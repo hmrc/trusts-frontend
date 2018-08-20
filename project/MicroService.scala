@@ -34,8 +34,8 @@ trait MicroService {
     .settings(
       ScoverageKeys.coverageExcludedFiles := "<empty>;Reverse.*;.*filters.*;.*handlers.*;.*components.*;.*models.*;.*repositories.*;" +
         ".*BuildInfo.*;.*javascript.*;.*FrontendAuditConnector.*;.*Routes.*;.*GuiceInjector;.*DataCacheConnector;" +
-        ".*ControllerConfiguration;.*LanguageSwitchController",
-      ScoverageKeys.coverageMinimum := 90,
+        ".*ControllerConfiguration;.*LanguageSwitchController.*;.*FormErrorHelper.*;.*error_template.*;.*FormHelpers.*;.*main_template.*;",
+      ScoverageKeys.coverageMinimum := 88,
       ScoverageKeys.coverageFailOnMinimum := true,
       ScoverageKeys.coverageHighlighting := true,
       parallelExecution in Test := false
