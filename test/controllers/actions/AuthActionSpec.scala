@@ -20,21 +20,51 @@ import play.api.mvc.Controller
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.authorise.Predicate
-import uk.gov.hmrc.auth.core.retrieve.Retrieval
+import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
 import base.SpecBase
 import controllers.routes
+import org.scalatest.mockito.MockitoSugar
 import uk.gov.hmrc.http.HeaderCarrier
+import org.mockito.{Matchers, Mockito}
+import org.mockito.Matchers.eq
+import org.mockito.Matchers.any
+import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.ExecutionContext.Implicits.global
+import uk.gov.hmrc.auth.core.authorise.Predicate
 
-class AuthActionSpec extends SpecBase {
+class AuthActionSpec extends SpecBase with MockitoSugar {
 
   class Harness(authAction: IdentifierAction) extends Controller {
     def onPageLoad() = authAction { request => Ok }
   }
 
+
   "Auth Action" when {
+
+    "the user has an Organisation affinity group" must {
+       "allow user to enter service" in {
+         val mockAuthConnector: AuthConnector = mockAuthSuccessRetrieval
+         val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, frontendAppConfig)
+         val controller = new Harness(authAction)
+         val result = controller.onPageLoad()(fakeRequest)
+         status(result) mustBe OK
+       }
+    }
+
+    "the user has an Agent affinity group" must {
+      "allow user to enter service" in {
+        val mockAuthConnector: AuthConnector = mockAuthSuccessRetrieval
+
+        val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, frontendAppConfig)
+        val controller = new Harness(authAction)
+        val result = controller.onPageLoad()(fakeRequest)
+        status(result) mustBe OK
+      }
+    }
+
+
     "the user hasn't logged in" must {
       "redirect the user to log in " in {
         val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new MissingBearerToken), frontendAppConfig)
@@ -104,6 +134,18 @@ class AuthActionSpec extends SpecBase {
         redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad().url)
       }
     }
+  }
+
+  private def mockAuthSuccessRetrieval = {
+    implicit val hc = mock[HeaderCarrier]
+    val mockAuthConnector: AuthConnector = mock[AuthConnector]
+    val retrievalResult: Future[Option[String]] = Future.successful(Some("123"))
+    val organisationPredicate: Predicate = AffinityGroup.Organisation
+    val agentPredicate: Predicate = Agent and Enrolment("HMRC-AS-AGENT")
+
+    Mockito.when(mockAuthConnector.authorise[Option[String]](Matchers.eq(agentPredicate or organisationPredicate), Matchers.any())
+      (any(), any())).thenReturn(retrievalResult)
+    mockAuthConnector
   }
 }
 
