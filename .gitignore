@@ -32,4 +32,5 @@ bin
 /*.iml
 /*.ipr
 /.classpath
+*.log
 *.iws
