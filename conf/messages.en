@@ -43,3 +43,9 @@ site.textarea.char_limit = (Limit is {0} characters)
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
+
+trustName.title = What is the name of the trust?
+trustName.heading = What is the name of the trust?
+trustName.checkYourAnswersLabel = What is the name of the trust?
+trustName.error.required = Enter the name of the trust
+trustName.error.length = The name of the trust must be 53 characters or less

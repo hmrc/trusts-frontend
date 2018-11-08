@@ -20,4 +20,7 @@ import org.scalacheck.Arbitrary
 import pages._
 
 trait PageGenerators {
+
+  implicit lazy val arbitraryTrustNamePage: Arbitrary[TrustNamePage.type] =
+    Arbitrary(TrustNamePage)
 }
