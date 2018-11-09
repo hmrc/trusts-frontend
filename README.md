@@ -1,6 +1,6 @@
 # Trusts Frontend
 
-[![Build Status](https://travis-ci.org/hmrc/trusts-frontend.svg?branch=master)](https://travis-ci.org/hmrc/trusts-frontend) [ ![Download](https://api.bintray.com/packages/hmrc/releases/trusts-frontend/images/download.svg) ](https://bintray.com/hmrc/releases/trusts-frontend/_latestVersion)
+[![Build Status][ ![Download](https://api.bintray.com/packages/hmrc/releases/trusts-frontend/images/download.svg) ](https://bintray.com/hmrc/releases/trusts-frontend/_latestVersion)
 
 This service allows users to register a trusts.
 
