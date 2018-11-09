@@ -81,19 +81,18 @@ class TrustNameControllerSpec extends ControllerSpecBase {
       contentAsString(result) mustBe viewAsString(boundForm)
     }
 
-//    "redirect to Session Expired for a GET if no existing data is found" in {
-//      val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
-//
-//      status(result) mustBe SEE_OTHER
-//      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
-//    }
-//
-//    "redirect to Session Expired for a POST if no existing data is found" in {
-//      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testAnswer))
-//      val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
-//
-//      status(result) mustBe SEE_OTHER
-//      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
-//    }
+    "redirect Ok for a GET if no existing data is found" in {
+      val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
+
+      status(result) mustBe OK
+    }
+
+    "redirect to next page for a POST if no existing data is found" in {
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testAnswer))
+      val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
+
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result) mustBe Some(onwardRoute.url)
+    }
   }
 }

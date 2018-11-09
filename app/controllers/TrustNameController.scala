@@ -44,7 +44,7 @@ class TrustNameController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode) = (identify andThen getData) {
+  def onPageLoad(mode: Mode) = ( identify andThen getData) {
     implicit request =>
 
       val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.internalId)).get(TrustNamePage) match {
