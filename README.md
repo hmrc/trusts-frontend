@@ -1,6 +1,6 @@
 # Trusts Frontend
 
-[![Build Status][ ![Download](https://api.bintray.com/packages/hmrc/releases/trusts-frontend/images/download.svg) ](https://bintray.com/hmrc/releases/trusts-frontend/_latestVersion)
+[ ![Download](https://api.bintray.com/packages/hmrc/releases/trusts-frontend/images/download.svg) ](https://bintray.com/hmrc/releases/trusts-frontend/_latestVersion)
 
 This service allows users to register a trusts.
 
