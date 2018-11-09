@@ -83,4 +83,12 @@ trait Constraints {
       case _ =>
         Invalid(errorKey, maximum)
     }
+
+  protected def isNotEmpty(value: String, errorKey: String): Constraint[String] =
+    Constraint {
+      case str if str.trim() != "" =>
+        Valid
+      case _ =>
+        Invalid(errorKey, value)
+    }
 }

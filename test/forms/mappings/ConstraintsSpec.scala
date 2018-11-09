@@ -116,4 +116,18 @@ class ConstraintsSpec extends WordSpec with MustMatchers with Constraints {
       result mustEqual Invalid("error.length", 10)
     }
   }
+
+  "isNotEmpty" must {
+
+    "return Valid for a string contating valid characters" in {
+      val result = isNotEmpty("String of characters", "error.required")("String of characters")
+      result mustEqual Valid
+    }
+
+    "return Invalid for an empty string" in {
+      val result = isNotEmpty(" ", "error.required")(" ")
+      result mustEqual Invalid("error.required", " ")
+    }
+
+  }
 }

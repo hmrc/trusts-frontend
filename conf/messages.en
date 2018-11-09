@@ -48,4 +48,6 @@ trustName.title = What is the name of the trust?
 trustName.heading = What is the name of the trust?
 trustName.checkYourAnswersLabel = What is the name of the trust?
 trustName.error.required = Enter the name of the trust
-trustName.error.length = The name of the trust must be 53 characters or less
+trustName.error.length = Full name of the trust cannot be more than 53 characters
+trustName.hint = The trust name is usually found on the trust deed. You will need to shorten the trust name if it is longer than 53 characters. If you are registering an existing trust make sure this name matches the name HMRC have on file for the trust.
+trustName.error.invalidCharacters = Full name of trust can only include letters, numbers, spaces and symbols ( ) ' , / & - .
