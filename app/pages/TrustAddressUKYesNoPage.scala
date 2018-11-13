@@ -14,16 +14,9 @@
  * limitations under the License.
  */
 
-package utils
+package pages
 
-import controllers.routes
-import models.CheckMode
-import pages._
-import viewmodels.{AnswerRow, RepeaterAnswerRow, RepeaterAnswerSection}
+case object TrustAddressUKYesNoPage extends QuestionPage[Boolean] {
 
-class CheckYourAnswersHelper(userAnswers: UserAnswers) {
-
-  def trustAddressUKYesNo: Option[AnswerRow] = userAnswers.get(TrustAddressUKYesNoPage) map {
-    x => AnswerRow("trustAddressUKYesNo.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.TrustAddressUKYesNoController.onPageLoad(CheckMode).url)
-  }
+  override def toString: String = "trustAddressUKYesNo"
 }

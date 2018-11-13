@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package utils
+package forms
 
-import controllers.routes
-import models.CheckMode
-import pages._
-import viewmodels.{AnswerRow, RepeaterAnswerRow, RepeaterAnswerSection}
+import javax.inject.Inject
 
-class CheckYourAnswersHelper(userAnswers: UserAnswers) {
+import forms.mappings.Mappings
+import play.api.data.Form
 
-  def trustAddressUKYesNo: Option[AnswerRow] = userAnswers.get(TrustAddressUKYesNoPage) map {
-    x => AnswerRow("trustAddressUKYesNo.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.TrustAddressUKYesNoController.onPageLoad(CheckMode).url)
-  }
+class TrustAddressUKYesNoFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("trustAddressUKYesNo.error.required")
+    )
 }

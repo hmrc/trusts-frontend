@@ -43,3 +43,9 @@ site.textarea.char_limit = (Limit is {0} characters)
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
+
+trustAddressUKYesNo.title = Is the trust's address in the UK?
+trustAddressUKYesNo.heading = Is the trust's address in the UK?
+trustAddressUKYesNo.checkYourAnswersLabel = Is the trust's address in the UK?
+trustAddressUKYesNo.error.required = Select yes if the trust's address in the UK
+trustAddressUKYesNo.hint = This is the address we will use to contact the trust.

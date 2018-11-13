@@ -11,3 +11,8 @@ GET        /this-service-has-been-reset                 controllers.SessionExpir
 GET        /check-your-answers                          controllers.CheckYourAnswersController.onPageLoad
 
 GET        /unauthorised                                controllers.UnauthorisedController.onPageLoad
+
+GET        /trust-address-uk-yes-no                     controllers.TrustAddressUKYesNoController.onPageLoad(mode: Mode = NormalMode)
+POST       /trust-address-uk-yes-no                     controllers.TrustAddressUKYesNoController.onSubmit(mode: Mode = NormalMode)
+GET        /change-trust-address-uk-yes-no              controllers.TrustAddressUKYesNoController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-trust-address-uk-yes-no              controllers.TrustAddressUKYesNoController.onSubmit(mode: Mode = CheckMode)
