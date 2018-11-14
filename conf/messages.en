@@ -38,6 +38,7 @@ site.hidden-edit = Change {0}
 site.no = No
 site.yes = Yes
 site.save_and_continue = Save and continue
+site.save_and_exit = Save and come back later
 site.service_name = trusts-frontend
 site.textarea.char_limit = (Limit is {0} characters)
 

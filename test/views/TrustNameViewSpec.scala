@@ -39,5 +39,9 @@ class TrustNameViewSpec extends StringViewBehaviours {
     behave like pageWithBackLink(createView)
 
     behave like stringPage(createViewUsingForm, messageKeyPrefix, routes.TrustNameController.onSubmit(NormalMode).url, Some(s"$messageKeyPrefix.hint"))
+
+    behave like pageWithSaveAndContinueButton(createView)
+
+    behave like pageWithSaveAndExitButton(createView)
   }
 }
