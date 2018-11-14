@@ -17,7 +17,6 @@
 package controllers
 
 import javax.inject.Inject
-
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
@@ -27,7 +26,7 @@ import config.FrontendAppConfig
 import forms.TrustAddressUKYesNoFormProvider
 import models.Mode
 import pages.TrustAddressUKYesNoPage
-import utils.Navigator
+import utils.{Navigator, UserAnswers}
 import views.html.trustAddressUKYesNo
 
 import scala.concurrent.Future
@@ -44,10 +43,10 @@ class TrustAddressUKYesNoController @Inject()(appConfig: FrontendAppConfig,
 
   val form: Form[Boolean] = formProvider()
 
-  def onPageLoad(mode: Mode) = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode) = (identify andThen getData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(TrustAddressUKYesNoPage) match {
+      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.internalId))get(TrustAddressUKYesNoPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -55,14 +54,14 @@ class TrustAddressUKYesNoController @Inject()(appConfig: FrontendAppConfig,
       Ok(trustAddressUKYesNo(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode) = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode) = (identify andThen getData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(trustAddressUKYesNo(appConfig, formWithErrors, mode))),
         (value) => {
-          val updatedAnswers = request.userAnswers.set(TrustAddressUKYesNoPage, value)
+          val updatedAnswers = request.userAnswers.getOrElse(UserAnswers(request.internalId)).set(TrustAddressUKYesNoPage, value)
 
           dataCacheConnector.save(updatedAnswers.cacheMap).map(
             _ =>
