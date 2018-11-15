@@ -14,16 +14,21 @@
  * limitations under the License.
  */
 
-package utils
+package forms
 
-import controllers.routes
-import models.CheckMode
-import pages._
-import viewmodels.{AnswerRow, RepeaterAnswerRow, RepeaterAnswerSection}
+import forms.mappings.Mappings
+import javax.inject.Inject
+import play.api.data.Form
 
-class CheckYourAnswersHelper(userAnswers: UserAnswers) {
+class TrustNameFormProvider @Inject() extends Mappings {
 
-  def trustName: Option[AnswerRow] = userAnswers.get(TrustNamePage) map {
-    x => AnswerRow("trustName.checkYourAnswersLabel", s"$x", false, routes.TrustNameController.onPageLoad(CheckMode).url)
-  }
+  def apply(): Form[String] =
+    Form(
+      "value" -> text("trustName.error.required")
+        .verifying(firstError(
+          maxLength(53, "trustName.error.length"),
+          regexp("^[A-Za-z0-9 ,.()/&'-]*$", "trustName.error.invalidCharacters"),
+          isNotEmpty("value", "trustName.error.required")
+        ))
+    )
 }

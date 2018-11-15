@@ -14,16 +14,9 @@
  * limitations under the License.
  */
 
-package utils
+package pages
 
-import controllers.routes
-import models.CheckMode
-import pages._
-import viewmodels.{AnswerRow, RepeaterAnswerRow, RepeaterAnswerSection}
+case object TrustNamePage extends QuestionPage[String] {
 
-class CheckYourAnswersHelper(userAnswers: UserAnswers) {
-
-  def trustName: Option[AnswerRow] = userAnswers.get(TrustNamePage) map {
-    x => AnswerRow("trustName.checkYourAnswersLabel", s"$x", false, routes.TrustNameController.onPageLoad(CheckMode).url)
-  }
+  override def toString: String = "trustName"
 }

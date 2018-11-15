@@ -38,8 +38,17 @@ site.hidden-edit = Change {0}
 site.no = No
 site.yes = Yes
 site.save_and_continue = Save and continue
+site.save_and_exit = Save and come back later
 site.service_name = trusts-frontend
 site.textarea.char_limit = (Limit is {0} characters)
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
+
+trustName.title = What is the name of the trust?
+trustName.heading = What is the name of the trust?
+trustName.checkYourAnswersLabel = What is the name of the trust?
+trustName.error.required = Enter the name of the trust
+trustName.error.length = Full name of the trust cannot be more than 53 characters
+trustName.hint = The trust name is usually found on the trust deed. You will need to shorten the trust name if it is longer than 53 characters. If you are registering an existing trust make sure this name matches the name HMRC have on file for the trust.
+trustName.error.invalidCharacters = Full name of trust can only include letters, numbers, spaces and symbols ( ) ' , / & - .

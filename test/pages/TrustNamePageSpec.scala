@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-package utils
+package pages
 
-import controllers.routes
-import models.CheckMode
-import pages._
-import viewmodels.{AnswerRow, RepeaterAnswerRow, RepeaterAnswerSection}
+import pages.behaviours.PageBehaviours
 
-class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
-  def trustName: Option[AnswerRow] = userAnswers.get(TrustNamePage) map {
-    x => AnswerRow("trustName.checkYourAnswersLabel", s"$x", false, routes.TrustNameController.onPageLoad(CheckMode).url)
+class TrustNamePageSpec extends PageBehaviours {
+
+  "TrustNamePage" must {
+
+    beRetrievable[String](TrustNamePage)
+
+    beSettable[String](TrustNamePage)
+
+    beRemovable[String](TrustNamePage)
   }
 }
