@@ -16,15 +16,19 @@
 
 package forms
 
-import javax.inject.Inject
-
 import forms.mappings.Mappings
+import javax.inject.Inject
 import play.api.data.Form
 
-class TrustAddressUKYesNoFormProvider @Inject() extends Mappings {
+class TrustNameFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Boolean] =
+  def apply(): Form[String] =
     Form(
-      "value" -> boolean("trustAddressUKYesNo.error.required")
+      "value" -> text("trustName.error.required")
+        .verifying(firstError(
+          maxLength(53, "trustName.error.length"),
+          regexp("^[A-Za-z0-9 ,.()/&'-]*$", "trustName.error.invalidCharacters"),
+          isNotEmpty("value", "trustName.error.required")
+        ))
     )
 }

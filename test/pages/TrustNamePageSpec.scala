@@ -14,32 +14,19 @@
  * limitations under the License.
  */
 
-package forms
+package pages
 
-import forms.behaviours.BooleanFieldBehaviours
-import play.api.data.FormError
+import pages.behaviours.PageBehaviours
 
-class TrustAddressUKYesNoFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "trustAddressUKYesNo.error.required"
-  val invalidKey = "error.boolean"
+class TrustNamePageSpec extends PageBehaviours {
 
-  val form = new TrustAddressUKYesNoFormProvider()()
+  "TrustNamePage" must {
 
-  ".value" must {
+    beRetrievable[String](TrustNamePage)
 
-    val fieldName = "value"
+    beSettable[String](TrustNamePage)
 
-    behave like booleanField(
-      form,
-      fieldName,
-      invalidError = FormError(fieldName, invalidKey)
-    )
-
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
+    beRemovable[String](TrustNamePage)
   }
 }

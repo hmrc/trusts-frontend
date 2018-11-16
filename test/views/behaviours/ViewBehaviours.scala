@@ -66,4 +66,25 @@ trait ViewBehaviours extends ViewSpecBase {
       }
     }
   }
+
+  def pageWithSaveAndContinueButton(view: () => HtmlFormat.Appendable) = {
+
+    "behave like a page with a save and continue button" must {
+      "have a save and continue button" in {
+        val doc = asDocument(view())
+        assertRenderedById(doc, "submit")
+      }
+    }
+  }
+
+  def pageWithSaveAndExitButton(view: () => HtmlFormat.Appendable) = {
+
+    "behave like a page with a save and exit button" must {
+      "have a save and exit button" in {
+        val doc = asDocument(view())
+        assertRenderedById(doc, "save-and-exit")
+      }
+    }
+  }
+
 }

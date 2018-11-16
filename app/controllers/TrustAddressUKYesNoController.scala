@@ -23,11 +23,12 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import connectors.DataCacheConnector
 import controllers.actions._
 import config.FrontendAppConfig
-import forms.TrustAddressUKYesNoFormProvider
+import controllers.routes.TrustAddressUKYesNoController
+import forms.YesNoFormProvider
 import models.Mode
 import pages.TrustAddressUKYesNoPage
 import utils.{Navigator, UserAnswers}
-import views.html.trustAddressUKYesNo
+import views.html.yesNo
 
 import scala.concurrent.Future
 
@@ -38,30 +39,32 @@ class TrustAddressUKYesNoController @Inject()(appConfig: FrontendAppConfig,
                                          identify: IdentifierAction,
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction,
-                                         formProvider: TrustAddressUKYesNoFormProvider
+                                         formProvider: YesNoFormProvider
                                          ) extends FrontendController with I18nSupport {
 
-  val form: Form[Boolean] = formProvider()
+  val messageKeyPrefix = "trustAddressUKYesNo"
+  val form: Form[Boolean] = formProvider(messageKeyPrefix)
+  def actionRoute(mode: Mode) = TrustAddressUKYesNoController.onSubmit(mode)
 
-  def onPageLoad(mode: Mode) = (identify andThen getData) {
+  def onPageLoad(mode: Mode) = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.internalId))get(TrustAddressUKYesNoPage) match {
+      val preparedForm = request.userAnswers.get(TrustAddressUKYesNoPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(trustAddressUKYesNo(appConfig, preparedForm, mode))
+      Ok(yesNo(appConfig, preparedForm, mode, actionRoute(mode), messageKeyPrefix))
   }
 
-  def onSubmit(mode: Mode) = (identify andThen getData).async {
+  def onSubmit(mode: Mode) = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(trustAddressUKYesNo(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(yesNo(appConfig, formWithErrors, mode, actionRoute(mode), messageKeyPrefix))),
         (value) => {
-          val updatedAnswers = request.userAnswers.getOrElse(UserAnswers(request.internalId)).set(TrustAddressUKYesNoPage, value)
+          val updatedAnswers = request.userAnswers.set(TrustAddressUKYesNoPage, value)
 
           dataCacheConnector.save(updatedAnswers.cacheMap).map(
             _ =>

@@ -18,27 +18,30 @@ package views
 
 import play.api.data.Form
 import controllers.routes
-import forms.TrustAddressUKYesNoFormProvider
-import views.behaviours.YesNoViewBehaviours
+import forms.TrustNameFormProvider
 import models.NormalMode
-import views.html.trustAddressUKYesNo
+import views.behaviours.StringViewBehaviours
+import views.html.trustName
 
-class TrustAddressUKYesNoViewSpec extends YesNoViewBehaviours {
+class TrustNameViewSpec extends StringViewBehaviours {
 
-  val messageKeyPrefix = "trustAddressUKYesNo"
+  val messageKeyPrefix = "trustName"
 
-  val form = new TrustAddressUKYesNoFormProvider()()
+  val form = new TrustNameFormProvider()()
 
-  def createView = () => trustAddressUKYesNo(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createView = () => trustName(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[_]) => trustAddressUKYesNo(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[String]) => trustName(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  "TrustAddressUKYesNo view" must {
-
+  "TrustName view" must {
     behave like normalPage(createView, messageKeyPrefix)
 
     behave like pageWithBackLink(createView)
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.TrustAddressUKYesNoController.onSubmit(NormalMode).url)
+    behave like stringPage(createViewUsingForm, messageKeyPrefix, routes.TrustNameController.onSubmit(NormalMode).url, Some(s"$messageKeyPrefix.hint"))
+
+    behave like pageWithSaveAndContinueButton(createView)
+
+    behave like pageWithSaveAndExitButton(createView)
   }
 }

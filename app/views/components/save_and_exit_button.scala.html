@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,18 +12,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package generators
+@()(implicit messages: Messages)
 
-import org.scalacheck.Arbitrary
-import pages._
-
-trait PageGenerators {
-
-  implicit lazy val arbitraryTrustAddressUKYesNoPage: Arbitrary[TrustAddressUKYesNoPage.type] =
-    Arbitrary(TrustAddressUKYesNoPage)
-
-  implicit lazy val arbitraryTrustNamePage: Arbitrary[TrustNamePage.type] =
-    Arbitrary(TrustNamePage)
-}
+<div>
+    <button id="save-and-exit" class="button-informative">@messages("site.save_and_exit")</button>
+</div>

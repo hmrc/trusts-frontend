@@ -23,25 +23,27 @@
 @(appConfig: FrontendAppConfig, form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("trustAddressUKYesNo.title")}",
+    title = s"${errorPrefix(form)} ${messages("trustName.title")}",
     appConfig = appConfig,
     bodyClasses = None) {
 
-    @helpers.form(action = TrustAddressUKYesNoController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = TrustNameController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("trustAddressUKYesNo.heading")
+        @components.heading("trustName.heading")
 
-        @components.input_yes_no(
-            field = form("value"),
-            label = messages("trustAddressUKYesNo.heading"),
-            labelClass = Some("visually-hidden"),
-            hint = Some(messages("trustAddressUKYesNo.hint"))
+        @components.input_text(
+          field = form("value"),
+          label = messages("trustName.heading"),
+          labelClass = Some("visually-hidden"),
+          hint = Some(messages("trustName.hint"))
         )
 
         @components.submit_button()
+
+        @components.save_and_exit_button()
     }
 }

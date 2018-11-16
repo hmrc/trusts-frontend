@@ -14,16 +14,9 @@
  * limitations under the License.
  */
 
-package generators
+package pages
 
-import org.scalacheck.Arbitrary
-import pages._
+case object TrustNamePage extends QuestionPage[String] {
 
-trait PageGenerators {
-
-  implicit lazy val arbitraryTrustAddressUKYesNoPage: Arbitrary[TrustAddressUKYesNoPage.type] =
-    Arbitrary(TrustAddressUKYesNoPage)
-
-  implicit lazy val arbitraryTrustNamePage: Arbitrary[TrustNamePage.type] =
-    Arbitrary(TrustNamePage)
+  override def toString: String = "trustName"
 }
