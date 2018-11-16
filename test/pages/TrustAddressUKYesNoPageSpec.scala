@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package generators
+package pages
 
-import org.scalacheck.Arbitrary
-import pages._
+import pages.behaviours.PageBehaviours
 
-trait PageGenerators {
+class TrustAddressUKYesNoPageSpec extends PageBehaviours {
 
-  implicit lazy val arbitraryTrustAddressUKYesNoPage: Arbitrary[TrustAddressUKYesNoPage.type] =
-    Arbitrary(TrustAddressUKYesNoPage)
+  "TrustAddressUKYesNoPage" must {
 
-  implicit lazy val arbitraryTrustNamePage: Arbitrary[TrustNamePage.type] =
-    Arbitrary(TrustNamePage)
+    beRetrievable[Boolean](TrustAddressUKYesNoPage)
+
+    beSettable[Boolean](TrustAddressUKYesNoPage)
+
+    beRemovable[Boolean](TrustAddressUKYesNoPage)
+  }
 }

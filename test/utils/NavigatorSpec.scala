@@ -32,10 +32,14 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
     "in Normal mode" must {
 
       "go to Index from a page that doesn't exist in the route map" in {
-
         case object UnknownPage extends Page
         navigator.nextPage(UnknownPage, NormalMode)(mock[UserAnswers]) mustBe routes.IndexController.onPageLoad()
       }
+
+      "go from the TrustNamePage page to TrustAddressUKYesNoPage" in {
+          navigator.nextPage(TrustNamePage, NormalMode)(mock[UserAnswers]) mustEqual routes.TrustAddressUKYesNoController.onPageLoad(NormalMode)
+      }
+
     }
 
     "in Check mode" must {

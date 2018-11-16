@@ -52,3 +52,9 @@ trustName.error.required = Enter the name of the trust
 trustName.error.length = Full name of the trust cannot be more than 53 characters
 trustName.hint = The trust name is usually found on the trust deed. You will need to shorten the trust name if it is longer than 53 characters. If you are registering an existing trust make sure this name matches the name HMRC have on file for the trust.
 trustName.error.invalidCharacters = Full name of trust can only include letters, numbers, spaces and symbols ( ) ' , / & - .
+
+trustAddressUKYesNo.title = Is the trust’s address in the UK?
+trustAddressUKYesNo.heading = Is the trust’s address in the UK?
+trustAddressUKYesNo.checkYourAnswersLabel = Is the trust’s address in the UK?
+trustAddressUKYesNo.error.required = Select yes if the trust’s address is in the UK
+trustAddressUKYesNo.hint = This is the address we will use to contact the trust.

@@ -27,6 +27,7 @@ trait CacheMapGenerator {
 
   val generators: Seq[Gen[(Page, JsValue)]] =
     arbitrary[(TrustNamePage.type, JsValue)] ::
+    arbitrary[(TrustAddressUKYesNoPage.type, JsValue)] ::
     Nil
 
   implicit lazy val arbitraryCacheMap: Arbitrary[CacheMap] =
