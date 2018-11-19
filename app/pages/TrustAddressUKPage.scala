@@ -14,22 +14,11 @@
  * limitations under the License.
  */
 
-package generators
+package pages
 
-import models._
-import org.scalacheck.Arbitrary.arbitrary
-import org.scalacheck.{Arbitrary, Gen}
+import models.AddressUK
 
-trait ModelGenerators {
+case object TrustAddressUKPage extends QuestionPage[AddressUK] {
 
-  implicit lazy val arbitraryTrustAddressUK: Arbitrary[AddressUK] =
-    Arbitrary {
-      for {
-        line1 <- arbitrary[String]
-        line2 <- arbitrary[String]
-        town <- arbitrary[String]
-        county <- arbitrary[String]
-        postcode <- arbitrary[String]
-      } yield AddressUK(line1, line2, town, county, postcode)
-    }
+  override def toString: String = "trustAddressUK"
 }
