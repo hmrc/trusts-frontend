@@ -37,27 +37,32 @@
 
         @components.input_text(
             field = form("line1"),
-            label = messages("addressUK.line1")
+            label = messages("addressUK.line1"),
+            inputClass = Some("govuk-input")
         )
 
         @components.input_text(
             field = form("line2"),
-            label = messages("addressUK.line2")
+            label = messages("addressUK.line2"),
+            inputClass = Some("govuk-input")
+        )
+
+        @components.input_text(
+            field = form("line3"),
+            label = messages("addressUK.line3"),
+            inputClass = Some("govuk-input")
         )
 
         @components.input_text(
             field = form("town"),
-            label = messages("addressUK.town")
-        )
-
-        @components.input_text(
-            field = form("county"),
-            label = messages("addressUK.county")
+            label = messages("addressUK.town"),
+            inputClass = Some("govuk-input")
         )
 
         @components.input_text(
             field = form("postcode"),
-            label = messages("addressUK.postcode")
+            label = messages("addressUK.postcode"),
+            inputClass = Some("govuk-input--width-10")
         )
 
         @components.submit_button()

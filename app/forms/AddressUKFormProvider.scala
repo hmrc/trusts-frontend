@@ -22,21 +22,40 @@ import forms.mappings.Mappings
 import play.api.data.Form
 import play.api.data.Forms._
 import models.AddressUK
+import utils.TrustsValidator._
 
 class AddressUKFormProvider @Inject() extends Mappings {
 
    def apply(): Form[AddressUK] = Form(
      mapping(
       "line1" -> text("addressUK.error.line1.required")
-        .verifying(maxLength(56, "addressUK.error.line1.length")),
-      "line2" -> text("addressUK.error.line2.required")
-        .verifying(maxLength(56, "addressUK.error.line2.length")),
+        .verifying(firstError(
+          maxLength(35, "addressUK.error.line1.length"),
+          regexp(alphaNumericWithSpecialsRegex, "addressUK.error.line1.invalidCharacters"),
+          isNotEmpty("line1", "addressUK.error.line1.required")
+        )),
+      "line2" -> optional(text("addressUK.error.line2.required")
+        .verifying(firstError(
+          maxLength(35, "addressUK.error.line2.length"),
+          regexp(alphaNumericWithSpecialsRegex, "addressUK.error.line2.invalidCharacters"),
+          isNotEmpty("line2", "addressUK.error.line2.invalidCharacters"))
+        )),
+        "line3" -> optional(text("addressUK.error.line3.required")
+          .verifying(firstError(
+            maxLength(35, "addressUK.error.line3.length"),
+            regexp(alphaNumericWithSpecialsRegex, "addressUK.error.line3.invalidCharacters"),
+            isNotEmpty("line3", "addressUK.error.line3.invalidCharacters"))
+          )),
         "town" -> text("addressUK.error.town.required")
-          .verifying(maxLength(56, "addressUK.error.town.length")),
-        "county" -> text("addressUK.error.county.required")
-          .verifying(maxLength(56, "addressUK.error.county.length")),
+          .verifying(firstError(
+            maxLength(35, "addressUK.error.town.length"),
+            regexp(alphaNumericWithSpecialsRegex, "addressUK.error.town.invalidCharacters"),
+            isNotEmpty("town", "addressUK.error.town.required")
+          )),
         "postcode" -> text("addressUK.error.postcode.required")
-          .verifying(maxLength(56, "addressUK.error.postcode.length"))
+          .verifying(firstError(
+            regexp(postcodeRegex, "addressUK.error.postcode.invalid")
+          ))
     )(AddressUK.apply)(AddressUK.unapply)
    )
  }

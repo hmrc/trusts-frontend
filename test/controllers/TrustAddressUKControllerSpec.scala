@@ -56,17 +56,17 @@ class TrustAddressUKControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(TrustAddressUKPage.toString -> Json.toJson(AddressUK("value 1", "value 2", "value 3", "Value 4", "value 5")))
+      val validData = Map(TrustAddressUKPage.toString -> Json.toJson(AddressUK("value 1", Some("value 2"), Some("value 3"), "Value 4", "value 5")))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(form.fill(AddressUK("value 1", "value 2", "value 3", "Value 4", "value 5")))
+      contentAsString(result) mustBe viewAsString(form.fill(AddressUK("value 1", Some("value 2"), Some("value 3"), "Value 4", "value 5")))
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("line1", "value 1"), ("line2", "value 2"),
-        ("town", "value 3"), ("county", "value 4"), ("postcode", "value 2"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("line1", "value 1"), ("line2", "value 2"), ("line3", "value 3"),
+        ("town", "value 3"), ("postcode", "AB11AB"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -92,8 +92,8 @@ class TrustAddressUKControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("line1", "value 1"), ("line2", "value 2"),
-        ("town", "value 3"), ("county", "value 4"), ("postcode", "value 2"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("line1", "value 1"), ("line2", "value 2"), ("line3", "value 3"),
+        ("town", "value 3"), ("postcode", "value 2"))
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER

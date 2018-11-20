@@ -14,22 +14,13 @@
  * limitations under the License.
  */
 
-package generators
+package utils
 
-import models._
-import org.scalacheck.Arbitrary.arbitrary
-import org.scalacheck.{Arbitrary, Gen}
+object TrustsValidator extends TrustsValidator
 
-trait ModelGenerators {
+trait TrustsValidator {
 
-  implicit lazy val arbitraryTrustAddressUK: Arbitrary[AddressUK] =
-    Arbitrary {
-      for {
-        line1 <- arbitrary[String]
-        line2 <- arbitrary[String]
-        line3 <- arbitrary[String]
-        town <- arbitrary[String]
-        postcode <- arbitrary[String]
-      } yield AddressUK(line1, Some(line2), Some(line3), town, postcode)
-    }
+  val alphaNumericWithSpecialsRegex = """^[A-Za-z0-9 ,.()/&'-]*$"""
+  val postcodeRegex = """^((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))( )?[0-9][A-Za-z]{2})$"""
+
 }

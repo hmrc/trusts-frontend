@@ -25,7 +25,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
   def trustAddressUK: Option[AnswerRow] = userAnswers.get(TrustAddressUKPage) map {
     x => AnswerRow("trustAddressUK.checkYourAnswersLabel",
-      s"${x.line1} ${x.line2} ${x.town} ${x.county} ${x.postcode}",
+      s"${x.line1} ${x.line2.getOrElse("")} ${x.line3.getOrElse("")} ${x.town} ${x.postcode}",
       false, routes.TrustAddressUKController.onPageLoad(CheckMode).url)
   }
 

@@ -45,7 +45,7 @@ class TrustAddressUKViewSpec extends QuestionViewBehaviours[AddressUK] {
       createViewUsingForm,
       messageKeyPrefix,
       actionRoute(NormalMode).url,
-      "line1", "line2", "town", "county", "postcode"
+      "line1", "line2", "line3", "town", "postcode"
     )
   }
 }
