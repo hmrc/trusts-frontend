@@ -167,3 +167,11 @@ override character count display
 }
 
 .form-hint, .error-message {margin-bottom: 10px;}
+
+.form-control.govuk-input {
+  width: 100%;
+}
+
+.govuk-input--width-10 {
+  max-width: 23ex;
+}

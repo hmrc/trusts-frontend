@@ -14,22 +14,16 @@
  * limitations under the License.
  */
 
-package generators
+package models
 
-import models._
-import org.scalacheck.Arbitrary.arbitrary
-import org.scalacheck.{Arbitrary, Gen}
+import play.api.libs.json._
 
-trait ModelGenerators {
+case class AddressUK(line1: String,
+                     line2: Option[String],
+                     line3: Option[String],
+                     town: String,
+                     postcode: String)
 
-  implicit lazy val arbitraryTrustAddressUK: Arbitrary[AddressUK] =
-    Arbitrary {
-      for {
-        line1 <- arbitrary[String]
-        line2 <- arbitrary[String]
-        line3 <- arbitrary[String]
-        town <- arbitrary[String]
-        postcode <- arbitrary[String]
-      } yield AddressUK(line1, Some(line2), Some(line3), town, postcode)
-    }
+object AddressUK {
+  implicit val format = Json.format[AddressUK]
 }

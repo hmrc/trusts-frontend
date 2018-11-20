@@ -14,22 +14,19 @@
  * limitations under the License.
  */
 
-package generators
+package pages
 
-import models._
-import org.scalacheck.Arbitrary.arbitrary
-import org.scalacheck.{Arbitrary, Gen}
+import models.AddressUK
+import pages.behaviours.PageBehaviours
 
-trait ModelGenerators {
+class TrustAddressUKPageSpec extends PageBehaviours {
 
-  implicit lazy val arbitraryTrustAddressUK: Arbitrary[AddressUK] =
-    Arbitrary {
-      for {
-        line1 <- arbitrary[String]
-        line2 <- arbitrary[String]
-        line3 <- arbitrary[String]
-        town <- arbitrary[String]
-        postcode <- arbitrary[String]
-      } yield AddressUK(line1, Some(line2), Some(line3), town, postcode)
-    }
+  "TrustAddressUKPage" must {
+
+    beRetrievable[AddressUK](TrustAddressUKPage)
+
+    beSettable[AddressUK](TrustAddressUKPage)
+
+    beRemovable[AddressUK](TrustAddressUKPage)
+  }
 }

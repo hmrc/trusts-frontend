@@ -17,22 +17,28 @@
 package utils
 
 import javax.inject.{Inject, Singleton}
-
 import play.api.mvc.Call
 import controllers.routes
-import pages._
+import pages.{TrustNamePage, _}
 import models.{CheckMode, Mode, NormalMode}
 
 @Singleton
 class Navigator @Inject()() {
 
   private val routeMap: Map[Page, UserAnswers => Call] = Map(
-    TrustNamePage -> (_=> routes.TrustAddressUKYesNoController.onPageLoad(NormalMode))
+    TrustNamePage -> (_=> routes.TrustAddressUKYesNoController.onPageLoad(NormalMode)),
+    TrustAddressUKYesNoPage -> trustAddressUKYesNoRoute()
   )
 
   private val checkRouteMap: Map[Page, UserAnswers => Call] = Map(
 
   )
+
+  private def trustAddressUKYesNoRoute()(answers: UserAnswers ) = answers.get(TrustAddressUKYesNoPage) match {
+    case Some(true) => routes.TrustAddressUKController.onPageLoad(NormalMode)
+    case Some(false) => routes.IndexController.onPageLoad()
+    case None =>routes.IndexController.onPageLoad()
+  }
 
   def nextPage(page: Page, mode: Mode): UserAnswers => Call = mode match {
     case NormalMode =>

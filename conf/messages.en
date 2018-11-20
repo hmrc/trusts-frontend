@@ -51,10 +51,33 @@ trustName.checkYourAnswersLabel = What is the name of the trust?
 trustName.error.required = Enter the name of the trust
 trustName.error.length = Full name of the trust cannot be more than 53 characters
 trustName.hint = The trust name is usually found on the trust deed. You will need to shorten the trust name if it is longer than 53 characters. If you are registering an existing trust make sure this name matches the name HMRC have on file for the trust.
-trustName.error.invalidCharacters = Full name of trust can only include letters, numbers, spaces and symbols ( ) ' , / & - .
+trustName.error.invalidCharacters = Full name of trust can only include letters, numbers, spaces and symbols ( ) '' , / & - .
 
 trustAddressUKYesNo.title = Is the trust’s address in the UK?
 trustAddressUKYesNo.heading = Is the trust’s address in the UK?
 trustAddressUKYesNo.checkYourAnswersLabel = Is the trust’s address in the UK?
 trustAddressUKYesNo.error.required = Select yes if the trust’s address is in the UK
 trustAddressUKYesNo.hint = This is the address we will use to contact the trust.
+
+trustAddressUK.title = UK Address details
+trustAddressUK.heading = UK Address details
+trustAddressUK.checkYourAnswersLabel = UK Address details
+
+addressUK.line1 = Address line 1
+addressUK.line2 = Address line 2 (optional)
+addressUK.line3 = Address line 3 (optional)
+addressUK.town = Town or city
+addressUK.postcode = Postcode
+addressUK.postcode.hint = For example AB1 1AB
+addressUK.error.line1.required = Enter the first line of the address
+addressUK.error.town.required = Enter the town or city
+addressUK.error.postcode.required = Enter the postcode. For example AB1 1AB
+addressUK.error.line1.length = Address line 1 cannot be more than 35 characters
+addressUK.error.line2.length = Address line 2 cannot be more than 35 characters
+addressUK.error.line3.length = Address line 3 cannot be more than 35 characters
+addressUK.error.town.length = Town or city cannot be more than 35 characters
+addressUK.error.line1.invalidCharacters = Address line 1 can only include letters, numbers, spaces and symbols ( ) '' , / & - .
+addressUK.error.line2.invalidCharacters = Address line 2 can only include letters, numbers, spaces and symbols ( ) '' , / & - .
+addressUK.error.line3.invalidCharacters = Address line 3 can only include letters, numbers, spaces and symbols ( ) '' , / & - .
+addressUK.error.town.invalidCharacters = Town or city can only include letters, numbers, spaces and symbols ( ) '' , / & - .
+addressUK.error.postcode.invalid = Enter a valid UK postcode. For example AB1 1AB

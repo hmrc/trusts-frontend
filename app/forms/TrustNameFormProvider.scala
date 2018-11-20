@@ -19,6 +19,7 @@ package forms
 import forms.mappings.Mappings
 import javax.inject.Inject
 import play.api.data.Form
+import utils.TrustsValidator._
 
 class TrustNameFormProvider @Inject() extends Mappings {
 
@@ -27,7 +28,7 @@ class TrustNameFormProvider @Inject() extends Mappings {
       "value" -> text("trustName.error.required")
         .verifying(firstError(
           maxLength(53, "trustName.error.length"),
-          regexp("^[A-Za-z0-9 ,.()/&'-]*$", "trustName.error.invalidCharacters"),
+          regexp(alphaNumericWithSpecialsRegex, "trustName.error.invalidCharacters"),
           isNotEmpty("value", "trustName.error.required")
         ))
     )
