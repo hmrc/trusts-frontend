@@ -14,22 +14,19 @@
  * limitations under the License.
  */
 
-package generators
+package pages
 
-import org.scalacheck.Arbitrary
-import pages._
+import models.InternationalAddress
+import pages.behaviours.PageBehaviours
 
-trait PageGenerators {
+class TrustsAddressInternationalPageSpec extends PageBehaviours {
 
-  implicit lazy val arbitraryInternationalTrustsAddressPage: Arbitrary[TrustsAddressInternationalPage.type] =
-    Arbitrary(TrustsAddressInternationalPage)
+  "TrustsAddressInternationalPage" must {
 
-  implicit lazy val arbitraryTrustAddressUKPage: Arbitrary[TrustAddressUKPage.type] =
-    Arbitrary(TrustAddressUKPage)
+    beRetrievable[InternationalAddress](TrustsAddressInternationalPage)
 
-  implicit lazy val arbitraryTrustAddressUKYesNoPage: Arbitrary[TrustAddressUKYesNoPage.type] =
-    Arbitrary(TrustAddressUKYesNoPage)
+    beSettable[InternationalAddress](TrustsAddressInternationalPage)
 
-  implicit lazy val arbitraryTrustNamePage: Arbitrary[TrustNamePage.type] =
-    Arbitrary(TrustNamePage)
+    beRemovable[InternationalAddress](TrustsAddressInternationalPage)
+  }
 }

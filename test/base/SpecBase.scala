@@ -22,6 +22,7 @@ import org.scalatestplus.play.guice._
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.Injector
 import play.api.test.FakeRequest
+import utils.Navigator
 
 trait SpecBase extends PlaySpec with GuiceOneAppPerSuite {
 
@@ -30,6 +31,9 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite {
   def frontendAppConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
 
   def messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
+
+ // def navigator: Navigator = injector.instanceOf[Navigator]
+
 
   def fakeRequest = FakeRequest("", "")
 

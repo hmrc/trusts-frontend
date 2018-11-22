@@ -81,3 +81,30 @@ addressUK.error.line2.invalidCharacters = Address line 2 can only include letter
 addressUK.error.line3.invalidCharacters = Address line 3 can only include letters, numbers, spaces and symbols ( ) '' , / & - .
 addressUK.error.town.invalidCharacters = Town or city can only include letters, numbers, spaces and symbols ( ) '' , / & - .
 addressUK.error.postcode.invalid = Enter a valid UK postcode. For example AB1 1AB
+
+internationalAddress.heading = International address details
+internationalAddress.checkYourAnswersLabel = International address details
+
+internationalAddress.line1 = Address line 1
+internationalAddress.line2 = Address line 2
+internationalAddress.line3 = Address line 3 (optional)
+internationalAddress.country = Country
+internationalAddress.error.line1.required = Enter the first line of the address
+internationalAddress.error.line1.length = Address line 1 cannot be more than 35 characters
+internationalAddress.error.line1.invalidCharacters = Address line 1 can only include letters, numbers, spaces and symbols ( ) '' , / & - .
+
+internationalAddress.error.line2.required = Enter the second line of the address
+internationalAddress.error.line2.length = Address line 2 cannot be more than 35 characters
+internationalAddress.error.line2.invalidCharacters = Address line 2 can only include letters, numbers, spaces and symbols ( ) '' , / & - .
+
+internationalAddress.error.line3.length = Address line 3 cannot be more than 35 characters
+internationalAddress.error.line3.invalidCharacters = Address line 3 can only include letters, numbers, spaces and symbols ( ) '' , / & - .
+
+internationalAddress.error.country.required = Enter the country
+internationalAddress.error.country.length = Country cannot be more than 35 characters
+internationalAddress.error.country.invalidCharacters = Country can only include letters, numbers, spaces and symbols ( ) '' , / & - .
+
+
+
+
+

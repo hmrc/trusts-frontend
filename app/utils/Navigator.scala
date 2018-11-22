@@ -36,7 +36,7 @@ class Navigator @Inject()() {
 
   private def trustAddressUKYesNoRoute()(answers: UserAnswers ) = answers.get(TrustAddressUKYesNoPage) match {
     case Some(true) => routes.TrustAddressUKController.onPageLoad(NormalMode)
-    case Some(false) => routes.IndexController.onPageLoad()
+    case Some(false) => routes.TrustsAddressInternationalController.onPageLoad(NormalMode)
     case None =>routes.IndexController.onPageLoad()
   }
 

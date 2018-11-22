@@ -14,22 +14,18 @@
  * limitations under the License.
  */
 
-package generators
+package models
 
-import org.scalacheck.Arbitrary
-import pages._
+import play.api.libs.json._
 
-trait PageGenerators {
 
-  implicit lazy val arbitraryInternationalTrustsAddressPage: Arbitrary[TrustsAddressInternationalPage.type] =
-    Arbitrary(TrustsAddressInternationalPage)
+case class InternationalAddress(
+                     line1: String,
+                     line2: String,
+                     line3: Option[String],
+                     country: String
+                     )
 
-  implicit lazy val arbitraryTrustAddressUKPage: Arbitrary[TrustAddressUKPage.type] =
-    Arbitrary(TrustAddressUKPage)
-
-  implicit lazy val arbitraryTrustAddressUKYesNoPage: Arbitrary[TrustAddressUKYesNoPage.type] =
-    Arbitrary(TrustAddressUKYesNoPage)
-
-  implicit lazy val arbitraryTrustNamePage: Arbitrary[TrustNamePage.type] =
-    Arbitrary(TrustNamePage)
+object InternationalAddress {
+  implicit val format = Json.format[InternationalAddress]
 }
