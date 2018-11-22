@@ -32,8 +32,6 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite {
 
   def messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
 
- // def navigator: Navigator = injector.instanceOf[Navigator]
-
 
   def fakeRequest = FakeRequest("", "")
 
