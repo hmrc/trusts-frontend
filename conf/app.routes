@@ -31,3 +31,8 @@ GET        /trust-address-international                        controllers.Trust
 POST       /trust-address-international                        controllers.TrustsAddressInternationalController.onSubmit(mode: Mode = NormalMode)
 GET        /change-trust-address-international                controllers.TrustsAddressInternationalController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-trust-address-international                  controllers.TrustsAddressInternationalController.onSubmit(mode: Mode = CheckMode)
+
+GET        /trustContactPhoneNumber                        controllers.TrustContactPhoneNumberController.onPageLoad(mode: Mode = NormalMode)
+POST       /trustContactPhoneNumber                        controllers.TrustContactPhoneNumberController.onSubmit(mode: Mode = NormalMode)
+GET        /changeTrustContactPhoneNumber                  controllers.TrustContactPhoneNumberController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeTrustContactPhoneNumber                  controllers.TrustContactPhoneNumberController.onSubmit(mode: Mode = CheckMode)

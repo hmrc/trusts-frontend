@@ -108,3 +108,9 @@ internationalAddress.error.country.invalidCharacters = Country can only include 
 
 
 
+
+trustContactPhoneNumber.title = trustContactPhoneNumber
+trustContactPhoneNumber.heading = trustContactPhoneNumber
+trustContactPhoneNumber.checkYourAnswersLabel = trustContactPhoneNumber
+trustContactPhoneNumber.error.required = Enter trustContactPhoneNumber
+trustContactPhoneNumber.error.length = TrustContactPhoneNumber must be 100 characters or less
