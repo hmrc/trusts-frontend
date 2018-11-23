@@ -109,8 +109,8 @@ internationalAddress.error.country.invalidCharacters = Country can only include 
 
 
 
-trustContactPhoneNumber.title = trustContactPhoneNumber
-trustContactPhoneNumber.heading = trustContactPhoneNumber
-trustContactPhoneNumber.checkYourAnswersLabel = trustContactPhoneNumber
-trustContactPhoneNumber.error.required = Enter trustContactPhoneNumber
-trustContactPhoneNumber.error.length = TrustContactPhoneNumber must be 100 characters or less
+trustContactPhoneNumber.title = What is the contact telephone number for the trust?
+trustContactPhoneNumber.heading = What is the contact telephone number for the trust?
+trustContactPhoneNumber.checkYourAnswersLabel = What is the contact telephone number for the trust?
+trustContactPhoneNumber.error.required = Enter the contact telephone number
+trustContactPhoneNumber.error.length = Enter a valid telephone number. It can be a 19 character telephone number or 18 character number with the + (plus) character
