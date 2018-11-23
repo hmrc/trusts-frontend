@@ -56,12 +56,12 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      "go from the TrustAddressUKPage page to IndexPae" in {
-        navigator.nextPage(TrustAddressUKPage, NormalMode)(mock[UserAnswers]) mustEqual routes.IndexController.onPageLoad()
+      "go from the TrustAddressUKPage page to TrustContactPhoneNumberPage" in {
+        navigator.nextPage(TrustAddressUKPage, NormalMode)(mock[UserAnswers]) mustEqual routes.TrustContactPhoneNumberController.onPageLoad(NormalMode)
       }
 
-      "go from the InternationalTrustsAddressPage page to IndexPae" in {
-        navigator.nextPage(TrustsAddressInternationalPage, NormalMode)(mock[UserAnswers]) mustEqual routes.IndexController.onPageLoad()
+      "go from the InternationalTrustsAddressPage page to TrustContactPhoneNumberPage" in {
+        navigator.nextPage(TrustsAddressInternationalPage, NormalMode)(mock[UserAnswers]) mustEqual routes.TrustContactPhoneNumberController.onPageLoad(NormalMode)
       }
 
     }
