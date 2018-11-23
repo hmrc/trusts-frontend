@@ -55,6 +55,11 @@ class EnumerableSpec extends WordSpec with MustMatchers with EitherValues with O
     "fail to bind for invalid values" in {
       Json.fromJson[Foo](JsString("invalid")).asEither.left.value must contain(JsPath -> Seq(ValidationError("error.invalid")))
     }
+
+    "fail to bind for invalid type value" in {
+      Json.fromJson[Foo](JsBoolean(true)).asEither.left.value must contain(JsPath -> Seq(ValidationError("error.invalid")))
+    }
+
   }
 
   ".writes" must {
