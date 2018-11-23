@@ -20,12 +20,15 @@ import javax.inject.Inject
 
 import forms.mappings.Mappings
 import play.api.data.Form
+import utils.TrustsValidator.phoneNumberRegEx
 
 class TrustContactPhoneNumberFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
     Form(
       "value" -> text("trustContactPhoneNumber.error.required")
-        .verifying(maxLength(100, "trustContactPhoneNumber.error.length"))
+        .verifying(firstError(maxLength(19, "trustContactPhoneNumber.error.length"),
+        regexp(phoneNumberRegEx, "trustContactPhoneNumber.error.invalidCharacters"),
+        isNotEmpty("value", "trustContactPhoneNumber.error.required")))
     )
 }
