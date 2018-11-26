@@ -32,7 +32,7 @@ POST       /trust-address-international                        controllers.Trust
 GET        /change-trust-address-international                controllers.TrustsAddressInternationalController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-trust-address-international                  controllers.TrustsAddressInternationalController.onSubmit(mode: Mode = CheckMode)
 
-GET        /trust-contact-phoneNumber                        controllers.TrustContactPhoneNumberController.onPageLoad(mode: Mode = NormalMode)
-POST       /trust-contact-phoneNumber                        controllers.TrustContactPhoneNumberController.onSubmit(mode: Mode = NormalMode)
-GET        /change-trust-contact-phoneNumber                  controllers.TrustContactPhoneNumberController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-trust-contact-phoneNumber                  controllers.TrustContactPhoneNumberController.onSubmit(mode: Mode = CheckMode)
+GET        /trust-contact-phone-number                        controllers.TrustContactPhoneNumberController.onPageLoad(mode: Mode = NormalMode)
+POST       /trust-contact-phone-number                        controllers.TrustContactPhoneNumberController.onSubmit(mode: Mode = NormalMode)
+GET        /change-trust-contact-phone-number                 controllers.TrustContactPhoneNumberController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-trust-contact-phone-number                 controllers.TrustContactPhoneNumberController.onSubmit(mode: Mode = CheckMode)
