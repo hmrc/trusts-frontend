@@ -117,3 +117,9 @@ trustContactPhoneNumber.error.required = Enter the contact telephone number
 trustContactPhoneNumber.error.length = Enter a valid telephone number. It can be a 19 character telephone number or 18 character number with the + (plus) character
 trustContactPhoneNumber.error.invalidCharacters = Enter a valid telephone number. It can be a 19 character telephone number or 18 character number with the + (plus) character
 
+
+trustSettledDate.title = trustSettledDate
+trustSettledDate.heading = trustSettledDate
+trustSettledDate.checkYourAnswersLabel = trustSettledDate
+trustSettledDate.error.required = Enter trustSettledDate
+trustSettledDate.error.length = TrustSettledDate must be 100 characters or less
