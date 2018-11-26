@@ -14,26 +14,18 @@
  * limitations under the License.
  */
 
-package base
+package models
 
-import config.FrontendAppConfig
-import org.scalatestplus.play.PlaySpec
-import org.scalatestplus.play.guice._
-import play.api.i18n.{Messages, MessagesApi}
-import play.api.inject.Injector
-import play.api.test.FakeRequest
-import utils.Navigator
-
-trait SpecBase extends PlaySpec with GuiceOneAppPerSuite {
-
-  def injector: Injector = app.injector
-
-  def frontendAppConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
-
-  def messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
+import play.api.libs.json._
 
 
-  def fakeRequest = FakeRequest("", "")
+case class InternationalAddress(
+                     line1: String,
+                     line2: String,
+                     line3: Option[String],
+                     country: String
+                     )
 
-  def messages: Messages = messagesApi.preferred(fakeRequest)
+object InternationalAddress {
+  implicit val format = Json.format[InternationalAddress]
 }

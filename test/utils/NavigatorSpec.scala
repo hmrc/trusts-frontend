@@ -48,12 +48,20 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      "go from TrustAddressUKYesNoPage to IndexPage" when {
+      "go from TrustAddressUKYesNoPage to InternationalTrustsAddressPage" when {
         "the user has answered No to TrustAddressUKYesNoPage" in {
           val mockAnswers = mock[UserAnswers]
           when(mockAnswers.get(TrustAddressUKYesNoPage)) thenReturn Some(false)
-          navigator.nextPage(TrustAddressUKYesNoPage, NormalMode)(mockAnswers) mustEqual routes.IndexController.onPageLoad()
+          navigator.nextPage(TrustAddressUKYesNoPage, NormalMode)(mockAnswers) mustEqual routes.TrustsAddressInternationalController.onPageLoad(NormalMode)
         }
+      }
+
+      "go from the TrustAddressUKPage page to IndexPae" in {
+        navigator.nextPage(TrustAddressUKPage, NormalMode)(mock[UserAnswers]) mustEqual routes.IndexController.onPageLoad()
+      }
+
+      "go from the InternationalTrustsAddressPage page to IndexPae" in {
+        navigator.nextPage(TrustsAddressInternationalPage, NormalMode)(mock[UserAnswers]) mustEqual routes.IndexController.onPageLoad()
       }
 
     }
