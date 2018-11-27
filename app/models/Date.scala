@@ -18,13 +18,8 @@ package models
 
 import play.api.libs.json._
 
-case class Date (day: Int, month: Int, year: Int) {}
+case class Date(day: String, month: String, year: String)
 
 object Date {
   implicit val format = Json.format[Date]
 }
-
-sealed abstract class DatePart
-case object Day extends DatePart
-case object Month extends DatePart
-case object Year extends DatePart

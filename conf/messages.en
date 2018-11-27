@@ -118,8 +118,14 @@ trustContactPhoneNumber.error.length = Enter a valid telephone number. It can be
 trustContactPhoneNumber.error.invalidCharacters = Enter a valid telephone number. It can be a 19 character telephone number or 18 character number with the + (plus) character
 
 
-trustSettledDate.title = trustSettledDate
-trustSettledDate.heading = trustSettledDate
-trustSettledDate.checkYourAnswersLabel = trustSettledDate
-trustSettledDate.error.required = Enter trustSettledDate
-trustSettledDate.error.length = TrustSettledDate must be 100 characters or less
+trustSettledDate.title = When was the trust settled?
+trustSettledDate.heading = When was the trust settled?
+trustSettledDate.checkYourAnswersLabel = When was the trust settled?
+trustSettledDate.hint = This is the date you signed the trust deed. For example, 20 03 2015
+trustSettledDate.checkYourAnswersLabel = What is the trustee’s date of birth?
+
+trustSettledDate.error.required = Enter the date the trust was set up. For example 20/03/2015
+trustSettledDate.error.invalid = Enter a valid date the trust was set up. For example 20/03/2015
+trustSettledDate.error.past = Date the trust was set up must not be before 01/01/1900
+trustSettledDate.error.future = Date must be in the past
+

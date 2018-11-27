@@ -16,6 +16,7 @@
 
 package forms.mappings
 
+import org.joda.time.LocalDate
 import play.api.data.validation.{Constraint, Invalid, Valid}
 
 trait Constraints {
@@ -90,5 +91,21 @@ trait Constraints {
         Valid
       case _ =>
         Invalid(errorKey, value)
+    }
+
+  protected def before(date: LocalDate, errorKey: String, errorArgs: Any*): Constraint[LocalDate] =
+    Constraint {
+      case d if d.isBefore(date) =>
+        Valid
+      case _ =>
+        Invalid(errorKey, errorArgs: _*)
+    }
+
+  protected def after(date: LocalDate, errorKey: String, errorArgs: Any*): Constraint[LocalDate] =
+    Constraint {
+      case d if d.isAfter(date) =>
+        Valid
+      case _ =>
+        Invalid(errorKey, errorArgs: _*)
     }
 }
