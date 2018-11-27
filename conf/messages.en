@@ -106,10 +106,6 @@ internationalAddress.error.country.length = Country cannot be more than 35 chara
 internationalAddress.error.country.invalidCharacters = Country can only include letters, numbers, spaces and symbols ( ) '' , / & - .
 
 
-
-
-
-
 trustContactPhoneNumber.title = What is the contact telephone number for the trust?
 trustContactPhoneNumber.heading = What is the contact telephone number for the trust?
 trustContactPhoneNumber.checkYourAnswersLabel = What is the contact telephone number for the trust?

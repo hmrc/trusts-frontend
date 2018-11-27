@@ -21,17 +21,22 @@ import controllers.routes
 import forms.TrustContactPhoneNumberFormProvider
 import models.NormalMode
 import views.behaviours.StringViewBehaviours
-import views.html.trustContactPhoneNumber
+import views.html.phoneNumber
+import models.Mode
+import controllers.routes.TrustContactPhoneNumberController
+
 
 class TrustContactPhoneNumberViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "trustContactPhoneNumber"
 
+  def actionRoute(mode: Mode) = TrustContactPhoneNumberController.onSubmit(mode)
+
   val form = new TrustContactPhoneNumberFormProvider()()
 
-  def createView = () => trustContactPhoneNumber(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createView = () => phoneNumber(frontendAppConfig, form, NormalMode,actionRoute(NormalMode),messageKeyPrefix)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[String]) => trustContactPhoneNumber(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[String]) => phoneNumber(frontendAppConfig, form, NormalMode,actionRoute(NormalMode),messageKeyPrefix)(fakeRequest, messages)
 
   "TrustContactPhoneNumber view" must {
     behave like normalPage(createView, messageKeyPrefix)

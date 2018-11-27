@@ -27,11 +27,18 @@ import forms.TrustContactPhoneNumberFormProvider
 import models.NormalMode
 import pages.TrustContactPhoneNumberPage
 import play.api.mvc.Call
-import views.html.trustContactPhoneNumber
+import views.html.phoneNumber
+import models.Mode
+import controllers.routes.TrustContactPhoneNumberController
+
 
 class TrustContactPhoneNumberControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = Call("GET", "/foo")
+
+  val messagePrefix: String = "trustContactPhoneNumber"
+
+  def actionRoute(mode: Mode) = TrustContactPhoneNumberController.onSubmit(mode)
 
   val formProvider = new TrustContactPhoneNumberFormProvider()
   val form = formProvider()
@@ -40,7 +47,7 @@ class TrustContactPhoneNumberControllerSpec extends ControllerSpecBase {
     new TrustContactPhoneNumberController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(onwardRoute), FakeIdentifierAction,
       dataRetrievalAction, new DataRequiredActionImpl, formProvider)
 
-  def viewAsString(form: Form[_] = form) = trustContactPhoneNumber(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[_] = form) = phoneNumber(frontendAppConfig, form, NormalMode,actionRoute(NormalMode), messagePrefix)(fakeRequest, messages).toString
 
   val testAnswer = "+1234567901234567"
 
