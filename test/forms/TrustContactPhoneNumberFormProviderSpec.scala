@@ -19,14 +19,15 @@ package forms
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
 
+
 class TrustContactPhoneNumberFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "trustContactPhoneNumber.error.required"
-  val lengthKey = "trustContactPhoneNumber.error.length"
-  val invalidKey = s"trustContactPhoneNumber.error.invalidCharacters"
+  val requiredKey = "phoneNumber.error.required"
+  val lengthKey = "phoneNumber.error.length"
+  val invalidKey = s"phoneNumber.error.invalidCharacters"
   val maxLength = 19
 
-  val form = new TrustContactPhoneNumberFormProvider()()
+  val form = new PhoneNumberFormProvider()()
 
   ".value" must {
 

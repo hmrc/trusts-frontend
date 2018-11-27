@@ -18,7 +18,7 @@ package views
 
 import play.api.data.Form
 import controllers.routes
-import forms.TrustContactPhoneNumberFormProvider
+import forms.PhoneNumberFormProvider
 import models.NormalMode
 import views.behaviours.StringViewBehaviours
 import views.html.phoneNumber
@@ -32,7 +32,7 @@ class TrustContactPhoneNumberViewSpec extends StringViewBehaviours {
 
   def actionRoute(mode: Mode) = TrustContactPhoneNumberController.onSubmit(mode)
 
-  val form = new TrustContactPhoneNumberFormProvider()()
+  val form = new PhoneNumberFormProvider()()
 
   def createView = () => phoneNumber(frontendAppConfig, form, NormalMode,actionRoute(NormalMode),messageKeyPrefix)(fakeRequest, messages)
 

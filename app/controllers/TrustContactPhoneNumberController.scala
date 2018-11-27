@@ -24,7 +24,7 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import connectors.DataCacheConnector
 import controllers.actions._
 import config.FrontendAppConfig
-import forms.TrustContactPhoneNumberFormProvider
+import forms.PhoneNumberFormProvider
 import models.Mode
 import pages.TrustContactPhoneNumberPage
 import utils.Navigator
@@ -42,7 +42,7 @@ class TrustContactPhoneNumberController @Inject()(
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        formProvider: TrustContactPhoneNumberFormProvider
+                                        formProvider: PhoneNumberFormProvider
                                       ) extends FrontendController with I18nSupport {
 
   val form = formProvider()

@@ -23,7 +23,7 @@ import utils.FakeNavigator
 import connectors.FakeDataCacheConnector
 import controllers.actions._
 import play.api.test.Helpers._
-import forms.TrustContactPhoneNumberFormProvider
+import forms.PhoneNumberFormProvider
 import models.NormalMode
 import pages.TrustContactPhoneNumberPage
 import play.api.mvc.Call
@@ -40,7 +40,7 @@ class TrustContactPhoneNumberControllerSpec extends ControllerSpecBase {
 
   def actionRoute(mode: Mode) = TrustContactPhoneNumberController.onSubmit(mode)
 
-  val formProvider = new TrustContactPhoneNumberFormProvider()
+  val formProvider = new PhoneNumberFormProvider()
   val form = formProvider()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
