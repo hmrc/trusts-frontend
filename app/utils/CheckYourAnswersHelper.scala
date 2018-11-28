@@ -23,6 +23,10 @@ import viewmodels.{AnswerRow}
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
+  def trustContactPhoneNumber: Option[AnswerRow] = userAnswers.get(TrustContactPhoneNumberPage) map {
+    x => AnswerRow("trustContactPhoneNumber.checkYourAnswersLabel", s"$x", false, routes.TrustContactPhoneNumberController.onPageLoad(CheckMode).url)
+  }
+
   def internationalAddress: Option[AnswerRow] = userAnswers.get(TrustsAddressInternationalPage) map {
     x => AnswerRow("internationalTrustsAddress.checkYourAnswersLabel",
       s"${x.line1} ${x.line2} ${x.line3.getOrElse("")} ${x.country}",

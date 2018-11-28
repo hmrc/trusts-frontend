@@ -14,14 +14,21 @@
  * limitations under the License.
  */
 
-package utils
+package forms
 
-object TrustsValidator extends TrustsValidator
+import javax.inject.Inject
 
-trait TrustsValidator {
+import forms.mappings.Mappings
+import play.api.data.Form
+import utils.TrustsValidator.phoneNumberRegEx
 
-  val alphaNumericWithSpecialsRegex = """^[A-Za-z0-9 ,.()/&'-]*$"""
-  val postcodeRegex = """^((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))( )?[0-9][A-Za-z]{2})$"""
-  val phoneNumberRegEx = """^\+[0-9 ]{1,18}$|^[0-9 ]{1,19}$"""
+class PhoneNumberFormProvider @Inject() extends Mappings {
 
+  def apply(): Form[String] =
+    Form(
+      "value" -> text("phoneNumber.error.required")
+        .verifying(firstError(maxLength(19, "phoneNumber.error.length"),
+        regexp(phoneNumberRegEx, "phoneNumber.error.invalidCharacters"),
+        isNotEmpty("value", "phoneNumber.error.required")))
+    )
 }

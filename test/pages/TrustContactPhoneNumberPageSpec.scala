@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
-package utils
+package pages
 
-object TrustsValidator extends TrustsValidator
+import pages.behaviours.PageBehaviours
 
-trait TrustsValidator {
 
-  val alphaNumericWithSpecialsRegex = """^[A-Za-z0-9 ,.()/&'-]*$"""
-  val postcodeRegex = """^((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))( )?[0-9][A-Za-z]{2})$"""
-  val phoneNumberRegEx = """^\+[0-9 ]{1,18}$|^[0-9 ]{1,19}$"""
+class TrustContactPhoneNumberPageSpec extends PageBehaviours {
 
+  "TrustContactPhoneNumberPage" must {
+
+    beRetrievable[String](TrustContactPhoneNumberPage)
+
+    beSettable[String](TrustContactPhoneNumberPage)
+
+    beRemovable[String](TrustContactPhoneNumberPage)
+  }
 }

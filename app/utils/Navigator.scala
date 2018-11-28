@@ -27,7 +27,10 @@ class Navigator @Inject()() {
 
   private val routeMap: Map[Page, UserAnswers => Call] = Map(
     TrustNamePage -> (_=> routes.TrustAddressUKYesNoController.onPageLoad(NormalMode)),
-    TrustAddressUKYesNoPage -> trustAddressUKYesNoRoute()
+    TrustAddressUKYesNoPage -> trustAddressUKYesNoRoute(),
+    TrustsAddressInternationalPage -> (_=> routes.TrustContactPhoneNumberController.onPageLoad(NormalMode)),
+    TrustAddressUKPage -> (_=> routes.TrustContactPhoneNumberController.onPageLoad(NormalMode))
+
   )
 
   private val checkRouteMap: Map[Page, UserAnswers => Call] = Map(
