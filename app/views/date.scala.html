@@ -19,7 +19,7 @@
 @import controllers.routes._
 @import models.Mode
 @import utils.FormHelpers._
-@import org.joda.time.LocalDate
+@import java.time.LocalDate
 
 
 @(appConfig: FrontendAppConfig, form: Form[LocalDate], mode: Mode, id : Option[Int] = None , actionRoute: Call, messageKeyPrefix: String)(implicit request: Request[_], messages: Messages)
@@ -39,7 +39,7 @@
         @components.heading(s"$messageKeyPrefix.heading")
 
         @components.input_date(
-                field = form("date"),
+                field = form("value"),
                 label = messages(s"$messageKeyPrefix.heading"),
                 hint = Some(messages(s"$messageKeyPrefix.hint")),
                 legendClass="visually-hidden"

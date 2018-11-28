@@ -16,6 +16,7 @@
 
 package controllers
 
+import java.time.LocalDate
 import javax.inject.Inject
 
 import play.api.data.Form
@@ -30,7 +31,6 @@ import pages.TrustSettledDatePage
 import utils.Navigator
 import views.html.date
 import controllers.routes.TrustSettledDateController
-import org.joda.time.LocalDate
 
 import scala.concurrent.Future
 

@@ -129,3 +129,8 @@ trustSettledDate.error.invalid = Enter a valid date the trust was set up. For ex
 trustSettledDate.error.past = Date the trust was set up must not be before 01/01/1900
 trustSettledDate.error.future = Date must be in the past
 
+trustSettledDate.error.required.all = Enter the date the trust was set up. For example 20/03/2015
+trustSettledDate.error.required.two = Trust settled date must include {0} and {1}
+trustSettledDate.error.required = Trust settled date must include {0}
+trustSettledDate.error.invalid = Enter a valid date the trust was set up. For example 20/03/2015
+

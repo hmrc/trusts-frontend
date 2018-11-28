@@ -1,37 +1,52 @@
+/*
+ * Copyright 2018 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package forms
 
-import forms.behaviours.StringFieldBehaviours
-import play.api.data.FormError
+import java.time.{LocalDate, ZoneOffset}
 
-class TrustSettledDateFormProviderSpec extends StringFieldBehaviours {
+import forms.behaviours.{DateBehaviours, StringFieldBehaviours}
+import play.api.data.{Form, FormError}
 
-  val requiredKey = "trustSettledDate.error.required"
-  val lengthKey = "trustSettledDate.error.length"
-  val maxLength = 100
+class TrustSettledDateFormProviderSpec extends DateBehaviours {
 
-  val form = new TrustSettledDateFormProvider()()
 
-  ".value" must {
+  val messageKeyPrefix = "trustSettledDate"
+  val form :Form[LocalDate] = new TrustSettledDateFormProvider().apply(messageKeyPrefix)
 
-    val fieldName = "value"
+  ".value" should {
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      stringsWithMaxLength(maxLength)
+    val validData = datesBetween(
+      min = LocalDate.of(1900, 1, 1),
+      max = LocalDate.now(ZoneOffset.UTC)
     )
 
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+    behave like dateField(form, "value", validData)
+
+    behave like mandatoryDateField(form, "value", s"$messageKeyPrefix.error.required.all")
+
+    behave like dateFieldWithMax(form, "value",
+      max = LocalDate.now,
+      FormError("value", s"$messageKeyPrefix.error.future", List("day", "month", "year"))
     )
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
+    behave like dateFieldWithMin(form, "value",
+      min = LocalDate.of(1900, 1, 1),
+      FormError("value", s"$messageKeyPrefix.error.past", List("day", "month", "year"))
     )
   }
+
 }

@@ -16,36 +16,28 @@
 
 package forms
 
-import javax.inject.Inject
+
+import java.time.LocalDate
 
 import forms.mappings.Mappings
-import play.api.data.Form
 import javax.inject.Inject
-import forms.mappings.Mappings
-import play.api.data.{Form, FormError}
-import play.api.data.Forms._
-import org.joda.time.LocalDate
+
+import play.api.data.Form
 
 class TrustSettledDateFormProvider @Inject() extends Mappings {
 
-  def requiredKey(messagePreFix: String) = s"$messagePreFix.error.required"
-  def invalidKey(messagePreFix: String) = s"$messagePreFix.error.invalid"
 
-  def apply(messagePrefix: String): Form[LocalDate] = Form(
-    single(
-      "date" -> localDateMapping(
-        "day" -> int(requiredKey(messagePrefix), invalidKey(messagePrefix)),
-        "month" -> int(requiredKey(messagePrefix), invalidKey(messagePrefix)),
-        "year" -> int(requiredKey(messagePrefix), invalidKey(messagePrefix))
+  def apply(messagePrefix: String): Form[LocalDate] =
+    Form(
+      "value" -> localDate(
+        invalidKey     = s"$messagePrefix.error.invalid",
+        allRequiredKey = s"$messagePrefix.error.required.all",
+        twoRequiredKey = s"$messagePrefix.error.required.two",
+        requiredKey    = s"$messagePrefix.error.required"
+      ).verifying(firstError(
+        maxDate(LocalDate.now, s"$messagePrefix.error.future", "day", "month", "year"),
+        minDate(LocalDate.of(1900,1,1), s"$messagePrefix.error.past", "day", "month", "year")
       )
-        .verifying(before(LocalDate.parse("1900-01-01"), s"$messagePrefix.error.past"))
-        .replaceError(FormError("", "error.invalidDate"), FormError("", invalidKey(messagePrefix)))
-        .replaceError(FormError("day", requiredKey(messagePrefix)), FormError("", requiredKey(messagePrefix)))
-        .replaceError(FormError("month", requiredKey(messagePrefix)), FormError("", requiredKey(messagePrefix)))
-        .replaceError(FormError("year", requiredKey(messagePrefix)), FormError("", requiredKey(messagePrefix)))
-        .replaceError(FormError("day", invalidKey(messagePrefix)), FormError("", invalidKey(messagePrefix)))
-        .replaceError(FormError("month", invalidKey(messagePrefix)), FormError("", invalidKey(messagePrefix)))
-        .replaceError(FormError("year", invalidKey(messagePrefix)), FormError("", invalidKey(messagePrefix)))
+      )
     )
-  )
 }

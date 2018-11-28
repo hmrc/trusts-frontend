@@ -32,6 +32,7 @@ class Navigator @Inject()() {
     TrustAddressUKPage -> (_=> routes.TrustContactPhoneNumberController.onPageLoad(NormalMode)),
     TrustContactPhoneNumberPage -> (_=> routes.TrustSettledDateController.onPageLoad(NormalMode))
 
+
   )
 
   private val checkRouteMap: Map[Page, UserAnswers => Call] = Map(

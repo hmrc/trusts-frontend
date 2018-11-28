@@ -16,7 +16,8 @@
 
 package pages
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
+
 
 case object TrustSettledDatePage extends QuestionPage[LocalDate] {
 
