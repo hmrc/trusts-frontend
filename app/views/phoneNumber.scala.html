@@ -39,9 +39,11 @@ bodyClasses = None) {
         @components.input_text(
         field = form("value"),
         label = messages(s"$messagePrefix.heading"),
-        labelClass=Some("visually-hidden")
+        labelClass=Some("visually-hidden"),
+        hint = Some(messages(s"$messagePrefix.hint"))
         )
 
         @components.submit_button()
+        @components.save_and_exit_button()
     }
 }

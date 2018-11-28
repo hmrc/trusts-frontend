@@ -108,6 +108,7 @@ internationalAddress.error.country.invalidCharacters = Country can only include 
 
 trustContactPhoneNumber.title = What is the contact telephone number for the trust?
 trustContactPhoneNumber.heading = What is the contact telephone number for the trust?
+trustContactPhoneNumber.hint = This is the telephone number we will use to contact the trust.
 trustContactPhoneNumber.checkYourAnswersLabel = What is the contact telephone number for the trust?
 
 phoneNumber.error.required = Enter the contact telephone number
