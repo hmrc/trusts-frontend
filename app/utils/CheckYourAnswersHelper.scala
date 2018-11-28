@@ -19,9 +19,15 @@ package utils
 import controllers.routes
 import models.CheckMode
 import pages._
-import viewmodels.{AnswerRow, RepeaterAnswerRow, RepeaterAnswerSection}
+import viewmodels.{AnswerRow}
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
+
+  def internationalAddress: Option[AnswerRow] = userAnswers.get(TrustsAddressInternationalPage) map {
+    x => AnswerRow("internationalTrustsAddress.checkYourAnswersLabel",
+      s"${x.line1} ${x.line2} ${x.line3.getOrElse("")} ${x.country}",
+      false, routes.TrustsAddressInternationalController.onPageLoad(CheckMode).url)
+  }
 
   def trustAddressUK: Option[AnswerRow] = userAnswers.get(TrustAddressUKPage) map {
     x => AnswerRow("trustAddressUK.checkYourAnswersLabel",

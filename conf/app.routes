@@ -26,3 +26,8 @@ GET        /trust-address-uk                       controllers.TrustAddressUKCon
 POST       /trust-address-uk                        controllers.TrustAddressUKController.onSubmit(mode: Mode = NormalMode)
 GET        /change-trust-address-uk                  controllers.TrustAddressUKController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-trust-address-uk                  controllers.TrustAddressUKController.onSubmit(mode: Mode = CheckMode)
+
+GET        /trust-address-international                        controllers.TrustsAddressInternationalController.onPageLoad(mode: Mode = NormalMode)
+POST       /trust-address-international                        controllers.TrustsAddressInternationalController.onSubmit(mode: Mode = NormalMode)
+GET        /change-trust-address-international                controllers.TrustsAddressInternationalController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-trust-address-international                  controllers.TrustsAddressInternationalController.onSubmit(mode: Mode = CheckMode)
