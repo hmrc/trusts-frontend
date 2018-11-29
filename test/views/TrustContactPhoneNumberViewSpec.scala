@@ -18,26 +18,31 @@ package views
 
 import play.api.data.Form
 import controllers.routes
-import forms.TrustContactPhoneNumberFormProvider
+import forms.PhoneNumberFormProvider
 import models.NormalMode
 import views.behaviours.StringViewBehaviours
-import views.html.trustContactPhoneNumber
+import views.html.phoneNumber
+import models.Mode
+import controllers.routes.TrustContactPhoneNumberController
+
 
 class TrustContactPhoneNumberViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "trustContactPhoneNumber"
 
-  val form = new TrustContactPhoneNumberFormProvider()()
+  def actionRoute(mode: Mode) = TrustContactPhoneNumberController.onSubmit(mode)
 
-  def createView = () => trustContactPhoneNumber(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  val form = new PhoneNumberFormProvider()()
 
-  def createViewUsingForm = (form: Form[String]) => trustContactPhoneNumber(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createView = () => phoneNumber(frontendAppConfig, form, NormalMode,actionRoute(NormalMode),messageKeyPrefix)(fakeRequest, messages)
+
+  def createViewUsingForm = (form: Form[String]) => phoneNumber(frontendAppConfig, form, NormalMode,actionRoute(NormalMode),messageKeyPrefix)(fakeRequest, messages)
 
   "TrustContactPhoneNumber view" must {
     behave like normalPage(createView, messageKeyPrefix)
 
     behave like pageWithBackLink(createView)
 
-    behave like stringPage(createViewUsingForm, messageKeyPrefix, routes.TrustContactPhoneNumberController.onSubmit(NormalMode).url)
+    behave like stringPage(createViewUsingForm, messageKeyPrefix, routes.TrustContactPhoneNumberController.onSubmit(NormalMode).url,Some(s"$messageKeyPrefix.hint"))
   }
 }

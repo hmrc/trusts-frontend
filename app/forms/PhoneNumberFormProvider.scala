@@ -22,13 +22,13 @@ import forms.mappings.Mappings
 import play.api.data.Form
 import utils.TrustsValidator.phoneNumberRegEx
 
-class TrustContactPhoneNumberFormProvider @Inject() extends Mappings {
+class PhoneNumberFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
     Form(
-      "value" -> text("trustContactPhoneNumber.error.required")
-        .verifying(firstError(maxLength(19, "trustContactPhoneNumber.error.length"),
-        regexp(phoneNumberRegEx, "trustContactPhoneNumber.error.invalidCharacters"),
-        isNotEmpty("value", "trustContactPhoneNumber.error.required")))
+      "value" -> text("phoneNumber.error.required")
+        .verifying(firstError(maxLength(19, "phoneNumber.error.length"),
+        regexp(phoneNumberRegEx, "phoneNumber.error.invalidCharacters"),
+        isNotEmpty("value", "phoneNumber.error.required")))
     )
 }

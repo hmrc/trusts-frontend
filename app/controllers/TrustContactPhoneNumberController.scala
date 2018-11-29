@@ -24,13 +24,15 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import connectors.DataCacheConnector
 import controllers.actions._
 import config.FrontendAppConfig
-import forms.TrustContactPhoneNumberFormProvider
+import forms.PhoneNumberFormProvider
 import models.Mode
 import pages.TrustContactPhoneNumberPage
 import utils.Navigator
-import views.html.trustContactPhoneNumber
+import views.html.phoneNumber
 
 import scala.concurrent.Future
+import controllers.routes.TrustContactPhoneNumberController
+
 
 class TrustContactPhoneNumberController @Inject()(
                                         appConfig: FrontendAppConfig,
@@ -40,10 +42,14 @@ class TrustContactPhoneNumberController @Inject()(
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        formProvider: TrustContactPhoneNumberFormProvider
+                                        formProvider: PhoneNumberFormProvider
                                       ) extends FrontendController with I18nSupport {
 
   val form = formProvider()
+
+  val messagePreFix: String = "trustContactPhoneNumber"
+
+  def actionRoute(mode: Mode) = TrustContactPhoneNumberController.onSubmit(mode)
 
   def onPageLoad(mode: Mode) = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -53,7 +59,7 @@ class TrustContactPhoneNumberController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(trustContactPhoneNumber(appConfig, preparedForm, mode))
+      Ok(phoneNumber(appConfig, preparedForm, mode,actionRoute(mode), messagePreFix))
   }
 
   def onSubmit(mode: Mode) = (identify andThen getData andThen requireData).async {
@@ -61,7 +67,7 @@ class TrustContactPhoneNumberController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(trustContactPhoneNumber(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(phoneNumber(appConfig, formWithErrors, mode,actionRoute(mode), messagePreFix))),
         (value) => {
           val updatedAnswers = request.userAnswers.set(TrustContactPhoneNumberPage, value)
 

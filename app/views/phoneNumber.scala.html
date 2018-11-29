@@ -17,30 +17,33 @@
 @import config.FrontendAppConfig
 @import uk.gov.hmrc.play.views.html._
 @import controllers.routes._
-@import models.Mode
 @import utils.FormHelpers._
+@import models.{Mode}
 
-@(appConfig: FrontendAppConfig, form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+
+@(appConfig: FrontendAppConfig, form: Form[_], mode: Mode, actionRoute: Call, messagePrefix: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("trustContactPhoneNumber.title")}",
-    appConfig = appConfig,
-    bodyClasses = None) {
+title = s"${errorPrefix(form)} ${messages(s"$messagePrefix.title")}",
+appConfig = appConfig,
+bodyClasses = None) {
 
-    @helpers.form(action = TrustContactPhoneNumberController.onSubmit(mode), 'autoComplete -> "off") {
+@helpers.form(action = actionRoute, 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("trustContactPhoneNumber.heading")
+        @components.heading(s"$messagePrefix.heading")
 
         @components.input_text(
-          field = form("value"),
-          label = messages("trustContactPhoneNumber.heading"),
-          labelClass=Some("visually-hidden")
+        field = form("value"),
+        label = messages(s"$messagePrefix.heading"),
+        labelClass=Some("visually-hidden"),
+        hint = Some(messages(s"$messagePrefix.hint"))
         )
 
         @components.submit_button()
+        @components.save_and_exit_button()
     }
 }
