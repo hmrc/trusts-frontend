@@ -120,7 +120,7 @@ trustSettledDate.title = When was the trust settled?
 trustSettledDate.heading = When was the trust settled?
 trustSettledDate.checkYourAnswersLabel = When was the trust settled?
 trustSettledDate.hint = This is the date you signed the trust deed. For example, 20 03 2015
-trustSettledDate.checkYourAnswersLabel = What is the trustee’s date of birth?
+trustSettledDate.checkYourAnswersLabel = When was the trust settled?
 
 trustSettledDate.error.required = Enter the date the trust was set up. For example 20/03/2015
 trustSettledDate.error.invalid = Enter a valid date the trust was set up. For example 20/03/2015
