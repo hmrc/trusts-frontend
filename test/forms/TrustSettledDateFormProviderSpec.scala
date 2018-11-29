@@ -21,13 +21,13 @@ import java.time.{LocalDate, ZoneOffset}
 import forms.behaviours.{DateBehaviours, StringFieldBehaviours}
 import play.api.data.{Form, FormError}
 
-class TrustSettledDateFormProviderSpec extends DateBehaviours {
+class DateFormProviderSpec extends DateBehaviours {
 
 
-  val messageKeyPrefix = "trustSettledDate"
-  val form :Form[LocalDate] = new TrustSettledDateFormProvider().apply(messageKeyPrefix)
+  "trustSettledDate page .value" should {
 
-  ".value" should {
+    val messageKeyPrefix = "trustSettledDate"
+    val form :Form[LocalDate] = new DateFormProvider().apply(messageKeyPrefix)
 
     val validData = datesBetween(
       min = LocalDate.of(1900, 1, 1),

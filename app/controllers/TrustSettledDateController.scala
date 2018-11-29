@@ -25,7 +25,7 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import connectors.DataCacheConnector
 import controllers.actions._
 import config.FrontendAppConfig
-import forms.TrustSettledDateFormProvider
+import forms.DateFormProvider
 import models.Mode
 import pages.TrustSettledDatePage
 import utils.Navigator
@@ -42,7 +42,7 @@ class TrustSettledDateController @Inject()(
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        formProvider: TrustSettledDateFormProvider
+                                        formProvider: DateFormProvider
                                       ) extends FrontendController with I18nSupport {
 
 

@@ -21,7 +21,7 @@ import java.time.LocalDate
 import play.api.data.Form
 import controllers.routes
 import controllers.routes.TrustSettledDateController
-import forms.TrustSettledDateFormProvider
+import forms.DateFormProvider
 import models.{Mode, NormalMode}
 import views.behaviours.DateViewBehaviours
 import views.html.date
@@ -32,7 +32,7 @@ class TrustSettledDateViewSpec extends DateViewBehaviours[LocalDate] {
 
   def actionRoute(mode: Mode) = TrustSettledDateController.onSubmit(mode)
 
-  val form :Form[LocalDate] = new TrustSettledDateFormProvider().apply(messageKeyPrefix)
+  val form :Form[LocalDate] = new DateFormProvider().apply(messageKeyPrefix)
 
   def createView = () => date(frontendAppConfig, form, NormalMode,None,actionRoute(NormalMode), messageKeyPrefix)(fakeRequest, messages)
 

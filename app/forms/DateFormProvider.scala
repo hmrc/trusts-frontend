@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 import play.api.data.Form
 
-class TrustSettledDateFormProvider @Inject() extends Mappings {
+class DateFormProvider @Inject() extends Mappings {
 
 
   def apply(messagePrefix: String): Form[LocalDate] =

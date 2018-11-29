@@ -24,7 +24,7 @@ import utils.FakeNavigator
 import connectors.FakeDataCacheConnector
 import controllers.actions._
 import play.api.test.Helpers._
-import forms.TrustSettledDateFormProvider
+import forms.DateFormProvider
 import models.NormalMode
 import java.time.{LocalDate, ZoneOffset}
 
@@ -38,8 +38,8 @@ class TrustSettledDateControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = Call("GET", "/foo")
   val messageKeyPrefix = "trustSettledDate"
-  val form : Form[LocalDate] = new TrustSettledDateFormProvider().apply(messageKeyPrefix)
-  val formProvider = new TrustSettledDateFormProvider()
+  val form : Form[LocalDate] = new DateFormProvider().apply(messageKeyPrefix)
+  val formProvider = new DateFormProvider()
 
   def actionRoute(mode: Mode) = TrustSettledDateController.onSubmit(mode)
 
