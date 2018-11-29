@@ -37,7 +37,7 @@ POST       /trust-contact-phone-number                        controllers.TrustC
 GET        /change-trust-contact-phone-number                 controllers.TrustContactPhoneNumberController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-trust-contact-phone-number                 controllers.TrustContactPhoneNumberController.onSubmit(mode: Mode = CheckMode)
 
-GET        /trustSettledDate                        controllers.TrustSettledDateController.onPageLoad(mode: Mode = NormalMode)
-POST       /trustSettledDate                        controllers.TrustSettledDateController.onSubmit(mode: Mode = NormalMode)
-GET        /changeTrustSettledDate                  controllers.TrustSettledDateController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeTrustSettledDate                  controllers.TrustSettledDateController.onSubmit(mode: Mode = CheckMode)
+GET        /trust-settled-date                        controllers.TrustSettledDateController.onPageLoad(mode: Mode = NormalMode)
+POST       /trust-settled-date                        controllers.TrustSettledDateController.onSubmit(mode: Mode = NormalMode)
+GET        /change-trust-settled-date                  controllers.TrustSettledDateController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-trust-settled-date                 controllers.TrustSettledDateController.onSubmit(mode: Mode = CheckMode)
