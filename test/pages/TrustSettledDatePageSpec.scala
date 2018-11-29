@@ -16,7 +16,7 @@
 
 package pages
 
-import java.time.LocalDate
+import java.time.{LocalDate, ZoneOffset}
 
 import org.scalacheck.Arbitrary
 import pages.behaviours.PageBehaviours
@@ -25,7 +25,7 @@ import pages.behaviours.PageBehaviours
 class TrustSettledDatePageSpec extends PageBehaviours {
 
   implicit  lazy val arbitaryLocalDate : Arbitrary[LocalDate] = Arbitrary{
-    datesBetween(LocalDate.parse("1900-01-01"), LocalDate.parse("2018-01-01"))
+    datesBetween(LocalDate.parse("1900-01-01"), LocalDate.now(ZoneOffset.UTC))
   }
 
   "TrustSettledDatePage" must {

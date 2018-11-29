@@ -122,13 +122,10 @@ trustSettledDate.checkYourAnswersLabel = When was the trust settled?
 trustSettledDate.hint = This is the date you signed the trust deed. For example, 20 03 2015
 trustSettledDate.checkYourAnswersLabel = When was the trust settled?
 
-trustSettledDate.error.required = Enter the date the trust was set up. For example 20/03/2015
-trustSettledDate.error.invalid = Enter a valid date the trust was set up. For example 20/03/2015
-trustSettledDate.error.past = Date the trust was set up must not be before 01/01/1900
-trustSettledDate.error.future = Date must be in the past
-
 trustSettledDate.error.required.all = Enter the date the trust was set up and include a day, month and year
 trustSettledDate.error.required.two = Enter the date the trust was set up and include a day, month and year
 trustSettledDate.error.required = Enter the date the trust was set up and include a day, month and year
 trustSettledDate.error.invalid = Enter a valid date the trust was set up. For example 20/03/2015
+trustSettledDate.error.past = Date the trust was set up must not be before 01/01/1900
+trustSettledDate.error.future = Date must be in the past
 
