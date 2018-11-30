@@ -116,11 +116,11 @@ phoneNumber.error.length = Enter a valid telephone number. It can be a 19 charac
 phoneNumber.error.invalidCharacters = Enter a valid telephone number. It can be a 19 character telephone number or 18 character number with the + (plus) character
 
 
-trustSettledDate.title = When was the trust settled?
-trustSettledDate.heading = When was the trust settled?
-trustSettledDate.checkYourAnswersLabel = When was the trust settled?
+trustSettledDate.title = When was the trust set up?
+trustSettledDate.heading = When was the trust set up?
+trustSettledDate.checkYourAnswersLabel = When was the trust set up?
 trustSettledDate.hint = This is the date you signed the trust deed. For example, 20 03 2015
-trustSettledDate.checkYourAnswersLabel = When was the trust settled?
+trustSettledDate.checkYourAnswersLabel = When was the trust set up?
 
 trustSettledDate.error.required.all = Enter the date the trust was set up and include a day, month and year
 trustSettledDate.error.required.two = Enter the date the trust was set up and include a day, month and year
