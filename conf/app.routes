@@ -11,33 +11,3 @@ GET        /this-service-has-been-reset                 controllers.SessionExpir
 GET        /check-your-answers                          controllers.CheckYourAnswersController.onPageLoad
 
 GET        /unauthorised                                controllers.UnauthorisedController.onPageLoad
-
-GET        /trust-name                        controllers.TrustNameController.onPageLoad(mode: Mode = NormalMode)
-POST       /trust-name                        controllers.TrustNameController.onSubmit(mode: Mode = NormalMode)
-GET        /change-trust-name                  controllers.TrustNameController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-trust-name                  controllers.TrustNameController.onSubmit(mode: Mode = CheckMode)
-
-GET        /trust-address-uk-yes-no                     controllers.TrustAddressUKYesNoController.onPageLoad(mode: Mode = NormalMode)
-POST       /trust-address-uk-yes-no                     controllers.TrustAddressUKYesNoController.onSubmit(mode: Mode = NormalMode)
-GET        /change-trust-address-uk-yes-no              controllers.TrustAddressUKYesNoController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-trust-address-uk-yes-no              controllers.TrustAddressUKYesNoController.onSubmit(mode: Mode = CheckMode)
-
-GET        /trust-address-uk                       controllers.TrustAddressUKController.onPageLoad(mode: Mode = NormalMode)
-POST       /trust-address-uk                        controllers.TrustAddressUKController.onSubmit(mode: Mode = NormalMode)
-GET        /change-trust-address-uk                  controllers.TrustAddressUKController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-trust-address-uk                  controllers.TrustAddressUKController.onSubmit(mode: Mode = CheckMode)
-
-GET        /trust-address-international                        controllers.TrustsAddressInternationalController.onPageLoad(mode: Mode = NormalMode)
-POST       /trust-address-international                        controllers.TrustsAddressInternationalController.onSubmit(mode: Mode = NormalMode)
-GET        /change-trust-address-international                controllers.TrustsAddressInternationalController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-trust-address-international                  controllers.TrustsAddressInternationalController.onSubmit(mode: Mode = CheckMode)
-
-GET        /trust-contact-phone-number                        controllers.TrustContactPhoneNumberController.onPageLoad(mode: Mode = NormalMode)
-POST       /trust-contact-phone-number                        controllers.TrustContactPhoneNumberController.onSubmit(mode: Mode = NormalMode)
-GET        /change-trust-contact-phone-number                 controllers.TrustContactPhoneNumberController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-trust-contact-phone-number                 controllers.TrustContactPhoneNumberController.onSubmit(mode: Mode = CheckMode)
-
-GET        /trust-settled-date                        controllers.TrustSettledDateController.onPageLoad(mode: Mode = NormalMode)
-POST       /trust-settled-date                        controllers.TrustSettledDateController.onSubmit(mode: Mode = NormalMode)
-GET        /change-trust-settled-date                  controllers.TrustSettledDateController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-trust-settled-date                 controllers.TrustSettledDateController.onSubmit(mode: Mode = CheckMode)
