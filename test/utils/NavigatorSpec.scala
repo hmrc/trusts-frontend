@@ -64,6 +64,10 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         navigator.nextPage(TrustsAddressInternationalPage, NormalMode)(mock[UserAnswers]) mustEqual routes.TrustContactPhoneNumberController.onPageLoad(NormalMode)
       }
 
+      "go from the TrustContactPhoneNumberPage page to TrustSettledDatePage" in {
+        navigator.nextPage(TrustContactPhoneNumberPage, NormalMode)(mock[UserAnswers]) mustEqual routes.TrustSettledDateController.onPageLoad(NormalMode)
+      }
+
     }
 
     "in Check mode" must {

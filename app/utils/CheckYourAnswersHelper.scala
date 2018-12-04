@@ -23,6 +23,10 @@ import viewmodels.{AnswerRow}
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
+  def trustSettledDate: Option[AnswerRow] = userAnswers.get(TrustSettledDatePage) map {
+    x => AnswerRow("trustSettledDate.checkYourAnswersLabel", s"$x", false, routes.TrustSettledDateController.onPageLoad(CheckMode).url)
+  }
+
   def trustContactPhoneNumber: Option[AnswerRow] = userAnswers.get(TrustContactPhoneNumberPage) map {
     x => AnswerRow("trustContactPhoneNumber.checkYourAnswersLabel", s"$x", false, routes.TrustContactPhoneNumberController.onPageLoad(CheckMode).url)
   }

@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,22 +12,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import config.FrontendAppConfig
+package pages
 
-@(appConfig: FrontendAppConfig)(implicit request: Request[_], messages: Messages)
+import java.time.LocalDate
 
-@main_template(
-    title = messages("index.title"),
-    appConfig = appConfig,
-    bodyClasses = None) {
 
-    @components.heading("index.heading")
+case object TrustSettledDatePage extends QuestionPage[LocalDate] {
 
-    <p>@messages("index.guidance")</p>
-
-<div class="section">
-    <a href="/trusts-registration/trust-name" role="button" class="button">Start now</a>
-</div>
+  override def toString: String = "trustSettledDate"
 }

@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,22 +12,28 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import config.FrontendAppConfig
+package pages
 
-@(appConfig: FrontendAppConfig)(implicit request: Request[_], messages: Messages)
+import java.time.{LocalDate, ZoneOffset}
 
-@main_template(
-    title = messages("index.title"),
-    appConfig = appConfig,
-    bodyClasses = None) {
+import org.scalacheck.Arbitrary
+import pages.behaviours.PageBehaviours
 
-    @components.heading("index.heading")
 
-    <p>@messages("index.guidance")</p>
+class TrustSettledDatePageSpec extends PageBehaviours {
 
-<div class="section">
-    <a href="/trusts-registration/trust-name" role="button" class="button">Start now</a>
-</div>
+  implicit  lazy val arbitaryLocalDate : Arbitrary[LocalDate] = Arbitrary{
+    datesBetween(LocalDate.parse("1900-01-01"), LocalDate.now(ZoneOffset.UTC))
+  }
+
+  "TrustSettledDatePage" must {
+
+    beRetrievable[LocalDate](TrustSettledDatePage)
+
+    beSettable[LocalDate](TrustSettledDatePage)
+
+    beRemovable[LocalDate](TrustSettledDatePage)
+  }
 }
