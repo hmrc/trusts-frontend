@@ -28,11 +28,13 @@ lazy val root = (project in file("."))
     PlayKeys.playDefaultPort := 9781,
     ScoverageKeys.coverageExcludedFiles := "<empty>;Reverse.*;.*filters.*;.*handlers.*;.*components.*;.*repositories.*;" +
       ".*BuildInfo.*;.*javascript.*;.*FrontendAuditConnector.*;.*Routes.*;.*GuiceInjector;" +
-      ".*ControllerConfiguration;.*LanguageSwitchController",
-    ScoverageKeys.coverageMinimum := 80,
+      ".*ControllerConfiguration;.*LanguageSwitchController;.*models;.*views.html.*;.*config.Service;.*models.Mode;",
+    ScoverageKeys.coverageMinimum := 74,
     ScoverageKeys.coverageFailOnMinimum := true,
     ScoverageKeys.coverageHighlighting := true,
-    scalacOptions ++= Seq("-feature"),
+    scalacOptions ++= Seq(
+      "-feature"
+    ),
     libraryDependencies ++= AppDependencies(),
     retrieveManaged := true,
     evictionWarningOptions in update :=
