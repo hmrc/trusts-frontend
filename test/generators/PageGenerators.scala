@@ -20,22 +20,4 @@ import org.scalacheck.Arbitrary
 import pages._
 
 trait PageGenerators {
-
-  implicit lazy val arbitraryTrustSettledDatePage: Arbitrary[TrustSettledDatePage.type] =
-    Arbitrary(TrustSettledDatePage)
-
-  implicit lazy val arbitraryTrustContactPhoneNumberPage: Arbitrary[TrustContactPhoneNumberPage.type] =
-    Arbitrary(TrustContactPhoneNumberPage)
-
-  implicit lazy val arbitraryInternationalTrustsAddressPage: Arbitrary[TrustsAddressInternationalPage.type] =
-    Arbitrary(TrustsAddressInternationalPage)
-
-  implicit lazy val arbitraryTrustAddressUKPage: Arbitrary[TrustAddressUKPage.type] =
-    Arbitrary(TrustAddressUKPage)
-
-  implicit lazy val arbitraryTrustAddressUKYesNoPage: Arbitrary[TrustAddressUKYesNoPage.type] =
-    Arbitrary(TrustAddressUKYesNoPage)
-
-  implicit lazy val arbitraryTrustNamePage: Arbitrary[TrustNamePage.type] =
-    Arbitrary(TrustNamePage)
 }
