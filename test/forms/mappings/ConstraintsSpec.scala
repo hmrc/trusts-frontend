@@ -127,5 +127,5 @@ class ConstraintsSpec extends WordSpec with MustMatchers with Constraints {
       result mustEqual Invalid("error.required", " ")
     }
   }
-  
+
 }

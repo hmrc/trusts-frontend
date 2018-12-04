@@ -72,13 +72,12 @@ Taken from GDS Elements
 Error styling to bring in line with GDS
 =====================================
 */
-
 .form-field--error {
     margin-left: -0.84211em;
 }
-.panel-indent .form-field--error {
-    margin-left: 0;
-}
+    .panel-indent .form-field--error {
+        margin-left: 0;
+    }
 .form-field--error .error-notification {
     font-weight: 700;
 }
