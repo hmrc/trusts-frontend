@@ -54,19 +54,4 @@ trait FieldBehaviours extends FormSpec with PropertyChecks with Generators {
       result.errors shouldEqual Seq(requiredError)
     }
   }
-
-  def optionalField(form: Form[_], fieldName: String) = {
-    "not bind when key is not present at all" in {
-
-      val result = form.bind(emptyForm).apply(fieldName)
-      result.errors.isEmpty shouldBe true
-    }
-    "not bind blank values" in {
-
-      val result = form.bind(Map(fieldName -> "")).apply(fieldName)
-      result.errors.isEmpty shouldBe true
-    }
-  }
-
-
 }

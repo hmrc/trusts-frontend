@@ -72,7 +72,9 @@ Taken from GDS Elements
 Error styling to bring in line with GDS
 =====================================
 */
-
+.form-field--error {
+    margin-left: -0.84211em;
+}
     .panel-indent .form-field--error {
         margin-left: 0;
     }
@@ -152,24 +154,4 @@ override character count display
     .char-counter {
         display: block;
     }
-}
-
-.button-informative {
-    background-color: #dee0e2;
-    color: black;
-    box-shadow: 0 2px 0 #aaa;
-}
-
-.button-informative:hover, .button-informative:focus {
-    background-color: #aaa;
-}
-
-.form-hint, .error-message {margin-bottom: 10px;}
-
-.form-control.govuk-input {
-  width: 100%;
-}
-
-.govuk-input--width-10 {
-  max-width: 23ex;
 }

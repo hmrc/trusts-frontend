@@ -17,18 +17,17 @@
 package controllers
 
 import javax.inject.Inject
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
-import config.FrontendAppConfig
-import controllers.actions.IdentifierAction
-import views.html.index
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import views.html.IndexView
 
-class IndexController @Inject()(val appConfig: FrontendAppConfig,
-                                val messagesApi: MessagesApi,
-                                val authenticate : IdentifierAction) extends FrontendController with I18nSupport {
+class IndexController @Inject()(
+                                 val controllerComponents: MessagesControllerComponents,
+                                 view: IndexView
+                               ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = authenticate { implicit request =>
-    Ok(index(appConfig))
+  def onPageLoad: Action[AnyContent] = Action { implicit request =>
+    Ok(view())
   }
 }

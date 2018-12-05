@@ -21,25 +21,4 @@ import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
-
-  implicit lazy val arbitraryInternationalTrustsAddress: Arbitrary[InternationalAddress] =
-    Arbitrary {
-      for {
-        line1 <- arbitrary[String]
-        line2 <- arbitrary[String]
-        line3 <- arbitrary[String]
-        country <- arbitrary[String]
-      } yield InternationalAddress(line1, line1, Some(line3), country)
-    }
-
-  implicit lazy val arbitraryTrustAddressUK: Arbitrary[AddressUK] =
-    Arbitrary {
-      for {
-        line1 <- arbitrary[String]
-        line2 <- arbitrary[String]
-        line3 <- arbitrary[String]
-        town <- arbitrary[String]
-        postcode <- arbitrary[String]
-      } yield AddressUK(line1, Some(line2), Some(line3), town, postcode)
-    }
 }
