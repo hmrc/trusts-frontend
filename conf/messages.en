@@ -53,3 +53,9 @@ governedOutsideTheUK.title = Is the trust governed by the laws of a country outs
 governedOutsideTheUK.heading = Is the trust governed by the laws of a country outside the UK?
 governedOutsideTheUK.checkYourAnswersLabel = governedOutsideTheUK
 governedOutsideTheUK.error.required = Select yes if governedOutsideTheUK
+
+countryGoverningTrust.title = What is the country governing the trust
+countryGoverningTrust.heading = What is the country governing the trust?
+countryGoverningTrust.checkYourAnswersLabel = countryGoverningTrust
+countryGoverningTrust.error.required = Enter countryGoverningTrust
+countryGoverningTrust.error.length = CountryGoverningTrust must be 100 characters or less
