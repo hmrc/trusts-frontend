@@ -90,3 +90,9 @@ trustResidentOffshore.title = Was the trust previously resident offshore
 trustResidentOffshore.heading = Was the trust previously resident offshore?
 trustResidentOffshore.checkYourAnswersLabel = trustResidentOffshore
 trustResidentOffshore.error.required = Select yes if trustResidentOffshore
+
+trustPreviouslyResident.title = Where was the trust previously resident
+trustPreviouslyResident.heading = Where was the trust previously resident?
+trustPreviouslyResident.checkYourAnswersLabel = trustPreviouslyResident
+trustPreviouslyResident.error.required = Enter trustPreviouslyResident
+trustPreviouslyResident.error.length = TrustPreviouslyResident must be 100 characters or less

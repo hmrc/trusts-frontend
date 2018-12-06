@@ -32,7 +32,8 @@ class Navigator @Inject()() {
     AdministrationOutsideUKPage -> AdministrationOutsideUKRoute(),
     CountryAdministeringTrustPage -> (_ => routes.TrustResidentInUKController.onPageLoad(NormalMode)),
     TrustResidentInUKPage -> TrustResidentinUKRoute(),
-    EstablishedUnderScotsLawPage -> (_ => routes.TrustResidentOffshoreController.onPageLoad(NormalMode)))
+    EstablishedUnderScotsLawPage -> (_ => routes.TrustResidentOffshoreController.onPageLoad(NormalMode)),
+    TrustResidentOffshorePage -> (_ => routes.IndexController.onPageLoad()))
 
   private val checkRouteMap: Map[Page, UserAnswers => Call] = Map(
 

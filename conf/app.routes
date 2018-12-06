@@ -56,3 +56,8 @@ GET        /trustResidentOffshore                        controllers.TrustReside
 POST       /trustResidentOffshore                        controllers.TrustResidentOffshoreController.onSubmit(mode: Mode = NormalMode)
 GET        /changeTrustResidentOffshore                  controllers.TrustResidentOffshoreController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeTrustResidentOffshore                  controllers.TrustResidentOffshoreController.onSubmit(mode: Mode = CheckMode)
+
+GET        /trustPreviouslyResident                        controllers.TrustPreviouslyResidentController.onPageLoad(mode: Mode = NormalMode)
+POST       /trustPreviouslyResident                        controllers.TrustPreviouslyResidentController.onSubmit(mode: Mode = NormalMode)
+GET        /changeTrustPreviouslyResident                  controllers.TrustPreviouslyResidentController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeTrustPreviouslyResident                  controllers.TrustPreviouslyResidentController.onSubmit(mode: Mode = CheckMode)
