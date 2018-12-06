@@ -17,7 +17,6 @@
 package navigation
 
 import javax.inject.{Inject, Singleton}
-
 import play.api.mvc.Call
 import controllers.routes
 import pages._
@@ -31,7 +30,8 @@ class Navigator @Inject()() {
     GovernedOutsideTheUKPage -> GovernedOutsideTheUKRoute(),
     CountryGoverningTrustPage -> (_ => routes.AdministrationOutsideUKController.onPageLoad(NormalMode)),
     AdministrationOutsideUKPage -> AdministrationOutsideUKRoute(),
-    CountryAdministeringTrustPage -> (_ => routes.TrustResidentInUKController.onPageLoad(NormalMode)))
+    CountryAdministeringTrustPage -> (_ => routes.TrustResidentInUKController.onPageLoad(NormalMode)),
+    TrustResidentInUKPage -> TrustResidentinUKRoute())
 
   private val checkRouteMap: Map[Page, UserAnswers => Call] = Map(
 
@@ -53,6 +53,12 @@ class Navigator @Inject()() {
   private def AdministrationOutsideUKRoute()(answers: UserAnswers ) = answers.get(AdministrationOutsideUKPage) match {
     case Some(true) => routes.CountryAdministeringTrustController.onPageLoad(NormalMode)
     case Some(false) => routes.TrustResidentInUKController.onPageLoad(NormalMode)
+    case None =>routes.IndexController.onPageLoad()
+  }
+
+  private def TrustResidentinUKRoute()(answers: UserAnswers ) = answers.get(AdministrationOutsideUKPage) match {
+    case Some(true) => routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode)
+    case Some(false) => routes.RegisteringTrustFor5AController.onPageLoad(NormalMode)
     case None =>routes.IndexController.onPageLoad()
   }
 
