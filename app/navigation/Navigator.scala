@@ -27,8 +27,9 @@ import models._
 class Navigator @Inject()() {
 
   private val routeMap: Map[Page, UserAnswers => Call] = Map(
-
-  )
+    TrustNamePage -> (_ => routes.GovernedOutsideTheUKController.onPageLoad(NormalMode)),
+    GovernedOutsideTheUKPage -> GovernedOutsideTheUKRoute(),
+    CountryGoverningTrustPage -> (_ => routes.AdministrationOutsideUKController.onPageLoad(NormalMode)))
 
   private val checkRouteMap: Map[Page, UserAnswers => Call] = Map(
 
@@ -39,5 +40,11 @@ class Navigator @Inject()() {
       routeMap.getOrElse(page, _ => routes.IndexController.onPageLoad())
     case CheckMode =>
       checkRouteMap.getOrElse(page, _ => routes.CheckYourAnswersController.onPageLoad())
+  }
+
+  private def GovernedOutsideTheUKRoute()(answers: UserAnswers ) = answers.get(GovernedOutsideTheUKPage) match {
+    case Some(true) => routes.CountryGoverningTrustController.onPageLoad(NormalMode)
+    case Some(false) => routes.AdministrationOutsideUKController.onPageLoad(NormalMode)
+    case None =>routes.IndexController.onPageLoad()
   }
 }
