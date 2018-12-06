@@ -36,9 +36,15 @@ site.hidden-delete = Delete {0}
 site.hidden-edit = Change {0}
 site.no = No
 site.yes = Yes
-site.continue = Continue
+site.continue = Save and continue
 site.service_name = Trusts Registration Service
 site.textarea.char_limit = (Limit is {0} characters)
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
+
+trustName.title = What is the name of the trust
+trustName.heading = What is the name of the trust?
+trustName.checkYourAnswersLabel = trustName
+trustName.error.required = Enter trustName
+trustName.error.length = TrustName must be 53 characters or less

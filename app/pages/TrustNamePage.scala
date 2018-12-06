@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package utils
+package pages
 
-import controllers.routes
-import models.{CheckMode, UserAnswers}
-import pages._
-import viewmodels.{AnswerRow, RepeaterAnswerRow, RepeaterAnswerSection}
+import play.api.libs.json.JsPath
 
-class CheckYourAnswersHelper(userAnswers: UserAnswers) {
+case object TrustNamePage extends QuestionPage[String] {
 
-  def trustName: Option[AnswerRow] = userAnswers.get(TrustNamePage) map {
-    x => AnswerRow("trustName.checkYourAnswersLabel", s"$x", false, routes.TrustNameController.onPageLoad(CheckMode).url)
-  }
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "trustName"
 }
