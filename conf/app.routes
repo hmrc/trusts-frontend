@@ -51,3 +51,8 @@ GET        /registeringTrustFor5A                        controllers.Registering
 POST       /registeringTrustFor5A                        controllers.RegisteringTrustFor5AController.onSubmit(mode: Mode = NormalMode)
 GET        /changeRegisteringTrustFor5A                  controllers.RegisteringTrustFor5AController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeRegisteringTrustFor5A                  controllers.RegisteringTrustFor5AController.onSubmit(mode: Mode = CheckMode)
+
+GET        /trustResidentOffshore                        controllers.TrustResidentOffshoreController.onPageLoad(mode: Mode = NormalMode)
+POST       /trustResidentOffshore                        controllers.TrustResidentOffshoreController.onSubmit(mode: Mode = NormalMode)
+GET        /changeTrustResidentOffshore                  controllers.TrustResidentOffshoreController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeTrustResidentOffshore                  controllers.TrustResidentOffshoreController.onSubmit(mode: Mode = CheckMode)

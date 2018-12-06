@@ -85,3 +85,8 @@ registeringTrustFor5A.title = Are you registering trust for the purpose of Sched
 registeringTrustFor5A.heading = Are you registering trust for the purpose of Schedule 5A Taxation of Chargeable Gains Act 1992?
 registeringTrustFor5A.checkYourAnswersLabel = registeringTrustFor5A
 registeringTrustFor5A.error.required = Select yes if registeringTrustFor5A
+
+trustResidentOffshore.title = Was the trust previously resident offshore
+trustResidentOffshore.heading = Was the trust previously resident offshore?
+trustResidentOffshore.checkYourAnswersLabel = trustResidentOffshore
+trustResidentOffshore.error.required = Select yes if trustResidentOffshore
