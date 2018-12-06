@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package generators
+package pages
 
-import org.scalacheck.Arbitrary
-import pages._
+import play.api.libs.json.JsPath
 
-trait PageGenerators {
+case object GovernedOutsideTheUKPage extends QuestionPage[Boolean] {
 
-  implicit lazy val arbitraryGovernedOutsideTheUKPage: Arbitrary[GovernedOutsideTheUKPage.type] =
-    Arbitrary(GovernedOutsideTheUKPage)
+  override def path: JsPath = JsPath \ toString
 
-  implicit lazy val arbitraryTrustNamePage: Arbitrary[TrustNamePage.type] =
-    Arbitrary(TrustNamePage)
+  override def toString: String = "governedOutsideTheUK"
 }

@@ -48,3 +48,8 @@ trustName.heading = What is the name of the trust?
 trustName.checkYourAnswersLabel = trustName
 trustName.error.required = Enter trustName
 trustName.error.length = TrustName must be 53 characters or less
+
+governedOutsideTheUK.title = Is the trust governed by the laws of a country outside the UK
+governedOutsideTheUK.heading = Is the trust governed by the laws of a country outside the UK?
+governedOutsideTheUK.checkYourAnswersLabel = governedOutsideTheUK
+governedOutsideTheUK.error.required = Select yes if governedOutsideTheUK

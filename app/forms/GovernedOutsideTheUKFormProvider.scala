@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package generators
+package forms
 
-import org.scalacheck.Arbitrary
-import pages._
+import javax.inject.Inject
 
-trait PageGenerators {
+import forms.mappings.Mappings
+import play.api.data.Form
 
-  implicit lazy val arbitraryGovernedOutsideTheUKPage: Arbitrary[GovernedOutsideTheUKPage.type] =
-    Arbitrary(GovernedOutsideTheUKPage)
+class GovernedOutsideTheUKFormProvider @Inject() extends Mappings {
 
-  implicit lazy val arbitraryTrustNamePage: Arbitrary[TrustNamePage.type] =
-    Arbitrary(TrustNamePage)
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("governedOutsideTheUK.error.required")
+    )
 }

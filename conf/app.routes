@@ -16,3 +16,8 @@ GET        /trustName                        controllers.TrustNameController.onP
 POST       /trustName                        controllers.TrustNameController.onSubmit(mode: Mode = NormalMode)
 GET        /changeTrustName                  controllers.TrustNameController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeTrustName                  controllers.TrustNameController.onSubmit(mode: Mode = CheckMode)
+
+GET        /governedOutsideTheUK                        controllers.GovernedOutsideTheUKController.onPageLoad(mode: Mode = NormalMode)
+POST       /governedOutsideTheUK                        controllers.GovernedOutsideTheUKController.onSubmit(mode: Mode = NormalMode)
+GET        /changeGovernedOutsideTheUK                  controllers.GovernedOutsideTheUKController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeGovernedOutsideTheUK                  controllers.GovernedOutsideTheUKController.onSubmit(mode: Mode = CheckMode)
