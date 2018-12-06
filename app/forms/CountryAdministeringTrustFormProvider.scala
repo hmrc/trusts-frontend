@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import pages.behaviours.PageBehaviours
+import javax.inject.Inject
 
+import forms.mappings.Mappings
+import play.api.data.Form
 
-class TrustNamePageSpec extends PageBehaviours {
+class CountryAdministeringTrustFormProvider @Inject() extends Mappings {
 
-  "TrustNamePage" must {
-
-    beRetrievable[String](TrustNamePage)
-
-    beSettable[String](TrustNamePage)
-
-    beRemovable[String](TrustNamePage)
-  }
+  def apply(): Form[String] =
+    Form(
+      "value" -> text("countryAdministeringTrust.error.required")
+        .verifying(maxLength(100, "countryAdministeringTrust.error.length"))
+    )
 }

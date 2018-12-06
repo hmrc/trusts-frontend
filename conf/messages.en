@@ -64,3 +64,14 @@ administrationOutsideUK.title = Is the trust's general administration done outsi
 administrationOutsideUK.heading = Is the trust's general administration done outside the UK?
 administrationOutsideUK.checkYourAnswersLabel = administrationOutsideUK
 administrationOutsideUK.error.required = Select yes if administrationOutsideUK
+
+countryAdministeringTrust.title = What is the country administering the trust
+countryAdministeringTrust.heading = What is the country administering the trust?
+countryAdministeringTrust.checkYourAnswersLabel = countryAdministeringTrust
+countryAdministeringTrust.error.required = Enter countryAdministeringTrust
+countryAdministeringTrust.error.length = CountryAdministeringTrust must be 100 characters or less
+
+trustResidentInUK.title = Is the trust resident in the UK
+trustResidentInUK.heading = Is the trust resident in the UK?
+trustResidentInUK.checkYourAnswersLabel = trustResidentInUK
+trustResidentInUK.error.required = Select yes if trustResidentInUK

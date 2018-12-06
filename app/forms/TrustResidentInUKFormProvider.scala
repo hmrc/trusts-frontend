@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import pages.behaviours.PageBehaviours
+import javax.inject.Inject
 
+import forms.mappings.Mappings
+import play.api.data.Form
 
-class TrustNamePageSpec extends PageBehaviours {
+class TrustResidentInUKFormProvider @Inject() extends Mappings {
 
-  "TrustNamePage" must {
-
-    beRetrievable[String](TrustNamePage)
-
-    beSettable[String](TrustNamePage)
-
-    beRemovable[String](TrustNamePage)
-  }
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("trustResidentInUK.error.required")
+    )
 }

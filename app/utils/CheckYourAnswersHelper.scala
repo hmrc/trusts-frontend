@@ -23,6 +23,14 @@ import viewmodels.{AnswerRow, RepeaterAnswerRow, RepeaterAnswerSection}
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
+  def trustResidentInUK: Option[AnswerRow] = userAnswers.get(TrustResidentInUKPage) map {
+    x => AnswerRow("trustResidentInUK.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.TrustResidentInUKController.onPageLoad(CheckMode).url)
+  }
+
+  def countryAdministeringTrust: Option[AnswerRow] = userAnswers.get(CountryAdministeringTrustPage) map {
+    x => AnswerRow("countryAdministeringTrust.checkYourAnswersLabel", s"$x", false, routes.CountryAdministeringTrustController.onPageLoad(CheckMode).url)
+  }
+
   def administrationOutsideUK: Option[AnswerRow] = userAnswers.get(AdministrationOutsideUKPage) map {
     x => AnswerRow("administrationOutsideUK.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.AdministrationOutsideUKController.onPageLoad(CheckMode).url)
   }

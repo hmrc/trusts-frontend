@@ -31,3 +31,13 @@ GET        /administrationOutsideUK                        controllers.Administr
 POST       /administrationOutsideUK                        controllers.AdministrationOutsideUKController.onSubmit(mode: Mode = NormalMode)
 GET        /changeAdministrationOutsideUK                  controllers.AdministrationOutsideUKController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeAdministrationOutsideUK                  controllers.AdministrationOutsideUKController.onSubmit(mode: Mode = CheckMode)
+
+GET        /countryAdministeringTrust                        controllers.CountryAdministeringTrustController.onPageLoad(mode: Mode = NormalMode)
+POST       /countryAdministeringTrust                        controllers.CountryAdministeringTrustController.onSubmit(mode: Mode = NormalMode)
+GET        /changeCountryAdministeringTrust                  controllers.CountryAdministeringTrustController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeCountryAdministeringTrust                  controllers.CountryAdministeringTrustController.onSubmit(mode: Mode = CheckMode)
+
+GET        /trustResidentInUK                        controllers.TrustResidentInUKController.onPageLoad(mode: Mode = NormalMode)
+POST       /trustResidentInUK                        controllers.TrustResidentInUKController.onSubmit(mode: Mode = NormalMode)
+GET        /changeTrustResidentInUK                  controllers.TrustResidentInUKController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeTrustResidentInUK                  controllers.TrustResidentInUKController.onSubmit(mode: Mode = CheckMode)
