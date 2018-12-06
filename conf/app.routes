@@ -26,3 +26,8 @@ GET        /countryGoverningTrust                        controllers.CountryGove
 POST       /countryGoverningTrust                        controllers.CountryGoverningTrustController.onSubmit(mode: Mode = NormalMode)
 GET        /changeCountryGoverningTrust                  controllers.CountryGoverningTrustController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeCountryGoverningTrust                  controllers.CountryGoverningTrustController.onSubmit(mode: Mode = CheckMode)
+
+GET        /administrationOutsideUK                        controllers.AdministrationOutsideUKController.onPageLoad(mode: Mode = NormalMode)
+POST       /administrationOutsideUK                        controllers.AdministrationOutsideUKController.onSubmit(mode: Mode = NormalMode)
+GET        /changeAdministrationOutsideUK                  controllers.AdministrationOutsideUKController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeAdministrationOutsideUK                  controllers.AdministrationOutsideUKController.onSubmit(mode: Mode = CheckMode)

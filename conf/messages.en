@@ -59,3 +59,8 @@ countryGoverningTrust.heading = What is the country governing the trust?
 countryGoverningTrust.checkYourAnswersLabel = countryGoverningTrust
 countryGoverningTrust.error.required = Enter countryGoverningTrust
 countryGoverningTrust.error.length = CountryGoverningTrust must be 100 characters or less
+
+administrationOutsideUK.title = Is the trust's general administration done outside the UK
+administrationOutsideUK.heading = Is the trust's general administration done outside the UK?
+administrationOutsideUK.checkYourAnswersLabel = administrationOutsideUK
+administrationOutsideUK.error.required = Select yes if administrationOutsideUK
