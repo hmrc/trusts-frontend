@@ -17,38 +17,38 @@
 package controllers
 
 import controllers.actions._
-import forms.TrustPreviouslyResidentFormProvider
+import forms.InheritanceTaxActFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, UserAnswers}
 import navigation.Navigator
-import pages.TrustPreviouslyResidentPage
+import pages.InheritanceTaxActPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.TrustPreviouslyResidentView
+import views.html.InheritanceTaxActView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrustPreviouslyResidentController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: TrustPreviouslyResidentFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: TrustPreviouslyResidentView
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class InheritanceTaxActController @Inject()(
+                                         override val messagesApi: MessagesApi,
+                                         sessionRepository: SessionRepository,
+                                         navigator: Navigator,
+                                         identify: IdentifierAction,
+                                         getData: DataRetrievalAction,
+                                         requireData: DataRequiredAction,
+                                         formProvider: InheritanceTaxActFormProvider,
+                                         val controllerComponents: MessagesControllerComponents,
+                                         view: InheritanceTaxActView
+                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  val form: Form[Boolean] = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(TrustPreviouslyResidentPage) match {
+      val preparedForm = request.userAnswers.get(InheritanceTaxActPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -56,7 +56,7 @@ class TrustPreviouslyResidentController @Inject()(
       Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode) = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -65,9 +65,9 @@ class TrustPreviouslyResidentController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustPreviouslyResidentPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(InheritanceTaxActPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrustPreviouslyResidentPage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(InheritanceTaxActPage, mode)(updatedAnswers))
         }
       )
   }

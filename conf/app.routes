@@ -61,3 +61,13 @@ GET        /trustPreviouslyResident                        controllers.TrustPrev
 POST       /trustPreviouslyResident                        controllers.TrustPreviouslyResidentController.onSubmit(mode: Mode = NormalMode)
 GET        /changeTrustPreviouslyResident                  controllers.TrustPreviouslyResidentController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeTrustPreviouslyResident                  controllers.TrustPreviouslyResidentController.onSubmit(mode: Mode = CheckMode)
+
+GET        /nonResidentType                        controllers.NonResidentTypeController.onPageLoad(mode: Mode = NormalMode)
+POST       /nonResidentType                        controllers.NonResidentTypeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeNonResidentType                  controllers.NonResidentTypeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeNonResidentType                  controllers.NonResidentTypeController.onSubmit(mode: Mode = CheckMode)
+
+GET        /inheritanceTaxAct                        controllers.InheritanceTaxActController.onPageLoad(mode: Mode = NormalMode)
+POST       /inheritanceTaxAct                        controllers.InheritanceTaxActController.onSubmit(mode: Mode = NormalMode)
+GET        /changeInheritanceTaxAct                  controllers.InheritanceTaxActController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeInheritanceTaxAct                  controllers.InheritanceTaxActController.onSubmit(mode: Mode = CheckMode)

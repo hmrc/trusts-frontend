@@ -21,4 +21,9 @@ import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
+
+  implicit lazy val arbitraryNon-residentType: Arbitrary[Non-residentType] =
+    Arbitrary {
+      Gen.oneOf(Non-residentType.values.toSeq)
+    }
 }

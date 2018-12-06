@@ -16,11 +16,12 @@
 
 package pages
 
+import models.NonResidentType
 import play.api.libs.json.JsPath
 
-case object TrustPreviouslyResidentPage extends QuestionPage[String] {
+case object NonResidentTypePage extends QuestionPage[NonResidentType] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "trustPreviouslyResident"
+  override def toString: String = "nonresidentType"
 }

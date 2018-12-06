@@ -33,7 +33,12 @@ class Navigator @Inject()() {
     CountryAdministeringTrustPage -> (_ => routes.TrustResidentInUKController.onPageLoad(NormalMode)),
     TrustResidentInUKPage -> TrustResidentinUKRoute(),
     EstablishedUnderScotsLawPage -> (_ => routes.TrustResidentOffshoreController.onPageLoad(NormalMode)),
-    TrustResidentOffshorePage -> (_ => routes.IndexController.onPageLoad()))
+    TrustResidentOffshorePage -> TrustResidentOffshoreRoute(),
+    RegisteringTrustFor5APage -> RegisteringTrustFor5ARoute(),
+    NonResidentTypePage -> (_ => routes.IndexController.onPageLoad()),
+    InheritanceTaxActPage -> (_ => routes.IndexController.onPageLoad())
+  )
+
 
   private val checkRouteMap: Map[Page, UserAnswers => Call] = Map(
 
@@ -61,6 +66,18 @@ class Navigator @Inject()() {
   private def TrustResidentinUKRoute()(answers: UserAnswers ) = answers.get(AdministrationOutsideUKPage) match {
     case Some(true) => routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode)
     case Some(false) => routes.RegisteringTrustFor5AController.onPageLoad(NormalMode)
+    case None =>routes.IndexController.onPageLoad()
+  }
+
+  private def TrustResidentOffshoreRoute()(answers: UserAnswers ) = answers.get(AdministrationOutsideUKPage) match {
+    case Some(true) => routes.TrustPreviouslyResidentController.onPageLoad(NormalMode)
+    case Some(false) => routes.IndexController.onPageLoad()
+    case None =>routes.IndexController.onPageLoad()
+  }
+
+  private def RegisteringTrustFor5ARoute()(answers: UserAnswers ) = answers.get(AdministrationOutsideUKPage) match {
+    case Some(true) => routes.NonResidentTypeController.onPageLoad(NormalMode)
+    case Some(false) => routes.InheritanceTaxActController.onPageLoad(NormalMode)
     case None =>routes.IndexController.onPageLoad()
   }
 

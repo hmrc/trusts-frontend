@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import play.api.libs.json.JsPath
+import javax.inject.Inject
 
-case object TrustPreviouslyResidentPage extends QuestionPage[String] {
+import forms.mappings.Mappings
+import play.api.data.Form
 
-  override def path: JsPath = JsPath \ toString
+class InheritanceTaxActFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "trustPreviouslyResident"
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("inheritanceTaxAct.error.required")
+    )
 }

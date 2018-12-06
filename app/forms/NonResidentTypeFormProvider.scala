@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import play.api.libs.json.JsPath
+import javax.inject.Inject
 
-case object TrustPreviouslyResidentPage extends QuestionPage[String] {
+import forms.mappings.Mappings
+import play.api.data.Form
+import models.NonResidentType
 
-  override def path: JsPath = JsPath \ toString
+class NonResidentTypeFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "trustPreviouslyResident"
+  def apply(): Form[NonResidentType] =
+    Form(
+      "value" -> enumerable[NonResidentType]("non-residentType.error.required")
+    )
 }

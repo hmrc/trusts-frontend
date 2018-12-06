@@ -21,6 +21,12 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryInheritanceTaxActPage: Arbitrary[InheritanceTaxActPage.type] =
+    Arbitrary(InheritanceTaxActPage)
+
+  implicit lazy val arbitraryNon-residentTypePage: Arbitrary[Non-residentTypePage.type] =
+    Arbitrary(Non-residentTypePage)
+
   implicit lazy val arbitraryTrustPreviouslyResidentPage: Arbitrary[TrustPreviouslyResidentPage.type] =
     Arbitrary(TrustPreviouslyResidentPage)
 
