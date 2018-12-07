@@ -17,22 +17,22 @@
 package forms
 
 import forms.behaviours.OptionFieldBehaviours
-import models.Non-residentType
+import models.NonResidentType
 import play.api.data.FormError
 
-class Non-residentTypeFormProviderSpec extends OptionFieldBehaviours {
+class NonResidentTypeFormProviderSpec extends OptionFieldBehaviours {
 
-  val form = new Non-residentTypeFormProvider()()
+  val form = new NonResidentTypeFormProvider()()
 
   ".value" must {
 
     val fieldName = "value"
     val requiredKey = "non-residentType.error.required"
 
-    behave like optionsField[Non-residentType](
+    behave like optionsField[NonResidentType](
       form,
       fieldName,
-      validValues  = Non-residentType.values,
+      validValues  = NonResidentType.values,
       invalidError = FormError(fieldName, "error.invalid")
     )
 

@@ -23,12 +23,12 @@ sealed trait NonResidentType
 
 object NonResidentType extends Enumerable.Implicits {
 
-  case object 1 extends WithName("1") with NonResidentType
-  case object 2 extends WithName("2") with NonResidentType
-  case object 3 extends WithName("3") with NonResidentType
+  case object resident extends WithName("resident") with NonResidentType
+  case object nonresident extends WithName("nonresident") with NonResidentType
+  case object ceaseresident extends WithName("ceaseresident") with NonResidentType
 
   val values: Set[NonResidentType] = Set(
-    1, 2, 3
+    resident, nonresident, ceaseresident
   )
 
   val options: Set[RadioOption] = values.map {

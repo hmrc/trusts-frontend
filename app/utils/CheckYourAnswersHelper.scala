@@ -23,12 +23,16 @@ import viewmodels.{AnswerRow, RepeaterAnswerRow, RepeaterAnswerSection}
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
+  def agentOtherThanBarrister: Option[AnswerRow] = userAnswers.get(AgentOtherThanBarristerPage) map {
+    x => AnswerRow("agentOtherThanBarrister.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.AgentOtherThanBarristerController.onPageLoad(CheckMode).url)
+  }
+
   def inheritanceTaxAct: Option[AnswerRow] = userAnswers.get(InheritanceTaxActPage) map {
     x => AnswerRow("inheritanceTaxAct.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.InheritanceTaxActController.onPageLoad(CheckMode).url)
   }
 
-  def non-residentType: Option[AnswerRow] = userAnswers.get(Non-residentTypePage) map {
-    x => AnswerRow("non-residentType.checkYourAnswersLabel", s"non-residentType.$x", true, routes.Non-residentTypeController.onPageLoad(CheckMode).url)
+  def nonresidentType: Option[AnswerRow] = userAnswers.get(NonResidentTypePage) map {
+    x => AnswerRow("non-residentType.checkYourAnswersLabel", s"non-residentType.$x", true, routes.NonResidentTypeController.onPageLoad(CheckMode).url)
   }
 
   def trustPreviouslyResident: Option[AnswerRow] = userAnswers.get(TrustPreviouslyResidentPage) map {

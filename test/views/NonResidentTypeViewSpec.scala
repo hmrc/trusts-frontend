@@ -16,34 +16,34 @@
 
 package views
 
-import forms.Non-residentTypeFormProvider
-import models.{NormalMode, Non-residentType}
+import forms.NonResidentTypeFormProvider
+import models.{NormalMode, NonResidentType}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.ViewBehaviours
-import views.html.Non-residentTypeView
+import views.html.NonResidentTypeView
 
-class Non-residentTypeViewSpec extends ViewBehaviours {
+class NonResidentTypeViewSpec extends ViewBehaviours {
 
-  val messageKeyPrefix = "non-residentType"
+  val messageKeyPrefix = "nonresidentType"
 
-  val form = new Non-residentTypeFormProvider()()
+  val form = new NonResidentTypeFormProvider()()
 
   val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-  val view = application.injector.instanceOf[Non-residentTypeView]
+  val view = application.injector.instanceOf[NonResidentTypeView]
 
   def applyView(form: Form[_]): HtmlFormat.Appendable =
     view.apply(form, NormalMode)(fakeRequest, messages)
 
-  "Non-residentTypeView" must {
+  "NonResidentTypeView" must {
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
   }
 
-  "Non-residentTypeView" when {
+  "NonResidentTypeView" when {
 
     "rendered" must {
 
@@ -51,13 +51,13 @@ class Non-residentTypeViewSpec extends ViewBehaviours {
 
         val doc = asDocument(applyView(form))
 
-        for (option <- Non-residentType.options) {
+        for (option <- NonResidentType.options) {
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
         }
       }
     }
 
-    for (option <- Non-residentType.options) {
+    for (option <- NonResidentType.options) {
 
       s"rendered with a value of '${option.value}'" must {
 
@@ -67,7 +67,7 @@ class Non-residentTypeViewSpec extends ViewBehaviours {
 
           assertContainsRadioButton(doc, option.id, "value", option.value, true)
 
-          for (unselectedOption <- Non-residentType.options.filterNot(o => o == option)) {
+          for (unselectedOption <- NonResidentType.options.filterNot(o => o == option)) {
             assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
           }
         }

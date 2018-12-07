@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-package generators
+package pages
 
-import models._
-import org.scalacheck.Arbitrary.arbitrary
-import org.scalacheck.{Arbitrary, Gen}
+import models.NonResidentType
+import pages.behaviours.PageBehaviours
 
-trait ModelGenerators {
+class NonResidentTypePageSpec extends PageBehaviours {
 
-  implicit lazy val arbitraryNonResidentType: Arbitrary[NonResidentType] =
-    Arbitrary {
-      Gen.oneOf(NonResidentType.values.toSeq)
-    }
+  "Non-residentTypePage" must {
+
+    beRetrievable[NonResidentType](NonResidentTypePage)
+
+    beSettable[NonResidentType](NonResidentTypePage)
+
+    beRemovable[NonResidentType](NonResidentTypePage)
+  }
 }

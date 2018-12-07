@@ -24,6 +24,14 @@ import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
 
+  implicit lazy val arbitraryAgentOtherThanBarristerUserAnswersEntry: Arbitrary[(AgentOtherThanBarristerPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[AgentOtherThanBarristerPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
   implicit lazy val arbitraryInheritanceTaxActUserAnswersEntry: Arbitrary[(InheritanceTaxActPage.type, JsValue)] =
     Arbitrary {
       for {
@@ -32,11 +40,11 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryNon-residentTypeUserAnswersEntry: Arbitrary[(Non-residentTypePage.type, JsValue)] =
+  implicit lazy val arbitraryNonResidentTypeUserAnswersEntry: Arbitrary[(NonResidentTypePage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[Non-residentTypePage.type]
-        value <- arbitrary[Non-residentType].map(Json.toJson(_))
+        page  <- arbitrary[NonResidentTypePage.type]
+        value <- arbitrary[NonResidentType].map(Json.toJson(_))
       } yield (page, value)
     }
 

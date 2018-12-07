@@ -1,53 +1,37 @@
-/*
- * Copyright 2018 HM Revenue & Customs
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package controllers
 
 import base.SpecBase
-import forms.NonResidentTypeFormProvider
-import models.{NormalMode, NonResidentType, UserAnswers}
+import forms.AgentOtherThanBarristerFormProvider
+import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.NonResidentTypePage
+import pages.AgentOtherThanBarristerPage
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
+import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.NonResidentTypeView
+import views.html.AgentOtherThanBarristerView
 
-class NonResidentTypeControllerSpec extends SpecBase {
+class AgentOtherThanBarristerControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  lazy val nonresidentTypeRoute = routes.NonResidentTypeController.onPageLoad(NormalMode).url
-
-  val formProvider = new NonResidentTypeFormProvider()
+  val formProvider = new AgentOtherThanBarristerFormProvider()
   val form = formProvider()
 
-  "Non-residentType Controller" must {
+  lazy val agentOtherThanBarristerRoute = routes.AgentOtherThanBarristerController.onPageLoad(NormalMode).url
+
+  "AgentOtherThanBarrister Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, nonresidentTypeRoute)
+      val request = FakeRequest(GET, agentOtherThanBarristerRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[NonResidentTypeView]
+      val view = application.injector.instanceOf[AgentOtherThanBarristerView]
 
       status(result) mustEqual OK
 
@@ -57,20 +41,20 @@ class NonResidentTypeControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(NonResidentTypePage, NonResidentType.values.head).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(AgentOtherThanBarristerPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, nonresidentTypeRoute)
+      val request = FakeRequest(GET, agentOtherThanBarristerRoute)
 
-      val view = application.injector.instanceOf[NonResidentTypeView]
+      val view = application.injector.instanceOf[AgentOtherThanBarristerView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(NonResidentType.values.head), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode)(fakeRequest, messages).toString
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -81,8 +65,8 @@ class NonResidentTypeControllerSpec extends SpecBase {
           .build()
 
       val request =
-        FakeRequest(POST, nonresidentTypeRoute)
-          .withFormUrlEncodedBody(("value", NonResidentType.options.head.value))
+        FakeRequest(POST, agentOtherThanBarristerRoute)
+          .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 
@@ -96,12 +80,12 @@ class NonResidentTypeControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, nonresidentTypeRoute)
-          .withFormUrlEncodedBody(("value", "invalid value"))
+        FakeRequest(POST, agentOtherThanBarristerRoute)
+          .withFormUrlEncodedBody(("value", ""))
 
-      val boundForm = form.bind(Map("value" -> "invalid value"))
+      val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[NonResidentTypeView]
+      val view = application.injector.instanceOf[AgentOtherThanBarristerView]
 
       val result = route(application, request).value
 
@@ -115,11 +99,12 @@ class NonResidentTypeControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, nonresidentTypeRoute)
+      val request = FakeRequest(GET, agentOtherThanBarristerRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
+
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
     }
 
@@ -128,8 +113,8 @@ class NonResidentTypeControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, nonresidentTypeRoute)
-          .withFormUrlEncodedBody(("value", NonResidentType.values.head.toString))
+        FakeRequest(POST, agentOtherThanBarristerRoute)
+          .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 

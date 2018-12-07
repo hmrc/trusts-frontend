@@ -71,3 +71,8 @@ GET        /inheritanceTaxAct                        controllers.InheritanceTaxA
 POST       /inheritanceTaxAct                        controllers.InheritanceTaxActController.onSubmit(mode: Mode = NormalMode)
 GET        /changeInheritanceTaxAct                  controllers.InheritanceTaxActController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeInheritanceTaxAct                  controllers.InheritanceTaxActController.onSubmit(mode: Mode = CheckMode)
+
+GET        /agentOtherThanBarrister                        controllers.AgentOtherThanBarristerController.onPageLoad(mode: Mode = NormalMode)
+POST       /agentOtherThanBarrister                        controllers.AgentOtherThanBarristerController.onSubmit(mode: Mode = NormalMode)
+GET        /changeAgentOtherThanBarrister                  controllers.AgentOtherThanBarristerController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeAgentOtherThanBarrister                  controllers.AgentOtherThanBarristerController.onSubmit(mode: Mode = CheckMode)

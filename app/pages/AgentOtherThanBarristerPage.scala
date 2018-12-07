@@ -16,17 +16,11 @@
 
 package pages
 
-import models.Non-residentType
-import pages.behaviours.PageBehaviours
+import play.api.libs.json.JsPath
 
-class Non-residentTypeSpec extends PageBehaviours {
+case object AgentOtherThanBarristerPage extends QuestionPage[Boolean] {
 
-  "Non-residentTypePage" must {
+  override def path: JsPath = JsPath \ toString
 
-    beRetrievable[Non-residentType](Non-residentTypePage)
-
-    beSettable[Non-residentType](Non-residentTypePage)
-
-    beRemovable[Non-residentType](Non-residentTypePage)
-  }
+  override def toString: String = "agentOtherThanBarrister"
 }

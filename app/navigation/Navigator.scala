@@ -37,7 +37,8 @@ class Navigator @Inject()() {
     TrustPreviouslyResidentPage -> (_ => routes.IndexController.onPageLoad()),
     RegisteringTrustFor5APage -> RegisteringTrustFor5ARoute(),
     NonResidentTypePage -> (_ => routes.IndexController.onPageLoad()),
-    InheritanceTaxActPage -> (_ => routes.IndexController.onPageLoad())
+    InheritanceTaxActPage -> InheritanceTaxActRoute(),
+    AgentOtherThanBarristerPage -> (_ => routes.IndexController.onPageLoad())
   )
 
 
@@ -79,6 +80,12 @@ class Navigator @Inject()() {
   private def RegisteringTrustFor5ARoute()(answers: UserAnswers ) = answers.get(AdministrationOutsideUKPage) match {
     case Some(true) => routes.NonResidentTypeController.onPageLoad(NormalMode)
     case Some(false) => routes.InheritanceTaxActController.onPageLoad(NormalMode)
+    case None =>routes.IndexController.onPageLoad()
+  }
+
+  private def InheritanceTaxActRoute()(answers: UserAnswers ) = answers.get(AdministrationOutsideUKPage) match {
+    case Some(true) => routes.AgentOtherThanBarristerController.onPageLoad(NormalMode)
+    case Some(false) => routes.IndexController.onPageLoad()
     case None =>routes.IndexController.onPageLoad()
   }
 
