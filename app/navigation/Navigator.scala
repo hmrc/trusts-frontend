@@ -34,6 +34,7 @@ class Navigator @Inject()() {
     TrustResidentInUKPage -> TrustResidentinUKRoute(),
     EstablishedUnderScotsLawPage -> (_ => routes.TrustResidentOffshoreController.onPageLoad(NormalMode)),
     TrustResidentOffshorePage -> TrustResidentOffshoreRoute(),
+    TrustPreviouslyResidentPage -> (_ => routes.IndexController.onPageLoad()),
     RegisteringTrustFor5APage -> RegisteringTrustFor5ARoute(),
     NonResidentTypePage -> (_ => routes.IndexController.onPageLoad()),
     InheritanceTaxActPage -> (_ => routes.IndexController.onPageLoad())
