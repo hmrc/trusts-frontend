@@ -20,7 +20,7 @@ class $className$Controller @Inject()(
                                                   sessionRepository: SessionRepository,
                                                   navigator: Navigator,
                                                   identify: IdentifierAction,
-                                                  getData: AfaDataRetrievalActionProvider,
+                                                  getData: DataRetrievalAction,
                                                   requireData: DataRequiredAction,
                                                   formProvider: $className$FormProvider,
                                                   val controllerComponents: MessagesControllerComponents,
@@ -29,7 +29,7 @@ class $className$Controller @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode, afaId: AfaId): Action[AnyContent] = (identify andThen getData(afaId) andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get($className$Page) match {
@@ -37,7 +37,7 @@ class $className$Controller @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, afaId))
+      Ok(view(preparedForm, mode))
   }
 
   def onSubmit(mode: Mode, afaId: AfaId): Action[AnyContent] = (identify andThen getData(afaId) andThen requireData).async {
@@ -45,7 +45,7 @@ class $className$Controller @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, afaId))),
+          Future.successful(BadRequest(view(formWithErrors, mode))),
 
         value => {
           for {
