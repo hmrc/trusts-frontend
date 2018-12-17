@@ -53,6 +53,8 @@ class EstablishedUnderScotsLawControllerSpec extends SpecBase {
 
       contentAsString(result) mustEqual
         view(form, NormalMode)(fakeRequest, messages).toString
+
+      application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
@@ -71,6 +73,8 @@ class EstablishedUnderScotsLawControllerSpec extends SpecBase {
 
       contentAsString(result) mustEqual
         view(form.fill(true), NormalMode)(fakeRequest, messages).toString
+
+      application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -89,6 +93,8 @@ class EstablishedUnderScotsLawControllerSpec extends SpecBase {
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual onwardRoute.url
+
+      application.stop()
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
@@ -109,6 +115,8 @@ class EstablishedUnderScotsLawControllerSpec extends SpecBase {
 
       contentAsString(result) mustEqual
         view(boundForm, NormalMode)(fakeRequest, messages).toString
+
+      application.stop()
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
@@ -122,6 +130,8 @@ class EstablishedUnderScotsLawControllerSpec extends SpecBase {
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+
+      application.stop()
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
@@ -137,6 +147,8 @@ class EstablishedUnderScotsLawControllerSpec extends SpecBase {
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+
+      application.stop()
     }
   }
 }
