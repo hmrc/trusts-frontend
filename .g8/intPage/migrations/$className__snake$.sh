@@ -54,8 +54,13 @@ awk '/class/ {\
      print;\
      print "";\
      print "  def $className;format="decap"$: Option[AnswerRow] = userAnswers.get($className$Page) map {";\
-     print "    x => AnswerRow(\"$className;format="decap"$.checkYourAnswersLabel\", s\"\$x\", false, routes.$className$Controller.onPageLoad(CheckMode).url)";\
-     print "  }";\
+     print "    x =>";\
+     print "      AnswerRow(";\
+     print "        \"$className;format="decap"$.checkYourAnswersLabel\",";\
+     print "        HtmlFormat.escape(x.toString),";\
+     print "        routes.$className$Controller.onPageLoad(CheckMode).url";\
+     print "      )";\
+     print "  }";\	     print "  }";\
      next }1' ../app/utils/CheckYourAnswersHelper.scala > tmp && mv tmp ../app/utils/CheckYourAnswersHelper.scala
 
 echo "Migration $className;format="snake"$ completed"
