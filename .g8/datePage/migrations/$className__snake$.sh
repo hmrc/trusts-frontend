@@ -58,8 +58,8 @@ awk '/class/ {\
      print "      AnswerRow(";\
      print "        \"$className;format="decap"$.checkYourAnswersLabel\",";\
      print "        HtmlFormat.escape(x.format(dateFormatter)),";\
-     print "        "false\",";\
      print "        routes.$className$Controller.onPageLoad(CheckMode).url";\
+     print "      )";\
      print "      )";\
      print "  }";\
      next }1' ../app/utils/CheckYourAnswersHelper.scala > tmp && mv tmp ../app/utils/CheckYourAnswersHelper.scala
