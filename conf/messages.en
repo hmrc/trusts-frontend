@@ -114,3 +114,11 @@ agentOtherThanBarrister.title = Has an agent, other than a barrister, created th
 agentOtherThanBarrister.heading = Has an agent, other than a barrister, created the non-UK resident trust being registered?
 agentOtherThanBarrister.checkYourAnswersLabel = agentOtherThanBarrister
 agentOtherThanBarrister.error.required = Select yes if agentOtherThanBarrister
+
+whenTrustSetup.title = WhenTrustSetup
+whenTrustSetup.heading = WhenTrustSetup
+whenTrustSetup.checkYourAnswersLabel = WhenTrustSetup
+whenTrustSetup.error.required.all = Enter the whenTrustSetup
+whenTrustSetup.error.required.two = The whenTrustSetup must include {0} and {1}
+whenTrustSetup.error.required = The whenTrustSetup must include {0}
+whenTrustSetup.error.invalid = Enter a real WhenTrustSetup

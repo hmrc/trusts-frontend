@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,21 +12,28 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import viewmodels.AnswerRow
+package forms
 
-@(row: AnswerRow)(implicit messages: Messages)
+import java.time.{LocalDate, ZoneOffset}
 
-<li>
-    <div class="cya-question">@messages(row.label)</div>
-    <div class="cya-answer">
-        @row.answer
-    </div>
-    <div class="cya-change">
-        <a href='@row.changeUrl'>
-            <span aria-hidden="true">@messages("site.edit")</span>
-            <span class="visually-hidden">@messages("site.hidden-edit", messages(row.label))</span>
-        </a>
-    </div>
-</li>
+import forms.behaviours.DateBehaviours
+import play.api.data.FormError
+
+class WhenTrustSetupFormProviderSpec extends DateBehaviours {
+
+  val form = new WhenTrustSetupFormProvider()()
+
+  ".value" should {
+
+    val validData = datesBetween(
+      min = LocalDate.of(2000, 1, 1),
+      max = LocalDate.now(ZoneOffset.UTC)
+    )
+
+    behave like dateField(form, "value", validData)
+
+    behave like mandatoryDateField(form, "value", "whenTrustSetup.error.required.all")
+  }
+}

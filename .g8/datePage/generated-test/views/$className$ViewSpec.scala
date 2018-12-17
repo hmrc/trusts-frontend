@@ -3,7 +3,7 @@ package views
 import java.time.LocalDate
 
 import forms.$className$FormProvider
-import models.{AfaId, NormalMode, UserAnswers}
+import models.{NormalMode, UserAnswers}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
@@ -22,7 +22,7 @@ class $className$ViewSpec extends QuestionViewBehaviours[LocalDate] {
     val view = application.injector.instanceOf[$className$View]
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, afaId)(fakeRequest, messages)
+      view.apply(form, NormalMode)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 

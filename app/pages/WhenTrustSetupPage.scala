@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,21 +12,17 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import viewmodels.AnswerRow
+package pages
 
-@(row: AnswerRow)(implicit messages: Messages)
+import java.time.LocalDate
 
-<li>
-    <div class="cya-question">@messages(row.label)</div>
-    <div class="cya-answer">
-        @row.answer
-    </div>
-    <div class="cya-change">
-        <a href='@row.changeUrl'>
-            <span aria-hidden="true">@messages("site.edit")</span>
-            <span class="visually-hidden">@messages("site.hidden-edit", messages(row.label))</span>
-        </a>
-    </div>
-</li>
+import play.api.libs.json.JsPath
+
+case object WhenTrustSetupPage extends QuestionPage[LocalDate] {
+
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "whenTrustSetup"
+}
