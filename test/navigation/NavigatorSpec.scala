@@ -119,6 +119,129 @@ class NavigatorSpec extends SpecBase with PropertyChecks with Generators{
         }
       }
 
+      "go to Registering for Purpose of 5A Schedule from Trust Resident in UK when user answers No" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(TrustResidentInUKPage, value = false).success.value
+
+            navigator.nextPage(TrustResidentInUKPage, NormalMode)(answers)
+              .mustBe(routes.RegisteringTrustFor5AController.onPageLoad(NormalMode))
+        }
+      }
+
+      "go to Inheritance Tax from Registering for Purpose of Schedule 5A when user answers No" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(RegisteringTrustFor5APage, value = false).success.value
+
+            navigator.nextPage(RegisteringTrustFor5APage, NormalMode)(answers)
+              .mustBe(routes.InheritanceTaxActController.onPageLoad(NormalMode))
+        }
+      }
+
+      "go to Check Your Answers from Inheritance Tax when user answers No" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(InheritanceTaxActPage, value = false).success.value
+
+            navigator.nextPage(InheritanceTaxActPage, NormalMode)(answers)
+              .mustBe(routes.CheckYourAnswersController.onPageLoad())
+        }
+      }
+
+      "go to Agent Other Than Barrister from Inheritance Tax when user answers Yes" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(InheritanceTaxActPage, value = true).success.value
+
+            navigator.nextPage(InheritanceTaxActPage, NormalMode)(answers)
+              .mustBe(routes.AgentOtherThanBarristerController.onPageLoad(NormalMode))
+        }
+      }
+
+      "go to Check Your Answers from Agent Other Than Barrister" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            navigator.nextPage(AgentOtherThanBarristerPage, NormalMode)(userAnswers)
+              .mustBe(routes.CheckYourAnswersController.onPageLoad())
+        }
+      }
+
+      "go to Check Your Answers from What is The Non Resident Type" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            navigator.nextPage(NonResidentTypePage, NormalMode)(userAnswers)
+              .mustBe(routes.CheckYourAnswersController.onPageLoad())
+        }
+      }
+
+      "go to What Is Non Resident Type from Registering for Purpose of Schedule 5A when user answers Yes" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(RegisteringTrustFor5APage, value = true).success.value
+
+            navigator.nextPage(RegisteringTrustFor5APage, NormalMode)(answers)
+              .mustBe(routes.NonResidentTypeController.onPageLoad(NormalMode))
+        }
+      }
+
+      "go to Trust Established Under Scots Law from Trust Resident in UK when user answers Yes" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(TrustResidentInUKPage, value = true).success.value
+
+            navigator.nextPage(TrustResidentInUKPage, NormalMode)(answers)
+              .mustBe(routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode))
+        }
+      }
+
+      "go to Was Trust Resident Previously Offshore from Trust Established Under Scots Law" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            navigator.nextPage(EstablishedUnderScotsLawPage, NormalMode)(userAnswers)
+              .mustBe(routes.TrustResidentOffshoreController.onPageLoad(NormalMode))
+        }
+      }
+
+      "go to Where Was The Trust Previously Resident from Was Trust Resident Offshore when user answers Yes" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(TrustResidentOffshorePage, value = true).success.value
+
+            navigator.nextPage(TrustResidentOffshorePage, NormalMode)(answers)
+              .mustBe(routes.TrustPreviouslyResidentController.onPageLoad(NormalMode))
+        }
+      }
+
+      "go to Check Your Answers from Was Trust Resident Offshore when user answers No" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(TrustResidentOffshorePage, value = false).success.value
+
+            navigator.nextPage(TrustResidentOffshorePage, NormalMode)(answers)
+              .mustBe(routes.CheckYourAnswersController.onPageLoad)
+        }
+      }
+
+      "go to Check Your Answers from Where Was The Trust Previously Resident" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            navigator.nextPage(TrustPreviouslyResidentPage, NormalMode)(userAnswers)
+              .mustBe(routes.CheckYourAnswersController.onPageLoad)
+        }
+      }
     }
 
     "in Check mode" must {
