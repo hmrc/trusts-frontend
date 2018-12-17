@@ -6,11 +6,11 @@ echo "Applying migration $className;format="snake"$"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /:afaId/$className;format="decap"$                  controllers.$className$Controller.onPageLoad(mode: Mode = NormalMode, afaId: AfaId)" >> ../conf/app.routes
-echo "POST       /:afaId/$className;format="decap"$                  controllers.$className$Controller.onSubmit(mode: Mode = NormalMode, afaId: AfaId)" >> ../conf/app.routes
+echo "GET        /$className;format="decap"$                  controllers.$className$Controller.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /$className;format="decap"$                  controllers.$className$Controller.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /:afaId/change$className$                        controllers.$className$Controller.onPageLoad(mode: Mode = CheckMode, afaId: AfaId)" >> ../conf/app.routes
-echo "POST       /:afaId/change$className$                        controllers.$className$Controller.onSubmit(mode: Mode = CheckMode, afaId: AfaId)" >> ../conf/app.routes
+echo "GET        /change$className$                        controllers.$className$Controller.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /change$className$                        controllers.$className$Controller.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en
@@ -58,7 +58,7 @@ awk '/class/ {\
      print "      AnswerRow(";\
      print "        \"$className;format="decap"$.checkYourAnswersLabel\",";\
      print "        HtmlFormat.escape(x.format(dateFormatter)),";\
-     print "        routes.$className$Controller.onPageLoad(CheckMode, afaId).url";\
+     print "        routes.$className$Controller.onPageLoad(CheckMode).url";\
      print "      )";\
      print "  }";\
      next }1' ../app/utils/CheckYourAnswersHelper.scala > tmp && mv tmp ../app/utils/CheckYourAnswersHelper.scala

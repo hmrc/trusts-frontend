@@ -13,13 +13,11 @@ class $className$ViewSpec extends QuestionViewBehaviours[LocalDate] {
 
   val messageKeyPrefix = "$className;format="decap"$"
 
-  val afaId = AfaId("1")
-
   val form = new $className$FormProvider()()
 
   "$className$View view" must {
 
-    val application = applicationBuilder(userAnswers = Some(UserAnswers(afaId.value))).build()
+    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
     val view = application.injector.instanceOf[$className$View]
 
