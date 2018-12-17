@@ -37,7 +37,6 @@ class TrustNameController @Inject()(
                                         navigator: Navigator,
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
                                         formProvider: TrustNameFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: TrustNameView

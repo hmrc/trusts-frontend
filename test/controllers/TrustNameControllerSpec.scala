@@ -118,7 +118,7 @@ class TrustNameControllerSpec extends SpecBase {
       application.stop()
     }
 
-    "redirect to Session Expired for a GET if no existing data is found" in {
+    "return OK for a GET if no existing data is found" in {
 
       val application = applicationBuilder(userAnswers = None).build()
 
@@ -126,28 +126,10 @@ class TrustNameControllerSpec extends SpecBase {
 
       val result = route(application, request).value
 
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      status(result) mustEqual OK
 
       application.stop()
     }
 
-    "redirect to Session Expired for a POST if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = None).build()
-
-      val request =
-        FakeRequest(POST, trustNameRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
-
-      application.stop()
-    }
   }
 }

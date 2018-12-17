@@ -26,21 +26,25 @@ import models._
 class Navigator @Inject()() {
 
   private val routeMap: Map[Page, UserAnswers => Call] = Map(
-    TrustNamePage -> (_ => routes.GovernedOutsideTheUKController.onPageLoad(NormalMode)),
-    GovernedOutsideTheUKPage -> GovernedOutsideTheUKRoute(),
+    TrustNamePage -> (_ => routes.WhenTrustSetupController.onPageLoad(NormalMode)),
+    WhenTrustSetupPage -> (_ => routes.GovernedOutsideTheUKController.onPageLoad(NormalMode)),
+    GovernedOutsideTheUKPage -> isTrustGovernedOutsideUK,
     CountryGoverningTrustPage -> (_ => routes.AdministrationOutsideUKController.onPageLoad(NormalMode)),
-    AdministrationOutsideUKPage -> AdministrationOutsideUKRoute(),
-    CountryAdministeringTrustPage -> (_ => routes.TrustResidentInUKController.onPageLoad(NormalMode)),
-    TrustResidentInUKPage -> TrustResidentinUKRoute(),
-    EstablishedUnderScotsLawPage -> (_ => routes.TrustResidentOffshoreController.onPageLoad(NormalMode)),
-    TrustResidentOffshorePage -> TrustResidentOffshoreRoute(),
-    TrustPreviouslyResidentPage -> (_ => routes.IndexController.onPageLoad()),
-    RegisteringTrustFor5APage -> RegisteringTrustFor5ARoute(),
-    NonResidentTypePage -> (_ => routes.IndexController.onPageLoad()),
-    InheritanceTaxActPage -> InheritanceTaxActRoute(),
-    AgentOtherThanBarristerPage -> (_ => routes.IndexController.onPageLoad())
+    AdministrationOutsideUKPage -> isTrustGeneralAdministration,
+    CountryAdministeringTrustPage -> (_ => routes.TrustResidentInUKController.onPageLoad(NormalMode))
   )
 
+  private def isTrustGovernedOutsideUK(answers: UserAnswers) = answers.get(GovernedOutsideTheUKPage) match {
+    case Some(true)  => routes.CountryGoverningTrustController.onPageLoad(NormalMode)
+    case Some(false) => routes.AdministrationOutsideUKController.onPageLoad(NormalMode)
+    case None        => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def isTrustGeneralAdministration(answers: UserAnswers) = answers.get(AdministrationOutsideUKPage) match {
+    case Some(true)  => routes.CountryAdministeringTrustController.onPageLoad(NormalMode)
+    case Some(false) => routes.TrustResidentInUKController.onPageLoad(NormalMode)
+    case None        => routes.SessionExpiredController.onPageLoad()
+  }
 
   private val checkRouteMap: Map[Page, UserAnswers => Call] = Map(
 
@@ -52,41 +56,4 @@ class Navigator @Inject()() {
     case CheckMode =>
       checkRouteMap.getOrElse(page, _ => routes.CheckYourAnswersController.onPageLoad())
   }
-
-  private def GovernedOutsideTheUKRoute()(answers: UserAnswers ) = answers.get(GovernedOutsideTheUKPage) match {
-    case Some(true) => routes.CountryGoverningTrustController.onPageLoad(NormalMode)
-    case Some(false) => routes.AdministrationOutsideUKController.onPageLoad(NormalMode)
-    case None =>routes.IndexController.onPageLoad()
-  }
-
-  private def AdministrationOutsideUKRoute()(answers: UserAnswers ) = answers.get(AdministrationOutsideUKPage) match {
-    case Some(true) => routes.CountryAdministeringTrustController.onPageLoad(NormalMode)
-    case Some(false) => routes.TrustResidentInUKController.onPageLoad(NormalMode)
-    case None =>routes.IndexController.onPageLoad()
-  }
-
-  private def TrustResidentinUKRoute()(answers: UserAnswers ) = answers.get(AdministrationOutsideUKPage) match {
-    case Some(true) => routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode)
-    case Some(false) => routes.RegisteringTrustFor5AController.onPageLoad(NormalMode)
-    case None =>routes.IndexController.onPageLoad()
-  }
-
-  private def TrustResidentOffshoreRoute()(answers: UserAnswers ) = answers.get(AdministrationOutsideUKPage) match {
-    case Some(true) => routes.TrustPreviouslyResidentController.onPageLoad(NormalMode)
-    case Some(false) => routes.IndexController.onPageLoad()
-    case None =>routes.IndexController.onPageLoad()
-  }
-
-  private def RegisteringTrustFor5ARoute()(answers: UserAnswers ) = answers.get(AdministrationOutsideUKPage) match {
-    case Some(true) => routes.NonResidentTypeController.onPageLoad(NormalMode)
-    case Some(false) => routes.InheritanceTaxActController.onPageLoad(NormalMode)
-    case None =>routes.IndexController.onPageLoad()
-  }
-
-  private def InheritanceTaxActRoute()(answers: UserAnswers ) = answers.get(AdministrationOutsideUKPage) match {
-    case Some(true) => routes.AgentOtherThanBarristerController.onPageLoad(NormalMode)
-    case Some(false) => routes.IndexController.onPageLoad()
-    case None =>routes.IndexController.onPageLoad()
-  }
-
 }
