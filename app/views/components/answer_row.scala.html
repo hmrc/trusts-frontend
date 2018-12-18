@@ -21,11 +21,7 @@
 <li>
     <div class="cya-question">@messages(row.label)</div>
     <div class="cya-answer">
-    @if(row.answerIsMessageKey){
-        @messages(row.answer)
-    } else{
         @row.answer
-    }
     </div>
     <div class="cya-change">
         <a href='@row.changeUrl'>

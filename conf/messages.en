@@ -8,12 +8,12 @@ date.year = Year
 
 error.browser.title.prefix = Error:
 error.boolean = Please give an answer
-error.invalid_date = Give a correct date
 error.date.day_blank = Enter a day
 error.date.day_invalid = Give a correct day using numbers 1 to 31
 error.date.month_blank = Enter a month
 error.date.month_invalid = Give a correct month using numbers 1 to 12
 error.date.year_blank = Enter a year
+error.date.year_invalid = Give a correct year
 error.date.year_invalid = Give a correct year
 error.integer = Give an answer in whole numbers
 error.non_numeric = Give a value using only numbers
@@ -36,9 +36,89 @@ site.hidden-delete = Delete {0}
 site.hidden-edit = Change {0}
 site.no = No
 site.yes = Yes
-site.continue = Continue
+site.continue = Save and continue
 site.service_name = Trusts Registration Service
 site.textarea.char_limit = (Limit is {0} characters)
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
+
+trustName.title = What is the name of the trust
+trustName.heading = What is the name of the trust?
+trustName.checkYourAnswersLabel = trustName
+trustName.error.required = Enter trustName
+trustName.error.length = TrustName must be 53 characters or less
+
+governedOutsideTheUK.title = Is the trust governed by the laws of a country outside the UK
+governedOutsideTheUK.heading = Is the trust governed by the laws of a country outside the UK?
+governedOutsideTheUK.checkYourAnswersLabel = governedOutsideTheUK
+governedOutsideTheUK.error.required = Select yes if governedOutsideTheUK
+
+countryGoverningTrust.title = What is the country governing the trust
+countryGoverningTrust.heading = What is the country governing the trust?
+countryGoverningTrust.checkYourAnswersLabel = countryGoverningTrust
+countryGoverningTrust.error.required = Enter countryGoverningTrust
+countryGoverningTrust.error.length = CountryGoverningTrust must be 100 characters or less
+
+administrationOutsideUK.title = Is the trust's general administration done outside the UK
+administrationOutsideUK.heading = Is the trust's general administration done outside the UK?
+administrationOutsideUK.checkYourAnswersLabel = administrationOutsideUK
+administrationOutsideUK.error.required = Select yes if administrationOutsideUK
+
+countryAdministeringTrust.title = What is the country administering the trust
+countryAdministeringTrust.heading = What is the country administering the trust?
+countryAdministeringTrust.checkYourAnswersLabel = countryAdministeringTrust
+countryAdministeringTrust.error.required = Enter countryAdministeringTrust
+countryAdministeringTrust.error.length = CountryAdministeringTrust must be 100 characters or less
+
+trustResidentInUK.title = Is the trust resident in the UK
+trustResidentInUK.heading = Is the trust resident in the UK?
+trustResidentInUK.checkYourAnswersLabel = trustResidentInUK
+trustResidentInUK.error.required = Select yes if trustResidentInUK
+
+establishedUnderScotsLaw.title = Is the trust established under Scots law
+establishedUnderScotsLaw.heading = Is the trust established under Scots law?
+establishedUnderScotsLaw.checkYourAnswersLabel = establishedUnderScotsLaw
+establishedUnderScotsLaw.error.required = Select yes if establishedUnderScotsLaw
+
+registeringTrustFor5A.title = Are you registering trust for the purpose of Schedule 5A Taxation of Chargeable Gains Act 1992
+registeringTrustFor5A.heading = Are you registering trust for the purpose of Schedule 5A Taxation of Chargeable Gains Act 1992?
+registeringTrustFor5A.checkYourAnswersLabel = registeringTrustFor5A
+registeringTrustFor5A.error.required = Select yes if registeringTrustFor5A
+
+trustResidentOffshore.title = Was the trust previously resident offshore
+trustResidentOffshore.heading = Was the trust previously resident offshore?
+trustResidentOffshore.checkYourAnswersLabel = trustResidentOffshore
+trustResidentOffshore.error.required = Select yes if trustResidentOffshore
+
+trustPreviouslyResident.title = Where was the trust previously resident
+trustPreviouslyResident.heading = Where was the trust previously resident?
+trustPreviouslyResident.checkYourAnswersLabel = trustPreviouslyResident
+trustPreviouslyResident.error.required = Enter trustPreviouslyResident
+trustPreviouslyResident.error.length = TrustPreviouslyResident must be 100 characters or less
+
+nonresidentType.title = What is the non-resident type
+nonresidentType.heading = What is the non-resident type
+nonresidentType.1 = Settlor domiciled trustees are non-resident
+nonresidentType.2 = Settlor non-domiciled becomes domiciled then resident
+nonresidentType.3 = Trustees cease to be resident
+nonresidentType.checkYourAnswersLabel = What is the non-resident type
+nonresidentType.error.required = Select non-residentType
+
+inheritanceTaxAct.title = Are you registering the trust for purpose of Section 218 Inheritance Tax Act 1984
+inheritanceTaxAct.heading = Are you registering the trust for purpose of Section 218 Inheritance Tax Act 1984?
+inheritanceTaxAct.checkYourAnswersLabel = inheritanceTaxAct
+inheritanceTaxAct.error.required = Select yes if inheritanceTaxAct
+
+agentOtherThanBarrister.title = Has an agent, other than a barrister, created the non-UK resident trust being registered
+agentOtherThanBarrister.heading = Has an agent, other than a barrister, created the non-UK resident trust being registered?
+agentOtherThanBarrister.checkYourAnswersLabel = agentOtherThanBarrister
+agentOtherThanBarrister.error.required = Select yes if agentOtherThanBarrister
+
+whenTrustSetup.title = WhenTrustSetup
+whenTrustSetup.heading = WhenTrustSetup
+whenTrustSetup.checkYourAnswersLabel = WhenTrustSetup
+whenTrustSetup.error.required.all = Enter the whenTrustSetup
+whenTrustSetup.error.required.two = The whenTrustSetup must include {0} and {1}
+whenTrustSetup.error.required = The whenTrustSetup must include {0}
+whenTrustSetup.error.invalid = Enter a real WhenTrustSetup

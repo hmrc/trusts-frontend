@@ -17,7 +17,6 @@
 package navigation
 
 import javax.inject.{Inject, Singleton}
-
 import play.api.mvc.Call
 import controllers.routes
 import pages._
@@ -27,8 +26,57 @@ import models._
 class Navigator @Inject()() {
 
   private val routeMap: Map[Page, UserAnswers => Call] = Map(
-
+    TrustNamePage -> (_ => routes.WhenTrustSetupController.onPageLoad(NormalMode)),
+    WhenTrustSetupPage -> (_ => routes.GovernedOutsideTheUKController.onPageLoad(NormalMode)),
+    GovernedOutsideTheUKPage -> isTrustGovernedOutsideUKRoute,
+    CountryGoverningTrustPage -> (_ => routes.AdministrationOutsideUKController.onPageLoad(NormalMode)),
+    AdministrationOutsideUKPage -> isTrustGeneralAdministrationRoute,
+    CountryAdministeringTrustPage -> (_ => routes.TrustResidentInUKController.onPageLoad(NormalMode)),
+    TrustResidentInUKPage -> isTrustResidentInUKRoute,
+    EstablishedUnderScotsLawPage -> (_ => routes.TrustResidentOffshoreController.onPageLoad(NormalMode)),
+    TrustResidentOffshorePage -> wasTrustPreviouslyResidentOffshoreRoute,
+    TrustPreviouslyResidentPage -> (_ => routes.CheckYourAnswersController.onPageLoad()),
+    RegisteringTrustFor5APage -> registeringForPurposeOfSchedule5ARoute,
+    NonResidentTypePage -> (_ => routes.CheckYourAnswersController.onPageLoad()),
+    InheritanceTaxActPage -> inheritanceTaxRoute,
+    AgentOtherThanBarristerPage -> (_ => routes.CheckYourAnswersController.onPageLoad())
   )
+
+  private def isTrustGovernedOutsideUKRoute(answers: UserAnswers) = answers.get(GovernedOutsideTheUKPage) match {
+    case Some(true)  => routes.CountryGoverningTrustController.onPageLoad(NormalMode)
+    case Some(false) => routes.AdministrationOutsideUKController.onPageLoad(NormalMode)
+    case None        => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def isTrustGeneralAdministrationRoute(answers: UserAnswers) = answers.get(AdministrationOutsideUKPage) match {
+    case Some(true)  => routes.CountryAdministeringTrustController.onPageLoad(NormalMode)
+    case Some(false) => routes.TrustResidentInUKController.onPageLoad(NormalMode)
+    case None        => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def isTrustResidentInUKRoute(answers: UserAnswers) = answers.get(TrustResidentInUKPage) match {
+    case Some(true)   => routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode)
+    case Some(false)  => routes.RegisteringTrustFor5AController.onPageLoad(NormalMode)
+    case None         => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def wasTrustPreviouslyResidentOffshoreRoute(answers: UserAnswers) = answers.get(TrustResidentOffshorePage) match {
+    case Some(true)   => routes.TrustPreviouslyResidentController.onPageLoad(NormalMode)
+    case Some(false)  => routes.CheckYourAnswersController.onPageLoad()
+    case None         => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def registeringForPurposeOfSchedule5ARoute(answers: UserAnswers) = answers.get(RegisteringTrustFor5APage) match {
+    case Some(true)   => routes.NonResidentTypeController.onPageLoad(NormalMode)
+    case Some(false)  => routes.InheritanceTaxActController.onPageLoad(NormalMode)
+    case None         => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def inheritanceTaxRoute(answers: UserAnswers) = answers.get(InheritanceTaxActPage) match {
+    case Some(true)   => routes.AgentOtherThanBarristerController.onPageLoad(NormalMode)
+    case Some(false)  => routes.CheckYourAnswersController.onPageLoad()
+    case None         => routes.SessionExpiredController.onPageLoad()
+  }
 
   private val checkRouteMap: Map[Page, UserAnswers => Call] = Map(
 

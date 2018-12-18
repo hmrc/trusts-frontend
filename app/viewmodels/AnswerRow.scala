@@ -16,4 +16,6 @@
 
 package viewmodels
 
-case class AnswerRow(label: String, answer: String, answerIsMessageKey: Boolean, changeUrl: String)
+import play.twirl.api.Html
+
+case class AnswerRow(label: String, answer: Html, changeUrl: String)
