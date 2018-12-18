@@ -77,7 +77,7 @@ POST       /agentOtherThanBarrister                        controllers.AgentOthe
 GET        /changeAgentOtherThanBarrister                  controllers.AgentOtherThanBarristerController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeAgentOtherThanBarrister                  controllers.AgentOtherThanBarristerController.onSubmit(mode: Mode = CheckMode)
 
-GET        /whenTrustSetup                  controllers.WhenTrustSetupController.onPageLoad(mode: Mode = NormalMode)
-POST       /whenTrustSetup                  controllers.WhenTrustSetupController.onSubmit(mode: Mode = NormalMode)
+GET        /Trust-Setup                  controllers.WhenTrustSetupController.onPageLoad(mode: Mode = NormalMode)
+POST       /Trust-Setup                  controllers.WhenTrustSetupController.onSubmit(mode: Mode = NormalMode)
 GET        /changeWhenTrustSetup                        controllers.WhenTrustSetupController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeWhenTrustSetup                        controllers.WhenTrustSetupController.onSubmit(mode: Mode = CheckMode)

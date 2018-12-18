@@ -18,6 +18,7 @@ package views
 
 import java.time.LocalDate
 
+import controllers.routes
 import forms.WhenTrustSetupFormProvider
 import models.{NormalMode, UserAnswers}
 import play.api.data.Form
@@ -40,7 +41,11 @@ class WhenTrustSetupViewSpec extends QuestionViewBehaviours[LocalDate] {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    val applyViewF = (form : Form[_]) => applyView(form)
+
+    behave like normalPage(applyView(form), messageKeyPrefix, s"hint")
+
+    behave like pageWithTextFields(form, applyViewF, messageKeyPrefix, routes.GovernedOutsideTheUKController.onPageLoad(NormalMode).url)
 
     behave like pageWithBackLink(applyView(form))
   }
