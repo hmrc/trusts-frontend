@@ -123,14 +123,17 @@ class ConstraintsSpec extends WordSpec with PropertyChecks with  MustMatchers wi
   }
 
   "isNotEmpty" must {
-    "return Valid for a string contating valid characters" in {
+
+    "return Valid for a string containing valid characters" in {
       val result = isNotEmpty("String of characters", "error.required")("String of characters")
       result mustEqual Valid
     }
+
     "return Invalid for an empty string" in {
       val result = isNotEmpty(" ", "error.required")(" ")
       result mustEqual Invalid("error.required", " ")
     }
+
   }
 
   "maxDate" must {
