@@ -79,10 +79,10 @@ trustResidentInUK.heading = Is the trust resident in the UK?
 trustResidentInUK.checkYourAnswersLabel = trustResidentInUK
 trustResidentInUK.error.required = Select yes if the trust is resident in the UK
 
-establishedUnderScotsLaw.title = Is the trust established under Scots law
-establishedUnderScotsLaw.heading = Is the trust established under Scots law?
+establishedUnderScotsLaw.title = Is the trust established under Scots Law?
+establishedUnderScotsLaw.heading = Is the trust established under Scots Law?
 establishedUnderScotsLaw.checkYourAnswersLabel = establishedUnderScotsLaw
-establishedUnderScotsLaw.error.required = Select yes if establishedUnderScotsLaw
+establishedUnderScotsLaw.error.required = Select yes if the trust was established under Scots Law
 
 registeringTrustFor5A.title = Are you registering trust for the purpose of Schedule 5A Taxation of Chargeable Gains Act 1992
 registeringTrustFor5A.heading = Are you registering trust for the purpose of Schedule 5A Taxation of Chargeable Gains Act 1992?
