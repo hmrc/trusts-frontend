@@ -26,6 +26,11 @@ class CountryAdministeringTrustFormProvider @Inject() extends Mappings {
   def apply(): Form[String] =
     Form(
       "value" -> text("countryAdministeringTrust.error.required")
-        .verifying(maxLength(100, "countryAdministeringTrust.error.length"))
-    )
+        .verifying(
+          firstError(
+            maxLength(100, "countryAdministeringTrust.error.length"),
+            regexp("^[A-Za-z ,.()'-]*$", "countryAdministeringTrust.error.invalidCharacters"),
+            isNotEmpty("value", "countryAdministeringTrust.error.required")
+          ))
+        )
 }
