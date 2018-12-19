@@ -44,5 +44,7 @@ class TrustPreviouslyResidentViewSpec extends StringViewBehaviours {
     behave like pageWithBackLink(applyView(form))
 
     behave like stringPage(form, applyView, messageKeyPrefix, routes.TrustPreviouslyResidentController.onSubmit(NormalMode).url)
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

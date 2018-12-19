@@ -26,6 +26,11 @@ class TrustPreviouslyResidentFormProvider @Inject() extends Mappings {
   def apply(): Form[String] =
     Form(
       "value" -> text("trustPreviouslyResident.error.required")
-        .verifying(maxLength(100, "trustPreviouslyResident.error.length"))
+        .verifying(
+          firstError(
+            maxLength(100, "trustPreviouslyResident.error.length"),
+        regexp("^[A-Za-z ,.()'-]*$", "trustPreviouslyResident.error.invalidCharacters"),
+      isNotEmpty("value", "trustPreviouslyResident.error.required")
+      ))
     )
 }
