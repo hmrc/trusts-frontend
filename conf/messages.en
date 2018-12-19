@@ -109,15 +109,15 @@ nonresidentType.3 = Trustees cease to be resident
 nonresidentType.checkYourAnswersLabel = What is the non-resident type
 nonresidentType.error.required = Select non-residentType
 
-inheritanceTaxAct.title = Are you registering the trust for purpose of Section 218 Inheritance Tax Act 1984
-inheritanceTaxAct.heading = Are you registering the trust for purpose of Section 218 Inheritance Tax Act 1984?
+inheritanceTaxAct.title = Are you registering the trust for the purpose of Section 218 Inheritance Tax Act 1984?
+inheritanceTaxAct.heading = Are you registering the trust for the purpose of Section 218 Inheritance Tax Act 1984?
 inheritanceTaxAct.checkYourAnswersLabel = inheritanceTaxAct
-inheritanceTaxAct.error.required = Select yes if inheritanceTaxAct
+inheritanceTaxAct.error.required = Select yes if you are registering the trust for the purpose of Section 218 Inheritance Tax Act 1984
 
-agentOtherThanBarrister.title = Has an agent, other than a barrister, created the non-UK resident trust being registered
-agentOtherThanBarrister.heading = Has an agent, other than a barrister, created the non-UK resident trust being registered?
+agentOtherThanBarrister.title = Has an agent who is not a barrister created the trust being registered?
+agentOtherThanBarrister.heading = Has an agent who is not a barrister created the trust being registered?
 agentOtherThanBarrister.checkYourAnswersLabel = agentOtherThanBarrister
-agentOtherThanBarrister.error.required = Select yes if agentOtherThanBarrister
+agentOtherThanBarrister.error.required = Select yes if an agent who is not a barrister created the trust being registered
 
 whenTrustSetup.title = What date was the trust deed signed?
 whenTrustSetup.heading = What date was the trust deed signed?
