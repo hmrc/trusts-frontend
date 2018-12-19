@@ -44,5 +44,7 @@ class TrustResidentInUKViewSpec extends YesNoViewBehaviours {
     behave like pageWithBackLink(applyView(form))
 
     behave like yesNoPage(form, applyView, messageKeyPrefix, routes.TrustResidentInUKController.onSubmit(NormalMode).url)
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

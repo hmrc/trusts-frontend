@@ -74,10 +74,10 @@ countryAdministeringTrust.error.required = Enter the country the trust is admini
 countryAdministeringTrust.error.length = The country that is administered in must be 100 characters or less
 countryAdministeringTrust.error.invalidCharacters = The country that governs the trust must only include letters a to z, apostrophes, commas, full stops, hyphens, round brackets and spaces
 
-trustResidentInUK.title = Is the trust resident in the UK
+trustResidentInUK.title = Is the trust resident in the UK?
 trustResidentInUK.heading = Is the trust resident in the UK?
 trustResidentInUK.checkYourAnswersLabel = trustResidentInUK
-trustResidentInUK.error.required = Select yes if trustResidentInUK
+trustResidentInUK.error.required = Select yes if the trust is resident in the UK
 
 establishedUnderScotsLaw.title = Is the trust established under Scots law
 establishedUnderScotsLaw.heading = Is the trust established under Scots law?
