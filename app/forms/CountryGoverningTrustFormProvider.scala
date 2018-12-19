@@ -28,8 +28,8 @@ class CountryGoverningTrustFormProvider @Inject() extends Mappings {
       "value" -> text("countryGoverningTrust.error.required")
         .verifying(
           firstError(
-            maxLength(53, "countryGoverningTrust.error.length"),
-            regexp("^[A-Za-z0-9 ,.()/&'-]*$", "countryGoverningTrust.error.invalidCharacters"),
+            maxLength(100, "countryGoverningTrust.error.length"),
+            regexp("^[A-Za-z ,.()'-]*$", "countryGoverningTrust.error.invalidCharacters"),
             isNotEmpty("value", "countryGoverningTrust.error.required")
       ))
     )

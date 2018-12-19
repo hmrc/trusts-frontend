@@ -50,17 +50,17 @@ trustName.error.length = The trust’s name must be 53 characters or less
 trustName.error.invalidCharacters = The trust’s name must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 trustName.error.required = Enter the trust’s name
 
-governedOutsideTheUK.title = Is the trust governed by the laws of a country outside the UK
-governedOutsideTheUK.heading = Is the trust governed by the laws of a country outside the UK?
+governedOutsideTheUK.title = Is the trust governed by UK law?
+governedOutsideTheUK.heading = Is the trust governed by UK law?
 governedOutsideTheUK.checkYourAnswersLabel = governedOutsideTheUK
-governedOutsideTheUK.error.required = Select yes if governedOutsideTheUK
+governedOutsideTheUK.error.required = Select yes if the trust is governed by UK law
 
-countryGoverningTrust.title = Is the trust governed by the laws of a country outside the UK?
-countryGoverningTrust.heading = Is the trust governed by the laws of a country outside the UK?
+countryGoverningTrust.title = What country governs the trust?
+countryGoverningTrust.heading = What country governs the trust?
 countryGoverningTrust.checkYourAnswersLabel = countryGoverningTrust
-countryGoverningTrust.error.required = Enter countryGoverningTrust
-countryGoverningTrust.error.length = CountryGoverningTrust must be 100 characters or less
-countryGoverningTrust.error.invalidCharacters = The country governing trust name must only include letters a to z.
+countryGoverningTrust.error.required = Enter the country that governs the trust
+countryGoverningTrust.error.length = The country that governs the trust must be 100 characters or less
+countryGoverningTrust.error.invalidCharacters = The country that governs the trust must only include letters a to z, apostrophes, commas, full stops, hyphens, round brackets and spaces
 
 administrationOutsideUK.title = Is the trust’s general administration done outside the UK
 administrationOutsideUK.heading = Is the trust’s general administration done outside the UK?

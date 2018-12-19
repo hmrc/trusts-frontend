@@ -44,5 +44,7 @@ class GovernedOutsideTheUKViewSpec extends YesNoViewBehaviours {
     behave like pageWithBackLink(applyView(form))
 
     behave like yesNoPage(form, applyView, messageKeyPrefix, routes.GovernedOutsideTheUKController.onSubmit(NormalMode).url)
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }
