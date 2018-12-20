@@ -43,14 +43,14 @@ class Navigator @Inject()() {
   )
 
   private def isTrustGovernedOutsideUKRoute(answers: UserAnswers) = answers.get(GovernedOutsideTheUKPage) match {
-    case Some(true)  => routes.CountryGoverningTrustController.onPageLoad(NormalMode)
-    case Some(false) => routes.AdministrationOutsideUKController.onPageLoad(NormalMode)
+    case Some(true)  => routes.AdministrationOutsideUKController.onPageLoad(NormalMode)
+    case Some(false) => routes.CountryGoverningTrustController.onPageLoad(NormalMode)
     case None        => routes.SessionExpiredController.onPageLoad()
   }
 
   private def isTrustGeneralAdministrationRoute(answers: UserAnswers) = answers.get(AdministrationOutsideUKPage) match {
-    case Some(true)  => routes.CountryAdministeringTrustController.onPageLoad(NormalMode)
-    case Some(false) => routes.TrustResidentInUKController.onPageLoad(NormalMode)
+    case Some(true)  => routes.TrustResidentInUKController.onPageLoad(NormalMode)
+    case Some(false) => routes.CountryAdministeringTrustController.onPageLoad(NormalMode)
     case None        => routes.SessionExpiredController.onPageLoad()
   }
 
