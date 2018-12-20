@@ -33,7 +33,7 @@ class WhenTrustSetupFormProvider @Inject() extends Mappings {
         requiredKey    = "whenTrustSetup.error.required"
       ).verifying(firstError(
         maxDate(LocalDate.now, s"whenTrustSetup.error.future", "day", "month", "year"),
-        minDate(LocalDate.of(1499,12,31), s"whenTrustSetup.error.past", "day", "month", "year")
+        minDate(LocalDate.of(1500,1,1), s"whenTrustSetup.error.past", "day", "month", "year")
       ))
 
     )

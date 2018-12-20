@@ -25,7 +25,7 @@ class WhenTrustSetupFormProviderSpec extends DateBehaviours {
 
   val form = new WhenTrustSetupFormProvider()()
 
-  private val min = LocalDate.of(1499, 12, 31)
+  private val min = LocalDate.of(1500, 1, 1)
   private val max = LocalDate.now(ZoneOffset.UTC)
 
   "whenTrustSetUp.value" should {
