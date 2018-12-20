@@ -62,10 +62,10 @@ countryGoverningTrust.error.required = Enter the country that governs the trust
 countryGoverningTrust.error.length = The country that governs the trust must be 100 characters or less
 countryGoverningTrust.error.invalidCharacters = The country that governs the trust must only include letters a to z, apostrophes, commas, full stops, hyphens, round brackets and spaces
 
-administrationOutsideUK.title = Is the trust's general administration done in UK?
-administrationOutsideUK.heading = Is the trust's general administration done in UK?
+administrationOutsideUK.title = Is the trust’s general administration done in the UK?
+administrationOutsideUK.heading = Is the trust’s general administration done in the UK?
 administrationOutsideUK.checkYourAnswersLabel = administrationOutsideUK
-administrationOutsideUK.error.required = Select yes if the trust's administration is done in the UK
+administrationOutsideUK.error.required = Select yes if the trust’s general administration is done in the UK
 
 countryAdministeringTrust.title = In what country is the trust administered?
 countryAdministeringTrust.heading = In what country is the trust administered?
