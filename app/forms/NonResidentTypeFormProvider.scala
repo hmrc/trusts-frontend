@@ -26,6 +26,6 @@ class NonResidentTypeFormProvider @Inject() extends Mappings {
 
   def apply(): Form[NonResidentType] =
     Form(
-      "value" -> enumerable[NonResidentType]("non-residentType.error.required")
+      "value" -> enumerable[NonResidentType]("nonresidentType.error.required")
     )
 }

@@ -27,7 +27,7 @@ class NonResidentTypeFormProviderSpec extends OptionFieldBehaviours {
   ".value" must {
 
     val fieldName = "value"
-    val requiredKey = "non-residentType.error.required"
+    val requiredKey = "nonresidentType.error.required"
 
     behave like optionsField[NonResidentType](
       form,

@@ -43,82 +43,89 @@ site.textarea.char_limit = (Limit is {0} characters)
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 
-trustName.title = What is the name of the trust
-trustName.heading = What is the name of the trust?
+trustName.title = What is the trust’s name?
+trustName.heading = What is the trust’s name?
 trustName.checkYourAnswersLabel = trustName
-trustName.error.required = Enter trustName
-trustName.error.length = TrustName must be 53 characters or less
+trustName.error.length = The trust’s name must be 53 characters or less
+trustName.error.invalidCharacters = The trust’s name must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+trustName.error.required = Enter the trust’s name
 
-governedOutsideTheUK.title = Is the trust governed by the laws of a country outside the UK
-governedOutsideTheUK.heading = Is the trust governed by the laws of a country outside the UK?
+governedOutsideTheUK.title = Is the trust governed by UK law?
+governedOutsideTheUK.heading = Is the trust governed by UK law?
 governedOutsideTheUK.checkYourAnswersLabel = governedOutsideTheUK
-governedOutsideTheUK.error.required = Select yes if governedOutsideTheUK
+governedOutsideTheUK.error.required = Select yes if the trust is governed by UK law
 
-countryGoverningTrust.title = What is the country governing the trust
-countryGoverningTrust.heading = What is the country governing the trust?
+countryGoverningTrust.title = What country governs the trust?
+countryGoverningTrust.heading = What country governs the trust?
 countryGoverningTrust.checkYourAnswersLabel = countryGoverningTrust
-countryGoverningTrust.error.required = Enter countryGoverningTrust
-countryGoverningTrust.error.length = CountryGoverningTrust must be 100 characters or less
+countryGoverningTrust.error.required = Enter the country that governs the trust
+countryGoverningTrust.error.length = The country that governs the trust must be 100 characters or less
+countryGoverningTrust.error.invalidCharacters = The country that governs the trust must only include letters a to z, apostrophes, commas, full stops, hyphens, round brackets and spaces
 
-administrationOutsideUK.title = Is the trust's general administration done outside the UK
-administrationOutsideUK.heading = Is the trust's general administration done outside the UK?
+administrationOutsideUK.title = Is the trust’s general administration done in the UK?
+administrationOutsideUK.heading = Is the trust’s general administration done in the UK?
 administrationOutsideUK.checkYourAnswersLabel = administrationOutsideUK
-administrationOutsideUK.error.required = Select yes if administrationOutsideUK
+administrationOutsideUK.error.required = Select yes if the trust’s general administration is done in the UK
 
-countryAdministeringTrust.title = What is the country administering the trust
-countryAdministeringTrust.heading = What is the country administering the trust?
+countryAdministeringTrust.title = In what country is the trust administered?
+countryAdministeringTrust.heading = In what country is the trust administered?
 countryAdministeringTrust.checkYourAnswersLabel = countryAdministeringTrust
-countryAdministeringTrust.error.required = Enter countryAdministeringTrust
-countryAdministeringTrust.error.length = CountryAdministeringTrust must be 100 characters or less
+countryAdministeringTrust.error.required = Enter the country the trust is administered in
+countryAdministeringTrust.error.length = The country that is administered in must be 100 characters or less
+countryAdministeringTrust.error.invalidCharacters = The country that governs the trust must only include letters a to z, apostrophes, commas, full stops, hyphens, round brackets and spaces
 
-trustResidentInUK.title = Is the trust resident in the UK
+trustResidentInUK.title = Is the trust resident in the UK?
 trustResidentInUK.heading = Is the trust resident in the UK?
 trustResidentInUK.checkYourAnswersLabel = trustResidentInUK
-trustResidentInUK.error.required = Select yes if trustResidentInUK
+trustResidentInUK.error.required = Select yes if the trust is resident in the UK
 
-establishedUnderScotsLaw.title = Is the trust established under Scots law
-establishedUnderScotsLaw.heading = Is the trust established under Scots law?
+establishedUnderScotsLaw.title = Is the trust established under Scots Law?
+establishedUnderScotsLaw.heading = Is the trust established under Scots Law?
 establishedUnderScotsLaw.checkYourAnswersLabel = establishedUnderScotsLaw
-establishedUnderScotsLaw.error.required = Select yes if establishedUnderScotsLaw
+establishedUnderScotsLaw.error.required = Select yes if the trust was established under Scots Law
 
-registeringTrustFor5A.title = Are you registering trust for the purpose of Schedule 5A Taxation of Chargeable Gains Act 1992
-registeringTrustFor5A.heading = Are you registering trust for the purpose of Schedule 5A Taxation of Chargeable Gains Act 1992?
+registeringTrustFor5A.title = Are you registering the trust for the purposes of Schedule 5A Taxation of Chargeable Gains Act 1992?
+registeringTrustFor5A.heading = Are you registering the trust for the purposes of Schedule 5A Taxation of Chargeable Gains Act 1992?
 registeringTrustFor5A.checkYourAnswersLabel = registeringTrustFor5A
-registeringTrustFor5A.error.required = Select yes if registeringTrustFor5A
+registeringTrustFor5A.error.required = Select yes if you are registering the trust for the purposes of Schedule 5A Taxation of Chargeable Gains Act 1992?
 
-trustResidentOffshore.title = Was the trust previously resident offshore
-trustResidentOffshore.heading = Was the trust previously resident offshore?
+trustResidentOffshore.title = Has the trust ever been resident offshore?
+trustResidentOffshore.heading = Has the trust ever been resident offshore?
 trustResidentOffshore.checkYourAnswersLabel = trustResidentOffshore
-trustResidentOffshore.error.required = Select yes if trustResidentOffshore
+trustResidentOffshore.error.required = Select yes if the trust has ever been resident offshore
 
-trustPreviouslyResident.title = Where was the trust previously resident
-trustPreviouslyResident.heading = Where was the trust previously resident?
+trustPreviouslyResident.title = In what country was the trust previously resident?
+trustPreviouslyResident.heading = In what country was the trust previously resident?
 trustPreviouslyResident.checkYourAnswersLabel = trustPreviouslyResident
-trustPreviouslyResident.error.required = Enter trustPreviouslyResident
-trustPreviouslyResident.error.length = TrustPreviouslyResident must be 100 characters or less
+trustPreviouslyResident.error.required = Enter the country the trust was previously resident in
+trustPreviouslyResident.error.length = The country the trust was previously resident in must be 100 characters or less
+trustPreviouslyResident.error.invalidCharacters = The country that governs the trust must only include letters a to z, apostrophes, commas, full stops, hyphens, round brackets and spaces
 
-nonresidentType.title = What is the non-resident type
-nonresidentType.heading = What is the non-resident type
-nonresidentType.1 = Settlor domiciled trustees are non-resident
-nonresidentType.2 = Settlor non-domiciled becomes domiciled then resident
-nonresidentType.3 = Trustees cease to be resident
+nonresidentType.title = What is the non-resident type?
+nonresidentType.heading = What is the non-resident type?
+nonresidentType.resident = Settlor domiciled trustees are non-resident
+nonresidentType.nonresident = Settlor non-domiciled becomes domiciled then resident
+nonresidentType.ceaseresident = Trustees cease to be resident
 nonresidentType.checkYourAnswersLabel = What is the non-resident type
-nonresidentType.error.required = Select non-residentType
+nonresidentType.error.required = Select the non-resident type
 
-inheritanceTaxAct.title = Are you registering the trust for purpose of Section 218 Inheritance Tax Act 1984
-inheritanceTaxAct.heading = Are you registering the trust for purpose of Section 218 Inheritance Tax Act 1984?
+inheritanceTaxAct.title = Are you registering the trust for the purpose of Section 218 Inheritance Tax Act 1984?
+inheritanceTaxAct.heading = Are you registering the trust for the purpose of Section 218 Inheritance Tax Act 1984?
 inheritanceTaxAct.checkYourAnswersLabel = inheritanceTaxAct
-inheritanceTaxAct.error.required = Select yes if inheritanceTaxAct
+inheritanceTaxAct.error.required = Select yes if you are registering the trust for the purpose of Section 218 Inheritance Tax Act 1984
 
-agentOtherThanBarrister.title = Has an agent, other than a barrister, created the non-UK resident trust being registered
-agentOtherThanBarrister.heading = Has an agent, other than a barrister, created the non-UK resident trust being registered?
+agentOtherThanBarrister.title = Has an agent who is not a barrister created the trust being registered?
+agentOtherThanBarrister.heading = Has an agent who is not a barrister created the trust being registered?
 agentOtherThanBarrister.checkYourAnswersLabel = agentOtherThanBarrister
-agentOtherThanBarrister.error.required = Select yes if agentOtherThanBarrister
+agentOtherThanBarrister.error.required = Select yes if an agent who is not a barrister created the trust being registered
 
-whenTrustSetup.title = WhenTrustSetup
-whenTrustSetup.heading = WhenTrustSetup
+whenTrustSetup.title = What date was the trust deed signed?
+whenTrustSetup.heading = What date was the trust deed signed?
 whenTrustSetup.checkYourAnswersLabel = WhenTrustSetup
-whenTrustSetup.error.required.all = Enter the whenTrustSetup
-whenTrustSetup.error.required.two = The whenTrustSetup must include {0} and {1}
-whenTrustSetup.error.required = The whenTrustSetup must include {0}
-whenTrustSetup.error.invalid = Enter a real WhenTrustSetup
+whenTrustSetup.error.required.all = Enter the date the trust deed was signed
+whenTrustSetup.error.required.two = The date the trust deed was signed must include a day, a month and a year (whatever is missing)
+whenTrustSetup.error.required = The date the trust deed was signed must include a day, a month and a year (whatever is missing)
+whenTrustSetup.error.invalid = Enter a real date the trust deed was signed
+whenTrustSetup.error.future = The date the trust deed was signed must be today or in the past
+whenTrustSetup.error.past = The date the trust deed was signed must be after 31 December 1499
+whenTrustSetup.hint = For example, 31 3 1980

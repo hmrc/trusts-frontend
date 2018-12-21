@@ -24,6 +24,8 @@ class CountryGoverningTrustFormProviderSpec extends StringFieldBehaviours {
   val requiredKey = "countryGoverningTrust.error.required"
   val lengthKey = "countryGoverningTrust.error.length"
   val maxLength = 100
+  val regexp = "^[A-Za-z ,.()'-]*$"
+  val invalidKey = "countryGoverningTrust.error.invalidCharacters"
 
   val form = new CountryGoverningTrustFormProvider()()
 
@@ -48,6 +50,14 @@ class CountryGoverningTrustFormProviderSpec extends StringFieldBehaviours {
       form,
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
+    )
+
+    behave like fieldWithRegexpWithGenerator(
+      form,
+      fieldName,
+      regexp = regexp,
+      generator = stringsWithMaxLength(maxLength),
+      error = FormError(fieldName, invalidKey, Seq(regexp))
     )
   }
 }
