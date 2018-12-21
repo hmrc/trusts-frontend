@@ -16,21 +16,8 @@
 
 package forms
 
-import javax.inject.Inject
+object Validation {
 
-import forms.mappings.Mappings
-import play.api.data.Form
+  val countryRegex = "^[A-Za-z ,.()'-]*$"
 
-class CountryAdministeringTrustFormProvider @Inject() extends Mappings {
-
-  def apply(): Form[String] =
-    Form(
-      "value" -> text("countryAdministeringTrust.error.required")
-        .verifying(
-          firstError(
-            maxLength(100, "countryAdministeringTrust.error.length"),
-            regexp(Validation.countryRegex, "countryAdministeringTrust.error.invalidCharacters"),
-            isNotEmpty("value", "countryAdministeringTrust.error.required")
-          ))
-        )
 }
