@@ -28,7 +28,7 @@ class Navigator @Inject()() {
   private val routeMap: Map[Page, UserAnswers => Call] = Map(
     TrustNamePage -> (_ => routes.WhenTrustSetupController.onPageLoad(NormalMode)),
     WhenTrustSetupPage -> (_ => routes.GovernedInsideTheUKController.onPageLoad(NormalMode)),
-    GovernedInsideTheUKPage -> isTrustGovernedOutsideUKRoute,
+    GovernedInsideTheUKPage -> isTrustGovernedInsideUKRoute,
     CountryGoverningTrustPage -> (_ => routes.AdministrationOutsideUKController.onPageLoad(NormalMode)),
     AdministrationOutsideUKPage -> isTrustGeneralAdministrationRoute,
     CountryAdministeringTrustPage -> (_ => routes.TrustResidentInUKController.onPageLoad(NormalMode)),
@@ -42,7 +42,7 @@ class Navigator @Inject()() {
     AgentOtherThanBarristerPage -> (_ => routes.CheckYourAnswersController.onPageLoad())
   )
 
-  private def isTrustGovernedOutsideUKRoute(answers: UserAnswers) = answers.get(GovernedInsideTheUKPage) match {
+  private def isTrustGovernedInsideUKRoute(answers: UserAnswers) = answers.get(GovernedInsideTheUKPage) match {
     case Some(true)  => routes.AdministrationOutsideUKController.onPageLoad(NormalMode)
     case Some(false) => routes.CountryGoverningTrustController.onPageLoad(NormalMode)
     case None        => routes.SessionExpiredController.onPageLoad()
