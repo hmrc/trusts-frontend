@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,24 +17,24 @@
 package views
 
 import controllers.routes
-import forms.AdministrationOutsideUKFormProvider
+import forms.AdministrationInsideUKFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.AdministrationOutsideUKView
+import views.html.AdministrationInsideUKView
 
-class AdministrationOutsideUKViewSpec extends YesNoViewBehaviours {
+class AdministrationInsideUKViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "administrationOutsideUK"
+  val messageKeyPrefix = "administrationInsideUK"
 
-  val form = new AdministrationOutsideUKFormProvider()()
+  val form = new AdministrationInsideUKFormProvider()()
 
-  "AdministrationOutsideUK view" must {
+  "AdministrationInsideUK view" must {
 
     val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-    val view = application.injector.instanceOf[AdministrationOutsideUKView]
+    val view = application.injector.instanceOf[AdministrationInsideUKView]
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode)(fakeRequest, messages)
@@ -43,7 +43,7 @@ class AdministrationOutsideUKViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.AdministrationOutsideUKController.onSubmit(NormalMode).url)
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.AdministrationInsideUKController.onSubmit(NormalMode).url)
 
     behave like pageWithASubmitButton(applyView(form))
   }

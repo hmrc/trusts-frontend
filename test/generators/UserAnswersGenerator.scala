@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,9 +37,9 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(EstablishedUnderScotsLawPage.type, JsValue)] ::
     arbitrary[(TrustResidentInUKPage.type, JsValue)] ::
     arbitrary[(CountryAdministeringTrustPage.type, JsValue)] ::
-    arbitrary[(AdministrationOutsideUKPage.type, JsValue)] ::
+    arbitrary[(AdministrationInsideUKPage.type, JsValue)] ::
     arbitrary[(CountryGoverningTrustPage.type, JsValue)] ::
-    arbitrary[(GovernedOutsideTheUKPage.type, JsValue)] ::
+    arbitrary[(GovernedInsideTheUKPage.type, JsValue)] ::
     arbitrary[(TrustNamePage.type, JsValue)] ::
     Nil
 

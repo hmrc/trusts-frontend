@@ -50,10 +50,10 @@ trustName.error.length = The trust’s name must be 53 characters or less
 trustName.error.invalidCharacters = The trust’s name must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 trustName.error.required = Enter the trust’s name
 
-governedOutsideTheUK.title = Is the trust governed by UK law?
-governedOutsideTheUK.heading = Is the trust governed by UK law?
-governedOutsideTheUK.checkYourAnswersLabel = governedOutsideTheUK
-governedOutsideTheUK.error.required = Select yes if the trust is governed by UK law
+governedInsideTheUK.title = Is the trust governed by UK law?
+governedInsideTheUK.heading = Is the trust governed by UK law?
+governedInsideTheUK.checkYourAnswersLabel = governedInsideTheUK
+governedInsideTheUK.error.required = Select yes if the trust is governed by UK law
 
 countryGoverningTrust.title = What country governs the trust?
 countryGoverningTrust.heading = What country governs the trust?
@@ -62,10 +62,10 @@ countryGoverningTrust.error.required = Enter the country that governs the trust
 countryGoverningTrust.error.length = The country that governs the trust must be 100 characters or less
 countryGoverningTrust.error.invalidCharacters = The country that governs the trust must only include letters a to z, apostrophes, commas, full stops, hyphens, round brackets and spaces
 
-administrationOutsideUK.title = Is the trust’s general administration done in the UK?
-administrationOutsideUK.heading = Is the trust’s general administration done in the UK?
-administrationOutsideUK.checkYourAnswersLabel = administrationOutsideUK
-administrationOutsideUK.error.required = Select yes if the trust’s general administration is done in the UK
+administrationInsideUK.title = Is the trust’s general administration done in the UK?
+administrationInsideUK.heading = Is the trust’s general administration done in the UK?
+administrationInsideUK.checkYourAnswersLabel = administrationInsideUK
+administrationInsideUK.error.required = Select yes if the trust’s general administration is done in the UK
 
 countryAdministeringTrust.title = In what country is the trust administered?
 countryAdministeringTrust.heading = In what country is the trust administered?

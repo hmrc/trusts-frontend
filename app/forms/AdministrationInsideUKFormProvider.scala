@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import pages.behaviours.PageBehaviours
+import javax.inject.Inject
 
-class GovernedOutsideTheUKPageSpec extends PageBehaviours {
+import forms.mappings.Mappings
+import play.api.data.Form
 
-  "GovernedOutsideTheUKPage" must {
+class AdministrationInsideUKFormProvider @Inject() extends Mappings {
 
-    beRetrievable[Boolean](GovernedOutsideTheUKPage)
-
-    beSettable[Boolean](GovernedOutsideTheUKPage)
-
-    beRemovable[Boolean](GovernedOutsideTheUKPage)
-  }
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("administrationInsideUK.error.required")
+    )
 }

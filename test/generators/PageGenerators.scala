@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,14 +51,14 @@ trait PageGenerators {
   implicit lazy val arbitraryCountryAdministeringTrustPage: Arbitrary[CountryAdministeringTrustPage.type] =
     Arbitrary(CountryAdministeringTrustPage)
 
-  implicit lazy val arbitraryAdministrationOutsideUKPage: Arbitrary[AdministrationOutsideUKPage.type] =
-    Arbitrary(AdministrationOutsideUKPage)
+  implicit lazy val arbitraryAdministrationInsideUKPage: Arbitrary[AdministrationInsideUKPage.type] =
+    Arbitrary(AdministrationInsideUKPage)
 
   implicit lazy val arbitraryCountryGoverningTrustPage: Arbitrary[CountryGoverningTrustPage.type] =
     Arbitrary(CountryGoverningTrustPage)
 
-  implicit lazy val arbitraryGovernedOutsideTheUKPage: Arbitrary[GovernedOutsideTheUKPage.type] =
-    Arbitrary(GovernedOutsideTheUKPage)
+  implicit lazy val arbitraryGovernedInsideTheUKPage: Arbitrary[GovernedInsideTheUKPage.type] =
+    Arbitrary(GovernedInsideTheUKPage)
 
   implicit lazy val arbitraryTrustNamePage: Arbitrary[TrustNamePage.type] =
     Arbitrary(TrustNamePage)

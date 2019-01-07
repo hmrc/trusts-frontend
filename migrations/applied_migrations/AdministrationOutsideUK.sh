@@ -23,10 +23,10 @@ echo "Adding to UserAnswersEntryGenerators"
 awk '/trait UserAnswersEntryGenerators/ {\
     print;\
     print "";\
-    print "  implicit lazy val arbitraryAdministrationOutsideUKUserAnswersEntry: Arbitrary[(AdministrationOutsideUKPage.type, JsValue)] =";\
+    print "  implicit lazy val arbitraryAdministrationOutsideUKUserAnswersEntry: Arbitrary[(AdministrationInsideUKPage.type, JsValue)] =";\
     print "    Arbitrary {";\
     print "      for {";\
-    print "        page  <- arbitrary[AdministrationOutsideUKPage.type]";\
+    print "        page  <- arbitrary[AdministrationInsideUKPage.type]";\
     print "        value <- arbitrary[Boolean].map(Json.toJson(_))";\
     print "      } yield (page, value)";\
     print "    }";\
@@ -36,21 +36,21 @@ echo "Adding to PageGenerators"
 awk '/trait PageGenerators/ {\
     print;\
     print "";\
-    print "  implicit lazy val arbitraryAdministrationOutsideUKPage: Arbitrary[AdministrationOutsideUKPage.type] =";\
-    print "    Arbitrary(AdministrationOutsideUKPage)";\
+    print "  implicit lazy val arbitraryAdministrationInsideUKPage: Arbitrary[AdministrationInsideUKPage.type] =";\
+    print "    Arbitrary(AdministrationInsideUKPage)";\
     next }1' ../test/generators/PageGenerators.scala > tmp && mv tmp ../test/generators/PageGenerators.scala
 
 echo "Adding to UserAnswersGenerator"
 awk '/val generators/ {\
     print;\
-    print "    arbitrary[(AdministrationOutsideUKPage.type, JsValue)] ::";\
+    print "    arbitrary[(AdministrationInsideUKPage.type, JsValue)] ::";\
     next }1' ../test/generators/UserAnswersGenerator.scala > tmp && mv tmp ../test/generators/UserAnswersGenerator.scala
 
 echo "Adding helper method to CheckYourAnswersHelper"
 awk '/class/ {\
      print;\
      print "";\
-     print "  def administrationOutsideUK: Option[AnswerRow] = userAnswers.get(AdministrationOutsideUKPage) map {";\
+     print "  def administrationOutsideUK: Option[AnswerRow] = userAnswers.get(AdministrationInsideUKPage) map {";\
      print "    x => AnswerRow(\"administrationOutsideUK.checkYourAnswersLabel\", if(x) \"site.yes\" else \"site.no\", true, routes.AdministrationOutsideUKController.onPageLoad(CheckMode).url)"; print "  }";\
      next }1' ../app/utils/CheckYourAnswersHelper.scala > tmp && mv tmp ../app/utils/CheckYourAnswersHelper.scala
 

@@ -73,16 +73,16 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x => AnswerRow("countryAdministeringTrust.checkYourAnswersLabel", escape(x), routes.CountryAdministeringTrustController.onPageLoad(CheckMode).url)
   }
 
-  def administrationOutsideUK: Option[AnswerRow] = userAnswers.get(AdministrationOutsideUKPage) map {
-    x => AnswerRow("administrationOutsideUK.checkYourAnswersLabel", yesOrNo(x), routes.AdministrationOutsideUKController.onPageLoad(CheckMode).url)
+  def administrationInsideUK: Option[AnswerRow] = userAnswers.get(AdministrationInsideUKPage) map {
+    x => AnswerRow("administrationInsideUK.checkYourAnswersLabel", yesOrNo(x), routes.AdministrationInsideUKController.onPageLoad(CheckMode).url)
   }
 
   def countryGoverningTrust: Option[AnswerRow] = userAnswers.get(CountryGoverningTrustPage) map {
     x => AnswerRow("countryGoverningTrust.checkYourAnswersLabel", escape(x), routes.CountryGoverningTrustController.onPageLoad(CheckMode).url)
   }
 
-  def governedOutsideTheUK: Option[AnswerRow] = userAnswers.get(GovernedOutsideTheUKPage) map {
-    x => AnswerRow("governedOutsideTheUK.checkYourAnswersLabel", yesOrNo(x), routes.GovernedOutsideTheUKController.onPageLoad(CheckMode).url)
+  def governedInsideTheUK: Option[AnswerRow] = userAnswers.get(GovernedInsideTheUKPage) map {
+    x => AnswerRow("governedInsideTheUK.checkYourAnswersLabel", yesOrNo(x), routes.GovernedInsideTheUKController.onPageLoad(CheckMode).url)
   }
 
   def trustName: Option[AnswerRow] = userAnswers.get(TrustNamePage) map {

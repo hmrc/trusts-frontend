@@ -16,11 +16,16 @@
 
 package pages
 
-import play.api.libs.json.JsPath
+import pages.behaviours.PageBehaviours
 
-case object AdministrationOutsideUKPage extends QuestionPage[Boolean] {
+class AdministrationInsideUKPageSpec extends PageBehaviours {
 
-  override def path: JsPath = JsPath \ toString
+  "AdministrationInsideUKPage" must {
 
-  override def toString: String = "administrationOutsideUK"
+    beRetrievable[Boolean](AdministrationInsideUKPage)
+
+    beSettable[Boolean](AdministrationInsideUKPage)
+
+    beRemovable[Boolean](AdministrationInsideUKPage)
+  }
 }

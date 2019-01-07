@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ class WhenTrustSetupViewSpec extends QuestionViewBehaviours[LocalDate] {
 
     behave like normalPage(applyView(form), messageKeyPrefix, s"hint")
 
-    behave like pageWithTextFields(form, applyViewF, messageKeyPrefix, routes.GovernedOutsideTheUKController.onPageLoad(NormalMode).url)
+    behave like pageWithTextFields(form, applyViewF, messageKeyPrefix, routes.GovernedInsideTheUKController.onPageLoad(NormalMode).url)
 
     behave like pageWithBackLink(applyView(form))
 

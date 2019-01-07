@@ -17,20 +17,20 @@ POST       /trust-name                        controllers.TrustNameController.on
 GET        /change-trust-name                  controllers.TrustNameController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-trust-name                  controllers.TrustNameController.onSubmit(mode: Mode = CheckMode)
 
-GET        /trust-governed-country                       controllers.GovernedOutsideTheUKController.onPageLoad(mode: Mode = NormalMode)
-POST       /trust-governed-country                          controllers.GovernedOutsideTheUKController.onSubmit(mode: Mode = NormalMode)
-GET        /change-trust-governed-country                    controllers.GovernedOutsideTheUKController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-trust-governed-country                    controllers.GovernedOutsideTheUKController.onSubmit(mode: Mode = CheckMode)
+GET        /trust-governed-country                       controllers.GovernedInsideTheUKController.onPageLoad(mode: Mode = NormalMode)
+POST       /trust-governed-country                          controllers.GovernedInsideTheUKController.onSubmit(mode: Mode = NormalMode)
+GET        /change-trust-governed-country                    controllers.GovernedInsideTheUKController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-trust-governed-country                    controllers.GovernedInsideTheUKController.onSubmit(mode: Mode = CheckMode)
 
 GET        /trust-governed-country-details                       controllers.CountryGoverningTrustController.onPageLoad(mode: Mode = NormalMode)
 POST       /trust-governed-country-details                         controllers.CountryGoverningTrustController.onSubmit(mode: Mode = NormalMode)
 GET        /change-trust-governed-country-details                 controllers.CountryGoverningTrustController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-trust-governed-country-details               controllers.CountryGoverningTrustController.onSubmit(mode: Mode = CheckMode)
 
-GET        /trust-administration                       controllers.AdministrationOutsideUKController.onPageLoad(mode: Mode = NormalMode)
-POST       /trust-administration                       controllers.AdministrationOutsideUKController.onSubmit(mode: Mode = NormalMode)
-GET        /change-trust-administration                  controllers.AdministrationOutsideUKController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-trust-administration                 controllers.AdministrationOutsideUKController.onSubmit(mode: Mode = CheckMode)
+GET        /trust-administration                       controllers.AdministrationInsideUKController.onPageLoad(mode: Mode = NormalMode)
+POST       /trust-administration                       controllers.AdministrationInsideUKController.onSubmit(mode: Mode = NormalMode)
+GET        /change-trust-administration                  controllers.AdministrationInsideUKController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-trust-administration                 controllers.AdministrationInsideUKController.onSubmit(mode: Mode = CheckMode)
 
 GET        /trust-administration-country                       controllers.CountryAdministeringTrustController.onPageLoad(mode: Mode = NormalMode)
 POST       /trust-administration-country                          controllers.CountryAdministeringTrustController.onSubmit(mode: Mode = NormalMode)

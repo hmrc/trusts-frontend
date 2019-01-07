@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,12 @@ package forms
 import forms.behaviours.BooleanFieldBehaviours
 import play.api.data.FormError
 
-class GovernedOutsideTheUKFormProviderSpec extends BooleanFieldBehaviours {
+class GovernedInsideTheUKFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "governedOutsideTheUK.error.required"
+  val requiredKey = "governedInsideTheUK.error.required"
   val invalidKey = "error.boolean"
 
-  val form = new GovernedOutsideTheUKFormProvider()()
+  val form = new GovernedInsideTheUKFormProvider()()
 
   ".value" must {
 
