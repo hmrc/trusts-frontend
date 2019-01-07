@@ -57,14 +57,14 @@ class NavigatorSpec extends SpecBase with PropertyChecks with Generators{
         }
       }
 
-      "go to is Trust Administration Done Outside UK from Is Trust Governed By Laws Inside The UK when the user answers Yes" in {
+      "go to is Trust Administration Done Inside UK from Is Trust Governed By Laws Inside The UK when the user answers Yes" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
             val answers = userAnswers.set(GovernedInsideTheUKPage, value = true).success.value
 
             navigator.nextPage(GovernedInsideTheUKPage, NormalMode)(answers)
-              .mustBe(routes.AdministrationOutsideUKController.onPageLoad(NormalMode))
+              .mustBe(routes.AdministrationInsideUKController.onPageLoad(NormalMode))
         }
       }
 
@@ -79,33 +79,33 @@ class NavigatorSpec extends SpecBase with PropertyChecks with Generators{
         }
       }
 
-      "go to Is Trust Administration Done Outside UK from What is Country Governing The Trust" in {
+      "go to Is Trust Administration Done Inside UK from What is Country Governing The Trust" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
             navigator.nextPage(CountryGoverningTrustPage, NormalMode)(userAnswers)
-              .mustBe(routes.AdministrationOutsideUKController.onPageLoad(NormalMode))
+              .mustBe(routes.AdministrationInsideUKController.onPageLoad(NormalMode))
         }
       }
 
-      "go to What Is Country Administering from Is Trust Administration Done Outside UK when user answers No" in {
+      "go to What Is Country Administering from Is Trust Administration Done Inside UK when user answers No" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
-            val answers = userAnswers.set(AdministrationOutsideUKPage, value = false).success.value
+            val answers = userAnswers.set(AdministrationInsideUKPage, value = false).success.value
 
-            navigator.nextPage(AdministrationOutsideUKPage, NormalMode)(answers)
+            navigator.nextPage(AdministrationInsideUKPage, NormalMode)(answers)
               .mustBe(routes.CountryAdministeringTrustController.onPageLoad(NormalMode))
         }
       }
 
-      "go to Is Trust Resident from Is Trust Administration Done Outside UK when user answers Yes" in {
+      "go to Is Trust Resident from Is Trust Administration Done Inside UK when user answers Yes" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
-            val answers = userAnswers.set(AdministrationOutsideUKPage, value = true).success.value
+            val answers = userAnswers.set(AdministrationInsideUKPage, value = true).success.value
 
-            navigator.nextPage(AdministrationOutsideUKPage, NormalMode)(answers)
+            navigator.nextPage(AdministrationInsideUKPage, NormalMode)(answers)
               .mustBe(routes.TrustResidentInUKController.onPageLoad(NormalMode))
         }
       }

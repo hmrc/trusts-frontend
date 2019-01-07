@@ -37,7 +37,7 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(EstablishedUnderScotsLawPage.type, JsValue)] ::
     arbitrary[(TrustResidentInUKPage.type, JsValue)] ::
     arbitrary[(CountryAdministeringTrustPage.type, JsValue)] ::
-    arbitrary[(AdministrationOutsideUKPage.type, JsValue)] ::
+    arbitrary[(AdministrationInsideUKPage.type, JsValue)] ::
     arbitrary[(CountryGoverningTrustPage.type, JsValue)] ::
     arbitrary[(GovernedInsideTheUKPage.type, JsValue)] ::
     arbitrary[(TrustNamePage.type, JsValue)] ::

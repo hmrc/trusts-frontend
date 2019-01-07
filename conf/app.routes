@@ -27,10 +27,10 @@ POST       /trust-governed-country-details                         controllers.C
 GET        /change-trust-governed-country-details                 controllers.CountryGoverningTrustController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-trust-governed-country-details               controllers.CountryGoverningTrustController.onSubmit(mode: Mode = CheckMode)
 
-GET        /trust-administration                       controllers.AdministrationOutsideUKController.onPageLoad(mode: Mode = NormalMode)
-POST       /trust-administration                       controllers.AdministrationOutsideUKController.onSubmit(mode: Mode = NormalMode)
-GET        /change-trust-administration                  controllers.AdministrationOutsideUKController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-trust-administration                 controllers.AdministrationOutsideUKController.onSubmit(mode: Mode = CheckMode)
+GET        /trust-administration                       controllers.AdministrationInsideUKController.onPageLoad(mode: Mode = NormalMode)
+POST       /trust-administration                       controllers.AdministrationInsideUKController.onSubmit(mode: Mode = NormalMode)
+GET        /change-trust-administration                  controllers.AdministrationInsideUKController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-trust-administration                 controllers.AdministrationInsideUKController.onSubmit(mode: Mode = CheckMode)
 
 GET        /trust-administration-country                       controllers.CountryAdministeringTrustController.onPageLoad(mode: Mode = NormalMode)
 POST       /trust-administration-country                          controllers.CountryAdministeringTrustController.onSubmit(mode: Mode = NormalMode)

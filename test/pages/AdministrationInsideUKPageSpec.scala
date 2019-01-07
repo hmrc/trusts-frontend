@@ -18,14 +18,14 @@ package pages
 
 import pages.behaviours.PageBehaviours
 
-class AdministrationOutsideUKPageSpec extends PageBehaviours {
+class AdministrationInsideUKPageSpec extends PageBehaviours {
 
-  "AdministrationOutsideUKPage" must {
+  "AdministrationInsideUKPage" must {
 
-    beRetrievable[Boolean](AdministrationOutsideUKPage)
+    beRetrievable[Boolean](AdministrationInsideUKPage)
 
-    beSettable[Boolean](AdministrationOutsideUKPage)
+    beSettable[Boolean](AdministrationInsideUKPage)
 
-    beRemovable[Boolean](AdministrationOutsideUKPage)
+    beRemovable[Boolean](AdministrationInsideUKPage)
   }
 }
