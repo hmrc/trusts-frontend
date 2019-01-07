@@ -82,7 +82,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   }
 
   def governedInsideTheUK: Option[AnswerRow] = userAnswers.get(GovernedInsideTheUKPage) map {
-    x => AnswerRow("governedOutsideTheUK.checkYourAnswersLabel", yesOrNo(x), routes.GovernedInsideTheUKController.onPageLoad(CheckMode).url)
+    x => AnswerRow("governedInsideTheUK.checkYourAnswersLabel", yesOrNo(x), routes.GovernedInsideTheUKController.onPageLoad(CheckMode).url)
   }
 
   def trustName: Option[AnswerRow] = userAnswers.get(TrustNamePage) map {
