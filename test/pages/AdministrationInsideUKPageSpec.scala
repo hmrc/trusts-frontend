@@ -16,6 +16,8 @@
 
 package pages
 
+import models.UserAnswers
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
 class AdministrationInsideUKPageSpec extends PageBehaviours {
@@ -28,4 +30,17 @@ class AdministrationInsideUKPageSpec extends PageBehaviours {
 
     beRemovable[Boolean](AdministrationInsideUKPage)
   }
+
+  "remove CountryAdministeringTrust when AdministrationInsideUK is set to true" in {
+
+    forAll(arbitrary[UserAnswers]) {
+      initial =>
+
+        val result = initial.set(AdministrationInsideUKPage, true).success.value
+
+        result.get(CountryAdministeringTrustPage) mustNot be (defined)
+    }
+
+  }
+
 }
