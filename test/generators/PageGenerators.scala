@@ -57,8 +57,8 @@ trait PageGenerators {
   implicit lazy val arbitraryCountryGoverningTrustPage: Arbitrary[CountryGoverningTrustPage.type] =
     Arbitrary(CountryGoverningTrustPage)
 
-  implicit lazy val arbitraryGovernedOutsideTheUKPage: Arbitrary[GovernedOutsideTheUKPage.type] =
-    Arbitrary(GovernedOutsideTheUKPage)
+  implicit lazy val arbitraryGovernedInsideTheUKPage: Arbitrary[GovernedInsideTheUKPage.type] =
+    Arbitrary(GovernedInsideTheUKPage)
 
   implicit lazy val arbitraryTrustNamePage: Arbitrary[TrustNamePage.type] =
     Arbitrary(TrustNamePage)

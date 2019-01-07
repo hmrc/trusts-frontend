@@ -21,10 +21,10 @@ import javax.inject.Inject
 import forms.mappings.Mappings
 import play.api.data.Form
 
-class GovernedOutsideTheUKFormProvider @Inject() extends Mappings {
+class GovernedInsideTheUKFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =
     Form(
-      "value" -> boolean("governedOutsideTheUK.error.required")
+      "value" -> boolean("governedInsideTheUK.error.required")
     )
 }

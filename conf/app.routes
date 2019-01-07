@@ -17,10 +17,10 @@ POST       /trust-name                        controllers.TrustNameController.on
 GET        /change-trust-name                  controllers.TrustNameController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-trust-name                  controllers.TrustNameController.onSubmit(mode: Mode = CheckMode)
 
-GET        /trust-governed-country                       controllers.GovernedOutsideTheUKController.onPageLoad(mode: Mode = NormalMode)
-POST       /trust-governed-country                          controllers.GovernedOutsideTheUKController.onSubmit(mode: Mode = NormalMode)
-GET        /change-trust-governed-country                    controllers.GovernedOutsideTheUKController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-trust-governed-country                    controllers.GovernedOutsideTheUKController.onSubmit(mode: Mode = CheckMode)
+GET        /trust-governed-country                       controllers.GovernedInsideTheUKController.onPageLoad(mode: Mode = NormalMode)
+POST       /trust-governed-country                          controllers.GovernedInsideTheUKController.onSubmit(mode: Mode = NormalMode)
+GET        /change-trust-governed-country                    controllers.GovernedInsideTheUKController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-trust-governed-country                    controllers.GovernedInsideTheUKController.onSubmit(mode: Mode = CheckMode)
 
 GET        /trust-governed-country-details                       controllers.CountryGoverningTrustController.onPageLoad(mode: Mode = NormalMode)
 POST       /trust-governed-country-details                         controllers.CountryGoverningTrustController.onSubmit(mode: Mode = NormalMode)

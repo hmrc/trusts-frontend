@@ -19,12 +19,12 @@ package forms
 import forms.behaviours.BooleanFieldBehaviours
 import play.api.data.FormError
 
-class GovernedOutsideTheUKFormProviderSpec extends BooleanFieldBehaviours {
+class GovernedInsideTheUKFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "governedOutsideTheUK.error.required"
+  val requiredKey = "governedInsideTheUK.error.required"
   val invalidKey = "error.boolean"
 
-  val form = new GovernedOutsideTheUKFormProvider()()
+  val form = new GovernedInsideTheUKFormProvider()()
 
   ".value" must {
 

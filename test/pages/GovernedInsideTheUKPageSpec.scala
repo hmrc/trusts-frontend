@@ -20,23 +20,23 @@ import models.UserAnswers
 import pages.behaviours.PageBehaviours
 import org.scalacheck.Arbitrary.arbitrary
 
-class GovernedOutsideTheUKPageSpec extends PageBehaviours {
+class GovernedInsideTheUKPageSpec extends PageBehaviours {
 
-  "GovernedOutsideTheUKPage" must {
+  "GovernedInsideTheUKPage" must {
 
-    beRetrievable[Boolean](GovernedOutsideTheUKPage)
+    beRetrievable[Boolean](GovernedInsideTheUKPage)
 
-    beSettable[Boolean](GovernedOutsideTheUKPage)
+    beSettable[Boolean](GovernedInsideTheUKPage)
 
-    beRemovable[Boolean](GovernedOutsideTheUKPage)
+    beRemovable[Boolean](GovernedInsideTheUKPage)
   }
 
-  "remove CountryGoverningTrust when GovernedOutsideTheUK is set to true" in {
+  "remove CountryGoverningTrust when GovernedInsideTheUK is set to true" in {
 
     forAll(arbitrary[UserAnswers]) {
       initial =>
 
-        val result = initial.set(GovernedOutsideTheUKPage, true).success.value
+        val result = initial.set(GovernedInsideTheUKPage, true).success.value
 
         result.get(CountryGoverningTrustPage) mustNot be (defined)
     }

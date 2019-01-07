@@ -17,37 +17,37 @@
 package controllers
 
 import base.SpecBase
-import forms.GovernedOutsideTheUKFormProvider
+import forms.GovernedInsideTheUKFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.GovernedOutsideTheUKPage
+import pages.GovernedInsideTheUKPage
 import play.api.inject.bind
 import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.GovernedOutsideTheUKView
+import views.html.GovernedInsideTheUKView
 
-class GovernedOutsideTheUKControllerSpec extends SpecBase {
+class GovernedInsideTheUKControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new GovernedOutsideTheUKFormProvider()
+  val formProvider = new GovernedInsideTheUKFormProvider()
   val form = formProvider()
 
-  lazy val governedOutsideTheUKRoute = routes.GovernedOutsideTheUKController.onPageLoad(NormalMode).url
+  lazy val governedInsideTheUKRoute = routes.GovernedInsideTheUKController.onPageLoad(NormalMode).url
 
-  "GovernedOutsideTheUK Controller" must {
+  "GovernedInsideTheUK Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, governedOutsideTheUKRoute)
+      val request = FakeRequest(GET, governedInsideTheUKRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[GovernedOutsideTheUKView]
+      val view = application.injector.instanceOf[GovernedInsideTheUKView]
 
       status(result) mustEqual OK
 
@@ -59,13 +59,13 @@ class GovernedOutsideTheUKControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(GovernedOutsideTheUKPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(GovernedInsideTheUKPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, governedOutsideTheUKRoute)
+      val request = FakeRequest(GET, governedInsideTheUKRoute)
 
-      val view = application.injector.instanceOf[GovernedOutsideTheUKView]
+      val view = application.injector.instanceOf[GovernedInsideTheUKView]
 
       val result = route(application, request).value
 
@@ -85,7 +85,7 @@ class GovernedOutsideTheUKControllerSpec extends SpecBase {
           .build()
 
       val request =
-        FakeRequest(POST, governedOutsideTheUKRoute)
+        FakeRequest(POST, governedInsideTheUKRoute)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
@@ -102,12 +102,12 @@ class GovernedOutsideTheUKControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, governedOutsideTheUKRoute)
+        FakeRequest(POST, governedInsideTheUKRoute)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[GovernedOutsideTheUKView]
+      val view = application.injector.instanceOf[GovernedInsideTheUKView]
 
       val result = route(application, request).value
 
@@ -123,7 +123,7 @@ class GovernedOutsideTheUKControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, governedOutsideTheUKRoute)
+      val request = FakeRequest(GET, governedInsideTheUKRoute)
 
       val result = route(application, request).value
 
@@ -139,7 +139,7 @@ class GovernedOutsideTheUKControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, governedOutsideTheUKRoute)
+        FakeRequest(POST, governedInsideTheUKRoute)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value

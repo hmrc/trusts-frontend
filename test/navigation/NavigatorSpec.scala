@@ -48,33 +48,33 @@ class NavigatorSpec extends SpecBase with PropertyChecks with Generators{
         }
       }
 
-      "go to Is Trust Governed By Laws Outside The UK from Trust Setup Page" in {
+      "go to Is Trust Governed By Laws Inside The UK from Trust Setup Page" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
             navigator.nextPage(WhenTrustSetupPage, NormalMode)(userAnswers)
-              .mustBe(routes.GovernedOutsideTheUKController.onPageLoad(NormalMode))
+              .mustBe(routes.GovernedInsideTheUKController.onPageLoad(NormalMode))
         }
       }
 
-      "go to is Trust Administration Done Outside UK from Is Trust Governed By Laws Outside The UK when the user answers Yes" in {
+      "go to is Trust Administration Done Outside UK from Is Trust Governed By Laws Inside The UK when the user answers Yes" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
-            val answers = userAnswers.set(GovernedOutsideTheUKPage, value = true).success.value
+            val answers = userAnswers.set(GovernedInsideTheUKPage, value = true).success.value
 
-            navigator.nextPage(GovernedOutsideTheUKPage, NormalMode)(answers)
+            navigator.nextPage(GovernedInsideTheUKPage, NormalMode)(answers)
               .mustBe(routes.AdministrationOutsideUKController.onPageLoad(NormalMode))
         }
       }
 
-      "go to What is the country governing the Trust  from Is Trust Governed By Laws Outside The UK when the user answers No" in {
+      "go to What is the country governing the Trust from Is Trust Governed By Laws Inside The UK when the user answers No" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
-            val answers = userAnswers.set(GovernedOutsideTheUKPage, value = false).success.value
+            val answers = userAnswers.set(GovernedInsideTheUKPage, value = false).success.value
 
-            navigator.nextPage(GovernedOutsideTheUKPage, NormalMode)(answers)
+            navigator.nextPage(GovernedInsideTheUKPage, NormalMode)(answers)
               .mustBe(routes.CountryGoverningTrustController.onPageLoad(NormalMode))
         }
       }
