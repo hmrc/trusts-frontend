@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,9 @@
 
 package pages
 
+import models.UserAnswers
 import pages.behaviours.PageBehaviours
+import org.scalacheck.Arbitrary.arbitrary
 
 class GovernedOutsideTheUKPageSpec extends PageBehaviours {
 
@@ -27,5 +29,17 @@ class GovernedOutsideTheUKPageSpec extends PageBehaviours {
     beSettable[Boolean](GovernedOutsideTheUKPage)
 
     beRemovable[Boolean](GovernedOutsideTheUKPage)
+  }
+
+  "remove CountryGoverningTrust when GovernedOutsideTheUK is set to true" in {
+
+    forAll(arbitrary[UserAnswers]) {
+      initial =>
+
+        val result = initial.set(GovernedOutsideTheUKPage, true).success.value
+
+        result.get(CountryGoverningTrustPage) mustNot be (defined)
+    }
+
   }
 }
