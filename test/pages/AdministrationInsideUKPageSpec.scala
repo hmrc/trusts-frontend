@@ -33,10 +33,12 @@ class AdministrationInsideUKPageSpec extends PageBehaviours {
 
   "remove CountryAdministeringTrust when AdministrationInsideUK is set to true" in {
 
-    forAll(arbitrary[UserAnswers]) {
-      initial =>
+    forAll(arbitrary[UserAnswers], arbitrary[String]) {
+      (initial, answer) =>
 
-        val result = initial.set(AdministrationInsideUKPage, true).success.value
+        val answers = initial.set(CountryAdministeringTrustPage, answer).success.value
+
+        val result = answers.set(AdministrationInsideUKPage, true).success.value
 
         result.get(CountryAdministeringTrustPage) mustNot be (defined)
     }

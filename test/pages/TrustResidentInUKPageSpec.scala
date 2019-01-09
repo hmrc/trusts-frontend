@@ -16,6 +16,8 @@
 
 package pages
 
+import models.UserAnswers
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
 class TrustResidentInUKPageSpec extends PageBehaviours {
@@ -28,4 +30,23 @@ class TrustResidentInUKPageSpec extends PageBehaviours {
 
     beRemovable[Boolean](TrustResidentInUKPage)
   }
+
+  "remove EstablishedUnderScotsLaw, TrustResidentOffshore and TrustPreviouslyResident when TrustResidentInUK is set to false" in {
+
+    forAll(arbitrary[UserAnswers], arbitrary[Boolean], arbitrary[String]) {
+      (initial, bool, str) =>
+
+        val answers = initial.set(EstablishedUnderScotsLawPage, bool).success.value
+          .set(TrustResidentOffshorePage, false).success.value
+          .set(TrustPreviouslyResidentPage, str).success.value
+
+        val result = answers.set(TrustResidentInUKPage, false).success.value
+
+        result.get(EstablishedUnderScotsLawPage) mustNot be (defined)
+        result.get(TrustResidentOffshorePage) mustNot be (defined)
+        result.get(TrustPreviouslyResidentPage) mustNot be (defined)
+    }
+
+  }
+
 }
