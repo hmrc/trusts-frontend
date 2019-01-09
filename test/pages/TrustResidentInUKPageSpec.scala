@@ -37,7 +37,7 @@ class TrustResidentInUKPageSpec extends PageBehaviours {
       (initial, bool, str) =>
 
         val answers = initial.set(EstablishedUnderScotsLawPage, bool).success.value
-          .set(TrustResidentOffshorePage, false).success.value
+          .set(TrustResidentOffshorePage, true).success.value
           .set(TrustPreviouslyResidentPage, str).success.value
 
         val result = answers.set(TrustResidentInUKPage, false).success.value
