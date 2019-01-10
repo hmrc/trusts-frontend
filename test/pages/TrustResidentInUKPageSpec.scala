@@ -49,4 +49,21 @@ class TrustResidentInUKPageSpec extends PageBehaviours {
 
   }
 
+  "remove EstablishedUnderScotsLaw and TrustResidentOffshore when TrustResidentInUK is set to false" in {
+
+    forAll(arbitrary[UserAnswers], arbitrary[Boolean]) {
+      (initial, bool) =>
+
+        val answers = initial.set(EstablishedUnderScotsLawPage, bool).success.value
+          .set(TrustResidentOffshorePage, false).success.value
+
+        val result = answers.set(TrustResidentInUKPage, false).success.value
+
+        result.get(EstablishedUnderScotsLawPage) mustNot be (defined)
+        result.get(TrustResidentOffshorePage) mustNot be (defined)
+        result.get(TrustPreviouslyResidentPage) mustNot be (defined)
+    }
+
+  }
+
 }
