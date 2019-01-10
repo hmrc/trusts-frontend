@@ -16,7 +16,7 @@
 
 package pages
 
-import models.UserAnswers
+import models.{NonResidentType, UserAnswers}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
@@ -62,6 +62,26 @@ class TrustResidentInUKPageSpec extends PageBehaviours {
         result.get(EstablishedUnderScotsLawPage) mustNot be (defined)
         result.get(TrustResidentOffshorePage) mustNot be (defined)
         result.get(TrustPreviouslyResidentPage) mustNot be (defined)
+    }
+
+  }
+
+  "remove relevant data when TrustResidentInUK set to true" in {
+
+    forAll(arbitrary[UserAnswers]) {
+      initial =>
+
+        val answers = initial.set(RegisteringTrustFor5APage, true).success.value
+          .set(NonResidentTypePage, NonResidentType.resident).success.value
+          .set(InheritanceTaxActPage, true).success.value
+          .set(AgentOtherThanBarristerPage, true).success.value
+
+        val result = answers.set(TrustResidentInUKPage, true).success.value
+
+        result.get(RegisteringTrustFor5APage) mustNot be (defined)
+        result.get(NonResidentTypePage) mustNot be (defined)
+        result.get(InheritanceTaxActPage) mustNot be (defined)
+        result.get(AgentOtherThanBarristerPage) mustNot be (defined)
     }
 
   }

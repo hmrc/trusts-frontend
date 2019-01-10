@@ -33,6 +33,11 @@ case object TrustResidentInUKPage extends QuestionPage[Boolean] {
         userAnswers.remove(EstablishedUnderScotsLawPage)
           .flatMap(_.remove(TrustResidentOffshorePage))
           .flatMap(_.remove(TrustPreviouslyResidentPage))
+      case Some(true) =>
+        userAnswers.remove(RegisteringTrustFor5APage)
+          .flatMap(_.remove(InheritanceTaxActPage))
+          .flatMap(_.remove(NonResidentTypePage))
+          .flatMap(_.remove(AgentOtherThanBarristerPage))
       case _ =>
         super.cleanup(value, userAnswers)
     }
