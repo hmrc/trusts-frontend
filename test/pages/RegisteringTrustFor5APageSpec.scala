@@ -16,7 +16,9 @@
 
 package pages
 
+import models.{NonResidentType, UserAnswers}
 import pages.behaviours.PageBehaviours
+import org.scalacheck.Arbitrary.arbitrary
 
 class RegisteringTrustFor5APageSpec extends PageBehaviours {
 
@@ -28,4 +30,35 @@ class RegisteringTrustFor5APageSpec extends PageBehaviours {
 
     beRemovable[Boolean](RegisteringTrustFor5APage)
   }
+
+
+  "remove NonResidentTypePage when RegisteringTrustFor5APage is set to false" in {
+
+    forAll(arbitrary[UserAnswers], arbitrary[NonResidentType]) {
+      (initial, resident) =>
+
+        val answers = initial.set(NonResidentTypePage, resident).success.value
+
+        val result = answers.set(RegisteringTrustFor5APage, false).success.value
+
+        result.get(NonResidentTypePage) mustNot be (defined)
+    }
+
+  }
+
+  "remove InheritanceTaxActPage and AgentOtherThanBarristerPage when RegisteringTrustFor5APage is set to true" in {
+
+    forAll(arbitrary[UserAnswers], arbitrary[Boolean]) {
+      (initial, bool) =>
+         val answers = initial.set(InheritanceTaxActPage, true).success.value.set(AgentOtherThanBarristerPage, bool).success.value
+
+        val result = answers.set(RegisteringTrustFor5APage, true).success.value
+
+        result.get(InheritanceTaxActPage) mustNot be (defined)
+        result.get(AgentOtherThanBarristerPage) mustNot be (defined)
+
+    }
+  }
+
+
 }
