@@ -27,8 +27,9 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.inject.{Injector, bind}
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
+import repositories.SessionRepository
 
-trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues {
+trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Mocked {
 
   val userAnswersId = "id"
 
@@ -49,6 +50,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues {
       .overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],
         bind[IdentifierAction].to[FakeIdentifierAction],
-        bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers))
+        bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
+        bind[SessionRepository].to(mockedSessionRepository)
       )
 }
