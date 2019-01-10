@@ -20,15 +20,21 @@ import base.SpecBase
 import forms.TrustResidentOffshoreFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
+import org.scalatest.mockito.MockitoSugar
 import pages.TrustResidentOffshorePage
 import play.api.inject.bind
 import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import repositories.SessionRepository
 import views.html.TrustResidentOffshoreView
 
-class TrustResidentOffshoreControllerSpec extends SpecBase {
+import scala.concurrent.Future
+
+class TrustResidentOffshoreControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
