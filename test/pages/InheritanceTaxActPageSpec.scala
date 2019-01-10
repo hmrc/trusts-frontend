@@ -16,7 +16,9 @@
 
 package pages
 
+import models.UserAnswers
 import pages.behaviours.PageBehaviours
+import org.scalacheck.Arbitrary.arbitrary
 
 class InheritanceTaxActPageSpec extends PageBehaviours {
 
@@ -27,5 +29,19 @@ class InheritanceTaxActPageSpec extends PageBehaviours {
     beSettable[Boolean](InheritanceTaxActPage)
 
     beRemovable[Boolean](InheritanceTaxActPage)
+  }
+
+  "remove AgentOtherThanBarrister when InheritanceTaxAct is set to false" in {
+
+    forAll(arbitrary[UserAnswers], arbitrary[Boolean]) {
+      (initial, bool) =>
+
+        val answers = initial.set(AgentOtherThanBarristerPage, bool).success.value
+
+        val result = answers.set(InheritanceTaxActPage, false).success.value
+
+        result.get(AgentOtherThanBarristerPage) mustNot be (defined)
+    }
+
   }
 }
