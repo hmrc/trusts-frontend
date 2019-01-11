@@ -28,6 +28,15 @@ import viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def trustRegisteredOnline: Option[AnswerRow] = userAnswers.get(TrustRegisteredOnlinePage) map {
+    x =>
+      AnswerRow(
+        "trustRegisteredOnline.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.TrustRegisteredOnlineController.onPageLoad(CheckMode).url
+      )
+  }
+
   def whenTrustSetup: Option[AnswerRow] = userAnswers.get(WhenTrustSetupPage) map {
     x =>
       AnswerRow(

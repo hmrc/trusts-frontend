@@ -129,3 +129,8 @@ whenTrustSetup.error.invalid = Enter a real date the trust deed was signed
 whenTrustSetup.error.future = The date the trust deed was signed must be today or in the past
 whenTrustSetup.error.past = The date the trust deed was signed must be after 31 December 1499
 whenTrustSetup.hint = For example, 31 3 1980
+
+trustRegisteredOnline.title = Has the trust already been registered online?
+trustRegisteredOnline.heading = Has the trust already been registered online?
+trustRegisteredOnline.checkYourAnswersLabel = trustRegisteredOnline
+trustRegisteredOnline.error.required = Select yes if the trust has already been registered online

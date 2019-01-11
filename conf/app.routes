@@ -81,3 +81,8 @@ GET        /Trust-Setup                  controllers.WhenTrustSetupController.on
 POST       /Trust-Setup                  controllers.WhenTrustSetupController.onSubmit(mode: Mode = NormalMode)
 GET        /changeWhenTrustSetup                        controllers.WhenTrustSetupController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeWhenTrustSetup                        controllers.WhenTrustSetupController.onSubmit(mode: Mode = CheckMode)
+
+GET        /trustRegisteredOnline                        controllers.TrustRegisteredOnlineController.onPageLoad(mode: Mode = NormalMode)
+POST       /trustRegisteredOnline                        controllers.TrustRegisteredOnlineController.onSubmit(mode: Mode = NormalMode)
+GET        /changeTrustRegisteredOnline                  controllers.TrustRegisteredOnlineController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeTrustRegisteredOnline                  controllers.TrustRegisteredOnlineController.onSubmit(mode: Mode = CheckMode)
