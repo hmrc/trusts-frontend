@@ -86,3 +86,8 @@ GET        /trustRegisteredOnline                        controllers.TrustRegist
 POST       /trustRegisteredOnline                        controllers.TrustRegisteredOnlineController.onSubmit(mode: Mode = NormalMode)
 GET        /changeTrustRegisteredOnline                  controllers.TrustRegisteredOnlineController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeTrustRegisteredOnline                  controllers.TrustRegisteredOnlineController.onSubmit(mode: Mode = CheckMode)
+
+GET        /trustHaveAUTR                        controllers.TrustHaveAUTRController.onPageLoad(mode: Mode = NormalMode)
+POST       /trustHaveAUTR                        controllers.TrustHaveAUTRController.onSubmit(mode: Mode = NormalMode)
+GET        /changeTrustHaveAUTR                  controllers.TrustHaveAUTRController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeTrustHaveAUTR                  controllers.TrustHaveAUTRController.onSubmit(mode: Mode = CheckMode)

@@ -25,7 +25,11 @@ import models._
 @Singleton
 class Navigator @Inject()() {
 
-  private val routeMap: Map[Page, UserAnswers => Call] = Map(
+  private val matchingDetails: Map[Page, UserAnswers => Call] = Map(
+    TrustRegisteredOnlinePage -> (_ => routes.TrustHaveAUTRController.onPageLoad(NormalMode))
+  )
+
+  private val trustDetails: Map[Page, UserAnswers => Call] = Map(
     TrustNamePage -> (_ => routes.WhenTrustSetupController.onPageLoad(NormalMode)),
     WhenTrustSetupPage -> (_ => routes.GovernedInsideTheUKController.onPageLoad(NormalMode)),
     GovernedInsideTheUKPage -> isTrustGovernedInsideUKRoute,
@@ -84,6 +88,9 @@ class Navigator @Inject()() {
 
   def nextPage(page: Page, mode: Mode): UserAnswers => Call = mode match {
     case NormalMode =>
+
+      val routeMap = trustDetails ++ matchingDetails
+
       routeMap.getOrElse(page, _ => routes.IndexController.onPageLoad())
     case CheckMode =>
       checkRouteMap.getOrElse(page, _ => routes.CheckYourAnswersController.onPageLoad())
