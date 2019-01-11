@@ -16,30 +16,18 @@
 
 package forms
 
-import forms.behaviours.BooleanFieldBehaviours
-import play.api.data.FormError
+import forms.mappings.Mappings
+import javax.inject.Inject
+import play.api.data.Form
 
-class TrustHaveAUTRFormProviderSpec extends BooleanFieldBehaviours {
+class WhatIsTheUTRFormProvider @Inject() extends Mappings {
 
-  val requiredKey = "trustHaveAUTR.error.required"
-  val invalidKey = "error.boolean"
-
-  val form = new TrustHaveAUTRFormProvider()()
-
-  ".value" must {
-
-    val fieldName = "value"
-
-    behave like booleanField(
-      form,
-      fieldName,
-      invalidError = FormError(fieldName, invalidKey)
+  def apply(): Form[Int] =
+    Form(
+      "value" -> int(
+        "whatIsTheUTR.error.required",
+        "whatIsTheUTR.error.wholeNumber",
+        "whatIsTheUTR.error.nonNumeric")
+          .verifying(inRange(10, 10, "whatIsTheUTR.error.outOfRange"))
     )
-
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
-  }
 }

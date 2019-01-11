@@ -91,3 +91,8 @@ GET        /trustHaveAUTR                        controllers.TrustHaveAUTRContro
 POST       /trustHaveAUTR                        controllers.TrustHaveAUTRController.onSubmit(mode: Mode = NormalMode)
 GET        /changeTrustHaveAUTR                  controllers.TrustHaveAUTRController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeTrustHaveAUTR                  controllers.TrustHaveAUTRController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whatIsTheUTR                  controllers.WhatIsTheUTRController.onPageLoad(mode: Mode = NormalMode)
+POST       /whatIsTheUTR                  controllers.WhatIsTheUTRController.onSubmit(mode: Mode = NormalMode)
+GET        /changewhatIsTheUTR                        controllers.WhatIsTheUTRController.onPageLoad(mode: Mode = CheckMode)
+POST       /changewhatIsTheUTR                        controllers.WhatIsTheUTRController.onSubmit(mode: Mode = CheckMode)

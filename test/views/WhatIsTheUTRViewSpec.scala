@@ -17,24 +17,24 @@
 package views
 
 import controllers.routes
-import forms.TrustHaveAUTRFormProvider
+import forms.WhatIsTheUTRFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.YesNoViewBehaviours
-import views.html.TrustHaveAUTRView
+import views.behaviours.IntViewBehaviours
+import views.html.WhatIsTheUTRView
 
-class TrustHaveAUTRViewSpec extends YesNoViewBehaviours {
+class WhatIsTheUTRViewSpec extends IntViewBehaviours {
 
-  val messageKeyPrefix = "trustHaveAUTR"
+  val messageKeyPrefix = "whatIsTheUTR"
 
-  val form = new TrustHaveAUTRFormProvider()()
+  val form = new WhatIsTheUTRFormProvider()()
 
-  "TrustHaveAUTR view" must {
+  "whatIsTheUTRView view" must {
 
     val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-    val view = application.injector.instanceOf[TrustHaveAUTRView]
+    val view = application.injector.instanceOf[WhatIsTheUTRView]
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode)(fakeRequest, messages)
@@ -43,6 +43,6 @@ class TrustHaveAUTRViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.TrustHaveAUTRController.onSubmit(NormalMode).url, Some(messageKeyPrefix))
+    behave like intPage(form, applyView, messageKeyPrefix, routes.WhatIsTheUTRController.onSubmit(NormalMode).url)
   }
 }

@@ -17,37 +17,39 @@
 package controllers
 
 import base.SpecBase
-import forms.TrustHaveAUTRFormProvider
+import forms.WhatIsTheUTRFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.TrustHaveAUTRPage
+import pages.WhatIsTheUTRPage
 import play.api.inject.bind
-import play.api.libs.json.{JsBoolean, Json}
+import play.api.libs.json.{JsNumber, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.TrustHaveAUTRView
+import views.html.WhatIsTheUTRView
 
-class TrustHaveAUTRControllerSpec extends SpecBase {
+class WhatIsTheUTRControllerSpec extends SpecBase {
+
+  val formProvider = new WhatIsTheUTRFormProvider()
+  val form = formProvider()
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new TrustHaveAUTRFormProvider()
-  val form = formProvider()
+  val validAnswer = 10
 
-  lazy val trustHaveAUTRRoute = routes.TrustHaveAUTRController.onPageLoad(NormalMode).url
+  lazy val whatIsTheUTRRoute = routes.WhatIsTheUTRController.onPageLoad(NormalMode).url
 
-  "TrustHaveAUTR Controller" must {
+  "whatIsTheUTR Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, trustHaveAUTRRoute)
+      val request = FakeRequest(GET, whatIsTheUTRRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[TrustHaveAUTRView]
+      val view = application.injector.instanceOf[WhatIsTheUTRView]
 
       status(result) mustEqual OK
 
@@ -59,20 +61,20 @@ class TrustHaveAUTRControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(TrustHaveAUTRPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(WhatIsTheUTRPage, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, trustHaveAUTRRoute)
+      val request = FakeRequest(GET, whatIsTheUTRRoute)
 
-      val view = application.injector.instanceOf[TrustHaveAUTRView]
+      val view = application.injector.instanceOf[WhatIsTheUTRView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(validAnswer), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -85,8 +87,8 @@ class TrustHaveAUTRControllerSpec extends SpecBase {
           .build()
 
       val request =
-        FakeRequest(POST, trustHaveAUTRRoute)
-          .withFormUrlEncodedBody(("value", "true"))
+        FakeRequest(POST, whatIsTheUTRRoute)
+          .withFormUrlEncodedBody(("value", validAnswer.toString))
 
       val result = route(application, request).value
 
@@ -102,12 +104,12 @@ class TrustHaveAUTRControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, trustHaveAUTRRoute)
-          .withFormUrlEncodedBody(("value", ""))
+        FakeRequest(POST, whatIsTheUTRRoute)
+          .withFormUrlEncodedBody(("value", "invalid value"))
 
-      val boundForm = form.bind(Map("value" -> ""))
+      val boundForm = form.bind(Map("value" -> "invalid value"))
 
-      val view = application.injector.instanceOf[TrustHaveAUTRView]
+      val view = application.injector.instanceOf[WhatIsTheUTRView]
 
       val result = route(application, request).value
 
@@ -123,12 +125,11 @@ class TrustHaveAUTRControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, trustHaveAUTRRoute)
+      val request = FakeRequest(GET, whatIsTheUTRRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
@@ -139,8 +140,8 @@ class TrustHaveAUTRControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, trustHaveAUTRRoute)
-          .withFormUrlEncodedBody(("value", "true"))
+        FakeRequest(POST, whatIsTheUTRRoute)
+          .withFormUrlEncodedBody(("value", validAnswer.toString))
 
       val result = route(application, request).value
 

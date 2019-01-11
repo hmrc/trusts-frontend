@@ -14,32 +14,18 @@
  * limitations under the License.
  */
 
-package forms
+package pages
 
-import forms.behaviours.BooleanFieldBehaviours
-import play.api.data.FormError
+import pages.behaviours.PageBehaviours
 
-class TrustHaveAUTRFormProviderSpec extends BooleanFieldBehaviours {
+class WhatIsTheUTRPageSpec extends PageBehaviours {
 
-  val requiredKey = "trustHaveAUTR.error.required"
-  val invalidKey = "error.boolean"
+  "whatIsTheUTRPage" must {
 
-  val form = new TrustHaveAUTRFormProvider()()
+    beRetrievable[Int](WhatIsTheUTRPage)
 
-  ".value" must {
+    beSettable[Int](WhatIsTheUTRPage)
 
-    val fieldName = "value"
-
-    behave like booleanField(
-      form,
-      fieldName,
-      invalidError = FormError(fieldName, invalidKey)
-    )
-
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
+    beRemovable[Int](WhatIsTheUTRPage)
   }
 }
