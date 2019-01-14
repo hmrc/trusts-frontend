@@ -141,10 +141,18 @@ trustHaveAUTR.checkYourAnswersLabel = trustHaveAUTR
 trustHaveAUTR.error.required = Select yes if the trust has a Unique Taxpayer Reference
 trustHaveAUTR.hint = This is 10 numbers, for example 12345 67890. It will be on tax returns and other letters about Self Assessment. It may be called ‘reference’, ‘UTR’ or ‘official use’. You can find a lost UTR number. (link https://www.gov.uk/find-lost-utr-number)
 
+whatIsTheTrustsName.title = What is the trust's name?
+whatIsTheTrustsName.heading = What is the trust's name?
+whatIsTheTrustsName.checkYourAnswersLabel = whatIsTheTrustsName
+whatIsTheTrustsName.error.required = Enter the trust's name
+whatIsTheTrustsName.error.length = The trust's name must be 53 characters or less
+whatIsTheTrustsName.error.invalidCharacters = The trust’s name must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+whatIsTheTrustsName.hint = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (SA316) or tax return.
+
 whatIsTheUTR.title = What is the trust's Unique Taxpayer Reference?
 whatIsTheUTR.heading = What is the trust's Unique Taxpayer Reference?
 whatIsTheUTR.checkYourAnswersLabel = whatIsTheUTR
-whatIsTheUTR.error.nonNumeric = Enter the trust’s Unique Taxpayer Reference in the correct format
 whatIsTheUTR.error.required = Enter the trust's Unique Taxpayer Reference
-whatIsTheUTR.error.outOfRange = Unique Taxpayer Reference must be a 10-digit number
+whatIsTheUTR.error.length = Unique Taxpayer Reference must be a 10-digit number
+whatIsTheUTR.error.invalidCharacters = Enter the trust’s Unique Taxpayer Reference in the correct format
 whatIsTheUTR.hint = This is 10 numbers, for example 12345 67890. It will be on the trust’s Self Assessment notice to file (SA316). It may be called ‘reference’, ‘UTR’ or ‘official use’.

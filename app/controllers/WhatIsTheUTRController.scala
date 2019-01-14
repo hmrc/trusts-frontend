@@ -17,37 +17,38 @@
 package controllers
 
 import controllers.actions._
-import forms.TrustNameFormProvider
+import forms.WhatIsTheUTRFormProvider
 import javax.inject.Inject
-import models.{Mode, UserAnswers}
+import models.Mode
 import navigation.Navigator
-import pages.{Page, TrustNamePage}
+import pages.WhatIsTheUTRPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.TrustNameView
+import views.html.WhatIsTheUTRView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrustNameController @Inject()(
+class WhatIsTheUTRController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
-                                        formProvider: TrustNameFormProvider,
+                                        requireData: DataRequiredAction,
+                                        formProvider: WhatIsTheUTRFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: TrustNameView
+                                        view: WhatIsTheUTRView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData ) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.internalId)).get(TrustNamePage) match {
+      val preparedForm = request.userAnswers.get(WhatIsTheUTRPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -55,7 +56,7 @@ class TrustNameController @Inject()(
       Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -64,9 +65,9 @@ class TrustNameController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.getOrElse(UserAnswers(request.internalId)).set(TrustNamePage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatIsTheUTRPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrustNamePage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(WhatIsTheUTRPage, mode)(updatedAnswers))
         }
       )
   }

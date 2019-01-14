@@ -17,24 +17,24 @@
 package views
 
 import controllers.routes
-import forms.TrustRegisteredOnlineFormProvider
+import forms.WhatIsTheUTRFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.YesNoViewBehaviours
-import views.html.TrustRegisteredOnlineView
+import views.behaviours.StringViewBehaviours
+import views.html.WhatIsTheUTRView
 
-class TrustRegisteredOnlineViewSpec extends YesNoViewBehaviours {
+class WhatIsTheUTRViewSpec extends StringViewBehaviours {
 
-  val messageKeyPrefix = "trustRegisteredOnline"
+  val messageKeyPrefix = "whatIsTheUTR"
 
-  val form = new TrustRegisteredOnlineFormProvider()()
+  val form = new WhatIsTheUTRFormProvider()()
 
-  "TrustRegisteredOnline view" must {
+  "WhatIsTheUTRView view" must {
 
     val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-    val view = application.injector.instanceOf[TrustRegisteredOnlineView]
+    val view = application.injector.instanceOf[WhatIsTheUTRView]
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode)(fakeRequest, messages)
@@ -43,8 +43,6 @@ class TrustRegisteredOnlineViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.TrustRegisteredOnlineController.onSubmit(NormalMode).url)
-
-    behave like pageWithASubmitButton(applyView(form))
+    behave like stringPage(form, applyView, messageKeyPrefix, routes.WhatIsTheUTRController.onSubmit(NormalMode).url)
   }
 }
