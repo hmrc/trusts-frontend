@@ -38,7 +38,7 @@ class Navigator @Inject()() {
     case None        => routes.SessionExpiredController.onPageLoad()
   }
 
-  
+
 
   private val trustDetails: Map[Page, UserAnswers => Call] = Map(
     TrustNamePage -> (_ => routes.WhenTrustSetupController.onPageLoad(NormalMode)),

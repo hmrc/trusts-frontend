@@ -162,3 +162,17 @@ postcodeForTheTrust.heading = What is the trust's postcode?
 postcodeForTheTrust.checkYourAnswersLabel = postcodeForTheTrust
 postcodeForTheTrust.error.required = Enter the trust's postcode
 postcodeForTheTrust.hint = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (SA316) or tax return. For example, AA1 1AA.
+
+FailedMatch.title = We cannot match the details you have given us to our records
+FailedMatch.heading = We cannot match the details you have given us to our records
+FailedMatch.paragraph1 = Check that you have entered the right:
+FailedMatch.bulletpoint1 = Unique Taxpayer Reference (UTR)
+FailedMatch.bulletpoint2 = trust name
+FailedMatch.bulletpoint3 = postcode
+FailedMatch.paragraph2 = You can find this information on any letters about the trust sent by HMRC, including the latest:
+FailedMatch.bulletpoint4 = Trust and Estate (SA900) tax return
+FailedMatch.bulletpoint5 = notice to file (SA316)
+FailedMatch.bulletpoint6 = statement of account
+FailedMatch.paragraph3 = The trust name must be entered exactly as it is on these letters.
+FailedMatch.h2 = What to do next
+FailedMatch.paragraph4 = If we still cannot match your trust details to our records, you can [contact the trusts helpline](LINK:https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts). You need the details of the trust to answer some security questions.

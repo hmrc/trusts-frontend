@@ -106,3 +106,5 @@ GET        /postcodeForTheTrust                        controllers.PostcodeForTh
 POST       /postcodeForTheTrust                        controllers.PostcodeForTheTrustController.onSubmit(mode: Mode = NormalMode)
 GET        /changePostcodeForTheTrust                  controllers.PostcodeForTheTrustController.onPageLoad(mode: Mode = CheckMode)
 POST       /changePostcodeForTheTrust                  controllers.PostcodeForTheTrustController.onSubmit(mode: Mode = CheckMode)
+
+GET        /FailedMatch                       controllers.FailedMatchController.onPageLoad()
