@@ -156,3 +156,9 @@ whatIsTheUTR.error.required = Enter the trust's Unique Taxpayer Reference
 whatIsTheUTR.error.length = Unique Taxpayer Reference must be a 10-digit number
 whatIsTheUTR.error.invalidCharacters = Enter the trust’s Unique Taxpayer Reference in the correct format
 whatIsTheUTR.hint = This is 10 numbers, for example 12345 67890. It will be on the trust’s Self Assessment notice to file (SA316). It may be called ‘reference’, ‘UTR’ or ‘official use’.
+
+postcodeForTheTrust.title = What is the trust's postcode?
+postcodeForTheTrust.heading = What is the trust's postcode?
+postcodeForTheTrust.checkYourAnswersLabel = postcodeForTheTrust
+postcodeForTheTrust.error.required = Enter the trust's postcode
+postcodeForTheTrust.hint = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (SA316) or tax return. For example, AA1 1AA.

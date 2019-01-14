@@ -28,6 +28,15 @@ import viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def postcodeForTheTrust: Option[AnswerRow] = userAnswers.get(PostcodeForTheTrustPage) map {
+    x =>
+      AnswerRow(
+        "postcodeForTheTrust.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.PostcodeForTheTrustController.onPageLoad(CheckMode).url
+      )
+  }
+
   def whatIsTheUTR: Option[AnswerRow] = userAnswers.get(WhatIsTheUTRPage) map {
     x =>
       AnswerRow(

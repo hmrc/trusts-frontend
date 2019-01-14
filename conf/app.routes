@@ -101,3 +101,8 @@ GET        /whatIsTheUTR                        controllers.WhatIsTheUTRControll
 POST       /whatIsTheUTR                        controllers.WhatIsTheUTRController.onSubmit(mode: Mode = NormalMode)
 GET        /changeWhatIsTheUTR                  controllers.WhatIsTheUTRController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeWhatIsTheUTR                  controllers.WhatIsTheUTRController.onSubmit(mode: Mode = CheckMode)
+
+GET        /postcodeForTheTrust                        controllers.PostcodeForTheTrustController.onPageLoad(mode: Mode = NormalMode)
+POST       /postcodeForTheTrust                        controllers.PostcodeForTheTrustController.onSubmit(mode: Mode = NormalMode)
+GET        /changePostcodeForTheTrust                  controllers.PostcodeForTheTrustController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePostcodeForTheTrust                  controllers.PostcodeForTheTrustController.onSubmit(mode: Mode = CheckMode)

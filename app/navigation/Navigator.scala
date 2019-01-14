@@ -27,15 +27,18 @@ class Navigator @Inject()() {
 
   private val matchingDetails: Map[Page, UserAnswers => Call] = Map(
     TrustRegisteredOnlinePage -> (_ => routes.TrustHaveAUTRController.onPageLoad(NormalMode)),
-    TrustHaveAUTRPage -> WhatIsTheUTRRoute,
-    WhatIsTheUTRPage -> (_ => routes.WhatIsTheTrustsNameController.onPageLoad(NormalMode))
+    TrustHaveAUTRPage -> TrustHaveAUTRRoute,
+    WhatIsTheUTRPage -> (_ => routes.WhatIsTheTrustsNameController.onPageLoad(NormalMode)),
+    WhatIsTheTrustsNamePage -> (_ => routes.PostcodeForTheTrustController.onPageLoad(NormalMode))
   )
 
-  private def WhatIsTheUTRRoute(answers: UserAnswers) = answers.get(TrustHaveAUTRPage) match {
+  private def TrustHaveAUTRRoute(answers: UserAnswers) = answers.get(TrustHaveAUTRPage) match {
     case Some(true)  => routes.WhatIsTheUTRController.onPageLoad(NormalMode)
     case Some(false) => routes.WhatIsTheUTRController.onPageLoad(NormalMode)
     case None        => routes.SessionExpiredController.onPageLoad()
   }
+
+  
 
   private val trustDetails: Map[Page, UserAnswers => Call] = Map(
     TrustNamePage -> (_ => routes.WhenTrustSetupController.onPageLoad(NormalMode)),
