@@ -27,7 +27,11 @@ main_template: MainTemplate
 title = messages("FailedMatch.title")
 ) {
 
+@components.back_link()
+
 @components.heading("FailedMatch.heading")
+
+<p>@messages("FailedMatch.paragraph1")</p>
 
 @components.bullet_list("FailedMatch",
  List(
@@ -39,6 +43,24 @@ title = messages("FailedMatch.title")
 
 <p>@messages("FailedMatch.paragraph2")</p>
 
+@components.bullet_list("FailedMatch",
+List(
+"bulletpoint4",
+"bulletpoint5",
+"bulletpoint6"
+)
+)
+
+<p>@messages("FailedMatch.paragraph3")</p>
+
 @components.button_link(messages("site.try-again"), WhatIsTheUTRController.onPageLoad(NormalMode).url)
+
+<h2>@messages("FailedMatch.h2")</h2>
+
+<p>@messages("FailedMatch.paragraph4") <a href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" rel="external">@messages("FailedMatch.contactLink")</a> @messages("FailedMatch.paragraph5")</p>
+
+
+
+
 }
 

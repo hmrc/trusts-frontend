@@ -14,13 +14,28 @@
  * limitations under the License.
  *@
 
-@(
- prefix : String,
- keys : Seq[String]
-)(implicit messages: Messages)
+@import controllers.routes._
+@import models.Mode
 
-<ul class="list list-bullet">
- @keys.map { key =>
- <li>@messages(s"$prefix.$key")</li>
- }
-</ul>
+@this(
+main_template: MainTemplate
+)
+
+@()(implicit request: Request[_], messages: Messages)
+
+@main_template(
+title = messages("cannotMakeChanges.title")
+) {
+
+@components.back_link()
+
+@components.heading("cannotMakeChanges.heading")
+
+<p>@messages("cannotMakeChanges.paragraph1") <a href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" rel="external">@messages("cannotMakeChanges.postLink")</a> @messages("cannotMakeChanges.paragraph2")</p>
+
+
+<p>@messages("cannotMakeChanges.paragraph3")</p>
+
+}
+
+

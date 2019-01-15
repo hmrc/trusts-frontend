@@ -176,4 +176,13 @@ FailedMatch.bulletpoint5 = notice to file (SA316)
 FailedMatch.bulletpoint6 = statement of account
 FailedMatch.paragraph3 = The trust name must be entered exactly as it is on these letters.
 FailedMatch.h2 = What to do next
-FailedMatch.paragraph4 = If we still cannot match your trust details to our records, you can [contact the trusts helpline](LINK:https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts). You need the details of the trust to answer some security questions.
+FailedMatch.paragraph4 = If we still cannot match your trust details to our records, you can
+FailedMatch.paragraph5 = . You will need the details of the trust to answer some security questions.
+FailedMatch.contactLink =  contact the trusts helpline
+
+cannotMakeChanges.title = You cannot make changes to the trust online
+cannotMakeChanges.heading = You cannot make changes to the trust online
+cannotMakeChanges.paragraph1 = You can
+cannotMakeChanges.paragraph2 = if you need to update the lead trustee or contact details for the trust.
+cannotMakeChanges.paragraph3 = You must keep a record of all other changes to the trust, but you do not need to send them by post.
+cannotMakeChanges.postLink = send a letter by post to HM Revenue and Customs

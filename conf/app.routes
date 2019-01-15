@@ -108,3 +108,5 @@ GET        /changePostcodeForTheTrust                  controllers.PostcodeForTh
 POST       /changePostcodeForTheTrust                  controllers.PostcodeForTheTrustController.onSubmit(mode: Mode = CheckMode)
 
 GET        /FailedMatch                       controllers.FailedMatchController.onPageLoad()
+
+GET        /cannotMakeChanges                       controllers.CannotMakeChangesController.onPageLoad()
