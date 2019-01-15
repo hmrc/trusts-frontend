@@ -5,9 +5,9 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.FailedMatchView
 
-class MyNewPageControllerSpec extends SpecBase {
+class FailedMatchControllerSpec extends SpecBase {
 
-  "MyNewPage Controller" must {
+  "FailedMatch Controller" must {
 
     "return OK and the correct view for a GET" in {
 

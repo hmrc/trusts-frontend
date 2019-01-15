@@ -14,31 +14,13 @@
  * limitations under the License.
  *@
 
-@import controllers.routes._
-@import models.Mode
+@(
+ prefix : String,
+ keys : Seq[String]
+)(implicit messages: Messages)
 
-@this(
-main_template: MainTemplate
-)
-
-@()(implicit request: Request[_], messages: Messages)
-
-@main_template(
-title = messages("FailedMatch.title")
-) {
-
-@components.heading("FailedMatch.heading")
-
-@components.bullet_list("FailedMatch",
- List(
-  "bulletpoint1",
-  "bulletpoint2",
-  "bulletpoint3"
- )
-)
-
-<p>@messages("FailedMatch.paragraph2")</p>
-
-@components.button_link(messages("site.try-again"), WhatIsTheUTRController.onPageLoad(NormalMode).url)
-}
-
+<ul class="govuk-list govuk-list--bullet">
+ @keys.map { key =>
+ <li>@messages(s"$prefix.$key")</li>
+ }
+</ul>

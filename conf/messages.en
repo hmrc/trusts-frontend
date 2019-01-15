@@ -32,6 +32,7 @@ session_expired.guidance = The details you have given have been deleted because 
 site.back = Back
 site.delete = Remove
 site.edit = Change
+site.try-again = Try again
 site.hidden-delete = Delete {0}
 site.hidden-edit = Change {0}
 site.no = No
