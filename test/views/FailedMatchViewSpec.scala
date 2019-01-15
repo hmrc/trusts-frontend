@@ -17,19 +17,20 @@
 package views
 
 import views.behaviours.ViewBehaviours
-import views.html.CannotMakeChangesView
+import views.html.FailedMatchView
 
-class CannotMakeChangesViewSpec extends ViewBehaviours {
+class FailedMatchViewSpec extends ViewBehaviours {
 
-  "CannotMakeChanges view" must {
+  "FailedMatch view" must {
 
     val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-    val view = application.injector.instanceOf[CannotMakeChangesView]
+    val view = application.injector.instanceOf[FailedMatchView]
 
     val applyView = view.apply()(fakeRequest, messages)
 
-    behave like normalPage(applyView, "cannotMakeChanges", "paragraph1", "paragraph2","paragraph3")
+    behave like normalPage(applyView, "FailedMatch", "paragraph1", "paragraph2","paragraph3",
+      "paragraph4", "paragraph5","bulletpoint1", "bulletpoint2","bulletpoint3" ,"bulletpoint4" ,"bulletpoint5", "bulletpoint6")
 
     behave like pageWithBackLink(applyView)
   }

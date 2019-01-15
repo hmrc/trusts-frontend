@@ -59,6 +59,7 @@ trait ViewBehaviours extends ViewSpecBase {
           val doc = asDocument(view)
           assertNotRenderedById(doc, "cymraeg-switch")
         }
+
       }
     }
   }
