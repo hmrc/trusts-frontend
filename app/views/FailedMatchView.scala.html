@@ -18,21 +18,22 @@
 @import models.Mode
 
 @this(
-main_template: MainTemplate,
-formHelper: FormWithCSRF
+main_template: MainTemplate
 )
-
-
 
 @()(implicit request: Request[_], messages: Messages)
 
 @main_template(
-title = s"${errorPrefix(form)} ${messages("FailedMatch.title")}"
+title = messages("FailedMatch.title")
 ) {
 
-    @components.back_link()
+@components.heading("FailedMatch.heading")
 
-    @components.heading("FailedMatch.heading")
+
+}
+
+
+
 
 <!--FailedMatch.bulletpoint1-->
 <!--FailedMatch.bulletpoint2-->
@@ -44,4 +45,4 @@ title = s"${errorPrefix(form)} ${messages("FailedMatch.title")}"
 <!--FailedMatch.paragraph3-->
 <!--FailedMatch.h2-->
 <!--FailedMatch.paragraph4-->
-}
+
