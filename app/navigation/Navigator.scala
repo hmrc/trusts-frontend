@@ -22,23 +22,33 @@ import controllers.routes
 import pages._
 import models._
 
-@Singleton
-class Navigator @Inject()() {
 
-  private val matchingDetails: Map[Page, UserAnswers => Call] = Map(
+trait MatchingNavigator {
+
+  protected val matchingDetails: Map[Page, UserAnswers => Call] = Map(
     TrustRegisteredOnlinePage -> (_ => routes.TrustHaveAUTRController.onPageLoad(NormalMode)),
-    TrustHaveAUTRPage -> TrustHaveAUTRRoute,
-    WhatIsTheUTRPage -> (_ => routes.WhatIsTheTrustsNameController.onPageLoad(NormalMode)),
-    WhatIsTheTrustsNamePage -> (_ => routes.PostcodeForTheTrustController.onPageLoad(NormalMode))
+    TrustHaveAUTRPage -> trustHaveAUTRRoute,
+    WhatIsTheUTRPage -> (_ => routes.TrustNameController.onPageLoad(NormalMode)),
+    TrustNamePage -> (_ => routes.PostcodeForTheTrustController.onPageLoad(NormalMode))
   )
 
-  private def TrustHaveAUTRRoute(answers: UserAnswers) = answers.get(TrustHaveAUTRPage) match {
-    case Some(true)  => routes.WhatIsTheUTRController.onPageLoad(NormalMode)
-    case Some(false) => routes.WhatIsTheUTRController.onPageLoad(NormalMode)
-    case None        => routes.SessionExpiredController.onPageLoad()
+  private def trustHaveAUTRRoute(answers: UserAnswers) = {
+    val condition = (answers.get(TrustRegisteredOnlinePage), answers.get(TrustHaveAUTRPage))
+
+    condition match {
+      case (Some(false), Some(true)) => routes.WhatIsTheUTRController.onPageLoad(NormalMode)
+      case (Some(false), Some(false)) => routes.TrustNameController.onPageLoad(NormalMode)
+      case (Some(true), Some(false)) => routes.UTRSentByPostController.onPageLoad()
+      case (Some(true), Some(true)) => routes.CannotMakeChangesController.onPageLoad()
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
   }
 
+}
 
+
+@Singleton
+class Navigator @Inject()() extends MatchingNavigator {
 
   private val trustDetails: Map[Page, UserAnswers => Call] = Map(
     TrustNamePage -> (_ => routes.WhenTrustSetupController.onPageLoad(NormalMode)),

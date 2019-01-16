@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,24 +12,19 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package forms
+@this(
+    main_template: MainTemplate
+)
 
-import javax.inject.Inject
+@()(implicit request: Request[_], messages: Messages)
 
-import forms.mappings.Mappings
-import play.api.data.Form
+@main_template(
+    title = messages("uTRSentByPostController.title")
+    ) {
 
-class WhatIsTheTrustsNameFormProvider @Inject() extends Mappings {
+    @components.back_link()
 
-  def apply(): Form[String] =
-    Form(
-      "value" -> text("whatIsTheTrustsName.error.required")
-        .verifying(
-          firstError(
-          maxLength(53, "whatIsTheTrustsName.error.length"),
-          regexp("^[A-Za-z0-9 ,.()/&'-]*$", "whatIsTheTrustsName.error.invalidCharacters"),
-          isNotEmpty("value", "whatIsTheTrustsName.error.required")))
-    )
+    @components.heading("uTRSentByPostController.heading")
 }

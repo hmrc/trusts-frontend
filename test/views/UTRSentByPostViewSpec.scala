@@ -14,22 +14,23 @@
  * limitations under the License.
  */
 
-package forms
+package views
 
-import javax.inject.Inject
+import views.behaviours.ViewBehaviours
+import views.html.UTRSentByPostView
 
-import forms.mappings.Mappings
-import play.api.data.Form
+class UTRSentByPostViewSpec extends ViewBehaviours {
 
-class WhatIsTheTrustsNameFormProvider @Inject() extends Mappings {
+  "UTRSentByPostController view" must {
 
-  def apply(): Form[String] =
-    Form(
-      "value" -> text("whatIsTheTrustsName.error.required")
-        .verifying(
-          firstError(
-          maxLength(53, "whatIsTheTrustsName.error.length"),
-          regexp("^[A-Za-z0-9 ,.()/&'-]*$", "whatIsTheTrustsName.error.invalidCharacters"),
-          isNotEmpty("value", "whatIsTheTrustsName.error.required")))
-    )
+    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+    val view = application.injector.instanceOf[UTRSentByPostView]
+
+    val applyView = view.apply()(fakeRequest, messages)
+
+    behave like normalPage(applyView, "uTRSentByPostController")
+
+    behave like pageWithBackLink(applyView)
+  }
 }

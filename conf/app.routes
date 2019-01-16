@@ -110,3 +110,5 @@ POST       /changePostcodeForTheTrust                  controllers.PostcodeForTh
 GET        /FailedMatch                       controllers.FailedMatchController.onPageLoad()
 
 GET        /cannotMakeChanges                       controllers.CannotMakeChangesController.onPageLoad()
+
+GET        /uTRSentByPost                      controllers.UTRSentByPostController.onPageLoad()
