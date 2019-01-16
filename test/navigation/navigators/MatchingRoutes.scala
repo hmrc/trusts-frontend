@@ -70,7 +70,9 @@ trait MatchingRoutes {
           forAll(arbitrary[UserAnswers]) {
             userAnswers =>
 
-              navigator.nextPage(TrustNamePage, NormalMode)(userAnswers)
+              val answers = userAnswers.set(TrustHaveAUTRPage, true).success.value
+
+              navigator.nextPage(TrustNamePage, NormalMode)(answers)
                 .mustBe(routes.PostcodeForTheTrustController.onPageLoad(NormalMode))
           }
         }

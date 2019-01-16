@@ -31,11 +31,13 @@ trait TrustDetailsRoutes {
 
   def trustDetailsRoutes()(implicit navigator : Navigator) = {
 
-    "go to TrustSetup from TrustName" in {
+    "go to TrustSetup from TrustName when user does not have a UTR" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(TrustNamePage, NormalMode)(userAnswers)
+          val answers = userAnswers.set(TrustHaveAUTRPage, false).success.value
+
+          navigator.nextPage(TrustNamePage, NormalMode)(answers)
             .mustBe(routes.WhenTrustSetupController.onPageLoad(NormalMode))
       }
     }

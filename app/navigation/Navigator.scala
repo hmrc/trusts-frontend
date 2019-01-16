@@ -28,8 +28,7 @@ trait MatchingNavigator {
   protected val matchingDetails: Map[Page, UserAnswers => Call] = Map(
     TrustRegisteredOnlinePage -> (_ => routes.TrustHaveAUTRController.onPageLoad(NormalMode)),
     TrustHaveAUTRPage -> trustHaveAUTRRoute,
-    WhatIsTheUTRPage -> (_ => routes.TrustNameController.onPageLoad(NormalMode)),
-    TrustNamePage -> (_ => routes.PostcodeForTheTrustController.onPageLoad(NormalMode))
+    WhatIsTheUTRPage -> (_ => routes.TrustNameController.onPageLoad(NormalMode))
   )
 
   private def trustHaveAUTRRoute(answers: UserAnswers) = {
@@ -51,7 +50,7 @@ trait MatchingNavigator {
 class Navigator @Inject()() extends MatchingNavigator {
 
   private val trustDetails: Map[Page, UserAnswers => Call] = Map(
-    TrustNamePage -> (_ => routes.WhenTrustSetupController.onPageLoad(NormalMode)),
+    TrustNamePage -> trustNameRoute,
     WhenTrustSetupPage -> (_ => routes.GovernedInsideTheUKController.onPageLoad(NormalMode)),
     GovernedInsideTheUKPage -> isTrustGovernedInsideUKRoute,
     CountryGoverningTrustPage -> (_ => routes.AdministrationInsideUKController.onPageLoad(NormalMode)),
@@ -66,6 +65,16 @@ class Navigator @Inject()() extends MatchingNavigator {
     InheritanceTaxActPage -> inheritanceTaxRoute,
     AgentOtherThanBarristerPage -> (_ => routes.CheckYourAnswersController.onPageLoad())
   )
+
+  private def trustNameRoute(answers: UserAnswers) = {
+    val hasUTR = answers.get(TrustHaveAUTRPage).getOrElse(false)
+
+    if (hasUTR) {
+      routes.PostcodeForTheTrustController.onPageLoad(NormalMode)
+    } else {
+      routes.WhenTrustSetupController.onPageLoad(NormalMode)
+    }
+  }
 
   private def isTrustGovernedInsideUKRoute(answers: UserAnswers) = answers.get(GovernedInsideTheUKPage) match {
     case Some(true)  => routes.AdministrationInsideUKController.onPageLoad(NormalMode)
