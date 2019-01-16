@@ -72,7 +72,7 @@ class TrustResidentInUKPageSpec extends PageBehaviours {
       initial =>
 
         val answers = initial.set(RegisteringTrustFor5APage, true).success.value
-          .set(NonResidentTypePage, NonResidentType.resident).success.value
+          .set(NonResidentTypePage, NonResidentType.Domiciled).success.value
           .set(InheritanceTaxActPage, true).success.value
           .set(AgentOtherThanBarristerPage, true).success.value
 

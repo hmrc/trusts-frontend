@@ -16,19 +16,18 @@
 
 package models
 
-import play.api.libs.json._
 import viewmodels.RadioOption
 
 sealed trait NonResidentType
 
 object NonResidentType extends Enumerable.Implicits {
 
-  case object resident extends WithName("resident") with NonResidentType
-  case object nonresident extends WithName("nonresident") with NonResidentType
-  case object ceaseresident extends WithName("ceaseresident") with NonResidentType
+  case object Domiciled extends WithName("non-resident-domiciled") with NonResidentType
+  case object NonDomiciled extends WithName("non-resident-non-domiciled") with NonResidentType
+  case object CeaseResident extends WithName("non-resident-cease-resident") with NonResidentType
 
   val values: Set[NonResidentType] = Set(
-    resident, nonresident, ceaseresident
+    Domiciled, NonDomiciled, CeaseResident
   )
 
   val options: Set[RadioOption] = values.map {
