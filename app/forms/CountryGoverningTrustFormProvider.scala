@@ -25,7 +25,7 @@ class CountryGoverningTrustFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
     Form(
-      "country" -> text("countryGoverningTrust.error.required")
+      "value" -> text("countryGoverningTrust.error.required")
         .verifying(
           firstError(
             maxLength(100, "countryGoverningTrust.error.length"),

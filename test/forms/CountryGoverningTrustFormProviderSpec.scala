@@ -31,7 +31,7 @@ class CountryGoverningTrustFormProviderSpec extends StringFieldBehaviours {
 
   ".value" must {
 
-    val fieldName = "country"
+    val fieldName = "value"
 
     behave like fieldThatBindsValidData(
       form,

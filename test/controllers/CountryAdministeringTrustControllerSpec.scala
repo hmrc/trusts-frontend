@@ -92,7 +92,7 @@ class CountryAdministeringTrustControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, countryAdministeringTrustRoute)
-          .withFormUrlEncodedBody(("country", "IN"))
+          .withFormUrlEncodedBody(("value", "IN"))
 
       val result = route(application, request).value
 
@@ -108,9 +108,9 @@ class CountryAdministeringTrustControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, countryAdministeringTrustRoute)
-          .withFormUrlEncodedBody(("country", ""))
+          .withFormUrlEncodedBody(("value", ""))
 
-      val boundForm = form.bind(Map("country" -> ""))
+      val boundForm = form.bind(Map("value" -> ""))
 
       val view = application.injector.instanceOf[CountryAdministeringTrustView]
 
@@ -147,7 +147,7 @@ class CountryAdministeringTrustControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, countryAdministeringTrustRoute)
-          .withFormUrlEncodedBody(("country", "GB"))
+          .withFormUrlEncodedBody(("value", "GB"))
 
       val result = route(application, request).value
 

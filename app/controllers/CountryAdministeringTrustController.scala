@@ -53,7 +53,7 @@ class CountryAdministeringTrustController @Inject()(
 
       val preparedForm = request.userAnswers.get(CountryAdministeringTrustPage) match {
         case None => form
-        case Some(country) => form.fill(country)
+        case Some(value) => form.fill(value)
       }
 
       Ok(view(preparedForm, countryOptions.options, mode))
@@ -66,9 +66,9 @@ class CountryAdministeringTrustController @Inject()(
         (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(view(formWithErrors, countryOptions.options, mode))),
 
-        country => {
+        value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(CountryAdministeringTrustPage, country))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(CountryAdministeringTrustPage, value))
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(CountryAdministeringTrustPage, mode)(updatedAnswers))
         }

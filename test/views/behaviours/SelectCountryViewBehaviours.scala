@@ -37,13 +37,13 @@ trait SelectCountryViewBehaviours extends QuestionViewBehaviours[String] {
 
           val doc = asDocument(createView(form))
           val expectedHintText = expectedHintKey map (k => messages(k))
-          assertContainsLabel(doc, "country", messages(s"$messageKeyPrefix.heading"), expectedHintText)
+          assertContainsLabel(doc, "value", messages(s"$messageKeyPrefix.heading"), expectedHintText)
         }
 
         "contain an input for the value" in {
 
           val doc = asDocument(createView(form))
-          assertRenderedById(doc, "country")
+          assertRenderedById(doc, "value")
         }
       }
 
@@ -66,7 +66,7 @@ trait SelectCountryViewBehaviours extends QuestionViewBehaviours[String] {
 
         "show an error in the value field's label" in {
 
-          val errorKey = "country"
+          val errorKey = "value"
           val errorMessage = "error.number"
           val error = FormError(errorKey, errorMessage)
 

@@ -92,7 +92,7 @@ class TrustPreviouslyResidentControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, trustPreviouslyResidentRoute)
-          .withFormUrlEncodedBody(("country", "IN"))
+          .withFormUrlEncodedBody(("value", "IN"))
 
       val result = route(application, request).value
 
@@ -108,9 +108,9 @@ class TrustPreviouslyResidentControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, trustPreviouslyResidentRoute)
-          .withFormUrlEncodedBody(("country", ""))
+          .withFormUrlEncodedBody(("value", ""))
 
-      val boundForm = form.bind(Map("country" -> ""))
+      val boundForm = form.bind(Map("value" -> ""))
 
       val view = application.injector.instanceOf[TrustPreviouslyResidentView]
 
@@ -147,7 +147,7 @@ class TrustPreviouslyResidentControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, trustPreviouslyResidentRoute)
-          .withFormUrlEncodedBody(("country", "GB"))
+          .withFormUrlEncodedBody(("value", "GB"))
 
       val result = route(application, request).value
 

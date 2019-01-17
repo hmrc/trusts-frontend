@@ -25,7 +25,7 @@ class TrustPreviouslyResidentFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
     Form(
-      "country" -> text("trustPreviouslyResident.error.required")
+      "value" -> text("trustPreviouslyResident.error.required")
         .verifying(
           firstError(
             maxLength(100, "trustPreviouslyResident.error.length"),
