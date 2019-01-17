@@ -119,7 +119,7 @@ class TrustRegisteredOnlineControllerSpec extends SpecBase {
       application.stop()
     }
 
-    "redirect to Session Expired for a GET if no existing data is found" in {
+    "return OK for a GET if no existing data is found" in {
 
       val application = applicationBuilder(userAnswers = None).build()
 
@@ -127,16 +127,16 @@ class TrustRegisteredOnlineControllerSpec extends SpecBase {
 
       val result = route(application, request).value
 
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      status(result) mustEqual OK
 
       application.stop()
     }
 
-    "redirect to Session Expired for a POST if no existing data is found" in {
+    "redirect to the next page when valid data is submitted if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      val application = applicationBuilder(userAnswers = None)
+        .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
+        .build()
 
       val request =
         FakeRequest(POST, trustRegisteredOnlineRoute)
@@ -146,9 +146,11 @@ class TrustRegisteredOnlineControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual onwardRoute.url
 
       application.stop()
     }
+
+
   }
 }
