@@ -39,7 +39,7 @@ selectAttribute: Set[String] = Set.empty
         <span class="error-message">@messages(error.message, error.args:_*)</span>
         }
     </label>
-    <select class="form-control @selectClasses.mkString(" ")" id="@field.id" name="@field.name" @selectAttribute>
+    <select class="form-control @selectClasses.mkString(" ")" id="@field.id" name="@field.name" aria-labelledby="@field.id" @selectAttribute>
         @placeholder.map{ ph =>
             <option value="">@messages(ph)</option>
         }
