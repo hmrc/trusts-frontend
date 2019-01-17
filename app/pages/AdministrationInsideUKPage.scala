@@ -16,11 +16,23 @@
 
 package pages
 
+import models.UserAnswers
 import play.api.libs.json.JsPath
 
-case object AdministrationOutsideUKPage extends QuestionPage[Boolean] {
+import scala.util.Try
+
+case object AdministrationInsideUKPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "administrationOutsideUK"
+  override def toString: String = "administrationInsideUK"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
+    value match {
+      case Some(true) =>
+        userAnswers.remove(CountryAdministeringTrustPage)
+      case _ =>
+        super.cleanup(value, userAnswers)
+    }
+  }
 }

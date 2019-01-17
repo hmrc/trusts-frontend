@@ -23,10 +23,10 @@ echo "Adding to UserAnswersEntryGenerators"
 awk '/trait UserAnswersEntryGenerators/ {\
     print;\
     print "";\
-    print "  implicit lazy val arbitraryGovernedOutsideTheUKUserAnswersEntry: Arbitrary[(GovernedOutsideTheUKPage.type, JsValue)] =";\
+    print "  implicit lazy val arbitraryGovernedOutsideTheUKUserAnswersEntry: Arbitrary[(GovernedInsideTheUKPage.type, JsValue)] =";\
     print "    Arbitrary {";\
     print "      for {";\
-    print "        page  <- arbitrary[GovernedOutsideTheUKPage.type]";\
+    print "        page  <- arbitrary[GovernedInsideTheUKPage.type]";\
     print "        value <- arbitrary[Boolean].map(Json.toJson(_))";\
     print "      } yield (page, value)";\
     print "    }";\
@@ -36,21 +36,21 @@ echo "Adding to PageGenerators"
 awk '/trait PageGenerators/ {\
     print;\
     print "";\
-    print "  implicit lazy val arbitraryGovernedOutsideTheUKPage: Arbitrary[GovernedOutsideTheUKPage.type] =";\
-    print "    Arbitrary(GovernedOutsideTheUKPage)";\
+    print "  implicit lazy val arbitraryGovernedInsideTheUKPage: Arbitrary[GovernedInsideTheUKPage.type] =";\
+    print "    Arbitrary(GovernedInsideTheUKPage)";\
     next }1' ../test/generators/PageGenerators.scala > tmp && mv tmp ../test/generators/PageGenerators.scala
 
 echo "Adding to UserAnswersGenerator"
 awk '/val generators/ {\
     print;\
-    print "    arbitrary[(GovernedOutsideTheUKPage.type, JsValue)] ::";\
+    print "    arbitrary[(GovernedInsideTheUKPage.type, JsValue)] ::";\
     next }1' ../test/generators/UserAnswersGenerator.scala > tmp && mv tmp ../test/generators/UserAnswersGenerator.scala
 
 echo "Adding helper method to CheckYourAnswersHelper"
 awk '/class/ {\
      print;\
      print "";\
-     print "  def governedOutsideTheUK: Option[AnswerRow] = userAnswers.get(GovernedOutsideTheUKPage) map {";\
+     print "  def governedOutsideTheUK: Option[AnswerRow] = userAnswers.get(GovernedInsideTheUKPage) map {";\
      print "    x => AnswerRow(\"governedOutsideTheUK.checkYourAnswersLabel\", if(x) \"site.yes\" else \"site.no\", true, routes.GovernedOutsideTheUKController.onPageLoad(CheckMode).url)"; print "  }";\
      next }1' ../app/utils/CheckYourAnswersHelper.scala > tmp && mv tmp ../app/utils/CheckYourAnswersHelper.scala
 

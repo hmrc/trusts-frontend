@@ -16,6 +16,8 @@
 
 package pages
 
+import models.{NonResidentType, UserAnswers}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
 class TrustResidentInUKPageSpec extends PageBehaviours {
@@ -28,4 +30,60 @@ class TrustResidentInUKPageSpec extends PageBehaviours {
 
     beRemovable[Boolean](TrustResidentInUKPage)
   }
+
+  "remove EstablishedUnderScotsLaw, TrustResidentOffshore and TrustPreviouslyResident when TrustResidentInUK is set to false" in {
+
+    forAll(arbitrary[UserAnswers], arbitrary[Boolean], arbitrary[String]) {
+      (initial, bool, str) =>
+
+        val answers = initial.set(EstablishedUnderScotsLawPage, bool).success.value
+          .set(TrustResidentOffshorePage, true).success.value
+          .set(TrustPreviouslyResidentPage, str).success.value
+
+        val result = answers.set(TrustResidentInUKPage, false).success.value
+
+        result.get(EstablishedUnderScotsLawPage) mustNot be (defined)
+        result.get(TrustResidentOffshorePage) mustNot be (defined)
+        result.get(TrustPreviouslyResidentPage) mustNot be (defined)
+    }
+
+  }
+
+  "remove EstablishedUnderScotsLaw and TrustResidentOffshore when TrustResidentInUK is set to false" in {
+
+    forAll(arbitrary[UserAnswers], arbitrary[Boolean]) {
+      (initial, bool) =>
+
+        val answers = initial.set(EstablishedUnderScotsLawPage, bool).success.value
+          .set(TrustResidentOffshorePage, false).success.value
+
+        val result = answers.set(TrustResidentInUKPage, false).success.value
+
+        result.get(EstablishedUnderScotsLawPage) mustNot be (defined)
+        result.get(TrustResidentOffshorePage) mustNot be (defined)
+        result.get(TrustPreviouslyResidentPage) mustNot be (defined)
+    }
+
+  }
+
+  "remove relevant data when TrustResidentInUK set to true" in {
+
+    forAll(arbitrary[UserAnswers]) {
+      initial =>
+
+        val answers = initial.set(RegisteringTrustFor5APage, true).success.value
+          .set(NonResidentTypePage, NonResidentType.Domiciled).success.value
+          .set(InheritanceTaxActPage, true).success.value
+          .set(AgentOtherThanBarristerPage, true).success.value
+
+        val result = answers.set(TrustResidentInUKPage, true).success.value
+
+        result.get(RegisteringTrustFor5APage) mustNot be (defined)
+        result.get(NonResidentTypePage) mustNot be (defined)
+        result.get(InheritanceTaxActPage) mustNot be (defined)
+        result.get(AgentOtherThanBarristerPage) mustNot be (defined)
+    }
+
+  }
+
 }

@@ -27,10 +27,10 @@ class Navigator @Inject()() {
 
   private val routeMap: Map[Page, UserAnswers => Call] = Map(
     TrustNamePage -> (_ => routes.WhenTrustSetupController.onPageLoad(NormalMode)),
-    WhenTrustSetupPage -> (_ => routes.GovernedOutsideTheUKController.onPageLoad(NormalMode)),
-    GovernedOutsideTheUKPage -> isTrustGovernedOutsideUKRoute,
-    CountryGoverningTrustPage -> (_ => routes.AdministrationOutsideUKController.onPageLoad(NormalMode)),
-    AdministrationOutsideUKPage -> isTrustGeneralAdministrationRoute,
+    WhenTrustSetupPage -> (_ => routes.GovernedInsideTheUKController.onPageLoad(NormalMode)),
+    GovernedInsideTheUKPage -> isTrustGovernedInsideUKRoute,
+    CountryGoverningTrustPage -> (_ => routes.AdministrationInsideUKController.onPageLoad(NormalMode)),
+    AdministrationInsideUKPage -> isTrustGeneralAdministrationRoute,
     CountryAdministeringTrustPage -> (_ => routes.TrustResidentInUKController.onPageLoad(NormalMode)),
     TrustResidentInUKPage -> isTrustResidentInUKRoute,
     EstablishedUnderScotsLawPage -> (_ => routes.TrustResidentOffshoreController.onPageLoad(NormalMode)),
@@ -42,13 +42,13 @@ class Navigator @Inject()() {
     AgentOtherThanBarristerPage -> (_ => routes.CheckYourAnswersController.onPageLoad())
   )
 
-  private def isTrustGovernedOutsideUKRoute(answers: UserAnswers) = answers.get(GovernedOutsideTheUKPage) match {
-    case Some(true)  => routes.AdministrationOutsideUKController.onPageLoad(NormalMode)
+  private def isTrustGovernedInsideUKRoute(answers: UserAnswers) = answers.get(GovernedInsideTheUKPage) match {
+    case Some(true)  => routes.AdministrationInsideUKController.onPageLoad(NormalMode)
     case Some(false) => routes.CountryGoverningTrustController.onPageLoad(NormalMode)
     case None        => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def isTrustGeneralAdministrationRoute(answers: UserAnswers) = answers.get(AdministrationOutsideUKPage) match {
+  private def isTrustGeneralAdministrationRoute(answers: UserAnswers) = answers.get(AdministrationInsideUKPage) match {
     case Some(true)  => routes.TrustResidentInUKController.onPageLoad(NormalMode)
     case Some(false) => routes.CountryAdministeringTrustController.onPageLoad(NormalMode)
     case None        => routes.SessionExpiredController.onPageLoad()

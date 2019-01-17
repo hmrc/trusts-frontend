@@ -17,24 +17,24 @@
 package views
 
 import controllers.routes
-import forms.GovernedOutsideTheUKFormProvider
+import forms.GovernedInsideTheUKFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.GovernedOutsideTheUKView
+import views.html.GovernedInsideTheUKView
 
-class GovernedOutsideTheUKViewSpec extends YesNoViewBehaviours {
+class GovernedInsideTheUKViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "governedOutsideTheUK"
+  val messageKeyPrefix = "governedInsideTheUK"
 
-  val form = new GovernedOutsideTheUKFormProvider()()
+  val form = new GovernedInsideTheUKFormProvider()()
 
-  "GovernedOutsideTheUK view" must {
+  "GovernedInsideTheUK view" must {
 
     val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-    val view = application.injector.instanceOf[GovernedOutsideTheUKView]
+    val view = application.injector.instanceOf[GovernedInsideTheUKView]
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode)(fakeRequest, messages)
@@ -43,7 +43,7 @@ class GovernedOutsideTheUKViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.GovernedOutsideTheUKController.onSubmit(NormalMode).url)
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.GovernedInsideTheUKController.onSubmit(NormalMode).url)
 
     behave like pageWithASubmitButton(applyView(form))
   }

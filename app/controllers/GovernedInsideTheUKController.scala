@@ -17,30 +17,30 @@
 package controllers
 
 import controllers.actions._
-import forms.AdministrationOutsideUKFormProvider
+import forms.GovernedInsideTheUKFormProvider
 import javax.inject.Inject
 import models.{Mode, UserAnswers}
 import navigation.Navigator
-import pages.AdministrationOutsideUKPage
+import pages.GovernedInsideTheUKPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.AdministrationOutsideUKView
+import views.html.GovernedInsideTheUKView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AdministrationOutsideUKController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: AdministrationOutsideUKFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: AdministrationOutsideUKView
+class GovernedInsideTheUKController @Inject()(
+                                               override val messagesApi: MessagesApi,
+                                               sessionRepository: SessionRepository,
+                                               navigator: Navigator,
+                                               identify: IdentifierAction,
+                                               getData: DataRetrievalAction,
+                                               requireData: DataRequiredAction,
+                                               formProvider: GovernedInsideTheUKFormProvider,
+                                               val controllerComponents: MessagesControllerComponents,
+                                               view: GovernedInsideTheUKView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = formProvider()
@@ -48,7 +48,7 @@ class AdministrationOutsideUKController @Inject()(
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(AdministrationOutsideUKPage) match {
+      val preparedForm = request.userAnswers.get(GovernedInsideTheUKPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -65,9 +65,9 @@ class AdministrationOutsideUKController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(AdministrationOutsideUKPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(GovernedInsideTheUKPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(AdministrationOutsideUKPage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(GovernedInsideTheUKPage, mode)(updatedAnswers))
         }
       )
   }

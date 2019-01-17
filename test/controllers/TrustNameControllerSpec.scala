@@ -20,15 +20,21 @@ import base.SpecBase
 import forms.TrustNameFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
+import org.scalatest.mockito.MockitoSugar
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
 import pages.TrustNamePage
 import play.api.inject.bind
 import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import repositories.SessionRepository
 import views.html.TrustNameView
 
-class TrustNameControllerSpec extends SpecBase {
+import scala.concurrent.Future
+
+class TrustNameControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 

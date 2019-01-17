@@ -104,10 +104,10 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryAdministrationOutsideUKUserAnswersEntry: Arbitrary[(AdministrationOutsideUKPage.type, JsValue)] =
+  implicit lazy val arbitraryAdministrationInsideUKUserAnswersEntry: Arbitrary[(AdministrationInsideUKPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[AdministrationOutsideUKPage.type]
+        page  <- arbitrary[AdministrationInsideUKPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -120,10 +120,10 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryGovernedOutsideTheUKUserAnswersEntry: Arbitrary[(GovernedOutsideTheUKPage.type, JsValue)] =
+  implicit lazy val arbitraryGovernedInsideTheUKUserAnswersEntry: Arbitrary[(GovernedInsideTheUKPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[GovernedOutsideTheUKPage.type]
+        page  <- arbitrary[GovernedInsideTheUKPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }

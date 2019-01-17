@@ -45,7 +45,7 @@ class WhenTrustSetupViewSpec extends QuestionViewBehaviours[LocalDate] {
 
     behave like normalPage(applyView(form), messageKeyPrefix, s"hint")
 
-    behave like pageWithTextFields(form, applyViewF, messageKeyPrefix, routes.GovernedOutsideTheUKController.onPageLoad(NormalMode).url)
+    behave like pageWithTextFields(form, applyViewF, messageKeyPrefix, routes.GovernedInsideTheUKController.onPageLoad(NormalMode).url)
 
     behave like pageWithBackLink(applyView(form))
 

@@ -44,15 +44,15 @@ class DefaultSessionRepository @Inject()(
   private def collection: Future[JSONCollection] =
     mongo.database.map(_.collection[JSONCollection](collectionName))
 
-  private val lastUpdatedIndex = Index(
-    key     = Seq("lastUpdated" -> IndexType.Ascending),
-    name    = Some("user-answers-last-updated-index"),
+  private val createdAtIndex = Index(
+    key     = Seq("createdAt" -> IndexType.Ascending),
+    name    = Some("user-answers-created-at-index"),
     options = BSONDocument("expireAfterSeconds" -> cacheTtl)
   )
 
   val started: Future[Unit] =
     collection.flatMap {
-      _.indexesManager.ensure(lastUpdatedIndex)
+      _.indexesManager.ensure(createdAtIndex)
     }.map(_ => ())
 
   override def get(id: String): Future[Option[UserAnswers]] =
@@ -65,7 +65,7 @@ class DefaultSessionRepository @Inject()(
     )
 
     val modifier = Json.obj(
-      "$set" -> (userAnswers copy (lastUpdated = LocalDateTime.now))
+      "$set" -> userAnswers
     )
 
     collection.flatMap {
