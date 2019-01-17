@@ -23,16 +23,16 @@ import models.{Mode, UserAnswers}
 import navigation.Navigator
 import pages.TrustHaveAUTRPage
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import viewmodels.Link
 import views.html.TrustHaveAUTRView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrustHaveAUTRController @Inject()(
-                                         override val messagesApi: MessagesApi,
+class TrustHaveAUTRController @Inject()( override val messagesApi: MessagesApi,
                                          sessionRepository: SessionRepository,
                                          navigator: Navigator,
                                          identify: IdentifierAction,
@@ -53,15 +53,19 @@ class TrustHaveAUTRController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      val link = Link(Messages("trustHaveAUTR.link"), "https://www.gov.uk/find-lost-utr-number")
+
+      Ok(view(preparedForm, mode, Some(link)))
   }
 
   def onSubmit(mode: Mode) = (identify andThen getData andThen requireData).async {
     implicit request =>
 
+      val link = Link(Messages("trustHaveAUTR.link"), "https://www.gov.uk/find-lost-utr-number")
+
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, Some(link)))),
 
         value => {
           for {

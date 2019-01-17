@@ -140,7 +140,8 @@ trustHaveAUTR.title = Does the trust have a Unique Taxpayer Reference?
 trustHaveAUTR.heading = Does the trust have a Unique Taxpayer Reference?
 trustHaveAUTR.checkYourAnswersLabel = trustHaveAUTR
 trustHaveAUTR.error.required = Select yes if the trust has a Unique Taxpayer Reference
-trustHaveAUTR.hint = This is 10 numbers, for example 12345 67890. It will be on tax returns and other letters about Self Assessment. It may be called ‘reference’, ‘UTR’ or ‘official use’. You can find a lost UTR number. (link https://www.gov.uk/find-lost-utr-number)
+trustHaveAUTR.hint = This is 10 numbers, for example 12345 67890. It will be on tax returns and other letters about Self Assessment. It may be called ‘reference’, ‘UTR’ or ‘official use’. You can
+trustHaveAUTR.link = find a lost UTR number.
 
 whatIsTheTrustsName.title = What is the trust's name?
 whatIsTheTrustsName.heading = What is the trust's name?
@@ -187,5 +188,8 @@ cannotMakeChanges.paragraph2 = if you need to update the lead trustee or contact
 cannotMakeChanges.paragraph3 = You must keep a record of all other changes to the trust, but you do not need to send them by post.
 cannotMakeChanges.postLink = send a letter by post to HM Revenue and Customs
 
-uTRSentByPost.title = uTRSentByPostController
-uTRSentByPost.heading = uTRSentByPostController
+uTRSentByPost.title = Your Unique Taxpayer Reference (UTR) has been sent by post
+uTRSentByPost.heading = Your Unique Taxpayer Reference (UTR) has been sent by post
+uTRSentByPost.paragraph1 = It can take 15 working days for you to get your UTR. For International addresses it can take 21 working days.
+uTRSentByPost.paragraph2 = if you have not received your UTR after this time.
+uTRSentByPost.link = Contact the trusts helpline

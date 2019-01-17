@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,28 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import controllers.routes._
-@import models.Mode
+package viewmodels
 
-@this(
-main_template: MainTemplate
-)
-
-@()(implicit request: Request[_], messages: Messages)
-
-@main_template(
-title = messages("uTRSentByPost.title")
-) {
-
-@components.back_link()
-
-@components.heading("uTRSentByPost.heading")
-
-<p>@messages("uTRSentByPost.paragraph1")</p>
-
-<p><a id="help-link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" rel="external">@messages("uTRSentByPost.link")</a> @messages("uTRSentByPost.paragraph2")</p>
-
-}
-
+case class Link(text: String, url: String)

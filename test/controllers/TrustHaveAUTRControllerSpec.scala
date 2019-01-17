@@ -26,6 +26,7 @@ import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import viewmodels.Link
 import views.html.TrustHaveAUTRView
 
 class TrustHaveAUTRControllerSpec extends SpecBase {
@@ -34,6 +35,9 @@ class TrustHaveAUTRControllerSpec extends SpecBase {
 
   val formProvider = new TrustHaveAUTRFormProvider()
   val form = formProvider()
+
+  val url = "https://www.gov.uk/find-lost-utr-number"
+  val link = Link(messages("trustHaveAUTR.link"), url)
 
   lazy val trustHaveAUTRRoute = routes.TrustHaveAUTRController.onPageLoad(NormalMode).url
 
@@ -52,7 +56,7 @@ class TrustHaveAUTRControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, Some(link))(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -72,7 +76,7 @@ class TrustHaveAUTRControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, Some(link))(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -114,7 +118,7 @@ class TrustHaveAUTRControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, Some(link))(fakeRequest, messages).toString
 
       application.stop()
     }

@@ -16,13 +16,14 @@
 
 @import controllers.routes._
 @import models.Mode
+@import viewmodels.Link
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, link: Option[Link] =None)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("trustHaveAUTR.title")}"
@@ -40,6 +41,7 @@
             field = form("value"),
             label = messages("trustHaveAUTR.heading"),
             hint = Some(messages(s"trustHaveAUTR.hint")),
+            link = link,
             labelClass = Some("visually-hidden")
         )
 

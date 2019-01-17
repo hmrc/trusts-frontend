@@ -76,6 +76,21 @@ trait ViewBehaviours extends ViewSpecBase {
     }
   }
 
+  def pageWithLink(view: HtmlFormat.Appendable, id: String, url : String): Unit = {
+
+    "behave like a page with a link" must {
+
+      "have a link" in {
+
+        val doc = asDocument(view)
+        val element = doc.getElementById(id)
+
+        assertRenderedById(doc, id)
+        assertAttributeValueForElement(element, "href", url)
+      }
+    }
+  }
+
   def pageWithASubmitButton(view: HtmlFormat.Appendable) = {
 
     "behave like a page with a submit button" must {

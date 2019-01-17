@@ -40,8 +40,7 @@ trait YesNoViewBehaviours extends QuestionViewBehaviours[Boolean] {
 
           hintTextPrefix.map {
             pref =>
-              assert(legends.first.getElementsByClass("form-hint").first.text == messages(s"$pref.hint"),
-                s"\n\nLegend did not contain hint text $pref.hint")
+              legends.first.getElementsByClass("form-hint").first.text must include(messages(s"$pref.hint"))
           }
         }
 

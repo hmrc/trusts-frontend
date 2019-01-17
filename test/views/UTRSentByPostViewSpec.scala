@@ -21,7 +21,7 @@ import views.html.UTRSentByPostView
 
 class UTRSentByPostViewSpec extends ViewBehaviours {
 
-  "UTRSentByPostController view" must {
+  "UTRSentByPost view" must {
 
     val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
@@ -29,7 +29,7 @@ class UTRSentByPostViewSpec extends ViewBehaviours {
 
     val applyView = view.apply()(fakeRequest, messages)
 
-    behave like normalPage(applyView, "uTRSentByPostController")
+    behave like normalPage(applyView, "uTRSentByPost", "paragraph1", "paragraph2")
 
     behave like pageWithBackLink(applyView)
   }

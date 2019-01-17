@@ -21,6 +21,7 @@ import forms.TrustHaveAUTRFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
+import viewmodels.Link
 import views.behaviours.YesNoViewBehaviours
 import views.html.TrustHaveAUTRView
 
@@ -36,12 +37,16 @@ class TrustHaveAUTRViewSpec extends YesNoViewBehaviours {
 
     val view = application.injector.instanceOf[TrustHaveAUTRView]
 
-    def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+    val url = "https://www.gov.uk/find-lost-utr-number"
+    val link = Link(messages("trustHaveAUTR.link"), url)
+
+    def applyView(form: Form[_]): HtmlFormat.Appendable = view.apply(form, NormalMode, Some(link))(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
+
+    behave like pageWithLink(applyView(form), "link", url)
 
     behave like yesNoPage(form, applyView, messageKeyPrefix, routes.TrustHaveAUTRController.onSubmit(NormalMode).url, Some(messageKeyPrefix))
 
