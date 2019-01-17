@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,12 +25,12 @@ class CountryGoverningTrustFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
     Form(
-      "value" -> text("countryGoverningTrust.error.required")
+      "country" -> text("countryGoverningTrust.error.required")
         .verifying(
           firstError(
             maxLength(100, "countryGoverningTrust.error.length"),
             regexp(Validation.countryRegex, "countryGoverningTrust.error.invalidCharacters"),
-            isNotEmpty("value", "countryGoverningTrust.error.required")
+            isNotEmpty("country", "countryGoverningTrust.error.required")
       ))
     )
 }

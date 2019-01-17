@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ class CountryAdministeringTrustFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
     Form(
-      "value" -> text("countryAdministeringTrust.error.required")
+      "country" -> text("countryAdministeringTrust.error.required")
         .verifying(
           firstError(
             maxLength(100, "countryAdministeringTrust.error.length"),

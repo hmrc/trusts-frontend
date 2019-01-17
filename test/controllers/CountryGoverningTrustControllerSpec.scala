@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,8 @@ import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import utils.InputOption
+import utils.countryOptions.CountryOptionsNonUK
 import views.html.CountryGoverningTrustView
 
 class CountryGoverningTrustControllerSpec extends SpecBase {
@@ -49,17 +51,19 @@ class CountryGoverningTrustControllerSpec extends SpecBase {
 
       val view = application.injector.instanceOf[CountryGoverningTrustView]
 
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, countryOptions, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(CountryGoverningTrustPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(CountryGoverningTrustPage, "Spain").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -67,12 +71,14 @@ class CountryGoverningTrustControllerSpec extends SpecBase {
 
       val view = application.injector.instanceOf[CountryGoverningTrustView]
 
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill("Spain"), countryOptions, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -86,7 +92,7 @@ class CountryGoverningTrustControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, countryGoverningTrustRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("country", "IN"))
 
       val result = route(application, request).value
 
@@ -102,18 +108,20 @@ class CountryGoverningTrustControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, countryGoverningTrustRoute)
-          .withFormUrlEncodedBody(("value", ""))
+          .withFormUrlEncodedBody(("country", ""))
 
-      val boundForm = form.bind(Map("value" -> ""))
+      val boundForm = form.bind(Map("country" -> ""))
 
       val view = application.injector.instanceOf[CountryGoverningTrustView]
+
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
 
       val result = route(application, request).value
 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, countryOptions, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -139,7 +147,7 @@ class CountryGoverningTrustControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, countryGoverningTrustRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("country", "GB"))
 
       val result = route(application, request).value
 

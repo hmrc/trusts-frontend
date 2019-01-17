@@ -6,6 +6,9 @@ date.day = Day
 date.month = Month
 date.year = Year
 
+address.country = Country
+address.country.select = Select a country
+
 error.browser.title.prefix = Error:
 error.boolean = Please give an answer
 error.date.day_blank = Enter a day
