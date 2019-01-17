@@ -103,9 +103,9 @@ trustPreviouslyResident.error.invalidCharacters = The country that governs the t
 
 nonresidentType.title = What is the non-resident type?
 nonresidentType.heading = What is the non-resident type?
-nonresidentType.resident = Settlor domiciled trustees are non-resident
-nonresidentType.nonresident = Settlor non-domiciled becomes domiciled then resident
-nonresidentType.ceaseresident = Trustees cease to be resident
+nonresidentType.non-resident-domiciled = Settlor domiciled trustees are non-resident
+nonresidentType.non-resident-non-domiciled = Settlor non-domiciled becomes domiciled then resident
+nonresidentType.non-resident-cease-resident = Trustees cease to be resident
 nonresidentType.checkYourAnswersLabel = What is the non-resident type
 nonresidentType.error.required = Select the non-resident type
 
