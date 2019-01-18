@@ -16,11 +16,25 @@
 
 package pages
 
+import models.UserAnswers
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 case object TrustHaveAUTRPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ toString
 
   override def toString: String = "trustHaveAUTR"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
+    value match {
+      case Some(false) =>
+        userAnswers.remove(WhatIsTheUTRPage)
+          .flatMap(_.remove(TrustNamePage))
+          .flatMap(_.remove(PostcodeForTheTrustPage))
+      case _ =>
+        super.cleanup(value, userAnswers)
+    }
+  }
 }

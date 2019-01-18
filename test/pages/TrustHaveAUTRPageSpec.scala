@@ -16,6 +16,8 @@
 
 package pages
 
+import models.UserAnswers
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
 class TrustHaveAUTRPageSpec extends PageBehaviours {
@@ -28,4 +30,23 @@ class TrustHaveAUTRPageSpec extends PageBehaviours {
 
     beRemovable[Boolean](TrustHaveAUTRPage)
   }
+
+  "remove relevant data when TrustHaveAUTRPage is set to false" in {
+
+    forAll(arbitrary[UserAnswers], arbitrary[String]) {
+      (initial, str) =>
+
+        val answers = initial.set(WhatIsTheUTRPage, str).success.value
+          .set(TrustNamePage, str).success.value
+          .set(PostcodeForTheTrustPage, str).success.value
+
+        val result = answers.set(TrustHaveAUTRPage, false).success.value
+
+        result.get(WhatIsTheUTRPage) mustNot be (defined)
+        result.get(TrustNamePage) mustNot be (defined)
+        result.get(PostcodeForTheTrustPage) mustNot be (defined)
+    }
+
+  }
+
 }
