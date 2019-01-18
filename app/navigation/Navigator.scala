@@ -28,7 +28,8 @@ trait MatchingNavigator {
   protected val matchingDetails: Map[Page, UserAnswers => Call] = Map(
     TrustRegisteredOnlinePage -> (_ => routes.TrustHaveAUTRController.onPageLoad(NormalMode)),
     TrustHaveAUTRPage -> trustHaveAUTRRoute,
-    WhatIsTheUTRPage -> (_ => routes.TrustNameController.onPageLoad(NormalMode))
+    WhatIsTheUTRPage -> (_ => routes.TrustNameController.onPageLoad(NormalMode)),
+    PostcodeForTheTrustPage -> (_ => routes.FailedMatchController.onPageLoad())
   )
 
   private def trustHaveAUTRRoute(answers: UserAnswers) = {
