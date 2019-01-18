@@ -27,9 +27,6 @@ trait PageGenerators {
   implicit lazy val arbitraryWhatIsTheUTRPage: Arbitrary[WhatIsTheUTRPage.type] =
     Arbitrary(WhatIsTheUTRPage)
 
-  implicit lazy val arbitraryWhatIsTheTrustsNamePage: Arbitrary[WhatIsTheTrustsNamePage.type] =
-    Arbitrary(WhatIsTheTrustsNamePage)
-
   implicit lazy val arbitraryTrustHaveAUTRPage: Arbitrary[TrustHaveAUTRPage.type] =
     Arbitrary(TrustHaveAUTRPage)
 

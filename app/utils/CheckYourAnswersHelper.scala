@@ -46,15 +46,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def whatIsTheTrustsName: Option[AnswerRow] = userAnswers.get(WhatIsTheTrustsNamePage) map {
-    x =>
-      AnswerRow(
-        "whatIsTheTrustsName.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
-        routes.WhatIsTheTrustsNameController.onPageLoad(CheckMode).url
-      )
-  }
-
   def trustHaveAUTR: Option[AnswerRow] = userAnswers.get(TrustHaveAUTRPage) map {
     x =>
       AnswerRow(

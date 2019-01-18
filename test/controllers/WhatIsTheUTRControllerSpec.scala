@@ -59,7 +59,7 @@ class WhatIsTheUTRControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(WhatIsTheUTRPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(WhatIsTheUTRPage, "1111111111").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -72,7 +72,7 @@ class WhatIsTheUTRControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill("1111111111"), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -86,7 +86,7 @@ class WhatIsTheUTRControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, whatIsTheUTRRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("value", "1111111111"))
 
       val result = route(application, request).value
 
@@ -139,7 +139,7 @@ class WhatIsTheUTRControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, whatIsTheUTRRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("value", "1111111111"))
 
       val result = route(application, request).value
 
