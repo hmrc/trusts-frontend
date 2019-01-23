@@ -140,21 +140,21 @@ trustHaveAUTR.title = Does the trust have a Unique Taxpayer Reference?
 trustHaveAUTR.heading = Does the trust have a Unique Taxpayer Reference?
 trustHaveAUTR.checkYourAnswersLabel = trustHaveAUTR
 trustHaveAUTR.error.required = Select yes if the trust has a Unique Taxpayer Reference
-trustHaveAUTR.hint = This is 10 numbers, for example 12345 67890. It will be on tax returns and other letters about Self Assessment. It may be called ‘reference’, ‘UTR’ or ‘official use’. You can
+trustHaveAUTR.hint = This is 10 numbers, for example 1234567890. It will be on tax returns and other letters about Self Assessment. It may be called ‘reference’, ‘UTR’ or ‘official use’. You can
 trustHaveAUTR.link = find a lost UTR number.
 
-whatIsTheUTR.title = What is the trust's Unique Taxpayer Reference?
-whatIsTheUTR.heading = What is the trust's Unique Taxpayer Reference?
+whatIsTheUTR.title = What is the trust’s Unique Taxpayer Reference?
+whatIsTheUTR.heading = What is the trust’s Unique Taxpayer Reference?
 whatIsTheUTR.checkYourAnswersLabel = whatIsTheUTR
-whatIsTheUTR.error.required = Enter the trust's Unique Taxpayer Reference
+whatIsTheUTR.error.required = Enter the trust’s Unique Taxpayer Reference
 whatIsTheUTR.error.length = Unique Taxpayer Reference must be a 10-digit number
 whatIsTheUTR.error.invalidCharacters = Enter the trust’s Unique Taxpayer Reference in the correct format
-whatIsTheUTR.hint = This is 10 numbers, for example 12345 67890. It will be on the trust’s Self Assessment notice to file (SA316). It may be called ‘reference’, ‘UTR’ or ‘official use’.
+whatIsTheUTR.hint = This is 10 numbers, for example 1234567890. It will be on the trust’s Self Assessment notice to file (SA316). It may be called ‘reference’, ‘UTR’ or ‘official use’.
 
-postcodeForTheTrust.title = What is the trust's postcode?
-postcodeForTheTrust.heading = What is the trust's postcode?
+postcodeForTheTrust.title = What is the trust’s postcode?
+postcodeForTheTrust.heading = What is the trust’s postcode?
 postcodeForTheTrust.checkYourAnswersLabel = postcodeForTheTrust
-postcodeForTheTrust.error.required = Enter the trust's postcode
+postcodeForTheTrust.error.required = Enter the trust’s postcode
 postcodeForTheTrust.hint = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (SA316) or tax return. For example, AA1 1AA.
 
 FailedMatch.title = We cannot match the details you have given us to our records
