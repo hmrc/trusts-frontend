@@ -180,8 +180,8 @@ cannotMakeChanges.paragraph2 = if you need to update the lead trustee or contact
 cannotMakeChanges.paragraph3 = You must keep a record of all other changes to the trust, but you do not need to send them by post.
 cannotMakeChanges.postLink = send a letter by post to HM Revenue and Customs
 
-uTRSentByPost.title = Your Unique Taxpayer Reference (UTR) has been sent by post
-uTRSentByPost.heading = Your Unique Taxpayer Reference (UTR) has been sent by post
-uTRSentByPost.paragraph1 = It can take 15 working days for you to get your UTR. For International addresses it can take 21 working days.
-uTRSentByPost.paragraph2 = if you have not received your UTR after this time.
-uTRSentByPost.link = Contact the trusts helpline
+UTRSentByPost.title = Your Unique Taxpayer Reference (UTR) has been sent by post
+UTRSentByPost.heading = Your Unique Taxpayer Reference (UTR) has been sent by post
+UTRSentByPost.paragraph1 = It can take 15 working days for you to get your UTR. For International addresses it can take 21 working days.
+UTRSentByPost.paragraph2 = if you have not received your UTR after this time.
+UTRSentByPost.link = Contact the trusts helpline

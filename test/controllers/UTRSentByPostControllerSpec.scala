@@ -23,7 +23,7 @@ import views.html.UTRSentByPostView
 
 class UTRSentByPostControllerSpec extends SpecBase {
 
-  "UTRSentbyPostController Controller" must {
+  "UTRSentByPostController Controller" must {
 
     "return OK and the correct view for a GET" in {
 
