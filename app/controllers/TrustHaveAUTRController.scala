@@ -16,6 +16,7 @@
 
 package controllers
 
+import config.FrontendAppConfig
 import controllers.actions._
 import forms.TrustHaveAUTRFormProvider
 import javax.inject.Inject
@@ -40,8 +41,11 @@ class TrustHaveAUTRController @Inject()( override val messagesApi: MessagesApi,
                                          requireData: DataRequiredAction,
                                          formProvider: TrustHaveAUTRFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
-                                         view: TrustHaveAUTRView
+                                         view: TrustHaveAUTRView,
+                                         config : FrontendAppConfig
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+
+  private val lostUtrKey : String = "trustHaveAUTR.link"
 
   val form: Form[Boolean] = formProvider()
 
@@ -53,7 +57,7 @@ class TrustHaveAUTRController @Inject()( override val messagesApi: MessagesApi,
         case Some(value) => form.fill(value)
       }
 
-      val link = Link(Messages("trustHaveAUTR.link"), "https://www.gov.uk/find-lost-utr-number")
+      val link = Link(Messages(lostUtrKey), config.lostUtrUrl)
 
       Ok(view(preparedForm, mode, Some(link)))
   }
@@ -61,7 +65,7 @@ class TrustHaveAUTRController @Inject()( override val messagesApi: MessagesApi,
   def onSubmit(mode: Mode) = (identify andThen getData andThen requireData).async {
     implicit request =>
 
-      val link = Link(Messages("trustHaveAUTR.link"), "https://www.gov.uk/find-lost-utr-number")
+      val link = Link(Messages(lostUtrKey), config.lostUtrUrl)
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
