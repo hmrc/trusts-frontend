@@ -37,6 +37,13 @@ class WhatIsTheUTRFormProviderSpec extends StringFieldBehaviours {
       stringsWithMaxLength(maxLength)
     )
 
+    behave like fieldWithMinLength(
+      form,
+      fieldName,
+      minLength = maxLength,
+      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+    )
+
     behave like fieldWithMaxLength(
       form,
       fieldName,
