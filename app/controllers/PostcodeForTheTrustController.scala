@@ -19,7 +19,7 @@ package controllers
 import controllers.actions._
 import forms.PostcodeForTheTrustFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, UserAnswers}
 import navigation.Navigator
 import pages.PostcodeForTheTrustPage
 import play.api.data.Form
@@ -50,7 +50,7 @@ class PostcodeForTheTrustController @Inject()(
 
       val preparedForm = request.userAnswers.get(PostcodeForTheTrustPage) match {
         case None => form
-        case Some(value) => form.fill(value)
+        case v @ Some(_) => form.fill(v)
       }
 
       Ok(view(preparedForm, mode))
@@ -59,15 +59,20 @@ class PostcodeForTheTrustController @Inject()(
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
+      def redirect(userAnswers : UserAnswers) = Redirect(navigator.nextPage(PostcodeForTheTrustPage, mode)(userAnswers))
+
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(view(formWithErrors, mode))),
-
-        value => {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(PostcodeForTheTrustPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(PostcodeForTheTrustPage, mode)(updatedAnswers))
+        value =>
+          value match {
+          case Some(v) =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(PostcodeForTheTrustPage, v))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield redirect(updatedAnswers)
+          case None =>
+            Future.successful(redirect(request.userAnswers))
         }
       )
   }

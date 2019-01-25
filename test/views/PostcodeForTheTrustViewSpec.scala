@@ -21,10 +21,10 @@ import forms.PostcodeForTheTrustFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.StringViewBehaviours
+import views.behaviours.OptionStringViewBehaviours
 import views.html.PostcodeForTheTrustView
 
-class PostcodeForTheTrustViewSpec extends StringViewBehaviours {
+class PostcodeForTheTrustViewSpec extends OptionStringViewBehaviours {
 
   val messageKeyPrefix = "postcodeForTheTrust"
 
@@ -43,6 +43,6 @@ class PostcodeForTheTrustViewSpec extends StringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.PostcodeForTheTrustController.onSubmit(NormalMode).url)
+    behave like optionalStringPage(form, applyView, messageKeyPrefix, routes.PostcodeForTheTrustController.onSubmit(NormalMode).url)
   }
 }

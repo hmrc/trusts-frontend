@@ -16,24 +16,37 @@
 
 package forms
 
-import forms.behaviours.StringFieldBehaviours
+import forms.behaviours.{OptionalFieldBehaviours, StringFieldBehaviours}
+import org.scalacheck.Arbitrary.arbitrary
 import play.api.data.FormError
+import wolfendale.scalacheck.regexp.RegexpGen
 
-class PostcodeForTheTrustFormProviderSpec extends StringFieldBehaviours {
+class PostcodeForTheTrustFormProviderSpec extends StringFieldBehaviours with OptionalFieldBehaviours {
 
-  val requiredKey = "postcodeForTheTrust.error.required"
-
+  val requiredKey : String = "postcodeForTheTrust.error.required"
+  val invalidKey : String = "postcodeForTheTrust.error.invalid"
 
   val form = new PostcodeForTheTrustFormProvider()()
+
+  val postcodeRegexWithSpaceConstrained = """^[A-Z]{1,2}[0-9][0-9A-Z] [0-9][A-Z]{2}$"""
 
   ".value" must {
 
     val fieldName = "value"
 
-    behave like mandatoryField(
+    behave like fieldWithRegexpWithGenerator(
       form,
       fieldName,
-      requiredError = FormError(fieldName, requiredKey)
+      regexp = postcodeRegexWithSpaceConstrained,
+      generator = arbitrary[String],
+      error = FormError(fieldName, invalidKey)
     )
+
+    behave like optionalField(
+      form,
+      fieldName,
+      RegexpGen.from(postcodeRegexWithSpaceConstrained)
+    )
+
   }
 }

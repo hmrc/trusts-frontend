@@ -19,23 +19,19 @@ package controllers
 import base.SpecBase
 import forms.PostcodeForTheTrustFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
 import pages.PostcodeForTheTrustPage
-import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
-import play.api.mvc.Call
+import play.api.data.Form
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.PostcodeForTheTrustView
 
 class PostcodeForTheTrustControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new PostcodeForTheTrustFormProvider()
-  val form = formProvider()
+  val form : Form[Option[String]] = formProvider()
 
-  lazy val postcodeForTheTrustRoute = routes.PostcodeForTheTrustController.onPageLoad(NormalMode).url
+  lazy val postcodeForTheTrustRoute : String = routes.PostcodeForTheTrustController.onPageLoad(NormalMode).url
+  lazy val matchingFailedRoute : String = routes.FailedMatchController.onPageLoad().url
 
   "PostcodeForTheTrust Controller" must {
 
@@ -59,7 +55,7 @@ class PostcodeForTheTrustControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(PostcodeForTheTrustPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(PostcodeForTheTrustPage, "AA9A 9AA").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -72,7 +68,7 @@ class PostcodeForTheTrustControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(Some("AA9A 9AA")), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -81,17 +77,52 @@ class PostcodeForTheTrustControllerSpec extends SpecBase {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
         FakeRequest(POST, postcodeForTheTrustRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("value", "AA9A 9AA"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+
+      redirectLocation(result).value mustEqual matchingFailedRoute
+
+      application.stop()
+    }
+
+    "redirect to the next page when no data is submitted" in {
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .build()
+
+      val request =
+        FakeRequest(POST, postcodeForTheTrustRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual matchingFailedRoute
+
+      application.stop()
+    }
+
+    "redirect to the next page when an empty string is submitted" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      val request =
+        FakeRequest(POST, postcodeForTheTrustRoute)
+          .withFormUrlEncodedBody(("value", ""))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual matchingFailedRoute
 
       application.stop()
     }
@@ -102,9 +133,9 @@ class PostcodeForTheTrustControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, postcodeForTheTrustRoute)
-          .withFormUrlEncodedBody(("value", ""))
+          .withFormUrlEncodedBody(("value", "AA1 1A"))
 
-      val boundForm = form.bind(Map("value" -> ""))
+      val boundForm = form.bind(Map("value" -> "AA1 1A"))
 
       val view = application.injector.instanceOf[PostcodeForTheTrustView]
 
