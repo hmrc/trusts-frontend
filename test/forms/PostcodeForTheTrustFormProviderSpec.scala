@@ -23,8 +23,7 @@ import wolfendale.scalacheck.regexp.RegexpGen
 
 class PostcodeForTheTrustFormProviderSpec extends StringFieldBehaviours with OptionalFieldBehaviours {
 
-  val requiredKey : String = "postcodeForTheTrust.error.required"
-  val invalidKey : String = "postcodeForTheTrust.error.invalid"
+  val invalidKey : String = "error.postcodeInvalid"
 
   val form = new PostcodeForTheTrustFormProvider()()
 

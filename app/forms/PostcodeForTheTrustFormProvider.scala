@@ -26,7 +26,6 @@ class PostcodeForTheTrustFormProvider @Inject() extends Mappings {
   def apply(): Form[Option[String]] =
     Form(
       "value" -> mandatoryIfNot("value", "", postcode(
-        requiredKey = "postcodeForTheTrust.error.required",
-        invalidKey = "postcodeForTheTrust.error.invalid"))
+        requiredKey = "postcodeForTheTrust.error.required"))
     )
 }
