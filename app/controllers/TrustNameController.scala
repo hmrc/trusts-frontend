@@ -21,7 +21,7 @@ import forms.TrustNameFormProvider
 import javax.inject.Inject
 import models.{Mode, UserAnswers}
 import navigation.Navigator
-import pages.TrustNamePage
+import pages.{Page, TrustNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -37,6 +37,7 @@ class TrustNameController @Inject()(
                                         navigator: Navigator,
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
+                                        requireData: DataRequiredAction,
                                         formProvider: TrustNameFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: TrustNameView
@@ -44,10 +45,10 @@ class TrustNameController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData ) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.internalId)).get(TrustNamePage) match {
+      val preparedForm = request.userAnswers.get(TrustNamePage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -55,7 +56,7 @@ class TrustNameController @Inject()(
       Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -64,7 +65,7 @@ class TrustNameController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.getOrElse(UserAnswers(request.internalId)).set(TrustNamePage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustNamePage, value))
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(TrustNamePage, mode)(updatedAnswers))
         }

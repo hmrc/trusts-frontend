@@ -17,7 +17,7 @@
 package views
 
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
+import org.jsoup.nodes.{Document, Element}
 import play.twirl.api.Html
 import base.SpecBase
 
@@ -49,6 +49,10 @@ trait ViewSpecBase extends SpecBase {
     for (key <- expectedMessageKeys) assertContainsText(doc, messages(key))
   }
 
+  def assertAttributeValueForElement(element : Element, attribute: String, attributeValue : String) = {
+    assert(element.attr(attribute) == attributeValue)
+  }
+
   def assertRenderedById(doc: Document, id: String) = {
     assert(doc.getElementById(id) != null, "\n\nElement " + id + " was not rendered on the page.\n")
   }
@@ -69,6 +73,7 @@ trait ViewSpecBase extends SpecBase {
     val labels = doc.getElementsByAttributeValue("for", forElement)
     assert(labels.size == 1, s"\n\nLabel for $forElement was not rendered on the page.")
     val label = labels.first
+
     assert(label.text().contains(expectedText), s"\n\nLabel for $forElement was not $expectedText")
 
     if (expectedHintText.isDefined) {

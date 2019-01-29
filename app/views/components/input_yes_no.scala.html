@@ -14,6 +14,8 @@
  * limitations under the License.
  *@
 
+@import viewmodels.Link
+
 @(
         field: Field,
         label: String,
@@ -22,7 +24,8 @@
         hint: Option[String] = None,
         yesAssoc: Option[String] = None,
         noAssoc: Option[String] = None,
-        labelClass: Option[String] = None
+        labelClass: Option[String] = None,
+        link : Option[Link] = None
 )(implicit messages: Messages)
 
 
@@ -31,9 +34,8 @@
 
         <legend>
             <span @if(labelClass.nonEmpty){class="@labelClass"}>@label</span>
-            @if(hint.nonEmpty){
-                <span class="form-hint">@hint</span>
-            }
+            @form_hint(hint, link)
+
             @field.errors.map { error =>
                 <span class="error-message" id="error-message-@{field.id}-input">@messages(error.message, error.args: _*)</span>
             }

@@ -73,6 +73,71 @@ class MappingsSpec extends WordSpec with MustMatchers with OptionValues with Map
     }
   }
 
+  "postcode" must {
+
+    val testForm : Form[String] =
+      Form(
+        "value" -> postcode()
+      )
+
+    val validPostcodes = Seq(
+      "AA9A 9AA",
+      "A9A 9AA",
+      "A9 9AA",
+      "A99 9AA",
+      "AA9 9AA",
+      "AA99 9AA"
+    )
+
+    validPostcodes.foreach {
+      p =>
+
+        s"bind a valid postcode $p" in {
+          val result = testForm.bind(Map("value" -> p))
+          result.get mustEqual p
+        }
+
+    }
+
+    validPostcodes.foreach {
+      p =>
+
+        val lowercase = p.toLowerCase
+
+        s"bind a valid postcode $lowercase" in {
+          val result = testForm.bind(Map("value" -> lowercase))
+          result.get mustEqual lowercase
+        }
+    }
+
+    "not bind an invalid postcode due to format" in {
+      val result = testForm.bind(Map("value" -> "AA1 1A"))
+      result.errors must contain(FormError("value", "error.postcodeInvalid"))
+    }
+
+    "not bind an invalid postcode due to too many spaces" in {
+      val result = testForm.bind(Map("value" -> "AA1  1AA"))
+      result.errors must contain(FormError("value", "error.postcodeInvalid"))
+    }
+
+    "not bind an empty map" in {
+      val result = testForm.bind(Map.empty[String, String])
+      result.errors must contain(FormError("value", "error.required"))
+    }
+
+    "return a custom error message" in {
+      val form = Form("value" -> postcode("custom.error"))
+      val result = form.bind(Map("value" -> ""))
+      result.errors must contain(FormError("value", "custom.error"))
+    }
+
+    "unbind a valid value" in {
+      val result = testForm.fill("AA1 1AA")
+      result.apply("value").value.value mustEqual "AA1 1AA"
+    }
+
+  }
+
   "boolean" must {
 
     val testForm: Form[Boolean] =

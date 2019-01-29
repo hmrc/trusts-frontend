@@ -28,6 +28,42 @@ import viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def postcodeForTheTrust: Option[AnswerRow] = userAnswers.get(PostcodeForTheTrustPage) map {
+    x =>
+      AnswerRow(
+        "postcodeForTheTrust.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.PostcodeForTheTrustController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def whatIsTheUTR: Option[AnswerRow] = userAnswers.get(WhatIsTheUTRPage) map {
+    x =>
+      AnswerRow(
+        "whatIsTheUTR.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.WhatIsTheUTRController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def trustHaveAUTR: Option[AnswerRow] = userAnswers.get(TrustHaveAUTRPage) map {
+    x =>
+      AnswerRow(
+        "trustHaveAUTR.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.TrustHaveAUTRController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def trustRegisteredOnline: Option[AnswerRow] = userAnswers.get(TrustRegisteredOnlinePage) map {
+    x =>
+      AnswerRow(
+        "trustRegisteredOnline.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.TrustRegisteredOnlineController.onPageLoad(CheckMode).url
+      )
+  }
+
   def whenTrustSetup: Option[AnswerRow] = userAnswers.get(WhenTrustSetupPage) map {
     x =>
       AnswerRow(
