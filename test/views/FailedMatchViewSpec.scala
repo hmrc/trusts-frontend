@@ -32,6 +32,6 @@ class FailedMatchViewSpec extends ViewBehaviours {
     behave like normalPage(applyView, "FailedMatch", "paragraph1", "paragraph2","paragraph3",
       "paragraph4", "paragraph5","bulletpoint1", "bulletpoint2","bulletpoint3" ,"bulletpoint4" ,"bulletpoint5", "bulletpoint6")
 
-    behave like pageWithBackLink(applyView)
+
   }
 }

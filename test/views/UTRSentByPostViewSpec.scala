@@ -31,6 +31,6 @@ class UTRSentByPostViewSpec extends ViewBehaviours {
 
     behave like normalPage(applyView, "UTRSentByPost", "paragraph1", "paragraph2")
 
-    behave like pageWithBackLink(applyView)
+ 
   }
 }
