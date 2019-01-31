@@ -28,6 +28,15 @@ import viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def isThisLeadTrustee: Option[AnswerRow] = userAnswers.get(IsThisLeadTrusteePage) map {
+    x =>
+      AnswerRow(
+        "isThisLeadTrustee.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.IsThisLeadTrusteeController.onPageLoad(CheckMode).url
+      )
+  }
+
   def postcodeForTheTrust: Option[AnswerRow] = userAnswers.get(PostcodeForTheTrustPage) map {
     x =>
       AnswerRow(

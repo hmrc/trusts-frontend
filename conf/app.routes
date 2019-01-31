@@ -107,3 +107,8 @@ GET        /matching-failed                             controllers.FailedMatchC
 GET        /cannot-change                               controllers.CannotMakeChangesController.onPageLoad()
 
 GET        /trust-utr-post                              controllers.UTRSentByPostController.onPageLoad()
+
+GET        /isThisLeadTrustee                        controllers.IsThisLeadTrusteeController.onPageLoad(mode: Mode = NormalMode)
+POST       /isThisLeadTrustee                        controllers.IsThisLeadTrusteeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIsThisLeadTrustee                  controllers.IsThisLeadTrusteeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIsThisLeadTrustee                  controllers.IsThisLeadTrusteeController.onSubmit(mode: Mode = CheckMode)

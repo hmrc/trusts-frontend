@@ -186,3 +186,9 @@ UTRSentByPost.heading = Your Unique Taxpayer Reference (UTR) has been sent by po
 UTRSentByPost.paragraph1 = It can take 15 working days for you to get your UTR. For International addresses it can take 21 working days.
 UTRSentByPost.paragraph2 = if you have not received your UTR after this time.
 UTRSentByPost.link = Contact the trusts helpline
+
+isThisLeadTrustee.title = Is this the lead trustee?
+isThisLeadTrustee.heading = Is this the lead trustee?
+isThisLeadTrustee.checkYourAnswersLabel = isThisLeadTrustee
+isThisLeadTrustee.error.required = Select yes if this is the trust's lead trustee
+isThisLeadTrustee.hint = The lead trustee is the main point of contact for the trust. Do not enter agent details here unless they are legally a trustee.
