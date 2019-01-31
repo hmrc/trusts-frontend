@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package generators
+package pages
 
-import models._
-import org.scalacheck.Arbitrary.arbitrary
-import org.scalacheck.{Arbitrary, Gen}
+import models.TrusteeOrIndividual
+import pages.behaviours.PageBehaviours
 
-trait ModelGenerators {
+class TrusteeOrIndividualSpec extends PageBehaviours {
 
-  implicit lazy val arbitraryTrusteeOrIndividual: Arbitrary[TrusteeOrIndividual] =
-    Arbitrary {
-      Gen.oneOf(TrusteeOrIndividual.values.toSeq)
-    }
+  "TrusteeOrIndividualPage" must {
 
-  implicit lazy val arbitraryNonResidentType: Arbitrary[NonResidentType] =
-    Arbitrary {
-      Gen.oneOf(NonResidentType.values.toSeq)
-    }
+    beRetrievable[TrusteeOrIndividual](TrusteeOrIndividualPage)
+
+    beSettable[TrusteeOrIndividual](TrusteeOrIndividualPage)
+
+    beRemovable[TrusteeOrIndividual](TrusteeOrIndividualPage)
+  }
 }

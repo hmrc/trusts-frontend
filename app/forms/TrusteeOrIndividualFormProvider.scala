@@ -14,21 +14,18 @@
  * limitations under the License.
  */
 
-package generators
+package forms
 
-import models._
-import org.scalacheck.Arbitrary.arbitrary
-import org.scalacheck.{Arbitrary, Gen}
+import javax.inject.Inject
 
-trait ModelGenerators {
+import forms.mappings.Mappings
+import play.api.data.Form
+import models.TrusteeOrIndividual
 
-  implicit lazy val arbitraryTrusteeOrIndividual: Arbitrary[TrusteeOrIndividual] =
-    Arbitrary {
-      Gen.oneOf(TrusteeOrIndividual.values.toSeq)
-    }
+class TrusteeOrIndividualFormProvider @Inject() extends Mappings {
 
-  implicit lazy val arbitraryNonResidentType: Arbitrary[NonResidentType] =
-    Arbitrary {
-      Gen.oneOf(NonResidentType.values.toSeq)
-    }
+  def apply(): Form[TrusteeOrIndividual] =
+    Form(
+      "value" -> enumerable[TrusteeOrIndividual]("trusteeOrIndividual.error.required")
+    )
 }

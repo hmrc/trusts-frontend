@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-package generators
+package pages
 
-import models._
-import org.scalacheck.Arbitrary.arbitrary
-import org.scalacheck.{Arbitrary, Gen}
+import models.TrusteeOrIndividual
+import play.api.libs.json.JsPath
 
-trait ModelGenerators {
+case object TrusteeOrIndividualPage extends QuestionPage[TrusteeOrIndividual] {
 
-  implicit lazy val arbitraryTrusteeOrIndividual: Arbitrary[TrusteeOrIndividual] =
-    Arbitrary {
-      Gen.oneOf(TrusteeOrIndividual.values.toSeq)
-    }
+  override def path: JsPath = JsPath \ toString
 
-  implicit lazy val arbitraryNonResidentType: Arbitrary[NonResidentType] =
-    Arbitrary {
-      Gen.oneOf(NonResidentType.values.toSeq)
-    }
+  override def toString: String = "trusteeOrIndividual"
 }

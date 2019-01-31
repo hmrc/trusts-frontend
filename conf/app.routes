@@ -112,3 +112,8 @@ GET        /isThisLeadTrustee                        controllers.IsThisLeadTrust
 POST       /isThisLeadTrustee                        controllers.IsThisLeadTrusteeController.onSubmit(mode: Mode = NormalMode)
 GET        /changeIsThisLeadTrustee                  controllers.IsThisLeadTrusteeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeIsThisLeadTrustee                  controllers.IsThisLeadTrusteeController.onSubmit(mode: Mode = CheckMode)
+
+GET        /lead-trustee-individual-business                        controllers.TrusteeOrIndividualController.onPageLoad(mode: Mode = NormalMode)
+POST       /lead-trustee-individual-business                      controllers.TrusteeOrIndividualController.onSubmit(mode: Mode = NormalMode)
+GET        /change-lead-trustee-individual-business                controllers.TrusteeOrIndividualController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-lead-trustee-individual-business                 controllers.TrusteeOrIndividualController.onSubmit(mode: Mode = CheckMode)
