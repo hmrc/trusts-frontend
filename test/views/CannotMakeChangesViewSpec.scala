@@ -31,6 +31,5 @@ class CannotMakeChangesViewSpec extends ViewBehaviours {
 
     behave like normalPage(applyView, "cannotMakeChanges", "paragraph1", "paragraph2","paragraph3")
 
-    behave like pageWithBackLink(applyView)
   }
 }

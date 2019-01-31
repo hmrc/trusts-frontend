@@ -43,7 +43,7 @@ trait Formatters {
       data.get(key) match {
         case None | Some("") => Left(Seq(FormError(key, requiredKey)))
         case Some(s) =>
-          s.matches(Validation.postcodeRegex) match {
+          s.trim.matches(Validation.postcodeRegex) match {
             case true => Right(s)
             case false => Left(Seq(FormError(key, invalidKey)))
           }
