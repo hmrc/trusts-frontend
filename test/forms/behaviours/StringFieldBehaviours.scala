@@ -19,7 +19,7 @@ package forms.behaviours
 import org.scalacheck.Gen
 import play.api.data.{Form, FormError}
 
-trait StringFieldBehaviours extends FieldBehaviours {
+trait StringFieldBehaviours extends FieldBehaviours with OptionalFieldBehaviours {
 
   def fieldWithMinLength(form : Form[_],
                          fieldName : String,

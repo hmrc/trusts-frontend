@@ -199,3 +199,16 @@ trusteeOrIndividual.individual = Individual
 trusteeOrIndividual.business = Business
 trusteeOrIndividual.checkYourAnswersLabel = trusteeOrIndividual
 trusteeOrIndividual.error.required = Select if the trustee is an individual or a business
+
+trusteesName.title = What is the trustee's name?
+trusteesName.heading = What is the trustee's name?
+trusteesName.checkYourAnswersLabel = trusteesName
+trusteesName.firstName = First name
+trusteesName.middleName = Middle name (optional)
+trusteesName.lastName = Last name
+trusteesName.error.firstnamerequired = Enter the trustee's first name
+trusteesName.error.LastNamerequired = Enter the trustee's last name
+trusteesName.error.lengthfirstname = Trustees first name must be 35 characters or less
+trusteesName.error.lengthmiddlename = Trustees middle name must be 35 characters or less
+trusteesName.error.lengthlastname = Trustees last name must be 35 characters or less
+trusteesName.error.invalidCharacters = Trustee’s name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
