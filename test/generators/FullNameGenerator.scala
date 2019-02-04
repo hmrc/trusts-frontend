@@ -16,20 +16,22 @@
 
 package generators
 
-import models._
-import org.scalacheck.Arbitrary.arbitrary
+import models.FullName
 import org.scalacheck.{Arbitrary, Gen}
 
-trait ModelGenerators {
+trait FullNameGenerator extends Generators {
 
-  implicit lazy val arbitraryTrusteeOrIndividual: Arbitrary[TrusteeOrIndividual] =
-    Arbitrary {
-      Gen.oneOf(TrusteeOrIndividual.values.toSeq)
-    }
+  private val maxLength : Int = 35
 
-  implicit lazy val arbitraryNonResidentType: Arbitrary[NonResidentType] =
+  implicit lazy val arbitraryFullName : Arbitrary[FullName] =
     Arbitrary {
-      Gen.oneOf(NonResidentType.values.toSeq)
+      for {
+        fName <- stringsWithMaxLength(maxLength)
+        mName <- Gen.option(stringsWithMaxLength(maxLength))
+        lName <- stringsWithMaxLength(maxLength)
+      } yield {
+        FullName(fName, mName, lName)
+      }
     }
 
 }
