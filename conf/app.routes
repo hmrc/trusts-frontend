@@ -122,3 +122,5 @@ GET        /lead-trustee-name                           controllers.TrusteesName
 POST       /lead-trustee-name                           controllers.TrusteesNameController.onSubmit(mode: Mode = NormalMode)
 GET        /change-lead-trustee-name                    controllers.TrusteesNameController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-lead-trustee-name                    controllers.TrusteesNameController.onSubmit(mode: Mode = CheckMode)
+
+GET        /trusteesAnswerPage                       controllers.TrusteesAnswerPageController.onPageLoad()
