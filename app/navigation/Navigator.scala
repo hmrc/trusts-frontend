@@ -23,6 +23,14 @@ import pages._
 import models._
 
 
+
+trait TrusteeNavigator {
+  protected val trusteeDetails: Map[Page, UserAnswers => Call] = Map(
+    IsThisLeadTrusteePage -> (_ => routes.TrusteeOrIndividualController.onPageLoad(NormalMode)),
+    TrusteeOrIndividualPage -> (_ => routes.TrusteesNameController.onPageLoad(NormalMode))
+  )
+}
+
 trait MatchingNavigator {
 
   protected val matchingDetails: Map[Page, UserAnswers => Call] = Map(
@@ -46,9 +54,8 @@ trait MatchingNavigator {
 
 }
 
-
 @Singleton
-class Navigator @Inject()() extends MatchingNavigator {
+class Navigator @Inject()() extends MatchingNavigator with TrusteeNavigator {
 
   private val trustDetails: Map[Page, UserAnswers => Call] = Map(
     TrustNamePage -> trustNameRoute,
@@ -120,7 +127,7 @@ class Navigator @Inject()() extends MatchingNavigator {
   def nextPage(page: Page, mode: Mode): UserAnswers => Call = mode match {
     case NormalMode =>
 
-      val routeMap = trustDetails ++ matchingDetails
+      val routeMap = trustDetails ++ matchingDetails ++ trusteeDetails
 
       routeMap.getOrElse(page, _ => routes.IndexController.onPageLoad())
     case CheckMode =>
