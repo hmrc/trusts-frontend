@@ -14,23 +14,14 @@
  * limitations under the License.
  */
 
-package views
+package pages
 
-import views.behaviours.ViewBehaviours
-import views.html.TrusteesAnswerPageView
+import models.AddATrustee
+import play.api.libs.json.JsPath
 
-class TrusteesAnswerPageViewSpec extends ViewBehaviours {
+case object AddATrusteePage extends QuestionPage[AddATrustee] {
 
-  "TrusteesAnswerPage view" must {
+  override def path: JsPath = JsPath \ toString
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-    val view = application.injector.instanceOf[TrusteesAnswerPageView]
-
-    val applyView = view.apply()(fakeRequest, messages)
-
-    behave like normalPage(applyView, "trusteesAnswerPage")
-
-    behave like pageWithBackLink(applyView)
-  }
+  override def toString: String = "addATrustee"
 }

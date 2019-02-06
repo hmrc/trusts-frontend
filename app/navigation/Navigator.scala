@@ -28,7 +28,7 @@ trait TrusteeNavigator {
   protected val trusteeDetails: Map[Page, UserAnswers => Call] = Map(
     IsThisLeadTrusteePage -> (_ => routes.TrusteeOrIndividualController.onPageLoad(NormalMode)),
     TrusteeOrIndividualPage -> (_ => routes.TrusteesNameController.onPageLoad(NormalMode)),
-    TrustNamePage -> (_ => routes.TrusteesAnswerPageController.onPageLoad())
+    TrusteesNamePage -> (_ => routes.TrusteesAnswerPageController.onPageLoad())
   )
 }
 

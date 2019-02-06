@@ -20,6 +20,9 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import play.twirl.api.Html
 import base.SpecBase
+import models.UserAnswers
+
+import scala.reflect.ClassTag
 
 trait ViewSpecBase extends SpecBase {
 
@@ -96,4 +99,12 @@ trait ViewSpecBase extends SpecBase {
       case _ => assert(!radio.hasAttr("checked") && radio.attr("checked") != "checked", s"\n\nElement $id is checked")
     }
   }
+
+  def viewFor[A](data: Option[UserAnswers])(implicit tag : ClassTag[A]) : A = {
+    val application = applicationBuilder(data).build()
+    val view = application.injector.instanceOf[A]
+    application.stop()
+    view
+  }
+
 }

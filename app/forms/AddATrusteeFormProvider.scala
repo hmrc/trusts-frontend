@@ -14,23 +14,18 @@
  * limitations under the License.
  */
 
-package views
+package forms
 
-import views.behaviours.ViewBehaviours
-import views.html.TrusteesAnswerPageView
+import javax.inject.Inject
 
-class TrusteesAnswerPageViewSpec extends ViewBehaviours {
+import forms.mappings.Mappings
+import play.api.data.Form
+import models.AddATrustee
 
-  "TrusteesAnswerPage view" must {
+class AddATrusteeFormProvider @Inject() extends Mappings {
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-    val view = application.injector.instanceOf[TrusteesAnswerPageView]
-
-    val applyView = view.apply()(fakeRequest, messages)
-
-    behave like normalPage(applyView, "trusteesAnswerPage")
-
-    behave like pageWithBackLink(applyView)
-  }
+  def apply(): Form[AddATrustee] =
+    Form(
+      "value" -> enumerable[AddATrustee]("addATrustee.error.required")
+    )
 }

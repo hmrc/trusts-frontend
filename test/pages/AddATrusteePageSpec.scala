@@ -14,23 +14,19 @@
  * limitations under the License.
  */
 
-package views
+package pages
 
-import views.behaviours.ViewBehaviours
-import views.html.TrusteesAnswerPageView
+import models.AddATrustee
+import pages.behaviours.PageBehaviours
 
-class TrusteesAnswerPageViewSpec extends ViewBehaviours {
+class AddATrusteePageSpec extends PageBehaviours {
 
-  "TrusteesAnswerPage view" must {
+  "AddATrusteePage" must {
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+    beRetrievable[AddATrustee](AddATrusteePage)
 
-    val view = application.injector.instanceOf[TrusteesAnswerPageView]
+    beSettable[AddATrustee](AddATrusteePage)
 
-    val applyView = view.apply()(fakeRequest, messages)
-
-    behave like normalPage(applyView, "trusteesAnswerPage")
-
-    behave like pageWithBackLink(applyView)
+    beRemovable[AddATrustee](AddATrusteePage)
   }
 }
