@@ -27,24 +27,57 @@ import views.html.TrustNameView
 class TrustNameViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "trustName"
+  val hintKey = "trustName.hint"
 
   val form = new TrustNameFormProvider()()
 
-  "TrustNameView view" must {
+  "TrustNameView view" when {
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+    "the trust is an existing trust" must {
 
-    val view = application.injector.instanceOf[TrustNameView]
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-    def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      val view = application.injector.instanceOf[TrustNameView]
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+      def applyView(form: Form[_]): HtmlFormat.Appendable =
+        view.apply(form, NormalMode, hintTextShown = true)(fakeRequest, messages)
 
-    behave like pageWithBackLink(applyView(form))
+      behave like normalPage(applyView(form), messageKeyPrefix)
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.TrustNameController.onSubmit(NormalMode).url)
+      behave like pageWithBackLink(applyView(form))
 
-    behave like pageWithASubmitButton(applyView(form))
+      behave like stringPage(form,
+        applyView,
+        messageKeyPrefix,
+        routes.TrustNameController.onSubmit(NormalMode).url,
+        Some(hintKey)
+      )
+
+      behave like pageWithASubmitButton(applyView(form))
+    }
+
+    "the trust is a new trust" must {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      val view = application.injector.instanceOf[TrustNameView]
+
+      def applyView(form: Form[_]): HtmlFormat.Appendable =
+        view.apply(form, NormalMode, hintTextShown = false)(fakeRequest, messages)
+
+      behave like normalPage(applyView(form), messageKeyPrefix)
+
+      behave like pageWithBackLink(applyView(form))
+
+      behave like stringPage(
+        form,
+        applyView,
+        messageKeyPrefix,
+        routes.TrustNameController.onSubmit(NormalMode).url
+      )
+
+      behave like pageWithASubmitButton(applyView(form))
+    }
+
   }
 }
