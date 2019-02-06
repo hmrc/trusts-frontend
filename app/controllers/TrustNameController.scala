@@ -21,7 +21,7 @@ import forms.TrustNameFormProvider
 import javax.inject.Inject
 import models.{Mode, UserAnswers}
 import navigation.Navigator
-import pages.{Page, TrustNamePage}
+import pages.{Page, TrustHaveAUTRPage, TrustNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -53,15 +53,19 @@ class TrustNameController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      val hintTextShown = request.userAnswers.get(TrustHaveAUTRPage).contains(true)
+
+      Ok(view(preparedForm, mode, hintTextShown))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
+      val hintTextShown = request.userAnswers.get(TrustHaveAUTRPage).contains(true)
+
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, hintTextShown))),
 
         value => {
           for {
