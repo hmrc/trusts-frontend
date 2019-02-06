@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.TrustNameFormProvider
 import javax.inject.Inject
-import models.{Mode, UserAnswers}
+import models.Mode
 import navigation.Navigator
-import pages.{Page, TrustHaveAUTRPage, TrustNamePage}
+import pages.{TrustHaveAUTRPage, TrustNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
