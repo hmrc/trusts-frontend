@@ -49,20 +49,19 @@ class AddATrusteeController @Inject()(
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-
       val preparedForm = request.userAnswers.get(AddATrusteePage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
       val trustee = List(
-        TrusteeRow("Trustee one", TrusteeOrIndividual.Individual, "", ""),
-        TrusteeRow("Trustee one", TrusteeOrIndividual.Individual, "", ""),
-        TrusteeRow("Trustee one", TrusteeOrIndividual.Individual, "", ""),
-        TrusteeRow("Trustee one", TrusteeOrIndividual.Individual, "", "")
+        TrusteeRow("Trustee one", TrusteeOrIndividual.Individual, "#", "#"),
+        TrusteeRow("Trustee two", TrusteeOrIndividual.Individual, "#", "#"),
+        TrusteeRow("Trustee three", TrusteeOrIndividual.Individual, "#", "#"),
+        TrusteeRow("Trustee four", TrusteeOrIndividual.Individual, "#", "#")
       )
 
-      Ok(view(preparedForm, mode, trustee))
+      Ok(view(preparedForm, mode, Nil))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {

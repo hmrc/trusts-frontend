@@ -18,6 +18,7 @@ package views.behaviours
 
 import org.jsoup.select.Elements
 import play.twirl.api.HtmlFormat
+import viewmodels.TrusteeRow
 import views.ViewSpecBase
 
 trait TabularDataViewBehaviours extends ViewSpecBase {
@@ -36,7 +37,7 @@ trait TabularDataViewBehaviours extends ViewSpecBase {
   }
 
 
-  def pageWithTabularData[A](view: HtmlFormat.Appendable, data : Seq[A]) = {
+  def pageWithTabularData(view: HtmlFormat.Appendable, data : Seq[TrusteeRow]) = {
 
     "behave like a page with tabular data" should {
 
@@ -48,7 +49,27 @@ trait TabularDataViewBehaviours extends ViewSpecBase {
       "render a row for each data item" in {
         val doc = asDocument(view)
         val elements : Elements = doc.select(".hmrc-add-to-a-list__contents")
+
         elements.size mustBe data.size
+
+        val dataWithIndex = data.zipWithIndex
+
+        for ((item, index) <- dataWithIndex) {
+          val element = elements.get(index)
+
+          element.text must include(item.name)
+          element.text must include(messages(item.typeKey))
+
+          val changeLink = element.getElementsByClass("hmrc-add-to-a-list__change").first()
+
+          changeLink.getElementsByTag("a").attr("href") must include(item.changeUrl)
+          changeLink.text must include(s"Change ${item.name}")
+
+          val removeLink = element.getElementsByClass("hmrc-add-to-a-list__remove").first()
+
+          removeLink.getElementsByTag("a").attr("href") must include(item.removeUrl)
+          removeLink.text must include(s"Delete ${item.name}")
+        }
       }
 
     }

@@ -222,4 +222,6 @@ addATrustee.add-them-now = Yes, I want to add them now
 addATrustee.add-them-later = Yes, I want to add them later
 addATrustee.no-complete = No, I have added all trustees
 addATrustee.checkYourAnswersLabel = Add A Trustee
+addATrustee.individual = Trustee Individual
+addATrustee.business = Trustee Business
 addATrustee.error.required = Select addATrustee

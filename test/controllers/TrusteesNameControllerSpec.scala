@@ -59,7 +59,7 @@ class TrusteesNameControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val name = FullName("first name", Some(" middle name"), "last name")
+      val name = FullName("first name", Some("middle name"), "last name")
 
       val userAnswers = UserAnswers(userAnswersId).set(TrusteesNamePage, name).success.value
 
@@ -88,7 +88,7 @@ class TrusteesNameControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, trusteesNameRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("firstName", "first"), ("middleName", "middle"), ("lastName", "last"))
 
       val result = route(application, request).value
 
