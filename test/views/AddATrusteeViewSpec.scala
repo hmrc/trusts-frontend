@@ -17,13 +17,14 @@
 package views
 
 import forms.AddATrusteeFormProvider
-import models.{AddATrustee, FullName, NormalMode}
+import models.{AddATrustee, NormalMode, TrusteeOrIndividual}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.OptionsViewBehaviours
+import viewmodels.TrusteeRow
+import views.behaviours.{OptionsViewBehaviours, TabularDataViewBehaviours}
 import views.html.AddATrusteeView
 
-class AddATrusteeViewSpec extends OptionsViewBehaviours {
+class AddATrusteeViewSpec extends OptionsViewBehaviours with TabularDataViewBehaviours {
 
   val messageKeyPrefix = "addATrustee"
 
@@ -31,19 +32,42 @@ class AddATrusteeViewSpec extends OptionsViewBehaviours {
 
   val view = viewFor[AddATrusteeView](Some(emptyUserAnswers))
 
-  val trustee = Some(FullName("Trustee", None, "Trustee"))
+  def applyView(form: Form[_]) : HtmlFormat.Appendable =
+    view.apply(form, NormalMode, Nil)(fakeRequest, messages)
 
-  def applyView(form: Form[_]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode, trustee)(fakeRequest, messages)
+  def applyView(form: Form[_], trustees : Seq[TrusteeRow]): HtmlFormat.Appendable =
+    view.apply(form, NormalMode, trustees)(fakeRequest, messages)
 
-  "AddATrusteeView" must {
+  "AddATrusteeView" when {
+
+    "there is no trustee data" must {
+
+      behave like normalPage(applyView(form), messageKeyPrefix)
+
+      behave like pageWithBackLink(applyView(form))
+
+      behave like pageWithNoTabularData(applyView(form))
+
+      behave like pageWithOptions(form, applyView, AddATrustee.options)
+    }
+  }
+
+  "there is trustee data" must {
+
+    val trustees = Seq(
+      TrusteeRow("trustee one", TrusteeOrIndividual.Individual, "#", "#"),
+      TrusteeRow("trustee two", TrusteeOrIndividual.Individual, "#", "#"),
+      TrusteeRow("trustee three", TrusteeOrIndividual.Individual, "#", "#")
+    )
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-//    behave like pageWithTabularData()
+    behave like pageWithTabularData(applyView(form, trustees), trustees)
 
     behave like pageWithOptions(form, applyView, AddATrustee.options)
+
   }
+
 }

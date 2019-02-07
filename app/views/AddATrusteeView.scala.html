@@ -15,14 +15,15 @@
  *@
 
 @import controllers.routes._
-@import models.{Mode, AddATrustee, FullName}
+@import models.{Mode, AddATrustee}
+@import viewmodels.TrusteeRow
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, trustee: Option[FullName])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, trustees: Seq[TrusteeRow])(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("addATrustee.title")}"
@@ -35,6 +36,8 @@
         @components.error_summary(form.errors)
 
         @components.heading("addATrustee.heading")
+
+        @components.data_list(trustees)
 
         <h2>@messages("addATrustee.additional-content")</h2>
 

@@ -36,7 +36,7 @@ class AddATrusteeControllerSpec extends SpecBase {
   val formProvider = new AddATrusteeFormProvider()
   val form = formProvider()
 
-  val trustee = Some(FullName("Trustee", None, "Trustee"))
+  val trustee = Nil
 
   "AddATrustee Controller" must {
 

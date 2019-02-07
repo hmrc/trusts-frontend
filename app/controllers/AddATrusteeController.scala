@@ -19,7 +19,7 @@ package controllers
 import controllers.actions._
 import forms.AddATrusteeFormProvider
 import javax.inject.Inject
-import models.{Enumerable, FullName, Mode}
+import models.{Enumerable, FullName, Mode, TrusteeOrIndividual}
 import navigation.Navigator
 import pages.{AddATrusteePage, TrusteesNamePage}
 import play.api.data.Form
@@ -27,6 +27,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import viewmodels.TrusteeRow
 import views.html.AddATrusteeView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -54,7 +55,12 @@ class AddATrusteeController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      val trustee = request.userAnswers.get(TrusteesNamePage)
+      val trustee = List(
+        TrusteeRow("Trustee one", TrusteeOrIndividual.Individual, "", ""),
+        TrusteeRow("Trustee one", TrusteeOrIndividual.Individual, "", ""),
+        TrusteeRow("Trustee one", TrusteeOrIndividual.Individual, "", ""),
+        TrusteeRow("Trustee one", TrusteeOrIndividual.Individual, "", "")
+      )
 
       Ok(view(preparedForm, mode, trustee))
   }
@@ -66,7 +72,7 @@ class AddATrusteeController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, trustee))),
+          Future.successful(BadRequest(view(formWithErrors, mode, Nil))),
 
         value => {
           for {

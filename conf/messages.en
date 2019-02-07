@@ -214,3 +214,12 @@ trusteesName.error.lengthlastname = Trustees last name must be 35 characters or 
 trusteesName.error.invalidCharacters = Trustee’s name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 trusteesAnswerPage.title = trusteesAnswerPage
 trusteesAnswerPage.heading = trusteesAnswerPage
+
+addATrustee.title = Add a trustee
+addATrustee.heading = Add a trustee
+addATrustee.additional-content = Do you need to add another trustee?
+addATrustee.add-them-now = Yes, I want to add them now
+addATrustee.add-them-later = Yes, I want to add them later
+addATrustee.no-complete = No, I have added all trustees
+addATrustee.checkYourAnswersLabel = Add A Trustee
+addATrustee.error.required = Select addATrustee
