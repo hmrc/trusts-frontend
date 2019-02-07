@@ -31,7 +31,7 @@ class AddATrusteeControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  lazy val addATrusteeRoute : String = routes.AddATrusteeController.onPageLoad(NormalMode).url
+  lazy val addATrusteeRoute : String = routes.AddATrusteeController.onPageLoad().url
 
   val formProvider = new AddATrusteeFormProvider()
   val form = formProvider()

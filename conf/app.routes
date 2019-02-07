@@ -118,14 +118,12 @@ POST       /lead-trustee-individual-business            controllers.TrusteeOrInd
 GET        /change-lead-trustee-individual-business     controllers.TrusteeOrIndividualController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-lead-trustee-individual-business     controllers.TrusteeOrIndividualController.onSubmit(mode: Mode = CheckMode)
 
-GET        /lead-trustee-name                           controllers.TrusteesNameController.onPageLoad(mode: Mode = NormalMode)
-POST       /lead-trustee-name                           controllers.TrusteesNameController.onSubmit(mode: Mode = NormalMode)
-GET        /change-lead-trustee-name                    controllers.TrusteesNameController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-lead-trustee-name                    controllers.TrusteesNameController.onSubmit(mode: Mode = CheckMode)
+GET        /trustee-name                                controllers.TrusteesNameController.onPageLoad(mode: Mode = NormalMode)
+POST       /trustee-name                                controllers.TrusteesNameController.onSubmit(mode: Mode = NormalMode)
+GET        /trustee-name                                controllers.TrusteesNameController.onPageLoad(mode: Mode = CheckMode)
+POST       /trustee-name                                controllers.TrusteesNameController.onSubmit(mode: Mode = CheckMode)
 
-GET        /trusteesAnswerPage                       controllers.TrusteesAnswerPageController.onPageLoad()
+GET        /trusteesAnswerPage                          controllers.TrusteesAnswerPageController.onPageLoad()
 
-GET        /addATrustee                        controllers.AddATrusteeController.onPageLoad(mode: Mode = NormalMode)
-POST       /addATrustee                        controllers.AddATrusteeController.onSubmit(mode: Mode = NormalMode)
-GET        /changeAddATrustee                  controllers.AddATrusteeController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeAddATrustee                  controllers.AddATrusteeController.onSubmit(mode: Mode = CheckMode)
+GET        /add-a-trustee                               controllers.AddATrusteeController.onPageLoad(mode: Mode = NormalMode)
+POST       /add-a-trustee                               controllers.AddATrusteeController.onSubmit(mode: Mode = NormalMode)
