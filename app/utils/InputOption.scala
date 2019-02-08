@@ -14,23 +14,6 @@
  * limitations under the License.
  */
 
-package forms
+package utils
 
-import javax.inject.Inject
-
-import forms.mappings.Mappings
-import play.api.data.Form
-
-class CountryGoverningTrustFormProvider @Inject() extends Mappings {
-
-  def apply(): Form[String] =
-    Form(
-      "value" -> text("countryGoverningTrust.error.required")
-        .verifying(
-          firstError(
-            maxLength(100, "countryGoverningTrust.error.length"),
-            regexp(Validation.countryRegex, "countryGoverningTrust.error.invalidCharacters"),
-            isNotEmpty("country", "countryGoverningTrust.error.required")
-      ))
-    )
-}
+case class InputOption(value: String, label: String, dataTarget: Option[String] = None)

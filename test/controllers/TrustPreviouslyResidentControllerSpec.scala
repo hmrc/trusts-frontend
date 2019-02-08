@@ -26,6 +26,8 @@ import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import utils.InputOption
+import utils.countryOptions.CountryOptionsNonUK
 import views.html.TrustPreviouslyResidentView
 
 class TrustPreviouslyResidentControllerSpec extends SpecBase {
@@ -49,10 +51,12 @@ class TrustPreviouslyResidentControllerSpec extends SpecBase {
 
       val view = application.injector.instanceOf[TrustPreviouslyResidentView]
 
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, countryOptions, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -69,10 +73,12 @@ class TrustPreviouslyResidentControllerSpec extends SpecBase {
 
       val result = route(application, request).value
 
-      status(result) mustEqual OK
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+
+       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill("Spain"), countryOptions, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -86,7 +92,7 @@ class TrustPreviouslyResidentControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, trustPreviouslyResidentRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("value", "IN"))
 
       val result = route(application, request).value
 
@@ -110,10 +116,12 @@ class TrustPreviouslyResidentControllerSpec extends SpecBase {
 
       val result = route(application, request).value
 
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, countryOptions, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -139,7 +147,7 @@ class TrustPreviouslyResidentControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, trustPreviouslyResidentRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("value", "GB"))
 
       val result = route(application, request).value
 

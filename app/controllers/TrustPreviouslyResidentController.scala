@@ -27,6 +27,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import utils.countryOptions.CountryOptionsNonUK
 import views.html.TrustPreviouslyResidentView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -40,7 +41,8 @@ class TrustPreviouslyResidentController @Inject()(
                                         requireData: DataRequiredAction,
                                         formProvider: TrustPreviouslyResidentFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: TrustPreviouslyResidentView
+                                        view: TrustPreviouslyResidentView,
+                                        val countryOptions: CountryOptionsNonUK
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -53,7 +55,7 @@ class TrustPreviouslyResidentController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, countryOptions.options, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -61,7 +63,7 @@ class TrustPreviouslyResidentController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, countryOptions.options, mode))),
 
         value => {
           for {
