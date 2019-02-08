@@ -23,7 +23,7 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, trustees: Seq[TrusteeRow])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, inProgressTrustees: Seq[TrusteeRow] ,completeTrustees: Seq[TrusteeRow])(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("addATrustee.title")}"
@@ -37,7 +37,9 @@
 
         @components.heading("addATrustee.heading")
 
-        @components.data_list(trustees)
+        @components.data_list(inProgressTrustees, "inprogress")
+
+        @components.data_list(completeTrustees, "complete")
 
         <h2>@messages("addATrustee.additional-content")</h2>
 

@@ -26,17 +26,29 @@ import views.html.AddATrusteeView
 
 class AddATrusteeViewSpec extends OptionsViewBehaviours with TabularDataViewBehaviours {
 
+  val completeTrustees = Seq(
+    TrusteeRow("trustee one", TrusteeOrIndividual.Individual, "#", "#"),
+    TrusteeRow("trustee two", TrusteeOrIndividual.Individual, "#", "#"),
+    TrusteeRow("trustee three", TrusteeOrIndividual.Individual, "#", "#")
+  )
+
+  val inProgressTrustees = Seq(
+    TrusteeRow("trustee one", TrusteeOrIndividual.Individual, "#", "#"),
+    TrusteeRow("trustee two", TrusteeOrIndividual.Individual, "#", "#"),
+    TrusteeRow("trustee three", TrusteeOrIndividual.Individual, "#", "#")
+  )
+
   val messageKeyPrefix = "addATrustee"
 
   val form = new AddATrusteeFormProvider()()
 
   val view = viewFor[AddATrusteeView](Some(emptyUserAnswers))
 
-  def applyView(form: Form[_]) : HtmlFormat.Appendable =
-    view.apply(form, NormalMode, Nil)(fakeRequest, messages)
+  def applyView(form: Form[_]): HtmlFormat.Appendable =
+    view.apply(form, NormalMode, Nil, Nil)(fakeRequest, messages)
 
-  def applyView(form: Form[_], trustees : Seq[TrusteeRow]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode, trustees)(fakeRequest, messages)
+  def applyView(form: Form[_], inProgressTrustees: Seq[TrusteeRow], completeTrustees: Seq[TrusteeRow]): HtmlFormat.Appendable =
+    view.apply(form, NormalMode, inProgressTrustees, completeTrustees)(fakeRequest, messages)
 
   "AddATrusteeView" when {
 
@@ -50,24 +62,44 @@ class AddATrusteeViewSpec extends OptionsViewBehaviours with TabularDataViewBeha
 
       behave like pageWithOptions(form, applyView, AddATrustee.options)
     }
+
+
+    "there is data in progress" must {
+
+      behave like normalPage(applyView(form), messageKeyPrefix)
+
+      behave like pageWithBackLink(applyView(form))
+
+      behave like pageWithInProgressTabularData(applyView(form, inProgressTrustees, Nil), inProgressTrustees)
+
+      behave like pageWithOptions(form, applyView, AddATrustee.options)
+
+    }
+
+    "there is complete data" must {
+
+      behave like normalPage(applyView(form), messageKeyPrefix)
+
+      behave like pageWithBackLink(applyView(form))
+
+      behave like pageWithCompleteTabularData(applyView(form, Nil, completeTrustees), completeTrustees)
+
+      behave like pageWithOptions(form, applyView, AddATrustee.options)
+    }
+
+
+//    "there is both inCompleteTrustee and completeTrustee trustee data" must {
+//
+//
+//      behave like normalPage(applyView(form), messageKeyPrefix)
+//
+//      behave like pageWithBackLink(applyView(form))
+//
+//      behave like pageWithIncompleteTabularData(applyView(form, inCompleteTrustees, completeTrustees))
+//
+//      behave like pageWithOptions(form, applyView, AddATrustee.options)
+//
+//    }
+
   }
-
-  "there is trustee data" must {
-
-    val trustees = Seq(
-      TrusteeRow("trustee one", TrusteeOrIndividual.Individual, "#", "#"),
-      TrusteeRow("trustee two", TrusteeOrIndividual.Individual, "#", "#"),
-      TrusteeRow("trustee three", TrusteeOrIndividual.Individual, "#", "#")
-    )
-
-    behave like normalPage(applyView(form), messageKeyPrefix)
-
-    behave like pageWithBackLink(applyView(form))
-
-    behave like pageWithTabularData(applyView(form, trustees), trustees)
-
-    behave like pageWithOptions(form, applyView, AddATrustee.options)
-
-  }
-
 }

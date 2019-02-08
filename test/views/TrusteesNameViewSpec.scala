@@ -44,7 +44,6 @@ class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generat
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode)(fakeRequest, messages)
 
-
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))

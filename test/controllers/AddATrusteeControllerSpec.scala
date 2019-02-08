@@ -53,7 +53,7 @@ class AddATrusteeControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, trustee)(fakeRequest, messages).toString
+        view(form, NormalMode, trustee, trustee)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -73,7 +73,7 @@ class AddATrusteeControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(AddATrustee.values.head), NormalMode, trustee)(fakeRequest, messages).toString
+        view(form.fill(AddATrustee.values.head), NormalMode, trustee, trustee)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -115,7 +115,7 @@ class AddATrusteeControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, trustee)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, trustee, trustee)(fakeRequest, messages).toString
 
       application.stop()
     }

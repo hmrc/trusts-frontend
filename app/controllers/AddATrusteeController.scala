@@ -57,11 +57,11 @@ class AddATrusteeController @Inject()(
       val trustee = List(
         TrusteeRow("Trustee one", TrusteeOrIndividual.Individual, "#", "#"),
         TrusteeRow("Trustee two", TrusteeOrIndividual.Individual, "#", "#"),
-        TrusteeRow("Trustee three", TrusteeOrIndividual.Individual, "#", "#"),
+        TrusteeRow("Trustee three", TrusteeOrIndividual.Business, "#", "#"),
         TrusteeRow("Trustee four", TrusteeOrIndividual.Individual, "#", "#")
       )
 
-      Ok(view(preparedForm, mode, Nil))
+      Ok(view(preparedForm, mode, Nil, Nil))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -71,7 +71,7 @@ class AddATrusteeController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, Nil))),
+          Future.successful(BadRequest(view(formWithErrors, mode, Nil, Nil))),
 
         value => {
           for {
