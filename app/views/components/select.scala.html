@@ -28,7 +28,7 @@ selectAttribute: Set[String] = Set.empty
 )(implicit messages: Messages)
 
 <div id="@field.id-form" class="form-group @formGroupClasses.mkString(" ") @if(field.hasErrors) {form-group-error}">
-    <label for="@field.id">
+    <label id="@field.id-label" for="@field.id">
         <span class="@labelClasses.mkString(" ")">@messages(label)</span>
 
         @hint.map{ hintText =>
@@ -39,7 +39,7 @@ selectAttribute: Set[String] = Set.empty
         <span class="error-message">@messages(error.message, error.args:_*)</span>
         }
     </label>
-    <select class="form-control @selectClasses.mkString(" ")" id="@field.id" name="@field.name" aria-labelledby="@field.id" @selectAttribute>
+    <select class="form-control @selectClasses.mkString(" ")" id="@field.id" name="@field.name" aria-labelledby="@field.id-label" @selectAttribute>
         @placeholder.map{ ph =>
             <option value="">@messages(ph)</option>
         }
