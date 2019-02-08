@@ -34,6 +34,7 @@ trait ViewBehaviours extends ViewSpecBase {
           val doc = asDocument(view)
           val nav = doc.getElementById("proposition-menu")
           val span = nav.children.first
+          span.text mustBe messages("site.service_name")
         }
 
         "display the correct browser title" in {
@@ -59,6 +60,7 @@ trait ViewBehaviours extends ViewSpecBase {
           val doc = asDocument(view)
           assertNotRenderedById(doc, "cymraeg-switch")
         }
+
       }
     }
   }
@@ -71,6 +73,21 @@ trait ViewBehaviours extends ViewSpecBase {
 
         val doc = asDocument(view)
         assertRenderedById(doc, "back-link")
+      }
+    }
+  }
+
+  def pageWithLink(view: HtmlFormat.Appendable, id: String, url : String): Unit = {
+
+    "behave like a page with a link" must {
+
+      "have a link" in {
+
+        val doc = asDocument(view)
+        val element = doc.getElementById(id)
+
+        assertRenderedById(doc, id)
+        assertAttributeValueForElement(element, "href", url)
       }
     }
   }

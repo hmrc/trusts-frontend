@@ -22,11 +22,36 @@ import controllers.routes
 import pages._
 import models._
 
-@Singleton
-class Navigator @Inject()() {
 
-  private val routeMap: Map[Page, UserAnswers => Call] = Map(
-    TrustNamePage -> (_ => routes.WhenTrustSetupController.onPageLoad(NormalMode)),
+trait MatchingNavigator {
+
+  protected val matchingDetails: Map[Page, UserAnswers => Call] = Map(
+    TrustRegisteredOnlinePage -> (_ => routes.TrustHaveAUTRController.onPageLoad(NormalMode)),
+    TrustHaveAUTRPage -> trustHaveAUTRRoute,
+    WhatIsTheUTRPage -> (_ => routes.TrustNameController.onPageLoad(NormalMode)),
+    PostcodeForTheTrustPage -> (_ => routes.FailedMatchController.onPageLoad())
+  )
+
+  private def trustHaveAUTRRoute(answers: UserAnswers) = {
+    val condition = (answers.get(TrustRegisteredOnlinePage), answers.get(TrustHaveAUTRPage))
+
+    condition match {
+      case (Some(false), Some(true)) => routes.WhatIsTheUTRController.onPageLoad(NormalMode)
+      case (Some(false), Some(false)) => routes.TrustNameController.onPageLoad(NormalMode)
+      case (Some(true), Some(false)) => routes.UTRSentByPostController.onPageLoad()
+      case (Some(true), Some(true)) => routes.CannotMakeChangesController.onPageLoad()
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+}
+
+
+@Singleton
+class Navigator @Inject()() extends MatchingNavigator {
+
+  private val trustDetails: Map[Page, UserAnswers => Call] = Map(
+    TrustNamePage -> trustNameRoute,
     WhenTrustSetupPage -> (_ => routes.GovernedInsideTheUKController.onPageLoad(NormalMode)),
     GovernedInsideTheUKPage -> isTrustGovernedInsideUKRoute,
     CountryGoverningTrustPage -> (_ => routes.AdministrationInsideUKController.onPageLoad(NormalMode)),
@@ -41,6 +66,16 @@ class Navigator @Inject()() {
     InheritanceTaxActPage -> inheritanceTaxRoute,
     AgentOtherThanBarristerPage -> (_ => routes.CheckYourAnswersController.onPageLoad())
   )
+
+  private def trustNameRoute(answers: UserAnswers) = {
+    val hasUTR = answers.get(TrustHaveAUTRPage).contains(true)
+
+    if (hasUTR) {
+      routes.PostcodeForTheTrustController.onPageLoad(NormalMode)
+    } else {
+      routes.WhenTrustSetupController.onPageLoad(NormalMode)
+    }
+  }
 
   private def isTrustGovernedInsideUKRoute(answers: UserAnswers) = answers.get(GovernedInsideTheUKPage) match {
     case Some(true)  => routes.AdministrationInsideUKController.onPageLoad(NormalMode)
@@ -84,6 +119,9 @@ class Navigator @Inject()() {
 
   def nextPage(page: Page, mode: Mode): UserAnswers => Call = mode match {
     case NormalMode =>
+
+      val routeMap = trustDetails ++ matchingDetails
+
       routeMap.getOrElse(page, _ => routes.IndexController.onPageLoad())
     case CheckMode =>
       checkRouteMap.getOrElse(page, _ => routes.CheckYourAnswersController.onPageLoad())

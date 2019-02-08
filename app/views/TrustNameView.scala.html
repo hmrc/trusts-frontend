@@ -23,7 +23,7 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, hintTextShown: Boolean)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("trustName.title")}"
@@ -40,7 +40,8 @@
         @components.input_text(
           field = form("value"),
           label = messages("trustName.heading"),
-          labelClass=Some("visually-hidden")
+          labelClass = Some("visually-hidden"),
+          hint = if(hintTextShown) Some(messages("trustName.hint")) else None
         )
 
         @components.submit_button()

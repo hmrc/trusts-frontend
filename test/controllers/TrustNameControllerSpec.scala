@@ -18,23 +18,20 @@ package controllers
 
 import base.SpecBase
 import forms.TrustNameFormProvider
+import generators.Generators
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
+import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.mockito.MockitoSugar
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
-import pages.TrustNamePage
+import org.scalatest.prop.PropertyChecks
+import pages.{TrustHaveAUTRPage, TrustNamePage}
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import repositories.SessionRepository
 import views.html.TrustNameView
 
-import scala.concurrent.Future
-
-class TrustNameControllerSpec extends SpecBase with MockitoSugar {
+class TrustNameControllerSpec extends SpecBase with MockitoSugar with Generators with PropertyChecks {
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -43,45 +40,173 @@ class TrustNameControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val trustNameRoute = routes.TrustNameController.onPageLoad(NormalMode).url
 
-  "TrustName Controller" must {
+  "TrustName Controller" when {
 
-    "return OK and the correct view for a GET" in {
+    "an existing trust" must {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      "return OK and the correct view for a GET" in {
 
-      val request = FakeRequest(GET, trustNameRoute)
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
 
-      val result = route(application, request).value
+            val answers = userAnswers.set(TrustHaveAUTRPage, true).success.value
+              .remove(TrustNamePage).success.value
 
-      val view = application.injector.instanceOf[TrustNameView]
+            val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-      status(result) mustEqual OK
+            val request = FakeRequest(GET, trustNameRoute)
 
-      contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+            val result = route(application, request).value
 
-      application.stop()
+            val view = application.injector.instanceOf[TrustNameView]
+
+            status(result) mustEqual OK
+
+            contentAsString(result) mustEqual
+              view(form, NormalMode, true)(fakeRequest, messages).toString
+
+            application.stop()
+
+        }
+      }
+
+      "populate the view correctly on a GET when the question has previously been answered" in {
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(TrustHaveAUTRPage, true).success.value
+              .set(TrustNamePage, "answer").success.value
+
+            val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+            val request = FakeRequest(GET, trustNameRoute)
+
+            val view = application.injector.instanceOf[TrustNameView]
+
+            val result = route(application, request).value
+
+            status(result) mustEqual OK
+
+            contentAsString(result) mustEqual
+              view(form.fill("answer"), NormalMode, true)(fakeRequest, messages).toString
+
+            application.stop()
+        }
+      }
+
+      "return a Bad Request and errors when invalid data is submitted" in {
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(TrustHaveAUTRPage, true).success.value
+
+            val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+            val request =
+              FakeRequest(POST, trustNameRoute)
+                .withFormUrlEncodedBody(("value", ""))
+
+            val boundForm = form.bind(Map("value" -> ""))
+
+            val view = application.injector.instanceOf[TrustNameView]
+
+            val result = route(application, request).value
+
+            status(result) mustEqual BAD_REQUEST
+
+            contentAsString(result) mustEqual
+              view(boundForm, NormalMode, true)(fakeRequest, messages).toString
+
+            application.stop()
+        }
+      }
+
     }
 
-    "populate the view correctly on a GET when the question has previously been answered" in {
+    "a new trust" must {
 
-      val userAnswers = UserAnswers(userAnswersId).set(TrustNamePage, "answer").success.value
+      "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
 
-      val request = FakeRequest(GET, trustNameRoute)
+            val answers = userAnswers.set(TrustHaveAUTRPage, false).success.value
+              .remove(TrustNamePage).success.value
 
-      val view = application.injector.instanceOf[TrustNameView]
+            val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-      val result = route(application, request).value
+            val request = FakeRequest(GET, trustNameRoute)
 
-      status(result) mustEqual OK
+            val result = route(application, request).value
 
-      contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+            val view = application.injector.instanceOf[TrustNameView]
 
-      application.stop()
+            status(result) mustEqual OK
+
+            contentAsString(result) mustEqual
+              view(form, NormalMode, false)(fakeRequest, messages).toString
+
+            application.stop()
+        }
+      }
+
+      "populate the view correctly on a GET when the question has previously been answered" in {
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(TrustHaveAUTRPage, false).success.value
+              .set(TrustNamePage, "answer").success.value
+
+            val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+            val request = FakeRequest(GET, trustNameRoute)
+
+            val view = application.injector.instanceOf[TrustNameView]
+
+            val result = route(application, request).value
+
+            status(result) mustEqual OK
+
+            contentAsString(result) mustEqual
+              view(form.fill("answer"), NormalMode, false)(fakeRequest, messages).toString
+
+            application.stop()
+        }
+      }
+
+      "return a Bad Request and errors when invalid data is submitted" in {
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(TrustHaveAUTRPage, false).success.value
+
+            val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+            val request =
+              FakeRequest(POST, trustNameRoute)
+                .withFormUrlEncodedBody(("value", ""))
+
+            val boundForm = form.bind(Map("value" -> ""))
+
+            val view = application.injector.instanceOf[TrustNameView]
+
+            val result = route(application, request).value
+
+            status(result) mustEqual BAD_REQUEST
+
+            contentAsString(result) mustEqual
+              view(boundForm, NormalMode, false)(fakeRequest, messages).toString
+
+            application.stop()
+        }
+      }
+
     }
+
 
     "redirect to the next page when valid data is submitted" in {
 
@@ -102,29 +227,7 @@ class TrustNameControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
 
-    "return a Bad Request and errors when invalid data is submitted" in {
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      val request =
-        FakeRequest(POST, trustNameRoute)
-          .withFormUrlEncodedBody(("value", ""))
-
-      val boundForm = form.bind(Map("value" -> ""))
-
-      val view = application.injector.instanceOf[TrustNameView]
-
-      val result = route(application, request).value
-
-      status(result) mustEqual BAD_REQUEST
-
-      contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
-
-      application.stop()
-    }
-
-    "return OK for a GET if no existing data is found" in {
+    "redirect to Session Expired for a GET if no existing data is found" in {
 
       val application = applicationBuilder(userAnswers = None).build()
 
@@ -132,7 +235,26 @@ class TrustNameControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      status(result) mustEqual OK
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+
+      application.stop()
+    }
+
+    "redirect to Session Expired for a POST if no existing data is found" in {
+
+      val application = applicationBuilder(userAnswers = None).build()
+
+      val request =
+        FakeRequest(POST, trustNameRoute)
+          .withFormUrlEncodedBody(("value", "true"))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
