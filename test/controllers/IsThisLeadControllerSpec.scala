@@ -20,22 +20,24 @@ import base.SpecBase
 import forms.IsThisLeadTrusteeFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.IsThisLeadTrusteePage
 import play.api.inject.bind
-import play.api.libs.json.{JsBoolean, Json}
-import play.api.mvc.Call
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.IsThisLeadTrusteeView
 
-class IsThisLeadTrusteeControllerSpec extends SpecBase {
+class IsThisLeadControllerSpec extends SpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new IsThisLeadTrusteeFormProvider()
   val form = formProvider()
 
-  lazy val isThisLeadTrusteeRoute = routes.IsThisLeadTrusteeController.onPageLoad(NormalMode).url
+  val index = 0
+
+  lazy val isThisLeadTrusteeRoute = routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index).url
 
   "IsThisLeadTrustee Controller" must {
 
@@ -52,14 +54,14 @@ class IsThisLeadTrusteeControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, index)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IsThisLeadTrusteePage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(IsThisLeadTrusteePage(index), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -72,7 +74,7 @@ class IsThisLeadTrusteeControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -114,7 +116,7 @@ class IsThisLeadTrusteeControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -149,6 +151,39 @@ class IsThisLeadTrusteeControllerSpec extends SpecBase {
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
+    }
+
+    "for a GET" must {
+
+      def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
+        val route = routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index).url
+
+        FakeRequest(GET, route)
+      }
+
+      validateIndex(
+        arbitrary[Boolean],
+        IsThisLeadTrusteePage.apply,
+        getForIndex
+      )
+
+    }
+
+    "for a POST" must {
+      def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+
+        val route =
+          routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index).url
+
+        FakeRequest(POST, route)
+          .withFormUrlEncodedBody(("value", "true"))
+      }
+
+      validateIndex(
+        arbitrary[Boolean],
+        IsThisLeadTrusteePage.apply,
+        postForIndex
+      )
     }
   }
 }

@@ -43,12 +43,12 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def isThisLeadTrustee: Option[AnswerRow] = userAnswers.get(IsThisLeadTrusteePage) map {
+  def isThisLeadTrustee(index: Int): Option[AnswerRow] = userAnswers.get(IsThisLeadTrusteePage(index)) map {
     x =>
       AnswerRow(
         "isThisLeadTrustee.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.IsThisLeadTrusteeController.onPageLoad(CheckMode).url
+        routes.IsThisLeadTrusteeController.onPageLoad(CheckMode, index).url
       )
   }
 

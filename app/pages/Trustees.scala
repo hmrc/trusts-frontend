@@ -16,16 +16,12 @@
 
 package pages
 
-import pages.behaviours.PageBehaviours
+import play.api.libs.json.{JsObject, JsPath}
 
-class IsThisLeadTrusteePageSpec extends PageBehaviours {
+case object Trustees extends QuestionPage[List[JsObject]]{
 
-  "IsThisLeadTrusteePage" must {
+  override def path: JsPath = JsPath \ toString
 
-    beRetrievable[Boolean](IsThisLeadTrusteePage(0))
+  override def toString: String = "trustees"
 
-    beSettable[Boolean](IsThisLeadTrusteePage(0))
-
-    beRemovable[Boolean](IsThisLeadTrusteePage(0))
-  }
 }

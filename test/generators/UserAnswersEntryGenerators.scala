@@ -40,10 +40,10 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryIsThisLeadTrusteeUserAnswersEntry: Arbitrary[(IsThisLeadTrusteePage.type, JsValue)] =
+  implicit lazy val arbitraryIsThisLeadTrusteeUserAnswersEntry: Arbitrary[(IsThisLeadTrusteePage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[IsThisLeadTrusteePage.type]
+        page  <- arbitrary[IsThisLeadTrusteePage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }

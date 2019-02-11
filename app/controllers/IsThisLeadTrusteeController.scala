@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.IsThisLeadTrusteeFormProvider
 import javax.inject.Inject
-import models.{Mode, UserAnswers}
+import models.Mode
 import navigation.Navigator
-import pages.IsThisLeadTrusteePage
+import pages.{IsThisLeadTrusteePage, Trustees}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -32,42 +32,44 @@ import views.html.IsThisLeadTrusteeView
 import scala.concurrent.{ExecutionContext, Future}
 
 class IsThisLeadTrusteeController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: IsThisLeadTrusteeFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: IsThisLeadTrusteeView
+                                             override val messagesApi: MessagesApi,
+                                             sessionRepository: SessionRepository,
+                                             navigator: Navigator,
+                                             identify: IdentifierAction,
+                                             getData: DataRetrievalAction,
+                                             requireData: DataRequiredAction,
+                                             validateIndex : IndexActionFilterProvider,
+                                             formProvider: IsThisLeadTrusteeFormProvider,
+                                             val controllerComponents: MessagesControllerComponents,
+                                             view: IsThisLeadTrusteeView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode, index : Int): Action[AnyContent] = (identify andThen getData andThen requireData andThen validateIndex(index, Trustees)) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(IsThisLeadTrusteePage) match {
+      val preparedForm = request.userAnswers.get(IsThisLeadTrusteePage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, index))
   }
 
-  def onSubmit(mode: Mode) = (identify andThen getData andThen requireData).async {
+
+  def onSubmit(mode: Mode, index : Int) = (identify andThen getData andThen requireData andThen validateIndex(index, Trustees)).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, index))),
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(IsThisLeadTrusteePage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(IsThisLeadTrusteePage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(IsThisLeadTrusteePage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(IsThisLeadTrusteePage(index), mode)(updatedAnswers))
         }
       )
   }

@@ -30,6 +30,8 @@ class IsThisLeadTrusteeViewSpec extends YesNoViewBehaviours {
 
   val form = new IsThisLeadTrusteeFormProvider()()
 
+  val index = 0
+
   "IsThisLeadTrustee view" must {
 
     val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
@@ -37,12 +39,17 @@ class IsThisLeadTrusteeViewSpec extends YesNoViewBehaviours {
     val view = application.injector.instanceOf[IsThisLeadTrusteeView]
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, NormalMode, index)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.IsThisLeadTrusteeController.onSubmit(NormalMode).url)
+    behave like yesNoPage(
+      form,
+      applyView,
+      messageKeyPrefix,
+      routes.IsThisLeadTrusteeController.onSubmit(NormalMode, index).url
+    )
   }
 }

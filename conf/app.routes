@@ -108,10 +108,12 @@ GET        /cannot-change                               controllers.CannotMakeCh
 
 GET        /trust-utr-post                              controllers.UTRSentByPostController.onPageLoad()
 
-GET        /isThisLeadTrustee                           controllers.IsThisLeadTrusteeController.onPageLoad(mode: Mode = NormalMode)
-POST       /isThisLeadTrustee                           controllers.IsThisLeadTrusteeController.onSubmit(mode: Mode = NormalMode)
-GET        /changeIsThisLeadTrustee                     controllers.IsThisLeadTrusteeController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeIsThisLeadTrustee                     controllers.IsThisLeadTrusteeController.onSubmit(mode: Mode = CheckMode)
+# trustees
+
+GET        /trustees/:index/isThisLeadTrustee            controllers.IsThisLeadTrusteeController.onPageLoad(mode: Mode = NormalMode, index : Int)
+POST       /trustees/:index/isThisLeadTrustee            controllers.IsThisLeadTrusteeController.onSubmit(mode: Mode = NormalMode, index : Int)
+GET        /trustees/:index/changeIsThisLeadTrustee      controllers.IsThisLeadTrusteeController.onPageLoad(mode: Mode = CheckMode, index : Int)
+POST       /trustees/:index/changeIsThisLeadTrustee      controllers.IsThisLeadTrusteeController.onSubmit(mode: Mode = CheckMode, index : Int)
 
 GET        /lead-trustee-individual-business            controllers.TrusteeOrIndividualController.onPageLoad(mode: Mode = NormalMode)
 POST       /lead-trustee-individual-business            controllers.TrusteeOrIndividualController.onSubmit(mode: Mode = NormalMode)
