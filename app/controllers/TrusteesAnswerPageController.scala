@@ -18,25 +18,47 @@ package controllers
 
 import controllers.actions._
 import javax.inject.Inject
+import navigation.Navigator
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import utils.CheckYourAnswersHelper
+import viewmodels.AnswerSection
 import views.html.TrusteesAnswerPageView
 
-import scala.concurrent.ExecutionContext
+
 
 class TrusteesAnswerPageController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: TrusteesAnswerPageView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                              override val messagesApi: MessagesApi,
+                                              identify: IdentifierAction,
+                                              navigator: Navigator,
+                                              getData: DataRetrievalAction,
+                                              requireData: DataRequiredAction,
+                                              val controllerComponents: MessagesControllerComponents,
+                                              view: TrusteesAnswerPageView
+                                            ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
+
+  def onPageLoad() = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      Ok(view())
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
+
+      val sections = Seq(
+        AnswerSection(None,
+          Seq(
+            checkYourAnswersHelper.isThisLeadTrustee,
+            checkYourAnswersHelper.trusteeOrIndividual,
+            checkYourAnswersHelper.trusteeFullName
+          ).flatten
+        )
+      )
+
+      Ok(view(sections))
+  }
+
+  def onSubmit() = (identify andThen getData andThen requireData) {
+    implicit request =>
+      Redirect(routes.AddATrusteeController.onPageLoad())
   }
 }

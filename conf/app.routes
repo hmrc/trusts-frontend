@@ -124,6 +124,7 @@ GET        /trustee-name                                controllers.TrusteesName
 POST       /trustee-name                                controllers.TrusteesNameController.onSubmit(mode: Mode = CheckMode)
 
 GET        /trusteesAnswerPage                          controllers.TrusteesAnswerPageController.onPageLoad()
+POST        /trusteesAnswerPage                          controllers.TrusteesAnswerPageController.onSubmit()
 
 GET        /add-a-trustee                               controllers.AddATrusteeController.onPageLoad(mode: Mode = NormalMode)
 POST       /add-a-trustee                               controllers.AddATrusteeController.onSubmit(mode: Mode = NormalMode)

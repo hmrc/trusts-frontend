@@ -17,15 +17,43 @@
 package controllers
 
 import base.SpecBase
+import models.{FullName, TrusteeOrIndividual, UserAnswers}
+import pages.{IsThisLeadTrusteePage, TrusteeOrIndividualPage, TrusteesNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import play.api.inject.bind
+import utils.CheckYourAnswersHelper
+import viewmodels.AnswerSection
 import views.html.TrusteesAnswerPageView
+import navigation.{FakeNavigator, Navigator}
+import play.api.mvc.Call
 
 class TrusteesAnswerPageControllerSpec extends SpecBase {
+
+  def onwardRoute = Call("GET", "/foo")
 
   "TrusteesAnswerPage Controller" must {
 
     "return OK and the correct view for a GET" in {
+
+      val answers =
+        UserAnswers(userAnswersId)
+          .set(IsThisLeadTrusteePage, false).success.value
+          .set(TrusteeOrIndividualPage, TrusteeOrIndividual.Individual).success.value
+          .set(TrusteesNamePage, FullName("", Some(""), "")).success.value
+
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
+
+      val sections = Seq(
+        AnswerSection(
+          None,
+          Seq(
+            checkYourAnswersHelper.isThisLeadTrustee.value,
+            checkYourAnswersHelper.trusteeOrIndividual.value,
+            checkYourAnswersHelper.trusteeFullName.value
+          )
+        )
+      )
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
@@ -38,7 +66,89 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view()(fakeRequest, messages).toString
+        view(sections)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "redirect to the next page when valid data is submitted" in {
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
+          .build()
+
+      val request =
+        FakeRequest(POST, routes.TrusteesAnswerPageController.onSubmit().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual onwardRoute.url
+
+      application.stop()
+    }
+
+    "redirect to Session Expired for a GET if no existing data is found" in {
+
+      val application = applicationBuilder(userAnswers = None).build()
+
+      val request = FakeRequest(GET, routes.TrusteesAnswerPageController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+
+      application.stop()
+    }
+
+    "redirect to Session Expired for a POST if no existing data is found" in {
+
+      val application = applicationBuilder(userAnswers = None).build()
+
+      val request = FakeRequest(POST, routes.TrusteesAnswerPageController.onSubmit().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+
+      application.stop()
+    }
+
+    "contain a section with all of the user answer detail sections" in {
+
+      val answers =
+        UserAnswers(userAnswersId)
+          .set(IsThisLeadTrusteePage, false).success.value
+          .set(TrusteeOrIndividualPage, TrusteeOrIndividual.Individual).success.value
+          .set(TrusteesNamePage, FullName("", Some(""), "")).success.value
+
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
+
+      val sections = Seq(
+        AnswerSection(
+          None,
+          Seq(
+            checkYourAnswersHelper.isThisLeadTrustee.value,
+            checkYourAnswersHelper.trusteeOrIndividual.value,
+            checkYourAnswersHelper.trusteeFullName.value
+          )
+        )
+      )
+
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+      val request = FakeRequest(GET, routes.TrusteesAnswerPageController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[TrusteesAnswerPageView]
+
+      contentAsString(result) mustEqual
+        view(sections)(fakeRequest, messages).toString
 
       application.stop()
     }
