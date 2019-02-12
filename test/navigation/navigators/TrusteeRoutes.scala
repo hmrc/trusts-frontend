@@ -16,59 +16,56 @@
 
 package navigation.navigators
 
+import base.SpecBase
+import controllers.routes
+import generators.Generators
+import models.{NormalMode, UserAnswers}
+import navigation.Navigator
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalatest.prop.PropertyChecks
+import pages._
 
+trait TrusteeRoutes {
 
+  self: PropertyChecks with Generators with SpecBase =>
 
-  import base.SpecBase
-  import generators.Generators
-  import navigation.Navigator
-  import org.scalatest.prop.PropertyChecks
-  import org.scalacheck.Arbitrary.arbitrary
-  import pages._
-  import models.{NormalMode, UserAnswers}
-  import controllers.routes
+  def trusteeRoutes()(implicit navigator: Navigator) = {
 
-  trait TrusteeRoutes {
+    "go to TrusteeOrIndividualPage from IsThisLeadTrusteePage page" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
 
-    self: PropertyChecks with Generators with SpecBase =>
-
-    def trusteeRoutes()(implicit navigator: Navigator) = {
-
-      "go to TrusteeOrIndividualPage from IsThisLeadTrusteePage page" in {
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
-
-            navigator.nextPage(IsThisLeadTrusteePage, NormalMode)(userAnswers)
-              .mustBe(routes.TrusteeOrIndividualController.onPageLoad(NormalMode))
-        }
+          navigator.nextPage(IsThisLeadTrusteePage, NormalMode)(userAnswers)
+            .mustBe(routes.TrusteeOrIndividualController.onPageLoad(NormalMode))
       }
-
-      "go to TrusteesNamePage from TrusteeOrIndividualPage page" in {
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
-
-            navigator.nextPage(TrusteeOrIndividualPage, NormalMode)(userAnswers)
-              .mustBe(routes.TrusteesNameController.onPageLoad(NormalMode))
-        }
-      }
-
-      "go to TrusteeAnswersPage from TrusteeNamePage page" in {
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
-
-            navigator.nextPage(TrusteesNamePage, NormalMode)(userAnswers)
-              .mustBe(routes.TrusteesAnswerPageController.onPageLoad())
-        }
-      }
-
-      "go to AddATrusteePage from TrusteeAnswersPage page" in {
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
-
-            navigator.nextPage(TrusteesAnswerPage, NormalMode)(userAnswers)
-              .mustBe(routes.AddATrusteeController.onPageLoad())
-        }
-      }
-
     }
+
+    "go to TrusteesNamePage from TrusteeOrIndividualPage page" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          navigator.nextPage(TrusteeOrIndividualPage, NormalMode)(userAnswers)
+            .mustBe(routes.TrusteesNameController.onPageLoad(NormalMode))
+      }
+    }
+
+    "go to TrusteeAnswersPage from TrusteeNamePage page" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          navigator.nextPage(TrusteesNamePage, NormalMode)(userAnswers)
+            .mustBe(routes.TrusteesAnswerPageController.onPageLoad())
+      }
+    }
+
+    "go to AddATrusteePage from TrusteeAnswersPage page" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          navigator.nextPage(TrusteesAnswerPage, NormalMode)(userAnswers)
+            .mustBe(routes.AddATrusteeController.onPageLoad())
+      }
+    }
+
   }
+}

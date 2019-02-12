@@ -40,11 +40,11 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
         UserAnswers(userAnswersId)
           .set(IsThisLeadTrusteePage, false).success.value
           .set(TrusteeOrIndividualPage, TrusteeOrIndividual.Individual).success.value
-          .set(TrusteesNamePage, FullName("", Some(""), "")).success.value
+          .set(TrusteesNamePage, FullName("First", None, "Trustee")).success.value
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
 
-      val sections = Seq(
+      val expectedSections = Seq(
         AnswerSection(
           None,
           Seq(
@@ -55,7 +55,7 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
         )
       )
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
 
       val request = FakeRequest(GET, routes.TrusteesAnswerPageController.onPageLoad().url)
 
@@ -66,7 +66,7 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(sections)(fakeRequest, messages).toString
+        view(expectedSections)(fakeRequest, messages).toString
 
       application.stop()
     }

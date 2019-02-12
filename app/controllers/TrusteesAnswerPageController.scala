@@ -16,9 +16,12 @@
 
 package controllers
 
+import akka.actor.FSM.Normal
 import controllers.actions._
 import javax.inject.Inject
+import models.NormalMode
 import navigation.Navigator
+import pages.TrusteesAnswerPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -38,14 +41,18 @@ class TrusteesAnswerPageController @Inject()(
                                               view: TrusteesAnswerPageView
                                             ) extends FrontendBaseController with I18nSupport {
 
+  private def actions(index : Int) =
+    identify andThen getData andThen requireData
 
-  def onPageLoad() = (identify andThen getData andThen requireData) {
+
+  def onPageLoad() = actions(0) {
     implicit request =>
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
 
       val sections = Seq(
-        AnswerSection(None,
+        AnswerSection(
+          None,
           Seq(
             checkYourAnswersHelper.isThisLeadTrustee,
             checkYourAnswersHelper.trusteeOrIndividual,
@@ -57,8 +64,8 @@ class TrusteesAnswerPageController @Inject()(
       Ok(view(sections))
   }
 
-  def onSubmit() = (identify andThen getData andThen requireData) {
+  def onSubmit() = actions(0) {
     implicit request =>
-      Redirect(routes.AddATrusteeController.onPageLoad())
+      Redirect(navigator.nextPage(TrusteesAnswerPage, NormalMode)(request.userAnswers))
   }
 }
