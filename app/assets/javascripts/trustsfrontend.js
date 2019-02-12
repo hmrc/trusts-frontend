@@ -31,6 +31,53 @@ $(document).ready(function() {
     }
   })
 
+
+  //======================================================
+  // Non-UK countries autocomplete
+  //======================================================
+    if(document.querySelectorAll('select[data-non-uk-countries]').length > 0){
+
+        var graphUrl = '/trusts-registration/assets/javascripts/autocomplete/location-non-uk-autocomplete-graph.json'
+
+        openregisterLocationPicker({
+            defaultValue: '',
+            selectElement: document.querySelector('select[data-non-uk-countries]'),
+            url: graphUrl
+        })
+
+    }
+
+  //======================================================
+  // All countries autocomplete
+  //======================================================
+    if(document.querySelectorAll('select[data-all-countries]').length > 0){
+
+        var graphUrl = '/trusts-registration/assets/javascripts/autocomplete/location-autocomplete-graph.json'
+
+        openregisterLocationPicker({
+            defaultValue: '',
+            selectElement: document.querySelector('select[data-all-countries]'),
+            url: graphUrl
+        })
+
+    }
+
+  //======================================================
+  // countries autocomplete
+  //======================================================
+    // temporary fix for IE not registering clicks on the text of the results list for the country autocomplete
+    $('body').on('mouseup', ".autocomplete__option > strong", function(e){
+        e.preventDefault(); $(this).parent().trigger('click');
+    })
+    // temporary fix for the autocomplete holding onto the last matching country when a user then enters an invalid or blank country
+    $('input[role="combobox"]').on('keydown', function(e){
+        if (e.which != 13 && e.which != 9) {
+             var sel = document.querySelector('.autocomplete-wrapper select');
+             sel.value = "";
+        }
+    })
+
+
   //======================================================
   // Move immediate forcus to any error summary
   //======================================================
@@ -117,6 +164,7 @@ $(document).ready(function() {
       window.onafterprint = function(){
           afterPrintCall();
       }
+
   });
 
 

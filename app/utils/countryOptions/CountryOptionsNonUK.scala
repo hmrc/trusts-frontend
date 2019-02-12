@@ -14,23 +14,18 @@
  * limitations under the License.
  */
 
-package forms
+package utils.countryOptions
 
-import javax.inject.Inject
+import com.google.inject.Inject
+import config.FrontendAppConfig
+import javax.inject.Singleton
+import play.api.Environment
+import utils.InputOption
 
-import forms.mappings.Mappings
-import play.api.data.Form
-
-class CountryGoverningTrustFormProvider @Inject() extends Mappings {
-
-  def apply(): Form[String] =
-    Form(
-      "value" -> text("countryGoverningTrust.error.required")
-        .verifying(
-          firstError(
-            maxLength(100, "countryGoverningTrust.error.length"),
-            regexp(Validation.countryRegex, "countryGoverningTrust.error.invalidCharacters"),
-            isNotEmpty("country", "countryGoverningTrust.error.required")
-      ))
-    )
+@Singleton
+class CountryOptionsNonUK @Inject()(
+                                        environment: Environment,
+                                        config: FrontendAppConfig
+                                      ) extends CountryOptions(environment, config) {
+  override def options: Seq[InputOption] = CountryOptions.getCountries(environment, config.locationCanonicalListNonUK)
 }

@@ -15,6 +15,7 @@
  *@
 
 @import controllers.routes._
+@import utils.InputOption
 @import models.Mode
 
 @this(
@@ -22,7 +23,7 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], countryOptions: Seq[InputOption], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("countryGoverningTrust.title")}"
@@ -36,10 +37,13 @@
 
         @components.heading("countryGoverningTrust.heading")
 
-        @components.input_text(
-          field = form("value"),
-          label = messages("countryGoverningTrust.heading"),
-          labelClass=Some("visually-hidden")
+        @components.select(field = form("value"),
+            label = messages("countryGoverningTrust.heading"),
+            labelClasses = Set("visually-hidden"),
+            options = countryOptions,
+            placeholder = Some("address.country.select"),
+            formGroupClasses = Set("autocomplete-wrapper"),
+            selectAttribute = Set("data-non-uk-countries")
         )
 
         @components.submit_button()

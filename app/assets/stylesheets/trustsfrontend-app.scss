@@ -1,16 +1,13 @@
 @import 'partials/_variables';
 @import 'partials/_base';
-
 @import 'partials/_forms';
 @import 'partials/_typography';
-
 @import 'partials/_utilities';
-
 @import 'partials/_shame';
-
+@import 'partials/heading';
 @import 'conditionals';
-
 @import 'colours/palette';
+@import 'location-autocomplete.min';
 
 .hmrc-add-to-a-list {
   font-size: 19px;

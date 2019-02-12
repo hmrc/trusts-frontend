@@ -34,4 +34,3 @@ class TrustNameFormProvider @Inject() extends Mappings {
         ))
     )
 }
-

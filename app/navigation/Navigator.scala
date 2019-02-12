@@ -67,7 +67,7 @@ class Navigator @Inject()() {
   }
 
   private def trustNameRoute(answers: UserAnswers) = {
-    val hasUTR = answers.get(TrustHaveAUTRPage).getOrElse(false)
+    val hasUTR = answers.get(TrustHaveAUTRPage).contains(true)
 
     if (hasUTR) {
       routes.PostcodeForTheTrustController.onPageLoad(NormalMode)

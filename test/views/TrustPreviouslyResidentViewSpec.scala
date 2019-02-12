@@ -21,10 +21,12 @@ import forms.TrustPreviouslyResidentFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.StringViewBehaviours
+import utils.InputOption
+import utils.countryOptions.CountryOptionsNonUK
+import views.behaviours.SelectCountryViewBehaviours
 import views.html.TrustPreviouslyResidentView
 
-class TrustPreviouslyResidentViewSpec extends StringViewBehaviours {
+class TrustPreviouslyResidentViewSpec extends SelectCountryViewBehaviours {
 
   val messageKeyPrefix = "trustPreviouslyResident"
 
@@ -36,14 +38,16 @@ class TrustPreviouslyResidentViewSpec extends StringViewBehaviours {
 
     val view = application.injector.instanceOf[TrustPreviouslyResidentView]
 
+    val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, countryOptions, NormalMode)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.TrustPreviouslyResidentController.onSubmit(NormalMode).url)
+    behave like selectCountryPage(form, applyView, messageKeyPrefix, routes.TrustPreviouslyResidentController.onSubmit(NormalMode).url)
 
     behave like pageWithASubmitButton(applyView(form))
   }
