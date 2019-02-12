@@ -20,8 +20,7 @@ import base.SpecBase
 import controllers.routes
 import generators.Generators
 import models.{CheckMode, NormalMode, UserAnswers}
-import navigation.navigators.{TrustDetailsRoutes, MatchingRoutes}
-import org.scalacheck.Arbitrary.arbitrary
+import navigation.navigators.{MatchingRoutes, TrustDetailsRoutes}
 import org.scalatest.prop.PropertyChecks
 import pages._
 
