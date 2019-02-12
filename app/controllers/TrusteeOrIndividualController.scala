@@ -32,21 +32,26 @@ import views.html.TrusteeOrIndividualView
 import scala.concurrent.{ExecutionContext, Future}
 
 class TrusteeOrIndividualController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       navigator: Navigator,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       validateIndex : IndexActionFilterProvider,
-                                       formProvider: TrusteeOrIndividualFormProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: TrusteeOrIndividualView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
+                                               override val messagesApi: MessagesApi,
+                                               sessionRepository: SessionRepository,
+                                               navigator: Navigator,
+                                               identify: IdentifierAction,
+                                               getData: DataRetrievalAction,
+                                               requireData: DataRequiredAction,
+                                               validateIndex: IndexActionFilterProvider,
+                                               formProvider: TrusteeOrIndividualFormProvider,
+                                               val controllerComponents: MessagesControllerComponents,
+                                               view: TrusteeOrIndividualView
+                                             )(implicit ec: ExecutionContext) extends FrontendBaseController
+  with I18nSupport
+  with Enumerable.Implicits {
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode, index : Int): Action[AnyContent] = (identify andThen getData andThen requireData andThen validateIndex(index, Trustees)) {
+  private def actions(index: Int) =
+    identify andThen getData andThen requireData andThen validateIndex(index, Trustees)
+
+  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = actions(index) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(TrusteeOrIndividualPage(index)) match {
@@ -57,7 +62,7 @@ class TrusteeOrIndividualController @Inject()(
       Ok(view(preparedForm, mode, index))
   }
 
-  def onSubmit(mode: Mode, index : Int): Action[AnyContent] = (identify andThen getData andThen requireData andThen validateIndex(index, Trustees)).async {
+  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = actions(index).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -67,7 +72,7 @@ class TrusteeOrIndividualController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeOrIndividualPage(index), value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _ <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(TrusteeOrIndividualPage(index), mode)(updatedAnswers))
         }
       )
