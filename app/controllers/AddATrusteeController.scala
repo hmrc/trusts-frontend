@@ -55,6 +55,9 @@ class AddATrusteeController @Inject()(
         case Some(value) => form.fill(value)
       }
 
+      val trustees = request.userAnswers.get(Trustees).getOrElse(List.empty)
+
+
       val trustee = List(
         TrusteeRow("Trustee one", TrusteeOrIndividual.Individual, "#", "#"),
         TrusteeRow("Trustee two", TrusteeOrIndividual.Individual, "#", "#"),
@@ -67,8 +70,6 @@ class AddATrusteeController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
-//      val trustee = request.userAnswers.get(TrusteesNamePage)
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>

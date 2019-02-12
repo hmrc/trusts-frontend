@@ -195,7 +195,7 @@ UTRSentByPost.link = Contact the trusts helpline
 
 isThisLeadTrustee.title = Is this the lead trustee?
 isThisLeadTrustee.heading = Is this the lead trustee?
-isThisLeadTrustee.checkYourAnswersLabel = isThisLeadTrustee
+isThisLeadTrustee.checkYourAnswersLabel = Is this the lead trustee?
 isThisLeadTrustee.error.required = Select yes if this is the trust's lead trustee
 isThisLeadTrustee.hint = The lead trustee is the main point of contact for the trust. Do not enter agent details here unless they are legally a trustee.
 
@@ -203,12 +203,12 @@ trusteeOrIndividual.title = Is the trustee an individual or a business?
 trusteeOrIndividual.heading = Is the trustee an individual or a business?
 trusteeOrIndividual.individual = Individual
 trusteeOrIndividual.business = Business
-trusteeOrIndividual.checkYourAnswersLabel = trusteeOrIndividual
+trusteeOrIndividual.checkYourAnswersLabel = Is the trustee an individual or a business?
 trusteeOrIndividual.error.required = Select if the trustee is an individual or a business
 
 trusteesName.title = What is the trustee's name?
 trusteesName.heading = What is the trustee's name?
-trusteesName.checkYourAnswersLabel = trusteesName
+trusteesName.checkYourAnswersLabel = What is the trustee's name?
 trusteesName.firstName = First name
 trusteesName.middleName = Middle name (optional)
 trusteesName.lastName = Last name
@@ -218,6 +218,7 @@ trusteesName.error.lengthfirstname = Trustees first name must be 35 characters o
 trusteesName.error.lengthmiddlename = Trustees middle name must be 35 characters or less
 trusteesName.error.lengthlastname = Trustees last name must be 35 characters or less
 trusteesName.error.invalidCharacters = Trustee’s name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+
 trusteesAnswerPage.title = trusteesAnswerPage
 trusteesAnswerPage.heading = trusteesAnswerPage
 
