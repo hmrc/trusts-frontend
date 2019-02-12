@@ -21,9 +21,10 @@ import forms.AddATrusteeFormProvider
 import javax.inject.Inject
 import models.{Enumerable, FullName, Mode, TrusteeOrIndividual}
 import navigation.Navigator
-import pages.{AddATrusteePage, TrusteesNamePage}
+import pages.{AddATrusteePage, Trustees, TrusteesNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.libs.json.JsObject
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -67,15 +68,20 @@ class AddATrusteeController @Inject()(
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
-      val trustee = request.userAnswers.get(TrusteesNamePage)
+//      val trustee = request.userAnswers.get(TrusteesNamePage)
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(view(formWithErrors, mode, Nil, Nil))),
 
         value => {
+
+          val currentTrustees = request.userAnswers.get(Trustees).getOrElse(List.empty)
+          val pushObject =  currentTrustees ::: List(JsObject.empty)
+
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(AddATrusteePage, value))
+            updatedTrustees <- Future.fromTry(request.userAnswers.set(Trustees, pushObject))
+            updatedAnswers <- Future.fromTry(updatedTrustees.set(AddATrusteePage, value))
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(AddATrusteePage, mode)(updatedAnswers))
         }

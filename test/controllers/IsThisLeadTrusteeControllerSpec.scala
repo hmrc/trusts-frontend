@@ -28,7 +28,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.IsThisLeadTrusteeView
 
-class IsThisLeadControllerSpec extends SpecBase with IndexValidation {
+class IsThisLeadTrusteeControllerSpec extends SpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 

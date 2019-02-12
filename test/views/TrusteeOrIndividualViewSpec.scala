@@ -31,10 +31,12 @@ class TrusteeOrIndividualViewSpec extends ViewBehaviours {
 
   val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
+  val index = 0
+
   val view = application.injector.instanceOf[TrusteeOrIndividualView]
 
   def applyView(form: Form[_]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode)(fakeRequest, messages)
+    view.apply(form, NormalMode, index)(fakeRequest, messages)
 
   "TrusteeOrIndividualView" must {
 

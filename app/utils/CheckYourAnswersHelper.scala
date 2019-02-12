@@ -34,12 +34,12 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"), routes.TrusteesNameController.onPageLoad(CheckMode).url)
   }
 
-  def trusteeOrIndividual: Option[AnswerRow] = userAnswers.get(TrusteeOrIndividualPage) map {
+  def trusteeOrIndividual(index : Int): Option[AnswerRow] = userAnswers.get(TrusteeOrIndividualPage(index)) map {
     x =>
       AnswerRow(
         "trusteeOrIndividual.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"trusteeOrIndividual.$x")),
-        routes.TrusteeOrIndividualController.onPageLoad(CheckMode).url
+        routes.TrusteeOrIndividualController.onPageLoad(CheckMode, index).url
       )
   }
 

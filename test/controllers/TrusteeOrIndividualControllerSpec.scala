@@ -20,19 +20,21 @@ import base.SpecBase
 import forms.TrusteeOrIndividualFormProvider
 import models.{NormalMode, TrusteeOrIndividual, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.TrusteeOrIndividualPage
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
-import play.api.mvc.Call
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.TrusteeOrIndividualView
 
-class TrusteeOrIndividualControllerSpec extends SpecBase {
+class TrusteeOrIndividualControllerSpec extends SpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 
-  lazy val trusteeOrIndividualRoute = routes.TrusteeOrIndividualController.onPageLoad(NormalMode).url
+  val index = 0
+
+  lazy val trusteeOrIndividualRoute = routes.TrusteeOrIndividualController.onPageLoad(NormalMode, index).url
 
   val formProvider = new TrusteeOrIndividualFormProvider()
   val form = formProvider()
@@ -52,14 +54,14 @@ class TrusteeOrIndividualControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, index)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(TrusteeOrIndividualPage, TrusteeOrIndividual.values.head).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(TrusteeOrIndividualPage(index), TrusteeOrIndividual.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -72,7 +74,7 @@ class TrusteeOrIndividualControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(TrusteeOrIndividual.values.head), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(TrusteeOrIndividual.values.head), NormalMode, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -114,7 +116,7 @@ class TrusteeOrIndividualControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -148,6 +150,39 @@ class TrusteeOrIndividualControllerSpec extends SpecBase {
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
+    }
+
+    "for a GET" must {
+
+      def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
+        val route = routes.TrusteeOrIndividualController.onPageLoad(NormalMode, index).url
+
+        FakeRequest(GET, route)
+      }
+
+      validateIndex(
+        arbitrary[TrusteeOrIndividual],
+        TrusteeOrIndividualPage.apply,
+        getForIndex
+      )
+
+    }
+
+    "for a POST" must {
+      def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+
+        val route =
+          routes.TrusteeOrIndividualController.onPageLoad(NormalMode, index).url
+
+        FakeRequest(POST, route)
+          .withFormUrlEncodedBody(("value", TrusteeOrIndividual.values.head.toString))
+      }
+
+      validateIndex(
+        arbitrary[TrusteeOrIndividual],
+        TrusteeOrIndividualPage.apply,
+        postForIndex
+      )
     }
   }
 }

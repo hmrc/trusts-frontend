@@ -19,14 +19,14 @@ package pages
 import models.TrusteeOrIndividual
 import pages.behaviours.PageBehaviours
 
-class TrusteeOrIndividualSpec extends PageBehaviours {
+class TrusteeOrIndividualPageSpec extends PageBehaviours {
 
   "TrusteeOrIndividualPage" must {
 
-    beRetrievable[TrusteeOrIndividual](TrusteeOrIndividualPage)
+    beRetrievable[TrusteeOrIndividual](TrusteeOrIndividualPage(0))
 
-    beSettable[TrusteeOrIndividual](TrusteeOrIndividualPage)
+    beSettable[TrusteeOrIndividual](TrusteeOrIndividualPage(0))
 
-    beRemovable[TrusteeOrIndividual](TrusteeOrIndividualPage)
+    beRemovable[TrusteeOrIndividual](TrusteeOrIndividualPage(0))
   }
 }

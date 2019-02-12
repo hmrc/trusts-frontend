@@ -21,7 +21,7 @@ import forms.TrusteeOrIndividualFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.TrusteeOrIndividualPage
+import pages.{TrusteeOrIndividualPage, Trustees}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -38,6 +38,7 @@ class TrusteeOrIndividualController @Inject()(
                                        identify: IdentifierAction,
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
+                                       validateIndex : IndexActionFilterProvider,
                                        formProvider: TrusteeOrIndividualFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: TrusteeOrIndividualView
@@ -45,29 +46,29 @@ class TrusteeOrIndividualController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode, index : Int): Action[AnyContent] = (identify andThen getData andThen requireData andThen validateIndex(index, Trustees)) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(TrusteeOrIndividualPage) match {
+      val preparedForm = request.userAnswers.get(TrusteeOrIndividualPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, index))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode, index : Int): Action[AnyContent] = (identify andThen getData andThen requireData andThen validateIndex(index, Trustees)).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, index))),
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeOrIndividualPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeOrIndividualPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrusteeOrIndividualPage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrusteeOrIndividualPage(index), mode)(updatedAnswers))
         }
       )
   }

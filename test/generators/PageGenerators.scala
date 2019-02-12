@@ -27,8 +27,8 @@ trait PageGenerators {
   implicit lazy val arbitraryTrusteesNamePage: Arbitrary[TrusteesNamePage.type] =
     Arbitrary(TrusteesNamePage)
 
-  implicit lazy val arbitraryTrusteeOrIndividualPage: Arbitrary[TrusteeOrIndividualPage.type] =
-    Arbitrary(TrusteeOrIndividualPage)
+  implicit lazy val arbitraryTrusteeOrIndividualPage: Arbitrary[TrusteeOrIndividualPage] =
+    Arbitrary(TrusteeOrIndividualPage(0))
 
   implicit lazy val arbitraryIsThisLeadTrusteePage: Arbitrary[IsThisLeadTrusteePage] =
     Arbitrary(IsThisLeadTrusteePage(0))
