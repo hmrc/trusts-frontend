@@ -24,10 +24,10 @@ class TrusteesNamePageSpec extends PageBehaviours with FullNameGenerator {
 
   "TrusteesNamePage" must {
 
-      beRetrievable[FullName](TrusteesNamePage)
+      beRetrievable[FullName](TrusteesNamePage(0))
 
-      beSettable[FullName](TrusteesNamePage)
+      beSettable[FullName](TrusteesNamePage(0))
 
-      beRemovable[FullName](TrusteesNamePage)
+      beRemovable[FullName](TrusteesNamePage(0))
     }
 }

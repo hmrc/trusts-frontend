@@ -16,7 +16,6 @@
 
 package views
 
-
 import controllers.routes
 import forms.TrusteesNameFormProvider
 import generators.Generators
@@ -26,13 +25,12 @@ import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
 import views.html.TrusteesNameView
 
-
-
-
 class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generators {
 
   val messageKeyPrefix = "trusteesName"
-  val applicantName : String = nonEmptyString.sample.value
+  val applicantName: String = nonEmptyString.sample.value
+
+  val index = 0
 
   override val form = new TrusteesNameFormProvider()()
 
@@ -42,7 +40,7 @@ class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generat
     val view = application.injector.instanceOf[TrusteesNameView]
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, NormalMode, index)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
@@ -52,7 +50,7 @@ class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generat
       form,
       applyView,
       messageKeyPrefix,
-      routes.TrusteesNameController.onSubmit(NormalMode).url,
+      routes.TrusteesNameController.onSubmit(NormalMode, index).url,
       "firstName", "middleName", "lastName"
     )
 

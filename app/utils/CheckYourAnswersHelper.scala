@@ -29,9 +29,12 @@ import viewmodels.AnswerRow
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
 
-  def trusteeFullName: Option[AnswerRow] = userAnswers.get(TrusteesNamePage) map {
-    x => AnswerRow("trusteeFullName.checkYourAnswersLabel",
-      HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"), routes.TrusteesNameController.onPageLoad(CheckMode).url)
+  def trusteeFullName(index : Int): Option[AnswerRow] = userAnswers.get(TrusteesNamePage(index)) map {
+    x => AnswerRow(
+      "trusteeFullName.checkYourAnswersLabel",
+      HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"),
+      routes.TrusteesNameController.onPageLoad(CheckMode, index).url
+    )
   }
 
   def trusteeOrIndividual(index : Int): Option[AnswerRow] = userAnswers.get(TrusteeOrIndividualPage(index)) map {

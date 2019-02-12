@@ -18,24 +18,27 @@ package controllers
 
 import base.SpecBase
 import forms.TrusteesNameFormProvider
+import generators.FullNameGenerator
 import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.TrusteesNamePage
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
-import play.api.mvc.Call
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.TrusteesNameView
 
-class TrusteesNameControllerSpec extends SpecBase {
+class TrusteesNameControllerSpec extends SpecBase with IndexValidation with FullNameGenerator {
 
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new TrusteesNameFormProvider()
   val form = formProvider()
 
-  lazy val trusteesNameRoute: String = routes.TrusteesNameController.onPageLoad(NormalMode).url
+  val index = 0
+
+  lazy val trusteesNameRoute: String = routes.TrusteesNameController.onPageLoad(NormalMode, index).url
 
   "TrusteesName Controller" must {
 
@@ -52,7 +55,7 @@ class TrusteesNameControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -61,7 +64,7 @@ class TrusteesNameControllerSpec extends SpecBase {
 
       val name = FullName("first name", Some("middle name"), "last name")
 
-      val userAnswers = UserAnswers(userAnswersId).set(TrusteesNamePage, name).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(TrusteesNamePage(index), name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -74,7 +77,7 @@ class TrusteesNameControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(name), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(name), NormalMode, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -115,7 +118,7 @@ class TrusteesNameControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -141,7 +144,7 @@ class TrusteesNameControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, trusteesNameRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("firstName", "first"), ("middleName", "middle"), ("lastName", "last"))
 
       val result = route(application, request).value
 
@@ -150,6 +153,39 @@ class TrusteesNameControllerSpec extends SpecBase {
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
+    }
+
+    "for a GET" must {
+
+      def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
+        val route = routes.TrusteeOrIndividualController.onPageLoad(NormalMode, index).url
+
+        FakeRequest(GET, route)
+      }
+
+      validateIndex(
+        arbitrary[FullName],
+        TrusteesNamePage.apply,
+        getForIndex
+      )
+
+    }
+
+    "for a POST" must {
+      def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+
+        val route =
+          routes.TrusteeOrIndividualController.onPageLoad(NormalMode, index).url
+
+        FakeRequest(POST, route)
+          .withFormUrlEncodedBody(("firstName", "first"), ("middleName", "middle"), ("lastName", "last"))
+      }
+
+      validateIndex(
+        arbitrary[FullName],
+        TrusteesNamePage.apply,
+        postForIndex
+      )
     }
   }
 }
