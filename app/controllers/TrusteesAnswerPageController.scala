@@ -16,27 +16,62 @@
 
 package controllers
 
+import akka.actor.FSM.Normal
 import controllers.actions._
 import javax.inject.Inject
+import models.NormalMode
+import navigation.Navigator
+import pages.{Trustees, TrusteesAnswerPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import utils.CheckYourAnswersHelper
+import viewmodels.AnswerSection
 import views.html.TrusteesAnswerPageView
 
-import scala.concurrent.ExecutionContext
+
 
 class TrusteesAnswerPageController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: TrusteesAnswerPageView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                              override val messagesApi: MessagesApi,
+                                              identify: IdentifierAction,
+                                              navigator: Navigator,
+                                              getData: DataRetrievalAction,
+                                              requireData: DataRequiredAction,
+                                              validateIndex : IndexActionFilterProvider,
+                                              val controllerComponents: MessagesControllerComponents,
+                                              view: TrusteesAnswerPageView
+                                            ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
+  private def actions(index : Int) =
+    identify andThen getData andThen requireData andThen validateIndex(index, Trustees)
+
+
+  def onPageLoad(index : Int) = actions(index) {
     implicit request =>
 
-      Ok(view())
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
+
+      val sections = Seq(
+        AnswerSection(
+          None,
+          Seq(
+            checkYourAnswersHelper.isThisLeadTrustee(index),
+            checkYourAnswersHelper.trusteeOrIndividual(index),
+            checkYourAnswersHelper.trusteeFullName(index)
+          ).flatten
+        )
+      )
+
+      sections.head.rows match {
+        case Nil =>
+          Redirect(routes.AddATrusteeController.onPageLoad())
+        case _ =>
+          Ok(view(index, sections))
+      }
+  }
+
+  def onSubmit(index : Int) = actions(index) {
+    implicit request =>
+      Redirect(navigator.nextPage(TrusteesAnswerPage, NormalMode)(request.userAnswers))
   }
 }

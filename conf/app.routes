@@ -125,7 +125,8 @@ POST       /trustees/:index/trustee-name                                controll
 GET        /trustees/:index/trustee-name                                controllers.TrusteesNameController.onPageLoad(mode: Mode = CheckMode, index : Int)
 POST       /trustees/:index/trustee-name                                controllers.TrusteesNameController.onSubmit(mode: Mode = CheckMode, index : Int)
 
-GET        /trusteesAnswerPage                          controllers.TrusteesAnswerPageController.onPageLoad()
+GET        /trustees/:index/trusteesAnswerPage                          controllers.TrusteesAnswerPageController.onPageLoad(index : Int)
+POST       /trustees/:index/trusteesAnswerPage                          controllers.TrusteesAnswerPageController.onSubmit(index : Int)
 
 GET        /add-a-trustee                               controllers.AddATrusteeController.onPageLoad(mode: Mode = NormalMode)
 POST       /add-a-trustee                               controllers.AddATrusteeController.onSubmit(mode: Mode = NormalMode)

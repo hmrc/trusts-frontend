@@ -14,25 +14,6 @@
  * limitations under the License.
  */
 
-package views
+package pages
 
-import views.behaviours.ViewBehaviours
-import views.html.TrusteesAnswerPageView
-
-class TrusteesAnswerPageViewSpec extends ViewBehaviours {
-
-  val index = 0
-
-  "TrusteesAnswerPage view" must {
-
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-    val view = application.injector.instanceOf[TrusteesAnswerPageView]
-
-    val applyView = view.apply(index, Nil)(fakeRequest, messages)
-
-    behave like normalPage(applyView, "trusteesAnswerPage")
-
-    behave like pageWithBackLink(applyView)
-  }
-}
+case object TrusteesAnswerPage extends Page

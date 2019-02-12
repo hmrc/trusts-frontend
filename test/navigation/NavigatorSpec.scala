@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.routes
 import generators.Generators
 import models.{CheckMode, NormalMode, UserAnswers}
-import navigation.navigators.{MatchingRoutes, TrustDetailsRoutes}
+import navigation.navigators.{MatchingRoutes, TrustDetailsRoutes, TrusteeRoutes}
 import org.scalatest.prop.PropertyChecks
 import pages._
 
@@ -29,7 +29,8 @@ class NavigatorSpec extends SpecBase
   with PropertyChecks
   with Generators
   with TrustDetailsRoutes
-  with MatchingRoutes {
+  with MatchingRoutes
+  with TrusteeRoutes {
 
   implicit val navigator : Navigator = new Navigator
 
@@ -45,6 +46,8 @@ class NavigatorSpec extends SpecBase
       behave like trustDetailsRoutes
 
       behave like matchingRoutes
+
+      behave like trusteeRoutes
 
     }
 
