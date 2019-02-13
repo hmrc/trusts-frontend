@@ -28,11 +28,22 @@ class TrusteesNameFormProvider @Inject() extends Mappings {
   def apply(): Form[FullName] = Form(
     mapping(
       "firstName" -> text("trusteesName.error.firstnamerequired")
-        .verifying(maxLength(35, "trusteesName.error.lengthfirstname")),
+        .verifying(
+          firstError(
+            maxLength(35, "trusteesName.error.lengthfirstname"),
+            regexp("^[A-Za-z0-9 ,.()/&'-]*$", "trusteesName.error.invalidCharacters"))),
+
       "middleName" -> optional(text("fullName.error.middleName.required")
-        .verifying(maxLength(35, "trusteesName.error.lengthmiddlename"))),
+        .verifying(
+          firstError(
+            maxLength(35, "trusteesName.error.lengthmiddlename"),
+            regexp("^[A-Za-z0-9 ,.()/&'-]*$", "trusteesName.error.invalidCharacters")))),
+
       "lastName" -> text("trusteesName.error.LastNamerequired")
-        .verifying(maxLength(35, "trusteesName.error.lengthlastname"))
+        .verifying(
+          firstError(
+            maxLength(35, "trusteesName.error.lengthlastname"),
+            regexp("^[A-Za-z0-9 ,.()/&'-]*$", "trusteesName.error.invalidCharacters")))
     )(FullName.apply)(FullName.unapply)
   )
 }

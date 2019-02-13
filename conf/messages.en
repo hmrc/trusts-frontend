@@ -219,8 +219,8 @@ trusteesName.error.lengthmiddlename = Trustees middle name must be 35 characters
 trusteesName.error.lengthlastname = Trustees last name must be 35 characters or less
 trusteesName.error.invalidCharacters = Trustee’s name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
-trusteesAnswerPage.title = trusteesAnswerPage
-trusteesAnswerPage.heading = trusteesAnswerPage
+trusteesAnswerPage.title = Check trustee details
+trusteesAnswerPage.heading = Check trustee details
 
 addATrustee.title = Add a trustee
 addATrustee.heading = Add a trustee
