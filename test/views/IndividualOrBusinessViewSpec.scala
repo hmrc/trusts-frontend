@@ -20,10 +20,10 @@ import forms.IndividualOrBusinessFormProvider
 import models.{NormalMode, IndividualOrBusiness}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.ViewBehaviours
+import views.behaviours.OptionsViewBehaviours
 import views.html.IndividualOrBusinessView
 
-class IndividualOrBusinessViewSpec extends ViewBehaviours {
+class IndividualOrBusinessViewSpec extends OptionsViewBehaviours {
 
   val messageKeyPrefix = "individualOrBusiness"
 
@@ -43,37 +43,8 @@ class IndividualOrBusinessViewSpec extends ViewBehaviours {
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
+
+    behave like pageWithOptions(form, applyView, IndividualOrBusiness.options)
   }
 
-  "IndividualOrBusinessView" when {
-
-    "rendered" must {
-
-      "contain radio buttons for the value" in {
-
-        val doc = asDocument(applyView(form))
-
-        for (option <- IndividualOrBusiness.options) {
-          assertContainsRadioButton(doc, option.id, "value", option.value, false)
-        }
-      }
-    }
-
-    for (option <- IndividualOrBusiness.options) {
-
-      s"rendered with a value of '${option.value}'" must {
-
-        s"have the '${option.value}' radio button selected" in {
-
-          val doc = asDocument(applyView(form.bind(Map("value" -> s"${option.value}"))))
-
-          assertContainsRadioButton(doc, option.id, "value", option.value, true)
-
-          for (unselectedOption <- IndividualOrBusiness.options.filterNot(o => o == option)) {
-            assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
-          }
-        }
-      }
-    }
-  }
 }

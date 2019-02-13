@@ -17,31 +17,27 @@
 package controllers.actions
 
 import com.google.inject.Inject
-import controllers.actions.Entity.EntityType
 import handlers.ErrorHandler
 import models.requests.DataRequest
 import pages.QuestionPage
 import play.api.http.Status
-import play.api.libs.json.JsObject
+import play.api.libs.json.Reads
 import play.api.mvc.{ActionFilter, Result}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-object Entity {
-  type EntityType = QuestionPage[List[JsObject]]
-}
-
-class IndexActionFilter(index : Int,
-                        entity : EntityType,
+class IndexActionFilter[T](index : Int,
+                        entity : QuestionPage[List[T]],
                         protected implicit val executionContext: ExecutionContext,
                         protected val errorHandler : ErrorHandler)
+                          (implicit val reads : Reads[T])
   extends ActionFilter[DataRequest] {
 
   override protected def filter[A](request: DataRequest[A]): Future[Option[Result]] = {
 
-    lazy val numberOfEntities = request.userAnswers.get(entity).getOrElse(List.empty).size
+    lazy val entities = request.userAnswers.get(entity).getOrElse(List.empty)
 
-    if (index >= 0 && index <= numberOfEntities) {
+    if (index >= 0 && index <= entities.size) {
       Future.successful(None)
     } else {
       errorHandler.onClientError(request, Status.NOT_FOUND).map(Some(_))
@@ -52,9 +48,10 @@ class IndexActionFilter(index : Int,
 }
 
 class IndexActionFilterProvider @Inject()(executionContext: ExecutionContext,
-                                          errorHandler: ErrorHandler) {
+                                          errorHandler: ErrorHandler)
+{
 
-  def apply(index: Int, entity : EntityType): IndexActionFilter =
-    new IndexActionFilter(index, entity, executionContext, errorHandler)
+  def apply[T](index: Int, entity : QuestionPage[List[T]])(implicit reads: Reads[T]) =
+    new IndexActionFilter[T](index, entity, executionContext, errorHandler)(reads)
 
 }

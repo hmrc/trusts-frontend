@@ -14,15 +14,20 @@
  * limitations under the License.
  */
 
-package pages
+package models.entities
 
-import models.entities.Trustee
-import play.api.libs.json.JsPath
+import models.{FullName, IndividualOrBusiness}
+import play.api.libs.json.{JsPath, Reads}
 
-case object Trustees extends QuestionPage[List[Trustee]]{
+case class Trustee(name : Option[FullName], `type` : Option[IndividualOrBusiness])
 
-  override def path: JsPath = JsPath \ toString
+object Trustee {
 
-  override def toString: String = "trustees"
+  import play.api.libs.functional.syntax._
+
+  implicit val reads : Reads[Trustee] = (
+    (JsPath \ "trusteesName").readNullable[FullName] and
+      (JsPath \ "trusteeOrIndividual").readNullable[IndividualOrBusiness]
+    )(Trustee.apply _)
 
 }
