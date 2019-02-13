@@ -19,7 +19,11 @@ package models
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 
-case class FullName(firstName: String, middleName: Option[String], lastName: String)
+case class FullName(firstName: String, middleName: Option[String], lastName: String) {
+
+  def asString = s"$firstName $lastName"
+
+}
 
 object FullName {
 
@@ -31,4 +35,5 @@ object FullName {
     )(FullName.apply _)
 
   implicit val writes : Writes[FullName] = Json.writes[FullName]
+
 }

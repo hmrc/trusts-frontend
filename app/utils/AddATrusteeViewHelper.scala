@@ -14,31 +14,28 @@
  * limitations under the License.
  */
 
-package models.entities
+package utils
 
-import models.{FullName, TrusteeOrIndividual}
-import play.api.libs.json.{JsPath, Reads}
+import models.entities.Trustee
+import models.{TrusteeOrIndividual, UserAnswers}
+import pages.Trustees
+import play.api.i18n.Messages
+import viewmodels.TrusteeRow
 
-case class Trustee(name : Option[FullName], `type` : Option[TrusteeOrIndividual]) {
+class AddATrusteeViewHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
-  def nameShow : String = {
-    name match {
-      case Some(n) =>
-        n.asString
-      case None =>
-        ""
-    }
+  private def parseTrustee(trustee : Trustee) : TrusteeRow = {
+    TrusteeRow(
+      trustee.nameShow,
+      trustee.`type`.getOrElse(TrusteeOrIndividual.Individual),
+      "#",
+      "#"
+    )
   }
 
-}
-
-object Trustee {
-
-  import play.api.libs.functional.syntax._
-
-  implicit val reads : Reads[Trustee] = (
-    (JsPath \ "trusteesName").readNullable[FullName] and
-      (JsPath \ "trusteeOrIndividual").readNullable[TrusteeOrIndividual]
-    )(Trustee.apply _)
+  def rows : List[TrusteeRow] = userAnswers.get(Trustees).toList.flatMap {
+    trustees =>
+      for(t <- trustees) yield parseTrustee(t)
+  }
 
 }
