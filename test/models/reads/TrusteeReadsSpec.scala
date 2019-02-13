@@ -21,7 +21,7 @@ import models.TrusteeOrIndividual.Individual
 import models.entities.Trustee
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.{MustMatchers, WordSpec}
-import play.api.libs.json.{JsObject, JsString, Json}
+import play.api.libs.json.{JsArray, JsObject, JsString, Json}
 
 class TrusteeReadsSpec extends WordSpec with MustMatchers with PropertyChecks {
 
@@ -46,21 +46,20 @@ class TrusteeReadsSpec extends WordSpec with MustMatchers with PropertyChecks {
 
   val emptyTrustee: JsObject = Json.obj()
 
+  val arrayOfTrustees : JsArray = Json.arr(trusteeWithMiddleName, trusteeWithoutMiddleName)
 
   "Trustee" must {
 
     "serialise trustee without middle name" in {
       val result = trusteeWithoutMiddleName.as[Trustee]
 
-      result.`type` mustBe Some(Individual)
-      result.name mustBe Some(FullName("First", None, "Last"))
+      result mustBe Trustee(Some(FullName("First", None, "Last")), Some(Individual))
     }
 
     "serialise trustee with middle name" in {
       val result = trusteeWithMiddleName.as[Trustee]
 
-      result.`type` mustBe Some(Individual)
-      result.name mustBe Some(FullName("First", Some("Middle"), "Last"))
+      result mustBe Trustee(Some(FullName("First", Some("Middle"), "Last")), Some(Individual))
     }
 
     "serialise an empty object to a trustee" in {
@@ -68,6 +67,14 @@ class TrusteeReadsSpec extends WordSpec with MustMatchers with PropertyChecks {
 
       result.`type` mustBe None
       result.name mustBe None
+    }
+
+    "serialise an array of trustees" in {
+      val result = arrayOfTrustees.as[List[Trustee]]
+
+      result.size mustBe 2
+      result.head mustBe Trustee(Some(FullName("First", Some("Middle"), "Last")), Some(Individual))
+      result.tail.head mustBe Trustee(Some(FullName("First", None, "Last")), Some(Individual))
     }
 
   }
