@@ -20,5 +20,6 @@ object Validation {
 
   val countryRegex = "^[A-Za-z ,.()'-]*$"
   val postcodeRegex = """^[a-zA-Z]{1,2}[0-9][0-9a-zA-Z]?\s?[0-9][a-zA-Z]{2}$"""
+  val nameRegex = "^[A-Za-z0-9 ,.()/&'-]*$"
 
 }

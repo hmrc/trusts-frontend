@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import models.TrusteeOrIndividual
-import play.api.libs.json.JsPath
+import javax.inject.Inject
 
-final case class TrusteeOrIndividualPage(index : Int) extends QuestionPage[TrusteeOrIndividual] {
+import forms.mappings.Mappings
+import play.api.data.Form
+import models.IndividualOrBusiness
 
-  override def path: JsPath = JsPath \ Trustees \ index \ toString
+class IndividualOrBusinessFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "trusteeOrIndividual"
+  def apply(): Form[IndividualOrBusiness] =
+    Form(
+      "value" -> enumerable[IndividualOrBusiness]("individualOrBusiness.error.required")
+    )
 }

@@ -16,36 +16,36 @@
 
 package views
 
-import forms.TrusteeOrIndividualFormProvider
-import models.{NormalMode, TrusteeOrIndividual}
+import forms.IndividualOrBusinessFormProvider
+import models.{NormalMode, IndividualOrBusiness}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.ViewBehaviours
-import views.html.TrusteeOrIndividualView
+import views.html.IndividualOrBusinessView
 
-class TrusteeOrIndividualViewSpec extends ViewBehaviours {
+class IndividualOrBusinessViewSpec extends ViewBehaviours {
 
-  val messageKeyPrefix = "trusteeOrIndividual"
+  val messageKeyPrefix = "individualOrBusiness"
 
-  val form = new TrusteeOrIndividualFormProvider()()
+  val form = new IndividualOrBusinessFormProvider()()
 
   val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
   val index = 0
 
-  val view = application.injector.instanceOf[TrusteeOrIndividualView]
+  val view = application.injector.instanceOf[IndividualOrBusinessView]
 
   def applyView(form: Form[_]): HtmlFormat.Appendable =
     view.apply(form, NormalMode, index)(fakeRequest, messages)
 
-  "TrusteeOrIndividualView" must {
+  "IndividualOrBusinessView" must {
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
   }
 
-  "TrusteeOrIndividualView" when {
+  "IndividualOrBusinessView" when {
 
     "rendered" must {
 
@@ -53,13 +53,13 @@ class TrusteeOrIndividualViewSpec extends ViewBehaviours {
 
         val doc = asDocument(applyView(form))
 
-        for (option <- TrusteeOrIndividual.options) {
+        for (option <- IndividualOrBusiness.options) {
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
         }
       }
     }
 
-    for (option <- TrusteeOrIndividual.options) {
+    for (option <- IndividualOrBusiness.options) {
 
       s"rendered with a value of '${option.value}'" must {
 
@@ -69,7 +69,7 @@ class TrusteeOrIndividualViewSpec extends ViewBehaviours {
 
           assertContainsRadioButton(doc, option.id, "value", option.value, true)
 
-          for (unselectedOption <- TrusteeOrIndividual.options.filterNot(o => o == option)) {
+          for (unselectedOption <- IndividualOrBusiness.options.filterNot(o => o == option)) {
             assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
           }
         }

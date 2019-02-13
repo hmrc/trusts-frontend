@@ -17,21 +17,21 @@
 package controllers
 
 import controllers.actions._
-import forms.TrusteeOrIndividualFormProvider
+import forms.IndividualOrBusinessFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.{TrusteeOrIndividualPage, Trustees}
+import pages.{IndividualOrBusinessPage, Trustees}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.TrusteeOrIndividualView
+import views.html.IndividualOrBusinessView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrusteeOrIndividualController @Inject()(
+class IndividualOrBusinessController @Inject()(
                                                override val messagesApi: MessagesApi,
                                                sessionRepository: SessionRepository,
                                                navigator: Navigator,
@@ -39,9 +39,9 @@ class TrusteeOrIndividualController @Inject()(
                                                getData: DataRetrievalAction,
                                                requireData: DataRequiredAction,
                                                validateIndex: IndexActionFilterProvider,
-                                               formProvider: TrusteeOrIndividualFormProvider,
+                                               formProvider: IndividualOrBusinessFormProvider,
                                                val controllerComponents: MessagesControllerComponents,
-                                               view: TrusteeOrIndividualView
+                                               view: IndividualOrBusinessView
                                              )(implicit ec: ExecutionContext) extends FrontendBaseController
   with I18nSupport
   with Enumerable.Implicits {
@@ -54,7 +54,7 @@ class TrusteeOrIndividualController @Inject()(
   def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = actions(index) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(TrusteeOrIndividualPage(index)) match {
+      val preparedForm = request.userAnswers.get(IndividualOrBusinessPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -71,9 +71,9 @@ class TrusteeOrIndividualController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeOrIndividualPage(index), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(IndividualOrBusinessPage(index), value))
             _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrusteeOrIndividualPage(index), mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(IndividualOrBusinessPage(index), mode)(updatedAnswers))
         }
       )
   }

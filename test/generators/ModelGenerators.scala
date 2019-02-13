@@ -27,9 +27,9 @@ trait ModelGenerators {
       Gen.oneOf(AddATrustee.values.toSeq)
     }
 
-  implicit lazy val arbitraryTrusteeOrIndividual: Arbitrary[TrusteeOrIndividual] =
+  implicit lazy val arbitraryTrusteeOrIndividual: Arbitrary[IndividualOrBusiness] =
     Arbitrary {
-      Gen.oneOf(TrusteeOrIndividual.values.toSeq)
+      Gen.oneOf(IndividualOrBusiness.values.toSeq)
     }
 
   implicit lazy val arbitraryNonResidentType: Arbitrary[NonResidentType] =

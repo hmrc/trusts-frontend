@@ -158,7 +158,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation with Full
     "for a GET" must {
 
       def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
-        val route = routes.TrusteeOrIndividualController.onPageLoad(NormalMode, index).url
+        val route = routes.IndividualOrBusinessController.onPageLoad(NormalMode, index).url
 
         FakeRequest(GET, route)
       }
@@ -175,7 +175,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation with Full
       def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
         val route =
-          routes.TrusteeOrIndividualController.onPageLoad(NormalMode, index).url
+          routes.IndividualOrBusinessController.onPageLoad(NormalMode, index).url
 
         FakeRequest(POST, route)
           .withFormUrlEncodedBody(("firstName", "first"), ("middleName", "middle"), ("lastName", "last"))

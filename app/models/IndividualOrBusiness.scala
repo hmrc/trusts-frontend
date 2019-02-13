@@ -19,22 +19,22 @@ package models
 import play.api.libs.json._
 import viewmodels.RadioOption
 
-sealed trait TrusteeOrIndividual
+sealed trait IndividualOrBusiness
 
-object TrusteeOrIndividual extends Enumerable.Implicits {
+object IndividualOrBusiness extends Enumerable.Implicits {
 
-  case object Individual extends WithName("individual") with TrusteeOrIndividual
-  case object Business extends WithName("business") with TrusteeOrIndividual
+  case object Individual extends WithName("individual") with IndividualOrBusiness
+  case object Business extends WithName("business") with IndividualOrBusiness
 
-  val values: Set[TrusteeOrIndividual] = Set(
+  val values: Set[IndividualOrBusiness] = Set(
     Individual, Business
   )
 
   val options: Set[RadioOption] = values.map {
     value =>
-      RadioOption("trusteeOrIndividual", value.toString)
+      RadioOption("individualOrBusiness", value.toString)
   }
 
-  implicit val enumerable: Enumerable[TrusteeOrIndividual] =
+  implicit val enumerable: Enumerable[IndividualOrBusiness] =
     Enumerable(values.toSeq.map(v => v.toString -> v): _*)
 }

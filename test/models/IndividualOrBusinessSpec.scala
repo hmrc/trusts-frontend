@@ -22,40 +22,40 @@ import org.scalatest.prop.PropertyChecks
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import play.api.libs.json.{JsError, JsString, Json}
 
-class TrusteeOrIndividualSpec extends WordSpec with MustMatchers with PropertyChecks with OptionValues {
+class IndividualOrBusinessSpec extends WordSpec with MustMatchers with PropertyChecks with OptionValues {
 
-  "TrusteeOrIndividual" must {
+  "IndividualOrBusiness" must {
 
     "deserialise valid values" in {
 
-      val gen = Gen.oneOf(TrusteeOrIndividual.values.toSeq)
+      val gen = Gen.oneOf(IndividualOrBusiness.values.toSeq)
 
       forAll(gen) {
-        trusteeOrIndividual =>
+        individualOrBusiness =>
 
-          JsString(trusteeOrIndividual.toString).validate[TrusteeOrIndividual].asOpt.value mustEqual trusteeOrIndividual
+          JsString(individualOrBusiness.toString).validate[IndividualOrBusiness].asOpt.value mustEqual individualOrBusiness
       }
     }
 
     "fail to deserialise invalid values" in {
 
-      val gen = arbitrary[String] suchThat (!TrusteeOrIndividual.values.map(_.toString).contains(_))
+      val gen = arbitrary[String] suchThat (!IndividualOrBusiness.values.map(_.toString).contains(_))
 
       forAll(gen) {
         invalidValue =>
 
-          JsString(invalidValue).validate[TrusteeOrIndividual] mustEqual JsError("error.invalid")
+          JsString(invalidValue).validate[IndividualOrBusiness] mustEqual JsError("error.invalid")
       }
     }
 
     "serialise" in {
 
-      val gen = Gen.oneOf(TrusteeOrIndividual.values.toSeq)
+      val gen = Gen.oneOf(IndividualOrBusiness.values.toSeq)
 
       forAll(gen) {
-        trusteeOrIndividual =>
+        individualOrBusiness =>
 
-          Json.toJson(trusteeOrIndividual) mustEqual JsString(trusteeOrIndividual.toString)
+          Json.toJson(individualOrBusiness) mustEqual JsString(individualOrBusiness.toString)
       }
     }
   }

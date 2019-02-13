@@ -17,22 +17,22 @@
 package forms
 
 import forms.behaviours.OptionFieldBehaviours
-import models.TrusteeOrIndividual
+import models.IndividualOrBusiness
 import play.api.data.FormError
 
-class TrusteeOrIndividualFormProviderSpec extends OptionFieldBehaviours {
+class IndividualOrBusinessFormProviderSpec extends OptionFieldBehaviours {
 
-  val form = new TrusteeOrIndividualFormProvider()()
+  val form = new IndividualOrBusinessFormProvider()()
 
   ".value" must {
 
     val fieldName = "value"
-    val requiredKey = "trusteeOrIndividual.error.required"
+    val requiredKey = "individualOrBusiness.error.required"
 
-    behave like optionsField[TrusteeOrIndividual](
+    behave like optionsField[IndividualOrBusiness](
       form,
       fieldName,
-      validValues  = TrusteeOrIndividual.values,
+      validValues  = IndividualOrBusiness.values,
       invalidError = FormError(fieldName, "error.invalid")
     )
 
