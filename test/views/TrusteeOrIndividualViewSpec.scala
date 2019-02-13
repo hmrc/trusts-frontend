@@ -46,5 +46,5 @@ class TrusteeOrIndividualViewSpec extends OptionsViewBehaviours {
 
     behave like pageWithOptions(form, applyView, TrusteeOrIndividual.options)
   }
-  
+
 }

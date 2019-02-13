@@ -66,40 +66,43 @@ class AddATrusteeViewSpec extends OptionsViewBehaviours with TabularDataViewBeha
 
     "there is data in progress" must {
 
+      val viewWithData = applyView(form, inProgressTrustees, Nil)
+
       behave like normalPage(applyView(form), messageKeyPrefix)
 
       behave like pageWithBackLink(applyView(form))
 
-      behave like pageWithInProgressTabularData(applyView(form, inProgressTrustees, Nil), inProgressTrustees)
+      behave like pageWithInProgressTabularData(viewWithData, inProgressTrustees)
 
       behave like pageWithOptions(form, applyView, AddATrustee.options)
-
     }
 
     "there is complete data" must {
 
+      val viewWithData = applyView(form, Nil, completeTrustees)
+
       behave like normalPage(applyView(form), messageKeyPrefix)
 
       behave like pageWithBackLink(applyView(form))
 
-      behave like pageWithCompleteTabularData(applyView(form, Nil, completeTrustees), completeTrustees)
+      behave like pageWithCompleteTabularData(viewWithData, completeTrustees)
 
       behave like pageWithOptions(form, applyView, AddATrustee.options)
     }
 
 
-//    "there is both inCompleteTrustee and completeTrustee trustee data" must {
-//
-//
-//      behave like normalPage(applyView(form), messageKeyPrefix)
-//
-//      behave like pageWithBackLink(applyView(form))
-//
-//      behave like pageWithIncompleteTabularData(applyView(form, inCompleteTrustees, completeTrustees))
-//
-//      behave like pageWithOptions(form, applyView, AddATrustee.options)
-//
-//    }
+    "there is both in progress and complete data" must {
+
+      val viewWithData = applyView(form, inProgressTrustees, completeTrustees)
+
+      behave like normalPage(applyView(form), messageKeyPrefix)
+
+      behave like pageWithBackLink(applyView(form))
+
+      behave like pageWithTabularData(viewWithData, inProgressTrustees, completeTrustees)
+
+      behave like pageWithOptions(form, applyView, AddATrustee.options)
+    }
 
   }
 }

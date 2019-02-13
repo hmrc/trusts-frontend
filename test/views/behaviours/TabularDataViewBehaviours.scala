@@ -24,7 +24,7 @@ import views.ViewSpecBase
 
 trait TabularDataViewBehaviours extends ViewSpecBase {
 
-  private def assertDataList(doc : Document, parentElementId : String, data : Seq[TrusteeRow]) = {
+  private def assertDataList(doc: Document, parentElementId: String, data: Seq[TrusteeRow]) = {
 
     val container = doc.getElementById(parentElementId)
 
@@ -51,7 +51,6 @@ trait TabularDataViewBehaviours extends ViewSpecBase {
     }
   }
 
-
   def pageWithNoTabularData(view: HtmlFormat.Appendable) = {
 
     "behave like a page with tabular data" when {
@@ -68,13 +67,12 @@ trait TabularDataViewBehaviours extends ViewSpecBase {
     }
   }
 
-
   def pageWithInProgressTabularData(view: HtmlFormat.Appendable, data: Seq[TrusteeRow]) = {
 
     "behave like a page with incomplete tabular data" should {
 
 
-      "render a h3 with incomplete data" in {
+      "render a h3" in {
         val doc = asDocument(view)
         assertRenderedById(doc, "data-list-heading--inprogress")
       }
@@ -93,12 +91,11 @@ trait TabularDataViewBehaviours extends ViewSpecBase {
     }
   }
 
-
   def pageWithCompleteTabularData(view: HtmlFormat.Appendable, data: Seq[TrusteeRow]) = {
 
     "behave like a page with complete tabular data" should {
 
-      "render a h3 with complete data" in {
+      "render a h3" in {
         val doc = asDocument(view)
         assertRenderedById(doc, "data-list-heading--complete")
       }
@@ -117,49 +114,31 @@ trait TabularDataViewBehaviours extends ViewSpecBase {
     }
   }
 
+  def pageWithTabularData(view: HtmlFormat.Appendable,
+                          inProgressData: Seq[TrusteeRow],
+                          completeData: Seq[TrusteeRow]) = {
 
-//    def pageWithBothInCompleteAndCompleteTabularData(view: HtmlFormat.Appendable, data: Seq[TrusteeRow], data: Seq[TrusteeRow]) = {
-//
-//      "behave like a page with complete and incomplete tabular data" should {
-//
-//        "render a h3 whith complete and a h3 with inprogress when both sets of data is present" in {
-//
-//          val doc = asDocument(view)
-//          assertRenderedById(doc, "data-list--inprogress","data-list--complete")
-//        }
-//
-//        "render an add to list" in {
-//          val doc = asDocument(view)
-//          assertRenderedByCssSelector(doc, ".hmrc-add-to-a-list")
-//        }
-//
-//        "render a row for each data item" in {
-//          val doc = asDocument(view)
-//          val elements: Elements = doc.select(".hmrc-add-to-a-list__contents")
-//
-//          elements.size mustBe data.size
-//
-//          val dataWithIndex = data.zipWithIndex
-//
-//          for ((item, index) <- dataWithIndex) {
-//            val element = elements.get(index)
-//
-//            element.text must include(item.name)
-//            element.text must include(messages(item.typeKey))
-//
-//            val changeLink = element.getElementsByClass("hmrc-add-to-a-list__change").first()
-//
-//            changeLink.getElementsByTag("a").attr("href") must include(item.changeUrl)
-//            changeLink.text must include(s"Change ${item.name}")
-//
-//            val removeLink = element.getElementsByClass("hmrc-add-to-a-list__remove").first()
-//
-//            removeLink.getElementsByTag("a").attr("href") must include(item.removeUrl)
-//            removeLink.text must include(s"Delete ${item.name}")
-//          }
-//        }
-//      }
-//    }
+    "behave like a page with complete and incomplete tabular data" should {
+
+      "render a h3" in {
+        val doc = asDocument(view)
+        assertRenderedById(doc, "data-list-heading--inprogress")
+        assertRenderedById(doc, "data-list-heading--complete")
+      }
+
+      "render an add to list" in {
+        val doc = asDocument(view)
+        assertRenderedById(doc, "data-list--inprogress")
+        assertRenderedById(doc, "data-list--complete")
+      }
+
+      "render a row for each data item" in {
+        val doc = asDocument(view)
+        assertDataList(doc, "data-list--inprogress", inProgressData)
+        assertDataList(doc, "data-list--complete", completeData)
+      }
+    }
+  }
 
 }
 
