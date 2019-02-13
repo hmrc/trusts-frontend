@@ -19,16 +19,15 @@ package controllers
 import controllers.actions._
 import forms.AddATrusteeFormProvider
 import javax.inject.Inject
-import models.{Enumerable, FullName, Mode, TrusteeOrIndividual}
+import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.{AddATrusteePage, Trustees, TrusteesNamePage}
+import pages.{AddATrusteePage, Trustees}
+import play.api.Logger
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.JsObject
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import viewmodels.TrusteeRow
 import views.html.AddATrusteeView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -57,13 +56,14 @@ class AddATrusteeController @Inject()(
 
       val trustees = request.userAnswers.get(Trustees).getOrElse(List.empty)
 
+      Logger.debug(s"\n\ntrustees $trustees\n\n")
 
-      val trustee = List(
-        TrusteeRow("Trustee one", TrusteeOrIndividual.Individual, "#", "#"),
-        TrusteeRow("Trustee two", TrusteeOrIndividual.Individual, "#", "#"),
-        TrusteeRow("Trustee three", TrusteeOrIndividual.Business, "#", "#"),
-        TrusteeRow("Trustee four", TrusteeOrIndividual.Individual, "#", "#")
-      )
+//      val trustee = List(
+//        TrusteeRow("Trustee one", TrusteeOrIndividual.Individual, "#", "#"),
+//        TrusteeRow("Trustee two", TrusteeOrIndividual.Individual, "#", "#"),
+//        TrusteeRow("Trustee three", TrusteeOrIndividual.Business, "#", "#"),
+//        TrusteeRow("Trustee four", TrusteeOrIndividual.Individual, "#", "#")
+//      )
 
       Ok(view(preparedForm, mode, Nil, Nil))
   }
@@ -77,12 +77,12 @@ class AddATrusteeController @Inject()(
 
         value => {
 
-          val currentTrustees = request.userAnswers.get(Trustees).getOrElse(List.empty)
-          val pushObject =  currentTrustees ::: List(JsObject.empty)
+//          val currentTrustees = request.userAnswers.get(Trustees).getOrElse(List.empty)
+//          val pushObject = currentTrustees ::: List(JsObject.empty)
 
           for {
-            updatedTrustees <- Future.fromTry(request.userAnswers.set(Trustees, pushObject))
-            updatedAnswers <- Future.fromTry(updatedTrustees.set(AddATrusteePage, value))
+//            updatedTrustees <- Future.fromTry(request.userAnswers.set(Trustees, pushObject))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(AddATrusteePage, value))
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(AddATrusteePage, mode)(updatedAnswers))
         }

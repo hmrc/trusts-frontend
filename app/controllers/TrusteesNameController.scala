@@ -20,6 +20,7 @@ import controllers.actions._
 import forms.TrusteesNameFormProvider
 import javax.inject.Inject
 import models.Mode
+import models.entities.Trustee
 import navigation.Navigator
 import pages.{Trustees, TrusteesNamePage}
 import play.api.data.Form
