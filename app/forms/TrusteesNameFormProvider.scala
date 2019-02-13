@@ -31,19 +31,20 @@ class TrusteesNameFormProvider @Inject() extends Mappings {
         .verifying(
           firstError(
             maxLength(35, "trusteesName.error.lengthfirstname"),
-            regexp("^[A-Za-z0-9 ,.()/&'-]*$", "trusteesName.error.invalidCharacters"))),
+            regexp(Validation.nameRegex, "trusteesName.error.invalidCharacters"))),
+//      isNotEmpty("value", "trusteesName.error..required")
 
       "middleName" -> optional(text("fullName.error.middleName.required")
         .verifying(
           firstError(
             maxLength(35, "trusteesName.error.lengthmiddlename"),
-            regexp("^[A-Za-z0-9 ,.()/&'-]*$", "trusteesName.error.invalidCharacters")))),
+            regexp(Validation.nameRegex, "trusteesName.error.invalidCharacters")))),
 
       "lastName" -> text("trusteesName.error.LastNamerequired")
         .verifying(
           firstError(
             maxLength(35, "trusteesName.error.lengthlastname"),
-            regexp("^[A-Za-z0-9 ,.()/&'-]*$", "trusteesName.error.invalidCharacters")))
+            regexp(Validation.nameRegex, "trusteesName.error.invalidCharacters")))
     )(FullName.apply)(FullName.unapply)
   )
 }

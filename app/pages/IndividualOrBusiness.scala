@@ -16,12 +16,12 @@
 
 package pages
 
-import models.TrusteeOrIndividual
+import models.IndividualOrBusiness
 import play.api.libs.json.JsPath
 
-final case class TrusteeOrIndividualPage(index : Int) extends QuestionPage[TrusteeOrIndividual] {
+final case class IndividualOrBusinessPage(index : Int) extends QuestionPage[IndividualOrBusiness] {
 
   override def path: JsPath = JsPath \ Trustees \ index \ toString
 
-  override def toString: String = "trusteeOrIndividual"
+  override def toString: String = "IndividualOrBusiness"
 }

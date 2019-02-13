@@ -19,17 +19,15 @@ package controllers
 import controllers.actions._
 import forms.AddATrusteeFormProvider
 import javax.inject.Inject
-import models.{Enumerable, Mode, TrusteeOrIndividual}
+import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.{AddATrusteePage, Trustees}
-import play.api.Logger
+import pages.AddATrusteePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.AddATrusteeViewHelper
-import viewmodels.TrusteeRow
 import views.html.AddATrusteeView
 
 import scala.concurrent.{ExecutionContext, Future}

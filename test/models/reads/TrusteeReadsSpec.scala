@@ -17,7 +17,7 @@
 package models.reads
 
 import models.FullName
-import models.TrusteeOrIndividual.Individual
+import models.IndividualOrBusiness.Individual
 import models.entities.Trustee
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.{MustMatchers, WordSpec}

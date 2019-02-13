@@ -17,7 +17,7 @@
 package views
 
 import forms.AddATrusteeFormProvider
-import models.{AddATrustee, NormalMode, TrusteeOrIndividual}
+import models.{AddATrustee, NormalMode, IndividualOrBusiness}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import viewmodels.TrusteeRow
@@ -26,16 +26,16 @@ import views.html.AddATrusteeView
 
 class AddATrusteeViewSpec extends OptionsViewBehaviours with TabularDataViewBehaviours {
 
-  val completeTrustees : Seq[TrusteeRow] = Seq(
-    TrusteeRow("trustee one", TrusteeOrIndividual.Individual, "#", "#"),
-    TrusteeRow("trustee two", TrusteeOrIndividual.Individual, "#", "#"),
-    TrusteeRow("trustee three", TrusteeOrIndividual.Individual, "#", "#")
+  val completeTrustees = Seq(
+    TrusteeRow("trustee one", "Individual", "#", "#"),
+    TrusteeRow("trustee two", "Individual", "#", "#"),
+    TrusteeRow("trustee three", "Individual", "#", "#")
   )
 
-  val inProgressTrustees : Seq[TrusteeRow] = Seq(
-    TrusteeRow("trustee one", TrusteeOrIndividual.Individual, "#", "#"),
-    TrusteeRow("trustee two", TrusteeOrIndividual.Individual, "#", "#"),
-    TrusteeRow("trustee three", TrusteeOrIndividual.Individual, "#", "#")
+  val inProgressTrustees = Seq(
+    TrusteeRow("trustee one", "Individual", "#", "#"),
+    TrusteeRow("trustee two", "Individual", "#", "#"),
+    TrusteeRow("trustee three", "Individual", "#", "#")
   )
 
   val messageKeyPrefix = "addATrustee"

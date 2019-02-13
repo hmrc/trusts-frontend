@@ -14,19 +14,26 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-import models.TrusteeOrIndividual
-import pages.behaviours.PageBehaviours
+import viewmodels.RadioOption
 
-class TrusteeOrIndividualPageSpec extends PageBehaviours {
+sealed trait IndividualOrBusiness
 
-  "TrusteeOrIndividualPage" must {
+object IndividualOrBusiness extends Enumerable.Implicits {
 
-    beRetrievable[TrusteeOrIndividual](TrusteeOrIndividualPage(0))
+  case object Individual extends WithName("individual") with IndividualOrBusiness
+  case object Business extends WithName("business") with IndividualOrBusiness
 
-    beSettable[TrusteeOrIndividual](TrusteeOrIndividualPage(0))
+  val values: Set[IndividualOrBusiness] = Set(
+    Individual, Business
+  )
 
-    beRemovable[TrusteeOrIndividual](TrusteeOrIndividualPage(0))
+  val options: Set[RadioOption] = values.map {
+    value =>
+      RadioOption("individualOrBusiness", value.toString)
   }
+
+  implicit val enumerable: Enumerable[IndividualOrBusiness] =
+    Enumerable(values.toSeq.map(v => v.toString -> v): _*)
 }

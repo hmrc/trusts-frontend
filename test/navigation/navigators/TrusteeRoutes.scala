@@ -38,7 +38,7 @@ trait TrusteeRoutes {
         userAnswers =>
 
           navigator.nextPage(IsThisLeadTrusteePage(index), NormalMode)(userAnswers)
-            .mustBe(routes.TrusteeOrIndividualController.onPageLoad(NormalMode, index))
+            .mustBe(routes.IndividualOrBusinessController.onPageLoad(NormalMode, index))
       }
     }
 
@@ -46,7 +46,7 @@ trait TrusteeRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(TrusteeOrIndividualPage(index), NormalMode)(userAnswers)
+          navigator.nextPage(IndividualOrBusinessPage(index), NormalMode)(userAnswers)
             .mustBe(routes.TrusteesNameController.onPageLoad(NormalMode, index))
       }
     }

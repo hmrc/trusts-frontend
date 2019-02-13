@@ -21,7 +21,7 @@ import play.api.libs.functional.syntax._
 
 case class FullName(firstName: String, middleName: Option[String], lastName: String) {
 
-  def asString = s"$firstName $lastName"
+  override def toString = s"$firstName $lastName"
 
 }
 

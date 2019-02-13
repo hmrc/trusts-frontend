@@ -16,8 +16,8 @@
 
 package utils
 
+import models.UserAnswers
 import models.entities.Trustee
-import models.{TrusteeOrIndividual, UserAnswers}
 import pages.Trustees
 import play.api.i18n.Messages
 import viewmodels.TrusteeRow
@@ -27,7 +27,7 @@ class AddATrusteeViewHelper(userAnswers: UserAnswers)(implicit messages: Message
   private def parseTrustee(trustee : Trustee) : TrusteeRow = {
     TrusteeRow(
       trustee.nameShow,
-      trustee.`type`.getOrElse(TrusteeOrIndividual.Individual),
+      trustee.typeShow,
       "#",
       "#"
     )

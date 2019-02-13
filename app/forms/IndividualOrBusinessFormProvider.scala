@@ -16,10 +16,16 @@
 
 package forms
 
-object Validation {
+import javax.inject.Inject
 
-  val countryRegex = "^[A-Za-z ,.()'-]*$"
-  val postcodeRegex = """^[a-zA-Z]{1,2}[0-9][0-9a-zA-Z]?\s?[0-9][a-zA-Z]{2}$"""
-  val nameRegex = "^[A-Za-z0-9 ,.()/&'-]*$"
+import forms.mappings.Mappings
+import play.api.data.Form
+import models.IndividualOrBusiness
 
+class IndividualOrBusinessFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[IndividualOrBusiness] =
+    Form(
+      "value" -> enumerable[IndividualOrBusiness]("individualOrBusiness.error.required")
+    )
 }

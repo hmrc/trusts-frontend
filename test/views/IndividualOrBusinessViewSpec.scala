@@ -16,35 +16,35 @@
 
 package views
 
-import forms.TrusteeOrIndividualFormProvider
-import models.{NormalMode, TrusteeOrIndividual}
+import forms.IndividualOrBusinessFormProvider
+import models.{NormalMode, IndividualOrBusiness}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.OptionsViewBehaviours
-import views.html.TrusteeOrIndividualView
+import views.html.IndividualOrBusinessView
 
-class TrusteeOrIndividualViewSpec extends OptionsViewBehaviours {
+class IndividualOrBusinessViewSpec extends OptionsViewBehaviours {
 
-  val messageKeyPrefix = "trusteeOrIndividual"
+  val messageKeyPrefix = "individualOrBusiness"
 
-  val form = new TrusteeOrIndividualFormProvider()()
+  val form = new IndividualOrBusinessFormProvider()()
 
   val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
   val index = 0
 
-  val view = application.injector.instanceOf[TrusteeOrIndividualView]
+  val view = application.injector.instanceOf[IndividualOrBusinessView]
 
   def applyView(form: Form[_]): HtmlFormat.Appendable =
     view.apply(form, NormalMode, index)(fakeRequest, messages)
 
-  "TrusteeOrIndividualView" must {
+  "IndividualOrBusinessView" must {
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like pageWithOptions(form, applyView, TrusteeOrIndividual.options)
+    behave like pageWithOptions(form, applyView, IndividualOrBusiness.options)
   }
 
 }

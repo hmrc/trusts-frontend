@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package forms
+package pages
 
-import javax.inject.Inject
+import models.IndividualOrBusiness
+import pages.behaviours.PageBehaviours
 
-import forms.mappings.Mappings
-import play.api.data.Form
-import models.TrusteeOrIndividual
+class IndividualOrBusinessPageSpec extends PageBehaviours {
 
-class TrusteeOrIndividualFormProvider @Inject() extends Mappings {
+  "IndividualOrBusinessPage" must {
 
-  def apply(): Form[TrusteeOrIndividual] =
-    Form(
-      "value" -> enumerable[TrusteeOrIndividual]("trusteeOrIndividual.error.required")
-    )
+    beRetrievable[IndividualOrBusiness](IndividualOrBusinessPage(0))
+
+    beSettable[IndividualOrBusiness](IndividualOrBusinessPage(0))
+
+    beRemovable[IndividualOrBusiness](IndividualOrBusinessPage(0))
+  }
 }
