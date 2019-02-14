@@ -216,9 +216,9 @@ trusteesName.middleName = Middle name (optional)
 trusteesName.lastName = Last name
 trusteesName.error.firstnamerequired = Enter the trustee’s first name
 trusteesName.error.LastNamerequired = Enter the trustee’s last name
-trusteesName.error.lengthfirstname = Trustees first name must be 35 characters or less
-trusteesName.error.lengthmiddlename = Trustees middle name must be 35 characters or less
-trusteesName.error.lengthlastname = Trustees last name must be 35 characters or less
+trusteesName.error.lengthfirstname = Trustee’s first name must be 35 characters or less
+trusteesName.error.lengthmiddlename = Trustee’s middle name must be 35 characters or less
+trusteesName.error.lengthlastname = Trustee’s last name must be 35 characters or less
 trusteesName.error.invalidCharacters = Trustee’s name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
 trusteesAnswerPage.title = Check trustee details
