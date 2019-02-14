@@ -27,6 +27,7 @@ class FrontendAppConfig @Inject() (configuration: Configuration) {
 
   private val contactHost = configuration.get[String]("contact-frontend.host")
   private val contactFormServiceIdentifier = "trustsfrontend"
+  private val agentServicesFrontendHost = configuration.get[String]("microservice.services.agent-subscription-frontend.host")
 
   private def loadConfig(key: String) = configuration.get[String](key)
 
@@ -36,6 +37,7 @@ class FrontendAppConfig @Inject() (configuration: Configuration) {
   val reportAProblemNonJSUrl = s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
   val betaFeedbackUrl = s"$contactHost/contact/beta-feedback"
   val betaFeedbackUnauthenticatedUrl = s"$contactHost/contact/beta-feedback-unauthenticated"
+  val agentServiceRegistrationUrl = s"$agentServicesFrontendHost/agent-subscription/start?continue=/trusts-registration/trust-registered-online"
 
   lazy val authUrl: String = configuration.get[Service]("auth").baseUrl
   lazy val loginUrl: String = configuration.get[String]("urls.login")
