@@ -28,7 +28,6 @@ import views.html.TrusteesNameView
 class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generators {
 
   val messageKeyPrefix = "trusteesName"
-  val applicantName: String = nonEmptyString.sample.value
 
   val index = 0
 
