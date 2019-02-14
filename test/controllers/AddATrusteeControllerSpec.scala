@@ -18,13 +18,14 @@ package controllers
 
 import base.SpecBase
 import forms.AddATrusteeFormProvider
-import models.{AddATrustee, FullName, NormalMode, UserAnswers}
+import models.{AddATrustee, FullName, IndividualOrBusiness, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.AddATrusteePage
+import pages.{AddATrusteePage, TrusteeIndividualOrBusinessPage, TrusteesNamePage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import viewmodels.TrusteeRow
 import views.html.AddATrusteeView
 
 class AddATrusteeControllerSpec extends SpecBase {
@@ -36,13 +37,22 @@ class AddATrusteeControllerSpec extends SpecBase {
   val formProvider = new AddATrusteeFormProvider()
   val form = formProvider()
 
-  val trustee = Nil
+  val trustee = List(
+    TrusteeRow("First 0 Last 0", typeLabel = "Trustee Individual", "#", "#"),
+    TrusteeRow("First 1 Last 1", typeLabel = "Trustee Business", "#", "#")
+  )
+
+  val userAnswersWithTrusteesComplete = UserAnswers(userAnswersId)
+    .set(TrusteesNamePage(0), FullName("First 0", None, "Last 0")).success.value
+    .set(TrusteeIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
+    .set(TrusteesNamePage(1), FullName("First 1", None, "Last 1")).success.value
+    .set(TrusteeIndividualOrBusinessPage(1), IndividualOrBusiness.Business).success.value
 
   "AddATrustee Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithTrusteesComplete)).build()
 
       val request = FakeRequest(GET, addATrusteeRoute)
 
@@ -53,14 +63,14 @@ class AddATrusteeControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, trustee, trustee)(fakeRequest, messages).toString
+        view(form, NormalMode, Nil, trustee)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(AddATrusteePage, AddATrustee.values.head).success.value
+      val userAnswers = userAnswersWithTrusteesComplete.set(AddATrusteePage, AddATrustee.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -73,7 +83,7 @@ class AddATrusteeControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(AddATrustee.values.head), NormalMode, trustee, trustee)(fakeRequest, messages).toString
+        view(form.fill(AddATrustee.values.head), NormalMode, Nil, trustee)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -81,7 +91,7 @@ class AddATrusteeControllerSpec extends SpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswersWithTrusteesComplete))
           .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
@@ -100,7 +110,7 @@ class AddATrusteeControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithTrusteesComplete)).build()
 
       val request =
         FakeRequest(POST, addATrusteeRoute)
@@ -115,7 +125,7 @@ class AddATrusteeControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, trustee, trustee)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, Nil, trustee)(fakeRequest, messages).toString
 
       application.stop()
     }

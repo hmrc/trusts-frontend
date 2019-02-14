@@ -63,16 +63,14 @@ class AddATrusteeController @Inject()(
     implicit request =>
 
       form.bindFromRequest().fold(
-        (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, Nil, Nil))),
+        (formWithErrors: Form[_]) => {
 
+          val trustees = new AddATrusteeViewHelper(request.userAnswers).rows
+
+          Future.successful(BadRequest(view(formWithErrors, mode, trustees.inProgress, trustees.complete)))
+        },
         value => {
-
-//          val currentTrustees = request.userAnswers.get(Trustees).getOrElse(List.empty)
-//          val pushObject = currentTrustees ::: List(JsObject.empty)
-
           for {
-//            updatedTrustees <- Future.fromTry(request.userAnswers.set(Trustees, pushObject))
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AddATrusteePage, value))
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(AddATrusteePage, mode)(updatedAnswers))
