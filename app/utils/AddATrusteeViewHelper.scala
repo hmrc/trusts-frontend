@@ -16,11 +16,11 @@
 
 package utils
 
-import models.{FullName, IndividualOrBusiness, UserAnswers}
 import models.entities.Trustee
+import models.{FullName, IndividualOrBusiness, UserAnswers}
 import pages.Trustees
 import play.api.i18n.Messages
-import viewmodels.TrusteeRow
+import viewmodels.{TrusteeRow, TrusteeRows}
 
 class AddATrusteeViewHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
@@ -49,9 +49,14 @@ class AddATrusteeViewHelper(userAnswers: UserAnswers)(implicit messages: Message
     )
   }
 
-  def rows : List[TrusteeRow] = userAnswers.get(Trustees).toList.flatMap {
-    trustees =>
-      for(t <- trustees) yield parseTrustee(t)
+  def rows : TrusteeRows = {
+    val trustees = userAnswers.get(Trustees).toList.flatten
+
+    val complete = trustees.filter(_.isComplete).map(parseTrustee)
+
+    val inProgress = trustees.filterNot(_.isComplete).map(parseTrustee)
+
+    TrusteeRows(inProgress, complete)
   }
 
 }

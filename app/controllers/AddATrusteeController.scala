@@ -56,7 +56,7 @@ class AddATrusteeController @Inject()(
 
       val trustees = new AddATrusteeViewHelper(request.userAnswers).rows
 
-      Ok(view(preparedForm, mode, trustees, Nil))
+      Ok(view(preparedForm, mode, trustees.inProgress, trustees.complete))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {

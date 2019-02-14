@@ -23,14 +23,20 @@ import viewmodels.TrusteeRow
 
 class AddATrusteeViewHelperSpec extends SpecBase {
 
-  val userAnswersWithTrustees = UserAnswers(userAnswersId)
+  val userAnswersWithTrusteesComplete = UserAnswers(userAnswersId)
     .set(TrusteesNamePage(0), FullName("First 0", None, "Last 0")).success.value
     .set(IndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
     .set(TrusteesNamePage(1), FullName("First 1", None, "Last 1")).success.value
     .set(IndividualOrBusinessPage(1), IndividualOrBusiness.Business).success.value
 
-  val userAnswersWithNoType = UserAnswers(userAnswersId)
+  val userAnswersWithTrusteesInProgress = UserAnswers(userAnswersId)
     .set(TrusteesNamePage(0), FullName("First 0", Some("Middle"), "Last 0")).success.value
+    .set(TrusteesNamePage(1), FullName("First 1", Some("Middle"), "Last 1")).success.value
+
+  val userAnswersWithCompleteAndInProgres = UserAnswers(userAnswersId)
+    .set(TrusteesNamePage(0), FullName("First 0", Some("Middle"), "Last 0")).success.value
+    .set(TrusteesNamePage(1), FullName("First 1", Some("Middle"), "Last 1")).success.value
+    .set(IndividualOrBusinessPage(1), IndividualOrBusiness.Individual).success.value
 
   val userAnswersWithNoTrustees = UserAnswers(userAnswersId)
 
@@ -40,21 +46,35 @@ class AddATrusteeViewHelperSpec extends SpecBase {
 
       "generate Nil for no user answers" in {
         val rows = new AddATrusteeViewHelper(userAnswersWithNoTrustees).rows
-        rows mustBe Nil
+        rows.inProgress mustBe Nil
+        rows.complete mustBe Nil
       }
 
-      "generate TrusteeRow from user answers" in {
-        val rows = new AddATrusteeViewHelper(userAnswersWithTrustees).rows
-        rows mustBe List(
+      "generate rows from user answers for trustees in progress" in {
+        val rows = new AddATrusteeViewHelper(userAnswersWithTrusteesInProgress).rows
+        rows.inProgress mustBe List(
+          TrusteeRow("First 0 Last 0", typeLabel = "Trustee", "#", "#"),
+          TrusteeRow("First 1 Last 1", typeLabel = "Trustee", "#", "#")
+        )
+        rows.complete mustBe Nil
+      }
+
+      "generate rows from user answers for complete trustees" in {
+        val rows = new AddATrusteeViewHelper(userAnswersWithTrusteesComplete).rows
+        rows.complete mustBe List(
           TrusteeRow("First 0 Last 0", typeLabel = "Trustee Individual", "#", "#"),
           TrusteeRow("First 1 Last 1", typeLabel = "Trustee Business", "#", "#")
         )
+        rows.inProgress mustBe Nil
       }
 
-      "generate TrusteeRow with default values" in {
-        val rows = new AddATrusteeViewHelper(userAnswersWithNoType).rows
-        rows mustBe List(
-          TrusteeRow("First 0 Last 0", "Trustee", "#", "#")
+      "generate rows from user answers for complete and in progress trustees" in {
+        val rows = new AddATrusteeViewHelper(userAnswersWithCompleteAndInProgres).rows
+        rows.complete mustBe List(
+          TrusteeRow("First 1 Last 1", typeLabel = "Trustee Individual", "#", "#")
+        )
+        rows.inProgress mustBe List(
+          TrusteeRow("First 0 Last 0", typeLabel = "Trustee", "#", "#")
         )
       }
 

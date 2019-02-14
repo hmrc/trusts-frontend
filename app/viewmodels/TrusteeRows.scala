@@ -14,24 +14,6 @@
  * limitations under the License.
  */
 
-package models.entities
+package viewmodels
 
-import models.{FullName, IndividualOrBusiness}
-import play.api.libs.json.{JsPath, Reads}
-
-case class Trustee(name : Option[FullName], `type` : Option[IndividualOrBusiness]) {
-
-  def isComplete = name.nonEmpty && `type`.nonEmpty
-
-}
-
-object Trustee {
-
-  import play.api.libs.functional.syntax._
-
-  implicit val reads : Reads[Trustee] = (
-    (JsPath \ "trusteesName").readNullable[FullName] and
-      (JsPath \ "individualOrBusiness").readNullable[IndividualOrBusiness]
-    )(Trustee.apply _)
-
-}
+case class TrusteeRows(inProgress : List[TrusteeRow], complete: List[TrusteeRow])
