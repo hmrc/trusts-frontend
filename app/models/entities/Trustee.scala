@@ -16,10 +16,10 @@
 
 package models.entities
 
-import models.{FullName, IndividualOrBusiness}
+import models.{FullName, TrusteeIndividualOrBusiness}
 import play.api.libs.json.{JsPath, Reads}
 
-case class Trustee(name : Option[FullName], `type` : Option[IndividualOrBusiness])
+case class Trustee(name : Option[FullName], `type` : Option[TrusteeIndividualOrBusiness])
 
 object Trustee {
 
@@ -27,7 +27,7 @@ object Trustee {
 
   implicit val reads : Reads[Trustee] = (
     (JsPath \ "trusteesName").readNullable[FullName] and
-      (JsPath \ "trusteeOrIndividual").readNullable[IndividualOrBusiness]
+      (JsPath \ "trusteeIndividualOrBusiness").readNullable[TrusteeIndividualOrBusiness]
     )(Trustee.apply _)
 
 }

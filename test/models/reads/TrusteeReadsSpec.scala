@@ -17,7 +17,7 @@
 package models.reads
 
 import models.FullName
-import models.IndividualOrBusiness.Individual
+import models.TrusteeIndividualOrBusiness.Individual
 import models.entities.Trustee
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.{MustMatchers, WordSpec}
@@ -26,7 +26,7 @@ import play.api.libs.json.{JsObject, JsString, Json}
 class TrusteeReadsSpec extends WordSpec with MustMatchers with PropertyChecks {
 
   val trusteeWithoutMiddleName: JsObject = Json.obj(
-    "trusteeOrIndividual" -> JsString("individual"),
+    "trusteeIndividualOrBusiness" -> JsString("individual"),
     "trusteesName" ->
       Json.obj(
       "firstName" -> JsString("First"),
@@ -35,7 +35,7 @@ class TrusteeReadsSpec extends WordSpec with MustMatchers with PropertyChecks {
   )
 
   val trusteeWithMiddleName: JsObject = Json.obj(
-    "trusteeOrIndividual" -> JsString("individual"),
+    "trusteeIndividualOrBusiness" -> JsString("individual"),
     "trusteesName" ->
       Json.obj(
         "firstName" -> JsString("First"),

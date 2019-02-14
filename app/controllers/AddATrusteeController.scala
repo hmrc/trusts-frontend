@@ -19,7 +19,7 @@ package controllers
 import controllers.actions._
 import forms.AddATrusteeFormProvider
 import javax.inject.Inject
-import models.{Enumerable, Mode, IndividualOrBusiness}
+import models.{Enumerable, Mode, TrusteeIndividualOrBusiness}
 import navigation.Navigator
 import pages.{AddATrusteePage, Trustees}
 import play.api.Logger
@@ -60,10 +60,10 @@ class AddATrusteeController @Inject()(
       Logger.debug(s"\n\ntrustees $trustees\n\n")
 
       val trustee = List(
-        TrusteeRow("Trustee one", IndividualOrBusiness.Individual, "#", "#"),
-        TrusteeRow("Trustee two", IndividualOrBusiness.Individual, "#", "#"),
-        TrusteeRow("Trustee three", IndividualOrBusiness.Business, "#", "#"),
-        TrusteeRow("Trustee four", IndividualOrBusiness.Individual, "#", "#")
+        TrusteeRow("Trustee one", TrusteeIndividualOrBusiness.Individual, "#", "#"),
+        TrusteeRow("Trustee two", TrusteeIndividualOrBusiness.Individual, "#", "#"),
+        TrusteeRow("Trustee three", TrusteeIndividualOrBusiness.Business, "#", "#"),
+        TrusteeRow("Trustee four", TrusteeIndividualOrBusiness.Individual, "#", "#")
       )
 
       Ok(view(preparedForm, mode, Nil, Nil))

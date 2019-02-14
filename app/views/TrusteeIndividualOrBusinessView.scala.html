@@ -15,7 +15,7 @@
  *@
 
 @import controllers.routes._
-@import models.{Mode, IndividualOrBusiness}
+@import models.{Mode, TrusteeIndividualOrBusiness}
 
 @this(
     main_template: MainTemplate,
@@ -25,23 +25,23 @@
 @(form: Form[_], mode: Mode, index : Int)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("individualOrBusiness.title")}"
+    title = s"${errorPrefix(form)} ${messages("trusteeIndividualOrBusiness.title")}"
     ) {
 
-    @formHelper(action = IndividualOrBusinessController.onSubmit(mode, index), 'autoComplete -> "off") {
+    @formHelper(action = TrusteeIndividualOrBusinessController.onSubmit(mode, index), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("individualOrBusiness.heading")
+        @components.heading("trusteeIndividualOrBusiness.heading")
 
         @components.input_radio(
             field = form("value"),
-            legend = messages("individualOrBusiness.heading"),
+            legend = messages("trusteeIndividualOrBusiness.heading"),
             legendClass = Some("visually-hidden"),
             fieldSetClass = Some("inline"),
-            inputs = IndividualOrBusiness.options.toSeq
+            inputs = TrusteeIndividualOrBusiness.options.toSeq
         )
 
         @components.submit_button()

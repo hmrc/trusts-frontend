@@ -16,17 +16,12 @@
 
 package pages
 
-import models.IndividualOrBusiness
-import pages.behaviours.PageBehaviours
+import models.TrusteeIndividualOrBusiness
+import play.api.libs.json.JsPath
 
-class IndividualOrBusinessPageSpec extends PageBehaviours {
+final case class TrusteeIndividualOrBusinessPage(index : Int) extends QuestionPage[TrusteeIndividualOrBusiness] {
 
-  "IndividualOrBusinessPage" must {
+  override def path: JsPath = JsPath \ Trustees \ index \ toString
 
-    beRetrievable[IndividualOrBusiness](IndividualOrBusinessPage(0))
-
-    beSettable[IndividualOrBusiness](IndividualOrBusinessPage(0))
-
-    beRemovable[IndividualOrBusiness](IndividualOrBusinessPage(0))
-  }
+  override def toString: String = "IndividualOrBusiness"
 }
