@@ -25,8 +25,6 @@ error.required = Please enter a value
 error.summary.title = There is a problem
 error.postcodeInvalid = Enter a real postcode
 
-entity.trustee = Trustee
-
 index.title = Trusts Registration Service
 index.heading = Trusts Registration Service
 index.guidance = Welcome to your new frontend. Please see the README file for a guide to getting started.
@@ -51,6 +49,10 @@ site.complete = Complete
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
+
+individualOrBusiness.individual = Individual
+individualOrBusiness.business = Business
+entity.trustee = Trustee
 
 trustName.title = What is the trust’s name?
 trustName.heading = What is the trust’s name?
@@ -201,12 +203,10 @@ isThisLeadTrustee.checkYourAnswersLabel = Is this the lead trustee?
 isThisLeadTrustee.error.required = Select yes if this is the trust’s lead trustee
 isThisLeadTrustee.hint = The lead trustee is the main point of contact for the trust. Do not enter agent details here unless they are legally a trustee.
 
-individualOrBusiness.title = Is the trustee an individual or a business?
-individualOrBusiness.heading = Is the trustee an individual or a business?
-individualOrBusiness.individual = Individual
-individualOrBusiness.business = Business
-individualOrBusiness.checkYourAnswersLabel = Is the trustee an individual or a business?
-individualOrBusiness.error.required = Select if the trustee is an individual or a business
+trusteeIndividualOrBusiness.title = Is the trustee an individual or a business?
+trusteeIndividualOrBusiness.heading = Is the trustee an individual or a business?
+trusteeIndividualOrBusiness.checkYourAnswersLabel = Is the trustee an individual or a business?
+trusteeIndividualOrBusiness.error.required = Select if the trustee is an individual or a business
 
 trusteesName.title = What is the trustee’s name?
 trusteesName.heading = What is the trustee’s name?

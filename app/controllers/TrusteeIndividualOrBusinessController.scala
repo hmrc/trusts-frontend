@@ -17,31 +17,31 @@
 package controllers
 
 import controllers.actions._
-import forms.IndividualOrBusinessFormProvider
+import forms.TrusteeIndividualOrBusinessFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.{IndividualOrBusinessPage, Trustees}
+import pages.{TrusteeIndividualOrBusinessPage, Trustees}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.IndividualOrBusinessView
+import views.html.TrusteeIndividualOrBusinessView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class IndividualOrBusinessController @Inject()(
-                                               override val messagesApi: MessagesApi,
-                                               sessionRepository: SessionRepository,
-                                               navigator: Navigator,
-                                               identify: IdentifierAction,
-                                               getData: DataRetrievalAction,
-                                               requireData: DataRequiredAction,
-                                               validateIndex: IndexActionFilterProvider,
-                                               formProvider: IndividualOrBusinessFormProvider,
-                                               val controllerComponents: MessagesControllerComponents,
-                                               view: IndividualOrBusinessView
+class TrusteeIndividualOrBusinessController @Inject()(
+                                                override val messagesApi: MessagesApi,
+                                                sessionRepository: SessionRepository,
+                                                navigator: Navigator,
+                                                identify: IdentifierAction,
+                                                getData: DataRetrievalAction,
+                                                requireData: DataRequiredAction,
+                                                validateIndex: IndexActionFilterProvider,
+                                                formProvider: TrusteeIndividualOrBusinessFormProvider,
+                                                val controllerComponents: MessagesControllerComponents,
+                                                view: TrusteeIndividualOrBusinessView
                                              )(implicit ec: ExecutionContext) extends FrontendBaseController
   with I18nSupport
   with Enumerable.Implicits {
@@ -54,7 +54,7 @@ class IndividualOrBusinessController @Inject()(
   def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = actions(index) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(IndividualOrBusinessPage(index)) match {
+      val preparedForm = request.userAnswers.get(TrusteeIndividualOrBusinessPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -71,9 +71,9 @@ class IndividualOrBusinessController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(IndividualOrBusinessPage(index), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeIndividualOrBusinessPage(index), value))
             _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(IndividualOrBusinessPage(index), mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrusteeIndividualOrBusinessPage(index), mode)(updatedAnswers))
         }
       )
   }

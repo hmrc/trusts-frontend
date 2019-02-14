@@ -22,7 +22,7 @@ import org.scalatest.prop.PropertyChecks
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import play.api.libs.json.{JsError, JsString, Json}
 
-class IndividualOrBusinessSpec extends WordSpec with MustMatchers with PropertyChecks with OptionValues {
+class TrusteeIndividualOrBusinessSpec extends WordSpec with MustMatchers with PropertyChecks with OptionValues {
 
   "IndividualOrBusiness" must {
 
@@ -31,9 +31,9 @@ class IndividualOrBusinessSpec extends WordSpec with MustMatchers with PropertyC
       val gen = Gen.oneOf(IndividualOrBusiness.values.toSeq)
 
       forAll(gen) {
-        individualOrBusiness =>
+        trusteeIndividualOrBusiness =>
 
-          JsString(individualOrBusiness.toString).validate[IndividualOrBusiness].asOpt.value mustEqual individualOrBusiness
+          JsString(trusteeIndividualOrBusiness.toString).validate[IndividualOrBusiness].asOpt.value mustEqual trusteeIndividualOrBusiness
       }
     }
 
@@ -53,9 +53,9 @@ class IndividualOrBusinessSpec extends WordSpec with MustMatchers with PropertyC
       val gen = Gen.oneOf(IndividualOrBusiness.values.toSeq)
 
       forAll(gen) {
-        individualOrBusiness =>
+        trusteeIndividualOrBusiness =>
 
-          Json.toJson(individualOrBusiness) mustEqual JsString(individualOrBusiness.toString)
+          Json.toJson(trusteeIndividualOrBusiness) mustEqual JsString(trusteeIndividualOrBusiness.toString)
       }
     }
   }

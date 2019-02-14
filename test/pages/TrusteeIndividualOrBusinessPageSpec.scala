@@ -19,14 +19,14 @@ package pages
 import models.IndividualOrBusiness
 import pages.behaviours.PageBehaviours
 
-class IndividualOrBusinessPageSpec extends PageBehaviours {
+class TrusteeIndividualOrBusinessPageSpec extends PageBehaviours {
 
   "IndividualOrBusinessPage" must {
 
-    beRetrievable[IndividualOrBusiness](IndividualOrBusinessPage(0))
+    beRetrievable[IndividualOrBusiness](TrusteeIndividualOrBusinessPage(0))
 
-    beSettable[IndividualOrBusiness](IndividualOrBusinessPage(0))
+    beSettable[IndividualOrBusiness](TrusteeIndividualOrBusinessPage(0))
 
-    beRemovable[IndividualOrBusiness](IndividualOrBusinessPage(0))
+    beRemovable[IndividualOrBusiness](TrusteeIndividualOrBusinessPage(0))
   }
 }

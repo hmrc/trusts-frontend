@@ -17,39 +17,39 @@
 package controllers
 
 import base.SpecBase
-import forms.IndividualOrBusinessFormProvider
+import forms.TrusteeIndividualOrBusinessFormProvider
 import models.{NormalMode, IndividualOrBusiness, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.IndividualOrBusinessPage
+import pages.TrusteeIndividualOrBusinessPage
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.IndividualOrBusinessView
+import views.html.TrusteeIndividualOrBusinessView
 
-class IndividualOrBusinessControllerSpec extends SpecBase with IndexValidation {
+class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 
   val index = 0
 
-  lazy val individualOrBusinessRoute = routes.IndividualOrBusinessController.onPageLoad(NormalMode, index).url
+  lazy val trusteeIndividualOrBusinessRoute = routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index).url
 
-  val formProvider = new IndividualOrBusinessFormProvider()
+  val formProvider = new TrusteeIndividualOrBusinessFormProvider()
   val form = formProvider()
 
-  "TrusteeOrIndividual Controller" must {
+  "TrusteeIndividualOrBusiness Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, individualOrBusinessRoute)
+      val request = FakeRequest(GET, trusteeIndividualOrBusinessRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[IndividualOrBusinessView]
+      val view = application.injector.instanceOf[TrusteeIndividualOrBusinessView]
 
       status(result) mustEqual OK
 
@@ -61,13 +61,13 @@ class IndividualOrBusinessControllerSpec extends SpecBase with IndexValidation {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IndividualOrBusinessPage(index), IndividualOrBusiness.values.head).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, individualOrBusinessRoute)
+      val request = FakeRequest(GET, trusteeIndividualOrBusinessRoute)
 
-      val view = application.injector.instanceOf[IndividualOrBusinessView]
+      val view = application.injector.instanceOf[TrusteeIndividualOrBusinessView]
 
       val result = route(application, request).value
 
@@ -87,7 +87,7 @@ class IndividualOrBusinessControllerSpec extends SpecBase with IndexValidation {
           .build()
 
       val request =
-        FakeRequest(POST, individualOrBusinessRoute)
+        FakeRequest(POST, trusteeIndividualOrBusinessRoute)
           .withFormUrlEncodedBody(("value", IndividualOrBusiness.options.head.value))
 
       val result = route(application, request).value
@@ -104,12 +104,12 @@ class IndividualOrBusinessControllerSpec extends SpecBase with IndexValidation {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, individualOrBusinessRoute)
+        FakeRequest(POST, trusteeIndividualOrBusinessRoute)
           .withFormUrlEncodedBody(("value", "invalid value"))
 
       val boundForm = form.bind(Map("value" -> "invalid value"))
 
-      val view = application.injector.instanceOf[IndividualOrBusinessView]
+      val view = application.injector.instanceOf[TrusteeIndividualOrBusinessView]
 
       val result = route(application, request).value
 
@@ -125,7 +125,7 @@ class IndividualOrBusinessControllerSpec extends SpecBase with IndexValidation {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, individualOrBusinessRoute)
+      val request = FakeRequest(GET, trusteeIndividualOrBusinessRoute)
 
       val result = route(application, request).value
 
@@ -140,7 +140,7 @@ class IndividualOrBusinessControllerSpec extends SpecBase with IndexValidation {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, individualOrBusinessRoute)
+        FakeRequest(POST, trusteeIndividualOrBusinessRoute)
           .withFormUrlEncodedBody(("value", IndividualOrBusiness.values.head.toString))
 
       val result = route(application, request).value
@@ -155,14 +155,14 @@ class IndividualOrBusinessControllerSpec extends SpecBase with IndexValidation {
     "for a GET" must {
 
       def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
-        val route = routes.IndividualOrBusinessController.onPageLoad(NormalMode, index).url
+        val route = routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index).url
 
         FakeRequest(GET, route)
       }
 
       validateIndex(
         arbitrary[IndividualOrBusiness],
-        IndividualOrBusinessPage.apply,
+        TrusteeIndividualOrBusinessPage.apply,
         getForIndex
       )
 
@@ -172,7 +172,7 @@ class IndividualOrBusinessControllerSpec extends SpecBase with IndexValidation {
       def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
         val route =
-          routes.IndividualOrBusinessController.onPageLoad(NormalMode, index).url
+          routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index).url
 
         FakeRequest(POST, route)
           .withFormUrlEncodedBody(("value", IndividualOrBusiness.values.head.toString))
@@ -180,7 +180,7 @@ class IndividualOrBusinessControllerSpec extends SpecBase with IndexValidation {
 
       validateIndex(
         arbitrary[IndividualOrBusiness],
-        IndividualOrBusinessPage.apply,
+        TrusteeIndividualOrBusinessPage.apply,
         postForIndex
       )
     }

@@ -90,7 +90,6 @@ class AddATrusteeViewSpec extends OptionsViewBehaviours with TabularDataViewBeha
       behave like pageWithOptions(form, applyView, AddATrustee.options)
     }
 
-
     "there is both in progress and complete data" must {
 
       val viewWithData = applyView(form, inProgressTrustees, completeTrustees)

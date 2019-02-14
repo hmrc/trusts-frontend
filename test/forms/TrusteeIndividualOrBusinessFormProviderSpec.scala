@@ -16,16 +16,30 @@
 
 package forms
 
-import javax.inject.Inject
-
-import forms.mappings.Mappings
-import play.api.data.Form
+import forms.behaviours.OptionFieldBehaviours
 import models.IndividualOrBusiness
+import play.api.data.FormError
 
-class IndividualOrBusinessFormProvider @Inject() extends Mappings {
+class TrusteeIndividualOrBusinessFormProviderSpec extends OptionFieldBehaviours {
 
-  def apply(): Form[IndividualOrBusiness] =
-    Form(
-      "value" -> enumerable[IndividualOrBusiness]("individualOrBusiness.error.required")
+  val form = new TrusteeIndividualOrBusinessFormProvider()()
+
+  ".value" must {
+
+    val fieldName = "value"
+    val requiredKey = "trusteeIndividualOrBusiness.error.required"
+
+    behave like optionsField[IndividualOrBusiness](
+      form,
+      fieldName,
+      validValues  = IndividualOrBusiness.values,
+      invalidError = FormError(fieldName, "error.invalid")
     )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
+  }
 }

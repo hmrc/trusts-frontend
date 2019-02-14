@@ -16,24 +16,24 @@
 
 package views
 
-import forms.IndividualOrBusinessFormProvider
+import forms.TrusteeIndividualOrBusinessFormProvider
 import models.{NormalMode, IndividualOrBusiness}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.OptionsViewBehaviours
-import views.html.IndividualOrBusinessView
+import views.html.TrusteeIndividualOrBusinessView
 
-class IndividualOrBusinessViewSpec extends OptionsViewBehaviours {
+class TrusteeIndividualOrBusinessViewSpec extends OptionsViewBehaviours {
 
-  val messageKeyPrefix = "individualOrBusiness"
+  val messageKeyPrefix = "trusteeIndividualOrBusiness"
 
-  val form = new IndividualOrBusinessFormProvider()()
+  val form = new TrusteeIndividualOrBusinessFormProvider()()
 
   val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
   val index = 0
 
-  val view = application.injector.instanceOf[IndividualOrBusinessView]
+  val view = application.injector.instanceOf[TrusteeIndividualOrBusinessView]
 
   def applyView(form: Form[_]): HtmlFormat.Appendable =
     view.apply(form, NormalMode, index)(fakeRequest, messages)

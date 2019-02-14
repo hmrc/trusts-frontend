@@ -14,27 +14,14 @@
  * limitations under the License.
  */
 
-package models.entities
+package pages
 
-import models.{FullName, IndividualOrBusiness}
-import play.api.libs.json.{JsPath, Reads}
+import models.IndividualOrBusiness
+import play.api.libs.json.JsPath
 
+final case class TrusteeIndividualOrBusinessPage(index : Int) extends QuestionPage[IndividualOrBusiness] {
 
-case class Trustee(name : Option[FullName], `type` : Option[IndividualOrBusiness]) {
+  override def path: JsPath = JsPath \ Trustees \ index \ toString
 
-
-  def isComplete = name.nonEmpty && `type`.nonEmpty
-
-}
-
-
-object Trustee {
-
-  import play.api.libs.functional.syntax._
-
-  implicit val reads : Reads[Trustee] = (
-    (JsPath \ "trusteesName").readNullable[FullName] and
-      (JsPath \ "trusteeIndividualOrBusiness").readNullable[IndividualOrBusiness]
-    )(Trustee.apply _)
-
+  override def toString: String = "trusteeIndividualOrBusiness"
 }

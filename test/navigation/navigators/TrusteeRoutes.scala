@@ -33,12 +33,12 @@ trait TrusteeRoutes {
 
   def trusteeRoutes()(implicit navigator: Navigator) = {
 
-    "go to TrusteeOrIndividualPage from IsThisLeadTrusteePage page" in {
+    "go to TrusteeIndividualOrBusinessPage from IsThisLeadTrusteePage page" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
           navigator.nextPage(IsThisLeadTrusteePage(index), NormalMode)(userAnswers)
-            .mustBe(routes.IndividualOrBusinessController.onPageLoad(NormalMode, index))
+            .mustBe(routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index))
       }
     }
 
@@ -46,7 +46,7 @@ trait TrusteeRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(IndividualOrBusinessPage(index), NormalMode)(userAnswers)
+          navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode)(userAnswers)
             .mustBe(routes.TrusteesNameController.onPageLoad(NormalMode, index))
       }
     }
