@@ -62,10 +62,10 @@ class AddATrusteeController @Inject()(
       Logger.debug(s"\n\ntrustees $trustees\n\n")
 
       val trustee = List(
-        TrusteeRow("Trustee one", TrusteeIndividualOrBusiness.Individual, "#", "#"),
-        TrusteeRow("Trustee two", TrusteeIndividualOrBusiness.Individual, "#", "#"),
-        TrusteeRow("Trustee three", TrusteeIndividualOrBusiness.Business, "#", "#"),
-        TrusteeRow("Trustee four", TrusteeIndividualOrBusiness.Individual, "#", "#")
+        TrusteeRow("Trustee one", "", "#", "#"),
+        TrusteeRow("Trustee two", "", "#", "#"),
+        TrusteeRow("Trustee three","" , "#", "#"),
+        TrusteeRow("Trustee four", "" , "#", "#")
       )
 
       Ok(view(preparedForm, mode, trustees, Nil))

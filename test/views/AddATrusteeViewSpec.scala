@@ -17,7 +17,7 @@
 package views
 
 import forms.AddATrusteeFormProvider
-import models.{AddATrustee, NormalMode, TrusteeIndividualOrBusiness}
+import models.{AddATrustee, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import viewmodels.TrusteeRow
@@ -28,15 +28,15 @@ class AddATrusteeViewSpec extends OptionsViewBehaviours with TabularDataViewBeha
 
   val completeTrustees = Seq(
 
-    TrusteeRow("trustee one", TrusteeIndividualOrBusiness.Individual, "#", "#"),
-    TrusteeRow("trustee two", TrusteeIndividualOrBusiness.Individual, "#", "#"),
-    TrusteeRow("trustee three", TrusteeIndividualOrBusiness.Individual, "#", "#")
+    TrusteeRow("trustee one", "", "#", "#"),
+    TrusteeRow("trustee two", "", "#", "#"),
+    TrusteeRow("trustee three", "", "#", "#")
   )
 
   val inProgressTrustees = Seq(
-    TrusteeRow("trustee one", TrusteeIndividualOrBusiness.Individual, "#", "#"),
-    TrusteeRow("trustee two", TrusteeIndividualOrBusiness.Individual, "#", "#"),
-    TrusteeRow("trustee three", TrusteeIndividualOrBusiness.Individual, "#", "#")
+    TrusteeRow("trustee one", "", "#", "#"),
+    TrusteeRow("trustee two", "", "#", "#"),
+    TrusteeRow("trustee three", "", "#", "#")
 
   )
 
