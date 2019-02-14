@@ -14,26 +14,28 @@
  * limitations under the License.
  */
 
-package models
+package utils
 
-import play.api.libs.json._
-import play.api.libs.functional.syntax._
+import models.UserAnswers
+import models.entities.Trustee
+import pages.Trustees
+import play.api.i18n.Messages
+import viewmodels.TrusteeRow
 
-case class FullName(firstName: String, middleName: Option[String], lastName: String) {
+class AddATrusteeViewHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
-  override def toString = s"$firstName $lastName"
+  private def parseTrustee(trustee : Trustee) : TrusteeRow = {
+    TrusteeRow(
+      trustee.nameShow,
+      trustee.typeShow,
+      "#",
+      "#"
+    )
+  }
 
-}
-
-object FullName {
-
-  implicit val reads : Reads[FullName] =
-    (
-      (JsPath \ "firstName").read[String] and
-      (JsPath \ "middleName").readNullable[String] and
-      (JsPath \ "lastName").read[String]
-    )(FullName.apply _)
-
-  implicit val writes : Writes[FullName] = Json.writes[FullName]
+  def rows : List[TrusteeRow] = userAnswers.get(Trustees).toList.flatMap {
+    trustees =>
+      for(t <- trustees) yield parseTrustee(t)
+  }
 
 }

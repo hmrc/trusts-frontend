@@ -19,7 +19,26 @@ package models.entities
 import models.{FullName, TrusteeIndividualOrBusiness}
 import play.api.libs.json.{JsPath, Reads}
 
-case class Trustee(name : Option[FullName], `type` : Option[TrusteeIndividualOrBusiness])
+
+case class Trustee(name : Option[FullName], `type` : Option[TrusteeIndividualOrBusiness]) {
+
+
+  def nameShow : String = {
+    name match {
+      case Some(n) => s"$n"
+      case None => ""
+    }
+  }
+
+  def typeShow : String = {
+    `type` match {
+      case Some(t) => s"$t"
+      case None => ""
+    }
+  }
+
+}
+
 
 object Trustee {
 

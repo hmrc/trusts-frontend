@@ -16,9 +16,8 @@
 
 package viewmodels
 
-import models.TrusteeIndividualOrBusiness
+case class TrusteeRow(name: String, `type`: String, changeUrl: String, removeUrl: String) {
 
-case class TrusteeRow(name: String, `type`: TrusteeIndividualOrBusiness, changeUrl: String, removeUrl: String) {
 
   def typeKey : String = s"addATrustee.${`type`.toString}"
 

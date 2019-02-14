@@ -21,15 +21,16 @@ import forms.AddATrusteeFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode, TrusteeIndividualOrBusiness}
 import navigation.Navigator
-import pages.{AddATrusteePage, Trustees}
+import pages.AddATrusteePage
 import play.api.Logger
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.AddATrusteeView
+import utils.AddATrusteeViewHelper
 import viewmodels.TrusteeRow
+import views.html.AddATrusteeView
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -55,7 +56,8 @@ class AddATrusteeController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      val trustees = request.userAnswers.get(Trustees).getOrElse(List.empty)
+      val trustees = new AddATrusteeViewHelper(request.userAnswers).rows
+
 
       Logger.debug(s"\n\ntrustees $trustees\n\n")
 
@@ -66,7 +68,8 @@ class AddATrusteeController @Inject()(
         TrusteeRow("Trustee four", TrusteeIndividualOrBusiness.Individual, "#", "#")
       )
 
-      Ok(view(preparedForm, mode, Nil, Nil))
+      Ok(view(preparedForm, mode, trustees, Nil))
+
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {

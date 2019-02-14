@@ -27,6 +27,7 @@ import views.html.AddATrusteeView
 class AddATrusteeViewSpec extends OptionsViewBehaviours with TabularDataViewBehaviours {
 
   val completeTrustees = Seq(
+
     TrusteeRow("trustee one", TrusteeIndividualOrBusiness.Individual, "#", "#"),
     TrusteeRow("trustee two", TrusteeIndividualOrBusiness.Individual, "#", "#"),
     TrusteeRow("trustee three", TrusteeIndividualOrBusiness.Individual, "#", "#")
@@ -36,6 +37,7 @@ class AddATrusteeViewSpec extends OptionsViewBehaviours with TabularDataViewBeha
     TrusteeRow("trustee one", TrusteeIndividualOrBusiness.Individual, "#", "#"),
     TrusteeRow("trustee two", TrusteeIndividualOrBusiness.Individual, "#", "#"),
     TrusteeRow("trustee three", TrusteeIndividualOrBusiness.Individual, "#", "#")
+
   )
 
   val messageKeyPrefix = "addATrustee"
