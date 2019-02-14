@@ -26,7 +26,7 @@ import play.api.libs.json.{JsArray, JsObject, JsString, Json}
 class TrusteeReadsSpec extends WordSpec with MustMatchers with PropertyChecks {
 
   val trusteeWithoutMiddleName: JsObject = Json.obj(
-    "trusteeOrIndividual" -> JsString("individual"),
+    "individualOrBusiness" -> JsString("individual"),
     "trusteesName" ->
       Json.obj(
       "firstName" -> JsString("First"),
@@ -35,7 +35,7 @@ class TrusteeReadsSpec extends WordSpec with MustMatchers with PropertyChecks {
   )
 
   val trusteeWithMiddleName: JsObject = Json.obj(
-    "trusteeOrIndividual" -> JsString("individual"),
+    "individualOrBusiness" -> JsString("individual"),
     "trusteesName" ->
       Json.obj(
         "firstName" -> JsString("First"),

@@ -16,9 +16,5 @@
 
 package viewmodels
 
-case class TrusteeRow(name: String, `type`: String, changeUrl: String, removeUrl: String) {
-
-  def typeKey : String = s"addATrustee.${`type`.toString}"
-
-}
+case class TrusteeRow(name: String, typeLabel: String, changeUrl: String, removeUrl: String)
 

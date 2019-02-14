@@ -49,9 +49,7 @@
 
     <logger name="uk.gov" level="INFO"/>
 
-    <logger name="application" level="DEBUG">
-        <appender-ref ref="STDOUT" />
-    </logger>
+    <logger name="application" level="DEBUG" />
 
     <logger name="org.asynchttpclient.netty" level="INFO"/>
     <logger name="io.netty.buffer" level="INFO"/>

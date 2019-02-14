@@ -37,7 +37,7 @@ trait TabularDataViewBehaviours extends ViewSpecBase {
       val element = elements.get(index)
 
       element.text must include(item.name)
-      element.text must include(messages(item.typeKey))
+      element.text must include(item.typeLabel)
 
       val changeLink = element.getElementsByClass("hmrc-add-to-a-list__change").first()
 

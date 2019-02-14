@@ -23,5 +23,5 @@ final case class IndividualOrBusinessPage(index : Int) extends QuestionPage[Indi
 
   override def path: JsPath = JsPath \ Trustees \ index \ toString
 
-  override def toString: String = "IndividualOrBusiness"
+  override def toString: String = "individualOrBusiness"
 }

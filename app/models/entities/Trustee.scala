@@ -19,23 +19,7 @@ package models.entities
 import models.{FullName, IndividualOrBusiness}
 import play.api.libs.json.{JsPath, Reads}
 
-case class Trustee(name : Option[FullName], `type` : Option[IndividualOrBusiness]) {
-
-  def nameShow : String = {
-    name match {
-      case Some(n) => s"$n"
-      case None => ""
-    }
-  }
-
-  def typeShow : String = {
-    `type` match {
-      case Some(t) => s"$t"
-      case None => ""
-    }
-  }
-
-}
+case class Trustee(name : Option[FullName], `type` : Option[IndividualOrBusiness])
 
 object Trustee {
 
@@ -43,7 +27,7 @@ object Trustee {
 
   implicit val reads : Reads[Trustee] = (
     (JsPath \ "trusteesName").readNullable[FullName] and
-      (JsPath \ "trusteeOrIndividual").readNullable[IndividualOrBusiness]
+      (JsPath \ "individualOrBusiness").readNullable[IndividualOrBusiness]
     )(Trustee.apply _)
 
 }

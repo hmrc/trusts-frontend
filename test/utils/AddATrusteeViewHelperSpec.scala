@@ -29,27 +29,36 @@ class AddATrusteeViewHelperSpec extends SpecBase {
     .set(TrusteesNamePage(1), FullName("First 1", None, "Last 1")).success.value
     .set(IndividualOrBusinessPage(1), IndividualOrBusiness.Business).success.value
 
+  val userAnswersWithNoType = UserAnswers(userAnswersId)
+    .set(TrusteesNamePage(0), FullName("First 0", Some("Middle"), "Last 0")).success.value
+
   val userAnswersWithNoTrustees = UserAnswers(userAnswersId)
 
   "AddATrusteeViewHelper" when {
 
     ".row" must {
 
-      "generate Nil for a user answers with no trustees" in {
+      "generate Nil for no user answers" in {
         val rows = new AddATrusteeViewHelper(userAnswersWithNoTrustees).rows
         rows mustBe Nil
       }
 
-      "generate TrusteeRow from a list of Trustees in user answers" in {
+      "generate TrusteeRow from user answers" in {
         val rows = new AddATrusteeViewHelper(userAnswersWithTrustees).rows
         rows mustBe List(
-          TrusteeRow("First 0 Last 0", `type` = "Individual", "#", "#"),
-          TrusteeRow("First 1 Last 1", `type` = "Business", "#", "#")
+          TrusteeRow("First 0 Last 0", typeLabel = "Trustee Individual", "#", "#"),
+          TrusteeRow("First 1 Last 1", typeLabel = "Trustee Business", "#", "#")
+        )
+      }
+
+      "generate TrusteeRow with default values" in {
+        val rows = new AddATrusteeViewHelper(userAnswersWithNoType).rows
+        rows mustBe List(
+          TrusteeRow("First 0 Last 0", "Trustee", "#", "#")
         )
       }
 
     }
-
   }
 
 }

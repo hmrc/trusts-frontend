@@ -25,6 +25,8 @@ error.required = Please enter a value
 error.summary.title = There is a problem
 error.postcodeInvalid = Enter a real postcode
 
+entity.trustee = Trustee
+
 index.title = Trusts Registration Service
 index.heading = Trusts Registration Service
 index.guidance = Welcome to your new frontend. Please see the README file for a guide to getting started.

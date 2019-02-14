@@ -51,7 +51,7 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
           None,
           Seq(
             checkYourAnswersHelper.isThisLeadTrustee(index).value,
-            checkYourAnswersHelper.trusteeOrIndividual(index).value,
+            checkYourAnswersHelper.individualOrBusiness(index).value,
             checkYourAnswersHelper.trusteeFullName(index).value
           )
         )
