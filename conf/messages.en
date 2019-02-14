@@ -48,6 +48,15 @@ site.textarea.char_limit = (Limit is {0} characters)
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 
+createAgentServicesAccount.title = Create an agent services account
+createAgentServicesAccount.heading = Create an agent services account
+createAgentServicesAccount.paragraph1 = Before you can register a trust you will need to create an agent services account. You can do this now.
+createAgentServicesAccount.insetText = You need to be the person responsible for your firm’s tax or administrative matters. The account gives you administrative control over your firm's access to new HMRC online services.
+createAgentServicesAccount.link = Check the guidance
+createAgentServicesAccount.paragraph2 = to find out what you will need to create an agent services account.
+createAgentServicesAccount.paragraph3 = Once you have created your agent services account, you can carry on with your trust registration.
+createAgentServicesAccount.cta = Create an agent services account
+
 trustName.title = What is the trust’s name?
 trustName.heading = What is the trust’s name?
 trustName.hint = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (SA316) or tax return.
