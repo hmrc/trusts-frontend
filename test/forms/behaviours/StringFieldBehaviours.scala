@@ -28,7 +28,9 @@ trait StringFieldBehaviours extends FieldBehaviours with OptionalFieldBehaviours
 
     s"not bind strings shorter than $minLength characters" in {
 
-      forAll(stringsWithMaxLength(minLength - 1) -> "shortString") {
+      val length = if (minLength > 0 && minLength < 2) minLength else minLength -1
+
+      forAll(stringsWithMaxLength(length) -> "shortString") {
         string =>
           val result = form.bind(Map(fieldName -> string)).apply(fieldName)
           result.errors shouldEqual Seq(lengthError)
@@ -66,6 +68,17 @@ trait StringFieldBehaviours extends FieldBehaviours with OptionalFieldBehaviours
             result.errors shouldEqual Seq(error)
           }
       }
+    }
+  }
+
+  def nonEmptyField(form: Form[_],
+                    fieldName: String,
+                    requiredError: FormError): Unit = {
+
+    "not bind spaces" in {
+
+      val result = form.bind(Map(fieldName -> "    ")).apply(fieldName)
+      result.errors shouldBe Seq(requiredError)
     }
   }
 }
