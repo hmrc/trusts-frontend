@@ -19,6 +19,7 @@ package navigation
 import javax.inject.{Inject, Singleton}
 import play.api.mvc.Call
 import controllers.routes
+import models.AddATrustee.{NoComplete, YesLater, YesNow}
 import pages._
 import models._
 
@@ -51,8 +52,33 @@ class Navigator @Inject()() {
     case TrusteeIndividualOrBusinessPage(index) => _ => routes.TrusteesNameController.onPageLoad(NormalMode, index)
     case TrusteesNamePage(index) => _ => routes.TrusteesAnswerPageController.onPageLoad(index)
     case TrusteesAnswerPage => _ => routes.AddATrusteeController.onPageLoad()
+    case AddATrusteePage => addATrusteeRoute
     //  Default
     case _ => _ => routes.IndexController.onPageLoad()
+  }
+
+  private def addATrusteeRoute(answers: UserAnswers) = {
+    val addAnother = answers.get(AddATrusteePage)
+
+    def routeToTrusteeIndex = {
+      val trustees = answers.get(Trustees).getOrElse(List.empty)
+      trustees match {
+        case Nil =>
+          routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 0)
+        case t if t.nonEmpty =>
+          routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, t.size)
+      }
+    }
+
+    addAnother match {
+      case Some(YesNow) =>
+        routeToTrusteeIndex
+      case Some(YesLater) =>
+        routes.AddATrusteeController.onPageLoad()
+      case Some(NoComplete) =>
+        routes.AddATrusteeController.onPageLoad()
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
   }
 
   private def trustHaveAUTRRoute(answers: UserAnswers) = {

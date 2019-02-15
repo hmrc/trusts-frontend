@@ -52,14 +52,9 @@ class AddATrusteeController @Inject()(
   def onPageLoad(mode: Mode): Action[AnyContent] = routes {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(AddATrusteePage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
       val trustees = new AddATrusteeViewHelper(request.userAnswers).rows
 
-      Ok(view(preparedForm, mode, trustees.inProgress, trustees.complete))
+      Ok(view(form, mode, trustees.inProgress, trustees.complete))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = routes.async {
