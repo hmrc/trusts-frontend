@@ -60,5 +60,9 @@ class TrustPreviouslyResidentFormProviderSpec extends StringFieldBehaviours {
       error = FormError(fieldName, invalidKey, Seq(regexp))
     )
 
+    behave like nonEmptyField(
+      form, fieldName, FormError(fieldName, requiredKey, Seq(fieldName))
+    )
+
   }
 }

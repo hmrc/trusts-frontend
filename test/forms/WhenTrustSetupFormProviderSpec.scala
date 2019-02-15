@@ -39,7 +39,6 @@ class WhenTrustSetupFormProviderSpec extends DateBehaviours {
 
     behave like mandatoryDateField(form, "value", "whenTrustSetup.error.required.all")
 
-
     behave like dateFieldWithMax(form, "value",
       max = max,
       FormError("value", s"whenTrustSetup.error.future", List("day", "month", "year"))
