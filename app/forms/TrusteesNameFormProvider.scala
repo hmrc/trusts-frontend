@@ -32,14 +32,14 @@ class TrusteesNameFormProvider @Inject() extends Mappings {
           firstError(
             maxLength(35, "trusteesName.error.lengthfirstname"),
             isNotEmpty("firstName", "trusteesName.error.firstnamerequired"),
-            regexp(Validation.nameRegex, "trusteesName.error.invalidCharacters")
+            regexp(Validation.nameRegex, "trusteesName.error.invalidFirstNameCharacters")
           )
         ),
       "middleName" -> optional(text("fullName.error.middleName.required")
         .verifying(
           firstError(
             maxLength(35, "trusteesName.error.lengthmiddlename"),
-            regexp(Validation.nameRegex, "trusteesName.error.invalidCharacters"))
+            regexp(Validation.nameRegex, "trusteesName.error.invalidMiddleNameCharacters"))
         )
       ),
       "lastName" -> text("trusteesName.error.lastnamerequired")
@@ -47,7 +47,7 @@ class TrusteesNameFormProvider @Inject() extends Mappings {
           firstError(
             maxLength(35, "trusteesName.error.lengthlastname"),
             isNotEmpty("lastName", "trusteesName.error.lastnamerequired"),
-            regexp(Validation.nameRegex, "trusteesName.error.invalidCharacters")
+            regexp(Validation.nameRegex, "trusteesName.error.invalidLastNameCharacters")
           )
         )
     )(FullName.apply)(FullName.unapply)
