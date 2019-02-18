@@ -95,7 +95,7 @@ trait Constraints {
 
   protected def isNotEmpty(value: String, errorKey: String): Constraint[String] =
     Constraint {
-      case str if str.trim() != "" =>
+      case str if str.trim.nonEmpty =>
         Valid
       case _ =>
         Invalid(errorKey, value)
