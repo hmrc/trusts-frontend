@@ -73,7 +73,6 @@ class TrusteesNameFormProviderSpec extends StringFieldBehaviours {
     val fieldName = "middleName"
     val lengthKey = "trusteesName.error.lengthmiddlename"
     val maxLength = 35
-    val invalidCharactersKey = "trusteesName.error.invalidCharacters"
     val regex = "^[A-Za-z0-9 ,.()/&'-]*$"
 
 
