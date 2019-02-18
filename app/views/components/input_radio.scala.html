@@ -27,7 +27,7 @@
 )(implicit messages: Messages)
 
 <div class="form-group @if(field.hasErrors){form-group-error}">
-    <fieldset @if(fieldSetClass.nonEmpty){class ="@fieldSetClass.get}" id="@{field.id}">
+    <fieldset @if(fieldSetClass.nonEmpty){class="@fieldSetClass.get"} id="@{field.id}">
         <legend>
             <span class="bold-small @if(legendClass.nonEmpty){@{legendClass.get}}">@legend</span>
             @if(hint.nonEmpty){
