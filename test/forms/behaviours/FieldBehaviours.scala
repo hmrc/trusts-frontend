@@ -38,17 +38,6 @@ trait FieldBehaviours extends FormSpec with PropertyChecks with Generators {
     }
   }
 
-  def fieldThatTrimsSpaces(form: Form[_],
-                           fieldName : String,
-                           input : String) : Unit = {
-
-    "bind data after trimmed" in {
-      val result = form.bind(Map(fieldName -> input)).apply(fieldName)
-      result.value.value shouldBe input.trim
-    }
-
-  }
-
   def mandatoryField(form: Form[_],
                      fieldName: String,
                      requiredError: FormError): Unit = {

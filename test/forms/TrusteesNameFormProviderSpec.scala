@@ -42,12 +42,6 @@ class TrusteesNameFormProviderSpec extends StringFieldBehaviours {
       RegexpGen.from(regex)
     )
 
-    behave like fieldThatTrimsSpaces(
-      form,
-      fieldName,
-      "   Trustee  "
-    )
-
     behave like fieldWithMaxLength(
       form,
       fieldName,
@@ -83,12 +77,6 @@ class TrusteesNameFormProviderSpec extends StringFieldBehaviours {
       lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
     )
 
-    behave like fieldThatTrimsSpaces(
-      form,
-      fieldName,
-      "      Trustee     "
-    )
-
     behave like optionalField(
       form,
       fieldName,
@@ -107,12 +95,6 @@ class TrusteesNameFormProviderSpec extends StringFieldBehaviours {
       form,
       fieldName,
       RegexpGen.from(regex)
-    )
-
-    behave like fieldThatTrimsSpaces(
-      form,
-      fieldName,
-      "      Trustee     "
     )
 
     behave like fieldWithMaxLength(
