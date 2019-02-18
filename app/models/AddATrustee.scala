@@ -22,12 +22,12 @@ sealed trait AddATrustee
 
 object AddATrustee extends Enumerable.Implicits {
 
-  case object yesNow extends WithName("add-them-now") with AddATrustee
-  case object yesLater extends WithName("add-them-later") with AddATrustee
-  case object noComplete extends WithName("no-complete") with AddATrustee
+  case object YesNow extends WithName("add-them-now") with AddATrustee
+  case object YesLater extends WithName("add-them-later") with AddATrustee
+  case object NoComplete extends WithName("no-complete") with AddATrustee
 
   val values: Set[AddATrustee] = Set(
-    yesNow, yesLater, noComplete
+    YesNow, YesLater, NoComplete
   )
 
   val options: Set[RadioOption] = values.map {

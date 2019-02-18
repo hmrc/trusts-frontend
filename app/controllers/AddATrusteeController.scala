@@ -46,20 +46,18 @@ class AddATrusteeController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  private def routes =
+    identify andThen getData andThen requireData
 
-      val preparedForm = request.userAnswers.get(AddATrusteePage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
+  def onPageLoad(mode: Mode): Action[AnyContent] = routes {
+    implicit request =>
 
       val trustees = new AddATrusteeViewHelper(request.userAnswers).rows
 
-      Ok(view(preparedForm, mode, trustees.inProgress, trustees.complete))
+      Ok(view(form, mode, trustees.inProgress, trustees.complete))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = routes.async {
     implicit request =>
 
       form.bindFromRequest().fold(
