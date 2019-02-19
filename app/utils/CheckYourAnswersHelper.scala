@@ -28,6 +28,15 @@ import viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def trusteesDateOfBirth: Option[AnswerRow] = userAnswers.get(TrusteesDateOfBirthPage) map {
+    x =>
+      AnswerRow(
+        "trusteesDateOfBirth.checkYourAnswersLabel",
+        HtmlFormat.escape(x.format(dateFormatter)),
+        routes.TrusteesDateOfBirthController.onPageLoad(CheckMode).url
+      )
+  }
+
   def postcodeForTheTrust: Option[AnswerRow] = userAnswers.get(PostcodeForTheTrustPage) map {
     x =>
       AnswerRow(
