@@ -22,8 +22,19 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
+  implicit lazy val arbitraryAddATrustee: Arbitrary[AddATrustee] =
+    Arbitrary {
+      Gen.oneOf(AddATrustee.values.toSeq)
+    }
+
+  implicit lazy val arbitraryTrusteeOrIndividual: Arbitrary[IndividualOrBusiness] =
+    Arbitrary {
+      Gen.oneOf(IndividualOrBusiness.values.toSeq)
+    }
+
   implicit lazy val arbitraryNonResidentType: Arbitrary[NonResidentType] =
     Arbitrary {
       Gen.oneOf(NonResidentType.values.toSeq)
     }
+
 }

@@ -17,5 +17,5 @@
 package models
 
 class WithName(string: String) {
-  override val toString: String = string
+  override def toString: String = string
 }

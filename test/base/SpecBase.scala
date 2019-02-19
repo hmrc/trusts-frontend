@@ -43,7 +43,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Moc
 
   def fakeRequest = FakeRequest("", "")
 
-  def messages: Messages = messagesApi.preferred(fakeRequest)
+  implicit def messages: Messages = messagesApi.preferred(fakeRequest)
 
   protected def applicationBuilder(userAnswers: Option[UserAnswers] = None): GuiceApplicationBuilder =
     new GuiceApplicationBuilder()

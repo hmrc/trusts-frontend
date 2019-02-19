@@ -20,8 +20,7 @@ import base.SpecBase
 import controllers.routes
 import generators.Generators
 import models.{CheckMode, NormalMode, UserAnswers}
-import navigation.navigators.{TrustDetailsRoutes, MatchingRoutes}
-import org.scalacheck.Arbitrary.arbitrary
+import navigation.navigators.{MatchingRoutes, TrustDetailsRoutes, TrusteeRoutes}
 import org.scalatest.prop.PropertyChecks
 import pages._
 
@@ -30,7 +29,8 @@ class NavigatorSpec extends SpecBase
   with PropertyChecks
   with Generators
   with TrustDetailsRoutes
-  with MatchingRoutes {
+  with MatchingRoutes
+  with TrusteeRoutes {
 
   implicit val navigator : Navigator = new Navigator
 
@@ -39,7 +39,6 @@ class NavigatorSpec extends SpecBase
     "in Normal mode" must {
 
       "go to Index from a page that doesn't exist in the route map" in {
-
         case object UnknownPage extends Page
         navigator.nextPage(UnknownPage, NormalMode)(UserAnswers("id")) mustBe routes.IndexController.onPageLoad()
       }
@@ -48,12 +47,13 @@ class NavigatorSpec extends SpecBase
 
       behave like matchingRoutes
 
+      behave like trusteeRoutes
+
     }
 
     "in Check mode" must {
 
       "go to CheckYourAnswers from a page that doesn't exist in the edit route map" in {
-
         case object UnknownPage extends Page
         navigator.nextPage(UnknownPage, CheckMode)(UserAnswers("id")) mustBe routes.CheckYourAnswersController.onPageLoad()
       }

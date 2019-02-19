@@ -51,6 +51,11 @@ class MappingsSpec extends WordSpec with MustMatchers with OptionValues with Map
       result.get mustEqual "foobar"
     }
 
+    "bind and trim spaces" in {
+      val result = testForm.bind(Map("value" -> "   foobar     "))
+      result.get mustEqual "foobar"
+    }
+
     "not bind an empty string" in {
       val result = testForm.bind(Map("value" -> ""))
       result.errors must contain(FormError("value", "error.required"))
@@ -186,6 +191,11 @@ class MappingsSpec extends WordSpec with MustMatchers with OptionValues with Map
     "bind a valid integer" in {
       val result = testForm.bind(Map("value" -> "1"))
       result.get mustEqual 1
+    }
+
+    "bind a valid number with commas" in {
+      val result = testForm.bind(Map("value" -> "123,456"))
+      result.get mustEqual 123456
     }
 
     "not bind an empty value" in {

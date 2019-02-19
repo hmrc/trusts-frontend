@@ -19,7 +19,7 @@ package utils
 import java.time.format.DateTimeFormatter
 
 import controllers.routes
-import models.{CheckMode, NonResidentType, UserAnswers}
+import models.{CheckMode, UserAnswers}
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
@@ -27,6 +27,33 @@ import utils.CheckYourAnswersHelper._
 import viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
+
+
+  def trusteeFullName(index : Int): Option[AnswerRow] = userAnswers.get(TrusteesNamePage(index)) map {
+    x => AnswerRow(
+      "trusteesName.checkYourAnswersLabel",
+      HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"),
+      routes.TrusteesNameController.onPageLoad(CheckMode, index).url
+    )
+  }
+
+  def trusteeIndividualOrBusiness(index : Int): Option[AnswerRow] = userAnswers.get(TrusteeIndividualOrBusinessPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeIndividualOrBusiness.checkYourAnswersLabel",
+        HtmlFormat.escape(messages(s"individualOrBusiness.$x")),
+        routes.TrusteeIndividualOrBusinessController.onPageLoad(CheckMode, index).url
+      )
+  }
+
+  def isThisLeadTrustee(index: Int): Option[AnswerRow] = userAnswers.get(IsThisLeadTrusteePage(index)) map {
+    x =>
+      AnswerRow(
+        "isThisLeadTrustee.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.IsThisLeadTrusteeController.onPageLoad(CheckMode, index).url
+      )
+  }
 
   def postcodeForTheTrust: Option[AnswerRow] = userAnswers.get(PostcodeForTheTrustPage) map {
     x =>

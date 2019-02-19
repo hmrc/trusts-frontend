@@ -59,5 +59,11 @@ class TrustNameFormProviderSpec extends StringFieldBehaviours {
       generator = stringsWithMaxLength(maxLength),
       error = FormError(fieldName, invalidKey, Seq(regexp))
     )
+
+    behave like nonEmptyField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
+    )
   }
 }
