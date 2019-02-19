@@ -40,9 +40,10 @@ trait StringFieldBehaviours extends FieldBehaviours with OptionalFieldBehaviours
   }
 
   def fieldWithMaxLength(form: Form[_],
-                           fieldName: String,
-                           maxLength: Int,
-                           lengthError: FormError): Unit = {
+                         fieldName: String,
+                         maxLength: Int,
+                         lengthError: FormError
+                        ): Unit = {
 
     s"not bind strings longer than $maxLength characters" in {
 

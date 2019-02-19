@@ -91,11 +91,15 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
       chars <- listOfN(length, arbitrary[Char])
     } yield chars.mkString
 
-  def stringsLongerThan(minLength: Int): Gen[String] = for {
-    maxLength <- (minLength * 2).max(100)
-    length    <- Gen.chooseNum(minLength + 1, maxLength)
-    chars     <- listOfN(length, arbitrary[Char])
-  } yield chars.mkString
+  def stringsLongerThan(minLength: Int): Gen[String] = {
+    val gen = Gen.alphaNumChar
+
+    for {
+      maxLength <- (minLength * 2).max(100)
+      length    <- Gen.chooseNum(minLength + 1, maxLength)
+      chars     <- listOfN(length, gen)
+    } yield chars.mkString
+  }
 
   def stringsExceptSpecificValues(excluded: Set[String]): Gen[String] =
     nonEmptyString suchThat (!excluded.contains(_))
