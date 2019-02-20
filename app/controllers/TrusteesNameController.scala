@@ -19,12 +19,12 @@ package controllers
 import controllers.actions._
 import forms.TrusteesNameFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, NormalMode}
 import models.entities.Trustee
 import navigation.Navigator
-import pages.{Trustees, TrusteesNamePage}
+import pages.{IsThisLeadTrusteePage, Trustees, TrusteesNamePage}
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -39,41 +39,70 @@ class TrusteesNameController @Inject()(
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        validateIndex : IndexActionFilterProvider,
+                                        validateIndex: IndexActionFilterProvider,
                                         formProvider: TrusteesNameFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: TrusteesNameView
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
-  private def actions(index : Int) =
+  private def actions(index: Int) =
     identify andThen getData andThen requireData andThen validateIndex(index, Trustees)
 
   def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = actions(index) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(TrusteesNamePage(index)) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
 
-      Ok(view(preparedForm, mode, index))
+      val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index))
+      if (isLead.isEmpty) {
+       Redirect(routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index))
+      } else {
+
+        val heading = if (isLead.contains(true)) {
+          Messages("leadTrusteesName.heading")
+        } else {
+          Messages("trusteesName.heading")
+        }
+
+        val preparedForm = request.userAnswers.get(TrusteesNamePage(index)) match {
+          case None => form
+          case Some(value) => form.fill(value)
+        }
+
+
+        Ok(view(preparedForm, mode, index, heading))
+      }
   }
 
-  def onSubmit(mode: Mode, index : Int): Action[AnyContent] = actions(index).async {
+  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = actions(index).async {
     implicit request =>
 
-      form.bindFromRequest().fold(
-        (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, index))),
+      val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index))
 
-        value => {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteesNamePage(index), value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrusteesNamePage(index), mode)(updatedAnswers))
+      if (isLead.isEmpty) {
+        Future.successful(Redirect(routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index)))
+      } else {
+
+        val heading = if (isLead.contains(true)) {
+          Messages("leadTrusteesName.heading")
+        } else {
+          Messages("trusteesName.heading")
         }
-      )
+
+        form.bindFromRequest().fold(
+          (formWithErrors: Form[_]) =>
+            Future.successful(BadRequest(view(formWithErrors, mode, index, heading))),
+
+          value => {
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteesNamePage(index), value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(TrusteesNamePage(index), mode)(updatedAnswers))
+          }
+        )
+
+      }
+
   }
 }

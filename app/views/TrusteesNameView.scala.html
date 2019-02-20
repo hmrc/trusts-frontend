@@ -22,7 +22,7 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, index : Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, index : Int, heading: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("trusteesName.title")}"
@@ -34,7 +34,7 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("trusteesName.heading")
+        @components.heading(heading)
 
         @components.input_text(
         field = form("firstName"),

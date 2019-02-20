@@ -223,6 +223,8 @@ trusteesName.error.invalidFirstNameCharacters = Trustee’s first name must only
 trusteesName.error.invalidMiddleNameCharacters = Trustee’s middle name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 trusteesName.error.invalidLastNameCharacters = Trustee’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
+leadTrusteesName.heading = What is the lead trustee’s name?
+
 trusteesAnswerPage.title = Check trustee details
 trusteesAnswerPage.heading = Check trustee details
 

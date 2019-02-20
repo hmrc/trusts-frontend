@@ -19,27 +19,36 @@ package views
 import controllers.routes
 import forms.TrusteesNameFormProvider
 import generators.Generators
-import models.{FullName, NormalMode}
+import models.{FullName, NormalMode, UserAnswers}
+import pages.{IsThisLeadTrusteePage, TrusteesNamePage}
 import play.api.data.Form
+import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
 import views.html.TrusteesNameView
+import views.html.components.heading
 
 class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generators {
 
   val messageKeyPrefix = "trusteesName"
 
+  val heading = Messages("trusteesName.heading")
+
   val index = 0
 
   override val form = new TrusteesNameFormProvider()()
 
-  "TrusteeFullName view" must {
+  "LeadTrusteeFullName view" must {
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+    val userAnswers = UserAnswers(userAnswersId)
+      .set(IsThisLeadTrusteePage(index), true).success.value
+
+    val application = applicationBuilder(Some(userAnswers)).build()
+
     val view = application.injector.instanceOf[TrusteesNameView]
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, index)(fakeRequest, messages)
+      view.apply(form, NormalMode, index, heading)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
@@ -53,5 +62,30 @@ class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generat
       "firstName", "middleName", "lastName"
     )
 
+  }
+
+  "TrusteeFullName view" must {
+
+    val userAnswers = UserAnswers(userAnswersId)
+      .set(IsThisLeadTrusteePage(index), false).success.value
+
+    val application = applicationBuilder(Some(userAnswers)).build()
+
+    val view = application.injector.instanceOf[TrusteesNameView]
+
+    def applyView(form: Form[_]): HtmlFormat.Appendable =
+      view.apply(form, NormalMode, index, heading)(fakeRequest, messages)
+
+    behave like normalPage(applyView(form), messageKeyPrefix)
+
+    behave like pageWithBackLink(applyView(form))
+
+    behave like pageWithTextFields(
+      form,
+      applyView,
+      messageKeyPrefix,
+      routes.TrusteesNameController.onSubmit(NormalMode, index).url,
+      "firstName", "middleName", "lastName"
+    )
   }
 }
