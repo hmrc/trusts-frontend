@@ -108,7 +108,30 @@ GET        /cannot-change                               controllers.CannotMakeCh
 
 GET        /trust-utr-post                              controllers.UTRSentByPostController.onPageLoad()
 
+# trustees
+
+GET        /trustees/:index/is-this-the-lead-trustee            controllers.IsThisLeadTrusteeController.onPageLoad(mode: Mode = NormalMode, index : Int)
+POST       /trustees/:index/is-this-the-lead-trustee             controllers.IsThisLeadTrusteeController.onSubmit(mode: Mode = NormalMode, index : Int)
+GET        /trustees/:index/change-is-this-the-lead-trustee       controllers.IsThisLeadTrusteeController.onPageLoad(mode: Mode = CheckMode, index : Int)
+POST       /trustees/:index/change-is-this-the-lead-trustee      controllers.IsThisLeadTrusteeController.onSubmit(mode: Mode = CheckMode, index : Int)
+
+GET        /trustees/:index/trustee-individual-or-business              controllers.TrusteeIndividualOrBusinessController.onPageLoad(mode: Mode = NormalMode, index : Int)
+POST       /trustees/:index/trustee-individual-or-business              controllers.TrusteeIndividualOrBusinessController.onSubmit(mode: Mode = NormalMode, index : Int)
+GET        /trustees/:index/change-trustee-individual-or-business     controllers.TrusteeIndividualOrBusinessController.onPageLoad(mode: Mode = CheckMode, index : Int)
+POST       /trustees/:index/change-trustee-individual-or-business     controllers.TrusteeIndividualOrBusinessController.onSubmit(mode: Mode = CheckMode, index : Int)
+
+GET        /trustees/:index/trustee-name                                controllers.TrusteesNameController.onPageLoad(mode: Mode = NormalMode, index : Int)
+POST       /trustees/:index/trustee-name                                controllers.TrusteesNameController.onSubmit(mode: Mode = NormalMode, index : Int)
+GET        /trustees/:index/change-trustee-name                                controllers.TrusteesNameController.onPageLoad(mode: Mode = CheckMode, index : Int)
+POST       /trustees/:index/change-trustee-name                                controllers.TrusteesNameController.onSubmit(mode: Mode = CheckMode, index : Int)
+
+GET        /trustees/:index/check-answers                      controllers.TrusteesAnswerPageController.onPageLoad(index : Int)
+POST       /trustees/:index/check-answers                      controllers.TrusteesAnswerPageController.onSubmit(index : Int)
+
+GET        /add-a-trustee                               controllers.AddATrusteeController.onPageLoad(mode: Mode = NormalMode)
+POST       /add-a-trustee                               controllers.AddATrusteeController.onSubmit(mode: Mode = NormalMode)
+
 GET        /trustees/:index/trustee-date-of-birth         controllers.TrusteesDateOfBirthController.onPageLoad(mode: Mode = NormalMode, index: Int)
-POST       /trustees/:index//trustee-date-of-birth        controllers.TrusteesDateOfBirthController.onSubmit(mode: Mode = NormalMode, index: Int)
+POST       /trustees/:index/trustee-date-of-birth         controllers.TrusteesDateOfBirthController.onSubmit(mode: Mode = NormalMode, index: Int)
 GET        /trustees/:index/change-trustee-date-of-birth   controllers.TrusteesDateOfBirthController.onPageLoad(mode: Mode = CheckMode, index: Int)
 POST       /trustees/:index/change-trustee-date-of-birth   controllers.TrusteesDateOfBirthController.onSubmit(mode: Mode = CheckMode, index: Int)

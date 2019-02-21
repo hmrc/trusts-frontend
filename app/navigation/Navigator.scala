@@ -19,18 +19,68 @@ package navigation
 import javax.inject.{Inject, Singleton}
 import play.api.mvc.Call
 import controllers.routes
+import models.AddATrustee.{NoComplete, YesLater, YesNow}
 import pages._
 import models._
 
+@Singleton
+class Navigator @Inject()() {
 
-trait MatchingNavigator {
+  private val normalRoutes: Page => UserAnswers => Call = {
+    //  Matching
+    case TrustRegisteredOnlinePage => _ => routes.TrustHaveAUTRController.onPageLoad(NormalMode)
+    case TrustHaveAUTRPage => trustHaveAUTRRoute
+    case WhatIsTheUTRPage => _ => routes.TrustNameController.onPageLoad(NormalMode)
+    case PostcodeForTheTrustPage => _ => routes.FailedMatchController.onPageLoad()
+    //  Trust Details
+    case TrustNamePage => trustNameRoute
+    case WhenTrustSetupPage => _ => routes.GovernedInsideTheUKController.onPageLoad(NormalMode)
+    case GovernedInsideTheUKPage => isTrustGovernedInsideUKRoute
+    case CountryGoverningTrustPage => _ => routes.AdministrationInsideUKController.onPageLoad(NormalMode)
+    case AdministrationInsideUKPage => isTrustGeneralAdministrationRoute
+    case CountryAdministeringTrustPage => _ => routes.TrustResidentInUKController.onPageLoad(NormalMode)
+    case TrustResidentInUKPage => isTrustResidentInUKRoute
+    case EstablishedUnderScotsLawPage => _ => routes.TrustResidentOffshoreController.onPageLoad(NormalMode)
+    case TrustResidentOffshorePage => wasTrustPreviouslyResidentOffshoreRoute
+    case TrustPreviouslyResidentPage => _ => routes.CheckYourAnswersController.onPageLoad()
+    case RegisteringTrustFor5APage => registeringForPurposeOfSchedule5ARoute
+    case NonResidentTypePage => _ => routes.CheckYourAnswersController.onPageLoad()
+    case InheritanceTaxActPage => inheritanceTaxRoute
+    case AgentOtherThanBarristerPage => _ => routes.CheckYourAnswersController.onPageLoad()
+    //  Trustees
+    case IsThisLeadTrusteePage(index) => _ => routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index)
+    case TrusteeIndividualOrBusinessPage(index) => _ => routes.TrusteesNameController.onPageLoad(NormalMode, index)
+    case TrusteesNamePage(index) => _ => routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index)
+    case TrusteesDateOfBirthPage(index) => _ => routes.TrusteesAnswerPageController.onPageLoad(index)
+    case TrusteesAnswerPage => _ => routes.AddATrusteeController.onPageLoad()
+    case AddATrusteePage => addATrusteeRoute
+    //  Default
+    case _ => _ => routes.IndexController.onPageLoad()
+  }
 
-  protected val matchingDetails: Map[Page, UserAnswers => Call] = Map(
-    TrustRegisteredOnlinePage -> (_ => routes.TrustHaveAUTRController.onPageLoad(NormalMode)),
-    TrustHaveAUTRPage -> trustHaveAUTRRoute,
-    WhatIsTheUTRPage -> (_ => routes.TrustNameController.onPageLoad(NormalMode)),
-    PostcodeForTheTrustPage -> (_ => routes.FailedMatchController.onPageLoad())
-  )
+  private def addATrusteeRoute(answers: UserAnswers) = {
+    val addAnother = answers.get(AddATrusteePage)
+
+    def routeToTrusteeIndex = {
+      val trustees = answers.get(Trustees).getOrElse(List.empty)
+      trustees match {
+        case Nil =>
+          routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 0)
+        case t if t.nonEmpty =>
+          routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, t.size)
+      }
+    }
+
+    addAnother match {
+      case Some(YesNow) =>
+        routeToTrusteeIndex
+      case Some(YesLater) =>
+        routes.AddATrusteeController.onPageLoad()
+      case Some(NoComplete) =>
+        routes.AddATrusteeController.onPageLoad()
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
 
   private def trustHaveAUTRRoute(answers: UserAnswers) = {
     val condition = (answers.get(TrustRegisteredOnlinePage), answers.get(TrustHaveAUTRPage))
@@ -43,29 +93,6 @@ trait MatchingNavigator {
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
-
-}
-
-
-@Singleton
-class Navigator @Inject()() extends MatchingNavigator {
-
-  private val trustDetails: Map[Page, UserAnswers => Call] = Map(
-    TrustNamePage -> trustNameRoute,
-    WhenTrustSetupPage -> (_ => routes.GovernedInsideTheUKController.onPageLoad(NormalMode)),
-    GovernedInsideTheUKPage -> isTrustGovernedInsideUKRoute,
-    CountryGoverningTrustPage -> (_ => routes.AdministrationInsideUKController.onPageLoad(NormalMode)),
-    AdministrationInsideUKPage -> isTrustGeneralAdministrationRoute,
-    CountryAdministeringTrustPage -> (_ => routes.TrustResidentInUKController.onPageLoad(NormalMode)),
-    TrustResidentInUKPage -> isTrustResidentInUKRoute,
-    EstablishedUnderScotsLawPage -> (_ => routes.TrustResidentOffshoreController.onPageLoad(NormalMode)),
-    TrustResidentOffshorePage -> wasTrustPreviouslyResidentOffshoreRoute,
-    TrustPreviouslyResidentPage -> (_ => routes.CheckYourAnswersController.onPageLoad()),
-    RegisteringTrustFor5APage -> registeringForPurposeOfSchedule5ARoute,
-    NonResidentTypePage -> (_ => routes.CheckYourAnswersController.onPageLoad()),
-    InheritanceTaxActPage -> inheritanceTaxRoute,
-    AgentOtherThanBarristerPage -> (_ => routes.CheckYourAnswersController.onPageLoad())
-  )
 
   private def trustNameRoute(answers: UserAnswers) = {
     val hasUTR = answers.get(TrustHaveAUTRPage).contains(true)
@@ -113,17 +140,14 @@ class Navigator @Inject()() extends MatchingNavigator {
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
-  private val checkRouteMap: Map[Page, UserAnswers => Call] = Map(
-
-  )
+  private val checkRouteMap: Page => UserAnswers => Call = {
+    case _ => _ => routes.CheckYourAnswersController.onPageLoad()
+  }
 
   def nextPage(page: Page, mode: Mode): UserAnswers => Call = mode match {
     case NormalMode =>
-
-      val routeMap = trustDetails ++ matchingDetails
-
-      routeMap.getOrElse(page, _ => routes.IndexController.onPageLoad())
+      normalRoutes(page)
     case CheckMode =>
-      checkRouteMap.getOrElse(page, _ => routes.CheckYourAnswersController.onPageLoad())
+      checkRouteMap(page)
   }
 }

@@ -19,7 +19,7 @@
 @(row: AnswerRow)(implicit messages: Messages)
 
 <li>
-    <div class="cya-question">@messages(row.label)</div>
+    <div class="cya-question">@messages(row.label, row.labelArg)</div>
     <div class="cya-answer">
         @row.answer
     </div>

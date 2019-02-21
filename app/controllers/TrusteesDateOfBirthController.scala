@@ -19,10 +19,10 @@ package controllers
 import controllers.actions._
 import forms.TrusteesDateOfBirthFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{FullName, Mode}
 import models.entities.Trustee
 import navigation.Navigator
-import pages.TrusteesDateOfBirthPage
+import pages.{Trustees, TrusteesDateOfBirthPage, TrusteesNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -47,11 +47,7 @@ class TrusteesDateOfBirthController @Inject()(
 
   val form = formProvider()
 
-  private def actions(index : Int) =
-    identify andThen getData andThen requireData andThen validateIndex(index, Trustees)
-
-
-  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData andThen validateIndex(index, Trustees)) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(TrusteesDateOfBirthPage(index)) match {
@@ -59,15 +55,25 @@ class TrusteesDateOfBirthController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, index))
+      val trusteeName = request.userAnswers.get(TrusteesNamePage(index)) match {
+        case None => ""
+        case Some(x) => x.firstName + " " + x.lastName
+      }
+
+      Ok(view(preparedForm, mode, index, trusteeName))
   }
 
-  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData andThen validateIndex(index, Trustees)).async {
     implicit request =>
+
+      val trusteeName = request.userAnswers.get(TrusteesNamePage(index)) match {
+        case None => ""
+        case Some(x) => x.firstName + " " + x.lastName
+      }
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, index))),
+          Future.successful(BadRequest(view(formWithErrors, mode, index, trusteeName))),
 
         value => {
           for {

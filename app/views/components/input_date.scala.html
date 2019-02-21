@@ -24,12 +24,15 @@
 <div class="form-group @if(field("day").hasErrors || field("month").hasErrors || field("year").hasErrors || field.hasErrors){form-group-error}">
     <fieldset>
         <legend>
-          <span class="form-label bold @legendClass">
-            @legend
-          </span>
-          @if(hint.nonEmpty){
-              <span class="form-hint form-field" id="@field.id-hint">@hint</span>
-          }
+            <span class="form-label bold @legendClass">
+                @legend
+            </span>
+            @if(hint.nonEmpty){
+                <span class="form-hint form-field" id="@field.id-hint">@hint</span>
+            }
+            @field.errors.map { error =>
+                <span class="error-message" id="error-message-@{field.id}-input">@messages(error.message, error.args: _*)</span>
+            }
         </legend>
         <div class="form-date">
             @List("day", "month", "year").map { part =>

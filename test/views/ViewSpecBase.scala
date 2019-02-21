@@ -20,13 +20,16 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import play.twirl.api.Html
 import base.SpecBase
+import models.UserAnswers
+
+import scala.reflect.ClassTag
 
 trait ViewSpecBase extends SpecBase {
 
   def asDocument(html: Html): Document = Jsoup.parse(html.toString())
 
-  def assertEqualsMessage(doc: Document, cssSelector: String, expectedMessageKey: String) =
-    assertEqualsValue(doc, cssSelector, messages(expectedMessageKey))
+  def assertEqualsMessage(doc: Document, cssSelector: String, expectedMessageKey: String, args: Any*) =
+    assertEqualsValue(doc, cssSelector, messages(expectedMessageKey,  args:_*))
 
   def assertEqualsValue(doc : Document, cssSelector : String, expectedValue: String) = {
     val elements = doc.select(cssSelector)
@@ -59,6 +62,10 @@ trait ViewSpecBase extends SpecBase {
 
   def assertNotRenderedById(doc: Document, id: String) = {
     assert(doc.getElementById(id) == null, "\n\nElement " + id + " was rendered on the page.\n")
+  }
+
+  def assertElementNotPresent(doc: Document, elementTag : String) = {
+    assert(doc.getElementsByTag(elementTag).isEmpty, s"\n\nElement $elementTag was rendered on the page.\n")
   }
 
   def assertRenderedByCssSelector(doc: Document, cssSelector: String) = {
@@ -96,4 +103,12 @@ trait ViewSpecBase extends SpecBase {
       case _ => assert(!radio.hasAttr("checked") && radio.attr("checked") != "checked", s"\n\nElement $id is checked")
     }
   }
+
+  def viewFor[A](data: Option[UserAnswers])(implicit tag : ClassTag[A]) : A = {
+    val application = applicationBuilder(data).build()
+    val view = application.injector.instanceOf[A]
+    application.stop()
+    view
+  }
+
 }

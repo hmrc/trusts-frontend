@@ -30,7 +30,8 @@ trait Formatters {
     override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] =
       data.get(key) match {
         case None | Some("") => Left(Seq(FormError(key, errorKey)))
-        case Some(s) => Right(s)
+        case Some(s) =>
+          Right(s.trim)
       }
 
     override def unbind(key: String, value: String): Map[String, String] =
@@ -43,8 +44,9 @@ trait Formatters {
       data.get(key) match {
         case None | Some("") => Left(Seq(FormError(key, requiredKey)))
         case Some(s) =>
-          s.trim.matches(Validation.postcodeRegex) match {
-            case true => Right(s)
+          val trimmed = s.trim
+            trimmed.matches(Validation.postcodeRegex) match {
+            case true => Right(trimmed)
             case false => Left(Seq(FormError(key, invalidKey)))
           }
       }

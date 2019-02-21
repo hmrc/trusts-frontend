@@ -30,7 +30,7 @@ class WhatIsTheUTRFormProvider @Inject() extends Mappings {
           firstError(
             maxLength(10, "whatIsTheUTR.error.length"),
             minLength(10, "whatIsTheUTR.error.length"),
-            regexp("^[0-9]*$", "whatIsTheUTR.error.invalidCharacters"),
+            regexp(Validation.utrRegex, "whatIsTheUTR.error.invalidCharacters"),
             isNotEmpty("value", "whatIsTheUTR.error.required")
           ))
     )

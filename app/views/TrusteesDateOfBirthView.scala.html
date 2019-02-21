@@ -19,10 +19,10 @@
         formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, index: Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, index: Int, trusteeName: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("trusteesDateOfBirth.title")}"
+    title = s"${errorPrefix(form)} ${messages("trusteesDateOfBirth.title", trusteeName)}"
 ) {
 
     @formHelper(action = TrusteesDateOfBirthController.onSubmit(mode, index), 'autoComplete -> "off") {
@@ -31,7 +31,7 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("trusteesDateOfBirth.heading")
+        @components.heading("trusteesDateOfBirth.heading", optionalParam = Some(trusteeName))
 
         @components.input_date(
             field = form("value"),
