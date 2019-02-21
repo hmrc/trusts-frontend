@@ -79,7 +79,7 @@ class TrusteesNameFormProviderSpec extends StringFieldBehaviours {
     behave like optionalField(
       form,
       fieldName,
-      validDataGenerator =  RegexpGen.from(regex))
+      validDataGenerator = RegexpGen.from(regex))
   }
 
 
