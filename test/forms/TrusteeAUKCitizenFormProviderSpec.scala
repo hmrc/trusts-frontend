@@ -14,21 +14,32 @@
  * limitations under the License.
  */
 
-package views
+package forms
 
-import views.behaviours.ViewBehaviours
-import views.html.SessionExpiredView
+import forms.behaviours.BooleanFieldBehaviours
+import play.api.data.FormError
 
-class SessionExpiredViewSpec extends ViewBehaviours {
+class TrusteeAUKCitizenFormProviderSpec extends BooleanFieldBehaviours {
 
-  "Session Expired view" must {
+  val requiredKey = "trusteeAUKCitizen.error.required"
+  val invalidKey = "error.boolean"
 
-    val application = applicationBuilder().build()
+  val form = new TrusteeAUKCitizenFormProvider()()
 
-    val view = application.injector.instanceOf[SessionExpiredView]
+  ".value" must {
 
-    val applyView = view.apply()(fakeRequest, messages)
+    val fieldName = "value"
 
-    behave like normalPage(applyView, "session_expired", Seq("guidance"))
+    behave like booleanField(
+      form,
+      fieldName,
+      invalidError = FormError(fieldName, invalidKey)
+    )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
   }
 }

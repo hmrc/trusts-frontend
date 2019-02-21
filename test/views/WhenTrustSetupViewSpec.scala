@@ -43,7 +43,7 @@ class WhenTrustSetupViewSpec extends QuestionViewBehaviours[LocalDate] {
 
     val applyViewF = (form : Form[_]) => applyView(form)
 
-    behave like normalPage(applyView(form), messageKeyPrefix, s"hint")
+    behave like normalPage(applyView(form), messageKeyPrefix, Seq(),Seq(s"hint"))
 
     behave like pageWithTextFields(form, applyViewF, messageKeyPrefix, routes.GovernedInsideTheUKController.onPageLoad(NormalMode).url)
 

@@ -14,21 +14,16 @@
  * limitations under the License.
  */
 
-package views
+package forms
 
-import views.behaviours.ViewBehaviours
-import views.html.SessionExpiredView
+import forms.mappings.Mappings
+import javax.inject.Inject
+import play.api.data.Form
 
-class SessionExpiredViewSpec extends ViewBehaviours {
+class TrusteeAUKCitizenFormProvider @Inject() extends Mappings {
 
-  "Session Expired view" must {
-
-    val application = applicationBuilder().build()
-
-    val view = application.injector.instanceOf[SessionExpiredView]
-
-    val applyView = view.apply()(fakeRequest, messages)
-
-    behave like normalPage(applyView, "session_expired", Seq("guidance"))
-  }
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("trusteeAUKCitizen.error.required")
+    )
 }

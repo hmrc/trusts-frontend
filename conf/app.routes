@@ -130,3 +130,8 @@ POST       /trustees/:index/check-answers                      controllers.Trust
 
 GET        /add-a-trustee                               controllers.AddATrusteeController.onPageLoad(mode: Mode = NormalMode)
 POST       /add-a-trustee                               controllers.AddATrusteeController.onSubmit(mode: Mode = NormalMode)
+
+GET        /trustees/:index/is-a-uk-citizen                        controllers.TrusteeAUKCitizenController.onPageLoad(mode: Mode = NormalMode, index : Int)
+POST       /trustees/:index/is-a-uk-citizen                      controllers.TrusteeAUKCitizenController.onSubmit(mode: Mode = NormalMode, index : Int)
+GET        /trustees/:index/change-is-a-uk-citizen                 controllers.TrusteeAUKCitizenController.onPageLoad(mode: Mode = CheckMode, index : Int)
+POST       /trustees/:index/change-is-a-uk-citizen                controllers.TrusteeAUKCitizenController.onSubmit(mode: Mode = CheckMode, index : Int)

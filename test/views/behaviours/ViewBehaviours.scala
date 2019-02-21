@@ -23,7 +23,8 @@ trait ViewBehaviours extends ViewSpecBase {
 
   def normalPage(view: HtmlFormat.Appendable,
                  messageKeyPrefix: String,
-                 expectedGuidanceKeys: String*): Unit = {
+                 expectedGuidanceKeys: Seq[String] = Nil,
+                 data : Seq[String] = Nil): Unit = {
 
     "behave like a normal page" when {
 
@@ -46,7 +47,7 @@ trait ViewBehaviours extends ViewSpecBase {
         "display the correct page title" in {
 
           val doc = asDocument(view)
-          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading")
+          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading", data: _*)
         }
 
         "display the correct guidance" in {

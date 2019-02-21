@@ -238,3 +238,9 @@ addATrustee.checkYourAnswersLabel = Add A Trustee
 addATrustee.individual = Trustee Individual
 addATrustee.business = Trustee Business
 addATrustee.error.required = Select yes if you want to add another trustee
+
+trusteeAUKCitizen.title = Is {0} a UK citizen?
+trusteeAUKCitizen.heading = Is {0} a UK citizen?
+trusteeAUKCitizen.checkYourAnswersLabel = trusteeAUKCitizen
+trusteeAUKCitizen.error.required = Select yes if the trustee is a UK citizen
+

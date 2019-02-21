@@ -14,21 +14,18 @@
  * limitations under the License.
  */
 
-package views
+package pages
 
-import views.behaviours.ViewBehaviours
-import views.html.SessionExpiredView
+import pages.behaviours.PageBehaviours
 
-class SessionExpiredViewSpec extends ViewBehaviours {
+class TrusteeAUKCitizenPageSpec extends PageBehaviours {
 
-  "Session Expired view" must {
+  "trusteeAUKCitizenPage" must {
 
-    val application = applicationBuilder().build()
+    beRetrievable[Boolean](TrusteeAUKCitizenPage(0))
 
-    val view = application.injector.instanceOf[SessionExpiredView]
+    beSettable[Boolean](TrusteeAUKCitizenPage(0))
 
-    val applyView = view.apply()(fakeRequest, messages)
-
-    behave like normalPage(applyView, "session_expired", Seq("guidance"))
+    beRemovable[Boolean](TrusteeAUKCitizenPage(0))
   }
 }

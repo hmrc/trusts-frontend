@@ -14,21 +14,13 @@
  * limitations under the License.
  */
 
-package views
+package pages
 
-import views.behaviours.ViewBehaviours
-import views.html.SessionExpiredView
+import play.api.libs.json.JsPath
 
-class SessionExpiredViewSpec extends ViewBehaviours {
+final case class  TrusteeAUKCitizenPage(index : Int) extends QuestionPage[Boolean] {
 
-  "Session Expired view" must {
+  override def path: JsPath = JsPath \ toString
 
-    val application = applicationBuilder().build()
-
-    val view = application.injector.instanceOf[SessionExpiredView]
-
-    val applyView = view.apply()(fakeRequest, messages)
-
-    behave like normalPage(applyView, "session_expired", Seq("guidance"))
-  }
+  override def toString: String = "trusteeAUKCitizen"
 }
