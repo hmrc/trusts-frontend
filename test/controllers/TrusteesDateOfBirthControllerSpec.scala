@@ -49,8 +49,10 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
 
     "return OK and the correct view for a GET" in {
 
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, trusteesDateOfBirthRoute)
 
@@ -61,7 +63,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, index, emptyTrusteeName)(fakeRequest, messages).toString
+        view(form, NormalMode, index, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -119,7 +121,10 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, trusteesDateOfBirthRoute)
@@ -134,7 +139,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, index, emptyTrusteeName)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, index, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }

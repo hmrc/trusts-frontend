@@ -40,6 +40,7 @@ class TrusteesDateOfBirthController @Inject()(
                                                   getData: DataRetrievalAction,
                                                   requireData: DataRequiredAction,
                                                   validateIndex : IndexActionFilterProvider,
+                                                  requiredAnswer: RequiredAnswerActionProvider,
                                                   formProvider: TrusteesDateOfBirthFormProvider,
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: TrusteesDateOfBirthView
@@ -47,7 +48,7 @@ class TrusteesDateOfBirthController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData andThen validateIndex(index, Trustees)) {
+  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData andThen validateIndex(index, Trustees) andThen requiredAnswer(RequiredAnswer(TrusteesNamePage(index)))) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(TrusteesDateOfBirthPage(index)) match {
@@ -63,7 +64,7 @@ class TrusteesDateOfBirthController @Inject()(
       Ok(view(preparedForm, mode, index, trusteeName))
   }
 
-  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData andThen validateIndex(index, Trustees)).async {
+  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData andThen validateIndex(index, Trustees) andThen requiredAnswer(RequiredAnswer(TrusteesNamePage(index)))).async {
     implicit request =>
 
       val trusteeName = request.userAnswers.get(TrusteesNamePage(index)) match {
