@@ -244,3 +244,10 @@ trusteeAUKCitizen.heading = Is {0} a UK citizen?
 trusteeAUKCitizen.checkYourAnswersLabel = trusteeAUKCitizen
 trusteeAUKCitizen.error.required = Select yes if the trustee is a UK citizen
 
+
+telephoneNumber.title = What is {0}'s telephone number?
+telephoneNumber.heading = What is {0}'s telephone number?
+telephoneNumber.checkYourAnswersLabel = telephoneNumber
+telephoneNumber.error.required = Enter trustee's telephone number
+telephoneNumber.error.length = TelephoneNumber must be 100 characters or less
+telephoneNumber.error.invalid.characters = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192

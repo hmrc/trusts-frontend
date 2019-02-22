@@ -28,6 +28,15 @@ import viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def telephoneNumber: Option[AnswerRow] = userAnswers.get(TelephoneNumberPage) map {
+    x =>
+      AnswerRow(
+        "telephoneNumber.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.TelephoneNumberController.onPageLoad(CheckMode).url
+      )
+  }
+
   def trusteeAUKCitizen(index : Int): Option[AnswerRow] = userAnswers.get(TrusteeAUKCitizenPage(index)) map {
     x =>
       AnswerRow(
