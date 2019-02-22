@@ -52,6 +52,7 @@ unauthorised.heading = You can’t access this service with this account
 
 individualOrBusiness.individual = Individual
 individualOrBusiness.business = Business
+
 entity.trustee = Trustee
 
 trustName.title = What is the trust’s name?
