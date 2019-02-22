@@ -27,22 +27,24 @@ class FrontendAppConfig @Inject() (configuration: Configuration) {
 
   private val contactHost = configuration.get[String]("contact-frontend.host")
   private val contactFormServiceIdentifier = "trustsfrontend"
-  private val agentServicesFrontendHost = configuration.get[String]("microservice.services.agent-subscription-frontend.host")
 
   private def loadConfig(key: String) = configuration.get[String](key)
 
   val analyticsToken: String = configuration.get[String](s"google-analytics.token")
   val analyticsHost: String = configuration.get[String](s"google-analytics.host")
+
   val reportAProblemPartialUrl = s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
   val reportAProblemNonJSUrl = s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
+
   val betaFeedbackUrl = s"$contactHost/contact/beta-feedback"
   val betaFeedbackUnauthenticatedUrl = s"$contactHost/contact/beta-feedback-unauthenticated"
-  val agentServiceRegistrationUrl = s"$agentServicesFrontendHost/agent-subscription/start?continue=/trusts-registration/trust-registered-online"
 
-  lazy val authUrl: String = configuration.get[Service]("auth").baseUrl
   lazy val loginUrl: String = configuration.get[String]("urls.login")
   lazy val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")
   lazy val lostUtrUrl : String = configuration.get[String]("urls.lostUtr")
+
+  lazy val agentsSubscriptionsUrl : String = configuration.get[Service]("microservice.services.agent-subscription-frontend").baseUrl
+  lazy val agentServiceRegistrationUrl = s"$agentsSubscriptionsUrl/agent-subscription/start?continue=$loginContinueUrl"
 
   lazy val locationCanonicalList: String = loadConfig("location.canonical.list.all")
   lazy val locationCanonicalListNonUK: String = loadConfig("location.canonical.list.nonUK")

@@ -47,7 +47,7 @@ class AuthActionSpec extends SpecBase {
   "Auth Action" when {
 
 
-    "Agent user hasn't enrolled in Trusts" must {
+    "Agent user hasn't enrolled in Agent Services Account" must {
 
       "redirect the user to the create agent services page" in {
 
@@ -62,7 +62,7 @@ class AuthActionSpec extends SpecBase {
 
     }
 
-    "Agent user has correct enrolled in Trusts" must {
+    "Agent user has correct enrolled in Agent Services Account" must {
 
       "allow user to continue" in {
 
@@ -76,7 +76,7 @@ class AuthActionSpec extends SpecBase {
 
     }
 
-    "Org user with no enrolled in Trusts" must {
+    "Org user with no enrolments" must {
 
       "allow user to continue" in {
 
@@ -90,7 +90,7 @@ class AuthActionSpec extends SpecBase {
 
     }
 
-    "Individual user with no enrolled in Trusts" must {
+    "Individual user" must {
 
       "redirect the user to the unauthorised page" in {
 
