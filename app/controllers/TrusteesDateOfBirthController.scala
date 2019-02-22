@@ -48,7 +48,14 @@ class TrusteesDateOfBirthController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData andThen validateIndex(index, Trustees) andThen requiredAnswer(RequiredAnswer(TrusteesNamePage(index)))) {
+  private def routes(index : Int) =
+      identify andThen
+      getData andThen
+      requireData andThen
+      validateIndex(index, Trustees) andThen
+      requiredAnswer(RequiredAnswer(TrusteesNamePage(index)))
+
+  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = routes(index) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(TrusteesDateOfBirthPage(index)) match {
@@ -56,21 +63,15 @@ class TrusteesDateOfBirthController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      val trusteeName = request.userAnswers.get(TrusteesNamePage(index)) match {
-        case None => ""
-        case Some(x) => x.firstName + " " + x.lastName
-      }
+      val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
 
       Ok(view(preparedForm, mode, index, trusteeName))
   }
 
-  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData andThen validateIndex(index, Trustees) andThen requiredAnswer(RequiredAnswer(TrusteesNamePage(index)))).async {
+  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = routes(index).async {
     implicit request =>
 
-      val trusteeName = request.userAnswers.get(TrusteesNamePage(index)) match {
-        case None => ""
-        case Some(x) => x.firstName + " " + x.lastName
-      }
+      val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>

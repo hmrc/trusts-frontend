@@ -28,7 +28,7 @@ import viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
-  def getTrusteeFirstLastName(index: Int) = userAnswers.get(TrusteesNamePage(index)).get.firstName + " " + userAnswers.get(TrusteesNamePage(index)).get.lastName
+  def getTrusteeFirstLastName(index: Int): String = userAnswers.get(TrusteesNamePage(index)).get.toString
 
   def trusteesDateOfBirth(index : Int): Option[AnswerRow] = userAnswers.get(TrusteesDateOfBirthPage(index)) map {
     x =>
