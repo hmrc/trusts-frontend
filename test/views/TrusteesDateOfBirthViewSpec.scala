@@ -45,7 +45,7 @@ class TrusteesDateOfBirthViewSpec extends QuestionViewBehaviours[LocalDate] {
 
     val applyViewF = (form : Form[_]) => applyView(form)
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, trusteeName)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, trusteeName, "hint")
 
     behave like pageWithBackLink(applyView(form))
 

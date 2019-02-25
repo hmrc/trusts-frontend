@@ -36,7 +36,8 @@
         @components.input_date(
             field = form("value"),
             legend = messages("trusteesDateOfBirth.heading", trusteeName),
-            legendClass = "visually-hidden"
+            legendClass = "visually-hidden",
+            hint = Some(messages(s"trusteesDateOfBirth.hint"))
         )
 
         @components.submit_button()
