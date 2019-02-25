@@ -47,6 +47,8 @@ site.textarea.char_limit = (Limit is {0} characters)
 site.inprogress = In Progress
 site.complete = Completed
 
+site.date.hint = For example, 31 3 1980
+
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 
@@ -151,7 +153,6 @@ whenTrustSetup.error.required = The date the trust deed was signed must include 
 whenTrustSetup.error.invalid = Enter a real date the trust deed was signed
 whenTrustSetup.error.future = The date the trust deed was signed must be today or in the past
 whenTrustSetup.error.past = The date the trust deed was signed must be after 31 December 1499
-whenTrustSetup.hint = For example, 31 3 1980
 
 trustRegisteredOnline.title = Has the trust already been registered online?
 trustRegisteredOnline.heading = Has the trust already been registered online?
