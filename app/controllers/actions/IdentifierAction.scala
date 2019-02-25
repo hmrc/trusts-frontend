@@ -22,10 +22,12 @@ import controllers.routes
 import models.requests.IdentifierRequest
 import play.api.mvc.Results._
 import play.api.mvc._
+import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import uk.gov.hmrc.auth.core._
-import uk.gov.hmrc.auth.core.retrieve.Retrievals
+import uk.gov.hmrc.auth.core.retrieve.{Retrievals, ~}
 import uk.gov.hmrc.http.{HeaderCarrier, UnauthorizedException}
 import uk.gov.hmrc.play.HeaderCarrierConverter
+import play.api.mvc.{ActionBuilder, ActionFunction, Request, Result}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -35,21 +37,26 @@ class AuthenticatedIdentifierAction @Inject()(
                                                val parser: BodyParsers.Default
                                              )
                                              (implicit val executionContext: ExecutionContext) extends IdentifierAction with AuthorisedFunctions {
-
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
-
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
-
-    authorised().retrieve(Retrievals.internalId) {
-      _.map {
-        internalId => block(IdentifierRequest(request, internalId))
-      }.getOrElse(throw new UnauthorizedException("Unable to retrieve internal Id"))
+    val hmrcAgentEnrolmentKey = "HMRC-AS-AGENT"
+    authorised().retrieve(Retrievals.internalId and Retrievals.affinityGroup and Retrievals.allEnrolments) {
+      case Some(internalId) ~ Some(Agent) ~ enrolments => {
+        if (enrolments.getEnrolment(hmrcAgentEnrolmentKey).nonEmpty)
+          block(IdentifierRequest(request, internalId))
+        else
+          Future(Redirect(routes.CreateAgentServicesAccountController.onPageLoad()))
+      }
+      case Some(internalId) ~ Some(Organisation) ~ _ => block(IdentifierRequest(request, internalId))
+      case Some(_) ~ _ ~ _ => Future(Redirect(routes.UnauthorisedController.onPageLoad()))
+      case _ => throw new UnauthorizedException("Unable to retrieve internal Id")
     } recover {
-      case _: NoActiveSession =>
-        Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl)))
-      case _ =>
-        Redirect(routes.UnauthorisedController.onPageLoad())
-
+      case ex: NoActiveSession => Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl)))
+      case ex: InsufficientEnrolments => Redirect(routes.UnauthorisedController.onPageLoad)
+      case ex: InsufficientConfidenceLevel => Redirect(routes.UnauthorisedController.onPageLoad)
+      case ex: UnsupportedAuthProvider => Redirect(routes.UnauthorisedController.onPageLoad)
+      case ex: UnsupportedAffinityGroup => Redirect(routes.UnauthorisedController.onPageLoad)
+      case ex: UnsupportedCredentialRole => Redirect(routes.UnauthorisedController.onPageLoad)
     }
   }
 }
