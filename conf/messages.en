@@ -145,8 +145,9 @@ whenTrustSetup.title = What date was the trust deed signed?
 whenTrustSetup.heading = What date was the trust deed signed?
 whenTrustSetup.checkYourAnswersLabel = WhenTrustSetup
 whenTrustSetup.error.required.all = Enter the date the trust deed was signed
-whenTrustSetup.error.required.two = The date the trust deed was signed must include a day, a month and a year (whatever is missing)
-whenTrustSetup.error.required = The date the trust deed was signed must include a day, a month and a year (whatever is missing)
+whenTrustSetup.error.required.two = The date the trust deed was signed must include a {0} and a {1}
+whenTrustSetup.error.required = The date the trust deed was signed must include a {0}
+
 whenTrustSetup.error.invalid = Enter a real date the trust deed was signed
 whenTrustSetup.error.future = The date the trust deed was signed must be today or in the past
 whenTrustSetup.error.past = The date the trust deed was signed must be after 31 December 1499

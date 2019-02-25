@@ -18,8 +18,9 @@ package views
 
 import java.time.LocalDate
 
+import controllers.routes
 import forms.TrusteesDateOfBirthFormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
@@ -42,8 +43,18 @@ class TrusteesDateOfBirthViewSpec extends QuestionViewBehaviours[LocalDate] {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, index, trusteeName)(fakeRequest, messages)
 
+    val applyViewF = (form : Form[_]) => applyView(form)
+
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, trusteeName)
 
     behave like pageWithBackLink(applyView(form))
+
+    behave like pageWithDateFields(form, applyViewF,
+      messageKeyPrefix,
+      routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index).url,
+      trusteeName
+    )
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }
