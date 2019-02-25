@@ -43,8 +43,8 @@ class FrontendAppConfig @Inject() (configuration: Configuration) {
   lazy val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")
   lazy val lostUtrUrl : String = configuration.get[String]("urls.lostUtr")
 
-  lazy val agentsSubscriptionsUrl : String = configuration.get[Service]("microservice.services.agent-subscription-frontend").baseUrl
-  lazy val agentServiceRegistrationUrl = s"$agentsSubscriptionsUrl/agent-subscription/start?continue=$loginContinueUrl"
+  lazy val agentsSubscriptionsUrl : String = configuration.get[String]("urls.agentSubscriptions")
+  lazy val agentServiceRegistrationUrl = s"$agentsSubscriptionsUrl?continue=$loginContinueUrl"
 
   lazy val locationCanonicalList: String = loadConfig("location.canonical.list.all")
   lazy val locationCanonicalListNonUK: String = loadConfig("location.canonical.list.nonUK")
