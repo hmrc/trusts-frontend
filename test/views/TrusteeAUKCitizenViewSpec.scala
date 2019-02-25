@@ -50,7 +50,7 @@ class TrusteeAUKCitizenViewSpec extends YesNoViewBehaviours {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, index, heading)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix, Nil, Seq(name.toString))
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString)
 
     behave like pageWithBackLink(applyView(form))
 

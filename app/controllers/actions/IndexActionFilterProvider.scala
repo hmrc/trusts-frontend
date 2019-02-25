@@ -26,11 +26,8 @@ import play.api.mvc.{ActionFilter, Result}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class IndexActionFilter[T](index : Int,
-                        entity : QuestionPage[List[T]],
-                        protected implicit val executionContext: ExecutionContext,
-                        protected val errorHandler : ErrorHandler)
-                          (implicit val reads : Reads[T])
+class IndexActionFilter[T](index : Int, entity : QuestionPage[List[T]], errorHandler : ErrorHandler)
+                          (implicit val reads : Reads[T], val executionContext: ExecutionContext)
   extends ActionFilter[DataRequest] {
 
   override protected def filter[A](request: DataRequest[A]): Future[Option[Result]] = {
@@ -52,6 +49,6 @@ class IndexActionFilterProvider @Inject()(executionContext: ExecutionContext,
 {
 
   def apply[T](index: Int, entity : QuestionPage[List[T]])(implicit reads: Reads[T]) =
-    new IndexActionFilter[T](index, entity, executionContext, errorHandler)(reads)
+    new IndexActionFilter[T](index, entity, errorHandler)(reads, executionContext)
 
 }
