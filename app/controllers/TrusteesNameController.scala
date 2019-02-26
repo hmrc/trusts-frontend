@@ -40,6 +40,7 @@ class TrusteesNameController @Inject()(
                                         requireData: DataRequiredAction,
                                         validateIndex: IndexActionFilterProvider,
                                         formProvider: TrusteesNameFormProvider,
+                                        requiredAnswer: RequiredAnswerActionProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: TrusteesNameView
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
@@ -47,61 +48,53 @@ class TrusteesNameController @Inject()(
   val form = formProvider()
 
   private def actions(index: Int) =
-    identify andThen getData andThen requireData andThen validateIndex(index, Trustees)
+    identify andThen getData andThen
+      requireData andThen
+      validateIndex(index, Trustees) andThen
+      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index)))
 
   def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = actions(index) {
     implicit request =>
 
 
-      val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index))
-      if (isLead.isEmpty) {
-       Redirect(routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index))
+      val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
+
+      val heading = if (isLead) {
+        Messages("leadTrusteesName.heading")
       } else {
-
-        val heading = if (isLead.contains(true)) {
-          Messages("leadTrusteesName.heading")
-        } else {
-          Messages("trusteesName.heading")
-        }
-
-        val preparedForm = request.userAnswers.get(TrusteesNamePage(index)) match {
-          case None => form
-          case Some(value) => form.fill(value)
-        }
-
-
-        Ok(view(preparedForm, mode, index, heading))
+        Messages("trusteesName.heading")
       }
+
+      val preparedForm = request.userAnswers.get(TrusteesNamePage(index)) match {
+        case None => form
+        case Some(value) => form.fill(value)
+      }
+
+      Ok(view(preparedForm, mode, index, heading))
+
   }
 
   def onSubmit(mode: Mode, index: Int): Action[AnyContent] = actions(index).async {
     implicit request =>
 
-      val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index))
+      val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
 
-      if (isLead.isEmpty) {
-        Future.successful(Redirect(routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index)))
+      val heading = if (isLead) {
+        Messages("leadTrusteesName.heading")
       } else {
-
-        val heading = if (isLead.contains(true)) {
-          Messages("leadTrusteesName.heading")
-        } else {
-          Messages("trusteesName.heading")
-        }
-
-        form.bindFromRequest().fold(
-          (formWithErrors: Form[_]) =>
-            Future.successful(BadRequest(view(formWithErrors, mode, index, heading))),
-
-          value => {
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteesNamePage(index), value))
-              _ <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(TrusteesNamePage(index), mode)(updatedAnswers))
-          }
-        )
-
+        Messages("trusteesName.heading")
       }
 
+      form.bindFromRequest().fold(
+        (formWithErrors: Form[_]) =>
+          Future.successful(BadRequest(view(formWithErrors, mode, index, heading))),
+
+        value => {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteesNamePage(index), value))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(TrusteesNamePage(index), mode)(updatedAnswers))
+        }
+      )
   }
 }
