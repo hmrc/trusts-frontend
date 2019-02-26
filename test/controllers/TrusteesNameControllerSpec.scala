@@ -21,15 +21,14 @@ import forms.TrusteesNameFormProvider
 import generators.FullNameGenerator
 import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import org.scalacheck.Arbitrary.arbitrary
+import org.scalacheck.Gen
 import pages.{IsThisLeadTrusteePage, TrusteesNamePage}
 import play.api.i18n.Messages
 import play.api.inject.bind
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.TrusteesNameView
-import views.html.components.heading
 
 class TrusteesNameControllerSpec extends SpecBase with IndexValidation with FullNameGenerator {
 
@@ -39,6 +38,8 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation with Full
   val form = formProvider()
 
   val index = 0
+
+  val name = FullName("first name", Some("middle name"), "last name")
 
   lazy val trusteesNameRoute: String = routes.TrusteesNameController.onPageLoad(NormalMode, index).url
 
@@ -280,38 +281,12 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation with Full
         application.stop()
       }
 
-      "for a GET" must {
+      behave like validateIndex(
+        TrusteesNamePage.apply,
+        routes.TrusteesNameController.onPageLoad(NormalMode, index),
+        ("firstName", "first"), ("middleName", "middle"), ("lastName", "last")
+      )
 
-        def getForIndex(index: Int): FakeRequest[AnyContentAsEmpty.type] = {
-          val route = routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index).url
-
-          FakeRequest(GET, route)
-        }
-
-        validateIndex(
-          arbitrary[FullName],
-          TrusteesNamePage.apply,
-          getForIndex
-        )
-
-      }
-
-      "for a POST" must {
-        def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
-
-          val route =
-            routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index).url
-
-          FakeRequest(POST, route)
-            .withFormUrlEncodedBody(("firstName", "first"), ("middleName", "middle"), ("lastName", "last"))
-        }
-
-        validateIndex(
-          arbitrary[FullName],
-          TrusteesNamePage.apply,
-          postForIndex
-        )
-      }
     }
   }
 }

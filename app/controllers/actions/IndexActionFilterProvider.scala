@@ -34,6 +34,8 @@ class IndexActionFilter[T](index : Int, entity : QuestionPage[List[T]], errorHan
 
     lazy val entities = request.userAnswers.get(entity).getOrElse(List.empty)
 
+    println(s"entities generated $entities size ${entities.size} index $index")
+
     if (index >= 0 && index <= entities.size) {
       Future.successful(None)
     } else {

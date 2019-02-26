@@ -152,37 +152,10 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
       application.stop()
     }
 
-    "for a GET" must {
-
-      def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
-        val route = routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index).url
-
-        FakeRequest(GET, route)
-      }
-
-      validateIndex(
-        arbitrary[IndividualOrBusiness],
-        TrusteeIndividualOrBusinessPage.apply,
-        getForIndex
-      )
-
-    }
-
-    "for a POST" must {
-      def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
-
-        val route =
-          routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index).url
-
-        FakeRequest(POST, route)
-          .withFormUrlEncodedBody(("value", IndividualOrBusiness.values.head.toString))
-      }
-
-      validateIndex(
-        arbitrary[IndividualOrBusiness],
-        TrusteeIndividualOrBusinessPage.apply,
-        postForIndex
-      )
-    }
+    behave like validateIndex(
+      TrusteeIndividualOrBusinessPage.apply,
+      routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index),
+      ("value", IndividualOrBusiness.values.head.toString)
+    )
   }
 }
