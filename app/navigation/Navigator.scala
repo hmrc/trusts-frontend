@@ -51,7 +51,8 @@ class Navigator @Inject()() {
     case IsThisLeadTrusteePage(index) => _ => routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index)
     case TrusteeIndividualOrBusinessPage(index) => _ => routes.TrusteesNameController.onPageLoad(NormalMode, index)
     case TrusteesNamePage(index) => _ => routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index)
-    case TrusteesDateOfBirthPage(index) => _ => routes.TrusteesAnswerPageController.onPageLoad(index)
+    case TrusteesDateOfBirthPage(index) => _ => routes.TrusteeAUKCitizenController.onPageLoad(NormalMode, index)
+    case TrusteeAUKCitizenPage(index) => ua => trusteeAUKCitizenRoute(ua, index)
     case TrusteesAnswerPage => _ => routes.AddATrusteeController.onPageLoad()
     case AddATrusteePage => addATrusteeRoute
     //  Default
@@ -137,6 +138,12 @@ class Navigator @Inject()() {
   private def inheritanceTaxRoute(answers: UserAnswers) = answers.get(InheritanceTaxActPage) match {
     case Some(true)   => routes.AgentOtherThanBarristerController.onPageLoad(NormalMode)
     case Some(false)  => routes.CheckYourAnswersController.onPageLoad()
+    case None         => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def trusteeAUKCitizenRoute(answers: UserAnswers, index: Int) = answers.get(TrusteeAUKCitizenPage(index)) match {
+    case Some(true)   => routes.TrusteesAnswerPageController.onPageLoad(index)
+    case Some(false)  => routes.TrusteesAnswerPageController.onPageLoad(index)
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 

@@ -39,63 +39,50 @@ class TrusteeAUKCitizenController @Inject()(
                                              identify: IdentifierAction,
                                              getData: DataRetrievalAction,
                                              requireData: DataRequiredAction,
+                                             requiredAnswer: RequiredAnswerActionProvider,
                                              formProvider: TrusteeAUKCitizenFormProvider,
                                              val controllerComponents: MessagesControllerComponents,
                                              view: TrusteeAUKCitizenView
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   private def actions(index: Int) =
-    identify andThen getData andThen requireData andThen validateIndex(index, Trustees)
+    identify andThen
+      getData andThen
+      requireData andThen
+      validateIndex(index, Trustees) andThen
+      requiredAnswer(RequiredAnswer(TrusteesNamePage(index), routes.TrusteesNameController.onPageLoad(NormalMode, index)))
 
   def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = actions(index) {
     implicit request =>
 
-      val trusteesName = request.userAnswers.get(TrusteesNamePage(index))
+      val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
 
-      if (trusteesName.isEmpty) {
-        Redirect(routes.TrusteesNameController.onPageLoad(NormalMode, index))
-      } else {
-
-        val name = trusteesName.get
-
-        val heading = Messages("trusteeAUKCitizen.heading", name)
-
-        val preparedForm = request.userAnswers.get(TrusteeAUKCitizenPage(index)) match {
-          case None => form
-          case Some(value) => form.fill(value)
-        }
-
-        Ok(view(preparedForm, mode, index, heading))
+      val preparedForm = request.userAnswers.get(TrusteeAUKCitizenPage(index)) match {
+        case None => form
+        case Some(value) => form.fill(value)
       }
+
+      Ok(view(preparedForm, mode, index, trusteeName))
   }
 
   def onSubmit(mode: Mode, index: Int): Action[AnyContent] = actions(index).async {
     implicit request =>
 
-      val trusteesName = request.userAnswers.get(TrusteesNamePage(index))
+      val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
 
-      if (trusteesName.isEmpty) {
-        Future.successful(Redirect(routes.TrusteesNameController.onPageLoad(NormalMode, index)))
-      } else {
+      form.bindFromRequest().fold(
+        (formWithErrors: Form[_]) =>
+          Future.successful(BadRequest(view(formWithErrors, mode, index, trusteeName))),
 
-        val name = trusteesName.get
-
-        val heading = Messages("trusteeAUKCitizen.heading", name)
-
-        form.bindFromRequest().fold(
-          (formWithErrors: Form[_]) =>
-            Future.successful(BadRequest(view(formWithErrors, mode, index, heading))),
-
-          value => {
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeAUKCitizenPage(index), value))
-              _ <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(TrusteeAUKCitizenPage(index), mode)(updatedAnswers))
-          }
-        )
-      }
+        value => {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeAUKCitizenPage(index), value))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(TrusteeAUKCitizenPage(index), mode)(updatedAnswers))
+        }
+      )
   }
 }
 

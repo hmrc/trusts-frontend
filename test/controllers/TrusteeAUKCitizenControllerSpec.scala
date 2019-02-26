@@ -21,9 +21,7 @@ import forms.TrusteeAUKCitizenFormProvider
 import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.{TrusteeAUKCitizenPage, TrusteesNamePage}
-import play.api.i18n.Messages
 import play.api.inject.bind
-import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -38,137 +36,153 @@ class TrusteeAUKCitizenControllerSpec extends SpecBase {
   val form = formProvider()
 
   val index = 0
+  val emptyTrusteeName = ""
+  val trusteeName = "FirstName LastName"
 
   lazy val trusteeAUKCitizenRoute = routes.TrusteeAUKCitizenController.onPageLoad(NormalMode, index).url
 
   "trusteeAUKCitizen Controller" must {
 
+    "return OK and the correct view for a GET" in {
 
-    "return OK and the correct view for a GET" when {
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      "trustees name has been provided" in {
+      val request = FakeRequest(GET, trusteeAUKCitizenRoute)
 
-        val name = FullName("First", Some(""), "Last")
+      val result = route(application, request).value
 
-        val heading = Messages("trusteeAUKCitizen.heading", name)
+      val view = application.injector.instanceOf[TrusteeAUKCitizenView]
 
-        val userAnswers = UserAnswers(userAnswersId)
-          .set(TrusteesNamePage(index), name).success.value
+      status(result) mustEqual OK
 
-        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      contentAsString(result) mustEqual
+        view(form, NormalMode, index, trusteeName)(fakeRequest, messages).toString
 
-        val request = FakeRequest(GET, trusteeAUKCitizenRoute)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[TrusteeAUKCitizenView]
-
-        status(result) mustEqual OK
-
-        contentAsString(result) mustEqual
-          view(form, NormalMode, index, heading)(fakeRequest, messages).toString
-
-        application.stop()
-      }
-
-      "trustees name has not been provided" in {
-
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-        val request = FakeRequest(GET, trusteeAUKCitizenRoute)
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-
-        redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index).url
-
-        application.stop()
-
-      }
+      application.stop()
     }
 
+    "populate the view correctly on a GET when the question has previously been answered" in {
 
-    "redirect to the correct page for a POST" when {
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
+        .set(TrusteeAUKCitizenPage(index), true).success.value
 
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      "trustees name has been provided" in {
+      val request = FakeRequest(GET, trusteeAUKCitizenRoute)
 
-        val name = FullName("first name", Some("middle name"), "last name")
+      val view = application.injector.instanceOf[TrusteeAUKCitizenView]
 
-        val userAnswers = UserAnswers(userAnswersId)
-          .set(TrusteesNamePage(index), name).success.value
+      val result = route(application, request).value
 
-        val application =
-          applicationBuilder(userAnswers = Some(userAnswers))
-            .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-            .build()
+      status(result) mustEqual OK
 
-        val request =
-          FakeRequest(POST, trusteeAUKCitizenRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+      contentAsString(result) mustEqual
+        view(form.fill(true), NormalMode, index, trusteeName)(fakeRequest, messages).toString
 
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRoute.url
-
-        application.stop()
-      }
-
-      "trustees name has not been provided" in {
-
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-        val request = FakeRequest(POST, trusteeAUKCitizenRoute)
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-
-        redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index).url
-
-        application.stop()
-
-      }
+      application.stop()
     }
 
+    "redirect to SessionExpired when TrusteesName is not answered" in {
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(TrusteeAUKCitizenPage(index), true).success.value
 
-    "return a Bad Request and errors when invalid data is submitted" when {
 
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      "on a GET if no existing data is found" in {
+      val request = FakeRequest(GET, trusteeAUKCitizenRoute)
 
-        val application = applicationBuilder(userAnswers = None).build()
+      val result = route(application, request).value
 
-        val request = FakeRequest(GET, trusteeAUKCitizenRoute)
+      status(result) mustEqual SEE_OTHER
 
-        val result = route(application, request).value
+      redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index).url
 
-        status(result) mustEqual SEE_OTHER
+      application.stop()
+    }
 
-        redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+    "redirect to the next page when valid data is submitted" in {
 
-        application.stop()
-      }
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
-      "on a POST if no existing data is found" in {
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswers))
+          .overrides(
+            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
+          )
+          .build()
 
-        val application = applicationBuilder(userAnswers = None).build()
+      val request =
+        FakeRequest(POST, trusteeAUKCitizenRoute)
+        .withFormUrlEncodedBody(("value", "true"))
 
-        val request =
-          FakeRequest(POST, trusteeAUKCitizenRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+      val result = route(application, request).value
 
-        val result = route(application, request).value
+      status(result) mustEqual SEE_OTHER
 
-        status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual onwardRoute.url
 
-        redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      application.stop()
+    }
 
-        application.stop()
-      }
+    "return a Bad Request and errors when invalid data is submitted" in {
+
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request =
+        FakeRequest(POST, trusteeAUKCitizenRoute)
+          .withFormUrlEncodedBody(("value", "invalid value"))
+
+      val boundForm = form.bind(Map("value" -> "invalid value"))
+
+      val view = application.injector.instanceOf[TrusteeAUKCitizenView]
+
+      val result = route(application, request).value
+
+      status(result) mustEqual BAD_REQUEST
+
+      contentAsString(result) mustEqual
+        view(boundForm, NormalMode, index, trusteeName)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "redirect to Session Expired for a GET if no existing data is found" in {
+
+      val application = applicationBuilder(userAnswers = None).build()
+
+      val request = FakeRequest(GET, trusteeAUKCitizenRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+
+      application.stop()
+    }
+
+    "redirect to Session Expired for a POST if no existing data is found" in {
+
+      val application = applicationBuilder(userAnswers = None).build()
+
+      val request =
+        FakeRequest(POST, trusteeAUKCitizenRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+
+      application.stop()
     }
   }
 }
+
