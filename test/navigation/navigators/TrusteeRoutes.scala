@@ -105,11 +105,20 @@ trait TrusteeRoutes {
       }
     }
 
-    "go to TrusteeAnswersPage from TrusteeNamePage page" in {
+    "go to TrusteesDateOfBirthPage from TrusteesNamePage page" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
           navigator.nextPage(TrusteesNamePage(index), NormalMode)(userAnswers)
+            .mustBe(routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index))
+      }
+    }
+
+    "go to TrusteeAnswersPage from TrusteesDateOfBirthPage page" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          navigator.nextPage(TrusteesDateOfBirthPage(index), NormalMode)(userAnswers)
             .mustBe(routes.TrusteesAnswerPageController.onPageLoad(index))
       }
     }

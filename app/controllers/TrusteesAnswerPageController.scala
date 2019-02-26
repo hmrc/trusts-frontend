@@ -57,7 +57,8 @@ class TrusteesAnswerPageController @Inject()(
           Seq(
             checkYourAnswersHelper.isThisLeadTrustee(index),
             checkYourAnswersHelper.trusteeIndividualOrBusiness(index),
-            checkYourAnswersHelper.trusteeFullName(index)
+            checkYourAnswersHelper.trusteeFullName(index),
+            checkYourAnswersHelper.trusteesDateOfBirth(index)
           ).flatten
         )
       )

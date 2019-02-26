@@ -19,38 +19,41 @@ package views
 import java.time.LocalDate
 
 import controllers.routes
-import forms.WhenTrustSetupFormProvider
-import models.{NormalMode, UserAnswers}
+import forms.TrusteesDateOfBirthFormProvider
+import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
-import views.html.WhenTrustSetupView
+import views.html.TrusteesDateOfBirthView
 
-class WhenTrustSetupViewSpec extends QuestionViewBehaviours[LocalDate] {
+class TrusteesDateOfBirthViewSpec extends QuestionViewBehaviours[LocalDate] {
 
-  val messageKeyPrefix = "whenTrustSetup"
+  val messageKeyPrefix = "trusteesDateOfBirth"
+  val index = 0
+  val trusteeName = "FirstName LastName"
 
-  val form = new WhenTrustSetupFormProvider()()
+  val form = new TrusteesDateOfBirthFormProvider()()
 
-  "WhenTrustSetupView view" must {
+  "TrusteesDateOfBirthView view" must {
 
     val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-    val view = application.injector.instanceOf[WhenTrustSetupView]
+    val view = application.injector.instanceOf[TrusteesDateOfBirthView]
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, NormalMode, index, trusteeName)(fakeRequest, messages)
 
     val applyViewF = (form : Form[_]) => applyView(form)
 
-    behave like normalPage(applyView(form), messageKeyPrefix, s"hint")
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, trusteeName, "hint")
+
+    behave like pageWithBackLink(applyView(form))
 
     behave like pageWithDateFields(form, applyViewF,
       messageKeyPrefix,
-      routes.WhenTrustSetupController.onPageLoad(NormalMode).url
+      routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index).url,
+      trusteeName
     )
-
-    behave like pageWithBackLink(applyView(form))
 
     behave like pageWithASubmitButton(applyView(form))
   }

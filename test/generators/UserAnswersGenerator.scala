@@ -30,6 +30,10 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(TrusteesNamePage, JsValue)] ::
     arbitrary[(TrusteeIndividualOrBusinessPage, JsValue)] ::
     arbitrary[(IsThisLeadTrusteePage, JsValue)] ::
+    arbitrary[(TrusteesDateOfBirthPage, JsValue)] ::
+    arbitrary[(TrusteesNamePage, JsValue)] ::
+    arbitrary[(TrusteeIndividualOrBusinessPage, JsValue)] ::
+    arbitrary[(IsThisLeadTrusteePage, JsValue)] ::
     arbitrary[(PostcodeForTheTrustPage.type, JsValue)] ::
     arbitrary[(WhatIsTheUTRPage.type, JsValue)] ::
     arbitrary[(TrustHaveAUTRPage.type, JsValue)] ::

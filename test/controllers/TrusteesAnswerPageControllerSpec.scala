@@ -16,9 +16,11 @@
 
 package controllers
 
+import java.time.{LocalDate, ZoneOffset}
+
 import base.SpecBase
 import models.{FullName, IndividualOrBusiness, UserAnswers}
-import pages.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage, TrusteesNamePage}
+import pages.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage, TrusteesDateOfBirthPage, TrusteesNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.api.inject.bind
@@ -43,6 +45,7 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
           .set(IsThisLeadTrusteePage(index), false).success.value
           .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
           .set(TrusteesNamePage(index), FullName("First", None, "Trustee")).success.value
+          .set(TrusteesDateOfBirthPage(index), LocalDate.now(ZoneOffset.UTC)).success.value
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
 
@@ -52,7 +55,8 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
           Seq(
             checkYourAnswersHelper.isThisLeadTrustee(index).value,
             checkYourAnswersHelper.trusteeIndividualOrBusiness(index).value,
-            checkYourAnswersHelper.trusteeFullName(index).value
+            checkYourAnswersHelper.trusteeFullName(index).value,
+            checkYourAnswersHelper.trusteesDateOfBirth(index).value
           )
         )
       )

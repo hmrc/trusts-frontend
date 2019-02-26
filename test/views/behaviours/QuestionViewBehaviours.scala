@@ -31,7 +31,8 @@ trait QuestionViewBehaviours[A] extends ViewBehaviours {
                          createView: Form[A] => HtmlFormat.Appendable,
                          messageKeyPrefix: String,
                          expectedFormAction: String,
-                         fields: String*) = {
+                         fields: Seq[String],
+                         args : String*) = {
 
     "behave like a question page" when {
 
@@ -57,7 +58,7 @@ trait QuestionViewBehaviours[A] extends ViewBehaviours {
         "show an error prefix in the browser title" in {
 
           val doc = asDocument(createView(form.withError(error)))
-          assertEqualsValue(doc, "title", s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title")}""")
+          assertEqualsValue(doc, "title", s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title", args: _*)}""")
         }
       }
 
@@ -79,6 +80,59 @@ trait QuestionViewBehaviours[A] extends ViewBehaviours {
           }
         }
       }
+    }
+  }
+
+  def pageWithDateFields(form: Form[A],
+                         createView: Form[A] => HtmlFormat.Appendable,
+                         messageKeyPrefix: String,
+                         expectedFormAction: String,
+                         args : String*) = {
+
+    val fields = Seq("value_day", "value_month", "value_year")
+
+    "behave like a question page" when {
+
+      "rendered" must {
+
+        for (field <- fields) {
+
+          s"contain an input for $field" in {
+            val doc = asDocument(createView(form))
+            assertRenderedById(doc, field)
+          }
+        }
+
+        "not render an error summary" in {
+
+          val doc = asDocument(createView(form))
+          assertNotRenderedById(doc, "error-summary-heading")
+        }
+      }
+
+      "rendered with any error" must {
+
+        "show an error prefix in the browser title" in {
+
+          val doc = asDocument(createView(form.withError(error)))
+          assertEqualsValue(doc, "title", s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title", args: _*)}""")
+        }
+      }
+
+        s"rendered with an error" must {
+
+          "show an error summary" in {
+
+            val doc = asDocument(createView(form.withError(FormError("value", "error"))))
+            assertRenderedById(doc, "error-summary-heading")
+          }
+
+          s"show an error in the legend" in {
+
+            val doc = asDocument(createView(form.withError(FormError("value", "error"))))
+            assertRenderedById(doc, "error-message-value-input")
+          }
+        }
     }
   }
 }
