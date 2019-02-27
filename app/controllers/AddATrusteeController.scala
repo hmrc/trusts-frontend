@@ -21,7 +21,7 @@ import forms.AddATrusteeFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.AddATrusteePage
+import pages.{AddATrusteePage, IsThisLeadTrusteePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -53,6 +53,7 @@ class AddATrusteeController @Inject()(
     implicit request =>
 
       val trustees = new AddATrusteeViewHelper(request.userAnswers).rows
+
 
       Ok(view(form, mode, trustees.inProgress, trustees.complete))
   }
