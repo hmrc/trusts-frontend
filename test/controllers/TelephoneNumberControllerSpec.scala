@@ -18,9 +18,9 @@ package controllers
 
 import base.SpecBase
 import forms.TelephoneNumberFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.TelephoneNumberPage
+import pages.{TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteesNamePage}
 import play.api.inject.bind
 import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
@@ -35,13 +35,20 @@ class TelephoneNumberControllerSpec extends SpecBase {
   val formProvider = new TelephoneNumberFormProvider()
   val form = formProvider()
 
-  lazy val telephoneNumberRoute = routes.TelephoneNumberController.onPageLoad(NormalMode).url
+  val index = 0
+  val emptyTrusteeName = ""
+  val trusteeName = "FirstName LastName"
+
+  lazy val telephoneNumberRoute = routes.TelephoneNumberController.onPageLoad(NormalMode, index).url
 
   "TelephoneNumber Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, telephoneNumberRoute)
 
@@ -52,14 +59,18 @@ class TelephoneNumberControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, index, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }
 
+
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(TelephoneNumberPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
+        .set(TrusteeAUKCitizenPage(index), true).success.value
+        .set(TelephoneNumberPage(index), "TelephoneNumber").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -72,25 +83,50 @@ class TelephoneNumberControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill("TelephoneNumber"), NormalMode, index, trusteeName)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "redirect to TrusteeName when TrusteesName is not answered" in {
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(TrusteeAUKCitizenPage(index), true).success.value
+
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, telephoneNumberRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index).url
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
+        .set(TrusteeAUKCitizenPage(index), true).success.value
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
+        applicationBuilder(userAnswers = Some(userAnswers))
+          .overrides(
+            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
+          )
           .build()
 
       val request =
         FakeRequest(POST, telephoneNumberRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("value", "0191 1111111"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
+
       redirectLocation(result).value mustEqual onwardRoute.url
 
       application.stop()
@@ -98,7 +134,10 @@ class TelephoneNumberControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, telephoneNumberRoute)
@@ -113,7 +152,7 @@ class TelephoneNumberControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, index, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -127,7 +166,6 @@ class TelephoneNumberControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
@@ -139,7 +177,6 @@ class TelephoneNumberControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, telephoneNumberRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
 
       val result = route(application, request).value
 

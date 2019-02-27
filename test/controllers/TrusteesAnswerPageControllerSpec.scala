@@ -20,7 +20,7 @@ import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
 import models.{FullName, IndividualOrBusiness, UserAnswers}
-import pages.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage, TrusteesDateOfBirthPage, TrusteesNamePage}
+import pages._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.api.inject.bind
@@ -46,6 +46,7 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
           .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
           .set(TrusteesNamePage(index), FullName("First", None, "Trustee")).success.value
           .set(TrusteesDateOfBirthPage(index), LocalDate.now(ZoneOffset.UTC)).success.value
+          .set(TelephoneNumberPage(index), "0191 1111111").success.value
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
 
@@ -56,7 +57,8 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
             checkYourAnswersHelper.isThisLeadTrustee(index).value,
             checkYourAnswersHelper.trusteeIndividualOrBusiness(index).value,
             checkYourAnswersHelper.trusteeFullName(index).value,
-            checkYourAnswersHelper.trusteesDateOfBirth(index).value
+            checkYourAnswersHelper.trusteesDateOfBirth(index).value,
+            checkYourAnswersHelper.telephoneNumber(index).value
           )
         )
       )

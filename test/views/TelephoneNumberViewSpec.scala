@@ -18,7 +18,7 @@ package views
 
 import controllers.routes
 import forms.TelephoneNumberFormProvider
-import models.NormalMode
+import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
@@ -30,6 +30,11 @@ class TelephoneNumberViewSpec extends StringViewBehaviours {
 
   val form = new TelephoneNumberFormProvider()()
 
+  val index = 0
+  val trusteeName = "FirstName LastName"
+  val fullName = FullName("FirstName", None, "LastName")
+  val hintKey = "telephoneNumber.hint"
+
   "TelephoneNumberView view" must {
 
     val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
@@ -37,12 +42,14 @@ class TelephoneNumberViewSpec extends StringViewBehaviours {
     val view = application.injector.instanceOf[TelephoneNumberView]
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, NormalMode, index, trusteeName)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, trusteeName, "hint")
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.TelephoneNumberController.onSubmit(NormalMode).url)
+    behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, trusteeName, routes.TelephoneNumberController.onSubmit(NormalMode, index).url, Some(hintKey))
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

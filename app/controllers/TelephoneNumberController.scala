@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.TelephoneNumberFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.TelephoneNumberPage
+import pages.{TelephoneNumberPage, Trustees, TrusteesNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -54,29 +54,33 @@ class TelephoneNumberController @Inject()(
       validateIndex(index, Trustees) andThen
       requiredAnswer(RequiredAnswer(TrusteesNamePage(index), routes.TrusteesNameController.onPageLoad(NormalMode, index)))
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = actions(index) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(TelephoneNumberPage) match {
+      val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
+
+      val preparedForm = request.userAnswers.get(TelephoneNumberPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, index, trusteeName))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = actions(index).async {
     implicit request =>
+
+      val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, index, trusteeName))),
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TelephoneNumberPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TelephoneNumberPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TelephoneNumberPage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TelephoneNumberPage(index), mode)(updatedAnswers))
         }
       )
   }

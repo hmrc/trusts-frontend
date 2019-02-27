@@ -26,6 +26,10 @@ class TelephoneNumberFormProvider @Inject() extends Mappings {
   def apply(): Form[String] =
     Form(
       "value" -> text("telephoneNumber.error.required")
-        .verifying(maxLength(100, "telephoneNumber.error.length"))
+        .verifying(
+          firstError(
+            isNotEmpty("value", "telephoneNumber.error.required"),
+            regexp(Validation.telephoneRegex, "telephoneNumber.error.invalid.characters")
+          ))
     )
 }

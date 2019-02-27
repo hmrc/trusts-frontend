@@ -58,7 +58,8 @@ class TrusteesAnswerPageController @Inject()(
             checkYourAnswersHelper.isThisLeadTrustee(index),
             checkYourAnswersHelper.trusteeIndividualOrBusiness(index),
             checkYourAnswersHelper.trusteeFullName(index),
-            checkYourAnswersHelper.trusteesDateOfBirth(index)
+            checkYourAnswersHelper.trusteesDateOfBirth(index),
+            checkYourAnswersHelper.telephoneNumber(index)
           ).flatten
         )
       )

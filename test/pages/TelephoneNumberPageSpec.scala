@@ -23,10 +23,10 @@ class TelephoneNumberPageSpec extends PageBehaviours {
 
   "TelephoneNumberPage" must {
 
-    beRetrievable[String](TelephoneNumberPage)
+    beRetrievable[String](TelephoneNumberPage(0))
 
-    beSettable[String](TelephoneNumberPage)
+    beSettable[String](TelephoneNumberPage(0))
 
-    beRemovable[String](TelephoneNumberPage)
+    beRemovable[String](TelephoneNumberPage(0))
   }
 }
