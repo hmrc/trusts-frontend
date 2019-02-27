@@ -14,24 +14,13 @@
  * limitations under the License.
  */
 
-package views
+package pages
 
-import views.behaviours.ViewBehaviours
-import views.html.FailedMatchView
+import play.api.libs.json.JsPath
 
-class FailedMatchViewSpec extends ViewBehaviours {
+final case class TrusteeAUKCitizenPage(index : Int) extends QuestionPage[Boolean] {
 
-  "FailedMatch view" must {
+  override def path: JsPath = JsPath \ Trustees \ index \ toString
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-    val view = application.injector.instanceOf[FailedMatchView]
-
-    val applyView = view.apply()(fakeRequest, messages)
-
-    behave like normalPage(applyView, "FailedMatch","paragraph1", "paragraph2","paragraph3",
-      "paragraph4", "paragraph5","bulletpoint1", "bulletpoint2","bulletpoint3" ,"bulletpoint4" ,"bulletpoint5", "bulletpoint6")
-
-
-  }
+  override def toString: String = "trusteeAUKCitizen"
 }

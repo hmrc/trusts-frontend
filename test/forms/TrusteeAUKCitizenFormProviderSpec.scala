@@ -14,24 +14,32 @@
  * limitations under the License.
  */
 
-package views
+package forms
 
-import views.behaviours.ViewBehaviours
-import views.html.FailedMatchView
+import forms.behaviours.BooleanFieldBehaviours
+import play.api.data.FormError
 
-class FailedMatchViewSpec extends ViewBehaviours {
+class TrusteeAUKCitizenFormProviderSpec extends BooleanFieldBehaviours {
 
-  "FailedMatch view" must {
+  val requiredKey = "trusteeAUKCitizen.error.required"
+  val invalidKey = "error.boolean"
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+  val form = new TrusteeAUKCitizenFormProvider()()
 
-    val view = application.injector.instanceOf[FailedMatchView]
+  ".value" must {
 
-    val applyView = view.apply()(fakeRequest, messages)
+    val fieldName = "value"
 
-    behave like normalPage(applyView, "FailedMatch","paragraph1", "paragraph2","paragraph3",
-      "paragraph4", "paragraph5","bulletpoint1", "bulletpoint2","bulletpoint3" ,"bulletpoint4" ,"bulletpoint5", "bulletpoint6")
+    behave like booleanField(
+      form,
+      fieldName,
+      invalidError = FormError(fieldName, invalidKey)
+    )
 
-
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
   }
 }

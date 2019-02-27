@@ -17,12 +17,14 @@
 package forms
 
 import forms.behaviours.StringFieldBehaviours
+import org.scalacheck.Arbitrary.arbitrary
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
 
 class TrusteesNinoFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "trusteesNino.error.required"
+  val invalidFormatKey = "trusteesNino.error.invalidFormat"
 
   val form = new TrusteesNinoFormProvider()()
 
@@ -46,6 +48,14 @@ class TrusteesNinoFormProviderSpec extends StringFieldBehaviours {
       form,
       fieldName,
       requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
+    )
+
+    behave like fieldWithRegexpWithGenerator(
+      form,
+      fieldName,
+      regexp = Validation.ninoRegex,
+      generator = arbitrary[String],
+      error = FormError(fieldName, invalidFormatKey, Seq(Validation.ninoRegex))
     )
 
   }

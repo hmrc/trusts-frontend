@@ -19,7 +19,7 @@ package controllers
 import controllers.actions._
 import forms.TrusteesDateOfBirthFormProvider
 import javax.inject.Inject
-import models.{FullName, Mode}
+import models.{FullName, Mode, NormalMode}
 import models.entities.Trustee
 import navigation.Navigator
 import pages.{Trustees, TrusteesDateOfBirthPage, TrusteesNamePage}
@@ -48,14 +48,17 @@ class TrusteesDateOfBirthController @Inject()(
 
   val form = formProvider()
 
-  private def routes(index : Int) =
+  private def actions(index : Int) =
       identify andThen
       getData andThen
       requireData andThen
       validateIndex(index, Trustees) andThen
-      requiredAnswer(RequiredAnswer(TrusteesNamePage(index)))
+      requiredAnswer(RequiredAnswer(
+        TrusteesNamePage(index),
+        routes.TrusteesNameController.onPageLoad(NormalMode, index)
+      ))
 
-  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = routes(index) {
+  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = actions(index) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(TrusteesDateOfBirthPage(index)) match {
@@ -68,7 +71,7 @@ class TrusteesDateOfBirthController @Inject()(
       Ok(view(preparedForm, mode, index, trusteeName))
   }
 
-  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = routes(index).async {
+  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = actions(index).async {
     implicit request =>
 
       val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString

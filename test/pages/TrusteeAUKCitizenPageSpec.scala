@@ -14,24 +14,18 @@
  * limitations under the License.
  */
 
-package views
+package pages
 
-import views.behaviours.ViewBehaviours
-import views.html.FailedMatchView
+import pages.behaviours.PageBehaviours
 
-class FailedMatchViewSpec extends ViewBehaviours {
+class TrusteeAUKCitizenPageSpec extends PageBehaviours {
 
-  "FailedMatch view" must {
+  "trusteeAUKCitizenPage" must {
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+    beRetrievable[Boolean](TrusteeAUKCitizenPage(0))
 
-    val view = application.injector.instanceOf[FailedMatchView]
+    beSettable[Boolean](TrusteeAUKCitizenPage(0))
 
-    val applyView = view.apply()(fakeRequest, messages)
-
-    behave like normalPage(applyView, "FailedMatch","paragraph1", "paragraph2","paragraph3",
-      "paragraph4", "paragraph5","bulletpoint1", "bulletpoint2","bulletpoint3" ,"bulletpoint4" ,"bulletpoint5", "bulletpoint6")
-
-
+    beRemovable[Boolean](TrusteeAUKCitizenPage(0))
   }
 }

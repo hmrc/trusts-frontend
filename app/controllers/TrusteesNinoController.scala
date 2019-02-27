@@ -19,7 +19,7 @@ package controllers
 import controllers.actions._
 import forms.TrusteesNinoFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, NormalMode}
 import navigation.Navigator
 import pages.{Trustees, TrusteesNamePage, TrusteesNinoPage}
 import play.api.data.Form
@@ -47,14 +47,17 @@ class TrusteesNinoController @Inject()(
 
   val form = formProvider()
 
-  private def routes(index : Int) =
+  private def actions(index : Int) =
       identify andThen
       getData andThen
       requireData andThen
       validateIndex(index, Trustees) andThen
-      requiredAnswer(RequiredAnswer(TrusteesNamePage(index)))
+      requiredAnswer(RequiredAnswer(
+        TrusteesNamePage(index),
+        routes.TrusteesNameController.onPageLoad(NormalMode, index)
+      ))
 
-  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = routes(index) {
+  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = actions(index) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(TrusteesNinoPage(index)) match {
@@ -67,7 +70,7 @@ class TrusteesNinoController @Inject()(
       Ok(view(preparedForm, mode, index, trusteeName))
   }
 
-  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = routes(index).async {
+  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = actions(index).async {
     implicit request =>
 
       val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString

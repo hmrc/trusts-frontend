@@ -33,7 +33,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         "trusteesNino.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        routes.TrusteesNinoController.onPageLoad(CheckMode, index).url
+        routes.TrusteesNinoController.onPageLoad(CheckMode, index).url,
+        getTrusteeFirstLastName(index)
       )
   }
 
@@ -45,7 +46,18 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         "trusteesDateOfBirth.checkYourAnswersLabel",
         HtmlFormat.escape(x.format(dateFormatter)),
         routes.TrusteesDateOfBirthController.onPageLoad(CheckMode, index).url,
-        getTrusteeFirstLastName(index))
+        getTrusteeFirstLastName(index)
+      )
+  }
+
+  def trusteeAUKCitizen(index : Int): Option[AnswerRow] = userAnswers.get(TrusteeAUKCitizenPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeAUKCitizen.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.TrusteeAUKCitizenController.onPageLoad(CheckMode,index).url,
+        getTrusteeFirstLastName(index)
+      )
   }
 
   def trusteeFullName(index : Int): Option[AnswerRow] = userAnswers.get(TrusteesNamePage(index)) map {

@@ -14,24 +14,16 @@
  * limitations under the License.
  */
 
-package views
+package forms
 
-import views.behaviours.ViewBehaviours
-import views.html.FailedMatchView
+import forms.mappings.Mappings
+import javax.inject.Inject
+import play.api.data.Form
 
-class FailedMatchViewSpec extends ViewBehaviours {
+class TrusteeAUKCitizenFormProvider @Inject() extends Mappings {
 
-  "FailedMatch view" must {
-
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-    val view = application.injector.instanceOf[FailedMatchView]
-
-    val applyView = view.apply()(fakeRequest, messages)
-
-    behave like normalPage(applyView, "FailedMatch","paragraph1", "paragraph2","paragraph3",
-      "paragraph4", "paragraph5","bulletpoint1", "bulletpoint2","bulletpoint3" ,"bulletpoint4" ,"bulletpoint5", "bulletpoint6")
-
-
-  }
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("trusteeAUKCitizen.error.required")
+    )
 }

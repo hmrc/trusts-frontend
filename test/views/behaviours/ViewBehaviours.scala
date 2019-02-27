@@ -66,9 +66,9 @@ trait ViewBehaviours extends ViewSpecBase {
   }
 
   def dynamicTitlePage(view: HtmlFormat.Appendable,
-                 messageKeyPrefix: String,
-                 messageKeyParam: String,
-                 expectedGuidanceKeys: String*): Unit = {
+                       messageKeyPrefix: String,
+                       messageKeyParam: String,
+                       expectedGuidanceKeys: String*): Unit = {
 
     "behave like a dynamic title page" when {
 
