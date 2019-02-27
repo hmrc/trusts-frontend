@@ -47,6 +47,7 @@ class Navigator @Inject()() {
     case NonResidentTypePage => _ => routes.TrustDetailsAnswerPageController.onPageLoad()
     case InheritanceTaxActPage => inheritanceTaxRoute
     case AgentOtherThanBarristerPage => _ => routes.TrustDetailsAnswerPageController.onPageLoad()
+    case TrustDetailsAnswerPage => ua => routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 0)
     //  Trustees
     case IsThisLeadTrusteePage(index) => _ => routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index)
     case TrusteeIndividualOrBusinessPage(index) => _ => routes.TrusteesNameController.onPageLoad(NormalMode, index)
