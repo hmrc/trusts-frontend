@@ -32,7 +32,6 @@ class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generat
 
   val messageKeyPrefix = "trusteesName"
 
-  val leadHeading = Messages("leadTrusteesName.heading")
   val heading = Messages("trusteesName.heading")
 
   val index = 0
@@ -49,7 +48,7 @@ class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generat
     val view = application.injector.instanceOf[TrusteesNameView]
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, index, leadHeading)(fakeRequest, messages)
+      view.apply(form, NormalMode, index, heading)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 

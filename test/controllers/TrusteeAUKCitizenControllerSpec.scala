@@ -18,7 +18,6 @@ package controllers
 
 import base.SpecBase
 import forms.TrusteeAUKCitizenFormProvider
-import generators.PageGenerators
 import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.{TrusteeAUKCitizenPage, TrusteesNamePage}
@@ -29,7 +28,7 @@ import play.api.test.Helpers._
 import views.html.TrusteeAUKCitizenView
 
 
-class TrusteeAUKCitizenControllerSpec extends SpecBase with IndexValidation with PageGenerators {
+class TrusteeAUKCitizenControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -184,12 +183,6 @@ class TrusteeAUKCitizenControllerSpec extends SpecBase with IndexValidation with
 
       application.stop()
     }
-
-    behave like validateIndex(
-      TrusteeAUKCitizenPage.apply,
-      routes.TrusteeAUKCitizenController.onPageLoad(NormalMode, index),
-      ("value", "true")
-    )
   }
 }
 
