@@ -253,7 +253,7 @@ addATrustee.error.required = Select yes if you want to add another trustee
 
 trusteeAUKCitizen.title = Is {0} a UK citizen?
 trusteeAUKCitizen.heading = Is {0} a UK citizen?
-trusteeAUKCitizen.checkYourAnswersLabel = trusteeAUKCitizen
+trusteeAUKCitizen.checkYourAnswersLabel = Is {0} a UK citizen?
 trusteeAUKCitizen.error.required = Select yes if the trustee is a UK citizen
 
 trusteesDateOfBirth.title = What is {0}’s date of birth?

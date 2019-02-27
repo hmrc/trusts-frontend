@@ -16,12 +16,11 @@
 
 package controllers
 
-import akka.actor.FSM.Normal
 import controllers.actions._
 import javax.inject.Inject
 import models.NormalMode
 import navigation.Navigator
-import pages.{Trustees, TrusteesAnswerPage}
+import pages.{Trustees, TrusteesAnswerPage, TrusteesNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -30,21 +29,26 @@ import viewmodels.AnswerSection
 import views.html.TrusteesAnswerPageView
 
 
-
 class TrusteesAnswerPageController @Inject()(
                                               override val messagesApi: MessagesApi,
                                               identify: IdentifierAction,
                                               navigator: Navigator,
                                               getData: DataRetrievalAction,
                                               requireData: DataRequiredAction,
+                                              requiredAnswer: RequiredAnswerActionProvider,
                                               validateIndex : IndexActionFilterProvider,
                                               val controllerComponents: MessagesControllerComponents,
                                               view: TrusteesAnswerPageView
                                             ) extends FrontendBaseController with I18nSupport {
 
   private def actions(index : Int) =
-    identify andThen getData andThen requireData andThen validateIndex(index, Trustees)
-
+    identify andThen getData andThen
+      requireData andThen
+      validateIndex(index, Trustees) andThen
+      requiredAnswer(RequiredAnswer(
+        TrusteesNamePage(index),
+        routes.TrusteesNameController.onPageLoad(NormalMode, index)
+      ))
 
   def onPageLoad(index : Int) = actions(index) {
     implicit request =>
@@ -58,17 +62,13 @@ class TrusteesAnswerPageController @Inject()(
             checkYourAnswersHelper.isThisLeadTrustee(index),
             checkYourAnswersHelper.trusteeIndividualOrBusiness(index),
             checkYourAnswersHelper.trusteeFullName(index),
-            checkYourAnswersHelper.trusteesDateOfBirth(index)
+            checkYourAnswersHelper.trusteesDateOfBirth(index),
+            checkYourAnswersHelper.trusteeAUKCitizen(index)
           ).flatten
         )
       )
 
-      sections.head.rows match {
-        case Nil =>
-          Redirect(routes.AddATrusteeController.onPageLoad())
-        case _ =>
-          Ok(view(index, sections))
-      }
+      Ok(view(index, sections))
   }
 
   def onSubmit(index : Int) = actions(index) {
