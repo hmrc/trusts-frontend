@@ -30,6 +30,16 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
 
   def getTrusteeFirstLastName(index: Int): String = userAnswers.get(TrusteesNamePage(index)).get.toString
 
+  def trusteeLiveInTheUK(index : Int): Option[AnswerRow] = userAnswers.get(TrusteeLiveInTheUKPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeLiveInTheUK.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.TrusteeLiveInTheUKController.onPageLoad(CheckMode, index).url,
+        getTrusteeFirstLastName(index)
+      )
+  }
+
   def trusteesDateOfBirth(index : Int): Option[AnswerRow] = userAnswers.get(TrusteesDateOfBirthPage(index)) map {
     x =>
       AnswerRow(
