@@ -14,32 +14,30 @@
  * limitations under the License.
  *@
 
-@import controllers.routes._
-@import models.Mode
-
 @this(
-    main_template: MainTemplate,
-    formHelper: FormWithCSRF
+        main_template: MainTemplate,
+        formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, index: Int, trusteeName: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("telephoneNumber.title")}"
-    ) {
+    title = s"${errorPrefix(form)} ${messages("trusteesDateOfBirth.title", trusteeName)}"
+) {
 
-    @formHelper(action = TelephoneNumberController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = TrusteesDateOfBirthController.onSubmit(mode, index), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("telephoneNumber.heading")
+        @components.heading("trusteesDateOfBirth.heading", optionalParam = Some(trusteeName))
 
-        @components.input_text(
-          field = form("value"),
-          label = messages("telephoneNumber.heading"),
-          labelClass=Some("visually-hidden")
+        @components.input_date(
+            field = form("value"),
+            legend = messages("trusteesDateOfBirth.heading", trusteeName),
+            legendClass = "visually-hidden",
+            hint = Some(messages(s"trusteesDateOfBirth.hint"))
         )
 
         @components.submit_button()

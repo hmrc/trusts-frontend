@@ -71,6 +71,11 @@ trait TabularDataViewBehaviours extends ViewSpecBase {
 
     "behave like a page with incomplete tabular data" should {
 
+      "render a h2" in {
+        val doc = asDocument(view)
+        assertRenderedById(doc, "data-list-heading--inprogress--hidden")
+        assertElementHasClass(doc, "data-list-heading--inprogress--hidden", "visually-hidden")
+      }
 
       "render a h3" in {
         val doc = asDocument(view)
@@ -94,6 +99,12 @@ trait TabularDataViewBehaviours extends ViewSpecBase {
   def pageWithCompleteTabularData(view: HtmlFormat.Appendable, data: Seq[TrusteeRow]) = {
 
     "behave like a page with complete tabular data" should {
+
+      "render a h2" in {
+        val doc = asDocument(view)
+        assertRenderedById(doc, "data-list-heading--complete--hidden")
+        assertElementHasClass(doc, "data-list-heading--complete--hidden", "visually-hidden")
+      }
 
       "render a h3" in {
         val doc = asDocument(view)
@@ -119,6 +130,14 @@ trait TabularDataViewBehaviours extends ViewSpecBase {
                           completeData: Seq[TrusteeRow]) = {
 
     "behave like a page with complete and incomplete tabular data" should {
+
+      "render a h2" in {
+        val doc = asDocument(view)
+        assertRenderedById(doc, "data-list-heading--inprogress--hidden")
+        assertRenderedById(doc, "data-list-heading--complete--hidden")
+        assertElementHasClass(doc, "data-list-heading--inprogress--hidden", "visually-hidden")
+        assertElementHasClass(doc, "data-list-heading--complete--hidden", "visually-hidden")
+      }
 
       "render a h3" in {
         val doc = asDocument(view)

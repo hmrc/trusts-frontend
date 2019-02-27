@@ -28,6 +28,16 @@ import viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def getTrusteeFirstLastName(index: Int): String = userAnswers.get(TrusteesNamePage(index)).get.toString
+
+  def trusteesDateOfBirth(index : Int): Option[AnswerRow] = userAnswers.get(TrusteesDateOfBirthPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteesDateOfBirth.checkYourAnswersLabel",
+        HtmlFormat.escape(x.format(dateFormatter)),
+        routes.TrusteesDateOfBirthController.onPageLoad(CheckMode, index).url,
+        getTrusteeFirstLastName(index))
+  }
   def telephoneNumber: Option[AnswerRow] = userAnswers.get(TelephoneNumberPage) map {
     x =>
       AnswerRow(

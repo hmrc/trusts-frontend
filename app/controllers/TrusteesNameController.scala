@@ -19,6 +19,7 @@ package controllers
 import controllers.actions._
 import forms.TrusteesNameFormProvider
 import javax.inject.Inject
+import models.Mode
 import models.{Mode, NormalMode}
 import models.entities.Trustee
 import navigation.Navigator

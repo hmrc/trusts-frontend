@@ -16,16 +16,24 @@
 
 package forms
 
-import javax.inject.Inject
+import java.time.LocalDate
 
 import forms.mappings.Mappings
+import javax.inject.Inject
 import play.api.data.Form
 
-class TelephoneNumberFormProvider @Inject() extends Mappings {
+class TrusteesDateOfBirthFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
+  def apply(): Form[LocalDate] =
     Form(
-      "value" -> text("telephoneNumber.error.required")
-        .verifying(maxLength(100, "telephoneNumber.error.length"))
+      "value" -> localDate(
+        invalidKey     = "trusteesDateOfBirth.error.invalid",
+        allRequiredKey = "trusteesDateOfBirth.error.required.all",
+        twoRequiredKey = "trusteesDateOfBirth.error.required.two",
+        requiredKey    = "trusteesDateOfBirth.error.required"
+      ).verifying(firstError(
+        maxDate(LocalDate.now, s"trusteesDateOfBirth.error.future", "day", "month", "year"),
+        minDate(LocalDate.of(1500,1,1), s"trusteesDateOfBirth.error.past", "day", "month", "year")
+      ))
     )
 }

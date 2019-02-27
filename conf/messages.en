@@ -52,7 +52,17 @@ unauthorised.heading = You can’t access this service with this account
 
 individualOrBusiness.individual = Individual
 individualOrBusiness.business = Business
+
 entity.trustee = Trustee
+
+createAgentServicesAccount.title = Create an agent services account
+createAgentServicesAccount.heading = Create an agent services account
+createAgentServicesAccount.paragraph1 = Before you can register a trust you will need to create an agent services account. You can do this now.
+createAgentServicesAccount.insetText = You need to be the person responsible for your firm’s tax or administrative matters. The account gives you administrative control over your firm's access to new HMRC online services.
+createAgentServicesAccount.link = Check the guidance
+createAgentServicesAccount.paragraph2 = to find out what you will need to create an agent services account.
+createAgentServicesAccount.paragraph3 = Once you have created your agent services account, you can carry on with your trust registration.
+createAgentServicesAccount.cta = Create an agent services account
 
 trustName.title = What is the trust’s name?
 trustName.heading = What is the trust’s name?
@@ -135,8 +145,9 @@ whenTrustSetup.title = What date was the trust deed signed?
 whenTrustSetup.heading = What date was the trust deed signed?
 whenTrustSetup.checkYourAnswersLabel = WhenTrustSetup
 whenTrustSetup.error.required.all = Enter the date the trust deed was signed
-whenTrustSetup.error.required.two = The date the trust deed was signed must include a day, a month and a year (whatever is missing)
-whenTrustSetup.error.required = The date the trust deed was signed must include a day, a month and a year (whatever is missing)
+whenTrustSetup.error.required.two = The date the trust deed was signed must include a {0} and a {1}
+whenTrustSetup.error.required = The date the trust deed was signed must include a {0}
+
 whenTrustSetup.error.invalid = Enter a real date the trust deed was signed
 whenTrustSetup.error.future = The date the trust deed was signed must be today or in the past
 whenTrustSetup.error.past = The date the trust deed was signed must be after 31 December 1499
@@ -244,10 +255,20 @@ trusteeAUKCitizen.heading = Is {0} a UK citizen?
 trusteeAUKCitizen.checkYourAnswersLabel = trusteeAUKCitizen
 trusteeAUKCitizen.error.required = Select yes if the trustee is a UK citizen
 
-
 telephoneNumber.title = What is {0}'s telephone number?
 telephoneNumber.heading = What is {0}'s telephone number?
 telephoneNumber.checkYourAnswersLabel = telephoneNumber
 telephoneNumber.error.required = Enter trustee's telephone number
 telephoneNumber.error.length = TelephoneNumber must be 100 characters or less
 telephoneNumber.error.invalid.characters = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192
+
+trusteesDateOfBirth.title = What is {0}’s date of birth?
+trusteesDateOfBirth.heading = What is {0}’s date of birth?
+trusteesDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
+trusteesDateOfBirth.hint = For example, 31 3 1980
+trusteesDateOfBirth.error.required.all = Enter a date of birth
+trusteesDateOfBirth.error.required.two = Date of birth must include a {0} and a {1}
+trusteesDateOfBirth.error.required = Date of birth must include a {0}
+trusteesDateOfBirth.error.invalid = Enter a real date of birth
+trusteesDateOfBirth.error.future = Date of birth must be today or in the past
+trusteesDateOfBirth.error.past = Date of birth must be after 31 December 1499

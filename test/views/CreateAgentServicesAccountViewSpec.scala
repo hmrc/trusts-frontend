@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,21 +12,25 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import viewmodels.AnswerRow
+package views
 
-@(row: AnswerRow)(implicit messages: Messages)
+import views.behaviours.ViewBehaviours
+import views.html.CreateAgentServicesAccountView
 
-<li>
-    <div class="cya-question">@messages(row.label, row.labelArg)</div>
-    <div class="cya-answer">
-        @row.answer
-    </div>
-    <div class="cya-change">
-        <a href='@row.changeUrl'>
-            <span aria-hidden="true">@messages("site.edit")</span>
-            <span class="visually-hidden">@messages("site.hidden-edit", messages(row.label))</span>
-        </a>
-    </div>
-</li>
+class CreateAgentServicesAccountViewSpec extends ViewBehaviours {
+
+  "CreateAgentServicesAccount view" must {
+
+    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+    val view = application.injector.instanceOf[CreateAgentServicesAccountView]
+
+    val applyView = view.apply()(fakeRequest, messages)
+
+    behave like normalPage(applyView, "createAgentServicesAccount", "paragraph1", "insetText", "paragraph2", "paragraph3")
+
+ 
+  }
+}
