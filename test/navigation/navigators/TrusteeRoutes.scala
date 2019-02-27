@@ -114,11 +114,24 @@ trait TrusteeRoutes {
       }
     }
 
-    "go to TrusteeAUKCitizen from TrusteesDateOfBirthPage page" in {
+    "go to TrusteeAnswersPage from TrusteesDateOfBirthPage if not a lead" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(TrusteesDateOfBirthPage(index), NormalMode)(userAnswers)
+          val answers = userAnswers.set(IsThisLeadTrusteePage(index), false).success.value
+
+          navigator.nextPage(TrusteesDateOfBirthPage(index), NormalMode)(answers)
+            .mustBe(routes.TrusteesAnswerPageController.onPageLoad(index))
+      }
+    }
+
+    "go to TrusteeAUKCitizen from TrusteesDateOfBirthPage page if is a lead" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(IsThisLeadTrusteePage(index), true).success.value
+
+          navigator.nextPage(TrusteesDateOfBirthPage(index), NormalMode)(answers)
             .mustBe(routes.TrusteeAUKCitizenController.onPageLoad(NormalMode, index))
       }
     }
