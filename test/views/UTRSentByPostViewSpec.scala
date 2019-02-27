@@ -29,7 +29,7 @@ class UTRSentByPostViewSpec extends ViewBehaviours {
 
     val applyView = view.apply()(fakeRequest, messages)
 
-    behave like normalPage(applyView, "UTRSentByPost", Seq("paragraph1", "paragraph2"))
+    behave like normalPage(applyView, "UTRSentByPost", "paragraph1", "paragraph2")
 
  
   }
