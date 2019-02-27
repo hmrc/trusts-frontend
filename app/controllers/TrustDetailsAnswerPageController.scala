@@ -25,6 +25,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
+import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.TrustDetailsAnswerPageView
 
@@ -37,7 +38,8 @@ class TrustDetailsAnswerPageController @Inject()(
                                               requireData: DataRequiredAction,
                                               validateIndex : IndexActionFilterProvider,
                                               val controllerComponents: MessagesControllerComponents,
-                                              view: TrustDetailsAnswerPageView
+                                              view: TrustDetailsAnswerPageView,
+                                              countryOptions : CountryOptions
                                             ) extends FrontendBaseController with I18nSupport {
 
   private def actions =
@@ -46,7 +48,7 @@ class TrustDetailsAnswerPageController @Inject()(
   def onPageLoad = actions {
     implicit request =>
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers)
 
       val sections = Seq(
         AnswerSection(

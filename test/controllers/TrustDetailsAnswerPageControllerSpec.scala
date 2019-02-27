@@ -27,6 +27,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.CheckYourAnswersHelper
+import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.TrustDetailsAnswerPageView
 
@@ -50,7 +51,11 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
             .set(EstablishedUnderScotsLawPage, true).success.value
             .set(TrustResidentOffshorePage, false).success.value
 
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
+        val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+        val countryOptions = application.injector.instanceOf[CountryOptions]
+
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers)
 
         val expectedSections = Seq(
           AnswerSection(
@@ -66,8 +71,6 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
             )
           )
         )
-
-        val application = applicationBuilder(userAnswers = Some(answers)).build()
 
         val request = FakeRequest(GET, routes.TrustDetailsAnswerPageController.onPageLoad.url)
 
@@ -98,7 +101,11 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
             .set(RegisteringTrustFor5APage, true).success.value
             .set(NonResidentTypePage, NonResidentType.NonDomiciled).success.value
 
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
+        val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+        val countryOptions = application.injector.instanceOf[CountryOptions]
+
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers)
 
         val expectedSections = Seq(
           AnswerSection(
@@ -114,8 +121,6 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
             )
           )
         )
-
-        val application = applicationBuilder(userAnswers = Some(answers)).build()
 
         val request = FakeRequest(GET, routes.TrustDetailsAnswerPageController.onPageLoad.url)
 
@@ -148,7 +153,11 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
             .set(InheritanceTaxActPage, true).success.value
             .set(AgentOtherThanBarristerPage, true).success.value
 
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
+        val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+        val countryOptions = application.injector.instanceOf[CountryOptions]
+
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers)
 
         val expectedSections = Seq(
           AnswerSection(
@@ -165,8 +174,6 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
             )
           )
         )
-
-        val application = applicationBuilder(userAnswers = Some(answers)).build()
 
         val request = FakeRequest(GET, routes.TrustDetailsAnswerPageController.onPageLoad.url)
 
@@ -201,7 +208,11 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
             .set(TrustResidentOffshorePage, true).success.value
             .set(TrustPreviouslyResidentPage, "France").success.value
 
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
+        val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+        val countryOptions = application.injector.instanceOf[CountryOptions]
+
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers)
 
         val expectedSections = Seq(
           AnswerSection(
@@ -220,8 +231,6 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
             )
           )
         )
-
-        val application = applicationBuilder(userAnswers = Some(answers)).build()
 
         val request = FakeRequest(GET, routes.TrustDetailsAnswerPageController.onPageLoad.url)
 

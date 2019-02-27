@@ -155,6 +155,9 @@ class Navigator @Inject()() {
   }
 
   private val checkRouteMap: Page => UserAnswers => Call = {
+    // TrustDetails
+    case TrustNamePage => _ => routes.TrustDetailsAnswerPageController.onPageLoad()
+    case WhenTrustSetupPage => _ => routes.TrustDetailsAnswerPageController.onPageLoad()
     case _ => _ => routes.CheckYourAnswersController.onPageLoad()
   }
 
