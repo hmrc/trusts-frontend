@@ -135,14 +135,14 @@ trait TrustDetailsRoutes {
       }
     }
 
-    "go to Check Your Answers from Inheritance Tax when user answers No" in {
+    "go to Check Trust Details Answers from Inheritance Tax when user answers No" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
           val answers = userAnswers.set(InheritanceTaxActPage, value = false).success.value
 
           navigator.nextPage(InheritanceTaxActPage, NormalMode)(answers)
-            .mustBe(routes.CheckYourAnswersController.onPageLoad())
+            .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad())
       }
     }
 
@@ -157,21 +157,21 @@ trait TrustDetailsRoutes {
       }
     }
 
-    "go to Check Your Answers from Agent Other Than Barrister" in {
+    "go to Check Trust Details Answers from Agent Other Than Barrister" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
           navigator.nextPage(AgentOtherThanBarristerPage, NormalMode)(userAnswers)
-            .mustBe(routes.CheckYourAnswersController.onPageLoad())
+            .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad())
       }
     }
 
-    "go to Check Your Answers from What is The Non Resident Type" in {
+    "go to Check Trust Details Answers from What is The Non Resident Type" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
           navigator.nextPage(NonResidentTypePage, NormalMode)(userAnswers)
-            .mustBe(routes.CheckYourAnswersController.onPageLoad())
+            .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad())
       }
     }
 
@@ -217,23 +217,23 @@ trait TrustDetailsRoutes {
       }
     }
 
-    "go to Check Your Answers from Was Trust Resident Offshore when user answers No" in {
+    "go to Check Trust Details Answers from Was Trust Resident Offshore when user answers No" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
           val answers = userAnswers.set(TrustResidentOffshorePage, value = false).success.value
 
           navigator.nextPage(TrustResidentOffshorePage, NormalMode)(answers)
-            .mustBe(routes.CheckYourAnswersController.onPageLoad)
+            .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad)
       }
     }
 
-    "go to Check Your Answers from Where Was The Trust Previously Resident" in {
+    "go to Check Trust Details Answers from Where Was The Trust Previously Resident" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
           navigator.nextPage(TrustPreviouslyResidentPage, NormalMode)(userAnswers)
-            .mustBe(routes.CheckYourAnswersController.onPageLoad)
+            .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad)
       }
     }
   }

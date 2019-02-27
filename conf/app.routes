@@ -111,6 +111,9 @@ GET        /cannot-change                               controllers.CannotMakeCh
 
 GET        /trust-utr-post                              controllers.UTRSentByPostController.onPageLoad()
 
+GET        /check-trust-answers                      controllers.TrustDetailsAnswerPageController.onPageLoad()
+POST       /check-trust-answers                      controllers.TrustDetailsAnswerPageController.onSubmit()
+
 # trustees
 
 GET        /trustees/:index/is-this-the-lead-trustee            controllers.IsThisLeadTrusteeController.onPageLoad(mode: Mode = NormalMode, index : Int)
