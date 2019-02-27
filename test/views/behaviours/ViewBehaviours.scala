@@ -70,7 +70,7 @@ trait ViewBehaviours extends ViewSpecBase {
                  messageKeyParam: String,
                  expectedGuidanceKeys: String*): Unit = {
 
-    "behave like a normal page" when {
+    "behave like a dynamic title page" when {
 
       "rendered" must {
 
