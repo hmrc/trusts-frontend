@@ -32,18 +32,27 @@ import views.html.TelephoneNumberView
 import scala.concurrent.{ExecutionContext, Future}
 
 class TelephoneNumberController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: TelephoneNumberFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: TelephoneNumberView
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                           override val messagesApi: MessagesApi,
+                                           sessionRepository: SessionRepository,
+                                           navigator: Navigator,
+                                           validateIndex: IndexActionFilterProvider,
+                                           identify: IdentifierAction,
+                                           getData: DataRetrievalAction,
+                                           requireData: DataRequiredAction,
+                                           requiredAnswer: RequiredAnswerActionProvider,
+                                           formProvider: TelephoneNumberFormProvider,
+                                           val controllerComponents: MessagesControllerComponents,
+                                           view: TelephoneNumberView
+                                         )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
+
+  private def actions(index: Int) =
+    identify andThen
+      getData andThen
+      requireData andThen
+      validateIndex(index, Trustees) andThen
+      requiredAnswer(RequiredAnswer(TrusteesNamePage(index), routes.TrusteesNameController.onPageLoad(NormalMode, index)))
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
