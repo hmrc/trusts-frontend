@@ -42,11 +42,12 @@ class Navigator @Inject()() {
     case TrustResidentInUKPage => isTrustResidentInUKRoute
     case EstablishedUnderScotsLawPage => _ => routes.TrustResidentOffshoreController.onPageLoad(NormalMode)
     case TrustResidentOffshorePage => wasTrustPreviouslyResidentOffshoreRoute
-    case TrustPreviouslyResidentPage => _ => routes.CheckYourAnswersController.onPageLoad()
+    case TrustPreviouslyResidentPage => _ => routes.TrustDetailsAnswerPageController.onPageLoad()
     case RegisteringTrustFor5APage => registeringForPurposeOfSchedule5ARoute
-    case NonResidentTypePage => _ => routes.CheckYourAnswersController.onPageLoad()
+    case NonResidentTypePage => _ => routes.TrustDetailsAnswerPageController.onPageLoad()
     case InheritanceTaxActPage => inheritanceTaxRoute
-    case AgentOtherThanBarristerPage => _ => routes.CheckYourAnswersController.onPageLoad()
+    case AgentOtherThanBarristerPage => _ => routes.TrustDetailsAnswerPageController.onPageLoad()
+    case TrustDetailsAnswerPage => ua => routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 0)
     //  Trustees
     case IsThisLeadTrusteePage(index) => _ => routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index)
     case TrusteeIndividualOrBusinessPage(index) => _ => routes.TrusteesNameController.onPageLoad(NormalMode, index)
@@ -125,7 +126,7 @@ class Navigator @Inject()() {
 
   private def wasTrustPreviouslyResidentOffshoreRoute(answers: UserAnswers) = answers.get(TrustResidentOffshorePage) match {
     case Some(true)   => routes.TrustPreviouslyResidentController.onPageLoad(NormalMode)
-    case Some(false)  => routes.CheckYourAnswersController.onPageLoad()
+    case Some(false)  => routes.TrustDetailsAnswerPageController.onPageLoad()
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
@@ -137,7 +138,7 @@ class Navigator @Inject()() {
 
   private def inheritanceTaxRoute(answers: UserAnswers) = answers.get(InheritanceTaxActPage) match {
     case Some(true)   => routes.AgentOtherThanBarristerController.onPageLoad(NormalMode)
-    case Some(false)  => routes.CheckYourAnswersController.onPageLoad()
+    case Some(false)  => routes.TrustDetailsAnswerPageController.onPageLoad()
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
@@ -154,6 +155,9 @@ class Navigator @Inject()() {
   }
 
   private val checkRouteMap: Page => UserAnswers => Call = {
+    // TrustDetails
+    case TrustNamePage => _ => routes.TrustDetailsAnswerPageController.onPageLoad()
+    case WhenTrustSetupPage => _ => routes.TrustDetailsAnswerPageController.onPageLoad()
     case _ => _ => routes.CheckYourAnswersController.onPageLoad()
   }
 
