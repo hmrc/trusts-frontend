@@ -21,7 +21,6 @@ import forms.TrusteeAUKCitizenFormProvider
 import models.{FullName, NormalMode, UserAnswers}
 import pages.TrusteesNamePage
 import play.api.data.Form
-import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
 import views.html.TrusteeAUKCitizenView

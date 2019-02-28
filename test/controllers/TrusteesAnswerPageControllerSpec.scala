@@ -19,7 +19,7 @@ package controllers
 import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
-import models.{FullName, IndividualOrBusiness, UserAnswers}
+import models.{FullName, IndividualOrBusiness, NormalMode, UserAnswers}
 import pages._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -46,7 +46,9 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
           .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
           .set(TrusteesNamePage(index), FullName("First", None, "Trustee")).success.value
           .set(TrusteesDateOfBirthPage(index), LocalDate.now(ZoneOffset.UTC)).success.value
+          .set(TrusteeAUKCitizenPage(index), true).success.value
           .set(TelephoneNumberPage(index), "0191 1111111").success.value
+
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
 
@@ -58,6 +60,7 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
             checkYourAnswersHelper.trusteeIndividualOrBusiness(index).value,
             checkYourAnswersHelper.trusteeFullName(index).value,
             checkYourAnswersHelper.trusteesDateOfBirth(index).value,
+            checkYourAnswersHelper.trusteeAUKCitizen(index).value,
             checkYourAnswersHelper.telephoneNumber(index).value
           )
         )
@@ -79,10 +82,35 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
       application.stop()
     }
 
+    "redirect to TrusteeName on a GET if no name for trustee at index" in {
+      val answers =
+        UserAnswers(userAnswersId)
+          .set(IsThisLeadTrusteePage(index), false).success.value
+          .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
+          .set(TrusteesDateOfBirthPage(index), LocalDate.now(ZoneOffset.UTC)).success.value
+          .set(TrusteeAUKCitizenPage(index), true).success.value
+
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+      val request = FakeRequest(GET, routes.TrusteesAnswerPageController.onPageLoad(index).url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index).url
+
+      application.stop()
+    }
+
     "redirect to the next page when valid data is submitted" in {
 
+      val answers =
+        UserAnswers(userAnswersId)
+          .set(TrusteesNamePage(index), FullName("First", None, "Trustee")).success.value
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(answers))
           .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
@@ -98,6 +126,24 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
       application.stop()
     }
 
+    "redirect to TrusteeNamePage when valid data is submitted with no required answer" in {
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .build()
+
+      val request =
+        FakeRequest(POST, routes.TrusteesAnswerPageController.onSubmit(index).url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index).url
+
+      application.stop()
+    }
+
     "redirect to Session Expired for a GET if no existing data is found" in {
 
       val application = applicationBuilder(userAnswers = None).build()
@@ -108,20 +154,6 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
-
-      application.stop()
-    }
-
-    "redirect to AddATrustee for a GET if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      val request = FakeRequest(GET, routes.TrusteesAnswerPageController.onPageLoad(index).url)
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.AddATrusteeController.onPageLoad().url
 
       application.stop()
     }

@@ -120,6 +120,7 @@ class TrusteeAUKCitizenControllerSpec extends SpecBase {
         FakeRequest(POST, trusteeAUKCitizenRoute)
           .withFormUrlEncodedBody(("value", "true"))
 
+
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER

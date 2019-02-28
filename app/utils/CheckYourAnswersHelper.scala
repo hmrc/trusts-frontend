@@ -36,8 +36,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         "trusteesDateOfBirth.checkYourAnswersLabel",
         HtmlFormat.escape(x.format(dateFormatter)),
         routes.TrusteesDateOfBirthController.onPageLoad(CheckMode, index).url,
-        getTrusteeFirstLastName(index))
+        getTrusteeFirstLastName(index)
+      )
   }
+
   def telephoneNumber(index : Int): Option[AnswerRow] = userAnswers.get(TelephoneNumberPage(index)) map {
     x =>
       AnswerRow(

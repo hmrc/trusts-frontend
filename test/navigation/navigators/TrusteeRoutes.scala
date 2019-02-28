@@ -49,7 +49,7 @@ trait TrusteeRoutes {
 
     }
 
-    "there is one trustee" must {
+    "there is atleast one trustee" must {
 
       "go to the next trustee from AddATrusteePage when selected add them now" in {
 
@@ -114,11 +114,46 @@ trait TrusteeRoutes {
       }
     }
 
-    "go to TrusteeAnswersPage from TrusteesDateOfBirthPage page" in {
+    "go to TrusteeAnswersPage from TrusteesDateOfBirthPage if not a lead" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(TrusteesDateOfBirthPage(index), NormalMode)(userAnswers)
+          val answers = userAnswers.set(IsThisLeadTrusteePage(index), false).success.value
+
+          navigator.nextPage(TrusteesDateOfBirthPage(index), NormalMode)(answers)
+            .mustBe(routes.TrusteesAnswerPageController.onPageLoad(index))
+      }
+    }
+
+    "go to TrusteeAUKCitizen from TrusteesDateOfBirthPage page if is a lead" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(IsThisLeadTrusteePage(index), true).success.value
+
+          navigator.nextPage(TrusteesDateOfBirthPage(index), NormalMode)(answers)
+            .mustBe(routes.TrusteeAUKCitizenController.onPageLoad(NormalMode, index))
+      }
+    }
+
+    "go to TrusteesNinoPage from TrusteeAUKCitizen when user answers Yes" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(TrusteeAUKCitizenPage(index), value = true).success.value
+
+          navigator.nextPage(TrusteeAUKCitizenPage(index), NormalMode)(answers)
+            .mustBe(routes.TrusteesAnswerPageController.onPageLoad(index))
+      }
+    }
+
+    "go to TrusteePassportOrIDPage from TrusteeAUKCitizen when user answers No" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(TrusteeAUKCitizenPage(index), value = false).success.value
+
+          navigator.nextPage(TrusteeAUKCitizenPage(index), NormalMode)(answers)
             .mustBe(routes.TrusteesAnswerPageController.onPageLoad(index))
       }
     }

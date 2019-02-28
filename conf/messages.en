@@ -234,6 +234,7 @@ trusteesName.error.invalidFirstNameCharacters = Trustee’s first name must only
 trusteesName.error.invalidMiddleNameCharacters = Trustee’s middle name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 trusteesName.error.invalidLastNameCharacters = Trustee’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
+leadTrusteesName.title = What is the lead trustee’s name?
 leadTrusteesName.heading = What is the lead trustee’s name?
 
 trusteesAnswerPage.title = Check trustee details
@@ -261,6 +262,11 @@ telephoneNumber.checkYourAnswersLabel = What is {0}'s telephone number?
 telephoneNumber.error.required = Enter trustee's telephone number
 telephoneNumber.error.invalid.characters = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192
 telephoneNumber.hint = For international numbers include the country code
+
+trusteeAUKCitizen.title = Is {0} a UK citizen?
+trusteeAUKCitizen.heading = Is {0} a UK citizen?
+trusteeAUKCitizen.checkYourAnswersLabel = Is {0} a UK citizen?
+trusteeAUKCitizen.error.required = Select yes if the trustee is a UK citizen
 
 trusteesDateOfBirth.title = What is {0}’s date of birth?
 trusteesDateOfBirth.heading = What is {0}’s date of birth?

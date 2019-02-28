@@ -31,7 +31,9 @@ import views.html.components.heading
 class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generators {
 
   val messageKeyPrefix = "trusteesName"
+  val leadMessageKeyPrefix = "leadTrusteesName"
 
+  val leadHeading = Messages("leadTrusteesName.heading")
   val heading = Messages("trusteesName.heading")
 
   val index = 0
@@ -48,16 +50,16 @@ class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generat
     val view = application.injector.instanceOf[TrusteesNameView]
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, index, heading)(fakeRequest, messages)
+      view.apply(form, NormalMode, index, leadHeading)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like normalPage(applyView(form), leadMessageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
     behave like pageWithTextFields(
       form,
       applyView,
-      messageKeyPrefix,
+      leadMessageKeyPrefix,
       routes.TrusteesNameController.onSubmit(NormalMode, index).url,
       Seq("firstName", "middleName", "lastName")
     )
@@ -87,5 +89,6 @@ class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generat
       routes.TrusteesNameController.onSubmit(NormalMode, index).url,
       Seq("firstName", "middleName", "lastName")
     )
+
   }
 }
