@@ -219,6 +219,9 @@ trusteeIndividualOrBusiness.heading = Is the trustee an individual or a business
 trusteeIndividualOrBusiness.checkYourAnswersLabel = Is the trustee an individual or a business?
 trusteeIndividualOrBusiness.error.required = Select if the trustee is an individual or a business
 
+leadTrusteeIndividualOrBusiness.title = Is the lead trustee an individual or a business?
+leadTrusteeIndividualOrBusiness.heading = Is the lead trustee an individual or a business?
+
 trusteesName.title = What is the trustee’s name?
 trusteesName.heading = What is the trustee’s name?
 trusteesName.checkYourAnswersLabel = What is the trustee’s name?

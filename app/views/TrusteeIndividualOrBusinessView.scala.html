@@ -22,10 +22,10 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, index : Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, index : Int, heading: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("trusteeIndividualOrBusiness.title")}"
+    title = s"${errorPrefix(form)} ${messages("trusteeIndividualOrBusiness.title", heading)}"
     ) {
 
     @formHelper(action = TrusteeIndividualOrBusinessController.onSubmit(mode, index), 'autoComplete -> "off") {
@@ -34,11 +34,11 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("trusteeIndividualOrBusiness.heading")
+        @components.heading("trusteeIndividualOrBusiness.heading", Some(heading))
 
         @components.input_radio(
             field = form("value"),
-            legend = messages("trusteeIndividualOrBusiness.heading"),
+            legend = messages("trusteeIndividualOrBusiness.heading", heading),
             legendClass = Some("visually-hidden"),
             fieldSetClass = Some("inline"),
             inputs = IndividualOrBusiness.options.toSeq
