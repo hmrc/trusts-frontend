@@ -284,3 +284,11 @@ trusteesDateOfBirth.error.required = Date of birth must include a {0}
 trusteesDateOfBirth.error.invalid = Enter a real date of birth
 trusteesDateOfBirth.error.future = Date of birth must be today or in the past
 trusteesDateOfBirth.error.past = Date of birth must be after 31 December 1499
+
+trusteesNino.title = Enter {0}’s National Insurance number
+trusteesNino.heading = Enter {0}’s National Insurance number
+trusteesNino.checkYourAnswersLabel = Enter {0}’s National Insurance number
+trusteesNino.hint = It is on their National Insurance card, benefit letter, payslip or P60. For example, ‘QQ 12 34 56 C’.
+trusteesNino.error.required = Enter a National Insurance number
+trusteesNino.error.invalidFormat = Enter a National Insurance number in the correct format
+

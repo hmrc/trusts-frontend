@@ -80,12 +80,13 @@ trait StringViewBehaviours extends QuestionViewBehaviours[String] {
     }
   }
 
+
   def stringPageWithDynamicTitle(form: Form[String],
-                                 createView: Form[String] => HtmlFormat.Appendable,
-                                 messageKeyPrefix: String,
-                                 messageKeyParam: String,
-                                 expectedFormAction: String,
-                                 expectedHintKey: Option[String] = None) = {
+                 createView: Form[String] => HtmlFormat.Appendable,
+                 messageKeyPrefix: String,
+                 messageKeyParam: String,
+                 expectedFormAction: String,
+                 expectedHintKey: Option[String] = None) = {
 
     "behave like a page with a string value field with a dynamic title" when {
 
@@ -137,4 +138,6 @@ trait StringViewBehaviours extends QuestionViewBehaviours[String] {
       }
     }
   }
+
+
 }
