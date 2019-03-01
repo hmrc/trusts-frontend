@@ -67,58 +67,58 @@ createAgentServicesAccount.cta = Create an agent services account
 trustName.title = What is the trust’s name?
 trustName.heading = What is the trust’s name?
 trustName.hint = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (SA316) or tax return.
-trustName.checkYourAnswersLabel = trustName
+trustName.checkYourAnswersLabel = What is the trust’s name?
 trustName.error.length = The trust’s name must be 53 characters or less
 trustName.error.invalidCharacters = The trust’s name must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 trustName.error.required = Enter the trust’s name
 
 governedInsideTheUK.title = Is the trust governed by UK law?
 governedInsideTheUK.heading = Is the trust governed by UK law?
-governedInsideTheUK.checkYourAnswersLabel = governedInsideTheUK
+governedInsideTheUK.checkYourAnswersLabel = Is the trust governed by UK law?
 governedInsideTheUK.error.required = Select yes if the trust is governed by UK law
 
 countryGoverningTrust.title = What country governs the trust?
 countryGoverningTrust.heading = What country governs the trust?
-countryGoverningTrust.checkYourAnswersLabel = countryGoverningTrust
+countryGoverningTrust.checkYourAnswersLabel = What country governs the trust?
 countryGoverningTrust.error.required = Enter the country that governs the trust
 countryGoverningTrust.error.length = The country that governs the trust must be 100 characters or less
 countryGoverningTrust.error.invalidCharacters = The country that governs the trust must only include letters a to z, apostrophes, commas, full stops, hyphens, round brackets and spaces
 
 administrationInsideUK.title = Is the trust’s general administration done in the UK?
 administrationInsideUK.heading = Is the trust’s general administration done in the UK?
-administrationInsideUK.checkYourAnswersLabel = administrationInsideUK
+administrationInsideUK.checkYourAnswersLabel = Is the trust’s general administration done in the UK?
 administrationInsideUK.error.required = Select yes if the trust’s general administration is done in the UK
 
 countryAdministeringTrust.title = In what country is the trust administered?
 countryAdministeringTrust.heading = In what country is the trust administered?
-countryAdministeringTrust.checkYourAnswersLabel = countryAdministeringTrust
+countryAdministeringTrust.checkYourAnswersLabel = In what country is the trust administered?
 countryAdministeringTrust.error.required = Enter the country the trust is administered in
 countryAdministeringTrust.error.length = The country that is administered in must be 100 characters or less
 countryAdministeringTrust.error.invalidCharacters = The country that governs the trust must only include letters a to z, apostrophes, commas, full stops, hyphens, round brackets and spaces
 
 trustResidentInUK.title = Is the trust resident in the UK?
 trustResidentInUK.heading = Is the trust resident in the UK?
-trustResidentInUK.checkYourAnswersLabel = trustResidentInUK
+trustResidentInUK.checkYourAnswersLabel = Is the trust resident in the UK?
 trustResidentInUK.error.required = Select yes if the trust is resident in the UK
 
 establishedUnderScotsLaw.title = Is the trust established under Scots Law?
 establishedUnderScotsLaw.heading = Is the trust established under Scots Law?
-establishedUnderScotsLaw.checkYourAnswersLabel = establishedUnderScotsLaw
+establishedUnderScotsLaw.checkYourAnswersLabel = Is the trust established under Scots Law?
 establishedUnderScotsLaw.error.required = Select yes if the trust was established under Scots Law
 
 registeringTrustFor5A.title = Are you registering the trust for the purposes of Schedule 5A Taxation of Chargeable Gains Act 1992?
 registeringTrustFor5A.heading = Are you registering the trust for the purposes of Schedule 5A Taxation of Chargeable Gains Act 1992?
-registeringTrustFor5A.checkYourAnswersLabel = registeringTrustFor5A
+registeringTrustFor5A.checkYourAnswersLabel = Are you registering the trust for the purposes of Schedule 5A Taxation of Chargeable Gains Act 1992?
 registeringTrustFor5A.error.required = Select yes if you are registering the trust for the purposes of Schedule 5A Taxation of Chargeable Gains Act 1992?
 
 trustResidentOffshore.title = Has the trust ever been resident offshore?
 trustResidentOffshore.heading = Has the trust ever been resident offshore?
-trustResidentOffshore.checkYourAnswersLabel = trustResidentOffshore
+trustResidentOffshore.checkYourAnswersLabel = Has the trust ever been resident offshore?
 trustResidentOffshore.error.required = Select yes if the trust has ever been resident offshore
 
 trustPreviouslyResident.title = In what country was the trust previously resident?
 trustPreviouslyResident.heading = In what country was the trust previously resident?
-trustPreviouslyResident.checkYourAnswersLabel = trustPreviouslyResident
+trustPreviouslyResident.checkYourAnswersLabel = In what country was the trust previously resident?
 trustPreviouslyResident.error.required = Enter the country the trust was previously resident in
 trustPreviouslyResident.error.length = The country the trust was previously resident in must be 100 characters or less
 trustPreviouslyResident.error.invalidCharacters = The country that governs the trust must only include letters a to z, apostrophes, commas, full stops, hyphens, round brackets and spaces
@@ -128,22 +128,22 @@ nonresidentType.heading = What is the non-resident type?
 nonresidentType.non-resident-domiciled = Settlor domiciled trustees are non-resident
 nonresidentType.non-resident-non-domiciled = Settlor non-domiciled becomes domiciled then resident
 nonresidentType.non-resident-cease-resident = Trustees cease to be resident
-nonresidentType.checkYourAnswersLabel = What is the non-resident type
+nonresidentType.checkYourAnswersLabel = What is the non-resident type?
 nonresidentType.error.required = Select the non-resident type
 
 inheritanceTaxAct.title = Are you registering the trust for the purpose of Section 218 Inheritance Tax Act 1984?
 inheritanceTaxAct.heading = Are you registering the trust for the purpose of Section 218 Inheritance Tax Act 1984?
-inheritanceTaxAct.checkYourAnswersLabel = inheritanceTaxAct
+inheritanceTaxAct.checkYourAnswersLabel = Are you registering the trust for the purpose of Section 218 Inheritance Tax Act 1984?
 inheritanceTaxAct.error.required = Select yes if you are registering the trust for the purpose of Section 218 Inheritance Tax Act 1984
 
 agentOtherThanBarrister.title = Has an agent who is not a barrister created the trust being registered?
 agentOtherThanBarrister.heading = Has an agent who is not a barrister created the trust being registered?
-agentOtherThanBarrister.checkYourAnswersLabel = agentOtherThanBarrister
+agentOtherThanBarrister.checkYourAnswersLabel = Has an agent who is not a barrister created the trust being registered?
 agentOtherThanBarrister.error.required = Select yes if an agent who is not a barrister created the trust being registered
 
 whenTrustSetup.title = What date was the trust deed signed?
 whenTrustSetup.heading = What date was the trust deed signed?
-whenTrustSetup.checkYourAnswersLabel = WhenTrustSetup
+whenTrustSetup.checkYourAnswersLabel = What date was the trust deed signed?
 whenTrustSetup.error.required.all = Enter the date the trust deed was signed
 whenTrustSetup.error.required.two = The date the trust deed was signed must include a {0} and a {1}
 whenTrustSetup.error.required = The date the trust deed was signed must include a {0}
@@ -155,19 +155,19 @@ whenTrustSetup.hint = For example, 31 3 1980
 
 trustRegisteredOnline.title = Has the trust already been registered online?
 trustRegisteredOnline.heading = Has the trust already been registered online?
-trustRegisteredOnline.checkYourAnswersLabel = trustRegisteredOnline
+trustRegisteredOnline.checkYourAnswersLabel = Has the trust already been registered online?
 trustRegisteredOnline.error.required = Select yes if the trust has already been registered online
 
 trustHaveAUTR.title = Does the trust have a Unique Taxpayer Reference?
 trustHaveAUTR.heading = Does the trust have a Unique Taxpayer Reference?
-trustHaveAUTR.checkYourAnswersLabel = trustHaveAUTR
+trustHaveAUTR.checkYourAnswersLabel = Does the trust have a Unique Taxpayer Reference?
 trustHaveAUTR.error.required = Select yes if the trust has a Unique Taxpayer Reference
 trustHaveAUTR.hint = This is 10 numbers, for example 1234567890. It will be on tax returns and other letters about Self Assessment. It may be called ‘reference’, ‘UTR’ or ‘official use’. You can
 trustHaveAUTR.link = find a lost UTR number.
 
 whatIsTheUTR.title = What is the trust’s Unique Taxpayer Reference?
 whatIsTheUTR.heading = What is the trust’s Unique Taxpayer Reference?
-whatIsTheUTR.checkYourAnswersLabel = whatIsTheUTR
+whatIsTheUTR.checkYourAnswersLabel = What is the trust’s Unique Taxpayer Reference?
 whatIsTheUTR.error.required = Enter the trust’s Unique Taxpayer Reference
 whatIsTheUTR.error.length = Unique Taxpayer Reference must be a 10-digit number
 whatIsTheUTR.error.invalidCharacters = Enter the trust’s Unique Taxpayer Reference in the correct format
@@ -175,7 +175,7 @@ whatIsTheUTR.hint = This is 10 numbers, for example 1234567890. It will be on th
 
 postcodeForTheTrust.title = What is the trust’s postcode?
 postcodeForTheTrust.heading = What is the trust’s postcode?
-postcodeForTheTrust.checkYourAnswersLabel = postcodeForTheTrust
+postcodeForTheTrust.checkYourAnswersLabel = What is the trust’s postcode?
 postcodeForTheTrust.error.required = Enter the trust’s postcode
 postcodeForTheTrust.hint = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (SA316) or tax return. For example, AA1 1AA.
 
@@ -218,6 +218,10 @@ trusteeIndividualOrBusiness.title = Is the trustee an individual or a business?
 trusteeIndividualOrBusiness.heading = Is the trustee an individual or a business?
 trusteeIndividualOrBusiness.checkYourAnswersLabel = Is the trustee an individual or a business?
 trusteeIndividualOrBusiness.error.required = Select if the trustee is an individual or a business
+
+trustDetailsAnswerPage.title = Check trust details
+trustDetailsAnswerPage.heading = Check trust details
+
 
 trusteesName.title = What is the trustee’s name?
 trusteesName.heading = What is the trustee’s name?

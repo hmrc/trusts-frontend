@@ -19,14 +19,16 @@ package utils
 import java.time.format.DateTimeFormatter
 
 import controllers.routes
+import javax.inject.Inject
 import models.{CheckMode, UserAnswers}
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
 import utils.CheckYourAnswersHelper._
+import utils.countryOptions.CountryOptions
 import viewmodels.AnswerRow
 
-class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
+class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers)(implicit messages: Messages) {
 
   def trusteesNino(index: Int): Option[AnswerRow] = userAnswers.get(TrusteesNinoPage(index)) map {
     x =>
@@ -46,7 +48,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         "trusteesDateOfBirth.checkYourAnswersLabel",
         HtmlFormat.escape(x.format(dateFormatter)),
         routes.TrusteesDateOfBirthController.onPageLoad(CheckMode, index).url,
-        getTrusteeFirstLastName(index)
+        trusteeName(index, userAnswers)
       )
   }
 
@@ -56,7 +58,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         "trusteeAUKCitizen.checkYourAnswersLabel",
         yesOrNo(x),
         routes.TrusteeAUKCitizenController.onPageLoad(CheckMode,index).url,
-        getTrusteeFirstLastName(index)
+        trusteeName(index, userAnswers)
       )
   }
 
@@ -144,7 +146,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   }
 
   def trustPreviouslyResident: Option[AnswerRow] = userAnswers.get(TrustPreviouslyResidentPage) map {
-    x => AnswerRow("trustPreviouslyResident.checkYourAnswersLabel", escape(x), routes.TrustPreviouslyResidentController.onPageLoad(CheckMode).url)
+    x => AnswerRow("trustPreviouslyResident.checkYourAnswersLabel", escape(country(x, countryOptions)), routes.TrustPreviouslyResidentController.onPageLoad(CheckMode).url)
   }
 
   def trustResidentOffshore: Option[AnswerRow] = userAnswers.get(TrustResidentOffshorePage) map {
@@ -164,7 +166,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   }
 
   def countryAdministeringTrust: Option[AnswerRow] = userAnswers.get(CountryAdministeringTrustPage) map {
-    x => AnswerRow("countryAdministeringTrust.checkYourAnswersLabel", escape(x), routes.CountryAdministeringTrustController.onPageLoad(CheckMode).url)
+    x => AnswerRow("countryAdministeringTrust.checkYourAnswersLabel", escape(country(x, countryOptions)), routes.CountryAdministeringTrustController.onPageLoad(CheckMode).url)
   }
 
   def administrationInsideUK: Option[AnswerRow] = userAnswers.get(AdministrationInsideUKPage) map {
@@ -172,7 +174,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   }
 
   def countryGoverningTrust: Option[AnswerRow] = userAnswers.get(CountryGoverningTrustPage) map {
-    x => AnswerRow("countryGoverningTrust.checkYourAnswersLabel", escape(x), routes.CountryGoverningTrustController.onPageLoad(CheckMode).url)
+    x => AnswerRow("countryGoverningTrust.checkYourAnswersLabel", escape(country(x, countryOptions)), routes.CountryGoverningTrustController.onPageLoad(CheckMode).url)
   }
 
   def governedInsideTheUK: Option[AnswerRow] = userAnswers.get(GovernedInsideTheUKPage) map {
@@ -185,6 +187,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
 }
 
 object CheckYourAnswersHelper {
+
   private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
 
   private def yesOrNo(answer: Boolean)(implicit messages: Messages): Html =
@@ -194,6 +197,11 @@ object CheckYourAnswersHelper {
       HtmlFormat.escape(messages("site.no"))
     }
 
+  private def country(code : String, countryOptions: CountryOptions) : String =
+    countryOptions.options.find(_.value.equals(code)).map(_.label).getOrElse("")
+
+  private def trusteeName(index: Int, userAnswers: UserAnswers): String =
+    userAnswers.get(TrusteesNamePage(index)).get.toString
 
   private def answer[T](key : String, answer: T)(implicit messages: Messages) : Html =
     HtmlFormat.escape(messages(s"$key.$answer"))

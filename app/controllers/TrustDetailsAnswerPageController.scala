@@ -20,39 +20,32 @@ import controllers.actions._
 import javax.inject.Inject
 import models.NormalMode
 import navigation.Navigator
-import pages.{Trustees, TrusteesAnswerPage, TrusteesNamePage}
+import pages.TrustDetailsAnswerPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
-import views.html.TrusteesAnswerPageView
+import views.html.TrustDetailsAnswerPageView
 
 
-class TrusteesAnswerPageController @Inject()(
+class TrustDetailsAnswerPageController @Inject()(
                                               override val messagesApi: MessagesApi,
                                               identify: IdentifierAction,
                                               navigator: Navigator,
                                               getData: DataRetrievalAction,
                                               requireData: DataRequiredAction,
-                                              requiredAnswer: RequiredAnswerActionProvider,
                                               validateIndex : IndexActionFilterProvider,
                                               val controllerComponents: MessagesControllerComponents,
-                                              view: TrusteesAnswerPageView,
+                                              view: TrustDetailsAnswerPageView,
                                               countryOptions : CountryOptions
                                             ) extends FrontendBaseController with I18nSupport {
 
-  private def actions(index : Int) =
-    identify andThen getData andThen
-      requireData andThen
-      validateIndex(index, Trustees) andThen
-      requiredAnswer(RequiredAnswer(
-        TrusteesNamePage(index),
-        routes.TrusteesNameController.onPageLoad(NormalMode, index)
-      ))
+  private def actions =
+    identify andThen getData andThen requireData
 
-  def onPageLoad(index : Int) = actions(index) {
+  def onPageLoad = actions {
     implicit request =>
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers)
@@ -61,21 +54,29 @@ class TrusteesAnswerPageController @Inject()(
         AnswerSection(
           None,
           Seq(
-            checkYourAnswersHelper.isThisLeadTrustee(index),
-            checkYourAnswersHelper.trusteeIndividualOrBusiness(index),
-            checkYourAnswersHelper.trusteeFullName(index),
-            checkYourAnswersHelper.trusteesDateOfBirth(index),
-            checkYourAnswersHelper.trusteeAUKCitizen(index),
-            checkYourAnswersHelper.trusteesNino(index)
+            checkYourAnswersHelper.trustName,
+            checkYourAnswersHelper.whenTrustSetup,
+            checkYourAnswersHelper.governedInsideTheUK,
+            checkYourAnswersHelper.countryGoverningTrust,
+            checkYourAnswersHelper.administrationInsideUK,
+            checkYourAnswersHelper.countryAdministeringTrust,
+            checkYourAnswersHelper.trustResidentInUK,
+            checkYourAnswersHelper.establishedUnderScotsLaw,
+            checkYourAnswersHelper.trustResidentOffshore,
+            checkYourAnswersHelper.trustPreviouslyResident,
+            checkYourAnswersHelper.registeringTrustFor5A,
+            checkYourAnswersHelper.nonresidentType,
+            checkYourAnswersHelper.inheritanceTaxAct,
+            checkYourAnswersHelper.agentOtherThanBarrister
           ).flatten
         )
       )
 
-      Ok(view(index, sections))
+      Ok(view(sections))
   }
 
-  def onSubmit(index : Int) = actions(index) {
+  def onSubmit() = actions {
     implicit request =>
-      Redirect(navigator.nextPage(TrusteesAnswerPage, NormalMode)(request.userAnswers))
+      Redirect(navigator.nextPage(TrustDetailsAnswerPage, NormalMode)(request.userAnswers))
   }
 }

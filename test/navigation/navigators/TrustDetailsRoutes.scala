@@ -16,10 +16,12 @@
 
 package navigation.navigators
 
+import java.time.LocalDate
+
 import base.SpecBase
 import controllers.routes
 import generators.Generators
-import models.{NormalMode, UserAnswers}
+import models.{CheckMode, NonResidentType, NormalMode, UserAnswers}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
@@ -46,7 +48,9 @@ trait TrustDetailsRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(WhenTrustSetupPage, NormalMode)(userAnswers)
+          val answers = userAnswers.set(WhenTrustSetupPage, value = LocalDate.of(2010, 10, 10)).success.value
+
+          navigator.nextPage(WhenTrustSetupPage, NormalMode)(answers)
             .mustBe(routes.GovernedInsideTheUKController.onPageLoad(NormalMode))
       }
     }
@@ -77,7 +81,9 @@ trait TrustDetailsRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(CountryGoverningTrustPage, NormalMode)(userAnswers)
+          val answers = userAnswers.set(CountryGoverningTrustPage, value = "France").success.value
+
+          navigator.nextPage(CountryGoverningTrustPage, NormalMode)(answers)
             .mustBe(routes.AdministrationInsideUKController.onPageLoad(NormalMode))
       }
     }
@@ -108,7 +114,9 @@ trait TrustDetailsRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(CountryAdministeringTrustPage, NormalMode)(userAnswers)
+          val answers = userAnswers.set(CountryAdministeringTrustPage, value = "France").success.value
+
+          navigator.nextPage(CountryAdministeringTrustPage, NormalMode)(answers)
             .mustBe(routes.TrustResidentInUKController.onPageLoad(NormalMode))
       }
     }
@@ -135,14 +143,14 @@ trait TrustDetailsRoutes {
       }
     }
 
-    "go to Check Your Answers from Inheritance Tax when user answers No" in {
+    "go to Check Trust Details Answers from Inheritance Tax when user answers No" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
           val answers = userAnswers.set(InheritanceTaxActPage, value = false).success.value
 
           navigator.nextPage(InheritanceTaxActPage, NormalMode)(answers)
-            .mustBe(routes.CheckYourAnswersController.onPageLoad())
+            .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad())
       }
     }
 
@@ -157,21 +165,25 @@ trait TrustDetailsRoutes {
       }
     }
 
-    "go to Check Your Answers from Agent Other Than Barrister" in {
+    "go to Check Trust Details Answers from Agent Other Than Barrister" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(AgentOtherThanBarristerPage, NormalMode)(userAnswers)
-            .mustBe(routes.CheckYourAnswersController.onPageLoad())
+          val answers = userAnswers.set(AgentOtherThanBarristerPage, value = true).success.value
+
+          navigator.nextPage(AgentOtherThanBarristerPage, NormalMode)(answers)
+            .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad())
       }
     }
 
-    "go to Check Your Answers from What is The Non Resident Type" in {
+    "go to Check Trust Details Answers from What is The Non Resident Type" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(NonResidentTypePage, NormalMode)(userAnswers)
-            .mustBe(routes.CheckYourAnswersController.onPageLoad())
+          val answers = userAnswers.set(NonResidentTypePage, value = NonResidentType.Domiciled).success.value
+
+          navigator.nextPage(NonResidentTypePage, NormalMode)(answers)
+            .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad())
       }
     }
 
@@ -201,7 +213,9 @@ trait TrustDetailsRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(EstablishedUnderScotsLawPage, NormalMode)(userAnswers)
+          val answers = userAnswers.set(EstablishedUnderScotsLawPage, value = false).success.value
+
+          navigator.nextPage(EstablishedUnderScotsLawPage, NormalMode)(answers)
             .mustBe(routes.TrustResidentOffshoreController.onPageLoad(NormalMode))
       }
     }
@@ -217,25 +231,59 @@ trait TrustDetailsRoutes {
       }
     }
 
-    "go to Check Your Answers from Was Trust Resident Offshore when user answers No" in {
+    "go to Check Trust Details Answers from Was Trust Resident Offshore when user answers No" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
           val answers = userAnswers.set(TrustResidentOffshorePage, value = false).success.value
 
           navigator.nextPage(TrustResidentOffshorePage, NormalMode)(answers)
-            .mustBe(routes.CheckYourAnswersController.onPageLoad)
+            .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad())
       }
     }
 
-    "go to Check Your Answers from Where Was The Trust Previously Resident" in {
+    "go to Check Trust Details Answers from Where Was The Trust Previously Resident" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(TrustPreviouslyResidentPage, NormalMode)(userAnswers)
-            .mustBe(routes.CheckYourAnswersController.onPageLoad)
+          val answers = userAnswers.set(TrustPreviouslyResidentPage, value = "France").success.value
+
+          navigator.nextPage(TrustPreviouslyResidentPage, NormalMode)(answers)
+            .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad())
       }
     }
+  }
+
+  def trustDetailsCheckRoutes()(implicit navigator : Navigator) = {
+
+    "go to Check Trust Details Answers" when {
+
+      "user answers trust name" in {
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(TrustNamePage, value = "New Trust").success.value
+
+            navigator.nextPage(TrustNamePage, CheckMode)(answers)
+              .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad())
+        }
+
+      }
+
+      "user answers trust set up date" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(WhenTrustSetupPage, value = LocalDate.of(2010,10,10)).success.value
+
+            navigator.nextPage(WhenTrustSetupPage, CheckMode)(answers)
+              .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad())
+        }
+      }
+
+    }
+
   }
 
 }
