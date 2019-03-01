@@ -18,12 +18,11 @@ package controllers
 
 import base.SpecBase
 import forms.TrusteesNinoFormProvider
-import models.{FullName, NormalMode, UserAnswers}
+import models.{FullName, IndividualOrBusiness, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.{TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage}
+import pages.{TrusteesNamePage, TrusteesNinoPage}
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -207,7 +206,7 @@ class TrusteesNinoControllerSpec extends SpecBase with IndexValidation {
           routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index).url
 
         FakeRequest(POST, route)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("value", IndividualOrBusiness.Individual.toString))
       }
 
       validateIndex(

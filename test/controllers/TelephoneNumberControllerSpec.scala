@@ -22,13 +22,13 @@ import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.{TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteesNamePage}
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.TelephoneNumberView
+import org.scalacheck.Arbitrary.arbitrary
 
-class TelephoneNumberControllerSpec extends SpecBase {
+class TelephoneNumberControllerSpec extends SpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -69,7 +69,7 @@ class TelephoneNumberControllerSpec extends SpecBase {
 
       val userAnswers = UserAnswers(userAnswersId)
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
-        .set(TrusteeAUKCitizenPage(index), true).success.value
+        .set(TelephoneNumberPage(index), "0191 1111111").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -186,7 +186,7 @@ class TelephoneNumberControllerSpec extends SpecBase {
       application.stop()
     }
 
-  "for a GET" in {
+  "for a GET" must {
 
     def getForIndex(index: Int): FakeRequest[AnyContentAsEmpty.type] = {
       val route = routes.TelephoneNumberController.onPageLoad(NormalMode, index).url
@@ -195,26 +195,26 @@ class TelephoneNumberControllerSpec extends SpecBase {
     }
 
     validateIndex(
-      arbitrary[Boolean],
+      arbitrary[String],
       TelephoneNumberPage.apply,
       getForIndex
     )
 
   }
 
-  "for a POST" in {
+  "for a POST" must {
     def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
       val route =
         routes.TelephoneNumberController.onPageLoad(NormalMode, index).url
 
       FakeRequest(POST, route)
-        .withFormUrlEncodedBody(("value", "true"))
+        .withFormUrlEncodedBody(("value", "0191 1111111"))
     }
 
     validateIndex(
-      arbitrary[Boolean],
-      TelephoneNumber.apply,
+      arbitrary[String],
+      TelephoneNumberPage.apply,
       postForIndex
     )
     }
