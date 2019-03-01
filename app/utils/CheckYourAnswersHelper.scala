@@ -30,13 +30,14 @@ import viewmodels.AnswerRow
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+
   def trusteeLiveInTheUK(index : Int): Option[AnswerRow] = userAnswers.get(TrusteeLiveInTheUKPage(index)) map {
     x =>
       AnswerRow(
         "trusteeLiveInTheUK.checkYourAnswersLabel",
         yesOrNo(x),
         routes.TrusteeLiveInTheUKController.onPageLoad(CheckMode, index).url,
-        getTrusteeFirstLastName(index)
+        trusteeName(index, userAnswers)
       )
   }
 

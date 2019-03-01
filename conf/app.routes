@@ -147,7 +147,7 @@ POST       /trustees/:index/is-a-uk-citizen                      controllers.Tru
 GET        /trustees/:index/change-is-a-uk-citizen                 controllers.TrusteeAUKCitizenController.onPageLoad(mode: Mode = CheckMode, index : Int)
 POST       /trustees/:index/change-is-a-uk-citizen                controllers.TrusteeAUKCitizenController.onSubmit(mode: Mode = CheckMode, index : Int)
 
-GET         /trustees/:index/trustee-live-in-the-uk                        controllers.TrusteeLiveInTheUKController.onPageLoad(mode: Mode = NormalMode, index : Int)
-POST        /trustees/:index/trustee-live-in-the-uk                         controllers.TrusteeLiveInTheUKController.onSubmit(mode: Mode = NormalMode, index : Int)
-GET         /trustees/:index/change-trustee-live-in-the-uk                    controllers.TrusteeLiveInTheUKController.onPageLoad(mode: Mode = CheckMode, index : Int)
-POST        /trustees/:index/change-trustee-live-in-the-uk                    controllers.TrusteeLiveInTheUKController.onSubmit(mode: Mode = CheckMode, index : Int)
+GET         /trustees/:index/live-in-the-uk                        controllers.TrusteeLiveInTheUKController.onPageLoad(mode: Mode = NormalMode, index : Int)
+POST        /trustees/:index/live-in-the-uk                         controllers.TrusteeLiveInTheUKController.onSubmit(mode: Mode = NormalMode, index : Int)
+GET         /trustees/:index/change-live-in-the-uk                    controllers.TrusteeLiveInTheUKController.onPageLoad(mode: Mode = CheckMode, index : Int)
+POST        /trustees/:index/change-live-in-the-uk                    controllers.TrusteeLiveInTheUKController.onSubmit(mode: Mode = CheckMode, index : Int)

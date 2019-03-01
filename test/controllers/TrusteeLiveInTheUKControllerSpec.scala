@@ -111,6 +111,50 @@ class TrusteeLiveInTheUKControllerSpec extends SpecBase {
       application.stop()
     }
 
+    "redirect to trusteeName must"  when{
+
+      "a GET when no name is found" in {
+
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(TrusteeLiveInTheUKPage(index), true).success.value
+
+        val application =
+          applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(GET, trusteeLiveInTheUKRoute)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index).url
+
+        application.stop()
+      }
+      "a POST when no name is found" in {
+
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(TrusteeLiveInTheUKPage(index), true).success.value
+
+        val application =
+          applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request =
+          FakeRequest(POST, trusteeLiveInTheUKRoute)
+            .withFormUrlEncodedBody(("value", "true"))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index).url
+
+        application.stop()
+
+      }
+    }
+
+
     "return a Bad Request and errors when invalid data is submitted" in {
 
       val userAnswers = UserAnswers(userAnswersId)
@@ -169,3 +213,4 @@ class TrusteeLiveInTheUKControllerSpec extends SpecBase {
     }
   }
 }
+
