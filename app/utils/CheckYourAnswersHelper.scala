@@ -55,7 +55,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "telephoneNumber.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        routes.TelephoneNumberController.onPageLoad(CheckMode, index).url
+        routes.TelephoneNumberController.onPageLoad(CheckMode, index).url,
+        trusteeName(index, userAnswers)
       )
   }
 
