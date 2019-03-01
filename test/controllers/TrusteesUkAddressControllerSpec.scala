@@ -1,3 +1,19 @@
+/*
+ * Copyright 2019 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package controllers
 
 import base.SpecBase
@@ -18,15 +34,20 @@ class TrusteesUkAddressControllerSpec extends SpecBase {
 
   val formProvider = new TrusteesUkAddressFormProvider()
   val form = formProvider()
+  val index = 0
+  val trusteeName = "FirstName LastName"
 
-  lazy val trusteesUkAddressRoute = routes.TrusteesUkAddressController.onPageLoad(NormalMode).url
+  lazy val trusteesUkAddressRoute = routes.TrusteesUkAddressController.onPageLoad(NormalMode, index).url
 
   val userAnswers = UserAnswers(
     userAnswersId,
     Json.obj(
       TrusteesUkAddressPage.toString -> Json.obj(
-        "field1" -> "value 1",
-        "field2" -> "value 2"
+        "line1" -> "value 1",
+        "line2" -> "value 2",
+        "line3"-> "value 3",
+        "townOrCity" -> "value 4",
+        "postcode" -> "value 5"
       )
     )
   )
@@ -46,7 +67,7 @@ class TrusteesUkAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form, NormalMode, index, trusteeName)(request, messages).toString
 
       application.stop()
     }
@@ -64,7 +85,7 @@ class TrusteesUkAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(TrusteesUkAddress("value 1", "value 2")), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(TrusteesUkAddress("value 1", Some("value 2"), Some("value 3"), "value 4", "value 5")), NormalMode, index, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -78,7 +99,7 @@ class TrusteesUkAddressControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, trusteesUkAddressRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+          .withFormUrlEncodedBody(("line1", "value 1"), ("line2", "value 2"))
 
       val result = route(application, request).value
 
@@ -106,7 +127,7 @@ class TrusteesUkAddressControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, index, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -131,7 +152,7 @@ class TrusteesUkAddressControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, trusteesUkAddressRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+          .withFormUrlEncodedBody(("line1", "value 1"), ("line2", "value 2"))
 
       val result = route(application, request).value
 
