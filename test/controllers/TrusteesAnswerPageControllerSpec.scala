@@ -29,6 +29,7 @@ import viewmodels.AnswerSection
 import views.html.TrusteesAnswerPageView
 import navigation.{FakeNavigator, Navigator}
 import play.api.mvc.Call
+import utils.countryOptions.CountryOptions
 
 class TrusteesAnswerPageControllerSpec extends SpecBase {
 
@@ -50,7 +51,9 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
           .set(TelephoneNumberPage(index), "0191 1111111").success.value
 
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
+      val countryOptions = injector.instanceOf[CountryOptions]
+
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers)
 
       val expectedSections = Seq(
         AnswerSection(
