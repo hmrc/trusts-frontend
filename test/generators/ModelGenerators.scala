@@ -22,6 +22,14 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
+  implicit lazy val arbitraryTrusteesUkAddress: Arbitrary[TrusteesUkAddress] =
+    Arbitrary {
+      for {
+        field1 <- arbitrary[String]
+        field2 <- arbitrary[String]
+      } yield TrusteesUkAddress(field1, field2)
+    }
+
   implicit lazy val arbitraryAddATrustee: Arbitrary[AddATrustee] =
     Arbitrary {
       Gen.oneOf(AddATrustee.values.toSeq)

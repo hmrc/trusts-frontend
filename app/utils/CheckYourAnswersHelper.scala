@@ -19,7 +19,7 @@ package utils
 import java.time.format.DateTimeFormatter
 
 import controllers.routes
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, TrusteesUkAddress, UserAnswers}
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
@@ -27,6 +27,15 @@ import utils.CheckYourAnswersHelper._
 import viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
+
+  def trusteesUkAddress(index: Int): Option[AnswerRow] = userAnswers.get(TrusteesUkAddressPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteesUkAddress.checkYourAnswersLabel",
+        ukAddress(x),
+        routes.TrusteesUkAddressController.onPageLoad(CheckMode, index).url
+      )
+  }
 
   def getTrusteeFirstLastName(index: Int): String = userAnswers.get(TrusteesNamePage(index)).get.toString
 
@@ -172,6 +181,20 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   def trustName: Option[AnswerRow] = userAnswers.get(TrustNamePage) map {
     x => AnswerRow("trustName.checkYourAnswersLabel", escape(x), routes.TrustNameController.onPageLoad(CheckMode).url)
   }
+
+  private def ukAddress(address: TrusteesUkAddress): Html = {
+    val lines =
+      Seq(
+        HtmlFormat.escape(address.line1),
+        Some(address.line2.map(HtmlFormat.escape)),
+        Some(address.line3.map(HtmlFormat.escape)),
+        HtmlFormat.escape(address.townOrCity),
+        HtmlFormat.escape(address.postcode)
+      )
+
+    Html(lines.mkString("<br />"))
+  }
+
 }
 
 object CheckYourAnswersHelper {
