@@ -143,7 +143,7 @@ trait TrusteeRoutes {
           val answers = userAnswers.set(TrusteeAUKCitizenPage(index), value = true).success.value
 
           navigator.nextPage(TrusteeAUKCitizenPage(index), NormalMode)(answers)
-            .mustBe(routes.TrusteesAnswerPageController.onPageLoad(index))
+            .mustBe(routes.TrusteesNinoController.onPageLoad(NormalMode, index))
       }
     }
 
@@ -154,6 +154,15 @@ trait TrusteeRoutes {
           val answers = userAnswers.set(TrusteeAUKCitizenPage(index), value = false).success.value
 
           navigator.nextPage(TrusteeAUKCitizenPage(index), NormalMode)(answers)
+            .mustBe(routes.TrusteesAnswerPageController.onPageLoad(index))
+      }
+    }
+
+    "go to TrusteesInUKQuestionPage from TrusteesNinoPage" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          navigator.nextPage(TrusteesNinoPage(index), NormalMode)(userAnswers)
             .mustBe(routes.TrusteesAnswerPageController.onPageLoad(index))
       }
     }

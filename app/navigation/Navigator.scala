@@ -54,6 +54,7 @@ class Navigator @Inject()() {
     case TrusteesNamePage(index) => _ => routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index)
     case TrusteesDateOfBirthPage(index) => ua => trusteeDateOfBirthRoute(ua, index)
     case TrusteeAUKCitizenPage(index) => ua => trusteeAUKCitizenRoute(ua, index)
+    case TrusteesNinoPage(index) => _ => routes.TrusteesAnswerPageController.onPageLoad(index)
     case TrusteesAnswerPage => _ => routes.AddATrusteeController.onPageLoad()
     case AddATrusteePage => addATrusteeRoute
     //  Default
@@ -143,7 +144,7 @@ class Navigator @Inject()() {
   }
 
   private def trusteeAUKCitizenRoute(answers: UserAnswers, index: Int) = answers.get(TrusteeAUKCitizenPage(index)) match {
-    case Some(true)   => routes.TrusteesAnswerPageController.onPageLoad(index)
+    case Some(true)   => routes.TrusteesNinoController.onPageLoad(NormalMode,index)
     case Some(false)  => routes.TrusteesAnswerPageController.onPageLoad(index)
     case None         => routes.SessionExpiredController.onPageLoad()
   }
