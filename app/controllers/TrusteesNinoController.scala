@@ -17,34 +17,33 @@
 package controllers
 
 import controllers.actions._
-import forms.TrusteesDateOfBirthFormProvider
+import forms.TrusteesNinoFormProvider
 import javax.inject.Inject
-import models.{FullName, Mode, NormalMode}
-import models.entities.Trustee
+import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.{Trustees, TrusteesDateOfBirthPage, TrusteesNamePage}
+import pages.{Trustees, TrusteesNamePage, TrusteesNinoPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.TrusteesDateOfBirthView
+import views.html.TrusteesNinoView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrusteesDateOfBirthController @Inject()(
-                                                  override val messagesApi: MessagesApi,
-                                                  sessionRepository: SessionRepository,
-                                                  navigator: Navigator,
-                                                  identify: IdentifierAction,
-                                                  getData: DataRetrievalAction,
-                                                  requireData: DataRequiredAction,
-                                                  validateIndex : IndexActionFilterProvider,
-                                                  requiredAnswer: RequiredAnswerActionProvider,
-                                                  formProvider: TrusteesDateOfBirthFormProvider,
-                                                  val controllerComponents: MessagesControllerComponents,
-                                                  view: TrusteesDateOfBirthView
-                                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class TrusteesNinoController @Inject()(
+                                        override val messagesApi: MessagesApi,
+                                        sessionRepository: SessionRepository,
+                                        navigator: Navigator,
+                                        identify: IdentifierAction,
+                                        getData: DataRetrievalAction,
+                                        requireData: DataRequiredAction,
+                                        validateIndex : IndexActionFilterProvider,
+                                        requiredAnswer: RequiredAnswerActionProvider,
+                                        formProvider: TrusteesNinoFormProvider,
+                                        val controllerComponents: MessagesControllerComponents,
+                                        view: TrusteesNinoView
+                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
@@ -61,7 +60,7 @@ class TrusteesDateOfBirthController @Inject()(
   def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = actions(index) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(TrusteesDateOfBirthPage(index)) match {
+      val preparedForm = request.userAnswers.get(TrusteesNinoPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -81,10 +80,11 @@ class TrusteesDateOfBirthController @Inject()(
           Future.successful(BadRequest(view(formWithErrors, mode, index, trusteeName))),
 
         value => {
+          val transformedNino = value.trim().replaceAll(" ","").toUpperCase()
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteesDateOfBirthPage(index), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteesNinoPage(index), transformedNino))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrusteesDateOfBirthPage(index), mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrusteesNinoPage(index), mode)(updatedAnswers))
         }
       )
   }

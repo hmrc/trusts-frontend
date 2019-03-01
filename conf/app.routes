@@ -131,10 +131,10 @@ POST       /trustees/:index/trustee-name                                controll
 GET        /trustees/:index/change-trustee-name                                controllers.TrusteesNameController.onPageLoad(mode: Mode = CheckMode, index : Int)
 POST       /trustees/:index/change-trustee-name                                controllers.TrusteesNameController.onSubmit(mode: Mode = CheckMode, index : Int)
 
-GET        /trustees/:index/trustee-date-of-birth         controllers.TrusteesDateOfBirthController.onPageLoad(mode: Mode = NormalMode, index: Int)
-  POST       /trustees/:index/trustee-date-of-birth         controllers.TrusteesDateOfBirthController.onSubmit(mode: Mode = NormalMode, index: Int)
-GET        /trustees/:index/change-trustee-date-of-birth   controllers.TrusteesDateOfBirthController.onPageLoad(mode: Mode = CheckMode, index: Int)
-POST       /trustees/:index/change-trustee-date-of-birth   controllers.TrusteesDateOfBirthController.onSubmit(mode: Mode = CheckMode, index: Int)
+GET        /trustees/:index/date-of-birth         controllers.TrusteesDateOfBirthController.onPageLoad(mode: Mode = NormalMode, index: Int)
+  POST       /trustees/:index/date-of-birth         controllers.TrusteesDateOfBirthController.onSubmit(mode: Mode = NormalMode, index: Int)
+GET        /trustees/:index/change-date-of-birth   controllers.TrusteesDateOfBirthController.onPageLoad(mode: Mode = CheckMode, index: Int)
+POST       /trustees/:index/change-date-of-birth   controllers.TrusteesDateOfBirthController.onSubmit(mode: Mode = CheckMode, index: Int)
 
 GET        /trustees/:index/check-answers                      controllers.TrusteesAnswerPageController.onPageLoad(index : Int)
 POST       /trustees/:index/check-answers                      controllers.TrusteesAnswerPageController.onSubmit(index : Int)
@@ -151,3 +151,8 @@ GET         /trustees/:index/live-in-the-uk                        controllers.T
 POST        /trustees/:index/live-in-the-uk                         controllers.TrusteeLiveInTheUKController.onSubmit(mode: Mode = NormalMode, index : Int)
 GET         /trustees/:index/change-live-in-the-uk                    controllers.TrusteeLiveInTheUKController.onPageLoad(mode: Mode = CheckMode, index : Int)
 POST        /trustees/:index/change-live-in-the-uk                    controllers.TrusteeLiveInTheUKController.onSubmit(mode: Mode = CheckMode, index : Int)
+
+GET        /trustees/:index/trustee-nino                        controllers.TrusteesNinoController.onPageLoad(mode: Mode = NormalMode, index: Int)
+POST       /trustees/:index/trustee-nino                        controllers.TrusteesNinoController.onSubmit(mode: Mode = NormalMode, index: Int)
+GET        /trustees/:index/change-trustee-nino                  controllers.TrusteesNinoController.onPageLoad(mode: Mode = CheckMode, index: Int)
+POST       /trustees/:index/change-trustee-Nino                  controllers.TrusteesNinoController.onSubmit(mode: Mode = CheckMode, index: Int)
