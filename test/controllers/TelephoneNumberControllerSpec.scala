@@ -23,7 +23,7 @@ import navigation.{FakeNavigator, Navigator}
 import pages.{TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteesNamePage}
 import play.api.inject.bind
 import play.api.libs.json.{JsString, Json}
-import play.api.mvc.Call
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.TelephoneNumberView
@@ -70,7 +70,6 @@ class TelephoneNumberControllerSpec extends SpecBase {
       val userAnswers = UserAnswers(userAnswersId)
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(TrusteeAUKCitizenPage(index), true).success.value
-        .set(TelephoneNumberPage(index), "TelephoneNumber").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -83,7 +82,7 @@ class TelephoneNumberControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("TelephoneNumber"), NormalMode, index, trusteeName)(fakeRequest, messages).toString
+        view(form.fill("0191 1111111"), NormalMode, index, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -185,6 +184,39 @@ class TelephoneNumberControllerSpec extends SpecBase {
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
+    }
+
+  "for a GET" in {
+
+    def getForIndex(index: Int): FakeRequest[AnyContentAsEmpty.type] = {
+      val route = routes.TelephoneNumberController.onPageLoad(NormalMode, index).url
+
+      FakeRequest(GET, route)
+    }
+
+    validateIndex(
+      arbitrary[Boolean],
+      TelephoneNumberPage.apply,
+      getForIndex
+    )
+
+  }
+
+  "for a POST" in {
+    def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+
+      val route =
+        routes.TelephoneNumberController.onPageLoad(NormalMode, index).url
+
+      FakeRequest(POST, route)
+        .withFormUrlEncodedBody(("value", "true"))
+    }
+
+    validateIndex(
+      arbitrary[Boolean],
+      TelephoneNumber.apply,
+      postForIndex
+    )
     }
   }
 }
