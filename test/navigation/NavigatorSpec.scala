@@ -58,6 +58,8 @@ class NavigatorSpec extends SpecBase
         navigator.nextPage(UnknownPage, CheckMode)(UserAnswers("id")) mustBe routes.CheckYourAnswersController.onPageLoad()
       }
 
+      behave like trustDetailsCheckRoutes
+
     }
   }
 }
