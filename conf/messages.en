@@ -270,4 +270,4 @@ trusteesDateOfBirth.error.past = Date of birth must be after 31 December 1499
 trusteeLiveInTheUK.title = Does {0} live in the UK?
 trusteeLiveInTheUK.heading = Does {0} live in the UK?
 trusteeLiveInTheUK.checkYourAnswersLabel = Does {0} live in the UK?
-trusteeLiveInTheUK.error.required = Select yes if {0} lives in the UK
+trusteeLiveInTheUK.error.required = Select yes if the trustee lives in the UK
