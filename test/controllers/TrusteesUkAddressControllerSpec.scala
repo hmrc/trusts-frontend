@@ -20,15 +20,16 @@ import base.SpecBase
 import forms.TrusteesUkAddressFormProvider
 import models.{FullName, NormalMode, TrusteesUkAddress, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.{TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
 import play.api.inject.bind
 import play.api.libs.json.Json
-import play.api.mvc.Call
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.TrusteesUkAddressView
 
-class TrusteesUkAddressControllerSpec extends SpecBase {
+class TrusteesUkAddressControllerSpec extends SpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -181,5 +182,40 @@ class TrusteesUkAddressControllerSpec extends SpecBase {
 
       application.stop()
     }
+
+    "for a GET" must {
+
+      def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
+        val route = routes.TrusteesUkAddressController.onPageLoad(NormalMode, index).url
+
+        FakeRequest(GET, route)
+      }
+
+      validateIndex(
+        arbitrary[TrusteesUkAddress],
+        TrusteesUkAddressPage.apply,
+        getForIndex
+      )
+
+    }
+
+    "for a POST" must {
+      def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+
+        val route =
+          routes.TrusteesUkAddressController.onPageLoad(NormalMode, index).url
+
+        FakeRequest(POST, route)
+          .withFormUrlEncodedBody(("line1", "line1"), ("line2", "line2"), ("line3", "line3"), ("townOrCity", "town or city"), ("postcode", "AB1 1AB"))
+      }
+
+      validateIndex(
+        arbitrary[TrusteesUkAddress],
+        TrusteesUkAddressPage.apply,
+        postForIndex
+      )
+    }
+
+
   }
 }
