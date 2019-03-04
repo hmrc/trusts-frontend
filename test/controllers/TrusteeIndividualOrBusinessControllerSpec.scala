@@ -28,6 +28,7 @@ import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.TrusteeIndividualOrBusinessView
+import views.html.components.heading
 
 class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValidation {
 

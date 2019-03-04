@@ -40,6 +40,16 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
+  def trusteeLiveInTheUK(index : Int): Option[AnswerRow] = userAnswers.get(TrusteeLiveInTheUKPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeLiveInTheUK.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.TrusteeLiveInTheUKController.onPageLoad(CheckMode, index).url,
+        trusteeName(index, userAnswers)
+      )
+  }
+
   def trusteesDateOfBirth(index : Int): Option[AnswerRow] = userAnswers.get(TrusteesDateOfBirthPage(index)) map {
     x =>
       AnswerRow(
