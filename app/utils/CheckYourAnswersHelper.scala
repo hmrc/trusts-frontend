@@ -216,12 +216,12 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
   private def ukAddress(address: TrusteesUkAddress): Html = {
     val lines =
       Seq(
-        HtmlFormat.escape(address.line1),
-        Some(address.line2.map(HtmlFormat.escape)),
-        Some(address.line3.map(HtmlFormat.escape)),
-        HtmlFormat.escape(address.townOrCity),
-        HtmlFormat.escape(address.postcode)
-      )
+        Some(HtmlFormat.escape(address.line1)),
+        address.line2.map(HtmlFormat.escape),
+        address.line3.map(HtmlFormat.escape),
+        Some(HtmlFormat.escape(address.townOrCity)),
+        Some(HtmlFormat.escape(address.postcode))
+      ).flatten
 
     Html(lines.mkString("<br />"))
   }

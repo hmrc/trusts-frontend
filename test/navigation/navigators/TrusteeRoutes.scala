@@ -173,11 +173,20 @@ trait TrusteeRoutes {
         }
       }
 
-      "go to TrusteeTelephoneNumberPage from TrusteeLivesInUKPage" in {
+      "go to TrusteesUkAddressPage from TrusteeLivesInUKPage" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
             navigator.nextPage(TrusteeLiveInTheUKPage(index), NormalMode)(userAnswers)
+              .mustBe(routes.TrusteesUkAddressController.onPageLoad(NormalMode, index))
+        }
+      }
+
+      "go to TrusteeTelephoneNumberPage from TrusteesUkAddressPage" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            navigator.nextPage(TrusteesUkAddressPage(index), NormalMode)(userAnswers)
               .mustBe(routes.TelephoneNumberController.onPageLoad(NormalMode, index))
         }
       }
