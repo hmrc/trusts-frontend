@@ -222,6 +222,8 @@ trusteeIndividualOrBusiness.error.required = Select if the trustee is an individ
 trustDetailsAnswerPage.title = Check trust details
 trustDetailsAnswerPage.heading = Check trust details
 
+leadTrusteeIndividualOrBusiness.title = Is the lead trustee an individual or a business?
+leadTrusteeIndividualOrBusiness.heading = Is the lead trustee an individual or a business?
 
 trusteesName.title = What is the trustee’s name?
 trusteesName.heading = What is the trustee’s name?
@@ -257,6 +259,18 @@ addATrustee.error.required = Select yes if you want to add another trustee
 
 trusteeAUKCitizen.title = Is {0} a UK citizen?
 trusteeAUKCitizen.heading = Is {0} a UK citizen?
+trusteeAUKCitizen.checkYourAnswersLabel = trusteeAUKCitizen
+trusteeAUKCitizen.error.required = Select yes if the trustee is a UK citizen
+
+telephoneNumber.title = What is {0}'s telephone number?
+telephoneNumber.heading = What is {0}'s telephone number?
+telephoneNumber.checkYourAnswersLabel = What is {0}'s telephone number?
+telephoneNumber.error.required = Enter trustee's telephone number
+telephoneNumber.error.invalid.characters = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192
+telephoneNumber.hint = For international numbers include the country code
+
+trusteeAUKCitizen.title = Is {0} a UK citizen?
+trusteeAUKCitizen.heading = Is {0} a UK citizen?
 trusteeAUKCitizen.checkYourAnswersLabel = Is {0} a UK citizen?
 trusteeAUKCitizen.error.required = Select yes if the trustee is a UK citizen
 
@@ -277,7 +291,6 @@ trusteesNino.checkYourAnswersLabel = Enter {0}’s National Insurance number
 trusteesNino.hint = It is on their National Insurance card, benefit letter, payslip or P60. For example, ‘QQ 12 34 56 C’.
 trusteesNino.error.required = Enter a National Insurance number
 trusteesNino.error.invalidFormat = Enter a National Insurance number in the correct format
-
 
 trusteeLiveInTheUK.title = Does {0} live in the UK?
 trusteeLiveInTheUK.heading = Does {0} live in the UK?

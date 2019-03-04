@@ -21,7 +21,8 @@ import forms.TrusteeIndividualOrBusinessFormProvider
 import models.{IndividualOrBusiness, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.TrusteeIndividualOrBusinessPage
+import pages.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage}
+import play.api.i18n.Messages
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
@@ -40,50 +41,120 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
   val formProvider = new TrusteeIndividualOrBusinessFormProvider()
   val form = formProvider()
 
+
   "TrusteeIndividualOrBusiness Controller" must {
 
-    "return OK and the correct view for a GET" in {
+    "return OK and the correct view for a GET" when {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      "is lead trustee" in {
 
-      val request = FakeRequest(GET, trusteeIndividualOrBusinessRoute)
+        val leadHeading = Messages("leadTrusteeIndividualOrBusiness.heading")
 
-      val result = route(application, request).value
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(IsThisLeadTrusteePage(index), true).success.value
 
-      val view = application.injector.instanceOf[TrusteeIndividualOrBusinessView]
+        val application = applicationBuilder(Some(userAnswers)).build()
 
-      status(result) mustEqual OK
+        val request = FakeRequest(GET, trusteeIndividualOrBusinessRoute)
 
-      contentAsString(result) mustEqual
-        view(form, NormalMode, index)(fakeRequest, messages).toString
+        val result = route(application, request).value
 
-      application.stop()
+        val view = application.injector.instanceOf[TrusteeIndividualOrBusinessView]
+
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(form, NormalMode, index, leadHeading)(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
+
+      "is trustee" in {
+
+        val heading = Messages("trusteeIndividualOrBusiness.heading")
+
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(IsThisLeadTrusteePage(index), false).success.value
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(GET, trusteeIndividualOrBusinessRoute)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[TrusteeIndividualOrBusinessView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(form, NormalMode, index, heading)(fakeRequest, messages).toString
+
+        application.stop()
+      }
     }
 
-    "populate the view correctly on a GET when the question has previously been answered" in {
+    "populate the view correctly on a GET when the question has previously been answered" when {
 
-      val userAnswers = UserAnswers(userAnswersId).set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.values.head).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      "is lead trustee" in {
 
-      val request = FakeRequest(GET, trusteeIndividualOrBusinessRoute)
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(IsThisLeadTrusteePage(index), true).success.value
+          .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.values.head).success.value
 
-      val view = application.injector.instanceOf[TrusteeIndividualOrBusinessView]
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val result = route(application, request).value
+        val request = FakeRequest(GET, trusteeIndividualOrBusinessRoute)
 
-      status(result) mustEqual OK
+        val view = application.injector.instanceOf[TrusteeIndividualOrBusinessView]
 
-      contentAsString(result) mustEqual
-        view(form.fill(IndividualOrBusiness.values.head), NormalMode, index)(fakeRequest, messages).toString
+        val result = route(application, request).value
 
-      application.stop()
+        val leadHeading = Messages("leadTrusteeIndividualOrBusiness.heading")
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(form.fill(IndividualOrBusiness.values.head), NormalMode, index, leadHeading)(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
+
+      "is not lead trustee" in {
+
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(IsThisLeadTrusteePage(index), false).success.value
+          .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.values.head).success.value
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(GET, trusteeIndividualOrBusinessRoute)
+
+        val view = application.injector.instanceOf[TrusteeIndividualOrBusinessView]
+
+        val result = route(application, request).value
+
+        val heading = Messages("trusteeIndividualOrBusiness.heading")
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(form.fill(IndividualOrBusiness.values.head), NormalMode, index, heading)(fakeRequest, messages).toString
+
+        application.stop()
+      }
     }
 
     "redirect to the next page when valid data is submitted" in {
 
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(IsThisLeadTrusteePage(index), false).success.value
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
@@ -102,7 +173,13 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val heading = Messages("trusteeIndividualOrBusiness.heading")
+
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(IsThisLeadTrusteePage(index), false).success.value
+
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, trusteeIndividualOrBusinessRoute)
@@ -117,7 +194,7 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, index)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, index, heading)(fakeRequest, messages).toString
 
       application.stop()
     }

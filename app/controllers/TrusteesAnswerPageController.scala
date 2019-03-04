@@ -16,6 +16,7 @@
 
 package controllers
 
+import akka.actor.FSM.Normal
 import controllers.actions._
 import javax.inject.Inject
 import models.NormalMode
@@ -28,6 +29,7 @@ import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.TrusteesAnswerPageView
+
 
 
 class TrusteesAnswerPageController @Inject()(
@@ -67,10 +69,11 @@ class TrusteesAnswerPageController @Inject()(
             checkYourAnswersHelper.trusteesDateOfBirth(index),
             checkYourAnswersHelper.trusteeAUKCitizen(index),
             checkYourAnswersHelper.trusteesNino(index),
-            checkYourAnswersHelper.trusteeLiveInTheUK(index)
+            checkYourAnswersHelper.trusteeLiveInTheUK(index),
+            checkYourAnswersHelper.telephoneNumber(index)
           ).flatten
         )
-      )
+    )
 
       Ok(view(index, sections))
   }

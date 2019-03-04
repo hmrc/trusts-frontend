@@ -16,14 +16,20 @@
 
 package forms
 
-object Validation {
+import javax.inject.Inject
 
-  val countryRegex = "^[A-Za-z ,.()'-]*$"
-  val postcodeRegex = """^[a-zA-Z]{1,2}[0-9][0-9a-zA-Z]?\s?[0-9][a-zA-Z]{2}$"""
-  val nameRegex = "^[A-Za-z0-9 ,.()/&'-]*$"
-  val utrRegex = "^[0-9]*$"
-  val ninoRegex = """^(?i)[ \t]*[A-Z]{1}[ \t]*[ \t]*[A-Z]{1}[ \t]*[0-9]{1}[ \t]*[ \t]*[0-9]{1}[ \t]*""" +
-    """[ \t]*[0-9]{1}[ \t]*[ \t]*[0-9]{1}[ \t]*[ \t]*[0-9]{1}[ \t]*[ \t]*[0-9]{1}[ \t]*[A-D]{1}[ \t]*$"""
-  val telephoneRegex = "^+[0-9 ]{1,18}$|^[0-9 ]{1,19}$"
+import forms.mappings.Mappings
+import play.api.data.Form
 
+class TelephoneNumberFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[String] =
+    Form(
+      "value" -> text("telephoneNumber.error.required")
+        .verifying(
+          firstError(
+            isNotEmpty("value", "telephoneNumber.error.required"),
+            regexp(Validation.telephoneRegex, "telephoneNumber.error.invalid.characters")
+          ))
+    )
 }

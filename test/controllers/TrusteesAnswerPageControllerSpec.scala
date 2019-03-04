@@ -48,7 +48,8 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
           .set(TrusteesNamePage(index), FullName("First", None, "Trustee")).success.value
           .set(TrusteesDateOfBirthPage(index), LocalDate.now(ZoneOffset.UTC)).success.value
           .set(TrusteeAUKCitizenPage(index), true).success.value
-          .set(TrusteesNinoPage(index), "JP121212A").success.value
+          .set(TrusteesNinoPage(index), "QQ121212A").success.value
+          .set(TelephoneNumberPage(index), "0191 1111111").success.value
           .set(TrusteeLiveInTheUKPage(index), true).success.value
 
       val countryOptions = injector.instanceOf[CountryOptions]
@@ -65,7 +66,8 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
             checkYourAnswersHelper.trusteesDateOfBirth(index).value,
             checkYourAnswersHelper.trusteeAUKCitizen(index).value,
             checkYourAnswersHelper.trusteesNino(index).value,
-            checkYourAnswersHelper.trusteeLiveInTheUK(index).value
+            checkYourAnswersHelper.trusteeLiveInTheUK(index).value,
+            checkYourAnswersHelper.telephoneNumber(index).value
           )
         )
       )

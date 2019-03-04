@@ -19,11 +19,11 @@ package controllers
 import controllers.actions._
 import forms.TrusteeIndividualOrBusinessFormProvider
 import javax.inject.Inject
-import models.{Enumerable, Mode}
+import models.{Enumerable, Mode, NormalMode}
 import navigation.Navigator
-import pages.{TrusteeIndividualOrBusinessPage, Trustees}
+import pages.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage, Trustees}
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -40,6 +40,7 @@ class TrusteeIndividualOrBusinessController @Inject()(
                                                 requireData: DataRequiredAction,
                                                 validateIndex: IndexActionFilterProvider,
                                                 formProvider: TrusteeIndividualOrBusinessFormProvider,
+                                                requiredAnswer: RequiredAnswerActionProvider,
                                                 val controllerComponents: MessagesControllerComponents,
                                                 view: TrusteeIndividualOrBusinessView
                                              )(implicit ec: ExecutionContext) extends FrontendBaseController
@@ -49,25 +50,44 @@ class TrusteeIndividualOrBusinessController @Inject()(
   val form = formProvider()
 
   private def actions(index: Int) =
-    identify andThen getData andThen requireData andThen validateIndex(index, Trustees)
+    identify andThen getData andThen
+      requireData andThen
+      validateIndex(index, Trustees) andThen
+      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index)))
 
   def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = actions(index) {
     implicit request =>
+
+      val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
+
+      val heading = if (isLead) {
+        Messages("leadTrusteeIndividualOrBusiness.heading")
+      } else {
+        Messages("trusteeIndividualOrBusiness.heading")
+      }
 
       val preparedForm = request.userAnswers.get(TrusteeIndividualOrBusinessPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, index))
+      Ok(view(preparedForm, mode, index, heading))
   }
 
   def onSubmit(mode: Mode, index: Int): Action[AnyContent] = actions(index).async {
     implicit request =>
 
+      val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
+
+      val heading = if (isLead) {
+        Messages("leadTrusteeIndividualOrBusiness.heading")
+      } else {
+        Messages("trusteeIndividualOrBusiness.heading")
+      }
+
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, index))),
+          Future.successful(BadRequest(view(formWithErrors, mode, index, heading))),
 
         value => {
           for {
