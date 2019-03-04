@@ -277,3 +277,9 @@ trusteesNino.checkYourAnswersLabel = Enter {0}’s National Insurance number
 trusteesNino.hint = It is on their National Insurance card, benefit letter, payslip or P60. For example, ‘QQ 12 34 56 C’.
 trusteesNino.error.required = Enter a National Insurance number
 trusteesNino.error.invalidFormat = Enter a National Insurance number in the correct format
+
+
+trusteeLiveInTheUK.title = Does {0} live in the UK?
+trusteeLiveInTheUK.heading = Does {0} live in the UK?
+trusteeLiveInTheUK.checkYourAnswersLabel = Does {0} live in the UK?
+trusteeLiveInTheUK.error.required = Select yes if the trustee lives in the UK

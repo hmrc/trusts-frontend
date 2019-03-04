@@ -36,11 +36,19 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
         "trusteesNino.checkYourAnswersLabel",
         HtmlFormat.escape(x),
         routes.TrusteesNinoController.onPageLoad(CheckMode, index).url,
-        getTrusteeFirstLastName(index)
+        trusteeName(index, userAnswers)
       )
   }
 
-  def getTrusteeFirstLastName(index: Int): String = userAnswers.get(TrusteesNamePage(index)).get.toString
+  def trusteeLiveInTheUK(index : Int): Option[AnswerRow] = userAnswers.get(TrusteeLiveInTheUKPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeLiveInTheUK.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.TrusteeLiveInTheUKController.onPageLoad(CheckMode, index).url,
+        trusteeName(index, userAnswers)
+      )
+  }
 
   def trusteesDateOfBirth(index : Int): Option[AnswerRow] = userAnswers.get(TrusteesDateOfBirthPage(index)) map {
     x =>

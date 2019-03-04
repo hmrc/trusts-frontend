@@ -66,7 +66,8 @@ class TrusteesAnswerPageController @Inject()(
             checkYourAnswersHelper.trusteeFullName(index),
             checkYourAnswersHelper.trusteesDateOfBirth(index),
             checkYourAnswersHelper.trusteeAUKCitizen(index),
-            checkYourAnswersHelper.trusteesNino(index)
+            checkYourAnswersHelper.trusteesNino(index),
+            checkYourAnswersHelper.trusteeLiveInTheUK(index)
           ).flatten
         )
       )
