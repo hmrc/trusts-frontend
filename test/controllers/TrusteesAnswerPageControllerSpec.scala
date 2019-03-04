@@ -19,7 +19,7 @@ package controllers
 import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
-import models.{FullName, IndividualOrBusiness, NormalMode, UserAnswers}
+import models.{FullName, IndividualOrBusiness, NormalMode, TrusteesUkAddress, UserAnswers}
 import pages._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -51,6 +51,8 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
           .set(TrusteesNinoPage(index), "QQ121212A").success.value
           .set(TelephoneNumberPage(index), "0191 1111111").success.value
           .set(TrusteeLiveInTheUKPage(index), true).success.value
+          .set(TrusteesUkAddressPage(index), TrusteesUkAddress("line1", Some("line2"), Some("line3"), "town or city", "AB1 1AB")).success.value
+
 
       val countryOptions = injector.instanceOf[CountryOptions]
 
@@ -67,6 +69,7 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
             checkYourAnswersHelper.trusteeAUKCitizen(index).value,
             checkYourAnswersHelper.trusteesNino(index).value,
             checkYourAnswersHelper.trusteeLiveInTheUK(index).value,
+            checkYourAnswersHelper.trusteesUkAddress(index).value,
             checkYourAnswersHelper.telephoneNumber(index).value
           )
         )

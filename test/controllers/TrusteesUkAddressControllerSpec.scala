@@ -40,19 +40,6 @@ class TrusteesUkAddressControllerSpec extends SpecBase {
 
   lazy val trusteesUkAddressRoute = routes.TrusteesUkAddressController.onPageLoad(NormalMode, index).url
 
-  val userAnswers = UserAnswers(
-    userAnswersId,
-    Json.obj(
-      TrusteesUkAddressPage.toString -> Json.obj(
-        "line1" -> "value 1",
-        "line2" -> "value 2",
-        "line3"-> "value 3",
-        "townOrCity" -> "value 4",
-        "postcode" -> "value 5"
-      )
-    )
-  )
-
   "TrusteesUkAddress Controller" must {
 
     "return OK and the correct view for a GET" in {
