@@ -17,33 +17,26 @@
 package views
 
 import controllers.routes
-import forms.TrusteeAUKCitizenFormProvider
-import models.{FullName, NormalMode, UserAnswers}
-import pages.TrusteesNamePage
+import forms.TrusteeLiveInTheUKFormProvider
+import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.TrusteeAUKCitizenView
+import views.html.TrusteeLiveInTheUKView
 
-class TrusteeAUKCitizenViewSpec extends YesNoViewBehaviours {
+class TrusteeLiveInTheUKViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "trusteeAUKCitizen"
-
-  val form = new TrusteeAUKCitizenFormProvider()()
-
+  val messageKeyPrefix = "trusteeLiveInTheUK"
   val index = 0
   val trusteeName = "FirstName LastName"
-  val fullName = FullName("FirstName", None, "LastName")
 
+  val form = new TrusteeLiveInTheUKFormProvider()()
 
-  "trusteeAUKCitizen view" must {
+  "TrusteeLiveInTheUK view" must {
 
-    val userAnswers = UserAnswers(userAnswersId)
-      .set(TrusteesNamePage(index), fullName).success.value
+    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-    val application = applicationBuilder(Some(userAnswers)).build()
-
-    val view = application.injector.instanceOf[TrusteeAUKCitizenView]
+    val view = application.injector.instanceOf[TrusteeLiveInTheUKView]
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, index, trusteeName)(fakeRequest, messages)
@@ -52,6 +45,6 @@ class TrusteeAUKCitizenViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.TrusteeAUKCitizenController.onSubmit(NormalMode, index).url, None, Seq(fullName.toString))
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.TrusteeLiveInTheUKController.onSubmit(NormalMode, index).url, None, Seq(trusteeName))
   }
 }

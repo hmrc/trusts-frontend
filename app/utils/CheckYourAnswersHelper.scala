@@ -36,11 +36,19 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
         "trusteesNino.checkYourAnswersLabel",
         HtmlFormat.escape(x),
         routes.TrusteesNinoController.onPageLoad(CheckMode, index).url,
-        getTrusteeFirstLastName(index)
+        trusteeName(index, userAnswers)
       )
   }
 
-  def getTrusteeFirstLastName(index: Int): String = userAnswers.get(TrusteesNamePage(index)).get.toString
+  def trusteeLiveInTheUK(index : Int): Option[AnswerRow] = userAnswers.get(TrusteeLiveInTheUKPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeLiveInTheUK.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.TrusteeLiveInTheUKController.onPageLoad(CheckMode, index).url,
+        trusteeName(index, userAnswers)
+      )
+  }
 
   def trusteesUkAddress(index: Int): Option[AnswerRow] = userAnswers.get(TrusteesUkAddressPage(index)) map {
     x =>
@@ -61,6 +69,16 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
+  def telephoneNumber(index : Int): Option[AnswerRow] = userAnswers.get(TelephoneNumberPage(index)) map {
+    x =>
+      AnswerRow(
+        "telephoneNumber.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.TelephoneNumberController.onPageLoad(CheckMode, index).url,
+        trusteeName(index, userAnswers)
+      )
+  }
+
   def trusteeAUKCitizen(index : Int): Option[AnswerRow] = userAnswers.get(TrusteeAUKCitizenPage(index)) map {
     x =>
       AnswerRow(
@@ -70,6 +88,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
         trusteeName(index, userAnswers)
       )
   }
+
 
   def trusteeFullName(index : Int): Option[AnswerRow] = userAnswers.get(TrusteesNamePage(index)) map {
     x => AnswerRow(

@@ -27,8 +27,11 @@ trait UserAnswersGenerator extends TryValues {
   self: Generators =>
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
+    arbitrary[(TrusteeLiveInTheUKPage, JsValue)] ::
     arbitrary[(TrusteesNinoPage, JsValue)] ::
     arbitrary[(TrusteesUkAddressPage, JsValue)] ::
+    arbitrary[(TrusteeAUKCitizenPage, JsValue)] ::
+    arbitrary[(TelephoneNumberPage, JsValue)] ::
     arbitrary[(TrusteeAUKCitizenPage, JsValue)] ::
     arbitrary[(TrusteesNamePage, JsValue)] ::
     arbitrary[(TrusteeIndividualOrBusinessPage, JsValue)] ::

@@ -89,5 +89,6 @@ class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generat
       routes.TrusteesNameController.onSubmit(NormalMode, index).url,
       Seq("firstName", "middleName", "lastName")
     )
+
   }
 }

@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import play.api.libs.json.JsPath
+import javax.inject.Inject
 
-final case class  TrusteeAUKCitizenPage(index : Int) extends QuestionPage[Boolean] {
+import forms.mappings.Mappings
+import play.api.data.Form
 
-  override def path: JsPath = JsPath \ toString
+class TrusteeLiveInTheUKFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "trusteeAUKCitizen"
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("trusteeLiveInTheUK.error.required")
+    )
 }

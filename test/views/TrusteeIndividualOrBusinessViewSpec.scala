@@ -17,28 +17,39 @@
 package views
 
 import forms.TrusteeIndividualOrBusinessFormProvider
-import models.{NormalMode, IndividualOrBusiness}
+import models.{IndividualOrBusiness, NormalMode, UserAnswers}
+import pages.IsThisLeadTrusteePage
 import play.api.data.Form
+import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import views.behaviours.OptionsViewBehaviours
 import views.html.TrusteeIndividualOrBusinessView
+import views.html.helper.form
 
 class TrusteeIndividualOrBusinessViewSpec extends OptionsViewBehaviours {
 
   val messageKeyPrefix = "trusteeIndividualOrBusiness"
+  val leadMessageKeyPrefix = "leadTrusteeIndividualOrBusiness"
 
-  val form = new TrusteeIndividualOrBusinessFormProvider()()
-
-  val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+  val leadHeading = Messages("leadTrusteeIndividualOrBusiness.heading")
+  val heading = Messages("trusteeIndividualOrBusiness.heading")
 
   val index = 0
 
-  val view = application.injector.instanceOf[TrusteeIndividualOrBusinessView]
+  val form = new TrusteeIndividualOrBusinessFormProvider()()
 
-  def applyView(form: Form[_]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode, index)(fakeRequest, messages)
 
-  "IndividualOrBusinessView" must {
+  "IndividualOrBusinessView as lead trustee" must {
+
+    val userAnswers = UserAnswers(userAnswersId)
+      .set(IsThisLeadTrusteePage(index), true).success.value
+
+    val application = applicationBuilder(Some(userAnswers)).build()
+
+    val view = application.injector.instanceOf[TrusteeIndividualOrBusinessView]
+
+    def applyView(form: Form[_]): HtmlFormat.Appendable =
+      view.apply(form, NormalMode, index, leadHeading)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
@@ -47,4 +58,23 @@ class TrusteeIndividualOrBusinessViewSpec extends OptionsViewBehaviours {
     behave like pageWithOptions(form, applyView, IndividualOrBusiness.options)
   }
 
+
+  "IndividualOrBusinessView as nonlead trustee" must {
+
+    val userAnswers = UserAnswers(userAnswersId)
+      .set(IsThisLeadTrusteePage(index), false).success.value
+
+    val application = applicationBuilder(Some(userAnswers)).build()
+
+    val view = application.injector.instanceOf[TrusteeIndividualOrBusinessView]
+
+    def applyView(form: Form[_]): HtmlFormat.Appendable =
+      view.apply(form, NormalMode, index, heading)(fakeRequest, messages)
+
+    behave like normalPage(applyView(form), messageKeyPrefix)
+
+    behave like pageWithBackLink(applyView(form))
+
+    behave like pageWithOptions(form, applyView, IndividualOrBusiness.options)
+  }
 }

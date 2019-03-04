@@ -17,35 +17,35 @@
 package controllers
 
 import controllers.actions._
-import forms.TrusteeAUKCitizenFormProvider
+import forms.TrusteeLiveInTheUKFormProvider
 import javax.inject.Inject
-import models.{FullName, Mode, NormalMode, UserAnswers}
+import models.{Mode, NormalMode, UserAnswers}
 import navigation.Navigator
-import pages.{TrusteeAUKCitizenPage, Trustees, TrusteesNamePage}
+import pages.{TrusteeLiveInTheUKPage, Trustees, TrusteesNamePage}
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.TrusteeAUKCitizenView
+import views.html.TrusteeLiveInTheUKView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrusteeAUKCitizenController @Inject()(
-                                             override val messagesApi: MessagesApi,
-                                             sessionRepository: SessionRepository,
-                                             navigator: Navigator,
-                                             validateIndex: IndexActionFilterProvider,
-                                             identify: IdentifierAction,
-                                             getData: DataRetrievalAction,
-                                             requireData: DataRequiredAction,
-                                             requiredAnswer: RequiredAnswerActionProvider,
-                                             formProvider: TrusteeAUKCitizenFormProvider,
-                                             val controllerComponents: MessagesControllerComponents,
-                                             view: TrusteeAUKCitizenView
-                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class TrusteeLiveInTheUKController @Inject()(
+                                         override val messagesApi: MessagesApi,
+                                         sessionRepository: SessionRepository,
+                                         navigator: Navigator,
+                                         validateIndex: IndexActionFilterProvider,
+                                         identify: IdentifierAction,
+                                         getData: DataRetrievalAction,
+                                         requireData: DataRequiredAction,
+                                         requiredAnswer: RequiredAnswerActionProvider,
+                                         formProvider: TrusteeLiveInTheUKFormProvider,
+                                         val controllerComponents: MessagesControllerComponents,
+                                         view: TrusteeLiveInTheUKView
+                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  val form: Form[Boolean] = formProvider()
 
   private def actions(index: Int) =
     identify andThen
@@ -59,7 +59,7 @@ class TrusteeAUKCitizenController @Inject()(
 
       val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
 
-      val preparedForm = request.userAnswers.get(TrusteeAUKCitizenPage(index)) match {
+      val preparedForm = request.userAnswers.get(TrusteeLiveInTheUKPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -78,9 +78,9 @@ class TrusteeAUKCitizenController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeAUKCitizenPage(index), value))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrusteeAUKCitizenPage(index), mode)(updatedAnswers))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeLiveInTheUKPage(index), value))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(TrusteeLiveInTheUKPage(index), mode)(updatedAnswers))
         }
       )
   }

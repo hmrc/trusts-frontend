@@ -20,17 +20,19 @@ import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
 import forms.TrusteesDateOfBirthFormProvider
-import models.{FullName, NormalMode, UserAnswers}
+import models.{FullName, IndividualOrBusiness, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalacheck.Gen
 import org.scalatest.mockito.MockitoSugar
-import pages.{TrusteesDateOfBirthPage, TrusteesNamePage}
+import pages.{TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage}
 import play.api.inject.bind
-import play.api.mvc.Call
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.TrusteesDateOfBirthView
 
-class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
+class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with IndexValidation {
 
   val formProvider = new TrusteesDateOfBirthFormProvider()
   val form = formProvider()
@@ -194,6 +196,44 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
+    }
+
+
+    "for a GET" must {
+
+      def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
+        val route = routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index).url
+
+        FakeRequest(GET, route)
+      }
+
+      validateIndex(
+        Gen.const(LocalDate.of(2010,10,10)),
+        TrusteesDateOfBirthPage.apply,
+        getForIndex
+      )
+
+    }
+
+    "for a POST" must {
+      def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+
+        val route =
+          routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index).url
+
+        FakeRequest(POST, route)
+          .withFormUrlEncodedBody(
+            "value.day"   -> validAnswer.getDayOfMonth.toString,
+            "value.month" -> validAnswer.getMonthValue.toString,
+            "value.year"  -> validAnswer.getYear.toString
+          )
+      }
+
+      validateIndex(
+        Gen.const(LocalDate.of(2010,10,10)),
+        TrusteesDateOfBirthPage.apply,
+        postForIndex
+      )
     }
 
   }

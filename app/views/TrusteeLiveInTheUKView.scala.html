@@ -15,33 +15,31 @@
  *@
 
 @import controllers.routes._
-@import models.{Mode, IndividualOrBusiness}
+@import models.Mode
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, index : Int, heading: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, index : Int, trusteeName: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("trusteeIndividualOrBusiness.title", heading)}"
+    title = s"${errorPrefix(form)} ${messages("trusteeLiveInTheUK.title", trusteeName)}"
     ) {
 
-    @formHelper(action = TrusteeIndividualOrBusinessController.onSubmit(mode, index), 'autoComplete -> "off") {
+    @formHelper(action = TrusteeLiveInTheUKController.onSubmit(mode, index), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading(messages("trusteeIndividualOrBusiness.heading",heading))
+        @components.heading(messages("trusteeLiveInTheUK.heading", trusteeName))
 
-        @components.input_radio(
+        @components.input_yes_no(
             field = form("value"),
-            legend = messages("trusteeIndividualOrBusiness.heading", heading),
-            legendClass = Some("visually-hidden"),
-            fieldSetClass = Some("inline"),
-            inputs = IndividualOrBusiness.options.toSeq
+            label = messages("trusteeLiveInTheUK.heading",trusteeName),
+            labelClass = Some("visually-hidden")
         )
 
         @components.submit_button()

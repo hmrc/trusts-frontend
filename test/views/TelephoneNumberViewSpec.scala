@@ -17,41 +17,39 @@
 package views
 
 import controllers.routes
-import forms.TrusteeAUKCitizenFormProvider
-import models.{FullName, NormalMode, UserAnswers}
-import pages.TrusteesNamePage
+import forms.TelephoneNumberFormProvider
+import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.YesNoViewBehaviours
-import views.html.TrusteeAUKCitizenView
+import views.behaviours.StringViewBehaviours
+import views.html.TelephoneNumberView
 
-class TrusteeAUKCitizenViewSpec extends YesNoViewBehaviours {
+class TelephoneNumberViewSpec extends StringViewBehaviours {
 
-  val messageKeyPrefix = "trusteeAUKCitizen"
+  val messageKeyPrefix = "telephoneNumber"
 
-  val form = new TrusteeAUKCitizenFormProvider()()
+  val form = new TelephoneNumberFormProvider()()
 
   val index = 0
   val trusteeName = "FirstName LastName"
   val fullName = FullName("FirstName", None, "LastName")
+  val hintKey = "telephoneNumber.hint"
 
+  "TelephoneNumberView view" must {
 
-  "trusteeAUKCitizen view" must {
+    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-    val userAnswers = UserAnswers(userAnswersId)
-      .set(TrusteesNamePage(index), fullName).success.value
-
-    val application = applicationBuilder(Some(userAnswers)).build()
-
-    val view = application.injector.instanceOf[TrusteeAUKCitizenView]
+    val view = application.injector.instanceOf[TelephoneNumberView]
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, index, trusteeName)(fakeRequest, messages)
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, trusteeName)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, trusteeName, "hint")
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.TrusteeAUKCitizenController.onSubmit(NormalMode, index).url, None, Seq(fullName.toString))
+    behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, trusteeName, routes.TelephoneNumberController.onSubmit(NormalMode, index).url, Some(hintKey))
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

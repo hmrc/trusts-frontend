@@ -14,13 +14,22 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import play.api.libs.json.JsPath
+import javax.inject.Inject
 
-final case class  TrusteeAUKCitizenPage(index : Int) extends QuestionPage[Boolean] {
+import forms.mappings.Mappings
+import play.api.data.Form
 
-  override def path: JsPath = JsPath \ toString
+class TelephoneNumberFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "trusteeAUKCitizen"
+  def apply(): Form[String] =
+    Form(
+      "value" -> text("telephoneNumber.error.required")
+        .verifying(
+          firstError(
+            isNotEmpty("value", "telephoneNumber.error.required"),
+            regexp(Validation.telephoneRegex, "telephoneNumber.error.invalid.characters")
+          ))
+    )
 }
