@@ -85,6 +85,24 @@ class TrusteesUkAddressControllerSpec extends SpecBase {
       application.stop()
     }
 
+
+    "redirect to Trustee Name page when TrusteesName is not answered" in {
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(TrusteesUkAddressPage(index), validAnswer).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, trusteesUkAddressRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index).url
+
+      application.stop()
+    }
+
     "redirect to the next page when valid data is submitted" in {
 
       val userAnswers = UserAnswers(userAnswersId)
