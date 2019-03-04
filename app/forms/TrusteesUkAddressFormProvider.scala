@@ -28,19 +28,41 @@ class TrusteesUkAddressFormProvider @Inject() extends Mappings {
     mapping(
       "line1" ->
         text("trusteesUkAddress.error.line1.required")
-          .verifying(maxLength(100, "trusteesUkAddress.error.line1.length")),
+          .verifying(
+            firstError(
+              isNotEmpty("line1", "trusteesUkAddress.error.line1.required"),
+              maxLength(35, "trusteesUkAddress.error.line1.length"),
+              regexp(Validation.addressLineRegex, "trusteesUkAddress.error.line1.invalidCharacters")
+            )),
       "line2" ->
         optional(Forms.text
-          .verifying(maxLength(100, "trusteesUkAddress.error.line2.length"))),
+          .verifying(
+            firstError(
+              maxLength(35, "trusteesUkAddress.error.line2.length"),
+              regexp(Validation.addressLineRegex, "trusteesUkAddress.error.line2.invalidCharacters")
+            ))),
       "line3" ->
         optional(Forms.text
-          .verifying(maxLength(100, "trusteesUkAddress.error.line3.length"))),
+          .verifying(
+            firstError(
+              maxLength(35, "trusteesUkAddress.error.line3.length"),
+              regexp(Validation.addressLineRegex, "trusteesUkAddress.error.line3.invalidCharacters")
+            ))),
       "townOrCity" ->
         text("trusteesUkAddress.error.townOrCity.required")
-          .verifying(maxLength(100, "trusteesUkAddress.error.townOrCity.length")),
+          .verifying(
+            firstError(
+              isNotEmpty("townOrCity", "trusteesUkAddress.error.townOrCity.required"),
+              maxLength(35, "trusteesUkAddress.error.townOrCity.length"),
+              regexp(Validation.addressLineRegex, "trusteesUkAddress.error.townOrCity.invalidCharacters")
+            )),
       "postcode" ->
         text("trusteesUkAddress.error.postcode.required")
-          .verifying(maxLength(10, "trusteesUkAddress.error.postcode.length"))
+          .verifying(
+            firstError(
+              isNotEmpty("postcode", "trusteesUkAddress.error.postcode.required"),
+              regexp(Validation.postcodeRegex, "trusteesUkAddress.error.postcode.invalidCharacters")
+            ))
     )(TrusteesUkAddress.apply)(TrusteesUkAddress.unapply)
    )
  }

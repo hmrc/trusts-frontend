@@ -18,6 +18,7 @@ package forms
 
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
+import wolfendale.scalacheck.regexp.RegexpGen
 
 class TrusteesUkAddressFormProviderSpec extends StringFieldBehaviours {
 
@@ -28,12 +29,12 @@ class TrusteesUkAddressFormProviderSpec extends StringFieldBehaviours {
     val fieldName = "line1"
     val requiredKey = "trusteesUkAddress.error.line1.required"
     val lengthKey = "trusteesUkAddress.error.line1.length"
-    val maxLength = 100
+    val maxLength = 35
 
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      RegexpGen.from(Validation.addressLineRegex)
     )
 
     behave like fieldWithMaxLength(
@@ -48,19 +49,68 @@ class TrusteesUkAddressFormProviderSpec extends StringFieldBehaviours {
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
     )
+
+    behave like nonEmptyField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
+    )
+
   }
 
   ".line2" must {
 
-    val fieldName = "field2"
-    val requiredKey = "trusteesUkAddress.error.line2.required"
+    val fieldName = "line2"
     val lengthKey = "trusteesUkAddress.error.line2.length"
-    val maxLength = 100
+    val maxLength = 35
+
+    behave like fieldWithMaxLength(
+      form,
+      fieldName,
+      maxLength = maxLength,
+      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+    )
+
+    behave like optionalField(
+      form,
+      fieldName,
+      validDataGenerator = RegexpGen.from(Validation.addressLineRegex)
+    )
+
+  }
+
+  ".line3" must {
+
+    val fieldName = "line3"
+    val lengthKey = "trusteesUkAddress.error.line3.length"
+    val maxLength = 35
+
+    behave like fieldWithMaxLength(
+      form,
+      fieldName,
+      maxLength = maxLength,
+      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+    )
+
+    behave like optionalField(
+      form,
+      fieldName,
+      validDataGenerator = RegexpGen.from(Validation.addressLineRegex)
+    )
+
+  }
+
+  ".townOrCity" must {
+
+    val fieldName = "townOrCity"
+    val requiredKey = "trusteesUkAddress.error.townOrCity.required"
+    val lengthKey = "trusteesUkAddress.error.townOrCity.length"
+    val maxLength = 35
 
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      RegexpGen.from(Validation.addressLineRegex)
     )
 
     behave like fieldWithMaxLength(
@@ -75,5 +125,38 @@ class TrusteesUkAddressFormProviderSpec extends StringFieldBehaviours {
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
     )
+
+    behave like nonEmptyField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
+    )
+
   }
+
+  ".postcode" must {
+
+    val fieldName = "postcode"
+    val requiredKey = "trusteesUkAddress.error.postcode.required"
+
+    behave like fieldThatBindsValidData(
+      form,
+      fieldName,
+      RegexpGen.from(Validation.postcodeRegex)
+    )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
+
+    behave like nonEmptyField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
+    )
+
+  }
+
 }

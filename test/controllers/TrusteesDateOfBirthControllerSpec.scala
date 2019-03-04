@@ -90,7 +90,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
 
-    "redirect to SessionExpired when TrusteesName is not answered" in {
+    "redirect to Trustee Name page when TrusteesName is not answered" in {
       val userAnswers = UserAnswers(userAnswersId)
         .set(TrusteesDateOfBirthPage(index), validAnswer).success.value
 
@@ -102,7 +102,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index).url
 
       application.stop()
     }

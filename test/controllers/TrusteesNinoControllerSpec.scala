@@ -17,43 +17,33 @@
 package controllers
 
 import base.SpecBase
-import forms.TrusteesUkAddressFormProvider
-import models.{FullName, NormalMode, TrusteesUkAddress, UserAnswers}
+import forms.TrusteesNinoFormProvider
+import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.{TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
+import org.scalacheck.Arbitrary.arbitrary
+import pages.{TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage}
 import play.api.inject.bind
-import play.api.libs.json.Json
-import play.api.mvc.Call
+import play.api.libs.json.{JsString, Json}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.TrusteesUkAddressView
+import views.html.TrusteesNinoView
 
-class TrusteesUkAddressControllerSpec extends SpecBase {
+class TrusteesNinoControllerSpec extends SpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new TrusteesUkAddressFormProvider()
+  val formProvider = new TrusteesNinoFormProvider()
   val form = formProvider()
+
   val index = 0
+  val emptyTrusteeName = ""
   val trusteeName = "FirstName LastName"
-  val validAnswer = TrusteesUkAddress("value 1", Some("value 2"), Some("value 3"), "value 4", "AB1 1AB")
+  val validAnswer = "NH111111A"
 
-  lazy val trusteesUkAddressRoute = routes.TrusteesUkAddressController.onPageLoad(NormalMode, index).url
+  lazy val trusteesNinoRoute = routes.TrusteesNinoController.onPageLoad(NormalMode, index).url
 
-  val userAnswers = UserAnswers(
-    userAnswersId,
-    Json.obj(
-      TrusteesUkAddressPage.toString -> Json.obj(
-        "line1" -> "value 1",
-        "line2" -> "value 2",
-        "line3"-> "value 3",
-        "townOrCity" -> "value 4",
-        "postcode" -> "value 5"
-      )
-    )
-  )
-
-  "TrusteesUkAddress Controller" must {
+  "TrusteesNino Controller" must {
 
     "return OK and the correct view for a GET" in {
 
@@ -62,16 +52,16 @@ class TrusteesUkAddressControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, trusteesUkAddressRoute)
-
-      val view = application.injector.instanceOf[TrusteesUkAddressView]
+      val request = FakeRequest(GET, trusteesNinoRoute)
 
       val result = route(application, request).value
+
+      val view = application.injector.instanceOf[TrusteesNinoView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, index, trusteeName)(request, messages).toString
+        view(form, NormalMode, index, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -79,14 +69,14 @@ class TrusteesUkAddressControllerSpec extends SpecBase {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = UserAnswers(userAnswersId)
-        .set(TrusteesUkAddressPage(index), validAnswer).success.value
+        .set(TrusteesNinoPage(index), validAnswer).success.value
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, trusteesUkAddressRoute)
+      val request = FakeRequest(GET, trusteesNinoRoute)
 
-      val view = application.injector.instanceOf[TrusteesUkAddressView]
+      val view = application.injector.instanceOf[TrusteesNinoView]
 
       val result = route(application, request).value
 
@@ -94,6 +84,23 @@ class TrusteesUkAddressControllerSpec extends SpecBase {
 
       contentAsString(result) mustEqual
         view(form.fill(validAnswer), NormalMode, index, trusteeName)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "redirect to Trustee Name page when TrusteesName is not answered" in {
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(TrusteesNinoPage(index), validAnswer).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, trusteesNinoRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index).url
 
       application.stop()
     }
@@ -109,13 +116,12 @@ class TrusteesUkAddressControllerSpec extends SpecBase {
           .build()
 
       val request =
-        FakeRequest(POST, trusteesUkAddressRoute)
-          .withFormUrlEncodedBody(("line1", "value 1"), ("line2", "value 2"), ("line3", "value 3"), ("townOrCity", "town"), ("postcode", "AB1 1AB") )
+        FakeRequest(POST, trusteesNinoRoute)
+          .withFormUrlEncodedBody(("value", validAnswer))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-
       redirectLocation(result).value mustEqual onwardRoute.url
 
       application.stop()
@@ -129,12 +135,12 @@ class TrusteesUkAddressControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
-        FakeRequest(POST, trusteesUkAddressRoute)
-          .withFormUrlEncodedBody(("line1", "invalid value"))
+        FakeRequest(POST, trusteesNinoRoute)
+          .withFormUrlEncodedBody(("value", "invalid value"))
 
-      val boundForm = form.bind(Map("line1" -> "invalid value"))
+      val boundForm = form.bind(Map("value" -> "invalid value"))
 
-      val view = application.injector.instanceOf[TrusteesUkAddressView]
+      val view = application.injector.instanceOf[TrusteesNinoView]
 
       val result = route(application, request).value
 
@@ -150,11 +156,12 @@ class TrusteesUkAddressControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, trusteesUkAddressRoute)
+      val request = FakeRequest(GET, trusteesNinoRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
+
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
@@ -165,8 +172,8 @@ class TrusteesUkAddressControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, trusteesUkAddressRoute)
-          .withFormUrlEncodedBody(("line1", "value 1"), ("line2", "value 2"))
+        FakeRequest(POST, trusteesNinoRoute)
+          .withFormUrlEncodedBody(("value", "answer"))
 
       val result = route(application, request).value
 
@@ -176,5 +183,39 @@ class TrusteesUkAddressControllerSpec extends SpecBase {
 
       application.stop()
     }
+
+    "for a GET" must {
+
+      def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
+        val route = routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index).url
+
+        FakeRequest(GET, route)
+      }
+
+      validateIndex(
+        arbitrary[String],
+        TrusteesNinoPage.apply,
+        getForIndex
+      )
+
+    }
+
+    "for a POST" must {
+      def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+
+        val route =
+          routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index).url
+
+        FakeRequest(POST, route)
+          .withFormUrlEncodedBody(("value", "answer"))
+      }
+
+      validateIndex(
+        arbitrary[String],
+        TrusteesNinoPage.apply,
+        postForIndex
+      )
+    }
+
   }
 }

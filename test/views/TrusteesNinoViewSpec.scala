@@ -17,43 +17,36 @@
 package views
 
 import controllers.routes
-import forms.TrusteesUkAddressFormProvider
-import models.{NormalMode, TrusteesUkAddress}
+import forms.TrusteesNinoFormProvider
+import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.QuestionViewBehaviours
-import views.html.TrusteesUkAddressView
+import views.behaviours.StringViewBehaviours
+import views.html.TrusteesNinoView
 
-class TrusteesUkAddressViewSpec extends QuestionViewBehaviours[TrusteesUkAddress] {
+class TrusteesNinoViewSpec extends StringViewBehaviours {
 
-  val messageKeyPrefix = "trusteesUkAddress"
+  val messageKeyPrefix = "trusteesNino"
   val index = 0
   val trusteeName = "FirstName LastName"
+  val hintKey = "trusteesNino.hint"
 
-  override val form = new TrusteesUkAddressFormProvider()()
+  val form = new TrusteesNinoFormProvider()()
 
-  "TrusteesUkAddressView" must {
+  "TrusteesNinoView view" must {
 
     val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-    val view = application.injector.instanceOf[TrusteesUkAddressView]
+    val view = application.injector.instanceOf[TrusteesNinoView]
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, index, trusteeName)(fakeRequest, messages)
 
-
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, trusteeName)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, trusteeName, "hint")
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like pageWithTextFields(
-      form,
-      applyView,
-      messageKeyPrefix,
-      routes.TrusteesUkAddressController.onSubmit(NormalMode, index).url,
-      Seq("line1", "line2", "line3", "townOrCity", "postcode"),
-      trusteeName
-    )
+    behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, trusteeName, routes.TrusteesNinoController.onSubmit(NormalMode, index).url, Some(hintKey))
 
     behave like pageWithASubmitButton(applyView(form))
 

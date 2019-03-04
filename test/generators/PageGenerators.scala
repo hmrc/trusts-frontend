@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryTrusteesNinoPage: Arbitrary[TrusteesNinoPage] =
+    Arbitrary(TrusteesNinoPage(0))
+
   implicit lazy val arbitraryTrusteesUkAddressPage: Arbitrary[TrusteesUkAddressPage] =
     Arbitrary(TrusteesUkAddressPage(0))
 
