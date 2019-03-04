@@ -18,7 +18,7 @@ package pages
 
 import play.api.libs.json.JsPath
 
-final case class  TrusteeLiveInTheUKPage(index : Int) extends QuestionPage[Boolean] {
+final case class TrusteeLiveInTheUKPage(index : Int) extends QuestionPage[Boolean] {
 
 override def path: JsPath = JsPath \ Trustees \ index \ toString
 

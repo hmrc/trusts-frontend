@@ -54,7 +54,9 @@ class Navigator @Inject()() {
     case TrusteesNamePage(index) => _ => routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index)
     case TrusteesDateOfBirthPage(index) => ua => trusteeDateOfBirthRoute(ua, index)
     case TrusteeAUKCitizenPage(index) => ua => trusteeAUKCitizenRoute(ua, index)
-    case TrusteesNinoPage(index) => _ => routes.TrusteesAnswerPageController.onPageLoad(index)
+    case TrusteesNinoPage(index) => _ => routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index)
+    case TrusteeLiveInTheUKPage(index) => _ => routes.TelephoneNumberController.onPageLoad(NormalMode, index)
+    case TelephoneNumberPage(index) => _ => routes.TrusteesAnswerPageController.onPageLoad(index)
     case TrusteesAnswerPage => _ => routes.AddATrusteeController.onPageLoad()
     case AddATrusteePage => addATrusteeRoute
     //  Default

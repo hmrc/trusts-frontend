@@ -33,7 +33,7 @@ trait TrusteeRoutes {
 
   def trusteeRoutes()(implicit navigator: Navigator) = {
 
-    "there a no trustees" must {
+    "there are no trustees" must {
 
       "go to the next trustee from AddATrusteePage when selected add them now" in {
         forAll(arbitrary[UserAnswers]) {
@@ -114,57 +114,83 @@ trait TrusteeRoutes {
       }
     }
 
-    "go to TrusteeAnswersPage from TrusteesDateOfBirthPage if not a lead" in {
-      forAll(arbitrary[UserAnswers]) {
-        userAnswers =>
+    "non lead trustee" must {
 
-          val answers = userAnswers.set(IsThisLeadTrusteePage(index), false).success.value
+      "go to TrusteeAnswersPage from TrusteesDateOfBirthPage" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
 
-          navigator.nextPage(TrusteesDateOfBirthPage(index), NormalMode)(answers)
-            .mustBe(routes.TrusteesAnswerPageController.onPageLoad(index))
+            val answers = userAnswers.set(IsThisLeadTrusteePage(index), false).success.value
+
+            navigator.nextPage(TrusteesDateOfBirthPage(index), NormalMode)(answers)
+              .mustBe(routes.TrusteesAnswerPageController.onPageLoad(index))
+        }
       }
+
     }
 
-    "go to TrusteeAUKCitizen from TrusteesDateOfBirthPage page if is a lead" in {
-      forAll(arbitrary[UserAnswers]) {
-        userAnswers =>
+    "lead trustee" must {
 
-          val answers = userAnswers.set(IsThisLeadTrusteePage(index), true).success.value
+      "go to TrusteeAUKCitizen from TrusteesDateOfBirthPage page" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
 
-          navigator.nextPage(TrusteesDateOfBirthPage(index), NormalMode)(answers)
-            .mustBe(routes.TrusteeAUKCitizenController.onPageLoad(NormalMode, index))
+            val answers = userAnswers.set(IsThisLeadTrusteePage(index), true).success.value
+
+            navigator.nextPage(TrusteesDateOfBirthPage(index), NormalMode)(answers)
+              .mustBe(routes.TrusteeAUKCitizenController.onPageLoad(NormalMode, index))
+        }
       }
-    }
 
-    "go to TrusteesNinoPage from TrusteeAUKCitizen when user answers Yes" in {
-      forAll(arbitrary[UserAnswers]) {
-        userAnswers =>
+      "go to TrusteesNinoPage from TrusteeAUKCitizen when user answers Yes" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
 
-          val answers = userAnswers.set(TrusteeAUKCitizenPage(index), value = true).success.value
+            val answers = userAnswers.set(TrusteeAUKCitizenPage(index), value = true).success.value
 
-          navigator.nextPage(TrusteeAUKCitizenPage(index), NormalMode)(answers)
-            .mustBe(routes.TrusteesNinoController.onPageLoad(NormalMode, index))
+            navigator.nextPage(TrusteeAUKCitizenPage(index), NormalMode)(answers)
+              .mustBe(routes.TrusteesNinoController.onPageLoad(NormalMode, index))
+        }
       }
-    }
 
-    "go to TrusteePassportOrIDPage from TrusteeAUKCitizen when user answers No" in {
-      forAll(arbitrary[UserAnswers]) {
-        userAnswers =>
+      "go to TrusteePassportOrIDPage from TrusteeAUKCitizen when user answers No" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
 
-          val answers = userAnswers.set(TrusteeAUKCitizenPage(index), value = false).success.value
+            val answers = userAnswers.set(TrusteeAUKCitizenPage(index), value = false).success.value
 
-          navigator.nextPage(TrusteeAUKCitizenPage(index), NormalMode)(answers)
-            .mustBe(routes.TrusteesAnswerPageController.onPageLoad(index))
+            navigator.nextPage(TrusteeAUKCitizenPage(index), NormalMode)(answers)
+              .mustBe(routes.TrusteesAnswerPageController.onPageLoad(index))
+        }
       }
-    }
 
-    "go to TrusteesInUKQuestionPage from TrusteesNinoPage" in {
-      forAll(arbitrary[UserAnswers]) {
-        userAnswers =>
+      "go to TrusteeLivesInUKPage from TrusteesNinoPage" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
 
-          navigator.nextPage(TrusteesNinoPage(index), NormalMode)(userAnswers)
-            .mustBe(routes.TrusteesAnswerPageController.onPageLoad(index))
+            navigator.nextPage(TrusteesNinoPage(index), NormalMode)(userAnswers)
+              .mustBe(routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index))
+        }
       }
+
+      "go to TrusteeTelephoneNumberPage from TrusteeLivesInUKPage" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            navigator.nextPage(TrusteeLiveInTheUKPage(index), NormalMode)(userAnswers)
+              .mustBe(routes.TelephoneNumberController.onPageLoad(NormalMode, index))
+        }
+      }
+
+      "go to TrusteeAnswerPage from TrusteeTelephoneNumberPage" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            navigator.nextPage(TelephoneNumberPage(index), NormalMode)(userAnswers)
+              .mustBe(routes.TrusteesAnswerPageController.onPageLoad(index))
+        }
+      }
+
     }
 
     "go to AddATrusteePage from TrusteeAnswersPage page" in {
