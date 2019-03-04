@@ -296,3 +296,6 @@ trusteeLiveInTheUK.title = Does {0} live in the UK?
 trusteeLiveInTheUK.heading = Does {0} live in the UK?
 trusteeLiveInTheUK.checkYourAnswersLabel = Does {0} live in the UK?
 trusteeLiveInTheUK.error.required = Select yes if the trustee lives in the UK
+
+agentOverview.title = agentOverview
+agentOverview.heading = agentOverview
