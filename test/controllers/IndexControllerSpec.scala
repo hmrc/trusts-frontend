@@ -25,11 +25,11 @@ class IndexControllerSpec extends SpecBase {
 
   "Index Controller" must {
 
-    "permanently redirect to TrustRegisteredOnline for a GET" in {
+    "redirect to TrustRegisteredOnline with Non-Agent affinityGroup for a GET" in {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, routes.IndexController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.IndexController.onPageLoad().url).withSession("affinityGroup" -> "Organisation")
 
       val result = route(application, request).value
 
@@ -39,5 +39,23 @@ class IndexControllerSpec extends SpecBase {
 
       application.stop()
     }
+
+    "redirect to AgentOverview with Agent affinityGroup for a GET" in {
+
+      val application = applicationBuilder(userAnswers = None).build()
+
+      val request = FakeRequest(GET, routes.IndexController.onPageLoad().url).withSession("affinityGroup" -> "Agent")
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustBe routes.AgentOverviewController.onPageLoad().url
+
+      application.stop()
+    }
+
+
   }
+
 }

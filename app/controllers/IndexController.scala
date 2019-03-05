@@ -16,6 +16,7 @@
 
 package controllers
 
+import controllers.actions.IdentifierAction
 import javax.inject.Inject
 import models.NormalMode
 import play.api.i18n.I18nSupport
@@ -25,12 +26,18 @@ import views.html.IndexView
 
 import scala.concurrent.Future
 
+import utils.AffinityGroupUtils._
+
 class IndexController @Inject()(
+                                 identify: IdentifierAction,
                                  val controllerComponents: MessagesControllerComponents,
                                  view: IndexView
                                ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode)))
+    isAgent(request) match {
+      case true => Future.successful(Redirect(routes.AgentOverviewController.onPageLoad()))
+      case _ => Future.successful(Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode)))
+    }
   }
 }

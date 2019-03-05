@@ -29,7 +29,19 @@ class AgentOverviewViewSpec extends ViewBehaviours {
 
     val applyView = view.apply()(fakeRequest, messages)
 
-    behave like normalPage(applyView, "agentOverview")
+    behave like normalPage(applyView, "agentOverview",
+      "paragraph1",
+      "helper",
+      "paragraph2",
+      "bulletpoint1",
+      "bulletpoint2",
+      "bulletpoint3",
+      "bulletpoint4",
+      "paragraph3",
+      "bulletpoint5",
+      "bulletpoint6",
+      "bulletpoint7"
+    )
 
     behave like pageWithBackLink(applyView)
   }

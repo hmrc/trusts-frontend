@@ -31,6 +31,9 @@ import play.api.mvc.{ActionBuilder, ActionFunction, Request, Result}
 
 import scala.concurrent.{ExecutionContext, Future}
 
+import play.api.libs.typedmap.TypedKey
+import models.requests._
+
 class AuthenticatedIdentifierAction @Inject()(
                                                override val authConnector: AuthConnector,
                                                config: FrontendAppConfig,
@@ -42,8 +45,9 @@ class AuthenticatedIdentifierAction @Inject()(
     val hmrcAgentEnrolmentKey = "HMRC-AS-AGENT"
     authorised().retrieve(Retrievals.internalId and Retrievals.affinityGroup and Retrievals.allEnrolments) {
       case Some(internalId) ~ Some(Agent) ~ enrolments => {
-        if (enrolments.getEnrolment(hmrcAgentEnrolmentKey).nonEmpty)
+        if (enrolments.getEnrolment(hmrcAgentEnrolmentKey).nonEmpty) {
           block(IdentifierRequest(request, internalId))
+        }
         else
           Future(Redirect(routes.CreateAgentServicesAccountController.onPageLoad()))
       }
