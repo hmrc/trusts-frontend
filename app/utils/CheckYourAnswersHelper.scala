@@ -55,7 +55,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "trusteesUkAddress.checkYourAnswersLabel",
         ukAddress(x),
-        routes.TrusteesUkAddressController.onPageLoad(CheckMode, index).url
+        routes.TrusteesUkAddressController.onPageLoad(CheckMode, index).url,
+        trusteeName(index, userAnswers)
       )
   }
 

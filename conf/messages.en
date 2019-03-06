@@ -242,6 +242,9 @@ trusteesName.error.invalidLastNameCharacters = Trustee’s last name must only i
 
 leadTrusteesName.title = What is the lead trustee’s name?
 leadTrusteesName.heading = What is the lead trustee’s name?
+leadTrusteesName.firstName = First name
+leadTrusteesName.middleName = Middle name (optional)
+leadTrusteesName.lastName = Last name
 
 trusteesAnswerPage.title = Check trustee details
 trusteesAnswerPage.heading = Check trustee details

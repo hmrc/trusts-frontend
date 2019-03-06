@@ -61,7 +61,7 @@ class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generat
       applyView,
       leadMessageKeyPrefix,
       routes.TrusteesNameController.onSubmit(NormalMode, index).url,
-      Seq("firstName", "middleName", "lastName")
+      Seq(("firstName",None), ("middleName",None), ("lastName",None))
     )
 
   }
@@ -87,7 +87,7 @@ class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generat
       applyView,
       messageKeyPrefix,
       routes.TrusteesNameController.onSubmit(NormalMode, index).url,
-      Seq("firstName", "middleName", "lastName")
+      Seq(("firstName",None), ("middleName",None), ("lastName",None))
     )
 
   }

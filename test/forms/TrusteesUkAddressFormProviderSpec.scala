@@ -17,6 +17,7 @@
 package forms
 
 import forms.behaviours.StringFieldBehaviours
+import org.scalacheck.Arbitrary.arbitrary
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
 
@@ -138,11 +139,14 @@ class TrusteesUkAddressFormProviderSpec extends StringFieldBehaviours {
 
     val fieldName = "postcode"
     val requiredKey = "trusteesUkAddress.error.postcode.required"
+    val invalidKey = "error.postcodeInvalid"
 
-    behave like fieldThatBindsValidData(
+    behave like fieldWithRegexpWithGenerator(
       form,
       fieldName,
-      RegexpGen.from(Validation.postcodeRegex)
+      regexp = Validation.postcodeRegex,
+      generator = arbitrary[String],
+      error = FormError(fieldName, invalidKey)
     )
 
     behave like mandatoryField(
@@ -154,7 +158,7 @@ class TrusteesUkAddressFormProviderSpec extends StringFieldBehaviours {
     behave like nonEmptyField(
       form,
       fieldName,
-      requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
+      requiredError = FormError(fieldName, invalidKey)
     )
 
   }

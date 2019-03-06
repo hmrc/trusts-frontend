@@ -46,7 +46,7 @@ object InternationalAddress {
   implicit lazy val formats: OFormat[InternationalAddress] = Json.format[InternationalAddress]
 }
 
-trait Address
+sealed trait Address
 
 object Address {
 

@@ -57,7 +57,7 @@ class TrusteesUkAddressFormProvider @Inject() extends Mappings {
               regexp(Validation.addressLineRegex, "trusteesUkAddress.error.townOrCity.invalidCharacters")
             )),
       "postcode" ->
-        text("trusteesUkAddress.error.postcode.required")
+        postcode("trusteesUkAddress.error.postcode.required")
           .verifying(
             firstError(
               isNotEmpty("postcode", "trusteesUkAddress.error.postcode.required"),

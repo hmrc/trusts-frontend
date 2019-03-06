@@ -44,7 +44,7 @@ trait Formatters {
       data.get(key) match {
         case None | Some("") => Left(Seq(FormError(key, requiredKey)))
         case Some(s) =>
-          val trimmed = s.trim
+          val trimmed = s.trim.toUpperCase
             trimmed.matches(Validation.postcodeRegex) match {
             case true => Right(trimmed)
             case false => Left(Seq(FormError(key, invalidKey)))

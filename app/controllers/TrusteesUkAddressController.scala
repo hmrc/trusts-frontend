@@ -77,10 +77,8 @@ class TrusteesUkAddressController @Inject()(
           Future.successful(BadRequest(view(formWithErrors, mode, index, trusteeName))),
 
         value => {
-          val transformedPostcode = value.postcode.toUpperCase()
-          val copyVal = value.copy(postcode = transformedPostcode)
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteesUkAddressPage(index), copyVal))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteesUkAddressPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(TrusteesUkAddressPage(index), mode)(updatedAnswers))
         }

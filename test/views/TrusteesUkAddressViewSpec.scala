@@ -29,6 +29,7 @@ class TrusteesUkAddressViewSpec extends QuestionViewBehaviours[TrusteesUkAddress
   val messageKeyPrefix = "trusteesUkAddress"
   val index = 0
   val trusteeName = "FirstName LastName"
+  val postcodeHintKey = "trusteesUkAddress.postcode.hint"
 
   override val form = new TrusteesUkAddressFormProvider()()
 
@@ -51,7 +52,7 @@ class TrusteesUkAddressViewSpec extends QuestionViewBehaviours[TrusteesUkAddress
       applyView,
       messageKeyPrefix,
       routes.TrusteesUkAddressController.onSubmit(NormalMode, index).url,
-      Seq("line1", "line2", "line3", "townOrCity", "postcode"),
+      Seq(("line1",None), ("line2",None), ("line3",None), ("townOrCity",None), ("postcode",Some(postcodeHintKey))),
       trusteeName
     )
 

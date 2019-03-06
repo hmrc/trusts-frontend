@@ -177,7 +177,9 @@ trait TrusteeRoutes {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
-            navigator.nextPage(TrusteeLiveInTheUKPage(index), NormalMode)(userAnswers)
+            val answers = userAnswers.set(TrusteeLiveInTheUKPage(index), value = true).success.value
+
+            navigator.nextPage(TrusteeLiveInTheUKPage(index), NormalMode)(answers)
               .mustBe(routes.TrusteesUkAddressController.onPageLoad(NormalMode, index))
         }
       }
