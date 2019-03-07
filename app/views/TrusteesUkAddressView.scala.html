@@ -1,0 +1,72 @@
+@*
+ * Copyright 2019 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import controllers.routes._
+@import models.Mode
+
+@this(
+    main_template: MainTemplate,
+    formHelper: FormWithCSRF
+)
+
+@(form: Form[_], mode: Mode, index: Int, trusteeName: String)(implicit request: Request[_], messages: Messages)
+
+@main_template(
+    title = s"${errorPrefix(form)} ${messages("trusteesUkAddress.title", trusteeName)}"
+    ) {
+
+    @formHelper(action = TrusteesUkAddressController.onSubmit(mode, index), 'autoComplete -> "off") {
+
+        @components.back_link()
+
+        @components.error_summary(form.errors)
+
+        @components.heading("trusteesUkAddress.heading", optionalParam = Some(trusteeName))
+
+        @components.input_text(
+            field = form("line1"),
+            label = messages("trusteesUkAddress.line1"),
+            inputClass = Some("form-control-3-4")
+        )
+
+        @components.input_text(
+            field = form("line2"),
+            label = messages("trusteesUkAddress.line2"),
+            inputClass = Some("form-control-3-4")
+        )
+
+        @components.input_text(
+            field = form("line3"),
+            label = messages("trusteesUkAddress.line3"),
+            inputClass = Some("form-control-3-4")
+        )
+
+        @components.input_text(
+            field = form("townOrCity"),
+            label = messages("trusteesUkAddress.townOrCity"),
+            inputClass = Some("form-control-2-3")
+        )
+
+        @components.input_text(
+            field = form("postcode"),
+            label = messages("trusteesUkAddress.postcode"),
+            hint = Some(messages(s"trusteesUkAddress.postcode.hint")),
+            inputClass = Some("form-control-1-4")
+        )
+
+        @components.submit_button()
+    }
+}

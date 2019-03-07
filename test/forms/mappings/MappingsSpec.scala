@@ -104,17 +104,6 @@ class MappingsSpec extends WordSpec with MustMatchers with OptionValues with Map
 
     }
 
-    validPostcodes.foreach {
-      p =>
-
-        val lowercase = p.toLowerCase
-
-        s"bind a valid postcode $lowercase" in {
-          val result = testForm.bind(Map("value" -> lowercase))
-          result.get mustEqual lowercase
-        }
-    }
-
     "not bind an invalid postcode due to format" in {
       val result = testForm.bind(Map("value" -> "AA1 1A"))
       result.errors must contain(FormError("value", "error.postcodeInvalid"))
