@@ -31,7 +31,7 @@ trait QuestionViewBehaviours[A] extends ViewBehaviours {
                          createView: Form[A] => HtmlFormat.Appendable,
                          messageKeyPrefix: String,
                          expectedFormAction: String,
-                         fields: Seq[String],
+                         fields: Seq[(String, Option[String])],
                          args : String*) = {
 
     "behave like a question page" when {
@@ -42,7 +42,7 @@ trait QuestionViewBehaviours[A] extends ViewBehaviours {
 
           s"contain an input for $field" in {
             val doc = asDocument(createView(form))
-            assertRenderedById(doc, field)
+            assertRenderedById(doc, field._1)
           }
         }
 
@@ -68,18 +68,30 @@ trait QuestionViewBehaviours[A] extends ViewBehaviours {
 
           "show an error summary" in {
 
-            val doc = asDocument(createView(form.withError(FormError(field, "error"))))
+            val doc = asDocument(createView(form.withError(FormError(field._1, "error"))))
             assertRenderedById(doc, "error-summary-heading")
           }
 
           s"show an error in the label for field '$field'" in {
 
-            val doc = asDocument(createView(form.withError(FormError(field, "error"))))
+            val doc = asDocument(createView(form.withError(FormError(field._1, "error"))))
             val errorSpan = doc.getElementsByClass("error-message").first
-            errorSpan.parent.attr("for") mustBe field
+            errorSpan.parent.attr("for") mustBe field._1
           }
         }
       }
+
+      for (field <- fields) {
+          s"contains a label and optional hint text for the field '$field'" in {
+            val doc = asDocument(createView(form))
+            val fieldName = field._1
+            val fieldHint = field._2 map (k => messages(k))
+            assertContainsLabel(doc, fieldName, messages(s"$messageKeyPrefix.$fieldName"), fieldHint)
+          }
+      }
+
+
+
     }
   }
 

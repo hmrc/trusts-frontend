@@ -242,6 +242,9 @@ trusteesName.error.invalidLastNameCharacters = Trustee’s last name must only i
 
 leadTrusteesName.title = What is the lead trustee’s name?
 leadTrusteesName.heading = What is the lead trustee’s name?
+leadTrusteesName.firstName = First name
+leadTrusteesName.middleName = Middle name (optional)
+leadTrusteesName.lastName = Last name
 
 trusteesAnswerPage.title = Check trustee details
 trusteesAnswerPage.heading = Check trustee details
@@ -296,6 +299,28 @@ trusteeLiveInTheUK.title = Does {0} live in the UK?
 trusteeLiveInTheUK.heading = Does {0} live in the UK?
 trusteeLiveInTheUK.checkYourAnswersLabel = Does {0} live in the UK?
 trusteeLiveInTheUK.error.required = Select yes if the trustee lives in the UK
+
+trusteesUkAddress.title = What is {0}’s address?
+trusteesUkAddress.heading = What is {0}’s address?
+trusteesUkAddress.line1 = Address line 1
+trusteesUkAddress.line2 = Address line 2 (optional)
+trusteesUkAddress.line3 = Address line 3 (optional)
+trusteesUkAddress.townOrCity = Town or city
+trusteesUkAddress.postcode = Postcode
+trusteesUkAddress.postcode.hint = For example AB1 1AB
+trusteesUkAddress.checkYourAnswersLabel = What is {0}’s address?
+trusteesUkAddress.error.line1.required = Enter address line 1
+trusteesUkAddress.error.townOrCity.required = Enter a town or city
+trusteesUkAddress.error.postcode.required = Enter a postcode
+trusteesUkAddress.error.line1.length = Address line 1 must be 35 characters or less
+trusteesUkAddress.error.line2.length = Address line 2 must be 35 characters or less
+trusteesUkAddress.error.line3.length = Address line 3 must be 35 characters or less
+trusteesUkAddress.error.townOrCity.length = Town or city must be 35 characters or less
+trusteesUkAddress.error.line1.invalidCharacters = Address line 1 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+trusteesUkAddress.error.line2.invalidCharacters = Address line 2 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+trusteesUkAddress.error.line3.invalidCharacters = Address line 3 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+trusteesUkAddress.error.townOrCity.invalidCharacters = Town or city must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+trusteesUkAddress.error.postcode.invalidCharacters = Enter a real postcode
 
 agentOverview.title = Register a trust for a client
 agentOverview.heading = Register a trust for a client
