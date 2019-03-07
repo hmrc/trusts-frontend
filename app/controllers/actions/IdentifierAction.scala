@@ -75,7 +75,7 @@ class SessionIdentifierAction @Inject()(
 
     hc.sessionId match {
       case Some(session) =>
-        block(IdentifierRequest(request, session.value, AffinityGroup.Organisation))
+        block(IdentifierRequest(request, session.value, AffinityGroup.Individual))
       case None =>
         Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
     }

@@ -29,7 +29,7 @@ class IndexControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, routes.IndexController.onPageLoad().url).withSession("affinityGroup" -> "Organisation")
+      val request = FakeRequest(GET, routes.IndexController.onPageLoad().url)
 
       val result = route(application, request).value
 
@@ -42,9 +42,9 @@ class IndexControllerSpec extends SpecBase {
 
     "redirect to AgentOverview with Agent affinityGroup for a GET" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      val application = applicationBuilderWithAgent(userAnswers = None).build()
 
-      val request = FakeRequest(GET, routes.IndexController.onPageLoad().url).withSession("affinityGroup" -> "Agent")
+      val request = FakeRequest(GET, routes.IndexController.onPageLoad().url)
 
       val result = route(application, request).value
 

@@ -16,19 +16,16 @@
 
 package controllers
 
-import controllers.actions.{IdentifierAction, RequiredAnswer}
+import controllers.actions.IdentifierAction
 import javax.inject.Inject
 import models.NormalMode
-import pages.{Trustees, TrusteesNamePage}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.IndexView
-import models.requests.IdentifierRequest
 import uk.gov.hmrc.auth.core.AffinityGroup
 
 import scala.concurrent.Future
-import utils.AffinityGroupUtils._
 
 class IndexController @Inject()(
                                  identify: IdentifierAction,
@@ -36,9 +33,9 @@ class IndexController @Inject()(
                                  view: IndexView
                                ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = Action.async { implicit request =>
-    isAgent(request) match {
-      case true => Future.successful(Redirect(routes.AgentOverviewController.onPageLoad()))
+  def onPageLoad: Action[AnyContent] = identify.async { implicit request =>
+    request.affinityGroup match {
+      case AffinityGroup.Agent => Future.successful(Redirect(routes.AgentOverviewController.onPageLoad()))
       case _ => Future.successful(Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode)))
     }
   }
