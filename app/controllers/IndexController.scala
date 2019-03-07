@@ -16,16 +16,18 @@
 
 package controllers
 
-import controllers.actions.IdentifierAction
+import controllers.actions.{IdentifierAction, RequiredAnswer}
 import javax.inject.Inject
 import models.NormalMode
+import pages.{Trustees, TrusteesNamePage}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.IndexView
+import models.requests.IdentifierRequest
+import uk.gov.hmrc.auth.core.AffinityGroup
 
 import scala.concurrent.Future
-
 import utils.AffinityGroupUtils._
 
 class IndexController @Inject()(
