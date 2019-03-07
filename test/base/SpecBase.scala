@@ -49,7 +49,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Moc
     new GuiceApplicationBuilder()
       .overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],
-        bind[IdentifierAction].to[FakeIdentifierAction],
+        bind[IdentifierAction].to[FakeIdentifierActionOrganisation],
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
         bind[SessionRepository].to(mockedSessionRepository)
       )
@@ -58,7 +58,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Moc
     new GuiceApplicationBuilder()
       .overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],
-        bind[IdentifierAction].to[FakeIdentifierActionWithAgent],
+        bind[IdentifierAction].to[FakeIdentifierActionAgent],
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
         bind[SessionRepository].to(mockedSessionRepository)
       )
