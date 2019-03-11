@@ -46,6 +46,7 @@ site.service_name = Trusts Registration Service
 site.textarea.char_limit = (Limit is {0} characters)
 site.inprogress = In Progress
 site.complete = Completed
+site.warning = Warning
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
@@ -322,5 +323,30 @@ trusteesUkAddress.error.line3.invalidCharacters = Address line 3 must only inclu
 trusteesUkAddress.error.townOrCity.invalidCharacters = Town or city must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
 trusteesUkAddress.error.postcode.invalidCharacters = Enter a real postcode
 
-trusteesInfo.title = trusteesInfo
-trusteesInfo.heading = trusteesInfo
+trusteesInfo.title = Information you need to add a trustee
+trusteesInfo.heading = Information you need to add a trustee
+trusteesInfo.subheading1 = Lead trustee
+trusteesInfo.paragraph1 = You must have a lead trustee who is the main contact point for the trust. They will be sent all official documents like the trust’s Unique Taxpayer Reference and notice to file tax returns.
+trusteesInfo.paragraph2 = If the lead trustee is a UK citizen, you must provide their:
+trusteesInfo.bulletpoint1 = National Insurance number
+trusteesInfo.bulletpoint2 = address
+trusteesInfo.bulletpoint3 = telephone number
+trusteesInfo.paragraph3 = If the lead trustee is UK-registered company, you must provide its Unique Taxpayer Reference.
+trusteesInfo.subheading2 = Trustee
+trusteesInfo.paragraph4 = To add a person as a trustee you need their:
+trusteesInfo.bulletpoint4 = name
+trusteesInfo.bulletpoint5 = date of birth
+trusteesInfo.bulletpoint6 = National Insurance number or passport details and address
+trusteesInfo.paragraph5 = To add a business as a trustee, you need their:
+trusteesInfo.bulletpoint7 = registered name
+trusteesInfo.bulletpoint8 = Unique Taxpayer Reference
+trusteesInfo.paragraph6 = If it is a non-UK business, you need their address.
+trusteesInfo.warning = All trustees have the same legal responsibilities.
+trusteesInfo.continue = Continue
+
+
+
+
+
+
+
