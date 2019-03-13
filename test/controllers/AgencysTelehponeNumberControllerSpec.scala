@@ -1,7 +1,23 @@
+/*
+ * Copyright 2019 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package controllers
 
 import base.SpecBase
-import forms.AgencysTelehponeNumberFormProvider
+import forms.AgenciesTelephoneNumber
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.AgencysTelehponeNumberPage
@@ -16,10 +32,10 @@ class AgencysTelehponeNumberControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new AgencysTelehponeNumberFormProvider()
+  val formProvider = new AgenciesTelephoneNumber()
   val form = formProvider()
 
-  lazy val agencysTelehponeNumberRoute = routes.AgencysTelehponeNumberController.onPageLoad(NormalMode).url
+  lazy val agenciesTelephoneNumberRoute = routes.AgencysTelehponeNumberController.onPageLoad(NormalMode).url
 
   "AgencysTelehponeNumber Controller" must {
 
@@ -27,7 +43,7 @@ class AgencysTelehponeNumberControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, agencysTelehponeNumberRoute)
+      val request = FakeRequest(GET, agenciesTelephoneNumberRoute)
 
       val result = route(application, request).value
 
@@ -47,7 +63,7 @@ class AgencysTelehponeNumberControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, agencysTelehponeNumberRoute)
+      val request = FakeRequest(GET, agenciesTelephoneNumberRoute)
 
       val view = application.injector.instanceOf[AgencysTelehponeNumberView]
 
@@ -69,8 +85,8 @@ class AgencysTelehponeNumberControllerSpec extends SpecBase {
           .build()
 
       val request =
-        FakeRequest(POST, agencysTelehponeNumberRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+        FakeRequest(POST, agenciesTelephoneNumberRoute)
+          .withFormUrlEncodedBody(("value", "0191 1111111"))
 
       val result = route(application, request).value
 
@@ -85,7 +101,7 @@ class AgencysTelehponeNumberControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, agencysTelehponeNumberRoute)
+        FakeRequest(POST, agenciesTelephoneNumberRoute)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
@@ -106,7 +122,7 @@ class AgencysTelehponeNumberControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, agencysTelehponeNumberRoute)
+      val request = FakeRequest(GET, agenciesTelephoneNumberRoute)
 
       val result = route(application, request).value
 
@@ -122,7 +138,7 @@ class AgencysTelehponeNumberControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, agencysTelehponeNumberRoute)
+        FakeRequest(POST, agenciesTelephoneNumberRoute)
           .withFormUrlEncodedBody(("value", "answer"))
 
       val result = route(application, request).value

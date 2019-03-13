@@ -322,8 +322,9 @@ trusteesUkAddress.error.line3.invalidCharacters = Address line 3 must only inclu
 trusteesUkAddress.error.townOrCity.invalidCharacters = Town or city must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
 trusteesUkAddress.error.postcode.invalidCharacters = Enter a real postcode
 
-agencysTelehponeNumber.title = agencysTelehponeNumber
-agencysTelehponeNumber.heading = agencysTelehponeNumber
-agencysTelehponeNumber.checkYourAnswersLabel = agencysTelehponeNumber
-agencysTelehponeNumber.error.required = Enter agencysTelehponeNumber
-agencysTelehponeNumber.error.length = AgencysTelehponeNumber must be 100 characters or less
+agenciesTelephoneNumber.title = What is the agency’s telephone number?
+agenciesTelephoneNumber.heading = What is the agency’s telephone number?
+agenciesTelephoneNumber.checkYourAnswersLabel = What is the agency’s telephone number?
+agenciesTelephoneNumber.hint = We will use this number to contact you about this trust’s registration. For international numbers include the country code
+agenciesTelephoneNumber.error.required = Enter the agency’s telephone number
+agenciesTelephoneNumber.error.invalid.characters = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192

@@ -167,7 +167,7 @@ POST       /trustees/:index/trustee-uk-address                         controlle
 GET        /trustees/:index/change-trustee-uk-address                  controllers.TrusteesUkAddressController.onPageLoad(mode: Mode = CheckMode, index : Int)
 POST       /trustees/:index/change-trustee-uk-address                  controllers.TrusteesUkAddressController.onSubmit(mode: Mode = CheckMode, index : Int)
 
-GET        /agencysTelehponeNumber                        controllers.AgencysTelehponeNumberController.onPageLoad(mode: Mode = NormalMode)
-POST       /agencysTelehponeNumber                        controllers.AgencysTelehponeNumberController.onSubmit(mode: Mode = NormalMode)
-GET        /changeAgencysTelehponeNumber                  controllers.AgencysTelehponeNumberController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeAgencysTelehponeNumber                  controllers.AgencysTelehponeNumberController.onSubmit(mode: Mode = CheckMode)
+GET        /agencys-telehpone-number                        controllers.AgencysTelehponeNumberController.onPageLoad(mode: Mode = NormalMode)
+POST       /agencys-telehpone-number                         controllers.AgencysTelehponeNumberController.onSubmit(mode: Mode = NormalMode)
+GET        /change-agencys-telehpone-number                   controllers.AgencysTelehponeNumberController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-agencys-telehpone-number                  controllers.AgencysTelehponeNumberController.onSubmit(mode: Mode = CheckMode)
