@@ -114,6 +114,10 @@ GET        /trust-utr-post                              controllers.UTRSentByPos
 GET        /check-trust-answers                      controllers.TrustDetailsAnswerPageController.onPageLoad()
 POST       /check-trust-answers                      controllers.TrustDetailsAnswerPageController.onSubmit()
 
+# Task List
+
+GET        /registration-progress                       controllers.TaskListController.onPageLoad()
+
 # trustees
 
 GET        /trustees/:index/is-this-the-lead-trustee            controllers.IsThisLeadTrusteeController.onPageLoad(mode: Mode = NormalMode, index : Int)

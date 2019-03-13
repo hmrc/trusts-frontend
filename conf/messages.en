@@ -321,3 +321,6 @@ trusteesUkAddress.error.line2.invalidCharacters = Address line 2 must only inclu
 trusteesUkAddress.error.line3.invalidCharacters = Address line 3 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
 trusteesUkAddress.error.townOrCity.invalidCharacters = Town or city must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
 trusteesUkAddress.error.postcode.invalidCharacters = Enter a real postcode
+
+taskList.title = taskList
+taskList.heading = taskList
