@@ -252,6 +252,21 @@ trait TrustDetailsRoutes {
             .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad())
       }
     }
+
+    "go to task list from Check Trust Answers Page" in {
+
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(TrustRegisteredOnlinePage, false).success.value
+            .set(TrustHaveAUTRPage, false).success.value
+
+          navigator.nextPage(TrustDetailsAnswerPage, NormalMode)(answers)
+            .mustBe(routes.TaskListController.onPageLoad())
+      }
+
+    }
+
   }
 
   def trustDetailsCheckRoutes()(implicit navigator : Navigator) = {

@@ -17,6 +17,8 @@
 package controllers
 
 import base.SpecBase
+import models.{NormalMode, UserAnswers}
+import pages.{ExistingTrustMatched, TrustHaveAUTRPage, TrustRegisteredOnlinePage, WhatIsTheUTRPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.TaskListView
@@ -25,22 +27,146 @@ class TaskListControllerSpec extends SpecBase {
 
   "TaskList Controller" must {
 
-    "return OK and the correct view for a GET" in {
+    "redirect to RegisteredOnline when no required answer" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val answers = UserAnswers(userAnswersId)
+
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
 
       val request = FakeRequest(GET, routes.TaskListController.onPageLoad().url)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[TaskListView]
+      status(result) mustEqual SEE_OTHER
 
-      status(result) mustEqual OK
-
-      contentAsString(result) mustEqual
-        view()(fakeRequest, messages).toString
+      redirectLocation(result).value mustEqual routes.TrustRegisteredOnlineController.onPageLoad(NormalMode).url
 
       application.stop()
     }
+
+    "redirect to TrustHaveAUTR when no required answer" in {
+
+      val answers = UserAnswers(userAnswersId).set(TrustRegisteredOnlinePage, true).success.value
+
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+      val request = FakeRequest(GET, routes.TaskListController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.TrustHaveAUTRController.onPageLoad(NormalMode).url
+
+      application.stop()
+    }
+
+    "for an existing trust" when {
+
+      "has matched" when {
+
+        "return OK and the correct view for a GET" in {
+
+          val answers = UserAnswers(userAnswersId)
+            .set(TrustRegisteredOnlinePage, false).success.value
+            .set(TrustHaveAUTRPage, true).success.value
+            .set(WhatIsTheUTRPage, "SA123456789").success.value
+            .set(ExistingTrustMatched, true).success.value
+
+          val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+          val request = FakeRequest(GET, routes.TaskListController.onPageLoad().url)
+
+          val result = route(application, request).value
+
+          val view = application.injector.instanceOf[TaskListView]
+
+          status(result) mustEqual OK
+
+          contentAsString(result) mustEqual
+            view()(fakeRequest, messages).toString
+
+          application.stop()
+        }
+
+      }
+
+      "has not matched" when {
+
+        "redirect to FailedMatching" in {
+
+          val answers = UserAnswers(userAnswersId)
+            .set(TrustRegisteredOnlinePage, false).success.value
+            .set(TrustHaveAUTRPage, true).success.value
+            .set(WhatIsTheUTRPage, "SA123456789").success.value
+            .set(ExistingTrustMatched, false).success.value
+
+          val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+          val request = FakeRequest(GET, routes.TaskListController.onPageLoad().url)
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+
+          redirectLocation(result).value mustEqual routes.FailedMatchController.onPageLoad().url
+
+          application.stop()
+        }
+
+      }
+
+      "has not attempted matching" when {
+
+        "redirect to WhatIsTrustUTR" in {
+          val answers = UserAnswers(userAnswersId)
+            .set(TrustRegisteredOnlinePage, false).success.value
+            .set(TrustHaveAUTRPage, true).success.value
+            .set(WhatIsTheUTRPage, "SA123456789").success.value
+
+          val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+          val request = FakeRequest(GET, routes.TaskListController.onPageLoad().url)
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+
+          redirectLocation(result).value mustEqual routes.WhatIsTheUTRController.onPageLoad(NormalMode).url
+
+          application.stop()
+        }
+
+      }
+
+    }
+
+    "for a new trust" which {
+
+      "return OK and the correct view for a GET" in {
+
+        val answers = UserAnswers(userAnswersId)
+          .set(TrustRegisteredOnlinePage, false).success.value
+          .set(TrustHaveAUTRPage, false).success.value
+
+        val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+        val request = FakeRequest(GET, routes.TaskListController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[TaskListView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view()(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
+    }
+
+
   }
 }

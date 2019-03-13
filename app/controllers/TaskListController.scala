@@ -18,6 +18,8 @@ package controllers
 
 import controllers.actions._
 import javax.inject.Inject
+import models.NormalMode
+import pages.{ExistingTrustMatched, TrustHaveAUTRPage, TrustRegisteredOnlinePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -30,12 +32,38 @@ class TaskListController @Inject()(
                                        identify: IdentifierAction,
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
+                                       requiredAnswer: RequiredAnswerActionProvider,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: TaskListView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
+  private def actions =
+    identify andThen getData andThen requireData andThen
+      requiredAnswer(
+        RequiredAnswer(
+          TrustRegisteredOnlinePage, routes.TrustRegisteredOnlineController.onPageLoad(NormalMode))
+      ) andThen
+      requiredAnswer(
+        RequiredAnswer(
+          TrustHaveAUTRPage, routes.TrustHaveAUTRController.onPageLoad(NormalMode))
+      )
+
+  def onPageLoad: Action[AnyContent] = actions {
     implicit request =>
-      Ok(view())
+
+      val isExistingTrust = request.userAnswers.get(TrustHaveAUTRPage).get
+
+      if (isExistingTrust) {
+        request.userAnswers.get(ExistingTrustMatched) match {
+          case Some(true) =>
+            Ok(view())
+          case Some(false) =>
+            Redirect(routes.FailedMatchController.onPageLoad().url)
+          case None =>
+            Redirect(routes.WhatIsTheUTRController.onPageLoad(NormalMode).url)
+        }
+      } else {
+        Ok(view())
+      }
   }
 }
