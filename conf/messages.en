@@ -324,3 +324,6 @@ trusteesUkAddress.error.postcode.invalidCharacters = Enter a real postcode
 
 taskList.title = Registration progress
 taskList.heading = Registration progress
+taskList.paragraph1 = You can save your registration and come back later. You have 28 days from the time you first save to register a trust. If you do not register within 28 days, your information will be deleted.
+taskList.savedUntil.heading = Saved until
+taskList.sections.heading = Sections

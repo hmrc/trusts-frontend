@@ -16,6 +16,9 @@
 
 package controllers
 
+import java.time.format.DateTimeFormatter
+
+import config.FrontendAppConfig
 import controllers.actions._
 import javax.inject.Inject
 import models.NormalMode
@@ -34,8 +37,11 @@ class TaskListController @Inject()(
                                        requireData: DataRequiredAction,
                                        requiredAnswer: RequiredAnswerActionProvider,
                                        val controllerComponents: MessagesControllerComponents,
-                                       view: TaskListView
+                                       view: TaskListView,
+                                       config: FrontendAppConfig
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+
+  private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
 
   private def actions =
     identify andThen getData andThen requireData andThen
@@ -51,19 +57,22 @@ class TaskListController @Inject()(
   def onPageLoad: Action[AnyContent] = actions {
     implicit request =>
 
+      val ttlInSeconds = config.ttlInSeconds
+      val savedUntil = request.userAnswers.createdAt.plusSeconds(ttlInSeconds).format(dateFormatter)
+
       val isExistingTrust = request.userAnswers.get(TrustHaveAUTRPage).get
 
       if (isExistingTrust) {
         request.userAnswers.get(ExistingTrustMatched) match {
           case Some(true) =>
-            Ok(view())
+            Ok(view(savedUntil))
           case Some(false) =>
             Redirect(routes.FailedMatchController.onPageLoad().url)
           case None =>
             Redirect(routes.WhatIsTheUTRController.onPageLoad(NormalMode).url)
         }
       } else {
-        Ok(view())
+        Ok(view(savedUntil))
       }
   }
 }

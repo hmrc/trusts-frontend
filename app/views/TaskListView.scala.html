@@ -18,7 +18,7 @@
     main_template: MainTemplate
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@(savedUntil : String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("taskList.title")
@@ -26,5 +26,13 @@
 
     @components.back_link()
 
-    @components.heading("taskList.heading")
+    @components.heading("taskList.heading", headingSize = "heading-xlarge")
+
+    <p>@messages("taskList.paragraph1")</p>
+
+    <h2>@messages("taskList.savedUntil.heading")</h2>
+    <p>@savedUntil</p>
+
+    <h2>@messages("taskList.sections.heading")</h2>
+
 }
