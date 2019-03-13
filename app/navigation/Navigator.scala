@@ -93,7 +93,7 @@ class Navigator @Inject()() {
 
     condition match {
       case (Some(false), Some(true)) => routes.WhatIsTheUTRController.onPageLoad(NormalMode)
-      case (Some(false), Some(false)) => routes.TrustNameController.onPageLoad(NormalMode)
+      case (Some(false), Some(false)) => routes.TaskListController.onPageLoad()
       case (Some(true), Some(false)) => routes.UTRSentByPostController.onPageLoad()
       case (Some(true), Some(true)) => routes.CannotMakeChangesController.onPageLoad()
       case _ => routes.SessionExpiredController.onPageLoad()
