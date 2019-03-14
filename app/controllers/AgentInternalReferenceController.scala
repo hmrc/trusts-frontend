@@ -36,6 +36,7 @@ class AgentInternalReferenceController @Inject()(
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
                                         identify: IdentifierAction,
+                                        hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
                                         formProvider: AgentInternalReferenceFormProvider,
@@ -45,7 +46,7 @@ class AgentInternalReferenceController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen hasAgentAffinityGroup() andThen getData andThen requireData) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(AgentInternalReferencePage) match {

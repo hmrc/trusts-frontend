@@ -26,6 +26,7 @@ import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.auth.core.AffinityGroup
 import views.html.AgentInternalReferenceView
 
 class AgentInternalReferenceControllerSpec extends SpecBase {
@@ -41,7 +42,7 @@ class AgentInternalReferenceControllerSpec extends SpecBase {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, agentInternalReferenceRoute)
 
@@ -61,7 +62,7 @@ class AgentInternalReferenceControllerSpec extends SpecBase {
 
       val userAnswers = UserAnswers(userAnswersId).set(AgentInternalReferencePage, "answer").success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, agentInternalReferenceRoute)
 
@@ -120,7 +121,7 @@ class AgentInternalReferenceControllerSpec extends SpecBase {
 
     "redirect to Session Expired for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, agentInternalReferenceRoute)
 
@@ -135,7 +136,7 @@ class AgentInternalReferenceControllerSpec extends SpecBase {
 
     "redirect to Session Expired for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
       val request =
         FakeRequest(POST, agentInternalReferenceRoute)
