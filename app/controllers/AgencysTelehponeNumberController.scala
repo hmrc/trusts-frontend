@@ -36,6 +36,7 @@ class AgencysTelehponeNumberController @Inject()(
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
                                         identify: IdentifierAction,
+                                        hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
                                         formProvider: AgenciesTelephoneNumber,
@@ -45,7 +46,7 @@ class AgencysTelehponeNumberController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen hasAgentAffinityGroup() andThen getData andThen requireData) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(AgencysTelehponeNumberPage) match {

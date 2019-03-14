@@ -171,3 +171,6 @@ GET        /agencys-telehpone-number                        controllers.AgencysT
 POST       /agencys-telehpone-number                         controllers.AgencysTelehponeNumberController.onSubmit(mode: Mode = NormalMode)
 GET        /change-agencys-telehpone-number                   controllers.AgencysTelehponeNumberController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-agencys-telehpone-number                  controllers.AgencysTelehponeNumberController.onSubmit(mode: Mode = CheckMode)
+
+GET        /agent-overview                                      controllers.AgentOverviewController.onPageLoad()
+GET        /trustees-information                                controllers.TrusteesInfoController.onPageLoad()
