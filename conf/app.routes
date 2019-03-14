@@ -168,3 +168,4 @@ GET        /trustees/:index/change-trustee-uk-address                  controlle
 POST       /trustees/:index/change-trustee-uk-address                  controllers.TrusteesUkAddressController.onSubmit(mode: Mode = CheckMode, index : Int)
 
 GET        /agent-overview                                      controllers.AgentOverviewController.onPageLoad()
+GET        /trustees-information                                controllers.TrusteesInfoController.onPageLoad()
