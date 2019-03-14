@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,29 +12,11 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import viewmodels.Task
+package viewmodels
 
-@this(
-    main_template: MainTemplate
-)
+sealed trait Tag
 
-@(savedUntil : String, sections : List[Task])(implicit request: Request[_], messages: Messages)
-
-@main_template(
-    title = messages("taskList.title")
-    ) {
-
-    @components.back_link()
-
-    @components.heading("taskList.heading", headingSize = "heading-xlarge")
-
-    <p>@messages("taskList.paragraph1")</p>
-
-    <h2>@messages("taskList.savedUntil.heading")</h2>
-    <p>@savedUntil</p>
-
-    @components.task_list(sections)
-
-}
+case object Complete extends Tag
+case object InProgress extends Tag

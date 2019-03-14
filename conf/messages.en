@@ -327,3 +327,10 @@ taskList.heading = Registration progress
 taskList.paragraph1 = You can save your registration and come back later. You have 28 days from the time you first save to register a trust. If you do not register within 28 days, your information will be deleted.
 taskList.savedUntil.heading = Saved until
 taskList.sections.heading = Sections
+
+taskList.trust-details.label = Trust details
+taskList.settlors.label = Settlors
+taskList.trustees.label = Trustees
+taskList.beneficiaries.label = Beneficiaries
+taskList.assets.label = Assets
+taskList.tax-liability.label = Years of tax liability

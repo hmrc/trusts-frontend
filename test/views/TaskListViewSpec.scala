@@ -16,21 +16,40 @@
 
 package views
 
-import views.behaviours.ViewBehaviours
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
+import controllers.routes
+import viewmodels.{Complete, InProgress, Task}
+import views.behaviours.{TaskListViewBehaviours, ViewBehaviours}
 import views.html.TaskListView
 
-class TaskListViewSpec extends ViewBehaviours {
+class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
+
+  private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
+  private val savedUntil : String = LocalDateTime.now.format(dateFormatter)
 
   "TaskList view" must {
+
+    val expectedSections = List(
+      Task("trust-details", routes.AddATrusteeController.onPageLoad(), Some(Complete)),
+      Task("settlors", routes.AddATrusteeController.onPageLoad(), Some(InProgress)),
+      Task("trustees", routes.AddATrusteeController.onPageLoad(), Some(InProgress)),
+      Task("beneficiaries", routes.AddATrusteeController.onPageLoad(), None),
+      Task("assets", routes.AddATrusteeController.onPageLoad(), None),
+      Task("tax-liability", routes.AddATrusteeController.onPageLoad(), Some(Complete))
+    )
 
     val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
     val view = application.injector.instanceOf[TaskListView]
 
-    val applyView = view.apply()(fakeRequest, messages)
+    val applyView = view.apply(savedUntil, expectedSections)(fakeRequest, messages)
 
     behave like normalPage(applyView, "taskList")
 
     behave like pageWithBackLink(applyView)
+
+    behave like taskList(applyView, expectedSections)
   }
 }

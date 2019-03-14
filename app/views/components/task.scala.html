@@ -15,26 +15,12 @@
  *@
 
 @import viewmodels.Task
+@import views.html._
 
-@this(
-    main_template: MainTemplate
-)
+@(task: Task)(implicit messages: Messages)
 
-@(savedUntil : String, sections : List[Task])(implicit request: Request[_], messages: Messages)
-
-@main_template(
-    title = messages("taskList.title")
-    ) {
-
-    @components.back_link()
-
-    @components.heading("taskList.heading", headingSize = "heading-xlarge")
-
-    <p>@messages("taskList.paragraph1")</p>
-
-    <h2>@messages("taskList.savedUntil.heading")</h2>
-    <p>@savedUntil</p>
-
-    @components.task_list(sections)
-
-}
+<li class="app-task-list__item" id="task-list__item--@{task.id}">
+    <a class="app-task-list__task-name" id="task-list__task--@{task.id}" href="@{task.href.url}">
+        @messages(s"taskList.${task.id}.label")
+    </a>
+</li>
