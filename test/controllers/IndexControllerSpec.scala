@@ -20,6 +20,7 @@ import base.SpecBase
 import models.NormalMode
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.auth.core.AffinityGroup
 
 class IndexControllerSpec extends SpecBase {
 
@@ -42,7 +43,7 @@ class IndexControllerSpec extends SpecBase {
 
     "redirect to AgentOverview with Agent affinityGroup for a GET" in {
 
-      val application = applicationBuilderWithAgent(userAnswers = None).build()
+      val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, routes.IndexController.onPageLoad().url)
 

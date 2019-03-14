@@ -28,13 +28,17 @@ import scala.concurrent.ExecutionContext
 class AgentOverviewController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        identify: IdentifierAction,
+                                       hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                        getData: DataRetrievalAction,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: AgentOverviewView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData) {
+  private def actions = identify andThen hasAgentAffinityGroup()
+
+  def onPageLoad: Action[AnyContent] = actions {
     implicit request =>
       Ok(view())
   }
+
 }
