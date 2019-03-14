@@ -323,6 +323,21 @@ trusteesUkAddress.error.line3.invalidCharacters = Address line 3 must only inclu
 trusteesUkAddress.error.townOrCity.invalidCharacters = Town or city must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
 trusteesUkAddress.error.postcode.invalidCharacters = Enter a real postcode
 
+agentOverview.title = Register a trust for a client
+agentOverview.heading = Register a trust for a client
+agentOverview.paragraph1 = You can save your registration and come back later. You have 28 days from the time you first save to register a trust. If you do not register within 28 days, your information will be deleted.
+agentOverview.helper = What you need to register the trust
+agentOverview.paragraph2 = You need information about the trust, including:
+agentOverview.bulletpoint1 = the name
+agentOverview.bulletpoint2 = the date the trust deed was signed
+agentOverview.bulletpoint3 = information and value of assets held by the trust
+agentOverview.bulletpoint4 = details of the lead trustee who is the point of contact for the trust
+agentOverview.paragraph3 = You need the names, dates of birth and National Insurance numbers for each:
+agentOverview.bulletpoint5 = settlor
+agentOverview.bulletpoint6 = trustee
+agentOverview.bulletpoint7 = beneficiary
+agentOverview.start = Start a new registration
+
 trusteesInfo.title = Information you need to add a trustee
 trusteesInfo.heading = Information you need to add a trustee
 trusteesInfo.subheading1 = Lead trustee
@@ -343,10 +358,3 @@ trusteesInfo.bulletpoint8 = Unique Taxpayer Reference
 trusteesInfo.paragraph6 = If it is a non-UK business, you need their address.
 trusteesInfo.warning = All trustees have the same legal responsibilities.
 trusteesInfo.continue = Continue
-
-
-
-
-
-
-

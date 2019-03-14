@@ -167,4 +167,5 @@ POST       /trustees/:index/trustee-uk-address                         controlle
 GET        /trustees/:index/change-trustee-uk-address                  controllers.TrusteesUkAddressController.onPageLoad(mode: Mode = CheckMode, index : Int)
 POST       /trustees/:index/change-trustee-uk-address                  controllers.TrusteesUkAddressController.onSubmit(mode: Mode = CheckMode, index : Int)
 
+GET        /agent-overview                                      controllers.AgentOverviewController.onPageLoad()
 GET        /trustees-information                                controllers.TrusteesInfoController.onPageLoad()
