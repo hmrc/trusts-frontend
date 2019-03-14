@@ -43,11 +43,11 @@ class AuthenticatedIdentifierAction @Inject()(
     authorised().retrieve(Retrievals.internalId and Retrievals.affinityGroup and Retrievals.allEnrolments) {
       case Some(internalId) ~ Some(Agent) ~ enrolments => {
         if (enrolments.getEnrolment(hmrcAgentEnrolmentKey).nonEmpty)
-          block(IdentifierRequest(request, internalId))
+          block(IdentifierRequest(request, internalId, AffinityGroup.Agent))
         else
           Future(Redirect(routes.CreateAgentServicesAccountController.onPageLoad()))
       }
-      case Some(internalId) ~ Some(Organisation) ~ _ => block(IdentifierRequest(request, internalId))
+      case Some(internalId) ~ Some(Organisation) ~ _ => block(IdentifierRequest(request, internalId, AffinityGroup.Organisation))
       case Some(_) ~ _ ~ _ => Future(Redirect(routes.UnauthorisedController.onPageLoad()))
       case _ => throw new UnauthorizedException("Unable to retrieve internal Id")
     } recover {
@@ -75,7 +75,7 @@ class SessionIdentifierAction @Inject()(
 
     hc.sessionId match {
       case Some(session) =>
-        block(IdentifierRequest(request, session.value))
+        block(IdentifierRequest(request, session.value, AffinityGroup.Individual))
       case None =>
         Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
     }
