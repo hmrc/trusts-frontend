@@ -17,38 +17,38 @@
 package controllers
 
 import base.SpecBase
-import forms.AgenciesTelephoneNumber
+import forms.AgentTelephoneNumber
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.AgencysTelehponeNumberPage
+import pages.AgentTelephoneNumberPage
 import play.api.inject.bind
 import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
-import views.html.AgencysTelehponeNumberView
+import views.html.AgentTelephoneNumberView
 
-class AgencysTelehponeNumberControllerSpec extends SpecBase {
+class AgentTelephoneNumberControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new AgenciesTelephoneNumber()
+  val formProvider = new AgentTelephoneNumber()
   val form = formProvider()
 
-  lazy val agenciesTelephoneNumberRoute = routes.AgencysTelehponeNumberController.onPageLoad(NormalMode).url
+  lazy val agentTelephoneNumberRoute = routes.AgentTelephoneNumberController.onPageLoad(NormalMode).url
 
-  "AgencysTelehponeNumber Controller" must {
+  "AgentTelephoneNumber Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
 
-      val request = FakeRequest(GET, agenciesTelephoneNumberRoute)
+      val request = FakeRequest(GET, agentTelephoneNumberRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[AgencysTelehponeNumberView]
+      val view = application.injector.instanceOf[AgentTelephoneNumberView]
 
       status(result) mustEqual OK
 
@@ -60,13 +60,13 @@ class AgencysTelehponeNumberControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(AgencysTelehponeNumberPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(AgentTelephoneNumberPage, "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
-      val request = FakeRequest(GET, agenciesTelephoneNumberRoute)
+      val request = FakeRequest(GET, agentTelephoneNumberRoute)
 
-      val view = application.injector.instanceOf[AgencysTelehponeNumberView]
+      val view = application.injector.instanceOf[AgentTelephoneNumberView]
 
       val result = route(application, request).value
 
@@ -86,7 +86,7 @@ class AgencysTelehponeNumberControllerSpec extends SpecBase {
           .build()
 
       val request =
-        FakeRequest(POST, agenciesTelephoneNumberRoute)
+        FakeRequest(POST, agentTelephoneNumberRoute)
           .withFormUrlEncodedBody(("value", "0191 1111111"))
 
       val result = route(application, request).value
@@ -102,12 +102,12 @@ class AgencysTelehponeNumberControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, agenciesTelephoneNumberRoute)
+        FakeRequest(POST, agentTelephoneNumberRoute)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[AgencysTelehponeNumberView]
+      val view = application.injector.instanceOf[AgentTelephoneNumberView]
 
       val result = route(application, request).value
 
@@ -123,7 +123,7 @@ class AgencysTelehponeNumberControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
-      val request = FakeRequest(GET, agenciesTelephoneNumberRoute)
+      val request = FakeRequest(GET, agentTelephoneNumberRoute)
 
       val result = route(application, request).value
 
@@ -139,7 +139,7 @@ class AgencysTelehponeNumberControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
       val request =
-        FakeRequest(POST, agenciesTelephoneNumberRoute)
+        FakeRequest(POST, agentTelephoneNumberRoute)
           .withFormUrlEncodedBody(("value", "answer"))
 
       val result = route(application, request).value

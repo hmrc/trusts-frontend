@@ -17,24 +17,24 @@
 package views
 
 import controllers.routes
-import forms.AgenciesTelephoneNumber
+import forms.AgentTelephoneNumber
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
-import views.html.AgencysTelehponeNumberView
+import views.html.AgentTelephoneNumberView
 
-class AgencysTelehponeNumberViewSpec extends StringViewBehaviours {
+class AgentTelephoneNumberViewSpec extends StringViewBehaviours {
 
-  val messageKeyPrefix = "agenciesTelephoneNumber"
+  val messageKeyPrefix = "agentTelephoneNumber"
 
-  val form = new AgenciesTelephoneNumber()()
+  val form = new AgentTelephoneNumber()()
 
-  "AgencysTelehponeNumberView view" must {
+  "AgentTelephoneNumberView view" must {
 
     val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-    val view = application.injector.instanceOf[AgencysTelehponeNumberView]
+    val view = application.injector.instanceOf[AgentTelephoneNumberView]
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode)(fakeRequest, messages)
@@ -43,6 +43,8 @@ class AgencysTelehponeNumberViewSpec extends StringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.AgencysTelehponeNumberController.onSubmit(NormalMode).url)
+    behave like stringPage(form, applyView, messageKeyPrefix, routes.AgentTelephoneNumberController.onSubmit(NormalMode).url)
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

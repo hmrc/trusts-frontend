@@ -17,21 +17,21 @@
 package controllers
 
 import controllers.actions._
-import forms.AgenciesTelephoneNumber
+import forms.AgentTelephoneNumber
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.AgencysTelehponeNumberPage
+import pages.AgentTelephoneNumberPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.AgencysTelehponeNumberView
+import views.html.AgentTelephoneNumberView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AgencysTelehponeNumberController @Inject()(
+class AgentTelephoneNumberController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
@@ -39,9 +39,9 @@ class AgencysTelehponeNumberController @Inject()(
                                         hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        formProvider: AgenciesTelephoneNumber,
+                                        formProvider: AgentTelephoneNumber,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: AgencysTelehponeNumberView
+                                        view: AgentTelephoneNumberView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -49,7 +49,7 @@ class AgencysTelehponeNumberController @Inject()(
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen hasAgentAffinityGroup() andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(AgencysTelehponeNumberPage) match {
+      val preparedForm = request.userAnswers.get(AgentTelephoneNumberPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -66,9 +66,9 @@ class AgencysTelehponeNumberController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(AgencysTelehponeNumberPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentTelephoneNumberPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(AgencysTelehponeNumberPage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(AgentTelephoneNumberPage, mode)(updatedAnswers))
         }
       )
   }

@@ -30,12 +30,12 @@ import viewmodels.AnswerRow
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers)(implicit messages: Messages) {
 
-  def agenciesTelephoneNumber: Option[AnswerRow] = userAnswers.get(AgencysTelehponeNumberPage) map {
+  def agenciesTelephoneNumber: Option[AnswerRow] = userAnswers.get(AgentTelephoneNumberPage) map {
     x =>
       AnswerRow(
-        "agenciesTelephoneNumber.checkYourAnswersLabel",
+        "agentTelephoneNumber.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        routes.AgencysTelehponeNumberController.onPageLoad(CheckMode).url
+        routes.AgentTelephoneNumberController.onPageLoad(CheckMode).url
       )
   }
 

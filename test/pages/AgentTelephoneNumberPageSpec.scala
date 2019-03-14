@@ -19,14 +19,14 @@ package pages
 import pages.behaviours.PageBehaviours
 
 
-class AgencysTelehponeNumberPageSpec extends PageBehaviours {
+class AgentTelephoneNumberPageSpec extends PageBehaviours {
 
-  "AgencysTelehponeNumberPage" must {
+  "AgentTelephoneNumberPage" must {
 
-    beRetrievable[String](AgencysTelehponeNumberPage)
+    beRetrievable[String](AgentTelephoneNumberPage)
 
-    beSettable[String](AgencysTelehponeNumberPage)
+    beSettable[String](AgentTelephoneNumberPage)
 
-    beRemovable[String](AgencysTelehponeNumberPage)
+    beRemovable[String](AgentTelephoneNumberPage)
   }
 }

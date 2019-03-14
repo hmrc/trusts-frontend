@@ -21,15 +21,15 @@ import javax.inject.Inject
 import forms.mappings.Mappings
 import play.api.data.Form
 
-class AgenciesTelephoneNumber @Inject() extends Mappings {
+class AgentTelephoneNumber @Inject() extends Mappings {
 
   def apply(): Form[String] =
     Form(
-      "value" -> text("agenciesTelephoneNumber.error.required")
+      "value" -> text("agentTelephoneNumber.error.required")
         .verifying(
           firstError(
-            isNotEmpty("value", "agenciesTelephoneNumber.error.required"),
-            regexp(Validation.telephoneRegex, "agenciesTelephoneNumber.error.invalid.characters")
+            isNotEmpty("value", "agentTelephoneNumber.error.required"),
+            regexp(Validation.telephoneRegex, "agentTelephoneNumber.error.invalid.characters")
           ))
     )
 }

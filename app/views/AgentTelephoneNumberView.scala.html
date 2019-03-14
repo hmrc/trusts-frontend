@@ -25,22 +25,22 @@
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("agenciesTelephoneNumber.title")}"
+    title = s"${errorPrefix(form)} ${messages("agentTelephoneNumber.title")}"
     ) {
 
-    @formHelper(action = AgencysTelehponeNumberController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = AgentTelephoneNumberController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("agenciesTelephoneNumber.heading")
+        @components.heading("agentTelephoneNumber.heading")
 
         @components.input_text(
           field = form("value"),
-          label = messages("agenciesTelephoneNumber.heading"),
+          label = messages("agentTelephoneNumber.heading"),
           labelClass=Some("visually-hidden"),
-          hint = Some(messages(s"agenciesTelephoneNumber.hint"))
+          hint = Some(messages(s"agentTelephoneNumber.hint"))
         )
 
         @components.submit_button()
