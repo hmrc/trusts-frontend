@@ -28,6 +28,8 @@ class AgentTelephoneNumberViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "agentTelephoneNumber"
 
+  val hintKey = "agentTelephoneNumber.hint"
+
   val form = new AgentTelephoneNumber()()
 
   "AgentTelephoneNumberView view" must {
@@ -43,7 +45,7 @@ class AgentTelephoneNumberViewSpec extends StringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.AgentTelephoneNumberController.onSubmit(NormalMode).url)
+    behave like stringPage(form, applyView, messageKeyPrefix, routes.AgentTelephoneNumberController.onSubmit(NormalMode).url, Some(hintKey))
 
     behave like pageWithASubmitButton(applyView(form))
   }
