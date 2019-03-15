@@ -51,7 +51,7 @@ trait TaskListViewBehaviours extends ViewSpecBase {
                 doc.getElementById(id).hasAttr("href")
               }
 
-              section.status.foreach {
+              section.tag.foreach {
                 _ =>
 
                   s"render a tag" in {

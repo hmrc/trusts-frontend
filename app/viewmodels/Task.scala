@@ -18,4 +18,4 @@ package viewmodels
 
 import play.api.mvc.Call
 
-case class Task(id : String, href : Call, status : Option[Tag])
+case class Task(id : String, href : Call, tag : Option[Tag])

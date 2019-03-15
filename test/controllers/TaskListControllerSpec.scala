@@ -24,7 +24,7 @@ import models.{NormalMode, UserAnswers}
 import pages.{ExistingTrustMatched, TrustHaveAUTRPage, TrustRegisteredOnlinePage, WhatIsTheUTRPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import viewmodels.{Complete, InProgress, Task}
+import viewmodels.Task
 import views.html.TaskListView
 
 class TaskListControllerSpec extends SpecBase {

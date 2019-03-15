@@ -20,7 +20,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 import controllers.routes
-import viewmodels.{Complete, InProgress, Task}
+import viewmodels.{Completed, InProgress, Task}
 import views.behaviours.{TaskListViewBehaviours, ViewBehaviours}
 import views.html.TaskListView
 
@@ -32,12 +32,12 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
   "TaskList view" must {
 
     val expectedSections = List(
-      Task("trust-details", routes.AddATrusteeController.onPageLoad(), Some(Complete)),
+      Task("trust-details", routes.AddATrusteeController.onPageLoad(), Some(Completed)),
       Task("settlors", routes.AddATrusteeController.onPageLoad(), Some(InProgress)),
       Task("trustees", routes.AddATrusteeController.onPageLoad(), Some(InProgress)),
       Task("beneficiaries", routes.AddATrusteeController.onPageLoad(), None),
       Task("assets", routes.AddATrusteeController.onPageLoad(), None),
-      Task("tax-liability", routes.AddATrusteeController.onPageLoad(), Some(Complete))
+      Task("tax-liability", routes.AddATrusteeController.onPageLoad(), Some(Completed))
     )
 
     val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
