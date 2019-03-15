@@ -29,11 +29,11 @@
         @messages(s"taskList.${task.id}.label")
     </a>
 
-    @task.status.map { t =>
-      <strong class="govuk-tag @{t.cssClass} app-task-list__task-@{t.cssClass}"
+    @task.tag.map { t =>
+      <strong class="govuk-tag @{t.id} app-task-list__task-@{t.id}"
          id="task-list__task--@{task.id}__tag">
 
-          @messages(s"taskList.${t.cssClass}")
+          @messages(s"taskList.${t.id}")
       </strong>
     }
 </li>

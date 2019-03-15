@@ -16,7 +16,7 @@
 
 package viewmodels
 
-abstract class Tag(val cssClass : String)
+abstract class Tag(val id : String)
 
 case object Completed extends Tag("completed")
 case object InProgress extends Tag("progress")
