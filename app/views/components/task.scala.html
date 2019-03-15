@@ -20,7 +20,20 @@
 @(task: Task)(implicit messages: Messages)
 
 <li class="app-task-list__item" id="task-list__item--@{task.id}">
-    <a class="app-task-list__task-name" id="task-list__task--@{task.id}" href="@{task.href.url}">
+
+    <a class="app-task-list__task-name"
+       id="task-list__task--@{task.id}"
+       href="@{task.href.url}"
+       aria-describedby="task-list__task--@{task.id}__tag">
+
         @messages(s"taskList.${task.id}.label")
     </a>
+
+    @task.status.map { t =>
+      <strong class="govuk-tag @{t.cssClass} app-task-list__task-@{t.cssClass}"
+         id="task-list__task--@{task.id}__tag">
+
+          @messages(s"taskList.${t.cssClass}")
+      </strong>
+    }
 </li>

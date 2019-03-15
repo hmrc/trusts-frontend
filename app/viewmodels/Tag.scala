@@ -16,7 +16,7 @@
 
 package viewmodels
 
-sealed trait Tag
+abstract class Tag(val cssClass : String)
 
-case object Complete extends Tag
-case object InProgress extends Tag
+case object Completed extends Tag("completed")
+case object InProgress extends Tag("progress")

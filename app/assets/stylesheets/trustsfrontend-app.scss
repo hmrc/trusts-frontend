@@ -1,3 +1,6 @@
+@import 'mixins/spacing';
+@import 'mixins/clearfix';
+
 @import 'partials/_variables';
 @import 'partials/_base';
 @import 'partials/_forms';
@@ -5,101 +8,13 @@
 @import 'partials/_utilities';
 @import 'partials/_shame';
 @import 'partials/heading';
+@import 'patterns/tag';
 @import 'conditionals';
 @import 'colours/palette';
 @import 'location-autocomplete.min';
+@import 'patterns/add-to-a-list';
 
-.hmrc-add-to-a-list {
-  font-size: 19px;
-  @include media(desktop) {
-    display: table;
-  }
-}
-
-.hmrc-add-to-a-list--short {
-  @include media(desktop) {
-    // to make group of q&a line up horizontally (unless there is just one group)
-    width: 100%;
-    // recommended for mostly short questions
-     .hmrc-add-to-a-list__question {
-      width: 30%;
-    }
-  }
-}
-
-.hmrc-add-to-a-list--long {
-  @include media(desktop) {
-    // to make group of q&a line up horizontally (unless there is just one group)
-    width: 100%;
-    // recommended for mostly long questions
-     .hmrc-add-to-a-list__question {
-      width: 50%;
-    }
-  }
-}
-
-.hmrc-add-to-a-list__contents {
-  position: relative;
-  padding-bottom: 5px;
-  border-bottom: 1px solid $border-colour;
-   @include media(desktop) {
-    display: table-row;
-    padding-bottom: 0;
-    border-bottom-width: 0;
-  }
-}
-
-.hmrc-add-to-a-list__contents:first-child dt {
-  @include media(desktop) {
-    padding-top: 0;
-  }
-}
-
-.hmrc-add-to-a-list__identifier,
-.hmrc-add-to-a-list__remove,
-.hmrc-add-to-a-list__change {
-  display: block;
-  margin: 0;
-   @include media(desktop) {
-    display: table-cell;
-    padding: 15px 0;
-    border-bottom: 1px solid $border-colour;
-  }
-}
-
-.hmrc-add-to-a-list__identifier {
-  margin: 10px 40px 0 0;
-  font-weight: bold;
-   @include media(desktop) {
-    margin: 0;
-  }
-}
-
-.hmrc-add-to-a-list__identifier--light {
-  font-weight: normal;
-}
-
-.hmrc-add-to-a-list__remove {
-  text-align: right;
-  margin-bottom: 10px;
-  margin-top: 10px;
-   @include media(desktop) {
-    padding-right: 0;
-  }
-}
-
-.hmrc-add-to-a-list__change {
-  position: absolute;
-  top: 0;
-  right: 0;
-  text-align: right;
-   @include media(desktop) {
-    position: static;
-     + .hmrc-add-to-a-list__remove {
-      width: 6em;
-    }
-  }
-}
+@import 'partials/task-list';
 
 .field-error {
     border:4px solid #b10e1e !important;
