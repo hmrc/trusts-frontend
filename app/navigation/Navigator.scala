@@ -26,10 +26,20 @@ import models._
 @Singleton
 class Navigator @Inject()() {
 
+//  private val agentRoutes : Page => AffinityGroup => UserAnswers => Call = {
+//    case WhatIsTheUTRPage => af => ua => {
+//      af match {
+//        case Agent => ???
+//        case Organisation => ???
+//      }
+//    }
+//  }
+
   private val normalRoutes: Page => UserAnswers => Call = {
     //  Matching
     case TrustRegisteredOnlinePage => _ => routes.TrustHaveAUTRController.onPageLoad(NormalMode)
     case TrustHaveAUTRPage => trustHaveAUTRRoute
+    case AgentInternalReferencePage => _ => routes.TrustNameController.onPageLoad(NormalMode)
     case WhatIsTheUTRPage => _ => routes.TrustNameController.onPageLoad(NormalMode)
     case PostcodeForTheTrustPage => _ => routes.FailedMatchController.onPageLoad()
     //  Trust Details
@@ -93,7 +103,7 @@ class Navigator @Inject()() {
 
     condition match {
       case (Some(false), Some(true)) => routes.WhatIsTheUTRController.onPageLoad(NormalMode)
-      case (Some(false), Some(false)) => routes.TrustNameController.onPageLoad(NormalMode)
+      case (Some(false), Some(false)) => routes.AgentInternalReferenceController.onPageLoad(NormalMode)
       case (Some(true), Some(false)) => routes.UTRSentByPostController.onPageLoad()
       case (Some(true), Some(true)) => routes.CannotMakeChangesController.onPageLoad()
       case _ => routes.SessionExpiredController.onPageLoad()
@@ -171,4 +181,9 @@ class Navigator @Inject()() {
     case CheckMode =>
       checkRouteMap(page)
   }
+
+//  def nextPage(page : Page, mode: Mode, af :AffinityGroup) : UserAnswers => Call = mode match {
+//    case NormalMode =>
+//      agentRoutes(page)(af)
+//  }
 }
