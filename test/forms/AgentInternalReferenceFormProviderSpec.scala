@@ -26,7 +26,7 @@ class AgentInternalReferenceFormProviderSpec extends StringFieldBehaviours {
   val requiredKey = "agentInternalReference.error.required"
   val lengthKey = "agentInternalReference.error.length"
   val invalidFormatKey = "agentInternalReference.error.invalidFormat"
-  val maxLength = 100
+  val maxLength = 56
 
   val form = new AgentInternalReferenceFormProvider()()
 
@@ -63,7 +63,7 @@ class AgentInternalReferenceFormProviderSpec extends StringFieldBehaviours {
       form,
       fieldName,
       regexp = Validation.clientRefRegex,
-      generator = arbitrary[String],
+      generator = stringsWithMaxLength(maxLength),
       error = FormError(fieldName, invalidFormatKey, Seq(Validation.clientRefRegex))
     )
   }
