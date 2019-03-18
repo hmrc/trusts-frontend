@@ -33,9 +33,7 @@ class TrustHaveAUTRViewSpec extends YesNoViewBehaviours {
 
   "TrustHaveAUTR view" must {
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-    val view = application.injector.instanceOf[TrustHaveAUTRView]
+    val view = viewFor[TrustHaveAUTRView](Some(emptyUserAnswers))
 
     val url = "https://www.gov.uk/find-lost-utr-number"
     val link = Link(messages("trustHaveAUTR.link"), url)

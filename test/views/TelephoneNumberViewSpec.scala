@@ -37,9 +37,7 @@ class TelephoneNumberViewSpec extends StringViewBehaviours {
 
   "TelephoneNumberView view" must {
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-    val view = application.injector.instanceOf[TelephoneNumberView]
+    val view = viewFor[TelephoneNumberView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, index, trusteeName)(fakeRequest, messages)

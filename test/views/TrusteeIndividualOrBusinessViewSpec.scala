@@ -44,9 +44,7 @@ class TrusteeIndividualOrBusinessViewSpec extends OptionsViewBehaviours {
     val userAnswers = UserAnswers(userAnswersId)
       .set(IsThisLeadTrusteePage(index), true).success.value
 
-    val application = applicationBuilder(Some(userAnswers)).build()
-
-    val view = application.injector.instanceOf[TrusteeIndividualOrBusinessView]
+    val view = viewFor[TrusteeIndividualOrBusinessView](Some(userAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, index, leadHeading)(fakeRequest, messages)
@@ -64,9 +62,7 @@ class TrusteeIndividualOrBusinessViewSpec extends OptionsViewBehaviours {
     val userAnswers = UserAnswers(userAnswersId)
       .set(IsThisLeadTrusteePage(index), false).success.value
 
-    val application = applicationBuilder(Some(userAnswers)).build()
-
-    val view = application.injector.instanceOf[TrusteeIndividualOrBusinessView]
+    val view = viewFor[TrusteeIndividualOrBusinessView](Some(userAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, index, heading)(fakeRequest, messages)
