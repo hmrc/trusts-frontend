@@ -175,6 +175,6 @@ POST       /change-agent-telephone-number                  controllers.AgentTele
 GET        /agent-overview                                      controllers.AgentOverviewController.onPageLoad()
 GET        /trustees-information                                controllers.TrusteesInfoController.onPageLoad()
 
-GET        /agentAnswer                       controllers.AgentAnswerController.onPageLoad()
-POST       /agentAnswer                       controllers.AgentAnswerController.onSubmit()
+GET        /agent-answer                      controllers.AgentAnswerController.onPageLoad()
+POST       /agent-answer                       controllers.AgentAnswerController.onSubmit()
 
