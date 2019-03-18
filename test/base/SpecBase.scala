@@ -29,7 +29,7 @@ import play.api.libs.json.Json
 import play.api.mvc.PlayBodyParsers
 import play.api.test.FakeRequest
 import repositories.{FakeSessionRepository, SessionRepository}
-import uk.gov.hmrc.auth.core.{AffinityGroup, AuthConnector, Enrolments}
+import uk.gov.hmrc.auth.core.AffinityGroup
 
 trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues {
 
@@ -53,7 +53,6 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues {
                                    affinityGroup: AffinityGroup = AffinityGroup.Organisation): GuiceApplicationBuilder =
     new GuiceApplicationBuilder()
       .overrides(
-        bind[AuthConnector].toInstance(FakeAuthConnector.stubbed(affinityGroup, Enrolments(Set()))),
         bind[DataRequiredAction].to[DataRequiredActionImpl],
         bind[IdentifierAction].toInstance(new FakeIdentifierAction(affinityGroup)(injectedParsers)),
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
