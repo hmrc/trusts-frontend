@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
-package models.requests
+package pages
 
-import play.api.mvc.{Request, WrappedRequest}
-import uk.gov.hmrc.auth.core.AffinityGroup
+import play.api.libs.json.JsPath
 
-case class IdentifierRequest[A] (request: Request[A], identifier: String, affinityGroup: AffinityGroup) extends WrappedRequest[A](request)
+case object AgentTelephoneNumberPage extends QuestionPage[String] {
+
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "agenciesTelephoneNumber"
+}

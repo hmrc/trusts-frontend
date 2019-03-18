@@ -14,9 +14,22 @@
  * limitations under the License.
  */
 
-package models.requests
+package forms
 
-import play.api.mvc.{Request, WrappedRequest}
-import uk.gov.hmrc.auth.core.AffinityGroup
+import javax.inject.Inject
 
-case class IdentifierRequest[A] (request: Request[A], identifier: String, affinityGroup: AffinityGroup) extends WrappedRequest[A](request)
+import forms.mappings.Mappings
+import play.api.data.Form
+
+class AgentTelephoneNumber @Inject() extends Mappings {
+
+  def apply(): Form[String] =
+    Form(
+      "value" -> text("agentTelephoneNumber.error.required")
+        .verifying(
+          firstError(
+            isNotEmpty("value", "agentTelephoneNumber.error.required"),
+            regexp(Validation.telephoneRegex, "agentTelephoneNumber.error.invalid.characters")
+          ))
+    )
+}

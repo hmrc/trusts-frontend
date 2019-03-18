@@ -14,9 +14,19 @@
  * limitations under the License.
  */
 
-package models.requests
+package pages
 
-import play.api.mvc.{Request, WrappedRequest}
-import uk.gov.hmrc.auth.core.AffinityGroup
+import pages.behaviours.PageBehaviours
 
-case class IdentifierRequest[A] (request: Request[A], identifier: String, affinityGroup: AffinityGroup) extends WrappedRequest[A](request)
+
+class AgentTelephoneNumberPageSpec extends PageBehaviours {
+
+  "AgentTelephoneNumberPage" must {
+
+    beRetrievable[String](AgentTelephoneNumberPage)
+
+    beSettable[String](AgentTelephoneNumberPage)
+
+    beRemovable[String](AgentTelephoneNumberPage)
+  }
+}

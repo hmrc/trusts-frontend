@@ -30,6 +30,8 @@ class Module extends AbstractModule {
     // For session based storage instead of cred based, change to SessionIdentifierAction
     bind(classOf[IdentifierAction]).to(classOf[AuthenticatedIdentifierAction]).asEagerSingleton()
 
+    bind(classOf[RequiredAgentAffinityGroupActionProvider]).to(classOf[RequireStateActionProviderImpl]).asEagerSingleton()
+
     bind(classOf[SessionRepository]).to(classOf[DefaultSessionRepository]).asEagerSingleton()
   }
 }
