@@ -39,6 +39,7 @@ class CountryOptionsNonUKSpec extends SpecBase with MockitoSugar {
         val countryOption: CountryOptions = application.injector.instanceOf[CountryOptionsNonUK]
         countryOption.options mustEqual Seq(InputOption("IE", "Ireland"), InputOption("BE", "Belgium"))
 
+      application.stop()
     }
 
     "throw the error if the country json does not exist" in {
@@ -52,6 +53,8 @@ class CountryOptionsNonUKSpec extends SpecBase with MockitoSugar {
       an[ConfigException.BadValue] shouldBe thrownBy {
         application.injector.instanceOf[CountryOptions].options
       }
+
+      application.stop()
     }
   }
 }
