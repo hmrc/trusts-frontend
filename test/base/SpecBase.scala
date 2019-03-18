@@ -45,7 +45,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Moc
 
   def fakeRequest = FakeRequest("", "")
 
-  def injectedParsers = fakeApplication.injector.instanceOf[PlayBodyParsers]
+  def injectedParsers = injector.instanceOf[PlayBodyParsers]
 
   implicit def messages: Messages = messagesApi.preferred(fakeRequest)
 

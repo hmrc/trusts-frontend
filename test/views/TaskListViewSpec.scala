@@ -29,9 +29,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
   private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
   private val savedUntil : String = LocalDateTime.now.format(dateFormatter)
 
-  "TaskList view" when {
+  "TaskList view" must {
 
-    "rendered for an Organisation or an Agent" must {
+    "rendered for an Organisation or an Agent" when {
         val expectedSections = List(
           Task("trust-details", routes.AddATrusteeController.onPageLoad(), Some(Completed)),
           Task("settlors", routes.AddATrusteeController.onPageLoad(), Some(InProgress)),
@@ -44,6 +44,8 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
         val view = application.injector.instanceOf[TaskListView]
+
+        application.stop()
 
         val applyView = view.apply(savedUntil, expectedSections)(fakeRequest, messages)
 
@@ -71,6 +73,8 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         "href",
         ""
       )
+
+      application.stop()
     }
 
   }
