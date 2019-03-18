@@ -46,7 +46,6 @@ site.service_name = Trusts Registration Service
 site.textarea.char_limit = (Limit is {0} characters)
 site.inprogress = In Progress
 site.complete = Completed
-site.warning = Warning
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
@@ -360,3 +359,10 @@ trusteesInfo.bulletpoint8 = Unique Taxpayer Reference
 trusteesInfo.paragraph6 = If it is a non-UK business, you need their address.
 trusteesInfo.warning = All trustees have the same legal responsibilities.
 trusteesInfo.continue = Continue
+
+agentTelephoneNumber.title = What is the agency’s telephone number?
+agentTelephoneNumber.heading = What is the agency’s telephone number?
+agentTelephoneNumber.checkYourAnswersLabel = What is the agency’s telephone number?
+agentTelephoneNumber.hint = We will use this number to contact you about this trust’s registration. For international numbers include the country code
+agentTelephoneNumber.error.required = Enter the agency’s telephone number
+agentTelephoneNumber.error.invalid.characters = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192
