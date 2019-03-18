@@ -28,10 +28,10 @@ import play.api.inject.{Injector, bind}
 import play.api.libs.json.Json
 import play.api.mvc.PlayBodyParsers
 import play.api.test.FakeRequest
-import repositories.SessionRepository
-import uk.gov.hmrc.auth.core.AffinityGroup
+import repositories.{FakeSessionRepository, SessionRepository}
+import uk.gov.hmrc.auth.core.{AffinityGroup, AuthConnector, Enrolments}
 
-trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Mocked {
+trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues {
 
   val userAnswersId = "id"
 
@@ -53,9 +53,10 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Moc
                                    affinityGroup: AffinityGroup = AffinityGroup.Organisation): GuiceApplicationBuilder =
     new GuiceApplicationBuilder()
       .overrides(
+        bind[AuthConnector].toInstance(FakeAuthConnector.stubbed(affinityGroup, Enrolments(Set()))),
         bind[DataRequiredAction].to[DataRequiredActionImpl],
         bind[IdentifierAction].toInstance(new FakeIdentifierAction(affinityGroup)(injectedParsers)),
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
-        bind[SessionRepository].to(mockedSessionRepository)
+        bind[SessionRepository].to[FakeSessionRepository]
       )
 }

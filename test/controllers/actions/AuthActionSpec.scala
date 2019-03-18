@@ -35,29 +35,43 @@ class AuthActionSpec extends SpecBase {
     def onPageLoad() = authAction { _ => Results.Ok }
   }
 
-  private def authRetrievals(affinityGroup: AffinityGroup = AffinityGroup.Individual, enrolment: Enrolments = noEnrollment) =
-    Future.successful(new ~(new ~(Some("id"), Some(affinityGroup)), enrolment))
-
   private val agentAffinityGroup = AffinityGroup.Agent
   private val orgAffinityGroup = AffinityGroup.Organisation
   private val noEnrollment = Enrolments(Set())
-  private val agentEnrolment = Enrolments(Set(Enrolment("HMRC-AS-AGENT",List(EnrolmentIdentifier("SomeKey","SomeVal")),"Activated",None)))
+  private val agentEnrolment = Enrolments(Set(
+    Enrolment(
+      "HMRC-AS-AGENT",
+      List(EnrolmentIdentifier("SomeKey","SomeVal")),
+      "Activated",
+      None
+    )
+  ))
 
 
   "Auth Action" when {
-
 
     "Agent user hasn't enrolled in Agent Services Account" must {
 
       "redirect the user to the create agent services page" in {
 
         val application = applicationBuilder(userAnswers = None).build()
+
         val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-        val authAction = new AuthenticatedIdentifierAction(new FakeAuthConnector(authRetrievals(agentAffinityGroup, noEnrollment)), frontendAppConfig, bodyParsers)
+
+        val authAction = new AuthenticatedIdentifierAction(
+          FakeAuthConnector.stubbed(agentAffinityGroup, noEnrollment),
+          frontendAppConfig, bodyParsers
+        )
+
         val controller = new Harness(authAction)
+
         val result = controller.onPageLoad()(fakeRequest)
+
         status(result) mustBe SEE_OTHER
+
         redirectLocation(result) mustBe Some(controllers.routes.CreateAgentServicesAccountController.onPageLoad().url)
+
+        application.stop()
       }
 
     }
@@ -67,11 +81,22 @@ class AuthActionSpec extends SpecBase {
       "allow user to continue" in {
 
         val application = applicationBuilder(userAnswers = None).build()
+
         val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-        val authAction = new AuthenticatedIdentifierAction(new FakeAuthConnector(authRetrievals(agentAffinityGroup, agentEnrolment)), frontendAppConfig, bodyParsers)
+
+        val authAction = new AuthenticatedIdentifierAction(
+          FakeAuthConnector.stubbed(agentAffinityGroup, agentEnrolment),
+          frontendAppConfig,
+          bodyParsers
+        )
+
         val controller = new Harness(authAction)
+
         val result = controller.onPageLoad()(fakeRequest)
+
         status(result) mustBe OK
+
+        application.stop()
       }
 
     }
@@ -81,11 +106,22 @@ class AuthActionSpec extends SpecBase {
       "allow user to continue" in {
 
         val application = applicationBuilder(userAnswers = None).build()
+
         val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-        val authAction = new AuthenticatedIdentifierAction(new FakeAuthConnector(authRetrievals(orgAffinityGroup, noEnrollment)), frontendAppConfig, bodyParsers)
+
+        val authAction = new AuthenticatedIdentifierAction(
+          FakeAuthConnector.stubbed(orgAffinityGroup, noEnrollment),
+          frontendAppConfig,
+          bodyParsers
+        )
+
         val controller = new Harness(authAction)
+
         val result = controller.onPageLoad()(fakeRequest)
+
         status(result) mustBe OK
+
+        application.stop()
       }
 
     }
@@ -95,12 +131,24 @@ class AuthActionSpec extends SpecBase {
       "redirect the user to the unauthorised page" in {
 
         val application = applicationBuilder(userAnswers = None).build()
+
         val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-        val authAction = new AuthenticatedIdentifierAction(new FakeAuthConnector(authRetrievals(enrolment = noEnrollment)), frontendAppConfig, bodyParsers)
+
+        val authAction = new AuthenticatedIdentifierAction(
+          FakeAuthConnector.stubbed(AffinityGroup.Individual, noEnrollment),
+          frontendAppConfig,
+          bodyParsers
+        )
+
         val controller = new Harness(authAction)
+
         val result = controller.onPageLoad()(fakeRequest)
+
         status(result) mustBe SEE_OTHER
+
         redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad().url)
+
+        application.stop()
       }
 
     }
@@ -113,13 +161,21 @@ class AuthActionSpec extends SpecBase {
 
         val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
 
-        val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new MissingBearerToken), frontendAppConfig, bodyParsers)
+        val authAction = new AuthenticatedIdentifierAction(
+          new FakeFailingAuthConnector(new MissingBearerToken),
+          frontendAppConfig,
+          bodyParsers
+        )
+
         val controller = new Harness(authAction)
+
         val result = controller.onPageLoad()(fakeRequest)
 
         status(result) mustBe SEE_OTHER
 
         redirectLocation(result).get must startWith(frontendAppConfig.loginUrl)
+
+        application.stop()
       }
     }
 
@@ -131,13 +187,21 @@ class AuthActionSpec extends SpecBase {
 
         val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
 
-        val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new BearerTokenExpired), frontendAppConfig, bodyParsers)
+        val authAction = new AuthenticatedIdentifierAction(
+          new FakeFailingAuthConnector(new BearerTokenExpired),
+          frontendAppConfig,
+          bodyParsers
+        )
+
         val controller = new Harness(authAction)
+
         val result = controller.onPageLoad()(fakeRequest)
 
         status(result) mustBe SEE_OTHER
 
         redirectLocation(result).get must startWith(frontendAppConfig.loginUrl)
+
+        application.stop()
       }
     }
 
@@ -149,13 +213,21 @@ class AuthActionSpec extends SpecBase {
 
         val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
 
-        val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new InsufficientEnrolments), frontendAppConfig, bodyParsers)
+        val authAction = new AuthenticatedIdentifierAction(
+          new FakeFailingAuthConnector(new InsufficientEnrolments),
+          frontendAppConfig,
+          bodyParsers
+        )
+
         val controller = new Harness(authAction)
+
         val result = controller.onPageLoad()(fakeRequest)
 
         status(result) mustBe SEE_OTHER
 
         redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad().url)
+
+        application.stop()
       }
     }
 
@@ -167,13 +239,21 @@ class AuthActionSpec extends SpecBase {
 
         val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
 
-        val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new InsufficientConfidenceLevel), frontendAppConfig, bodyParsers)
+        val authAction = new AuthenticatedIdentifierAction(
+          new FakeFailingAuthConnector(new InsufficientConfidenceLevel),
+          frontendAppConfig,
+          bodyParsers
+        )
+
         val controller = new Harness(authAction)
+
         val result = controller.onPageLoad()(fakeRequest)
 
         status(result) mustBe SEE_OTHER
 
         redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad().url)
+
+        application.stop()
       }
     }
 
@@ -185,13 +265,21 @@ class AuthActionSpec extends SpecBase {
 
         val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
 
-        val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new UnsupportedAuthProvider), frontendAppConfig, bodyParsers)
+        val authAction = new AuthenticatedIdentifierAction(
+          new FakeFailingAuthConnector(new UnsupportedAuthProvider),
+          frontendAppConfig,
+          bodyParsers
+        )
+
         val controller = new Harness(authAction)
+
         val result = controller.onPageLoad()(fakeRequest)
 
         status(result) mustBe SEE_OTHER
 
         redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad().url)
+
+        application.stop()
       }
     }
 
@@ -203,13 +291,21 @@ class AuthActionSpec extends SpecBase {
 
         val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
 
-        val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new UnsupportedAffinityGroup), frontendAppConfig, bodyParsers)
+        val authAction = new AuthenticatedIdentifierAction(
+          new FakeFailingAuthConnector(new UnsupportedAffinityGroup),
+          frontendAppConfig,
+          bodyParsers
+        )
+
         val controller = new Harness(authAction)
+
         val result = controller.onPageLoad()(fakeRequest)
 
         status(result) mustBe SEE_OTHER
 
         redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad().url)
+
+        application.stop()
       }
     }
 
@@ -221,32 +317,23 @@ class AuthActionSpec extends SpecBase {
 
         val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
 
-        val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new UnsupportedCredentialRole), frontendAppConfig, bodyParsers)
+        val authAction = new AuthenticatedIdentifierAction(
+          new FakeFailingAuthConnector(new UnsupportedCredentialRole),
+          frontendAppConfig,
+          bodyParsers
+        )
+
         val controller = new Harness(authAction)
+
         val result = controller.onPageLoad()(fakeRequest)
 
         status(result) mustBe SEE_OTHER
 
         redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad().url)
+
+        application.stop()
       }
     }
   }
-}
-
-class FakeFailingAuthConnector @Inject()(exceptionToReturn: Throwable) extends AuthConnector {
-  val serviceUrl: String = ""
-
-  override def authorise[A](predicate: Predicate, retrieval: Retrieval[A])(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[A] =
-    Future.failed(exceptionToReturn)
-}
-
-
-
-class FakeAuthConnector(stubbedRetrievalResult: Future[_]) extends AuthConnector {
-
-  override def authorise[A](predicate: Predicate, retrieval: Retrieval[A])(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[A] = {
-    stubbedRetrievalResult.map(_.asInstanceOf[A])
-  }
-
 }
 

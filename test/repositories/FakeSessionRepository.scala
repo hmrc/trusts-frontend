@@ -14,19 +14,22 @@
  * limitations under the License.
  */
 
-package base
-
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
-import org.scalatest.mockito.MockitoSugar
-import repositories.SessionRepository
+package repositories
+import models.UserAnswers
+import play.api.libs.json.Json
 
 import scala.concurrent.Future
 
-trait Mocked extends MockitoSugar {
+class FakeSessionRepository extends SessionRepository {
 
-  val mockedSessionRepository : SessionRepository = mock[SessionRepository]
+  val userAnswersId = "id"
 
-  when(mockedSessionRepository.set(any())).thenReturn(Future.successful(true))
+  def emptyUserAnswers = UserAnswers(userAnswersId, Json.obj())
+
+  override val started: Future[Unit] = Future.successful(())
+
+  override def get(id: String): Future[Option[UserAnswers]] = Future.successful(Some(emptyUserAnswers))
+
+  override def set(userAnswers: UserAnswers): Future[Boolean] = Future.successful(true)
 
 }
