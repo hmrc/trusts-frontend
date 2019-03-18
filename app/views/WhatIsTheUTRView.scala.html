@@ -40,7 +40,10 @@
           field = form("value"),
           label = messages("whatIsTheUTR.heading"),
           hint = Some(messages(s"whatIsTheUTR.hint")),
-          labelClass=Some("visually-hidden")
+          readerHint = Some(messages(s"whatIsTheUTR.hint.reader")),
+          labelClass = Some("visually-hidden"),
+          ariaLabelledBy = Some("value"),
+          ariaRequired = true
         )
 
         @components.submit_button()
