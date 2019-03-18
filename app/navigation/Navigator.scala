@@ -60,6 +60,8 @@ class Navigator @Inject()() {
     case TelephoneNumberPage(index) => _ => routes.TrusteesAnswerPageController.onPageLoad(index)
     case TrusteesAnswerPage => _ => routes.AddATrusteeController.onPageLoad()
     case AddATrusteePage => addATrusteeRoute
+    //Agents
+    case AgentTelephoneNumberPage => _ => routes.AgentAnswerController.onPageLoad()
     //  Default
     case _ => _ => routes.IndexController.onPageLoad()
   }
