@@ -19,20 +19,17 @@ package controllers.actions
 import com.google.inject.Inject
 import config.FrontendAppConfig
 import controllers.routes
-import javax.inject.Singleton
 import models.requests.IdentifierRequest
 import play.api.mvc.Results._
-import play.api.mvc._
+import play.api.mvc.{ActionBuilder, ActionFunction, Request, Result, _}
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.{Retrievals, ~}
 import uk.gov.hmrc.http.{HeaderCarrier, UnauthorizedException}
 import uk.gov.hmrc.play.HeaderCarrierConverter
-import play.api.mvc.{ActionBuilder, ActionFunction, Request, Result}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-@Singleton
 class AuthenticatedIdentifierAction @Inject()(
                                                override val authConnector: AuthConnector,
                                                config: FrontendAppConfig,
@@ -65,7 +62,6 @@ class AuthenticatedIdentifierAction @Inject()(
 
 trait IdentifierAction extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest]
 
-@Singleton
 class SessionIdentifierAction @Inject()(
                                          config: FrontendAppConfig,
                                          val parser: BodyParsers.Default
