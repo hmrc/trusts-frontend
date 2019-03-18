@@ -37,15 +37,15 @@ trait TaskListViewBehaviours extends ViewSpecBase {
         expectedSections.foreach {
           section =>
 
-            s"${section.id}" must {
+            s"${section.link.text}" must {
 
               s"render a list item" in {
                 val doc = asDocument(view)
-                assertRenderedById(doc, s"task-list__item--${section.id}")
+                assertRenderedById(doc, s"task-list__item--${section.link.text}")
               }
 
               s"render a link" in {
-                val id = s"task-list__task--${section.id}"
+                val id = s"task-list__task--${section.link.text}"
 
                 val doc = asDocument(view)
                 doc.getElementById(id).hasAttr("href")
@@ -56,7 +56,7 @@ trait TaskListViewBehaviours extends ViewSpecBase {
 
                   s"render a tag" in {
                     val doc = asDocument(view)
-                    assertRenderedById(doc, s"task-list__task--${section.id}__tag")
+                    assertRenderedById(doc, s"task-list__task--${section.link.text}__tag")
                   }
 
               }

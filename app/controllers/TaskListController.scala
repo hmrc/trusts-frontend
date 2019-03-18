@@ -26,7 +26,7 @@ import pages.{ExistingTrustMatched, TrustHaveAUTRPage, TrustRegisteredOnlinePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import viewmodels.{Completed, InProgress, Task}
+import viewmodels.{Completed, InProgress, Link, Task}
 import views.html.TaskListView
 
 import scala.concurrent.ExecutionContext
@@ -63,16 +63,13 @@ class TaskListController @Inject()(
 
       val isExistingTrust = request.userAnswers.get(TrustHaveAUTRPage).get
 
-      val inProgress = InProgress
-      val complete = Completed
-
       val sections = List(
-        Task("trust-details", routes.AddATrusteeController.onPageLoad(), Some(complete)),
-        Task("settlors", routes.AddATrusteeController.onPageLoad(), Some(inProgress)),
-        Task("trustees", routes.AddATrusteeController.onPageLoad(), Some(inProgress)),
-        Task("beneficiaries", routes.AddATrusteeController.onPageLoad(), None),
-        Task("assets", routes.AddATrusteeController.onPageLoad(), None),
-        Task("tax-liability", routes.AddATrusteeController.onPageLoad(), Some(complete))
+        Task(Link("trust-details", routes.AddATrusteeController.onPageLoad().url), Some(Completed)),
+        Task(Link("settlors", routes.AddATrusteeController.onPageLoad().url), Some(InProgress)),
+        Task(Link("trustees", routes.AddATrusteeController.onPageLoad().url), Some(InProgress)),
+        Task(Link("beneficiaries", routes.AddATrusteeController.onPageLoad().url), None),
+        Task(Link("assets", routes.AddATrusteeController.onPageLoad().url), None),
+        Task(Link("tax-liability", routes.AddATrusteeController.onPageLoad().url), Some(Completed))
       )
 
       if (isExistingTrust) {

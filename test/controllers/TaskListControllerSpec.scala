@@ -24,7 +24,7 @@ import models.{NormalMode, UserAnswers}
 import pages.{ExistingTrustMatched, TrustHaveAUTRPage, TrustRegisteredOnlinePage, WhatIsTheUTRPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import viewmodels.Task
+import viewmodels.{Completed, InProgress, Link, Task}
 import views.html.TaskListView
 
 class TaskListControllerSpec extends SpecBase {
@@ -33,12 +33,12 @@ class TaskListControllerSpec extends SpecBase {
   private val savedUntil : String = LocalDateTime.now.plusSeconds(frontendAppConfig.ttlInSeconds).format(dateFormatter)
 
   val sections = List(
-    Task("trust-details", routes.AddATrusteeController.onPageLoad(), None),
-    Task("settlors", routes.AddATrusteeController.onPageLoad(), None),
-    Task("trustees", routes.AddATrusteeController.onPageLoad(), None),
-    Task("beneficiaries", routes.AddATrusteeController.onPageLoad(), None),
-    Task("assets", routes.AddATrusteeController.onPageLoad(), None),
-    Task("tax-liability", routes.AddATrusteeController.onPageLoad(), None)
+    Task(Link("trust-details", routes.AddATrusteeController.onPageLoad().url), Some(Completed)),
+    Task(Link("settlors", routes.AddATrusteeController.onPageLoad().url), Some(InProgress)),
+    Task(Link("trustees", routes.AddATrusteeController.onPageLoad().url), Some(InProgress)),
+    Task(Link("beneficiaries", routes.AddATrusteeController.onPageLoad().url), None),
+    Task(Link("assets", routes.AddATrusteeController.onPageLoad().url), None),
+    Task(Link("tax-liability", routes.AddATrusteeController.onPageLoad().url), Some(Completed))
   )
 
   "TaskList Controller" must {

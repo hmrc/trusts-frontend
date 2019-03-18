@@ -33,12 +33,12 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
     "rendered for an Organisation or an Agent" when {
         val expectedSections = List(
-          Task("trust-details", routes.AddATrusteeController.onPageLoad(), Some(Completed)),
-          Task("settlors", routes.AddATrusteeController.onPageLoad(), Some(InProgress)),
-          Task("trustees", routes.AddATrusteeController.onPageLoad(), Some(InProgress)),
-          Task("beneficiaries", routes.AddATrusteeController.onPageLoad(), None),
-          Task("assets", routes.AddATrusteeController.onPageLoad(), None),
-          Task("tax-liability", routes.AddATrusteeController.onPageLoad(), Some(Completed))
+          Task(Link("trust-details", routes.AddATrusteeController.onPageLoad().url), Some(Completed)),
+          Task(Link("settlors", routes.AddATrusteeController.onPageLoad().url), Some(InProgress)),
+          Task(Link("trustees", routes.AddATrusteeController.onPageLoad().url), Some(InProgress)),
+          Task(Link("beneficiaries", routes.AddATrusteeController.onPageLoad().url), None),
+          Task(Link("assets", routes.AddATrusteeController.onPageLoad().url), None),
+          Task(Link("tax-liability", routes.AddATrusteeController.onPageLoad().url), Some(Completed))
         )
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
