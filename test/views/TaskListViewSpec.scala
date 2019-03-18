@@ -20,7 +20,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 import controllers.routes
-import viewmodels.{Completed, InProgress, Task}
+import viewmodels._
 import views.behaviours.{TaskListViewBehaviours, ViewBehaviours}
 import views.html.TaskListView
 
@@ -29,7 +29,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
   private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
   private val savedUntil : String = LocalDateTime.now.format(dateFormatter)
 
-  "TaskList view" must {
+  "TaskList view" when {
 
     "rendered for an Organisation or an Agent" when {
         val expectedSections = List(
@@ -55,26 +55,55 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
         behave like taskList(applyView, expectedSections)
       }
-    }
 
-  "rendered for an Agent" must {
+    "rendered for an Agent" must {
 
-    "render return to saved registrations link" in {
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      "render return to saved registrations link" in {
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val view = application.injector.instanceOf[TaskListView]
+        val view = application.injector.instanceOf[TaskListView]
 
-      val applyView = view.apply(savedUntil, Nil)(fakeRequest, messages)
+        val agentLinks = AgentLinks(
+          Link("taskList.agent.savedRegistrations", routes.AgentOverviewController.onPageLoad().url),
+          Link("taskList.agent.agentDetails", routes.AgentOverviewController.onPageLoad().url)
+        )
 
-      val doc = asDocument(applyView)
+        val applyView = view.apply(savedUntil, Nil, Some(agentLinks))(fakeRequest, messages)
 
-      assertAttributeValueForElement(
-        doc.getElementById("saved-registrations"),
-        "href",
-        ""
-      )
+        val doc = asDocument(applyView)
 
-      application.stop()
+        assertAttributeValueForElement(
+          doc.getElementById("saved-registrations"),
+          "href",
+          routes.AgentOverviewController.onPageLoad().url
+        )
+
+        application.stop()
+      }
+
+      "render agent details link" in {
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+        val view = application.injector.instanceOf[TaskListView]
+
+        val agentLinks = AgentLinks(
+          Link("taskList.agent.savedRegistrations", routes.AgentOverviewController.onPageLoad().url),
+          Link("taskList.agent.agentDetails", routes.AgentOverviewController.onPageLoad().url)
+        )
+
+        val applyView = view.apply(savedUntil, Nil, Some(agentLinks))(fakeRequest, messages)
+
+        val doc = asDocument(applyView)
+
+        assertAttributeValueForElement(
+          doc.getElementById("agent-details"),
+          "href",
+          routes.AgentOverviewController.onPageLoad().url
+        )
+
+        application.stop()
+      }
+
     }
 
   }

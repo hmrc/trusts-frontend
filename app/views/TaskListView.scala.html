@@ -15,12 +15,13 @@
  *@
 
 @import viewmodels.Task
+@import viewmodels.AgentLinks
 
 @this(
     main_template: MainTemplate
 )
 
-@(savedUntil : String, sections : List[Task])(implicit request: Request[_], messages: Messages)
+@(savedUntil : String, sections : List[Task], agent : Option[AgentLinks] = None)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("taskList.title")
@@ -31,6 +32,11 @@
     @components.heading("taskList.heading", headingSize = "heading-xlarge")
 
     <p>@messages("taskList.paragraph1")</p>
+
+    @agent.map { av =>
+        <a id="saved-registrations" href="@av.savedRegistrations.url">@messages(av.savedRegistrations.text)</a>
+        <a id="agent-details" href="@av.agentDetails.url">@messages(av.agentDetails.text)</a>
+    }
 
     <h2>@messages("taskList.savedUntil.heading")</h2>
     <p>@savedUntil</p>
