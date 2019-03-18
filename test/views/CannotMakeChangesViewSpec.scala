@@ -23,9 +23,7 @@ class CannotMakeChangesViewSpec extends ViewBehaviours {
 
   "CannotMakeChanges view" must {
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-    val view = application.injector.instanceOf[CannotMakeChangesView]
+    val view = viewFor[CannotMakeChangesView](Some(emptyUserAnswers))
 
     val applyView = view.apply()(fakeRequest, messages)
 

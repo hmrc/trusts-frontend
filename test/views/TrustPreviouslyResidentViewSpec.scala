@@ -34,9 +34,7 @@ class TrustPreviouslyResidentViewSpec extends SelectCountryViewBehaviours {
 
   "TrustPreviouslyResidentView view" must {
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-    val view = application.injector.instanceOf[TrustPreviouslyResidentView]
+    val view = viewFor[TrustPreviouslyResidentView](Some(emptyUserAnswers))
 
     val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
 

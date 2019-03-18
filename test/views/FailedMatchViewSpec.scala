@@ -23,9 +23,7 @@ class FailedMatchViewSpec extends ViewBehaviours {
 
   "FailedMatch view" must {
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-    val view = application.injector.instanceOf[FailedMatchView]
+    val view = viewFor[FailedMatchView](Some(emptyUserAnswers))
 
     val applyView = view.apply()(fakeRequest, messages)
 

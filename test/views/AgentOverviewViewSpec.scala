@@ -23,9 +23,7 @@ class AgentOverviewViewSpec extends ViewBehaviours {
 
   "AgentOverview view" must {
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-    val view = application.injector.instanceOf[AgentOverviewView]
+    val view = viewFor[AgentOverviewView](Some(emptyUserAnswers))
 
     val applyView = view.apply()(fakeRequest, messages)
 
