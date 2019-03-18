@@ -23,9 +23,7 @@ class IndexViewSpec extends ViewBehaviours {
 
   "Index view" must {
 
-    val application = applicationBuilder().build()
-
-    val view = application.injector.instanceOf[IndexView]
+    val view = viewFor[IndexView](Some(emptyUserAnswers))
 
     val applyView = view.apply()(fakeRequest, messages)
 

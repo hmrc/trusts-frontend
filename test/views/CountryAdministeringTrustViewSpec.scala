@@ -34,9 +34,7 @@ class CountryAdministeringTrustViewSpec extends SelectCountryViewBehaviours {
 
   "CountryAdministeringTrustView view" must {
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-    val view = application.injector.instanceOf[CountryAdministeringTrustView]
+    val view = viewFor[CountryAdministeringTrustView](Some(emptyUserAnswers))
 
     val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
 
