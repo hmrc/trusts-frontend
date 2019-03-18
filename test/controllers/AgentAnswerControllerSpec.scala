@@ -51,7 +51,6 @@ class AgentAnswerControllerSpec extends SpecBase {
         AnswerSection(
           None,
           Seq(
-            checkYourAnswersHelper..value,
             checkYourAnswersHelper.agenciesTelephoneNumber.value
           )
         )
