@@ -29,6 +29,8 @@ class AssetInterruptPageViewSpec extends ViewBehaviours {
 
     val applyView = view.apply()(fakeRequest, messages)
 
+    application.stop()
+
     behave like normalPage(applyView, "assetInterruptPage", "title",
       "subheading1",
       "paragraph1",
@@ -50,6 +52,7 @@ class AssetInterruptPageViewSpec extends ViewBehaviours {
       "bullet9",
       "paragraph6",
       "continue")
+
 
     behave like pageWithBackLink(applyView)
 
