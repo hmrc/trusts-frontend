@@ -30,5 +30,42 @@
 
     @components.back_link()
 
-    @components.heading("assetInterruptPage.heading")
+
+<span class="govuk-caption-xl">Assets</span>
+@components.heading("assetInterruptPage.heading")
+
+    <h2>Money</h2>
+<p>You must give the total amount of money in the trust. If more than one amount has been added to the trust, add them together.</p>
+
+    <h2>Business</h2>
+<p>For a business named in the trust deed, you need:</p>
+@components.bullet_list("assetInterruptPage", List(
+        "bullet1",
+        "bullet2",
+        "bullet3"
+    )
+)
+
+    <h2>Shares</h2>
+<p>For shares named in the trust deed, you need:</p>
+@components.bullet_list("assetInterruptPage", List(
+        "bullet4",
+        "bullet5",
+        "bullet6"
+    )
+)
+
+<p>You will also need to choose whether the shares are listed on a stock exchange (quoted shares) or not.</p>
+    <h2>Property or land</h2>
+<p>For property or land in the trust deed, you need:</p>
+@components.bullet_list("assetInterruptPage", List(
+        "bullet7",
+        "bullet8",
+        "bullet9"
+    )
+)
+
+<p>The current value of the property or land is needed, not the value when it first entered the trust. This can be an estimate.</p>
+
+@components.button_link(messages("assetInterruptPage.continue"), AssetInterruptPageController.onPageLoad().url)
 }

@@ -367,3 +367,13 @@ agentTelephoneNumber.error.invalid.characters = Enter a telephone number, like 0
 
 assetInterruptPage.title = Information you need to add assets
 assetInterruptPage.heading = Information you need to add assets
+assetInterruptPage.bullet1 = business name
+assetInterruptPage.bullet2 = the business’s Unique Taxpayer Reference (UTR), if you don’t have this you will need to enter the business’s address
+assetInterruptPage.bullet3 = current value
+assetInterruptPage.bullet4 = share company name
+assetInterruptPage.bullet5 = share class
+assetInterruptPage.bullet6 = number of shares in the trust and total current value
+assetInterruptPage.bullet7 = description of the property or land, or address if available
+assetInterruptPage.bullet8 = estimated total value of the property or land
+assetInterruptPage.bullet9 = estimated value of the property or land if the trust only owns a proportion
+assetInterruptPage.continue = Continue
