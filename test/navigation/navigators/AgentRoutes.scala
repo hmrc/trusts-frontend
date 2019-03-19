@@ -19,7 +19,7 @@ package navigation.navigators
 import base.SpecBase
 import controllers.routes
 import generators.Generators
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, NormalMode, UserAnswers}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
@@ -35,7 +35,7 @@ trait AgentRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(AgentTelephoneNumberPage, CheckMode)(userAnswers)
+          navigator.nextPage(AgentTelephoneNumberPage, NormalMode)(userAnswers)
             .mustBe(routes.AgentAnswerController.onPageLoad())
       }
     }
