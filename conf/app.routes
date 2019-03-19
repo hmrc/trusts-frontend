@@ -173,4 +173,7 @@ GET        /change-agent-telephone-number                   controllers.AgentTel
 POST       /change-agent-telephone-number                  controllers.AgentTelephoneNumberController.onSubmit(mode: Mode = CheckMode)
 
 GET        /agent-overview                                      controllers.AgentOverviewController.onPageLoad()
+
 GET        /trustees-information                                controllers.TrusteesInfoController.onPageLoad()
+
+GET        /asset-interrupt-page                       controllers.AssetInterruptPageController.onPageLoad()
