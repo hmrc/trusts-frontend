@@ -29,9 +29,7 @@ class NonResidentTypeViewSpec extends ViewBehaviours {
 
   val form = new NonResidentTypeFormProvider()()
 
-  val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-  val view = application.injector.instanceOf[NonResidentTypeView]
+  val view = viewFor[NonResidentTypeView](Some(emptyUserAnswers))
 
   def applyView(form: Form[_]): HtmlFormat.Appendable =
     view.apply(form, NormalMode)(fakeRequest, messages)

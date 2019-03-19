@@ -35,13 +35,10 @@ class TrusteesUkAddressViewSpec extends QuestionViewBehaviours[TrusteesUkAddress
 
   "TrusteesUkAddressView" must {
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-    val view = application.injector.instanceOf[TrusteesUkAddressView]
+    val view = viewFor[TrusteesUkAddressView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, index, trusteeName)(fakeRequest, messages)
-
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, trusteeName)
 

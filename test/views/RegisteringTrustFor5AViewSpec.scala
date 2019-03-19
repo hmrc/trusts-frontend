@@ -32,9 +32,7 @@ class RegisteringTrustFor5AViewSpec extends YesNoViewBehaviours {
 
   "RegisteringTrustFor5A view" must {
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-    val view = application.injector.instanceOf[RegisteringTrustFor5AView]
+    val view = viewFor[RegisteringTrustFor5AView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode)(fakeRequest, messages)

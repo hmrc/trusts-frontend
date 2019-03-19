@@ -32,9 +32,7 @@ class AdministrationInsideUKViewSpec extends YesNoViewBehaviours {
 
   "AdministrationInsideUK view" must {
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-    val view = application.injector.instanceOf[AdministrationInsideUKView]
+    val view = viewFor[AdministrationInsideUKView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode)(fakeRequest, messages)
