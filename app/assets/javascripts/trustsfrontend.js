@@ -78,12 +78,6 @@ $(document).ready(function() {
     })
 
 
-  //======================================================
-  // Move immediate forcus to any error summary
-  //======================================================
-  if ($('.error-summary a').length > 0){
-    $('.error-summary').focus();
-  }
 
   // =====================================================
   // Adds data-focuses attribute to all containers of inputs listed in an error summary
@@ -99,6 +93,16 @@ $(document).ready(function() {
           });
       }
       assignFocus();
+
+
+  //======================================================
+  // Move immediate forcus to any error summary
+  //======================================================
+  if ($('.error-summary a').length > 0){
+    $('.error-summary').focus();
+  }
+
+    $('#errors').focus();
 
       function beforePrintCall(){
           if($('.no-details').length > 0){
@@ -199,3 +203,16 @@ $(document).ready(function() {
               e.preventDefault();
       });
   }
+
+	$(".skiplink").on("click", function(event) {
+		// strip the leading hash and declare
+		// the content we're skipping to
+		var skipTo="#"+this.href.split('#')[1];
+		// Setting 'tabindex' to -1 takes an element out of normal
+		// tab flow but allows it to be focused via javascript
+		$(skipTo).attr('tabindex', -1).on('blur focusout', function () {
+			// when focus leaves this element,
+			// remove the tabindex attribute
+			$(this).removeAttr('tabindex');
+		}).focus(); // focus on the content container
+	});

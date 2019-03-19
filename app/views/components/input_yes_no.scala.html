@@ -25,21 +25,26 @@
         yesAssoc: Option[String] = None,
         noAssoc: Option[String] = None,
         labelClass: Option[String] = None,
-        link : Option[Link] = None
+        link : Option[Link] = None,
+        labelAsHeading: Boolean = false
 )(implicit messages: Messages)
 
 
 <div class="form-group @if(field.hasErrors){form-group-error}">
+
     <fieldset class="inline" id="@{field.id}">
 
+        <div>
+        @if(labelAsHeading){<h1 class="labelAsHeading">}
         <legend>
-            <span @if(labelClass.nonEmpty){class="@labelClass"}>@label</span>
-            @form_hint(hint, link)
-
-            @field.errors.map { error =>
-                <span class="error-message" id="error-message-@{field.id}-input">@messages(error.message, error.args: _*)</span>
-            }
+            <span id="@{field.id}-id" @if(labelClass.nonEmpty){class="@labelClass"}>@label</span>
         </legend>
+        @if(labelAsHeading){</h1>}
+        @form_hint(hint, link)
+        @field.errors.map { error =>
+        <span class="error-message" id="error-message-@{field.id}-input">@messages(error.message, error.args: _*)</span>
+        }
+        </div>
         <div class="multiple-choice">
             <input id="@{field.id}-yes" type="radio" name="@{field.id}" value="true" @if(field.value.contains("true")){checked="checked"} />
             <label class="block-label selection-button-radio" for="@{field.id}-yes" data-target="@if(yesAssoc.nonEmpty){@yesAssoc}">

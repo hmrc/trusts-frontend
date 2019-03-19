@@ -17,11 +17,11 @@
 @(
         field: Field,
         label: String,
+        labelAsHeading: Boolean = false,
         inputClass: Option[String] = None,
         hint: Option[String] = None,
         readerHint: Option[String] = None,
         labelClass: Option[String] = None,
-        ariaLabelledBy: Option[String] = None,
         ariaRequired: Boolean = false
 )(implicit messages: Messages)
 
@@ -33,16 +33,20 @@
 }
 
 <div class="form-group @if(field.hasErrors){form-group-error}">
+    @if(labelAsHeading){<h1>}
     <label class="form-label" for="@{field.id}">
         <span class="bold @if(labelClass.nonEmpty){@labelClass}">@label</span>
-        @if(hint.nonEmpty){
+    </label>
+    @if(labelAsHeading){</h1>}
+    @if(hint.nonEmpty){
+        <div id="@{field.id}_hint">
             <span class="form-hint form-field" @if(readerHint.nonEmpty){aria-hidden="true"}>@hint</span>
             @if(readerHint.nonEmpty){<span class="visuallyhidden">@readerHint</span>}
-        }
-        @field.errors.map { error =>
-            <span class="error-message" id="error-message-@{field.id}-input">@messages(error.message, error.args: _*)</span>
-        }
-    </label>
+        </div>
+    }
+    @field.errors.map { error =>
+    <span class="error-message" id="error-message-@{field.id}-input">@messages(error.message, error.args: _*)</span>
+    }
     <div class="form-control-wrapper">
         <input
         class="form-control @inputClass"
@@ -53,10 +57,10 @@
         @required
         @if(field.hasErrors) {
             aria-describedby="error-message-@{field.id}-input"
-        } else {
-            @if(ariaLabelledBy.nonEmpty) {
-                aria-describedby="@{ariaLabelledBy}"
-            }
+        }
+        else
+        @if(hint.nonEmpty) {
+            aria-describedby="@{field.id}_hint"
         }
         />
     </div>
