@@ -18,6 +18,7 @@ package controllers.actions
 
 import models.UserAnswers
 import models.requests.{IdentifierRequest, OptionalDataRequest}
+import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -26,9 +27,9 @@ class FakeDataRetrievalAction(dataToReturn: Option[UserAnswers]) extends DataRet
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] =
     dataToReturn match {
       case None =>
-        Future(OptionalDataRequest(request.request, request.identifier, None))
+        Future(OptionalDataRequest(request.request, request.identifier, None, Organisation))
       case Some(userAnswers) =>
-        Future(OptionalDataRequest(request.request, request.identifier, Some(userAnswers)))
+        Future(OptionalDataRequest(request.request, request.identifier, Some(userAnswers), Organisation))
     }
 
   override protected implicit val executionContext: ExecutionContext =

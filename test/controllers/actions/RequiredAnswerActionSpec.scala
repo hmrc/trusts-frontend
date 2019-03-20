@@ -27,6 +27,7 @@ import pages.TrusteesNamePage
 import play.api.http.HeaderNames
 import play.api.libs.json.Reads
 import play.api.mvc.Result
+import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -48,7 +49,7 @@ class RequiredAnswerActionSpec extends SpecBase with MockitoSugar with ScalaFutu
           val answers = emptyUserAnswers
 
           val action = new Harness(RequiredAnswer(TrusteesNamePage(0)))
-          val futureResult = action.callRefine(new DataRequest(fakeRequest, "id", answers))
+          val futureResult = action.callRefine(new DataRequest(fakeRequest, "id", answers, Organisation))
 
           whenReady(futureResult) { result =>
             result.left.value.header.headers(HeaderNames.LOCATION) mustBe routes.SessionExpiredController.onPageLoad().url
@@ -59,7 +60,7 @@ class RequiredAnswerActionSpec extends SpecBase with MockitoSugar with ScalaFutu
           val answers = emptyUserAnswers
 
           val action = new Harness(RequiredAnswer(TrusteesNamePage(0), routes.TrusteesNameController.onPageLoad(NormalMode, 0)))
-          val futureResult = action.callRefine(new DataRequest(fakeRequest, "id", answers))
+          val futureResult = action.callRefine(new DataRequest(fakeRequest, "id", answers, Organisation))
 
           whenReady(futureResult) { result =>
             result.left.value.header.headers(HeaderNames.LOCATION) mustBe routes.TrusteesNameController.onPageLoad(NormalMode, 0).url
@@ -73,7 +74,7 @@ class RequiredAnswerActionSpec extends SpecBase with MockitoSugar with ScalaFutu
       "continue with refining the request" in {
         val answers = UserAnswers("id").set(TrusteesNamePage(0), FullName("Adam", None, "Conder")).success.value
 
-        val dataRequest = new DataRequest(fakeRequest, "id", answers)
+        val dataRequest = new DataRequest(fakeRequest, "id", answers, Organisation)
 
         val action = new Harness(RequiredAnswer(TrusteesNamePage(0)))
         val futureResult = action.callRefine(dataRequest)

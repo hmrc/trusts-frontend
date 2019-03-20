@@ -21,6 +21,7 @@ import java.time.format.DateTimeFormatter
 import config.FrontendAppConfig
 import controllers.actions._
 import javax.inject.Inject
+import models.Matched.{AlreadyRegistered, Failed, Success}
 import models.NormalMode
 import pages._
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -75,9 +76,10 @@ class TaskListController @Inject()(
 
       if (isExistingTrust) {
         request.userAnswers.get(ExistingTrustMatched) match {
-          case Some(true) =>
+          case Some(Success) =>
             renderView(request.affinityGroup)
-          case Some(false) =>
+
+          case Some(AlreadyRegistered) | Some(Failed) =>
             Redirect(routes.FailedMatchController.onPageLoad().url)
 
           case None =>

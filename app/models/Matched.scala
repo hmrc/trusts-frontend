@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 
-package pages
-import models.Matched
-import play.api.libs.json.JsPath
+package models
 
-object ExistingTrustMatched extends QuestionPage[Matched] {
+sealed trait Matched
 
-  override def path: JsPath = JsPath \ "existing" \ toString
+object Matched extends Enumerable.Implicits {
 
-  override def toString: String = "matched"
+  case object Success extends WithName("success") with Matched
+  case object AlreadyRegistered extends WithName("already-registered") with Matched
+  case object Failed extends WithName("failed") with Matched
 
+  val values: Set[Matched] = Set(
+    Success, AlreadyRegistered, Failed
+  )
+
+  implicit val enumerable: Enumerable[Matched] =
+    Enumerable(values.toSeq.map(v => v.toString -> v): _*)
 }

@@ -20,7 +20,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 import base.SpecBase
-import models.{NormalMode, UserAnswers}
+import models.{Matched, NormalMode, UserAnswers}
 import pages._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -78,7 +78,7 @@ class TaskListControllerSpec extends SpecBase {
             .set(TrustRegisteredOnlinePage, false).success.value
             .set(TrustHaveAUTRPage, true).success.value
             .set(WhatIsTheUTRPage, "SA123456789").success.value
-            .set(ExistingTrustMatched, true).success.value
+            .set(ExistingTrustMatched, Matched.Success).success.value
 
           val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = Organisation).build()
 
@@ -100,13 +100,33 @@ class TaskListControllerSpec extends SpecBase {
 
       "has not matched" when {
 
-        "redirect to FailedMatching" in {
+        "already registered redirect to AlreadyRegistered" in {
+          val answers = UserAnswers(userAnswersId)
+            .set(TrustRegisteredOnlinePage, false).success.value
+            .set(TrustHaveAUTRPage, true).success.value
+            .set(WhatIsTheUTRPage, "SA123456789").success.value
+            .set(ExistingTrustMatched, Matched.AlreadyRegistered).success.value
+
+          val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+          val request = FakeRequest(GET, routes.TaskListController.onPageLoad().url)
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+
+          redirectLocation(result).value mustEqual routes.FailedMatchController.onPageLoad().url
+
+          application.stop()
+        }
+
+        "failed matching redirect to FailedMatching" in {
 
           val answers = UserAnswers(userAnswersId)
             .set(TrustRegisteredOnlinePage, false).success.value
             .set(TrustHaveAUTRPage, true).success.value
             .set(WhatIsTheUTRPage, "SA123456789").success.value
-            .set(ExistingTrustMatched, false).success.value
+            .set(ExistingTrustMatched, Matched.Failed).success.value
 
           val application = applicationBuilder(userAnswers = Some(answers)).build()
 
