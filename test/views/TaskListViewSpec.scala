@@ -31,7 +31,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
   "TaskList view" when {
 
-    "rendered for an Organisation or an Agent" when {
+    "rendered for an Organisation or an Agent" must {
+
+      "render sections" in {
         val expectedSections = List(
           Task(Link("trust-details", routes.AddATrusteeController.onPageLoad().url), Some(Completed)),
           Task(Link("settlors", routes.AddATrusteeController.onPageLoad().url), Some(InProgress)),
@@ -41,11 +43,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
           Task(Link("tax-liability", routes.AddATrusteeController.onPageLoad().url), Some(Completed))
         )
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-        val view = application.injector.instanceOf[TaskListView]
-
-        application.stop()
+        val view = viewFor[TaskListView](Some(emptyUserAnswers))
 
         val applyView = view.apply(savedUntil, expectedSections)(fakeRequest, messages)
 
@@ -55,13 +53,12 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
         behave like taskList(applyView, expectedSections)
       }
+    }
 
     "rendered for an Agent" must {
 
       "render return to saved registrations link" in {
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-        val view = application.injector.instanceOf[TaskListView]
+        val view = viewFor[TaskListView](Some(emptyUserAnswers))
 
         val agentLinks = AgentLinks(
           Link("taskList.agent.savedRegistrations", routes.AgentOverviewController.onPageLoad().url),
@@ -77,14 +74,11 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
           "href",
           routes.AgentOverviewController.onPageLoad().url
         )
-
-        application.stop()
       }
 
       "render agent details link" in {
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-        val view = application.injector.instanceOf[TaskListView]
+        val view = viewFor[TaskListView](Some(emptyUserAnswers))
 
         val agentLinks = AgentLinks(
           Link("taskList.agent.savedRegistrations", routes.AgentOverviewController.onPageLoad().url),
@@ -100,8 +94,6 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
           "href",
           routes.AgentOverviewController.onPageLoad().url
         )
-
-        application.stop()
       }
 
     }
