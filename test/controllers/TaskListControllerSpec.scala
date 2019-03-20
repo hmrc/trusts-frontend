@@ -21,25 +21,15 @@ import java.time.format.DateTimeFormatter
 
 import base.SpecBase
 import models.{NormalMode, UserAnswers}
-import pages.{ExistingTrustMatched, TrustHaveAUTRPage, TrustRegisteredOnlinePage, WhatIsTheUTRPage}
+import pages._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import viewmodels.{Completed, InProgress, Link, Task}
 import views.html.TaskListView
 
 class TaskListControllerSpec extends SpecBase {
 
   private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
   private val savedUntil : String = LocalDateTime.now.plusSeconds(frontendAppConfig.ttlInSeconds).format(dateFormatter)
-
-  val sections = List(
-    Task(Link("trust-details", routes.AddATrusteeController.onPageLoad().url), Some(Completed)),
-    Task(Link("settlors", routes.AddATrusteeController.onPageLoad().url), Some(InProgress)),
-    Task(Link("trustees", routes.AddATrusteeController.onPageLoad().url), Some(InProgress)),
-    Task(Link("beneficiaries", routes.AddATrusteeController.onPageLoad().url), None),
-    Task(Link("assets", routes.AddATrusteeController.onPageLoad().url), None),
-    Task(Link("tax-liability", routes.AddATrusteeController.onPageLoad().url), Some(Completed))
-  )
 
   "TaskList Controller" must {
 
@@ -100,7 +90,7 @@ class TaskListControllerSpec extends SpecBase {
           status(result) mustEqual OK
 
           contentAsString(result) mustEqual
-            view(savedUntil, sections)(fakeRequest, messages).toString
+            view(savedUntil, RegistrationProgress.sections(answers))(fakeRequest, messages).toString
 
           application.stop()
         }
@@ -176,7 +166,7 @@ class TaskListControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(savedUntil, sections)(fakeRequest, messages).toString
+          view(savedUntil, RegistrationProgress.sections(answers))(fakeRequest, messages).toString
 
         application.stop()
       }

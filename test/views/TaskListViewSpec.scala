@@ -29,11 +29,16 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
   private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
   private val savedUntil : String = LocalDateTime.now.format(dateFormatter)
 
+  private val agentLinks = AgentLinks(
+    Link("taskList.agent.savedRegistrations", routes.AgentOverviewController.onPageLoad().url),
+    Link("taskList.agent.agentDetails", routes.AgentOverviewController.onPageLoad().url)
+  )
+
   "TaskList view" when {
 
     "rendered for an Organisation or an Agent" must {
 
-      "render sections" in {
+      "render sections" must {
         val expectedSections = List(
           Task(Link("trust-details", routes.AddATrusteeController.onPageLoad().url), Some(Completed)),
           Task(Link("settlors", routes.AddATrusteeController.onPageLoad().url), Some(InProgress)),
@@ -55,16 +60,22 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
       }
     }
 
+    "rendered for an Organisation" must {
+
+      "render Saved Until" in {
+        val view = viewFor[TaskListView](Some(emptyUserAnswers))
+        val applyView = view.apply(savedUntil, Nil, None)(fakeRequest, messages)
+
+        val doc = asDocument(applyView)
+        assertRenderedById(doc, "saved-until")
+      }
+
+    }
+
     "rendered for an Agent" must {
 
       "render return to saved registrations link" in {
         val view = viewFor[TaskListView](Some(emptyUserAnswers))
-
-        val agentLinks = AgentLinks(
-          Link("taskList.agent.savedRegistrations", routes.AgentOverviewController.onPageLoad().url),
-          Link("taskList.agent.agentDetails", routes.AgentOverviewController.onPageLoad().url)
-        )
-
         val applyView = view.apply(savedUntil, Nil, Some(agentLinks))(fakeRequest, messages)
 
         val doc = asDocument(applyView)
@@ -77,13 +88,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
       }
 
       "render agent details link" in {
-
         val view = viewFor[TaskListView](Some(emptyUserAnswers))
-
-        val agentLinks = AgentLinks(
-          Link("taskList.agent.savedRegistrations", routes.AgentOverviewController.onPageLoad().url),
-          Link("taskList.agent.agentDetails", routes.AgentOverviewController.onPageLoad().url)
-        )
 
         val applyView = view.apply(savedUntil, Nil, Some(agentLinks))(fakeRequest, messages)
 
@@ -94,6 +99,14 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
           "href",
           routes.AgentOverviewController.onPageLoad().url
         )
+      }
+
+      "not render saved until" in {
+        val view = viewFor[TaskListView](Some(emptyUserAnswers))
+        val applyView = view.apply(savedUntil, Nil, Some(agentLinks))(fakeRequest, messages)
+
+        val doc = asDocument(applyView)
+        assertNotRenderedById(doc, "saved-until")
       }
 
     }

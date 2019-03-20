@@ -22,11 +22,10 @@ import config.FrontendAppConfig
 import controllers.actions._
 import javax.inject.Inject
 import models.NormalMode
-import pages.{ExistingTrustMatched, TrustHaveAUTRPage, TrustRegisteredOnlinePage}
+import pages._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import viewmodels.{Completed, InProgress, Link, Task}
 import views.html.TaskListView
 
 import scala.concurrent.ExecutionContext
@@ -63,26 +62,17 @@ class TaskListController @Inject()(
 
       val isExistingTrust = request.userAnswers.get(TrustHaveAUTRPage).get
 
-      val sections = List(
-        Task(Link("trust-details", routes.AddATrusteeController.onPageLoad().url), Some(Completed)),
-        Task(Link("settlors", routes.AddATrusteeController.onPageLoad().url), Some(InProgress)),
-        Task(Link("trustees", routes.AddATrusteeController.onPageLoad().url), Some(InProgress)),
-        Task(Link("beneficiaries", routes.AddATrusteeController.onPageLoad().url), None),
-        Task(Link("assets", routes.AddATrusteeController.onPageLoad().url), None),
-        Task(Link("tax-liability", routes.AddATrusteeController.onPageLoad().url), Some(Completed))
-      )
-
       if (isExistingTrust) {
         request.userAnswers.get(ExistingTrustMatched) match {
           case Some(true) =>
-            Ok(view(savedUntil, sections))
+            Ok(view(savedUntil, RegistrationProgress.sections(request.userAnswers)))
           case Some(false) =>
             Redirect(routes.FailedMatchController.onPageLoad().url)
           case None =>
             Redirect(routes.WhatIsTheUTRController.onPageLoad(NormalMode).url)
         }
       } else {
-        Ok(view(savedUntil, sections))
+        Ok(view(savedUntil, RegistrationProgress.sections(request.userAnswers)))
       }
   }
 }

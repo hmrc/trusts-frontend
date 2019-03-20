@@ -34,12 +34,14 @@
     <p>@messages("taskList.paragraph1")</p>
 
     @agent.map { av =>
-        <a id="saved-registrations" href="@av.savedRegistrations.url">@messages(av.savedRegistrations.text)</a>
-        <a id="agent-details" href="@av.agentDetails.url">@messages(av.agentDetails.text)</a>
+        <a id="saved-registrations" href="@av.savedRegistrations.url">@messages(s"$av.savedRegistrations.text")</a>
+        <a id="agent-details" href="@av.agentDetails.url">@messages(s"$av.agentDetails.text")</a>
     }
 
-    <h2>@messages("taskList.savedUntil.heading")</h2>
-    <p>@savedUntil</p>
+    @if(agent.isEmpty) {
+        <h2>@messages("taskList.savedUntil.heading")</h2>
+        <p id="saved-until">@savedUntil</p>
+    }
 
     @components.task_list(sections)
 
