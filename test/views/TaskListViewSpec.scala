@@ -20,6 +20,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 import controllers.routes
+import pages.RegistrationProgress
 import viewmodels._
 import views.behaviours.{TaskListViewBehaviours, ViewBehaviours}
 import views.html.TaskListView
@@ -39,16 +40,12 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
     "rendered for an Organisation or an Agent" must {
 
       "render sections" must {
-        val expectedSections = List(
-          Task(Link("trust-details", routes.AddATrusteeController.onPageLoad().url), Some(Completed)),
-          Task(Link("settlors", routes.AddATrusteeController.onPageLoad().url), Some(InProgress)),
-          Task(Link("trustees", routes.AddATrusteeController.onPageLoad().url), Some(InProgress)),
-          Task(Link("beneficiaries", routes.AddATrusteeController.onPageLoad().url), None),
-          Task(Link("assets", routes.AddATrusteeController.onPageLoad().url), None),
-          Task(Link("tax-liability", routes.AddATrusteeController.onPageLoad().url), Some(Completed))
-        )
 
-        val view = viewFor[TaskListView](Some(emptyUserAnswers))
+        val answers = emptyUserAnswers
+
+        val view = viewFor[TaskListView](Some(answers))
+
+        val expectedSections = RegistrationProgress.sections(answers)
 
         val applyView = view.apply(savedUntil, expectedSections)(fakeRequest, messages)
 

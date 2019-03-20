@@ -66,8 +66,10 @@ class TaskListController @Inject()(
         request.userAnswers.get(ExistingTrustMatched) match {
           case Some(true) =>
             Ok(view(savedUntil, RegistrationProgress.sections(request.userAnswers)))
+
           case Some(false) =>
             Redirect(routes.FailedMatchController.onPageLoad().url)
+
           case None =>
             Redirect(routes.WhatIsTheUTRController.onPageLoad(NormalMode).url)
         }
