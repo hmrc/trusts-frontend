@@ -15,13 +15,14 @@
  *@
 
 @import viewmodels.Task
-@import viewmodels.AgentLinks
+@import uk.gov.hmrc.auth.core.AffinityGroup
+@import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 
 @this(
     main_template: MainTemplate
 )
 
-@(savedUntil : String, sections : List[Task], agent : Option[AgentLinks] = None)(implicit request: Request[_], messages: Messages)
+@(savedUntil : String, sections : List[Task], affinityGroup : AffinityGroup)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("taskList.title")
@@ -33,12 +34,11 @@
 
     <p>@messages("taskList.paragraph1")</p>
 
-    @agent.map { av =>
-        <a id="saved-registrations" href="@av.savedRegistrations.url">@messages(s"$av.savedRegistrations.text")</a>
-        <a id="agent-details" href="@av.agentDetails.url">@messages(s"$av.agentDetails.text")</a>
-    }
+    @if(affinityGroup == AffinityGroup.Agent) {
+        <p>@components.link(AgentOverviewController.onPageLoad.url, "saved-registrations", "taskList.agent.savedRegistrations")</p>
 
-    @if(agent.isEmpty) {
+        <p>@components.link(AgentOverviewController.onPageLoad.url, "agent-details", "taskList.agent.agentDetails")</p>
+    } else {
         <h2>@messages("taskList.savedUntil.heading")</h2>
         <p id="saved-until">@savedUntil</p>
     }

@@ -335,6 +335,8 @@ taskList.trustees.label = Trustees
 taskList.beneficiaries.label = Beneficiaries
 taskList.assets.label = Assets
 taskList.taxLiability.label = Years of tax liability
+taskList.agent.savedRegistrations = Return to saved registrations
+taskList.agent.agentDetails = Agent details
 
 taskList.completed = Completed
 taskList.progress = In Progress

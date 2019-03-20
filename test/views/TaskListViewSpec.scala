@@ -20,8 +20,9 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 import controllers.routes
+import models.UserAnswers
 import pages.RegistrationProgress
-import viewmodels._
+import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import views.behaviours.{TaskListViewBehaviours, ViewBehaviours}
 import views.html.TaskListView
 
@@ -30,10 +31,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
   private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
   private val savedUntil : String = LocalDateTime.now.format(dateFormatter)
 
-  private val agentLinks = AgentLinks(
-    Link("taskList.agent.savedRegistrations", routes.AgentOverviewController.onPageLoad().url),
-    Link("taskList.agent.agentDetails", routes.AgentOverviewController.onPageLoad().url)
-  )
+  private def sections(userAnswers: UserAnswers) = RegistrationProgress.sections(userAnswers)
 
   "TaskList view" when {
 
@@ -45,15 +43,13 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
         val view = viewFor[TaskListView](Some(answers))
 
-        val expectedSections = RegistrationProgress.sections(answers)
-
-        val applyView = view.apply(savedUntil, expectedSections)(fakeRequest, messages)
+        val applyView = view.apply(savedUntil, sections(answers), Organisation)(fakeRequest, messages)
 
         behave like normalPage(applyView, "taskList")
 
         behave like pageWithBackLink(applyView)
 
-        behave like taskList(applyView, expectedSections)
+        behave like taskList(applyView, sections(answers))
       }
     }
 
@@ -61,7 +57,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
       "render Saved Until" in {
         val view = viewFor[TaskListView](Some(emptyUserAnswers))
-        val applyView = view.apply(savedUntil, Nil, None)(fakeRequest, messages)
+        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), Organisation)(fakeRequest, messages)
 
         val doc = asDocument(applyView)
         assertRenderedById(doc, "saved-until")
@@ -73,7 +69,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
       "render return to saved registrations link" in {
         val view = viewFor[TaskListView](Some(emptyUserAnswers))
-        val applyView = view.apply(savedUntil, Nil, Some(agentLinks))(fakeRequest, messages)
+        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), Agent)(fakeRequest, messages)
 
         val doc = asDocument(applyView)
 
@@ -87,7 +83,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
       "render agent details link" in {
         val view = viewFor[TaskListView](Some(emptyUserAnswers))
 
-        val applyView = view.apply(savedUntil, Nil, Some(agentLinks))(fakeRequest, messages)
+        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), Agent)(fakeRequest, messages)
 
         val doc = asDocument(applyView)
 
@@ -100,7 +96,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
       "not render saved until" in {
         val view = viewFor[TaskListView](Some(emptyUserAnswers))
-        val applyView = view.apply(savedUntil, Nil, Some(agentLinks))(fakeRequest, messages)
+        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), Agent)(fakeRequest, messages)
 
         val doc = asDocument(applyView)
         assertNotRenderedById(doc, "saved-until")

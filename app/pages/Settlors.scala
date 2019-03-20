@@ -16,7 +16,11 @@
 
 package pages
 
-case object Settlors extends Page {
+import play.api.libs.json.JsPath
+
+case object Settlors extends QuestionPage[List[Nothing]]{
+
+  override def path: JsPath = JsPath \ toString
 
   override def toString: String = "settlors"
 

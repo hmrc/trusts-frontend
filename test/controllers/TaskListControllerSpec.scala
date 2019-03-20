@@ -24,6 +24,7 @@ import models.{NormalMode, UserAnswers}
 import pages._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import views.html.TaskListView
 
 class TaskListControllerSpec extends SpecBase {
@@ -79,7 +80,7 @@ class TaskListControllerSpec extends SpecBase {
             .set(WhatIsTheUTRPage, "SA123456789").success.value
             .set(ExistingTrustMatched, true).success.value
 
-          val application = applicationBuilder(userAnswers = Some(answers)).build()
+          val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = Organisation).build()
 
           val request = FakeRequest(GET, routes.TaskListController.onPageLoad().url)
 
@@ -90,7 +91,7 @@ class TaskListControllerSpec extends SpecBase {
           status(result) mustEqual OK
 
           contentAsString(result) mustEqual
-            view(savedUntil, RegistrationProgress.sections(answers))(fakeRequest, messages).toString
+            view(savedUntil, RegistrationProgress.sections(answers), Organisation)(fakeRequest, messages).toString
 
           application.stop()
         }
@@ -155,7 +156,7 @@ class TaskListControllerSpec extends SpecBase {
           .set(TrustRegisteredOnlinePage, false).success.value
           .set(TrustHaveAUTRPage, false).success.value
 
-        val application = applicationBuilder(userAnswers = Some(answers)).build()
+        val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = Organisation).build()
 
         val request = FakeRequest(GET, routes.TaskListController.onPageLoad().url)
 
@@ -166,7 +167,7 @@ class TaskListControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(savedUntil, RegistrationProgress.sections(answers))(fakeRequest, messages).toString
+          view(savedUntil, RegistrationProgress.sections(answers), Organisation)(fakeRequest, messages).toString
 
         application.stop()
       }
