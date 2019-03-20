@@ -24,6 +24,7 @@ import org.scalacheck.Arbitrary.arbitrary
 import pages._
 import models.{NormalMode, UserAnswers}
 import controllers.routes
+import uk.gov.hmrc.auth.core.AffinityGroup
 
 trait MatchingRoutes {
 
@@ -57,14 +58,33 @@ trait MatchingRoutes {
           }
         }
 
-        "go to TrustName from WhatIsTheUTR" in {
-          forAll(arbitrary[UserAnswers]) {
-            userAnswers =>
+        "user is an organisation" must {
 
-              navigator.nextPage(WhatIsTheUTRPage, NormalMode)(userAnswers)
-                .mustBe(routes.TrustNameController.onPageLoad(NormalMode))
+          "go to TrustName from WhatIsTheUTR" in {
+            forAll(arbitrary[UserAnswers]) {
+              userAnswers =>
+
+                navigator.nextPage(WhatIsTheUTRPage, NormalMode)(userAnswers)
+                  .mustBe(routes.TrustNameController.onPageLoad(NormalMode))
+            }
           }
+
         }
+
+        "user is an agent" must {
+
+          "go to AgentClientReference from WhatIsTheUTR" in {
+            forAll(arbitrary[UserAnswers]) {
+              userAnswers =>
+
+                navigator.nextPage(WhatIsTheUTRPage, NormalMode, AffinityGroup.Agent)(userAnswers)
+                  .mustBe(routes.AgentInternalReferenceController.onPageLoad(NormalMode))
+            }
+          }
+
+        }
+
+
 
         "go to PostcodeForTheTrust from TrustName" in {
           forAll(arbitrary[UserAnswers]) {
