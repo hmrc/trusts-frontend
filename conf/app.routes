@@ -174,3 +174,8 @@ POST       /change-agent-telephone-number                  controllers.AgentTele
 
 GET        /agent-overview                                      controllers.AgentOverviewController.onPageLoad()
 GET        /trustees-information                                controllers.TrusteesInfoController.onPageLoad()
+
+GET        /whatKindOfAsset                        controllers.WhatKindOfAssetController.onPageLoad(mode: Mode = NormalMode)
+POST       /whatKindOfAsset                        controllers.WhatKindOfAssetController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhatKindOfAsset                  controllers.WhatKindOfAssetController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhatKindOfAsset                  controllers.WhatKindOfAssetController.onSubmit(mode: Mode = CheckMode)
