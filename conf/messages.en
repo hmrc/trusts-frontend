@@ -67,6 +67,7 @@ createAgentServicesAccount.cta = Create an agent services account
 trustName.title = What is the trust’s name?
 trustName.heading = What is the trust’s name?
 trustName.hint = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (SA316) or tax return.
+trustName.hint.reader = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (S A 3 1 6) or tax return.
 trustName.checkYourAnswersLabel = What is the trust’s name?
 trustName.error.length = The trust’s name must be 53 characters or less
 trustName.error.invalidCharacters = The trust’s name must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
@@ -180,6 +181,7 @@ postcodeForTheTrust.heading = What is the trust’s postcode?
 postcodeForTheTrust.checkYourAnswersLabel = What is the trust’s postcode?
 postcodeForTheTrust.error.required = Enter the trust’s postcode
 postcodeForTheTrust.hint = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (SA316) or tax return. For example, AA1 1AA.
+postcodeForTheTrust.hint.reader = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (S A 3 1 6) or tax return. For example, A,A,1,  1,A,A.
 
 FailedMatch.title = We cannot match the details you have given us to our records
 FailedMatch.heading = We cannot match the details you have given us to our records
