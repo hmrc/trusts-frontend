@@ -33,7 +33,7 @@
 }
 
 <div class="form-group @if(field.hasErrors){form-group-error}">
-    @if(labelAsHeading){<h1>}
+    @if(labelAsHeading){<h1 class="label-as-heading">}
     <label class="form-label" for="@{field.id}">
         <span class="bold @if(labelClass.nonEmpty){@labelClass}">@label</span>
     </label>
@@ -55,12 +55,11 @@
         name="@{field.name}"
         value="@{field.value}"
         @required
-        @if(field.hasErrors) {
-            aria-describedby="error-message-@{field.id}-input"
-        }
-        else
         @if(hint.nonEmpty) {
             aria-describedby="@{field.id}_hint"
+        }
+        @if(field.hasErrors) {
+            aria-labelledby="error-message-@{field.id}-input"
         }
         />
     </div>
