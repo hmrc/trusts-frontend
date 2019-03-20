@@ -35,9 +35,7 @@ class TrustNameViewSpec extends StringViewBehaviours {
 
     "the trust is an existing trust" must {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      val view = application.injector.instanceOf[TrustNameView]
+      val view = viewFor[TrustNameView](Some(emptyUserAnswers))
 
       def applyView(form: Form[_]): HtmlFormat.Appendable =
         view.apply(form, NormalMode, hintTextShown = true)(fakeRequest, messages)
@@ -58,9 +56,7 @@ class TrustNameViewSpec extends StringViewBehaviours {
 
     "the trust is a new trust" must {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      val view = application.injector.instanceOf[TrustNameView]
+      val view = viewFor[TrustNameView](Some(emptyUserAnswers))
 
       def applyView(form: Form[_]): HtmlFormat.Appendable =
         view.apply(form, NormalMode, hintTextShown = false)(fakeRequest, messages)

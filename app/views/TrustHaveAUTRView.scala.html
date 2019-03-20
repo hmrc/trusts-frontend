@@ -35,14 +35,13 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("trustHaveAUTR.heading")
-
         @components.input_yes_no(
             field = form("value"),
             label = messages("trustHaveAUTR.heading"),
             hint = Some(messages(s"trustHaveAUTR.hint")),
             link = link,
-            labelClass = Some("visually-hidden")
+            labelClass = Some("heading-large"),
+            labelAsHeading = true
         )
 
         @components.submit_button()

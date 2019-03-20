@@ -32,9 +32,7 @@ class TrustRegisteredOnlineViewSpec extends YesNoViewBehaviours {
 
   "TrustRegisteredOnline view" must {
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-    val view = application.injector.instanceOf[TrustRegisteredOnlineView]
+    val view = viewFor[TrustRegisteredOnlineView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode)(fakeRequest, messages)

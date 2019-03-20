@@ -25,9 +25,7 @@ class TrusteesAnswerPageViewSpec extends ViewBehaviours {
 
   "TrusteesAnswerPage view" must {
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-    val view = application.injector.instanceOf[TrusteesAnswerPageView]
+    val view = viewFor[TrusteesAnswerPageView](Some(emptyUserAnswers))
 
     val applyView = view.apply(index, Nil)(fakeRequest, messages)
 
