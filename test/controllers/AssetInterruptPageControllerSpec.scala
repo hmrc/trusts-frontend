@@ -17,11 +17,16 @@
 package controllers
 
 import base.SpecBase
+import navigation.{FakeNavigator, Navigator}
+import play.api.inject.bind
+import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.AssetInterruptPageView
 
 class AssetInterruptPageControllerSpec extends SpecBase {
+
+  def onwardRoute = Call("GET", "/foo")
 
   "AssetInterruptPage Controller" must {
 
@@ -39,6 +44,22 @@ class AssetInterruptPageControllerSpec extends SpecBase {
 
       contentAsString(result) mustEqual
         view()(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "redirect to the correct page for a POST" in {
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
+          .build()
+
+      val request = FakeRequest(POST, routes.AssetInterruptPageController.onSubmit().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
 
       application.stop()
     }

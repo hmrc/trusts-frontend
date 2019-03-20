@@ -29,19 +29,24 @@ import scala.concurrent.ExecutionContext
 
 class AssetInterruptPageController @Inject()(
                                               override val messagesApi: MessagesApi,
-                                              sessionRepository: SessionRepository,
-                                              navigator: Navigator,
-                                              validateIndex: IndexActionFilterProvider,
                                               identify: IdentifierAction,
                                               getData: DataRetrievalAction,
                                               requireData: DataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: AssetInterruptPageView
-
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       Ok(view())
   }
+
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) {
+    implicit request =>
+
+      Redirect(routes.AssetInterruptPageController.onPageLoad())
+
+  }
+
+
 }

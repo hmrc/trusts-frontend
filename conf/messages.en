@@ -46,6 +46,7 @@ site.service_name = Trusts Registration Service
 site.textarea.char_limit = (Limit is {0} characters)
 site.inprogress = In Progress
 site.complete = Completed
+site.justContinue = continue
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
@@ -356,7 +357,7 @@ trusteesInfo.bulletpoint7 = registered name
 trusteesInfo.bulletpoint8 = Unique Taxpayer Reference
 trusteesInfo.paragraph6 = If it is a non-UK business, you need their address.
 trusteesInfo.warning = All trustees have the same legal responsibilities.
-trusteesInfo.continue = Continue
+
 
 agentTelephoneNumber.title = What is the agency’s telephone number?
 agentTelephoneNumber.heading = What is the agency’s telephone number?
@@ -386,4 +387,3 @@ assetInterruptPage.bullet7 = description of the property or land, or address if 
 assetInterruptPage.bullet8 = estimated total value of the property or land
 assetInterruptPage.bullet9 = estimated value of the property or land if the trust only owns a proportion
 assetInterruptPage.paragraph6 = The current value of the property or land is needed, not the value when it first entered the trust. This can be an estimate.
-assetInterruptPage.continue = Continue
