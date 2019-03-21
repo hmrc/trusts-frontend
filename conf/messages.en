@@ -368,3 +368,6 @@ agentTelephoneNumber.checkYourAnswersLabel = What is the agency’s telephone nu
 agentTelephoneNumber.hint = We will use this number to contact you about this trust’s registration. For international numbers include the country code
 agentTelephoneNumber.error.required = Enter the agency’s telephone number
 agentTelephoneNumber.error.invalid.characters = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192
+
+agentAnswer.title = Check agent details
+agentAnswer.heading = Check agent details
