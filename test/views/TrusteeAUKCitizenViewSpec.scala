@@ -41,9 +41,7 @@ class TrusteeAUKCitizenViewSpec extends YesNoViewBehaviours {
     val userAnswers = UserAnswers(userAnswersId)
       .set(TrusteesNamePage(index), fullName).success.value
 
-    val application = applicationBuilder(Some(userAnswers)).build()
-
-    val view = application.injector.instanceOf[TrusteeAUKCitizenView]
+    val view = viewFor[TrusteeAUKCitizenView](Some(userAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, index, trusteeName)(fakeRequest, messages)

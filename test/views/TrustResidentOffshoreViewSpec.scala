@@ -32,9 +32,7 @@ class TrustResidentOffshoreViewSpec extends YesNoViewBehaviours {
 
   "TrustResidentOffshore view" must {
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-    val view = application.injector.instanceOf[TrustResidentOffshoreView]
+    val view = viewFor[TrustResidentOffshoreView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode)(fakeRequest, messages)
