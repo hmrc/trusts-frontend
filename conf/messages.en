@@ -327,11 +327,11 @@ trusteesUkAddress.error.postcode.invalidCharacters = Enter a real postcode
 agentInternalReference.title = What is your internal reference for this client?
 agentInternalReference.heading = What is your internal reference for this client?
 agentInternalReference.checkYourAnswersLabel = What is your internal reference for this client?
-agentInternalReference.paragraph1 = This reference will help you identify this trust in your saved registrations.
-agentInternalReference.hint = It must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, grave accents (`) and hyphens.
-agentInternalReference.error.required = Enter your internal reference for this client.
-agentInternalReference.error.length = Your internal reference for this client must be 56 characters or less.
-agentInternalReference.error.invalidFormat = The internal reference for this client must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, grave accents (`) and hyphens.
+agentInternalReference.paragraph1 = This reference will help you identify this trust in your saved registrations
+agentInternalReference.hint = It must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, grave accents (`) and hyphens
+agentInternalReference.error.required = Enter your internal reference for this client
+agentInternalReference.error.length = Your internal reference for this client must be 56 characters or less
+agentInternalReference.error.invalidFormat = The internal reference for this client must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, grave accents (`) and hyphens
 
 agentOverview.title = Register a trust for a client
 agentOverview.heading = Register a trust for a client

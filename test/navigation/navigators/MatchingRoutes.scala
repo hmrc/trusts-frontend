@@ -58,33 +58,14 @@ trait MatchingRoutes {
           }
         }
 
-        "user is an organisation" must {
+        "go to TrustName from WhatIsTheUTR" in {
+          forAll(arbitrary[UserAnswers]) {
+            userAnswers =>
 
-          "go to TrustName from WhatIsTheUTR" in {
-            forAll(arbitrary[UserAnswers]) {
-              userAnswers =>
-
-                navigator.nextPage(WhatIsTheUTRPage, NormalMode)(userAnswers)
-                  .mustBe(routes.TrustNameController.onPageLoad(NormalMode))
-            }
+              navigator.nextPage(WhatIsTheUTRPage, NormalMode)(userAnswers)
+                .mustBe(routes.TrustNameController.onPageLoad(NormalMode))
           }
-
         }
-
-        "user is an agent" must {
-
-          "go to AgentClientReference from WhatIsTheUTR" in {
-            forAll(arbitrary[UserAnswers]) {
-              userAnswers =>
-
-                navigator.nextPage(WhatIsTheUTRPage, NormalMode, AffinityGroup.Agent)(userAnswers)
-                  .mustBe(routes.AgentInternalReferenceController.onPageLoad(NormalMode))
-            }
-          }
-
-        }
-
-
 
         "go to PostcodeForTheTrust from TrustName" in {
           forAll(arbitrary[UserAnswers]) {
@@ -101,15 +82,31 @@ trait MatchingRoutes {
 
       "the user does not have a UTR for the trust" when {
 
-        "go to trustName from TrustHaveAUTR when user answers no" in {
-          forAll(arbitrary[UserAnswers]) {
-            userAnswers =>
+        "user is an agent" must {
+          "go to AgentInternalReference from TrustHaveAUTR when user answers no" in {
+            forAll(arbitrary[UserAnswers]) {
+              userAnswers =>
 
-              val answers = userAnswers.set(TrustRegisteredOnlinePage, false).success.value
-                .set(TrustHaveAUTRPage, false).success.value
+                val answers = userAnswers.set(TrustRegisteredOnlinePage, false).success.value
+                  .set(TrustHaveAUTRPage, false).success.value
 
-              navigator.nextPage(TrustHaveAUTRPage, NormalMode)(answers)
-                .mustBe(routes.TrustNameController.onPageLoad(NormalMode))
+                navigator.nextPage(TrustHaveAUTRPage, NormalMode, AffinityGroup.Agent)(answers)
+                  .mustBe(routes.AgentInternalReferenceController.onPageLoad(NormalMode))
+            }
+          }
+        }
+
+        "user is an organisation" must {
+          "go to trustName from TrustHaveAUTR when user answers no" in {
+            forAll(arbitrary[UserAnswers]) {
+              userAnswers =>
+
+                val answers = userAnswers.set(TrustRegisteredOnlinePage, false).success.value
+                  .set(TrustHaveAUTRPage, false).success.value
+
+                navigator.nextPage(TrustHaveAUTRPage, NormalMode, AffinityGroup.Organisation)(answers)
+                  .mustBe(routes.TrustNameController.onPageLoad(NormalMode))
+            }
           }
         }
 

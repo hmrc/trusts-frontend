@@ -95,7 +95,7 @@ class Navigator @Inject()() {
 
     condition match {
       case (Some(false), Some(true)) => routes.WhatIsTheUTRController.onPageLoad(NormalMode)
-      case (Some(false), Some(false)) => if(af == AffinityGroup.Organisation){ routes.AgentInternalReferenceController.onPageLoad(NormalMode)} else {routes.AgentInternalReferenceController.onPageLoad(NormalMode)}
+      case (Some(false), Some(false)) => if(af.toString == AffinityGroup.Organisation.toString){ routes.TrustNameController.onPageLoad(NormalMode)} else {routes.AgentInternalReferenceController.onPageLoad(NormalMode)}
       case (Some(true), Some(false)) => routes.UTRSentByPostController.onPageLoad()
       case (Some(true), Some(true)) => routes.CannotMakeChangesController.onPageLoad()
       case _ => routes.SessionExpiredController.onPageLoad()

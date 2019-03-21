@@ -16,12 +16,7 @@
 
 package pages
 
-import play.api.libs.json.JsPath
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
+case object Agent extends Page {
 
-case object AgentInternalReferencePage extends QuestionPage[String] {
-
-  override def path: JsPath = JsPath \ Agent \ toString
-
-  override def toString: String = "agentInternalReference"
+  override def toString: String = "Agent"
 }
