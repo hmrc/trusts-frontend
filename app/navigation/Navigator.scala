@@ -29,9 +29,8 @@ class Navigator @Inject()() {
 
   private val normalRoutes: Page => AffinityGroup => UserAnswers => Call = {
     //  Matching
-    case TrustRegisteredOnlinePage => af => _ => routes.TrustHaveAUTRController.onPageLoad(NormalMode)
+    case TrustRegisteredOnlinePage => _ => _ => routes.TrustHaveAUTRController.onPageLoad(NormalMode)
     case TrustHaveAUTRPage => af => userAnswers => trustHaveAUTRRoute(userAnswers, af)
-    case AgentInternalReferencePage => _ => _ => routes.TrustNameController.onPageLoad(NormalMode)
     case WhatIsTheUTRPage => _ => _ => routes.TrustNameController.onPageLoad(NormalMode)
     case PostcodeForTheTrustPage => _ => _ => routes.FailedMatchController.onPageLoad()
 
@@ -66,6 +65,7 @@ class Navigator @Inject()() {
     case AddATrusteePage => _ => addATrusteeRoute
 
     //Agents
+    case AgentInternalReferencePage => _ => _ => routes.AgentTelephoneNumberController.onPageLoad(NormalMode)
     case AgentTelephoneNumberPage => _ => _ => routes.AgentAnswerController.onPageLoad()
 
     //  Default

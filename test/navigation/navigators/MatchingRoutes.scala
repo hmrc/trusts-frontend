@@ -83,6 +83,7 @@ trait MatchingRoutes {
       "the user does not have a UTR for the trust" when {
 
         "user is an agent" must {
+
           "go to AgentInternalReference from TrustHaveAUTR when user answers no" in {
             forAll(arbitrary[UserAnswers]) {
               userAnswers =>

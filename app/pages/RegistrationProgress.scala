@@ -16,16 +16,15 @@
 
 package pages
 
-import controllers.routes
 import javax.inject.Inject
-import models.{NormalMode, UserAnswers}
+import models.UserAnswers
 import navigation.TaskListNavigator
 import viewmodels.{Link, Task}
 
 class RegistrationProgress @Inject()(navigator : TaskListNavigator){
 
   def sections(userAnswers: UserAnswers) = List(
-    Task(Link(TrustDetails, routes.TrustNameController.onPageLoad(NormalMode).url), None),
+    Task(Link(TrustDetails, navigator.nextPage(TrustDetails, userAnswers).url), None),
     Task(Link(Settlors, navigator.nextPage(Settlors, userAnswers).url), None),
     Task(Link(Trustees, navigator.nextPage(Trustees, userAnswers).url), None),
     Task(Link(Beneficiaries, navigator.nextPage(Beneficiaries, userAnswers).url), None),

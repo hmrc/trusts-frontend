@@ -16,9 +16,11 @@
 
 package navigation
 
+import java.time.LocalDate
+
 import base.SpecBase
 import controllers.routes
-import models.UserAnswers
+import models.{NormalMode, UserAnswers}
 import pages._
 
 class TaskListNavigatorSpec extends SpecBase {
@@ -26,6 +28,30 @@ class TaskListNavigatorSpec extends SpecBase {
   val navigator : TaskListNavigator = new TaskListNavigator
 
   "TaskList Navigator" must {
+
+    "for trust details task" when {
+
+      "trust details has been answered" must {
+
+        "go to Check Trust Answers Page" in {
+          val answers = UserAnswers(userAnswersId)
+            .set(TrustNamePage, "Trust of John").success.value
+              .set(WhenTrustSetupPage, LocalDate.of(2010,10,10)).success.value
+
+          navigator.nextPage(TrustDetails, answers) mustBe routes.TrustDetailsAnswerPageController.onPageLoad()
+        }
+
+      }
+
+      "trust details has not been answered" must {
+
+        "go to TrustName Page" in {
+          navigator.nextPage(TrustDetails, emptyUserAnswers) mustBe routes.TrustNameController.onPageLoad(NormalMode)
+        }
+
+      }
+
+    }
 
     "for settlors task" when {
 
