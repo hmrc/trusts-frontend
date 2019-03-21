@@ -35,13 +35,14 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("trustName.heading")
-
         @components.input_text(
           field = form("value"),
           label = messages("trustName.heading"),
-          labelClass = Some("visually-hidden"),
-          hint = if(hintTextShown) Some(messages("trustName.hint")) else None
+          labelAsHeading = true,
+          hint = if(hintTextShown) Some(messages("trustName.hint")) else None,
+          readerHint = if(hintTextShown) Some(messages(s"trustName.hint.reader")) else None,
+          labelClass = Some("heading-large"),
+          ariaRequired = true
         )
 
         @components.submit_button()

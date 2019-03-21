@@ -34,6 +34,7 @@ class Navigator @Inject()() {
     case AgentInternalReferencePage => _ => _ => routes.TrustNameController.onPageLoad(NormalMode)
     case WhatIsTheUTRPage => _ => _ => routes.TrustNameController.onPageLoad(NormalMode)
     case PostcodeForTheTrustPage => _ => _ => routes.FailedMatchController.onPageLoad()
+
     //  Trust Details
     case TrustNamePage => _ => trustNameRoute
     case WhenTrustSetupPage => _ => _ => routes.GovernedInsideTheUKController.onPageLoad(NormalMode)
@@ -50,8 +51,9 @@ class Navigator @Inject()() {
     case InheritanceTaxActPage => _ => inheritanceTaxRoute
     case AgentOtherThanBarristerPage => _ => _ => routes.TrustDetailsAnswerPageController.onPageLoad()
     case TrustDetailsAnswerPage => _ => ua => routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 0)
+
     //  Trustees
-    case IsThisLeadTrusteePage(index) =>  _ =>_ => routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index)
+    case IsThisLeadTrusteePage(index) => _ =>_ => routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index)
     case TrusteeIndividualOrBusinessPage(index) => _ => _ => routes.TrusteesNameController.onPageLoad(NormalMode, index)
     case TrusteesNamePage(index) => _ => _ => routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index)
     case TrusteesDateOfBirthPage(index) => _ => ua => trusteeDateOfBirthRoute(ua, index)
@@ -62,6 +64,10 @@ class Navigator @Inject()() {
     case TelephoneNumberPage(index) => _ => _ => routes.TrusteesAnswerPageController.onPageLoad(index)
     case TrusteesAnswerPage => _ => _ => routes.AddATrusteeController.onPageLoad()
     case AddATrusteePage => _ => addATrusteeRoute
+
+    //Agents
+    case AgentTelephoneNumberPage => _ => _ => routes.AgentAnswerController.onPageLoad()
+
     //  Default
     case _ => _ => _ => routes.IndexController.onPageLoad()
   }

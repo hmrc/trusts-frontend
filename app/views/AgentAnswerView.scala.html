@@ -15,34 +15,35 @@
  *@
 
 @import controllers.routes._
-@import models.Mode
+@import viewmodels.{AnswerSection, RepeaterAnswerSection, Section}
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("postcodeForTheTrust.title")}"
-    ) {
+    title = messages("agentAnswer.title")
+) {
 
-    @formHelper(action = PostcodeForTheTrustController.onSubmit(mode), 'autoComplete -> "off") {
+@components.back_link()
 
-        @components.back_link()
+@components.heading("agentAnswer.heading")
 
-        @components.error_summary(form.errors)
-
-        @components.input_text(
-          field = form("value"),
-          label = messages("postcodeForTheTrust.heading"),
-          labelAsHeading = true,
-          hint = Some(messages(s"postcodeForTheTrust.hint")),
-          readerHint = Some(messages(s"postcodeForTheTrust.hint.reader")),
-          labelClass = Some("heading-large")
-        )
-
-        @components.submit_button()
+@for(section <- answerSections){
+    @{
+        section match {
+                    case a: AnswerSection => components.answer_section(a)
+                    case r: RepeaterAnswerSection => components.repeater_answer_section(r)
+        }
     }
 }
+
+    @formHelper(action = AgentAnswerController.onSubmit(), 'autoComplete -> "off") {
+        @components.submit_button()
+
+    }
+}
+
