@@ -17,6 +17,7 @@
 @import viewmodels.Task
 @import uk.gov.hmrc.auth.core.AffinityGroup
 @import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
+@import models.Mode
 
 @this(
     main_template: MainTemplate
@@ -37,7 +38,7 @@
     @if(affinityGroup == AffinityGroup.Agent) {
         <p>@components.link(AgentOverviewController.onPageLoad.url, "saved-registrations", "taskList.agent.savedRegistrations")</p>
 
-        <p>@components.link(AgentOverviewController.onPageLoad.url, "agent-details", "taskList.agent.agentDetails")</p>
+        <p>@components.link(AgentInternalReferenceController.onPageLoad(NormalMode).url, "agent-details", "taskList.agent.agentDetails")</p>
     } else {
         <h2>@messages("taskList.savedUntil.heading")</h2>
         <p id="saved-until">@savedUntil</p>

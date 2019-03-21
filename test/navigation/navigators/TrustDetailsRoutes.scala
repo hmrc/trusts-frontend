@@ -253,7 +253,7 @@ trait TrustDetailsRoutes {
       }
     }
 
-    "go to task list from Check Trust Answers Page" in {
+    "go to task list from Check Trust Details Answers Page" in {
 
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>

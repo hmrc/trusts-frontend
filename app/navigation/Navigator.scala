@@ -22,48 +22,54 @@ import controllers.routes
 import models.AddATrustee.{NoComplete, YesLater, YesNow}
 import pages._
 import models._
+import uk.gov.hmrc.auth.core.AffinityGroup
 
 @Singleton
 class Navigator @Inject()() {
 
-  private val normalRoutes: Page => UserAnswers => Call = {
+  private val normalRoutes: Page => AffinityGroup => UserAnswers => Call = {
     //  Matching
-    case TrustRegisteredOnlinePage => _ => routes.TrustHaveAUTRController.onPageLoad(NormalMode)
-    case TrustHaveAUTRPage => trustHaveAUTRRoute
-    case WhatIsTheUTRPage => _ => routes.TrustNameController.onPageLoad(NormalMode)
-    case PostcodeForTheTrustPage => _ => routes.FailedMatchController.onPageLoad()
+    case TrustRegisteredOnlinePage => af => _ => routes.TrustHaveAUTRController.onPageLoad(NormalMode)
+    case TrustHaveAUTRPage => af => userAnswers => trustHaveAUTRRoute(userAnswers, af)
+    case AgentInternalReferencePage => _ => _ => routes.TrustNameController.onPageLoad(NormalMode)
+    case WhatIsTheUTRPage => _ => _ => routes.TrustNameController.onPageLoad(NormalMode)
+    case PostcodeForTheTrustPage => _ => _ => routes.FailedMatchController.onPageLoad()
+
     //  Trust Details
-    case TrustNamePage => trustNameRoute
-    case WhenTrustSetupPage => _ => routes.GovernedInsideTheUKController.onPageLoad(NormalMode)
-    case GovernedInsideTheUKPage => isTrustGovernedInsideUKRoute
-    case CountryGoverningTrustPage => _ => routes.AdministrationInsideUKController.onPageLoad(NormalMode)
-    case AdministrationInsideUKPage => isTrustGeneralAdministrationRoute
-    case CountryAdministeringTrustPage => _ => routes.TrustResidentInUKController.onPageLoad(NormalMode)
-    case TrustResidentInUKPage => isTrustResidentInUKRoute
-    case EstablishedUnderScotsLawPage => _ => routes.TrustResidentOffshoreController.onPageLoad(NormalMode)
-    case TrustResidentOffshorePage => wasTrustPreviouslyResidentOffshoreRoute
-    case TrustPreviouslyResidentPage => _ => routes.TrustDetailsAnswerPageController.onPageLoad()
-    case RegisteringTrustFor5APage => registeringForPurposeOfSchedule5ARoute
-    case NonResidentTypePage => _ => routes.TrustDetailsAnswerPageController.onPageLoad()
-    case InheritanceTaxActPage => inheritanceTaxRoute
-    case AgentOtherThanBarristerPage => _ => routes.TrustDetailsAnswerPageController.onPageLoad()
-    case TrustDetailsAnswerPage => _ => routes.TaskListController.onPageLoad()
+    case TrustNamePage => _ => trustNameRoute
+    case WhenTrustSetupPage => _ => _ => routes.GovernedInsideTheUKController.onPageLoad(NormalMode)
+    case GovernedInsideTheUKPage => _ => isTrustGovernedInsideUKRoute
+    case CountryGoverningTrustPage => _ => _ => routes.AdministrationInsideUKController.onPageLoad(NormalMode)
+    case AdministrationInsideUKPage => _ => isTrustGeneralAdministrationRoute
+    case CountryAdministeringTrustPage => _ => _ => routes.TrustResidentInUKController.onPageLoad(NormalMode)
+    case TrustResidentInUKPage => _ => isTrustResidentInUKRoute
+    case EstablishedUnderScotsLawPage => _ => _ => routes.TrustResidentOffshoreController.onPageLoad(NormalMode)
+    case TrustResidentOffshorePage => _ => wasTrustPreviouslyResidentOffshoreRoute
+    case TrustPreviouslyResidentPage => _ => _ => routes.TrustDetailsAnswerPageController.onPageLoad()
+    case RegisteringTrustFor5APage => _ => registeringForPurposeOfSchedule5ARoute
+    case NonResidentTypePage => _ => _ => routes.TrustDetailsAnswerPageController.onPageLoad()
+    case InheritanceTaxActPage => _ => inheritanceTaxRoute
+    case AgentOtherThanBarristerPage => _ => _ => routes.TrustDetailsAnswerPageController.onPageLoad()
+    case TrustDetailsAnswerPage => _ => _ => routes.TaskListController.onPageLoad()
+
     //  Trustees
-    case IsThisLeadTrusteePage(index) => _ => routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index)
-    case TrusteeIndividualOrBusinessPage(index) => _ => routes.TrusteesNameController.onPageLoad(NormalMode, index)
-    case TrusteesNamePage(index) => _ => routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index)
-    case TrusteesDateOfBirthPage(index) => ua => trusteeDateOfBirthRoute(ua, index)
-    case TrusteeAUKCitizenPage(index) => ua => trusteeAUKCitizenRoute(ua, index)
-    case TrusteesNinoPage(index) => _ => routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index)
-    case TrusteeLiveInTheUKPage(index) => _ => routes.TrusteesUkAddressController.onPageLoad(NormalMode, index)
-    case TrusteesUkAddressPage(index) => _ => routes.TelephoneNumberController.onPageLoad(NormalMode, index)
-    case TelephoneNumberPage(index) => _ => routes.TrusteesAnswerPageController.onPageLoad(index)
-    case TrusteesAnswerPage => _ => routes.AddATrusteeController.onPageLoad()
-    case AddATrusteePage => addATrusteeRoute
+    case IsThisLeadTrusteePage(index) => _ =>_ => routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index)
+    case TrusteeIndividualOrBusinessPage(index) => _ => _ => routes.TrusteesNameController.onPageLoad(NormalMode, index)
+    case TrusteesNamePage(index) => _ => _ => routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index)
+    case TrusteesDateOfBirthPage(index) => _ => ua => trusteeDateOfBirthRoute(ua, index)
+    case TrusteeAUKCitizenPage(index) => _ => ua => trusteeAUKCitizenRoute(ua, index)
+    case TrusteesNinoPage(index) => _ => _ => routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index)
+    case TrusteeLiveInTheUKPage(index) => _ => _ => routes.TrusteesUkAddressController.onPageLoad(NormalMode, index)
+    case TrusteesUkAddressPage(index) => _ => _ => routes.TelephoneNumberController.onPageLoad(NormalMode, index)
+    case TelephoneNumberPage(index) => _ => _ => routes.TrusteesAnswerPageController.onPageLoad(index)
+    case TrusteesAnswerPage => _ => _ => routes.AddATrusteeController.onPageLoad()
+    case AddATrusteePage => _ => addATrusteeRoute
+
     //Agents
-    case AgentTelephoneNumberPage => _ => routes.AgentAnswerController.onPageLoad()
+    case AgentTelephoneNumberPage => _ => _ => routes.AgentAnswerController.onPageLoad()
+
     //  Default
-    case _ => _ => routes.IndexController.onPageLoad()
+    case _ => _ => _ => routes.IndexController.onPageLoad()
   }
 
   private def addATrusteeRoute(answers: UserAnswers) = {
@@ -90,12 +96,19 @@ class Navigator @Inject()() {
     }
   }
 
-  private def trustHaveAUTRRoute(answers: UserAnswers) = {
+  private def trustHaveAUTRRoute(answers: UserAnswers, af: AffinityGroup) = {
     val condition = (answers.get(TrustRegisteredOnlinePage), answers.get(TrustHaveAUTRPage))
 
     condition match {
       case (Some(false), Some(true)) => routes.WhatIsTheUTRController.onPageLoad(NormalMode)
-      case (Some(false), Some(false)) => routes.TaskListController.onPageLoad()
+      case (Some(false), Some(false)) =>
+
+        if(af == AffinityGroup.Organisation){
+          routes.TaskListController.onPageLoad()
+        } else {
+          routes.AgentInternalReferenceController.onPageLoad(NormalMode)
+        }
+
       case (Some(true), Some(false)) => routes.UTRSentByPostController.onPageLoad()
       case (Some(true), Some(true)) => routes.CannotMakeChangesController.onPageLoad()
       case _ => routes.SessionExpiredController.onPageLoad()
@@ -167,10 +180,11 @@ class Navigator @Inject()() {
     case _ => _ => routes.CheckYourAnswersController.onPageLoad()
   }
 
-  def nextPage(page: Page, mode: Mode): UserAnswers => Call = mode match {
+  def nextPage(page: Page, mode: Mode, af :AffinityGroup = AffinityGroup.Organisation): UserAnswers => Call = mode match {
     case NormalMode =>
-      normalRoutes(page)
+      normalRoutes(page)(af)
     case CheckMode =>
       checkRouteMap(page)
   }
+
 }

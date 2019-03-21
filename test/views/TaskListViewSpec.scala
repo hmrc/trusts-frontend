@@ -20,7 +20,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 import controllers.routes
-import models.UserAnswers
+import models.{NormalMode, UserAnswers}
 import navigation.TaskListNavigator
 import pages.RegistrationProgress
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
@@ -92,7 +92,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         assertAttributeValueForElement(
           doc.getElementById("agent-details"),
           "href",
-          routes.AgentOverviewController.onPageLoad().url
+          routes.AgentInternalReferenceController.onPageLoad(NormalMode).url
         )
       }
 
