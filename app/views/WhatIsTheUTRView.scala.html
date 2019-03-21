@@ -34,13 +34,14 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("whatIsTheUTR.heading")
-
         @components.input_text(
           field = form("value"),
           label = messages("whatIsTheUTR.heading"),
-          hint = Some(messages(s"whatIsTheUTR.hint")),
-          labelClass=Some("visually-hidden")
+          labelAsHeading = true,
+          hint = Some(messages("whatIsTheUTR.hint")),
+          readerHint = Some(messages("whatIsTheUTR.hint.reader")),
+          labelClass = Some("heading-large"),
+          ariaRequired = true
         )
 
         @components.submit_button()
