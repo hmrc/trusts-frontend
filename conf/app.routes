@@ -176,5 +176,5 @@ GET        /agent-overview                                      controllers.Agen
 
 GET        /trustees-information                                controllers.TrusteesInfoController.onPageLoad()
 
-GET        /assets/information-you-need                    controllers.AssetInterruptPageController.onPageLoad()
-POST       /assets/information-you-need                     controllers.AssetInterruptPageController.onSubmit()
+GET        /asset/information-you-need                    controllers.AssetInterruptPageController.onPageLoad()
+POST       /asset/information-you-need                     controllers.AssetInterruptPageController.onSubmit()
