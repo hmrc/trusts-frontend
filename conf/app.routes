@@ -167,6 +167,11 @@ POST       /trustees/:index/trustee-uk-address                         controlle
 GET        /trustees/:index/change-trustee-uk-address                  controllers.TrusteesUkAddressController.onPageLoad(mode: Mode = CheckMode, index : Int)
 POST       /trustees/:index/change-trustee-uk-address                  controllers.TrusteesUkAddressController.onSubmit(mode: Mode = CheckMode, index : Int)
 
+GET        /client-reference                        controllers.AgentInternalReferenceController.onPageLoad(mode: Mode = NormalMode)
+POST       /client-reference                        controllers.AgentInternalReferenceController.onSubmit(mode: Mode = NormalMode)
+GET        /change-client-reference                  controllers.AgentInternalReferenceController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-client-reference                  controllers.AgentInternalReferenceController.onSubmit(mode: Mode = CheckMode)
+
 GET        /agent-telephone-number                        controllers.AgentTelephoneNumberController.onPageLoad(mode: Mode = NormalMode)
 POST       /agent-telephone-number                         controllers.AgentTelephoneNumberController.onSubmit(mode: Mode = NormalMode)
 GET        /change-agent-telephone-number                   controllers.AgentTelephoneNumberController.onPageLoad(mode: Mode = CheckMode)
@@ -174,7 +179,5 @@ POST       /change-agent-telephone-number                  controllers.AgentTele
 
 GET        /agent-overview                                      controllers.AgentOverviewController.onPageLoad()
 GET        /trustees-information                                controllers.TrusteesInfoController.onPageLoad()
-
 GET        /check-agent-details                     controllers.AgentAnswerController.onPageLoad()
 POST       /chack-agent-details                       controllers.AgentAnswerController.onSubmit()
-
