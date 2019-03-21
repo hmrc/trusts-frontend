@@ -83,9 +83,9 @@ class Navigator @Inject()() {
       case Some(YesNow) =>
         routeToTrusteeIndex
       case Some(YesLater) =>
-        routes.AddATrusteeController.onPageLoad()
+        routes.TaskListController.onPageLoad()
       case Some(NoComplete) =>
-        routes.AddATrusteeController.onPageLoad()
+        routes.TaskListController.onPageLoad()
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
