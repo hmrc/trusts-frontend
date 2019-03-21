@@ -175,7 +175,7 @@ POST       /change-agent-telephone-number                  controllers.AgentTele
 GET        /agent-overview                                      controllers.AgentOverviewController.onPageLoad()
 GET        /trustees-information                                controllers.TrusteesInfoController.onPageLoad()
 
-GET        /whatKindOfAsset                        controllers.WhatKindOfAssetController.onPageLoad(mode: Mode = NormalMode)
-POST       /whatKindOfAsset                        controllers.WhatKindOfAssetController.onSubmit(mode: Mode = NormalMode)
-GET        /changeWhatKindOfAsset                  controllers.WhatKindOfAssetController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeWhatKindOfAsset                  controllers.WhatKindOfAssetController.onSubmit(mode: Mode = CheckMode)
+GET        /assets/:index/assets-type                        controllers.WhatKindOfAssetController.onPageLoad(mode: Mode = NormalMode, index: Int)
+POST       /assets/:index/assets-type                         controllers.WhatKindOfAssetController.onSubmit(mode: Mode = NormalMode, index: Int)
+GET        /assets/:index/change-assets-type                  controllers.WhatKindOfAssetController.onPageLoad(mode: Mode = CheckMode, index: Int)
+POST       /assets/:index/change-assets-type                  controllers.WhatKindOfAssetController.onSubmit(mode: Mode = CheckMode, index: Int)

@@ -369,9 +369,13 @@ agentTelephoneNumber.hint = We will use this number to contact you about this tr
 agentTelephoneNumber.error.required = Enter the agency’s telephone number
 agentTelephoneNumber.error.invalid.characters = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192
 
-whatKindOfAsset.title = WhatKindOfAsset
-whatKindOfAsset.heading = WhatKindOfAsset
+whatKindOfAsset.title = What kind of asset do you need to add first?
+whatKindOfAsset.heading = What kind of asset do you need to add first?
 whatKindOfAsset.one = one
 whatKindOfAsset.two = two
-whatKindOfAsset.checkYourAnswersLabel = WhatKindOfAsset
-whatKindOfAsset.error.required = Select whatKindOfAsset
+whatKindOfAsset.two = three
+whatKindOfAsset.two = four
+whatKindOfAsset.two = five
+whatKindOfAsset.two = six
+whatKindOfAsset.checkYourAnswersLabel = What kind of asset do you need to add first?
+whatKindOfAsset.error.required = Select the kind of asset you need to add

@@ -19,7 +19,8 @@ package pages
 import models.WhatKindOfAsset
 import play.api.libs.json.JsPath
 
-case object WhatKindOfAssetPage extends QuestionPage[WhatKindOfAsset] {
+
+final case class WhatKindOfAssetPage(index: Int) extends QuestionPage[WhatKindOfAsset] {
 
   override def path: JsPath = JsPath \ toString
 

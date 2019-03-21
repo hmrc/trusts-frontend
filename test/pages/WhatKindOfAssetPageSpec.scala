@@ -23,10 +23,10 @@ class WhatKindOfAssetSpec extends PageBehaviours {
 
   "WhatKindOfAssetPage" must {
 
-    beRetrievable[WhatKindOfAsset](WhatKindOfAssetPage)
+    beRetrievable[WhatKindOfAsset](WhatKindOfAssetPage(0))
 
-    beSettable[WhatKindOfAsset](WhatKindOfAssetPage)
+    beSettable[WhatKindOfAsset](WhatKindOfAssetPage(0))
 
-    beRemovable[WhatKindOfAsset](WhatKindOfAssetPage)
+    beRemovable[WhatKindOfAsset](WhatKindOfAssetPage(0))
   }
 }

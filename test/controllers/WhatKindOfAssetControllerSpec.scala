@@ -32,7 +32,9 @@ class WhatKindOfAssetControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  lazy val whatKindOfAssetRoute = routes.WhatKindOfAssetController.onPageLoad(NormalMode).url
+  val index = 0
+
+  lazy val whatKindOfAssetRoute = routes.WhatKindOfAssetController.onPageLoad(NormalMode, index).url
 
   val formProvider = new WhatKindOfAssetFormProvider()
   val form = formProvider()
@@ -52,14 +54,14 @@ class WhatKindOfAssetControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, index)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(WhatKindOfAssetPage, WhatKindOfAsset.values.head).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(WhatKindOfAssetPage(index), WhatKindOfAsset.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -72,7 +74,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(WhatKindOfAsset.values.head), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(WhatKindOfAsset.values.head), NormalMode, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -114,7 +116,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, index)(fakeRequest, messages).toString
 
       application.stop()
     }

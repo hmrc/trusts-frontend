@@ -24,10 +24,10 @@ import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
 
-  implicit lazy val arbitraryWhatKindOfAssetUserAnswersEntry: Arbitrary[(WhatKindOfAssetPage.type, JsValue)] =
+  implicit lazy val arbitraryWhatKindOfAssetUserAnswersEntry: Arbitrary[(WhatKindOfAssetPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[WhatKindOfAssetPage.type]
+        page  <- arbitrary[WhatKindOfAssetPage]
         value <- arbitrary[WhatKindOfAsset].map(Json.toJson(_))
       } yield (page, value)
     }

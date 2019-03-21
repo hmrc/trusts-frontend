@@ -25,9 +25,13 @@ object WhatKindOfAsset extends Enumerable.Implicits {
 
   case object One extends WithName("one") with WhatKindOfAsset
   case object Two extends WithName("two") with WhatKindOfAsset
+  case object Three extends WithName("three") with WhatKindOfAsset
+  case object Four extends WithName("four") with WhatKindOfAsset
+  case object Five extends WithName("five") with WhatKindOfAsset
+  case object Six extends WithName("six") with WhatKindOfAsset
 
   val values: Set[WhatKindOfAsset] = Set(
-    One, Two
+    One, Two, Three, Four, Five, Six
   )
 
   val options: Set[RadioOption] = values.map {
