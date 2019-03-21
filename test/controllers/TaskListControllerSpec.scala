@@ -21,6 +21,7 @@ import java.time.format.DateTimeFormatter
 
 import base.SpecBase
 import models.{Matched, NormalMode, UserAnswers}
+import navigation.TaskListNavigator
 import pages._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -31,6 +32,9 @@ class TaskListControllerSpec extends SpecBase {
 
   private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
   private val savedUntil : String = LocalDateTime.now.plusSeconds(frontendAppConfig.ttlInSeconds).format(dateFormatter)
+
+  private def sections(answers: UserAnswers) =
+    new RegistrationProgress(new TaskListNavigator()).sections(answers)
 
   "TaskList Controller" must {
 
@@ -91,7 +95,7 @@ class TaskListControllerSpec extends SpecBase {
           status(result) mustEqual OK
 
           contentAsString(result) mustEqual
-            view(savedUntil, RegistrationProgress.sections(answers), Organisation)(fakeRequest, messages).toString
+            view(savedUntil, sections(answers), Organisation)(fakeRequest, messages).toString
 
           application.stop()
         }
@@ -187,7 +191,7 @@ class TaskListControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(savedUntil, RegistrationProgress.sections(answers), Organisation)(fakeRequest, messages).toString
+          view(savedUntil, sections(answers), Organisation)(fakeRequest, messages).toString
 
         application.stop()
       }

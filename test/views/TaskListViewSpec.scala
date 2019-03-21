@@ -21,6 +21,7 @@ import java.time.format.DateTimeFormatter
 
 import controllers.routes
 import models.UserAnswers
+import navigation.TaskListNavigator
 import pages.RegistrationProgress
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import views.behaviours.{TaskListViewBehaviours, ViewBehaviours}
@@ -31,7 +32,8 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
   private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
   private val savedUntil : String = LocalDateTime.now.format(dateFormatter)
 
-  private def sections(userAnswers: UserAnswers) = RegistrationProgress.sections(userAnswers)
+  private def sections(answers: UserAnswers) =
+    new RegistrationProgress(new TaskListNavigator()).sections(answers)
 
   "TaskList view" when {
 

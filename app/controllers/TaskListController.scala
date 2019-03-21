@@ -40,7 +40,8 @@ class TaskListController @Inject()(
                                        requiredAnswer: RequiredAnswerActionProvider,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: TaskListView,
-                                       config: FrontendAppConfig
+                                       config: FrontendAppConfig,
+                                       registrationProgress: RegistrationProgress
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
@@ -63,7 +64,7 @@ class TaskListController @Inject()(
         val ttlInSeconds = config.ttlInSeconds
         val savedUntil = request.userAnswers.createdAt.plusSeconds(ttlInSeconds).format(dateFormatter)
 
-        Ok(view(savedUntil, RegistrationProgress.sections(request.userAnswers), affinityGroup))
+        Ok(view(savedUntil, registrationProgress.sections(request.userAnswers), affinityGroup))
       }
 
       val isExistingTrust = request.userAnswers.get(TrustHaveAUTRPage).get
