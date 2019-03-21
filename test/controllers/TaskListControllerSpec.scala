@@ -70,7 +70,7 @@ class TaskListControllerSpec extends SpecBase {
 
     "for an existing trust" when {
 
-      "has matched" when {
+      "has matched" must {
 
         "return OK and the correct view for a GET" in {
 
@@ -98,7 +98,7 @@ class TaskListControllerSpec extends SpecBase {
 
       }
 
-      "has not matched" when {
+      "has not matched" must {
 
         "already registered redirect to AlreadyRegistered" in {
           val answers = UserAnswers(userAnswersId)
@@ -143,7 +143,7 @@ class TaskListControllerSpec extends SpecBase {
 
       }
 
-      "has not attempted matching" when {
+      "has not attempted matching" must {
 
         "redirect to WhatIsTrustUTR" in {
           val answers = UserAnswers(userAnswersId)
@@ -168,7 +168,7 @@ class TaskListControllerSpec extends SpecBase {
 
     }
 
-    "for a new trust" which {
+    "for a new trust" must {
 
       "return OK and the correct view for a GET" in {
 
