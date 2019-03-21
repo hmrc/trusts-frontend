@@ -27,7 +27,6 @@ import pages._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.auth.core.AffinityGroup
-import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.TaskListView
 
@@ -64,12 +63,7 @@ class TaskListController @Inject()(
         val ttlInSeconds = config.ttlInSeconds
         val savedUntil = request.userAnswers.createdAt.plusSeconds(ttlInSeconds).format(dateFormatter)
 
-        affinityGroup match {
-          case Organisation =>
-            Ok(view(savedUntil, RegistrationProgress.sections(request.userAnswers), affinityGroup))
-          case Agent =>
-            Ok(view(savedUntil, RegistrationProgress.sections(request.userAnswers), affinityGroup))
-        }
+        Ok(view(savedUntil, RegistrationProgress.sections(request.userAnswers), affinityGroup))
       }
 
       val isExistingTrust = request.userAnswers.get(TrustHaveAUTRPage).get
