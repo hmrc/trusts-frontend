@@ -17,15 +17,15 @@
 package pages
 
 import controllers.routes
-import models.UserAnswers
+import models.{NormalMode, UserAnswers}
 import viewmodels.{Completed, InProgress, Link, Task}
 
 object RegistrationProgress {
 
   def sections(userAnswers: UserAnswers) = List(
-    Task(Link(TrustDetails, routes.AddATrusteeController.onPageLoad().url), Some(Completed)),
-    Task(Link(Settlors, routes.AddATrusteeController.onPageLoad().url), Some(InProgress)),
-    Task(Link(Trustees, routes.AddATrusteeController.onPageLoad().url), Some(InProgress)),
+    Task(Link(TrustDetails, routes.TrustNameController.onPageLoad(NormalMode).url), None),
+    Task(Link(Settlors, routes.TaskListController.onPageLoad().url), Some(InProgress)),
+    Task(Link(Trustees, routes.IsThisLeadTrusteeController.onPageLoad().url), Some(InProgress)),
     Task(Link(Beneficiaries, routes.AddATrusteeController.onPageLoad().url), None),
     Task(Link(pages.Assets, routes.AddATrusteeController.onPageLoad().url), None),
     Task(Link(TaxLiability, routes.AddATrusteeController.onPageLoad().url), Some(Completed))
