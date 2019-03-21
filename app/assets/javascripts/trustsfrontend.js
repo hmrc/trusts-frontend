@@ -22,13 +22,9 @@ $(document).ready(function() {
   if (window.history && window.history.replaceState && typeof window.history.replaceState === 'function') {
     window.history.replaceState(null, null, window.location.href);
   }
-  // back click handle, dependent upon presence of referrer & no host change
   $('#back-link').on('click', function(e){
     e.preventDefault();
-    if (window.history && window.history.back && typeof window.history.back === 'function' &&
-       (docReferrer !== "" && docReferrer.indexOf(window.location.host) !== -1)) {
-        window.history.back();
-    }
+    window.history.back();
   })
 
 
