@@ -18,5 +18,5 @@ package pages
 
 case object Agent extends Page {
 
-  override def toString: String = "Agent"
+  override def toString: String = "agent"
 }
