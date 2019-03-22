@@ -18,11 +18,10 @@ package controllers
 
 import base.SpecBase
 import forms.WhatKindOfAssetFormProvider
-import models.{NormalMode, WhatKindOfAsset, UserAnswers}
+import models.{NormalMode, UserAnswers, WhatKindOfAsset}
 import navigation.{FakeNavigator, Navigator}
 import pages.WhatKindOfAssetPage
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

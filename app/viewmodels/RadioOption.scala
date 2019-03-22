@@ -24,4 +24,8 @@ object RadioOption {
     option,
     s"$keyPrefix.$option"
   )
+
+
 }
+
+case class WeightedRadioOption(weight: Int, override val id: String, override val value: String, override val messageKey: String) extends RadioOption(id, value, messageKey)

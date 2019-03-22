@@ -20,6 +20,7 @@ import javax.inject.{Inject, Singleton}
 import play.api.mvc.Call
 import controllers.routes
 import models.AddATrustee.{NoComplete, YesLater, YesNow}
+import models.WhatKindOfAsset.{Business, Money, Other, Partnership, PropertyOrLand, Shares}
 import pages._
 import models._
 
@@ -60,9 +61,24 @@ class Navigator @Inject()() {
     case TelephoneNumberPage(index) => _ => routes.TrusteesAnswerPageController.onPageLoad(index)
     case TrusteesAnswerPage => _ => routes.AddATrusteeController.onPageLoad()
     case AddATrusteePage => addATrusteeRoute
+
+    //Assets
+    case WhatKindOfAssetPage(index) => ua => whatKindOfAssetRoute(ua, index)
+
     //  Default
     case _ => _ => routes.IndexController.onPageLoad()
   }
+
+  private def whatKindOfAssetRoute(answers: UserAnswers, index: Int) = answers.get(WhatKindOfAssetPage(index)) match {
+      case Some(Money) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index)
+      case Some(PropertyOrLand) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index)
+      case Some(Shares) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index)
+      case Some(Business) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index)
+      case Some(Partnership) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index)
+      case Some(Other) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+
 
   private def addATrusteeRoute(answers: UserAnswers) = {
     val addAnother = answers.get(AddATrusteePage)

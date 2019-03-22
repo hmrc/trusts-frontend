@@ -16,27 +16,42 @@
 
 package models
 
-import play.api.libs.json._
-import viewmodels.RadioOption
+import viewmodels.{RadioOption, WeightedRadioOption}
 
 sealed trait WhatKindOfAsset
 
+trait WithWeight {
+  val weight : Int
+}
+
 object WhatKindOfAsset extends Enumerable.Implicits {
 
-  case object One extends WithName("one") with WhatKindOfAsset
-  case object Two extends WithName("two") with WhatKindOfAsset
-  case object Three extends WithName("three") with WhatKindOfAsset
-  case object Four extends WithName("four") with WhatKindOfAsset
-  case object Five extends WithName("five") with WhatKindOfAsset
-  case object Six extends WithName("six") with WhatKindOfAsset
+  case object Money extends WithName("Money") with WhatKindOfAsset with WithWeight {
+    override val weight: Int = 0
+  }
+  case object PropertyOrLand extends WithName("PropertyOrLand") with WhatKindOfAsset with WithWeight {
+    override val weight: Int = 1
+  }
+  case object Shares extends WithName("Shares") with WhatKindOfAsset with WithWeight {
+    override val weight: Int = 2
+  }
+  case object Business extends WithName("Business") with WhatKindOfAsset with WithWeight {
+    override val weight: Int = 3
+  }
+  case object Partnership extends WithName("Partnership") with WhatKindOfAsset with WithWeight {
+    override val weight: Int = 4
+  }
+  case object Other extends WithName("Other") with WhatKindOfAsset with WithWeight {
+    override val weight: Int = 5
+  }
 
   val values: Set[WhatKindOfAsset] = Set(
-    One, Two, Three, Four, Five, Six
+    Money, PropertyOrLand, Shares, Business, Partnership, Other
   )
 
-  val options: Set[RadioOption] = values.map {
+  val options: Set[WeightedRadioOption] = values.map {
     value =>
-      RadioOption("whatKindOfAsset", value.toString)
+      WeightedRadioOption(value.weight,"whatKindOfAsset", value.toString)
   }
 
   implicit val enumerable: Enumerable[WhatKindOfAsset] =

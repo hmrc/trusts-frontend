@@ -176,9 +176,7 @@ GET        /agent-overview                                      controllers.Agen
 
 GET        /trustees-information                                controllers.TrusteesInfoController.onPageLoad()
 
-
 GET        /asset/:index/assets-type                        controllers.WhatKindOfAssetController.onPageLoad(mode: Mode = NormalMode, index: Int)
 POST       /asset/:index/assets-type                         controllers.WhatKindOfAssetController.onSubmit(mode: Mode = NormalMode, index: Int)
-
 GET        /asset/:index/change-assets-type                  controllers.WhatKindOfAssetController.onPageLoad(mode: Mode = CheckMode, index: Int)
 POST       /asset/:index/change-assets-type                  controllers.WhatKindOfAssetController.onSubmit(mode: Mode = CheckMode, index: Int)

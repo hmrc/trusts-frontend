@@ -371,11 +371,11 @@ agentTelephoneNumber.error.invalid.characters = Enter a telephone number, like 0
 
 whatKindOfAsset.title = What kind of asset do you need to add first?
 whatKindOfAsset.heading = What kind of asset do you need to add first?
-whatKindOfAsset.one = one
-whatKindOfAsset.two = two
-whatKindOfAsset.two = three
-whatKindOfAsset.two = four
-whatKindOfAsset.two = five
-whatKindOfAsset.two = six
+whatKindOfAsset.Money = Money
+whatKindOfAsset.PropertyOrLand = Property or land
+whatKindOfAsset.Shares = Shares
+whatKindOfAsset.Business = Business
+whatKindOfAsset.Partnership = Partnership
+whatKindOfAsset.Other = Other
 whatKindOfAsset.checkYourAnswersLabel = What kind of asset do you need to add first?
 whatKindOfAsset.error.required = Select the kind of asset you need to add
