@@ -46,7 +46,9 @@ class IsThisLeadTrusteeController @Inject()(
 
   val form: Form[Boolean] = formProvider()
 
-  def onPageLoad(mode: Mode, index : Int): Action[AnyContent] = (identify andThen getData andThen requireData andThen validateIndex(index, Trustees)) {
+  def actions(index : Int) = identify andThen getData andThen requireData andThen validateIndex(index, Trustees)
+
+  def onPageLoad(mode: Mode, index : Int): Action[AnyContent] = actions(index) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(IsThisLeadTrusteePage(index)) match {
@@ -58,7 +60,7 @@ class IsThisLeadTrusteeController @Inject()(
   }
 
 
-  def onSubmit(mode: Mode, index : Int) = (identify andThen getData andThen requireData andThen validateIndex(index, Trustees)).async {
+  def onSubmit(mode: Mode, index : Int) = actions(index).async {
     implicit request =>
 
       form.bindFromRequest().fold(

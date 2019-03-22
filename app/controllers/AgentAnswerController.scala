@@ -19,14 +19,14 @@ package controllers
 import controllers.actions._
 import javax.inject.Inject
 import models.NormalMode
+import navigation.Navigator
+import pages.AgentAnswerPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
-import viewmodels.AnswerSection
-import navigation.Navigator
-import pages.{AgentAnswerPage, AgentTelephoneNumberPage}
 import utils.countryOptions.CountryOptions
+import viewmodels.AnswerSection
 import views.html.AgentAnswerView
 
 import scala.concurrent.ExecutionContext
