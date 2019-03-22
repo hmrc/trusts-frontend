@@ -35,9 +35,7 @@ class TrusteesNinoViewSpec extends StringViewBehaviours {
 
   "TrusteesNinoView view" must {
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-    val view = application.injector.instanceOf[TrusteesNinoView]
+    val view = viewFor[TrusteesNinoView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, index, trusteeName)(fakeRequest, messages)

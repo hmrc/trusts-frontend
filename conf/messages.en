@@ -68,6 +68,7 @@ createAgentServicesAccount.cta = Create an agent services account
 trustName.title = What is the trust’s name?
 trustName.heading = What is the trust’s name?
 trustName.hint = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (SA316) or tax return.
+trustName.hint.reader = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (S A 3 1 6) or tax return.
 trustName.checkYourAnswersLabel = What is the trust’s name?
 trustName.error.length = The trust’s name must be 53 characters or less
 trustName.error.invalidCharacters = The trust’s name must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
@@ -170,15 +171,17 @@ whatIsTheUTR.title = What is the trust’s Unique Taxpayer Reference?
 whatIsTheUTR.heading = What is the trust’s Unique Taxpayer Reference?
 whatIsTheUTR.checkYourAnswersLabel = What is the trust’s Unique Taxpayer Reference?
 whatIsTheUTR.error.required = Enter the trust’s Unique Taxpayer Reference
-whatIsTheUTR.error.length = Unique Taxpayer Reference must be a 10-digit number
+whatIsTheUTR.error.length = Unique Taxpayer Reference must be a 10 digit number
 whatIsTheUTR.error.invalidCharacters = Enter the trust’s Unique Taxpayer Reference in the correct format
 whatIsTheUTR.hint = This is 10 numbers, for example 1234567890. It will be on the trust’s Self Assessment notice to file (SA316). It may be called ‘reference’, ‘UTR’ or ‘official use’.
+whatIsTheUTR.hint.reader = This is 10 numbers, for example one two three four five six seven eight nine zero. It will be on the trust’s Self Assessment notice to file (S A three one six). It may be called ‘reference’, ‘UTR’ or ‘official use’.
 
 postcodeForTheTrust.title = What is the trust’s postcode?
 postcodeForTheTrust.heading = What is the trust’s postcode?
 postcodeForTheTrust.checkYourAnswersLabel = What is the trust’s postcode?
 postcodeForTheTrust.error.required = Enter the trust’s postcode
 postcodeForTheTrust.hint = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (SA316) or tax return. For example, AA1 1AA.
+postcodeForTheTrust.hint.reader = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (S A 3 1 6) or tax return. For example, A,A,1,  1,A,A.
 
 FailedMatch.title = We cannot match the details you have given us to our records
 FailedMatch.heading = We cannot match the details you have given us to our records
@@ -323,6 +326,15 @@ trusteesUkAddress.error.line3.invalidCharacters = Address line 3 must only inclu
 trusteesUkAddress.error.townOrCity.invalidCharacters = Town or city must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
 trusteesUkAddress.error.postcode.invalidCharacters = Enter a real postcode
 
+agentInternalReference.title = What is your internal reference for this client?
+agentInternalReference.heading = What is your internal reference for this client?
+agentInternalReference.checkYourAnswersLabel = What is your internal reference for this client?
+agentInternalReference.paragraph1 = This reference will help you identify this trust in your saved registrations
+agentInternalReference.hint = It must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, grave accents (`) and hyphens
+agentInternalReference.error.required = Enter your internal reference for this client
+agentInternalReference.error.length = Your internal reference for this client must be 56 characters or less
+agentInternalReference.error.invalidFormat = The internal reference for this client must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, grave accents (`) and hyphens
+
 agentOverview.title = Register a trust for a client
 agentOverview.heading = Register a trust for a client
 agentOverview.paragraph1 = You can save your registration and come back later. You have 28 days from the time you first save to register a trust. If you do not register within 28 days, your information will be deleted.
@@ -357,7 +369,7 @@ trusteesInfo.bulletpoint7 = registered name
 trusteesInfo.bulletpoint8 = Unique Taxpayer Reference
 trusteesInfo.paragraph6 = If it is a non-UK business, you need their address.
 trusteesInfo.warning = All trustees have the same legal responsibilities.
-
+trusteesInfo.continue = Continue
 
 agentTelephoneNumber.title = What is the agency’s telephone number?
 agentTelephoneNumber.heading = What is the agency’s telephone number?
@@ -387,3 +399,6 @@ assetInterruptPage.bullet7 = description of the property or land, or address if 
 assetInterruptPage.bullet8 = estimated total value of the property or land
 assetInterruptPage.bullet9 = estimated value of the property or land if the trust only owns a proportion
 assetInterruptPage.paragraph6 = The current value of the property or land is needed, not the value when it first entered the trust. This can be an estimate.
+
+agentAnswer.title = Check agent details
+agentAnswer.heading = Check agent details

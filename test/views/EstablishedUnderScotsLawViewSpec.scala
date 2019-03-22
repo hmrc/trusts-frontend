@@ -32,9 +32,7 @@ class EstablishedUnderScotsLawViewSpec extends YesNoViewBehaviours {
 
   "EstablishedUnderScotsLaw view" must {
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-    val view = application.injector.instanceOf[EstablishedUnderScotsLawView]
+    val view = viewFor[EstablishedUnderScotsLawView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode)(fakeRequest, messages)

@@ -26,5 +26,6 @@ object Validation {
     """[ \t]*[0-9]{1}[ \t]*[ \t]*[0-9]{1}[ \t]*[ \t]*[0-9]{1}[ \t]*[ \t]*[0-9]{1}[ \t]*[A-D]{1}[ \t]*$"""
   val telephoneRegex = """^\+[0-9 ]{1,18}$|^[0-9 ]{1,19}$"""
   val addressLineRegex = "^[A-Za-z0-9 ,.()/&'-]*$"
+  val clientRefRegex = "^[A-Za-z0-9&'`-]*$"
 
 }

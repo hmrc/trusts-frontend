@@ -34,13 +34,13 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("postcodeForTheTrust.heading")
-
         @components.input_text(
           field = form("value"),
           label = messages("postcodeForTheTrust.heading"),
+          labelAsHeading = true,
           hint = Some(messages(s"postcodeForTheTrust.hint")),
-          labelClass=Some("visually-hidden")
+          readerHint = Some(messages(s"postcodeForTheTrust.hint.reader")),
+          labelClass = Some("heading-large")
         )
 
         @components.submit_button()

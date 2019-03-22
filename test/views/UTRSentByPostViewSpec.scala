@@ -23,9 +23,7 @@ class UTRSentByPostViewSpec extends ViewBehaviours {
 
   "UTRSentByPost view" must {
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-    val view = application.injector.instanceOf[UTRSentByPostView]
+    val view = viewFor[UTRSentByPostView](Some(emptyUserAnswers))
 
     val applyView = view.apply()(fakeRequest, messages)
 
