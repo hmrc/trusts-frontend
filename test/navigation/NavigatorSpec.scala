@@ -44,9 +44,9 @@ class NavigatorSpec extends SpecBase
         navigator.nextPage(UnknownPage, NormalMode)(UserAnswers("id")) mustBe routes.IndexController.onPageLoad()
       }
 
-      behave like trustDetailsRoutes
-
       behave like matchingRoutes
+
+      behave like trustDetailsRoutes
 
       behave like trusteeRoutes
 

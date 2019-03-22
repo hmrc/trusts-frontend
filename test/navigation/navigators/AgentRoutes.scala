@@ -19,7 +19,7 @@ package navigation.navigators
 import base.SpecBase
 import controllers.routes
 import generators.Generators
-import models.{CheckMode, NormalMode, UserAnswers}
+import models.{NormalMode, UserAnswers}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
@@ -41,12 +41,21 @@ trait AgentRoutes {
       }
     }
 
-    "go to AgentAnswer Page from AgentTelephoneNumber page" in {
+    "go to CheckAgentAnswer Page from AgentTelephoneNumber page" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
           navigator.nextPage(AgentTelephoneNumberPage, NormalMode, AffinityGroup.Agent)(userAnswers)
             .mustBe(routes.AgentAnswerController.onPageLoad())
+      }
+    }
+
+    "go to RegistrationProgress from CheckAgentAnswer Page" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          navigator.nextPage(AgentAnswerPage, NormalMode, AffinityGroup.Agent)(userAnswers)
+            .mustBe(routes.TaskListController.onPageLoad())
       }
     }
   }
