@@ -25,7 +25,7 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import viewmodels.AnswerSection
 import navigation.Navigator
-import pages.AgentTelephoneNumberPage
+import pages.{AgentAnswerPage, AgentTelephoneNumberPage}
 import utils.countryOptions.CountryOptions
 import views.html.AgentAnswerView
 
@@ -64,6 +64,6 @@ class AgentAnswerController @Inject()(
 
   def onSubmit = actions {
     implicit request =>
-      Redirect(navigator.nextPage(AgentTelephoneNumberPage ,NormalMode)(request.userAnswers))
+      Redirect(navigator.nextPage(AgentAnswerPage ,NormalMode)(request.userAnswers))
   }
 }

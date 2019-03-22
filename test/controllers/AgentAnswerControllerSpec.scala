@@ -33,8 +33,6 @@ class AgentAnswerControllerSpec extends SpecBase {
 
   val agentID = AffinityGroup.Agent
 
-  def onwardRoute = Call("GET", "/foo")
-
   "AgentAnswer Controller" must {
 
     "return OK and the correct view for a GET" in {
@@ -85,7 +83,7 @@ class AgentAnswerControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.AgentAnswerController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad().url
 
       application.stop()
     }
