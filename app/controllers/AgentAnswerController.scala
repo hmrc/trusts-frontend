@@ -54,6 +54,7 @@ class AgentAnswerController @Inject()(
         AnswerSection(
           None,
           Seq(
+            checkYourAnswersHelper.agentInternalReference,
             checkYourAnswersHelper.agenciesTelephoneNumber
           ).flatten
         )
