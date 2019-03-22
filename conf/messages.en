@@ -46,6 +46,7 @@ site.service_name = Trusts Registration Service
 site.textarea.char_limit = (Limit is {0} characters)
 site.inprogress = In Progress
 site.complete = Completed
+site.onlycontinue = Continue
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
@@ -164,7 +165,6 @@ trustHaveAUTR.heading = Does the trust have a Unique Taxpayer Reference?
 trustHaveAUTR.checkYourAnswersLabel = Does the trust have a Unique Taxpayer Reference?
 trustHaveAUTR.error.required = Select yes if the trust has a Unique Taxpayer Reference
 trustHaveAUTR.hint = This is 10 numbers, for example 1234567890. It will be on tax returns and other letters about Self Assessment. It may be called ‘reference’, ‘UTR’ or ‘official use’. You can
-trustHaveAUTR.hint.reader = This is 10 numbers, for example one two three four five six seven eight nine zero. It will be on tax returns and other letters about Self Assessment. It may be called ‘reference’, ‘UTR’ or ‘official use’. You can
 trustHaveAUTR.link = find a lost UTR number.
 
 whatIsTheUTR.title = What is the trust’s Unique Taxpayer Reference?
@@ -326,6 +326,15 @@ trusteesUkAddress.error.line3.invalidCharacters = Address line 3 must only inclu
 trusteesUkAddress.error.townOrCity.invalidCharacters = Town or city must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
 trusteesUkAddress.error.postcode.invalidCharacters = Enter a real postcode
 
+agentInternalReference.title = What is your internal reference for this client?
+agentInternalReference.heading = What is your internal reference for this client?
+agentInternalReference.checkYourAnswersLabel = What is your internal reference for this client?
+agentInternalReference.paragraph1 = This reference will help you identify this trust in your saved registrations
+agentInternalReference.hint = It must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, grave accents (`) and hyphens
+agentInternalReference.error.required = Enter your internal reference for this client
+agentInternalReference.error.length = Your internal reference for this client must be 56 characters or less
+agentInternalReference.error.invalidFormat = The internal reference for this client must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, grave accents (`) and hyphens
+
 agentOverview.title = Register a trust for a client
 agentOverview.heading = Register a trust for a client
 agentOverview.paragraph1 = You can save your registration and come back later. You have 28 days from the time you first save to register a trust. If you do not register within 28 days, your information will be deleted.
@@ -368,6 +377,28 @@ agentTelephoneNumber.checkYourAnswersLabel = What is the agency’s telephone nu
 agentTelephoneNumber.hint = We will use this number to contact you about this trust’s registration. For international numbers include the country code
 agentTelephoneNumber.error.required = Enter the agency’s telephone number
 agentTelephoneNumber.error.invalid.characters = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192
+
+assetInterruptPage.title = Information you need to add assets
+assetInterruptPage.heading = Information you need to add assets
+assetInterruptPage.subheading1 = Money
+assetInterruptPage.paragraph1 = You must give the total amount of money in the trust. If more than one amount has been added to the trust, add them together.
+assetInterruptPage.subheading2 = Business
+assetInterruptPage.paragraph2 = For a business named in the trust deed, you need:
+assetInterruptPage.bullet1 = business name
+assetInterruptPage.bullet2 = the business’s Unique Taxpayer Reference (UTR), if you don’t have this you will need to enter the business’s address
+assetInterruptPage.bullet3 = current value
+assetInterruptPage.subheading3 = Shares
+assetInterruptPage.paragraph3 = For shares named in the trust deed, you need:
+assetInterruptPage.bullet4 = share company name
+assetInterruptPage.bullet5 = share class
+assetInterruptPage.bullet6 = number of shares in the trust and total current value
+assetInterruptPage.paragraph4 = You will also need to choose whether the shares are listed on a stock exchange (quoted shares) or not.
+assetInterruptPage.subheading4 = Property or land
+assetInterruptPage.paragraph5 = For property or land in the trust deed, you need:
+assetInterruptPage.bullet7 = description of the property or land, or address if available
+assetInterruptPage.bullet8 = estimated total value of the property or land
+assetInterruptPage.bullet9 = estimated value of the property or land if the trust only owns a proportion
+assetInterruptPage.paragraph6 = The current value of the property or land is needed, not the value when it first entered the trust. This can be an estimate.
 
 agentAnswer.title = Check agent details
 agentAnswer.heading = Check agent details

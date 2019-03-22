@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-package forms
+package pages
 
-object Validation {
+import play.api.libs.json.JsPath
+import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 
-  val countryRegex = "^[A-Za-z ,.()'-]*$"
-  val postcodeRegex = """^[a-zA-Z]{1,2}[0-9][0-9a-zA-Z]?\s?[0-9][a-zA-Z]{2}$"""
-  val nameRegex = "^[A-Za-z0-9 ,.()/&'-]*$"
-  val utrRegex = "^[0-9]*$"
-  val ninoRegex = """^(?i)[ \t]*[A-Z]{1}[ \t]*[ \t]*[A-Z]{1}[ \t]*[0-9]{1}[ \t]*[ \t]*[0-9]{1}[ \t]*""" +
-    """[ \t]*[0-9]{1}[ \t]*[ \t]*[0-9]{1}[ \t]*[ \t]*[0-9]{1}[ \t]*[ \t]*[0-9]{1}[ \t]*[A-D]{1}[ \t]*$"""
-  val telephoneRegex = """^\+[0-9 ]{1,18}$|^[0-9 ]{1,19}$"""
-  val addressLineRegex = "^[A-Za-z0-9 ,.()/&'-]*$"
-  val clientRefRegex = "^[A-Za-z0-9&'`-]*$"
+case object AgentInternalReferencePage extends QuestionPage[String] {
 
+  override def path: JsPath = JsPath \ Agent \ toString
+
+  override def toString: String = "agentInternalReference"
 }
