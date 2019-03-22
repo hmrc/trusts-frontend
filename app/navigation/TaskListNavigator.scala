@@ -51,7 +51,7 @@ class TaskListNavigator @Inject()() {
     case Settlors => _ => routes.TaskListController.onPageLoad()
     case Beneficiaries => _ => routes.TaskListController.onPageLoad()
     case TaxLiability => _ => routes.TaskListController.onPageLoad()
-    case Assets => _ => routes.TaskListController.onPageLoad()
+    case Assets => _ => routes.AssetInterruptPageController.onPageLoad()
     case _ => _ => routes.IndexController.onPageLoad()
   }
 

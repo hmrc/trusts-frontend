@@ -102,7 +102,7 @@ class TaskListNavigatorSpec extends SpecBase {
       "there are no assets" must {
 
         "go to AssetInfoPage" in {
-          navigator.nextPage(Assets, emptyUserAnswers) mustBe routes.TaskListController.onPageLoad()
+          navigator.nextPage(Assets, emptyUserAnswers) mustBe routes.AssetInterruptPageController.onPageLoad()
         }
 
       }
@@ -112,7 +112,7 @@ class TaskListNavigatorSpec extends SpecBase {
 
         "go to AddAAsset" in {
           val answers = emptyUserAnswers
-          navigator.nextPage(Assets, answers) mustBe routes.TaskListController.onPageLoad()
+          navigator.nextPage(Assets, answers) mustBe routes.AssetInterruptPageController.onPageLoad()
         }
 
       }
