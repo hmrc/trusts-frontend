@@ -217,5 +217,11 @@
 .heading-large {margin-top:0;}
 .multiple-choice{display: inline-block;}
 
-#value__listbox{width:49.4%;}
+#value__listbox {
+    width: 100%;
+   @include media(tablet) {
+    width: 49.4%;
+  }
+}
+
 .autocomplete__wrapper span {display:none;}
