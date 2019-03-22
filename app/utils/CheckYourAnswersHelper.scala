@@ -30,6 +30,15 @@ import viewmodels.AnswerRow
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def assetMoneyValue: Option[AnswerRow] = userAnswers.get(AssetMoneyValuePage) map {
+    x =>
+      AnswerRow(
+        "assetMoneyValue.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.AssetMoneyValueController.onPageLoad(CheckMode).url
+      )
+  }
+
   def agentInternalReference: Option[AnswerRow] = userAnswers.get(AgentInternalReferencePage) map {
     x =>
       AnswerRow(

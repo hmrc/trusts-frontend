@@ -190,3 +190,7 @@ POST       /chack-agent-details                       controllers.AgentAnswerCon
 
 GET        /asset/information-you-need                    controllers.AssetInterruptPageController.onPageLoad()
 POST       /asset/information-you-need                     controllers.AssetInterruptPageController.onSubmit()
+GET        /assetMoneyValue                        controllers.AssetMoneyValueController.onPageLoad(mode: Mode = NormalMode)
+POST       /assetMoneyValue                        controllers.AssetMoneyValueController.onSubmit(mode: Mode = NormalMode)
+GET        /changeAssetMoneyValue                  controllers.AssetMoneyValueController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeAssetMoneyValue                  controllers.AssetMoneyValueController.onSubmit(mode: Mode = CheckMode)

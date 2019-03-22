@@ -402,3 +402,9 @@ assetInterruptPage.paragraph6 = The current value of the property or land is nee
 
 agentAnswer.title = Check agent details
 agentAnswer.heading = Check agent details
+
+assetMoneyValue.title = assetMoneyValue
+assetMoneyValue.heading = assetMoneyValue
+assetMoneyValue.checkYourAnswersLabel = assetMoneyValue
+assetMoneyValue.error.required = Enter assetMoneyValue
+assetMoneyValue.error.length = AssetMoneyValue must be 12 characters or less
