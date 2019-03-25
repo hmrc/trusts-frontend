@@ -18,16 +18,18 @@ package controllers
 
 import base.SpecBase
 import forms.WhatKindOfAssetFormProvider
-import models.{NormalMode, UserAnswers, WhatKindOfAsset}
+import generators.FullNameGenerator
+import models.{FullName, NormalMode, UserAnswers, WhatKindOfAsset}
 import navigation.{FakeNavigator, Navigator}
-import pages.WhatKindOfAssetPage
+import org.scalacheck.Arbitrary.arbitrary
+import pages.{TrusteesNamePage, WhatKindOfAssetPage}
 import play.api.inject.bind
-import play.api.mvc.Call
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.WhatKindOfAssetView
 
-class WhatKindOfAssetControllerSpec extends SpecBase {
+class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation with FullNameGenerator {
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -149,6 +151,39 @@ class WhatKindOfAssetControllerSpec extends SpecBase {
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
+    }
+
+    "for a GET" must {
+
+      def getForIndex(index: Int): FakeRequest[AnyContentAsEmpty.type] = {
+        val route = routes.WhatKindOfAssetController.onPageLoad(NormalMode, index).url
+
+        FakeRequest(GET, route)
+      }
+
+      validateIndex(
+        arbitrary[WhatKindOfAsset],
+        WhatKindOfAssetPage.apply,
+        getForIndex
+      )
+
+    }
+
+    "for a POST" must {
+      def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+
+        val route =
+          routes.WhatKindOfAssetController.onPageLoad(NormalMode, index).url
+
+        FakeRequest(POST, route)
+          .withFormUrlEncodedBody(("value", WhatKindOfAsset.Money.toString))
+      }
+
+      validateIndex(
+        arbitrary[WhatKindOfAsset],
+        WhatKindOfAssetPage.apply,
+        postForIndex
+      )
     }
   }
 }
