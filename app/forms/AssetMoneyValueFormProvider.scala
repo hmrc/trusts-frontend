@@ -26,6 +26,11 @@ class AssetMoneyValueFormProvider @Inject() extends Mappings {
   def apply(): Form[String] =
     Form(
       "value" -> text("assetMoneyValue.error.required")
-        .verifying(maxLength(12, "assetMoneyValue.error.length"))
+        .verifying(
+          firstError(
+            maxLength(12, "assetMoneyValue.error.length"),
+            isNotEmpty("value", "assetMoneyValue.error.required"),
+            regexp(Validation.numericRegex, "assetMoneyValue.error.invalidFormat")
+          ))
     )
 }

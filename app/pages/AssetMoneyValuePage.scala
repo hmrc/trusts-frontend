@@ -19,6 +19,8 @@ package pages
 import play.api.libs.json.JsPath
 
 case object AssetMoneyValuePage extends QuestionPage[String] {
+  def unapply(page: Page): Option[Any] = ???
+
 
   override def path: JsPath = JsPath \ toString
 

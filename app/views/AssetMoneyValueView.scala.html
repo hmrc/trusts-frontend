@@ -36,10 +36,13 @@
 
         @components.heading("assetMoneyValue.heading")
 
+        <p>@messages("assetMoneyValue.paragraph1")</p>
+
         @components.input_text(
           field = form("value"),
           label = messages("assetMoneyValue.heading"),
-          labelClass=Some("visually-hidden")
+          labelClass=Some("visually-hidden"),
+          hint = Some(messages(s"assetMoneyValue.hint"))
         )
 
         @components.submit_button()

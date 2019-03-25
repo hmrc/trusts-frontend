@@ -17,7 +17,6 @@
 package pages
 
 import play.api.libs.json.JsPath
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 
 case object AgentInternalReferencePage extends QuestionPage[String] {
 

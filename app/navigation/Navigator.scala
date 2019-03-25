@@ -20,7 +20,7 @@ import javax.inject.{Inject, Singleton}
 import play.api.mvc.Call
 import controllers.routes
 import models.AddATrustee.{NoComplete, YesLater, YesNow}
-import pages._
+import pages.{AssetMoneyValuePage, _}
 import models._
 import uk.gov.hmrc.auth.core.AffinityGroup
 
@@ -67,6 +67,9 @@ class Navigator @Inject()() {
 
     //Agents
     case AgentTelephoneNumberPage => _ => _ => routes.AgentAnswerController.onPageLoad()
+
+    //Assets
+    case AssetMoneyValuePage(index) => _ => _ => routes.AssetMoneyValueController.onPageLoad(NormalMode)
 
     //  Default
     case _ => _ => _ => routes.IndexController.onPageLoad()
