@@ -29,9 +29,8 @@ class Navigator @Inject()() {
 
   private val normalRoutes: Page => AffinityGroup => UserAnswers => Call = {
     //  Matching
-    case TrustRegisteredOnlinePage => af => _ => routes.TrustHaveAUTRController.onPageLoad(NormalMode)
+    case TrustRegisteredOnlinePage => _ => _ => routes.TrustHaveAUTRController.onPageLoad(NormalMode)
     case TrustHaveAUTRPage => af => userAnswers => trustHaveAUTRRoute(userAnswers, af)
-    case AgentInternalReferencePage => _ => _ => routes.TrustNameController.onPageLoad(NormalMode)
     case WhatIsTheUTRPage => _ => _ => routes.TrustNameController.onPageLoad(NormalMode)
     case PostcodeForTheTrustPage => _ => _ => routes.FailedMatchController.onPageLoad()
 
@@ -50,7 +49,7 @@ class Navigator @Inject()() {
     case NonResidentTypePage => _ => _ => routes.TrustDetailsAnswerPageController.onPageLoad()
     case InheritanceTaxActPage => _ => inheritanceTaxRoute
     case AgentOtherThanBarristerPage => _ => _ => routes.TrustDetailsAnswerPageController.onPageLoad()
-    case TrustDetailsAnswerPage => _ => ua => routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 0)
+    case TrustDetailsAnswerPage => _ => _ => routes.TaskListController.onPageLoad()
 
     //  Trustees
     case IsThisLeadTrusteePage(index) => _ =>_ => routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index)
@@ -66,7 +65,9 @@ class Navigator @Inject()() {
     case AddATrusteePage => _ => addATrusteeRoute
 
     //Agents
+    case AgentInternalReferencePage => _ => _ => routes.AgentTelephoneNumberController.onPageLoad(NormalMode)
     case AgentTelephoneNumberPage => _ => _ => routes.AgentAnswerController.onPageLoad()
+    case AgentAnswerPage => _ => _ => routes.TaskListController.onPageLoad()
 
     //  Default
     case _ => _ => _ => routes.IndexController.onPageLoad()
@@ -89,9 +90,9 @@ class Navigator @Inject()() {
       case Some(YesNow) =>
         routeToTrusteeIndex
       case Some(YesLater) =>
-        routes.AddATrusteeController.onPageLoad()
+        routes.TaskListController.onPageLoad()
       case Some(NoComplete) =>
-        routes.AddATrusteeController.onPageLoad()
+        routes.TaskListController.onPageLoad()
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
@@ -101,7 +102,14 @@ class Navigator @Inject()() {
 
     condition match {
       case (Some(false), Some(true)) => routes.WhatIsTheUTRController.onPageLoad(NormalMode)
-      case (Some(false), Some(false)) => if(af == AffinityGroup.Organisation){ routes.TrustNameController.onPageLoad(NormalMode)} else {routes.AgentInternalReferenceController.onPageLoad(NormalMode)}
+      case (Some(false), Some(false)) =>
+
+        if(af == AffinityGroup.Organisation){
+          routes.TaskListController.onPageLoad()
+        } else {
+          routes.AgentInternalReferenceController.onPageLoad(NormalMode)
+        }
+
       case (Some(true), Some(false)) => routes.UTRSentByPostController.onPageLoad()
       case (Some(true), Some(true)) => routes.CannotMakeChangesController.onPageLoad()
       case _ => routes.SessionExpiredController.onPageLoad()

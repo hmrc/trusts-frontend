@@ -14,13 +14,9 @@
  * limitations under the License.
  */
 
-package pages
+package viewmodels
 
-import play.api.libs.json.JsPath
+abstract class Tag(val id : String)
 
-final case class  TrusteeAUKCitizenPage(index : Int) extends QuestionPage[Boolean] {
-
-  override def path: JsPath = JsPath \ Trustees \ index \ toString
-
-  override def toString: String = "trusteeAUKCitizen"
-}
+case object Completed extends Tag("completed")
+case object InProgress extends Tag("progress")

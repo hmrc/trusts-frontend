@@ -22,7 +22,7 @@ import akka.stream.Materializer
 import com.google.inject.Inject
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import org.scalatestplus.play.OneAppPerSuite
-import play.api.Application
+import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 import play.api.mvc.{Action, Results, SessionCookieBaker}
@@ -72,26 +72,21 @@ class SessionIdFilterSpec extends WordSpec with MustMatchers with OneAppPerSuite
     }
   }
 
-  override lazy val app: Application = {
-
-    import play.api.inject._
-
-    new GuiceApplicationBuilder()
-      .overrides(
-        bind[SessionIdFilter].to[TestSessionIdFilter]
-      )
-      .configure(
-        "play.filters.disabled" -> List("uk.gov.hmrc.play.bootstrap.filters.frontend.crypto.SessionCookieCryptoFilter")
-      )
-      .router(router)
-      .build()
-  }
-
   "session id filter" must {
 
     "add a sessionId if one doesn't already exist" in {
 
-      val result = route(app, FakeRequest(GET, "/test")).value
+      val application = new GuiceApplicationBuilder()
+        .overrides(
+          bind[SessionIdFilter].to[TestSessionIdFilter]
+        )
+        .configure(
+          "play.filters.disabled" -> List("uk.gov.hmrc.play.bootstrap.filters.frontend.crypto.SessionCookieCryptoFilter")
+        )
+        .router(router)
+        .build()
+
+      val result = route(application, FakeRequest(GET, "/test")).value
 
       val body = contentAsJson(result)
 
@@ -99,29 +94,67 @@ class SessionIdFilterSpec extends WordSpec with MustMatchers with OneAppPerSuite
       (body \ "fromSession").as[String] mustEqual s"session-$sessionId"
 
       session(result).data.get(SessionKeys.sessionId) mustBe defined
+
+      application.stop()
     }
 
     "not override a sessionId if one doesn't already exist" in {
 
-      val result = route(app, FakeRequest(GET, "/test").withSession(SessionKeys.sessionId -> "foo")).value
+      val application = new GuiceApplicationBuilder()
+        .overrides(
+          bind[SessionIdFilter].to[TestSessionIdFilter]
+        )
+        .configure(
+          "play.filters.disabled" -> List("uk.gov.hmrc.play.bootstrap.filters.frontend.crypto.SessionCookieCryptoFilter")
+        )
+        .router(router)
+        .build()
+
+      val result = route(application, FakeRequest(GET, "/test").withSession(SessionKeys.sessionId -> "foo")).value
 
       val body = contentAsJson(result)
 
       (body \ "fromHeader").as[String] mustEqual ""
       (body \ "fromSession").as[String] mustEqual "foo"
+
+      application.stop()
     }
 
     "not override other session values from the response" in {
 
-      val result = route(app, FakeRequest(GET, "/test2")).value
+      val application = new GuiceApplicationBuilder()
+        .overrides(
+          bind[SessionIdFilter].to[TestSessionIdFilter]
+        )
+        .configure(
+          "play.filters.disabled" -> List("uk.gov.hmrc.play.bootstrap.filters.frontend.crypto.SessionCookieCryptoFilter")
+        )
+        .router(router)
+        .build()
+
+      val result = route(application, FakeRequest(GET, "/test2")).value
 
       session(result).data must contain("foo" -> "bar")
+
+      application.stop()
     }
 
     "not override other session values from the request" in {
 
-      val result = route(app, FakeRequest(GET, "/test").withSession("foo" -> "bar")).value
+      val application = new GuiceApplicationBuilder()
+        .overrides(
+          bind[SessionIdFilter].to[TestSessionIdFilter]
+        )
+        .configure(
+          "play.filters.disabled" -> List("uk.gov.hmrc.play.bootstrap.filters.frontend.crypto.SessionCookieCryptoFilter")
+        )
+        .router(router)
+        .build()
+
+      val result = route(application, FakeRequest(GET, "/test").withSession("foo" -> "bar")).value
       session(result).data must contain("foo" -> "bar")
+
+      application.stop()
     }
   }
 }

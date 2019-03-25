@@ -63,7 +63,7 @@ trait TrusteeRoutes {
 
     }
 
-    "stay on AddATrustee from AddATrusteePage when selecting add them later" in {
+    "go to RegistrationProgress from AddATrusteePage when selecting add them later" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
@@ -71,11 +71,11 @@ trait TrusteeRoutes {
             .set(AddATrusteePage, AddATrustee.YesLater).success.value
 
           navigator.nextPage(AddATrusteePage, NormalMode)(answers)
-            .mustBe(routes.AddATrusteeController.onPageLoad())
+            .mustBe(routes.TaskListController.onPageLoad())
       }
     }
 
-    "stay on AddATrustee from AddATrusteePage when selecting added them all" in {
+    "go to RegistrationProgress from AddATrusteePage when selecting added them all" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
@@ -83,7 +83,7 @@ trait TrusteeRoutes {
             .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
           navigator.nextPage(AddATrusteePage, NormalMode)(answers)
-            .mustBe(routes.AddATrusteeController.onPageLoad())
+            .mustBe(routes.TaskListController.onPageLoad())
       }
     }
 

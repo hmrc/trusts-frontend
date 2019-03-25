@@ -46,7 +46,7 @@ site.service_name = Trusts Registration Service
 site.textarea.char_limit = (Limit is {0} characters)
 site.inprogress = In Progress
 site.complete = Completed
-site.onlycontinue = Continue
+site.onlyContinue = Continue
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
@@ -334,6 +334,25 @@ agentInternalReference.hint = It must only include letters a to z, numbers 0 to 
 agentInternalReference.error.required = Enter your internal reference for this client
 agentInternalReference.error.length = Your internal reference for this client must be 56 characters or less
 agentInternalReference.error.invalidFormat = The internal reference for this client must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, grave accents (`) and hyphens
+
+
+taskList.title = Registration progress
+taskList.heading = Registration progress
+taskList.paragraph1 = You can save your registration and come back later. You have 28 days from the time you first save to register a trust. If you do not register within 28 days, your information will be deleted.
+taskList.savedUntil.heading = Saved until
+taskList.sections.heading = Sections
+
+taskList.trustDetails.label = Trust details
+taskList.settlors.label = Settlors
+taskList.trustees.label = Trustees
+taskList.beneficiaries.label = Beneficiaries
+taskList.assets.label = Assets
+taskList.taxLiability.label = Years of tax liability
+taskList.agent.savedRegistrations = Return to saved registrations
+taskList.agent.agentDetails = Agent details
+
+taskList.completed = Completed
+taskList.progress = In Progress
 
 agentOverview.title = Register a trust for a client
 agentOverview.heading = Register a trust for a client

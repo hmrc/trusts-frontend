@@ -14,27 +14,20 @@
  * limitations under the License.
  */
 
-package models.entities
+package models
 
-import models.{FullName, IndividualOrBusiness}
-import play.api.libs.json.{JsPath, Reads}
+sealed trait Matched
 
+object Matched extends Enumerable.Implicits {
 
-case class Trustee(lead: Boolean, name : Option[FullName], `type` : Option[IndividualOrBusiness]) {
+  case object Success extends WithName("success") with Matched
+  case object AlreadyRegistered extends WithName("already-registered") with Matched
+  case object Failed extends WithName("failed") with Matched
 
-  def isComplete = name.nonEmpty && `type`.nonEmpty
+  val values: Set[Matched] = Set(
+    Success, AlreadyRegistered, Failed
+  )
 
-}
-
-
-object Trustee {
-
-  import play.api.libs.functional.syntax._
-
-  implicit val reads : Reads[Trustee] = (
-    (JsPath \ "isThisLeadTrustee").readWithDefault[Boolean](false) and
-    (JsPath \ "trusteesName").readNullable[FullName] and
-      (JsPath \ "trusteeIndividualOrBusiness").readNullable[IndividualOrBusiness]
-    )(Trustee.apply _)
-
+  implicit val enumerable: Enumerable[Matched] =
+    Enumerable(values.toSeq.map(v => v.toString -> v): _*)
 }
