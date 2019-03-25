@@ -16,44 +16,28 @@
 
 package models
 
-import viewmodels.{RadioOption, WeightedRadioOption}
+import viewmodels.RadioOption
 
 sealed trait WhatKindOfAsset
 
-trait WithWeight {
-  val weight : Int
-}
-
 object WhatKindOfAsset extends Enumerable.Implicits {
 
-  case object Money extends WithName("Money") with WhatKindOfAsset with WithWeight {
-    override val weight: Int = 0
-  }
-  case object PropertyOrLand extends WithName("PropertyOrLand") with WhatKindOfAsset with WithWeight {
-    override val weight: Int = 1
-  }
-  case object Shares extends WithName("Shares") with WhatKindOfAsset with WithWeight {
-    override val weight: Int = 2
-  }
-  case object Business extends WithName("Business") with WhatKindOfAsset with WithWeight {
-    override val weight: Int = 3
-  }
-  case object Partnership extends WithName("Partnership") with WhatKindOfAsset with WithWeight {
-    override val weight: Int = 4
-  }
-  case object Other extends WithName("Other") with WhatKindOfAsset with WithWeight {
-    override val weight: Int = 5
-  }
+  case object Money extends WithName("Money") with WhatKindOfAsset
+  case object PropertyOrLand extends WithName("PropertyOrLand") with WhatKindOfAsset
+  case object Shares extends WithName("Shares") with WhatKindOfAsset
+  case object Business extends WithName("Business") with WhatKindOfAsset
+  case object Partnership extends WithName("Partnership") with WhatKindOfAsset
+  case object Other extends WithName("Other") with WhatKindOfAsset
 
-  val values: Set[WhatKindOfAsset] = Set(
+  val values: List[WhatKindOfAsset] = List(
     Money, PropertyOrLand, Shares, Business, Partnership, Other
   )
 
-  val options: Set[WeightedRadioOption] = values.map {
+  val options: List[RadioOption] = values.map {
     value =>
-      WeightedRadioOption(value.weight,"whatKindOfAsset", value.toString)
+      RadioOption("whatKindOfAsset", value.toString)
   }
 
   implicit val enumerable: Enumerable[WhatKindOfAsset] =
-    Enumerable(values.toSeq.map(v => v.toString -> v): _*)
+    Enumerable(values.map(v => v.toString -> v): _*)
 }

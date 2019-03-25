@@ -32,7 +32,7 @@ class WhatKindOfAssetFormProviderSpec extends OptionFieldBehaviours {
     behave like optionsField[WhatKindOfAsset](
       form,
       fieldName,
-      validValues  = WhatKindOfAsset.values,
+      validValues  = WhatKindOfAsset.values.toSet,
       invalidError = FormError(fieldName, "error.invalid")
     )
 

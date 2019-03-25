@@ -32,7 +32,7 @@ class NonResidentTypeFormProviderSpec extends OptionFieldBehaviours {
     behave like optionsField[NonResidentType](
       form,
       fieldName,
-      validValues  = NonResidentType.values,
+      validValues  = NonResidentType.values.toSet,
       invalidError = FormError(fieldName, "error.invalid")
     )
 

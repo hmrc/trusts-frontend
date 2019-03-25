@@ -40,7 +40,7 @@
             field = form("value"),
             legend = messages("whatKindOfAsset.heading"),
             legendClass = Some("visually-hidden"),
-            inputs = WhatKindOfAsset.options.toList.sortBy(_.weight)
+            inputs = WhatKindOfAsset.options
         )
 
         @components.submit_button()
