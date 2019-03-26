@@ -46,7 +46,10 @@ class WhatKindOfAssetController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def routes(index : Int) =
+    identify andThen getData andThen requireData andThen validateIndex(index, Assets)
+
+  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = routes(index) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(WhatKindOfAssetPage(index)) match {
@@ -57,7 +60,7 @@ class WhatKindOfAssetController @Inject()(
       Ok(view(preparedForm, mode, index))
   }
 
-  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = routes(index).async {
     implicit request =>
 
       form.bindFromRequest().fold(

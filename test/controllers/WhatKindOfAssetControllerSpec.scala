@@ -176,7 +176,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation with F
           routes.WhatKindOfAssetController.onPageLoad(NormalMode, index).url
 
         FakeRequest(POST, route)
-          .withFormUrlEncodedBody(("value", WhatKindOfAsset.Money.toString))
+          .withFormUrlEncodedBody(("value", WhatKindOfAsset.values.head.toString))
       }
 
       validateIndex(
