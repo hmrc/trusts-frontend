@@ -76,7 +76,7 @@
                         aria-describedby="form-hint"
                     }
                     @if(field.hasErrors) {
-                        aria-labelledby="error-message-@{field.id}-input period @{field.id}-no-label"
+                        aria-labelledby="error-message-@{field.id}-input aria-period @{field.id}-no-label"
                     }
                     @if(field.value.contains("false")){checked="checked"}
             />

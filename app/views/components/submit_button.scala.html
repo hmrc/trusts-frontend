@@ -14,8 +14,8 @@
  * limitations under the License.
  *@
 
-@()(implicit messages: Messages)
+@(submitClass: Option[String] = None)(implicit messages: Messages)
 
 <div class="section">
-    <button id="submit" class="button">@messages("site.continue")</button>
+    <button id="submit" class="button @if(submitClass.nonEmpty){@{submitClass.get}}">@messages("site.continue")</button>
 </div>

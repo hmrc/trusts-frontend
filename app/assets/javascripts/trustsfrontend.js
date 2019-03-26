@@ -58,6 +58,13 @@ $(document).ready(function() {
 
     }
 
+    // fix to prevent submission of blank country input
+    $("#submit.countryLookupHelper").on('click', function(e){
+        var inputText = $("#value").val().trim();
+        if (inputText == "") $('#value-select option:selected').removeAttr('selected');
+    })
+
+
   //======================================================
   // countries autocomplete
   //======================================================
@@ -72,6 +79,7 @@ $(document).ready(function() {
              sel.value = "";
         }
     })
+
 
 
 
