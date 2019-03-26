@@ -14,27 +14,10 @@
  * limitations under the License.
  */
 
-package models.entities
+package pages
 
-import models.{FullName, IndividualOrBusiness}
-import play.api.libs.json.{JsPath, Reads}
+case object TrustDetails extends Page {
 
-
-case class Trustee(lead: Boolean, name : Option[FullName], `type` : Option[IndividualOrBusiness]) {
-
-  def isComplete = name.nonEmpty && `type`.nonEmpty
-
-}
-
-
-object Trustee {
-
-  import play.api.libs.functional.syntax._
-
-  implicit val reads : Reads[Trustee] = (
-    (JsPath \ "isThisLeadTrustee").readWithDefault[Boolean](false) and
-    (JsPath \ "trusteesName").readNullable[FullName] and
-      (JsPath \ "trusteeIndividualOrBusiness").readNullable[IndividualOrBusiness]
-    )(Trustee.apply _)
+  override def toString: String = "trustDetails"
 
 }

@@ -83,6 +83,7 @@ trait MatchingRoutes {
       "the user does not have a UTR for the trust" when {
 
         "user is an agent" must {
+
           "go to AgentInternalReference from TrustHaveAUTR when user answers no" in {
             forAll(arbitrary[UserAnswers]) {
               userAnswers =>
@@ -97,7 +98,8 @@ trait MatchingRoutes {
         }
 
         "user is an organisation" must {
-          "go to trustName from TrustHaveAUTR when user answers no" in {
+
+          "go to TaskList from TrustHaveAUTR when user answers no" in {
             forAll(arbitrary[UserAnswers]) {
               userAnswers =>
 
@@ -105,9 +107,10 @@ trait MatchingRoutes {
                   .set(TrustHaveAUTRPage, false).success.value
 
                 navigator.nextPage(TrustHaveAUTRPage, NormalMode, AffinityGroup.Organisation)(answers)
-                  .mustBe(routes.TrustNameController.onPageLoad(NormalMode))
+                  .mustBe(routes.TaskListController.onPageLoad())
             }
           }
+
         }
 
       }

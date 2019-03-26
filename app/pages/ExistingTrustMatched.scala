@@ -14,27 +14,14 @@
  * limitations under the License.
  */
 
-package models.entities
+package pages
+import models.Matched
+import play.api.libs.json.JsPath
 
-import models.{FullName, IndividualOrBusiness}
-import play.api.libs.json.{JsPath, Reads}
+object ExistingTrustMatched extends QuestionPage[Matched] {
 
+  override def path: JsPath = JsPath \ "existing" \ toString
 
-case class Trustee(lead: Boolean, name : Option[FullName], `type` : Option[IndividualOrBusiness]) {
-
-  def isComplete = name.nonEmpty && `type`.nonEmpty
-
-}
-
-
-object Trustee {
-
-  import play.api.libs.functional.syntax._
-
-  implicit val reads : Reads[Trustee] = (
-    (JsPath \ "isThisLeadTrustee").readWithDefault[Boolean](false) and
-    (JsPath \ "trusteesName").readNullable[FullName] and
-      (JsPath \ "trusteeIndividualOrBusiness").readNullable[IndividualOrBusiness]
-    )(Trustee.apply _)
+  override def toString: String = "matched"
 
 }

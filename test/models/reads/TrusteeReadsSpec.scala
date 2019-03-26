@@ -21,11 +21,12 @@ import models.IndividualOrBusiness.Individual
 import models.entities.Trustee
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.{MustMatchers, WordSpec}
-import play.api.libs.json.{JsArray, JsObject, JsString, Json}
+import play.api.libs.json._
 
 class TrusteeReadsSpec extends WordSpec with MustMatchers with PropertyChecks {
 
   val trusteeWithoutMiddleName: JsObject = Json.obj(
+    "isThisLeadTrustee" -> JsBoolean(true),
     "trusteeIndividualOrBusiness" -> JsString("individual"),
     "trusteesName" ->
       Json.obj(
@@ -35,6 +36,7 @@ class TrusteeReadsSpec extends WordSpec with MustMatchers with PropertyChecks {
   )
 
   val trusteeWithMiddleName: JsObject = Json.obj(
+    "isThisLeadTrustee" -> JsBoolean(true),
     "trusteeIndividualOrBusiness" -> JsString("individual"),
     "trusteesName" ->
       Json.obj(
@@ -53,13 +55,13 @@ class TrusteeReadsSpec extends WordSpec with MustMatchers with PropertyChecks {
     "serialise trustee without middle name" in {
       val result = trusteeWithoutMiddleName.as[Trustee]
 
-      result mustBe Trustee(Some(FullName("First", None, "Last")), Some(Individual))
+      result mustBe Trustee(true, Some(FullName("First", None, "Last")), Some(Individual))
     }
 
     "serialise trustee with middle name" in {
       val result = trusteeWithMiddleName.as[Trustee]
 
-      result mustBe Trustee(Some(FullName("First", Some("Middle"), "Last")), Some(Individual))
+      result mustBe Trustee(true, Some(FullName("First", Some("Middle"), "Last")), Some(Individual))
     }
 
     "serialise an empty object to a trustee" in {
@@ -73,8 +75,8 @@ class TrusteeReadsSpec extends WordSpec with MustMatchers with PropertyChecks {
       val result = arrayOfTrustees.as[List[Trustee]]
 
       result.size mustBe 2
-      result.head mustBe Trustee(Some(FullName("First", Some("Middle"), "Last")), Some(Individual))
-      result.tail.head mustBe Trustee(Some(FullName("First", None, "Last")), Some(Individual))
+      result.head mustBe Trustee(true, Some(FullName("First", Some("Middle"), "Last")), Some(Individual))
+      result.tail.head mustBe Trustee(true, Some(FullName("First", None, "Last")), Some(Individual))
     }
 
   }

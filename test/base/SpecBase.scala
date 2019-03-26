@@ -45,7 +45,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Moc
 
   def fakeRequest = FakeRequest("", "")
 
-  def injectedParsers = fakeApplication.injector.instanceOf[PlayBodyParsers]
+  def injectedParsers = injector.instanceOf[PlayBodyParsers]
 
   implicit def messages: Messages = messagesApi.preferred(fakeRequest)
 
@@ -56,6 +56,6 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Moc
         bind[DataRequiredAction].to[DataRequiredActionImpl],
         bind[IdentifierAction].toInstance(new FakeIdentifierAction(affinityGroup)(injectedParsers)),
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
-        bind[SessionRepository].to(mockedSessionRepository)
+        bind[SessionRepository].toInstance(mockedSessionRepository)
       )
 }
