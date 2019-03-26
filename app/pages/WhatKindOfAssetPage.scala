@@ -22,7 +22,7 @@ import play.api.libs.json.JsPath
 
 final case class WhatKindOfAssetPage(index: Int) extends QuestionPage[WhatKindOfAsset] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ pages.Assets \ index \ toString
 
   override def toString: String = "whatKindOfAsset"
 }

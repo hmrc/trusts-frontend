@@ -19,6 +19,7 @@ package controllers
 import base.SpecBase
 import forms.WhatKindOfAssetFormProvider
 import generators.FullNameGenerator
+import models.WhatKindOfAsset.Money
 import models.{FullName, NormalMode, UserAnswers, WhatKindOfAsset}
 import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
@@ -118,6 +119,28 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation with F
 
       contentAsString(result) mustEqual
         view(boundForm, NormalMode, index)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "return a bad request when money is submitted and already exists" in {
+
+      val answers = UserAnswers(userAnswersId).set(WhatKindOfAssetPage(index), Money).success.value
+
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+      val request = FakeRequest(POST, whatKindOfAssetRoute).withFormUrlEncodedBody(("value", "Money"))
+
+      val boundForm = form.bind(Map("value" -> "Money"))
+
+      val view = application.injector.instanceOf[WhatKindOfAssetView]
+
+      val result = route(application, request).value
+
+      status(result) mustEqual BAD_REQUEST
+
+      contentAsString(result) mustEqual
+        view(boundForm, NormalMode, 1)(fakeRequest, messages).toString
 
       application.stop()
     }

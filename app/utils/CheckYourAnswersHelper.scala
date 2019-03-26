@@ -39,6 +39,15 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
+  def agentInternalReference: Option[AnswerRow] = userAnswers.get(AgentInternalReferencePage) map {
+    x =>
+      AnswerRow(
+        "agentInternalReference.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.AgentInternalReferenceController.onPageLoad(CheckMode).url
+      )
+  }
+
   def agenciesTelephoneNumber: Option[AnswerRow] = userAnswers.get(AgentTelephoneNumberPage) map {
     x =>
       AnswerRow(

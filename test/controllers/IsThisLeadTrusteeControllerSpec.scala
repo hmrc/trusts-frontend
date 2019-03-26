@@ -41,42 +41,69 @@ class IsThisLeadTrusteeControllerSpec extends SpecBase with IndexValidation {
 
   "IsThisLeadTrustee Controller" must {
 
-    "return OK and the correct view for a GET" in {
+    "when there is no lead trustee" must {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      "return OK and the correct view for a GET" in {
 
-      val request = FakeRequest(GET, isThisLeadTrusteeRoute)
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val result = route(application, request).value
+        val request = FakeRequest(GET, isThisLeadTrusteeRoute)
 
-      val view = application.injector.instanceOf[IsThisLeadTrusteeView]
+        val result = route(application, request).value
 
-      status(result) mustEqual OK
+        val view = application.injector.instanceOf[IsThisLeadTrusteeView]
 
-      contentAsString(result) mustEqual
-        view(form, NormalMode, index)(fakeRequest, messages).toString
+        status(result) mustEqual OK
 
-      application.stop()
+        contentAsString(result) mustEqual
+          view(form, NormalMode, index)(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
     }
 
-    "populate the view correctly on a GET when the question has previously been answered" in {
+    "when there is a lead trustee" must {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IsThisLeadTrusteePage(index), true).success.value
+      "redirect to TrusteeIndividualOrBusiness Page for a different index to previously answered" in {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+        val answers = UserAnswers(userAnswersId)
+          .set(IsThisLeadTrusteePage(0), true).success.value
+          .set(IsThisLeadTrusteePage(1), false).success.value
 
-      val request = FakeRequest(GET, isThisLeadTrusteeRoute)
+        val application =
+          applicationBuilder(userAnswers = Some(answers))
+            .build()
 
-      val view = application.injector.instanceOf[IsThisLeadTrusteeView]
+        val request = FakeRequest(GET, routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 1).url)
 
-      val result = route(application, request).value
+        val result = route(application, request).value
 
-      status(result) mustEqual OK
+        status(result) mustEqual SEE_OTHER
 
-      contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, index)(fakeRequest, messages).toString
+        redirectLocation(result).value mustEqual routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, 1).url
+      }
 
-      application.stop()
+      "populate the view correctly on a GET when the question has previously been answered for the same trustee index" in {
+
+        val userAnswers = UserAnswers(userAnswersId).set(IsThisLeadTrusteePage(index), true).success.value
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(GET, isThisLeadTrusteeRoute)
+
+        val view = application.injector.instanceOf[IsThisLeadTrusteeView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(form.fill(true), NormalMode, index)(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
     }
 
     "redirect to the next page when valid data is submitted" in {

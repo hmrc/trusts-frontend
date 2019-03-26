@@ -21,6 +21,10 @@ import pages._
 
 trait PageGenerators {
 
+
+  implicit lazy val arbitraryAgentInternalReferencePage: Arbitrary[AgentInternalReferencePage.type] =
+    Arbitrary(AgentInternalReferencePage)
+
   implicit lazy val arbitraryWhatKindOfAssetPage: Arbitrary[WhatKindOfAssetPage] =
     Arbitrary(WhatKindOfAssetPage(0))
 

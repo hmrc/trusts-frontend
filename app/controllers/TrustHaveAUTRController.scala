@@ -75,7 +75,7 @@ class TrustHaveAUTRController @Inject()( override val messagesApi: MessagesApi,
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustHaveAUTRPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrustHaveAUTRPage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrustHaveAUTRPage, mode, request.affinityGroup)(updatedAnswers))
         }
       )
   }

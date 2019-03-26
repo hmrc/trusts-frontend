@@ -30,30 +30,31 @@ class CountryOptionsNonUKSpec extends SpecBase with MockitoSugar {
 
     "build correctly the InputOptions with non-UK country list and country code" in {
 
-      val app =
-        new GuiceApplicationBuilder()
-          .configure(Map(
-            "location.canonical.list.nonUK" -> "non-uk-countries-canonical-list-test.json",
-            "metrics.enabled" -> "false"
-          )).build()
+      val application = applicationBuilder()
+        .configure(Map(
+          "location.canonical.list.nonUK" -> "non-uk-countries-canonical-list-test.json"
+        ))
+        .build()
 
-      running(app) {
-        val countryOption: CountryOptions = app.injector.instanceOf[CountryOptionsNonUK]
+        val countryOption: CountryOptions = application.injector.instanceOf[CountryOptionsNonUK]
         countryOption.options mustEqual Seq(InputOption("IE", "Ireland"), InputOption("BE", "Belgium"))
-      }
 
+      application.stop()
     }
 
     "throw the error if the country json does not exist" in {
-      val builder = new GuiceApplicationBuilder()
+
+      val application = applicationBuilder()
         .configure(Map(
-          "location.canonical.list.all" -> "countries-canonical-test.json",
-          "metrics.enabled" -> "false"
+          "location.canonical.list.all" -> "countries-canonical-test.json"
         ))
+        .build()
 
       an[ConfigException.BadValue] shouldBe thrownBy {
-        new CountryOptions(builder.environment, builder.injector.instanceOf[FrontendAppConfig]).options
+        application.injector.instanceOf[CountryOptions].options
       }
+
+      application.stop()
     }
   }
 }

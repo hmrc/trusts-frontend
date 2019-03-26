@@ -19,7 +19,8 @@ package controllers
 import controllers.actions._
 import forms.IsThisLeadTrusteeFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.entities.Trustee
+import models.{Mode, NormalMode}
 import navigation.Navigator
 import pages.{IsThisLeadTrusteePage, Trustees}
 import play.api.data.Form
@@ -46,19 +47,46 @@ class IsThisLeadTrusteeController @Inject()(
 
   val form: Form[Boolean] = formProvider()
 
-  def onPageLoad(mode: Mode, index : Int): Action[AnyContent] = (identify andThen getData andThen requireData andThen validateIndex(index, Trustees)) {
+  def actions(index : Int) = identify andThen getData andThen requireData andThen validateIndex(index, Trustees)
+
+  def onPageLoad(mode: Mode, index : Int): Action[AnyContent] = actions(index).async {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(IsThisLeadTrusteePage(index)) match {
-        case None => form
-        case Some(value) => form.fill(value)
+      def renderView = {
+        val preparedForm = request.userAnswers.get(IsThisLeadTrusteePage(index)) match {
+          case None => form
+          case Some(value) => form.fill(value)
+        }
+
+        Future.successful(Ok(view(preparedForm, mode, index)))
       }
 
-      Ok(view(preparedForm, mode, index))
+      def leadTrustee : Option[(Trustee, Int)] = {
+        val trustees = request.userAnswers.get(Trustees).getOrElse(Nil).zipWithIndex
+        trustees.find(_._1.lead)
+      }
+
+      leadTrustee match {
+        case Some((_, i)) =>
+          def currentIndexIsNotTheLeadTrustee = i != index
+
+          // A lead trustee has already been added, if the current index is not the lead trustee
+          // answer the question on behalf of the user and redirect to next page
+          if (currentIndexIsNotTheLeadTrustee) {
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(IsThisLeadTrusteePage(index), false))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(IsThisLeadTrusteePage(index), mode)(updatedAnswers))
+          } else {
+            renderView
+          }
+        case None =>
+          renderView
+      }
   }
 
 
-  def onSubmit(mode: Mode, index : Int) = (identify andThen getData andThen requireData andThen validateIndex(index, Trustees)).async {
+  def onSubmit(mode: Mode, index : Int) = actions(index).async {
     implicit request =>
 
       form.bindFromRequest().fold(

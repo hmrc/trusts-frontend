@@ -19,6 +19,7 @@ package controllers
 import controllers.actions._
 import forms.WhatKindOfAssetFormProvider
 import javax.inject.Inject
+import models.WhatKindOfAsset.Money
 import models.{Enumerable, Mode}
 import navigation.Navigator
 import pages.WhatKindOfAssetPage
@@ -47,11 +48,10 @@ class WhatKindOfAssetController @Inject()(
   val form = formProvider()
 
   def routes(index : Int) =
-    identify andThen getData andThen requireData andThen validateIndex(index, Assets)
+    identify andThen getData andThen requireData andThen validateIndex(index, pages.Assets)
 
   def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = routes(index) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(WhatKindOfAssetPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
@@ -63,16 +63,21 @@ class WhatKindOfAssetController @Inject()(
   def onSubmit(mode: Mode, index: Int): Action[AnyContent] = routes(index).async {
     implicit request =>
 
-      form.bindFromRequest().fold(
-        (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, index))),
+      val assets = request.userAnswers.get(pages.Assets).getOrElse(Nil)
+      if(assets.exists(_.whatKindOfAsset.contains(Money))) {
+        Future.successful(BadRequest(view(form, mode, index)))
+      } else {
+        form.bindFromRequest().fold(
+          (formWithErrors: Form[_]) =>
+            Future.successful(BadRequest(view(formWithErrors, mode, index))),
 
-        value => {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatKindOfAssetPage(index), value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(WhatKindOfAssetPage(index), mode)(updatedAnswers))
-        }
-      )
+          value => {
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatKindOfAssetPage(index), value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(WhatKindOfAssetPage(index), mode)(updatedAnswers))
+          }
+        )
+      }
   }
 }

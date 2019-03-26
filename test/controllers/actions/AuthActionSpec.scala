@@ -58,6 +58,7 @@ class AuthActionSpec extends SpecBase {
         val result = controller.onPageLoad()(fakeRequest)
         status(result) mustBe SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.routes.CreateAgentServicesAccountController.onPageLoad().url)
+        application.stop()
       }
 
     }
@@ -72,6 +73,7 @@ class AuthActionSpec extends SpecBase {
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
         status(result) mustBe OK
+        application.stop()
       }
 
     }
@@ -86,6 +88,7 @@ class AuthActionSpec extends SpecBase {
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
         status(result) mustBe OK
+        application.stop()
       }
 
     }
@@ -101,6 +104,7 @@ class AuthActionSpec extends SpecBase {
         val result = controller.onPageLoad()(fakeRequest)
         status(result) mustBe SEE_OTHER
         redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad().url)
+        application.stop()
       }
 
     }
@@ -120,6 +124,7 @@ class AuthActionSpec extends SpecBase {
         status(result) mustBe SEE_OTHER
 
         redirectLocation(result).get must startWith(frontendAppConfig.loginUrl)
+        application.stop()
       }
     }
 
@@ -138,6 +143,7 @@ class AuthActionSpec extends SpecBase {
         status(result) mustBe SEE_OTHER
 
         redirectLocation(result).get must startWith(frontendAppConfig.loginUrl)
+        application.stop()
       }
     }
 
@@ -156,6 +162,7 @@ class AuthActionSpec extends SpecBase {
         status(result) mustBe SEE_OTHER
 
         redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad().url)
+        application.stop()
       }
     }
 
@@ -174,6 +181,7 @@ class AuthActionSpec extends SpecBase {
         status(result) mustBe SEE_OTHER
 
         redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad().url)
+        application.stop()
       }
     }
 
@@ -192,6 +200,7 @@ class AuthActionSpec extends SpecBase {
         status(result) mustBe SEE_OTHER
 
         redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad().url)
+        application.stop()
       }
     }
 
@@ -210,6 +219,7 @@ class AuthActionSpec extends SpecBase {
         status(result) mustBe SEE_OTHER
 
         redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad().url)
+        application.stop()
       }
     }
 
@@ -228,6 +238,7 @@ class AuthActionSpec extends SpecBase {
         status(result) mustBe SEE_OTHER
 
         redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad().url)
+        application.stop()
       }
     }
   }

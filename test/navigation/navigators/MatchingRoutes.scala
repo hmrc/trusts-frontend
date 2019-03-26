@@ -24,6 +24,7 @@ import org.scalacheck.Arbitrary.arbitrary
 import pages._
 import models.{NormalMode, UserAnswers}
 import controllers.routes
+import uk.gov.hmrc.auth.core.AffinityGroup
 
 trait MatchingRoutes {
 
@@ -81,16 +82,35 @@ trait MatchingRoutes {
 
       "the user does not have a UTR for the trust" when {
 
-        "go to trustName from TrustHaveAUTR when user answers no" in {
-          forAll(arbitrary[UserAnswers]) {
-            userAnswers =>
+        "user is an agent" must {
 
-              val answers = userAnswers.set(TrustRegisteredOnlinePage, false).success.value
-                .set(TrustHaveAUTRPage, false).success.value
+          "go to AgentInternalReference from TrustHaveAUTR when user answers no" in {
+            forAll(arbitrary[UserAnswers]) {
+              userAnswers =>
 
-              navigator.nextPage(TrustHaveAUTRPage, NormalMode)(answers)
-                .mustBe(routes.TrustNameController.onPageLoad(NormalMode))
+                val answers = userAnswers.set(TrustRegisteredOnlinePage, false).success.value
+                  .set(TrustHaveAUTRPage, false).success.value
+
+                navigator.nextPage(TrustHaveAUTRPage, NormalMode, AffinityGroup.Agent)(answers)
+                  .mustBe(routes.AgentInternalReferenceController.onPageLoad(NormalMode))
+            }
           }
+        }
+
+        "user is an organisation" must {
+
+          "go to TaskList from TrustHaveAUTR when user answers no" in {
+            forAll(arbitrary[UserAnswers]) {
+              userAnswers =>
+
+                val answers = userAnswers.set(TrustRegisteredOnlinePage, false).success.value
+                  .set(TrustHaveAUTRPage, false).success.value
+
+                navigator.nextPage(TrustHaveAUTRPage, NormalMode, AffinityGroup.Organisation)(answers)
+                  .mustBe(routes.TaskListController.onPageLoad())
+            }
+          }
+
         }
 
       }

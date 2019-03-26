@@ -20,7 +20,8 @@ package navigation.navigators
 import base.SpecBase
 import controllers.routes
 import generators.Generators
-import models.{NormalMode, UserAnswers}
+import models.WhatKindOfAsset.Money
+import models.{NormalMode, UserAnswers, WhatKindOfAsset}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
@@ -38,7 +39,9 @@ trait AssetRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(WhatKindOfAssetPage(index), NormalMode)(userAnswers)
+          val answers = userAnswers.set(WhatKindOfAssetPage(index), Money).success.value
+
+          navigator.nextPage(WhatKindOfAssetPage(index), NormalMode)(answers)
             .mustBe(routes.WhatKindOfAssetController.onPageLoad(NormalMode, index))
       }
     }
