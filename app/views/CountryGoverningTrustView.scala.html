@@ -35,17 +35,16 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("countryGoverningTrust.heading")
-
         @components.select(field = form("value"),
             label = messages("countryGoverningTrust.heading"),
-            labelClasses = Set("visually-hidden"),
+            labelClasses = Set("heading-large"),
+            labelAsHeading = true,
             options = countryOptions,
             placeholder = Some("address.country.select"),
             formGroupClasses = Set("autocomplete-wrapper"),
             selectAttribute = Set("data-non-uk-countries")
         )
 
-        @components.submit_button()
+        @components.submit_button(submitClass = Some("countryLookupHelper"))
     }
 }

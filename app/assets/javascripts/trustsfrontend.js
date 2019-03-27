@@ -58,6 +58,16 @@ $(document).ready(function() {
 
     }
 
+    // Autocomplete country fixes
+    // Prevent submission of blank country input
+    $("#submit.countryLookupHelper").on('click', function(e){
+        var inputText = $("#value").val().trim();
+        if (inputText == "") $('#value-select option:selected').removeAttr('selected');
+    })
+    // Assign aria-labbledby to the dynamically created country input
+    if ($(".autocomplete-wrapper .error-message").length) $("#value").attr('aria-labelledby', 'error-message-input');
+
+
   //======================================================
   // countries autocomplete
   //======================================================
@@ -72,6 +82,7 @@ $(document).ready(function() {
              sel.value = "";
         }
     })
+
 
 
 
