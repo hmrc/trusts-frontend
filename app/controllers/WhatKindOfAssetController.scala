@@ -20,6 +20,7 @@ import controllers.actions._
 import forms.WhatKindOfAssetFormProvider
 import javax.inject.Inject
 import models.WhatKindOfAsset.Money
+import models.entities.Asset
 import models.{Enumerable, Mode}
 import navigation.Navigator
 import pages.WhatKindOfAssetPage
@@ -33,21 +34,23 @@ import views.html.WhatKindOfAssetView
 import scala.concurrent.{ExecutionContext, Future}
 
 class WhatKindOfAssetController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       navigator: Navigator,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       validateIndex: IndexActionFilterProvider,
-                                       formProvider: WhatKindOfAssetFormProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: WhatKindOfAssetView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
+                                           override val messagesApi: MessagesApi,
+                                           sessionRepository: SessionRepository,
+                                           navigator: Navigator,
+                                           identify: IdentifierAction,
+                                           getData: DataRetrievalAction,
+                                           requireData: DataRequiredAction,
+                                           validateIndex: IndexActionFilterProvider,
+                                           formProvider: WhatKindOfAssetFormProvider,
+                                           val controllerComponents: MessagesControllerComponents,
+                                           view: WhatKindOfAssetView
+                                         )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
   val form = formProvider()
 
-  def routes(index : Int) =
+  private def assetsContainMoney(assets : List[Asset]) : Boolean = assets.exists(_.whatKindOfAsset.contains(Money))
+
+  def routes(index: Int) =
     identify andThen getData andThen requireData andThen validateIndex(index, pages.Assets)
 
   def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = routes(index) {
@@ -64,20 +67,26 @@ class WhatKindOfAssetController @Inject()(
     implicit request =>
 
       val assets = request.userAnswers.get(pages.Assets).getOrElse(Nil)
-      if(assets.exists(_.whatKindOfAsset.contains(Money))) {
-        Future.successful(BadRequest(view(form, mode, index)))
-      } else {
-        form.bindFromRequest().fold(
-          (formWithErrors: Form[_]) =>
-            Future.successful(BadRequest(view(formWithErrors, mode, index))),
 
-          value => {
+      form.bindFromRequest().fold(
+        (formWithErrors: Form[_]) =>
+          Future.successful(BadRequest(view(formWithErrors, mode, index))),
+
+        value => {
+
+          def insertAndRedirect =
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatKindOfAssetPage(index), value))
-              _              <- sessionRepository.set(updatedAnswers)
+              _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(navigator.nextPage(WhatKindOfAssetPage(index), mode)(updatedAnswers))
+
+          value match {
+            case v @ Money if assetsContainMoney(assets) =>
+              Future.successful(BadRequest(view(form.fill(v), mode, index)))
+            case _ =>
+              insertAndRedirect
           }
-        )
-      }
+        }
+      )
   }
 }

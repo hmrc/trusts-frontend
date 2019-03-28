@@ -123,13 +123,14 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation with F
       application.stop()
     }
 
-    "return a bad request when money is submitted and already exists" in {
+    "return a BadRequest when money is submitted and already exists" in {
 
       val answers = UserAnswers(userAnswersId).set(WhatKindOfAssetPage(index), Money).success.value
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-      val request = FakeRequest(POST, whatKindOfAssetRoute).withFormUrlEncodedBody(("value", "Money"))
+      val request = FakeRequest(routes.WhatKindOfAssetController.onSubmit(NormalMode, 1))
+        .withFormUrlEncodedBody(("value", "Money"))
 
       val boundForm = form.bind(Map("value" -> "Money"))
 
