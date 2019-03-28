@@ -17,7 +17,6 @@
 package models
 
 import play.api.libs.json._
-import play.api.libs.functional.syntax._
 
 case class FullName(firstName: String, middleName: Option[String], lastName: String) {
 
@@ -27,13 +26,6 @@ case class FullName(firstName: String, middleName: Option[String], lastName: Str
 
 object FullName {
 
-  implicit val reads : Reads[FullName] =
-    (
-      (JsPath \ "firstName").read[String] and
-      (JsPath \ "middleName").readNullable[String] and
-      (JsPath \ "lastName").read[String]
-    )(FullName.apply _)
-
-  implicit val writes : Writes[FullName] = Json.writes[FullName]
+  implicit lazy val formats: OFormat[FullName] = Json.format[FullName]
 
 }

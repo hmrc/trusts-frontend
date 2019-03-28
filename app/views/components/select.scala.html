@@ -18,6 +18,7 @@
 @(
 field: Field,
 label: String,
+labelAsHeading: Boolean = false,
 hint: Option[String] = None,
 placeholder: Option[String] = None,
 options: Seq[InputOption],
@@ -28,17 +29,18 @@ selectAttribute: Set[String] = Set.empty
 )(implicit messages: Messages)
 
 <div id="@field.id-form" class="form-group @formGroupClasses.mkString(" ") @if(field.hasErrors) {form-group-error}">
+    @if(labelAsHeading){<h1 class="label-as-heading">}
     <label id="@field.id-label" for="@field.id">
         <span class="@labelClasses.mkString(" ")">@messages(label)</span>
-
-        @hint.map{ hintText =>
-        <span class="form-hint">@messages(hintText)</span>
-        }
-
-        @field.errors.headOption.map{ error =>
-        <span class="error-message">@messages(error.message, error.args:_*)</span>
-        }
     </label>
+    @if(labelAsHeading){</h1>}
+    @hint.map{ hintText =>
+        <span class="form-hint">@messages(hintText)</span>
+    }
+
+    @field.errors.headOption.map{ error =>
+        <span id="error-message-input" class="error-message">@messages(error.message, error.args:_*)</span>
+    }
     <select class="form-control @selectClasses.mkString(" ")" id="@field.id" name="@field.name" aria-labelledby="@field.id-label" @selectAttribute>
         @placeholder.map{ ph =>
             <option value="">@messages(ph)</option>

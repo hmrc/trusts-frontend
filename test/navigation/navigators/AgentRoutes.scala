@@ -19,11 +19,12 @@ package navigation.navigators
 import base.SpecBase
 import controllers.routes
 import generators.Generators
-import models.{CheckMode, NormalMode, UserAnswers}
+import models.{NormalMode, UserAnswers}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages._
+import uk.gov.hmrc.auth.core.AffinityGroup
 
 trait AgentRoutes {
 
@@ -31,12 +32,30 @@ trait AgentRoutes {
 
   def agentRoutes()(implicit navigator: Navigator) = {
 
-    "go to AgentAnswer Page from AgentTelephonenumber page" in {
+    "go to AgentTelephoneNumber from AgentInternalReference Page" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(AgentTelephoneNumberPage, NormalMode)(userAnswers)
+          navigator.nextPage(AgentInternalReferencePage, NormalMode, AffinityGroup.Agent)(userAnswers)
+            .mustBe(routes.AgentTelephoneNumberController.onPageLoad(NormalMode))
+      }
+    }
+
+    "go to CheckAgentAnswer Page from AgentTelephoneNumber page" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          navigator.nextPage(AgentTelephoneNumberPage, NormalMode, AffinityGroup.Agent)(userAnswers)
             .mustBe(routes.AgentAnswerController.onPageLoad())
+      }
+    }
+
+    "go to RegistrationProgress from CheckAgentAnswer Page" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          navigator.nextPage(AgentAnswerPage, NormalMode, AffinityGroup.Agent)(userAnswers)
+            .mustBe(routes.TaskListController.onPageLoad())
       }
     }
   }
