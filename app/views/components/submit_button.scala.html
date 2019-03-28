@@ -14,10 +14,10 @@
  * limitations under the License.
  *@
 
-@(overrideMessage : Option[String] = None)(implicit messages: Messages)
+@(overrideMessage : Option[String] = None, submitClass: Option[String] = None)(implicit messages: Messages)
 
 <div class="section">
-    <button id="submit" class="button">
+    <button id="submit" class="button  @if(submitClass.nonEmpty){@{submitClass.get}}">
      @if(overrideMessage.isEmpty) {
        @messages("site.continue")
      } else {
