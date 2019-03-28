@@ -17,8 +17,7 @@
 package controllers
 
 import base.SpecBase
-import navigation.{FakeNavigator, Navigator}
-import play.api.inject.bind
+import models.NormalMode
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -50,16 +49,15 @@ class AssetInterruptPageControllerSpec extends SpecBase {
 
     "redirect to the correct page for a POST" in {
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request = FakeRequest(POST, routes.AssetInterruptPageController.onSubmit().url)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustBe routes.WhatKindOfAssetController.onPageLoad(NormalMode, 0).url
 
       application.stop()
     }
