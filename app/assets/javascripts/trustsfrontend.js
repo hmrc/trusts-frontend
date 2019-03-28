@@ -58,14 +58,23 @@ $(document).ready(function() {
 
     }
 
-    // Autocomplete country fixes
+  //======================================================
+  // countries autocomplete fixes
+  //======================================================
     // Prevent submission of blank country input
     $("#submit.countryLookupHelper").on('click', function(e){
         var inputText = $("#value").val().trim();
-        if (inputText == "") $('#value-select option:selected').removeAttr('selected');
+        if (inputText == "") {$('#value-select option:selected').removeAttr('selected')};
     })
     // Assign aria-labbledby to the dynamically created country input
-    if ($(".autocomplete-wrapper .error-message").length) $("#value").attr('aria-labelledby', 'error-message-input');
+    if ($(".autocomplete-wrapper .error-message").length) $(".autocomplete__wrapper #value").attr('aria-labelledby', 'error-message-input');
+
+    // fix to correctly set country option for a valid country input if not selected from dropdown list
+    $(".autocomplete__wrapper #value").on('change', function(e){
+        var inputText = $("#value").val().trim();
+        $('#value-select option:selected').removeAttr('selected');
+        $('#value-select option').filter(function() { return $.trim( $(this).text() ) == inputText; }).attr('selected','selected');
+    })
 
 
   //======================================================
