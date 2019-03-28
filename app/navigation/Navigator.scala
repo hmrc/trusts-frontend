@@ -70,7 +70,7 @@ class Navigator @Inject()() {
     case AgentAnswerPage => _ => _ => routes.TaskListController.onPageLoad()
 
     //Assets
-    case AssetMoneyValuePage(index) => _ => _ => routes.AssetMoneyValueController.onPageLoad(NormalMode)
+    case AssetMoneyValuePage => _ => _ => routes.AssetMoneyValueController.onPageLoad(NormalMode)
 
     //  Default
     case _ => _ => _ => routes.IndexController.onPageLoad()
