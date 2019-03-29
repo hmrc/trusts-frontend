@@ -16,13 +16,14 @@
 
 @import controllers.routes._
 @import models.{Mode, WhatKindOfAsset}
+@import viewmodels.RadioOption
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, index: Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, index: Int, options : List[RadioOption])(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("whatKindOfAsset.title")}"
@@ -40,7 +41,7 @@
             field = form("value"),
             legend = messages("whatKindOfAsset.heading"),
             legendClass = Some("visually-hidden"),
-            inputs = WhatKindOfAsset.options
+            inputs = options
         )
 
         @components.submit_button()

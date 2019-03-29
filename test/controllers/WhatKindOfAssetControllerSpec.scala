@@ -19,11 +19,11 @@ package controllers
 import base.SpecBase
 import forms.WhatKindOfAssetFormProvider
 import generators.FullNameGenerator
-import models.WhatKindOfAsset.Money
-import models.{FullName, NormalMode, UserAnswers, WhatKindOfAsset}
+import models.WhatKindOfAsset.{Money, PropertyOrLand}
+import models.{NormalMode, UserAnswers, WhatKindOfAsset}
 import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.{TrusteesNamePage, WhatKindOfAssetPage}
+import pages.WhatKindOfAssetPage
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
@@ -41,6 +41,9 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation with F
   val formProvider = new WhatKindOfAssetFormProvider()
   val form = formProvider()
 
+  val options = WhatKindOfAsset.options
+  val optionsWithoutMoney = WhatKindOfAsset.options.filterNot(_.value == Money.toString)
+
   "WhatKindOfAsset Controller" must {
 
     "return OK and the correct view for a GET" in {
@@ -56,29 +59,57 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation with F
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, index)(fakeRequest, messages).toString
+        view(form, NormalMode, index, options)(fakeRequest, messages).toString
 
       application.stop()
     }
 
-    "populate the view correctly on a GET when the question has previously been answered" in {
+    "when money has been answered for the same index" must {
 
-      val userAnswers = UserAnswers(userAnswersId).set(WhatKindOfAssetPage(index), WhatKindOfAsset.values.head).success.value
+      "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+        val userAnswers = UserAnswers(userAnswersId).set(WhatKindOfAssetPage(index), Money).success.value
 
-      val request = FakeRequest(GET, whatKindOfAssetRoute)
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val view = application.injector.instanceOf[WhatKindOfAssetView]
+        val request = FakeRequest(GET, whatKindOfAssetRoute)
 
-      val result = route(application, request).value
+        val view = application.injector.instanceOf[WhatKindOfAssetView]
 
-      status(result) mustEqual OK
+        val result = route(application, request).value
 
-      contentAsString(result) mustEqual
-        view(form.fill(WhatKindOfAsset.values.head), NormalMode, index)(fakeRequest, messages).toString
+        status(result) mustEqual OK
 
-      application.stop()
+        contentAsString(result) mustEqual
+          view(form.fill(WhatKindOfAsset.values.head), NormalMode, index, options)(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
+    }
+
+    "when money has been answered and viewing a different index" must {
+
+      "populate the view correctly on a GET when the question has previously been answered" in {
+
+        val userAnswers = UserAnswers(userAnswersId).set(WhatKindOfAssetPage(index), Money).success.value
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(GET, routes.WhatKindOfAssetController.onPageLoad(NormalMode, 1).url)
+
+        val view = application.injector.instanceOf[WhatKindOfAssetView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(form.fill(WhatKindOfAsset.values.head), NormalMode, 1, optionsWithoutMoney)(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -118,7 +149,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation with F
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, index)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, index, options)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -141,7 +172,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation with F
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, 1)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, 1, optionsWithoutMoney)(fakeRequest, messages).toString
 
       application.stop()
     }

@@ -21,7 +21,8 @@ import forms.WhatKindOfAssetFormProvider
 import javax.inject.Inject
 import models.WhatKindOfAsset.Money
 import models.entities.Asset
-import models.{Enumerable, Mode}
+import models.requests.DataRequest
+import models.{Enumerable, Mode, WhatKindOfAsset}
 import navigation.Navigator
 import pages.WhatKindOfAssetPage
 import play.api.data.Form
@@ -48,7 +49,23 @@ class WhatKindOfAssetController @Inject()(
 
   val form = formProvider()
 
-  private def assetsContainMoney(assets : List[Asset]) : Boolean = assets.exists(_.whatKindOfAsset.contains(Money))
+  private def assetsContainsMoney(assets : List[Asset]) = assets.find(_.whatKindOfAsset.contains(Money))
+
+  private def findAssetThatIsMoney(assets : List[Asset], index: Int): Option[(Asset, Int)] =
+    assets.zipWithIndex.find(_._1.whatKindOfAsset.contains(Money))
+
+  private def options(request : DataRequest[AnyContent], index: Int) = {
+    val assets = request.userAnswers.get(pages.Assets).getOrElse(Nil)
+
+    findAssetThatIsMoney(assets, index) match {
+      case Some((_, i)) if i == index =>
+        WhatKindOfAsset.options
+      case Some((_, i)) if i != index =>
+        WhatKindOfAsset.options.filterNot(_.value == Money.toString)
+      case _ =>
+        WhatKindOfAsset.options
+    }
+  }
 
   def routes(index: Int) =
     identify andThen getData andThen requireData andThen validateIndex(index, pages.Assets)
@@ -60,7 +77,7 @@ class WhatKindOfAssetController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, index))
+      Ok(view(preparedForm, mode, index, options(request, index)))
   }
 
   def onSubmit(mode: Mode, index: Int): Action[AnyContent] = routes(index).async {
@@ -70,7 +87,7 @@ class WhatKindOfAssetController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, index))),
+          Future.successful(BadRequest(view(formWithErrors, mode, index, options(request, index)))),
 
         value => {
 
@@ -81,8 +98,8 @@ class WhatKindOfAssetController @Inject()(
             } yield Redirect(navigator.nextPage(WhatKindOfAssetPage(index), mode)(updatedAnswers))
 
           value match {
-            case v @ Money if assetsContainMoney(assets) =>
-              Future.successful(BadRequest(view(form.fill(v), mode, index)))
+            case Money if assetsContainsMoney(assets).isDefined =>
+              Future.successful(BadRequest(view(form.fill(Money), mode, index, options(request, index))))
             case _ =>
               insertAndRedirect
           }
