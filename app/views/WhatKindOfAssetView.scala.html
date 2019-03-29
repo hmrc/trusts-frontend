@@ -25,8 +25,24 @@
 
 @(form: Form[_], mode: Mode, index: Int, options : List[RadioOption])(implicit request: Request[_], messages: Messages)
 
+@title = {
+    @if(index == 0) {
+        @messages("whatKindOfAsset.first.title")
+    } else {
+        @messages("whatKindOfAsset.next.title")
+    }
+}
+
+@heading = {
+    @if(index == 0) {
+        @messages("whatKindOfAsset.first.heading")
+    } else {
+        @messages("whatKindOfAsset.next.heading")
+    }
+}
+
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("whatKindOfAsset.title")}"
+    title = s"${errorPrefix(form)} $title"
     ) {
 
     @formHelper(action = WhatKindOfAssetController.onSubmit(mode, index), 'autoComplete -> "off") {
@@ -35,11 +51,11 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("whatKindOfAsset.heading")
+        @components.heading(heading.toString)
 
         @components.input_radio(
             field = form("value"),
-            legend = messages("whatKindOfAsset.heading"),
+            legend = heading.toString,
             legendClass = Some("visually-hidden"),
             inputs = options
         )

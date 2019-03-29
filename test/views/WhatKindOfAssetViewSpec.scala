@@ -25,7 +25,8 @@ import views.html.WhatKindOfAssetView
 
 class WhatKindOfAssetViewSpec extends ViewBehaviours {
 
-  val messageKeyPrefix = "whatKindOfAsset"
+  val messageKeyPrefixFirst = "whatKindOfAsset.first"
+  val messageKeyPrefixNext = "whatKindOfAsset.next"
 
   val form = new WhatKindOfAssetFormProvider()()
 
@@ -35,16 +36,25 @@ class WhatKindOfAssetViewSpec extends ViewBehaviours {
 
   val index = 0
 
-  def applyView(form: Form[_]): HtmlFormat.Appendable =
+  def applyView(form: Form[_], index : Int): HtmlFormat.Appendable =
     view.apply(form, NormalMode, index, WhatKindOfAsset.options)(fakeRequest, messages)
 
   "WhatKindOfAssetView" must {
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    "when no assets have been added" must {
 
-    behave like pageWithBackLink(applyView(form))
+      behave like normalPage(applyView(form, 0), messageKeyPrefixFirst)
+    }
 
-    behave like pageWithASubmitButton(applyView(form))
+    "when an asset has been added" must {
+
+      behave like normalPage(applyView(form, 1), messageKeyPrefixNext)
+    }
+
+
+    behave like pageWithBackLink(applyView(form, 0))
+
+    behave like pageWithASubmitButton(applyView(form, 0))
   }
 
   "WhatKindOfAssetView" when {
@@ -53,7 +63,7 @@ class WhatKindOfAssetViewSpec extends ViewBehaviours {
 
       "contain radio buttons for the value" in {
 
-        val doc = asDocument(applyView(form))
+        val doc = asDocument(applyView(form, 0))
 
         for (option <- WhatKindOfAsset.options) {
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
@@ -67,7 +77,7 @@ class WhatKindOfAssetViewSpec extends ViewBehaviours {
 
         s"have the '${option.value}' radio button selected" in {
 
-          val doc = asDocument(applyView(form.bind(Map("value" -> s"${option.value}"))))
+          val doc = asDocument(applyView(form.bind(Map("value" -> s"${option.value}")), 0))
 
           assertContainsRadioButton(doc, option.id, "value", option.value, true)
 

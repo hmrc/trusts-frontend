@@ -49,8 +49,6 @@ class WhatKindOfAssetController @Inject()(
 
   val form = formProvider()
 
-  private def assetsContainsMoney(assets : List[Asset]) = assets.find(_.whatKindOfAsset.contains(Money))
-
   private def findAssetThatIsMoney(assets : List[Asset], index: Int): Option[(Asset, Int)] =
     assets.zipWithIndex.find(_._1.whatKindOfAsset.contains(Money))
 
@@ -98,7 +96,7 @@ class WhatKindOfAssetController @Inject()(
             } yield Redirect(navigator.nextPage(WhatKindOfAssetPage(index), mode)(updatedAnswers))
 
           value match {
-            case Money if assetsContainsMoney(assets).isDefined =>
+            case Money if findAssetThatIsMoney(assets, index).isDefined =>
               Future.successful(BadRequest(view(form.fill(Money), mode, index, options(request, index))))
             case _ =>
               insertAndRedirect
