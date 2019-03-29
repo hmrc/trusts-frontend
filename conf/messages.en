@@ -422,3 +422,16 @@ assetInterruptPage.paragraph6 = The current value of the property or land is nee
 
 agentAnswer.title = Check agent details
 agentAnswer.heading = Check agent details
+
+whatKindOfAsset.first.title = What kind of asset do you need to add first?
+whatKindOfAsset.next.title = What kind of asset do you need to add next?
+whatKindOfAsset.first.heading = What kind of asset do you need to add first?
+whatKindOfAsset.next.heading = What kind of asset do you need to add next?
+whatKindOfAsset.Money = Money
+whatKindOfAsset.PropertyOrLand = Property or land
+whatKindOfAsset.Shares = Shares
+whatKindOfAsset.Business = Business
+whatKindOfAsset.Partnership = Partnership
+whatKindOfAsset.Other = Other
+whatKindOfAsset.checkYourAnswersLabel = What kind of asset do you need to add first?
+whatKindOfAsset.error.required = Select the kind of asset you need to add

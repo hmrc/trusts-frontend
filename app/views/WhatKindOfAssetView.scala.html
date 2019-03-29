@@ -15,32 +15,49 @@
  *@
 
 @import controllers.routes._
-@import models.{Mode, NonResidentType}
+@import models.{Mode, WhatKindOfAsset}
+@import viewmodels.RadioOption
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, index: Int, options : List[RadioOption])(implicit request: Request[_], messages: Messages)
+
+@title = {
+    @if(index == 0) {
+        @messages("whatKindOfAsset.first.title")
+    } else {
+        @messages("whatKindOfAsset.next.title")
+    }
+}
+
+@heading = {
+    @if(index == 0) {
+        @messages("whatKindOfAsset.first.heading")
+    } else {
+        @messages("whatKindOfAsset.next.heading")
+    }
+}
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("nonresidentType.title")}"
+    title = s"${errorPrefix(form)} $title"
     ) {
 
-    @formHelper(action = NonResidentTypeController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = WhatKindOfAssetController.onSubmit(mode, index), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("nonresidentType.heading")
+        @components.heading(heading.toString)
 
         @components.input_radio(
             field = form("value"),
-            legend = messages("nonresidentType.heading"),
+            legend = heading.toString,
             legendClass = Some("visually-hidden"),
-            inputs = NonResidentType.options
+            inputs = options
         )
 
         @components.submit_button()

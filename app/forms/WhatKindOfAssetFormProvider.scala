@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import models.entities.Asset
-import play.api.libs.json.JsPath
+import javax.inject.Inject
 
-case object Assets extends QuestionPage[List[Asset]]{
+import forms.mappings.Mappings
+import play.api.data.Form
+import models.WhatKindOfAsset
 
-  override def path: JsPath = JsPath \ toString
+class WhatKindOfAssetFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "assets"
-
+  def apply(): Form[WhatKindOfAsset] =
+    Form(
+      "value" -> enumerable[WhatKindOfAsset]("whatKindOfAsset.error.required")
+    )
 }

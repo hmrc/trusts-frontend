@@ -25,6 +25,9 @@ trait PageGenerators {
   implicit lazy val arbitraryAgentInternalReferencePage: Arbitrary[AgentInternalReferencePage.type] =
     Arbitrary(AgentInternalReferencePage)
 
+  implicit lazy val arbitraryWhatKindOfAssetPage: Arbitrary[WhatKindOfAssetPage] =
+    Arbitrary(WhatKindOfAssetPage(0))
+
   implicit lazy val arbitraryAgentTelephoneNumberPage: Arbitrary[AgentTelephoneNumberPage.type] =
     Arbitrary(AgentTelephoneNumberPage)
 

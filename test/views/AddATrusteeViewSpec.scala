@@ -60,7 +60,7 @@ class AddATrusteeViewSpec extends OptionsViewBehaviours with TabularDataViewBeha
 
       behave like pageWithNoTabularData(applyView(form))
 
-      behave like pageWithOptions(form, applyView, AddATrustee.options)
+      behave like pageWithOptions(form, applyView, AddATrustee.options.toSet)
     }
 
 
@@ -74,7 +74,7 @@ class AddATrusteeViewSpec extends OptionsViewBehaviours with TabularDataViewBeha
 
       behave like pageWithInProgressTabularData(viewWithData, inProgressTrustees)
 
-      behave like pageWithOptions(form, applyView, AddATrustee.options)
+      behave like pageWithOptions(form, applyView, AddATrustee.options.toSet)
     }
 
     "there is complete data" must {
@@ -87,7 +87,7 @@ class AddATrusteeViewSpec extends OptionsViewBehaviours with TabularDataViewBeha
 
       behave like pageWithCompleteTabularData(viewWithData, completeTrustees)
 
-      behave like pageWithOptions(form, applyView, AddATrustee.options)
+      behave like pageWithOptions(form, applyView, AddATrustee.options.toSet)
     }
 
     "there is both in progress and complete data" must {
@@ -100,7 +100,7 @@ class AddATrusteeViewSpec extends OptionsViewBehaviours with TabularDataViewBeha
 
       behave like pageWithTabularData(viewWithData, inProgressTrustees, completeTrustees)
 
-      behave like pageWithOptions(form, applyView, AddATrustee.options)
+      behave like pageWithOptions(form, applyView, AddATrustee.options.toSet)
     }
 
   }

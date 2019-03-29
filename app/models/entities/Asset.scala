@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package pages
+package models.entities
 
-import models.entities.Asset
-import play.api.libs.json.JsPath
+import models.WhatKindOfAsset
+import play.api.libs.json.{Json, OFormat}
 
-case object Assets extends QuestionPage[List[Asset]]{
+case class Asset(whatKindOfAsset: Option[WhatKindOfAsset])
 
-  override def path: JsPath = JsPath \ toString
+object Asset {
 
-  override def toString: String = "assets"
+  implicit val formats : OFormat[Asset] = Json.format[Asset]
 
 }

@@ -16,13 +16,13 @@
 
 package pages
 
-import models.entities.Asset
+import models.WhatKindOfAsset
 import play.api.libs.json.JsPath
 
-case object Assets extends QuestionPage[List[Asset]]{
 
-  override def path: JsPath = JsPath \ toString
+final case class WhatKindOfAssetPage(index: Int) extends QuestionPage[WhatKindOfAsset] {
 
-  override def toString: String = "assets"
+  override def path: JsPath = JsPath \ pages.Assets \ index \ toString
 
+  override def toString: String = "whatKindOfAsset"
 }

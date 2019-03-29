@@ -18,11 +18,10 @@ package controllers
 
 import controllers.actions._
 import javax.inject.Inject
+import models.NormalMode
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import navigation.Navigator
-import repositories.SessionRepository
 import views.html.AssetInterruptPageView
 
 import scala.concurrent.ExecutionContext
@@ -32,9 +31,9 @@ class AssetInterruptPageController @Inject()(
                                               identify: IdentifierAction,
                                               getData: DataRetrievalAction,
                                               requireData: DataRequiredAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: AssetInterruptPageView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                              val controllerComponents: MessagesControllerComponents,
+                                              view: AssetInterruptPageView
+                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -44,7 +43,7 @@ class AssetInterruptPageController @Inject()(
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      Redirect(routes.AssetInterruptPageController.onPageLoad())
+      Redirect(routes.WhatKindOfAssetController.onPageLoad(NormalMode, 0))
 
   }
 
