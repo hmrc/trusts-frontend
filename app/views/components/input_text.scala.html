@@ -22,6 +22,7 @@
         hint: Option[String] = None,
         readerHint: Option[String] = None,
         labelClass: Option[String] = None,
+        symbol: Option[String] = None,
         ariaRequired: Boolean = false
 )(implicit messages: Messages)
 
@@ -48,6 +49,7 @@
     <span class="error-message" id="error-message-@{field.id}-input">@messages(error.message, error.args: _*)</span>
     }
     <div class="form-control-wrapper">
+        @symbol
         <input
         class="form-control @inputClass"
         type="text"

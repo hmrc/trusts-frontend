@@ -42,9 +42,12 @@
           field = form("value"),
           label = messages("assetMoneyValue.heading"),
           labelClass=Some("visually-hidden"),
+          symbol = Some("£"),
           hint = Some(messages(s"assetMoneyValue.hint"))
         )
 
         @components.submit_button()
+
+
     }
 }
