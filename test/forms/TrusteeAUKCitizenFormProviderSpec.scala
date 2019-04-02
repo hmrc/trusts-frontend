@@ -23,8 +23,9 @@ class TrusteeAUKCitizenFormProviderSpec extends BooleanFieldBehaviours {
 
   val requiredKey = "trusteeAUKCitizen.error.required"
   val invalidKey = "error.boolean"
+  val messageKeyPrefix = "trusteeAUKCitizen"
 
-  val form = new TrusteeAUKCitizenFormProvider()()
+  val form = new TrusteeAUKCitizenFormProvider()(messageKeyPrefix)
 
   ".value" must {
 

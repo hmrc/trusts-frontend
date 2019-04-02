@@ -19,9 +19,10 @@ package controllers
 import controllers.actions._
 import forms.TelephoneNumberFormProvider
 import javax.inject.Inject
+import models.requests.DataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.{TelephoneNumberPage, Trustees, TrusteesNamePage}
+import pages.{IsThisLeadTrusteePage, TelephoneNumberPage, Trustees, TrusteesNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -45,8 +46,6 @@ class TelephoneNumberController @Inject()(
                                            view: TelephoneNumberView
                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
-
   private def actions(index: Int) =
     identify andThen
       getData andThen
@@ -59,6 +58,10 @@ class TelephoneNumberController @Inject()(
 
       val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
 
+      val messagePrefix: String = getMessagePrefix(index, request)
+
+      val form = formProvider(messagePrefix)
+
       val preparedForm = request.userAnswers.get(TelephoneNumberPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
@@ -67,10 +70,25 @@ class TelephoneNumberController @Inject()(
       Ok(view(preparedForm, mode, index, trusteeName))
   }
 
+  private def getMessagePrefix(index: Int, request: DataRequest[AnyContent]) = {
+    val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
+
+    val messagePrefix = if (isLead) {
+      "leadTrusteesTelephoneNumber"
+    } else {
+      "telephoneNumber"
+    }
+    messagePrefix
+  }
+
   def onSubmit(mode: Mode, index: Int): Action[AnyContent] = actions(index).async {
     implicit request =>
 
       val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
+
+      val messagePrefix: String = getMessagePrefix(index, request)
+
+      val form = formProvider(messagePrefix)
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>

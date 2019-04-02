@@ -24,8 +24,8 @@ import models.IndividualOrBusiness
 
 class TrusteeIndividualOrBusinessFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[IndividualOrBusiness] =
+  def apply(messagePrefix: String): Form[IndividualOrBusiness] =
     Form(
-      "value" -> enumerable[IndividualOrBusiness]("trusteeIndividualOrBusiness.error.required")
+      "value" -> enumerable[IndividualOrBusiness](s"$messagePrefix.error.required")
     )
 }

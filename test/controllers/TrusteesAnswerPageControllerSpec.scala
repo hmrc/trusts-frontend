@@ -39,7 +39,62 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
 
   "TrusteesAnswerPage Controller" must {
 
-    "return OK and the correct view for a GET" in {
+    "return OK and the correct view (for a lead trustee) for a GET" in {
+
+      val answers =
+        UserAnswers(userAnswersId)
+          .set(IsThisLeadTrusteePage(index), true).success.value
+          .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
+          .set(TrusteesNamePage(index), FullName("First", None, "Trustee")).success.value
+          .set(TrusteesDateOfBirthPage(index), LocalDate.now(ZoneOffset.UTC)).success.value
+          .set(TrusteeAUKCitizenPage(index), true).success.value
+          .set(TrusteesNinoPage(index), "QQ121212A").success.value
+          .set(TelephoneNumberPage(index), "0191 1111111").success.value
+          .set(TrusteeLiveInTheUKPage(index), true).success.value
+          .set(TrusteesUkAddressPage(index), TrusteesUkAddress("line1", Some("line2"), Some("line3"), "town or city", "AB1 1AB")).success.value
+
+
+      val countryOptions = injector.instanceOf[CountryOptions]
+
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers)
+
+      val leadTrusteeIndividualOrBusinessMessagePrefix = "leadTrusteeIndividualOrBusiness"
+      val leadTrusteeFullNameMessagePrefix = "leadTrusteesName"
+
+      val expectedSections = Seq(
+        AnswerSection(
+          None,
+          Seq(
+            checkYourAnswersHelper.isThisLeadTrustee(index).value,
+            checkYourAnswersHelper.trusteeIndividualOrBusiness(index, leadTrusteeIndividualOrBusinessMessagePrefix).value,
+            checkYourAnswersHelper.trusteeFullName(index, leadTrusteeFullNameMessagePrefix).value,
+            checkYourAnswersHelper.trusteesDateOfBirth(index).value,
+            checkYourAnswersHelper.trusteeAUKCitizen(index).value,
+            checkYourAnswersHelper.trusteesNino(index).value,
+            checkYourAnswersHelper.trusteeLiveInTheUK(index).value,
+            checkYourAnswersHelper.trusteesUkAddress(index).value,
+            checkYourAnswersHelper.telephoneNumber(index).value
+          )
+        )
+      )
+
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+      val request = FakeRequest(GET, routes.TrusteesAnswerPageController.onPageLoad(index).url)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[TrusteesAnswerPageView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(index, expectedSections)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view (for a trustee) for a GET" in {
 
       val answers =
         UserAnswers(userAnswersId)
@@ -58,13 +113,16 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers)
 
+      val trusteeIndividualOrBusinessMessagePrefix = "trusteeIndividualOrBusiness"
+      val trusteeFullNameMessagePrefix = "trusteesName"
+
       val expectedSections = Seq(
         AnswerSection(
           None,
           Seq(
             checkYourAnswersHelper.isThisLeadTrustee(index).value,
-            checkYourAnswersHelper.trusteeIndividualOrBusiness(index).value,
-            checkYourAnswersHelper.trusteeFullName(index).value,
+            checkYourAnswersHelper.trusteeIndividualOrBusiness(index, trusteeIndividualOrBusinessMessagePrefix).value,
+            checkYourAnswersHelper.trusteeFullName(index, trusteeFullNameMessagePrefix).value,
             checkYourAnswersHelper.trusteesDateOfBirth(index).value,
             checkYourAnswersHelper.trusteeAUKCitizen(index).value,
             checkYourAnswersHelper.trusteesNino(index).value,

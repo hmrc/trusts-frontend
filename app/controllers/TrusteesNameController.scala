@@ -19,6 +19,7 @@ package controllers
 import controllers.actions._
 import forms.TrusteesNameFormProvider
 import javax.inject.Inject
+import models.requests.DataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
 import pages.{IsThisLeadTrusteePage, Trustees, TrusteesNamePage}
@@ -45,7 +46,7 @@ class TrusteesNameController @Inject()(
                                         view: TrusteesNameView
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  var messagePrefix = ""
 
   private def actions(index: Int) =
     identify andThen getData andThen
@@ -56,14 +57,17 @@ class TrusteesNameController @Inject()(
   def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = actions(index) {
     implicit request =>
 
-
       val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
 
       val heading = if (isLead) {
-        Messages("leadTrusteesName.heading")
+        messagePrefix = "leadTrusteesName"
+        Messages(s"$messagePrefix.heading")
       } else {
-        Messages("trusteesName.heading")
+        messagePrefix = "trusteesName"
+        Messages(s"$messagePrefix.heading")
       }
+
+      val form = formProvider(messagePrefix)
 
       val preparedForm = request.userAnswers.get(TrusteesNamePage(index)) match {
         case None => form
@@ -80,10 +84,14 @@ class TrusteesNameController @Inject()(
       val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
 
       val heading = if (isLead) {
-        Messages("leadTrusteesName.heading")
+        messagePrefix = "leadTrusteesName"
+        Messages(s"$messagePrefix.heading")
       } else {
-        Messages("trusteesName.heading")
+        messagePrefix = "trusteesName"
+        Messages(s"$messagePrefix.heading")
       }
+
+      val form = formProvider(messagePrefix)
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>

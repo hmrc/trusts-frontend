@@ -21,7 +21,7 @@ import forms.TrusteeAUKCitizenFormProvider
 import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.{TrusteeAUKCitizenPage, TrusteesNamePage}
+import pages.{IsThisLeadTrusteePage, TrusteeAUKCitizenPage, TrusteesNamePage}
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
@@ -33,8 +33,9 @@ class TrusteeAUKCitizenControllerSpec extends SpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 
+  val messageKeyPrefix = "trusteeAUKCitizen"
   val formProvider = new TrusteeAUKCitizenFormProvider()
-  val form = formProvider()
+  val form = formProvider(messageKeyPrefix)
 
   val index = 0
   val emptyTrusteeName = ""
@@ -44,10 +45,33 @@ class TrusteeAUKCitizenControllerSpec extends SpecBase with IndexValidation {
 
   "trusteeAUKCitizen Controller" must {
 
-    "return OK and the correct view for a GET" in {
+    "return OK and the correct view (lead trustee) for a GET" in {
 
       val userAnswers = UserAnswers(userAnswersId)
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
+        .set(IsThisLeadTrusteePage(index), true).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, trusteeAUKCitizenRoute)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[TrusteeAUKCitizenView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(form, NormalMode, index, trusteeName)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view (trustee) for a GET" in {
+
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
+        .set(IsThisLeadTrusteePage(index), false).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -70,6 +94,7 @@ class TrusteeAUKCitizenControllerSpec extends SpecBase with IndexValidation {
       val userAnswers = UserAnswers(userAnswersId)
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(TrusteeAUKCitizenPage(index), true).success.value
+        .set(IsThisLeadTrusteePage(index), false).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -90,7 +115,7 @@ class TrusteeAUKCitizenControllerSpec extends SpecBase with IndexValidation {
     "redirect to TrusteeNamePage when TrusteesName is not answered" in {
       val userAnswers = UserAnswers(userAnswersId)
         .set(TrusteeAUKCitizenPage(index), true).success.value
-
+        .set(IsThisLeadTrusteePage(index), false).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -109,6 +134,7 @@ class TrusteeAUKCitizenControllerSpec extends SpecBase with IndexValidation {
 
       val userAnswers = UserAnswers(userAnswersId)
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
+        .set(IsThisLeadTrusteePage(index), false).success.value
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers))
@@ -135,6 +161,7 @@ class TrusteeAUKCitizenControllerSpec extends SpecBase with IndexValidation {
 
       val userAnswers = UserAnswers(userAnswersId)
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
+        .set(IsThisLeadTrusteePage(index), false).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

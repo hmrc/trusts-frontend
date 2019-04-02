@@ -224,11 +224,13 @@ trusteeIndividualOrBusiness.heading = Is the trustee an individual or a business
 trusteeIndividualOrBusiness.checkYourAnswersLabel = Is the trustee an individual or a business?
 trusteeIndividualOrBusiness.error.required = Select if the trustee is an individual or a business
 
-trustDetailsAnswerPage.title = Check trust details
-trustDetailsAnswerPage.heading = Check trust details
-
 leadTrusteeIndividualOrBusiness.title = Is the lead trustee an individual or a business?
 leadTrusteeIndividualOrBusiness.heading = Is the lead trustee an individual or a business?
+leadTrusteeIndividualOrBusiness.checkYourAnswersLabel = Is the lead trustee an individual or a business?
+leadTrusteeIndividualOrBusiness.error.required = Select if the lead trustee is an individual or a business
+
+trustDetailsAnswerPage.title = Check trust details
+trustDetailsAnswerPage.heading = Check trust details
 
 trusteesName.title = What is the trustee’s name?
 trusteesName.heading = What is the trustee’s name?
@@ -247,9 +249,18 @@ trusteesName.error.invalidLastNameCharacters = Trustee’s last name must only i
 
 leadTrusteesName.title = What is the lead trustee’s name?
 leadTrusteesName.heading = What is the lead trustee’s name?
+leadTrusteesName.checkYourAnswersLabel = What is the lead trustee’s name?
 leadTrusteesName.firstName = First name
 leadTrusteesName.middleName = Middle name (optional)
 leadTrusteesName.lastName = Last name
+leadTrusteesName.error.firstnamerequired = Enter the lead trustee’s first name
+leadTrusteesName.error.lastnamerequired = Enter the lead trustee’s last name
+leadTrusteesName.error.lengthfirstname = Lead trustee’s first name must be 35 characters or less
+leadTrusteesName.error.lengthmiddlename = Lead trustee’s middle name must be 35 characters or less
+leadTrusteesName.error.lengthlastname = Lead trustee’s last name must be 35 characters or less
+leadTrusteesName.error.invalidFirstNameCharacters = Lead trustee’s first name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+leadTrusteesName.error.invalidMiddleNameCharacters = Lead trustee’s middle name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+leadTrusteesName.error.invalidLastNameCharacters = Lead trustee’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
 trusteesAnswerPage.title = Check trustee details
 trusteesAnswerPage.heading = Check trustee details
@@ -265,11 +276,6 @@ addATrustee.individual = Trustee Individual
 addATrustee.business = Trustee Business
 addATrustee.error.required = Select yes if you want to add another trustee
 
-trusteeAUKCitizen.title = Is {0} a UK citizen?
-trusteeAUKCitizen.heading = Is {0} a UK citizen?
-trusteeAUKCitizen.checkYourAnswersLabel = trusteeAUKCitizen
-trusteeAUKCitizen.error.required = Select yes if the trustee is a UK citizen
-
 telephoneNumber.title = What is {0}’s telephone number?
 telephoneNumber.heading = What is {0}’s telephone number?
 telephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
@@ -277,10 +283,14 @@ telephoneNumber.error.required = Enter trustee’s telephone number
 telephoneNumber.error.invalid.characters = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192
 telephoneNumber.hint = For international numbers include the country code
 
+leadTrusteesTelephoneNumber.error.required = Enter lead trustee’s telephone number
+
 trusteeAUKCitizen.title = Is {0} a UK citizen?
 trusteeAUKCitizen.heading = Is {0} a UK citizen?
 trusteeAUKCitizen.checkYourAnswersLabel = Is {0} a UK citizen?
 trusteeAUKCitizen.error.required = Select yes if the trustee is a UK citizen
+
+leadTrusteeAUKCitizen.error.required = Select yes if the lead trustee is a UK citizen
 
 trusteesDateOfBirth.title = What is {0}’s date of birth?
 trusteesDateOfBirth.heading = What is {0}’s date of birth?
@@ -304,6 +314,8 @@ trusteeLiveInTheUK.title = Does {0} live in the UK?
 trusteeLiveInTheUK.heading = Does {0} live in the UK?
 trusteeLiveInTheUK.checkYourAnswersLabel = Does {0} live in the UK?
 trusteeLiveInTheUK.error.required = Select yes if the trustee lives in the UK
+
+leadTrusteeLiveInTheUK.error.required = Select yes if the lead trustee lives in the UK
 
 trusteesUkAddress.title = What is {0}’s address?
 trusteesUkAddress.heading = What is {0}’s address?

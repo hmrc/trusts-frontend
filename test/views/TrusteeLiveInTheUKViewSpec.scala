@@ -30,7 +30,7 @@ class TrusteeLiveInTheUKViewSpec extends YesNoViewBehaviours {
   val index = 0
   val trusteeName = "FirstName LastName"
 
-  val form = new TrusteeLiveInTheUKFormProvider()()
+  val form = new TrusteeLiveInTheUKFormProvider()(messageKeyPrefix)
 
   "TrusteeLiveInTheUK view" must {
 
