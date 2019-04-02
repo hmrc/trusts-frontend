@@ -1,0 +1,32 @@
+@import controllers.routes._
+@import models.{Mode, AddAssets}
+
+@this(
+    main_template: MainTemplate,
+    formHelper: FormWithCSRF
+)
+
+@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+
+@main_template(
+    title = s"${errorPrefix(form)} ${messages("addAssets.title")}"
+    ) {
+
+    @formHelper(action = AddAssetsController.onSubmit(mode), 'autoComplete -> "off") {
+
+        @components.back_link()
+
+        @components.error_summary(form.errors)
+
+        @components.heading("addAssets.heading")
+
+        @components.input_radio(
+            field = form("value"),
+            legend = messages("addAssets.heading"),
+            legendClass = Some("visually-hidden"),
+            inputs = AddAssets.options
+        )
+
+        @components.submit_button()
+    }
+}

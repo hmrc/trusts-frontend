@@ -444,3 +444,10 @@ whatKindOfAsset.Partnership = Partnership
 whatKindOfAsset.Other = Other
 whatKindOfAsset.checkYourAnswersLabel = What kind of asset do you need to add first?
 whatKindOfAsset.error.required = Select the kind of asset you need to add
+
+addAssets.title = addAssets
+addAssets.heading = addAssets
+addAssets.option1 = Option 1
+addAssets.option2 = Option 2
+addAssets.checkYourAnswersLabel = addAssets
+addAssets.error.required = Select addAssets
