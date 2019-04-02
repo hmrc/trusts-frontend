@@ -30,12 +30,22 @@ import viewmodels.AnswerRow
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers)(implicit messages: Messages) {
 
-  def assetMoneyValue: Option[AnswerRow] = userAnswers.get(AssetMoneyValuePage) map {
+
+  def assetMoneyValue(index: Int): Option[AnswerRow] = userAnswers.get(AssetMoneyValuePage(index)) map {
     x =>
       AnswerRow(
         "assetMoneyValue.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        routes.AssetMoneyValueController.onPageLoad(CheckMode).url
+        routes.AssetMoneyValueController.onPageLoad(CheckMode, index).url
+      )
+  }
+
+  def whatKindOfAsset(index: Int): Option[AnswerRow] = userAnswers.get(WhatKindOfAssetPage(index)) map {
+    x =>
+      AnswerRow(
+        "whatKindOfAsset.checkYourAnswersLabel",
+        HtmlFormat.escape(messages(s"whatKindOfAsset.$x")),
+        routes.WhatKindOfAssetController.onPageLoad(CheckMode, index).url
       )
   }
 

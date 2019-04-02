@@ -30,17 +30,19 @@ class AssetMoneyValueViewSpec extends StringViewBehaviours {
 
   val form = new AssetMoneyValueFormProvider()()
 
+  val index = 0
+
   "AssetMoneyValueView view" must {
 
     val view = viewFor[AssetMoneyValueView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, NormalMode, index)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.AssetMoneyValueController.onSubmit(NormalMode).url)
+    behave like stringPage(form, applyView, messageKeyPrefix, routes.AssetMoneyValueController.onSubmit(NormalMode, index).url)
   }
 }

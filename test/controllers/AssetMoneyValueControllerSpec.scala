@@ -35,7 +35,9 @@ class AssetMoneyValueControllerSpec extends SpecBase {
   val formProvider = new AssetMoneyValueFormProvider()
   val form = formProvider()
 
-  lazy val assetMoneyValueRoute = routes.AssetMoneyValueController.onPageLoad(NormalMode).url
+  val index = 0
+
+  lazy val assetMoneyValueRoute = routes.AssetMoneyValueController.onPageLoad(NormalMode, index).url
 
   "AssetMoneyValue Controller" must {
 
@@ -52,14 +54,14 @@ class AssetMoneyValueControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, index)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(AssetMoneyValuePage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(AssetMoneyValuePage(index), "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -72,7 +74,7 @@ class AssetMoneyValueControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill("answer"), NormalMode, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -86,7 +88,7 @@ class AssetMoneyValueControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, assetMoneyValueRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("value", "45000"))
 
       val result = route(application, request).value
 
@@ -113,7 +115,7 @@ class AssetMoneyValueControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, index)(fakeRequest, messages).toString
 
       application.stop()
     }

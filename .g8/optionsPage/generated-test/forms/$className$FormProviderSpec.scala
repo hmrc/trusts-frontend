@@ -16,7 +16,7 @@ class $className$FormProviderSpec extends OptionFieldBehaviours {
     behave like optionsField[$className$](
       form,
       fieldName,
-      validValues  = $className$.values,
+      validValues  = $className$.values.toSet,
       invalidError = FormError(fieldName, "error.invalid")
     )
 

@@ -20,9 +20,11 @@ package navigation.navigators
 import base.SpecBase
 import controllers.routes
 import generators.Generators
-import models.{NormalMode, UserAnswers}
+import models.WhatKindOfAsset.Money
+import models.{NormalMode, UserAnswers, WhatKindOfAsset}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
+import org.scalacheck.Gen
 import org.scalatest.prop.PropertyChecks
 import pages._
 
@@ -32,14 +34,30 @@ trait AssetRoutes {
 
   def assetRoutes()(implicit navigator: Navigator) = {
 
-    "go to AddAssetPages from AssetMoneyValue page when the amount submitted" in {
+
+    "go to WhatKindOfAssetPage from AssetMoneyValue page when the amount submitted" in {
+
       val index = 0
 
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(AssetMoneyValuePage, NormalMode)(userAnswers)
-            .mustBe(routes.AssetMoneyValueController.onPageLoad(NormalMode))
+          navigator.nextPage(AssetMoneyValuePage(index), NormalMode)(userAnswers)
+            .mustBe(routes.WhatKindOfAssetController.onPageLoad(NormalMode, index))
+
+      }
+    }
+
+    "go to AssetMoneyValuePage from WhatKindOfAsset page when the money option is selected" in {
+      val index = 0
+
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(WhatKindOfAssetPage(index), Money).success.value
+
+          navigator.nextPage(WhatKindOfAssetPage(index), NormalMode)(answers)
+            .mustBe(routes.AssetMoneyValueController.onPageLoad(NormalMode, index))
       }
     }
   }

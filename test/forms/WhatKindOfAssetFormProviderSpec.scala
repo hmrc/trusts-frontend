@@ -17,22 +17,22 @@
 package forms
 
 import forms.behaviours.OptionFieldBehaviours
-import models.NonResidentType
+import models.WhatKindOfAsset
 import play.api.data.FormError
 
-class NonResidentTypeFormProviderSpec extends OptionFieldBehaviours {
+class WhatKindOfAssetFormProviderSpec extends OptionFieldBehaviours {
 
-  val form = new NonResidentTypeFormProvider()()
+  val form = new WhatKindOfAssetFormProvider()()
 
   ".value" must {
 
     val fieldName = "value"
-    val requiredKey = "nonresidentType.error.required"
+    val requiredKey = "whatKindOfAsset.error.required"
 
-    behave like optionsField[NonResidentType](
+    behave like optionsField[WhatKindOfAsset](
       form,
       fieldName,
-      validValues  = NonResidentType.values.toSet,
+      validValues  = WhatKindOfAsset.values.toSet,
       invalidError = FormError(fieldName, "error.invalid")
     )
 

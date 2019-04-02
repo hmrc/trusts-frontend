@@ -16,9 +16,10 @@
 
 package pages
 
+import models.entities.Asset
 import play.api.libs.json.JsPath
 
-case object Assets extends QuestionPage[List[Nothing]]{
+case object Assets extends QuestionPage[List[Asset]]{
 
   override def path: JsPath = JsPath \ toString
 

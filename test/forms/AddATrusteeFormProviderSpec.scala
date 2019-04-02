@@ -32,7 +32,7 @@ class AddATrusteeFormProviderSpec extends OptionFieldBehaviours {
     behave like optionsField[AddATrustee](
       form,
       fieldName,
-      validValues  = AddATrustee.values,
+      validValues  = AddATrustee.values.toSet,
       invalidError = FormError(fieldName, "error.invalid")
     )
 

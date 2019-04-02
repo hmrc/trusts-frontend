@@ -18,23 +18,26 @@ package models
 
 import viewmodels.RadioOption
 
-sealed trait AddATrustee
+sealed trait WhatKindOfAsset
 
-object AddATrustee extends Enumerable.Implicits {
+object WhatKindOfAsset extends Enumerable.Implicits {
 
-  case object YesNow extends WithName("add-them-now") with AddATrustee
-  case object YesLater extends WithName("add-them-later") with AddATrustee
-  case object NoComplete extends WithName("no-complete") with AddATrustee
+  case object Money extends WithName("Money") with WhatKindOfAsset
+  case object PropertyOrLand extends WithName("PropertyOrLand") with WhatKindOfAsset
+  case object Shares extends WithName("Shares") with WhatKindOfAsset
+  case object Business extends WithName("Business") with WhatKindOfAsset
+  case object Partnership extends WithName("Partnership") with WhatKindOfAsset
+  case object Other extends WithName("Other") with WhatKindOfAsset
 
-  val values: List[AddATrustee] = List(
-    YesNow, YesLater, NoComplete
+  val values: List[WhatKindOfAsset] = List(
+    Money, PropertyOrLand, Shares, Business, Partnership, Other
   )
 
   val options: List[RadioOption] = values.map {
     value =>
-      RadioOption("addATrustee", value.toString)
+      RadioOption("whatKindOfAsset", value.toString)
   }
 
-  implicit val enumerable: Enumerable[AddATrustee] =
+  implicit val enumerable: Enumerable[WhatKindOfAsset] =
     Enumerable(values.map(v => v.toString -> v): _*)
 }

@@ -16,13 +16,17 @@
 
 package pages
 
-import play.api.libs.json.JsPath
+import models.WhatKindOfAsset
+import pages.behaviours.PageBehaviours
 
-final case class AssetMoneyValuePage(index: Int) extends QuestionPage[String] {
+class WhatKindOfAssetSpec extends PageBehaviours {
 
-  override def path: JsPath = JsPath \ pages.Assets \ index \ toString
+  "WhatKindOfAssetPage" must {
 
-  override def toString: String = "assetMoneyValue"
+    beRetrievable[WhatKindOfAsset](WhatKindOfAssetPage(0))
+
+    beSettable[WhatKindOfAsset](WhatKindOfAssetPage(0))
+
+    beRemovable[WhatKindOfAsset](WhatKindOfAssetPage(0))
+  }
 }
-
-

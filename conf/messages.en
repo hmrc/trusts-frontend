@@ -431,3 +431,16 @@ assetMoneyValue.hint = Rounded down to the nearest pound. For example, 4000
 assetMoneyValue.error.required = Enter the current total amount of money in the trust
 assetMoneyValue.error.length = AssetMoneyValue must be 12 characters or less
 assetMoneyValue.error.invalidFormat = Total assets value must be a number
+
+whatKindOfAsset.first.title = What kind of asset do you need to add first?
+whatKindOfAsset.next.title = What kind of asset do you need to add next?
+whatKindOfAsset.first.heading = What kind of asset do you need to add first?
+whatKindOfAsset.next.heading = What kind of asset do you need to add next?
+whatKindOfAsset.Money = Money
+whatKindOfAsset.PropertyOrLand = Property or land
+whatKindOfAsset.Shares = Shares
+whatKindOfAsset.Business = Business
+whatKindOfAsset.Partnership = Partnership
+whatKindOfAsset.Other = Other
+whatKindOfAsset.checkYourAnswersLabel = What kind of asset do you need to add first?
+whatKindOfAsset.error.required = Select the kind of asset you need to add

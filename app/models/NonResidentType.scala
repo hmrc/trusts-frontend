@@ -26,15 +26,15 @@ object NonResidentType extends Enumerable.Implicits {
   case object NonDomiciled extends WithName("non-resident-non-domiciled") with NonResidentType
   case object CeaseResident extends WithName("non-resident-cease-resident") with NonResidentType
 
-  val values: Set[NonResidentType] = Set(
+  val values: List[NonResidentType] = List(
     Domiciled, NonDomiciled, CeaseResident
   )
 
-  val options: Set[RadioOption] = values.map {
+  val options: List[RadioOption] = values.map {
     value =>
       RadioOption("nonresidentType", value.toString)
   }
 
   implicit val enumerable: Enumerable[NonResidentType] =
-    Enumerable(values.toSeq.map(v => v.toString -> v): _*)
+    Enumerable(values.map(v => v.toString -> v): _*)
 }
