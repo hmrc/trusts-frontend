@@ -45,9 +45,7 @@ class TrusteeAUKCitizenController @Inject()(
                                              val controllerComponents: MessagesControllerComponents,
                                              view: TrusteeAUKCitizenView
                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
-  var messagePrefix = ""
-
+  
   private def actions(index: Int) =
     identify andThen
       getData andThen
