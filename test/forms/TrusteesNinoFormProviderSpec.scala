@@ -23,10 +23,11 @@ import wolfendale.scalacheck.regexp.RegexpGen
 
 class TrusteesNinoFormProviderSpec extends StringFieldBehaviours {
 
+  val messageKeyPrefix = "trusteesNino"
   val requiredKey = "trusteesNino.error.required"
   val invalidFormatKey = "trusteesNino.error.invalidFormat"
 
-  val form = new TrusteesNinoFormProvider()()
+  val form = new TrusteesNinoFormProvider()(messageKeyPrefix)
 
   ".value" must {
 

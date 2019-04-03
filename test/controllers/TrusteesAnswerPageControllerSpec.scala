@@ -175,6 +175,7 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
       val answers =
         UserAnswers(userAnswersId)
           .set(TrusteesNamePage(index), FullName("First", None, "Trustee")).success.value
+          .set(IsThisLeadTrusteePage(index), false).success.value
 
       val application =
         applicationBuilder(userAnswers = Some(answers))
@@ -193,10 +194,14 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
       application.stop()
     }
 
-    "redirect to TrusteeNamePage when valid data is submitted with no required answer" in {
+    "redirect to TrusteeNamePage when valid data is submitted with no Trustee Name required answer" in {
+
+      val answers =
+        UserAnswers(userAnswersId)
+          .set(IsThisLeadTrusteePage(index), false).success.value
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(answers))
           .build()
 
       val request =
@@ -207,6 +212,28 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index).url
+
+      application.stop()
+    }
+
+    "redirect to IsThisLeadTrusteePage when valid data is submitted with no Is This Lead Trustee required answer" in {
+
+      val answers =
+        UserAnswers(userAnswersId)
+          .set(TrusteesNamePage(index), FullName("First", None, "Trustee")).success.value
+
+      val application =
+        applicationBuilder(userAnswers = Some(answers))
+          .build()
+
+      val request =
+        FakeRequest(POST, routes.TrusteesAnswerPageController.onSubmit(index).url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index).url
 
       application.stop()
     }

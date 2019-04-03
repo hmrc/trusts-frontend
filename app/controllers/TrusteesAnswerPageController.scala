@@ -49,10 +49,8 @@ class TrusteesAnswerPageController @Inject()(
     identify andThen getData andThen
       requireData andThen
       validateIndex(index, Trustees) andThen
-      requiredAnswer(RequiredAnswer(
-        TrusteesNamePage(index),
-        routes.TrusteesNameController.onPageLoad(NormalMode, index)
-      ))
+      requiredAnswer(RequiredAnswer(TrusteesNamePage(index),routes.TrusteesNameController.onPageLoad(NormalMode, index))) andThen
+      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index)))
 
   def onPageLoad(index : Int) = actions(index) {
     implicit request =>

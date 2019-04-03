@@ -161,6 +161,21 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
       }
     }
 
+    "redirect to IsThisLeadTrustee when IsThisLeadTrustee is not answered" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      val request = FakeRequest(GET, trusteeIndividualOrBusinessRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index).url
+
+      application.stop()
+    }
+
     "redirect to the next page when valid data is submitted (lead trustee)" in {
 
       val userAnswers = UserAnswers(userAnswersId)
