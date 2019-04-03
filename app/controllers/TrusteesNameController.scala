@@ -46,8 +46,6 @@ class TrusteesNameController @Inject()(
                                         view: TrusteesNameView
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  var messagePrefix = ""
-
   private def actions(index: Int) =
     identify andThen getData andThen
       requireData andThen
@@ -59,13 +57,9 @@ class TrusteesNameController @Inject()(
 
       val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
 
-      val heading = if (isLead) {
-        messagePrefix = "leadTrusteesName"
-        Messages(s"$messagePrefix.heading")
-      } else {
-        messagePrefix = "trusteesName"
-        Messages(s"$messagePrefix.heading")
-      }
+      val messagePrefix = if (isLead) "leadTrusteesName" else "trusteesName"
+
+      val heading = Messages(s"$messagePrefix.heading")
 
       val form = formProvider(messagePrefix)
 
@@ -83,13 +77,9 @@ class TrusteesNameController @Inject()(
 
       val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
 
-      val heading = if (isLead) {
-        messagePrefix = "leadTrusteesName"
-        Messages(s"$messagePrefix.heading")
-      } else {
-        messagePrefix = "trusteesName"
-        Messages(s"$messagePrefix.heading")
-      }
+      val messagePrefix = if (isLead) "leadTrusteesName" else "trusteesName"
+
+      val heading = Messages(s"$messagePrefix.heading")
 
       val form = formProvider(messagePrefix)
 
