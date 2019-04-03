@@ -60,11 +60,7 @@ class TrusteeIndividualOrBusinessController @Inject()(
 
       val messagePrefix = if (isLead) "leadTrusteeIndividualOrBusiness" else "trusteeIndividualOrBusiness"
 
-      val heading = if (isLead) {
-        Messages(s"$messagePrefix.heading")
-      } else {
-        Messages(s"$messagePrefix.heading")
-      }
+      val heading = Messages(s"$messagePrefix.heading")
 
       val form = formProvider(messagePrefix)
 
@@ -83,11 +79,7 @@ class TrusteeIndividualOrBusinessController @Inject()(
 
       val messagePrefix = if (isLead) "leadTrusteeIndividualOrBusiness" else "trusteeIndividualOrBusiness"
 
-      val heading = if (isLead) {
-        Messages(s"$messagePrefix.heading")
-      } else {
-        Messages(s"$messagePrefix.heading")
-      }
+      val heading = Messages(s"$messagePrefix.heading")
 
       val form = formProvider(messagePrefix)
 
