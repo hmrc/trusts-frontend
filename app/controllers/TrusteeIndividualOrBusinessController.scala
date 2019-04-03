@@ -47,8 +47,6 @@ class TrusteeIndividualOrBusinessController @Inject()(
   with I18nSupport
   with Enumerable.Implicits {
 
-  var messagePrefix = ""
-
   private def actions(index: Int) =
     identify andThen getData andThen
       requireData andThen
@@ -60,11 +58,11 @@ class TrusteeIndividualOrBusinessController @Inject()(
 
       val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
 
+      val messagePrefix = if (isLead) "leadTrusteeIndividualOrBusiness" else "trusteeIndividualOrBusiness"
+
       val heading = if (isLead) {
-        messagePrefix = "leadTrusteeIndividualOrBusiness"
         Messages(s"$messagePrefix.heading")
       } else {
-        messagePrefix = "trusteeIndividualOrBusiness"
         Messages(s"$messagePrefix.heading")
       }
 
@@ -83,11 +81,11 @@ class TrusteeIndividualOrBusinessController @Inject()(
 
       val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
 
+      val messagePrefix = if (isLead) "leadTrusteeIndividualOrBusiness" else "trusteeIndividualOrBusiness"
+
       val heading = if (isLead) {
-        messagePrefix = "leadTrusteeIndividualOrBusiness"
         Messages(s"$messagePrefix.heading")
       } else {
-        messagePrefix = "trusteeIndividualOrBusiness"
         Messages(s"$messagePrefix.heading")
       }
 
