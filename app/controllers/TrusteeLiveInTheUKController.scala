@@ -19,9 +19,10 @@ package controllers
 import controllers.actions._
 import forms.TrusteeLiveInTheUKFormProvider
 import javax.inject.Inject
+import models.requests.DataRequest
 import models.{Mode, NormalMode, UserAnswers}
 import navigation.Navigator
-import pages.{TrusteeLiveInTheUKPage, Trustees, TrusteesNamePage}
+import pages.{IsThisLeadTrusteePage, TrusteeLiveInTheUKPage, Trustees, TrusteesNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -45,19 +46,22 @@ class TrusteeLiveInTheUKController @Inject()(
                                          view: TrusteeLiveInTheUKView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = formProvider()
-
   private def actions(index: Int) =
     identify andThen
       getData andThen
       requireData andThen
       validateIndex(index, Trustees) andThen
-      requiredAnswer(RequiredAnswer(TrusteesNamePage(index), routes.TrusteesNameController.onPageLoad(NormalMode, index)))
+      requiredAnswer(RequiredAnswer(TrusteesNamePage(index), routes.TrusteesNameController.onPageLoad(NormalMode, index))) andThen
+      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index)))
 
   def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = actions(index) {
     implicit request =>
 
       val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
+
+      val messagePrefix: String = getMessagePrefix(index, request)
+
+      val form: Form[Boolean] = formProvider(messagePrefix)
 
       val preparedForm = request.userAnswers.get(TrusteeLiveInTheUKPage(index)) match {
         case None => form
@@ -67,10 +71,25 @@ class TrusteeLiveInTheUKController @Inject()(
       Ok(view(preparedForm, mode, index, trusteeName))
   }
 
+  private def getMessagePrefix(index: Int, request: DataRequest[AnyContent]) = {
+    val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
+
+    val messagePrefix = if (isLead) {
+      "leadTrusteeLiveInTheUK"
+    } else {
+      "trusteeLiveInTheUK"
+    }
+    messagePrefix
+  }
+
   def onSubmit(mode: Mode, index: Int): Action[AnyContent] = actions(index).async {
     implicit request =>
 
       val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
+
+      val messagePrefix: String = getMessagePrefix(index, request)
+
+      val form: Form[Boolean] = formProvider(messagePrefix)
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>

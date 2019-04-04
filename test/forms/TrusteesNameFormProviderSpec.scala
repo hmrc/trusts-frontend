@@ -22,7 +22,8 @@ import wolfendale.scalacheck.regexp.RegexpGen
 
 class TrusteesNameFormProviderSpec extends StringFieldBehaviours {
 
-  val form = new TrusteesNameFormProvider()()
+  val messageKeyPrefix = "trusteesName"
+  val form = new TrusteesNameFormProvider()(messageKeyPrefix)
 
   val maxLength = 35
   val minLength = 1

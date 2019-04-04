@@ -31,7 +31,7 @@ class TrusteesNinoViewSpec extends StringViewBehaviours {
   val trusteeName = "FirstName LastName"
   val hintKey = "trusteesNino.hint"
 
-  val form = new TrusteesNinoFormProvider()()
+  val form = new TrusteesNinoFormProvider()(messageKeyPrefix)
 
   "TrusteesNinoView view" must {
 

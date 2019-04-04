@@ -29,14 +29,13 @@ import views.html.helper.form
 class TrusteeIndividualOrBusinessViewSpec extends OptionsViewBehaviours {
 
   val messageKeyPrefix = "trusteeIndividualOrBusiness"
-  val leadMessageKeyPrefix = "leadTrusteeIndividualOrBusiness"
 
-  val leadHeading = Messages("leadTrusteeIndividualOrBusiness.heading")
-  val heading = Messages("trusteeIndividualOrBusiness.heading")
+  val leadHeading = Messages("trusteeIndividualOrBusiness.heading", "lead")
+  val heading = Messages("trusteeIndividualOrBusiness.heading", "")
 
   val index = 0
 
-  val form = new TrusteeIndividualOrBusinessFormProvider()()
+  val form = new TrusteeIndividualOrBusinessFormProvider()(messageKeyPrefix)
 
 
   "IndividualOrBusinessView as lead trustee" must {

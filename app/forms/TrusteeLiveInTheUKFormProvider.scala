@@ -23,8 +23,8 @@ import play.api.data.Form
 
 class TrusteeLiveInTheUKFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Boolean] =
+  def apply(messagePrefix: String): Form[Boolean] =
     Form(
-      "value" -> boolean("trusteeLiveInTheUK.error.required")
+      "value" -> boolean(s"$messagePrefix.error.required")
     )
 }

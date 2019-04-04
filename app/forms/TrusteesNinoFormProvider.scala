@@ -23,13 +23,13 @@ import play.api.data.Form
 
 class TrusteesNinoFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
+  def apply(messagePrefix: String): Form[String] =
     Form(
-      "value" -> text("trusteesNino.error.required")
+      "value" -> text(s"$messagePrefix.error.required")
         .verifying(
           firstError(
-            isNotEmpty("value", "trusteesNino.error.required"),
-            regexp(Validation.ninoRegex, "trusteesNino.error.invalidFormat")
+            isNotEmpty("value", s"$messagePrefix.error.required"),
+            regexp(Validation.ninoRegex, s"$messagePrefix.error.invalidFormat")
           ))
     )
 }

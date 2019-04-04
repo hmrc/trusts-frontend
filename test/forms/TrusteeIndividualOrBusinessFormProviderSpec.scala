@@ -22,7 +22,8 @@ import play.api.data.FormError
 
 class TrusteeIndividualOrBusinessFormProviderSpec extends OptionFieldBehaviours {
 
-  val form = new TrusteeIndividualOrBusinessFormProvider()()
+  val messageKeyPrefix = "trusteeIndividualOrBusiness"
+  val form = new TrusteeIndividualOrBusinessFormProvider()(messageKeyPrefix)
 
   ".value" must {
 

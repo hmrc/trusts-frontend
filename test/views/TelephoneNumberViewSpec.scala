@@ -28,7 +28,7 @@ class TelephoneNumberViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "telephoneNumber"
 
-  val form = new TelephoneNumberFormProvider()()
+  val form = new TelephoneNumberFormProvider()(messageKeyPrefix)
 
   val index = 0
   val trusteeName = "FirstName LastName"

@@ -36,7 +36,6 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation with Full
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new TrusteesNameFormProvider()
-  val form = formProvider()
 
   val index = 0
 
@@ -48,7 +47,9 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation with Full
 
       "is lead trustee" in {
 
-        val heading = Messages("leadTrusteesName.heading")
+        val messageKeyPrefix = "leadTrusteesName"
+
+        val heading = Messages(s"$messageKeyPrefix.heading")
 
         val userAnswers = UserAnswers(userAnswersId)
           .set(IsThisLeadTrusteePage(index), true).success.value
@@ -61,6 +62,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation with Full
 
         val view = application.injector.instanceOf[TrusteesNameView]
 
+        val form = formProvider(messageKeyPrefix)
 
         status(result) mustEqual OK
 
@@ -72,7 +74,9 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation with Full
 
       "is trustee" in {
 
-        val heading = Messages("trusteesName.heading")
+        val messageKeyPrefix = "trusteesName"
+
+        val heading = Messages(s"$messageKeyPrefix.heading")
 
         val userAnswers = UserAnswers(userAnswersId)
           .set(IsThisLeadTrusteePage(index), false).success.value
@@ -84,6 +88,8 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation with Full
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[TrusteesNameView]
+
+        val form = formProvider(messageKeyPrefix)
 
         status(result) mustEqual OK
 
@@ -99,7 +105,9 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation with Full
 
       "is lead trustee" in {
 
-        val heading = Messages("leadTrusteesName.heading")
+        val messageKeyPrefix = "leadTrusteesName"
+
+        val heading = Messages(s"$messageKeyPrefix.heading")
 
         val userAnswers = UserAnswers(userAnswersId)
           .set(IsThisLeadTrusteePage(index), true).success.value
@@ -109,6 +117,8 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation with Full
         val request =
           FakeRequest(POST, trusteesNameRoute)
             .withFormUrlEncodedBody(("value", ""))
+
+        val form = formProvider(messageKeyPrefix)
 
         val boundForm = form.bind(Map("value" -> ""))
 
@@ -127,7 +137,9 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation with Full
 
       "is trustee" in {
 
-        val heading = Messages("trusteesName.heading")
+        val messageKeyPrefix = "trusteesName"
+
+        val heading = Messages(s"$messageKeyPrefix.heading")
 
         val userAnswers = UserAnswers(userAnswersId)
           .set(IsThisLeadTrusteePage(index), false).success.value
@@ -137,6 +149,8 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation with Full
         val request =
           FakeRequest(POST, trusteesNameRoute)
             .withFormUrlEncodedBody(("value", ""))
+
+        val form = formProvider(messageKeyPrefix)
 
         val boundForm = form.bind(Map("value" -> ""))
 
@@ -174,6 +188,8 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation with Full
 
       "populate the view correctly on a GET when the question has previously been answered" in {
 
+        val messageKeyPrefix = "trusteesName"
+
         val name = FullName("first name", Some("middle name"), "last name")
 
         val userAnswers = UserAnswers(userAnswersId)
@@ -188,7 +204,9 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation with Full
 
         val result = route(application, request).value
 
-        val heading = Messages("trusteesName.heading")
+        val heading = Messages(s"$messageKeyPrefix.heading")
+
+        val form = formProvider(messageKeyPrefix)
 
         status(result) mustEqual OK
 
