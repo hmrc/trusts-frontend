@@ -54,7 +54,7 @@ class WhatKindOfAssetController @Inject()(
 
   private def options(request : DataRequest[AnyContent], index: Int) = {
     val assets = request.userAnswers.get(pages.Assets).getOrElse(Nil)
-
+    
     findAssetThatIsMoney(assets, index) match {
       case Some((_, i)) if i == index =>
         WhatKindOfAsset.options

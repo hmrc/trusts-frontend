@@ -71,14 +71,25 @@ class Navigator @Inject()() {
     case AgentAnswerPage => _ => _ => routes.TaskListController.onPageLoad()
 
     //Assets
+    case AssetMoneyValuePage(index) => _ => ua => assetMoneyValueRoute(ua, index)
     case WhatKindOfAssetPage(index) => _ => ua => whatKindOfAssetRoute(ua, index)
 
     //  Default
     case _ => _ => _ => routes.IndexController.onPageLoad()
   }
 
+  private def assetMoneyValueRoute(answers: UserAnswers, index: Int) = {
+
+    val assets = answers.get(Assets).getOrElse(List.empty)
+
+    assets match  {
+      case Nil => routes.WhatKindOfAssetController.onPageLoad(NormalMode, 0)
+      case a if assets.nonEmpty => routes.WhatKindOfAssetController.onPageLoad(NormalMode, a.size)
+    }
+  }
+
   private def whatKindOfAssetRoute(answers: UserAnswers, index: Int) = answers.get(WhatKindOfAssetPage(index)) match {
-      case Some(Money) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index)
+      case Some(Money) => routes.AssetMoneyValueController.onPageLoad(NormalMode, index)
       case Some(PropertyOrLand) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index)
       case Some(Shares) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index)
       case Some(Business) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index)

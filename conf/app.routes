@@ -191,12 +191,17 @@ GET        /agent-overview                                      controllers.Agen
 GET        /check-agent-details                     controllers.AgentAnswerController.onPageLoad()
 POST       /chack-agent-details                       controllers.AgentAnswerController.onSubmit()
 
+#assets
+
 GET        /asset/:index/assets-type                        controllers.WhatKindOfAssetController.onPageLoad(mode: Mode = NormalMode, index: Int)
 POST       /asset/:index/assets-type                         controllers.WhatKindOfAssetController.onSubmit(mode: Mode = NormalMode, index: Int)
 GET        /asset/:index/change-assets-type                  controllers.WhatKindOfAssetController.onPageLoad(mode: Mode = CheckMode, index: Int)
 POST       /asset/:index/change-assets-type                  controllers.WhatKindOfAssetController.onSubmit(mode: Mode = CheckMode, index: Int)
 
-#assets
-
 GET        /asset/information-you-need                    controllers.AssetInterruptPageController.onPageLoad()
 POST       /asset/information-you-need                     controllers.AssetInterruptPageController.onSubmit()
+
+GET        /asset/:index/money                          controllers.AssetMoneyValueController.onPageLoad(mode: Mode = NormalMode, index: Int)
+POST       /asset/:index/money                          controllers.AssetMoneyValueController.onSubmit(mode: Mode = NormalMode, index: Int)
+GET        /asset/:index/change-money                   controllers.AssetMoneyValueController.onPageLoad(mode: Mode = CheckMode, index: Int)
+POST       /asset/:index/change-money                   controllers.AssetMoneyValueController.onSubmit(mode: Mode = CheckMode, index: Int)
