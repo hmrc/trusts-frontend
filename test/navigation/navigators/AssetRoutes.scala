@@ -42,8 +42,10 @@ trait AssetRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
+          val assets = userAnswers.get(Assets).getOrElse(List.empty)
+
           navigator.nextPage(AssetMoneyValuePage(index), NormalMode)(userAnswers)
-            .mustBe(routes.WhatKindOfAssetController.onPageLoad(NormalMode, index))
+            .mustBe(routes.WhatKindOfAssetController.onPageLoad(NormalMode, assets.size))
 
       }
     }
