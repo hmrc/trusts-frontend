@@ -16,8 +16,6 @@
 
 package models
 
-import models.AddATrustee.YesNow
-import play.api.libs.json._
 import viewmodels.RadioOption
 
 sealed trait AddAssets

@@ -73,12 +73,35 @@ class Navigator @Inject()() {
     //Assets
     case AssetMoneyValuePage(index) => _ => ua => assetMoneyValueRoute(ua, index)
     case WhatKindOfAssetPage(index) => _ => ua => whatKindOfAssetRoute(ua, index)
+    case AddAssetsPage => _ => addAssetsRoute
 
     //  Default
     case _ => _ => _ => routes.IndexController.onPageLoad()
   }
 
-  
+  private def addAssetsRoute(answers: UserAnswers) = {
+    val addAnother = answers.get(AddAssetsPage)
+
+    def routeToAssetIndex = {
+      val assets = answers.get(Assets).getOrElse(List.empty)
+      assets match {
+        case Nil =>
+          routes.WhatKindOfAssetController.onPageLoad(NormalMode, 0)
+        case t if t.nonEmpty =>
+          routes.WhatKindOfAssetController.onPageLoad(NormalMode, t.size)
+      }
+    }
+
+    addAnother match {
+      case Some(models.AddAssets.YesNow) =>
+        routeToAssetIndex
+      case Some(models.AddAssets.YesLater) =>
+        routes.TaskListController.onPageLoad()
+      case Some(models.AddAssets.NoComplete) =>
+        routes.TaskListController.onPageLoad()
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
 
   private def assetMoneyValueRoute(answers: UserAnswers, index: Int) = {
 

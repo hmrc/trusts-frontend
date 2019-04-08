@@ -28,7 +28,8 @@ class AssetReadsSpec extends WordSpec with MustMatchers {
   val moneyJson = Json.parse(
     """
       |{
-      | "whatKindOfAsset": "Money"
+      | "whatKindOfAsset": "Money",
+      | "assetMoneyValue" : "4000"
       |}
     """.stripMargin
   )
@@ -39,7 +40,7 @@ class AssetReadsSpec extends WordSpec with MustMatchers {
 
       "serialise money asset type" in {
         val result = moneyJson.as[Asset]
-        result mustBe Asset(Some(Money), Some(""))
+        result mustBe Asset(Some(Money), Some("4000"))
       }
 
     }
@@ -48,7 +49,7 @@ class AssetReadsSpec extends WordSpec with MustMatchers {
 
       "serialise an empty object" in {
         val result = emptyJson.as[Asset]
-        result mustBe Asset(None, Some(""))
+        result mustBe Asset(None,None)
       }
 
     }
