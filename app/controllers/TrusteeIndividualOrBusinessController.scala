@@ -47,8 +47,6 @@ class TrusteeIndividualOrBusinessController @Inject()(
   with I18nSupport
   with Enumerable.Implicits {
 
-  val form = formProvider()
-
   private def actions(index: Int) =
     identify andThen getData andThen
       requireData andThen
@@ -60,11 +58,11 @@ class TrusteeIndividualOrBusinessController @Inject()(
 
       val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
 
-      val heading = if (isLead) {
-        Messages("leadTrusteeIndividualOrBusiness.heading")
-      } else {
-        Messages("trusteeIndividualOrBusiness.heading")
-      }
+      val messagePrefix = if (isLead) "leadTrusteeIndividualOrBusiness" else "trusteeIndividualOrBusiness"
+
+      val heading = Messages(s"$messagePrefix.heading")
+
+      val form = formProvider(messagePrefix)
 
       val preparedForm = request.userAnswers.get(TrusteeIndividualOrBusinessPage(index)) match {
         case None => form
@@ -79,11 +77,11 @@ class TrusteeIndividualOrBusinessController @Inject()(
 
       val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
 
-      val heading = if (isLead) {
-        Messages("leadTrusteeIndividualOrBusiness.heading")
-      } else {
-        Messages("trusteeIndividualOrBusiness.heading")
-      }
+      val messagePrefix = if (isLead) "leadTrusteeIndividualOrBusiness" else "trusteeIndividualOrBusiness"
+
+      val heading = Messages(s"$messagePrefix.heading")
+
+      val form = formProvider(messagePrefix)
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>

@@ -27,8 +27,9 @@ class TelephoneNumberFormProviderSpec extends StringFieldBehaviours {
   val lengthKey = "telephoneNumber.error.length"
   val invalidCharKey = "telephoneNumber.error.invalid.characters"
   val maxLength = 100
+  val messageKeyPrefix = "telephoneNumber"
 
-  val form = new TelephoneNumberFormProvider()()
+  val form = new TelephoneNumberFormProvider()(messageKeyPrefix)
 
   ".value" must {
 

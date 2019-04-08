@@ -38,7 +38,7 @@ class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generat
 
   val index = 0
 
-  override val form = new TrusteesNameFormProvider()()
+  override val form = new TrusteesNameFormProvider()(messageKeyPrefix)
 
   "LeadTrusteeFullName view" must {
 

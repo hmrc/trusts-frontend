@@ -19,9 +19,10 @@ package controllers
 import controllers.actions._
 import forms.TrusteeAUKCitizenFormProvider
 import javax.inject.Inject
+import models.requests.DataRequest
 import models.{FullName, Mode, NormalMode, UserAnswers}
 import navigation.Navigator
-import pages.{TrusteeAUKCitizenPage, Trustees, TrusteesNamePage}
+import pages.{IsThisLeadTrusteePage, TrusteeAUKCitizenPage, Trustees, TrusteesNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -45,19 +46,22 @@ class TrusteeAUKCitizenController @Inject()(
                                              view: TrusteeAUKCitizenView
                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
-
   private def actions(index: Int) =
     identify andThen
       getData andThen
       requireData andThen
       validateIndex(index, Trustees) andThen
-      requiredAnswer(RequiredAnswer(TrusteesNamePage(index), routes.TrusteesNameController.onPageLoad(NormalMode, index)))
+      requiredAnswer(RequiredAnswer(TrusteesNamePage(index), routes.TrusteesNameController.onPageLoad(NormalMode, index))) andThen
+      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index)))
 
   def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = actions(index) {
     implicit request =>
 
       val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
+
+      val messagePrefix: String = getMessagePrefix(index, request)
+
+      val form = formProvider(messagePrefix)
 
       val preparedForm = request.userAnswers.get(TrusteeAUKCitizenPage(index)) match {
         case None => form
@@ -72,6 +76,10 @@ class TrusteeAUKCitizenController @Inject()(
 
       val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
 
+      val messagePrefix: String = getMessagePrefix(index, request)
+
+      val form = formProvider(messagePrefix)
+
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(view(formWithErrors, mode, index, trusteeName))),
@@ -84,4 +92,16 @@ class TrusteeAUKCitizenController @Inject()(
         }
       )
   }
+
+  private def getMessagePrefix(index: Int, request: DataRequest[AnyContent]) = {
+    val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
+
+    val messagePrefix = if (isLead) {
+      "leadTrusteeAUKCitizen"
+    } else {
+      "trusteeAUKCitizen"
+    }
+    messagePrefix
+  }
+
 }

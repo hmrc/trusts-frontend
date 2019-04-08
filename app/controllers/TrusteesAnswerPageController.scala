@@ -21,8 +21,8 @@ import controllers.actions._
 import javax.inject.Inject
 import models.NormalMode
 import navigation.Navigator
-import pages.{Trustees, TrusteesAnswerPage, TrusteesNamePage}
-import play.api.i18n.{I18nSupport, MessagesApi}
+import pages.{IsThisLeadTrusteePage, Trustees, TrusteesAnswerPage, TrusteesNamePage}
+import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
@@ -49,23 +49,26 @@ class TrusteesAnswerPageController @Inject()(
     identify andThen getData andThen
       requireData andThen
       validateIndex(index, Trustees) andThen
-      requiredAnswer(RequiredAnswer(
-        TrusteesNamePage(index),
-        routes.TrusteesNameController.onPageLoad(NormalMode, index)
-      ))
+      requiredAnswer(RequiredAnswer(TrusteesNamePage(index),routes.TrusteesNameController.onPageLoad(NormalMode, index))) andThen
+      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index)))
 
   def onPageLoad(index : Int) = actions(index) {
     implicit request =>
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers)
 
+      val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
+
+      val trusteeIndividualOrBusinessMessagePrefix = if (isLead) "leadTrusteeIndividualOrBusiness" else "trusteeIndividualOrBusiness"
+      val trusteeFullNameMessagePrefix = if (isLead) "leadTrusteesName" else "trusteesName"
+
       val sections = Seq(
         AnswerSection(
           None,
           Seq(
             checkYourAnswersHelper.isThisLeadTrustee(index),
-            checkYourAnswersHelper.trusteeIndividualOrBusiness(index),
-            checkYourAnswersHelper.trusteeFullName(index),
+            checkYourAnswersHelper.trusteeIndividualOrBusiness(index, trusteeIndividualOrBusinessMessagePrefix),
+            checkYourAnswersHelper.trusteeFullName(index, trusteeFullNameMessagePrefix),
             checkYourAnswersHelper.trusteesDateOfBirth(index),
             checkYourAnswersHelper.trusteeAUKCitizen(index),
             checkYourAnswersHelper.trusteesNino(index),

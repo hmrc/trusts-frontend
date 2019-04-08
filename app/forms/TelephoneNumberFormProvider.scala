@@ -23,12 +23,12 @@ import play.api.data.Form
 
 class TelephoneNumberFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
+  def apply(messagePrefix: String): Form[String] =
     Form(
-      "value" -> text("telephoneNumber.error.required")
+      "value" -> text(s"$messagePrefix.error.required")
         .verifying(
           firstError(
-            isNotEmpty("value", "telephoneNumber.error.required"),
+            isNotEmpty("value", s"$messagePrefix.error.required"),
             regexp(Validation.telephoneRegex, "telephoneNumber.error.invalid.characters")
           ))
     )

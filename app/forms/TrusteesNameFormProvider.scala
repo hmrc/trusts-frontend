@@ -25,29 +25,29 @@ import play.api.data.Forms._
 
 class TrusteesNameFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[FullName] = Form(
+  def apply(messagePrefix: String): Form[FullName] = Form(
     mapping(
-      "firstName" -> text("trusteesName.error.firstnamerequired")
+      "firstName" -> text(s"$messagePrefix.error.firstnamerequired")
         .verifying(
           firstError(
-            maxLength(35, "trusteesName.error.lengthfirstname"),
-            isNotEmpty("firstName", "trusteesName.error.firstnamerequired"),
-            regexp(Validation.nameRegex, "trusteesName.error.invalidFirstNameCharacters")
+            maxLength(35, s"$messagePrefix.error.lengthfirstname"),
+            isNotEmpty("firstName", s"$messagePrefix.error.firstnamerequired"),
+            regexp(Validation.nameRegex, s"$messagePrefix.error.invalidFirstNameCharacters")
           )
         ),
-      "middleName" -> optional(text("fullName.error.middleName.required")
+      "middleName" -> optional(text()
         .verifying(
           firstError(
-            maxLength(35, "trusteesName.error.lengthmiddlename"),
-            regexp(Validation.nameRegex, "trusteesName.error.invalidMiddleNameCharacters"))
+            maxLength(35, s"$messagePrefix.error.lengthmiddlename"),
+            regexp(Validation.nameRegex, s"$messagePrefix.error.invalidMiddleNameCharacters"))
         )
       ),
-      "lastName" -> text("trusteesName.error.lastnamerequired")
+      "lastName" -> text(s"$messagePrefix.error.lastnamerequired")
         .verifying(
           firstError(
-            maxLength(35, "trusteesName.error.lengthlastname"),
-            isNotEmpty("lastName", "trusteesName.error.lastnamerequired"),
-            regexp(Validation.nameRegex, "trusteesName.error.invalidLastNameCharacters")
+            maxLength(35, s"$messagePrefix.error.lengthlastname"),
+            isNotEmpty("lastName", s"$messagePrefix.error.lastnamerequired"),
+            regexp(Validation.nameRegex, s"$messagePrefix.error.invalidLastNameCharacters")
           )
         )
     )(FullName.apply)(FullName.unapply)

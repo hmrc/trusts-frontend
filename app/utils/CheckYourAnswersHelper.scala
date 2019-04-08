@@ -137,18 +137,18 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
   }
 
 
-  def trusteeFullName(index : Int): Option[AnswerRow] = userAnswers.get(TrusteesNamePage(index)) map {
+  def trusteeFullName(index : Int, messagePrefix: String): Option[AnswerRow] = userAnswers.get(TrusteesNamePage(index)) map {
     x => AnswerRow(
-      "trusteesName.checkYourAnswersLabel",
+      s"$messagePrefix.checkYourAnswersLabel",
       HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"),
       routes.TrusteesNameController.onPageLoad(CheckMode, index).url
     )
   }
 
-  def trusteeIndividualOrBusiness(index : Int): Option[AnswerRow] = userAnswers.get(TrusteeIndividualOrBusinessPage(index)) map {
+  def trusteeIndividualOrBusiness(index : Int, messagePrefix: String): Option[AnswerRow] = userAnswers.get(TrusteeIndividualOrBusinessPage(index)) map {
     x =>
       AnswerRow(
-        "trusteeIndividualOrBusiness.checkYourAnswersLabel",
+        s"$messagePrefix.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"individualOrBusiness.$x")),
         routes.TrusteeIndividualOrBusinessController.onPageLoad(CheckMode, index).url
       )
