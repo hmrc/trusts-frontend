@@ -109,7 +109,7 @@ class Navigator @Inject()() {
 
     assets match  {
       case Nil => routes.WhatKindOfAssetController.onPageLoad(NormalMode, 0)
-      case a if assets.nonEmpty => routes.WhatKindOfAssetController.onPageLoad(NormalMode, a.size)
+      case a if assets.nonEmpty => routes.AddAssetsController.onPageLoad(NormalMode)
     }
   }
 

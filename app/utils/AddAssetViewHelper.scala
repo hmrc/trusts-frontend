@@ -16,6 +16,7 @@
 
 package utils
 
+import models.WhatKindOfAsset.Money
 import models.{UserAnswers, WhatKindOfAsset}
 import models.entities.Asset
 import pages.{Assets, Trustees}
@@ -24,9 +25,11 @@ import viewmodels.{AssetRow, AssetRows, TrusteeRow, TrusteeRows}
 
 class AddAssetViewHelper(userAnswers: UserAnswers)(implicit  messages: Messages) {
 
-  private def parseAssetValue(value :  Option[String]) : String = {
+  private def parseAssetValue(value :  Option[String],isMoney :Boolean) : String = {
     value match {
-      case Some(x) => s"$x"
+      case Some(x) if isMoney =>s"£$x"
+      case Some(x) =>s"$x"
+
       case None => ""
     }
   }
@@ -42,7 +45,7 @@ class AddAssetViewHelper(userAnswers: UserAnswers)(implicit  messages: Messages)
 
   private def parseAsset(asset: Asset) : TrusteeRow = {
     TrusteeRow(
-      parseAssetValue(asset.assetMoneyValue),
+      parseAssetValue(asset.assetMoneyValue,asset.isMoney),
       parseAssetType(asset.whatKindOfAsset),
       "#",
       "#"

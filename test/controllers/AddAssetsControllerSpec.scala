@@ -40,7 +40,7 @@ class AddAssetsControllerSpec extends SpecBase {
   val form = formProvider()
 
   val assets = List(
-    TrusteeRow("4800", typeLabel = "Money", "#", "#")
+    TrusteeRow("£4800", typeLabel = "Money", "#", "#")
   )
 
   val userAnswersWithAssetsComplete = UserAnswers(userAnswersId)

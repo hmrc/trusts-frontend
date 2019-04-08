@@ -35,17 +35,17 @@ trait AssetRoutes {
   def assetRoutes()(implicit navigator: Navigator) = {
 
 
-    "go to WhatKindOfAssetPage from AssetMoneyValue page when the amount submitted" in {
+    "go to AddAssetsPage from AssetMoneyValue page when the amount submitted" in {
 
       val index = 0
 
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          val assets = userAnswers.get(Assets).getOrElse(List.empty)
+          val answers = userAnswers.set(WhatKindOfAssetPage(index), Money).success.value
 
-          navigator.nextPage(AssetMoneyValuePage(index), NormalMode)(userAnswers)
-            .mustBe(routes.WhatKindOfAssetController.onPageLoad(NormalMode, assets.size))
+          navigator.nextPage(AssetMoneyValuePage(index), NormalMode)(answers)
+            .mustBe(routes.AddAssetsController.onPageLoad(NormalMode))
 
       }
     }
