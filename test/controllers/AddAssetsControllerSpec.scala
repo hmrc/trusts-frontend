@@ -27,7 +27,7 @@ import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import viewmodels.TrusteeRow
+import viewmodels.AddRow
 import views.html.AddAssetsView
 
 class AddAssetsControllerSpec extends SpecBase {
@@ -40,7 +40,7 @@ class AddAssetsControllerSpec extends SpecBase {
   val form = formProvider()
 
   val assets = List(
-    TrusteeRow("£4800", typeLabel = "Money", "#", "#")
+    AddRow("£4800", typeLabel = "Money", "#", "#")
   )
 
   val userAnswersWithAssetsComplete = UserAnswers(userAnswersId)

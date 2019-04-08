@@ -16,14 +16,14 @@
 
 @import controllers.routes._
 @import models.{Mode, AddATrustee}
-@import viewmodels.TrusteeRow
+@import viewmodels.AddRow
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, inProgressTrustees: Seq[TrusteeRow] ,completeTrustees: Seq[TrusteeRow])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, inProgressTrustees: Seq[AddRow] ,completeTrustees: Seq[AddRow])(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("addATrustee.title")}"

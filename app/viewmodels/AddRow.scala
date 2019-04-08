@@ -16,4 +16,5 @@
 
 package viewmodels
 
-case class TrusteeRows(inProgress : List[TrusteeRow], complete: List[TrusteeRow])
+case class AddRow(name: String, typeLabel: String, changeUrl: String, removeUrl: String)
+

@@ -21,7 +21,7 @@ import models.{UserAnswers, WhatKindOfAsset}
 import models.entities.Asset
 import pages.{Assets, Trustees}
 import play.api.i18n.Messages
-import viewmodels.{AssetRow, AssetRows, TrusteeRow, TrusteeRows}
+import viewmodels.{AssetRow, AssetRows, AddRow, AddToRows}
 
 class AddAssetViewHelper(userAnswers: UserAnswers)(implicit  messages: Messages) {
 
@@ -43,8 +43,8 @@ class AddAssetViewHelper(userAnswers: UserAnswers)(implicit  messages: Messages)
     }
   }
 
-  private def parseAsset(asset: Asset) : TrusteeRow = {
-    TrusteeRow(
+  private def parseAsset(asset: Asset) : AddRow = {
+    AddRow(
       parseAssetValue(asset.assetMoneyValue,asset.isMoney),
       parseAssetType(asset.whatKindOfAsset),
       "#",
@@ -52,14 +52,14 @@ class AddAssetViewHelper(userAnswers: UserAnswers)(implicit  messages: Messages)
     )
   }
 
-  def rows : TrusteeRows = {
+  def rows : AddToRows = {
     val assets = userAnswers.get(Assets).toList.flatten
 
     val complete = assets.filter(_.isComplete).map(parseAsset)
 
     val inProgress = assets.filterNot(_.isComplete).map(parseAsset)
 
-    TrusteeRows(inProgress, complete)
+    AddToRows(inProgress, complete)
   }
 
 }

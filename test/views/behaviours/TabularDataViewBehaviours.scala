@@ -19,12 +19,12 @@ package views.behaviours
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import play.twirl.api.HtmlFormat
-import viewmodels.TrusteeRow
+import viewmodels.AddRow
 import views.ViewSpecBase
 
 trait TabularDataViewBehaviours extends ViewSpecBase {
 
-  private def assertDataList(doc: Document, parentElementId: String, data: Seq[TrusteeRow]) = {
+  private def assertDataList(doc: Document, parentElementId: String, data: Seq[AddRow]) = {
 
     val container = doc.getElementById(parentElementId)
 
@@ -67,7 +67,7 @@ trait TabularDataViewBehaviours extends ViewSpecBase {
     }
   }
 
-  def pageWithInProgressTabularData(view: HtmlFormat.Appendable, data: Seq[TrusteeRow]) = {
+  def pageWithInProgressTabularData(view: HtmlFormat.Appendable, data: Seq[AddRow]) = {
 
     "behave like a page with incomplete tabular data" should {
 
@@ -96,7 +96,7 @@ trait TabularDataViewBehaviours extends ViewSpecBase {
     }
   }
 
-  def pageWithCompleteTabularData(view: HtmlFormat.Appendable, data: Seq[TrusteeRow]) = {
+  def pageWithCompleteTabularData(view: HtmlFormat.Appendable, data: Seq[AddRow]) = {
 
     "behave like a page with complete tabular data" should {
 
@@ -126,8 +126,8 @@ trait TabularDataViewBehaviours extends ViewSpecBase {
   }
 
   def pageWithTabularData(view: HtmlFormat.Appendable,
-                          inProgressData: Seq[TrusteeRow],
-                          completeData: Seq[TrusteeRow]) = {
+                          inProgressData: Seq[AddRow],
+                          completeData: Seq[AddRow]) = {
 
     "behave like a page with complete and incomplete tabular data" should {
 

@@ -20,7 +20,7 @@ import forms.AddAssetsFormProvider
 import models.{AddAssets, IndividualOrBusiness, NormalMode, WhatKindOfAsset}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import viewmodels.TrusteeRow
+import viewmodels.AddRow
 import views.behaviours.ViewBehaviours
 import views.html.AddAssetsView
 
@@ -28,11 +28,11 @@ class AddAssetsViewSpec extends ViewBehaviours {
 
 
   val completeAssets = Seq(
-    TrusteeRow("4500", WhatKindOfAsset.Money.toString, "#", "#")
+    AddRow("4500", WhatKindOfAsset.Money.toString, "#", "#")
   )
 
   val inProgressAssets = Seq(
-    TrusteeRow("Tesco", WhatKindOfAsset.Shares.toString, "#", "#")
+    AddRow("Tesco", WhatKindOfAsset.Shares.toString, "#", "#")
   )
 
   val messageKeyPrefix = "addAssets"
@@ -44,7 +44,7 @@ class AddAssetsViewSpec extends ViewBehaviours {
   def applyView(form: Form[_]): HtmlFormat.Appendable =
     view.apply(form, NormalMode, Nil, Nil)(fakeRequest, messages)
 
-  def applyView(form: Form[_], inProgressAssets: Seq[TrusteeRow], completeAssets: Seq[TrusteeRow]): HtmlFormat.Appendable =
+  def applyView(form: Form[_], inProgressAssets: Seq[AddRow], completeAssets: Seq[AddRow]): HtmlFormat.Appendable =
     view.apply(form, NormalMode, inProgressAssets, completeAssets)(fakeRequest, messages)
 
   "AddAssetsView" must {
