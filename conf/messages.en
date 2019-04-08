@@ -446,9 +446,11 @@ whatKindOfAsset.Other = Other
 whatKindOfAsset.checkYourAnswersLabel = What kind of asset do you need to add first?
 whatKindOfAsset.error.required = Select the kind of asset you need to add
 
-addAssets.title = addAssets
-addAssets.heading = addAssets
-addAssets.option1 = Option 1
-addAssets.option2 = Option 2
+addAssets.title = Add assets
+addAssets.heading = Add assets
+addAssets.additional-content = Do you want to add another asset?
+addAssets.add-them-now = Yes, I want to add them now
+addAssets.add-them-later = Yes, I want to add them later
+addAssets.no-complete = No, I have added all assets
 addAssets.checkYourAnswersLabel = addAssets
-addAssets.error.required = Select addAssets
+addAssets.error.required = Select yes if you want to add another asset

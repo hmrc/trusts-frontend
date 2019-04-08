@@ -78,6 +78,8 @@ class Navigator @Inject()() {
     case _ => _ => _ => routes.IndexController.onPageLoad()
   }
 
+  
+
   private def assetMoneyValueRoute(answers: UserAnswers, index: Int) = {
 
     val assets = answers.get(Assets).getOrElse(List.empty)

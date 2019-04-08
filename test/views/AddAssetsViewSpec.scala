@@ -1,13 +1,39 @@
+/*
+ * Copyright 2019 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package views
 
 import forms.AddAssetsFormProvider
-import models.{NormalMode, AddAssets}
+import models.{AddAssets, IndividualOrBusiness, NormalMode, WhatKindOfAsset}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
+import viewmodels.TrusteeRow
 import views.behaviours.ViewBehaviours
 import views.html.AddAssetsView
 
 class AddAssetsViewSpec extends ViewBehaviours {
+
+
+  val completeAssets = Seq(
+    TrusteeRow("4500", WhatKindOfAsset.Money.toString, "#", "#")
+  )
+
+  val inProgressAssets = Seq(
+    TrusteeRow("Tesco", WhatKindOfAsset.Shares.toString, "#", "#")
+  )
 
   val messageKeyPrefix = "addAssets"
 
@@ -16,7 +42,10 @@ class AddAssetsViewSpec extends ViewBehaviours {
   val view = viewFor[AddAssetsView](Some(emptyUserAnswers))
 
   def applyView(form: Form[_]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode)(fakeRequest, messages)
+    view.apply(form, NormalMode, Nil, Nil)(fakeRequest, messages)
+
+  def applyView(form: Form[_], inProgressAssets: Seq[TrusteeRow], completeAssets: Seq[TrusteeRow]): HtmlFormat.Appendable =
+    view.apply(form, NormalMode, inProgressAssets, completeAssets)(fakeRequest, messages)
 
   "AddAssetsView" must {
 

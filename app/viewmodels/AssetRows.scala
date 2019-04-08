@@ -14,19 +14,6 @@
  * limitations under the License.
  */
 
-package pages
+package viewmodels
 
-import models.AddAssets
-import pages.behaviours.PageBehaviours
-
-class AddAssetsSpec extends PageBehaviours {
-
-  "AddAssetsPage" must {
-
-    beRetrievable[AddAssets](AddAssetsPage)
-
-    beSettable[AddAssets](AddAssetsPage)
-
-    beRemovable[AddAssets](AddAssetsPage)
-  }
-}
+case class AssetRows(inProgress : List[AssetRow], complete: List[AssetRow])
