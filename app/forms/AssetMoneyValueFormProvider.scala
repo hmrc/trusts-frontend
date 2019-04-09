@@ -28,7 +28,9 @@ class AssetMoneyValueFormProvider @Inject() extends Mappings {
       "value" -> text("assetMoneyValue.error.required")
         .verifying(
           firstError(
-            maxLength(12, "assetMoneyValue.error.length"),
+            minimumValue("1", "assetMoneyValue.error.zero"),
+            regexp(Validation.decimalCheck, "assetMoneyValue.error.wholeNumber"),
+            maxLength(15, "assetMoneyValue.error.length"),
             isNotEmpty("value", "assetMoneyValue.error.required"),
             regexp(Validation.numericRegex, "assetMoneyValue.error.invalidFormat")
           ))

@@ -88,7 +88,7 @@ class AssetMoneyValueControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, assetMoneyValueRoute)
-          .withFormUrlEncodedBody(("value", "45000"))
+          .withFormUrlEncodedBody(("value", "45,000"))
 
       val result = route(application, request).value
 

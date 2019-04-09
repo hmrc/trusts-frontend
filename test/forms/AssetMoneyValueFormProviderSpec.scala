@@ -25,7 +25,7 @@ class AssetMoneyValueFormProviderSpec extends StringFieldBehaviours {
   val requiredKey = "assetMoneyValue.error.required"
   val lengthKey = "assetMoneyValue.error.length"
   val invalidFormatKey = "assetMoneyValue.error.invalidFormat"
-  val maxLength = 12
+  val maxLength = 15
 
   val form = new AssetMoneyValueFormProvider()()
 
