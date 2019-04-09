@@ -89,5 +89,18 @@ trait AssetRoutes {
             .mustBe(routes.TaskListController.onPageLoad())
       }
     }
+
+    "go to RegistrationProgress from AddAssetsPage when selecting no complete" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = UserAnswers(userAnswersId)
+            .set(WhatKindOfAssetPage(0), Money).success.value
+            .set(AddAssetsPage, AddAssets.NoComplete).success.value
+
+          navigator.nextPage(AddAssetsPage, NormalMode)(answers)
+            .mustBe(routes.TaskListController.onPageLoad())
+      }
+    }
   }
 }
