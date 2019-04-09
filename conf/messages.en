@@ -460,3 +460,13 @@ whatKindOfAsset.Partnership = Partnership
 whatKindOfAsset.Other = Other
 whatKindOfAsset.checkYourAnswersLabel = What kind of asset do you need to add first?
 whatKindOfAsset.error.required = Select the kind of asset you need to add
+
+individualBeneficiaryName.title = individualBeneficiaryName
+individualBeneficiaryName.heading = individualBeneficiaryName
+individualBeneficiaryName.field1 = Field 1
+individualBeneficiaryName.field2 = Field 2
+individualBeneficiaryName.checkYourAnswersLabel = individualBeneficiaryName
+individualBeneficiaryName.error.field1.required = Enter field1
+individualBeneficiaryName.error.field2.required = Enter field2
+individualBeneficiaryName.error.field1.length = field1 must be 100 characters or less
+individualBeneficiaryName.error.field2.length = field2 must be 100 characters or less
