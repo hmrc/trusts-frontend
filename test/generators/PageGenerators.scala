@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryAddAssetsPage: Arbitrary[AddAssetsPage.type] =
+    Arbitrary(AddAssetsPage)
+
   implicit lazy val arbitraryAssetMoneyValuePage: Arbitrary[AssetMoneyValuePage] =
     Arbitrary(AssetMoneyValuePage(0))
 

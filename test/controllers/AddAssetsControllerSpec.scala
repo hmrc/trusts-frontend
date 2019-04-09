@@ -17,53 +17,52 @@
 package controllers
 
 import base.SpecBase
-import forms.AddATrusteeFormProvider
-import models.{AddATrustee, FullName, IndividualOrBusiness, NormalMode, UserAnswers}
+import forms.AddAssetsFormProvider
+import models.WhatKindOfAsset.Money
+import models.{AddAssets, FullName, IndividualOrBusiness, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.{AddATrusteePage, TrusteeIndividualOrBusinessPage, TrusteesNamePage}
+import pages.{AddAssetsPage, AssetMoneyValuePage, TrusteeIndividualOrBusinessPage, TrusteesNamePage, WhatKindOfAssetPage}
 import play.api.inject.bind
+import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.AddRow
-import views.html.AddATrusteeView
+import views.html.AddAssetsView
 
-class AddATrusteeControllerSpec extends SpecBase {
+class AddAssetsControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  lazy val addATrusteeRoute : String = routes.AddATrusteeController.onPageLoad().url
+  lazy val addAssetsRoute = routes.AddAssetsController.onPageLoad().url
 
-  val formProvider = new AddATrusteeFormProvider()
+  val formProvider = new AddAssetsFormProvider()
   val form = formProvider()
 
-  val trustee = List(
-    AddRow("First 0 Last 0", typeLabel = "Trustee Individual", "#", "#"),
-    AddRow("First 1 Last 1", typeLabel = "Trustee Business", "#", "#")
+  val assets = List(
+    AddRow("£4800", typeLabel = "Money", "#", "#")
   )
 
-  val userAnswersWithTrusteesComplete = UserAnswers(userAnswersId)
-    .set(TrusteesNamePage(0), FullName("First 0", None, "Last 0")).success.value
-    .set(TrusteeIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
-    .set(TrusteesNamePage(1), FullName("First 1", None, "Last 1")).success.value
-    .set(TrusteeIndividualOrBusinessPage(1), IndividualOrBusiness.Business).success.value
+  val userAnswersWithAssetsComplete = UserAnswers(userAnswersId)
+    .set(WhatKindOfAssetPage(0), Money).success.value
+    .set(AssetMoneyValuePage(0), "4800").success.value
 
-  "AddATrustee Controller" must {
+  "AddAssets Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswersWithTrusteesComplete)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithAssetsComplete)).build()
 
-      val request = FakeRequest(GET, addATrusteeRoute)
+      val request = FakeRequest(GET, addAssetsRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[AddATrusteeView]
+      val view = application.injector.instanceOf[AddAssetsView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, Nil, trustee)(fakeRequest, messages).toString
+        view(form, NormalMode, Nil, assets)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -71,13 +70,13 @@ class AddATrusteeControllerSpec extends SpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(userAnswersWithTrusteesComplete))
+        applicationBuilder(userAnswers = Some(userAnswersWithAssetsComplete))
           .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
-        FakeRequest(POST, addATrusteeRoute)
-          .withFormUrlEncodedBody(("value", AddATrustee.options.head.value))
+        FakeRequest(POST, addAssetsRoute)
+          .withFormUrlEncodedBody(("value", AddAssets.options.head.value))
 
       val result = route(application, request).value
 
@@ -90,22 +89,22 @@ class AddATrusteeControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswersWithTrusteesComplete)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithAssetsComplete)).build()
 
       val request =
-        FakeRequest(POST, addATrusteeRoute)
+        FakeRequest(POST, addAssetsRoute)
           .withFormUrlEncodedBody(("value", "invalid value"))
 
       val boundForm = form.bind(Map("value" -> "invalid value"))
 
-      val view = application.injector.instanceOf[AddATrusteeView]
+      val view = application.injector.instanceOf[AddAssetsView]
 
       val result = route(application, request).value
 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, Nil, trustee)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, Nil, assets)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -114,7 +113,7 @@ class AddATrusteeControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, addATrusteeRoute)
+      val request = FakeRequest(GET, addAssetsRoute)
 
       val result = route(application, request).value
 
@@ -129,8 +128,8 @@ class AddATrusteeControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, addATrusteeRoute)
-          .withFormUrlEncodedBody(("value", AddATrustee.values.head.toString))
+        FakeRequest(POST, addAssetsRoute)
+          .withFormUrlEncodedBody(("value", AddAssets.values.head.toString))
 
       val result = route(application, request).value
 

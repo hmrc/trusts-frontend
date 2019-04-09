@@ -21,7 +21,7 @@ import base.SpecBase
 import controllers.routes
 import generators.Generators
 import models.WhatKindOfAsset.Money
-import models.{NormalMode, UserAnswers, WhatKindOfAsset}
+import models.{NormalMode, UserAnswers, AddAssets}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
@@ -35,17 +35,17 @@ trait AssetRoutes {
   def assetRoutes()(implicit navigator: Navigator) = {
 
 
-    "go to WhatKindOfAssetPage from AssetMoneyValue page when the amount submitted" in {
+    "go to AddAssetsPage from AssetMoneyValue page when the amount submitted" in {
 
       val index = 0
 
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          val assets = userAnswers.get(Assets).getOrElse(List.empty)
+          val answers = userAnswers.set(WhatKindOfAssetPage(index), Money).success.value
 
-          navigator.nextPage(AssetMoneyValuePage(index), NormalMode)(userAnswers)
-            .mustBe(routes.WhatKindOfAssetController.onPageLoad(NormalMode, assets.size))
+          navigator.nextPage(AssetMoneyValuePage(index), NormalMode)(answers)
+            .mustBe(routes.AddAssetsController.onPageLoad())
 
       }
     }
@@ -60,6 +60,46 @@ trait AssetRoutes {
 
           navigator.nextPage(WhatKindOfAssetPage(index), NormalMode)(answers)
             .mustBe(routes.AssetMoneyValueController.onPageLoad(NormalMode, index))
+      }
+    }
+
+
+   "there is atleast one assets" must {
+
+      "go to the WhatKindOfAssetPage from AddAssetsPage when selected add them now" in {
+
+        val answers = UserAnswers(userAnswersId)
+          .set(WhatKindOfAssetPage(0), Money).success.value
+          .set(AddAssetsPage, AddAssets.YesNow).success.value
+
+        navigator.nextPage(AddAssetsPage, NormalMode)(answers)
+          .mustBe(routes.WhatKindOfAssetController.onPageLoad(NormalMode, 1))
+      }
+    }
+
+    "go to RegistrationProgress from AddAssetsPage when selecting add them later" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = UserAnswers(userAnswersId)
+            .set(WhatKindOfAssetPage(0), Money).success.value
+            .set(AddAssetsPage, AddAssets.YesLater).success.value
+
+          navigator.nextPage(AddAssetsPage, NormalMode)(answers)
+            .mustBe(routes.TaskListController.onPageLoad())
+      }
+    }
+
+    "go to RegistrationProgress from AddAssetsPage when selecting no complete" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = UserAnswers(userAnswersId)
+            .set(WhatKindOfAssetPage(0), Money).success.value
+            .set(AddAssetsPage, AddAssets.NoComplete).success.value
+
+          navigator.nextPage(AddAssetsPage, NormalMode)(answers)
+            .mustBe(routes.TaskListController.onPageLoad())
       }
     }
   }

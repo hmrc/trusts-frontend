@@ -14,20 +14,14 @@
  * limitations under the License.
  */
 
-package models.entities
+package pages
 
-import models.WhatKindOfAsset
-import models.WhatKindOfAsset.Money
-import play.api.libs.json.{Json, OFormat}
+import models.AddAssets
+import play.api.libs.json.JsPath
 
+case object AddAssetsPage extends QuestionPage[AddAssets] {
 
-case class Asset(whatKindOfAsset: Option[WhatKindOfAsset], assetMoneyValue: Option[String]){
-  def isComplete = whatKindOfAsset.nonEmpty && assetMoneyValue.nonEmpty
-  def isMoney :Boolean = whatKindOfAsset.isDefined && whatKindOfAsset.contains(Money)
-}
+  override def path: JsPath = JsPath \ toString
 
-object Asset {
-
-  implicit val formats : OFormat[Asset] = Json.format[Asset]
-
+  override def toString: String = "addAssets"
 }

@@ -16,45 +16,46 @@
 
 package utils
 
-import models.entities.Trustee
-import models.{FullName, IndividualOrBusiness, UserAnswers}
-import pages.Trustees
+import models.entities.Asset
+import models.{UserAnswers, WhatKindOfAsset}
+import pages.Assets
 import play.api.i18n.Messages
 import viewmodels.{AddRow, AddToRows}
 
-class AddATrusteeViewHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
+class AddAssetViewHelper(userAnswers: UserAnswers)(implicit  messages: Messages) {
 
-  private def parseName(name : Option[FullName]) : String = {
-    name match {
+  private def parseAssetValue(value: Option[String], isMoney: Boolean) : String = {
+    value match {
+      case Some(x) if isMoney => s"£$x"
       case Some(x) => s"$x"
       case None => ""
     }
   }
 
-  private def parseType(individualOrBusiness: Option[IndividualOrBusiness]) : String = {
-    individualOrBusiness match {
+  private def parseAssetType(whatKindOfAsset: Option[WhatKindOfAsset]): String = {
+    whatKindOfAsset match {
       case Some(x) =>
-        s"${messages("entity.trustee")} ${messages(s"individualOrBusiness.$x")}"
+       x.toString
       case None =>
-        messages("entity.trustee")
+        ""
     }
   }
 
-  private def parseTrustee(trustee : Trustee) : AddRow = {
+  private def parseAsset(asset: Asset) : AddRow = {
     AddRow(
-      parseName(trustee.name),
-      parseType(trustee.`type`),
+      parseAssetValue(asset.assetMoneyValue, asset.isMoney),
+      parseAssetType(asset.whatKindOfAsset),
       "#",
       "#"
     )
   }
 
   def rows : AddToRows = {
-    val trustees = userAnswers.get(Trustees).toList.flatten
+    val assets = userAnswers.get(Assets).toList.flatten
 
-    val complete = trustees.filter(_.isComplete).map(parseTrustee)
+    val complete = assets.filter(_.isComplete).map(parseAsset)
 
-    val inProgress = trustees.filterNot(_.isComplete).map(parseTrustee)
+    val inProgress = assets.filterNot(_.isComplete).map(parseAsset)
 
     AddToRows(inProgress, complete)
   }

@@ -14,20 +14,7 @@
  * limitations under the License.
  */
 
-package models.entities
+package viewmodels
 
-import models.WhatKindOfAsset
-import models.WhatKindOfAsset.Money
-import play.api.libs.json.{Json, OFormat}
+case class AddRow(name: String, typeLabel: String, changeUrl: String, removeUrl: String)
 
-
-case class Asset(whatKindOfAsset: Option[WhatKindOfAsset], assetMoneyValue: Option[String]){
-  def isComplete = whatKindOfAsset.nonEmpty && assetMoneyValue.nonEmpty
-  def isMoney :Boolean = whatKindOfAsset.isDefined && whatKindOfAsset.contains(Money)
-}
-
-object Asset {
-
-  implicit val formats : OFormat[Asset] = Json.format[Asset]
-
-}

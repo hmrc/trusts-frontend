@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package models.entities
+package forms
 
-import models.WhatKindOfAsset
-import models.WhatKindOfAsset.Money
-import play.api.libs.json.{Json, OFormat}
+import javax.inject.Inject
 
+import forms.mappings.Mappings
+import play.api.data.Form
+import models.AddAssets
 
-case class Asset(whatKindOfAsset: Option[WhatKindOfAsset], assetMoneyValue: Option[String]){
-  def isComplete = whatKindOfAsset.nonEmpty && assetMoneyValue.nonEmpty
-  def isMoney :Boolean = whatKindOfAsset.isDefined && whatKindOfAsset.contains(Money)
-}
+class AddAssetsFormProvider @Inject() extends Mappings {
 
-object Asset {
-
-  implicit val formats : OFormat[Asset] = Json.format[Asset]
-
+  def apply(): Form[AddAssets] =
+    Form(
+      "value" -> enumerable[AddAssets]("addAssets.error.required")
+    )
 }

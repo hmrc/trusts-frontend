@@ -15,39 +15,40 @@
  *@
 
 @import controllers.routes._
-@import models.{Mode, AddATrustee}
+@import models.{Mode, AddAssets}
 @import viewmodels.AddRow
+
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, inProgressTrustees: Seq[AddRow] ,completeTrustees: Seq[AddRow])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, inProgressAssets: Seq[AddRow] ,completeAssets: Seq[AddRow])(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("addATrustee.title")}"
+    title = s"${errorPrefix(form)} ${messages("addAssets.title")}"
     ) {
 
-    @formHelper(action = AddATrusteeController.onSubmit(), 'autoComplete -> "off") {
+    @formHelper(action = AddAssetsController.onSubmit(), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("addATrustee.heading")
+        @components.heading(messages("addAssets.heading"))
 
-        @components.data_list(inProgressTrustees, "inprogress", "trustee")
+        @components.data_list(inProgressAssets, "inprogress", "asset")
 
-        @components.data_list(completeTrustees, "complete", "trustee")
+        @components.data_list(completeAssets, "complete", "asset")
 
-        <h2>@messages("addATrustee.additional-content")</h2>
+        <h2>@messages("addAssets.additional-content")</h2>
 
         @components.input_radio(
             field = form("value"),
-            legend = messages("addATrustee.heading"),
+            legend = messages("addAssets.heading"),
             legendClass = Some("visually-hidden"),
-            inputs = AddATrustee.options
+            inputs = AddAssets.options
         )
 
         @components.submit_button()
