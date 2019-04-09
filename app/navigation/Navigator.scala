@@ -107,7 +107,7 @@ class Navigator @Inject()() {
     val assets = answers.get(Assets).getOrElse(List.empty)
     assets match  {
       case Nil => routes.WhatKindOfAssetController.onPageLoad(NormalMode, 0)
-      case _ => routes.AddAssetsController.onPageLoad(NormalMode)
+      case _ => routes.AddAssetsController.onPageLoad()
     }
   }
 

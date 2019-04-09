@@ -208,5 +208,3 @@ POST       /asset/:index/change-money                   controllers.AssetMoneyVa
 
 GET        /asset/add                        controllers.AddAssetsController.onPageLoad(mode: Mode = NormalMode)
 POST       /asset/add                        controllers.AddAssetsController.onSubmit(mode: Mode = NormalMode)
-GET        /asset/change                  controllers.AddAssetsController.onPageLoad(mode: Mode = CheckMode)
-POST       /asset/change                  controllers.AddAssetsController.onSubmit(mode: Mode = CheckMode)

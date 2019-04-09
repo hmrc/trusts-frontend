@@ -45,7 +45,7 @@ trait AssetRoutes {
           val answers = userAnswers.set(WhatKindOfAssetPage(index), Money).success.value
 
           navigator.nextPage(AssetMoneyValuePage(index), NormalMode)(answers)
-            .mustBe(routes.AddAssetsController.onPageLoad(NormalMode))
+            .mustBe(routes.AddAssetsController.onPageLoad())
 
       }
     }

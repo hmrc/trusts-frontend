@@ -34,7 +34,7 @@ class AddAssetsControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  lazy val addAssetsRoute = routes.AddAssetsController.onPageLoad(NormalMode).url
+  lazy val addAssetsRoute = routes.AddAssetsController.onPageLoad().url
 
   val formProvider = new AddAssetsFormProvider()
   val form = formProvider()
