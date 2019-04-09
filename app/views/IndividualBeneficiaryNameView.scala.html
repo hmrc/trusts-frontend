@@ -37,14 +37,22 @@
         @components.heading("individualBeneficiaryName.heading")
 
         @components.input_text(
-            field = form("field1"),
-            label = messages("individualBeneficiaryName.field1")
+            field = form("firstName"),
+            label = messages("trusteesName.firstName"),
+            ariaRequired = true
         )
 
         @components.input_text(
-            field = form("field2"),
-            label = messages("individualBeneficiaryName.field2")
+            field = form("middleName"),
+            label = messages("trusteesName.middleName")
         )
+
+        @components.input_text(
+            field = form("lastName"),
+            label = messages("trusteesName.lastName"),
+            ariaRequired = true
+        )
+
 
         @components.submit_button()
     }

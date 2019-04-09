@@ -461,12 +461,18 @@ whatKindOfAsset.Other = Other
 whatKindOfAsset.checkYourAnswersLabel = What kind of asset do you need to add first?
 whatKindOfAsset.error.required = Select the kind of asset you need to add
 
-individualBeneficiaryName.title = individualBeneficiaryName
-individualBeneficiaryName.heading = individualBeneficiaryName
-individualBeneficiaryName.field1 = Field 1
-individualBeneficiaryName.field2 = Field 2
-individualBeneficiaryName.checkYourAnswersLabel = individualBeneficiaryName
-individualBeneficiaryName.error.field1.required = Enter field1
-individualBeneficiaryName.error.field2.required = Enter field2
-individualBeneficiaryName.error.field1.length = field1 must be 100 characters or less
-individualBeneficiaryName.error.field2.length = field2 must be 100 characters or less
+individualBeneficiaryName.title = What is the name of the individual?
+individualBeneficiaryName.heading = What is the name of the individual?
+individualBeneficiaryName.checkYourAnswersLabel = What is the name of the individual?
+individualBeneficiaryName.firstName = First name
+individualBeneficiaryName.middleName = Middle name (optional)
+individualBeneficiaryName.lastName = Last name
+individualBeneficiaryName.error.firstnamerequired = Enter the named individual's first name
+individualBeneficiaryName.error.lastnamerequired = Enter the named individual's last name
+individualBeneficiaryName.error.lengthfirstname = Named individual's first name must be 35 characters or less
+individualBeneficiaryName.error.lengthmiddlename = Named individual's middle name must be 35 characters or less
+individualBeneficiaryName.error.lengthlastname = Named individual's last name must be 35 characters or less
+individualBeneficiaryName.error.invalidFirstNameCharacters = Named individual's first name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+individualBeneficiaryName.error.invalidMiddleNameCharacters = Named individual's middle name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+individualBeneficiaryName.error.invalidLastNameCharacters = Named individual's last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+

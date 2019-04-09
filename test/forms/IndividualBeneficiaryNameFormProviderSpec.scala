@@ -18,22 +18,29 @@ package forms
 
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
+import wolfendale.scalacheck.regexp.RegexpGen
+import play.api.data.{Form}
 
 class IndividualBeneficiaryNameFormProviderSpec extends StringFieldBehaviours {
 
   val form = new IndividualBeneficiaryNameFormProvider()()
 
-  ".field1" must {
 
-    val fieldName = "field1"
-    val requiredKey = "individualBeneficiaryName.error.field1.required"
-    val lengthKey = "individualBeneficiaryName.error.field1.length"
-    val maxLength = 100
+  val maxLength = 35
+  val minLength = 1
+
+
+  ".firstName" must {
+
+    val fieldName = "firstName"
+    val requiredKey = "individualBeneficiaryName.error.firstnamerequired"
+    val lengthKey = "individualBeneficiaryName.error.lengthfirstname"
+    val regex = "^[A-Za-z0-9 ,.()/&'-]*$"
 
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      RegexpGen.from(regex)
     )
 
     behave like fieldWithMaxLength(
@@ -47,20 +54,48 @@ class IndividualBeneficiaryNameFormProviderSpec extends StringFieldBehaviours {
       form,
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
+    )
+
+    behave like nonEmptyField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
     )
   }
 
-  ".field2" must {
+  ".middleName" must {
 
-    val fieldName = "field2"
-    val requiredKey = "individualBeneficiaryName.error.field2.required"
-    val lengthKey = "individualBeneficiaryName.error.field2.length"
-    val maxLength = 100
+    val fieldName = "middleName"
+    val lengthKey = "individualBeneficiaryName.error.lengthmiddlename"
+    val maxLength = 35
+    val regex = "^[A-Za-z0-9 ,.()/&'-]*$"
+
+
+    behave like fieldWithMaxLength(
+      form,
+      fieldName,
+      maxLength = maxLength,
+      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+    )
+
+    behave like optionalField(
+      form,
+      fieldName,
+      validDataGenerator = RegexpGen.from(regex))
+  }
+
+
+  ".lastName" must {
+
+    val fieldName = "lastName"
+    val requiredKey = "individualBeneficiaryName.error.lastnamerequired"
+    val lengthKey = "individualBeneficiaryName.error.lengthlastname"
+    val regex = "^[A-Za-z0-9 ,.()/&'-]*$"
 
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      RegexpGen.from(regex)
     )
 
     behave like fieldWithMaxLength(
@@ -74,6 +109,12 @@ class IndividualBeneficiaryNameFormProviderSpec extends StringFieldBehaviours {
       form,
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
+    )
+
+    behave like nonEmptyField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
     )
   }
 }

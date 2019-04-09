@@ -18,13 +18,14 @@ package views
 
 import controllers.routes
 import forms.IndividualBeneficiaryNameFormProvider
-import models.{NormalMode, IndividualBeneficiaryName}
+import models.{FullName,  NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
 import views.html.IndividualBeneficiaryNameView
+import generators.Generators
 
-class IndividualBeneficiaryNameViewSpec extends QuestionViewBehaviours[IndividualBeneficiaryName] {
+class IndividualBeneficiaryNameViewSpec extends QuestionViewBehaviours[FullName] with Generators {
 
   val messageKeyPrefix = "individualBeneficiaryName"
 
@@ -47,7 +48,7 @@ class IndividualBeneficiaryNameViewSpec extends QuestionViewBehaviours[Individua
       applyView,
       messageKeyPrefix,
       routes.IndividualBeneficiaryNameController.onSubmit(NormalMode).url,
-      Seq(("field1",None), ("field2",None))
+      Seq(("firstName",None), ("middleName",None), ("lastName",None))
     )
   }
 }

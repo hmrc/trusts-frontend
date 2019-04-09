@@ -16,17 +16,18 @@
 
 package pages
 
-import models.IndividualBeneficiaryName
+import generators.FullNameGenerator
+import models.{FullName, IndividualBeneficiaryName}
 import pages.behaviours.PageBehaviours
 
-class IndividualBeneficiaryNamePageSpec extends PageBehaviours {
+class IndividualBeneficiaryNamePageSpec extends PageBehaviours with FullNameGenerator {
 
   "IndividualBeneficiaryNamePage" must {
 
-    beRetrievable[IndividualBeneficiaryName](IndividualBeneficiaryNamePage)
+    beRetrievable[FullName](IndividualBeneficiaryNamePage)
 
-    beSettable[IndividualBeneficiaryName](IndividualBeneficiaryNamePage)
+    beSettable[FullName](IndividualBeneficiaryNamePage)
 
-    beRemovable[IndividualBeneficiaryName](IndividualBeneficiaryNamePage)
+    beRemovable[FullName](IndividualBeneficiaryNamePage)
   }
 }

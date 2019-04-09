@@ -18,9 +18,9 @@ package controllers
 
 import base.SpecBase
 import forms.IndividualBeneficiaryNameFormProvider
-import models.{NormalMode, IndividualBeneficiaryName, UserAnswers}
+import models.{FullName, IndividualBeneficiaryName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.IndividualBeneficiaryNamePage
+import pages.{IndividualBeneficiaryNamePage, TrusteesNamePage}
 import play.api.inject.bind
 import play.api.libs.json.Json
 import play.api.mvc.Call
@@ -36,8 +36,9 @@ class IndividualBeneficiaryNameControllerSpec extends SpecBase {
   val form = formProvider()
 
   lazy val individualBeneficiaryNameRoute = routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode).url
+  val name = FullName("first name", Some("middle name"), "last name")
 
-  val userAnswers = UserAnswers(
+ /* val userAnswers = UserAnswers(
     userAnswersId,
     Json.obj(
       IndividualBeneficiaryNamePage.toString -> Json.obj(
@@ -45,7 +46,10 @@ class IndividualBeneficiaryNameControllerSpec extends SpecBase {
         "field2" -> "value 2"
       )
     )
-  )
+  )*/
+
+  val userAnswers = UserAnswers(userAnswersId)
+    .set(IndividualBeneficiaryNamePage, name).success.value
 
   "IndividualBeneficiaryName Controller" must {
 
@@ -80,7 +84,7 @@ class IndividualBeneficiaryNameControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(IndividualBeneficiaryName("value 1", "value 2")), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(name), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -94,7 +98,7 @@ class IndividualBeneficiaryNameControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, individualBeneficiaryNameRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+          .withFormUrlEncodedBody(("firstName", "first"), ("middleName", "middle"), ("lastName", "last"))
 
       val result = route(application, request).value
 
@@ -147,7 +151,7 @@ class IndividualBeneficiaryNameControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, individualBeneficiaryNameRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+          .withFormUrlEncodedBody(("firstName", "first"), ("middleName", "middle"), ("lastName", "last"))
 
       val result = route(application, request).value
 

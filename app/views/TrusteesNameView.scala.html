@@ -36,22 +36,22 @@
 
         @components.heading(heading)
 
-        @components.input_text(
-        field = form("firstName"),
-        label = messages("trusteesName.firstName"),
-        ariaRequired = true
-        )
+            @components.input_text(
+            field = form("firstName"),
+            label = messages("trusteesName.firstName"),
+            ariaRequired = true
+            )
 
-        @components.input_text(
-        field = form("middleName"),
-        label = messages("trusteesName.middleName")
-        )
+            @components.input_text(
+            field = form("middleName"),
+            label = messages("trusteesName.middleName")
+            )
 
-        @components.input_text(
-        field = form("lastName"),
-        label = messages("trusteesName.lastName"),
-        ariaRequired = true
-        )
+            @components.input_text(
+            field = form("lastName"),
+            label = messages("trusteesName.lastName"),
+            ariaRequired = true
+            )
 
         @components.submit_button()
     }

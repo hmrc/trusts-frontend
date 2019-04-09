@@ -21,16 +21,35 @@ import javax.inject.Inject
 import forms.mappings.Mappings
 import play.api.data.Form
 import play.api.data.Forms._
-import models.IndividualBeneficiaryName
+import models.{FullName, IndividualBeneficiaryName}
 
 class IndividualBeneficiaryNameFormProvider @Inject() extends Mappings {
 
-   def apply(): Form[IndividualBeneficiaryName] = Form(
-     mapping(
-      "field1" -> text("individualBeneficiaryName.error.field1.required")
-        .verifying(maxLength(100, "individualBeneficiaryName.error.field1.length")),
-      "field2" -> text("individualBeneficiaryName.error.field2.required")
-        .verifying(maxLength(100, "individualBeneficiaryName.error.field2.length"))
-    )(IndividualBeneficiaryName.apply)(IndividualBeneficiaryName.unapply)
+   def apply(): Form[FullName] =   Form(
+    mapping(
+      "firstName" -> text(s"individualBeneficiaryName.error.firstnamerequired")
+        .verifying(
+          firstError(
+            maxLength(35, s"individualBeneficiaryName.error.lengthfirstname"),
+            isNotEmpty("firstName", s"individualBeneficiaryName.error.firstnamerequired"),
+            regexp(Validation.nameRegex, s"individualBeneficiaryName.error.invalidFirstNameCharacters")
+          )
+        ),
+      "middleName" -> optional(text()
+        .verifying(
+          firstError(
+            maxLength(35, s"individualBeneficiaryName.error.lengthmiddlename"),
+            regexp(Validation.nameRegex, s"individualBeneficiaryName.error.invalidMiddleNameCharacters"))
+        )
+      ),
+      "lastName" -> text(s"individualBeneficiaryName.error.lastnamerequired")
+        .verifying(
+          firstError(
+            maxLength(35, s"individualBeneficiaryName.error.lengthlastname"),
+            isNotEmpty("lastName", s"individualBeneficiaryName.error.lastnamerequired"),
+            regexp(Validation.nameRegex, s"individualBeneficiaryName.error.invalidLastNameCharacters")
+          )
+        )
+    )(FullName.apply)(FullName.unapply)
    )
  }
