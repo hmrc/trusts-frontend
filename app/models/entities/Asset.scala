@@ -23,9 +23,7 @@ import play.api.libs.json.{Json, OFormat}
 
 case class Asset(whatKindOfAsset: Option[WhatKindOfAsset], assetMoneyValue: Option[String]){
   def isComplete = whatKindOfAsset.nonEmpty && assetMoneyValue.nonEmpty
-  def isMoney :Boolean = whatKindOfAsset.isDefined && whatKindOfAsset.get.toString == Money.toString
-
-
+  def isMoney :Boolean = whatKindOfAsset.isDefined && whatKindOfAsset.contains(Money)
 }
 
 object Asset {

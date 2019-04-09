@@ -104,12 +104,10 @@ class Navigator @Inject()() {
   }
 
   private def assetMoneyValueRoute(answers: UserAnswers, index: Int) = {
-
     val assets = answers.get(Assets).getOrElse(List.empty)
-
     assets match  {
       case Nil => routes.WhatKindOfAssetController.onPageLoad(NormalMode, 0)
-      case a if assets.nonEmpty => routes.AddAssetsController.onPageLoad(NormalMode)
+      case _ => routes.AddAssetsController.onPageLoad(NormalMode)
     }
   }
 

@@ -16,20 +16,18 @@
 
 package utils
 
-import models.WhatKindOfAsset.Money
-import models.{UserAnswers, WhatKindOfAsset}
 import models.entities.Asset
-import pages.{Assets, Trustees}
+import models.{UserAnswers, WhatKindOfAsset}
+import pages.Assets
 import play.api.i18n.Messages
-import viewmodels.{AssetRow, AssetRows, AddRow, AddToRows}
+import viewmodels.{AddRow, AddToRows}
 
 class AddAssetViewHelper(userAnswers: UserAnswers)(implicit  messages: Messages) {
 
-  private def parseAssetValue(value :  Option[String],isMoney :Boolean) : String = {
+  private def parseAssetValue(value: Option[String], isMoney: Boolean) : String = {
     value match {
-      case Some(x) if isMoney =>s"£$x"
-      case Some(x) =>s"$x"
-
+      case Some(x) if isMoney => s"£$x"
+      case Some(x) => s"$x"
       case None => ""
     }
   }
@@ -45,7 +43,7 @@ class AddAssetViewHelper(userAnswers: UserAnswers)(implicit  messages: Messages)
 
   private def parseAsset(asset: Asset) : AddRow = {
     AddRow(
-      parseAssetValue(asset.assetMoneyValue,asset.isMoney),
+      parseAssetValue(asset.assetMoneyValue, asset.isMoney),
       parseAssetType(asset.whatKindOfAsset),
       "#",
       "#"
