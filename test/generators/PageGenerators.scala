@@ -21,6 +21,42 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryWasSettlorsAddressUKYesNoPage: Arbitrary[WasSettlorsAddressUKYesNoPage.type] =
+    Arbitrary(WasSettlorsAddressUKYesNoPage)
+
+  implicit lazy val arbitrarySetupAfterSettlorDiedPage: Arbitrary[SetupAfterSettlorDiedPage.type] =
+    Arbitrary(SetupAfterSettlorDiedPage)
+
+  implicit lazy val arbitrarySettlorsUKAddressPage: Arbitrary[SettlorsUKAddressPage.type] =
+    Arbitrary(SettlorsUKAddressPage)
+
+  implicit lazy val arbitrarySettlorsNINoYesNoPage: Arbitrary[SettlorsNINoYesNoPage.type] =
+    Arbitrary(SettlorsNINoYesNoPage)
+
+  implicit lazy val arbitrarySettlorsNamePage: Arbitrary[SettlorsNamePage.type] =
+    Arbitrary(SettlorsNamePage)
+
+  implicit lazy val arbitrarySettlorsLastKnownAddressYesNoPage: Arbitrary[SettlorsLastKnownAddressYesNoPage.type] =
+    Arbitrary(SettlorsLastKnownAddressYesNoPage)
+
+  implicit lazy val arbitrarySettlorsInternationalAddressPage: Arbitrary[SettlorsInternationalAddressPage.type] =
+    Arbitrary(SettlorsInternationalAddressPage)
+
+  implicit lazy val arbitrarySettlorsDateOfBirthPage: Arbitrary[SettlorsDateOfBirthPage.type] =
+    Arbitrary(SettlorsDateOfBirthPage)
+
+  implicit lazy val arbitrarySettlorNationalInsuranceNumberPage: Arbitrary[SettlorNationalInsuranceNumberPage.type] =
+    Arbitrary(SettlorNationalInsuranceNumberPage)
+
+  implicit lazy val arbitrarySettlorDateOfDeathYesNoPage: Arbitrary[SettlorDateOfDeathYesNoPage.type] =
+    Arbitrary(SettlorDateOfDeathYesNoPage)
+
+  implicit lazy val arbitrarySettlorDateOfDeathPage: Arbitrary[SettlorDateOfDeathPage.type] =
+    Arbitrary(SettlorDateOfDeathPage)
+
+  implicit lazy val arbitrarySettlorDateOfBirthYesNoPage: Arbitrary[SettlorDateOfBirthYesNoPage.type] =
+    Arbitrary(SettlorDateOfBirthYesNoPage)
+
   implicit lazy val arbitraryAddAssetsPage: Arbitrary[AddAssetsPage.type] =
     Arbitrary(AddAssetsPage)
 

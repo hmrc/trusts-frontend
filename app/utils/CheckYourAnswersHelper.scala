@@ -30,6 +30,114 @@ import viewmodels.AnswerRow
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def wasSettlorsAddressUKYesNo: Option[AnswerRow] = userAnswers.get(WasSettlorsAddressUKYesNoPage) map {
+    x =>
+      AnswerRow(
+        "wasSettlorsAddressUKYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.WasSettlorsAddressUKYesNoController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def setupAfterSettlorDied: Option[AnswerRow] = userAnswers.get(SetupAfterSettlorDiedPage) map {
+    x =>
+      AnswerRow(
+        "setupAfterSettlorDied.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.SetupAfterSettlorDiedController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def settlorsUKAddress: Option[AnswerRow] = userAnswers.get(SettlorsUKAddressPage) map {
+    x =>
+      AnswerRow(
+        "settlorsUKAddress.checkYourAnswersLabel",
+        HtmlFormat.escape(s"${x.field1} ${x.field2}"),
+        routes.SettlorsUKAddressController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def settlorsNINoYesNo: Option[AnswerRow] = userAnswers.get(SettlorsNINoYesNoPage) map {
+    x =>
+      AnswerRow(
+        "settlorsNINoYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.SettlorsNINoYesNoController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def settlorsName: Option[AnswerRow] = userAnswers.get(SettlorsNamePage) map {
+    x =>
+      AnswerRow(
+        "settlorsName.checkYourAnswersLabel",
+        HtmlFormat.escape(s"${x.field1} ${x.field2}"),
+        routes.SettlorsNameController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def settlorsLastKnownAddressYesNo: Option[AnswerRow] = userAnswers.get(SettlorsLastKnownAddressYesNoPage) map {
+    x =>
+      AnswerRow(
+        "settlorsLastKnownAddressYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.SettlorsLastKnownAddressYesNoController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def settlorsInternationalAddress: Option[AnswerRow] = userAnswers.get(SettlorsInternationalAddressPage) map {
+    x =>
+      AnswerRow(
+        "settlorsInternationalAddress.checkYourAnswersLabel",
+        HtmlFormat.escape(s"${x.field1} ${x.field2}"),
+        routes.SettlorsInternationalAddressController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def settlorsDateOfBirth: Option[AnswerRow] = userAnswers.get(SettlorsDateOfBirthPage) map {
+    x =>
+      AnswerRow(
+        "settlorsDateOfBirth.checkYourAnswersLabel",
+        HtmlFormat.escape(x.format(dateFormatter)),
+        routes.SettlorsDateOfBirthController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def settlorNationalInsuranceNumber: Option[AnswerRow] = userAnswers.get(SettlorNationalInsuranceNumberPage) map {
+    x =>
+      AnswerRow(
+        "settlorNationalInsuranceNumber.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.SettlorNationalInsuranceNumberController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def settlorDateOfDeathYesNo: Option[AnswerRow] = userAnswers.get(SettlorDateOfDeathYesNoPage) map {
+    x =>
+      AnswerRow(
+        "settlorDateOfDeathYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.SettlorDateOfDeathYesNoController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def settlorDateOfDeath: Option[AnswerRow] = userAnswers.get(SettlorDateOfDeathPage) map {
+    x =>
+      AnswerRow(
+        "settlorDateOfDeath.checkYourAnswersLabel",
+        HtmlFormat.escape(x.format(dateFormatter)),
+        routes.SettlorDateOfDeathController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def settlorDateOfBirthYesNo: Option[AnswerRow] = userAnswers.get(SettlorDateOfBirthYesNoPage) map {
+    x =>
+      AnswerRow(
+        "settlorDateOfBirthYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.SettlorDateOfBirthYesNoController.onPageLoad(CheckMode).url
+      )
+  }
+
   def assetMoneyValue(index: Int): Option[AnswerRow] = userAnswers.get(AssetMoneyValuePage(index)) map {
     x =>
       AnswerRow(

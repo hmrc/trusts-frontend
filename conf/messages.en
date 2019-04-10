@@ -469,3 +469,85 @@ addAssets.add-them-later = Yes, I want to add them later
 addAssets.no-complete = No, I have added all assets
 addAssets.checkYourAnswersLabel = addAssets
 addAssets.error.required = Select yes if you want to add another asset
+
+settlorDateOfBirthYesNo.title = settlorDateOfBirthYesNo
+settlorDateOfBirthYesNo.heading = settlorDateOfBirthYesNo
+settlorDateOfBirthYesNo.checkYourAnswersLabel = settlorDateOfBirthYesNo
+settlorDateOfBirthYesNo.error.required = Select yes if settlorDateOfBirthYesNo
+
+settlorDateOfDeath.title = SettlorDateOfDeath
+settlorDateOfDeath.heading = SettlorDateOfDeath
+settlorDateOfDeath.checkYourAnswersLabel = SettlorDateOfDeath
+settlorDateOfDeath.error.required.all = Enter the settlorDateOfDeath
+settlorDateOfDeath.error.required.two = The settlorDateOfDeath must include {0} and {1}
+settlorDateOfDeath.error.required = The settlorDateOfDeath must include {0}
+settlorDateOfDeath.error.invalid = Enter a real SettlorDateOfDeath
+
+settlorDateOfDeathYesNo.title = settlorDateOfDeathYesNo
+settlorDateOfDeathYesNo.heading = settlorDateOfDeathYesNo
+settlorDateOfDeathYesNo.checkYourAnswersLabel = settlorDateOfDeathYesNo
+settlorDateOfDeathYesNo.error.required = Select yes if settlorDateOfDeathYesNo
+
+settlorNationalInsuranceNumber.title = settlorNationalInsuranceNumber
+settlorNationalInsuranceNumber.heading = settlorNationalInsuranceNumber
+settlorNationalInsuranceNumber.checkYourAnswersLabel = settlorNationalInsuranceNumber
+settlorNationalInsuranceNumber.error.required = Enter settlorNationalInsuranceNumber
+settlorNationalInsuranceNumber.error.length = SettlorNationalInsuranceNumber must be 9 characters or less
+
+settlorsDateOfBirth.title = SettlorsDateOfBirth
+settlorsDateOfBirth.heading = SettlorsDateOfBirth
+settlorsDateOfBirth.checkYourAnswersLabel = SettlorsDateOfBirth
+settlorsDateOfBirth.error.required.all = Enter the settlorsDateOfBirth
+settlorsDateOfBirth.error.required.two = The settlorsDateOfBirth must include {0} and {1}
+settlorsDateOfBirth.error.required = The settlorsDateOfBirth must include {0}
+settlorsDateOfBirth.error.invalid = Enter a real SettlorsDateOfBirth
+
+settlorsInternationalAddress.title = settlorsInternationalAddress
+settlorsInternationalAddress.heading = settlorsInternationalAddress
+settlorsInternationalAddress.field1 = Field 1
+settlorsInternationalAddress.field2 = Field 2
+settlorsInternationalAddress.checkYourAnswersLabel = settlorsInternationalAddress
+settlorsInternationalAddress.error.field1.required = Enter field1
+settlorsInternationalAddress.error.field2.required = Enter field2
+settlorsInternationalAddress.error.field1.length = field1 must be 100 characters or less
+settlorsInternationalAddress.error.field2.length = field2 must be 100 characters or less
+
+settlorsLastKnownAddressYesNo.title = settlorsLastKnownAddressYesNo
+settlorsLastKnownAddressYesNo.heading = settlorsLastKnownAddressYesNo
+settlorsLastKnownAddressYesNo.checkYourAnswersLabel = settlorsLastKnownAddressYesNo
+settlorsLastKnownAddressYesNo.error.required = Select yes if settlorsLastKnownAddressYesNo
+
+settlorsName.title = settlorsName
+settlorsName.heading = settlorsName
+settlorsName.field1 = Field 1
+settlorsName.field2 = Field 2
+settlorsName.checkYourAnswersLabel = settlorsName
+settlorsName.error.field1.required = Enter field1
+settlorsName.error.field2.required = Enter field2
+settlorsName.error.field1.length = field1 must be 100 characters or less
+settlorsName.error.field2.length = field2 must be 100 characters or less
+
+settlorsNINoYesNo.title = settlorsNINoYesNo
+settlorsNINoYesNo.heading = settlorsNINoYesNo
+settlorsNINoYesNo.checkYourAnswersLabel = settlorsNINoYesNo
+settlorsNINoYesNo.error.required = Select yes if settlorsNINoYesNo
+
+settlorsUKAddress.title = settlorsUKAddress
+settlorsUKAddress.heading = settlorsUKAddress
+settlorsUKAddress.field1 = Field 1
+settlorsUKAddress.field2 = Field 2
+settlorsUKAddress.checkYourAnswersLabel = settlorsUKAddress
+settlorsUKAddress.error.field1.required = Enter field1
+settlorsUKAddress.error.field2.required = Enter field2
+settlorsUKAddress.error.field1.length = field1 must be 100 characters or less
+settlorsUKAddress.error.field2.length = field2 must be 100 characters or less
+
+setupAfterSettlorDied.title = setupAfterSettlorDied
+setupAfterSettlorDied.heading = setupAfterSettlorDied
+setupAfterSettlorDied.checkYourAnswersLabel = setupAfterSettlorDied
+setupAfterSettlorDied.error.required = Select yes if setupAfterSettlorDied
+
+wasSettlorsAddressUKYesNo.title = wasSettlorsAddressUKYesNo
+wasSettlorsAddressUKYesNo.heading = wasSettlorsAddressUKYesNo
+wasSettlorsAddressUKYesNo.checkYourAnswersLabel = wasSettlorsAddressUKYesNo
+wasSettlorsAddressUKYesNo.error.required = Select yes if wasSettlorsAddressUKYesNo
