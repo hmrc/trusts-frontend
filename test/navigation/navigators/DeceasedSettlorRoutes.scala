@@ -56,6 +56,42 @@ trait DeceasedSettlorRoutes {
             .mustBe(routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode))
       }
     }
+
+    "go to SettlorDateOfDeathPage from SettlorDateOfDeathYesNoPage when user answers yes" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val answers = userAnswers.set(SettlorDateOfDeathYesNoPage, value = true).success.value
+          navigator.nextPage(SettlorDateOfDeathYesNoPage, NormalMode)(answers)
+            .mustBe(routes.SettlorDateOfDeathController.onPageLoad(NormalMode))
+      }
+    }
+
+    "go to SettlorDateOfBirthYesNoPage from SettlorDateOfDeathPage" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          navigator.nextPage(SettlorDateOfDeathPage, NormalMode)(userAnswers)
+            .mustBe(routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode))
+      }
+    }
+
+    "go to SettlorDateOfBirthPage from SettlorDateOfBirthYesNoPage when user answers yes" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val answers = userAnswers.set(SettlorDateOfBirthYesNoPage, value = true).success.value
+
+          navigator.nextPage(SettlorDateOfBirthYesNoPage, NormalMode)(answers)
+            .mustBe(routes.SettlorsDateOfBirthController.onPageLoad(NormalMode))
+      }
+    }
+
+    "go to SettlorNINoYesNoPage from SettlorsDateOfBirthPage" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          navigator.nextPage(SettlorsDateOfBirthPage, NormalMode)(userAnswers)
+            .mustBe(routes.SettlorsNINoYesNoController.onPageLoad(NormalMode))
+      }
+    }
+
     "go to SettlorsNINoYesNoPage from SettlorDateOfBirthYesNoPage when user answers no" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>

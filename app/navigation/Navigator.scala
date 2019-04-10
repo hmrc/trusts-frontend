@@ -78,13 +78,26 @@ class Navigator @Inject()() {
     //Settlors
     case SetupAfterSettlorDiedPage => _ => _ => routes.SettlorsNameController.onPageLoad(NormalMode)
     case SettlorsNamePage => _ => _ => routes.SettlorDateOfDeathYesNoController.onPageLoad(NormalMode)
-    case SettlorDateOfDeathYesNoPage => _ => _ => routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode)
-    case SettlorDateOfBirthYesNoPage => _ => _ => routes.SettlorsNINoYesNoController.onPageLoad(NormalMode)
+    case SettlorDateOfDeathYesNoPage => _ => deceasedSettlorDateOfDeathRoute
+    case SettlorDateOfBirthYesNoPage => _ => deceasedSettlorDateOfBirthRoute
+    case SettlorsDateOfBirthPage => _ => _ => routes.SettlorsNINoYesNoController.onPageLoad(NormalMode)
     case SettlorsNINoYesNoPage => _ => _ => routes.SettlorsLastKnownAddressYesNoController.onPageLoad(NormalMode)
     case SettlorsLastKnownAddressYesNoPage => _ => _ => routes.DeceasedSettlorAnswerController.onPageLoad()
-
+    case SettlorDateOfDeathPage => _ => _ => routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode)
     //  Default
     case _ => _ => _ => routes.IndexController.onPageLoad()
+  }
+
+  private def deceasedSettlorDateOfBirthRoute(userAnswers: UserAnswers): Call = userAnswers.get(SettlorDateOfBirthYesNoPage) match {
+    case Some(false) => routes.SettlorsNINoYesNoController.onPageLoad(NormalMode)
+    case Some(true) => routes.SettlorsDateOfBirthController.onPageLoad(NormalMode)
+    case _ => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def deceasedSettlorDateOfDeathRoute(userAnswers: UserAnswers) : Call = userAnswers.get(SettlorDateOfDeathYesNoPage) match {
+    case Some(false) => routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode)
+    case Some(true) => routes.SettlorDateOfDeathController.onPageLoad(NormalMode)
+    case _ => routes.SessionExpiredController.onPageLoad()
   }
 
   private def addAssetsRoute(answers: UserAnswers) = {
