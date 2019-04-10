@@ -208,3 +208,63 @@ POST       /asset/:index/change-money                   controllers.AssetMoneyVa
 
 GET        /asset/add                        controllers.AddAssetsController.onPageLoad(mode: Mode = NormalMode)
 POST       /asset/add                        controllers.AddAssetsController.onSubmit(mode: Mode = NormalMode)
+
+GET        /settlorDateOfBirthYesNo                        controllers.SettlorDateOfBirthYesNoController.onPageLoad(mode: Mode = NormalMode)
+POST       /settlorDateOfBirthYesNo                        controllers.SettlorDateOfBirthYesNoController.onSubmit(mode: Mode = NormalMode)
+GET        /changeSettlorDateOfBirthYesNo                  controllers.SettlorDateOfBirthYesNoController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeSettlorDateOfBirthYesNo                  controllers.SettlorDateOfBirthYesNoController.onSubmit(mode: Mode = CheckMode)
+
+GET        /settlorDateOfDeath                  controllers.SettlorDateOfDeathController.onPageLoad(mode: Mode = NormalMode)
+POST       /settlorDateOfDeath                  controllers.SettlorDateOfDeathController.onSubmit(mode: Mode = NormalMode)
+GET        /changeSettlorDateOfDeath                        controllers.SettlorDateOfDeathController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeSettlorDateOfDeath                        controllers.SettlorDateOfDeathController.onSubmit(mode: Mode = CheckMode)
+
+GET        /settlorDateOfDeathYesNo                        controllers.SettlorDateOfDeathYesNoController.onPageLoad(mode: Mode = NormalMode)
+POST       /settlorDateOfDeathYesNo                        controllers.SettlorDateOfDeathYesNoController.onSubmit(mode: Mode = NormalMode)
+GET        /changeSettlorDateOfDeathYesNo                  controllers.SettlorDateOfDeathYesNoController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeSettlorDateOfDeathYesNo                  controllers.SettlorDateOfDeathYesNoController.onSubmit(mode: Mode = CheckMode)
+
+GET        /settlorNationalInsuranceNumber                        controllers.SettlorNationalInsuranceNumberController.onPageLoad(mode: Mode = NormalMode)
+POST       /settlorNationalInsuranceNumber                        controllers.SettlorNationalInsuranceNumberController.onSubmit(mode: Mode = NormalMode)
+GET        /changeSettlorNationalInsuranceNumber                  controllers.SettlorNationalInsuranceNumberController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeSettlorNationalInsuranceNumber                  controllers.SettlorNationalInsuranceNumberController.onSubmit(mode: Mode = CheckMode)
+
+GET        /settlorsDateOfBirth                  controllers.SettlorsDateOfBirthController.onPageLoad(mode: Mode = NormalMode)
+POST       /settlorsDateOfBirth                  controllers.SettlorsDateOfBirthController.onSubmit(mode: Mode = NormalMode)
+GET        /changeSettlorsDateOfBirth                        controllers.SettlorsDateOfBirthController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeSettlorsDateOfBirth                        controllers.SettlorsDateOfBirthController.onSubmit(mode: Mode = CheckMode)
+
+GET        /settlorsInternationalAddress                        controllers.SettlorsInternationalAddressController.onPageLoad(mode: Mode = NormalMode)
+POST       /settlorsInternationalAddress                        controllers.SettlorsInternationalAddressController.onSubmit(mode: Mode = NormalMode)
+GET        /changeSettlorsInternationalAddress                  controllers.SettlorsInternationalAddressController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeSettlorsInternationalAddress                  controllers.SettlorsInternationalAddressController.onSubmit(mode: Mode = CheckMode)
+
+GET        /settlorsLastKnownAddressYesNo                        controllers.SettlorsLastKnownAddressYesNoController.onPageLoad(mode: Mode = NormalMode)
+POST       /settlorsLastKnownAddressYesNo                        controllers.SettlorsLastKnownAddressYesNoController.onSubmit(mode: Mode = NormalMode)
+GET        /changeSettlorsLastKnownAddressYesNo                  controllers.SettlorsLastKnownAddressYesNoController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeSettlorsLastKnownAddressYesNo                  controllers.SettlorsLastKnownAddressYesNoController.onSubmit(mode: Mode = CheckMode)
+
+GET        /settlorsName                        controllers.SettlorsNameController.onPageLoad(mode: Mode = NormalMode)
+POST       /settlorsName                        controllers.SettlorsNameController.onSubmit(mode: Mode = NormalMode)
+GET        /changeSettlorsName                  controllers.SettlorsNameController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeSettlorsName                  controllers.SettlorsNameController.onSubmit(mode: Mode = CheckMode)
+
+GET        /settlorsNINoYesNo                        controllers.SettlorsNINoYesNoController.onPageLoad(mode: Mode = NormalMode)
+POST       /settlorsNINoYesNo                        controllers.SettlorsNINoYesNoController.onSubmit(mode: Mode = NormalMode)
+GET        /changeSettlorsNINoYesNo                  controllers.SettlorsNINoYesNoController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeSettlorsNINoYesNo                  controllers.SettlorsNINoYesNoController.onSubmit(mode: Mode = CheckMode)
+
+GET        /settlorsUKAddress                        controllers.SettlorsUKAddressController.onPageLoad(mode: Mode = NormalMode)
+POST       /settlorsUKAddress                        controllers.SettlorsUKAddressController.onSubmit(mode: Mode = NormalMode)
+GET        /changeSettlorsUKAddress                  controllers.SettlorsUKAddressController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeSettlorsUKAddress                  controllers.SettlorsUKAddressController.onSubmit(mode: Mode = CheckMode)
+
+GET        /setupAfterSettlorDied                        controllers.SetupAfterSettlorDiedController.onPageLoad(mode: Mode = NormalMode)
+POST       /setupAfterSettlorDied                        controllers.SetupAfterSettlorDiedController.onSubmit(mode: Mode = NormalMode)
+GET        /changeSetupAfterSettlorDied                  controllers.SetupAfterSettlorDiedController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeSetupAfterSettlorDied                  controllers.SetupAfterSettlorDiedController.onSubmit(mode: Mode = CheckMode)
+
+GET        /wasSettlorsAddressUKYesNo                        controllers.WasSettlorsAddressUKYesNoController.onPageLoad(mode: Mode = NormalMode)
+POST       /wasSettlorsAddressUKYesNo                        controllers.WasSettlorsAddressUKYesNoController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWasSettlorsAddressUKYesNo                  controllers.WasSettlorsAddressUKYesNoController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWasSettlorsAddressUKYesNo                  controllers.WasSettlorsAddressUKYesNoController.onSubmit(mode: Mode = CheckMode)
