@@ -31,7 +31,7 @@ class $className$ViewSpec extends QuestionViewBehaviours[$className$] {
       applyView,
       messageKeyPrefix,
       routes.$className$Controller.onSubmit(NormalMode).url,
-      "field1", "field2"
+      Seq(("field1", None), ("field2", None))
     )
   }
 }

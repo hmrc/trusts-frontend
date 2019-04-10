@@ -22,18 +22,13 @@ import base.SpecBase
 import forms.SettlorDateOfDeathFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
 import org.scalatest.mockito.MockitoSugar
 import pages.SettlorDateOfDeathPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import repositories.SessionRepository
 import views.html.SettlorDateOfDeathView
-
-import scala.concurrent.Future
 
 class SettlorDateOfDeathControllerSpec extends SpecBase with MockitoSugar {
 
@@ -87,8 +82,6 @@ class SettlorDateOfDeathControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "redirect to the next page when valid data is submitted" in {
-
-
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
