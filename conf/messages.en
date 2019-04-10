@@ -447,7 +447,7 @@ assetMoneyValue.error.required = Enter the current total amount of money in the 
 assetMoneyValue.error.length = Total assets value must be 12 numbers or less
 assetMoneyValue.error.invalidFormat = Total assets value must be a number
 assetMoneyValue.error.wholeNumber = Total assets value must be a whole number
-assetMoneyValue.error.zero = Total assets should have some value
+assetMoneyValue.error.zero = Total amount of money in the trust must be 1 or more
 assetMoneyValue.link = Return to registration progress
 
 whatKindOfAsset.first.title = What kind of asset do you need to add first?
