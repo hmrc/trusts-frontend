@@ -81,7 +81,7 @@ class Navigator @Inject()() {
     case SettlorDateOfDeathYesNoPage => _ => _ => routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode)
     case SettlorDateOfBirthYesNoPage => _ => _ => routes.SettlorsNINoYesNoController.onPageLoad(NormalMode)
     case SettlorsNINoYesNoPage => _ => _ => routes.SettlorsLastKnownAddressYesNoController.onPageLoad(NormalMode)
-      
+
     //  Default
     case _ => _ => _ => routes.IndexController.onPageLoad()
   }
