@@ -75,6 +75,13 @@ class Navigator @Inject()() {
     case WhatKindOfAssetPage(index) => _ => ua => whatKindOfAssetRoute(ua, index)
     case AddAssetsPage => _ => addAssetsRoute
 
+    //Settlors
+    case SetupAfterSettlorDiedPage => _ => _ => routes.SettlorsNameController.onPageLoad(NormalMode)
+    case SettlorsNamePage => _ => _ => routes.SettlorDateOfDeathYesNoController.onPageLoad(NormalMode)
+    case SettlorDateOfDeathYesNoPage => _ => _ => routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode)
+    case SettlorDateOfBirthYesNoPage => _ => _ => routes.SettlorsNINoYesNoController.onPageLoad(NormalMode)
+    case SettlorsNINoYesNoPage => _ => _ => routes.SettlorsLastKnownAddressYesNoController.onPageLoad(NormalMode)
+      
     //  Default
     case _ => _ => _ => routes.IndexController.onPageLoad()
   }
