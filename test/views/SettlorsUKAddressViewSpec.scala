@@ -47,7 +47,7 @@ class SettlorsUKAddressViewSpec extends QuestionViewBehaviours[SettlorsUKAddress
       applyView,
       messageKeyPrefix,
       routes.SettlorsUKAddressController.onSubmit(NormalMode).url,
-      "field1", "field2"
+      Seq(("field1",None),("field2",None) )
     )
   }
 }

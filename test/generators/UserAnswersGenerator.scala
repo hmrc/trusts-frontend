@@ -21,7 +21,7 @@ import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.TryValues
 import pages._
-import play.api.libs.json.{JsPath, JsValue, Json}
+import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersGenerator extends TryValues {
   self: Generators =>
@@ -39,7 +39,6 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(SettlorDateOfDeathYesNoPage.type, JsValue)] ::
     arbitrary[(SettlorDateOfDeathPage.type, JsValue)] ::
     arbitrary[(SettlorDateOfBirthYesNoPage.type, JsValue)] ::
-
     arbitrary[(AddAssetsPage.type, JsValue)] ::
     arbitrary[(AssetMoneyValuePage, JsValue)] ::
     arbitrary[(AgentInternalReferencePage.type, JsValue)] ::

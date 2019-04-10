@@ -47,7 +47,7 @@ class SettlorsInternationalAddressViewSpec extends QuestionViewBehaviours[Settlo
       applyView,
       messageKeyPrefix,
       routes.SettlorsInternationalAddressController.onSubmit(NormalMode).url,
-      "field1", "field2"
+      Seq(("field1",None),("field2",None) )
     )
   }
 }
