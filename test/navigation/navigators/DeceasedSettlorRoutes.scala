@@ -31,7 +31,7 @@ trait DeceasedSettlorRoutes {
   self: PropertyChecks with Generators with SpecBase =>
 
   def deceasedSettlorRoutes()(implicit navigator: Navigator) = {
-    "go to Settlor's Name page from Was Trust Setup When Settlor Died page when user answers yes" in {
+    "go to SettlorsNamePage from SetupAfterSettlorDiedPage when user answers yes" in {
       forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
