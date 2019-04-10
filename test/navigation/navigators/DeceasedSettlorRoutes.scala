@@ -73,5 +73,14 @@ trait DeceasedSettlorRoutes {
       }
     }
 
+    "go to DeceasedSettlorAnswerPage from SettlorsLastKnownAddressYesNoPage when user answers no" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val answers = userAnswers.set(SettlorsLastKnownAddressYesNoPage, value = false).success.value
+          navigator.nextPage(SettlorsLastKnownAddressYesNoPage, NormalMode)(answers)
+            .mustBe(routes.DeceasedSettlorAnswerController.onPageLoad())
+      }
+    }
+
   }
 }
