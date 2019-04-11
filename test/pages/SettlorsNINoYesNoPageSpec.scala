@@ -16,6 +16,8 @@
 
 package pages
 
+import models.{SettlorsUKAddress, UserAnswers}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
 class SettlorsNINoYesNoPageSpec extends PageBehaviours {
@@ -27,5 +29,30 @@ class SettlorsNINoYesNoPageSpec extends PageBehaviours {
     beSettable[Boolean](SettlorsNINoYesNoPage)
 
     beRemovable[Boolean](SettlorsNINoYesNoPage)
+  }
+
+  "remove SettlorNinoPage when SettlorsNINoYesNoPage is set to false" in {
+    forAll(arbitrary[UserAnswers], arbitrary[String]) {
+      (initial, str) =>
+        val answers: UserAnswers = initial.set(SettlorNationalInsuranceNumberPage, str).success.value
+        val result = answers.set(SettlorsNINoYesNoPage, false).success.value
+
+        result.get(SettlorNationalInsuranceNumberPage) mustNot be(defined)
+    }
+  }
+
+  "remove relevant Data when SettlorsNINoYesNoPage is set to true" in {
+    forAll(arbitrary[UserAnswers], arbitrary[String]) {
+      (initial, str) =>
+        val answers: UserAnswers = initial.set(SettlorsLastKnownAddressYesNoPage, true).success.value
+          .set(WasSettlorsAddressUKYesNoPage, true).success.value
+          .set(SettlorsUKAddressPage, SettlorsUKAddress(str, str)).success.value
+
+        val result = answers.set(SettlorsNINoYesNoPage, true).success.value
+
+        result.get(SettlorsLastKnownAddressYesNoPage) mustNot be(defined)
+        result.get(WasSettlorsAddressUKYesNoPage) mustNot be(defined)
+        result.get(SettlorsUKAddressPage) mustNot be(defined)
+    }
   }
 }

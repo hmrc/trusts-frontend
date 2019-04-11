@@ -16,6 +16,10 @@
 
 package pages
 
+import java.time.LocalDate
+
+import models.UserAnswers
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
 class SettlorDateOfDeathYesNoPageSpec extends PageBehaviours {
@@ -27,5 +31,15 @@ class SettlorDateOfDeathYesNoPageSpec extends PageBehaviours {
     beSettable[Boolean](SettlorDateOfDeathYesNoPage)
 
     beRemovable[Boolean](SettlorDateOfDeathYesNoPage)
+  }
+
+  "remove SettlorDateOfDeath when SettlorDateOfDeathPage is set to false" in {
+    forAll(arbitrary[UserAnswers]) {
+      initial =>
+        val answers: UserAnswers = initial.set(SettlorDateOfDeathPage, LocalDate.now).success.value
+        val result = answers.set(SettlorDateOfDeathYesNoPage, false).success.value
+
+        result.get(SettlorDateOfDeathPage) mustNot be(defined)
+    }
   }
 }

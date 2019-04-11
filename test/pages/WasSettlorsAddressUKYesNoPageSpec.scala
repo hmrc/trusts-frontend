@@ -16,6 +16,8 @@
 
 package pages
 
+import models.{SettlorsInternationalAddress, SettlorsUKAddress, UserAnswers}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
 class WasSettlorsAddressUKYesNoPageSpec extends PageBehaviours {
@@ -28,4 +30,25 @@ class WasSettlorsAddressUKYesNoPageSpec extends PageBehaviours {
 
     beRemovable[Boolean](WasSettlorsAddressUKYesNoPage)
   }
+
+  "remove DeceasedSettlorUkAddress when WasSettlorsAddressUKYesNoPage is set to false" in {
+    forAll(arbitrary[UserAnswers], arbitrary[String]) {
+      (initial, str) =>
+        val answers : UserAnswers = initial.set(SettlorsUKAddressPage,SettlorsUKAddress(str,str)).success.value
+        val result = answers.set(WasSettlorsAddressUKYesNoPage, false).success.value
+
+        result.get(SettlorsUKAddressPage) mustNot be (defined)
+    }
+  }
+
+  "remove DeceasedSettlorInternationalAddress when WasSettlorsAddressUKYesNoPage is set to true" in {
+    forAll(arbitrary[UserAnswers], arbitrary[String]) {
+      (initial, str) =>
+        val answers: UserAnswers = initial.set(SettlorsInternationalAddressPage, SettlorsInternationalAddress(str, str)).success.value
+        val result = answers.set(WasSettlorsAddressUKYesNoPage, true).success.value
+
+        result.get(SettlorsInternationalAddressPage) mustNot be(defined)
+    }
+  }
+
 }
