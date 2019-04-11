@@ -36,3 +36,4 @@ bin
 /.classpath
 *.log
 *.iws
+/app/navigation/Navigator.scala
