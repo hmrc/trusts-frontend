@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-package pages
+package models.entities
 
-import models.{FullName, IndividualBeneficiaryName}
-import play.api.libs.json.JsPath
+import models.{FullName, WhatKindOfAsset}
+import play.api.libs.json.{Json, OFormat}
 
-case object IndividualBeneficiaryNamePage extends QuestionPage[FullName] {
 
-  override def path: JsPath = JsPath \ Beneficiaries \ IndividualBeneficiary \ toString
 
-  override def toString: String = "individualBeneficiaryName"
+case class IndividualBeneficiary(individualBeneficiaryName: Option[FullName])
+
+object IndividualBeneficiary {
+
+  implicit val formats : OFormat[IndividualBeneficiary] = Json.format[IndividualBeneficiary]
+
 }

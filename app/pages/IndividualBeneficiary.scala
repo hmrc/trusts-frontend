@@ -16,12 +16,13 @@
 
 package pages
 
-import models.{FullName, IndividualBeneficiaryName}
+import models.entities.IndividualBeneficiary
 import play.api.libs.json.JsPath
 
-case object IndividualBeneficiaryNamePage extends QuestionPage[FullName] {
+case object IndividualBeneficiary extends QuestionPage[List[IndividualBeneficiary]]{
 
-  override def path: JsPath = JsPath \ Beneficiaries \ IndividualBeneficiary \ toString
+  override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "individualBeneficiaryName"
+  override def toString: String = "individualBeneficiary"
+
 }
