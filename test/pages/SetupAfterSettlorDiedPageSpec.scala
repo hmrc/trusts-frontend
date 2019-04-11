@@ -16,6 +16,10 @@
 
 package pages
 
+import java.time.LocalDate
+
+import models.{SettlorsName, SettlorsUKAddress, UserAnswers}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
 class SetupAfterSettlorDiedPageSpec extends PageBehaviours {
@@ -27,5 +31,55 @@ class SetupAfterSettlorDiedPageSpec extends PageBehaviours {
     beSettable[Boolean](SetupAfterSettlorDiedPage)
 
     beRemovable[Boolean](SetupAfterSettlorDiedPage)
+  }
+
+  "Relevant Data and NINO are removed when SetupAfterSettlorDiedPage set to false" in {
+    forAll(arbitrary[UserAnswers], arbitrary[String]) {
+      (initial, str) =>
+        val answers: UserAnswers = initial.set(SettlorsNamePage, SettlorsName(str, str)).success.value
+          .set(SettlorDateOfDeathYesNoPage, true).success.value
+          .set(SettlorDateOfDeathPage, LocalDate.now).success.value
+          .set(SettlorDateOfBirthYesNoPage, true).success.value
+          .set(SettlorsDateOfBirthPage, LocalDate.now.minusDays(10)).success.value
+          .set(SettlorsNINoYesNoPage, true).success.value
+          .set(SettlorNationalInsuranceNumberPage, str).success.value
+        val result = answers.set(SetupAfterSettlorDiedPage, false).success.value
+
+        result.get(SettlorsNamePage) mustNot be(defined)
+        result.get(SettlorDateOfDeathYesNoPage) mustNot be(defined)
+        result.get(SettlorDateOfDeathPage) mustNot be(defined)
+        result.get(SettlorDateOfBirthYesNoPage) mustNot be(defined)
+        result.get(SettlorsDateOfBirthPage) mustNot be(defined)
+        result.get(SettlorsNINoYesNoPage) mustNot be(defined)
+        result.get(SettlorNationalInsuranceNumberPage) mustNot be(defined)
+
+    }
+  }
+
+  "Relevant Data and Addresses are removed when SetupAfterSettlorDiedPage set to false" in {
+    forAll(arbitrary[UserAnswers], arbitrary[String]) {
+      (initial, str) =>
+        val answers: UserAnswers = initial.set(SettlorsNamePage, SettlorsName(str, str)).success.value
+          .set(SettlorDateOfDeathYesNoPage, true).success.value
+          .set(SettlorDateOfDeathPage, LocalDate.now).success.value
+          .set(SettlorDateOfBirthYesNoPage, true).success.value
+          .set(SettlorsDateOfBirthPage, LocalDate.now.minusDays(10)).success.value
+          .set(SettlorsNINoYesNoPage, false).success.value
+          .set(SettlorsLastKnownAddressYesNoPage, true).success.value
+          .set(WasSettlorsAddressUKYesNoPage, true).success.value
+          .set(SettlorsUKAddressPage, SettlorsUKAddress(str, str)).success.value
+        val result = answers.set(SetupAfterSettlorDiedPage, false).success.value
+
+        result.get(SettlorsNamePage) mustNot be(defined)
+        result.get(SettlorDateOfDeathYesNoPage) mustNot be(defined)
+        result.get(SettlorDateOfDeathPage) mustNot be(defined)
+        result.get(SettlorDateOfBirthYesNoPage) mustNot be(defined)
+        result.get(SettlorsDateOfBirthPage) mustNot be(defined)
+        result.get(SettlorsNINoYesNoPage) mustNot be(defined)
+        result.get(SettlorsLastKnownAddressYesNoPage) mustNot be(defined)
+        result.get(WasSettlorsAddressUKYesNoPage) mustNot be(defined)
+        result.get(SettlorsUKAddressPage) mustNot be(defined)
+
+    }
   }
 }
