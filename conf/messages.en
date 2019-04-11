@@ -551,3 +551,6 @@ wasSettlorsAddressUKYesNo.title = wasSettlorsAddressUKYesNo
 wasSettlorsAddressUKYesNo.heading = wasSettlorsAddressUKYesNo
 wasSettlorsAddressUKYesNo.checkYourAnswersLabel = wasSettlorsAddressUKYesNo
 wasSettlorsAddressUKYesNo.error.required = Select yes if wasSettlorsAddressUKYesNo
+
+deceasedSettlorAnswer.title = deceasedSettlorAnswer
+deceasedSettlorAnswer.heading = deceasedSettlorAnswer
