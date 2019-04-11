@@ -20,7 +20,7 @@ import java.time.LocalDate
 
 import base.SpecBase
 import controllers.routes
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, SettlorsName, UserAnswers}
 import pages._
 
 class TaskListNavigatorSpec extends SpecBase {
@@ -57,8 +57,8 @@ class TaskListNavigatorSpec extends SpecBase {
 
       "there are no settlors" must {
 
-        "go to SettlorInfoPage" in {
-          navigator.nextPage(Settlors, emptyUserAnswers) mustBe routes.TaskListController.onPageLoad()
+        "go to SetupAfterSettlorDiedPage" in {
+          navigator.nextPage(Settlors, emptyUserAnswers) mustBe routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode)
         }
 
       }
@@ -66,9 +66,10 @@ class TaskListNavigatorSpec extends SpecBase {
 
       "there are settlors" must {
 
-        "go to AddASettlor" in {
-          val answers = emptyUserAnswers
-          navigator.nextPage(Settlors, answers) mustBe routes.TaskListController.onPageLoad()
+        "go to DeceasedSettlorAnswerPage" in {
+          val answers = UserAnswers(userAnswersId).set(SetupAfterSettlorDiedPage, true).success.value
+              .set(SettlorsNamePage, SettlorsName("deceased", "settlor")).success.value
+          navigator.nextPage(Settlors, answers) mustBe routes.DeceasedSettlorAnswerController.onPageLoad()
         }
 
       }
