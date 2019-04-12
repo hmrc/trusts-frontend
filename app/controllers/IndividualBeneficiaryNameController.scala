@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 import models.Mode
 import navigation.Navigator
-import pages.{IndividualBeneficiary, IndividualBeneficiaryNamePage}
+import pages.{IndividualBeneficiaries, IndividualBeneficiaryNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -48,7 +48,7 @@ class IndividualBeneficiaryNameController @Inject()(
 
   def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val allind= request.userAnswers.get(IndividualBeneficiary).getOrElse(List.empty)
+      val allind= request.userAnswers.get(IndividualBeneficiaries).getOrElse(List.empty)
 
       println(allind)
 
