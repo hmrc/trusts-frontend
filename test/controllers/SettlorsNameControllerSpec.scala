@@ -41,8 +41,8 @@ class SettlorsNameControllerSpec extends SpecBase {
     userAnswersId,
     Json.obj(
       SettlorsNamePage.toString -> Json.obj(
-        "field1" -> "value 1",
-        "field2" -> "value 2"
+        "firstName" -> "value 1",
+        "lastName" -> "value 2"
       )
     )
   )
@@ -94,7 +94,7 @@ class SettlorsNameControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, settlorsNameRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+          .withFormUrlEncodedBody(("firstName", "value 1"), ("lastName", "value 2"))
 
       val result = route(application, request).value
 
@@ -147,7 +147,7 @@ class SettlorsNameControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, settlorsNameRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+          .withFormUrlEncodedBody(("firstName", "value 1"), ("lastName", "value 2"))
 
       val result = route(application, request).value
 
