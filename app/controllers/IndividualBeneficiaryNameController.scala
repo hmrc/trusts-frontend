@@ -19,9 +19,10 @@ package controllers
 import controllers.actions._
 import forms.IndividualBeneficiaryNameFormProvider
 import javax.inject.Inject
+
 import models.Mode
 import navigation.Navigator
-import pages.IndividualBeneficiaryNamePage
+import pages.{IndividualBeneficiary, IndividualBeneficiaryNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -47,6 +48,9 @@ class IndividualBeneficiaryNameController @Inject()(
 
   def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
+      val allind= request.userAnswers.get(IndividualBeneficiary).getOrElse(List.empty)
+
+      println(allind)
 
       val preparedForm = request.userAnswers.get(IndividualBeneficiaryNamePage(index)) match {
         case None => form
