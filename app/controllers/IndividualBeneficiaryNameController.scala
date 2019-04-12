@@ -48,10 +48,7 @@ class IndividualBeneficiaryNameController @Inject()(
 
   def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val allind= request.userAnswers.get(IndividualBeneficiaries).getOrElse(List.empty)
-
-      println(allind)
-
+      
       val preparedForm = request.userAnswers.get(IndividualBeneficiaryNamePage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
