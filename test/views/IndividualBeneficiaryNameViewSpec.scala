@@ -28,6 +28,8 @@ import generators.Generators
 class IndividualBeneficiaryNameViewSpec extends QuestionViewBehaviours[FullName] with Generators {
 
   val messageKeyPrefix = "individualBeneficiaryName"
+  val index = 0
+
 
   override val form = new IndividualBeneficiaryNameFormProvider()()
 
@@ -36,7 +38,7 @@ class IndividualBeneficiaryNameViewSpec extends QuestionViewBehaviours[FullName]
     val view = viewFor[IndividualBeneficiaryNameView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, NormalMode,index)(fakeRequest, messages)
 
 
     behave like normalPage(applyView(form), messageKeyPrefix)
@@ -47,7 +49,7 @@ class IndividualBeneficiaryNameViewSpec extends QuestionViewBehaviours[FullName]
       form,
       applyView,
       messageKeyPrefix,
-      routes.IndividualBeneficiaryNameController.onSubmit(NormalMode).url,
+      routes.IndividualBeneficiaryNameController.onSubmit(NormalMode, index).url,
       Seq(("firstName",None), ("middleName",None), ("lastName",None))
     )
   }

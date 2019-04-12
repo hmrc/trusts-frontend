@@ -34,22 +34,13 @@ class IndividualBeneficiaryNameControllerSpec extends SpecBase {
 
   val formProvider = new IndividualBeneficiaryNameFormProvider()
   val form = formProvider()
-
-  lazy val individualBeneficiaryNameRoute = routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode).url
   val name = FullName("first name", Some("middle name"), "last name")
+  val index: Int = 0
+  lazy val individualBeneficiaryNameRoute = routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, index).url
 
- /* val userAnswers = UserAnswers(
-    userAnswersId,
-    Json.obj(
-      IndividualBeneficiaryNamePage.toString -> Json.obj(
-        "field1" -> "value 1",
-        "field2" -> "value 2"
-      )
-    )
-  )*/
 
   val userAnswers = UserAnswers(userAnswersId)
-    .set(IndividualBeneficiaryNamePage, name).success.value
+    .set(IndividualBeneficiaryNamePage(index), name).success.value
 
   "IndividualBeneficiaryName Controller" must {
 
@@ -66,7 +57,7 @@ class IndividualBeneficiaryNameControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form, NormalMode,index)(request, messages).toString
 
       application.stop()
     }
@@ -84,7 +75,7 @@ class IndividualBeneficiaryNameControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(name), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(name), NormalMode,index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -126,7 +117,7 @@ class IndividualBeneficiaryNameControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode,index)(fakeRequest, messages).toString
 
       application.stop()
     }

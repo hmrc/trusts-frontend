@@ -24,10 +24,10 @@ class IndividualBeneficiaryNamePageSpec extends PageBehaviours with FullNameGene
 
   "IndividualBeneficiaryNamePage" must {
 
-    beRetrievable[FullName](IndividualBeneficiaryNamePage)
+    beRetrievable[FullName](IndividualBeneficiaryNamePage(0))
 
-    beSettable[FullName](IndividualBeneficiaryNamePage)
+    beSettable[FullName](IndividualBeneficiaryNamePage(0))
 
-    beRemovable[FullName](IndividualBeneficiaryNamePage)
+    beRemovable[FullName](IndividualBeneficiaryNamePage(0))
   }
 }
