@@ -18,7 +18,7 @@ package pages
 
 import java.time.LocalDate
 
-import models.{SettlorsName, SettlorsUKAddress, UserAnswers}
+import models.{FullName, SettlorsUKAddress, UserAnswers}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
@@ -36,7 +36,7 @@ class SetupAfterSettlorDiedPageSpec extends PageBehaviours {
   "Relevant Data and NINO are removed when SetupAfterSettlorDiedPage set to false" in {
     forAll(arbitrary[UserAnswers], arbitrary[String]) {
       (initial, str) =>
-        val answers: UserAnswers = initial.set(SettlorsNamePage, SettlorsName(str, str)).success.value
+        val answers: UserAnswers = initial.set(SettlorsNamePage, FullName(str,None, str)).success.value
           .set(SettlorDateOfDeathYesNoPage, true).success.value
           .set(SettlorDateOfDeathPage, LocalDate.now).success.value
           .set(SettlorDateOfBirthYesNoPage, true).success.value
@@ -59,7 +59,7 @@ class SetupAfterSettlorDiedPageSpec extends PageBehaviours {
   "Relevant Data and Addresses are removed when SetupAfterSettlorDiedPage set to false" in {
     forAll(arbitrary[UserAnswers], arbitrary[String]) {
       (initial, str) =>
-        val answers: UserAnswers = initial.set(SettlorsNamePage, SettlorsName(str, str)).success.value
+        val answers: UserAnswers = initial.set(SettlorsNamePage, FullName(str,None, str)).success.value
           .set(SettlorDateOfDeathYesNoPage, true).success.value
           .set(SettlorDateOfDeathPage, LocalDate.now).success.value
           .set(SettlorDateOfBirthYesNoPage, true).success.value

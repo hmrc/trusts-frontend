@@ -18,13 +18,13 @@ package views
 
 import controllers.routes
 import forms.SettlorsNameFormProvider
-import models.{NormalMode, SettlorsName}
+import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
 import views.html.SettlorsNameView
 
-class SettlorsNameViewSpec extends QuestionViewBehaviours[SettlorsName] {
+class SettlorsNameViewSpec extends QuestionViewBehaviours[FullName] {
 
   val messageKeyPrefix = "settlorsName"
 

@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.SettlorsNameFormProvider
-import models.{NormalMode, SettlorsName, UserAnswers}
+import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.SettlorsNamePage
 import play.api.inject.bind
@@ -80,7 +80,7 @@ class SettlorsNameControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(SettlorsName("value 1", "value 2")), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(FullName("value 1",None, "value 2")), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }

@@ -18,22 +18,23 @@ package forms
 
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
+import wolfendale.scalacheck.regexp.RegexpGen
 
 class SettlorsNameFormProviderSpec extends StringFieldBehaviours {
 
   val form = new SettlorsNameFormProvider()()
 
-  ".field1" must {
+  ".firstName" must {
 
-    val fieldName = "field1"
-    val requiredKey = "settlorsName.error.field1.required"
-    val lengthKey = "settlorsName.error.field1.length"
-    val maxLength = 100
+    val fieldName = "firstName"
+    val requiredKey = "settlorsName.error.firstName.required"
+    val lengthKey = "settlorsName.error.firstName.length"
+    val maxLength = 35
 
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      RegexpGen.from(Validation.nameRegex)
     )
 
     behave like fieldWithMaxLength(
@@ -48,19 +49,45 @@ class SettlorsNameFormProviderSpec extends StringFieldBehaviours {
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
     )
+
+    behave like nonEmptyField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
+    )
   }
 
-  ".field2" must {
+  ".middleName" must {
 
-    val fieldName = "field2"
-    val requiredKey = "settlorsName.error.field2.required"
-    val lengthKey = "settlorsName.error.field2.length"
-    val maxLength = 100
+    val fieldName = "middleName"
+    val lengthKey = "settlorsName.error.middleName.length"
+    val maxLength = 35
+
+    behave like fieldWithMaxLength(
+      form,
+      fieldName,
+      maxLength = maxLength,
+      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+    )
+
+    behave like optionalField(
+      form,
+      fieldName,
+      validDataGenerator = RegexpGen.from(Validation.nameRegex)
+    )
+  }
+
+  ".lastName" must {
+
+    val fieldName = "lastName"
+    val requiredKey = "settlorsName.error.lastName.required"
+    val lengthKey = "settlorsName.error.lastName.length"
+    val maxLength = 35
 
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      RegexpGen.from(Validation.nameRegex)
     )
 
     behave like fieldWithMaxLength(
@@ -75,5 +102,12 @@ class SettlorsNameFormProviderSpec extends StringFieldBehaviours {
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
     )
+
+    behave like nonEmptyField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
+    )
   }
+
 }
