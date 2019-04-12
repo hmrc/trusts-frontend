@@ -22,13 +22,13 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, index : Int)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("individualBeneficiaryName.title")}"
     ) {
 
-    @formHelper(action = IndividualBeneficiaryNameController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = IndividualBeneficiaryNameController.onSubmit(mode,index : Int), 'autoComplete -> "off") {
 
         @components.back_link()
 
@@ -38,18 +38,18 @@
 
         @components.input_text(
             field = form("firstName"),
-            label = messages("trusteesName.firstName"),
+            label = messages("individualBeneficiaryName.firstName"),
             ariaRequired = true
         )
 
         @components.input_text(
             field = form("middleName"),
-            label = messages("trusteesName.middleName")
+            label = messages("individualBeneficiaryName.middleName")
         )
 
         @components.input_text(
             field = form("lastName"),
-            label = messages("trusteesName.lastName"),
+            label = messages("individualBeneficiaryName.lastName"),
             ariaRequired = true
         )
 

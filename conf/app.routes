@@ -206,7 +206,7 @@ POST       /asset/:index/money                          controllers.AssetMoneyVa
 GET        /asset/:index/change-money                   controllers.AssetMoneyValueController.onPageLoad(mode: Mode = CheckMode, index: Int)
 POST       /asset/:index/change-money                   controllers.AssetMoneyValueController.onSubmit(mode: Mode = CheckMode, index: Int)
 
-GET        /individualBeneficiaryName                        controllers.IndividualBeneficiaryNameController.onPageLoad(mode: Mode = NormalMode)
-POST       /individualBeneficiaryName                        controllers.IndividualBeneficiaryNameController.onSubmit(mode: Mode = NormalMode)
-GET        /changeIndividualBeneficiaryName                  controllers.IndividualBeneficiaryNameController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeIndividualBeneficiaryName                  controllers.IndividualBeneficiaryNameController.onSubmit(mode: Mode = CheckMode)
+GET        /:index/individualBeneficiaryName                        controllers.IndividualBeneficiaryNameController.onPageLoad(mode: Mode = NormalMode,index: Int)
+POST       /:index/individualBeneficiaryName                        controllers.IndividualBeneficiaryNameController.onSubmit(mode: Mode = NormalMode,index: Int)
+GET        /:index/changeIndividualBeneficiaryName                  controllers.IndividualBeneficiaryNameController.onPageLoad(mode: Mode = CheckMode,index: Int)
+POST       /:index/changeIndividualBeneficiaryName                  controllers.IndividualBeneficiaryNameController.onSubmit(mode: Mode = CheckMode,index: Int)

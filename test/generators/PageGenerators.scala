@@ -22,7 +22,7 @@ import pages._
 trait PageGenerators {
 
   implicit lazy val arbitraryIndividualBeneficiaryNamePage: Arbitrary[IndividualBeneficiaryNamePage.type] =
-    Arbitrary(IndividualBeneficiaryNamePage)
+    Arbitrary(IndividualBeneficiaryNamePage(0))
 
   implicit lazy val arbitraryAssetMoneyValuePage: Arbitrary[AssetMoneyValuePage] =
     Arbitrary(AssetMoneyValuePage(0))
