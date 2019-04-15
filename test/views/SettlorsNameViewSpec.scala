@@ -47,7 +47,7 @@ class SettlorsNameViewSpec extends QuestionViewBehaviours[FullName] {
       applyView,
       messageKeyPrefix,
       routes.SettlorsNameController.onSubmit(NormalMode).url,
-      Seq(("field1",None),("field2",None) )
+      Seq(("firstName",None),("middleName",None),("lastName", None))
     )
   }
 }
