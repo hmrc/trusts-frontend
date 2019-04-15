@@ -17,21 +17,21 @@
 package views
 
 import controllers.routes
-import forms.TrusteesUkAddressFormProvider
-import models.{NormalMode, TrusteesUkAddress}
+import forms.UKAddressFormProvider
+import models.{NormalMode, UKAddress}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
 import views.html.TrusteesUkAddressView
 
-class TrusteesUkAddressViewSpec extends QuestionViewBehaviours[TrusteesUkAddress] {
+class UKAddressViewSpec extends QuestionViewBehaviours[UKAddress] {
 
   val messageKeyPrefix = "trusteesUkAddress"
   val index = 0
   val trusteeName = "FirstName LastName"
   val postcodeHintKey = "trusteesUkAddress.postcode.hint"
 
-  override val form = new TrusteesUkAddressFormProvider()()
+  override val form = new UKAddressFormProvider()()
 
   "TrusteesUkAddressView" must {
 

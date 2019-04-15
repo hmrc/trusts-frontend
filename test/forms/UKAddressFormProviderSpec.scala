@@ -21,15 +21,15 @@ import org.scalacheck.Arbitrary.arbitrary
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
 
-class TrusteesUkAddressFormProviderSpec extends StringFieldBehaviours {
+class UKAddressFormProviderSpec extends StringFieldBehaviours {
 
-  val form = new TrusteesUkAddressFormProvider()()
+  val form = new UKAddressFormProvider()()
 
   ".line1" must {
 
     val fieldName = "line1"
-    val requiredKey = "trusteesUkAddress.error.line1.required"
-    val lengthKey = "trusteesUkAddress.error.line1.length"
+    val requiredKey = "ukAddress.error.line1.required"
+    val lengthKey = "ukAddress.error.line1.length"
     val maxLength = 35
 
     behave like fieldThatBindsValidData(
@@ -62,7 +62,7 @@ class TrusteesUkAddressFormProviderSpec extends StringFieldBehaviours {
   ".line2" must {
 
     val fieldName = "line2"
-    val lengthKey = "trusteesUkAddress.error.line2.length"
+    val lengthKey = "ukAddress.error.line2.length"
     val maxLength = 35
 
     behave like fieldWithMaxLength(
@@ -83,7 +83,7 @@ class TrusteesUkAddressFormProviderSpec extends StringFieldBehaviours {
   ".line3" must {
 
     val fieldName = "line3"
-    val lengthKey = "trusteesUkAddress.error.line3.length"
+    val lengthKey = "ukAddress.error.line3.length"
     val maxLength = 35
 
     behave like fieldWithMaxLength(
@@ -104,8 +104,8 @@ class TrusteesUkAddressFormProviderSpec extends StringFieldBehaviours {
   ".townOrCity" must {
 
     val fieldName = "townOrCity"
-    val requiredKey = "trusteesUkAddress.error.townOrCity.required"
-    val lengthKey = "trusteesUkAddress.error.townOrCity.length"
+    val requiredKey = "ukAddress.error.townOrCity.required"
+    val lengthKey = "ukAddress.error.townOrCity.length"
     val maxLength = 35
 
     behave like fieldThatBindsValidData(
@@ -138,7 +138,7 @@ class TrusteesUkAddressFormProviderSpec extends StringFieldBehaviours {
   ".postcode" must {
 
     val fieldName = "postcode"
-    val requiredKey = "trusteesUkAddress.error.postcode.required"
+    val requiredKey = "ukAddress.error.postcode.required"
     val invalidKey = "error.postcodeInvalid"
 
     behave like fieldWithRegexpWithGenerator(

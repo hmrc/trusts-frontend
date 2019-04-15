@@ -20,7 +20,7 @@ import play.api.libs.json.{Json, OFormat, Reads, Writes}
 
 import scala.language.implicitConversions
 
-final case class TrusteesUkAddress(
+final case class UKAddress(
                             line1: String,
                             line2: Option[String],
                             line3: Option[String],
@@ -28,9 +28,9 @@ final case class TrusteesUkAddress(
                             postcode: String
                           ) extends Address
 
-object TrusteesUkAddress {
+object UKAddress {
 
-  implicit lazy val formats: OFormat[TrusteesUkAddress] = Json.format[TrusteesUkAddress]
+  implicit lazy val formats: OFormat[UKAddress] = Json.format[UKAddress]
 }
 
 final case class InternationalAddress(
@@ -62,12 +62,12 @@ object Address {
     implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
       a.map(identity)
 
-    TrusteesUkAddress.formats or
+    UKAddress.formats or
       InternationalAddress.formats
   }
 
   implicit lazy val writes: Writes[Address] = Writes {
-    case address: TrusteesUkAddress            => Json.toJson(address)(TrusteesUkAddress.formats)
+    case address: UKAddress            => Json.toJson(address)(UKAddress.formats)
     case address: InternationalAddress => Json.toJson(address)(InternationalAddress.formats)
   }
 }

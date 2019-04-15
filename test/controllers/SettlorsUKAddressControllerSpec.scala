@@ -17,8 +17,8 @@
 package controllers
 
 import base.SpecBase
-import forms.SettlorsUKAddressFormProvider
-import models.{NormalMode, SettlorsUKAddress, UserAnswers}
+import forms.UKAddressFormProvider
+import models.{NormalMode, UKAddress, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.SettlorsUKAddressPage
 import play.api.inject.bind
@@ -32,7 +32,7 @@ class SettlorsUKAddressControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new SettlorsUKAddressFormProvider()
+  val formProvider = new UKAddressFormProvider()
   val form = formProvider()
 
   lazy val settlorsUKAddressRoute = routes.SettlorsUKAddressController.onPageLoad(NormalMode).url
@@ -80,7 +80,7 @@ class SettlorsUKAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(SettlorsUKAddress("value 1", "value 2")), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -94,7 +94,7 @@ class SettlorsUKAddressControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, settlorsUKAddressRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+          .withFormUrlEncodedBody(("line1", "value 1"), ("townOrCity", "value 2"),("postcode", "NE1 1ZZ"))
 
       val result = route(application, request).value
 
@@ -147,7 +147,7 @@ class SettlorsUKAddressControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, settlorsUKAddressRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+          .withFormUrlEncodedBody(("line1", "value 1"), ("townOrCity", "value 2"),("postcode", "NE1 1ZZ"))
 
       val result = route(application, request).value
 

@@ -14,24 +14,19 @@
  * limitations under the License.
  */
 
-package generators
+package pages
 
-import models.FullName
-import org.scalacheck.{Arbitrary, Gen}
+import models.UKAddress
+import pages.behaviours.PageBehaviours
 
-trait FullNameGenerator extends Generators {
+class UKAddressPageSpec extends PageBehaviours {
 
-  private val maxLength : Int = 35
+  "TrusteesUkAddressPage" must {
 
-  implicit lazy val arbitraryFullName : Arbitrary[FullName] =
-    Arbitrary {
-      for {
-        fName <- stringsWithMaxLength(maxLength)
-        mName <- Gen.option(stringsWithMaxLength(maxLength))
-        lName <- stringsWithMaxLength(maxLength)
-      } yield {
-        FullName(fName, mName, lName)
-      }
-    }
+    beRetrievable[UKAddress](TrusteesUkAddressPage(0))
 
+    beSettable[UKAddress](TrusteesUkAddressPage(0))
+
+    beRemovable[UKAddress](TrusteesUkAddressPage(0))
+  }
 }

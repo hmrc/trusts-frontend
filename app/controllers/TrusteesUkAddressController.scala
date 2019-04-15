@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions._
-import forms.TrusteesUkAddressFormProvider
+import forms.UKAddressFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
@@ -32,17 +32,17 @@ import views.html.TrusteesUkAddressView
 import scala.concurrent.{ExecutionContext, Future}
 
 class TrusteesUkAddressController @Inject()(
-                                      override val messagesApi: MessagesApi,
-                                      sessionRepository: SessionRepository,
-                                      navigator: Navigator,
-                                      validateIndex: IndexActionFilterProvider,
-                                      identify: IdentifierAction,
-                                      getData: DataRetrievalAction,
-                                      requireData: DataRequiredAction,
-                                      requiredAnswer: RequiredAnswerActionProvider,
-                                      formProvider: TrusteesUkAddressFormProvider,
-                                      val controllerComponents: MessagesControllerComponents,
-                                      view: TrusteesUkAddressView
+                                             override val messagesApi: MessagesApi,
+                                             sessionRepository: SessionRepository,
+                                             navigator: Navigator,
+                                             validateIndex: IndexActionFilterProvider,
+                                             identify: IdentifierAction,
+                                             getData: DataRetrievalAction,
+                                             requireData: DataRequiredAction,
+                                             requiredAnswer: RequiredAnswerActionProvider,
+                                             formProvider: UKAddressFormProvider,
+                                             val controllerComponents: MessagesControllerComponents,
+                                             view: TrusteesUkAddressView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()

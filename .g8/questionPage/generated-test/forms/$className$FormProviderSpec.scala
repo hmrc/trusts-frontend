@@ -32,6 +32,12 @@ class $className$FormProviderSpec extends StringFieldBehaviours {
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
     )
+
+    behave like nonEmptyField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
+    )
   }
 
   ".field2" must {
@@ -58,6 +64,12 @@ class $className$FormProviderSpec extends StringFieldBehaviours {
       form,
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
+    )
+
+    behave like nonEmptyField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
     )
   }
 }
