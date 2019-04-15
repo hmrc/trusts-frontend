@@ -16,7 +16,7 @@
 
 package pages
 
-import models.{SettlorsUKAddress, UserAnswers}
+import models.{UKAddress, UserAnswers}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
@@ -34,7 +34,7 @@ class SettlorsLastKnownAddressYesNoPageSpec extends PageBehaviours {
   "remove WasSettlorsAddressUKYesNoPage, SettlorsAddressUK, SettlorsInternationalAddressPage when SettlorsLastKnownAddressYesNoPage is set to false" in {
     forAll(arbitrary[UserAnswers], arbitrary[String]) {
       (initial, str) =>
-        val answers: UserAnswers = initial.set(SettlorsUKAddressPage, SettlorsUKAddress(str, str)).success.value
+        val answers: UserAnswers = initial.set(SettlorsUKAddressPage, UKAddress(str, Some(str), Some(str), str, str)).success.value
           .set(WasSettlorsAddressUKYesNoPage, true).success.value
         val result = answers.set(SettlorsLastKnownAddressYesNoPage, false).success.value
 

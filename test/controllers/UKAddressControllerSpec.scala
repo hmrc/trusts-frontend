@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import forms.TrusteesUkAddressFormProvider
+import forms.UKAddressFormProvider
 import models.{FullName, NormalMode, UKAddress, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
@@ -33,7 +33,7 @@ class UKAddressControllerSpec extends SpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new TrusteesUkAddressFormProvider()
+  val formProvider = new UKAddressFormProvider()
   val form = formProvider()
   val index = 0
   val trusteeName = "FirstName LastName"

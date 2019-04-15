@@ -18,7 +18,7 @@ package pages
 
 import java.time.LocalDate
 
-import models.{FullName, SettlorsUKAddress, UserAnswers}
+import models.{FullName, UKAddress, UserAnswers}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
@@ -67,7 +67,7 @@ class SetupAfterSettlorDiedPageSpec extends PageBehaviours {
           .set(SettlorsNINoYesNoPage, false).success.value
           .set(SettlorsLastKnownAddressYesNoPage, true).success.value
           .set(WasSettlorsAddressUKYesNoPage, true).success.value
-          .set(SettlorsUKAddressPage, SettlorsUKAddress(str, str)).success.value
+          .set(SettlorsUKAddressPage, UKAddress(str, Some(str), Some(str), str, str)).success.value
         val result = answers.set(SetupAfterSettlorDiedPage, false).success.value
 
         result.get(SettlorsNamePage) mustNot be(defined)

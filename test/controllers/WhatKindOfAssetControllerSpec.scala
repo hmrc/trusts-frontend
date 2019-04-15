@@ -18,7 +18,6 @@ package controllers
 
 import base.SpecBase
 import forms.WhatKindOfAssetFormProvider
-import generators.FullNameGenerator
 import models.WhatKindOfAsset.{Money, PropertyOrLand}
 import models.{NormalMode, UserAnswers, WhatKindOfAsset}
 import navigation.{FakeNavigator, Navigator}
@@ -30,7 +29,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.WhatKindOfAssetView
 
-class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation with FullNameGenerator {
+class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
 
   def onwardRoute = Call("GET", "/foo")
 
