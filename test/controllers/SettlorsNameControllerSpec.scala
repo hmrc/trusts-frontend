@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.SettlorsNameFormProvider
-import models.{NormalMode, SettlorsName, UserAnswers}
+import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.SettlorsNamePage
 import play.api.inject.bind
@@ -41,8 +41,8 @@ class SettlorsNameControllerSpec extends SpecBase {
     userAnswersId,
     Json.obj(
       SettlorsNamePage.toString -> Json.obj(
-        "field1" -> "value 1",
-        "field2" -> "value 2"
+        "firstName" -> "value 1",
+        "lastName" -> "value 2"
       )
     )
   )
@@ -80,7 +80,7 @@ class SettlorsNameControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(SettlorsName("value 1", "value 2")), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(FullName("value 1",None, "value 2")), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -94,7 +94,7 @@ class SettlorsNameControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, settlorsNameRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+          .withFormUrlEncodedBody(("firstName", "value 1"), ("lastName", "value 2"))
 
       val result = route(application, request).value
 
@@ -147,7 +147,7 @@ class SettlorsNameControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, settlorsNameRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+          .withFormUrlEncodedBody(("firstName", "value 1"), ("lastName", "value 2"))
 
       val result = route(application, request).value
 

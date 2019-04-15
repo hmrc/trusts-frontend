@@ -16,17 +16,18 @@
 
 package pages
 
-import models.SettlorsName
+import generators.FullNameGenerator
+import models.FullName
 import pages.behaviours.PageBehaviours
 
-class SettlorsNamePageSpec extends PageBehaviours {
+class SettlorsNamePageSpec extends PageBehaviours with FullNameGenerator  {
 
   "SettlorsNamePage" must {
 
-    beRetrievable[SettlorsName](SettlorsNamePage)
+    beRetrievable[FullName](SettlorsNamePage)
 
-    beSettable[SettlorsName](SettlorsNamePage)
+    beSettable[FullName](SettlorsNamePage)
 
-    beRemovable[SettlorsName](SettlorsNamePage)
+    beRemovable[FullName](SettlorsNamePage)
   }
 }

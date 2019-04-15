@@ -37,13 +37,20 @@
         @components.heading("settlorsName.heading")
 
         @components.input_text(
-            field = form("field1"),
-            label = messages("settlorsName.field1")
+            field = form("firstName"),
+            label = messages("settlorsName.firstName"),
+            ariaRequired = true
         )
 
         @components.input_text(
-            field = form("field2"),
-            label = messages("settlorsName.field2")
+            field = form("middleName"),
+            label = messages("settlorsName.middleName")
+        )
+
+        @components.input_text(
+            field = form("lastName"),
+            label = messages("settlorsName.lastName"),
+            ariaRequired = true
         )
 
         @components.submit_button()
