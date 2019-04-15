@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter
 
 import controllers.routes
 import javax.inject.Inject
-import models.{CheckMode, TrusteesUkAddress, UserAnswers}
+import models.{CheckMode, UKAddress, UserAnswers}
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
@@ -52,7 +52,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x =>
       AnswerRow(
         "settlorsUKAddress.checkYourAnswersLabel",
-        HtmlFormat.escape(s"${x.field1} ${x.field2}"),
+        HtmlFormat.escape(s"${x.line1} ${x.line2}"),
         routes.SettlorsUKAddressController.onPageLoad(CheckMode).url
       )
   }
@@ -358,7 +358,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x => AnswerRow("trustName.checkYourAnswersLabel", escape(x), routes.TrustNameController.onPageLoad(CheckMode).url)
   }
 
-  private def ukAddress(address: TrusteesUkAddress): Html = {
+  private def ukAddress(address: UKAddress): Html = {
     val lines =
       Seq(
         Some(HtmlFormat.escape(address.line1)),

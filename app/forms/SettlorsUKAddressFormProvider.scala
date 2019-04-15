@@ -17,20 +17,25 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
 import play.api.data.Form
 import play.api.data.Forms._
-import models.SettlorsUKAddress
+import models.UKAddress
 
 class SettlorsUKAddressFormProvider @Inject() extends Mappings {
 
-   def apply(): Form[SettlorsUKAddress] = Form(
+   def apply(): Form[UKAddress] = Form(
      mapping(
-      "field1" -> text("settlorsUKAddress.error.field1.required")
-        .verifying(maxLength(100, "settlorsUKAddress.error.field1.length")),
-      "field2" -> text("settlorsUKAddress.error.field2.required")
-        .verifying(maxLength(100, "settlorsUKAddress.error.field2.length"))
-    )(SettlorsUKAddress.apply)(SettlorsUKAddress.unapply)
+      "line1" -> text("settlorsUKAddress.error.line1.required")
+        .verifying(maxLength(100, "settlorsUKAddress.error.line1.length")),
+      "line2" -> optional(text("settlorsUKAddress.error.line2.required")
+        .verifying(maxLength(100, "settlorsUKAddress.error.line2.length"))),
+       "line3" -> optional(text("settlorsUKAddress.error.line3.required")
+         .verifying(maxLength(100, "settlorsUKAddress.error.line3.length"))),
+       "townOrCity" -> text("settlorsUKAddress.error.townOrCity.required")
+         .verifying(maxLength(100, "settlorsUKAddress.error.townOrCity.length")),
+       "postcode" -> text("settlorsUKAddress.error.postcode.required")
+         .verifying(maxLength(100, "settlorsUKAddress.error.postcode.length"))
+    )(UKAddress.apply)(UKAddress.unapply)
    )
  }

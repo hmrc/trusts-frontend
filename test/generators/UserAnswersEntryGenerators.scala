@@ -190,7 +190,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
     Arbitrary {
       for {
         page  <- arbitrary[TrusteesUkAddressPage]
-        value <- arbitrary[TrusteesUkAddress].map(Json.toJson(_))
+        value <- arbitrary[UKAddress].map(Json.toJson(_))
       } yield (page, value)
     }
 

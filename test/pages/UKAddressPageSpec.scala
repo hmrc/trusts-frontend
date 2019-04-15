@@ -16,17 +16,17 @@
 
 package pages
 
-import models.TrusteesUkAddress
+import models.UKAddress
 import pages.behaviours.PageBehaviours
 
-class TrusteesUkAddressPageSpec extends PageBehaviours {
+class UKAddressPageSpec extends PageBehaviours {
 
   "TrusteesUkAddressPage" must {
 
-    beRetrievable[TrusteesUkAddress](TrusteesUkAddressPage(0))
+    beRetrievable[UKAddress](TrusteesUkAddressPage(0))
 
-    beSettable[TrusteesUkAddress](TrusteesUkAddressPage(0))
+    beSettable[UKAddress](TrusteesUkAddressPage(0))
 
-    beRemovable[TrusteesUkAddress](TrusteesUkAddressPage(0))
+    beRemovable[UKAddress](TrusteesUkAddressPage(0))
   }
 }

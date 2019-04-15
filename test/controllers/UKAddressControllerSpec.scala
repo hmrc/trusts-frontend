@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.TrusteesUkAddressFormProvider
-import models.{FullName, NormalMode, TrusteesUkAddress, UserAnswers}
+import models.{FullName, NormalMode, UKAddress, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.{TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
@@ -29,7 +29,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.TrusteesUkAddressView
 
-class TrusteesUkAddressControllerSpec extends SpecBase with IndexValidation {
+class UKAddressControllerSpec extends SpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -37,7 +37,7 @@ class TrusteesUkAddressControllerSpec extends SpecBase with IndexValidation {
   val form = formProvider()
   val index = 0
   val trusteeName = "FirstName LastName"
-  val validAnswer = TrusteesUkAddress("value 1", Some("value 2"), Some("value 3"), "value 4", "AB1 1AB")
+  val validAnswer = UKAddress("value 1", Some("value 2"), Some("value 3"), "value 4", "AB1 1AB")
 
   lazy val trusteesUkAddressRoute = routes.TrusteesUkAddressController.onPageLoad(NormalMode, index).url
 
@@ -192,7 +192,7 @@ class TrusteesUkAddressControllerSpec extends SpecBase with IndexValidation {
       }
 
       validateIndex(
-        arbitrary[TrusteesUkAddress],
+        arbitrary[UKAddress],
         TrusteesUkAddressPage.apply,
         getForIndex
       )
@@ -210,7 +210,7 @@ class TrusteesUkAddressControllerSpec extends SpecBase with IndexValidation {
       }
 
       validateIndex(
-        arbitrary[TrusteesUkAddress],
+        arbitrary[UKAddress],
         TrusteesUkAddressPage.apply,
         postForIndex
       )

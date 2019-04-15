@@ -21,7 +21,7 @@ import org.scalacheck.Arbitrary.arbitrary
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
 
-class TrusteesUkAddressFormProviderSpec extends StringFieldBehaviours {
+class UKAddressFormProviderSpec extends StringFieldBehaviours {
 
   val form = new TrusteesUkAddressFormProvider()()
 

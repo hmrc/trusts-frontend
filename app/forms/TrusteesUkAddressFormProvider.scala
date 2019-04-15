@@ -20,11 +20,11 @@ import javax.inject.Inject
 import forms.mappings.Mappings
 import play.api.data.{Form, Forms}
 import play.api.data.Forms._
-import models.TrusteesUkAddress
+import models.UKAddress
 
 class TrusteesUkAddressFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[TrusteesUkAddress] = Form(
+  def apply(): Form[UKAddress] = Form(
     mapping(
       "line1" ->
         text("trusteesUkAddress.error.line1.required")
@@ -63,6 +63,6 @@ class TrusteesUkAddressFormProvider @Inject() extends Mappings {
               isNotEmpty("postcode", "trusteesUkAddress.error.postcode.required"),
               regexp(Validation.postcodeRegex, "trusteesUkAddress.error.postcode.invalidCharacters")
             ))
-    )(TrusteesUkAddress.apply)(TrusteesUkAddress.unapply)
+    )(UKAddress.apply)(UKAddress.unapply)
    )
  }

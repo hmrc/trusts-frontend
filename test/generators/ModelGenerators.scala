@@ -56,7 +56,7 @@ trait ModelGenerators {
       Gen.oneOf(WhatKindOfAsset.values.toSeq)
     }
 
-  implicit lazy val arbitraryTrusteesUkAddress: Arbitrary[TrusteesUkAddress] =
+  implicit lazy val arbitraryTrusteesUkAddress: Arbitrary[UKAddress] =
     Arbitrary {
       for {
         line1 <- arbitrary[String]
@@ -64,7 +64,7 @@ trait ModelGenerators {
         line3 <- arbitrary[String]
         townOrCity <- arbitrary[String]
         postcode <- arbitrary[String]
-      } yield TrusteesUkAddress(line1, Some(line2), Some(line3), townOrCity, postcode)
+      } yield UKAddress(line1, Some(line2), Some(line3), townOrCity, postcode)
     }
 
   implicit lazy val arbitraryAddATrustee: Arbitrary[AddATrustee] =
