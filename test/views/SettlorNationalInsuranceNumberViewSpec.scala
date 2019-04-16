@@ -41,6 +41,9 @@ class SettlorNationalInsuranceNumberViewSpec extends StringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.SettlorNationalInsuranceNumberController.onSubmit(NormalMode).url)
+    behave like stringPage(form, applyView, messageKeyPrefix,
+      routes.SettlorNationalInsuranceNumberController.onSubmit(NormalMode).url, Some(s"$messageKeyPrefix.hint"))
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

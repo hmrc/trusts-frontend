@@ -28,6 +28,7 @@ class SetupAfterSettlorDiedViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "setupAfterSettlorDied"
 
+
   val form = new SetupAfterSettlorDiedFormProvider()()
 
   "SetupAfterSettlorDied view" must {
@@ -41,6 +42,9 @@ class SetupAfterSettlorDiedViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.SetupAfterSettlorDiedController.onSubmit(NormalMode).url)
+
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.SetupAfterSettlorDiedController.onSubmit(NormalMode).url, Some(messageKeyPrefix))
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }
