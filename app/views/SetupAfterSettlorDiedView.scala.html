@@ -39,7 +39,8 @@
         @components.input_yes_no(
             field = form("value"),
             label = messages("setupAfterSettlorDied.heading"),
-            labelClass = Some("visually-hidden")
+            labelClass = Some("visually-hidden"),
+            hint = Some(messages("setupAfterSettlorDied.hint"))
         )
 
         @components.submit_button()
