@@ -22,7 +22,6 @@ import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.SettlorsNamePage
 import play.api.inject.bind
-import play.api.libs.json.Json
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -37,15 +36,6 @@ class SettlorsNameControllerSpec extends SpecBase {
 
   lazy val settlorsNameRoute = routes.SettlorsNameController.onPageLoad(NormalMode).url
 
-  val userAnswers = UserAnswers(
-    userAnswersId,
-    Json.obj(
-      SettlorsNamePage.toString -> Json.obj(
-        "firstName" -> "value 1",
-        "lastName" -> "value 2"
-      )
-    )
-  )
 
   "SettlorsName Controller" must {
 
@@ -69,6 +59,9 @@ class SettlorsNameControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
+
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, settlorsNameRoute)
@@ -80,7 +73,7 @@ class SettlorsNameControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(FullName("value 1",None, "value 2")), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(FullName("First",None, "Last")), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
