@@ -88,7 +88,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x =>
       AnswerRow(
         "settlorsInternationalAddress.checkYourAnswersLabel",
-        HtmlFormat.escape(s"${x.field1} ${x.field2}"),
+        HtmlFormat.escape(s"${x.line1} ${x.line2}"),
         routes.SettlorsInternationalAddressController.onPageLoad(CheckMode).url
       )
   }

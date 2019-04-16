@@ -17,18 +17,18 @@
 package views
 
 import controllers.routes
-import forms.SettlorsInternationalAddressFormProvider
-import models.{NormalMode, SettlorsInternationalAddress}
+import forms.InternationalAddressFormProvider
+import models.{InternationalAddress, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
 import views.html.SettlorsInternationalAddressView
 
-class SettlorsInternationalAddressViewSpec extends QuestionViewBehaviours[SettlorsInternationalAddress] {
+class SettlorsInternationalAddressViewSpec extends QuestionViewBehaviours[InternationalAddress] {
 
   val messageKeyPrefix = "settlorsInternationalAddress"
 
-  override val form = new SettlorsInternationalAddressFormProvider()()
+  override val form = new InternationalAddressFormProvider()()
 
   "SettlorsInternationalAddressView" must {
 

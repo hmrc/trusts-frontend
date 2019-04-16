@@ -22,15 +22,6 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
-
-  implicit lazy val arbitrarySettlorsUKAddress: Arbitrary[SettlorsUKAddress] =
-    Arbitrary {
-      for {
-        field1 <- arbitrary[String]
-        field2 <- arbitrary[String]
-      } yield SettlorsUKAddress(field1, field2)
-    }
-
   implicit lazy val arbitraryFullName : Arbitrary[FullName] = {
     Arbitrary {
       for {
@@ -41,25 +32,24 @@ trait ModelGenerators {
     }
   }
 
-  implicit lazy val arbitrarySettlorsInternationalAddress: Arbitrary[SettlorsInternationalAddress] =
+  implicit lazy val arbitraryInternationalAddress: Arbitrary[InternationalAddress] =
     Arbitrary {
       for {
-        field1 <- arbitrary[String]
-        field2 <- arbitrary[String]
-      } yield SettlorsInternationalAddress(field1, field2)
+        str <- arbitrary[String]
+      } yield InternationalAddress(str,str,Some(str),Some(str),str)
     }
 
   implicit lazy val arbitraryAddAssets: Arbitrary[AddAssets] =
     Arbitrary {
-      Gen.oneOf(AddAssets.values.toSeq)
+      Gen.oneOf(AddAssets.values)
     }
 
   implicit lazy val arbitraryWhatKindOfAsset: Arbitrary[WhatKindOfAsset] =
     Arbitrary {
-      Gen.oneOf(WhatKindOfAsset.values.toSeq)
+      Gen.oneOf(WhatKindOfAsset.values)
     }
 
-  implicit lazy val arbitraryTrusteesUkAddress: Arbitrary[UKAddress] =
+  implicit lazy val arbitraryUkAddress: Arbitrary[UKAddress] =
     Arbitrary {
       for {
         line1 <- arbitrary[String]
@@ -72,7 +62,7 @@ trait ModelGenerators {
 
   implicit lazy val arbitraryAddATrustee: Arbitrary[AddATrustee] =
     Arbitrary {
-      Gen.oneOf(AddATrustee.values.toSeq)
+      Gen.oneOf(AddATrustee.values)
     }
 
   implicit lazy val arbitraryTrusteeOrIndividual: Arbitrary[IndividualOrBusiness] =
@@ -82,7 +72,7 @@ trait ModelGenerators {
 
   implicit lazy val arbitraryNonResidentType: Arbitrary[NonResidentType] =
     Arbitrary {
-      Gen.oneOf(NonResidentType.values.toSeq)
+      Gen.oneOf(NonResidentType.values)
     }
 
 }
