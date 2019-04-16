@@ -60,6 +60,7 @@ class InternationalAddressFormProvider @Inject() extends Mappings {
         text("internationalAddress.error.country.required")
           .verifying(
             firstError(
+              maxLength(35, "internationalAddress.error.country.length"),
               isNotEmpty("country", "internationalAddress.error.country.required")
             ))
     )(InternationalAddress.apply)(InternationalAddress.unapply)

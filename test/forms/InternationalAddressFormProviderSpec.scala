@@ -139,12 +139,12 @@ class InternationalAddressFormProviderSpec extends StringFieldBehaviours {
     val lengthKey = "internationalAddress.error.country.length"
     val maxLength = 35
 
-//    behave like fieldWithMaxLength(
-//      form,
-//      fieldName,
-//      maxLength = maxLength,
-//      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
-//    )
+    behave like fieldWithMaxLength(
+      form,
+      fieldName,
+      maxLength = maxLength,
+      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+    )
 
     behave like mandatoryField(
       form,
