@@ -24,7 +24,7 @@ import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
 import views.html.TrusteesUkAddressView
 
-class UKAddressViewSpec extends QuestionViewBehaviours[UKAddress] {
+class TrusteeUKAddressViewSpec extends QuestionViewBehaviours[UKAddress] {
 
   val messageKeyPrefix = "trusteesUkAddress"
   val index = 0

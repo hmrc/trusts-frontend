@@ -27,6 +27,7 @@ import views.html.SettlorsUKAddressView
 class SettlorsUKAddressViewSpec extends QuestionViewBehaviours[UKAddress] {
 
   val messageKeyPrefix = "settlorsUKAddress"
+  val postcodeHintKey = "settlorsUKAddress.postcode.hint"
 
   override val form = new UKAddressFormProvider()()
 
@@ -37,7 +38,6 @@ class SettlorsUKAddressViewSpec extends QuestionViewBehaviours[UKAddress] {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode)(fakeRequest, messages)
 
-
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
@@ -47,7 +47,9 @@ class SettlorsUKAddressViewSpec extends QuestionViewBehaviours[UKAddress] {
       applyView,
       messageKeyPrefix,
       routes.SettlorsUKAddressController.onSubmit(NormalMode).url,
-      Seq(("field1",None),("field2",None) )
+      Seq(("line1",None), ("line2",None), ("line3", None), ("townOrCity", None), ("postcode", Some(postcodeHintKey)))
     )
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

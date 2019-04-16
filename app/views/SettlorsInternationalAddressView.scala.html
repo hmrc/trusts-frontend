@@ -37,13 +37,28 @@
         @components.heading("settlorsInternationalAddress.heading")
 
         @components.input_text(
-            field = form("field1"),
-            label = messages("settlorsInternationalAddress.field1")
+            field = form("line1"),
+            label = messages("settlorsInternationalAddress.line1")
         )
 
         @components.input_text(
-            field = form("field2"),
-            label = messages("settlorsInternationalAddress.field2")
+            field = form("line2"),
+            label = messages("settlorsInternationalAddress.line2")
+        )
+
+        @components.input_text(
+        field = form("line3"),
+        label = messages("settlorsInternationalAddress.line3")
+        )
+
+        @components.input_text(
+        field = form("line4"),
+        label = messages("settlorsInternationalAddress.line4")
+        )
+
+        @components.input_text(
+        field = form("country"),
+        label = messages("settlorsInternationalAddress.country")
         )
 
         @components.submit_button()
