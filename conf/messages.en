@@ -507,10 +507,18 @@ settlorsInternationalAddress.heading = settlorsInternationalAddress
 settlorsInternationalAddress.field1 = Field 1
 settlorsInternationalAddress.field2 = Field 2
 settlorsInternationalAddress.checkYourAnswersLabel = settlorsInternationalAddress
-settlorsInternationalAddress.error.field1.required = Enter field1
-settlorsInternationalAddress.error.field2.required = Enter field2
-settlorsInternationalAddress.error.field1.length = field1 must be 100 characters or less
-settlorsInternationalAddress.error.field2.length = field2 must be 100 characters or less
+
+internationalAddress.error.line1.required = Enter address line 1
+internationalAddress.error.line2.required = Enter address line 2
+internationalAddress.error.country.required = Select a Country
+internationalAddress.error.line1.length = Address line 1 must be 35 characters or less
+internationalAddress.error.line2.length = Address line 2 must be 35 characters or less
+internationalAddress.error.line3.length = Address line 3 must be 35 characters or less
+internationalAddress.error.line4.length = Address line 4 must be 35 characters or less
+internationalAddress.error.line1.invalidCharacters = Address line 1 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+internationalAddress.error.line2.invalidCharacters = Address line 2 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+internationalAddress.error.line3.invalidCharacters = Address line 3 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+internationalAddress.error.line4.invalidCharacters = Address line 4 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
 
 settlorsLastKnownAddressYesNo.title = settlorsLastKnownAddressYesNo
 settlorsLastKnownAddressYesNo.heading = settlorsLastKnownAddressYesNo

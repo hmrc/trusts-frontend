@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions._
-import forms.SettlorsInternationalAddressFormProvider
+import forms.InternationalAddressFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
@@ -32,15 +32,15 @@ import views.html.SettlorsInternationalAddressView
 import scala.concurrent.{ExecutionContext, Future}
 
 class SettlorsInternationalAddressController @Inject()(
-                                      override val messagesApi: MessagesApi,
-                                      sessionRepository: SessionRepository,
-                                      navigator: Navigator,
-                                      identify: IdentifierAction,
-                                      getData: DataRetrievalAction,
-                                      requireData: DataRequiredAction,
-                                      formProvider: SettlorsInternationalAddressFormProvider,
-                                      val controllerComponents: MessagesControllerComponents,
-                                      view: SettlorsInternationalAddressView
+                                                        override val messagesApi: MessagesApi,
+                                                        sessionRepository: SessionRepository,
+                                                        navigator: Navigator,
+                                                        identify: IdentifierAction,
+                                                        getData: DataRetrievalAction,
+                                                        requireData: DataRequiredAction,
+                                                        formProvider: InternationalAddressFormProvider,
+                                                        val controllerComponents: MessagesControllerComponents,
+                                                        view: SettlorsInternationalAddressView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
