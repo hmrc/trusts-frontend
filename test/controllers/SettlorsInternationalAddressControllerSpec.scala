@@ -37,16 +37,6 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
 
   lazy val settlorsInternationalAddressRoute = routes.SettlorsInternationalAddressController.onPageLoad(NormalMode).url
 
-  val userAnswers = UserAnswers(
-    userAnswersId,
-    Json.obj(
-      SettlorsInternationalAddressPage.toString -> Json.obj(
-        "field1" -> "value 1",
-        "field2" -> "value 2"
-      )
-    )
-  )
-
   "SettlorsInternationalAddress Controller" must {
 
     "return OK and the correct view for a GET" in {
@@ -68,6 +58,9 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
+
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(SettlorsInternationalAddressPage, InternationalAddress("line 1", "line 2", None, None, "country")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
