@@ -16,23 +16,12 @@
 
 package pages
 
-import models.UserAnswers
 import play.api.libs.json.JsPath
 
-import scala.util.Try
+case object DeceasedSettlor extends QuestionPage[Nothing]{
 
-case object SettlorDateOfBirthYesNoPage extends QuestionPage[Boolean] {
+  override def path: JsPath = JsPath \ Settlors \ toString
 
-  override def path: JsPath = JsPath \ Settlors \ DeceasedSettlor \toString
+  override def toString: String = "deceased"
 
-  override def toString: String = "settlorDateOfBirthYesNo"
-
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
-    value match {
-      case Some(false) =>
-        userAnswers.remove(SettlorsDateOfBirthPage)
-      case _ =>
-        super.cleanup(value, userAnswers)
-    }
-  }
 }
