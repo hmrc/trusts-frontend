@@ -56,20 +56,24 @@ class SettlorDateOfDeathController @Inject()(
   def onPageLoad(mode: Mode): Action[AnyContent] = actions() {
     implicit request =>
 
+      val name = request.userAnswers.get(SettlorsNamePage).get
+
       val preparedForm = request.userAnswers.get(SettlorDateOfDeathPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, name))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = actions().async {
     implicit request =>
 
+      val name = request.userAnswers.get(SettlorsNamePage).get
+
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, name))),
 
         value => {
           for {

@@ -14,15 +14,17 @@
  * limitations under the License.
  *@
 
+@import models.FullName
+
 @this(
         main_template: MainTemplate,
         formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, name : FullName)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("settlorDateOfDeath.title")}"
+    title = s"${errorPrefix(form)} ${messages("settlorDateOfDeath.title", name.toString)}"
 ) {
 
     @formHelper(action = SettlorDateOfDeathController.onSubmit(mode), 'autoComplete -> "off") {
@@ -31,11 +33,11 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("settlorDateOfDeath.heading")
+        @components.heading("settlorDateOfDeath.heading", Some(name.toString))
 
         @components.input_date(
             field = form("value"),
-            legend = messages("settlorDateOfDeath.heading"),
+            legend = messages("settlorDateOfDeath.heading", name.toString),
             legendClass = "visually-hidden"
         )
 

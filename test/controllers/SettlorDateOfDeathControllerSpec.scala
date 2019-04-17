@@ -39,13 +39,15 @@ class SettlorDateOfDeathControllerSpec extends SpecBase with MockitoSugar {
 
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
 
+  private val fullName = FullName("first name", None, "Last name")
+
   lazy val settlorDateOfDeathRoute = routes.SettlorDateOfDeathController.onPageLoad(NormalMode).url
 
   "SettlorDateOfDeath Controller" must {
 
     "return OK and the correct view for a GET" in {
       val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
-        FullName("first name", None, "Last name")).success.value
+        fullName).success.value
 
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -59,7 +61,7 @@ class SettlorDateOfDeathControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, fullName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -67,8 +69,7 @@ class SettlorDateOfDeathControllerSpec extends SpecBase with MockitoSugar {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = UserAnswers(userAnswersId).set(SettlorDateOfDeathPage, validAnswer)
-        .success.value.set(SettlorsNamePage,
-        FullName("first name", None, "Last name")).success.value
+        .success.value.set(SettlorsNamePage, fullName).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -81,7 +82,7 @@ class SettlorDateOfDeathControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(validAnswer), NormalMode, fullName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -90,7 +91,7 @@ class SettlorDateOfDeathControllerSpec extends SpecBase with MockitoSugar {
 
       val userAnswers = UserAnswers(userAnswersId).set(SettlorDateOfDeathPage, validAnswer)
         .success.value.set(SettlorsNamePage,
-        FullName("first name", None, "Last name")).success.value
+        fullName).success.value
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers))
@@ -137,7 +138,7 @@ class SettlorDateOfDeathControllerSpec extends SpecBase with MockitoSugar {
 
       val userAnswers = UserAnswers(userAnswersId).set(SettlorDateOfDeathPage, validAnswer)
         .success.value.set(SettlorsNamePage,
-        FullName("first name", None, "Last name")).success.value
+        fullName).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -154,7 +155,7 @@ class SettlorDateOfDeathControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fullName)(fakeRequest, messages).toString
 
       application.stop()
     }
