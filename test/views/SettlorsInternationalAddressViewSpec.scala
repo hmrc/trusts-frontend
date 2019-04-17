@@ -18,7 +18,7 @@ package views
 
 import controllers.routes
 import forms.InternationalAddressFormProvider
-import models.{InternationalAddress, NormalMode}
+import models.{FullName, InternationalAddress, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
@@ -30,15 +30,17 @@ class SettlorsInternationalAddressViewSpec extends QuestionViewBehaviours[Intern
 
   override val form = new InternationalAddressFormProvider()()
 
+
   "SettlorsInternationalAddressView" must {
 
     val view = viewFor[SettlorsInternationalAddressView](Some(emptyUserAnswers))
 
+    val name = FullName("First", None, "Last")
+
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, NormalMode, name)(fakeRequest, messages)
 
-
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString)
 
     behave like pageWithBackLink(applyView(form))
 
@@ -47,7 +49,8 @@ class SettlorsInternationalAddressViewSpec extends QuestionViewBehaviours[Intern
       applyView,
       messageKeyPrefix,
       routes.SettlorsInternationalAddressController.onSubmit(NormalMode).url,
-      Seq(("line1",None), ("line2",None), ("line3", None), ("line4", None), ("country", None))
+      Seq(("line1",None), ("line2",None), ("line3", None), ("line4", None), ("country", None)),
+      name.toString
     )
   }
 }

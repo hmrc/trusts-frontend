@@ -37,12 +37,14 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
 
   lazy val settlorsInternationalAddressRoute = routes.SettlorsInternationalAddressController.onPageLoad(NormalMode).url
 
+  val name = FullName("first name", None, "Last name")
+
   "SettlorsInternationalAddress Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
-        FullName("first name", None, "Last name")).success.value
+        name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -55,7 +57,7 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form, NormalMode, name)(request, messages).toString
 
       application.stop()
     }
@@ -64,7 +66,7 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
 
       val userAnswers = UserAnswers(userAnswersId)
         .set(SettlorsInternationalAddressPage, InternationalAddress("line 1", "line 2", None, None, "country")).success.value.set(SettlorsNamePage,
-        FullName("first name", None, "Last name")).success.value
+        name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -77,7 +79,7 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(InternationalAddress("line 1", "line 2", None, None, "country")), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(InternationalAddress("line 1", "line 2", None, None, "country")), NormalMode, name)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -85,7 +87,7 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
-        FullName("first name", None, "Last name")).success.value
+        name).success.value
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers))
@@ -108,7 +110,7 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
     "return a Bad Request and errors when invalid data is submitted" in {
 
       val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
-        FullName("first name", None, "Last name")).success.value
+        name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -125,7 +127,7 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, name)(fakeRequest, messages).toString
 
       application.stop()
     }

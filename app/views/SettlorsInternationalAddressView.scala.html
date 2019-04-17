@@ -16,16 +16,17 @@
 
 @import controllers.routes._
 @import models.Mode
+@import models.FullName
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, name : FullName)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("settlorsInternationalAddress.title")}"
+    title = s"${errorPrefix(form)} ${messages("settlorsInternationalAddress.title", name.toString)}"
     ) {
 
     @formHelper(action = SettlorsInternationalAddressController.onSubmit(mode), 'autoComplete -> "off") {
@@ -34,7 +35,7 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("settlorsInternationalAddress.heading")
+        @components.heading("settlorsInternationalAddress.heading", Some(name.toString))
 
         @components.input_text(
             field = form("line1"),
