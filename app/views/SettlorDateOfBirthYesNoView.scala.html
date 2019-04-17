@@ -14,6 +14,8 @@
  * limitations under the License.
  *@
 
+@import models.FullName
+
 @import controllers.routes._
 @import models.Mode
 
@@ -22,10 +24,10 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, name : FullName)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("settlorDateOfBirthYesNo.title")}"
+    title = s"${errorPrefix(form)} ${messages("settlorDateOfBirthYesNo.title", name.toString)}"
     ) {
 
     @formHelper(action = SettlorDateOfBirthYesNoController.onSubmit(mode), 'autoComplete -> "off") {
@@ -34,11 +36,11 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("settlorDateOfBirthYesNo.heading")
+        @components.heading("settlorDateOfBirthYesNo.heading", Some(name.toString))
 
         @components.input_yes_no(
             field = form("value"),
-            label = messages("settlorDateOfBirthYesNo.heading"),
+            label = messages("settlorDateOfBirthYesNo.heading", name.toString),
             labelClass = Some("visually-hidden")
         )
 

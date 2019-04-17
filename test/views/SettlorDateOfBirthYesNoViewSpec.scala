@@ -18,7 +18,7 @@ package views
 
 import controllers.routes
 import forms.SettlorDateOfBirthYesNoFormProvider
-import models.NormalMode
+import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
@@ -34,13 +34,15 @@ class SettlorDateOfBirthYesNoViewSpec extends YesNoViewBehaviours {
 
     val view = viewFor[SettlorDateOfBirthYesNoView](Some(emptyUserAnswers))
 
-    def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+    val name = FullName("First", None, "Last")
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    def applyView(form: Form[_]): HtmlFormat.Appendable =
+      view.apply(form, NormalMode, name)(fakeRequest, messages)
+
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.SettlorDateOfBirthYesNoController.onSubmit(NormalMode).url)
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.SettlorDateOfBirthYesNoController.onSubmit(NormalMode).url, None, Seq(name.toString))
   }
 }
