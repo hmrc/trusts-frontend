@@ -20,10 +20,10 @@ import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
 import forms.SettlorsDateOfBirthFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.scalatest.mockito.MockitoSugar
-import pages.SettlorsDateOfBirthPage
+import pages.{SettlorsDateOfBirthPage, SettlorsNamePage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -45,7 +45,10 @@ class SettlorsDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
+        FullName("first name", None, "Last name")).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, settlorsDateOfBirthRoute)
 
@@ -63,7 +66,8 @@ class SettlorsDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(SettlorsDateOfBirthPage, validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(SettlorsDateOfBirthPage, validAnswer).success.value.set(SettlorsNamePage,
+        FullName("first name", None, "Last name")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -83,8 +87,11 @@ class SettlorsDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
 
     "redirect to the next page when valid data is submitted" in {
 
+      val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
+        FullName("first name", None, "Last name")).success.value
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
           )
@@ -109,7 +116,10 @@ class SettlorsDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
+        FullName("first name", None, "Last name")).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, settlorsDateOfBirthRoute)
@@ -160,6 +170,22 @@ class SettlorsDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+
+      application.stop()
+    }
+
+    "redirect to SettlorNamePage when settlor name is not answered" in {
+
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      val request = FakeRequest(GET, settlorsDateOfBirthRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.SettlorsNameController.onPageLoad(NormalMode).url
 
       application.stop()
     }

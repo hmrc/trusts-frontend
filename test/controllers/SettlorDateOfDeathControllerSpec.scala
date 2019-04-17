@@ -20,10 +20,10 @@ import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
 import forms.SettlorDateOfDeathFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.scalatest.mockito.MockitoSugar
-import pages.SettlorDateOfDeathPage
+import pages.{SettlorDateOfDeathPage, SettlorsNamePage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -44,8 +44,11 @@ class SettlorDateOfDeathControllerSpec extends SpecBase with MockitoSugar {
   "SettlorDateOfDeath Controller" must {
 
     "return OK and the correct view for a GET" in {
+      val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
+        FullName("first name", None, "Last name")).success.value
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, settlorDateOfDeathRoute)
 
@@ -63,7 +66,9 @@ class SettlorDateOfDeathControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(SettlorDateOfDeathPage, validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(SettlorDateOfDeathPage, validAnswer)
+        .success.value.set(SettlorsNamePage,
+        FullName("first name", None, "Last name")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -83,8 +88,12 @@ class SettlorDateOfDeathControllerSpec extends SpecBase with MockitoSugar {
 
     "redirect to the next page when valid data is submitted" in {
 
+      val userAnswers = UserAnswers(userAnswersId).set(SettlorDateOfDeathPage, validAnswer)
+        .success.value.set(SettlorsNamePage,
+        FullName("first name", None, "Last name")).success.value
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
           )
@@ -107,9 +116,30 @@ class SettlorDateOfDeathControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
 
-    "return a Bad Request and errors when invalid data is submitted" in {
+
+    "redirect to SettlorNamePage when settlor name is not answered" in {
+
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      val request = FakeRequest(GET, settlorDateOfDeathRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.SettlorsNameController.onPageLoad(NormalMode).url
+
+      application.stop()
+    }
+
+    "return a Bad Request and errors when invalid data is submitted" in {
+
+      val userAnswers = UserAnswers(userAnswersId).set(SettlorDateOfDeathPage, validAnswer)
+        .success.value.set(SettlorsNamePage,
+        FullName("first name", None, "Last name")).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, settlorDateOfDeathRoute)

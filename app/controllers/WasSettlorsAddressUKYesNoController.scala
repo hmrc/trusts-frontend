@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.WasSettlorsAddressUKYesNoFormProvider
 import javax.inject.Inject
-import models.{Mode, UserAnswers}
+import models.{Mode, NormalMode, UserAnswers}
 import navigation.Navigator
-import pages.WasSettlorsAddressUKYesNoPage
+import pages.{SettlorsNamePage, WasSettlorsAddressUKYesNoPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -39,13 +39,20 @@ class WasSettlorsAddressUKYesNoController @Inject()(
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction,
                                          formProvider: WasSettlorsAddressUKYesNoFormProvider,
+                                         requiredAnswer: RequiredAnswerActionProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: WasSettlorsAddressUKYesNoView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  private def actions() =
+    identify andThen
+      getData andThen
+      requireData andThen
+      requiredAnswer(RequiredAnswer(SettlorsNamePage, routes.SettlorsNameController.onPageLoad(NormalMode)))
+
+  def onPageLoad(mode: Mode): Action[AnyContent] = actions() {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(WasSettlorsAddressUKYesNoPage) match {
@@ -56,7 +63,7 @@ class WasSettlorsAddressUKYesNoController @Inject()(
       Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode) = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode) = actions().async {
     implicit request =>
 
       form.bindFromRequest().fold(

@@ -18,9 +18,9 @@ package controllers
 
 import base.SpecBase
 import forms.WasSettlorsAddressUKYesNoFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.WasSettlorsAddressUKYesNoPage
+import pages.{SettlorsNamePage, WasSettlorsAddressUKYesNoPage}
 import play.api.inject.bind
 import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.Call
@@ -41,7 +41,10 @@ class WasSettlorsAddressUKYesNoControllerSpec extends SpecBase {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
+        FullName("first name", None, "Last name")).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, wasSettlorsAddressUKYesNoRoute)
 
@@ -59,7 +62,8 @@ class WasSettlorsAddressUKYesNoControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(WasSettlorsAddressUKYesNoPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(WasSettlorsAddressUKYesNoPage, true).success.value.set(SettlorsNamePage,
+        FullName("first name", None, "Last name")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -79,8 +83,11 @@ class WasSettlorsAddressUKYesNoControllerSpec extends SpecBase {
 
     "redirect to the next page when valid data is submitted" in {
 
+      val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
+        FullName("first name", None, "Last name")).success.value
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
@@ -99,7 +106,10 @@ class WasSettlorsAddressUKYesNoControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
+        FullName("first name", None, "Last name")).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, wasSettlorsAddressUKYesNoRoute)
@@ -147,6 +157,21 @@ class WasSettlorsAddressUKYesNoControllerSpec extends SpecBase {
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+
+      application.stop()
+    }
+
+    "redirect to SettlorNamePage when settlor name is not answered" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      val request = FakeRequest(GET, wasSettlorsAddressUKYesNoRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.SettlorsNameController.onPageLoad(NormalMode).url
 
       application.stop()
     }
