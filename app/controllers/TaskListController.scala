@@ -23,14 +23,16 @@ import controllers.actions._
 import javax.inject.Inject
 import models.Matched.{AlreadyRegistered, Failed, Success}
 import models.NormalMode
+import models.Progress.InProgress
 import pages._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.TaskListView
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 class TaskListController @Inject()(
                                        override val messagesApi: MessagesApi,
@@ -41,7 +43,8 @@ class TaskListController @Inject()(
                                        val controllerComponents: MessagesControllerComponents,
                                        view: TaskListView,
                                        config: FrontendAppConfig,
-                                       registrationProgress: RegistrationProgress
+                                       registrationProgress: RegistrationProgress,
+                                       sessionRepository: SessionRepository
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
@@ -57,14 +60,20 @@ class TaskListController @Inject()(
           TrustHaveAUTRPage, routes.TrustHaveAUTRController.onPageLoad(NormalMode))
       )
 
-  def onPageLoad: Action[AnyContent] = actions {
+  def onPageLoad: Action[AnyContent] = actions.async {
     implicit request =>
 
       def renderView(affinityGroup : AffinityGroup) = {
         val ttlInSeconds = config.ttlInSeconds
         val savedUntil = request.userAnswers.createdAt.plusSeconds(ttlInSeconds).format(dateFormatter)
 
-        Ok(view(savedUntil, registrationProgress.sections(request.userAnswers), affinityGroup))
+        val updatedAnswers = request.userAnswers.copy(progress = InProgress)
+
+        for {
+          _              <- sessionRepository.set(updatedAnswers)
+        } yield {
+          Ok(view(savedUntil, registrationProgress.sections(updatedAnswers), affinityGroup))
+        }
       }
 
       val isExistingTrust = request.userAnswers.get(TrustHaveAUTRPage).get
@@ -75,10 +84,10 @@ class TaskListController @Inject()(
             renderView(request.affinityGroup)
 
           case Some(AlreadyRegistered) | Some(Failed) =>
-            Redirect(routes.FailedMatchController.onPageLoad().url)
+            Future.successful(Redirect(routes.FailedMatchController.onPageLoad().url))
 
           case None =>
-            Redirect(routes.WhatIsTheUTRController.onPageLoad(NormalMode).url)
+            Future.successful(Redirect(routes.WhatIsTheUTRController.onPageLoad(NormalMode).url))
         }
       } else {
         renderView(request.affinityGroup)

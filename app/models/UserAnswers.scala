@@ -18,6 +18,7 @@ package models
 
 import java.time.LocalDateTime
 
+import models.Progress.NotStarted
 import pages._
 import play.api.libs.json._
 
@@ -26,6 +27,7 @@ import scala.util.{Failure, Success, Try}
 final case class UserAnswers(
                               id: String,
                               data: JsObject = Json.obj(),
+                              progress : Progress = NotStarted,
                               createdAt : LocalDateTime = LocalDateTime.now
                             ) {
 
@@ -74,6 +76,7 @@ object UserAnswers {
     (
       (__ \ "_id").read[String] and
       (__ \ "data").read[JsObject] and
+      (__ \ "progress").read[Progress] and
       (__ \ "createdAt").read(MongoDateTimeFormats.localDateTimeRead)
     ) (UserAnswers.apply _)
   }
@@ -85,6 +88,7 @@ object UserAnswers {
     (
       (__ \ "_id").write[String] and
       (__ \ "data").write[JsObject] and
+      (__ \ "progress").write[Progress] and
       (__ \ "createdAt").write(MongoDateTimeFormats.localDateTimeWrite)
     ) (unlift(UserAnswers.unapply))
   }

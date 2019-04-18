@@ -17,7 +17,8 @@
 package controllers
 
 import base.SpecBase
-import models.NormalMode
+import models.Progress.InProgress
+import models.{NormalMode, UserAnswers}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
@@ -26,9 +27,47 @@ class IndexControllerSpec extends SpecBase {
 
   "Index Controller" must {
 
-    "redirect to TrustRegisteredOnline with Non-Agent affinityGroup for a GET" in {
+    "redirect when form has not been started" should {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      "redirect to TrustRegisteredOnline with Non-Agent affinityGroup for a GET" in {
+
+        val application = applicationBuilder(userAnswers = None).build()
+
+        val request = FakeRequest(GET, routes.IndexController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustBe routes.TrustRegisteredOnlineController.onPageLoad(NormalMode).url
+
+        application.stop()
+      }
+
+      "redirect to AgentOverview with Agent affinityGroup for a GET" in {
+
+        val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
+
+        val request = FakeRequest(GET, routes.IndexController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustBe routes.AgentOverviewController.onPageLoad().url
+
+        application.stop()
+      }
+
+    }
+
+  "redirect when registration has been started" should {
+
+    "redirect to RegistrationProgress with Non-Agent affinityGroup" in {
+
+      val answers = UserAnswers(userAnswersId, progress = InProgress)
+
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
 
       val request = FakeRequest(GET, routes.IndexController.onPageLoad().url)
 
@@ -36,14 +75,16 @@ class IndexControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustBe routes.TrustRegisteredOnlineController.onPageLoad(NormalMode).url
+      redirectLocation(result).value mustBe routes.TaskListController.onPageLoad().url
 
       application.stop()
     }
 
-    "redirect to AgentOverview with Agent affinityGroup for a GET" in {
+    "redirect to AgentOverview with Agent affinityGroup" in {
 
-      val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
+      val answers = UserAnswers(userAnswersId, progress = InProgress)
+
+      val application = applicationBuilder(userAnswers = Some(answers), AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, routes.IndexController.onPageLoad().url)
 
@@ -56,6 +97,7 @@ class IndexControllerSpec extends SpecBase {
       application.stop()
     }
 
+  }
 
   }
 
