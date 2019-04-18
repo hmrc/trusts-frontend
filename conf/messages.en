@@ -536,9 +536,12 @@ settlorsName.middleName = Middle name (optional)
 settlorsName.lastName = Last name
 settlorsName.checkYourAnswersLabel = What is the settlor’s name?
 settlorsName.error.firstName.required = Enter the settlor’s first name
+settlorsName.error.firstName.invalid = Settlor’s first name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 settlorsName.error.lastName.required = Enter the settlor’s last name
+settlorsName.error.lastName.invalid = Settlor’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 settlorsName.error.firstName.length = Settlor’s first name must be 35 characters or less
 settlorsName.error.middleName.length = Settlor’s middle name must be 35 characters or less
+settlorsName.error.middleName.invalid = Settlor’s middle name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 settlorsName.error.lastName.length = Settlor’s last name must be 35 characters or less
 
 settlorsNINoYesNo.title = Do you know {0}’s National Insurance number?
