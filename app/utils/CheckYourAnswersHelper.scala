@@ -20,11 +20,11 @@ import java.time.format.DateTimeFormatter
 
 import controllers.routes
 import javax.inject.Inject
-import models.{CheckMode, UKAddress, UserAnswers}
+import models.{CheckMode, InternationalAddress, UKAddress, UserAnswers}
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
-import utils.CheckYourAnswersHelper._
+import utils.CheckYourAnswersHelper.{trusteeName, _}
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerRow
 
@@ -35,7 +35,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "wasSettlorsAddressUKYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.WasSettlorsAddressUKYesNoController.onPageLoad(CheckMode).url
+        routes.WasSettlorsAddressUKYesNoController.onPageLoad(CheckMode).url,
+          deceasedSettlorName(userAnswers)
       )
   }
 
@@ -52,8 +53,9 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x =>
       AnswerRow(
         "settlorsUKAddress.checkYourAnswersLabel",
-        HtmlFormat.escape(s"${x.line1} ${x.line2}"),
-        routes.SettlorsUKAddressController.onPageLoad(CheckMode).url
+        ukAddress(x),
+        routes.SettlorsUKAddressController.onPageLoad(CheckMode).url,
+        deceasedSettlorName(userAnswers)
       )
   }
 
@@ -62,7 +64,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorsNINoYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SettlorsNINoYesNoController.onPageLoad(CheckMode).url
+        routes.SettlorsNINoYesNoController.onPageLoad(CheckMode).url,
+        deceasedSettlorName(userAnswers)
       )
   }
 
@@ -80,7 +83,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorsLastKnownAddressYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SettlorsLastKnownAddressYesNoController.onPageLoad(CheckMode).url
+        routes.SettlorsLastKnownAddressYesNoController.onPageLoad(CheckMode).url,
+        deceasedSettlorName(userAnswers)
       )
   }
 
@@ -88,8 +92,9 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x =>
       AnswerRow(
         "settlorsInternationalAddress.checkYourAnswersLabel",
-        HtmlFormat.escape(s"${x.line1} ${x.line2}"),
-        routes.SettlorsInternationalAddressController.onPageLoad(CheckMode).url
+        internationalAddress(x, countryOptions),
+        routes.SettlorsInternationalAddressController.onPageLoad(CheckMode).url,
+        deceasedSettlorName(userAnswers)
       )
   }
 
@@ -98,7 +103,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorsDateOfBirth.checkYourAnswersLabel",
         HtmlFormat.escape(x.format(dateFormatter)),
-        routes.SettlorsDateOfBirthController.onPageLoad(CheckMode).url
+        routes.SettlorsDateOfBirthController.onPageLoad(CheckMode).url,
+        deceasedSettlorName(userAnswers)
       )
   }
 
@@ -107,7 +113,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorNationalInsuranceNumber.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        routes.SettlorNationalInsuranceNumberController.onPageLoad(CheckMode).url
+        routes.SettlorNationalInsuranceNumberController.onPageLoad(CheckMode).url,
+        deceasedSettlorName(userAnswers)
       )
   }
 
@@ -116,7 +123,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorDateOfDeathYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SettlorDateOfDeathYesNoController.onPageLoad(CheckMode).url
+        routes.SettlorDateOfDeathYesNoController.onPageLoad(CheckMode).url,
+        deceasedSettlorName(userAnswers)
       )
   }
 
@@ -125,7 +133,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorDateOfDeath.checkYourAnswersLabel",
         HtmlFormat.escape(x.format(dateFormatter)),
-        routes.SettlorDateOfDeathController.onPageLoad(CheckMode).url
+        routes.SettlorDateOfDeathController.onPageLoad(CheckMode).url,
+        deceasedSettlorName(userAnswers)
       )
   }
 
@@ -134,7 +143,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorDateOfBirthYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SettlorDateOfBirthYesNoController.onPageLoad(CheckMode).url
+        routes.SettlorDateOfBirthYesNoController.onPageLoad(CheckMode).url,
+        deceasedSettlorName(userAnswers)
       )
   }
 
@@ -358,18 +368,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x => AnswerRow("trustName.checkYourAnswersLabel", escape(x), routes.TrustNameController.onPageLoad(CheckMode).url)
   }
 
-  private def ukAddress(address: UKAddress): Html = {
-    val lines =
-      Seq(
-        Some(HtmlFormat.escape(address.line1)),
-        address.line2.map(HtmlFormat.escape),
-        address.line3.map(HtmlFormat.escape),
-        Some(HtmlFormat.escape(address.townOrCity)),
-        Some(HtmlFormat.escape(address.postcode))
-      ).flatten
 
-    Html(lines.mkString("<br />"))
-  }
 
 }
 
@@ -394,4 +393,33 @@ object CheckYourAnswersHelper {
     HtmlFormat.escape(messages(s"$key.$answer"))
 
   private def escape(x : String) = HtmlFormat.escape(x)
+
+  private def deceasedSettlorName(userAnswers: UserAnswers): String =
+    userAnswers.get(SettlorsNamePage).get.toString
+
+  private def ukAddress(address: UKAddress): Html = {
+    val lines =
+      Seq(
+        Some(HtmlFormat.escape(address.line1)),
+        address.line2.map(HtmlFormat.escape),
+        address.line3.map(HtmlFormat.escape),
+        Some(HtmlFormat.escape(address.townOrCity)),
+        Some(HtmlFormat.escape(address.postcode))
+      ).flatten
+
+    Html(lines.mkString("<br />"))
+  }
+
+  private def internationalAddress(address: InternationalAddress, countryOptions: CountryOptions): Html = {
+    val lines =
+      Seq(
+        Some(HtmlFormat.escape(address.line1)),
+        Some(HtmlFormat.escape(address.line2)),
+        address.line3.map(HtmlFormat.escape),
+        address.line4.map(HtmlFormat.escape),
+        Some(country(address.country, countryOptions))
+      ).flatten
+
+    Html(lines.mkString("<br />"))
+  }
 }
