@@ -18,7 +18,7 @@ package views
 
 import controllers.routes
 import forms.SettlorsLastKnownAddressYesNoFormProvider
-import models.NormalMode
+import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
@@ -32,15 +32,19 @@ class SettlorsLastKnownAddressYesNoViewSpec extends YesNoViewBehaviours {
 
   "SettlorsLastKnownAddressYesNo view" must {
 
+    val name = FullName("First", None, "Last")
+
     val view = viewFor[SettlorsLastKnownAddressYesNoView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, NormalMode, name)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.SettlorsLastKnownAddressYesNoController.onSubmit(NormalMode).url)
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.SettlorsLastKnownAddressYesNoController.onSubmit(NormalMode).url, None, Seq(name.toString))
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

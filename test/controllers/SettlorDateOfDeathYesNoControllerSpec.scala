@@ -37,12 +37,14 @@ class SettlorDateOfDeathYesNoControllerSpec extends SpecBase {
 
   lazy val settlorDateOfDeathYesNoRoute = routes.SettlorDateOfDeathYesNoController.onPageLoad(NormalMode).url
 
+  val name = FullName("first name", None, "Last name")
+
   "SettlorDateOfDeathYesNo Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
-        FullName("first name", None, "Last name")).success.value
+        name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -55,14 +57,14 @@ class SettlorDateOfDeathYesNoControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, name)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(SettlorDateOfDeathYesNoPage, true).success.value.set(SettlorsNamePage,FullName("first name", None, "Last name")).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(SettlorDateOfDeathYesNoPage, true).success.value.set(SettlorsNamePage,name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -75,7 +77,7 @@ class SettlorDateOfDeathYesNoControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, name)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -83,7 +85,7 @@ class SettlorDateOfDeathYesNoControllerSpec extends SpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
-        FullName("first name", None, "Last name")).success.value
+        name).success.value
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers))
@@ -106,7 +108,7 @@ class SettlorDateOfDeathYesNoControllerSpec extends SpecBase {
     "return a Bad Request and errors when invalid data is submitted" in {
 
       val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
-        FullName("first name", None, "Last name")).success.value
+        name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -123,7 +125,7 @@ class SettlorDateOfDeathYesNoControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, name)(fakeRequest, messages).toString
 
       application.stop()
     }
