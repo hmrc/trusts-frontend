@@ -19,7 +19,7 @@ package controllers
 import controllers.actions._
 import forms.AssetMoneyValueFormProvider
 import javax.inject.Inject
-import models.{Mode, UserAnswers}
+import models.Mode
 import navigation.Navigator
 import pages.AssetMoneyValuePage
 import play.api.data.Form
@@ -50,7 +50,7 @@ class AssetMoneyValueController @Inject()(
 
       val preparedForm = request.userAnswers.get(AssetMoneyValuePage(index)) match {
         case None => form
-        case v @ Some(_) => form.fill(v)
+        case Some(value) => form.fill(value)
       }
 
       Ok(view(preparedForm, mode, index))
@@ -59,24 +59,16 @@ class AssetMoneyValueController @Inject()(
   def onSubmit(mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
-      def redirect(userAnswers: UserAnswers) = Redirect(navigator.nextPage(AssetMoneyValuePage(index), mode)(userAnswers))
-
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(view(formWithErrors, mode, index))),
 
         value => {
-          value match {
-            case Some(v) =>
-              for {
-                updatedAnswers <- Future.fromTry(request.userAnswers.set(AssetMoneyValuePage(index), v))
+          for {
+                updatedAnswers <- Future.fromTry(request.userAnswers.set(AssetMoneyValuePage(index), value))
                 _              <- sessionRepository.set(updatedAnswers)
-              } yield redirect(updatedAnswers)
-            case None =>
-              Future.successful(redirect(request.userAnswers))
+              } yield Redirect(navigator.nextPage(AssetMoneyValuePage(index), mode)(updatedAnswers))
           }
-
-        }
       )
   }
 }

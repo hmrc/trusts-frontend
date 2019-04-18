@@ -16,16 +16,25 @@
 
 package forms
 
-import forms.behaviours.StringFieldBehaviours
+import forms.behaviours.{IntFieldBehaviours, StringFieldBehaviours}
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalacheck.Gen
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
 
-class AssetMoneyValueFormProviderSpec extends StringFieldBehaviours {
+import scala.collection.mutable
+
+class AssetMoneyValueFormProviderSpec extends StringFieldBehaviours with IntFieldBehaviours {
 
   val requiredKey = "assetMoneyValue.error.required"
   val lengthKey = "assetMoneyValue.error.length"
   val invalidFormatKey = "assetMoneyValue.error.invalidFormat"
-  val maxLength = 15
+  val wholeNumberKey = "assetMoneyValue.error.wholeNumber"
+  val zeroNumberkey = "assetMoneyValue.error.zero"
+  val maxLength = 12
+  val minValue = 1
+
+  val maxLengthRegex = "^[0-9]{13}$"
 
   val form = new AssetMoneyValueFormProvider()()
 
@@ -36,14 +45,15 @@ class AssetMoneyValueFormProviderSpec extends StringFieldBehaviours {
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      RegexpGen.from(Validation.numericRegex)
+      RegexpGen.from(Validation.currencyRegex)
     )
 
-    behave like fieldWithMaxLength(
+    behave like intFieldWithMinimumWithGenerator(
       form,
       fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+      1,
+      Gen.const(0),
+      FormError(fieldName, zeroNumberkey, Array("1"))
     )
 
     behave like mandatoryField(
@@ -51,6 +61,7 @@ class AssetMoneyValueFormProviderSpec extends StringFieldBehaviours {
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
     )
+
 
   }
 }

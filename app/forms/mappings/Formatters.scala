@@ -62,10 +62,7 @@ trait Formatters {
         case None | Some("") => Left(Seq(FormError(key, requiredKey)))
         case Some(s) =>
           val trimmed = s.trim.replaceAll(",", "")
-          trimmed.matches(Validation.numericRegex) match {
-            case true => Right(trimmed)
-            case false => Left(Seq(FormError(key, invalidKey)))
-          }
+          Right(trimmed)
       }
 
     override def unbind(key: String, value: String): Map[String, String] =

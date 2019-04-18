@@ -16,41 +16,23 @@
 
 package forms
 
-import javax.inject.Inject
-
 import forms.mappings.Mappings
+import javax.inject.Inject
 import play.api.data.Form
-import uk.gov.voa.play.form.ConditionalMappings._
 
 class AssetMoneyValueFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Option[String]] =
-//    Form(
-//      "value" -> text("assetMoneyValue.error.required")
-//        .verifying(
-//          firstError(
-//            minimumValue("1", "assetMoneyValue.error.zero"),
-//            regexp(Validation.decimalCheck, "assetMoneyValue.error.wholeNumber"),
-//            maxLength(15, "assetMoneyValue.error.length"),
-//            isNotEmpty("value", "assetMoneyValue.error.required"),
-//            regexp(Validation.numericRegex, "assetMoneyValue.error.invalidFormat")
-//          )
-//        )
-//    )
-
+  def apply(): Form[String] =
     Form(
-      "value"-> mandatoryIfNot("value", "", currency(
-        requiredKey = "assetMoneyValue.error.required")
+      "value"-> currency("assetMoneyValue.error.required")
       .verifying(
         firstError(
-          minimumValue("1", "assetMoneyValue.error.zero"),
-          regexp(Validation.decimalCheck, "assetMoneyValue.error.wholeNumber"),
-          maxLength(12, "assetMoneyValue.error.length"),
           isNotEmpty("value", "assetMoneyValue.error.required"),
-          regexp(Validation.numericRegex, "assetMoneyValue.error.invalidFormat")
+          maxLength(12, "assetMoneyValue.error.length"),
+          regexp(Validation.currencyRegex, "assetMoneyValue.error.invalidFormat"),
+          regexp(Validation.decimalCheck, "assetMoneyValue.error.wholeNumber"),
+          minimumValue("1", "assetMoneyValue.error.zero")
         )
       )
     )
-    )
-
 }
