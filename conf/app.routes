@@ -272,3 +272,4 @@ GET        /settlors/deceased/change-was-settlors-address-uk                  co
 POST       /settlors/deceased/change-was-settlors-address-uk                 controllers.WasSettlorsAddressUKYesNoController.onSubmit(mode: Mode = CheckMode)
 
 GET        /settlors/deceased/check-answers                       controllers.DeceasedSettlorAnswerController.onPageLoad()
+POST        /settlors/deceased/check-answers                       controllers.DeceasedSettlorAnswerController.onSubmit()

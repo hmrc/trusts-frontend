@@ -174,5 +174,12 @@ trait DeceasedSettlorRoutes {
             .mustBe(routes.DeceasedSettlorAnswerController.onPageLoad())
       }
     }
+    "go to TaskList from DeceasedSettlorAnswerPage" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          navigator.nextPage(DeceasedSettlorAnswerPage, NormalMode)(userAnswers)
+            .mustBe(routes.TaskListController.onPageLoad())
+      }
+    }
   }
 }
