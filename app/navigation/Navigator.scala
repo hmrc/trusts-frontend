@@ -76,7 +76,7 @@ class Navigator @Inject()() {
     case AddAssetsPage => _ => addAssetsRoute
 
     //Settlors
-    case SetupAfterSettlorDiedPage => _ => _ => routes.SettlorsNameController.onPageLoad(NormalMode)
+    case SetupAfterSettlorDiedPage => _ => setupAfterSettlorDiedRoute
     case SettlorsNamePage => _ => _ => routes.SettlorDateOfDeathYesNoController.onPageLoad(NormalMode)
     case SettlorDateOfDeathYesNoPage => _ => deceasedSettlorDateOfDeathRoute
     case SettlorDateOfBirthYesNoPage => _ => deceasedSettlorDateOfBirthRoute
@@ -91,6 +91,12 @@ class Navigator @Inject()() {
     case DeceasedSettlorAnswerPage => _ => _ => routes.TaskListController.onPageLoad()
     //  Default
     case _ => _ => _ => routes.IndexController.onPageLoad()
+  }
+
+  private def setupAfterSettlorDiedRoute(userAnswers: UserAnswers) : Call = userAnswers.get(SetupAfterSettlorDiedPage) match {
+    case Some(false) => routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode)
+    case Some(true) => routes.SettlorsNameController.onPageLoad(NormalMode)
+    case _ => routes.SessionExpiredController.onPageLoad()
   }
 
   private def deceasedSettlorAddressRoute(userAnswers: UserAnswers) : Call = userAnswers.get(WasSettlorsAddressUKYesNoPage) match {

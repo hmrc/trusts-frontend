@@ -31,6 +31,18 @@ trait DeceasedSettlorRoutes {
   self: PropertyChecks with Generators with SpecBase =>
 
   def deceasedSettlorRoutes()(implicit navigator: Navigator) = {
+
+    "go to SetupAfterSettlorDiedPage from SetupAfterSettlorDiedPage when user answers no" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(SetupAfterSettlorDiedPage, value = false).success.value
+
+          navigator.nextPage(SetupAfterSettlorDiedPage, NormalMode)(answers)
+            .mustBe(routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode))
+      }
+    }
+
     "go to SettlorsNamePage from SetupAfterSettlorDiedPage when user answers yes" in {
       forAll(arbitrary[UserAnswers]) {
           userAnswers =>
