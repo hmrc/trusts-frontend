@@ -18,9 +18,15 @@ package controllers
 
 import controllers.actions._
 import javax.inject.Inject
+import models.NormalMode
+import navigation.Navigator
+import pages.{DeceasedSettlorAnswerPage, SettlorsNamePage, TrusteesAnswerPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import utils.CheckYourAnswersHelper
+import utils.countryOptions.CountryOptions
+import viewmodels.AnswerSection
 import views.html.DeceasedSettlorAnswerView
 
 import scala.concurrent.ExecutionContext
@@ -29,13 +35,50 @@ class DeceasedSettlorAnswerController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        identify: IdentifierAction,
                                        getData: DataRetrievalAction,
+                                       navigator: Navigator,
                                        requireData: DataRequiredAction,
+                                       requiredAnswer: RequiredAnswerActionProvider,
                                        val controllerComponents: MessagesControllerComponents,
-                                       view: DeceasedSettlorAnswerView
+                                       view: DeceasedSettlorAnswerView,
+                                       countryOptions : CountryOptions
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
+  private def actions() =
+    identify andThen
+      getData andThen
+      requireData andThen
+      requiredAnswer(RequiredAnswer(SettlorsNamePage, routes.SettlorsNameController.onPageLoad(NormalMode)))
+
+
+  def onPageLoad: Action[AnyContent] = actions() {
     implicit request =>
-      Ok(view())
+
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers)
+
+      val sections = Seq(
+        AnswerSection(
+          None,
+          Seq(checkYourAnswersHelper.setupAfterSettlorDied,
+            checkYourAnswersHelper.settlorsName,
+            checkYourAnswersHelper.settlorDateOfDeathYesNo,
+            checkYourAnswersHelper.settlorDateOfDeath,
+            checkYourAnswersHelper.settlorDateOfBirthYesNo,
+            checkYourAnswersHelper.settlorsDateOfBirth,
+            checkYourAnswersHelper.settlorsNINoYesNo,
+            checkYourAnswersHelper.settlorNationalInsuranceNumber,
+            checkYourAnswersHelper.settlorsLastKnownAddressYesNo,
+            checkYourAnswersHelper.wasSettlorsAddressUKYesNo,
+            checkYourAnswersHelper.settlorsUKAddress,
+            checkYourAnswersHelper.settlorsInternationalAddress
+          ).flatten
+        )
+      )
+
+      Ok(view(sections))
+  }
+
+  def onSubmit() = actions() {
+    implicit request =>
+      Redirect(navigator.nextPage(DeceasedSettlorAnswerPage, NormalMode)(request.userAnswers))
   }
 }

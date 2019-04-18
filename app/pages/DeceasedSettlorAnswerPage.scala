@@ -14,21 +14,6 @@
  * limitations under the License.
  */
 
-package views
+package pages
 
-import views.behaviours.ViewBehaviours
-import views.html.DeceasedSettlorAnswerView
-
-class DeceasedSettlorAnswerViewSpec extends ViewBehaviours {
-
-  "DeceasedSettlorAnswer view" must {
-
-    val view = viewFor[DeceasedSettlorAnswerView](Some(emptyUserAnswers))
-
-    val applyView = view.apply(Nil)(fakeRequest, messages)
-
-    behave like normalPage(applyView, "deceasedSettlorAnswer")
-
-    behave like pageWithBackLink(applyView)
-  }
-}
+case object DeceasedSettlorAnswerPage extends Page

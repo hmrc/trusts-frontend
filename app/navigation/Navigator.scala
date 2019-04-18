@@ -88,6 +88,7 @@ class Navigator @Inject()() {
     case WasSettlorsAddressUKYesNoPage => _ => deceasedSettlorAddressRoute
     case SettlorsInternationalAddressPage => _ => _ => routes.DeceasedSettlorAnswerController.onPageLoad()
     case SettlorsUKAddressPage => _ => _ => routes.DeceasedSettlorAnswerController.onPageLoad()
+    case DeceasedSettlorAnswerPage => _ => _ => routes.TaskListController.onPageLoad()
     //  Default
     case _ => _ => _ => routes.IndexController.onPageLoad()
   }
