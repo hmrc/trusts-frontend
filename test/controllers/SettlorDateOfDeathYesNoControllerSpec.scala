@@ -18,9 +18,9 @@ package controllers
 
 import base.SpecBase
 import forms.SettlorDateOfDeathYesNoFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.SettlorDateOfDeathYesNoPage
+import pages.{SettlorDateOfDeathYesNoPage, SettlorsNamePage}
 import play.api.inject.bind
 import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.Call
@@ -37,11 +37,16 @@ class SettlorDateOfDeathYesNoControllerSpec extends SpecBase {
 
   lazy val settlorDateOfDeathYesNoRoute = routes.SettlorDateOfDeathYesNoController.onPageLoad(NormalMode).url
 
+  val name = FullName("first name", None, "Last name")
+
   "SettlorDateOfDeathYesNo Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
+        name).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, settlorDateOfDeathYesNoRoute)
 
@@ -52,14 +57,14 @@ class SettlorDateOfDeathYesNoControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, name)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(SettlorDateOfDeathYesNoPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(SettlorDateOfDeathYesNoPage, true).success.value.set(SettlorsNamePage,name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -72,15 +77,18 @@ class SettlorDateOfDeathYesNoControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, name)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
+      val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
+        name).success.value
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
@@ -99,7 +107,10 @@ class SettlorDateOfDeathYesNoControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
+        name).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, settlorDateOfDeathYesNoRoute)
@@ -114,7 +125,7 @@ class SettlorDateOfDeathYesNoControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, name)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -147,6 +158,22 @@ class SettlorDateOfDeathYesNoControllerSpec extends SpecBase {
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+
+      application.stop()
+    }
+
+    "redirect to SettlorNamePage when settlor name is not answered" in {
+
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      val request = FakeRequest(GET, settlorDateOfDeathYesNoRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.SettlorsNameController.onPageLoad(NormalMode).url
 
       application.stop()
     }

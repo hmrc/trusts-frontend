@@ -16,16 +16,17 @@
 
 @import controllers.routes._
 @import models.Mode
+@import models.FullName
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, name : FullName)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("settlorsInternationalAddress.title")}"
+    title = s"${errorPrefix(form)} ${messages("settlorsInternationalAddress.title", name.toString)}"
     ) {
 
     @formHelper(action = SettlorsInternationalAddressController.onSubmit(mode), 'autoComplete -> "off") {
@@ -34,31 +35,36 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("settlorsInternationalAddress.heading")
+        @components.heading("settlorsInternationalAddress.heading", Some(name.toString))
 
         @components.input_text(
             field = form("line1"),
-            label = messages("settlorsInternationalAddress.line1")
+            label = messages("settlorsInternationalAddress.line1"),
+            inputClass = Some("form-control-3-4")
         )
 
         @components.input_text(
             field = form("line2"),
-            label = messages("settlorsInternationalAddress.line2")
+            label = messages("settlorsInternationalAddress.line2"),
+            inputClass = Some("form-control-3-4")
         )
 
         @components.input_text(
         field = form("line3"),
-        label = messages("settlorsInternationalAddress.line3")
+        label = messages("settlorsInternationalAddress.line3"),
+        inputClass = Some("form-control-3-4")
         )
 
         @components.input_text(
         field = form("line4"),
-        label = messages("settlorsInternationalAddress.line4")
+        label = messages("settlorsInternationalAddress.line4"),
+        inputClass = Some("form-control-3-4")
         )
 
         @components.input_text(
         field = form("country"),
-        label = messages("settlorsInternationalAddress.country")
+        label = messages("settlorsInternationalAddress.country"),
+        inputClass = Some("form-control-1-2")
         )
 
         @components.submit_button()

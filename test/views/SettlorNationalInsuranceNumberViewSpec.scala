@@ -18,7 +18,7 @@ package views
 
 import controllers.routes
 import forms.SettlorNationalInsuranceNumberFormProvider
-import models.NormalMode
+import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
@@ -32,16 +32,18 @@ class SettlorNationalInsuranceNumberViewSpec extends StringViewBehaviours {
 
   "SettlorNationalInsuranceNumberView view" must {
 
+    val name = FullName("First", None, "Last")
+
     val view = viewFor[SettlorNationalInsuranceNumberView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, NormalMode, name)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix,
+    behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, name.toString,
       routes.SettlorNationalInsuranceNumberController.onSubmit(NormalMode).url, Some(s"$messageKeyPrefix.hint"))
 
     behave like pageWithASubmitButton(applyView(form))

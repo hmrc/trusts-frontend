@@ -18,8 +18,9 @@ package views
 
 import java.time.LocalDate
 
+import controllers.routes
 import forms.SettlorsDateOfBirthFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{FullName, NormalMode, UserAnswers}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
@@ -33,12 +34,22 @@ class SettlorsDateOfBirthViewSpec extends QuestionViewBehaviours[LocalDate] {
 
   "SettlorsDateOfBirthView view" must {
 
+    val name = FullName("First", None, "Last")
+
     val view = viewFor[SettlorsDateOfBirthView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, NormalMode, name)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    val applyViewF = (form : Form[_]) => applyView(form)
+
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString)
+
+    behave like pageWithDateFields(form, applyViewF,
+      messageKeyPrefix,
+      routes.SettlorsDateOfBirthController.onPageLoad(NormalMode).url,
+      name.toString
+    )
 
     behave like pageWithBackLink(applyView(form))
   }

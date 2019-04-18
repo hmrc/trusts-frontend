@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.InternationalAddressFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.SettlorsInternationalAddressPage
+import pages.{SettlorsInternationalAddressPage, SettlorsNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -39,29 +39,40 @@ class SettlorsInternationalAddressController @Inject()(
                                                         getData: DataRetrievalAction,
                                                         requireData: DataRequiredAction,
                                                         formProvider: InternationalAddressFormProvider,
+                                                        requiredAnswer: RequiredAnswerActionProvider,
                                                         val controllerComponents: MessagesControllerComponents,
                                                         view: SettlorsInternationalAddressView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  private def actions() =
+    identify andThen
+      getData andThen
+      requireData andThen
+      requiredAnswer(RequiredAnswer(SettlorsNamePage, routes.SettlorsNameController.onPageLoad(NormalMode)))
+
+  def onPageLoad(mode: Mode): Action[AnyContent] = actions() {
     implicit request =>
+
+      val name = request.userAnswers.get(SettlorsNamePage).get
 
       val preparedForm = request.userAnswers.get(SettlorsInternationalAddressPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, name))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = actions().async {
     implicit request =>
+
+      val name = request.userAnswers.get(SettlorsNamePage).get
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, name))),
 
         value => {
           for {

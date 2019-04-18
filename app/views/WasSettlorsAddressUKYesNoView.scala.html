@@ -16,16 +16,17 @@
 
 @import controllers.routes._
 @import models.Mode
+@import models.FullName
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, name : FullName)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("wasSettlorsAddressUKYesNo.title")}"
+    title = s"${errorPrefix(form)} ${messages("wasSettlorsAddressUKYesNo.title", name.toString)}"
     ) {
 
     @formHelper(action = WasSettlorsAddressUKYesNoController.onSubmit(mode), 'autoComplete -> "off") {
@@ -34,11 +35,11 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("wasSettlorsAddressUKYesNo.heading")
+        @components.heading("wasSettlorsAddressUKYesNo.heading", Some(name.toString))
 
         @components.input_yes_no(
             field = form("value"),
-            label = messages("wasSettlorsAddressUKYesNo.heading"),
+            label = messages("wasSettlorsAddressUKYesNo.heading", name.toString),
             labelClass = Some("visually-hidden")
         )
 

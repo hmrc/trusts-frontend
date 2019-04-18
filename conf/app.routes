@@ -271,4 +271,4 @@ POST       /settlors/deceased/was-settlors-address-uk                      contr
 GET        /settlors/deceased/change-was-settlors-address-uk                  controllers.WasSettlorsAddressUKYesNoController.onPageLoad(mode: Mode = CheckMode)
 POST       /settlors/deceased/change-was-settlors-address-uk                 controllers.WasSettlorsAddressUKYesNoController.onSubmit(mode: Mode = CheckMode)
 
-GET        /settlors/deceased/chack-answers                       controllers.DeceasedSettlorAnswerController.onPageLoad()
+GET        /settlors/deceased/check-answers                       controllers.DeceasedSettlorAnswerController.onPageLoad()

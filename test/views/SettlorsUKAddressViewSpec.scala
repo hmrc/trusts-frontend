@@ -18,7 +18,7 @@ package views
 
 import controllers.routes
 import forms.UKAddressFormProvider
-import models.{NormalMode, UKAddress}
+import models.{FullName, NormalMode, UKAddress}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
@@ -33,12 +33,14 @@ class SettlorsUKAddressViewSpec extends QuestionViewBehaviours[UKAddress] {
 
   "SettlorsUKAddressView" must {
 
+    val name = FullName("First", None, "Last")
+
     val view = viewFor[SettlorsUKAddressView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, NormalMode, name)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString)
 
     behave like pageWithBackLink(applyView(form))
 
@@ -47,7 +49,8 @@ class SettlorsUKAddressViewSpec extends QuestionViewBehaviours[UKAddress] {
       applyView,
       messageKeyPrefix,
       routes.SettlorsUKAddressController.onSubmit(NormalMode).url,
-      Seq(("line1",None), ("line2",None), ("line3", None), ("townOrCity", None), ("postcode", Some(postcodeHintKey)))
+      Seq(("line1",None), ("line2",None), ("line3", None), ("townOrCity", None), ("postcode", Some(postcodeHintKey))),
+      name.toString
     )
 
     behave like pageWithASubmitButton(applyView(form))
