@@ -21,6 +21,8 @@ import forms.InternationalAddressFormProvider
 import models.{FullName, InternationalAddress, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
+import utils.InputOption
+import utils.countryOptions.CountryOptionsNonUK
 import views.behaviours.QuestionViewBehaviours
 import views.html.SettlorsInternationalAddressView
 
@@ -37,8 +39,10 @@ class SettlorsInternationalAddressViewSpec extends QuestionViewBehaviours[Intern
 
     val name = FullName("First", None, "Last")
 
+    val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, name)(fakeRequest, messages)
+      view.apply(form, countryOptions, NormalMode, name)(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString)
 
@@ -49,7 +53,7 @@ class SettlorsInternationalAddressViewSpec extends QuestionViewBehaviours[Intern
       applyView,
       messageKeyPrefix,
       routes.SettlorsInternationalAddressController.onSubmit(NormalMode).url,
-      Seq(("line1",None), ("line2",None), ("line3", None), ("line4", None), ("country", None)),
+      Seq(("line1",None), ("line2",None), ("line3", None), ("line4", None)),
       name.toString
     )
   }

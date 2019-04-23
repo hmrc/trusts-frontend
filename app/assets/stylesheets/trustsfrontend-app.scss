@@ -132,7 +132,7 @@
 .heading-large {margin-top:0;}
 .multiple-choice{display: inline-block;}
 
-#value__listbox {
+#value__listbox, #country__listbox {
     width: 100%;
    @include media(tablet) {
     width: 49.4%;

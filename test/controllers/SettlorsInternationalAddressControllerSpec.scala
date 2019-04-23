@@ -22,10 +22,11 @@ import models.{FullName, InternationalAddress, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.{SettlorsInternationalAddressPage, SettlorsNamePage}
 import play.api.inject.bind
-import play.api.libs.json.Json
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import utils.InputOption
+import utils.countryOptions.CountryOptionsNonUK
 import views.html.SettlorsInternationalAddressView
 
 class SettlorsInternationalAddressControllerSpec extends SpecBase {
@@ -54,10 +55,12 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
 
       val result = route(application, request).value
 
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, name)(request, messages).toString
+        view(form, countryOptions, NormalMode, name)(request, messages).toString
 
       application.stop()
     }
@@ -76,10 +79,12 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
 
       val result = route(application, request).value
 
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(InternationalAddress("line 1", "line 2", None, None, "country")), NormalMode, name)(fakeRequest, messages).toString
+        view(form.fill(InternationalAddress("line 1", "line 2", None, None, "country")), countryOptions, NormalMode, name)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -96,7 +101,7 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, settlorsInternationalAddressRoute)
-          .withFormUrlEncodedBody(("line1", "value 1"), ("line2", "value 2"), ("country", "ind"))
+          .withFormUrlEncodedBody(("line1", "value 1"), ("line2", "value 2"), ("country", "IN"))
 
       val result = route(application, request).value
 
@@ -124,10 +129,12 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
 
       val result = route(application, request).value
 
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, name)(fakeRequest, messages).toString
+        view(boundForm, countryOptions, NormalMode, name)(fakeRequest, messages).toString
 
       application.stop()
     }

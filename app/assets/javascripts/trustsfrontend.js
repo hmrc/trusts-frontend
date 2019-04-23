@@ -76,6 +76,13 @@ $(document).ready(function() {
         $('#value-select option').filter(function() { return $.trim( $(this).text() ) == inputText; }).attr('selected','selected');
     })
 
+    // fix to correctly set country option for a valid country input if not selected from dropdown list
+    $(".autocomplete__wrapper #country").on('change', function(e){
+        var inputText = $("#country").val().trim();
+        $('#country-select option:selected').removeAttr('selected');
+        $('#country-select option').filter(function() { return $.trim( $(this).text() ) == inputText; }).attr('selected','selected');
+    })
+
 
   //======================================================
   // countries autocomplete
