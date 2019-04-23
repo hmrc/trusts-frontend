@@ -27,6 +27,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import utils.countryOptions.CountryOptionsNonUK
 import views.html.SettlorsInternationalAddressView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -41,8 +42,9 @@ class SettlorsInternationalAddressController @Inject()(
                                                         formProvider: InternationalAddressFormProvider,
                                                         requiredAnswer: RequiredAnswerActionProvider,
                                                         val controllerComponents: MessagesControllerComponents,
-                                                        view: SettlorsInternationalAddressView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                                        view: SettlorsInternationalAddressView,
+                                                        val countryOptions: CountryOptionsNonUK
+                                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
@@ -62,7 +64,7 @@ class SettlorsInternationalAddressController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, name))
+      Ok(view(preparedForm, countryOptions.options, mode, name))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = actions().async {
@@ -72,7 +74,7 @@ class SettlorsInternationalAddressController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, name))),
+          Future.successful(BadRequest(view(formWithErrors, countryOptions.options, mode, name))),
 
         value => {
           for {
