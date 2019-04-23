@@ -80,7 +80,7 @@ class MappingsSpec extends WordSpec with MustMatchers with OptionValues with Map
 
   "postcode" must {
 
-    val testForm : Form[String] =
+    val testForm: Form[String] =
       Form(
         "value" -> postcode()
       )
@@ -113,10 +113,34 @@ class MappingsSpec extends WordSpec with MustMatchers with OptionValues with Map
       val result = testForm.bind(Map("value" -> "AA1  1AA"))
       result.errors must contain(FormError("value", "error.postcodeInvalid"))
     }
+  }
+
+  "currency" must {
+
+    val testForm : Form[String] =
+      Form(
+        "value" -> currency()
+      )
+
+    val validCurency = Seq(
+      "1",
+      "999",
+      "999999",
+      "999999999",
+      "999999999999"
+    )
+
+    validCurency.foreach {
+      p =>
+        s"bind a valid currency $p" in {
+          val result = testForm.bind(Map("value" -> p))
+          result.get mustEqual p
+        }
+    }
 
     "not bind an empty map" in {
       val result = testForm.bind(Map.empty[String, String])
-      result.errors must contain(FormError("value", "error.required"))
+      result.errors must contain(FormError("value", "assetMoneyValue.error.required"))
     }
 
     "return a custom error message" in {
@@ -126,10 +150,9 @@ class MappingsSpec extends WordSpec with MustMatchers with OptionValues with Map
     }
 
     "unbind a valid value" in {
-      val result = testForm.fill("AA1 1AA")
-      result.apply("value").value.value mustEqual "AA1 1AA"
+      val result = testForm.fill("999999")
+      result.apply("value").value.value mustEqual "999999"
     }
-
   }
 
   "boolean" must {

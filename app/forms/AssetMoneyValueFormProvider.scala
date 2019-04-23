@@ -16,21 +16,23 @@
 
 package forms
 
-import javax.inject.Inject
-
 import forms.mappings.Mappings
+import javax.inject.Inject
 import play.api.data.Form
 
 class AssetMoneyValueFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
     Form(
-      "value" -> text("assetMoneyValue.error.required")
-        .verifying(
-          firstError(
-            maxLength(12, "assetMoneyValue.error.length"),
-            isNotEmpty("value", "assetMoneyValue.error.required"),
-            regexp(Validation.numericRegex, "assetMoneyValue.error.invalidFormat")
-          ))
+      "value"-> currency("assetMoneyValue.error.required")
+      .verifying(
+        firstError(
+          isNotEmpty("value", "assetMoneyValue.error.required"),
+          maxLength(12, "assetMoneyValue.error.length"),
+          regexp(Validation.currencyRegex, "assetMoneyValue.error.invalidFormat"),
+          regexp(Validation.decimalCheck, "assetMoneyValue.error.wholeNumber"),
+          minimumValue("1", "assetMoneyValue.error.zero")
+        )
+      )
     )
 }

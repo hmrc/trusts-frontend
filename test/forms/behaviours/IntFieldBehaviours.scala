@@ -16,6 +16,7 @@
 
 package forms.behaviours
 
+import org.scalacheck.Gen
 import play.api.data.{Form, FormError}
 
 trait IntFieldBehaviours extends FieldBehaviours {
@@ -70,6 +71,22 @@ trait IntFieldBehaviours extends FieldBehaviours {
     s"not bind integers below $minimum" in {
 
       forAll(intsBelowValue(minimum) -> "intBelowMin") {
+        number: Int =>
+          val result = form.bind(Map(fieldName -> number.toString)).apply(fieldName)
+          result.errors shouldEqual Seq(expectedError)
+      }
+    }
+  }
+
+  def intFieldWithMinimumWithGenerator(form: Form[_],
+                          fieldName: String,
+                          minimum: Int,
+                          generator : Gen[Int],
+                          expectedError: FormError): Unit = {
+
+    s"not bind integers below $minimum" in {
+
+      forAll(generator -> "intBelowMin") {
         number: Int =>
           val result = form.bind(Map(fieldName -> number.toString)).apply(fieldName)
           result.errors shouldEqual Seq(expectedError)
