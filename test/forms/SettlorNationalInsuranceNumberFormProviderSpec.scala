@@ -18,12 +18,12 @@ package forms
 
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
+import wolfendale.scalacheck.regexp.RegexpGen
 
 class SettlorNationalInsuranceNumberFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "settlorNationalInsuranceNumber.error.required"
-  val lengthKey = "settlorNationalInsuranceNumber.error.length"
-  val maxLength = 9
+  val invalidFormatKey = "settlorNationalInsuranceNumber.error.invalid"
 
   val form = new SettlorNationalInsuranceNumberFormProvider()()
 
@@ -34,20 +34,27 @@ class SettlorNationalInsuranceNumberFormProviderSpec extends StringFieldBehaviou
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
-    )
-
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+      RegexpGen.from(Validation.ninoRegex)
     )
 
     behave like mandatoryField(
       form,
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
+    )
+
+    behave like nonEmptyField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
+    )
+
+    behave like fieldWithRegexpWithGenerator(
+      form,
+      fieldName,
+      regexp = Validation.ninoRegex,
+      generator = RegexpGen.from(Validation.ninoRegex),
+      error = FormError(fieldName, invalidFormatKey, Seq(Validation.ninoRegex))
     )
   }
 }

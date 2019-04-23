@@ -94,7 +94,7 @@ class SettlorNationalInsuranceNumberControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, settlorNationalInsuranceNumberRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("value", "JP123456A"))
 
       val result = route(application, request).value
 
