@@ -23,17 +23,31 @@ import play.api.data.FormError
 
 class SettlorsDateOfBirthFormProviderSpec extends DateBehaviours {
 
+  private val min = LocalDate.of(1500, 1, 1)
+  private val max = LocalDate.now(ZoneOffset.UTC)
+
   val form = new SettlorsDateOfBirthFormProvider()()
 
   ".value" should {
 
     val validData = datesBetween(
-      min = LocalDate.of(2000, 1, 1),
-      max = LocalDate.now(ZoneOffset.UTC)
+      min = min,
+      max = max
     )
 
     behave like dateField(form, "value", validData)
 
     behave like mandatoryDateField(form, "value", "settlorsDateOfBirth.error.required.all")
+
+    behave like dateFieldWithMax(form, "value",
+      max = max,
+      FormError("value", s"settlorsDateOfBirth.error.future", List("day", "month", "year"))
+    )
+
+    behave like dateFieldWithMin(form, "value",
+      min = min,
+      FormError("value", s"settlorsDateOfBirth.error.past", List("day", "month", "year"))
+    )
+
   }
 }

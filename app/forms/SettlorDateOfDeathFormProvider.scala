@@ -31,6 +31,9 @@ class SettlorDateOfDeathFormProvider @Inject() extends Mappings {
         allRequiredKey = "settlorDateOfDeath.error.required.all",
         twoRequiredKey = "settlorDateOfDeath.error.required.two",
         requiredKey    = "settlorDateOfDeath.error.required"
-      )
+      ).verifying(firstError(
+          maxDate(LocalDate.now, s"settlorDateOfDeath.error.future", "day", "month", "year"),
+          minDate(LocalDate.of(1500,1,1), s"settlorDateOfDeath.error.past", "day", "month", "year")
+        ))
     )
 }
