@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryIndividualBeneficiaryVulnerableYesNoPage: Arbitrary[IndividualBeneficiaryVulnerableYesNoPage.type] =
+    Arbitrary(IndividualBeneficiaryVulnerableYesNoPage)
+
   implicit lazy val arbitraryIndividualBeneficiaryAddressUKPage: Arbitrary[IndividualBeneficiaryAddressUKPage.type] =
     Arbitrary(IndividualBeneficiaryAddressUKPage)
 

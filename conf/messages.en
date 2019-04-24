@@ -647,3 +647,8 @@ individualBeneficiaryAddressUK.error.field1.required = Enter field1
 individualBeneficiaryAddressUK.error.field2.required = Enter field2
 individualBeneficiaryAddressUK.error.field1.length = field1 must be 100 characters or less
 individualBeneficiaryAddressUK.error.field2.length = field2 must be 100 characters or less
+
+individualBeneficiaryVulnerableYesNo.title = individualBeneficiaryVulnerableYesNo
+individualBeneficiaryVulnerableYesNo.heading = individualBeneficiaryVulnerableYesNo
+individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel = individualBeneficiaryVulnerableYesNo
+individualBeneficiaryVulnerableYesNo.error.required = Select yes if individualBeneficiaryVulnerableYesNo

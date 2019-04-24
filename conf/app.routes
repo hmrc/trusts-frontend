@@ -320,3 +320,8 @@ GET        /individualBeneficiaryAddressUK                        controllers.In
 POST       /individualBeneficiaryAddressUK                        controllers.IndividualBeneficiaryAddressUKController.onSubmit(mode: Mode = NormalMode)
 GET        /changeIndividualBeneficiaryAddressUK                  controllers.IndividualBeneficiaryAddressUKController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeIndividualBeneficiaryAddressUK                  controllers.IndividualBeneficiaryAddressUKController.onSubmit(mode: Mode = CheckMode)
+
+GET        /individualBeneficiaryVulnerableYesNo                        controllers.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(mode: Mode = NormalMode)
+POST       /individualBeneficiaryVulnerableYesNo                        controllers.IndividualBeneficiaryVulnerableYesNoController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIndividualBeneficiaryVulnerableYesNo                  controllers.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIndividualBeneficiaryVulnerableYesNo                  controllers.IndividualBeneficiaryVulnerableYesNoController.onSubmit(mode: Mode = CheckMode)
