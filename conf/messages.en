@@ -655,3 +655,10 @@ individualBeneficiaryVulnerableYesNo.error.required = Select yes if individualBe
 
 individualBeneficiaryInfo.title = individualBeneficiaryInfo
 individualBeneficiaryInfo.heading = individualBeneficiaryInfo
+
+addABeneficiary.title = AddABeneficiary
+addABeneficiary.heading = AddABeneficiary
+addABeneficiary.1 = 1
+addABeneficiary.2 = 2
+addABeneficiary.checkYourAnswersLabel = AddABeneficiary
+addABeneficiary.error.required = Select addABeneficiary

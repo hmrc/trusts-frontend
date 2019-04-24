@@ -1,0 +1,32 @@
+@import controllers.routes._
+@import models.{Mode, AddABeneficiary}
+
+@this(
+    main_template: MainTemplate,
+    formHelper: FormWithCSRF
+)
+
+@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+
+@main_template(
+    title = s"${errorPrefix(form)} ${messages("addABeneficiary.title")}"
+    ) {
+
+    @formHelper(action = AddABeneficiaryController.onSubmit(mode), 'autoComplete -> "off") {
+
+        @components.back_link()
+
+        @components.error_summary(form.errors)
+
+        @components.heading("addABeneficiary.heading")
+
+        @components.input_radio(
+            field = form("value"),
+            legend = messages("addABeneficiary.heading"),
+            legendClass = Some("visually-hidden"),
+            inputs = AddABeneficiary.options
+        )
+
+        @components.submit_button()
+    }
+}

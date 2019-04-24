@@ -30,6 +30,15 @@ import viewmodels.AnswerRow
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def addABeneficiary: Option[AnswerRow] = userAnswers.get(AddABeneficiaryPage) map {
+    x =>
+      AnswerRow(
+        "addABeneficiary.checkYourAnswersLabel",
+        HtmlFormat.escape(messages(s"addABeneficiary.$x")),
+        routes.AddABeneficiaryController.onPageLoad(CheckMode).url
+      )
+  }
+
   def individualBeneficiaryVulnerableYesNo: Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryVulnerableYesNoPage) map {
     x =>
       AnswerRow(
