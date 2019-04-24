@@ -290,3 +290,8 @@ GET        /individualBeneficiaryDateOfBirth                  controllers.Indivi
 POST       /individualBeneficiaryDateOfBirth                  controllers.IndividualBeneficiaryDateOfBirthController.onSubmit(mode: Mode = NormalMode)
 GET        /changeIndividualBeneficiaryDateOfBirth                        controllers.IndividualBeneficiaryDateOfBirthController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeIndividualBeneficiaryDateOfBirth                        controllers.IndividualBeneficiaryDateOfBirthController.onSubmit(mode: Mode = CheckMode)
+
+GET        /individualBeneficiaryIncomeYesNo                        controllers.IndividualBeneficiaryIncomeYesNoController.onPageLoad(mode: Mode = NormalMode)
+POST       /individualBeneficiaryIncomeYesNo                        controllers.IndividualBeneficiaryIncomeYesNoController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIndividualBeneficiaryIncomeYesNo                  controllers.IndividualBeneficiaryIncomeYesNoController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIndividualBeneficiaryIncomeYesNo                  controllers.IndividualBeneficiaryIncomeYesNoController.onSubmit(mode: Mode = CheckMode)

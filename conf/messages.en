@@ -610,3 +610,8 @@ individualBeneficiaryDateOfBirth.error.required.all = Enter the individualBenefi
 individualBeneficiaryDateOfBirth.error.required.two = The individualBeneficiaryDateOfBirth must include {0} and {1}
 individualBeneficiaryDateOfBirth.error.required = The individualBeneficiaryDateOfBirth must include {0}
 individualBeneficiaryDateOfBirth.error.invalid = Enter a real IndividualBeneficiaryDateOfBirth
+
+individualBeneficiaryIncomeYesNo.title = individualBeneficiaryIncomeYesNo
+individualBeneficiaryIncomeYesNo.heading = individualBeneficiaryIncomeYesNo
+individualBeneficiaryIncomeYesNo.checkYourAnswersLabel = individualBeneficiaryIncomeYesNo
+individualBeneficiaryIncomeYesNo.error.required = Select yes if individualBeneficiaryIncomeYesNo
