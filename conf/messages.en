@@ -579,3 +579,9 @@ wasSettlorsAddressUKYesNo.error.required = Select yes if the settlor’s last kn
 
 deceasedSettlorAnswer.title = Check settlor’s details
 deceasedSettlorAnswer.heading = Check settlor’s details
+
+agentName.title = agentName
+agentName.heading = agentName
+agentName.checkYourAnswersLabel = agentName
+agentName.error.required = Enter agentName
+agentName.error.length = AgentName must be 56 characters or less

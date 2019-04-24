@@ -273,3 +273,8 @@ POST       /settlors/deceased/change-was-settlors-address-uk                 con
 
 GET        /settlors/deceased/check-answers                       controllers.DeceasedSettlorAnswerController.onPageLoad()
 POST        /settlors/deceased/check-answers                       controllers.DeceasedSettlorAnswerController.onSubmit()
+
+GET        /agentName                        controllers.AgentNameController.onPageLoad(mode: Mode = NormalMode)
+POST       /agentName                        controllers.AgentNameController.onSubmit(mode: Mode = NormalMode)
+GET        /changeAgentName                  controllers.AgentNameController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeAgentName                  controllers.AgentNameController.onSubmit(mode: Mode = CheckMode)
