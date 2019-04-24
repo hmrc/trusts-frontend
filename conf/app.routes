@@ -295,3 +295,8 @@ GET        /individualBeneficiaryIncomeYesNo                        controllers.
 POST       /individualBeneficiaryIncomeYesNo                        controllers.IndividualBeneficiaryIncomeYesNoController.onSubmit(mode: Mode = NormalMode)
 GET        /changeIndividualBeneficiaryIncomeYesNo                  controllers.IndividualBeneficiaryIncomeYesNoController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeIndividualBeneficiaryIncomeYesNo                  controllers.IndividualBeneficiaryIncomeYesNoController.onSubmit(mode: Mode = CheckMode)
+
+GET        /individualBeneficiaryIncome                        controllers.IndividualBeneficiaryIncomeController.onPageLoad(mode: Mode = NormalMode)
+POST       /individualBeneficiaryIncome                        controllers.IndividualBeneficiaryIncomeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIndividualBeneficiaryIncome                  controllers.IndividualBeneficiaryIncomeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIndividualBeneficiaryIncome                  controllers.IndividualBeneficiaryIncomeController.onSubmit(mode: Mode = CheckMode)

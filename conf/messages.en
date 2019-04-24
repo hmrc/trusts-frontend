@@ -615,3 +615,9 @@ individualBeneficiaryIncomeYesNo.title = individualBeneficiaryIncomeYesNo
 individualBeneficiaryIncomeYesNo.heading = individualBeneficiaryIncomeYesNo
 individualBeneficiaryIncomeYesNo.checkYourAnswersLabel = individualBeneficiaryIncomeYesNo
 individualBeneficiaryIncomeYesNo.error.required = Select yes if individualBeneficiaryIncomeYesNo
+
+individualBeneficiaryIncome.title = individualBeneficiaryIncome
+individualBeneficiaryIncome.heading = individualBeneficiaryIncome
+individualBeneficiaryIncome.checkYourAnswersLabel = individualBeneficiaryIncome
+individualBeneficiaryIncome.error.required = Enter individualBeneficiaryIncome
+individualBeneficiaryIncome.error.length = IndividualBeneficiaryIncome must be 100 characters or less
