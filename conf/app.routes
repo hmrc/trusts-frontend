@@ -206,6 +206,7 @@ POST       /asset/:index/money                          controllers.AssetMoneyVa
 GET        /asset/:index/change-money                   controllers.AssetMoneyValueController.onPageLoad(mode: Mode = CheckMode, index: Int)
 POST       /asset/:index/change-money                   controllers.AssetMoneyValueController.onSubmit(mode: Mode = CheckMode, index: Int)
 
+
 GET        /asset/add                        controllers.AddAssetsController.onPageLoad(mode: Mode = NormalMode)
 POST       /asset/add                        controllers.AddAssetsController.onSubmit(mode: Mode = NormalMode)
 
@@ -273,3 +274,9 @@ POST       /settlors/deceased/change-was-settlors-address-uk                 con
 
 GET        /settlors/deceased/check-answers                       controllers.DeceasedSettlorAnswerController.onPageLoad()
 POST        /settlors/deceased/check-answers                       controllers.DeceasedSettlorAnswerController.onSubmit()
+
+#beneficiary
+GET        /:index/individualBeneficiaryName                        controllers.IndividualBeneficiaryNameController.onPageLoad(mode: Mode = NormalMode,index: Int)
+POST       /:index/individualBeneficiaryName                        controllers.IndividualBeneficiaryNameController.onSubmit(mode: Mode = NormalMode,index: Int)
+GET        /:index/changeIndividualBeneficiaryName                  controllers.IndividualBeneficiaryNameController.onPageLoad(mode: Mode = CheckMode,index: Int)
+POST       /:index/changeIndividualBeneficiaryName                  controllers.IndividualBeneficiaryNameController.onSubmit(mode: Mode = CheckMode,index: Int)

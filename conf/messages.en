@@ -463,6 +463,7 @@ whatKindOfAsset.Other = Other
 whatKindOfAsset.checkYourAnswersLabel = What kind of asset do you need to add first?
 whatKindOfAsset.error.required = Select the kind of asset you need to add
 
+
 addAssets.title = Add assets
 addAssets.heading = Add assets
 addAssets.additional-content = Do you want to add another asset?
@@ -579,3 +580,20 @@ wasSettlorsAddressUKYesNo.error.required = Select yes if the settlor’s last kn
 
 deceasedSettlorAnswer.title = Check settlor’s details
 deceasedSettlorAnswer.heading = Check settlor’s details
+
+
+individualBeneficiaryName.title = What is the name of the individual?
+individualBeneficiaryName.heading = What is the name of the individual?
+individualBeneficiaryName.checkYourAnswersLabel = What is the name of the individual?
+individualBeneficiaryName.firstName = First name
+individualBeneficiaryName.middleName = Middle name (optional)
+individualBeneficiaryName.lastName = Last name
+individualBeneficiaryName.error.firstname.required = Enter the named individual''s first name
+individualBeneficiaryName.error.lastname.required = Enter the named individual''s last name
+individualBeneficiaryName.error.firstname.length = Named individual''s first name must be 35 characters or less
+individualBeneficiaryName.error.middlename.length = Named individual''s middle name must be 35 characters or less
+individualBeneficiaryName.error.lastname.length = Named individual''s last name must be 35 characters or less
+individualBeneficiaryName.error.firstname.invalid = Named individual''s first name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+individualBeneficiaryName.error.middlename.invalid = Named individual''s middle name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+individualBeneficiaryName.error.lastname.invalid = Named individual''s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+

@@ -30,6 +30,15 @@ import viewmodels.AnswerRow
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def individualBeneficiaryName(index: Int): Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryNamePage(index)) map {
+    x =>
+      AnswerRow(
+        "individualBeneficiaryName.checkYourAnswersLabel",
+        HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"),
+        routes.IndividualBeneficiaryNameController.onPageLoad(CheckMode, index).url
+      )
+  }
+
   def wasSettlorsAddressUKYesNo: Option[AnswerRow] = userAnswers.get(WasSettlorsAddressUKYesNoPage) map {
     x =>
       AnswerRow(
