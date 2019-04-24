@@ -33,8 +33,8 @@ class IndividualBeneficiaryNameFormProviderSpec extends StringFieldBehaviours {
   ".firstName" must {
 
     val fieldName = "firstName"
-    val requiredKey = "individualBeneficiaryName.error.firstnamerequired"
-    val lengthKey = "individualBeneficiaryName.error.lengthfirstname"
+    val requiredKey = "individualBeneficiaryName.error.firstname.required"
+    val lengthKey = "individualBeneficiaryName.error.firstname.length"
     val regex = "^[A-Za-z0-9 ,.()/&'-]*$"
 
     behave like fieldThatBindsValidData(
@@ -66,7 +66,7 @@ class IndividualBeneficiaryNameFormProviderSpec extends StringFieldBehaviours {
   ".middleName" must {
 
     val fieldName = "middleName"
-    val lengthKey = "individualBeneficiaryName.error.lengthmiddlename"
+    val lengthKey = "individualBeneficiaryName.error.middlename.length"
     val maxLength = 35
     val regex = "^[A-Za-z0-9 ,.()/&'-]*$"
 
@@ -88,8 +88,8 @@ class IndividualBeneficiaryNameFormProviderSpec extends StringFieldBehaviours {
   ".lastName" must {
 
     val fieldName = "lastName"
-    val requiredKey = "individualBeneficiaryName.error.lastnamerequired"
-    val lengthKey = "individualBeneficiaryName.error.lengthlastname"
+    val requiredKey = "individualBeneficiaryName.error.lastname.required"
+    val lengthKey = "individualBeneficiaryName.error.lastname.length"
     val regex = "^[A-Za-z0-9 ,.()/&'-]*$"
 
     behave like fieldThatBindsValidData(

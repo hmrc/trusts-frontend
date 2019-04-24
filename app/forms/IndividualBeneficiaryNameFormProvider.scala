@@ -27,27 +27,27 @@ class IndividualBeneficiaryNameFormProvider @Inject() extends Mappings {
 
    def apply(): Form[FullName] =   Form(
     mapping(
-      "firstName" -> text(s"individualBeneficiaryName.error.firstnamerequired")
+      "firstName" -> text(s"individualBeneficiaryName.error.firstname.required")
         .verifying(
           firstError(
-            maxLength(35, s"individualBeneficiaryName.error.lengthfirstname"),
-            isNotEmpty("firstName", s"individualBeneficiaryName.error.firstnamerequired"),
-            regexp(Validation.nameRegex, s"individualBeneficiaryName.error.invalidFirstNameCharacters")
+            maxLength(35, s"individualBeneficiaryName.error.firstname.length"),
+            isNotEmpty("firstName", s"individualBeneficiaryName.error.firstname.required"),
+            regexp(Validation.nameRegex, s"individualBeneficiaryName.error.firstname.invalid")
           )
         ),
       "middleName" -> optional(text()
         .verifying(
           firstError(
-            maxLength(35, s"individualBeneficiaryName.error.lengthmiddlename"),
-            regexp(Validation.nameRegex, s"individualBeneficiaryName.error.invalidMiddleNameCharacters"))
+            maxLength(35, s"individualBeneficiaryName.error.middlename.length"),
+            regexp(Validation.nameRegex, s"individualBeneficiaryName.error.middlename.invalid"))
         )
       ),
-      "lastName" -> text(s"individualBeneficiaryName.error.lastnamerequired")
+      "lastName" -> text(s"individualBeneficiaryName.error.lastname.required")
         .verifying(
           firstError(
-            maxLength(35, s"individualBeneficiaryName.error.lengthlastname"),
-            isNotEmpty("lastName", s"individualBeneficiaryName.error.lastnamerequired"),
-            regexp(Validation.nameRegex, s"individualBeneficiaryName.error.invalidLastNameCharacters")
+            maxLength(35, s"individualBeneficiaryName.error.lastname.length"),
+            isNotEmpty("lastName", s"individualBeneficiaryName.error.lastname.required"),
+            regexp(Validation.nameRegex, s"individualBeneficiaryName.error.lastname.invalid")
           )
         )
     )(FullName.apply)(FullName.unapply)
