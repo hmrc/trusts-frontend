@@ -280,3 +280,8 @@ GET        /:index/individualBeneficiaryName                        controllers.
 POST       /:index/individualBeneficiaryName                        controllers.IndividualBeneficiaryNameController.onSubmit(mode: Mode = NormalMode,index: Int)
 GET        /:index/changeIndividualBeneficiaryName                  controllers.IndividualBeneficiaryNameController.onPageLoad(mode: Mode = CheckMode,index: Int)
 POST       /:index/changeIndividualBeneficiaryName                  controllers.IndividualBeneficiaryNameController.onSubmit(mode: Mode = CheckMode,index: Int)
+
+GET        /individualBeneficiaryDateOfBirthYesNo                        controllers.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(mode: Mode = NormalMode)
+POST       /individualBeneficiaryDateOfBirthYesNo                        controllers.IndividualBeneficiaryDateOfBirthYesNoController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIndividualBeneficiaryDateOfBirthYesNo                  controllers.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIndividualBeneficiaryDateOfBirthYesNo                  controllers.IndividualBeneficiaryDateOfBirthYesNoController.onSubmit(mode: Mode = CheckMode)
