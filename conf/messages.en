@@ -602,3 +602,11 @@ individualBeneficiaryDateOfBirthYesNo.title = individualBeneficiaryDateOfBirthYe
 individualBeneficiaryDateOfBirthYesNo.heading = individualBeneficiaryDateOfBirthYesNo
 individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel = individualBeneficiaryDateOfBirthYesNo
 individualBeneficiaryDateOfBirthYesNo.error.required = Select yes if individualBeneficiaryDateOfBirthYesNo
+
+individualBeneficiaryDateOfBirth.title = IndividualBeneficiaryDateOfBirth
+individualBeneficiaryDateOfBirth.heading = IndividualBeneficiaryDateOfBirth
+individualBeneficiaryDateOfBirth.checkYourAnswersLabel = IndividualBeneficiaryDateOfBirth
+individualBeneficiaryDateOfBirth.error.required.all = Enter the individualBeneficiaryDateOfBirth
+individualBeneficiaryDateOfBirth.error.required.two = The individualBeneficiaryDateOfBirth must include {0} and {1}
+individualBeneficiaryDateOfBirth.error.required = The individualBeneficiaryDateOfBirth must include {0}
+individualBeneficiaryDateOfBirth.error.invalid = Enter a real IndividualBeneficiaryDateOfBirth

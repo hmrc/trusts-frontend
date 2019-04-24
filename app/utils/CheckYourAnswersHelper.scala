@@ -30,6 +30,15 @@ import viewmodels.AnswerRow
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def individualBeneficiaryDateOfBirth: Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryDateOfBirthPage) map {
+    x =>
+      AnswerRow(
+        "individualBeneficiaryDateOfBirth.checkYourAnswersLabel",
+        HtmlFormat.escape(x.format(dateFormatter)),
+        routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(CheckMode).url
+      )
+  }
+
   def individualBeneficiaryDateOfBirthYesNo: Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryDateOfBirthYesNoPage) map {
     x =>
       AnswerRow(
