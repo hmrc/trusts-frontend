@@ -36,10 +36,13 @@
 
         @components.heading("agentName.heading")
 
+        <p>@messages("agentName.fullname")</p>
+
         @components.input_text(
           field = form("value"),
           label = messages("agentName.heading"),
           labelClass=Some("visually-hidden")
+
         )
 
         @components.submit_button()

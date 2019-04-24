@@ -36,6 +36,7 @@ class AgentNameController @Inject()(
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
                                         identify: IdentifierAction,
+                                        hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
                                         formProvider: AgentNameFormProvider,
@@ -45,7 +46,7 @@ class AgentNameController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen hasAgentAffinityGroup() andThen getData andThen requireData) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(AgentNamePage) match {
@@ -56,7 +57,7 @@ class AgentNameController @Inject()(
       Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen hasAgentAffinityGroup() andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(

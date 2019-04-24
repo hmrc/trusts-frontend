@@ -580,8 +580,11 @@ wasSettlorsAddressUKYesNo.error.required = Select yes if the settlor’s last kn
 deceasedSettlorAnswer.title = Check settlor’s details
 deceasedSettlorAnswer.heading = Check settlor’s details
 
-agentName.title = agentName
-agentName.heading = agentName
-agentName.checkYourAnswersLabel = agentName
-agentName.error.required = Enter agentName
-agentName.error.length = AgentName must be 56 characters or less
+agentName.title = What is the name of the agency registering this trust?
+agentName.heading = What is the name of the agency registering this trust?
+agentName.checkYourAnswersLabel = What is the name of the agency registering this trust?
+agentName.fullname = Your full name
+agentName.hint = What is the name of the agency registering this trust?
+agentName.error.required = Enter the agent’s full name
+agentName.error.length = Agent’s full name must be 56 characters or less
+agentName.error.invalidFormat = Agent’s full name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces

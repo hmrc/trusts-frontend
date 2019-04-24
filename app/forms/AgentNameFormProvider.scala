@@ -26,6 +26,8 @@ class AgentNameFormProvider @Inject() extends Mappings {
   def apply(): Form[String] =
     Form(
       "value" -> text("agentName.error.required")
-        .verifying(maxLength(56, "agentName.error.length"))
+        .verifying(maxLength(56, "agentName.error.length"),
+          isNotEmpty("value", "agentName.error.required"),
+          regexp(Validation.nameRegex, "agentName.error.invalidFormat"))
     )
 }

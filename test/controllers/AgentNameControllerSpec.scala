@@ -27,6 +27,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.AgentNameView
+import uk.gov.hmrc.auth.core.AffinityGroup
 
 class AgentNameControllerSpec extends SpecBase {
 
@@ -41,7 +42,7 @@ class AgentNameControllerSpec extends SpecBase {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, agentNameRoute)
 
@@ -61,7 +62,7 @@ class AgentNameControllerSpec extends SpecBase {
 
       val userAnswers = UserAnswers(userAnswersId).set(AgentNamePage, "answer").success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, agentNameRoute)
 
@@ -80,7 +81,7 @@ class AgentNameControllerSpec extends SpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
           .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
@@ -98,7 +99,7 @@ class AgentNameControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
 
       val request =
         FakeRequest(POST, agentNameRoute)
@@ -120,7 +121,7 @@ class AgentNameControllerSpec extends SpecBase {
 
     "redirect to Session Expired for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, agentNameRoute)
 
@@ -135,7 +136,7 @@ class AgentNameControllerSpec extends SpecBase {
 
     "redirect to Session Expired for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
       val request =
         FakeRequest(POST, agentNameRoute)

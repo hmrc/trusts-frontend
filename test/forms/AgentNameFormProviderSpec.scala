@@ -23,6 +23,7 @@ class AgentNameFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "agentName.error.required"
   val lengthKey = "agentName.error.length"
+  val invalidFormatKey = "agentName.error.invalidFormat"
   val maxLength = 56
 
   val form = new AgentNameFormProvider()()
@@ -48,6 +49,20 @@ class AgentNameFormProviderSpec extends StringFieldBehaviours {
       form,
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
+    )
+
+    behave like nonEmptyField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
+    )
+
+    behave like fieldWithRegexpWithGenerator(
+      form,
+      fieldName,
+      regexp = Validation.nameRegex,
+      generator = stringsWithMaxLength(maxLength),
+      error = FormError(fieldName, invalidFormatKey, Seq(Validation.nameRegex))
     )
   }
 }
