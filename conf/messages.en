@@ -652,3 +652,6 @@ individualBeneficiaryVulnerableYesNo.title = individualBeneficiaryVulnerableYesN
 individualBeneficiaryVulnerableYesNo.heading = individualBeneficiaryVulnerableYesNo
 individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel = individualBeneficiaryVulnerableYesNo
 individualBeneficiaryVulnerableYesNo.error.required = Select yes if individualBeneficiaryVulnerableYesNo
+
+individualBeneficiaryInfo.title = individualBeneficiaryInfo
+individualBeneficiaryInfo.heading = individualBeneficiaryInfo

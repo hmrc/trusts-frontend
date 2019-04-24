@@ -325,3 +325,5 @@ GET        /individualBeneficiaryVulnerableYesNo                        controll
 POST       /individualBeneficiaryVulnerableYesNo                        controllers.IndividualBeneficiaryVulnerableYesNoController.onSubmit(mode: Mode = NormalMode)
 GET        /changeIndividualBeneficiaryVulnerableYesNo                  controllers.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeIndividualBeneficiaryVulnerableYesNo                  controllers.IndividualBeneficiaryVulnerableYesNoController.onSubmit(mode: Mode = CheckMode)
+
+GET        /individualBeneficiaryInfo                       controllers.IndividualBeneficiaryInfoController.onPageLoad()
