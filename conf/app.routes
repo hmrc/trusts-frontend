@@ -305,3 +305,8 @@ GET        /individualBeneficiaryNationalInsuranceYesNo                        c
 POST       /individualBeneficiaryNationalInsuranceYesNo                        controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onSubmit(mode: Mode = NormalMode)
 GET        /changeIndividualBeneficiaryNationalInsuranceYesNo                  controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeIndividualBeneficiaryNationalInsuranceYesNo                  controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onSubmit(mode: Mode = CheckMode)
+
+GET        /individualBeneficiaryNationalInsuranceNumber                        controllers.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(mode: Mode = NormalMode)
+POST       /individualBeneficiaryNationalInsuranceNumber                        controllers.IndividualBeneficiaryNationalInsuranceNumberController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIndividualBeneficiaryNationalInsuranceNumber                  controllers.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIndividualBeneficiaryNationalInsuranceNumber                  controllers.IndividualBeneficiaryNationalInsuranceNumberController.onSubmit(mode: Mode = CheckMode)
