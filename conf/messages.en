@@ -637,3 +637,13 @@ individualBeneficiaryAdressYesNo.title = individualBeneficiaryAdressYesNo
 individualBeneficiaryAdressYesNo.heading = individualBeneficiaryAdressYesNo
 individualBeneficiaryAdressYesNo.checkYourAnswersLabel = individualBeneficiaryAdressYesNo
 individualBeneficiaryAdressYesNo.error.required = Select yes if individualBeneficiaryAdressYesNo
+
+individualBeneficiaryAddressUK.title = individualBeneficiaryAddressUK
+individualBeneficiaryAddressUK.heading = individualBeneficiaryAddressUK
+individualBeneficiaryAddressUK.field1 = Field 1
+individualBeneficiaryAddressUK.field2 = Field 2
+individualBeneficiaryAddressUK.checkYourAnswersLabel = individualBeneficiaryAddressUK
+individualBeneficiaryAddressUK.error.field1.required = Enter field1
+individualBeneficiaryAddressUK.error.field2.required = Enter field2
+individualBeneficiaryAddressUK.error.field1.length = field1 must be 100 characters or less
+individualBeneficiaryAddressUK.error.field2.length = field2 must be 100 characters or less
