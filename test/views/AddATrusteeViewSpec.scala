@@ -20,22 +20,22 @@ import forms.AddATrusteeFormProvider
 import models.{AddATrustee, NormalMode, IndividualOrBusiness}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import viewmodels.TrusteeRow
+import viewmodels.AddRow
 import views.behaviours.{OptionsViewBehaviours, TabularDataViewBehaviours}
 import views.html.AddATrusteeView
 
 class AddATrusteeViewSpec extends OptionsViewBehaviours with TabularDataViewBehaviours {
 
   val completeTrustees = Seq(
-    TrusteeRow("trustee one", IndividualOrBusiness.Individual.toString, "#", "#"),
-    TrusteeRow("trustee two", IndividualOrBusiness.Individual.toString, "#", "#"),
-    TrusteeRow("trustee three", IndividualOrBusiness.Individual.toString, "#", "#")
+    AddRow("trustee one", IndividualOrBusiness.Individual.toString, "#", "#"),
+    AddRow("trustee two", IndividualOrBusiness.Individual.toString, "#", "#"),
+    AddRow("trustee three", IndividualOrBusiness.Individual.toString, "#", "#")
   )
 
   val inProgressTrustees = Seq(
-    TrusteeRow("trustee one", IndividualOrBusiness.Individual.toString, "#", "#"),
-    TrusteeRow("trustee two", IndividualOrBusiness.Individual.toString, "#", "#"),
-    TrusteeRow("trustee three", IndividualOrBusiness.Individual.toString, "#", "#")
+    AddRow("trustee one", IndividualOrBusiness.Individual.toString, "#", "#"),
+    AddRow("trustee two", IndividualOrBusiness.Individual.toString, "#", "#"),
+    AddRow("trustee three", IndividualOrBusiness.Individual.toString, "#", "#")
   )
 
   val messageKeyPrefix = "addATrustee"
@@ -47,7 +47,7 @@ class AddATrusteeViewSpec extends OptionsViewBehaviours with TabularDataViewBeha
   def applyView(form: Form[_]): HtmlFormat.Appendable =
     view.apply(form, NormalMode, Nil, Nil)(fakeRequest, messages)
 
-  def applyView(form: Form[_], inProgressTrustees: Seq[TrusteeRow], completeTrustees: Seq[TrusteeRow]): HtmlFormat.Appendable =
+  def applyView(form: Form[_], inProgressTrustees: Seq[AddRow], completeTrustees: Seq[AddRow]): HtmlFormat.Appendable =
     view.apply(form, NormalMode, inProgressTrustees, completeTrustees)(fakeRequest, messages)
 
   "AddATrusteeView" when {

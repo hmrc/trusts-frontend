@@ -47,6 +47,7 @@ site.textarea.char_limit = (Limit is {0} characters)
 site.inprogress = In Progress
 site.complete = Completed
 site.onlyContinue = Continue
+site.date.hint = For example, 31 3 1980
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
@@ -262,8 +263,8 @@ leadTrusteesName.error.invalidFirstNameCharacters = Lead trustee’s first name 
 leadTrusteesName.error.invalidMiddleNameCharacters = Lead trustee’s middle name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 leadTrusteesName.error.invalidLastNameCharacters = Lead trustee’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
-trusteesAnswerPage.title = Check trustee details
-trusteesAnswerPage.heading = Check trustee details
+trusteesAnswerPage.title = Check trustee’s details
+trusteesAnswerPage.heading = Check trustee’s details
 
 addATrustee.title = Add a trustee
 addATrustee.heading = Add a trustee
@@ -329,18 +330,18 @@ trusteesUkAddress.townOrCity = Town or city
 trusteesUkAddress.postcode = Postcode
 trusteesUkAddress.postcode.hint = For example AB1 1AB
 trusteesUkAddress.checkYourAnswersLabel = What is {0}’s address?
-trusteesUkAddress.error.line1.required = Enter address line 1
-trusteesUkAddress.error.townOrCity.required = Enter a town or city
-trusteesUkAddress.error.postcode.required = Enter a postcode
-trusteesUkAddress.error.line1.length = Address line 1 must be 35 characters or less
-trusteesUkAddress.error.line2.length = Address line 2 must be 35 characters or less
-trusteesUkAddress.error.line3.length = Address line 3 must be 35 characters or less
-trusteesUkAddress.error.townOrCity.length = Town or city must be 35 characters or less
-trusteesUkAddress.error.line1.invalidCharacters = Address line 1 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
-trusteesUkAddress.error.line2.invalidCharacters = Address line 2 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
-trusteesUkAddress.error.line3.invalidCharacters = Address line 3 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
-trusteesUkAddress.error.townOrCity.invalidCharacters = Town or city must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
-trusteesUkAddress.error.postcode.invalidCharacters = Enter a real postcode
+ukAddress.error.line1.required = Enter address line 1
+ukAddress.error.townOrCity.required = Enter a town or city
+ukAddress.error.postcode.required = Enter a postcode
+ukAddress.error.line1.length = Address line 1 must be 35 characters or less
+ukAddress.error.line2.length = Address line 2 must be 35 characters or less
+ukAddress.error.line3.length = Address line 3 must be 35 characters or less
+ukAddress.error.townOrCity.length = Town or city must be 35 characters or less
+ukAddress.error.line1.invalidCharacters = Address line 1 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+ukAddress.error.line2.invalidCharacters = Address line 2 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+ukAddress.error.line3.invalidCharacters = Address line 3 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+ukAddress.error.townOrCity.invalidCharacters = Town or city must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+ukAddress.error.postcode.invalidCharacters = Enter a real postcode
 
 agentInternalReference.title = What is your internal reference for this client?
 agentInternalReference.heading = What is your internal reference for this client?
@@ -350,7 +351,6 @@ agentInternalReference.hint = It must only include letters a to z, numbers 0 to 
 agentInternalReference.error.required = Enter your internal reference for this client
 agentInternalReference.error.length = Your internal reference for this client must be 56 characters or less
 agentInternalReference.error.invalidFormat = The internal reference for this client must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, grave accents (`) and hyphens
-
 
 taskList.title = Registration progress
 taskList.heading = Registration progress
@@ -446,6 +446,8 @@ assetMoneyValue.hint = Rounded down to the nearest pound. For example, 4000
 assetMoneyValue.error.required = Enter the current total amount of money in the trust
 assetMoneyValue.error.length = Total assets value must be 12 numbers or less
 assetMoneyValue.error.invalidFormat = Total assets value must be a number
+assetMoneyValue.error.wholeNumber = Total assets value must be a whole number
+assetMoneyValue.error.zero = Total amount of money in the trust must be 1 or more
 assetMoneyValue.link = Return to registration progress
 
 whatKindOfAsset.first.title = What kind of asset do you need to add first?
@@ -460,6 +462,125 @@ whatKindOfAsset.Partnership = Partnership
 whatKindOfAsset.Other = Other
 whatKindOfAsset.checkYourAnswersLabel = What kind of asset do you need to add first?
 whatKindOfAsset.error.required = Select the kind of asset you need to add
+
+
+addAssets.title = Add assets
+addAssets.heading = Add assets
+addAssets.additional-content = Do you want to add another asset?
+addAssets.add-them-now = Yes, I want to add them now
+addAssets.add-them-later = Yes, I want to add them later
+addAssets.no-complete = No, I have added all assets
+addAssets.checkYourAnswersLabel = addAssets
+addAssets.error.required = Select yes if you want to add another asset
+
+settlorDateOfBirthYesNo.title = Do you know {0}’s date of birth?
+settlorDateOfBirthYesNo.heading = Do you know {0}’s date of birth?
+settlorDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
+settlorDateOfBirthYesNo.error.required = Select yes if you know the settlor’s date of birth
+
+settlorDateOfDeath.title = What is {0}’s date of death?
+settlorDateOfDeath.heading = What is {0}’s date of death?
+settlorDateOfDeath.checkYourAnswersLabel = What is {0}’s date of death?
+settlorDateOfDeath.error.required.all = Enter a date of death
+settlorDateOfDeath.error.required.two = The date of death must include {0} and {1}
+settlorDateOfDeath.error.required = The date of death must include {0}
+settlorDateOfDeath.error.invalid = Enter a real date of death
+settlorDateOfDeath.error.future = Date of death must be today or in the past
+settlorDateOfDeath.error.past = Date of death must be after 31 December 1499
+
+settlorDateOfDeathYesNo.title = Do you know {0}’s date of death?
+settlorDateOfDeathYesNo.heading = Do you know {0}’s date of death?
+settlorDateOfDeathYesNo.checkYourAnswersLabel = Do you know {0}’s date of death?
+settlorDateOfDeathYesNo.error.required = Select yes if you know the settlor’s date of death
+
+settlorNationalInsuranceNumber.title = What is {0}’s National Insurance number?
+settlorNationalInsuranceNumber.heading = What is {0}’s National Insurance number?
+settlorNationalInsuranceNumber.hint = It is on their National Insurance card, benefit letter, payslip or P60. For example, ‘QQ 12 34 56 C’.
+settlorNationalInsuranceNumber.checkYourAnswersLabel = What is {0}’s National Insurance number?
+settlorNationalInsuranceNumber.error.required = Enter the settlor’s National Insurance number
+settlorNationalInsuranceNumber.error.length = Settlor’s National Insurance number must be 9 characters or less
+settlorNationalInsuranceNumber.error.invalid = Enter the settlor’s National Insurance number in the correct format
+
+settlorsDateOfBirth.title = What is {0}’s date of birth?
+settlorsDateOfBirth.heading = What is {0}’s date of birth?
+settlorsDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
+settlorsDateOfBirth.error.required.all = Enter a date of birth
+settlorsDateOfBirth.error.required.two = The date of birth must include {0} and {1}
+settlorsDateOfBirth.error.required = The date of birth must include {0}
+settlorsDateOfBirth.error.invalid = Enter a real date of birth
+settlorsDateOfBirth.error.future = Date of birth must be today or in the past
+settlorsDateOfBirth.error.past = Date of birth must be after 31 December 1499
+
+settlorsInternationalAddress.title = What is {0}’s last known address?
+settlorsInternationalAddress.heading = What is {0}’s last known address?
+settlorsInternationalAddress.line1 = Address line 1
+settlorsInternationalAddress.line2 = Address line 2
+settlorsInternationalAddress.line3 = Address line 3 (optional)
+settlorsInternationalAddress.line4 = Address line 4 (optional)
+settlorsInternationalAddress.country = Country
+settlorsInternationalAddress.checkYourAnswersLabel = What is {0}’s last known address?
+
+internationalAddress.error.line1.required = Enter address line 1
+internationalAddress.error.line2.required = Enter address line 2
+internationalAddress.error.country.required = Select a country
+internationalAddress.error.line1.length = Address line 1 must be 35 characters or less
+internationalAddress.error.line2.length = Address line 2 must be 35 characters or less
+internationalAddress.error.line3.length = Address line 3 must be 35 characters or less
+internationalAddress.error.line4.length = Address line 4 must be 35 characters or less
+internationalAddress.error.line1.invalidCharacters = Address line 1 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+internationalAddress.error.line2.invalidCharacters = Address line 2 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+internationalAddress.error.line3.invalidCharacters = Address line 3 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+internationalAddress.error.line4.invalidCharacters = Address line 4 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+
+settlorsLastKnownAddressYesNo.title = Do you know {0}’s last known address?
+settlorsLastKnownAddressYesNo.heading = Do you know {0}’s last known address?
+settlorsLastKnownAddressYesNo.checkYourAnswersLabel = Do you know {0}’s last known address?
+settlorsLastKnownAddressYesNo.error.required = Select yes if you know the settlor’s last known address
+
+settlorsName.title = What is the settlor’s name?
+settlorsName.heading = What is the settlor’s name?
+settlorsName.firstName = First name
+settlorsName.middleName = Middle name (optional)
+settlorsName.lastName = Last name
+settlorsName.checkYourAnswersLabel = What is the settlor’s name?
+settlorsName.error.firstName.required = Enter the settlor’s first name
+settlorsName.error.firstName.invalid = Settlor’s first name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+settlorsName.error.lastName.required = Enter the settlor’s last name
+settlorsName.error.lastName.invalid = Settlor’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+settlorsName.error.firstName.length = Settlor’s first name must be 35 characters or less
+settlorsName.error.middleName.length = Settlor’s middle name must be 35 characters or less
+settlorsName.error.middleName.invalid = Settlor’s middle name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+settlorsName.error.lastName.length = Settlor’s last name must be 35 characters or less
+
+settlorsNINoYesNo.title = Do you know {0}’s National Insurance number?
+settlorsNINoYesNo.heading = Do you know {0}’s National Insurance number?
+settlorsNINoYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
+settlorsNINoYesNo.error.required = Select yes if you know the settlor’s National Insurance number
+
+settlorsUKAddress.title = What is {0}’s last known address?
+settlorsUKAddress.heading = What is {0}’s last known address?
+settlorsUKAddress.line1 = Address line 1
+settlorsUKAddress.line2 = Address line 2 (optional)
+settlorsUKAddress.line3 = Address line 3 (optional)
+settlorsUKAddress.townOrCity = Town or city
+settlorsUKAddress.postcode = Postcode
+settlorsUKAddress.postcode.hint = For example AB1 1AB
+settlorsUKAddress.checkYourAnswersLabel = What is {0}’s last known address?
+
+setupAfterSettlorDied.title = Was the trust set up after the settlor died?
+setupAfterSettlorDied.heading = Was the trust set up after the settlor died?
+setupAfterSettlorDied.checkYourAnswersLabel = Was the trust set up after the settlor died?
+setupAfterSettlorDied.error.required = Select yes if the trust was set up after the settlor died
+setupAfterSettlorDied.hint = This is also known as a will trust
+
+wasSettlorsAddressUKYesNo.title = Was {0}’s last known address in the UK?
+wasSettlorsAddressUKYesNo.heading = Was {0}’s last known address in the UK?
+wasSettlorsAddressUKYesNo.checkYourAnswersLabel = Was {0}’s last known address in the UK?
+wasSettlorsAddressUKYesNo.error.required = Select yes if the settlor’s last known address was in the UK
+
+deceasedSettlorAnswer.title = Check settlor’s details
+deceasedSettlorAnswer.heading = Check settlor’s details
+
 
 individualBeneficiaryName.title = What is the name of the individual?
 individualBeneficiaryName.heading = What is the name of the individual?

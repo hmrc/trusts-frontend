@@ -20,7 +20,7 @@ import models.entities.Trustee
 import models.{FullName, IndividualOrBusiness, UserAnswers}
 import pages.Trustees
 import play.api.i18n.Messages
-import viewmodels.{TrusteeRow, TrusteeRows}
+import viewmodels.{AddRow, AddToRows}
 
 class AddATrusteeViewHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
@@ -40,8 +40,8 @@ class AddATrusteeViewHelper(userAnswers: UserAnswers)(implicit messages: Message
     }
   }
 
-  private def parseTrustee(trustee : Trustee) : TrusteeRow = {
-    TrusteeRow(
+  private def parseTrustee(trustee : Trustee) : AddRow = {
+    AddRow(
       parseName(trustee.name),
       parseType(trustee.`type`),
       "#",
@@ -49,14 +49,14 @@ class AddATrusteeViewHelper(userAnswers: UserAnswers)(implicit messages: Message
     )
   }
 
-  def rows : TrusteeRows = {
+  def rows : AddToRows = {
     val trustees = userAnswers.get(Trustees).toList.flatten
 
     val complete = trustees.filter(_.isComplete).map(parseTrustee)
 
     val inProgress = trustees.filterNot(_.isComplete).map(parseTrustee)
 
-    TrusteeRows(inProgress, complete)
+    AddToRows(inProgress, complete)
   }
 
 }

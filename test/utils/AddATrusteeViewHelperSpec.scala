@@ -19,7 +19,7 @@ package utils
 import base.SpecBase
 import models.{FullName, IndividualOrBusiness, UserAnswers}
 import pages.{TrusteeIndividualOrBusinessPage, TrusteesNamePage}
-import viewmodels.TrusteeRow
+import viewmodels.AddRow
 
 class AddATrusteeViewHelperSpec extends SpecBase {
 
@@ -53,8 +53,8 @@ class AddATrusteeViewHelperSpec extends SpecBase {
       "generate rows from user answers for trustees in progress" in {
         val rows = new AddATrusteeViewHelper(userAnswersWithTrusteesInProgress).rows
         rows.inProgress mustBe List(
-          TrusteeRow("First 0 Last 0", typeLabel = "Trustee", "#", "#"),
-          TrusteeRow("First 1 Last 1", typeLabel = "Trustee", "#", "#")
+          AddRow("First 0 Last 0", typeLabel = "Trustee", "#", "#"),
+          AddRow("First 1 Last 1", typeLabel = "Trustee", "#", "#")
         )
         rows.complete mustBe Nil
       }
@@ -62,8 +62,8 @@ class AddATrusteeViewHelperSpec extends SpecBase {
       "generate rows from user answers for complete trustees" in {
         val rows = new AddATrusteeViewHelper(userAnswersWithTrusteesComplete).rows
         rows.complete mustBe List(
-          TrusteeRow("First 0 Last 0", typeLabel = "Trustee Individual", "#", "#"),
-          TrusteeRow("First 1 Last 1", typeLabel = "Trustee Business", "#", "#")
+          AddRow("First 0 Last 0", typeLabel = "Trustee Individual", "#", "#"),
+          AddRow("First 1 Last 1", typeLabel = "Trustee Business", "#", "#")
         )
         rows.inProgress mustBe Nil
       }
@@ -71,10 +71,10 @@ class AddATrusteeViewHelperSpec extends SpecBase {
       "generate rows from user answers for complete and in progress trustees" in {
         val rows = new AddATrusteeViewHelper(userAnswersWithCompleteAndInProgres).rows
         rows.complete mustBe List(
-          TrusteeRow("First 1 Last 1", typeLabel = "Trustee Individual", "#", "#")
+          AddRow("First 1 Last 1", typeLabel = "Trustee Individual", "#", "#")
         )
         rows.inProgress mustBe List(
-          TrusteeRow("First 0 Last 0", typeLabel = "Trustee", "#", "#")
+          AddRow("First 0 Last 0", typeLabel = "Trustee", "#", "#")
         )
       }
 

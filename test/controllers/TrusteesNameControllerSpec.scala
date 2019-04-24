@@ -18,7 +18,6 @@ package controllers
 
 import base.SpecBase
 import forms.TrusteesNameFormProvider
-import generators.FullNameGenerator
 import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
@@ -31,7 +30,7 @@ import play.api.test.Helpers._
 import views.html.TrusteesNameView
 import views.html.components.heading
 
-class TrusteesNameControllerSpec extends SpecBase with IndexValidation with FullNameGenerator {
+class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 

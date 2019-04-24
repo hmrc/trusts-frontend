@@ -16,11 +16,10 @@
 
 package pages
 
-import generators.FullNameGenerator
-import models.{FullName, IndividualBeneficiaryName}
+import models.{FullName}
 import pages.behaviours.PageBehaviours
 
-class IndividualBeneficiaryNamePageSpec extends PageBehaviours with FullNameGenerator {
+class IndividualBeneficiaryNamePageSpec extends PageBehaviours  {
 
   "IndividualBeneficiaryNamePage" must {
 

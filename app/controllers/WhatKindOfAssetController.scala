@@ -49,13 +49,13 @@ class WhatKindOfAssetController @Inject()(
 
   val form = formProvider()
 
-  private def findAssetThatIsMoney(assets : List[Asset], index: Int): Option[(Asset, Int)] =
+  private def findAssetThatIsMoney(assets : List[Asset]): Option[(Asset, Int)] =
     assets.zipWithIndex.find(_._1.whatKindOfAsset.contains(Money))
 
   private def options(request : DataRequest[AnyContent], index: Int) = {
     val assets = request.userAnswers.get(pages.Assets).getOrElse(Nil)
     
-    findAssetThatIsMoney(assets, index) match {
+    findAssetThatIsMoney(assets) match {
       case Some((_, i)) if i == index =>
         WhatKindOfAsset.options
       case Some((_, i)) if i != index =>
@@ -96,8 +96,14 @@ class WhatKindOfAssetController @Inject()(
             } yield Redirect(navigator.nextPage(WhatKindOfAssetPage(index), mode)(updatedAnswers))
 
           value match {
-            case Money if findAssetThatIsMoney(assets, index).isDefined =>
-              Future.successful(BadRequest(view(form.fill(Money), mode, index, options(request, index))))
+            case Money =>
+              findAssetThatIsMoney(assets) match {
+                case Some((_ , i)) if i == index =>
+                  insertAndRedirect
+                case Some((_, i)) if i != index =>
+                  Future.successful(BadRequest(view(form.fill(Money), mode, index, options(request, index))))
+                case _ => insertAndRedirect
+            }
             case _ =>
               insertAndRedirect
           }

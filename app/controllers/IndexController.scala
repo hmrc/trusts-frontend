@@ -16,27 +16,58 @@
 
 package controllers
 
-import controllers.actions.IdentifierAction
+import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import javax.inject.Inject
-import models.NormalMode
+import models.{NormalMode, UserAnswers}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
+import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.IndexView
-import uk.gov.hmrc.auth.core.AffinityGroup
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class IndexController @Inject()(
                                  identify: IdentifierAction,
+                                 getData: DataRetrievalAction,
+                                 sessionRepository: SessionRepository,
                                  val controllerComponents: MessagesControllerComponents,
                                  view: IndexView
-                               ) extends FrontendBaseController with I18nSupport {
+                               )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = identify.async { implicit request =>
-    request.affinityGroup match {
-      case AffinityGroup.Agent => Future.successful(Redirect(routes.AgentOverviewController.onPageLoad()))
-      case _ => Future.successful(Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode)))
-    }
+  def onPageLoad: Action[AnyContent] = (identify andThen getData).async {
+    implicit request =>
+
+      def routeAffinityGroupNotStarted = {
+        request.affinityGroup match {
+          case AffinityGroup.Agent =>
+            Redirect(routes.AgentOverviewController.onPageLoad())
+          case _ =>
+            Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode))
+        }
+      }
+
+      def routeAffinityGroupInProgress = {
+        request.affinityGroup match {
+          case AffinityGroup.Agent =>
+            Redirect(routes.AgentOverviewController.onPageLoad())
+          case _ =>
+            Redirect(routes.TaskListController.onPageLoad())
+        }
+      }
+
+      request.userAnswers match {
+        case Some(_) =>
+          Future.successful(routeAffinityGroupInProgress)
+        case None =>
+          // Created a userAnswers set to NotStarted and redirect
+          val userAnswers = UserAnswers(request.internalId)
+          for {
+            _ <- sessionRepository.set(userAnswers)
+          } yield {
+            routeAffinityGroupNotStarted
+          }
+      }
   }
 }

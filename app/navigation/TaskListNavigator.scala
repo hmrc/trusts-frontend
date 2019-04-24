@@ -45,10 +45,20 @@ class TaskListNavigator @Inject()() {
     }
   }
 
+  private def settlorRoute(answers: UserAnswers) = {
+    answers.get(SettlorsNamePage) match {
+      case Some(_) =>
+        routes.DeceasedSettlorAnswerController.onPageLoad()
+      case None =>
+        routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode)
+    }
+  }
+
+
   private val taskListRoutes : Page => UserAnswers => Call = {
     case TrustDetails => trustDetailsRoute
     case Trustees => trusteeRoute
-    case Settlors => _ => routes.TaskListController.onPageLoad()
+    case Settlors => settlorRoute
     case Beneficiaries => _ => routes.TaskListController.onPageLoad()
     case TaxLiability => _ => routes.TaskListController.onPageLoad()
     case Assets => _ => routes.AssetInterruptPageController.onPageLoad()

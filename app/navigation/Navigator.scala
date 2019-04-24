@@ -73,18 +73,91 @@ class Navigator @Inject()() {
     //Assets
     case AssetMoneyValuePage(index) => _ => ua => assetMoneyValueRoute(ua, index)
     case WhatKindOfAssetPage(index) => _ => ua => whatKindOfAssetRoute(ua, index)
+    case AddAssetsPage => _ => addAssetsRoute
 
+    //Settlors
+    case SetupAfterSettlorDiedPage => _ => setupAfterSettlorDiedRoute
+    case SettlorsNamePage => _ => _ => routes.SettlorDateOfDeathYesNoController.onPageLoad(NormalMode)
+    case SettlorDateOfDeathYesNoPage => _ => deceasedSettlorDateOfDeathRoute
+    case SettlorDateOfBirthYesNoPage => _ => deceasedSettlorDateOfBirthRoute
+    case SettlorsDateOfBirthPage => _ => _ => routes.SettlorsNINoYesNoController.onPageLoad(NormalMode)
+    case SettlorsNINoYesNoPage => _ => deceasedSettlorNinoRoute
+    case SettlorsLastKnownAddressYesNoPage => _ => deceasedSettlorLastKnownAddressRoute
+    case SettlorDateOfDeathPage => _ => _ => routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode)
+    case SettlorNationalInsuranceNumberPage => _ => _ => routes.DeceasedSettlorAnswerController.onPageLoad()
+    case WasSettlorsAddressUKYesNoPage => _ => deceasedSettlorAddressRoute
+    case SettlorsInternationalAddressPage => _ => _ => routes.DeceasedSettlorAnswerController.onPageLoad()
+    case SettlorsUKAddressPage => _ => _ => routes.DeceasedSettlorAnswerController.onPageLoad()
+    case DeceasedSettlorAnswerPage => _ => _ => routes.TaskListController.onPageLoad()
     //  Default
     case _ => _ => _ => routes.IndexController.onPageLoad()
   }
 
+  private def setupAfterSettlorDiedRoute(userAnswers: UserAnswers) : Call = userAnswers.get(SetupAfterSettlorDiedPage) match {
+    case Some(false) => routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode)
+    case Some(true) => routes.SettlorsNameController.onPageLoad(NormalMode)
+    case _ => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def deceasedSettlorAddressRoute(userAnswers: UserAnswers) : Call = userAnswers.get(WasSettlorsAddressUKYesNoPage) match {
+    case Some(false) => routes.SettlorsInternationalAddressController.onPageLoad(NormalMode)
+    case Some(true) => routes.SettlorsUKAddressController.onPageLoad(NormalMode)
+    case _ => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def deceasedSettlorLastKnownAddressRoute(userAnswers: UserAnswers) : Call = userAnswers.get(SettlorsLastKnownAddressYesNoPage) match {
+    case Some(false) => routes.DeceasedSettlorAnswerController.onPageLoad()
+    case Some(true) => routes.WasSettlorsAddressUKYesNoController.onPageLoad(NormalMode)
+    case _ => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def deceasedSettlorNinoRoute(userAnswers: UserAnswers) : Call = userAnswers.get(SettlorsNINoYesNoPage) match {
+    case Some(false) => routes.SettlorsLastKnownAddressYesNoController.onPageLoad(NormalMode)
+    case Some(true) => routes.SettlorNationalInsuranceNumberController.onPageLoad(NormalMode)
+    case _ => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def deceasedSettlorDateOfBirthRoute(userAnswers: UserAnswers): Call = userAnswers.get(SettlorDateOfBirthYesNoPage) match {
+    case Some(false) => routes.SettlorsNINoYesNoController.onPageLoad(NormalMode)
+    case Some(true) => routes.SettlorsDateOfBirthController.onPageLoad(NormalMode)
+    case _ => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def deceasedSettlorDateOfDeathRoute(userAnswers: UserAnswers) : Call = userAnswers.get(SettlorDateOfDeathYesNoPage) match {
+    case Some(false) => routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode)
+    case Some(true) => routes.SettlorDateOfDeathController.onPageLoad(NormalMode)
+    case _ => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def addAssetsRoute(answers: UserAnswers) = {
+    val addAnother = answers.get(AddAssetsPage)
+
+    def routeToAssetIndex = {
+      val assets = answers.get(Assets).getOrElse(List.empty)
+      assets match {
+        case Nil =>
+          routes.WhatKindOfAssetController.onPageLoad(NormalMode, 0)
+        case t if t.nonEmpty =>
+          routes.WhatKindOfAssetController.onPageLoad(NormalMode, t.size)
+      }
+    }
+
+    addAnother match {
+      case Some(models.AddAssets.YesNow) =>
+        routeToAssetIndex
+      case Some(models.AddAssets.YesLater) =>
+        routes.TaskListController.onPageLoad()
+      case Some(models.AddAssets.NoComplete) =>
+        routes.TaskListController.onPageLoad()
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
   private def assetMoneyValueRoute(answers: UserAnswers, index: Int) = {
-
     val assets = answers.get(Assets).getOrElse(List.empty)
-
     assets match  {
       case Nil => routes.WhatKindOfAssetController.onPageLoad(NormalMode, 0)
-      case a if assets.nonEmpty => routes.WhatKindOfAssetController.onPageLoad(NormalMode, a.size)
+      case _ => routes.AddAssetsController.onPageLoad()
     }
   }
 

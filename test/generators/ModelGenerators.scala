@@ -30,12 +30,35 @@ trait ModelGenerators {
       } yield IndividualBeneficiaryName(field1, field2)
     }
 
-  implicit lazy val arbitraryWhatKindOfAsset: Arbitrary[WhatKindOfAsset] =
+
+  implicit lazy val arbitraryFullName : Arbitrary[FullName] = {
     Arbitrary {
-      Gen.oneOf(WhatKindOfAsset.values.toSeq)
+      for {
+        str <- arbitrary[String]
+      } yield {
+        FullName(str, Some(str), str)
+      }
+    }
+  }
+
+  implicit lazy val arbitraryInternationalAddress: Arbitrary[InternationalAddress] =
+    Arbitrary {
+      for {
+        str <- arbitrary[String]
+      } yield InternationalAddress(str,str,Some(str),Some(str),str)
     }
 
-  implicit lazy val arbitraryTrusteesUkAddress: Arbitrary[TrusteesUkAddress] =
+  implicit lazy val arbitraryAddAssets: Arbitrary[AddAssets] =
+    Arbitrary {
+      Gen.oneOf(AddAssets.values)
+    }
+
+  implicit lazy val arbitraryWhatKindOfAsset: Arbitrary[WhatKindOfAsset] =
+    Arbitrary {
+      Gen.oneOf(WhatKindOfAsset.values)
+    }
+
+  implicit lazy val arbitraryUkAddress: Arbitrary[UKAddress] =
     Arbitrary {
       for {
         line1 <- arbitrary[String]
@@ -43,12 +66,12 @@ trait ModelGenerators {
         line3 <- arbitrary[String]
         townOrCity <- arbitrary[String]
         postcode <- arbitrary[String]
-      } yield TrusteesUkAddress(line1, Some(line2), Some(line3), townOrCity, postcode)
+      } yield UKAddress(line1, Some(line2), Some(line3), townOrCity, postcode)
     }
 
   implicit lazy val arbitraryAddATrustee: Arbitrary[AddATrustee] =
     Arbitrary {
-      Gen.oneOf(AddATrustee.values.toSeq)
+      Gen.oneOf(AddATrustee.values)
     }
 
   implicit lazy val arbitraryTrusteeOrIndividual: Arbitrary[IndividualOrBusiness] =
@@ -58,7 +81,7 @@ trait ModelGenerators {
 
   implicit lazy val arbitraryNonResidentType: Arbitrary[NonResidentType] =
     Arbitrary {
-      Gen.oneOf(NonResidentType.values.toSeq)
+      Gen.oneOf(NonResidentType.values)
     }
 
 }

@@ -25,7 +25,7 @@ import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import viewmodels.TrusteeRow
+import viewmodels.AddRow
 import views.html.AddATrusteeView
 
 class AddATrusteeControllerSpec extends SpecBase {
@@ -38,8 +38,8 @@ class AddATrusteeControllerSpec extends SpecBase {
   val form = formProvider()
 
   val trustee = List(
-    TrusteeRow("First 0 Last 0", typeLabel = "Trustee Individual", "#", "#"),
-    TrusteeRow("First 1 Last 1", typeLabel = "Trustee Business", "#", "#")
+    AddRow("First 0 Last 0", typeLabel = "Trustee Individual", "#", "#"),
+    AddRow("First 1 Last 1", typeLabel = "Trustee Business", "#", "#")
   )
 
   val userAnswersWithTrusteesComplete = UserAnswers(userAnswersId)

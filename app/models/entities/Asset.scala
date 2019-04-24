@@ -17,9 +17,14 @@
 package models.entities
 
 import models.WhatKindOfAsset
+import models.WhatKindOfAsset.Money
 import play.api.libs.json.{Json, OFormat}
 
-case class Asset(whatKindOfAsset: Option[WhatKindOfAsset])
+
+case class Asset(whatKindOfAsset: Option[WhatKindOfAsset], assetMoneyValue: Option[String]){
+  def isComplete = whatKindOfAsset.nonEmpty && assetMoneyValue.nonEmpty
+  def isMoney :Boolean = whatKindOfAsset.isDefined && whatKindOfAsset.contains(Money)
+}
 
 object Asset {
 

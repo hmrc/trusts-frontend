@@ -20,11 +20,11 @@ import java.time.format.DateTimeFormatter
 
 import controllers.routes
 import javax.inject.Inject
-import models.{CheckMode, TrusteesUkAddress, UserAnswers}
+import models.{CheckMode, InternationalAddress, UKAddress, UserAnswers}
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
-import utils.CheckYourAnswersHelper._
+import utils.CheckYourAnswersHelper.{trusteeName, _}
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerRow
 
@@ -39,6 +39,123 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
+  def wasSettlorsAddressUKYesNo: Option[AnswerRow] = userAnswers.get(WasSettlorsAddressUKYesNoPage) map {
+    x =>
+      AnswerRow(
+        "wasSettlorsAddressUKYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.WasSettlorsAddressUKYesNoController.onPageLoad(CheckMode).url,
+          deceasedSettlorName(userAnswers)
+      )
+  }
+
+  def setupAfterSettlorDied: Option[AnswerRow] = userAnswers.get(SetupAfterSettlorDiedPage) map {
+    x =>
+      AnswerRow(
+        "setupAfterSettlorDied.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.SetupAfterSettlorDiedController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def settlorsUKAddress: Option[AnswerRow] = userAnswers.get(SettlorsUKAddressPage) map {
+    x =>
+      AnswerRow(
+        "settlorsUKAddress.checkYourAnswersLabel",
+        ukAddress(x),
+        routes.SettlorsUKAddressController.onPageLoad(CheckMode).url,
+        deceasedSettlorName(userAnswers)
+      )
+  }
+
+  def settlorsNINoYesNo: Option[AnswerRow] = userAnswers.get(SettlorsNINoYesNoPage) map {
+    x =>
+      AnswerRow(
+        "settlorsNINoYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.SettlorsNINoYesNoController.onPageLoad(CheckMode).url,
+        deceasedSettlorName(userAnswers)
+      )
+  }
+
+  def settlorsName: Option[AnswerRow] = userAnswers.get(SettlorsNamePage) map {
+    x =>
+      AnswerRow(
+        "settlorsName.checkYourAnswersLabel",
+        HtmlFormat.escape(s"${x.firstName} ${x.lastName}"),
+        routes.SettlorsNameController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def settlorsLastKnownAddressYesNo: Option[AnswerRow] = userAnswers.get(SettlorsLastKnownAddressYesNoPage) map {
+    x =>
+      AnswerRow(
+        "settlorsLastKnownAddressYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.SettlorsLastKnownAddressYesNoController.onPageLoad(CheckMode).url,
+        deceasedSettlorName(userAnswers)
+      )
+  }
+
+  def settlorsInternationalAddress: Option[AnswerRow] = userAnswers.get(SettlorsInternationalAddressPage) map {
+    x =>
+      AnswerRow(
+        "settlorsInternationalAddress.checkYourAnswersLabel",
+        internationalAddress(x, countryOptions),
+        routes.SettlorsInternationalAddressController.onPageLoad(CheckMode).url,
+        deceasedSettlorName(userAnswers)
+      )
+  }
+
+  def settlorsDateOfBirth: Option[AnswerRow] = userAnswers.get(SettlorsDateOfBirthPage) map {
+    x =>
+      AnswerRow(
+        "settlorsDateOfBirth.checkYourAnswersLabel",
+        HtmlFormat.escape(x.format(dateFormatter)),
+        routes.SettlorsDateOfBirthController.onPageLoad(CheckMode).url,
+        deceasedSettlorName(userAnswers)
+      )
+  }
+
+  def settlorNationalInsuranceNumber: Option[AnswerRow] = userAnswers.get(SettlorNationalInsuranceNumberPage) map {
+    x =>
+      AnswerRow(
+        "settlorNationalInsuranceNumber.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.SettlorNationalInsuranceNumberController.onPageLoad(CheckMode).url,
+        deceasedSettlorName(userAnswers)
+      )
+  }
+
+  def settlorDateOfDeathYesNo: Option[AnswerRow] = userAnswers.get(SettlorDateOfDeathYesNoPage) map {
+    x =>
+      AnswerRow(
+        "settlorDateOfDeathYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.SettlorDateOfDeathYesNoController.onPageLoad(CheckMode).url,
+        deceasedSettlorName(userAnswers)
+      )
+  }
+
+  def settlorDateOfDeath: Option[AnswerRow] = userAnswers.get(SettlorDateOfDeathPage) map {
+    x =>
+      AnswerRow(
+        "settlorDateOfDeath.checkYourAnswersLabel",
+        HtmlFormat.escape(x.format(dateFormatter)),
+        routes.SettlorDateOfDeathController.onPageLoad(CheckMode).url,
+        deceasedSettlorName(userAnswers)
+      )
+  }
+
+  def settlorDateOfBirthYesNo: Option[AnswerRow] = userAnswers.get(SettlorDateOfBirthYesNoPage) map {
+    x =>
+      AnswerRow(
+        "settlorDateOfBirthYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.SettlorDateOfBirthYesNoController.onPageLoad(CheckMode).url,
+        deceasedSettlorName(userAnswers)
+      )
+  }
 
   def assetMoneyValue(index: Int): Option[AnswerRow] = userAnswers.get(AssetMoneyValuePage(index)) map {
     x =>
@@ -260,18 +377,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x => AnswerRow("trustName.checkYourAnswersLabel", escape(x), routes.TrustNameController.onPageLoad(CheckMode).url)
   }
 
-  private def ukAddress(address: TrusteesUkAddress): Html = {
-    val lines =
-      Seq(
-        Some(HtmlFormat.escape(address.line1)),
-        address.line2.map(HtmlFormat.escape),
-        address.line3.map(HtmlFormat.escape),
-        Some(HtmlFormat.escape(address.townOrCity)),
-        Some(HtmlFormat.escape(address.postcode))
-      ).flatten
 
-    Html(lines.mkString("<br />"))
-  }
 
 }
 
@@ -296,4 +402,33 @@ object CheckYourAnswersHelper {
     HtmlFormat.escape(messages(s"$key.$answer"))
 
   private def escape(x : String) = HtmlFormat.escape(x)
+
+  private def deceasedSettlorName(userAnswers: UserAnswers): String =
+    userAnswers.get(SettlorsNamePage).get.toString
+
+  private def ukAddress(address: UKAddress): Html = {
+    val lines =
+      Seq(
+        Some(HtmlFormat.escape(address.line1)),
+        address.line2.map(HtmlFormat.escape),
+        address.line3.map(HtmlFormat.escape),
+        Some(HtmlFormat.escape(address.townOrCity)),
+        Some(HtmlFormat.escape(address.postcode))
+      ).flatten
+
+    Html(lines.mkString("<br />"))
+  }
+
+  private def internationalAddress(address: InternationalAddress, countryOptions: CountryOptions): Html = {
+    val lines =
+      Seq(
+        Some(HtmlFormat.escape(address.line1)),
+        Some(HtmlFormat.escape(address.line2)),
+        address.line3.map(HtmlFormat.escape),
+        address.line4.map(HtmlFormat.escape),
+        Some(country(address.country, countryOptions))
+      ).flatten
+
+    Html(lines.mkString("<br />"))
+  }
 }

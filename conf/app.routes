@@ -120,7 +120,7 @@ GET        /registration-progress                       controllers.TaskListCont
 
 # trustees
 
-GET        /trustees-information                                controllers.TrusteesInfoController.onPageLoad()
+GET        /trustees/information-you-need                                controllers.TrusteesInfoController.onPageLoad()
 
 GET        /trustees/:index/is-this-the-lead-trustee            controllers.IsThisLeadTrusteeController.onPageLoad(mode: Mode = NormalMode, index : Int)
 POST       /trustees/:index/is-this-the-lead-trustee             controllers.IsThisLeadTrusteeController.onSubmit(mode: Mode = NormalMode, index : Int)
@@ -145,8 +145,8 @@ POST       /trustees/:index/change-date-of-birth   controllers.TrusteesDateOfBir
 GET        /trustees/:index/check-answers                      controllers.TrusteesAnswerPageController.onPageLoad(index : Int)
 POST       /trustees/:index/check-answers                      controllers.TrusteesAnswerPageController.onSubmit(index : Int)
 
-GET        /add-a-trustee                               controllers.AddATrusteeController.onPageLoad(mode: Mode = NormalMode)
-POST       /add-a-trustee                               controllers.AddATrusteeController.onSubmit(mode: Mode = NormalMode)
+GET        /trustees/add                               controllers.AddATrusteeController.onPageLoad(mode: Mode = NormalMode)
+POST       /trustees/add                               controllers.AddATrusteeController.onSubmit(mode: Mode = NormalMode)
 
 GET        /trustees/:index/telephone-number                        controllers.TelephoneNumberController.onPageLoad(mode: Mode = NormalMode, index : Int)
 POST       /trustees/:index/telephone-number                        controllers.TelephoneNumberController.onSubmit(mode: Mode = NormalMode, index : Int)
@@ -206,6 +206,76 @@ POST       /asset/:index/money                          controllers.AssetMoneyVa
 GET        /asset/:index/change-money                   controllers.AssetMoneyValueController.onPageLoad(mode: Mode = CheckMode, index: Int)
 POST       /asset/:index/change-money                   controllers.AssetMoneyValueController.onSubmit(mode: Mode = CheckMode, index: Int)
 
+
+GET        /asset/add                        controllers.AddAssetsController.onPageLoad(mode: Mode = NormalMode)
+POST       /asset/add                        controllers.AddAssetsController.onSubmit(mode: Mode = NormalMode)
+
+#settlors
+
+GET        /settlors/deceased/do-you-know-date-of-birth                        controllers.SettlorDateOfBirthYesNoController.onPageLoad(mode: Mode = NormalMode)
+POST       /settlors/deceased/do-you-know-date-of-birth                       controllers.SettlorDateOfBirthYesNoController.onSubmit(mode: Mode = NormalMode)
+GET        /settlors/deceased/change-do-you-know-date-of-birth                 controllers.SettlorDateOfBirthYesNoController.onPageLoad(mode: Mode = CheckMode)
+POST       /settlors/deceased/change-do-you-know-date-of-birth                 controllers.SettlorDateOfBirthYesNoController.onSubmit(mode: Mode = CheckMode)
+
+GET        /settlors/deceased/date-of-death                  controllers.SettlorDateOfDeathController.onPageLoad(mode: Mode = NormalMode)
+POST       /settlors/deceased/date-of-death                  controllers.SettlorDateOfDeathController.onSubmit(mode: Mode = NormalMode)
+GET        /settlors/deceased/change-date-of-death                        controllers.SettlorDateOfDeathController.onPageLoad(mode: Mode = CheckMode)
+POST       /settlors/deceased/change-date-of-death                      controllers.SettlorDateOfDeathController.onSubmit(mode: Mode = CheckMode)
+
+GET        /settlors/deceased/do-you-know-date-of-death                       controllers.SettlorDateOfDeathYesNoController.onPageLoad(mode: Mode = NormalMode)
+POST       /settlors/deceased/do-you-know-date-of-death                       controllers.SettlorDateOfDeathYesNoController.onSubmit(mode: Mode = NormalMode)
+GET        /settlors/deceased/change-do-you-know-date-of-death                controllers.SettlorDateOfDeathYesNoController.onPageLoad(mode: Mode = CheckMode)
+POST       /settlors/deceased/change-do-you-know-date-of-death                controllers.SettlorDateOfDeathYesNoController.onSubmit(mode: Mode = CheckMode)
+
+GET        /settlors/deceased/national-insurance-number                        controllers.SettlorNationalInsuranceNumberController.onPageLoad(mode: Mode = NormalMode)
+POST       /settlors/deceased/national-insurance-number                         controllers.SettlorNationalInsuranceNumberController.onSubmit(mode: Mode = NormalMode)
+GET        /settlors/deceased/change-national-insurance-number                   controllers.SettlorNationalInsuranceNumberController.onPageLoad(mode: Mode = CheckMode)
+POST       /settlors/deceased/change-national-insurance-number                   controllers.SettlorNationalInsuranceNumberController.onSubmit(mode: Mode = CheckMode)
+
+GET        /settlors/deceased/date-of-birth                  controllers.SettlorsDateOfBirthController.onPageLoad(mode: Mode = NormalMode)
+POST       /settlors/deceased/date-of-birth                controllers.SettlorsDateOfBirthController.onSubmit(mode: Mode = NormalMode)
+GET        /settlors/deceased/change-date-of-birth                        controllers.SettlorsDateOfBirthController.onPageLoad(mode: Mode = CheckMode)
+POST       /settlors/deceased/change-date-of-birth                        controllers.SettlorsDateOfBirthController.onSubmit(mode: Mode = CheckMode)
+
+GET        /settlors/deceased/international-address                        controllers.SettlorsInternationalAddressController.onPageLoad(mode: Mode = NormalMode)
+POST       /settlors/deceased/international-address                        controllers.SettlorsInternationalAddressController.onSubmit(mode: Mode = NormalMode)
+GET        /settlors/deceased/change-international-address                  controllers.SettlorsInternationalAddressController.onPageLoad(mode: Mode = CheckMode)
+POST       /settlors/deceased/change-international-address                  controllers.SettlorsInternationalAddressController.onSubmit(mode: Mode = CheckMode)
+
+GET        /settlors/deceased/do-you-know-last-known-address                        controllers.SettlorsLastKnownAddressYesNoController.onPageLoad(mode: Mode = NormalMode)
+POST       /settlors/deceased/do-you-know-last-known-address                       controllers.SettlorsLastKnownAddressYesNoController.onSubmit(mode: Mode = NormalMode)
+GET        /settlors/deceased/change-do-you-know-last-known-address                 controllers.SettlorsLastKnownAddressYesNoController.onPageLoad(mode: Mode = CheckMode)
+POST       /settlors/deceased/change-do-you-know-last-known-address                 controllers.SettlorsLastKnownAddressYesNoController.onSubmit(mode: Mode = CheckMode)
+
+GET        /settlors/deceased/settlors-name                        controllers.SettlorsNameController.onPageLoad(mode: Mode = NormalMode)
+POST       /settlors/deceased/settlors-name                        controllers.SettlorsNameController.onSubmit(mode: Mode = NormalMode)
+GET        /settlors/deceased/change-settlors-name                  controllers.SettlorsNameController.onPageLoad(mode: Mode = CheckMode)
+POST       /settlors/deceased/change-settlors-name                  controllers.SettlorsNameController.onSubmit(mode: Mode = CheckMode)
+
+GET        /settlors/deceased/do-you-know-nino                       controllers.SettlorsNINoYesNoController.onPageLoad(mode: Mode = NormalMode)
+POST       /settlors/deceased/do-you-know-nino                        controllers.SettlorsNINoYesNoController.onSubmit(mode: Mode = NormalMode)
+GET        /settlors/deceased/change-do-you-know-nino                   controllers.SettlorsNINoYesNoController.onPageLoad(mode: Mode = CheckMode)
+POST       /settlors/deceased/change-do-you-know-nino                   controllers.SettlorsNINoYesNoController.onSubmit(mode: Mode = CheckMode)
+
+GET        /settlors/deceased/uk-address                        controllers.SettlorsUKAddressController.onPageLoad(mode: Mode = NormalMode)
+POST       /settlors/deceased/uk-address                        controllers.SettlorsUKAddressController.onSubmit(mode: Mode = NormalMode)
+GET        /settlors/deceased/change-uk-address                   controllers.SettlorsUKAddressController.onPageLoad(mode: Mode = CheckMode)
+POST       /settlors/deceased/change-uk-address                   controllers.SettlorsUKAddressController.onSubmit(mode: Mode = CheckMode)
+
+GET        /settlors/setup-after-settlor-died                        controllers.SetupAfterSettlorDiedController.onPageLoad(mode: Mode = NormalMode)
+POST       /settlors/setup-after-settlor-died                         controllers.SetupAfterSettlorDiedController.onSubmit(mode: Mode = NormalMode)
+GET        /settlors/change-setup-after-settlor-died                   controllers.SetupAfterSettlorDiedController.onPageLoad(mode: Mode = CheckMode)
+POST       /settlors/change-setup-after-settlor-died                   controllers.SetupAfterSettlorDiedController.onSubmit(mode: Mode = CheckMode)
+
+GET        /settlors/deceased/was-settlors-address-uk                        controllers.WasSettlorsAddressUKYesNoController.onPageLoad(mode: Mode = NormalMode)
+POST       /settlors/deceased/was-settlors-address-uk                      controllers.WasSettlorsAddressUKYesNoController.onSubmit(mode: Mode = NormalMode)
+GET        /settlors/deceased/change-was-settlors-address-uk                  controllers.WasSettlorsAddressUKYesNoController.onPageLoad(mode: Mode = CheckMode)
+POST       /settlors/deceased/change-was-settlors-address-uk                 controllers.WasSettlorsAddressUKYesNoController.onSubmit(mode: Mode = CheckMode)
+
+GET        /settlors/deceased/check-answers                       controllers.DeceasedSettlorAnswerController.onPageLoad()
+POST        /settlors/deceased/check-answers                       controllers.DeceasedSettlorAnswerController.onSubmit()
+
+#beneficiary
 GET        /:index/individualBeneficiaryName                        controllers.IndividualBeneficiaryNameController.onPageLoad(mode: Mode = NormalMode,index: Int)
 POST       /:index/individualBeneficiaryName                        controllers.IndividualBeneficiaryNameController.onSubmit(mode: Mode = NormalMode,index: Int)
 GET        /:index/changeIndividualBeneficiaryName                  controllers.IndividualBeneficiaryNameController.onPageLoad(mode: Mode = CheckMode,index: Int)

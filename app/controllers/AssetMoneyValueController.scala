@@ -65,10 +65,10 @@ class AssetMoneyValueController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(AssetMoneyValuePage(index), value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(AssetMoneyValuePage(index), mode)(updatedAnswers))
-        }
+                updatedAnswers <- Future.fromTry(request.userAnswers.set(AssetMoneyValuePage(index), value))
+                _              <- sessionRepository.set(updatedAnswers)
+              } yield Redirect(navigator.nextPage(AssetMoneyValuePage(index), mode)(updatedAnswers))
+          }
       )
   }
 }

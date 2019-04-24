@@ -16,11 +16,10 @@
 
 package pages
 
-import generators.FullNameGenerator
 import pages.behaviours.PageBehaviours
 import models.FullName
 
-class TrusteesNamePageSpec extends PageBehaviours with FullNameGenerator {
+class TrusteesNamePageSpec extends PageBehaviours  {
 
   "TrusteesNamePage" must {
 

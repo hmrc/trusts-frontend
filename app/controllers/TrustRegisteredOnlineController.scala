@@ -16,13 +16,10 @@
 
 package controllers
 
-import java.time.LocalDateTime
-
-import config.FrontendAppConfig
 import controllers.actions._
 import forms.TrustRegisteredOnlineFormProvider
 import javax.inject.Inject
-import models.{Mode, UserAnswers}
+import models.Mode
 import navigation.Navigator
 import pages.TrustRegisteredOnlinePage
 import play.api.data.Form
@@ -48,10 +45,10 @@ class TrustRegisteredOnlineController @Inject()(
 
   val form: Form[Boolean] = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.internalId)).get(TrustRegisteredOnlinePage) match {
+      val preparedForm = request.userAnswers.get(TrustRegisteredOnlinePage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -59,7 +56,7 @@ class TrustRegisteredOnlineController @Inject()(
       Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode) = (identify andThen getData).async {
+  def onSubmit(mode: Mode) = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -68,7 +65,7 @@ class TrustRegisteredOnlineController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.getOrElse(UserAnswers(request.internalId)).set(TrustRegisteredOnlinePage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustRegisteredOnlinePage, value))
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(TrustRegisteredOnlinePage, mode)(updatedAnswers))
         }

@@ -21,13 +21,26 @@ import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.TryValues
 import pages._
-import play.api.libs.json.{JsPath, JsValue, Json}
+import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersGenerator extends TryValues {
   self: Generators =>
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
     arbitrary[(IndividualBeneficiaryNamePage, JsValue)] ::
+    arbitrary[(WasSettlorsAddressUKYesNoPage.type, JsValue)] ::
+    arbitrary[(SetupAfterSettlorDiedPage.type, JsValue)] ::
+    arbitrary[(SettlorsUKAddressPage.type, JsValue)] ::
+    arbitrary[(SettlorsNINoYesNoPage.type, JsValue)] ::
+    arbitrary[(SettlorsNamePage.type, JsValue)] ::
+    arbitrary[(SettlorsLastKnownAddressYesNoPage.type, JsValue)] ::
+    arbitrary[(SettlorsInternationalAddressPage.type, JsValue)] ::
+    arbitrary[(SettlorsDateOfBirthPage.type, JsValue)] ::
+    arbitrary[(SettlorNationalInsuranceNumberPage.type, JsValue)] ::
+    arbitrary[(SettlorDateOfDeathYesNoPage.type, JsValue)] ::
+    arbitrary[(SettlorDateOfDeathPage.type, JsValue)] ::
+    arbitrary[(SettlorDateOfBirthYesNoPage.type, JsValue)] ::
+    arbitrary[(AddAssetsPage.type, JsValue)] ::
     arbitrary[(AssetMoneyValuePage, JsValue)] ::
     arbitrary[(AgentInternalReferencePage.type, JsValue)] ::
     arbitrary[(WhatKindOfAssetPage, JsValue)] ::
