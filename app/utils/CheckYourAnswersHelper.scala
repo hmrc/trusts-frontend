@@ -30,6 +30,96 @@ import viewmodels.AnswerRow
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def addABeneficiary: Option[AnswerRow] = userAnswers.get(AddABeneficiaryPage) map {
+    x =>
+      AnswerRow(
+        "addABeneficiary.checkYourAnswersLabel",
+        HtmlFormat.escape(messages(s"addABeneficiary.$x")),
+        routes.AddABeneficiaryController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def individualBeneficiaryVulnerableYesNo: Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryVulnerableYesNoPage) map {
+    x =>
+      AnswerRow(
+        "individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def individualBeneficiaryAddressUK: Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryAddressUKPage) map {
+    x =>
+      AnswerRow(
+        "individualBeneficiaryAddressUK.checkYourAnswersLabel",
+        HtmlFormat.escape(s"${x.field1} ${x.field2}"),
+        routes.IndividualBeneficiaryAddressUKController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def individualBeneficiaryAdressYesNo: Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryAdressYesNoPage) map {
+    x =>
+      AnswerRow(
+        "individualBeneficiaryAdressYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.IndividualBeneficiaryAdressYesNoController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def individualBeneficiaryNationalInsuranceNumber: Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryNationalInsuranceNumberPage) map {
+    x =>
+      AnswerRow(
+        "individualBeneficiaryNationalInsuranceNumber.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def individualBeneficiaryNationalInsuranceYesNo: Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryNationalInsuranceYesNoPage) map {
+    x =>
+      AnswerRow(
+        "individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def individualBeneficiaryIncome: Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryIncomePage) map {
+    x =>
+      AnswerRow(
+        "individualBeneficiaryIncome.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.IndividualBeneficiaryIncomeController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def individualBeneficiaryIncomeYesNo: Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryIncomeYesNoPage) map {
+    x =>
+      AnswerRow(
+        "individualBeneficiaryIncomeYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def individualBeneficiaryDateOfBirth: Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryDateOfBirthPage) map {
+    x =>
+      AnswerRow(
+        "individualBeneficiaryDateOfBirth.checkYourAnswersLabel",
+        HtmlFormat.escape(x.format(dateFormatter)),
+        routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def individualBeneficiaryDateOfBirthYesNo: Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryDateOfBirthYesNoPage) map {
+    x =>
+      AnswerRow(
+        "individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(CheckMode).url
+      )
+  }
+
   def individualBeneficiaryName(index: Int): Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryNamePage(index)) map {
     x =>
       AnswerRow(
