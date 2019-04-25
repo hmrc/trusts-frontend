@@ -23,7 +23,7 @@ import models.{NormalMode, UserAnswers}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages.{IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryNamePage, SetupAfterSettlorDiedPage}
+import pages._
 
 
 trait BeneficiaryRoutes {
@@ -47,6 +47,50 @@ trait BeneficiaryRoutes {
           val answers = userAnswers.set(IndividualBeneficiaryDateOfBirthYesNoPage, value = true).success.value
           navigator.nextPage(IndividualBeneficiaryDateOfBirthYesNoPage, NormalMode)(answers)
             .mustBe(routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(NormalMode))
+      }
+    }
+
+    "go to IndividualBeneficiaryIncomeYesNoPage from IndividualBeneficiaryDateOfBirthYesNoPage when user answers no" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val answers = userAnswers.set(IndividualBeneficiaryDateOfBirthYesNoPage, value = false).success.value
+          navigator.nextPage(IndividualBeneficiaryDateOfBirthYesNoPage, NormalMode)(answers)
+            .mustBe(routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode))
+      }
+    }
+
+    "go to IndividualBeneficiaryIncomePage from IndividualBeneficiaryIncomeYesNoPage when user answers no" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val answers = userAnswers.set(IndividualBeneficiaryIncomeYesNoPage, value = false).success.value
+          navigator.nextPage(IndividualBeneficiaryIncomeYesNoPage, NormalMode)(answers)
+            .mustBe(routes.IndividualBeneficiaryIncomeController.onPageLoad(NormalMode))
+      }
+    }
+
+    "go to IndividualBeneficiaryNationalInsuranceYesNoPage from IndividualBeneficiaryIncomeYesNoPage when user answers yes" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val answers = userAnswers.set(IndividualBeneficiaryIncomeYesNoPage, value = true).success.value
+          navigator.nextPage(IndividualBeneficiaryIncomeYesNoPage, NormalMode)(answers)
+            .mustBe(routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode))
+      }
+    }
+
+    "go to IndividualBeneficiaryNationalInsuranceYesNoPage from IndividualBeneficiaryIncomePage" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          navigator.nextPage(IndividualBeneficiaryIncomePage, NormalMode)(userAnswers)
+            .mustBe(routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode))
+      }
+    }
+
+    "go to IndividualBeneficiaryAdressYesNoPage from IndividualBeneficiaryNationalInsuranceYesNoPage when user answers no" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val answers = userAnswers.set(IndividualBeneficiaryIncomeYesNoPage, value = false).success.value
+          navigator.nextPage(IndividualBeneficiaryNationalInsuranceYesNoPage, NormalMode)(answers)
+            .mustBe(routes.IndividualBeneficiaryAdressYesNoController.onPageLoad(NormalMode))
       }
     }
 
