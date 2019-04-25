@@ -94,12 +94,46 @@ trait BeneficiaryRoutes {
       }
     }
 
-    "go to IndividualBeneficiaryAdressYesNoPage from IndividualBeneficiaryNationalInsuranceYesNoPage when user answers yes" in {
+    "go to IndividualBeneficiaryNationalInsuranceNumberPage from IndividualBeneficiaryNationalInsuranceYesNoPage when user answers yes" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(IndividualBeneficiaryNationalInsuranceYesNoPage, value = true).success.value
           navigator.nextPage(IndividualBeneficiaryNationalInsuranceYesNoPage, NormalMode)(answers)
             .mustBe(routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(NormalMode))
+      }
+    }
+
+    "go to IndividualBeneficiaryVulnerableYesNoPage from IndividualBeneficiaryNationalInsuranceNumberPage" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          navigator.nextPage(IndividualBeneficiaryNationalInsuranceNumberPage, NormalMode)(userAnswers)
+            .mustBe(routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode))
+      }
+    }
+
+    "go to IndividualBeneficiaryAddressUKPage from IndividualBeneficiaryAdressYesNoPage when user answers yes" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val answers = userAnswers.set(IndividualBeneficiaryAdressYesNoPage, value = true).success.value
+          navigator.nextPage(IndividualBeneficiaryAdressYesNoPage, NormalMode)(answers)
+            .mustBe(routes.IndividualBeneficiaryAddressUKController.onPageLoad(NormalMode))
+      }
+    }
+
+    "go to IndividualBeneficiaryVulnerableYesNoPage from IndividualBeneficiaryAdressYesNoPage when user answers no" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val answers = userAnswers.set(IndividualBeneficiaryAdressYesNoPage, value = false).success.value
+          navigator.nextPage(IndividualBeneficiaryAdressYesNoPage, NormalMode)(answers)
+            .mustBe(routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode))
+      }
+    }
+
+    "go to IndividualBeneficiaryVulnerableYesNoPage from IndividualBeneficiaryAddressUKPage" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          navigator.nextPage(IndividualBeneficiaryAddressUKPage, NormalMode)(userAnswers)
+            .mustBe(routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode))
       }
     }
 
