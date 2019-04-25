@@ -34,15 +34,12 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("agentName.heading")
-
-        <label class="govuk-label">@messages("agentName.fullname")</label>
-
         @components.input_text(
           field = form("value"),
           label = messages("agentName.heading"),
-          labelClass=Some("visually-hidden")
-
+          labelAsHeading = true,
+          labelClass=Some("heading-large"),
+          ariaRequired = true
         )
 
         @components.submit_button()
