@@ -96,9 +96,8 @@ class TrusteesNinoController @Inject()(
           Future.successful(BadRequest(view(formWithErrors, mode, index, trusteeName))),
 
         value => {
-          val transformedNino = value.trim().replaceAll(" ","").toUpperCase()
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteesNinoPage(index), transformedNino))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteesNinoPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(TrusteesNinoPage(index), mode)(updatedAnswers))
         }

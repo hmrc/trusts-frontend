@@ -24,10 +24,10 @@ import play.api.data.Form
 class SettlorNationalInsuranceNumberFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
-    Form("value" -> text("settlorNationalInsuranceNumber.error.required")
+    Form("value" -> nino("settlorNationalInsuranceNumber.error.required")
       .verifying(
         firstError(
           isNotEmpty("value", "settlorNationalInsuranceNumber.error.required"),
-        regexp(Validation.ninoRegex, "settlorNationalInsuranceNumber.error.invalid")
+          regexp(Validation.ninoRegex, "settlorNationalInsuranceNumber.error.invalid")
     )))
 }
