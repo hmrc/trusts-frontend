@@ -96,16 +96,24 @@ class Navigator @Inject()() {
     case IndividualBeneficiaryDateOfBirthYesNoPage => _ => individualBeneficiaryDateOfBirthRoute
     case IndividualBeneficiaryIncomeYesNoPage => _ => individualBeneficiaryIncomeRoute
     case IndividualBeneficiaryIncomePage => _ => _ => routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode)
+    case IndividualBeneficiaryNationalInsuranceYesNoPage => _ => individualBeneficiaryNationalInsuranceYesNoRoute
     //  Default
     case _ => _ => _ => routes.IndexController.onPageLoad()
   }
+
+  private def individualBeneficiaryNationalInsuranceYesNoRoute(userAnswers: UserAnswers) : Call =
+    userAnswers.get(IndividualBeneficiaryNationalInsuranceYesNoPage) match {
+      case Some(false) => routes.IndividualBeneficiaryAdressYesNoController.onPageLoad(NormalMode)
+      case Some(true) => routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(NormalMode)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
 
   private def individualBeneficiaryIncomeRoute(userAnswers: UserAnswers) : Call =
     userAnswers.get(IndividualBeneficiaryIncomeYesNoPage) match {
       case Some(false) => routes.IndividualBeneficiaryIncomeController.onPageLoad(NormalMode)
       case Some(true) => routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
-    }
+  }
 
   private def individualBeneficiaryDateOfBirthRoute(userAnswers: UserAnswers) : Call =
     userAnswers.get(IndividualBeneficiaryDateOfBirthYesNoPage) match {

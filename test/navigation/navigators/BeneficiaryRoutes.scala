@@ -88,9 +88,18 @@ trait BeneficiaryRoutes {
     "go to IndividualBeneficiaryAdressYesNoPage from IndividualBeneficiaryNationalInsuranceYesNoPage when user answers no" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          val answers = userAnswers.set(IndividualBeneficiaryIncomeYesNoPage, value = false).success.value
+          val answers = userAnswers.set(IndividualBeneficiaryNationalInsuranceYesNoPage, value = false).success.value
           navigator.nextPage(IndividualBeneficiaryNationalInsuranceYesNoPage, NormalMode)(answers)
             .mustBe(routes.IndividualBeneficiaryAdressYesNoController.onPageLoad(NormalMode))
+      }
+    }
+
+    "go to IndividualBeneficiaryAdressYesNoPage from IndividualBeneficiaryNationalInsuranceYesNoPage when user answers yes" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val answers = userAnswers.set(IndividualBeneficiaryNationalInsuranceYesNoPage, value = true).success.value
+          navigator.nextPage(IndividualBeneficiaryNationalInsuranceYesNoPage, NormalMode)(answers)
+            .mustBe(routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(NormalMode))
       }
     }
 
