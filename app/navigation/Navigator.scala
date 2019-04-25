@@ -66,8 +66,7 @@ class Navigator @Inject()() {
     case AddATrusteePage => _ => addATrusteeRoute
 
     //Agents
-    case AgentInternalReferencePage => _ => _ => routes.AgentNameController.onPageLoad(NormalMode)
-    case AgentNamePage => _ => _ => routes.AgentTelephoneNumberController.onPageLoad(NormalMode)
+    case AgentInternalReferencePage => _ => _ => routes.AgentTelephoneNumberController.onPageLoad(NormalMode)
     case AgentTelephoneNumberPage => _ => _ => routes.AgentAnswerController.onPageLoad()
     case AgentAnswerPage => _ => _ => routes.TaskListController.onPageLoad()
 

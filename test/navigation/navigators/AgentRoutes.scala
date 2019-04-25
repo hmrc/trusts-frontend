@@ -32,21 +32,12 @@ trait AgentRoutes {
 
   def agentRoutes()(implicit navigator: Navigator) = {
 
-    "go to AgentTelephoneNumber from AgentName Page" in {
-      forAll(arbitrary[UserAnswers]) {
-        userAnswers =>
-
-          navigator.nextPage(AgentNamePage, NormalMode, AffinityGroup.Agent)(userAnswers)
-            .mustBe(routes.AgentTelephoneNumberController.onPageLoad(NormalMode))
-      }
-    }
-
-    "go to AgentName from AgentInternalReference Page" in {
+    "go to AgentTelephoneNumber from AgentInternalReference Page" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
           navigator.nextPage(AgentInternalReferencePage, NormalMode, AffinityGroup.Agent)(userAnswers)
-            .mustBe(routes.AgentNameController.onPageLoad(NormalMode))
+            .mustBe(routes.AgentTelephoneNumberController.onPageLoad(NormalMode))
       }
     }
 
