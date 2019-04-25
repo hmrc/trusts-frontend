@@ -206,6 +206,7 @@ POST       /asset/:index/money                          controllers.AssetMoneyVa
 GET        /asset/:index/change-money                   controllers.AssetMoneyValueController.onPageLoad(mode: Mode = CheckMode, index: Int)
 POST       /asset/:index/change-money                   controllers.AssetMoneyValueController.onSubmit(mode: Mode = CheckMode, index: Int)
 
+
 GET        /asset/add                        controllers.AddAssetsController.onPageLoad(mode: Mode = NormalMode)
 POST       /asset/add                        controllers.AddAssetsController.onSubmit(mode: Mode = NormalMode)
 
@@ -273,3 +274,61 @@ POST       /settlors/deceased/change-was-settlors-address-uk                 con
 
 GET        /settlors/deceased/check-answers                       controllers.DeceasedSettlorAnswerController.onPageLoad()
 POST        /settlors/deceased/check-answers                       controllers.DeceasedSettlorAnswerController.onSubmit()
+
+#beneficiary
+GET        /:index/individualBeneficiaryName                        controllers.IndividualBeneficiaryNameController.onPageLoad(mode: Mode = NormalMode,index: Int)
+POST       /:index/individualBeneficiaryName                        controllers.IndividualBeneficiaryNameController.onSubmit(mode: Mode = NormalMode,index: Int)
+GET        /:index/changeIndividualBeneficiaryName                  controllers.IndividualBeneficiaryNameController.onPageLoad(mode: Mode = CheckMode,index: Int)
+POST       /:index/changeIndividualBeneficiaryName                  controllers.IndividualBeneficiaryNameController.onSubmit(mode: Mode = CheckMode,index: Int)
+
+GET        /individualBeneficiaryDateOfBirthYesNo                        controllers.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(mode: Mode = NormalMode)
+POST       /individualBeneficiaryDateOfBirthYesNo                        controllers.IndividualBeneficiaryDateOfBirthYesNoController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIndividualBeneficiaryDateOfBirthYesNo                  controllers.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIndividualBeneficiaryDateOfBirthYesNo                  controllers.IndividualBeneficiaryDateOfBirthYesNoController.onSubmit(mode: Mode = CheckMode)
+
+GET        /individualBeneficiaryDateOfBirth                  controllers.IndividualBeneficiaryDateOfBirthController.onPageLoad(mode: Mode = NormalMode)
+POST       /individualBeneficiaryDateOfBirth                  controllers.IndividualBeneficiaryDateOfBirthController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIndividualBeneficiaryDateOfBirth                        controllers.IndividualBeneficiaryDateOfBirthController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIndividualBeneficiaryDateOfBirth                        controllers.IndividualBeneficiaryDateOfBirthController.onSubmit(mode: Mode = CheckMode)
+
+GET        /individualBeneficiaryIncomeYesNo                        controllers.IndividualBeneficiaryIncomeYesNoController.onPageLoad(mode: Mode = NormalMode)
+POST       /individualBeneficiaryIncomeYesNo                        controllers.IndividualBeneficiaryIncomeYesNoController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIndividualBeneficiaryIncomeYesNo                  controllers.IndividualBeneficiaryIncomeYesNoController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIndividualBeneficiaryIncomeYesNo                  controllers.IndividualBeneficiaryIncomeYesNoController.onSubmit(mode: Mode = CheckMode)
+
+GET        /individualBeneficiaryIncome                        controllers.IndividualBeneficiaryIncomeController.onPageLoad(mode: Mode = NormalMode)
+POST       /individualBeneficiaryIncome                        controllers.IndividualBeneficiaryIncomeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIndividualBeneficiaryIncome                  controllers.IndividualBeneficiaryIncomeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIndividualBeneficiaryIncome                  controllers.IndividualBeneficiaryIncomeController.onSubmit(mode: Mode = CheckMode)
+
+GET        /individualBeneficiaryNationalInsuranceYesNo                        controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(mode: Mode = NormalMode)
+POST       /individualBeneficiaryNationalInsuranceYesNo                        controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIndividualBeneficiaryNationalInsuranceYesNo                  controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIndividualBeneficiaryNationalInsuranceYesNo                  controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onSubmit(mode: Mode = CheckMode)
+
+GET        /individualBeneficiaryNationalInsuranceNumber                        controllers.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(mode: Mode = NormalMode)
+POST       /individualBeneficiaryNationalInsuranceNumber                        controllers.IndividualBeneficiaryNationalInsuranceNumberController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIndividualBeneficiaryNationalInsuranceNumber                  controllers.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIndividualBeneficiaryNationalInsuranceNumber                  controllers.IndividualBeneficiaryNationalInsuranceNumberController.onSubmit(mode: Mode = CheckMode)
+
+GET        /individualBeneficiaryAdressYesNo                        controllers.IndividualBeneficiaryAdressYesNoController.onPageLoad(mode: Mode = NormalMode)
+POST       /individualBeneficiaryAdressYesNo                        controllers.IndividualBeneficiaryAdressYesNoController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIndividualBeneficiaryAdressYesNo                  controllers.IndividualBeneficiaryAdressYesNoController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIndividualBeneficiaryAdressYesNo                  controllers.IndividualBeneficiaryAdressYesNoController.onSubmit(mode: Mode = CheckMode)
+
+GET        /individualBeneficiaryAddressUK                        controllers.IndividualBeneficiaryAddressUKController.onPageLoad(mode: Mode = NormalMode)
+POST       /individualBeneficiaryAddressUK                        controllers.IndividualBeneficiaryAddressUKController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIndividualBeneficiaryAddressUK                  controllers.IndividualBeneficiaryAddressUKController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIndividualBeneficiaryAddressUK                  controllers.IndividualBeneficiaryAddressUKController.onSubmit(mode: Mode = CheckMode)
+
+GET        /individualBeneficiaryVulnerableYesNo                        controllers.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(mode: Mode = NormalMode)
+POST       /individualBeneficiaryVulnerableYesNo                        controllers.IndividualBeneficiaryVulnerableYesNoController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIndividualBeneficiaryVulnerableYesNo                  controllers.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIndividualBeneficiaryVulnerableYesNo                  controllers.IndividualBeneficiaryVulnerableYesNoController.onSubmit(mode: Mode = CheckMode)
+
+GET        /individualBeneficiaryInfo                       controllers.IndividualBeneficiaryInfoController.onPageLoad()
+
+GET        /addABeneficiary                        controllers.AddABeneficiaryController.onPageLoad(mode: Mode = NormalMode)
+POST       /addABeneficiary                        controllers.AddABeneficiaryController.onSubmit(mode: Mode = NormalMode)
+GET        /changeAddABeneficiary                  controllers.AddABeneficiaryController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeAddABeneficiary                  controllers.AddABeneficiaryController.onSubmit(mode: Mode = CheckMode)

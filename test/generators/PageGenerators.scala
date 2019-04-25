@@ -21,6 +21,39 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryAddABeneficiaryPage: Arbitrary[AddABeneficiaryPage.type] =
+    Arbitrary(AddABeneficiaryPage)
+
+  implicit lazy val arbitraryIndividualBeneficiaryVulnerableYesNoPage: Arbitrary[IndividualBeneficiaryVulnerableYesNoPage.type] =
+    Arbitrary(IndividualBeneficiaryVulnerableYesNoPage)
+
+  implicit lazy val arbitraryIndividualBeneficiaryAddressUKPage: Arbitrary[IndividualBeneficiaryAddressUKPage.type] =
+    Arbitrary(IndividualBeneficiaryAddressUKPage)
+
+  implicit lazy val arbitraryIndividualBeneficiaryAdressYesNoPage: Arbitrary[IndividualBeneficiaryAdressYesNoPage.type] =
+    Arbitrary(IndividualBeneficiaryAdressYesNoPage)
+
+  implicit lazy val arbitraryIndividualBeneficiaryNationalInsuranceNumberPage: Arbitrary[IndividualBeneficiaryNationalInsuranceNumberPage.type] =
+    Arbitrary(IndividualBeneficiaryNationalInsuranceNumberPage)
+
+  implicit lazy val arbitraryIndividualBeneficiaryNationalInsuranceYesNoPage: Arbitrary[IndividualBeneficiaryNationalInsuranceYesNoPage.type] =
+    Arbitrary(IndividualBeneficiaryNationalInsuranceYesNoPage)
+
+  implicit lazy val arbitraryIndividualBeneficiaryIncomePage: Arbitrary[IndividualBeneficiaryIncomePage.type] =
+    Arbitrary(IndividualBeneficiaryIncomePage)
+
+  implicit lazy val arbitraryIndividualBeneficiaryIncomeYesNoPage: Arbitrary[IndividualBeneficiaryIncomeYesNoPage.type] =
+    Arbitrary(IndividualBeneficiaryIncomeYesNoPage)
+
+  implicit lazy val arbitraryIndividualBeneficiaryDateOfBirthPage: Arbitrary[IndividualBeneficiaryDateOfBirthPage.type] =
+    Arbitrary(IndividualBeneficiaryDateOfBirthPage)
+
+  implicit lazy val arbitraryIndividualBeneficiaryDateOfBirthYesNoPage: Arbitrary[IndividualBeneficiaryDateOfBirthYesNoPage.type] =
+    Arbitrary(IndividualBeneficiaryDateOfBirthYesNoPage)
+
+  implicit lazy val arbitraryIndividualBeneficiaryNamePage: Arbitrary[IndividualBeneficiaryNamePage] =
+    Arbitrary(IndividualBeneficiaryNamePage(0))
+
   implicit lazy val arbitraryWasSettlorsAddressUKYesNoPage: Arbitrary[WasSettlorsAddressUKYesNoPage.type] =
     Arbitrary(WasSettlorsAddressUKYesNoPage)
 

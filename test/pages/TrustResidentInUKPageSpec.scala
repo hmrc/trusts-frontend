@@ -35,7 +35,6 @@ class TrustResidentInUKPageSpec extends PageBehaviours {
 
     forAll(arbitrary[UserAnswers], arbitrary[Boolean], arbitrary[String]) {
       (initial, bool, str) =>
-
         val answers = initial.set(EstablishedUnderScotsLawPage, bool).success.value
           .set(TrustResidentOffshorePage, true).success.value
           .set(TrustPreviouslyResidentPage, str).success.value

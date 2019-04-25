@@ -22,36 +22,25 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, index : Int, heading: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} $heading"
+    title = s"${errorPrefix(form)} ${messages("individualBeneficiaryIncome.title")}"
     ) {
 
-    @formHelper(action = TrusteesNameController.onSubmit(mode, index), 'autoComplete -> "off") {
+    @formHelper(action = IndividualBeneficiaryIncomeController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading(heading)
+        @components.heading("individualBeneficiaryIncome.heading")
 
-            @components.input_text(
-            field = form("firstName"),
-            label = messages("trusteesName.firstName"),
-            ariaRequired = true
-            )
-
-            @components.input_text(
-            field = form("middleName"),
-            label = messages("trusteesName.middleName")
-            )
-
-            @components.input_text(
-            field = form("lastName"),
-            label = messages("trusteesName.lastName"),
-            ariaRequired = true
-            )
+        @components.input_text(
+          field = form("value"),
+          label = messages("individualBeneficiaryIncome.heading"),
+          labelClass=Some("visually-hidden")
+        )
 
         @components.submit_button()
     }

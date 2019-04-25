@@ -24,6 +24,95 @@ import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
 
+  implicit lazy val arbitraryAddABeneficiaryUserAnswersEntry: Arbitrary[(AddABeneficiaryPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[AddABeneficiaryPage.type]
+        value <- arbitrary[AddABeneficiary].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryIndividualBeneficiaryVulnerableYesNoUserAnswersEntry: Arbitrary[(IndividualBeneficiaryVulnerableYesNoPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[IndividualBeneficiaryVulnerableYesNoPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryIndividualBeneficiaryAddressUKUserAnswersEntry: Arbitrary[(IndividualBeneficiaryAddressUKPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[IndividualBeneficiaryAddressUKPage.type]
+        value <- arbitrary[IndividualBeneficiaryAddressUK].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryIndividualBeneficiaryAdressYesNoUserAnswersEntry: Arbitrary[(IndividualBeneficiaryAdressYesNoPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[IndividualBeneficiaryAdressYesNoPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryIndividualBeneficiaryNationalInsuranceNumberUserAnswersEntry: Arbitrary[(IndividualBeneficiaryNationalInsuranceNumberPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[IndividualBeneficiaryNationalInsuranceNumberPage.type]
+        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryIndividualBeneficiaryNationalInsuranceYesNoUserAnswersEntry: Arbitrary[(IndividualBeneficiaryNationalInsuranceYesNoPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[IndividualBeneficiaryNationalInsuranceYesNoPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryIndividualBeneficiaryIncomeUserAnswersEntry: Arbitrary[(IndividualBeneficiaryIncomePage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[IndividualBeneficiaryIncomePage.type]
+        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryIndividualBeneficiaryIncomeYesNoUserAnswersEntry: Arbitrary[(IndividualBeneficiaryIncomeYesNoPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[IndividualBeneficiaryIncomeYesNoPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryIndividualBeneficiaryDateOfBirthUserAnswersEntry: Arbitrary[(IndividualBeneficiaryDateOfBirthPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[IndividualBeneficiaryDateOfBirthPage.type]
+        value <- arbitrary[Int].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryIndividualBeneficiaryDateOfBirthYesNoUserAnswersEntry: Arbitrary[(IndividualBeneficiaryDateOfBirthYesNoPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[IndividualBeneficiaryDateOfBirthYesNoPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryIndividualBeneficiaryNameUserAnswersEntry: Arbitrary[(IndividualBeneficiaryNamePage, JsValue)] =
+    Arbitrary {
+      for {
+        page <- arbitrary[IndividualBeneficiaryNamePage]
+        value <- arbitrary[IndividualBeneficiaryName].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+
   implicit lazy val arbitraryWasSettlorsAddressUKYesNoUserAnswersEntry: Arbitrary[(WasSettlorsAddressUKYesNoPage.type, JsValue)] =
     Arbitrary {
       for {
