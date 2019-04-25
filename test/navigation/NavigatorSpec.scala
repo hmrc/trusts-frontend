@@ -33,7 +33,8 @@ class NavigatorSpec extends SpecBase
   with TrusteeRoutes
   with AgentRoutes
   with AssetRoutes
-  with DeceasedSettlorRoutes {
+  with DeceasedSettlorRoutes
+  with BeneficiaryRoutes {
 
   implicit val navigator : Navigator = new Navigator
 
@@ -57,6 +58,8 @@ class NavigatorSpec extends SpecBase
       behave like assetRoutes
 
       behave like deceasedSettlorRoutes
+
+      behave like beneficiaryRoutes
 
     }
 

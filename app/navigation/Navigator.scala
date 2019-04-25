@@ -17,6 +17,7 @@
 package navigation
 
 import javax.inject.{Inject, Singleton}
+
 import play.api.mvc.Call
 import controllers.routes
 import models.AddATrustee.{NoComplete, YesLater, YesNow}
@@ -89,9 +90,21 @@ class Navigator @Inject()() {
     case SettlorsInternationalAddressPage => _ => _ => routes.DeceasedSettlorAnswerController.onPageLoad()
     case SettlorsUKAddressPage => _ => _ => routes.DeceasedSettlorAnswerController.onPageLoad()
     case DeceasedSettlorAnswerPage => _ => _ => routes.TaskListController.onPageLoad()
+
+     //Beneficiary
+    case IndividualBeneficiaryNamePage(index) => _ => _ => routes.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(NormalMode)
+    case IndividualBeneficiaryDateOfBirthYesNoPage => _ => individualBeneficiaryDateOfBirthRoute
     //  Default
     case _ => _ => _ => routes.IndexController.onPageLoad()
   }
+
+  private def individualBeneficiaryDateOfBirthRoute(userAnswers: UserAnswers) : Call =
+    userAnswers.get(IndividualBeneficiaryDateOfBirthYesNoPage) match {
+    case Some(false) => routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode)
+    case Some(true) => routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(NormalMode)
+    case _ => routes.SessionExpiredController.onPageLoad()
+  }
+
 
   private def setupAfterSettlorDiedRoute(userAnswers: UserAnswers) : Call = userAnswers.get(SetupAfterSettlorDiedPage) match {
     case Some(false) => routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode)
