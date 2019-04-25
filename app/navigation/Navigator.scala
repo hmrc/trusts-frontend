@@ -94,6 +94,7 @@ class Navigator @Inject()() {
      //Beneficiary
     case IndividualBeneficiaryNamePage(index) => _ => _ => routes.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(NormalMode)
     case IndividualBeneficiaryDateOfBirthYesNoPage => _ => individualBeneficiaryDateOfBirthRoute
+    case IndividualBeneficiaryDateOfBirthPage => _ => _ => routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode)
     case IndividualBeneficiaryIncomeYesNoPage => _ => individualBeneficiaryIncomeRoute
     case IndividualBeneficiaryIncomePage => _ => _ => routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode)
     case IndividualBeneficiaryNationalInsuranceYesNoPage => _ => individualBeneficiaryNationalInsuranceYesNoRoute

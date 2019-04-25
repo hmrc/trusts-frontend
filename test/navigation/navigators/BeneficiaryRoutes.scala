@@ -59,6 +59,14 @@ trait BeneficiaryRoutes {
       }
     }
 
+    "go to IndividualBeneficiaryIncomeYesNoPage from IndividualBeneficiaryDateOfBirthPage" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          navigator.nextPage(IndividualBeneficiaryDateOfBirthPage, NormalMode)(userAnswers)
+            .mustBe(routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode))
+      }
+    }
+
     "go to IndividualBeneficiaryIncomePage from IndividualBeneficiaryIncomeYesNoPage when user answers no" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
