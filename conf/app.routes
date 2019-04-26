@@ -180,6 +180,11 @@ POST       /client-reference                        controllers.AgentInternalRef
 GET        /change-client-reference                  controllers.AgentInternalReferenceController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-client-reference                  controllers.AgentInternalReferenceController.onSubmit(mode: Mode = CheckMode)
 
+GET        /agent-name                        controllers.AgentNameController.onPageLoad(mode: Mode = NormalMode)
+POST       /agent-name                        controllers.AgentNameController.onSubmit(mode: Mode = NormalMode)
+GET        /change-agent-name                  controllers.AgentNameController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-agent-name                  controllers.AgentNameController.onSubmit(mode: Mode = CheckMode)
+
 GET        /agent-telephone-number                        controllers.AgentTelephoneNumberController.onPageLoad(mode: Mode = NormalMode)
 POST       /agent-telephone-number                         controllers.AgentTelephoneNumberController.onSubmit(mode: Mode = NormalMode)
 
