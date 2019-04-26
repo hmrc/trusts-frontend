@@ -81,7 +81,7 @@ class TaskListNavigatorSpec extends SpecBase {
       "there are no beneficiaries" must {
 
         "go to BeneficiaryInfoPage" in {
-          navigator.nextPage(Beneficiaries, emptyUserAnswers) mustBe routes.TaskListController.onPageLoad()
+          navigator.nextPage(Beneficiaries, emptyUserAnswers) mustBe routes.IndividualBeneficiaryInfoController.onPageLoad()
         }
 
       }
@@ -90,7 +90,8 @@ class TaskListNavigatorSpec extends SpecBase {
       "there are beneficiaries" must {
 
         "go to AddABeneficiary" in {
-          val answers = emptyUserAnswers
+          val answers = UserAnswers(userAnswersId)
+            .set(IndividualBeneficiaryNamePage(0), FullName("individual",None, "beneficiary")).success.value
           navigator.nextPage(Beneficiaries, answers) mustBe routes.TaskListController.onPageLoad()
         }
 
