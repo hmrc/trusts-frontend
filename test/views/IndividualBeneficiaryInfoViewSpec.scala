@@ -27,7 +27,28 @@ class IndividualBeneficiaryInfoViewSpec extends ViewBehaviours {
 
     val applyView = view.apply()(fakeRequest, messages)
 
-    behave like normalPage(applyView, "individualBeneficiaryInfo")
+    behave like normalPage(applyView, "individualBeneficiaryInfo",
+      "caption",
+      "subheading1",
+      "paragraph1",
+      "bulletpoint1",
+      "bulletpoint2",
+      "bulletpoint3",
+      "paragraph2",
+      "paragraph3",
+      "subheading2",
+      "paragraph4",
+      "subheading3",
+      "paragraph5",
+      "subheading4",
+      "paragraph6",
+      "bulletpoint4",
+      "bulletpoint5",
+      "bulletpoint6",
+      "paragraph7",
+      "subheading5",
+      "paragraph7"
+    )
 
     behave like pageWithBackLink(applyView)
   }

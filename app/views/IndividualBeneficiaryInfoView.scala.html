@@ -26,5 +26,51 @@
 
     @components.back_link()
 
-    @components.heading("individualBeneficiaryInfo.heading")
+    <span class="govuk-caption-xl">@messages("individualBeneficiaryInfo.caption")</span>
+    @components.heading("individualBeneficiaryInfo.heading", headingSize = "heading-large govuk-fieldset__heading")
+
+    <h2>@messages("individualBeneficiaryInfo.subheading1")</h2>
+
+    <p>@messages("individualBeneficiaryInfo.paragraph1")</p>
+
+    @components.bullet_list("individualBeneficiaryInfo",
+        List(
+            "bulletpoint1",
+            "bulletpoint2",
+            "bulletpoint3"
+        )
+    )
+
+    <p>@messages("individualBeneficiaryInfo.paragraph2")</p>
+
+    <p>@messages("individualBeneficiaryInfo.paragraph3")</p>
+
+    <h2>@messages("individualBeneficiaryInfo.subheading2")</h2>
+
+    <p>@messages("individualBeneficiaryInfo.paragraph4")</p>
+
+    <h2>@messages("individualBeneficiaryInfo.subheading3")</h2>
+
+    <p>@messages("individualBeneficiaryInfo.paragraph5")</p>
+
+    <h2>@messages("individualBeneficiaryInfo.subheading4")</h2>
+
+    <p>@messages("individualBeneficiaryInfo.paragraph6")</p>
+
+    @components.bullet_list("individualBeneficiaryInfo",
+        List(
+            "bulletpoint4",
+            "bulletpoint5",
+            "bulletpoint6"
+        )
+    )
+
+    <p>@messages("individualBeneficiaryInfo.paragraph7")</p>
+
+    <h2>@messages("individualBeneficiaryInfo.subheading5")</h2>
+
+    <p>@messages("individualBeneficiaryInfo.paragraph8")</p>
+
+    @components.button_link(messages("site.onlyContinue"), IndividualBeneficiaryNameController.onPageLoad(NormalMode, 0).url)
+
 }
