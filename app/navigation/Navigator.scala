@@ -17,6 +17,7 @@
 package navigation
 
 import javax.inject.{Inject, Singleton}
+
 import play.api.mvc.Call
 import controllers.routes
 import models.AddATrustee.{NoComplete, YesLater, YesNow}
@@ -89,9 +90,50 @@ class Navigator @Inject()() {
     case SettlorsInternationalAddressPage => _ => _ => routes.DeceasedSettlorAnswerController.onPageLoad()
     case SettlorsUKAddressPage => _ => _ => routes.DeceasedSettlorAnswerController.onPageLoad()
     case DeceasedSettlorAnswerPage => _ => _ => routes.TaskListController.onPageLoad()
+
+     //Beneficiary
+    case IndividualBeneficiaryNamePage(index) => _ => _ => routes.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(NormalMode)
+    case IndividualBeneficiaryDateOfBirthYesNoPage => _ => individualBeneficiaryDateOfBirthRoute
+    case IndividualBeneficiaryDateOfBirthPage => _ => _ => routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode)
+    case IndividualBeneficiaryIncomeYesNoPage => _ => individualBeneficiaryIncomeRoute
+    case IndividualBeneficiaryIncomePage => _ => _ => routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode)
+    case IndividualBeneficiaryNationalInsuranceYesNoPage => _ => individualBeneficiaryNationalInsuranceYesNoRoute
+    case IndividualBeneficiaryNationalInsuranceNumberPage => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode)
+    case IndividualBeneficiaryAdressYesNoPage => _ => individualBeneficiaryAddressRoute
+    case IndividualBeneficiaryAddressUKPage => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode)
+    case IndividualBeneficiaryVulnerableYesNoPage => _ => _ => routes.IndividualBenficiaryAnswersController.onPageLoad()
     //  Default
     case _ => _ => _ => routes.IndexController.onPageLoad()
   }
+
+  private def individualBeneficiaryAddressRoute(userAnswers: UserAnswers) : Call =
+    userAnswers.get(IndividualBeneficiaryAdressYesNoPage) match {
+      case Some(false) => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode)
+      case Some(true) => routes.IndividualBeneficiaryAddressUKController.onPageLoad(NormalMode)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+
+  private def individualBeneficiaryNationalInsuranceYesNoRoute(userAnswers: UserAnswers) : Call =
+    userAnswers.get(IndividualBeneficiaryNationalInsuranceYesNoPage) match {
+      case Some(false) => routes.IndividualBeneficiaryAdressYesNoController.onPageLoad(NormalMode)
+      case Some(true) => routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(NormalMode)
+      case _ => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def individualBeneficiaryIncomeRoute(userAnswers: UserAnswers) : Call =
+    userAnswers.get(IndividualBeneficiaryIncomeYesNoPage) match {
+      case Some(false) => routes.IndividualBeneficiaryIncomeController.onPageLoad(NormalMode)
+      case Some(true) => routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode)
+      case _ => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def individualBeneficiaryDateOfBirthRoute(userAnswers: UserAnswers) : Call =
+    userAnswers.get(IndividualBeneficiaryDateOfBirthYesNoPage) match {
+    case Some(false) => routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode)
+    case Some(true) => routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(NormalMode)
+    case _ => routes.SessionExpiredController.onPageLoad()
+  }
+
 
   private def setupAfterSettlorDiedRoute(userAnswers: UserAnswers) : Call = userAnswers.get(SetupAfterSettlorDiedPage) match {
     case Some(false) => routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode)

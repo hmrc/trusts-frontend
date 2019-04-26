@@ -54,12 +54,21 @@ class TaskListNavigator @Inject()() {
     }
   }
 
+  private def beneficiaryRoute(answers: UserAnswers) = {
+    answers.get(IndividualBeneficiaryNamePage(0)) match {
+      case Some(_) =>
+        routes.IndividualBenficiaryAnswersController.onPageLoad()
+      case None =>
+        routes.IndividualBeneficiaryInfoController.onPageLoad()
+    }
+  }
+
 
   private val taskListRoutes : Page => UserAnswers => Call = {
     case TrustDetails => trustDetailsRoute
     case Trustees => trusteeRoute
     case Settlors => settlorRoute
-    case Beneficiaries => _ => routes.TaskListController.onPageLoad()
+    case Beneficiaries => beneficiaryRoute
     case TaxLiability => _ => routes.TaskListController.onPageLoad()
     case Assets => _ => routes.AssetInterruptPageController.onPageLoad()
     case _ => _ => routes.IndexController.onPageLoad()
