@@ -101,6 +101,7 @@ class Navigator @Inject()() {
     case IndividualBeneficiaryNationalInsuranceNumberPage => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode)
     case IndividualBeneficiaryAdressYesNoPage => _ => individualBeneficiaryAddressRoute
     case IndividualBeneficiaryAddressUKPage => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode)
+    case IndividualBeneficiaryVulnerableYesNoPage => _ => _ => routes.IndividualBenficiaryAnswersController.onPageLoad()
     //  Default
     case _ => _ => _ => routes.IndexController.onPageLoad()
   }
