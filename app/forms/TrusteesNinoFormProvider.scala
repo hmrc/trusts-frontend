@@ -25,7 +25,7 @@ class TrusteesNinoFormProvider @Inject() extends Mappings {
 
   def apply(messagePrefix: String): Form[String] =
     Form(
-      "value" -> text(s"$messagePrefix.error.required")
+      "value" -> nino(s"$messagePrefix.error.required")
         .verifying(
           firstError(
             isNotEmpty("value", s"$messagePrefix.error.required"),
