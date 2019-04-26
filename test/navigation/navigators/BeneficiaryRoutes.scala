@@ -145,6 +145,14 @@ trait BeneficiaryRoutes {
       }
     }
 
+    "go to IndividualBeneficiaryAnswersPage from IndividualBeneficiaryVulnerableYesNoPage" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          navigator.nextPage(IndividualBeneficiaryVulnerableYesNoPage, NormalMode)(userAnswers)
+            .mustBe(routes.IndividualBenficiaryAnswersController.onPageLoad())
+      }
+    }
+
   }
 
 }

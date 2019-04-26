@@ -18,34 +18,40 @@ package controllers
 
 import controllers.actions._
 import javax.inject.Inject
+
 import models.NormalMode
-import navigation.Navigator
-import pages.AgentAnswerPage
+import pages.{IndividualBeneficiaryNamePage, SettlorsNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.MessagesControllerComponents
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
-import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
-import views.html.AgentAnswerView
+import views.html.IndividualBenficiaryAnswersView
+import utils.countryOptions.CountryOptions
 
 import scala.concurrent.ExecutionContext
 
-class AgentAnswerController @Inject()(
+class IndividualBenficiaryAnswersController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        identify: IdentifierAction,
-                                       navigator: Navigator,
-                                       hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,
-                                       view: AgentAnswerView, countryOptions : CountryOptions
+                                       requiredAnswer: RequiredAnswerActionProvider,
+                                       view: IndividualBenficiaryAnswersView,
+                                       countryOptions : CountryOptions
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions =
-    identify andThen hasAgentAffinityGroup() andThen getData andThen requireData
 
-  def onPageLoad= actions {
+  private def actions() =
+    identify andThen
+      getData andThen
+      requireData andThen
+      requiredAnswer(RequiredAnswer(IndividualBeneficiaryNamePage(0), routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, 0)))
+
+
+
+  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers)
@@ -54,18 +60,10 @@ class AgentAnswerController @Inject()(
         AnswerSection(
           None,
           Seq(
-            checkYourAnswersHelper.agentInternalReference,
-            checkYourAnswersHelper.agentName,
-            checkYourAnswersHelper.agenciesTelephoneNumber
           ).flatten
         )
       )
 
-      Ok(view(sections))
-  }
-
-  def onSubmit = actions {
-    implicit request =>
-      Redirect(navigator.nextPage(AgentAnswerPage ,NormalMode)(request.userAnswers))
+      Ok(view())
   }
 }
