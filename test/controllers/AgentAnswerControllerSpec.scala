@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import models.UserAnswers
-import pages.{AgentInternalReferencePage, AgentTelephoneNumberPage}
+import pages.{AgentInternalReferencePage, AgentNamePage, AgentTelephoneNumberPage}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -40,6 +40,7 @@ class AgentAnswerControllerSpec extends SpecBase {
       val answers =
         UserAnswers(userAnswersId)
           .set(AgentTelephoneNumberPage, "123456789").success.value
+          .set(AgentNamePage, "Sam Curran Trust").success.value
           .set(AgentInternalReferencePage, "123456789").success.value
 
       val countryOptions = injector.instanceOf[CountryOptions]
@@ -51,6 +52,7 @@ class AgentAnswerControllerSpec extends SpecBase {
           None,
           Seq(
             checkYourAnswersHelper.agentInternalReference.value,
+            checkYourAnswersHelper.agentName.value,
             checkYourAnswersHelper.agenciesTelephoneNumber.value
           )
         )
