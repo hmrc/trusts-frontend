@@ -55,7 +55,7 @@ trait BeneficiaryRoutes {
         userAnswers =>
           val answers = userAnswers.set(IndividualBeneficiaryDateOfBirthYesNoPage(indexForBeneficiary), value = false).success.value
           navigator.nextPage(IndividualBeneficiaryDateOfBirthYesNoPage(indexForBeneficiary), NormalMode)(answers)
-            .mustBe(routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode))
+            .mustBe(routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode, indexForBeneficiary))
       }
     }
 
@@ -63,15 +63,15 @@ trait BeneficiaryRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(IndividualBeneficiaryDateOfBirthPage(indexForBeneficiary), NormalMode)(userAnswers)
-            .mustBe(routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode))
+            .mustBe(routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode, indexForBeneficiary))
       }
     }
 
     "go to IndividualBeneficiaryIncomePage from IndividualBeneficiaryIncomeYesNoPage when user answers no" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          val answers = userAnswers.set(IndividualBeneficiaryIncomeYesNoPage, value = false).success.value
-          navigator.nextPage(IndividualBeneficiaryIncomeYesNoPage, NormalMode)(answers)
+          val answers = userAnswers.set(IndividualBeneficiaryIncomeYesNoPage(indexForBeneficiary), value = false).success.value
+          navigator.nextPage(IndividualBeneficiaryIncomeYesNoPage(indexForBeneficiary), NormalMode)(answers)
             .mustBe(routes.IndividualBeneficiaryIncomeController.onPageLoad(NormalMode))
       }
     }
@@ -79,8 +79,8 @@ trait BeneficiaryRoutes {
     "go to IndividualBeneficiaryNationalInsuranceYesNoPage from IndividualBeneficiaryIncomeYesNoPage when user answers yes" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          val answers = userAnswers.set(IndividualBeneficiaryIncomeYesNoPage, value = true).success.value
-          navigator.nextPage(IndividualBeneficiaryIncomeYesNoPage, NormalMode)(answers)
+          val answers = userAnswers.set(IndividualBeneficiaryIncomeYesNoPage(indexForBeneficiary), value = true).success.value
+          navigator.nextPage(IndividualBeneficiaryIncomeYesNoPage(indexForBeneficiary), NormalMode)(answers)
             .mustBe(routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode))
       }
     }

@@ -296,10 +296,10 @@ POST       /:index/individualBeneficiaryDateOfBirth                  controllers
 GET        /:index/changeIndividualBeneficiaryDateOfBirth                        controllers.IndividualBeneficiaryDateOfBirthController.onPageLoad(mode: Mode = CheckMode,index: Int)
 POST       /:index/changeIndividualBeneficiaryDateOfBirth                        controllers.IndividualBeneficiaryDateOfBirthController.onSubmit(mode: Mode = CheckMode,index: Int)
 
-GET        /individualBeneficiaryIncomeYesNo                        controllers.IndividualBeneficiaryIncomeYesNoController.onPageLoad(mode: Mode = NormalMode)
-POST       /individualBeneficiaryIncomeYesNo                        controllers.IndividualBeneficiaryIncomeYesNoController.onSubmit(mode: Mode = NormalMode)
-GET        /changeIndividualBeneficiaryIncomeYesNo                  controllers.IndividualBeneficiaryIncomeYesNoController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeIndividualBeneficiaryIncomeYesNo                  controllers.IndividualBeneficiaryIncomeYesNoController.onSubmit(mode: Mode = CheckMode)
+GET        /:index/individualBeneficiaryIncomeYesNo                        controllers.IndividualBeneficiaryIncomeYesNoController.onPageLoad(mode: Mode = NormalMode,index: Int)
+POST       /:index/individualBeneficiaryIncomeYesNo                        controllers.IndividualBeneficiaryIncomeYesNoController.onSubmit(mode: Mode = NormalMode,index: Int)
+GET        /:index/changeIndividualBeneficiaryIncomeYesNo                  controllers.IndividualBeneficiaryIncomeYesNoController.onPageLoad(mode: Mode = CheckMode,index: Int)
+POST       /:index/changeIndividualBeneficiaryIncomeYesNo                  controllers.IndividualBeneficiaryIncomeYesNoController.onSubmit(mode: Mode = CheckMode,index: Int)
 
 GET        /individualBeneficiaryIncome                        controllers.IndividualBeneficiaryIncomeController.onPageLoad(mode: Mode = NormalMode)
 POST       /individualBeneficiaryIncome                        controllers.IndividualBeneficiaryIncomeController.onSubmit(mode: Mode = NormalMode)
