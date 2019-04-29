@@ -338,4 +338,5 @@ POST       /addABeneficiary                        controllers.AddABeneficiaryCo
 GET        /changeAddABeneficiary                  controllers.AddABeneficiaryController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeAddABeneficiary                  controllers.AddABeneficiaryController.onSubmit(mode: Mode = CheckMode)
 
-GET        /individualBenficiaryAnswers                       controllers.IndividualBenficiaryAnswersController.onPageLoad()
+GET        /beneficiaries/individual/:index/check-answers                       controllers.IndividualBenficiaryAnswersController.onPageLoad(index: Int)
+POST       /beneficiaries/individual/:index/check-answers                       controllers.IndividualBenficiaryAnswersController.onSubmit(index: Int)

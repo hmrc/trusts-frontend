@@ -149,7 +149,7 @@ trait BeneficiaryRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(IndividualBeneficiaryVulnerableYesNoPage, NormalMode)(userAnswers)
-            .mustBe(routes.IndividualBenficiaryAnswersController.onPageLoad())
+            .mustBe(routes.IndividualBenficiaryAnswersController.onPageLoad(indexForBeneficiary))
       }
     }
 

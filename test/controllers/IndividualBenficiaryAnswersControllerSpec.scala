@@ -16,20 +16,45 @@
 
 package controllers
 
+import java.time.{LocalDate, ZoneOffset}
+
 import base.SpecBase
+import models.{FullName, IndividualOrBusiness, UKAddress, UserAnswers}
+import pages._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import utils.CheckYourAnswersHelper
+import utils.countryOptions.CountryOptions
+import viewmodels.AnswerSection
 import views.html.IndividualBenficiaryAnswersView
 
 class IndividualBenficiaryAnswersControllerSpec extends SpecBase {
+
+  val index = 0
 
   "IndividualBenficiaryAnswers Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers =
+        UserAnswers(userAnswersId)
+          .set(IndividualBeneficiaryNamePage(index), FullName("First", None, "Trustee")).success.value
 
-      val request = FakeRequest(GET, routes.IndividualBenficiaryAnswersController.onPageLoad().url)
+      val countryOptions = injector.instanceOf[CountryOptions]
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers)
+
+      val expectedSections = Seq(
+        AnswerSection(
+          None,
+          Seq(
+            checkYourAnswersHelper.individualBeneficiaryName(index).value
+          )
+        )
+      )
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.IndividualBenficiaryAnswersController.onPageLoad(index).url)
 
       val result = route(application, request).value
 
@@ -38,7 +63,7 @@ class IndividualBenficiaryAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view()(fakeRequest, messages).toString
+        view(index, expectedSections)(fakeRequest, messages).toString
 
       application.stop()
     }

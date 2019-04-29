@@ -20,7 +20,8 @@ import controllers.actions._
 import javax.inject.Inject
 
 import models.NormalMode
-import pages.{IndividualBeneficiaryNamePage, SettlorsNamePage}
+import navigation.Navigator
+import pages.{IndividualBeneficiaryAnswersPage, IndividualBeneficiaryNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -34,16 +35,18 @@ import scala.concurrent.ExecutionContext
 class IndividualBenficiaryAnswersController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        identify: IdentifierAction,
+                                       navigator: Navigator,
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,
                                        requiredAnswer: RequiredAnswerActionProvider,
+                                       validateIndex : IndexActionFilterProvider,
                                        view: IndividualBenficiaryAnswersView,
                                        countryOptions : CountryOptions
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
-  private def actions() =
+  private def actions(index : Int) =
     identify andThen
       getData andThen
       requireData andThen
@@ -51,19 +54,25 @@ class IndividualBenficiaryAnswersController @Inject()(
 
 
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(index : Int): Action[AnyContent] = actions(index) {
     implicit request =>
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers)
+      val answers = new CheckYourAnswersHelper(countryOptions)(request.userAnswers)
 
       val sections = Seq(
         AnswerSection(
           None,
           Seq(
+            answers.individualBeneficiaryName(index)
           ).flatten
         )
       )
 
-      Ok(view())
+      Ok(view(index, sections))
+  }
+
+  def onSubmit(index : Int) = actions(index) {
+    implicit request =>
+      Redirect(navigator.nextPage(IndividualBeneficiaryAnswersPage, NormalMode)(request.userAnswers))
   }
 }
