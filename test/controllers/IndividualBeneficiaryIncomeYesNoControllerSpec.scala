@@ -111,7 +111,7 @@ class IndividualBeneficiaryIncomeYesNoControllerSpec extends SpecBase {
       val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryNamePage(0),
         name).success.value
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, individualBeneficiaryIncomeYesNoRoute)
