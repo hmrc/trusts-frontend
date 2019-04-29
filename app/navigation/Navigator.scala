@@ -94,8 +94,8 @@ class Navigator @Inject()() {
      //Beneficiary
     case IndividualBeneficiaryNamePage(index) => _ => _ => routes.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(NormalMode, index)
     case IndividualBeneficiaryDateOfBirthYesNoPage(index) => _ => ua => individualBeneficiaryDateOfBirthRoute(ua, index)
-    case IndividualBeneficiaryDateOfBirthPage => _ => _ => routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode)
-    case IndividualBeneficiaryIncomeYesNoPage => _ => individualBeneficiaryIncomeRoute
+    case IndividualBeneficiaryDateOfBirthPage => _ => _ => routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode, index)
+    case IndividualBeneficiaryIncomeYesNoPage(index) => _ => ua => individualBeneficiaryIncomeRoute(ua, index)
     case IndividualBeneficiaryIncomePage => _ => _ => routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode)
     case IndividualBeneficiaryNationalInsuranceYesNoPage => _ => individualBeneficiaryNationalInsuranceYesNoRoute
     case IndividualBeneficiaryNationalInsuranceNumberPage => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode)
@@ -120,8 +120,8 @@ class Navigator @Inject()() {
       case _ => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def individualBeneficiaryIncomeRoute(userAnswers: UserAnswers) : Call =
-    userAnswers.get(IndividualBeneficiaryIncomeYesNoPage) match {
+  private def individualBeneficiaryIncomeRoute(userAnswers: UserAnswers, index: Int) : Call =
+    userAnswers.get(IndividualBeneficiaryIncomeYesNoPage(index)) match {
       case Some(false) => routes.IndividualBeneficiaryIncomeController.onPageLoad(NormalMode)
       case Some(true) => routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()

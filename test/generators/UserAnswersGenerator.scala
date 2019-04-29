@@ -36,7 +36,7 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(IndividualBeneficiaryNationalInsuranceNumberPage.type, JsValue)] ::
     arbitrary[(IndividualBeneficiaryNationalInsuranceYesNoPage.type, JsValue)] ::
     arbitrary[(IndividualBeneficiaryIncomePage.type, JsValue)] ::
-    arbitrary[(IndividualBeneficiaryIncomeYesNoPage.type, JsValue)] ::
+    arbitrary[(IndividualBeneficiaryIncomeYesNoPage, JsValue)] ::
     arbitrary[(IndividualBeneficiaryDateOfBirthPage.type, JsValue)] ::
     arbitrary[(IndividualBeneficiaryDateOfBirthYesNoPage, JsValue)] ::
     arbitrary[(IndividualBeneficiaryNamePage, JsValue)] ::
