@@ -92,8 +92,8 @@ class Navigator @Inject()() {
     case DeceasedSettlorAnswerPage => _ => _ => routes.TaskListController.onPageLoad()
 
      //Beneficiary
-    case IndividualBeneficiaryNamePage(index) => _ => _ => routes.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(NormalMode)
-    case IndividualBeneficiaryDateOfBirthYesNoPage => _ => individualBeneficiaryDateOfBirthRoute
+    case IndividualBeneficiaryNamePage(index) => _ => _ => routes.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(NormalMode, index)
+    case IndividualBeneficiaryDateOfBirthYesNoPage(index) => _ => ua => individualBeneficiaryDateOfBirthRoute(ua, index)
     case IndividualBeneficiaryDateOfBirthPage => _ => _ => routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode)
     case IndividualBeneficiaryIncomeYesNoPage => _ => individualBeneficiaryIncomeRoute
     case IndividualBeneficiaryIncomePage => _ => _ => routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode)
@@ -127,8 +127,8 @@ class Navigator @Inject()() {
       case _ => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def individualBeneficiaryDateOfBirthRoute(userAnswers: UserAnswers) : Call =
-    userAnswers.get(IndividualBeneficiaryDateOfBirthYesNoPage) match {
+  private def individualBeneficiaryDateOfBirthRoute(userAnswers: UserAnswers, index: Int) : Call =
+    userAnswers.get(IndividualBeneficiaryDateOfBirthYesNoPage(index)) match {
     case Some(false) => routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode)
     case Some(true) => routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(NormalMode)
     case _ => routes.SessionExpiredController.onPageLoad()

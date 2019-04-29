@@ -37,15 +37,15 @@ trait BeneficiaryRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(IndividualBeneficiaryNamePage(indexForBeneficiary), NormalMode)(userAnswers)
-            .mustBe(routes.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(NormalMode))
+            .mustBe(routes.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(NormalMode, indexForBeneficiary))
       }
     }
 
     "go to IndividualBeneficiaryDateOfBirthPage from IndividualBeneficiaryDateOfBirthYesNoPage when user answers yes" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          val answers = userAnswers.set(IndividualBeneficiaryDateOfBirthYesNoPage, value = true).success.value
-          navigator.nextPage(IndividualBeneficiaryDateOfBirthYesNoPage, NormalMode)(answers)
+          val answers = userAnswers.set(IndividualBeneficiaryDateOfBirthYesNoPage(indexForBeneficiary), value = true).success.value
+          navigator.nextPage(IndividualBeneficiaryDateOfBirthYesNoPage(indexForBeneficiary), NormalMode)(answers)
             .mustBe(routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(NormalMode))
       }
     }
@@ -53,8 +53,8 @@ trait BeneficiaryRoutes {
     "go to IndividualBeneficiaryIncomeYesNoPage from IndividualBeneficiaryDateOfBirthYesNoPage when user answers no" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          val answers = userAnswers.set(IndividualBeneficiaryDateOfBirthYesNoPage, value = false).success.value
-          navigator.nextPage(IndividualBeneficiaryDateOfBirthYesNoPage, NormalMode)(answers)
+          val answers = userAnswers.set(IndividualBeneficiaryDateOfBirthYesNoPage(indexForBeneficiary), value = false).success.value
+          navigator.nextPage(IndividualBeneficiaryDateOfBirthYesNoPage(indexForBeneficiary), NormalMode)(answers)
             .mustBe(routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode))
       }
     }

@@ -22,10 +22,10 @@ class IndividualBeneficiaryDateOfBirthYesNoPageSpec extends PageBehaviours {
 
   "IndividualBeneficiaryDateOfBirthYesNoPage" must {
 
-    beRetrievable[Boolean](IndividualBeneficiaryDateOfBirthYesNoPage)
+    beRetrievable[Boolean](IndividualBeneficiaryDateOfBirthYesNoPage(0))
 
-    beSettable[Boolean](IndividualBeneficiaryDateOfBirthYesNoPage)
+    beSettable[Boolean](IndividualBeneficiaryDateOfBirthYesNoPage(0))
 
-    beRemovable[Boolean](IndividualBeneficiaryDateOfBirthYesNoPage)
+    beRemovable[Boolean](IndividualBeneficiaryDateOfBirthYesNoPage(0))
   }
 }
