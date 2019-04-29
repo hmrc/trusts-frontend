@@ -31,6 +31,9 @@ class IndividualBeneficiaryDateOfBirthFormProvider @Inject() extends Mappings {
         allRequiredKey = "individualBeneficiaryDateOfBirth.error.required.all",
         twoRequiredKey = "individualBeneficiaryDateOfBirth.error.required.two",
         requiredKey    = "individualBeneficiaryDateOfBirth.error.required"
-      )
+      ).verifying(firstError(
+        maxDate(LocalDate.now, s"individualBeneficiaryDateOfBirth.error.future", "day", "month", "year"),
+        minDate(LocalDate.of(1500,1,1), s"individualBeneficiaryDateOfBirth.error.past", "day", "month", "year")
+      ))
     )
 }

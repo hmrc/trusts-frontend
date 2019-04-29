@@ -111,12 +111,12 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
-  def individualBeneficiaryDateOfBirth: Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryDateOfBirthPage) map {
+  def individualBeneficiaryDateOfBirth(index: Int): Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryDateOfBirthPage(index)) map {
     x =>
       AnswerRow(
         "individualBeneficiaryDateOfBirth.checkYourAnswersLabel",
         HtmlFormat.escape(x.format(dateFormatter)),
-        routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(CheckMode).url
+        routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(CheckMode, index).url
       )
   }
 

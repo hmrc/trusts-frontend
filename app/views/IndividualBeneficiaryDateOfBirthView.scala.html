@@ -19,23 +19,23 @@
         formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, name: FullName, index: Int)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("individualBeneficiaryDateOfBirth.title")}"
+    title = s"${errorPrefix(form)} ${messages("individualBeneficiaryDateOfBirth.title", name.toString)}"
 ) {
 
-    @formHelper(action = IndividualBeneficiaryDateOfBirthController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = IndividualBeneficiaryDateOfBirthController.onSubmit(mode, index), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("individualBeneficiaryDateOfBirth.heading")
+        @components.heading("individualBeneficiaryDateOfBirth.heading", Some(name.toString))
 
         @components.input_date(
             field = form("value"),
-            legend = messages("individualBeneficiaryDateOfBirth.heading"),
+            legend = messages("individualBeneficiaryDateOfBirth.heading", name.toString),
             legendClass = "visually-hidden"
         )
 

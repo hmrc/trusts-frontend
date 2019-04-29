@@ -46,7 +46,7 @@ trait BeneficiaryRoutes {
         userAnswers =>
           val answers = userAnswers.set(IndividualBeneficiaryDateOfBirthYesNoPage(indexForBeneficiary), value = true).success.value
           navigator.nextPage(IndividualBeneficiaryDateOfBirthYesNoPage(indexForBeneficiary), NormalMode)(answers)
-            .mustBe(routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(NormalMode))
+            .mustBe(routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(NormalMode, indexForBeneficiary))
       }
     }
 
@@ -62,7 +62,7 @@ trait BeneficiaryRoutes {
     "go to IndividualBeneficiaryIncomeYesNoPage from IndividualBeneficiaryDateOfBirthPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          navigator.nextPage(IndividualBeneficiaryDateOfBirthPage, NormalMode)(userAnswers)
+          navigator.nextPage(IndividualBeneficiaryDateOfBirthPage(indexForBeneficiary), NormalMode)(userAnswers)
             .mustBe(routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode, indexForBeneficiary))
       }
     }
