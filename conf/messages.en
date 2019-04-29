@@ -623,7 +623,7 @@ individualBeneficiaryDateOfBirth.error.past = Date of birth must be after 31 Dec
 individualBeneficiaryIncomeYesNo.title = Do the trustees have discretion over how much income {0}’s may get?
 individualBeneficiaryIncomeYesNo.heading = Do the trustees have discretion over how much income {0}’s may get?
 individualBeneficiaryIncomeYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0}’s may get?
-individualBeneficiaryIncomeYesNo.error.required = Select yes if the trustees have discretion over how much income may get
+individualBeneficiaryIncomeYesNo.error.required = Select yes if the trustees have discretion over how much income beneficiary may get
 
 individualBeneficiaryIncome.title = individualBeneficiaryIncome
 individualBeneficiaryIncome.heading = individualBeneficiaryIncome
