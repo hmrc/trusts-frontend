@@ -18,8 +18,9 @@ package views
 
 import java.time.LocalDate
 
+import controllers.routes
 import forms.IndividualBeneficiaryDateOfBirthFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{FullName, NormalMode, UserAnswers}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
@@ -28,6 +29,9 @@ import views.html.IndividualBeneficiaryDateOfBirthView
 class IndividualBeneficiaryDateOfBirthViewSpec extends QuestionViewBehaviours[LocalDate] {
 
   val messageKeyPrefix = "individualBeneficiaryDateOfBirth"
+  val index = 0
+  val name = "First Last"
+  val fullName = FullName("First", None, "Last")
 
   val form = new IndividualBeneficiaryDateOfBirthFormProvider()()
 
@@ -36,10 +40,21 @@ class IndividualBeneficiaryDateOfBirthViewSpec extends QuestionViewBehaviours[Lo
     val view = viewFor[IndividualBeneficiaryDateOfBirthView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, NormalMode, fullName, index)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    val applyViewF = (form : Form[_]) => applyView(form)
+
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name)
+
+    behave like pageWithDateFields(form, applyViewF,
+      messageKeyPrefix,
+      routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(NormalMode, index).url,
+      name.toString
+    )
 
     behave like pageWithBackLink(applyView(form))
+
+    behave like pageWithASubmitButton(applyView(form))
+
   }
 }

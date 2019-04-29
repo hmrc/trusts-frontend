@@ -610,13 +610,15 @@ individualBeneficiaryDateOfBirthYesNo.heading = Do you know {0}’s date of birt
 individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
 individualBeneficiaryDateOfBirthYesNo.error.required = Select yes if you know the individual beneficiary’s date of birth
 
-individualBeneficiaryDateOfBirth.title = IndividualBeneficiaryDateOfBirth
-individualBeneficiaryDateOfBirth.heading = IndividualBeneficiaryDateOfBirth
-individualBeneficiaryDateOfBirth.checkYourAnswersLabel = IndividualBeneficiaryDateOfBirth
-individualBeneficiaryDateOfBirth.error.required.all = Enter the individualBeneficiaryDateOfBirth
-individualBeneficiaryDateOfBirth.error.required.two = The individualBeneficiaryDateOfBirth must include {0} and {1}
-individualBeneficiaryDateOfBirth.error.required = The individualBeneficiaryDateOfBirth must include {0}
-individualBeneficiaryDateOfBirth.error.invalid = Enter a real IndividualBeneficiaryDateOfBirth
+individualBeneficiaryDateOfBirth.title = What is {0}’s date of birth?
+individualBeneficiaryDateOfBirth.heading = What is {0}’s date of birth?
+individualBeneficiaryDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
+individualBeneficiaryDateOfBirth.error.required.all = Enter a date of birth
+individualBeneficiaryDateOfBirth.error.required.two = The date of birth must include {0} and {1}
+individualBeneficiaryDateOfBirth.error.required = The date of birth must include {0}
+individualBeneficiaryDateOfBirth.error.invalid = Enter a real date of birth
+individualBeneficiaryDateOfBirth.error.future = Date of birth must be today or in the past
+individualBeneficiaryDateOfBirth.error.past = Date of birth must be after 31 December 1499
 
 individualBeneficiaryIncomeYesNo.title = individualBeneficiaryIncomeYesNo
 individualBeneficiaryIncomeYesNo.heading = individualBeneficiaryIncomeYesNo

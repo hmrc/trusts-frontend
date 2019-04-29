@@ -29,10 +29,10 @@ class IndividualBeneficiaryDateOfBirthPageSpec extends PageBehaviours {
       datesBetween(LocalDate.of(1900, 1, 1), LocalDate.of(2100, 1, 1))
     }
 
-    beRetrievable[LocalDate](IndividualBeneficiaryDateOfBirthPage)
+    beRetrievable[LocalDate](IndividualBeneficiaryDateOfBirthPage(0))
 
-    beSettable[LocalDate](IndividualBeneficiaryDateOfBirthPage)
+    beSettable[LocalDate](IndividualBeneficiaryDateOfBirthPage(0))
 
-    beRemovable[LocalDate](IndividualBeneficiaryDateOfBirthPage)
+    beRemovable[LocalDate](IndividualBeneficiaryDateOfBirthPage(0))
   }
 }

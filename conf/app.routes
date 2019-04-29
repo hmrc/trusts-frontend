@@ -291,10 +291,10 @@ POST       /:index/individualBeneficiaryDateOfBirthYesNo                        
 GET        /:index/changeIndividualBeneficiaryDateOfBirthYesNo                  controllers.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(mode: Mode = CheckMode,index: Int)
 POST       /:index/changeIndividualBeneficiaryDateOfBirthYesNo                  controllers.IndividualBeneficiaryDateOfBirthYesNoController.onSubmit(mode: Mode = CheckMode,index: Int)
 
-GET        /individualBeneficiaryDateOfBirth                  controllers.IndividualBeneficiaryDateOfBirthController.onPageLoad(mode: Mode = NormalMode)
-POST       /individualBeneficiaryDateOfBirth                  controllers.IndividualBeneficiaryDateOfBirthController.onSubmit(mode: Mode = NormalMode)
-GET        /changeIndividualBeneficiaryDateOfBirth                        controllers.IndividualBeneficiaryDateOfBirthController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeIndividualBeneficiaryDateOfBirth                        controllers.IndividualBeneficiaryDateOfBirthController.onSubmit(mode: Mode = CheckMode)
+GET        /:index/individualBeneficiaryDateOfBirth                  controllers.IndividualBeneficiaryDateOfBirthController.onPageLoad(mode: Mode = NormalMode,index: Int)
+POST       /:index/individualBeneficiaryDateOfBirth                  controllers.IndividualBeneficiaryDateOfBirthController.onSubmit(mode: Mode = NormalMode,index: Int)
+GET        /:index/changeIndividualBeneficiaryDateOfBirth                        controllers.IndividualBeneficiaryDateOfBirthController.onPageLoad(mode: Mode = CheckMode,index: Int)
+POST       /:index/changeIndividualBeneficiaryDateOfBirth                        controllers.IndividualBeneficiaryDateOfBirthController.onSubmit(mode: Mode = CheckMode,index: Int)
 
 GET        /individualBeneficiaryIncomeYesNo                        controllers.IndividualBeneficiaryIncomeYesNoController.onPageLoad(mode: Mode = NormalMode)
 POST       /individualBeneficiaryIncomeYesNo                        controllers.IndividualBeneficiaryIncomeYesNoController.onSubmit(mode: Mode = NormalMode)
