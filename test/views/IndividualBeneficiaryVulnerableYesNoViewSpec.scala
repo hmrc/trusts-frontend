@@ -18,7 +18,8 @@ package views
 
 import controllers.routes
 import forms.IndividualBeneficiaryVulnerableYesNoFormProvider
-import models.NormalMode
+import models.{FullName, NormalMode, UserAnswers}
+import pages.IndividualBeneficiaryNamePage
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
@@ -27,20 +28,29 @@ import views.html.IndividualBeneficiaryVulnerableYesNoView
 class IndividualBeneficiaryVulnerableYesNoViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "individualBeneficiaryVulnerableYesNo"
+  val index = 0
+  val name = "First Last"
+  val fullName = FullName("First", None, "Last")
 
   val form = new IndividualBeneficiaryVulnerableYesNoFormProvider()()
 
   "IndividualBeneficiaryVulnerableYesNo view" must {
 
-    val view = viewFor[IndividualBeneficiaryVulnerableYesNoView](Some(emptyUserAnswers))
+    val userAnswers = UserAnswers(userAnswersId)
+      .set(IndividualBeneficiaryNamePage(index), fullName).success.value
+
+    val view = viewFor[IndividualBeneficiaryVulnerableYesNoView](Some(userAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, NormalMode, fullName, index)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.IndividualBeneficiaryVulnerableYesNoController.onSubmit(NormalMode).url)
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.IndividualBeneficiaryVulnerableYesNoController.onSubmit(NormalMode, index).url, None, Seq(fullName.toString))
+
+    behave like pageWithASubmitButton(applyView(form))
+
   }
 }

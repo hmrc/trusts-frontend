@@ -22,10 +22,10 @@ class IndividualBeneficiaryVulnerableYesNoPageSpec extends PageBehaviours {
 
   "IndividualBeneficiaryVulnerableYesNoPage" must {
 
-    beRetrievable[Boolean](IndividualBeneficiaryVulnerableYesNoPage)
+    beRetrievable[Boolean](IndividualBeneficiaryVulnerableYesNoPage(0))
 
-    beSettable[Boolean](IndividualBeneficiaryVulnerableYesNoPage)
+    beSettable[Boolean](IndividualBeneficiaryVulnerableYesNoPage(0))
 
-    beRemovable[Boolean](IndividualBeneficiaryVulnerableYesNoPage)
+    beRemovable[Boolean](IndividualBeneficiaryVulnerableYesNoPage(0))
   }
 }

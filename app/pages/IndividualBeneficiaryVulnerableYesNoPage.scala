@@ -18,9 +18,9 @@ package pages
 
 import play.api.libs.json.JsPath
 
-case object IndividualBeneficiaryVulnerableYesNoPage extends QuestionPage[Boolean] {
+final case class IndividualBeneficiaryVulnerableYesNoPage(index : Int) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \  Beneficiaries \ IndividualBeneficiaries \ index \ toString
 
   override def toString: String = "individualBeneficiaryVulnerableYesNo"
 }

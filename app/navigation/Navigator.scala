@@ -98,10 +98,10 @@ class Navigator @Inject()() {
     case IndividualBeneficiaryIncomeYesNoPage(index) => _ => ua => individualBeneficiaryIncomeRoute(ua, index)
     case IndividualBeneficiaryIncomePage(index) => _ => _ => routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode, index)
     case IndividualBeneficiaryNationalInsuranceYesNoPage(index) => _ => ua => individualBeneficiaryNationalInsuranceYesNoRoute(ua, index)
-    case IndividualBeneficiaryNationalInsuranceNumberPage(index) => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode)
+    case IndividualBeneficiaryNationalInsuranceNumberPage(index) => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index)
     case IndividualBeneficiaryAdressYesNoPage => _ => individualBeneficiaryAddressRoute
-    case IndividualBeneficiaryAddressUKPage => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode)
-    case IndividualBeneficiaryVulnerableYesNoPage => _ => _ => routes.IndividualBeneficiaryAnswersController.onPageLoad(0)
+    case IndividualBeneficiaryAddressUKPage => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, 0)
+    case IndividualBeneficiaryVulnerableYesNoPage(index) => _ => _ => routes.IndividualBeneficiaryAnswersController.onPageLoad(index)
     case IndividualBeneficiaryAnswersPage => _ => _ => routes.AddABeneficiaryController.onPageLoad(NormalMode)
     //  Default
     case _ => _ => _ => routes.IndexController.onPageLoad()
@@ -109,7 +109,7 @@ class Navigator @Inject()() {
 
   private def individualBeneficiaryAddressRoute(userAnswers: UserAnswers) : Call =
     userAnswers.get(IndividualBeneficiaryAdressYesNoPage) match {
-      case Some(false) => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode)
+      case Some(false) => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, 0)
       case Some(true) => routes.IndividualBeneficiaryAddressUKController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }

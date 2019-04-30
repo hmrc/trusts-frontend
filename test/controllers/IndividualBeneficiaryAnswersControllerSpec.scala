@@ -44,6 +44,7 @@ class IndividualBeneficiaryAnswersControllerSpec extends SpecBase {
           .set(IndividualBeneficiaryIncomeYesNoPage(index),true).success.value
           .set(IndividualBeneficiaryNationalInsuranceYesNoPage(index),true).success.value
           .set(IndividualBeneficiaryNationalInsuranceNumberPage(index),"ST123456T").success.value
+          .set(IndividualBeneficiaryVulnerableYesNoPage(index),true).success.value
 
 
       val countryOptions = injector.instanceOf[CountryOptions]
@@ -58,7 +59,8 @@ class IndividualBeneficiaryAnswersControllerSpec extends SpecBase {
             checkYourAnswersHelper.individualBeneficiaryDateOfBirth(index).value,
             checkYourAnswersHelper.individualBeneficiaryIncomeYesNo(index).value,
             checkYourAnswersHelper.individualBeneficiaryNationalInsuranceYesNo(index).value,
-            checkYourAnswersHelper.individualBeneficiaryNationalInsuranceNumber(index).value
+            checkYourAnswersHelper.individualBeneficiaryNationalInsuranceNumber(index).value,
+            checkYourAnswersHelper.individualBeneficiaryVulnerableYesNo(index).value
           )
         )
       )

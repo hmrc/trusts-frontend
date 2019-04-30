@@ -661,10 +661,10 @@ individualBeneficiaryAddressUK.error.field2.required = Enter field2
 individualBeneficiaryAddressUK.error.field1.length = field1 must be 100 characters or less
 individualBeneficiaryAddressUK.error.field2.length = field2 must be 100 characters or less
 
-individualBeneficiaryVulnerableYesNo.title = individualBeneficiaryVulnerableYesNo
-individualBeneficiaryVulnerableYesNo.heading = individualBeneficiaryVulnerableYesNo
-individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel = individualBeneficiaryVulnerableYesNo
-individualBeneficiaryVulnerableYesNo.error.required = Select yes if individualBeneficiaryVulnerableYesNo
+individualBeneficiaryVulnerableYesNo.title = Is {0} elected as a vulnerable beneficiary?
+individualBeneficiaryVulnerableYesNo.heading = Is {0} elected as a vulnerable beneficiary?
+individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel = Is {0} elected as a vulnerable beneficiary?
+individualBeneficiaryVulnerableYesNo.error.required = Select yes if individual beneficiary is elected as a vulnerable beneficiary
 
 individualBeneficiaryInfo.title = Information you need to add a beneficiary
 individualBeneficiaryInfo.heading = Information you need to add a beneficiary

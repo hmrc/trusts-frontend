@@ -48,12 +48,13 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
-  def individualBeneficiaryVulnerableYesNo: Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryVulnerableYesNoPage) map {
+  def individualBeneficiaryVulnerableYesNo(index: Int): Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryVulnerableYesNoPage(index)) map {
     x =>
       AnswerRow(
         "individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(CheckMode).url
+        routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(CheckMode, index).url,
+        indBeneficiaryName(index,userAnswers)
       )
   }
 
