@@ -28,17 +28,20 @@ import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.IndividualBenficiaryAnswersView
 
-class IndividualBenficiaryAnswersControllerSpec extends SpecBase {
+class IndividualBeneficiaryAnswersControllerSpec extends SpecBase {
 
   val index = 0
 
-  "IndividualBenficiaryAnswers Controller" must {
+  "IndividualBeneficiaryAnswers Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val userAnswers =
         UserAnswers(userAnswersId)
-          .set(IndividualBeneficiaryNamePage(index), FullName("First", None, "Trustee")).success.value
+          .set(IndividualBeneficiaryNamePage(index), FullName("first name", None, "last name")).success.value
+          .set(IndividualBeneficiaryDateOfBirthYesNoPage(index),true).success.value
+          .set(IndividualBeneficiaryDateOfBirthPage(index),LocalDate.now(ZoneOffset.UTC)).success.value
+          .set(IndividualBeneficiaryIncomeYesNoPage(index),true).success.value
 
       val countryOptions = injector.instanceOf[CountryOptions]
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers)
@@ -47,14 +50,17 @@ class IndividualBenficiaryAnswersControllerSpec extends SpecBase {
         AnswerSection(
           None,
           Seq(
-            checkYourAnswersHelper.individualBeneficiaryName(index).value
+            checkYourAnswersHelper.individualBeneficiaryName(index).value,
+            checkYourAnswersHelper.individualBeneficiaryDateOfBirthYesNo(index).value,
+            checkYourAnswersHelper.individualBeneficiaryDateOfBirth(index).value,
+            checkYourAnswersHelper.individualBeneficiaryIncomeYesNo(index).value
           )
         )
       )
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.IndividualBenficiaryAnswersController.onPageLoad(index).url)
+      val request = FakeRequest(GET, routes.IndividualBeneficiaryAnswersController.onPageLoad(index).url)
 
       val result = route(application, request).value
 

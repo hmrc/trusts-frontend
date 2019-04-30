@@ -32,7 +32,7 @@ import utils.countryOptions.CountryOptions
 
 import scala.concurrent.ExecutionContext
 
-class IndividualBenficiaryAnswersController @Inject()(
+class IndividualBeneficiaryAnswersController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        identify: IdentifierAction,
                                        navigator: Navigator,
@@ -50,7 +50,7 @@ class IndividualBenficiaryAnswersController @Inject()(
     identify andThen
       getData andThen
       requireData andThen
-      requiredAnswer(RequiredAnswer(IndividualBeneficiaryNamePage(0), routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, 0)))
+      requiredAnswer(RequiredAnswer(IndividualBeneficiaryNamePage(index), routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, 0)))
 
 
 
@@ -63,7 +63,10 @@ class IndividualBenficiaryAnswersController @Inject()(
         AnswerSection(
           None,
           Seq(
-            answers.individualBeneficiaryName(index)
+            answers.individualBeneficiaryName(index),
+            answers.individualBeneficiaryDateOfBirthYesNo(index),
+            answers.individualBeneficiaryDateOfBirth(index),
+            answers.individualBeneficiaryIncomeYesNo(index)
           ).flatten
         )
       )

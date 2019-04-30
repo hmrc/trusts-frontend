@@ -107,7 +107,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "individualBeneficiaryIncomeYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(CheckMode, index).url
+        routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(CheckMode, index).url,
+        indBeneficiaryName(index,userAnswers)
       )
   }
 
@@ -116,7 +117,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "individualBeneficiaryDateOfBirth.checkYourAnswersLabel",
         HtmlFormat.escape(x.format(dateFormatter)),
-        routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(CheckMode, index).url
+        routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(CheckMode, index).url,
+        indBeneficiaryName(index,userAnswers)
       )
   }
 
@@ -125,7 +127,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(CheckMode, index).url
+        routes.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(CheckMode, index).url,
+        indBeneficiaryName(index,userAnswers)
       )
   }
 
@@ -504,6 +507,10 @@ object CheckYourAnswersHelper {
 
   private def deceasedSettlorName(userAnswers: UserAnswers): String =
     userAnswers.get(SettlorsNamePage).get.toString
+
+  private def indBeneficiaryName(index: Int, userAnswers: UserAnswers): String = {
+    userAnswers.get(IndividualBeneficiaryNamePage(index)).get.toString
+  }
 
   private def ukAddress(address: UKAddress): Html = {
     val lines =
