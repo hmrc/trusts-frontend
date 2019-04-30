@@ -42,6 +42,9 @@ class IndividualBeneficiaryAnswersControllerSpec extends SpecBase {
           .set(IndividualBeneficiaryDateOfBirthYesNoPage(index),true).success.value
           .set(IndividualBeneficiaryDateOfBirthPage(index),LocalDate.now(ZoneOffset.UTC)).success.value
           .set(IndividualBeneficiaryIncomeYesNoPage(index),true).success.value
+          .set(IndividualBeneficiaryNationalInsuranceYesNoPage(index),true).success.value
+          .set(IndividualBeneficiaryNationalInsuranceNumberPage(index),"ST123456T").success.value
+
 
       val countryOptions = injector.instanceOf[CountryOptions]
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers)
@@ -53,7 +56,9 @@ class IndividualBeneficiaryAnswersControllerSpec extends SpecBase {
             checkYourAnswersHelper.individualBeneficiaryName(index).value,
             checkYourAnswersHelper.individualBeneficiaryDateOfBirthYesNo(index).value,
             checkYourAnswersHelper.individualBeneficiaryDateOfBirth(index).value,
-            checkYourAnswersHelper.individualBeneficiaryIncomeYesNo(index).value
+            checkYourAnswersHelper.individualBeneficiaryIncomeYesNo(index).value,
+            checkYourAnswersHelper.individualBeneficiaryNationalInsuranceYesNo(index).value,
+            checkYourAnswersHelper.individualBeneficiaryNationalInsuranceNumber(index).value
           )
         )
       )
