@@ -301,10 +301,10 @@ POST       /beneficiaries/individual/:index/do-you-know-income                  
 GET        /beneficiaries/individual/:index/change-do-you-know-income                  controllers.IndividualBeneficiaryIncomeYesNoController.onPageLoad(mode: Mode = CheckMode,index: Int)
 POST       /beneficiaries/individual/:index/change-do-you-know-income                  controllers.IndividualBeneficiaryIncomeYesNoController.onSubmit(mode: Mode = CheckMode,index: Int)
 
-GET        /:index/individualBeneficiaryIncome                        controllers.IndividualBeneficiaryIncomeController.onPageLoad(mode: Mode = NormalMode,index: Int)
-POST       /:index/individualBeneficiaryIncome                        controllers.IndividualBeneficiaryIncomeController.onSubmit(mode: Mode = NormalMode,index: Int)
-GET        /:index/changeIndividualBeneficiaryIncome                  controllers.IndividualBeneficiaryIncomeController.onPageLoad(mode: Mode = CheckMode,index: Int)
-POST       /:index/changeIndividualBeneficiaryIncome                  controllers.IndividualBeneficiaryIncomeController.onSubmit(mode: Mode = CheckMode,index: Int)
+GET        /beneficiaries/individual/:index/income                        controllers.IndividualBeneficiaryIncomeController.onPageLoad(mode: Mode = NormalMode,index: Int)
+POST       /beneficiaries/individual/:index/income                        controllers.IndividualBeneficiaryIncomeController.onSubmit(mode: Mode = NormalMode,index: Int)
+GET        /beneficiaries/individual/:index/change-income                  controllers.IndividualBeneficiaryIncomeController.onPageLoad(mode: Mode = CheckMode,index: Int)
+POST       /beneficiaries/individual/:index/change-income                  controllers.IndividualBeneficiaryIncomeController.onSubmit(mode: Mode = CheckMode,index: Int)
 
 GET        /individualBeneficiaryNationalInsuranceYesNo                        controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(mode: Mode = NormalMode)
 POST       /individualBeneficiaryNationalInsuranceYesNo                        controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onSubmit(mode: Mode = NormalMode)
