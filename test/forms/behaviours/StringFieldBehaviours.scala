@@ -61,7 +61,7 @@ trait StringFieldBehaviours extends FieldBehaviours with OptionalFieldBehaviours
                                    generator: Gen[String],
                                    error: FormError): Unit = {
 
-    s"not bind strings which do not match $regex" in {
+    s"not bind strings which do not match $regexp" in {
       forAll(generator) {
         string =>
           whenever(!string.matches(regexp) && string.nonEmpty) {

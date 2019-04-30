@@ -26,6 +26,12 @@ class IndividualBeneficiaryIncomeFormProvider @Inject() extends Mappings {
   def apply(): Form[String] =
     Form(
       "value" -> text("individualBeneficiaryIncome.error.required")
-        .verifying(maxLength(100, "individualBeneficiaryIncome.error.length"))
+        .verifying(
+          firstError(
+            isNotEmpty("value", "individualBeneficiaryIncome.error.required"),
+            regexp(Validation.numericRegex, "individualBeneficiaryIncome.error.invalid"),
+            regexp(Validation.percentageRegex, "individualBeneficiaryIncome.error.length")
+          )
+        )
     )
 }

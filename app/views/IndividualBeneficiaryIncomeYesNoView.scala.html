@@ -40,7 +40,8 @@
         @components.input_yes_no(
             field = form("value"),
             label = messages("individualBeneficiaryIncomeYesNo.heading", name.toString),
-            labelClass = Some("visually-hidden")
+            labelClass = Some("visually-hidden"),
+            hint = Some(messages(s"individualBeneficiaryIncomeYesNo.hint"))
         )
 
         @components.submit_button()
