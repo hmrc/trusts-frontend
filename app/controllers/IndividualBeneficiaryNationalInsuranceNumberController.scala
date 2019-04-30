@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.IndividualBeneficiaryNationalInsuranceNumberFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.IndividualBeneficiaryNationalInsuranceNumberPage
+import pages.{IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -38,6 +38,7 @@ class IndividualBeneficiaryNationalInsuranceNumberController @Inject()(
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
+                                        requiredAnswer: RequiredAnswerActionProvider,
                                         formProvider: IndividualBeneficiaryNationalInsuranceNumberFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: IndividualBeneficiaryNationalInsuranceNumberView
@@ -45,29 +46,39 @@ class IndividualBeneficiaryNationalInsuranceNumberController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  private def actions(index: Int) =
+    identify andThen
+      getData andThen
+      requireData andThen
+      requiredAnswer(RequiredAnswer(IndividualBeneficiaryNamePage(index), routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode,index)))
+
+  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = actions(index) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(IndividualBeneficiaryNationalInsuranceNumberPage) match {
+      val name = request.userAnswers.get(IndividualBeneficiaryNamePage(index)).get
+
+      val preparedForm = request.userAnswers.get(IndividualBeneficiaryNationalInsuranceNumberPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, name, index))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = actions(index).async {
     implicit request =>
+
+      val name = request.userAnswers.get(IndividualBeneficiaryNamePage(index)).get
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, name, index))),
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(IndividualBeneficiaryNationalInsuranceNumberPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(IndividualBeneficiaryNationalInsuranceNumberPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(IndividualBeneficiaryNationalInsuranceNumberPage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(IndividualBeneficiaryNationalInsuranceNumberPage(index), mode)(updatedAnswers))
         }
       )
   }

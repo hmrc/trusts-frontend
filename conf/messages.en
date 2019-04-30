@@ -631,16 +631,17 @@ individualBeneficiaryIncome.checkYourAnswersLabel = individualBeneficiaryIncome
 individualBeneficiaryIncome.error.required = Enter individualBeneficiaryIncome
 individualBeneficiaryIncome.error.length = IndividualBeneficiaryIncome must be 100 characters or less
 
-individualBeneficiaryNationalInsuranceYesNo.title = individualBeneficiaryNationalInsuranceYesNo
-individualBeneficiaryNationalInsuranceYesNo.heading = individualBeneficiaryNationalInsuranceYesNo
-individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel = individualBeneficiaryNationalInsuranceYesNo
-individualBeneficiaryNationalInsuranceYesNo.error.required = Select yes if individualBeneficiaryNationalInsuranceYesNo
+individualBeneficiaryNationalInsuranceYesNo.title = Do you know {0}’s National Insurance number?
+individualBeneficiaryNationalInsuranceYesNo.heading = Do you know {0}’s National Insurance number?
+individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
+individualBeneficiaryNationalInsuranceYesNo.error.required = Select yes if you know the individual beneficiary’s National Insurance number
 
-individualBeneficiaryNationalInsuranceNumber.title = individualBeneficiaryNationalInsuranceNumber
-individualBeneficiaryNationalInsuranceNumber.heading = individualBeneficiaryNationalInsuranceNumber
-individualBeneficiaryNationalInsuranceNumber.checkYourAnswersLabel = individualBeneficiaryNationalInsuranceNumber
-individualBeneficiaryNationalInsuranceNumber.error.required = Enter individualBeneficiaryNationalInsuranceNumber
-individualBeneficiaryNationalInsuranceNumber.error.length = IndividualBeneficiaryNationalInsuranceNumber must be 100 characters or less
+individualBeneficiaryNationalInsuranceNumber.title = What is {0}’s National Insurance number?
+individualBeneficiaryNationalInsuranceNumber.heading = What is {0}’s National Insurance number?
+individualBeneficiaryNationalInsuranceNumber.checkYourAnswersLabel = What is {0}’s National Insurance number?
+individualBeneficiaryNationalInsuranceNumber.error.required = Enter the individual beneficiary’s National Insurance number
+individualBeneficiaryNationalInsuranceNumber.error.length = Individual beneficiary’s National Insurance number must be 9 characters or less
+individualBeneficiaryNationalInsuranceNumber.error.invalid = Enter the individual beneficiary’s National Insurance number in the correct format
 
 individualBeneficiaryAdressYesNo.title = individualBeneficiaryAdressYesNo
 individualBeneficiaryAdressYesNo.heading = individualBeneficiaryAdressYesNo

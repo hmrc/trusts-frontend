@@ -22,10 +22,10 @@ class IndividualBeneficiaryNationalInsuranceYesNoPageSpec extends PageBehaviours
 
   "IndividualBeneficiaryNationalInsuranceYesNoPage" must {
 
-    beRetrievable[Boolean](IndividualBeneficiaryNationalInsuranceYesNoPage)
+    beRetrievable[Boolean](IndividualBeneficiaryNationalInsuranceYesNoPage(0))
 
-    beSettable[Boolean](IndividualBeneficiaryNationalInsuranceYesNoPage)
+    beSettable[Boolean](IndividualBeneficiaryNationalInsuranceYesNoPage(0))
 
-    beRemovable[Boolean](IndividualBeneficiaryNationalInsuranceYesNoPage)
+    beRemovable[Boolean](IndividualBeneficiaryNationalInsuranceYesNoPage(0))
   }
 }

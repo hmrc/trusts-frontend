@@ -306,15 +306,15 @@ POST       /individualBeneficiaryIncome                        controllers.Indiv
 GET        /changeIndividualBeneficiaryIncome                  controllers.IndividualBeneficiaryIncomeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeIndividualBeneficiaryIncome                  controllers.IndividualBeneficiaryIncomeController.onSubmit(mode: Mode = CheckMode)
 
-GET        /individualBeneficiaryNationalInsuranceYesNo                        controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(mode: Mode = NormalMode)
-POST       /individualBeneficiaryNationalInsuranceYesNo                        controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onSubmit(mode: Mode = NormalMode)
-GET        /changeIndividualBeneficiaryNationalInsuranceYesNo                  controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeIndividualBeneficiaryNationalInsuranceYesNo                  controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onSubmit(mode: Mode = CheckMode)
+GET        /:index/individualBeneficiaryNationalInsuranceYesNo                        controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(mode: Mode = NormalMode,index: Int)
+POST       /:index/individualBeneficiaryNationalInsuranceYesNo                        controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onSubmit(mode: Mode = NormalMode,index: Int)
+GET        /:index/changeIndividualBeneficiaryNationalInsuranceYesNo                  controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(mode: Mode = CheckMode,index: Int)
+POST       /:index/changeIndividualBeneficiaryNationalInsuranceYesNo                  controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onSubmit(mode: Mode = CheckMode,index: Int)
 
-GET        /individualBeneficiaryNationalInsuranceNumber                        controllers.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(mode: Mode = NormalMode)
-POST       /individualBeneficiaryNationalInsuranceNumber                        controllers.IndividualBeneficiaryNationalInsuranceNumberController.onSubmit(mode: Mode = NormalMode)
-GET        /changeIndividualBeneficiaryNationalInsuranceNumber                  controllers.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeIndividualBeneficiaryNationalInsuranceNumber                  controllers.IndividualBeneficiaryNationalInsuranceNumberController.onSubmit(mode: Mode = CheckMode)
+GET        /:index/individualBeneficiaryNationalInsuranceNumber                        controllers.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(mode: Mode = NormalMode,index: Int)
+POST       /:index/individualBeneficiaryNationalInsuranceNumber                        controllers.IndividualBeneficiaryNationalInsuranceNumberController.onSubmit(mode: Mode = NormalMode,index: Int)
+GET        /:index/changeIndividualBeneficiaryNationalInsuranceNumber                  controllers.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(mode: Mode = CheckMode,index: Int)
+POST       /:index/changeIndividualBeneficiaryNationalInsuranceNumber                  controllers.IndividualBeneficiaryNationalInsuranceNumberController.onSubmit(mode: Mode = CheckMode,index: Int)
 
 GET        /individualBeneficiaryAdressYesNo                        controllers.IndividualBeneficiaryAdressYesNoController.onPageLoad(mode: Mode = NormalMode)
 POST       /individualBeneficiaryAdressYesNo                        controllers.IndividualBeneficiaryAdressYesNoController.onSubmit(mode: Mode = NormalMode)

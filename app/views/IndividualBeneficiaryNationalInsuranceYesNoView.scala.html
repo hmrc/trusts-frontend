@@ -16,29 +16,30 @@
 
 @import controllers.routes._
 @import models.Mode
+@import models.FullName
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, name: FullName, index: Int)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("individualBeneficiaryNationalInsuranceYesNo.title")}"
+    title = s"${errorPrefix(form)} ${messages("individualBeneficiaryNationalInsuranceYesNo.title", name.toString)}"
     ) {
 
-    @formHelper(action = IndividualBeneficiaryNationalInsuranceYesNoController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = IndividualBeneficiaryNationalInsuranceYesNoController.onSubmit(mode, index), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("individualBeneficiaryNationalInsuranceYesNo.heading")
+        @components.heading("individualBeneficiaryNationalInsuranceYesNo.heading", Some(name.toString))
 
         @components.input_yes_no(
             field = form("value"),
-            label = messages("individualBeneficiaryNationalInsuranceYesNo.heading"),
+            label = messages("individualBeneficiaryNationalInsuranceYesNo.heading", name.toString),
             labelClass = Some("visually-hidden")
         )
 
