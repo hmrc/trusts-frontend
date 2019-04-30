@@ -306,15 +306,15 @@ POST       /individualBeneficiaryIncome                        controllers.Indiv
 GET        /changeIndividualBeneficiaryIncome                  controllers.IndividualBeneficiaryIncomeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeIndividualBeneficiaryIncome                  controllers.IndividualBeneficiaryIncomeController.onSubmit(mode: Mode = CheckMode)
 
-GET        /:index/individualBeneficiaryNationalInsuranceYesNo                        controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(mode: Mode = NormalMode,index: Int)
-POST       /:index/individualBeneficiaryNationalInsuranceYesNo                        controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onSubmit(mode: Mode = NormalMode,index: Int)
-GET        /:index/changeIndividualBeneficiaryNationalInsuranceYesNo                  controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(mode: Mode = CheckMode,index: Int)
-POST       /:index/changeIndividualBeneficiaryNationalInsuranceYesNo                  controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onSubmit(mode: Mode = CheckMode,index: Int)
+GET        /beneficiaries/individual/:index/individualBeneficiaryNationalInsuranceYesNo                        controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(mode: Mode = NormalMode,index: Int)
+POST       /beneficiaries/individual/:index/individualBeneficiaryNationalInsuranceYesNo                        controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onSubmit(mode: Mode = NormalMode,index: Int)
+GET        /beneficiaries/individual/:index/changeIndividualBeneficiaryNationalInsuranceYesNo                  controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(mode: Mode = CheckMode,index: Int)
+POST       /beneficiaries/individual/:index/changeIndividualBeneficiaryNationalInsuranceYesNo                  controllers.IndividualBeneficiaryNationalInsuranceYesNoController.onSubmit(mode: Mode = CheckMode,index: Int)
 
-GET        /:index/individualBeneficiaryNationalInsuranceNumber                        controllers.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(mode: Mode = NormalMode,index: Int)
-POST       /:index/individualBeneficiaryNationalInsuranceNumber                        controllers.IndividualBeneficiaryNationalInsuranceNumberController.onSubmit(mode: Mode = NormalMode,index: Int)
-GET        /:index/changeIndividualBeneficiaryNationalInsuranceNumber                  controllers.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(mode: Mode = CheckMode,index: Int)
-POST       /:index/changeIndividualBeneficiaryNationalInsuranceNumber                  controllers.IndividualBeneficiaryNationalInsuranceNumberController.onSubmit(mode: Mode = CheckMode,index: Int)
+GET        /beneficiaries/individual/:index/individualBeneficiaryNationalInsuranceNumber                        controllers.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(mode: Mode = NormalMode,index: Int)
+POST       /beneficiaries/individual/:index/individualBeneficiaryNationalInsuranceNumber                        controllers.IndividualBeneficiaryNationalInsuranceNumberController.onSubmit(mode: Mode = NormalMode,index: Int)
+GET        /beneficiaries/individual/:index/changeIndividualBeneficiaryNationalInsuranceNumber                  controllers.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(mode: Mode = CheckMode,index: Int)
+POST       /beneficiaries/individual/:index/changeIndividualBeneficiaryNationalInsuranceNumber                  controllers.IndividualBeneficiaryNationalInsuranceNumberController.onSubmit(mode: Mode = CheckMode,index: Int)
 
 GET        /individualBeneficiaryAdressYesNo                        controllers.IndividualBeneficiaryAdressYesNoController.onPageLoad(mode: Mode = NormalMode)
 POST       /individualBeneficiaryAdressYesNo                        controllers.IndividualBeneficiaryAdressYesNoController.onSubmit(mode: Mode = NormalMode)
