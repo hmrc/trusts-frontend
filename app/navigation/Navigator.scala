@@ -96,12 +96,13 @@ class Navigator @Inject()() {
     case IndividualBeneficiaryDateOfBirthYesNoPage(index) => _ => ua => individualBeneficiaryDateOfBirthRoute(ua, index)
     case IndividualBeneficiaryDateOfBirthPage(index) => _ => _ => routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode, index)
     case IndividualBeneficiaryIncomeYesNoPage(index) => _ => ua => individualBeneficiaryIncomeRoute(ua, index)
-    case IndividualBeneficiaryIncomePage(index) => _ => _ => routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode)
-    case IndividualBeneficiaryNationalInsuranceYesNoPage => _ => individualBeneficiaryNationalInsuranceYesNoRoute
-    case IndividualBeneficiaryNationalInsuranceNumberPage => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode)
+    case IndividualBeneficiaryIncomePage(index) => _ => _ => routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode, index)
+    case IndividualBeneficiaryNationalInsuranceYesNoPage(index) => _ => ua => individualBeneficiaryNationalInsuranceYesNoRoute(ua, index)
+    case IndividualBeneficiaryNationalInsuranceNumberPage(index) => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode)
     case IndividualBeneficiaryAdressYesNoPage => _ => individualBeneficiaryAddressRoute
     case IndividualBeneficiaryAddressUKPage => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode)
-    case IndividualBeneficiaryVulnerableYesNoPage => _ => _ => routes.IndividualBenficiaryAnswersController.onPageLoad()
+    case IndividualBeneficiaryVulnerableYesNoPage => _ => _ => routes.IndividualBeneficiaryAnswersController.onPageLoad(0)
+    case IndividualBeneficiaryAnswersPage => _ => _ => routes.AddABeneficiaryController.onPageLoad(NormalMode)
     //  Default
     case _ => _ => _ => routes.IndexController.onPageLoad()
   }
@@ -113,17 +114,17 @@ class Navigator @Inject()() {
       case _ => routes.SessionExpiredController.onPageLoad()
     }
 
-  private def individualBeneficiaryNationalInsuranceYesNoRoute(userAnswers: UserAnswers) : Call =
-    userAnswers.get(IndividualBeneficiaryNationalInsuranceYesNoPage) match {
+  private def individualBeneficiaryNationalInsuranceYesNoRoute(userAnswers: UserAnswers, index: Int) : Call =
+    userAnswers.get(IndividualBeneficiaryNationalInsuranceYesNoPage(index)) match {
       case Some(false) => routes.IndividualBeneficiaryAdressYesNoController.onPageLoad(NormalMode)
-      case Some(true) => routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(NormalMode)
+      case Some(true) => routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(NormalMode, index)
       case _ => routes.SessionExpiredController.onPageLoad()
   }
 
   private def individualBeneficiaryIncomeRoute(userAnswers: UserAnswers, index: Int) : Call =
     userAnswers.get(IndividualBeneficiaryIncomeYesNoPage(index)) match {
       case Some(false) => routes.IndividualBeneficiaryIncomeController.onPageLoad(NormalMode, index)
-      case Some(true) => routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode)
+      case Some(true) => routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode, index)
       case _ => routes.SessionExpiredController.onPageLoad()
   }
 

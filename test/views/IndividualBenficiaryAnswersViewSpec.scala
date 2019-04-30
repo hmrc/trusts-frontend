@@ -20,12 +20,13 @@ import views.behaviours.ViewBehaviours
 import views.html.IndividualBenficiaryAnswersView
 
 class IndividualBenficiaryAnswersViewSpec extends ViewBehaviours {
+  val index = 0
 
   "IndividualBenficiaryAnswers view" must {
 
     val view = viewFor[IndividualBenficiaryAnswersView](Some(emptyUserAnswers))
 
-    val applyView = view.apply()(fakeRequest, messages)
+    val applyView = view.apply(index, Nil)(fakeRequest, messages)
 
     behave like normalPage(applyView, "individualBenficiaryAnswers")
 

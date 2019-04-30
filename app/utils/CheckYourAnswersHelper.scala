@@ -75,21 +75,23 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
-  def individualBeneficiaryNationalInsuranceNumber: Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryNationalInsuranceNumberPage) map {
+  def individualBeneficiaryNationalInsuranceNumber(index: Int): Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryNationalInsuranceNumberPage(index)) map {
     x =>
       AnswerRow(
         "individualBeneficiaryNationalInsuranceNumber.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(CheckMode).url
+        routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(CheckMode, index).url,
+        indBeneficiaryName(index,userAnswers)
       )
   }
 
-  def individualBeneficiaryNationalInsuranceYesNo: Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryNationalInsuranceYesNoPage) map {
+  def individualBeneficiaryNationalInsuranceYesNo(index: Int): Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryNationalInsuranceYesNoPage(index)) map {
     x =>
       AnswerRow(
         "individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(CheckMode).url
+        routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(CheckMode, index).url,
+        indBeneficiaryName(index,userAnswers)
       )
   }
 
@@ -107,7 +109,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "individualBeneficiaryIncomeYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(CheckMode, index).url
+        routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(CheckMode, index).url,
+        indBeneficiaryName(index,userAnswers)
       )
   }
 
@@ -116,7 +119,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "individualBeneficiaryDateOfBirth.checkYourAnswersLabel",
         HtmlFormat.escape(x.format(dateFormatter)),
-        routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(CheckMode, index).url
+        routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(CheckMode, index).url,
+        indBeneficiaryName(index,userAnswers)
       )
   }
 
@@ -125,7 +129,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(CheckMode, index).url
+        routes.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(CheckMode, index).url,
+        indBeneficiaryName(index,userAnswers)
       )
   }
 
@@ -504,6 +509,10 @@ object CheckYourAnswersHelper {
 
   private def deceasedSettlorName(userAnswers: UserAnswers): String =
     userAnswers.get(SettlorsNamePage).get.toString
+
+  private def indBeneficiaryName(index: Int, userAnswers: UserAnswers): String = {
+    userAnswers.get(IndividualBeneficiaryNamePage(index)).get.toString
+  }
 
   private def ukAddress(address: UKAddress): Html = {
     val lines =

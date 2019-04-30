@@ -14,17 +14,34 @@
  * limitations under the License.
  *@
 
+@import controllers.routes._
+@import viewmodels.{AnswerSection, RepeaterAnswerSection, Section}
+
 @this(
-    main_template: MainTemplate
+main_template: MainTemplate,
+formHelper: FormWithCSRF
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@(index : Int, answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("individualBenficiaryAnswers.title")
-    ) {
+title = messages("individualBenficiaryAnswers.title")
+) {
 
-    @components.back_link()
+@components.back_link()
 
-    @components.heading("individualBenficiaryAnswers.heading")
+@components.heading("individualBenficiaryAnswers.heading")
+
+@for(section <- answerSections){
+    @{
+section match {
+        case a: AnswerSection => components.answer_section(a)
+        case r: RepeaterAnswerSection => components.repeater_answer_section(r)
+        }
+    }
+}
+
+@formHelper(action = IndividualBeneficiaryAnswersController.onSubmit(index), 'autoComplete -> "off") {
+@components.submit_button()
+}
 }

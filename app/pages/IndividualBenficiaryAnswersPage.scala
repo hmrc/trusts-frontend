@@ -16,11 +16,4 @@
 
 package pages
 
-import play.api.libs.json.JsPath
-
-final case class IndividualBeneficiaryNationalInsuranceYesNoPage(index : Int) extends QuestionPage[Boolean] {
-
-  override def path: JsPath = JsPath \  Beneficiaries \ IndividualBeneficiaries \ index \ toString
-
-  override def toString: String = "individualBeneficiaryNationalInsuranceYesNo"
-}
+case object IndividualBeneficiaryAnswersPage extends Page
