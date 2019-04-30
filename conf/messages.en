@@ -623,13 +623,16 @@ individualBeneficiaryDateOfBirth.error.past = Date of birth must be after 31 Dec
 individualBeneficiaryIncomeYesNo.title = Do the trustees have discretion over how much income {0}’s may get?
 individualBeneficiaryIncomeYesNo.heading = Do the trustees have discretion over how much income {0}’s may get?
 individualBeneficiaryIncomeYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0}’s may get?
+individualBeneficiaryIncomeYesNo.hint = See the trust deed for details
 individualBeneficiaryIncomeYesNo.error.required = Select yes if the trustees have discretion over how much income beneficiary may get
 
 individualBeneficiaryIncome.title = How much income does the trust deed say {0}’s will get?
 individualBeneficiaryIncome.heading = How much income does the trust deed say {0}’s will get?
 individualBeneficiaryIncome.checkYourAnswersLabel = How much income does the trust deed say {0}’s will get?
+individualBeneficiaryIncome.hint = Round this down to a whole number. This should be a percentage of the trust’s value.
 individualBeneficiaryIncome.error.required = Enter how much income the trust deeds says the beneficiary will get
 individualBeneficiaryIncome.error.length = How much income the trust deed says the beneficiary will get must be 100 or less
+individualBeneficiaryIncome.error.invalidFormat = How much income the trust deed says the beneficiary will get must be a whole number
 
 individualBeneficiaryNationalInsuranceYesNo.title = individualBeneficiaryNationalInsuranceYesNo
 individualBeneficiaryNationalInsuranceYesNo.heading = individualBeneficiaryNationalInsuranceYesNo

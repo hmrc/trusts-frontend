@@ -40,7 +40,8 @@
         @components.input_text(
           field = form("value"),
           label = messages("individualBeneficiaryIncome.heading", name.toString),
-          labelClass=Some("visually-hidden")
+          labelClass=Some("visually-hidden"),
+          hint = Some(messages(s"individualBeneficiaryIncome.hint"))
         )
 
         @components.submit_button()

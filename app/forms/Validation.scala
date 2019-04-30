@@ -28,6 +28,7 @@ object Validation {
   val addressLineRegex = "^[A-Za-z0-9 ,.()/&'-]*$"
   val clientRefRegex = "^[A-Za-z0-9&'`-]*$"
   val currencyRegex = "^[0-9]{1,12}$"
+  val numericRegex = "^[0-9]*$"
   val decimalCheck = "^[^.]*$"
 
 }
