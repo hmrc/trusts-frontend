@@ -14,22 +14,6 @@
  * limitations under the License.
  */
 
-package views
+package pages
 
-import views.behaviours.ViewBehaviours
-import views.html.IndividualBenficiaryAnswersView
-
-class IndividualBenficiaryAnswersViewSpec extends ViewBehaviours {
-  val index = 0
-
-  "IndividualBenficiaryAnswers view" must {
-
-    val view = viewFor[IndividualBenficiaryAnswersView](Some(emptyUserAnswers))
-
-    val applyView = view.apply(index, Nil)(fakeRequest, messages)
-
-    behave like normalPage(applyView, "individualBenficiaryAnswers")
-
-    behave like pageWithBackLink(applyView)
-  }
-}
+case object IndividualBeneficiaryAnswersPage extends Page

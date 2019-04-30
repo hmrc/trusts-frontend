@@ -693,5 +693,5 @@ addABeneficiary.2 = 2
 addABeneficiary.checkYourAnswersLabel = AddABeneficiary
 addABeneficiary.error.required = Select addABeneficiary
 
-individualBenficiaryAnswers.title = individualBenficiaryAnswers
-individualBenficiaryAnswers.heading = individualBenficiaryAnswers
+individualBenficiaryAnswers.title = Check beneficiary details
+individualBenficiaryAnswers.heading = Check beneficiary details
