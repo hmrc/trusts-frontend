@@ -68,7 +68,8 @@ class IndividualBeneficiaryAnswersController @Inject()(
             answers.individualBeneficiaryDateOfBirth(index),
             answers.individualBeneficiaryIncomeYesNo(index),
             answers.individualBeneficiaryNationalInsuranceYesNo(index),
-            answers.individualBeneficiaryNationalInsuranceNumber(index)
+            answers.individualBeneficiaryNationalInsuranceNumber(index),
+            answers.individualBeneficiaryVulnerableYesNo(index)
           ).flatten
         )
       )
