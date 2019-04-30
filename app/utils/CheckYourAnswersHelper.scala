@@ -80,7 +80,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "individualBeneficiaryNationalInsuranceNumber.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(CheckMode, index).url
+        routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(CheckMode, index).url,
+        indBeneficiaryName(index,userAnswers)
       )
   }
 
@@ -89,7 +90,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(CheckMode, index).url
+        routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(CheckMode, index).url,
+        indBeneficiaryName(index,userAnswers)
       )
   }
 
