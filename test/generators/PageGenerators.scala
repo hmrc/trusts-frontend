@@ -36,11 +36,11 @@ trait PageGenerators {
   implicit lazy val arbitraryIndividualBeneficiaryAdressYesNoPage: Arbitrary[IndividualBeneficiaryAdressYesNoPage.type] =
     Arbitrary(IndividualBeneficiaryAdressYesNoPage)
 
-  implicit lazy val arbitraryIndividualBeneficiaryNationalInsuranceNumberPage: Arbitrary[IndividualBeneficiaryNationalInsuranceNumberPage.type] =
-    Arbitrary(IndividualBeneficiaryNationalInsuranceNumberPage)
+  implicit lazy val arbitraryIndividualBeneficiaryNationalInsuranceNumberPage: Arbitrary[IndividualBeneficiaryNationalInsuranceNumberPage] =
+    Arbitrary(IndividualBeneficiaryNationalInsuranceNumberPage(0))
 
-  implicit lazy val arbitraryIndividualBeneficiaryNationalInsuranceYesNoPage: Arbitrary[IndividualBeneficiaryNationalInsuranceYesNoPage.type] =
-    Arbitrary(IndividualBeneficiaryNationalInsuranceYesNoPage)
+  implicit lazy val arbitraryIndividualBeneficiaryNationalInsuranceYesNoPage: Arbitrary[IndividualBeneficiaryNationalInsuranceYesNoPage] =
+    Arbitrary(IndividualBeneficiaryNationalInsuranceYesNoPage(0))
 
   implicit lazy val arbitraryIndividualBeneficiaryIncomePage: Arbitrary[IndividualBeneficiaryIncomePage.type] =
     Arbitrary(IndividualBeneficiaryIncomePage)

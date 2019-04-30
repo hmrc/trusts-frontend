@@ -75,21 +75,21 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
-  def individualBeneficiaryNationalInsuranceNumber: Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryNationalInsuranceNumberPage) map {
+  def individualBeneficiaryNationalInsuranceNumber(index: Int): Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryNationalInsuranceNumberPage(index)) map {
     x =>
       AnswerRow(
         "individualBeneficiaryNationalInsuranceNumber.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(CheckMode).url
+        routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(CheckMode, index).url
       )
   }
 
-  def individualBeneficiaryNationalInsuranceYesNo: Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryNationalInsuranceYesNoPage) map {
+  def individualBeneficiaryNationalInsuranceYesNo(index: Int): Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryNationalInsuranceYesNoPage(index)) map {
     x =>
       AnswerRow(
         "individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(CheckMode).url
+        routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(CheckMode, index).url
       )
   }
 

@@ -81,7 +81,7 @@ trait BeneficiaryRoutes {
         userAnswers =>
           val answers = userAnswers.set(IndividualBeneficiaryIncomeYesNoPage(indexForBeneficiary), value = true).success.value
           navigator.nextPage(IndividualBeneficiaryIncomeYesNoPage(indexForBeneficiary), NormalMode)(answers)
-            .mustBe(routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode))
+            .mustBe(routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode, indexForBeneficiary))
       }
     }
 
@@ -89,15 +89,15 @@ trait BeneficiaryRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(IndividualBeneficiaryIncomePage, NormalMode)(userAnswers)
-            .mustBe(routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode))
+            .mustBe(routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode, indexForBeneficiary))
       }
     }
 
     "go to IndividualBeneficiaryAdressYesNoPage from IndividualBeneficiaryNationalInsuranceYesNoPage when user answers no" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          val answers = userAnswers.set(IndividualBeneficiaryNationalInsuranceYesNoPage, value = false).success.value
-          navigator.nextPage(IndividualBeneficiaryNationalInsuranceYesNoPage, NormalMode)(answers)
+          val answers = userAnswers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(indexForBeneficiary), value = false).success.value
+          navigator.nextPage(IndividualBeneficiaryNationalInsuranceYesNoPage(indexForBeneficiary), NormalMode)(answers)
             .mustBe(routes.IndividualBeneficiaryAdressYesNoController.onPageLoad(NormalMode))
       }
     }
@@ -105,16 +105,16 @@ trait BeneficiaryRoutes {
     "go to IndividualBeneficiaryNationalInsuranceNumberPage from IndividualBeneficiaryNationalInsuranceYesNoPage when user answers yes" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          val answers = userAnswers.set(IndividualBeneficiaryNationalInsuranceYesNoPage, value = true).success.value
-          navigator.nextPage(IndividualBeneficiaryNationalInsuranceYesNoPage, NormalMode)(answers)
-            .mustBe(routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(NormalMode))
+          val answers = userAnswers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(indexForBeneficiary), value = true).success.value
+          navigator.nextPage(IndividualBeneficiaryNationalInsuranceYesNoPage(indexForBeneficiary), NormalMode)(answers)
+            .mustBe(routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(NormalMode, indexForBeneficiary))
       }
     }
 
     "go to IndividualBeneficiaryVulnerableYesNoPage from IndividualBeneficiaryNationalInsuranceNumberPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          navigator.nextPage(IndividualBeneficiaryNationalInsuranceNumberPage, NormalMode)(userAnswers)
+          navigator.nextPage(IndividualBeneficiaryNationalInsuranceNumberPage(indexForBeneficiary), NormalMode)(userAnswers)
             .mustBe(routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode))
       }
     }
