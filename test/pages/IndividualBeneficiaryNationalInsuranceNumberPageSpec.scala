@@ -23,10 +23,10 @@ class IndividualBeneficiaryNationalInsuranceNumberPageSpec extends PageBehaviour
 
   "IndividualBeneficiaryNationalInsuranceNumberPage" must {
 
-    beRetrievable[String](IndividualBeneficiaryNationalInsuranceNumberPage)
+    beRetrievable[String](IndividualBeneficiaryNationalInsuranceNumberPage(0))
 
-    beSettable[String](IndividualBeneficiaryNationalInsuranceNumberPage)
+    beSettable[String](IndividualBeneficiaryNationalInsuranceNumberPage(0))
 
-    beRemovable[String](IndividualBeneficiaryNationalInsuranceNumberPage)
+    beRemovable[String](IndividualBeneficiaryNationalInsuranceNumberPage(0))
   }
 }
