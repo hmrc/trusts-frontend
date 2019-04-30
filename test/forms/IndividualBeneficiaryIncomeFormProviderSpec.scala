@@ -17,13 +17,15 @@
 package forms
 
 import forms.behaviours.StringFieldBehaviours
+import org.scalacheck.Gen
 import play.api.data.FormError
+import wolfendale.scalacheck.regexp.RegexpGen
 
 class IndividualBeneficiaryIncomeFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "individualBeneficiaryIncome.error.required"
   val lengthKey = "individualBeneficiaryIncome.error.length"
-  val maxLength = 100
+  val invalid = "individualBeneficiaryIncome.error.invalid"
 
   val form = new IndividualBeneficiaryIncomeFormProvider()()
 
@@ -34,14 +36,7 @@ class IndividualBeneficiaryIncomeFormProviderSpec extends StringFieldBehaviours 
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
-    )
-
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+      RegexpGen.from(Validation.percentageRegex)
     )
 
     behave like mandatoryField(
@@ -49,5 +44,24 @@ class IndividualBeneficiaryIncomeFormProviderSpec extends StringFieldBehaviours 
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
     )
+
+    behave like fieldWithRegexpWithGenerator(
+      form,
+      fieldName,
+      regexp = Validation.numericRegex,
+      generator = nonEmptyString,
+      error = FormError(fieldName, invalid, Seq(Validation.numericRegex))
+    )
+
+
+    behave like fieldWithRegexpWithGenerator(
+      form,
+      fieldName,
+      Validation.percentageRegex,
+      generator =  intsInRange(0,1000),
+      error = FormError(fieldName, lengthKey, Seq(Validation.percentageRegex))
+    )
+
+
   }
 }

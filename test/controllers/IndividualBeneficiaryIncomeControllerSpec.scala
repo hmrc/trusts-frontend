@@ -66,7 +66,7 @@ class IndividualBeneficiaryIncomeControllerSpec extends SpecBase {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryIncomePage(index), "answer").success.value
-        .set(IndividualBeneficiaryNamePage(0),name).success.value
+        .set(IndividualBeneficiaryNamePage(index),name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -96,7 +96,7 @@ class IndividualBeneficiaryIncomeControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, individualBeneficiaryIncomeRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("value", "100"))
 
       val result = route(application, request).value
 

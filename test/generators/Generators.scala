@@ -52,6 +52,13 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
     genIntersperseString(numberGen.toString, ",")
   }
 
+  def intsInRange(min: Int, max: Int): Gen[String] = {
+    Gen.choose(min, max).map{
+      value=> value.toString
+    }
+  }
+
+
   def intsLargerThanMaxValue: Gen[BigInt] =
     arbitrary[BigInt] suchThat(x => x > Int.MaxValue)
 

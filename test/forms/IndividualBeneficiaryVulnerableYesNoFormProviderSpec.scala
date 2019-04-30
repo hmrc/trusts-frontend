@@ -41,5 +41,7 @@ class IndividualBeneficiaryVulnerableYesNoFormProviderSpec extends BooleanFieldB
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
     )
+
+
   }
 }

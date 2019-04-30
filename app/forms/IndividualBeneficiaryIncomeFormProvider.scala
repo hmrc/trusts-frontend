@@ -29,8 +29,8 @@ class IndividualBeneficiaryIncomeFormProvider @Inject() extends Mappings {
         .verifying(
           firstError(
             isNotEmpty("value", "individualBeneficiaryIncome.error.required"),
-            regexp(Validation.numericRegex, "individualBeneficiaryIncome.error.invalidFormat"),
-            maxLength(2, "individualBeneficiaryIncome.error.length")
+            regexp(Validation.numericRegex, "individualBeneficiaryIncome.error.invalid"),
+            regexp(Validation.percentageRegex, "individualBeneficiaryIncome.error.length")
           )
         )
     )
