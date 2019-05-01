@@ -16,6 +16,10 @@
 
 package pages
 
+import java.time.LocalDate
+
+import models.UserAnswers
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
 class IndividualBeneficiaryDateOfBirthYesNoPageSpec extends PageBehaviours {
@@ -27,5 +31,16 @@ class IndividualBeneficiaryDateOfBirthYesNoPageSpec extends PageBehaviours {
     beSettable[Boolean](IndividualBeneficiaryDateOfBirthYesNoPage(0))
 
     beRemovable[Boolean](IndividualBeneficiaryDateOfBirthYesNoPage(0))
+  }
+
+
+  "remove IndividualBeneficiaryDateOfBirth when IndividualBeneficiaryDateOfBirthYesNoPage is set to false" in {
+    forAll(arbitrary[UserAnswers]) {
+      initial =>
+        val answers: UserAnswers = initial.set(IndividualBeneficiaryDateOfBirthPage(0), LocalDate.now).success.value
+        val result = answers.set(IndividualBeneficiaryDateOfBirthYesNoPage(0), false).success.value
+
+        result.get(IndividualBeneficiaryDateOfBirthPage(0)) mustNot be(defined)
+    }
   }
 }
