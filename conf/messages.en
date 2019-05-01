@@ -595,14 +595,14 @@ individualBeneficiaryName.checkYourAnswersLabel = What is the name of the indivi
 individualBeneficiaryName.firstName = First name
 individualBeneficiaryName.middleName = Middle name (optional)
 individualBeneficiaryName.lastName = Last name
-individualBeneficiaryName.error.firstname.required = Enter the named individual''s first name
-individualBeneficiaryName.error.lastname.required = Enter the named individual''s last name
-individualBeneficiaryName.error.firstname.length = Named individual''s first name must be 35 characters or less
-individualBeneficiaryName.error.middlename.length = Named individual''s middle name must be 35 characters or less
-individualBeneficiaryName.error.lastname.length = Named individual''s last name must be 35 characters or less
-individualBeneficiaryName.error.firstname.invalid = Named individual''s first name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
-individualBeneficiaryName.error.middlename.invalid = Named individual''s middle name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
-individualBeneficiaryName.error.lastname.invalid = Named individual''s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+individualBeneficiaryName.error.firstname.required = Enter the individual beneficiary’s first name
+individualBeneficiaryName.error.lastname.required = Enter the individual beneficiary’s last name
+individualBeneficiaryName.error.firstname.length = The individual beneficiary’s first name must be 35 characters or less
+individualBeneficiaryName.error.middlename.length = The individual beneficiary’s middle name must be 35 characters or less
+individualBeneficiaryName.error.lastname.length = The individual beneficiary’s last name must be 35 characters or less
+individualBeneficiaryName.error.firstname.invalid = The individual beneficiary’s first name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+individualBeneficiaryName.error.middlename.invalid = The individual beneficiary’s middle name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+individualBeneficiaryName.error.lastname.invalid = The individual beneficiary’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
 
 individualBeneficiaryDateOfBirthYesNo.title = Do you know {0}’s date of birth?
@@ -620,19 +620,19 @@ individualBeneficiaryDateOfBirth.error.invalid = Enter a real date of birth
 individualBeneficiaryDateOfBirth.error.future = Date of birth must be today or in the past
 individualBeneficiaryDateOfBirth.error.past = Date of birth must be after 31 December 1499
 
-individualBeneficiaryIncomeYesNo.title = Do the trustees have discretion over how much income {0}’s may get?
-individualBeneficiaryIncomeYesNo.heading = Do the trustees have discretion over how much income {0}’s may get?
-individualBeneficiaryIncomeYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0}’s may get?
+individualBeneficiaryIncomeYesNo.title = Do the trustees have discretion over how much income {0} may get?
+individualBeneficiaryIncomeYesNo.heading = Do the trustees have discretion over how much income {0} may get?
+individualBeneficiaryIncomeYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
 individualBeneficiaryIncomeYesNo.hint = See the trust deed for details
-individualBeneficiaryIncomeYesNo.error.required = Select yes if the trustees have discretion over how much income beneficiary may get
+individualBeneficiaryIncomeYesNo.error.required = Select yes if the trustees have discretion over how much income the individual beneficiary may get
 
-individualBeneficiaryIncome.title = How much income does the trust deed say {0}’s will get?
-individualBeneficiaryIncome.heading = How much income does the trust deed say {0}’s will get?
-individualBeneficiaryIncome.checkYourAnswersLabel = How much income does the trust deed say {0}’s will get?
+individualBeneficiaryIncome.title = How much income does the trust deed say {0} will get?
+individualBeneficiaryIncome.heading = How much income does the trust deed say {0} will get?
+individualBeneficiaryIncome.checkYourAnswersLabel = How much income does the trust deed say {0} will get?
 individualBeneficiaryIncome.hint = Round this down to a whole number. This should be a percentage of the trust’s value.
-individualBeneficiaryIncome.error.required = Enter how much income the trust deeds says the beneficiary will get
-individualBeneficiaryIncome.error.length = How much income the trust deed says the beneficiary will get must be 100 or less
-individualBeneficiaryIncome.error.invalid = How much income the trust deed says the beneficiary will get must be a whole number
+individualBeneficiaryIncome.error.required = Enter how much income the trust deed says the individual beneficiary will get
+individualBeneficiaryIncome.error.length = How much income the trust deed says the individual beneficiary will get must be 100 or less
+individualBeneficiaryIncome.error.invalid = How much income the trust deed says the individual beneficiary will get must be a whole number
 
 individualBeneficiaryNationalInsuranceYesNo.title = Do you know {0}’s National Insurance number?
 individualBeneficiaryNationalInsuranceYesNo.heading = Do you know {0}’s National Insurance number?
@@ -647,10 +647,10 @@ individualBeneficiaryNationalInsuranceNumber.error.required = Enter the individu
 individualBeneficiaryNationalInsuranceNumber.error.length = Individual beneficiary’s National Insurance number must be 9 characters or less
 individualBeneficiaryNationalInsuranceNumber.error.invalid = Enter the individual beneficiary’s National Insurance number in the correct format
 
-individualBeneficiaryAdressYesNo.title = individualBeneficiaryAdressYesNo
-individualBeneficiaryAdressYesNo.heading = individualBeneficiaryAdressYesNo
-individualBeneficiaryAdressYesNo.checkYourAnswersLabel = individualBeneficiaryAdressYesNo
-individualBeneficiaryAdressYesNo.error.required = Select yes if individualBeneficiaryAdressYesNo
+individualBeneficiaryAdressYesNo.title = Do you know {0}’s address?
+individualBeneficiaryAdressYesNo.heading = Do you know {0}’s address?
+individualBeneficiaryAdressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+individualBeneficiaryAdressYesNo.error.required = Select yes if you know the individual beneficiary’s address
 
 individualBeneficiaryAddressUK.title = individualBeneficiaryAddressUK
 individualBeneficiaryAddressUK.heading = individualBeneficiaryAddressUK
@@ -662,10 +662,10 @@ individualBeneficiaryAddressUK.error.field2.required = Enter field2
 individualBeneficiaryAddressUK.error.field1.length = field1 must be 100 characters or less
 individualBeneficiaryAddressUK.error.field2.length = field2 must be 100 characters or less
 
-individualBeneficiaryVulnerableYesNo.title = Is {0} elected as a vulnerable beneficiary?
-individualBeneficiaryVulnerableYesNo.heading = Is {0} elected as a vulnerable beneficiary?
-individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel = Is {0} elected as a vulnerable beneficiary?
-individualBeneficiaryVulnerableYesNo.error.required = Select yes if individual beneficiary is elected as a vulnerable beneficiary
+individualBeneficiaryVulnerableYesNo.title = Has a vulnerable person election form (VPE1) been submitted to HMRC for {0}?
+individualBeneficiaryVulnerableYesNo.heading = Has a vulnerable person election form (VPE1) been submitted to HMRC for {0}?
+individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel = Has a vulnerable person election form (VPE1) been submitted to HMRC for {0}?
+individualBeneficiaryVulnerableYesNo.error.required = Select yes if a vulnerable person election form (VPE1) has been submitted to HMRC for the individual beneficiary
 
 individualBeneficiaryInfo.title = Information you need to add a beneficiary
 individualBeneficiaryInfo.heading = Information you need to add a beneficiary
