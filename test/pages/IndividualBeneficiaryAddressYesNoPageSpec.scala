@@ -22,10 +22,10 @@ class IndividualBeneficiaryAddressYesNoPageSpec extends PageBehaviours {
 
   "IndividualBeneficiaryAddressYesNoPage" must {
 
-    beRetrievable[Boolean](IndividualBeneficiaryAddressYesNoPage)
+    beRetrievable[Boolean](IndividualBeneficiaryAddressYesNoPage(0))
 
-    beSettable[Boolean](IndividualBeneficiaryAddressYesNoPage)
+    beSettable[Boolean](IndividualBeneficiaryAddressYesNoPage(0))
 
-    beRemovable[Boolean](IndividualBeneficiaryAddressYesNoPage)
+    beRemovable[Boolean](IndividualBeneficiaryAddressYesNoPage(0))
   }
 }

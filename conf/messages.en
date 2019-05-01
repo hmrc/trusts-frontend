@@ -647,9 +647,9 @@ individualBeneficiaryNationalInsuranceNumber.error.required = Enter the individu
 individualBeneficiaryNationalInsuranceNumber.error.length = Individual beneficiary’s National Insurance number must be 9 characters or less
 individualBeneficiaryNationalInsuranceNumber.error.invalid = Enter the individual beneficiary’s National Insurance number in the correct format
 
-individualBeneficiaryAddressYesNo.title = individualBeneficiaryAddressYesNo
-individualBeneficiaryAddressYesNo.heading = individualBeneficiaryAddressYesNo
-individualBeneficiaryAddressYesNo.checkYourAnswersLabel = individualBeneficiaryAddressYesNo
+individualBeneficiaryAddressYesNo.title = Does {0}’s live in the UK?
+individualBeneficiaryAddressYesNo.heading = Does {0}’s live in the UK?
+individualBeneficiaryAddressYesNo.checkYourAnswersLabel = Does {0}’s live in the UK?
 individualBeneficiaryAddressYesNo.error.required = Select yes if you know the individual beneficiary’s address
 
 individualBeneficiaryAddressUK.title = individualBeneficiaryAddressUK

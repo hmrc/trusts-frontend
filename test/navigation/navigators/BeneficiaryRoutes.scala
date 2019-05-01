@@ -98,7 +98,7 @@ trait BeneficiaryRoutes {
         userAnswers =>
           val answers = userAnswers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(indexForBeneficiary), value = false).success.value
           navigator.nextPage(IndividualBeneficiaryNationalInsuranceYesNoPage(indexForBeneficiary), NormalMode)(answers)
-            .mustBe(routes.IndividualBeneficiaryAddressYesNoController.onPageLoad(NormalMode))
+            .mustBe(routes.IndividualBeneficiaryAddressYesNoController.onPageLoad(NormalMode, indexForBeneficiary))
       }
     }
 
@@ -122,8 +122,8 @@ trait BeneficiaryRoutes {
     "go to IndividualBeneficiaryAddressUKPage from IndividualBeneficiaryAddressYesNoPage when user answers yes" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          val answers = userAnswers.set(IndividualBeneficiaryAddressYesNoPage, value = true).success.value
-          navigator.nextPage(IndividualBeneficiaryAddressYesNoPage, NormalMode)(answers)
+          val answers = userAnswers.set(IndividualBeneficiaryAddressYesNoPage(indexForBeneficiary), value = true).success.value
+          navigator.nextPage(IndividualBeneficiaryAddressYesNoPage(indexForBeneficiary), NormalMode)(answers)
             .mustBe(routes.IndividualBeneficiaryAddressUKController.onPageLoad(NormalMode))
       }
     }
@@ -131,8 +131,8 @@ trait BeneficiaryRoutes {
     "go to IndividualBeneficiaryVulnerableYesNoPage from IndividualBeneficiaryAddressYesNoPage when user answers no" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          val answers = userAnswers.set(IndividualBeneficiaryAddressYesNoPage, value = false).success.value
-          navigator.nextPage(IndividualBeneficiaryAddressYesNoPage, NormalMode)(answers)
+          val answers = userAnswers.set(IndividualBeneficiaryAddressYesNoPage(indexForBeneficiary), value = false).success.value
+          navigator.nextPage(IndividualBeneficiaryAddressYesNoPage(indexForBeneficiary), NormalMode)(answers)
             .mustBe(routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, indexForBeneficiary))
       }
     }

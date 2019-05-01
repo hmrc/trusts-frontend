@@ -67,12 +67,13 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
-  def individualBeneficiaryAddressYesNo: Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryAddressYesNoPage) map {
+  def individualBeneficiaryAddressYesNo(index: Int): Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryAddressYesNoPage(index)) map {
     x =>
       AnswerRow(
         "individualBeneficiaryAddressYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.IndividualBeneficiaryAddressYesNoController.onPageLoad(CheckMode).url
+        routes.IndividualBeneficiaryAddressYesNoController.onPageLoad(CheckMode, index).url,
+        indBeneficiaryName(index,userAnswers)
       )
   }
 
