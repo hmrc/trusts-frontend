@@ -18,14 +18,14 @@ package pages
 
 import pages.behaviours.PageBehaviours
 
-class IndividualBeneficiaryAdressYesNoPageSpec extends PageBehaviours {
+class IndividualBeneficiaryAddressYesNoPageSpec extends PageBehaviours {
 
-  "IndividualBeneficiaryAdressYesNoPage" must {
+  "IndividualBeneficiaryAddressYesNoPage" must {
 
-    beRetrievable[Boolean](IndividualBeneficiaryAdressYesNoPage)
+    beRetrievable[Boolean](IndividualBeneficiaryAddressYesNoPage)
 
-    beSettable[Boolean](IndividualBeneficiaryAdressYesNoPage)
+    beSettable[Boolean](IndividualBeneficiaryAddressYesNoPage)
 
-    beRemovable[Boolean](IndividualBeneficiaryAdressYesNoPage)
+    beRemovable[Boolean](IndividualBeneficiaryAddressYesNoPage)
   }
 }

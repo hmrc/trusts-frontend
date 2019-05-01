@@ -316,10 +316,10 @@ POST       /beneficiaries/individual/:index/national-insurance-number           
 GET        /beneficiaries/individual/:index/change-national-insurance-number                  controllers.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(mode: Mode = CheckMode,index: Int)
 POST       /beneficiaries/individual/:index/change-national-insurance-number                  controllers.IndividualBeneficiaryNationalInsuranceNumberController.onSubmit(mode: Mode = CheckMode,index: Int)
 
-GET        /individualBeneficiaryAdressYesNo                        controllers.IndividualBeneficiaryAdressYesNoController.onPageLoad(mode: Mode = NormalMode)
-POST       /individualBeneficiaryAdressYesNo                        controllers.IndividualBeneficiaryAdressYesNoController.onSubmit(mode: Mode = NormalMode)
-GET        /changeIndividualBeneficiaryAdressYesNo                  controllers.IndividualBeneficiaryAdressYesNoController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeIndividualBeneficiaryAdressYesNo                  controllers.IndividualBeneficiaryAdressYesNoController.onSubmit(mode: Mode = CheckMode)
+GET        /individualBeneficiaryAddressYesNo                        controllers.IndividualBeneficiaryAddressYesNoController.onPageLoad(mode: Mode = NormalMode)
+POST       /individualBeneficiaryAddressYesNo                        controllers.IndividualBeneficiaryAddressYesNoController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIndividualBeneficiaryAddressYesNo                  controllers.IndividualBeneficiaryAddressYesNoController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIndividualBeneficiaryAddressYesNo                  controllers.IndividualBeneficiaryAddressYesNoController.onSubmit(mode: Mode = CheckMode)
 
 GET        /individualBeneficiaryAddressUK                        controllers.IndividualBeneficiaryAddressUKController.onPageLoad(mode: Mode = NormalMode)
 POST       /individualBeneficiaryAddressUK                        controllers.IndividualBeneficiaryAddressUKController.onSubmit(mode: Mode = NormalMode)

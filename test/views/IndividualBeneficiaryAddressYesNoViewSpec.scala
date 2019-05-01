@@ -17,22 +17,22 @@
 package views
 
 import controllers.routes
-import forms.IndividualBeneficiaryAdressYesNoFormProvider
+import forms.IndividualBeneficiaryAddressYesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.IndividualBeneficiaryAdressYesNoView
+import views.html.IndividualBeneficiaryAddressYesNoView
 
-class IndividualBeneficiaryAdressYesNoViewSpec extends YesNoViewBehaviours {
+class IndividualBeneficiaryAddressYesNoViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "individualBeneficiaryAdressYesNo"
+  val messageKeyPrefix = "individualBeneficiaryAddressYesNo"
 
-  val form = new IndividualBeneficiaryAdressYesNoFormProvider()()
+  val form = new IndividualBeneficiaryAddressYesNoFormProvider()()
 
-  "IndividualBeneficiaryAdressYesNo view" must {
+  "IndividualBeneficiaryAddressYesNo view" must {
 
-    val view = viewFor[IndividualBeneficiaryAdressYesNoView](Some(emptyUserAnswers))
+    val view = viewFor[IndividualBeneficiaryAddressYesNoView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode)(fakeRequest, messages)
@@ -41,6 +41,6 @@ class IndividualBeneficiaryAdressYesNoViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.IndividualBeneficiaryAdressYesNoController.onSubmit(NormalMode).url)
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.IndividualBeneficiaryAddressYesNoController.onSubmit(NormalMode).url)
   }
 }

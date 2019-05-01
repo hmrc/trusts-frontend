@@ -99,7 +99,7 @@ class Navigator @Inject()() {
     case IndividualBeneficiaryIncomePage(index) => _ => _ => routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode, index)
     case IndividualBeneficiaryNationalInsuranceYesNoPage(index) => _ => ua => individualBeneficiaryNationalInsuranceYesNoRoute(ua, index)
     case IndividualBeneficiaryNationalInsuranceNumberPage(index) => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index)
-    case IndividualBeneficiaryAdressYesNoPage => _ => individualBeneficiaryAddressRoute
+    case IndividualBeneficiaryAddressYesNoPage => _ => individualBeneficiaryAddressRoute
     case IndividualBeneficiaryAddressUKPage => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, 0)
     case IndividualBeneficiaryVulnerableYesNoPage(index) => _ => _ => routes.IndividualBeneficiaryAnswersController.onPageLoad(index)
     case IndividualBeneficiaryAnswersPage => _ => _ => routes.AddABeneficiaryController.onPageLoad(NormalMode)
@@ -108,7 +108,7 @@ class Navigator @Inject()() {
   }
 
   private def individualBeneficiaryAddressRoute(userAnswers: UserAnswers) : Call =
-    userAnswers.get(IndividualBeneficiaryAdressYesNoPage) match {
+    userAnswers.get(IndividualBeneficiaryAddressYesNoPage) match {
       case Some(false) => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, 0)
       case Some(true) => routes.IndividualBeneficiaryAddressUKController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
@@ -116,7 +116,7 @@ class Navigator @Inject()() {
 
   private def individualBeneficiaryNationalInsuranceYesNoRoute(userAnswers: UserAnswers, index: Int) : Call =
     userAnswers.get(IndividualBeneficiaryNationalInsuranceYesNoPage(index)) match {
-      case Some(false) => routes.IndividualBeneficiaryAdressYesNoController.onPageLoad(NormalMode)
+      case Some(false) => routes.IndividualBeneficiaryAddressYesNoController.onPageLoad(NormalMode)
       case Some(true) => routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(NormalMode, index)
       case _ => routes.SessionExpiredController.onPageLoad()
   }
