@@ -35,12 +35,11 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("individualBeneficiaryVulnerableYesNo.heading", Some(name.toString))
-
         @components.input_yes_no(
             field = form("value"),
             label = messages("individualBeneficiaryVulnerableYesNo.heading", name.toString),
-            labelClass = Some("visually-hidden")
+            labelClass = Some("heading-large"),
+            labelAsHeading = true
         )
 
         @components.submit_button()
