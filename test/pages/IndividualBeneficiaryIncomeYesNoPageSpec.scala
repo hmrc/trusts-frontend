@@ -16,6 +16,10 @@
 
 package pages
 
+import java.time.LocalDate
+
+import models.UserAnswers
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
 class IndividualBeneficiaryIncomeYesNoPageSpec extends PageBehaviours {
@@ -27,5 +31,16 @@ class IndividualBeneficiaryIncomeYesNoPageSpec extends PageBehaviours {
     beSettable[Boolean](IndividualBeneficiaryIncomeYesNoPage(0))
 
     beRemovable[Boolean](IndividualBeneficiaryIncomeYesNoPage(0))
+  }
+
+
+  "remove IndividualBeneficiaryIncome when IndividualBeneficiaryIncomeYesNoPage is set to true" in {
+    forAll(arbitrary[UserAnswers]) {
+      initial =>
+        val answers: UserAnswers = initial.set(IndividualBeneficiaryIncomePage(0), "100").success.value
+        val result = answers.set(IndividualBeneficiaryIncomeYesNoPage(0), true).success.value
+
+        result.get(IndividualBeneficiaryIncomePage(0)) mustNot be(defined)
+    }
   }
 }
