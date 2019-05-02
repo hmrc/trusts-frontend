@@ -39,16 +39,6 @@ class IndividualBeneficiaryAddressUKControllerSpec extends SpecBase {
 
   lazy val individualBeneficiaryAddressUKRoute = routes.IndividualBeneficiaryAddressUKController.onPageLoad(NormalMode, index).url
 
-//  val userAnswers = UserAnswers(
-//    userAnswersId,
-//    Json.obj(
-//      IndividualBeneficiaryAddressUKPage.toString -> Json.obj(
-//        "field1" -> "value 1",
-//        "field2" -> "value 2"
-//      )
-//    )
-//  )
-
   "IndividualBeneficiaryAddressUK Controller" must {
 
     "return OK and the correct view for a GET" in {
