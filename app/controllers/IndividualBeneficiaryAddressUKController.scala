@@ -17,11 +17,11 @@
 package controllers
 
 import controllers.actions._
-import forms.IndividualBeneficiaryAddressUKFormProvider
+import forms.{IndividualBeneficiaryAddressUKFormProvider, UKAddressFormProvider}
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.IndividualBeneficiaryAddressUKPage
+import pages.{IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -38,36 +38,47 @@ class IndividualBeneficiaryAddressUKController @Inject()(
                                       identify: IdentifierAction,
                                       getData: DataRetrievalAction,
                                       requireData: DataRequiredAction,
-                                      formProvider: IndividualBeneficiaryAddressUKFormProvider,
+                                      requiredAnswer: RequiredAnswerActionProvider,
+                                      formProvider: UKAddressFormProvider,
                                       val controllerComponents: MessagesControllerComponents,
                                       view: IndividualBeneficiaryAddressUKView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  private def actions(index: Int) =
+    identify andThen
+      getData andThen
+      requireData andThen
+      requiredAnswer(RequiredAnswer(IndividualBeneficiaryNamePage(index), routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode,index)))
+
+  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = actions(index) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(IndividualBeneficiaryAddressUKPage) match {
+      val name = request.userAnswers.get(IndividualBeneficiaryNamePage(index)).get
+
+      val preparedForm = request.userAnswers.get(IndividualBeneficiaryAddressUKPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, name, index))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = actions(index).async {
     implicit request =>
+
+      val name = request.userAnswers.get(IndividualBeneficiaryNamePage(index)).get
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, name, index))),
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(IndividualBeneficiaryAddressUKPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(IndividualBeneficiaryAddressUKPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(IndividualBeneficiaryAddressUKPage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(IndividualBeneficiaryAddressUKPage(index), mode)(updatedAnswers))
         }
       )
   }

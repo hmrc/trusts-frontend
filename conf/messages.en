@@ -652,15 +652,15 @@ individualBeneficiaryAdressYesNo.heading = individualBeneficiaryAdressYesNo
 individualBeneficiaryAdressYesNo.checkYourAnswersLabel = individualBeneficiaryAdressYesNo
 individualBeneficiaryAdressYesNo.error.required = Select yes if you know the individual beneficiary’s address
 
-individualBeneficiaryAddressUK.title = individualBeneficiaryAddressUK
-individualBeneficiaryAddressUK.heading = individualBeneficiaryAddressUK
-individualBeneficiaryAddressUK.field1 = Field 1
-individualBeneficiaryAddressUK.field2 = Field 2
-individualBeneficiaryAddressUK.checkYourAnswersLabel = individualBeneficiaryAddressUK
-individualBeneficiaryAddressUK.error.field1.required = Enter field1
-individualBeneficiaryAddressUK.error.field2.required = Enter field2
-individualBeneficiaryAddressUK.error.field1.length = field1 must be 100 characters or less
-individualBeneficiaryAddressUK.error.field2.length = field2 must be 100 characters or less
+individualBeneficiaryAddressUK.title = What is {0}’s last known address?
+individualBeneficiaryAddressUK.heading = What is {0}’s last known address?
+individualBeneficiaryAddressUK.line1 = Address line 1
+individualBeneficiaryAddressUK.line2 = Address line 2 (optional)
+individualBeneficiaryAddressUK.line3 = Address line 3 (optional)
+individualBeneficiaryAddressUK.townOrCity = Town or city
+individualBeneficiaryAddressUK.postcode = Postcode
+individualBeneficiaryAddressUK.postcode.hint = For example AB1 1AB
+individualBeneficiaryAddressUK.checkYourAnswersLabel = What is {0}’s last known address?
 
 individualBeneficiaryVulnerableYesNo.title = Has a vulnerable person election form (VPE1) been submitted to HMRC for {0}?
 individualBeneficiaryVulnerableYesNo.heading = Has a vulnerable person election form (VPE1) been submitted to HMRC for {0}?

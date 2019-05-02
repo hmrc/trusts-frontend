@@ -58,12 +58,12 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
-  def individualBeneficiaryAddressUK: Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryAddressUKPage) map {
+  def individualBeneficiaryAddressUK(index: Int): Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryAddressUKPage(index)) map {
     x =>
       AnswerRow(
         "individualBeneficiaryAddressUK.checkYourAnswersLabel",
-        HtmlFormat.escape(s"${x.field1} ${x.field2}"),
-        routes.IndividualBeneficiaryAddressUKController.onPageLoad(CheckMode).url
+        ukAddress(x),
+        routes.IndividualBeneficiaryAddressUKController.onPageLoad(CheckMode, index).url
       )
   }
 

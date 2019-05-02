@@ -16,17 +16,17 @@
 
 package pages
 
-import models.IndividualBeneficiaryAddressUK
+import models.{IndividualBeneficiaryAddressUK, UKAddress}
 import pages.behaviours.PageBehaviours
 
 class IndividualBeneficiaryAddressUKPageSpec extends PageBehaviours {
 
   "IndividualBeneficiaryAddressUKPage" must {
 
-    beRetrievable[IndividualBeneficiaryAddressUK](IndividualBeneficiaryAddressUKPage)
+    beRetrievable[UKAddress](IndividualBeneficiaryAddressUKPage(0))
 
-    beSettable[IndividualBeneficiaryAddressUK](IndividualBeneficiaryAddressUKPage)
+    beSettable[UKAddress](IndividualBeneficiaryAddressUKPage(0))
 
-    beRemovable[IndividualBeneficiaryAddressUK](IndividualBeneficiaryAddressUKPage)
+    beRemovable[UKAddress](IndividualBeneficiaryAddressUKPage(0))
   }
 }

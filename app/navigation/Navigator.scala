@@ -99,18 +99,18 @@ class Navigator @Inject()() {
     case IndividualBeneficiaryIncomePage(index) => _ => _ => routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode, index)
     case IndividualBeneficiaryNationalInsuranceYesNoPage(index) => _ => ua => individualBeneficiaryNationalInsuranceYesNoRoute(ua, index)
     case IndividualBeneficiaryNationalInsuranceNumberPage(index) => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index)
-    case IndividualBeneficiaryAdressYesNoPage => _ => individualBeneficiaryAddressRoute
-    case IndividualBeneficiaryAddressUKPage => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, 0)
+    case IndividualBeneficiaryAdressYesNoPage => _ => ua =>  individualBeneficiaryAddressRoute(ua, 0)
+    case IndividualBeneficiaryAddressUKPage(index) => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index)
     case IndividualBeneficiaryVulnerableYesNoPage(index) => _ => _ => routes.IndividualBeneficiaryAnswersController.onPageLoad(index)
     case IndividualBeneficiaryAnswersPage => _ => _ => routes.AddABeneficiaryController.onPageLoad(NormalMode)
     //  Default
     case _ => _ => _ => routes.IndexController.onPageLoad()
   }
 
-  private def individualBeneficiaryAddressRoute(userAnswers: UserAnswers) : Call =
+  private def individualBeneficiaryAddressRoute(userAnswers: UserAnswers, index: Int) : Call =
     userAnswers.get(IndividualBeneficiaryAdressYesNoPage) match {
-      case Some(false) => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, 0)
-      case Some(true) => routes.IndividualBeneficiaryAddressUKController.onPageLoad(NormalMode)
+      case Some(false) => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index)
+      case Some(true) => routes.IndividualBeneficiaryAddressUKController.onPageLoad(NormalMode, index)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
 

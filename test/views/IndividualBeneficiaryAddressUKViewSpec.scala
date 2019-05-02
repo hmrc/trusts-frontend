@@ -18,7 +18,7 @@ package views
 
 import controllers.routes
 import forms.IndividualBeneficiaryAddressUKFormProvider
-import models.{NormalMode, IndividualBeneficiaryAddressUK}
+import models.{FullName, IndividualBeneficiaryAddressUK, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
@@ -27,6 +27,10 @@ import views.html.IndividualBeneficiaryAddressUKView
 class IndividualBeneficiaryAddressUKViewSpec extends QuestionViewBehaviours[IndividualBeneficiaryAddressUK] {
 
   val messageKeyPrefix = "individualBeneficiaryAddressUK"
+  val postcodeHintKey = "individualBeneficiaryAddressUK.postcode.hint"
+  val index = 0
+  val name = "First Last"
+  val fullName = FullName("First", None, "Last")
 
   override val form = new IndividualBeneficiaryAddressUKFormProvider()()
 
@@ -35,10 +39,9 @@ class IndividualBeneficiaryAddressUKViewSpec extends QuestionViewBehaviours[Indi
     val view = viewFor[IndividualBeneficiaryAddressUKView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, NormalMode, fullName, index)(fakeRequest, messages)
 
-
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name)
 
     behave like pageWithBackLink(applyView(form))
 
@@ -46,8 +49,12 @@ class IndividualBeneficiaryAddressUKViewSpec extends QuestionViewBehaviours[Indi
       form,
       applyView,
       messageKeyPrefix,
-      routes.IndividualBeneficiaryAddressUKController.onSubmit(NormalMode).url,
-      Seq(("field1", None), ("field2", None))
+      routes.IndividualBeneficiaryAddressUKController.onSubmit(NormalMode, index).url,
+      Seq(("line1",None), ("line2",None), ("line3", None), ("townOrCity", None), ("postcode", Some(postcodeHintKey))),
+      name.toString
     )
+
+    behave like pageWithASubmitButton(applyView(form))
+
   }
 }

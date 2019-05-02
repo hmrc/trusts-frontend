@@ -16,34 +16,56 @@
 
 @import controllers.routes._
 @import models.Mode
+@import models.FullName
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, name: FullName, index: Int)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("individualBeneficiaryAddressUK.title")}"
+    title = s"${errorPrefix(form)} ${messages("individualBeneficiaryAddressUK.title", name.toString)}"
     ) {
 
-    @formHelper(action = IndividualBeneficiaryAddressUKController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = IndividualBeneficiaryAddressUKController.onSubmit(mode, index), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("individualBeneficiaryAddressUK.heading")
+        @components.heading("individualBeneficiaryAddressUK.heading", Some(name.toString))
 
         @components.input_text(
-            field = form("field1"),
-            label = messages("individualBeneficiaryAddressUK.field1")
+            field = form("line1"),
+            label = messages("individualBeneficiaryAddressUK.line1"),
+            inputClass = Some("form-control-3-4")
         )
 
         @components.input_text(
-            field = form("field2"),
-            label = messages("individualBeneficiaryAddressUK.field2")
+            field = form("line2"),
+            label = messages("individualBeneficiaryAddressUK.line2"),
+            inputClass = Some("form-control-3-4")
+        )
+
+        @components.input_text(
+            field = form("line3"),
+            label = messages("individualBeneficiaryAddressUK.line3"),
+            inputClass = Some("form-control-3-4")
+        )
+
+        @components.input_text(
+            field = form("townOrCity"),
+            label = messages("individualBeneficiaryAddressUK.townOrCity"),
+            inputClass = Some("form-control-2-3")
+        )
+
+        @components.input_text(
+            field = form("postcode"),
+            label = messages("individualBeneficiaryAddressUK.postcode"),
+            hint = Some(messages(s"individualBeneficiaryAddressUK.postcode.hint")),
+            inputClass = Some("form-control-1-4")
         )
 
         @components.submit_button()
