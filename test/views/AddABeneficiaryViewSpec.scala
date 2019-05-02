@@ -52,7 +52,7 @@ class AddABeneficiaryViewSpec extends OptionsViewBehaviours with TabularDataView
 
   "AddABeneficiaryView" when {
 
-    "there is no trustee data" must {
+    "there is no beneficiary data" must {
 
       behave like normalPage(applyView(form), messageKeyPrefix)
 
