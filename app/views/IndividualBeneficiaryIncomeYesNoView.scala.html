@@ -39,7 +39,8 @@
             field = form("value"),
             label = messages("individualBeneficiaryIncomeYesNo.heading", name.toString),
             labelClass = Some("heading-large"),
-            hint = Some(messages(s"individualBeneficiaryIncomeYesNo.hint"))
+            hint = Some(messages(s"individualBeneficiaryIncomeYesNo.hint")),
+            labelAsHeading = true
         )
 
         @components.submit_button()

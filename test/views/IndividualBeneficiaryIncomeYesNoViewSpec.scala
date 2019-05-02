@@ -39,7 +39,7 @@ class IndividualBeneficiaryIncomeYesNoViewSpec extends YesNoViewBehaviours {
     val userAnswers = UserAnswers(userAnswersId)
       .set(IndividualBeneficiaryNamePage(index), fullName).success.value
 
-    val view = viewFor[IndividualBeneficiaryIncomeYesNoView](Some(emptyUserAnswers))
+    val view = viewFor[IndividualBeneficiaryIncomeYesNoView](Some(userAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fullName, index)(fakeRequest, messages)
@@ -48,7 +48,14 @@ class IndividualBeneficiaryIncomeYesNoViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.IndividualBeneficiaryIncomeYesNoController.onSubmit(NormalMode, index).url, None, Seq(fullName.toString))
+    behave like yesNoPage(
+      form,
+      applyView,
+      messageKeyPrefix,
+      routes.IndividualBeneficiaryIncomeYesNoController.onSubmit(NormalMode, index).url,
+      None,
+      Seq(fullName.toString)
+    )
 
     behave like pageWithASubmitButton(applyView(form))
   }

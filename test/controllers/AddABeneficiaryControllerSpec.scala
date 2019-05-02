@@ -39,7 +39,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
   val form = formProvider()
 
   val individualBeneficiary = List(
-    AddRow("First Last", typeLabel = "Named Individual", "#", "#")
+    AddRow("First Last", typeLabel = "Individual Beneficiary", "#", "#")
   )
 
   val userAnswersWithBeneficiariesComplete = UserAnswers(userAnswersId)
@@ -90,7 +90,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswersWithBeneficiariesComplete)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, addABeneficiaryRoute)
@@ -105,7 +105,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, Nil, Nil)(fakeRequest, messages).toString
 
       application.stop()
     }
