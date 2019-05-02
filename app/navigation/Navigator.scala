@@ -100,7 +100,7 @@ class Navigator @Inject()() {
     case IndividualBeneficiaryNationalInsuranceYesNoPage(index) => _ => ua => individualBeneficiaryNationalInsuranceYesNoRoute(ua, index)
     case IndividualBeneficiaryNationalInsuranceNumberPage(index) => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index)
     case IndividualBeneficiaryAddressYesNoPage(index) => _ => ua => individualBeneficiaryAddressRoute(ua, index)
-    case IndividualBeneficiaryAddressUKPage => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, 0)
+    case IndividualBeneficiaryAddressUKPage(index)  => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index)
     case IndividualBeneficiaryVulnerableYesNoPage(index) => _ => _ => routes.IndividualBeneficiaryAnswersController.onPageLoad(index)
     case IndividualBeneficiaryAnswersPage => _ => _ => routes.AddABeneficiaryController.onPageLoad(NormalMode)
     //  Default
@@ -109,8 +109,8 @@ class Navigator @Inject()() {
 
   private def individualBeneficiaryAddressRoute(userAnswers: UserAnswers, index: Int) : Call =
     userAnswers.get(IndividualBeneficiaryAddressYesNoPage(index)) match {
-      case Some(false) => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, 0)
-      case Some(true) => routes.IndividualBeneficiaryAddressUKController.onPageLoad(NormalMode)
+      case Some(false) => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index)
+      case Some(true) => routes.IndividualBeneficiaryAddressUKController.onPageLoad(NormalMode, index)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
 

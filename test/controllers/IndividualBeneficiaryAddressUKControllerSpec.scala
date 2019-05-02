@@ -17,10 +17,10 @@
 package controllers
 
 import base.SpecBase
-import forms.IndividualBeneficiaryAddressUKFormProvider
-import models.{NormalMode, IndividualBeneficiaryAddressUK, UserAnswers}
+import forms.{IndividualBeneficiaryAddressUKFormProvider, UKAddressFormProvider}
+import models.{FullName, IndividualBeneficiaryAddressUK, NormalMode, UKAddress, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.IndividualBeneficiaryAddressUKPage
+import pages.{IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryNamePage}
 import play.api.inject.bind
 import play.api.libs.json.Json
 import play.api.mvc.Call
@@ -32,42 +32,19 @@ class IndividualBeneficiaryAddressUKControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new IndividualBeneficiaryAddressUKFormProvider()
+  val formProvider = new UKAddressFormProvider()
   val form = formProvider()
+  val index: Int = 0
+  val name = FullName("first name", None, "Last name")
 
-  lazy val individualBeneficiaryAddressUKRoute = routes.IndividualBeneficiaryAddressUKController.onPageLoad(NormalMode).url
-
-  val userAnswers = UserAnswers(
-    userAnswersId,
-    Json.obj(
-      IndividualBeneficiaryAddressUKPage.toString -> Json.obj(
-        "field1" -> "value 1",
-        "field2" -> "value 2"
-      )
-    )
-  )
+  lazy val individualBeneficiaryAddressUKRoute = routes.IndividualBeneficiaryAddressUKController.onPageLoad(NormalMode, index).url
 
   "IndividualBeneficiaryAddressUK Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      val request = FakeRequest(GET, individualBeneficiaryAddressUKRoute)
-
-      val view = application.injector.instanceOf[IndividualBeneficiaryAddressUKView]
-
-      val result = route(application, request).value
-
-      status(result) mustEqual OK
-
-      contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
-
-      application.stop()
-    }
-
-    "populate the view correctly on a GET when the question has previously been answered" in {
+      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryNamePage(index),
+        name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -80,21 +57,46 @@ class IndividualBeneficiaryAddressUKControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(IndividualBeneficiaryAddressUK("value 1", "value 2")), NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, name, index)(request, messages).toString
+
+      application.stop()
+    }
+
+    "populate the view correctly on a GET when the question has previously been answered" in {
+
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(IndividualBeneficiaryAddressUKPage(index),  UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")).success.value.set(IndividualBeneficiaryNamePage(index),
+        name).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, individualBeneficiaryAddressUKRoute)
+
+      val view = application.injector.instanceOf[IndividualBeneficiaryAddressUKView]
+
+      val result = route(application, request).value
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(form.fill(UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")), NormalMode, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
+      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryNamePage(index),
+        name).success.value
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
         FakeRequest(POST, individualBeneficiaryAddressUKRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+          .withFormUrlEncodedBody(("line1", "value 1"), ("townOrCity", "value 2"),("postcode", "NE1 1ZZ"))
 
       val result = route(application, request).value
 
@@ -107,7 +109,10 @@ class IndividualBeneficiaryAddressUKControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryNamePage(index),
+        name).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, individualBeneficiaryAddressUKRoute)
@@ -122,7 +127,7 @@ class IndividualBeneficiaryAddressUKControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -147,7 +152,7 @@ class IndividualBeneficiaryAddressUKControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, individualBeneficiaryAddressUKRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+          .withFormUrlEncodedBody(("line1", "value 1"), ("townOrCity", "value 2"),("postcode", "NE1 1ZZ"))
 
       val result = route(application, request).value
 
