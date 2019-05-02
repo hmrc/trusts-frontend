@@ -16,18 +16,18 @@
 
 package models
 
-import play.api.libs.json._
 import viewmodels.RadioOption
 
 sealed trait AddABeneficiary
 
 object AddABeneficiary extends Enumerable.Implicits {
 
-  case object One extends WithName("1") with AddABeneficiary
-  case object Two extends WithName("2") with AddABeneficiary
+  case object YesNow extends WithName("add-them-now") with AddABeneficiary
+  case object YesLater extends WithName("add-them-later") with AddABeneficiary
+  case object NoComplete extends WithName("no-complete") with AddABeneficiary
 
   val values: List[AddABeneficiary] = List(
-    One, Two
+    YesNow, YesLater, NoComplete
   )
 
   val options: List[RadioOption] = values.map {

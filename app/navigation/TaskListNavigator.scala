@@ -57,7 +57,7 @@ class TaskListNavigator @Inject()() {
   private def beneficiaryRoute(answers: UserAnswers) = {
     answers.get(IndividualBeneficiaries).getOrElse(Nil) match {
       case _ :: _ =>
-        routes.AddABeneficiaryController.onPageLoad(NormalMode)
+        routes.AddABeneficiaryController.onPageLoad()
       case Nil =>
         routes.IndividualBeneficiaryInfoController.onPageLoad()
     }

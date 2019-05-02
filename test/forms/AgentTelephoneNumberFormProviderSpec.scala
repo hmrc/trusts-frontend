@@ -20,7 +20,7 @@ import forms.behaviours.StringFieldBehaviours
 import org.scalacheck.Arbitrary.arbitrary
 import play.api.data.FormError
 
-class AgentTelephoneNumberSpec extends StringFieldBehaviours {
+class AgentTelephoneNumberFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "agentTelephoneNumber.error.required"
   val lengthKey = "agentTelephoneNumber.error.length"

@@ -19,7 +19,7 @@ package navigation.navigators
 import base.SpecBase
 import controllers.routes
 import generators.Generators
-import models.{NormalMode, UserAnswers}
+import models.{AddABeneficiary, FullName, NormalMode, UserAnswers}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
@@ -29,8 +29,64 @@ import pages._
 trait BeneficiaryRoutes {
   self: PropertyChecks with Generators with SpecBase =>
 
-
   def beneficiaryRoutes()(implicit navigator: Navigator) = {
+
+    "there are no beneficiaries" must {
+
+      "go to the next beneficiary from AddABeneficiaryPage when selected add them now" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(AddABeneficiaryPage, AddABeneficiary.YesNow).success.value
+              .remove(Beneficiaries).success.value
+
+            navigator.nextPage(AddABeneficiaryPage, NormalMode)(answers)
+              .mustBe(routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, 0))
+        }
+      }
+
+    }
+
+    "there is atleast one beneficiary" must {
+
+      "go to the next benficiary from AddABeneficiaryPage when selected add them now" in {
+
+        val answers = UserAnswers(userAnswersId)
+          .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
+          .set(AddABeneficiaryPage, AddABeneficiary.YesNow).success.value
+
+        navigator.nextPage(AddABeneficiaryPage, NormalMode)(answers)
+          .mustBe(routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, 1))
+      }
+
+    }
+
+    "go to RegistrationProgress from AddABeneficiaryPage when selecting add them later" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers
+            .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
+            .set(AddABeneficiaryPage, AddABeneficiary.YesLater).success.value
+
+          navigator.nextPage(AddABeneficiaryPage, NormalMode)(answers)
+            .mustBe(routes.TaskListController.onPageLoad())
+      }
+    }
+
+    "go to RegistrationProgress from AddABeneficiaryPage when selecting added them all" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers
+            .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
+            .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
+
+          navigator.nextPage(AddABeneficiaryPage, NormalMode)(answers)
+            .mustBe(routes.TaskListController.onPageLoad())
+      }
+    }
+
     val indexForBeneficiary = 0
 
     "go to IndividualBeneficiaryDateOfBirthYesNoPage from IndividualBeneficiaryNamePage" in {
@@ -157,7 +213,7 @@ trait BeneficiaryRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(IndividualBeneficiaryAnswersPage, NormalMode)(userAnswers)
-            .mustBe(routes.AddABeneficiaryController.onPageLoad(NormalMode))
+            .mustBe(routes.AddABeneficiaryController.onPageLoad())
       }
     }
 

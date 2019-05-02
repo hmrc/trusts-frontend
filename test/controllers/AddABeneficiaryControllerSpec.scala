@@ -18,30 +18,40 @@ package controllers
 
 import base.SpecBase
 import forms.AddABeneficiaryFormProvider
-import models.{NormalMode, AddABeneficiary, UserAnswers}
+import models.{AddABeneficiary, FullName, IndividualOrBusiness, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.AddABeneficiaryPage
+import pages._
 import play.api.inject.bind
 import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import viewmodels.AddRow
 import views.html.AddABeneficiaryView
 
 class AddABeneficiaryControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  lazy val addABeneficiaryRoute = routes.AddABeneficiaryController.onPageLoad(NormalMode).url
+  lazy val addABeneficiaryRoute = routes.AddABeneficiaryController.onPageLoad().url
 
   val formProvider = new AddABeneficiaryFormProvider()
   val form = formProvider()
+
+  val individualBeneficiary = List(
+    AddRow("First Last", typeLabel = "Individual Beneficiary", "#", "#")
+  )
+
+  val userAnswersWithBeneficiariesComplete = UserAnswers(userAnswersId)
+    .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
+    .set(IndividualBeneficiaryVulnerableYesNoPage(0), true).success.value
+
 
   "AddABeneficiary Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithBeneficiariesComplete)).build()
 
       val request = FakeRequest(GET, addABeneficiaryRoute)
 
@@ -52,35 +62,16 @@ class AddABeneficiaryControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, Nil, individualBeneficiary)(fakeRequest, messages).toString
 
       application.stop()
     }
 
-    "populate the view correctly on a GET when the question has previously been answered" in {
-
-      val userAnswers = UserAnswers(userAnswersId).set(AddABeneficiaryPage, AddABeneficiary.values.head).success.value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-      val request = FakeRequest(GET, addABeneficiaryRoute)
-
-      val view = application.injector.instanceOf[AddABeneficiaryView]
-
-      val result = route(application, request).value
-
-      status(result) mustEqual OK
-
-      contentAsString(result) mustEqual
-        view(form.fill(AddABeneficiary.values.head), NormalMode)(fakeRequest, messages).toString
-
-      application.stop()
-    }
 
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswersWithBeneficiariesComplete))
           .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
@@ -114,7 +105,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, Nil, Nil)(fakeRequest, messages).toString
 
       application.stop()
     }

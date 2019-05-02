@@ -27,6 +27,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import utils.AddABeneficiaryViewHelper
 import views.html.AddABeneficiaryView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -45,7 +46,10 @@ class AddABeneficiaryController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  private def routes =
+    identify andThen getData andThen requireData
+
+  def onPageLoad(mode: Mode): Action[AnyContent] = routes {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(AddABeneficiaryPage) match {
@@ -53,15 +57,22 @@ class AddABeneficiaryController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      val beneficiaries = new AddABeneficiaryViewHelper(request.userAnswers).rows
+
+      Ok(view(preparedForm, mode, beneficiaries.inProgress, beneficiaries.complete))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = routes.async {
     implicit request =>
 
       form.bindFromRequest().fold(
-        (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+        (formWithErrors: Form[_]) => {
+
+          val beneficiaries = new AddABeneficiaryViewHelper(request.userAnswers).rows
+
+          Future.successful(BadRequest(view(formWithErrors, mode, beneficiaries.inProgress, beneficiaries.complete)))
+
+        },
 
         value => {
           for {
