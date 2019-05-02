@@ -16,16 +16,11 @@
 
 package pages
 
-import pages.behaviours.PageBehaviours
+import play.api.libs.json.JsPath
 
-class IndividualBeneficiaryAdressYesNoPageSpec extends PageBehaviours {
+case class IndividualBeneficiaryAddressYesNoPage(index : Int) extends QuestionPage[Boolean] {
 
-  "IndividualBeneficiaryAdressYesNoPage" must {
+  override def path: JsPath = JsPath \  Beneficiaries \ IndividualBeneficiaries \ index \ toString
 
-    beRetrievable[Boolean](IndividualBeneficiaryAdressYesNoPage)
-
-    beSettable[Boolean](IndividualBeneficiaryAdressYesNoPage)
-
-    beRemovable[Boolean](IndividualBeneficiaryAdressYesNoPage)
-  }
+  override def toString: String = "individualBeneficiaryAddressYesNo"
 }

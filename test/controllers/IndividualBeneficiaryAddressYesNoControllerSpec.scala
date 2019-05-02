@@ -17,75 +17,84 @@
 package controllers
 
 import base.SpecBase
-import forms.IndividualBeneficiaryAdressYesNoFormProvider
-import models.{NormalMode, UserAnswers}
+import forms.IndividualBeneficiaryAddressYesNoFormProvider
+import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.IndividualBeneficiaryAdressYesNoPage
+import pages.{IndividualBeneficiaryAddressYesNoPage, IndividualBeneficiaryNamePage}
 import play.api.inject.bind
 import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.IndividualBeneficiaryAdressYesNoView
+import views.html.IndividualBeneficiaryAddressYesNoView
 
-class IndividualBeneficiaryAdressYesNoControllerSpec extends SpecBase {
+class IndividualBeneficiaryAddressYesNoControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new IndividualBeneficiaryAdressYesNoFormProvider()
+  val formProvider = new IndividualBeneficiaryAddressYesNoFormProvider()
   val form = formProvider()
+  val index: Int = 0
+  val name = FullName("first name", None, "Last name")
 
-  lazy val individualBeneficiaryAdressYesNoRoute = routes.IndividualBeneficiaryAdressYesNoController.onPageLoad(NormalMode).url
+  lazy val individualBeneficiaryAddressYesNoRoute = routes.IndividualBeneficiaryAddressYesNoController.onPageLoad(NormalMode, index).url
 
-  "IndividualBeneficiaryAdressYesNo Controller" must {
+  "IndividualBeneficiaryAddressYesNo Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryNamePage(index),
+        name).success.value
 
-      val request = FakeRequest(GET, individualBeneficiaryAdressYesNoRoute)
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, individualBeneficiaryAddressYesNoRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[IndividualBeneficiaryAdressYesNoView]
+      val view = application.injector.instanceOf[IndividualBeneficiaryAddressYesNoView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryAdressYesNoPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryAddressYesNoPage(index), true).success.value
+        .set(IndividualBeneficiaryNamePage(index),name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, individualBeneficiaryAdressYesNoRoute)
+      val request = FakeRequest(GET, individualBeneficiaryAddressYesNoRoute)
 
-      val view = application.injector.instanceOf[IndividualBeneficiaryAdressYesNoView]
+      val view = application.injector.instanceOf[IndividualBeneficiaryAddressYesNoView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
+      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryNamePage(index),
+        name).success.value
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
-        FakeRequest(POST, individualBeneficiaryAdressYesNoRoute)
+        FakeRequest(POST, individualBeneficiaryAddressYesNoRoute)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
@@ -99,22 +108,25 @@ class IndividualBeneficiaryAdressYesNoControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryNamePage(index),
+        name).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
-        FakeRequest(POST, individualBeneficiaryAdressYesNoRoute)
+        FakeRequest(POST, individualBeneficiaryAddressYesNoRoute)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[IndividualBeneficiaryAdressYesNoView]
+      val view = application.injector.instanceOf[IndividualBeneficiaryAddressYesNoView]
 
       val result = route(application, request).value
 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -123,7 +135,7 @@ class IndividualBeneficiaryAdressYesNoControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, individualBeneficiaryAdressYesNoRoute)
+      val request = FakeRequest(GET, individualBeneficiaryAddressYesNoRoute)
 
       val result = route(application, request).value
 
@@ -139,7 +151,7 @@ class IndividualBeneficiaryAdressYesNoControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, individualBeneficiaryAdressYesNoRoute)
+        FakeRequest(POST, individualBeneficiaryAddressYesNoRoute)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
