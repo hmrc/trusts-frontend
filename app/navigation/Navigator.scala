@@ -98,11 +98,12 @@ class Navigator @Inject()() {
     case IndividualBeneficiaryIncomeYesNoPage(index) => _ => ua => individualBeneficiaryIncomeRoute(ua, index)
     case IndividualBeneficiaryIncomePage(index) => _ => _ => routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode, index)
     case IndividualBeneficiaryNationalInsuranceYesNoPage(index) => _ => ua => individualBeneficiaryNationalInsuranceYesNoRoute(ua, index)
-    case IndividualBeneficiaryNationalInsuranceNumberPage(index) => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index)
+    case IndividualBeneficiaryNationalInsuranceNumberPage(index) => _ => _ =>
+      routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index)
     case IndividualBeneficiaryAddressYesNoPage(index) => _ => ua => individualBeneficiaryAddressRoute(ua, index)
     case IndividualBeneficiaryAddressUKPage(index)  => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index)
     case IndividualBeneficiaryVulnerableYesNoPage(index) => _ => _ => routes.IndividualBeneficiaryAnswersController.onPageLoad(index)
-    case IndividualBeneficiaryAnswersPage => _ => _ => routes.AddABeneficiaryController.onPageLoad(NormalMode)
+    case IndividualBeneficiaryAnswersPage => _ => _ => routes.AddABeneficiaryController.onPageLoad()
 
     case AddABeneficiaryPage => _ => addABeneficiaryRoute
 

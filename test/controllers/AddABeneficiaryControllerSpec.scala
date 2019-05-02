@@ -33,7 +33,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  lazy val addABeneficiaryRoute = routes.AddABeneficiaryController.onPageLoad(NormalMode).url
+  lazy val addABeneficiaryRoute = routes.AddABeneficiaryController.onPageLoad().url
 
   val formProvider = new AddABeneficiaryFormProvider()
   val form = formProvider()

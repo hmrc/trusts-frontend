@@ -92,7 +92,7 @@ class TaskListNavigatorSpec extends SpecBase {
         "go to AddABeneficiary" in {
           val answers = UserAnswers(userAnswersId)
             .set(IndividualBeneficiaryNamePage(0), FullName("individual",None, "beneficiary")).success.value
-          navigator.nextPage(Beneficiaries, answers) mustBe routes.AddABeneficiaryController.onPageLoad(NormalMode)
+          navigator.nextPage(Beneficiaries, answers) mustBe routes.AddABeneficiaryController.onPageLoad()
         }
 
       }

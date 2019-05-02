@@ -44,7 +44,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "addABeneficiary.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"addABeneficiary.$x")),
-        routes.AddABeneficiaryController.onPageLoad(CheckMode).url
+        routes.AddABeneficiaryController.onPageLoad().url
       )
   }
 
