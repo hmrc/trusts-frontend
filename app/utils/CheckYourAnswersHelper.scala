@@ -24,7 +24,7 @@ import models.{CheckMode, InternationalAddress, UKAddress, UserAnswers}
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
-import utils.CheckYourAnswersHelper.{trusteeName, _}
+import utils.CheckYourAnswersHelper.{indBeneficiaryName, trusteeName, _}
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerRow
 
@@ -63,7 +63,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "individualBeneficiaryAddressUK.checkYourAnswersLabel",
         ukAddress(x),
-        routes.IndividualBeneficiaryAddressUKController.onPageLoad(CheckMode, index).url
+        routes.IndividualBeneficiaryAddressUKController.onPageLoad(CheckMode, index).url,
+        indBeneficiaryName(index,userAnswers)
       )
   }
 

@@ -140,7 +140,7 @@ trait BeneficiaryRoutes {
     "go to IndividualBeneficiaryVulnerableYesNoPage from IndividualBeneficiaryAddressUKPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          navigator.nextPage(IndividualBeneficiaryAddressUKPage, NormalMode)(userAnswers)
+          navigator.nextPage(IndividualBeneficiaryAddressUKPage(indexForBeneficiary), NormalMode)(userAnswers)
             .mustBe(routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, indexForBeneficiary))
       }
     }

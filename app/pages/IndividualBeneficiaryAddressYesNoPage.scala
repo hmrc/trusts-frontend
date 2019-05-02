@@ -16,11 +16,23 @@
 
 package pages
 
+import models.UserAnswers
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 case class IndividualBeneficiaryAddressYesNoPage(index : Int) extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \  Beneficiaries \ IndividualBeneficiaries \ index \ toString
 
   override def toString: String = "individualBeneficiaryAddressYesNo"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
+    value match {
+      case Some(false) =>
+        userAnswers.remove(IndividualBeneficiaryAddressUKPage(index))
+      case _ => super.cleanup(value, userAnswers)
+    }
+  }
+
 }
