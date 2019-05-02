@@ -652,15 +652,15 @@ individualBeneficiaryAddressYesNo.heading = Do you know {0}’s address?
 individualBeneficiaryAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
 individualBeneficiaryAddressYesNo.error.required = Select yes if you know the individual beneficiary’s address
 
-individualBeneficiaryAddressUK.title = What is {0}’s last known address?
-individualBeneficiaryAddressUK.heading = What is {0}’s last known address?
+individualBeneficiaryAddressUK.title = What is {0}’s address?
+individualBeneficiaryAddressUK.heading = What is {0}’s address?
 individualBeneficiaryAddressUK.line1 = Address line 1
 individualBeneficiaryAddressUK.line2 = Address line 2 (optional)
 individualBeneficiaryAddressUK.line3 = Address line 3 (optional)
 individualBeneficiaryAddressUK.townOrCity = Town or city
 individualBeneficiaryAddressUK.postcode = Postcode
 individualBeneficiaryAddressUK.postcode.hint = For example AB1 1AB
-individualBeneficiaryAddressUK.checkYourAnswersLabel = What is {0}’s last known address?
+individualBeneficiaryAddressUK.checkYourAnswersLabel = What is {0}’s address?
 
 individualBeneficiaryVulnerableYesNo.title = Has a vulnerable person election form (VPE1) been submitted to HMRC for {0}?
 individualBeneficiaryVulnerableYesNo.heading = Has a vulnerable person election form (VPE1) been submitted to HMRC for {0}?
