@@ -16,6 +16,8 @@
 
 package pages
 
+import models.{UKAddress, UserAnswers}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
 class IndividualBeneficiaryNationalInsuranceYesNoPageSpec extends PageBehaviours {
@@ -27,5 +29,31 @@ class IndividualBeneficiaryNationalInsuranceYesNoPageSpec extends PageBehaviours
     beSettable[Boolean](IndividualBeneficiaryNationalInsuranceYesNoPage(0))
 
     beRemovable[Boolean](IndividualBeneficiaryNationalInsuranceYesNoPage(0))
+  }
+
+
+  "remove IndividualBeneficiaryNationalInsuranceNumberPage when IndividualBeneficiaryNationalInsuranceYesNoPage is set to false" in {
+    val index = 0
+    forAll(arbitrary[UserAnswers], arbitrary[String]) {
+      (initial, str) =>
+        val answers: UserAnswers = initial.set(IndividualBeneficiaryNationalInsuranceNumberPage(index), str).success.value
+        val result = answers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), false).success.value
+
+        result.get(IndividualBeneficiaryNationalInsuranceNumberPage(index)) mustNot be(defined)
+    }
+  }
+
+  "remove relevant Data when IndividualBeneficiaryNationalInsuranceYesNoPage is set to true" in {
+    val index = 0
+    forAll(arbitrary[UserAnswers], arbitrary[String]) {
+      (initial, str) =>
+        val answers: UserAnswers = initial.set(IndividualBeneficiaryAddressYesNoPage(index), true).success.value
+          .set(IndividualBeneficiaryAddressUKPage(index), UKAddress(str, Some(str), Some(str), str, str)).success.value
+
+        val result = answers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), true).success.value
+
+        result.get(IndividualBeneficiaryAddressYesNoPage(index)) mustNot be(defined)
+        result.get(IndividualBeneficiaryAddressUKPage(index)) mustNot be(defined)
+    }
   }
 }
