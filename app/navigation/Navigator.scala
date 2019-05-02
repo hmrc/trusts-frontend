@@ -103,6 +103,9 @@ class Navigator @Inject()() {
     case IndividualBeneficiaryAddressUKPage(index)  => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index)
     case IndividualBeneficiaryVulnerableYesNoPage(index) => _ => _ => routes.IndividualBeneficiaryAnswersController.onPageLoad(index)
     case IndividualBeneficiaryAnswersPage => _ => _ => routes.AddABeneficiaryController.onPageLoad(NormalMode)
+
+    case AddABeneficiaryPage => _ => addABeneficiaryRoute
+
     //  Default
     case _ => _ => _ => routes.IndexController.onPageLoad()
   }
@@ -238,6 +241,31 @@ class Navigator @Inject()() {
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
+
+  private def addABeneficiaryRoute(answers: UserAnswers) = {
+    val addAnother = answers.get(AddABeneficiaryPage)
+
+    def routeToBeneficiaryIndex = {
+      val beneficiaries = answers.get(IndividualBeneficiaries).getOrElse(List.empty)
+      beneficiaries match {
+        case Nil =>
+          routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, 0)
+        case t if t.nonEmpty =>
+          routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, t.size)
+      }
+    }
+
+    addAnother match {
+      case Some(AddABeneficiary.YesNow) =>
+        routeToBeneficiaryIndex
+      case Some(AddABeneficiary.YesLater) =>
+        routes.TaskListController.onPageLoad()
+      case Some(AddABeneficiary.NoComplete) =>
+        routes.TaskListController.onPageLoad()
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
 
   private def trustHaveAUTRRoute(answers: UserAnswers, af: AffinityGroup) = {
     val condition = (answers.get(TrustRegisteredOnlinePage), answers.get(TrustHaveAUTRPage))

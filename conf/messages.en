@@ -690,12 +690,14 @@ individualBeneficiaryInfo.paragraph7 = Do not include named or specific employee
 individualBeneficiaryInfo.subheading5 = Other beneficiaries
 individualBeneficiaryInfo.paragraph8 = A short description for beneficiaries that do not fall into the other beneficiary types is needed. For example, pets.
 
-addABeneficiary.title = AddABeneficiary
-addABeneficiary.heading = AddABeneficiary
-addABeneficiary.1 = 1
-addABeneficiary.2 = 2
-addABeneficiary.checkYourAnswersLabel = AddABeneficiary
-addABeneficiary.error.required = Select addABeneficiary
+addABeneficiary.title = Add a beneficiary
+addABeneficiary.heading = Add a beneficiary
+addABeneficiary.additional-content = Do you want to add another beneficiary?
+addABeneficiary.add-them-now = Yes, I want to add them now
+addABeneficiary.add-them-later = Yes, I want to add them later
+addABeneficiary.no-complete = No, I have added all beneficiaries
+addABeneficiary.individualBeneficiary = Individual beneficiary
+addABeneficiary.error.required = Select yes if you want to add another beneficiary
 
 individualBenficiaryAnswers.title = Check beneficiary details
 individualBenficiaryAnswers.heading = Check beneficiary details

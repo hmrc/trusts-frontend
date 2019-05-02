@@ -17,14 +17,26 @@
 package views
 
 import forms.AddABeneficiaryFormProvider
-import models.{NormalMode, AddABeneficiary}
+import models.{AddABeneficiary, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.ViewBehaviours
+import viewmodels.AddRow
+import views.behaviours.{OptionsViewBehaviours, TabularDataViewBehaviours}
 import views.html.AddABeneficiaryView
 
-class AddABeneficiaryViewSpec extends ViewBehaviours {
+class AddABeneficiaryViewSpec extends OptionsViewBehaviours with TabularDataViewBehaviours {
 
+  val completeBeneficiaries = Seq(
+    AddRow("beneficiary one", "Individual Beneficiary", "#", "#"),
+    AddRow("beneficiary two", "Individual Beneficiary", "#", "#"),
+    AddRow("beneficiary three", "Individual Beneficiary", "#", "#")
+  )
+
+  val inProgressBeneficiaries = Seq(
+    AddRow("beneficiary four", "Individual Beneficiary", "#", "#"),
+    AddRow("beneficiary five", "Individual Beneficiary", "#", "#"),
+    AddRow("beneficiary six", "Individual Beneficiary", "#", "#")
+  )
   val messageKeyPrefix = "addABeneficiary"
 
   val form = new AddABeneficiaryFormProvider()()
@@ -32,44 +44,63 @@ class AddABeneficiaryViewSpec extends ViewBehaviours {
   val view = viewFor[AddABeneficiaryView](Some(emptyUserAnswers))
 
   def applyView(form: Form[_]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode)(fakeRequest, messages)
+    view.apply(form, NormalMode, Nil, Nil)(fakeRequest, messages)
 
-  "AddABeneficiaryView" must {
+  def applyView(form: Form[_], inProgressBeneficiaries: Seq[AddRow], completeBeneficiaries: Seq[AddRow]): HtmlFormat.Appendable =
+    view.apply(form, NormalMode, inProgressBeneficiaries, completeBeneficiaries)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
-
-    behave like pageWithBackLink(applyView(form))
-  }
 
   "AddABeneficiaryView" when {
 
-    "rendered" must {
+    "there is no trustee data" must {
 
-      "contain radio buttons for the value" in {
+      behave like normalPage(applyView(form), messageKeyPrefix)
 
-        val doc = asDocument(applyView(form))
+      behave like pageWithBackLink(applyView(form))
 
-        for (option <- AddABeneficiary.options) {
-          assertContainsRadioButton(doc, option.id, "value", option.value, false)
-        }
-      }
+      behave like pageWithNoTabularData(applyView(form))
+
+      behave like pageWithOptions(form, applyView, AddABeneficiary.options.toSet)
     }
 
-    for (option <- AddABeneficiary.options) {
+    "there is data in progress" must {
 
-      s"rendered with a value of '${option.value}'" must {
+      val viewWithData = applyView(form, inProgressBeneficiaries, Nil)
 
-        s"have the '${option.value}' radio button selected" in {
+      behave like normalPage(applyView(form), messageKeyPrefix)
 
-          val doc = asDocument(applyView(form.bind(Map("value" -> s"${option.value}"))))
+      behave like pageWithBackLink(applyView(form))
 
-          assertContainsRadioButton(doc, option.id, "value", option.value, true)
+      behave like pageWithInProgressTabularData(viewWithData, inProgressBeneficiaries)
 
-          for (unselectedOption <- AddABeneficiary.options.filterNot(o => o == option)) {
-            assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
-          }
-        }
-      }
+      behave like pageWithOptions(form, applyView, AddABeneficiary.options.toSet)
+    }
+
+    "there is complete data" must {
+
+      val viewWithData = applyView(form, Nil, completeBeneficiaries)
+
+      behave like normalPage(applyView(form), messageKeyPrefix)
+
+      behave like pageWithBackLink(applyView(form))
+
+      behave like pageWithCompleteTabularData(viewWithData, completeBeneficiaries)
+
+      behave like pageWithOptions(form, applyView, AddABeneficiary.options.toSet)
+    }
+
+    "there is both in progress and complete data" must {
+
+      val viewWithData = applyView(form, inProgressBeneficiaries, completeBeneficiaries)
+
+      behave like normalPage(applyView(form), messageKeyPrefix)
+
+      behave like pageWithBackLink(applyView(form))
+
+      behave like pageWithTabularData(viewWithData, inProgressBeneficiaries, completeBeneficiaries)
+
+      behave like pageWithOptions(form, applyView, AddABeneficiary.options.toSet)
     }
   }
+
 }

@@ -16,13 +16,14 @@
 
 @import controllers.routes._
 @import models.{Mode, AddABeneficiary}
+@import viewmodels.AddRow
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, inProgressIndividualBeneficiaries: Seq[AddRow], completeIndividualBeneficiaries: Seq[AddRow])(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("addABeneficiary.title")}"
@@ -35,6 +36,12 @@
         @components.error_summary(form.errors)
 
         @components.heading("addABeneficiary.heading")
+
+        @components.data_list(inProgressIndividualBeneficiaries, "inprogress", "individual beneficiary")
+
+        @components.data_list(completeIndividualBeneficiaries, "complete", "individual beneficiary")
+
+        <h2>@messages("addABeneficiary.additional-content")</h2>
 
         @components.input_radio(
             field = form("value"),
