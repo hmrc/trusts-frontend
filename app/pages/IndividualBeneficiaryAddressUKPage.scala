@@ -16,7 +16,7 @@
 
 package pages
 
-import models.{IndividualBeneficiaryAddressUK, UKAddress}
+import models.{ UKAddress}
 import play.api.libs.json.JsPath
 
 final case class  IndividualBeneficiaryAddressUKPage(index: Int) extends QuestionPage[UKAddress] {

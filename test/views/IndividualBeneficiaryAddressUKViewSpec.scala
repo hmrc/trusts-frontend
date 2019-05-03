@@ -17,14 +17,14 @@
 package views
 
 import controllers.routes
-import forms.IndividualBeneficiaryAddressUKFormProvider
-import models.{FullName, IndividualBeneficiaryAddressUK, NormalMode}
+import forms.{ UKAddressFormProvider}
+import models.{FullName, UKAddress, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
 import views.html.IndividualBeneficiaryAddressUKView
 
-class IndividualBeneficiaryAddressUKViewSpec extends QuestionViewBehaviours[IndividualBeneficiaryAddressUK] {
+class IndividualBeneficiaryAddressUKViewSpec extends QuestionViewBehaviours[UKAddress] {
 
   val messageKeyPrefix = "individualBeneficiaryAddressUK"
   val postcodeHintKey = "individualBeneficiaryAddressUK.postcode.hint"
@@ -32,7 +32,7 @@ class IndividualBeneficiaryAddressUKViewSpec extends QuestionViewBehaviours[Indi
   val name = "First Last"
   val fullName = FullName("First", None, "Last")
 
-  override val form = new IndividualBeneficiaryAddressUKFormProvider()()
+  override val form = new UKAddressFormProvider()()
 
   "IndividualBeneficiaryAddressUKView" must {
 

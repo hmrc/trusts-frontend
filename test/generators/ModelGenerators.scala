@@ -27,13 +27,6 @@ trait ModelGenerators {
       Gen.oneOf(AddABeneficiary.values.toSeq)
     }
 
-  implicit lazy val arbitraryIndividualBeneficiaryAddressUK: Arbitrary[IndividualBeneficiaryAddressUK] =
-    Arbitrary {
-      for {
-        field1 <- arbitrary[String]
-        field2 <- arbitrary[String]
-      } yield IndividualBeneficiaryAddressUK(field1, field2)
-    }
 
   implicit lazy val arbitraryIndividualBeneficiaryName: Arbitrary[IndividualBeneficiaryName] =
     Arbitrary {
