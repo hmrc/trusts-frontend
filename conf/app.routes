@@ -339,3 +339,8 @@ POST       /beneficiaries/add                        controllers.AddABeneficiary
 
 GET        /beneficiaries/individual/:index/check-answers                       controllers.IndividualBeneficiaryAnswersController.onPageLoad(index: Int)
 POST       /beneficiaries/individual/:index/check-answers                       controllers.IndividualBeneficiaryAnswersController.onSubmit(index: Int)
+
+GET        /individualBeneficiaryIsAddressUK                        controllers.IndividualBeneficiaryIsAddressUKController.onPageLoad(mode: Mode = NormalMode)
+POST       /individualBeneficiaryIsAddressUK                        controllers.IndividualBeneficiaryIsAddressUKController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIndividualBeneficiaryIsAddressUK                  controllers.IndividualBeneficiaryIsAddressUKController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIndividualBeneficiaryIsAddressUK                  controllers.IndividualBeneficiaryIsAddressUKController.onSubmit(mode: Mode = CheckMode)
