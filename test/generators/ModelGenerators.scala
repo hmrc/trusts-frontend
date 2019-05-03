@@ -28,15 +28,6 @@ trait ModelGenerators {
     }
 
 
-  implicit lazy val arbitraryIndividualBeneficiaryName: Arbitrary[IndividualBeneficiaryName] =
-    Arbitrary {
-      for {
-        field1 <- arbitrary[String]
-        field2 <- arbitrary[String]
-      } yield IndividualBeneficiaryName(field1, field2)
-    }
-
-
   implicit lazy val arbitraryFullName : Arbitrary[FullName] = {
     Arbitrary {
       for {

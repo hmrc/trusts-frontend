@@ -21,7 +21,7 @@ import javax.inject.Inject
 import forms.mappings.Mappings
 import play.api.data.Form
 import play.api.data.Forms._
-import models.{FullName, IndividualBeneficiaryName}
+import models.FullName
 
 class IndividualBeneficiaryNameFormProvider @Inject() extends Mappings {
 

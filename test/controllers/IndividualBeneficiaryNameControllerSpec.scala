@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.IndividualBeneficiaryNameFormProvider
-import models.{FullName, IndividualBeneficiaryName, NormalMode, UserAnswers}
+import models.{FullName,  NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.{IndividualBeneficiaryNamePage, TrusteesNamePage}
 import play.api.inject.bind
