@@ -42,6 +42,7 @@ class IndividualBeneficiaryAnswersControllerSpec extends SpecBase {
           .set(IndividualBeneficiaryDateOfBirthYesNoPage(index),true).success.value
           .set(IndividualBeneficiaryDateOfBirthPage(index),LocalDate.now(ZoneOffset.UTC)).success.value
           .set(IndividualBeneficiaryIncomeYesNoPage(index),true).success.value
+          .set(IndividualBeneficiaryIncomePage(index),"100").success.value
           .set(IndividualBeneficiaryNationalInsuranceYesNoPage(index),true).success.value
           .set(IndividualBeneficiaryNationalInsuranceNumberPage(index),"ST123456T").success.value
           .set(IndividualBeneficiaryAddressYesNoPage(index),true).success.value
@@ -60,6 +61,7 @@ class IndividualBeneficiaryAnswersControllerSpec extends SpecBase {
             checkYourAnswersHelper.individualBeneficiaryDateOfBirthYesNo(index).value,
             checkYourAnswersHelper.individualBeneficiaryDateOfBirth(index).value,
             checkYourAnswersHelper.individualBeneficiaryIncomeYesNo(index).value,
+            checkYourAnswersHelper.individualBeneficiaryIncome(index).value,
             checkYourAnswersHelper.individualBeneficiaryNationalInsuranceYesNo(index).value,
             checkYourAnswersHelper.individualBeneficiaryNationalInsuranceNumber(index).value,
             checkYourAnswersHelper.individualBeneficiaryAddressYesNo(index).value,
