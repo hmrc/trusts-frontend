@@ -103,7 +103,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "individualBeneficiaryIncome.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        routes.IndividualBeneficiaryIncomeController.onPageLoad(CheckMode, index).url
+        routes.IndividualBeneficiaryIncomeController.onPageLoad(CheckMode, index).url,
+        indBeneficiaryName(index, userAnswers)
       )
   }
 
