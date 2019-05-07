@@ -28,6 +28,7 @@ class IndividualBeneficiaryNationalInsuranceNumberFormProvider @Inject() extends
       .verifying(
         firstError(
           isNotEmpty("value", "individualBeneficiaryNationalInsuranceNumber.error.required"),
-          regexp(Validation.ninoRegex, "individualBeneficiaryNationalInsuranceNumber.error.invalid")
+          isNinoValid("value", "individualBeneficiaryNationalInsuranceNumber.error.invalid")
+
     )))
 }
