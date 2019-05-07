@@ -175,12 +175,12 @@ trait BeneficiaryRoutes {
       }
     }
 
-    "go to IndividualBeneficiaryAddressUKPage from IndividualBeneficiaryAddressYesNoPage when user answers yes" in {
+    "go to IndividualBeneficiaryAddressUKYesNoPage from IndividualBeneficiaryAddressYesNoPage when user answers yes" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(IndividualBeneficiaryAddressYesNoPage(indexForBeneficiary), value = true).success.value
           navigator.nextPage(IndividualBeneficiaryAddressYesNoPage(indexForBeneficiary), NormalMode)(answers)
-            .mustBe(routes.IndividualBeneficiaryAddressUKController.onPageLoad(NormalMode, indexForBeneficiary))
+            .mustBe(routes.IndividualBeneficiaryAddressUKYesNoController.onPageLoad(NormalMode, indexForBeneficiary))
       }
     }
 
@@ -190,6 +190,24 @@ trait BeneficiaryRoutes {
           val answers = userAnswers.set(IndividualBeneficiaryAddressYesNoPage(indexForBeneficiary), value = false).success.value
           navigator.nextPage(IndividualBeneficiaryAddressYesNoPage(indexForBeneficiary), NormalMode)(answers)
             .mustBe(routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, indexForBeneficiary))
+      }
+    }
+
+    "go to IndividualBeneficiaryAddressUKPage from IndividualBeneficiaryAddressUKYesNoPage when user answers yes" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val answers = userAnswers.set(IndividualBeneficiaryAddressUKYesNoPage(indexForBeneficiary), value = true).success.value
+          navigator.nextPage(IndividualBeneficiaryAddressUKYesNoPage(indexForBeneficiary), NormalMode)(answers)
+            .mustBe(routes.IndividualBeneficiaryAddressUKController.onPageLoad(NormalMode, indexForBeneficiary))
+      }
+    }
+
+    "go to IndividualBeneficiaryAddressUKYesNoPage from IndividualBeneficiaryAddressUKPage when user answers no" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val answers = userAnswers.set(IndividualBeneficiaryAddressUKYesNoPage(indexForBeneficiary), value = false).success.value
+          navigator.nextPage(IndividualBeneficiaryAddressUKYesNoPage(indexForBeneficiary), NormalMode)(answers)
+            .mustBe(routes.IndividualBeneficiaryAddressUKYesNoController.onPageLoad(NormalMode, indexForBeneficiary))
       }
     }
 

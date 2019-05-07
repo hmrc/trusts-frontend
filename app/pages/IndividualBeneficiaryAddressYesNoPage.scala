@@ -30,7 +30,8 @@ case class IndividualBeneficiaryAddressYesNoPage(index : Int) extends QuestionPa
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
       case Some(false) =>
-        userAnswers.remove(IndividualBeneficiaryAddressUKPage(index))
+        userAnswers.remove(IndividualBeneficiaryAddressUKYesNoPage(index))
+          .flatMap(_.remove(IndividualBeneficiaryAddressUKPage(index)))
       case _ => super.cleanup(value, userAnswers)
     }
   }
