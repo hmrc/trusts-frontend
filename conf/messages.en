@@ -701,3 +701,8 @@ addABeneficiary.error.required = Select yes if you want to add another beneficia
 
 individualBenficiaryAnswers.title = Check beneficiary details
 individualBenficiaryAnswers.heading = Check beneficiary details
+
+individualBeneficiaryAddressUKYesNo.title = Does {0} live in the UK?
+individualBeneficiaryAddressUKYesNo.heading = Does {0} live in the UK?
+individualBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Does {0} live in the UK?
+individualBeneficiaryAddressUKYesNo.error.required = Select yes if the individual beneficiary lives in the UK

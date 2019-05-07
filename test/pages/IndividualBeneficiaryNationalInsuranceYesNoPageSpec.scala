@@ -48,12 +48,16 @@ class IndividualBeneficiaryNationalInsuranceYesNoPageSpec extends PageBehaviours
     forAll(arbitrary[UserAnswers], arbitrary[String]) {
       (initial, str) =>
         val answers: UserAnswers = initial.set(IndividualBeneficiaryAddressYesNoPage(index), true).success.value
+          .set(IndividualBeneficiaryAddressUKYesNoPage(index), true).success.value
           .set(IndividualBeneficiaryAddressUKPage(index), UKAddress(str, Some(str), Some(str), str, str)).success.value
 
         val result = answers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), true).success.value
 
         result.get(IndividualBeneficiaryAddressYesNoPage(index)) mustNot be(defined)
+        result.get(IndividualBeneficiaryAddressUKYesNoPage(index)) mustNot be(defined)
         result.get(IndividualBeneficiaryAddressUKPage(index)) mustNot be(defined)
     }
   }
+
+
 }
