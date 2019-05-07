@@ -202,7 +202,7 @@ trait BeneficiaryRoutes {
       }
     }
 
-    "go to IndividualBeneficiaryAddressUKPage from IndividualBeneficiaryAddressUKPage when user answers no" in {
+    "go to IndividualBeneficiaryAddressUKYesNoPage from IndividualBeneficiaryAddressUKPage when user answers no" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(IndividualBeneficiaryAddressUKYesNoPage(indexForBeneficiary), value = false).success.value

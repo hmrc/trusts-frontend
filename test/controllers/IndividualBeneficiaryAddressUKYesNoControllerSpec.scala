@@ -162,5 +162,21 @@ class IndividualBeneficiaryAddressUKYesNoControllerSpec extends SpecBase {
 
       application.stop()
     }
+
+    "redirect to IndividualBeneficiaryNamePage when individual beneficiary name is not answered" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      val request = FakeRequest(GET, individualBeneficiaryAddressUKYesNoRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, index).url
+
+      application.stop()
+    }
+
   }
 }
