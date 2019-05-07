@@ -69,7 +69,7 @@ class DefaultSessionRepository @Inject()(
     )
 
     collection.flatMap {
-      _.update(selector, modifier, upsert = true).map {
+      _.update(ordered = false).one(selector, modifier, upsert = true).map {
         lastError =>
           lastError.ok
       }
