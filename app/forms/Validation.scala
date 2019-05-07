@@ -31,5 +31,6 @@ object Validation {
   val numericRegex = "^[0-9]*$"
   val percentageRegex = "^([0-9]|[1-9][0-9]|100)$"
   val decimalCheck = "^[^.]*$"
+  val validNinoFormat: String = "[[A-Z]&&[^DFIQUV]][[A-Z]&&[^DFIQUVO]] ?\\d{2} ?\\d{2} ?\\d{2} ?[A-D]{1}"
 
 }
