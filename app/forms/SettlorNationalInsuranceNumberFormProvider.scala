@@ -28,6 +28,6 @@ class SettlorNationalInsuranceNumberFormProvider @Inject() extends Mappings {
       .verifying(
         firstError(
           isNotEmpty("value", "settlorNationalInsuranceNumber.error.required"),
-          regexp(Validation.ninoRegex, "settlorNationalInsuranceNumber.error.invalid")
+          isNinoValid("value", "settlorNationalInsuranceNumber.error.invalid")
     )))
 }
