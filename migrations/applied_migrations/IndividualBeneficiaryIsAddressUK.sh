@@ -6,7 +6,7 @@ echo "Applying migration IndividualBeneficiaryIsAddressUK"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /individualBeneficiaryIsAddressUK                        controllers.IndividualBeneficiaryIsAddressUKController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /individualBeneficiaryAddressUKYesNo                        controllers.IndividualBeneficiaryIsAddressUKController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
 echo "POST       /individualBeneficiaryIsAddressUK                        controllers.IndividualBeneficiaryIsAddressUKController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
 echo "GET        /changeIndividualBeneficiaryIsAddressUK                  controllers.IndividualBeneficiaryIsAddressUKController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes

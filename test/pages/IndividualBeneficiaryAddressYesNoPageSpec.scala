@@ -16,6 +16,8 @@
 
 package pages
 
+import models.{UKAddress, UserAnswers}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
 class IndividualBeneficiaryAddressYesNoPageSpec extends PageBehaviours {
@@ -28,4 +30,18 @@ class IndividualBeneficiaryAddressYesNoPageSpec extends PageBehaviours {
 
     beRemovable[Boolean](IndividualBeneficiaryAddressYesNoPage(0))
   }
+
+
+  "remove relevant Data when IndividualBeneficiaryAddressYesNoPage is set to false" in {
+    val index = 0
+    forAll(arbitrary[UserAnswers], arbitrary[String]) {
+      (initial, str) =>
+        val answers: UserAnswers = initial.set(IndividualBeneficiaryAddressYesNoPage(index), false).success.value
+        val result = answers.set(IndividualBeneficiaryAddressYesNoPage(index), false).success.value
+
+        result.get(IndividualBeneficiaryAddressUKYesNoPage(index)) mustNot be(defined)
+        result.get(IndividualBeneficiaryAddressUKPage(index)) mustNot be(defined)
+    }
+  }
+
 }
