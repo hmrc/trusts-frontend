@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions._
-import forms.{IndividualBeneficiaryAddressUKFormProvider, UKAddressFormProvider}
+import forms.{ UKAddressFormProvider}
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator

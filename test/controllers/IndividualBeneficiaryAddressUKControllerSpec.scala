@@ -17,8 +17,8 @@
 package controllers
 
 import base.SpecBase
-import forms.{IndividualBeneficiaryAddressUKFormProvider, UKAddressFormProvider}
-import models.{FullName, IndividualBeneficiaryAddressUK, NormalMode, UKAddress, UserAnswers}
+import forms.{ UKAddressFormProvider}
+import models.{FullName,  NormalMode, UKAddress, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.{IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryNamePage}
 import play.api.inject.bind
