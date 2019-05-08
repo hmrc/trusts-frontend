@@ -45,7 +45,7 @@ class DeceasedSettlorAnswerControllerSpec extends SpecBase {
         .set(SettlorDateOfBirthYesNoPage, true).success.value
         .set(SettlorsDateOfBirthPage, LocalDate.now).success.value
         .set(SettlorsNINoYesNoPage, true).success.value
-        .set(SettlorNationalInsuranceNumberPage, "QQ123456A").success.value
+        .set(SettlorNationalInsuranceNumberPage, "AB123456C").success.value
         .set(SettlorsLastKnownAddressYesNoPage, true).success.value
         .set(WasSettlorsAddressUKYesNoPage, true).success.value
         .set(SettlorsUKAddressPage, UKAddress("Line1", None, None, "Town", "NE1 1ZZ")).success.value

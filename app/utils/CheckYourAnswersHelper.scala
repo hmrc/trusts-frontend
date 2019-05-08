@@ -20,15 +20,17 @@ import java.time.format.DateTimeFormatter
 
 import controllers.routes
 import javax.inject.Inject
+
 import models.{CheckMode, InternationalAddress, UKAddress, UserAnswers}
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
+import uk.gov.hmrc.domain.Nino
 import utils.CheckYourAnswersHelper.{indBeneficiaryName, trusteeName, _}
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerRow
 
-class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers)(implicit messages: Messages) {
+class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers)(implicit messages: Messages)  {
 
   def individualBeneficiaryAddressUKYesNo(index: Int): Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryAddressUKYesNoPage(index)) map {
     x =>
@@ -92,7 +94,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x =>
       AnswerRow(
         "individualBeneficiaryNationalInsuranceNumber.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(formatNino(x)),
         routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(CheckMode, index).url,
         indBeneficiaryName(index,userAnswers)
       )
@@ -239,7 +241,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x =>
       AnswerRow(
         "settlorNationalInsuranceNumber.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(formatNino(x)),
         routes.SettlorNationalInsuranceNumberController.onPageLoad(CheckMode).url,
         deceasedSettlorName(userAnswers)
       )
@@ -315,7 +317,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x =>
       AnswerRow(
         "trusteesNino.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(formatNino(x)),
         routes.TrusteesNinoController.onPageLoad(CheckMode, index).url,
         trusteeName(index, userAnswers)
       )
@@ -509,6 +511,8 @@ object CheckYourAnswersHelper {
     } else {
       HtmlFormat.escape(messages("site.no"))
     }
+
+  private def formatNino(nino: String): String = Nino(nino).formatted
 
   private def country(code : String, countryOptions: CountryOptions) : String =
     countryOptions.options.find(_.value.equals(code)).map(_.label).getOrElse("")

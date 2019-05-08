@@ -48,7 +48,7 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
           .set(TrusteesNamePage(index), FullName("First", None, "Trustee")).success.value
           .set(TrusteesDateOfBirthPage(index), LocalDate.now(ZoneOffset.UTC)).success.value
           .set(TrusteeAUKCitizenPage(index), true).success.value
-          .set(TrusteesNinoPage(index), "QQ121212A").success.value
+          .set(TrusteesNinoPage(index), "AB123456C").success.value
           .set(TelephoneNumberPage(index), "0191 1111111").success.value
           .set(TrusteeLiveInTheUKPage(index), true).success.value
           .set(TrusteesUkAddressPage(index), UKAddress("line1", Some("line2"), Some("line3"), "town or city", "AB1 1AB")).success.value
@@ -103,7 +103,7 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
           .set(TrusteesNamePage(index), FullName("First", None, "Trustee")).success.value
           .set(TrusteesDateOfBirthPage(index), LocalDate.now(ZoneOffset.UTC)).success.value
           .set(TrusteeAUKCitizenPage(index), true).success.value
-          .set(TrusteesNinoPage(index), "QQ121212A").success.value
+          .set(TrusteesNinoPage(index), "AB123456C").success.value
           .set(TelephoneNumberPage(index), "0191 1111111").success.value
           .set(TrusteeLiveInTheUKPage(index), true).success.value
           .set(TrusteesUkAddressPage(index), UKAddress("line1", Some("line2"), Some("line3"), "town or city", "AB1 1AB")).success.value
