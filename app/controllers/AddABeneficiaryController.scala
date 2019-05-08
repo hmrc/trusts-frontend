@@ -52,14 +52,9 @@ class AddABeneficiaryController @Inject()(
   def onPageLoad(mode: Mode): Action[AnyContent] = routes {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(AddABeneficiaryPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
       val beneficiaries = new AddABeneficiaryViewHelper(request.userAnswers).rows
 
-      Ok(view(preparedForm, mode, beneficiaries.inProgress, beneficiaries.complete))
+      Ok(view(form, mode, beneficiaries.inProgress, beneficiaries.complete))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = routes.async {
