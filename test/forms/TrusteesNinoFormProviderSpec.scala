@@ -51,13 +51,10 @@ class TrusteesNinoFormProviderSpec extends StringFieldBehaviours {
       requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
     )
 
-    behave like fieldWithRegexpWithGenerator(
+    behave like ninoField(
       form,
       fieldName,
-      regexp = Validation.ninoRegex,
-      generator = arbitrary[String],
-      error = FormError(fieldName, invalidFormatKey, Seq(Validation.ninoRegex))
+      requiredError = FormError(fieldName, invalidFormatKey, Seq(fieldName))
     )
-
   }
 }

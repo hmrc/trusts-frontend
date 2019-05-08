@@ -29,7 +29,7 @@ class TrusteesNinoFormProvider @Inject() extends Mappings {
         .verifying(
           firstError(
             isNotEmpty("value", s"$messagePrefix.error.required"),
-            regexp(Validation.ninoRegex, s"$messagePrefix.error.invalidFormat")
+            isNinoValid("value", s"$messagePrefix.error.invalidFormat")
           ))
     )
 }
