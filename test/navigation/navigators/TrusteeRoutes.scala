@@ -19,6 +19,7 @@ package navigation.navigators
 import base.SpecBase
 import controllers.routes
 import generators.Generators
+import models.IndividualOrBusiness.{Business, Individual}
 import models.{AddATrustee, NormalMode, UserAnswers}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
@@ -96,12 +97,23 @@ trait TrusteeRoutes {
       }
     }
 
-    "go to TrusteesNamePage from TrusteeOrIndividualPage page" in {
+    "go to TrusteesNamePage from TrusteeOrIndividualPage page when answer is Individual" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
+          val answers = userAnswers.set(TrusteeIndividualOrBusinessPage(0), Individual).success.value
 
-          navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode)(userAnswers)
+          navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode)(answers)
             .mustBe(routes.TrusteesNameController.onPageLoad(NormalMode, index))
+      }
+    }
+
+    "go to TrusteeIndividualOrBusinessPage from TrusteeOrIndividualPage page when answer is Business" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val answers = userAnswers.set(TrusteeIndividualOrBusinessPage(0), Business).success.value
+
+          navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode)(answers)
+            .mustBe(routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index))
       }
     }
 
