@@ -150,5 +150,21 @@ class AgentNameControllerSpec extends SpecBase {
 
       application.stop()
     }
+
+    "redirect to unauthorised page when accessing Agent resources with AffinityGroup.Organisation" in {
+
+      val application = applicationBuilder(userAnswers = None, AffinityGroup.Organisation).build()
+
+      val request = FakeRequest(GET, agentNameRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.UnauthorisedController.onPageLoad().url
+
+      application.stop()
+    }
+
   }
 }
