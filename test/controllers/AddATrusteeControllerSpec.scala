@@ -39,14 +39,14 @@ class AddATrusteeControllerSpec extends SpecBase {
 
   val trustee = List(
     AddRow("First 0 Last 0", typeLabel = "Trustee Individual", "#", "#"),
-    AddRow("First 1 Last 1", typeLabel = "Trustee Business", "#", "#")
+    AddRow("First 1 Last 1", typeLabel = "Trustee Individual", "#", "#")
   )
 
   val userAnswersWithTrusteesComplete = UserAnswers(userAnswersId)
     .set(TrusteesNamePage(0), FullName("First 0", None, "Last 0")).success.value
     .set(TrusteeIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
     .set(TrusteesNamePage(1), FullName("First 1", None, "Last 1")).success.value
-    .set(TrusteeIndividualOrBusinessPage(1), IndividualOrBusiness.Business).success.value
+    .set(TrusteeIndividualOrBusinessPage(1), IndividualOrBusiness.Individual).success.value
 
   "AddATrustee Controller" must {
 
