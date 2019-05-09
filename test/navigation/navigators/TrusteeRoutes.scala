@@ -173,7 +173,7 @@ trait TrusteeRoutes {
         }
       }
 
-      "go to TrusteesUkAddressPage from TrusteeLivesInUKPage" in {
+      "go to TrusteesUkAddressPage from TrusteeLivesInUKPage when answer is yes" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
@@ -181,6 +181,17 @@ trait TrusteeRoutes {
 
             navigator.nextPage(TrusteeLiveInTheUKPage(index), NormalMode)(answers)
               .mustBe(routes.TrusteesUkAddressController.onPageLoad(NormalMode, index))
+        }
+      }
+
+      "go to TrusteeLivesInUKPage from TrusteeLivesInUKPage when answer is no" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(TrusteeLiveInTheUKPage(index), value = false).success.value
+
+            navigator.nextPage(TrusteeLiveInTheUKPage(index), NormalMode)(answers)
+              .mustBe(routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index))
         }
       }
 

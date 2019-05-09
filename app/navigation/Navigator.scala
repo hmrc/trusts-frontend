@@ -60,7 +60,7 @@ class Navigator @Inject()() {
     case TrusteesDateOfBirthPage(index) => _ => ua => trusteeDateOfBirthRoute(ua, index)
     case TrusteeAUKCitizenPage(index) => _ => ua => trusteeAUKCitizenRoute(ua, index)
     case TrusteesNinoPage(index) => _ => _ => routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index)
-    case TrusteeLiveInTheUKPage(index) => _ => _ => routes.TrusteesUkAddressController.onPageLoad(NormalMode, index)
+    case TrusteeLiveInTheUKPage(index)  => _ => ua => trusteeLiveInTheUKRoute(ua, index)
     case TrusteesUkAddressPage(index) => _ => _ => routes.TelephoneNumberController.onPageLoad(NormalMode, index)
     case TelephoneNumberPage(index) => _ => _ => routes.TrusteesAnswerPageController.onPageLoad(index)
     case TrusteesAnswerPage => _ => _ => routes.AddATrusteeController.onPageLoad()
@@ -344,6 +344,12 @@ class Navigator @Inject()() {
   private def trusteeAUKCitizenRoute(answers: UserAnswers, index: Int) = answers.get(TrusteeAUKCitizenPage(index)) match {
     case Some(true)   => routes.TrusteesNinoController.onPageLoad(NormalMode,index)
     case Some(false)  => routes.TrusteesAnswerPageController.onPageLoad(index)
+    case None         => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def trusteeLiveInTheUKRoute(answers: UserAnswers, index: Int) = answers.get(TrusteeLiveInTheUKPage(index)) match {
+    case Some(true)   => routes.TrusteesUkAddressController.onPageLoad(NormalMode,index)
+    case Some(false)  => routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode,index)
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 

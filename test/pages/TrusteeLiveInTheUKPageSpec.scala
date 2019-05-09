@@ -16,6 +16,8 @@
 
 package pages
 
+import models.{UKAddress, UserAnswers}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
 class TrusteeLiveInTheUKPageSpec extends PageBehaviours {
@@ -27,5 +29,17 @@ class TrusteeLiveInTheUKPageSpec extends PageBehaviours {
     beSettable[Boolean](TrusteeLiveInTheUKPage(0))
 
     beRemovable[Boolean](TrusteeLiveInTheUKPage(0))
+  }
+
+
+  "remove TrusteesUkAddressPage when TrusteeLiveInTheUKPage is set to false" in {
+    val index = 0
+    forAll(arbitrary[UserAnswers], arbitrary[String]) {
+      (initial, str) =>
+        val answers: UserAnswers = initial.set(TrusteesUkAddressPage(index),UKAddress(str, Some(str), Some(str), str, str) ).success.value
+        val result = answers.set(TrusteeLiveInTheUKPage(index), false).success.value
+
+        result.get(TrusteesUkAddressPage(index)) mustNot be(defined)
+    }
   }
 }
