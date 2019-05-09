@@ -20,12 +20,13 @@ import base.SpecBase
 import forms.AgentAddressYesNoFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.AgentAddressYesNoPage
+import pages.{AgentAddressYesNoPage, AgentNamePage}
 import play.api.inject.bind
 import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.auth.core.AffinityGroup
 import views.html.AgentAddressYesNoView
 
 class AgentAddressYesNoControllerSpec extends SpecBase {
@@ -34,6 +35,7 @@ class AgentAddressYesNoControllerSpec extends SpecBase {
 
   val formProvider = new AgentAddressYesNoFormProvider()
   val form = formProvider()
+  val name = "name"
 
   lazy val agentAddressYesNoRoute = routes.AgentAddressYesNoController.onPageLoad(NormalMode).url
 
@@ -41,7 +43,10 @@ class AgentAddressYesNoControllerSpec extends SpecBase {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(AgentNamePage, name).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, agentAddressYesNoRoute)
 
@@ -52,16 +57,18 @@ class AgentAddressYesNoControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, name)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(AgentAddressYesNoPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(AgentAddressYesNoPage, true).success.value
+        .set(AgentNamePage, name).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, agentAddressYesNoRoute)
 
@@ -72,15 +79,18 @@ class AgentAddressYesNoControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, name)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(AgentNamePage, name).success.value
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent)
           .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
@@ -99,7 +109,10 @@ class AgentAddressYesNoControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(AgentNamePage, name).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
       val request =
         FakeRequest(POST, agentAddressYesNoRoute)
@@ -114,14 +127,14 @@ class AgentAddressYesNoControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, name)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, agentAddressYesNoRoute)
 
@@ -136,7 +149,7 @@ class AgentAddressYesNoControllerSpec extends SpecBase {
 
     "redirect to Session Expired for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
       val request =
         FakeRequest(POST, agentAddressYesNoRoute)
@@ -147,6 +160,21 @@ class AgentAddressYesNoControllerSpec extends SpecBase {
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+
+      application.stop()
+    }
+
+    "redirect to unauthorised page when accessing Agent resources with AffinityGroup.Organisation" in {
+
+      val application = applicationBuilder(userAnswers = None, AffinityGroup.Organisation).build()
+
+      val request = FakeRequest(GET, agentAddressYesNoRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.UnauthorisedController.onPageLoad().url
 
       application.stop()
     }

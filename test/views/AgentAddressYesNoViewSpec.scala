@@ -18,7 +18,8 @@ package views
 
 import controllers.routes
 import forms.AgentAddressYesNoFormProvider
-import models.NormalMode
+import models.{FullName, NormalMode, UserAnswers}
+import pages.AgentNamePage
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
@@ -28,19 +29,26 @@ class AgentAddressYesNoViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "agentAddressYesNo"
 
+  val name = "First Last"
+
   val form = new AgentAddressYesNoFormProvider()()
 
   "AgentAddressYesNo view" must {
 
-    val view = viewFor[AgentAddressYesNoView](Some(emptyUserAnswers))
+    val userAnswers = UserAnswers(userAnswersId)
+      .set(AgentNamePage, name).success.value
+
+    val view = viewFor[AgentAddressYesNoView](Some(userAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, NormalMode, name)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.AgentAddressYesNoController.onSubmit(NormalMode).url)
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.AgentAddressYesNoController.onSubmit(NormalMode).url, None, Seq(name))
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

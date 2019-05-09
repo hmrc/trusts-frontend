@@ -22,10 +22,10 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, name: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("agentAddressYesNo.title")}"
+    title = s"${errorPrefix(form)} ${messages("agentAddressYesNo.title", name)}"
     ) {
 
     @formHelper(action = AgentAddressYesNoController.onSubmit(mode), 'autoComplete -> "off") {
@@ -38,7 +38,7 @@
 
         @components.input_yes_no(
             field = form("value"),
-            label = messages("agentAddressYesNo.heading"),
+            label = messages("agentAddressYesNo.heading", name),
             labelClass = Some("visually-hidden")
         )
 

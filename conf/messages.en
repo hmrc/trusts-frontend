@@ -706,7 +706,7 @@ individualBeneficiaryAddressUKYesNo.heading = Does {0} live in the UK?
 individualBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Does {0} live in the UK?
 individualBeneficiaryAddressUKYesNo.error.required = Select yes if the individual beneficiary lives in the UK
 
-agentAddressYesNo.title = agentAddressYesNo
-agentAddressYesNo.heading = agentAddressYesNo
-agentAddressYesNo.checkYourAnswersLabel = agentAddressYesNo
-agentAddressYesNo.error.required = Select yes if agentAddressYesNo
+agentAddressYesNo.title = Is {0}’s agency address in the UK?
+agentAddressYesNo.heading = Is {0}’s agency address in the UK?
+agentAddressYesNo.checkYourAnswersLabel = Is {0}’s agency address in the UK?
+agentAddressYesNo.error.required = Select yes if {0}’s agency address in the UK

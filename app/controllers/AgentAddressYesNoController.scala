@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.AgentAddressYesNoFormProvider
 import javax.inject.Inject
-import models.{Mode, UserAnswers}
+import models.{Mode, NormalMode, UserAnswers}
 import navigation.Navigator
-import pages.AgentAddressYesNoPage
+import pages.{AgentAddressYesNoPage, AgentNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -36,8 +36,10 @@ class AgentAddressYesNoController @Inject()(
                                          sessionRepository: SessionRepository,
                                          navigator: Navigator,
                                          identify: IdentifierAction,
+                                         hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction,
+                                         requiredAnswer: RequiredAnswerActionProvider,
                                          formProvider: AgentAddressYesNoFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: AgentAddressYesNoView
@@ -45,23 +47,34 @@ class AgentAddressYesNoController @Inject()(
 
   val form: Form[Boolean] = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  private def actions =
+    identify andThen
+      hasAgentAffinityGroup() andThen
+      getData andThen
+      requireData andThen
+      requiredAnswer(RequiredAnswer(AgentNamePage, routes.AgentNameController.onPageLoad(NormalMode)))
+
+  def onPageLoad(mode: Mode): Action[AnyContent] = actions {
     implicit request =>
+
+      val name = request.userAnswers.get(AgentNamePage).get
 
       val preparedForm = request.userAnswers.get(AgentAddressYesNoPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, name))
   }
 
-  def onSubmit(mode: Mode) = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode) = actions.async {
     implicit request =>
+
+      val name = request.userAnswers.get(AgentNamePage).get
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, name))),
 
         value => {
           for {
