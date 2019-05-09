@@ -16,8 +16,13 @@
 
 package pages
 
-import models.IndividualOrBusiness
+import java.time.LocalDate
+
+import models.IndividualOrBusiness.Business
+import models.{FullName, IndividualOrBusiness, UKAddress, UserAnswers}
 import pages.behaviours.PageBehaviours
+import org.scalacheck.Arbitrary.arbitrary
+
 
 class TrusteeIndividualOrBusinessPageSpec extends PageBehaviours {
 
@@ -29,4 +34,33 @@ class TrusteeIndividualOrBusinessPageSpec extends PageBehaviours {
 
     beRemovable[IndividualOrBusiness](TrusteeIndividualOrBusinessPage(0))
   }
+
+
+  "remove relevant data when TrusteeIndividualOrBusinessPage is set to Business" in {
+    val index = 0
+    forAll(arbitrary[UserAnswers], arbitrary[String]) {
+      (initial, str) =>
+        val answers: UserAnswers = initial
+          .set(TrusteesNamePage(index), FullName(str,None, str)).success.value
+          .set(TrusteesDateOfBirthPage(index), LocalDate.now()).success.value
+          .set(TrusteeAUKCitizenPage(index), true).success.value
+          .set(TrusteesNinoPage(index), str).success.value
+          .set(TrusteeLiveInTheUKPage(index), true).success.value
+          .set(TrusteesUkAddressPage(index), UKAddress(str,None,None,str,str)).success.value
+          .set(TelephoneNumberPage(index), str).success.value
+
+        val result = answers.set(TrusteeIndividualOrBusinessPage(index), Business).success.value
+
+        result.get(TrusteesNamePage(index)) mustNot be(defined)
+        result.get(TrusteesDateOfBirthPage(index)) mustNot be(defined)
+        result.get(TrusteeAUKCitizenPage(index)) mustNot be(defined)
+        result.get(TrusteesNinoPage(index)) mustNot be(defined)
+        result.get(TrusteeLiveInTheUKPage(index)) mustNot be(defined)
+        result.get(TrusteesUkAddressPage(index)) mustNot be(defined)
+        result.get(TelephoneNumberPage(index)) mustNot be(defined)
+    }
+  }
+
+
+
 }

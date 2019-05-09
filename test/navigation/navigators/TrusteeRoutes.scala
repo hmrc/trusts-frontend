@@ -165,14 +165,14 @@ trait TrusteeRoutes {
         }
       }
 
-      "go to TrusteePassportOrIDPage from TrusteeAUKCitizen when user answers No" in {
+      "go to TrusteeAUKCitizenPage from TrusteeAUKCitizen when user answers No" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
             val answers = userAnswers.set(TrusteeAUKCitizenPage(index), value = false).success.value
 
             navigator.nextPage(TrusteeAUKCitizenPage(index), NormalMode)(answers)
-              .mustBe(routes.TrusteesAnswerPageController.onPageLoad(index))
+              .mustBe(routes.TrusteeAUKCitizenController.onPageLoad(NormalMode,index))
         }
       }
 

@@ -345,7 +345,7 @@ class Navigator @Inject()() {
 
   private def trusteeAUKCitizenRoute(answers: UserAnswers, index: Int) = answers.get(TrusteeAUKCitizenPage(index)) match {
     case Some(true)   => routes.TrusteesNinoController.onPageLoad(NormalMode,index)
-    case Some(false)  => routes.TrusteesAnswerPageController.onPageLoad(index)
+    case Some(false)  => routes.TrusteeAUKCitizenController.onPageLoad(NormalMode,index)
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
