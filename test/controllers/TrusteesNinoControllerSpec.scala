@@ -94,7 +94,7 @@ class TrusteesNinoControllerSpec extends SpecBase with IndexValidation {
       val userAnswers = UserAnswers(userAnswersId)
         .set(TrusteesNinoPage(index), validAnswer).success.value
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
-        .set(IsThisLeadTrusteePage(index), false).success.value
+        .set(IsThisLeadTrusteePage(index), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
