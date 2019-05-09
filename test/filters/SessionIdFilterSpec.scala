@@ -25,7 +25,7 @@ import org.scalatestplus.play.OneAppPerSuite
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
-import play.api.mvc.{Action, Results, SessionCookieBaker}
+import play.api.mvc.{DefaultActionBuilder, Results, SessionCookieBaker}
 import play.api.routing.Router
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -45,16 +45,14 @@ object SessionIdFilterSpec {
 
 }
 
-class SessionIdFilterSpec extends WordSpec with MustMatchers with OneAppPerSuite with OptionValues {
+class TrustRouter @Inject()(actionBuilder : DefaultActionBuilder) {
 
-  import SessionIdFilterSpec._
-
-  val router: Router = {
+  def router: Router = {
 
     import play.api.routing.sird._
 
     Router.from {
-      case GET(p"/test") => Action {
+      case GET(p"/test") => actionBuilder.apply {
         request =>
           val fromHeader = request.headers.get(HeaderNames.xSessionId).getOrElse("")
           val fromSession = request.session.get(SessionKeys.sessionId).getOrElse("")
@@ -65,16 +63,24 @@ class SessionIdFilterSpec extends WordSpec with MustMatchers with OneAppPerSuite
             )
           )
       }
-      case GET(p"/test2") => Action {
+      case GET(p"/test2") => actionBuilder.apply {
         implicit request =>
           Results.Ok.addingToSession("foo" -> "bar")
       }
     }
   }
 
+}
+
+class SessionIdFilterSpec extends WordSpec with MustMatchers with OneAppPerSuite with OptionValues {
+
+  import SessionIdFilterSpec._
+
   "session id filter" must {
 
     "add a sessionId if one doesn't already exist" in {
+
+      val router = app.injector.instanceOf[TrustRouter]
 
       val application = new GuiceApplicationBuilder()
         .overrides(
@@ -83,7 +89,7 @@ class SessionIdFilterSpec extends WordSpec with MustMatchers with OneAppPerSuite
         .configure(
           "play.filters.disabled" -> List("uk.gov.hmrc.play.bootstrap.filters.frontend.crypto.SessionCookieCryptoFilter")
         )
-        .router(router)
+        .router(router.router)
         .build()
 
       val result = route(application, FakeRequest(GET, "/test")).value
@@ -100,6 +106,8 @@ class SessionIdFilterSpec extends WordSpec with MustMatchers with OneAppPerSuite
 
     "not override a sessionId if one doesn't already exist" in {
 
+      val router = app.injector.instanceOf[TrustRouter]
+
       val application = new GuiceApplicationBuilder()
         .overrides(
           bind[SessionIdFilter].to[TestSessionIdFilter]
@@ -107,7 +115,7 @@ class SessionIdFilterSpec extends WordSpec with MustMatchers with OneAppPerSuite
         .configure(
           "play.filters.disabled" -> List("uk.gov.hmrc.play.bootstrap.filters.frontend.crypto.SessionCookieCryptoFilter")
         )
-        .router(router)
+        .router(router.router)
         .build()
 
       val result = route(application, FakeRequest(GET, "/test").withSession(SessionKeys.sessionId -> "foo")).value
@@ -122,6 +130,8 @@ class SessionIdFilterSpec extends WordSpec with MustMatchers with OneAppPerSuite
 
     "not override other session values from the response" in {
 
+      val router = app.injector.instanceOf[TrustRouter]
+
       val application = new GuiceApplicationBuilder()
         .overrides(
           bind[SessionIdFilter].to[TestSessionIdFilter]
@@ -129,7 +139,7 @@ class SessionIdFilterSpec extends WordSpec with MustMatchers with OneAppPerSuite
         .configure(
           "play.filters.disabled" -> List("uk.gov.hmrc.play.bootstrap.filters.frontend.crypto.SessionCookieCryptoFilter")
         )
-        .router(router)
+        .router(router.router)
         .build()
 
       val result = route(application, FakeRequest(GET, "/test2")).value
@@ -141,6 +151,8 @@ class SessionIdFilterSpec extends WordSpec with MustMatchers with OneAppPerSuite
 
     "not override other session values from the request" in {
 
+      val router = app.injector.instanceOf[TrustRouter]
+
       val application = new GuiceApplicationBuilder()
         .overrides(
           bind[SessionIdFilter].to[TestSessionIdFilter]
@@ -148,7 +160,7 @@ class SessionIdFilterSpec extends WordSpec with MustMatchers with OneAppPerSuite
         .configure(
           "play.filters.disabled" -> List("uk.gov.hmrc.play.bootstrap.filters.frontend.crypto.SessionCookieCryptoFilter")
         )
-        .router(router)
+        .router(router.router)
         .build()
 
       val result = route(application, FakeRequest(GET, "/test").withSession("foo" -> "bar")).value
