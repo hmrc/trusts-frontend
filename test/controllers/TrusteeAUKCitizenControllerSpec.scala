@@ -94,7 +94,7 @@ class TrusteeAUKCitizenControllerSpec extends SpecBase with IndexValidation {
       val userAnswers = UserAnswers(userAnswersId)
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(TrusteeAUKCitizenPage(index), true).success.value
-        .set(IsThisLeadTrusteePage(index), false).success.value
+        .set(IsThisLeadTrusteePage(index), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

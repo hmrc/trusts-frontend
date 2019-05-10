@@ -21,6 +21,7 @@ import javax.inject.{Inject, Singleton}
 import play.api.mvc.Call
 import controllers.routes
 import models.AddATrustee.{NoComplete, YesLater, YesNow}
+import models.IndividualOrBusiness.Individual
 import models.WhatKindOfAsset.{Business, Money, Other, Partnership, PropertyOrLand, Shares}
 import pages._
 import models._
@@ -55,12 +56,13 @@ class Navigator @Inject()() {
 
     //  Trustees
     case IsThisLeadTrusteePage(index) => _ =>_ => routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index)
-    case TrusteeIndividualOrBusinessPage(index) => _ => _ => routes.TrusteesNameController.onPageLoad(NormalMode, index)
+    case TrusteeIndividualOrBusinessPage(index)  => _ => ua => trusteeIndividualOrBusinessRoute(ua, index)
+
     case TrusteesNamePage(index) => _ => _ => routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index)
     case TrusteesDateOfBirthPage(index) => _ => ua => trusteeDateOfBirthRoute(ua, index)
     case TrusteeAUKCitizenPage(index) => _ => ua => trusteeAUKCitizenRoute(ua, index)
     case TrusteesNinoPage(index) => _ => _ => routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index)
-    case TrusteeLiveInTheUKPage(index) => _ => _ => routes.TrusteesUkAddressController.onPageLoad(NormalMode, index)
+    case TrusteeLiveInTheUKPage(index)  => _ => ua => trusteeLiveInTheUKRoute(ua, index)
     case TrusteesUkAddressPage(index) => _ => _ => routes.TelephoneNumberController.onPageLoad(NormalMode, index)
     case TelephoneNumberPage(index) => _ => _ => routes.TrusteesAnswerPageController.onPageLoad(index)
     case TrusteesAnswerPage => _ => _ => routes.AddATrusteeController.onPageLoad()
@@ -343,7 +345,13 @@ class Navigator @Inject()() {
 
   private def trusteeAUKCitizenRoute(answers: UserAnswers, index: Int) = answers.get(TrusteeAUKCitizenPage(index)) match {
     case Some(true)   => routes.TrusteesNinoController.onPageLoad(NormalMode,index)
-    case Some(false)  => routes.TrusteesAnswerPageController.onPageLoad(index)
+    case Some(false)  => routes.TrusteeAUKCitizenController.onPageLoad(NormalMode,index)
+    case None         => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def trusteeLiveInTheUKRoute(answers: UserAnswers, index: Int) = answers.get(TrusteeLiveInTheUKPage(index)) match {
+    case Some(true)   => routes.TrusteesUkAddressController.onPageLoad(NormalMode,index)
+    case Some(false)  => routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode,index)
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
@@ -352,6 +360,13 @@ class Navigator @Inject()() {
     case Some(false) => routes.TrusteesAnswerPageController.onPageLoad(index)
     case None => routes.SessionExpiredController.onPageLoad()
   }
+
+  private def trusteeIndividualOrBusinessRoute(answers: UserAnswers, index : Int) = answers.get(TrusteeIndividualOrBusinessPage(index)) match {
+    case Some(Individual) => routes.TrusteesNameController.onPageLoad(NormalMode, index)
+    case Some(IndividualOrBusiness.Business) => routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode,index)
+    case None => routes.SessionExpiredController.onPageLoad()
+  }
+
 
   private val checkRouteMap: Page => UserAnswers => Call = {
     // TrustDetails

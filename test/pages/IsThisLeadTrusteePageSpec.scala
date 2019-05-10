@@ -16,7 +16,9 @@
 
 package pages
 
+import models.{UKAddress, UserAnswers}
 import pages.behaviours.PageBehaviours
+import org.scalacheck.Arbitrary.arbitrary
 
 class IsThisLeadTrusteePageSpec extends PageBehaviours {
 
@@ -28,4 +30,27 @@ class IsThisLeadTrusteePageSpec extends PageBehaviours {
 
     beRemovable[Boolean](IsThisLeadTrusteePage(0))
   }
+
+  "remove relevant data when IsThisLeadTrusteePage is set to false" in {
+    val index = 0
+    forAll(arbitrary[UserAnswers], arbitrary[String]) {
+      (initial, str) =>
+        val answers: UserAnswers = initial
+          .set(TrusteeAUKCitizenPage(index), true).success.value
+          .set(TrusteesNinoPage(index), str).success.value
+          .set(TrusteeLiveInTheUKPage(index), true).success.value
+          .set(TrusteesUkAddressPage(index), UKAddress(str,None,None,str,str)).success.value
+          .set(TelephoneNumberPage(index), str).success.value
+
+        val result = answers.set(IsThisLeadTrusteePage(index), false).success.value
+
+        result.get(TrusteeAUKCitizenPage(index)) mustNot be(defined)
+        result.get(TrusteesNinoPage(index)) mustNot be(defined)
+        result.get(TrusteeLiveInTheUKPage(index)) mustNot be(defined)
+        result.get(TrusteesUkAddressPage(index)) mustNot be(defined)
+        result.get(TelephoneNumberPage(index)) mustNot be(defined)
+    }
+  }
+
+
 }
