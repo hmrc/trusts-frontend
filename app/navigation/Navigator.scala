@@ -70,7 +70,8 @@ class Navigator @Inject()() {
 
     //Agents
     case AgentInternalReferencePage => _ => _ => routes.AgentNameController.onPageLoad(NormalMode)
-    case AgentNamePage => _ => _ => routes.AgentTelephoneNumberController.onPageLoad(NormalMode)
+    case AgentNamePage => _ => _ => routes.AgentAddressYesNoController.onPageLoad(NormalMode)
+    case AgentAddressYesNoPage => _ => ua => agentAddressYesNoRoute(ua)
     case AgentTelephoneNumberPage => _ => _ => routes.AgentAnswerController.onPageLoad()
     case AgentAnswerPage => _ => _ => routes.TaskListController.onPageLoad()
 
@@ -114,6 +115,13 @@ class Navigator @Inject()() {
     //  Default
     case _ => _ => _ => routes.IndexController.onPageLoad()
   }
+
+  private def agentAddressYesNoRoute(userAnswers: UserAnswers) : Call =
+    userAnswers.get(AgentAddressYesNoPage) match {
+      case Some(false) => routes.AgentTelephoneNumberController.onPageLoad(NormalMode)
+      case Some(true) => routes.AgentTelephoneNumberController.onPageLoad(NormalMode)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
 
   private def individualBeneficiaryAddressRoute(userAnswers: UserAnswers, index: Int) : Call =
     userAnswers.get(IndividualBeneficiaryAddressYesNoPage(index)) match {
