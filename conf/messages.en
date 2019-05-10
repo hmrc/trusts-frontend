@@ -593,15 +593,15 @@ individualBeneficiaryName.title = What is the name of the individual?
 individualBeneficiaryName.heading = What is the name of the individual?
 individualBeneficiaryName.checkYourAnswersLabel = What is the name of the individual?
 individualBeneficiaryName.firstName = First name
-individualBeneficiaryName.middleName = Middle name (optional)
+individualBeneficiaryName.middleName = Middle names (optional)
 individualBeneficiaryName.lastName = Last name
 individualBeneficiaryName.error.firstname.required = Enter the individual beneficiary’s first name
 individualBeneficiaryName.error.lastname.required = Enter the individual beneficiary’s last name
 individualBeneficiaryName.error.firstname.length = The individual beneficiary’s first name must be 35 characters or less
-individualBeneficiaryName.error.middlename.length = The individual beneficiary’s middle name must be 35 characters or less
+individualBeneficiaryName.error.middlename.length = The individual beneficiary’s middle names must be 35 characters or less
 individualBeneficiaryName.error.lastname.length = The individual beneficiary’s last name must be 35 characters or less
 individualBeneficiaryName.error.firstname.invalid = The individual beneficiary’s first name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
-individualBeneficiaryName.error.middlename.invalid = The individual beneficiary’s middle name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+individualBeneficiaryName.error.middlename.invalid = The individual beneficiary’s middle names must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 individualBeneficiaryName.error.lastname.invalid = The individual beneficiary’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
 
