@@ -18,7 +18,7 @@ package views
 
 import controllers.routes
 import forms.AgentUKAddressFormProvider
-import models.{NormalMode, AgentUKAddress}
+import models.{AgentUKAddress, FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
@@ -29,6 +29,8 @@ class AgentUKAddressViewSpec extends QuestionViewBehaviours[AgentUKAddress] {
   val messageKeyPrefix = "site.address.uk"
   val postcodeHintKey = "site.address.uk.postcode.hint"
 
+  val agencyName = "Hadrian"
+
   override val form = new AgentUKAddressFormProvider()()
 
   "AgentUKAddressView" must {
@@ -36,10 +38,10 @@ class AgentUKAddressViewSpec extends QuestionViewBehaviours[AgentUKAddress] {
     val view = viewFor[AgentUKAddressView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, NormalMode, agencyName)(fakeRequest, messages)
 
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, agencyName)
 
     behave like pageWithBackLink(applyView(form))
 
@@ -48,7 +50,8 @@ class AgentUKAddressViewSpec extends QuestionViewBehaviours[AgentUKAddress] {
       applyView,
       messageKeyPrefix,
       routes.AgentUKAddressController.onSubmit(NormalMode).url,
-      Seq(("line1",None), ("line2",None), ("line3", None), ("townOrCity", None), ("postcode", Some(postcodeHintKey)))
+      Seq(("line1",None), ("line2",None), ("line3", None), ("townOrCity", None), ("postcode", Some(postcodeHintKey))),
+      agencyName
 
     )
 

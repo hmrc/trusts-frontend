@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.UKAddressFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.AgentUKAddressPage
+import pages.{AgentNamePage, AgentUKAddressPage, IndividualBeneficiaryNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -38,6 +38,7 @@ class AgentUKAddressController @Inject()(
                                       identify: IdentifierAction,
                                       getData: DataRetrievalAction,
                                       requireData: DataRequiredAction,
+                                      requiredAnswer: RequiredAnswerActionProvider,
                                       formProvider: UKAddressFormProvider,
                                       val controllerComponents: MessagesControllerComponents,
                                       view: AgentUKAddressView
@@ -45,23 +46,34 @@ class AgentUKAddressController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  private def actions() =
+    identify andThen
+      getData andThen
+      requireData andThen
+      requiredAnswer(RequiredAnswer(AgentNamePage, routes.AgentNameController.onPageLoad(NormalMode)))
+
+
+  def onPageLoad(mode: Mode): Action[AnyContent] = actions() {
     implicit request =>
+
+      val agencyName = request.userAnswers.get(AgentNamePage).get
 
       val preparedForm = request.userAnswers.get(AgentUKAddressPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode,agencyName))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = actions().async {
     implicit request =>
+
+      val agencyName = request.userAnswers.get(AgentNamePage).get
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode,agencyName))),
 
         value => {
           for {
