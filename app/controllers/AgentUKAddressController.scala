@@ -36,6 +36,7 @@ class AgentUKAddressController @Inject()(
                                       sessionRepository: SessionRepository,
                                       navigator: Navigator,
                                       identify: IdentifierAction,
+                                      hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                       getData: DataRetrievalAction,
                                       requireData: DataRequiredAction,
                                       requiredAnswer: RequiredAnswerActionProvider,
@@ -48,6 +49,7 @@ class AgentUKAddressController @Inject()(
 
   private def actions() =
     identify andThen
+      hasAgentAffinityGroup() andThen
       getData andThen
       requireData andThen
       requiredAnswer(RequiredAnswer(AgentNamePage, routes.AgentNameController.onPageLoad(NormalMode)))

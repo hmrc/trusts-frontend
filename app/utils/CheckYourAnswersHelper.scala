@@ -35,9 +35,10 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
   def agentUKAddress: Option[AnswerRow] = userAnswers.get(AgentUKAddressPage) map {
     x =>
       AnswerRow(
-        "agentUKAddress.checkYourAnswersLabel",
+        "site.address.uk.checkYourAnswersLabel",
         ukAddress(x),
-        routes.AgentUKAddressController.onPageLoad(CheckMode).url
+        routes.AgentUKAddressController.onPageLoad(CheckMode).url,
+        agencyName(userAnswers)
       )
   }
 
@@ -46,7 +47,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "agentAddressYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.AgentAddressYesNoController.onPageLoad(CheckMode).url
+        routes.AgentAddressYesNoController.onPageLoad(CheckMode).url,
+        agencyName(userAnswers)
       )
   }
 
@@ -548,6 +550,10 @@ object CheckYourAnswersHelper {
 
   private def indBeneficiaryName(index: Int, userAnswers: UserAnswers): String = {
     userAnswers.get(IndividualBeneficiaryNamePage(index)).get.toString
+  }
+
+  private def agencyName(userAnswers: UserAnswers): String = {
+    userAnswers.get(AgentNamePage).get.toString
   }
 
   private def ukAddress(address: UKAddress): Html = {

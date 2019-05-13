@@ -26,6 +26,7 @@ import play.api.libs.json.Json
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.auth.core.AffinityGroup
 import views.html.AgentUKAddressView
 
 class AgentUKAddressControllerSpec extends SpecBase {
@@ -47,7 +48,7 @@ class AgentUKAddressControllerSpec extends SpecBase {
       val userAnswers = UserAnswers(userAnswersId).set(AgentNamePage,
         agencyName).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, agentUKAddressRoute)
 
@@ -69,7 +70,7 @@ class AgentUKAddressControllerSpec extends SpecBase {
         .set(AgentUKAddressPage,  UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")).success.value
         .set(AgentNamePage, agencyName).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, agentUKAddressRoute)
 
@@ -91,7 +92,7 @@ class AgentUKAddressControllerSpec extends SpecBase {
         agencyName).success.value
 
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers))
+        applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent)
           .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
@@ -113,7 +114,7 @@ class AgentUKAddressControllerSpec extends SpecBase {
       val userAnswers = UserAnswers(userAnswersId).set(AgentNamePage,
         agencyName).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
       val request =
         FakeRequest(POST, agentUKAddressRoute)
@@ -135,7 +136,7 @@ class AgentUKAddressControllerSpec extends SpecBase {
 
     "redirect to Session Expired for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, agentUKAddressRoute)
 
@@ -149,7 +150,7 @@ class AgentUKAddressControllerSpec extends SpecBase {
 
     "redirect to Session Expired for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
       val request =
         FakeRequest(POST, agentUKAddressRoute)
@@ -166,7 +167,7 @@ class AgentUKAddressControllerSpec extends SpecBase {
 
     "redirect to AgentNamePage when agency name is not answered" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, agentUKAddressRoute)
 
@@ -175,6 +176,21 @@ class AgentUKAddressControllerSpec extends SpecBase {
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual routes.AgentNameController.onPageLoad(NormalMode).url
+
+      application.stop()
+    }
+
+    "redirect to unauthorised page when accessing Agent resources with AffinityGroup.Organisation" in {
+
+      val application = applicationBuilder(userAnswers = None, AffinityGroup.Organisation).build()
+
+      val request = FakeRequest(GET, agentUKAddressRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.UnauthorisedController.onPageLoad().url
 
       application.stop()
     }

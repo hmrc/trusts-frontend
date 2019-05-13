@@ -17,8 +17,8 @@
 package controllers
 
 import base.SpecBase
-import models.UserAnswers
-import pages.{AgentInternalReferencePage, AgentNamePage, AgentTelephoneNumberPage}
+import models.{UKAddress, UserAnswers}
+import pages.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentNamePage, AgentTelephoneNumberPage, AgentUKAddressPage}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -40,6 +40,8 @@ class AgentAnswerControllerSpec extends SpecBase {
       val answers =
         UserAnswers(userAnswersId)
           .set(AgentTelephoneNumberPage, "123456789").success.value
+          .set(AgentUKAddressPage,UKAddress("Line1",None, None, "TownOrCity","NE62RT")).success.value
+          .set(AgentAddressYesNoPage, true).success.value
           .set(AgentNamePage, "Sam Curran Trust").success.value
           .set(AgentInternalReferencePage, "123456789").success.value
 
@@ -53,6 +55,8 @@ class AgentAnswerControllerSpec extends SpecBase {
           Seq(
             checkYourAnswersHelper.agentInternalReference.value,
             checkYourAnswersHelper.agentName.value,
+            checkYourAnswersHelper.agentAddressYesNo.value,
+            checkYourAnswersHelper.agentUKAddress.value,
             checkYourAnswersHelper.agenciesTelephoneNumber.value
           )
         )
