@@ -710,3 +710,13 @@ agentAddressYesNo.title = Is {0}’s agency address in the UK?
 agentAddressYesNo.heading = Is {0}’s agency address in the UK?
 agentAddressYesNo.checkYourAnswersLabel = Is {0}’s agency address in the UK?
 agentAddressYesNo.error.required = Select yes if agency’s address in the UK
+
+agentUKAddress.title = agentUKAddress
+agentUKAddress.heading = agentUKAddress
+agentUKAddress.field1 = Field 1
+agentUKAddress.field2 = Field 2
+agentUKAddress.checkYourAnswersLabel = agentUKAddress
+agentUKAddress.error.field1.required = Enter field1
+agentUKAddress.error.field2.required = Enter field2
+agentUKAddress.error.field1.length = field1 must be 100 characters or less
+agentUKAddress.error.field2.length = field2 must be 100 characters or less
