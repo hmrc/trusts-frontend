@@ -14,25 +14,17 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import models.UserAnswers
-import play.api.libs.json.JsPath
+import javax.inject.Inject
 
-import scala.util.Try
+import forms.mappings.Mappings
+import play.api.data.Form
 
-final case class TrusteeLiveInTheUKPage(index : Int) extends QuestionPage[Boolean] {
+class AgentAddressYesNoFormProvider @Inject() extends Mappings {
 
-override def path: JsPath = JsPath \ Trustees \ index \ toString
-
-  override def toString: String = "trusteeLiveInTheUK"
-
-
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
-    value match {
-      case Some(false) =>
-        userAnswers.remove(TrusteesUkAddressPage(index))
-      case _ => super.cleanup(value, userAnswers)
-    }
-  }
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("agentAddressYesNo.error.required")
+    )
 }

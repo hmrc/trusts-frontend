@@ -19,6 +19,7 @@ package navigation.navigators
 import base.SpecBase
 import controllers.routes
 import generators.Generators
+import models.IndividualOrBusiness.{Business, Individual}
 import models.{AddATrustee, NormalMode, UserAnswers}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
@@ -96,12 +97,23 @@ trait TrusteeRoutes {
       }
     }
 
-    "go to TrusteesNamePage from TrusteeOrIndividualPage page" in {
+    "go to TrusteesNamePage from TrusteeOrIndividualPage page when answer is Individual" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
+          val answers = userAnswers.set(TrusteeIndividualOrBusinessPage(0), Individual).success.value
 
-          navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode)(userAnswers)
+          navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode)(answers)
             .mustBe(routes.TrusteesNameController.onPageLoad(NormalMode, index))
+      }
+    }
+
+    "go to TrusteeIndividualOrBusinessPage from TrusteeOrIndividualPage page when answer is Business" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val answers = userAnswers.set(TrusteeIndividualOrBusinessPage(0), Business).success.value
+
+          navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode)(answers)
+            .mustBe(routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index))
       }
     }
 
@@ -153,14 +165,14 @@ trait TrusteeRoutes {
         }
       }
 
-      "go to TrusteePassportOrIDPage from TrusteeAUKCitizen when user answers No" in {
+      "go to TrusteeAUKCitizenPage from TrusteeAUKCitizen when user answers No" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
             val answers = userAnswers.set(TrusteeAUKCitizenPage(index), value = false).success.value
 
             navigator.nextPage(TrusteeAUKCitizenPage(index), NormalMode)(answers)
-              .mustBe(routes.TrusteesAnswerPageController.onPageLoad(index))
+              .mustBe(routes.TrusteeAUKCitizenController.onPageLoad(NormalMode,index))
         }
       }
 
@@ -173,7 +185,7 @@ trait TrusteeRoutes {
         }
       }
 
-      "go to TrusteesUkAddressPage from TrusteeLivesInUKPage" in {
+      "go to TrusteesUkAddressPage from TrusteeLivesInUKPage when answer is yes" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
@@ -181,6 +193,17 @@ trait TrusteeRoutes {
 
             navigator.nextPage(TrusteeLiveInTheUKPage(index), NormalMode)(answers)
               .mustBe(routes.TrusteesUkAddressController.onPageLoad(NormalMode, index))
+        }
+      }
+
+      "go to TrusteeLivesInUKPage from TrusteeLivesInUKPage when answer is no" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(TrusteeLiveInTheUKPage(index), value = false).success.value
+
+            navigator.nextPage(TrusteeLiveInTheUKPage(index), NormalMode)(answers)
+              .mustBe(routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index))
         }
       }
 

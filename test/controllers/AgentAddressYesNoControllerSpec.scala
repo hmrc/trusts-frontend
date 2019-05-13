@@ -17,81 +17,91 @@
 package controllers
 
 import base.SpecBase
-import forms.AgentNameFormProvider
+import forms.AgentAddressYesNoFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.AgentNamePage
+import pages.{AgentAddressYesNoPage, AgentNamePage}
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
+import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.AgentNameView
 import uk.gov.hmrc.auth.core.AffinityGroup
+import views.html.AgentAddressYesNoView
 
-class AgentNameControllerSpec extends SpecBase {
+class AgentAddressYesNoControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new AgentNameFormProvider()
+  val formProvider = new AgentAddressYesNoFormProvider()
   val form = formProvider()
+  val name = "name"
 
-  lazy val agentNameRoute = routes.AgentNameController.onPageLoad(NormalMode).url
+  lazy val agentAddressYesNoRoute = routes.AgentAddressYesNoController.onPageLoad(NormalMode).url
 
-  "AgentName Controller" must {
+  "AgentAddressYesNo Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(AgentNamePage, name).success.value
 
-      val request = FakeRequest(GET, agentNameRoute)
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
+
+      val request = FakeRequest(GET, agentAddressYesNoRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[AgentNameView]
+      val view = application.injector.instanceOf[AgentAddressYesNoView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, name)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(AgentNamePage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(AgentAddressYesNoPage, true).success.value
+        .set(AgentNamePage, name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
-      val request = FakeRequest(GET, agentNameRoute)
+      val request = FakeRequest(GET, agentAddressYesNoRoute)
 
-      val view = application.injector.instanceOf[AgentNameView]
+      val view = application.injector.instanceOf[AgentAddressYesNoView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, name)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(AgentNamePage, name).success.value
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
+        applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent)
           .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
-        FakeRequest(POST, agentNameRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+        FakeRequest(POST, agentAddressYesNoRoute)
+          .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
+
       redirectLocation(result).value mustEqual onwardRoute.url
 
       application.stop()
@@ -99,22 +109,25 @@ class AgentNameControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(AgentNamePage, name).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
       val request =
-        FakeRequest(POST, agentNameRoute)
+        FakeRequest(POST, agentAddressYesNoRoute)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[AgentNameView]
+      val view = application.injector.instanceOf[AgentAddressYesNoView]
 
       val result = route(application, request).value
 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, name)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -123,7 +136,7 @@ class AgentNameControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
-      val request = FakeRequest(GET, agentNameRoute)
+      val request = FakeRequest(GET, agentAddressYesNoRoute)
 
       val result = route(application, request).value
 
@@ -139,8 +152,8 @@ class AgentNameControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
       val request =
-        FakeRequest(POST, agentNameRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+        FakeRequest(POST, agentAddressYesNoRoute)
+          .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 
@@ -155,7 +168,7 @@ class AgentNameControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = None, AffinityGroup.Organisation).build()
 
-      val request = FakeRequest(GET, agentNameRoute)
+      val request = FakeRequest(GET, agentAddressYesNoRoute)
 
       val result = route(application, request).value
 
@@ -165,6 +178,5 @@ class AgentNameControllerSpec extends SpecBase {
 
       application.stop()
     }
-
   }
 }

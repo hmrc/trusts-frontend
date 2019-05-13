@@ -32,11 +32,38 @@ trait AgentRoutes {
 
   def agentRoutes()(implicit navigator: Navigator) = {
 
-    "go to AgentTelephoneNumber from AgentInternalReference Page" in {
+    "go to AgentName from AgentInternalReference Page" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
           navigator.nextPage(AgentInternalReferencePage, NormalMode, AffinityGroup.Agent)(userAnswers)
+            .mustBe(routes.AgentNameController.onPageLoad(NormalMode))
+      }
+    }
+
+    "go to AgentAddressYesNo from AgentName Page" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          navigator.nextPage(AgentNamePage, NormalMode, AffinityGroup.Agent)(userAnswers)
+            .mustBe(routes.AgentAddressYesNoController.onPageLoad(NormalMode))
+      }
+    }
+
+    "go to AgentTelephoneNumber from AgentAddressYesNo Page when user answers yes" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val answers = userAnswers.set(AgentAddressYesNoPage, value = true).success.value
+          navigator.nextPage(AgentAddressYesNoPage, NormalMode, AffinityGroup.Agent)(answers)
+            .mustBe(routes.AgentTelephoneNumberController.onPageLoad(NormalMode))
+      }
+    }
+
+    "go to AgentTelephoneNumber from AgentAddressYesNo Page when user answers no" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val answers = userAnswers.set(AgentAddressYesNoPage, value = false).success.value
+          navigator.nextPage(AgentAddressYesNoPage, NormalMode, AffinityGroup.Agent)(answers)
             .mustBe(routes.AgentTelephoneNumberController.onPageLoad(NormalMode))
       }
     }
