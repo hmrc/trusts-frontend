@@ -27,6 +27,7 @@ import views.html.AgentUKAddressView
 class AgentUKAddressViewSpec extends QuestionViewBehaviours[AgentUKAddress] {
 
   val messageKeyPrefix = "agentUKAddress"
+  val postcodeHintKey = "site.postcode.hint"
 
   override val form = new AgentUKAddressFormProvider()()
 
@@ -47,7 +48,11 @@ class AgentUKAddressViewSpec extends QuestionViewBehaviours[AgentUKAddress] {
       applyView,
       messageKeyPrefix,
       routes.AgentUKAddressController.onSubmit(NormalMode).url,
-      Seq(("field1", None), ("field2", None))
+      Seq(("line1",None), ("line2",None), ("line3", None), ("townOrCity", None), ("postcode", Some(postcodeHintKey)))
+
     )
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }
+

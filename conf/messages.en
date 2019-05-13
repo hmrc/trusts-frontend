@@ -48,6 +48,7 @@ site.inprogress = In Progress
 site.complete = Completed
 site.onlyContinue = Continue
 site.date.hint = For example, 31 3 1980
+site.postcode.hint = For example AB1 1AB
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
