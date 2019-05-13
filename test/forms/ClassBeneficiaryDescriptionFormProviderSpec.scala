@@ -23,7 +23,7 @@ class ClassBeneficiaryDescriptionFormProviderSpec extends StringFieldBehaviours 
 
   val requiredKey = "classBeneficiaryDescription.error.required"
   val lengthKey = "classBeneficiaryDescription.error.length"
-  val maxLength = 100
+  val maxLength = 56
 
   val form = new ClassBeneficiaryDescriptionFormProvider()()
 

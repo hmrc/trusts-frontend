@@ -26,6 +26,6 @@ class ClassBeneficiaryDescriptionFormProvider @Inject() extends Mappings {
   def apply(): Form[String] =
     Form(
       "value" -> text("classBeneficiaryDescription.error.required")
-        .verifying(maxLength(100, "classBeneficiaryDescription.error.length"))
+        .verifying(maxLength(56, "classBeneficiaryDescription.error.length"))
     )
 }

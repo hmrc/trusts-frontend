@@ -711,8 +711,8 @@ agentAddressYesNo.heading = Is {0}’s agency address in the UK?
 agentAddressYesNo.checkYourAnswersLabel = Is {0}’s agency address in the UK?
 agentAddressYesNo.error.required = Select yes if agency’s address in the UK
 
-classBeneficiaryDescription.title = classBeneficiaryDescription
-classBeneficiaryDescription.heading = classBeneficiaryDescription
-classBeneficiaryDescription.checkYourAnswersLabel = classBeneficiaryDescription
-classBeneficiaryDescription.error.required = Enter classBeneficiaryDescription
-classBeneficiaryDescription.error.length = ClassBeneficiaryDescription must be 100 characters or less
+classBeneficiaryDescription.title = What is the description for the class of beneficiaries?
+classBeneficiaryDescription.heading = What is the description for the class of beneficiaries?
+classBeneficiaryDescription.checkYourAnswersLabel = What is the description for the class of beneficiaries?
+classBeneficiaryDescription.error.required = Enter the description for the class of beneficiaries
+classBeneficiaryDescription.error.length = The description of the class in the trust deed must be 56 characters or less
