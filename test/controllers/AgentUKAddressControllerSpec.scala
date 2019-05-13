@@ -17,10 +17,10 @@
 package controllers
 
 import base.SpecBase
-import forms.AgentUKAddressFormProvider
-import models.{NormalMode, AgentUKAddress, UserAnswers}
+import forms.{AgentUKAddressFormProvider, UKAddressFormProvider}
+import models.{AgentUKAddress, NormalMode, UKAddress, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.AgentUKAddressPage
+import pages.{AgentUKAddressPage, IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryNamePage}
 import play.api.inject.bind
 import play.api.libs.json.Json
 import play.api.mvc.Call
@@ -32,20 +32,11 @@ class AgentUKAddressControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new AgentUKAddressFormProvider()
+  val formProvider = new UKAddressFormProvider()
   val form = formProvider()
 
   lazy val agentUKAddressRoute = routes.AgentUKAddressController.onPageLoad(NormalMode).url
 
-  val userAnswers = UserAnswers(
-    userAnswersId,
-    Json.obj(
-      AgentUKAddressPage.toString -> Json.obj(
-        "field1" -> "value 1",
-        "field2" -> "value 2"
-      )
-    )
-  )
 
   "AgentUKAddress Controller" must {
 
@@ -69,6 +60,9 @@ class AgentUKAddressControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(AgentUKAddressPage,  UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")).success.value
+
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, agentUKAddressRoute)
@@ -80,7 +74,7 @@ class AgentUKAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(AgentUKAddress("value 1", "value 2")), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -94,7 +88,7 @@ class AgentUKAddressControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, agentUKAddressRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+          .withFormUrlEncodedBody(("line1", "value 1"), ("townOrCity", "value 2"),("postcode", "NE1 1ZZ"))
 
       val result = route(application, request).value
 

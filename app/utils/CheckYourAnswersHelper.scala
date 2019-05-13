@@ -36,7 +36,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x =>
       AnswerRow(
         "agentUKAddress.checkYourAnswersLabel",
-        HtmlFormat.escape(s"${x.field1} ${x.field2}"),
+        ukAddress(x),
         routes.AgentUKAddressController.onPageLoad(CheckMode).url
       )
   }

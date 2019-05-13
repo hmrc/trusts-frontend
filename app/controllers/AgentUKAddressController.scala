@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions._
-import forms.AgentUKAddressFormProvider
+import forms.UKAddressFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
@@ -38,7 +38,7 @@ class AgentUKAddressController @Inject()(
                                       identify: IdentifierAction,
                                       getData: DataRetrievalAction,
                                       requireData: DataRequiredAction,
-                                      formProvider: AgentUKAddressFormProvider,
+                                      formProvider: UKAddressFormProvider,
                                       val controllerComponents: MessagesControllerComponents,
                                       view: AgentUKAddressView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
