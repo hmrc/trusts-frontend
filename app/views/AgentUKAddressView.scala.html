@@ -25,7 +25,7 @@
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("agentUKAddress.title")}"
+    title = s"${errorPrefix(form)} ${messages("site.address.uk.title")}"
     ) {
 
     @formHelper(action = AgentUKAddressController.onSubmit(mode), 'autoComplete -> "off") {
@@ -34,36 +34,36 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("agentUKAddress.heading")
+        @components.heading("site.address.uk.heading")
 
         @components.input_text(
         field = form("line1"),
-        label = messages("agentUKAddress.line1"),
+        label = messages("site.address.uk.line1"),
         inputClass = Some("form-control-3-4")
         )
 
         @components.input_text(
         field = form("line2"),
-        label = messages("agentUKAddress.line2"),
+        label = messages("site.address.uk.line2"),
         inputClass = Some("form-control-3-4")
         )
 
         @components.input_text(
         field = form("line3"),
-        label = messages("agentUKAddress.line3"),
+        label = messages("site.address.uk.line3"),
         inputClass = Some("form-control-3-4")
         )
 
         @components.input_text(
         field = form("townOrCity"),
-        label = messages("agentUKAddress.townOrCity"),
+        label = messages("site.address.uk.townOrCity"),
         inputClass = Some("form-control-2-3")
         )
 
         @components.input_text(
         field = form("postcode"),
-        label = messages("agentUKAddress.postcode"),
-        hint = Some(messages(s"site.postcode.hint")),
+        label = messages("site.address.uk.postcode"),
+        hint = Some(messages(s"site.address.uk.postcode.hint")),
         inputClass = Some("form-control-1-4")
         )
 

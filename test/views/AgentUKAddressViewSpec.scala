@@ -26,8 +26,8 @@ import views.html.AgentUKAddressView
 
 class AgentUKAddressViewSpec extends QuestionViewBehaviours[AgentUKAddress] {
 
-  val messageKeyPrefix = "agentUKAddress"
-  val postcodeHintKey = "site.postcode.hint"
+  val messageKeyPrefix = "site.address.uk"
+  val postcodeHintKey = "site.address.uk.postcode.hint"
 
   override val form = new AgentUKAddressFormProvider()()
 

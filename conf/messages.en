@@ -48,7 +48,15 @@ site.inprogress = In Progress
 site.complete = Completed
 site.onlyContinue = Continue
 site.date.hint = For example, 31 3 1980
-site.postcode.hint = For example AB1 1AB
+
+site.address.uk.title = What is {0}’s address?
+site.address.uk.heading = What is {0}’s address?
+site.address.uk.line1 = Address line 1
+site.address.uk.line2 = Address line 2 (optional)
+site.address.uk.line3 = Address line 3 (optional)
+site.address.uk.townOrCity = Town or city
+site.address.uk.postcode = Postcode
+site.address.uk.postcode.hint = For example AB1 1AB
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
