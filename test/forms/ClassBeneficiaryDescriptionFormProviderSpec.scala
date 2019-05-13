@@ -23,6 +23,7 @@ class ClassBeneficiaryDescriptionFormProviderSpec extends StringFieldBehaviours 
 
   val requiredKey = "classBeneficiaryDescription.error.required"
   val lengthKey = "classBeneficiaryDescription.error.length"
+  val invalidKey = "classBeneficiaryDescription.error.invalid"
   val maxLength = 56
 
   val form = new ClassBeneficiaryDescriptionFormProvider()()
@@ -48,6 +49,20 @@ class ClassBeneficiaryDescriptionFormProviderSpec extends StringFieldBehaviours 
       form,
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
+    )
+
+    behave like nonEmptyField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
+    )
+
+    behave like fieldWithRegexpWithGenerator(
+      form,
+      fieldName,
+      Validation.classOfBeneficiaryDescRegex,
+      generator = stringsWithMaxLength(maxLength),
+      error = FormError(fieldName, invalidKey, Seq(Validation.classOfBeneficiaryDescRegex))
     )
   }
 }

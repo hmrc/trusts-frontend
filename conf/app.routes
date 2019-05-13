@@ -350,7 +350,7 @@ POST       /agent-address                        controllers.AgentAddressYesNoCo
 GET        /change-agent-address                  controllers.AgentAddressYesNoController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-agent-address                  controllers.AgentAddressYesNoController.onSubmit(mode: Mode = CheckMode)
 
-GET        /classBeneficiaryDescription                        controllers.ClassBeneficiaryDescriptionController.onPageLoad(mode: Mode = NormalMode)
-POST       /classBeneficiaryDescription                        controllers.ClassBeneficiaryDescriptionController.onSubmit(mode: Mode = NormalMode)
-GET        /changeClassBeneficiaryDescription                  controllers.ClassBeneficiaryDescriptionController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeClassBeneficiaryDescription                  controllers.ClassBeneficiaryDescriptionController.onSubmit(mode: Mode = CheckMode)
+GET        /beneficiaries/class/description                        controllers.ClassBeneficiaryDescriptionController.onPageLoad(mode: Mode = NormalMode)
+POST       /beneficiaries/class/description                        controllers.ClassBeneficiaryDescriptionController.onSubmit(mode: Mode = NormalMode)
+GET        /beneficiaries/class/change-description                   controllers.ClassBeneficiaryDescriptionController.onPageLoad(mode: Mode = CheckMode)
+POST       /beneficiaries/class/change-description                   controllers.ClassBeneficiaryDescriptionController.onSubmit(mode: Mode = CheckMode)
