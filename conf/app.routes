@@ -350,6 +350,11 @@ POST       /agent-address                        controllers.AgentAddressYesNoCo
 GET        /change-agent-address                  controllers.AgentAddressYesNoController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-agent-address                  controllers.AgentAddressYesNoController.onSubmit(mode: Mode = CheckMode)
 
+GET        /beneficiaries/class/:index/description                        controllers.ClassBeneficiaryDescriptionController.onPageLoad(mode: Mode = NormalMode, index: Int )
+POST       /beneficiaries/class/:index/description                        controllers.ClassBeneficiaryDescriptionController.onSubmit(mode: Mode = NormalMode, index: Int)
+GET        /beneficiaries/class/:index/change-description                   controllers.ClassBeneficiaryDescriptionController.onPageLoad(mode: Mode = CheckMode, index: Int)
+POST       /beneficiaries/class/:index/change-description                   controllers.ClassBeneficiaryDescriptionController.onSubmit(mode: Mode = CheckMode, index: Int)
+
 GET        /agent-uk-address                        controllers.AgentUKAddressController.onPageLoad(mode: Mode = NormalMode)
 POST       /agent-uk-address                        controllers.AgentUKAddressController.onSubmit(mode: Mode = NormalMode)
 GET        /change-agent-uk-address                  controllers.AgentUKAddressController.onPageLoad(mode: Mode = CheckMode)

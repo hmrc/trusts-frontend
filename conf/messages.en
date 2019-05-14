@@ -731,3 +731,12 @@ agentAddressYesNo.title = Is {0}’s agency address in the UK?
 agentAddressYesNo.heading = Is {0}’s agency address in the UK?
 agentAddressYesNo.checkYourAnswersLabel = Is {0}’s agency address in the UK?
 agentAddressYesNo.error.required = Select yes if agency’s address in the UK
+
+classBeneficiaryDescription.title = What is the description for the class of beneficiaries?
+classBeneficiaryDescription.heading = What is the description for the class of beneficiaries?
+classBeneficiaryDescription.checkYourAnswersLabel = What is the description for the class of beneficiaries?
+classBeneficiaryDescription.error.required = Enter the description for the class of beneficiaries
+classBeneficiaryDescription.error.length = The description of the class in the trust deed must be 56 characters or less
+classBeneficiaryDescription.error.invalid = The description of class in the trust deed must only include letters a to z, numbers, spaces, special characters, ampersands (&), backword slashes, spaces
+classBeneficiaryDescription.hint = This must be 56 characters or less. For example, future grandchildren and future great-grandchildren.
+
