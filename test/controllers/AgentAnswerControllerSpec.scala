@@ -35,12 +35,11 @@ class AgentAnswerControllerSpec extends SpecBase {
 
   "AgentAnswer Controller" must {
 
-    "return OK and the correct view for a GET" in {
+    "return OK and the correct view for a UK address GET" in {
 
       val answers =
         UserAnswers(userAnswersId)
           .set(AgentTelephoneNumberPage, "123456789").success.value
-          .set(AgentInternationalAddressPage, InternationalAddress("Line1", "Line2", None, None, "Country")).success.value
           .set(AgentUKAddressPage,UKAddress("Line1",None, None, "TownOrCity","NE62RT")).success.value
           .set(AgentAddressYesNoPage, true).success.value
           .set(AgentNamePage, "Sam Curran Trust").success.value
@@ -59,6 +58,49 @@ class AgentAnswerControllerSpec extends SpecBase {
             checkYourAnswersHelper.agentName.value,
             checkYourAnswersHelper.agentAddressYesNo.value,
             checkYourAnswersHelper.agentUKAddress.value,
+            checkYourAnswersHelper.agenciesTelephoneNumber.value
+          )
+        )
+      )
+
+      val application = applicationBuilder(userAnswers = Some(answers), agentID).build()
+
+      val request = FakeRequest(GET, routes.AgentAnswerController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[AgentAnswerView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(expectedSections)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view for a International address GET" in {
+
+      val answers =
+        UserAnswers(userAnswersId)
+          .set(AgentTelephoneNumberPage, "123456789").success.value
+          .set(AgentInternationalAddressPage, InternationalAddress("Line1", "Line2", None, None, "Country")).success.value
+          .set(AgentAddressYesNoPage, false).success.value
+          .set(AgentNamePage, "Sam Curran Trust").success.value
+          .set(AgentInternalReferencePage, "123456789").success.value
+
+
+      val countryOptions = injector.instanceOf[CountryOptions]
+
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers)
+
+      val expectedSections = Seq(
+        AnswerSection(
+          None,
+          Seq(
+            checkYourAnswersHelper.agentInternalReference.value,
+            checkYourAnswersHelper.agentName.value,
+            checkYourAnswersHelper.agentAddressYesNo.value,
             checkYourAnswersHelper.agentInternationalAddress.value,
             checkYourAnswersHelper.agenciesTelephoneNumber.value
           )
