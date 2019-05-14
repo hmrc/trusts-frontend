@@ -16,17 +16,17 @@
 
 package pages
 
-import models.AgentInternationalAddress
+import models.InternationalAddress
 import pages.behaviours.PageBehaviours
 
 class AgentInternationalAddressPageSpec extends PageBehaviours {
 
   "AgentInternationalAddressPage" must {
 
-    beRetrievable[AgentInternationalAddress](AgentInternationalAddressPage)
+    beRetrievable[InternationalAddress](AgentInternationalAddressPage)
 
-    beSettable[AgentInternationalAddress](AgentInternationalAddressPage)
+    beSettable[InternationalAddress](AgentInternationalAddressPage)
 
-    beRemovable[AgentInternationalAddress](AgentInternationalAddressPage)
+    beRemovable[InternationalAddress](AgentInternationalAddressPage)
   }
 }

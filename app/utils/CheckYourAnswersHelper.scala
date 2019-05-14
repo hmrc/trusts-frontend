@@ -35,9 +35,10 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
   def agentInternationalAddress: Option[AnswerRow] = userAnswers.get(AgentInternationalAddressPage) map {
     x =>
       AnswerRow(
-        "agentInternationalAddress.checkYourAnswersLabel",
-        HtmlFormat.escape(s"${x.field1} ${x.field2}"),
-        routes.AgentInternationalAddressController.onPageLoad(CheckMode).url
+        "site.address.international.checkYourAnswersLabel",
+        internationalAddress(x, countryOptions),
+        routes.AgentInternationalAddressController.onPageLoad(CheckMode).url,
+        agencyName(userAnswers)
       )
   }
 

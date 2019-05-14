@@ -17,41 +17,38 @@
 package controllers
 
 import base.SpecBase
-import forms.AgentInternationalAddressFormProvider
-import models.{NormalMode, AgentInternationalAddress, UserAnswers}
+import forms.InternationalAddressFormProvider
+import models.{InternationalAddress, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.AgentInternationalAddressPage
+import pages.{AgentInternationalAddressPage, AgentNamePage}
 import play.api.inject.bind
 import play.api.libs.json.Json
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.auth.core.AffinityGroup
+import utils.InputOption
+import utils.countryOptions.CountryOptionsNonUK
 import views.html.AgentInternationalAddressView
 
 class AgentInternationalAddressControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new AgentInternationalAddressFormProvider()
+  val formProvider = new InternationalAddressFormProvider()
   val form = formProvider()
+  val agencyName = "Hadrian"
 
   lazy val agentInternationalAddressRoute = routes.AgentInternationalAddressController.onPageLoad(NormalMode).url
-
-  val userAnswers = UserAnswers(
-    userAnswersId,
-    Json.obj(
-      AgentInternationalAddressPage.toString -> Json.obj(
-        "field1" -> "value 1",
-        "field2" -> "value 2"
-      )
-    )
-  )
 
   "AgentInternationalAddress Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId).set(AgentNamePage,
+        agencyName).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, agentInternationalAddressRoute)
 
@@ -59,17 +56,23 @@ class AgentInternationalAddressControllerSpec extends SpecBase {
 
       val result = route(application, request).value
 
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form, countryOptions, NormalMode, agencyName)(request, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(AgentInternationalAddressPage, InternationalAddress("line 1", "line 2", Some("line 3"), Some("line 4"),"country")).success.value
+        .set(AgentNamePage, agencyName).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, agentInternationalAddressRoute)
 
@@ -77,24 +80,29 @@ class AgentInternationalAddressControllerSpec extends SpecBase {
 
       val result = route(application, request).value
 
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(AgentInternationalAddress("value 1", "value 2")), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(InternationalAddress("line 1", "line 2", Some("line 3"), Some("line 4"),"country")), countryOptions, NormalMode, agencyName)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
+      val userAnswers = UserAnswers(userAnswersId).set(AgentNamePage,
+        agencyName).success.value
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent)
           .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
         FakeRequest(POST, agentInternationalAddressRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+          .withFormUrlEncodedBody(("line1", "value 1"), ("line2", "value 2"), ("country", "IN"))
 
       val result = route(application, request).value
 
@@ -107,7 +115,10 @@ class AgentInternationalAddressControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId).set(AgentNamePage,
+        agencyName).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
       val request =
         FakeRequest(POST, agentInternationalAddressRoute)
@@ -119,17 +130,19 @@ class AgentInternationalAddressControllerSpec extends SpecBase {
 
       val result = route(application, request).value
 
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, countryOptions, NormalMode,agencyName)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, agentInternationalAddressRoute)
 
@@ -143,7 +156,7 @@ class AgentInternationalAddressControllerSpec extends SpecBase {
 
     "redirect to Session Expired for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
       val request =
         FakeRequest(POST, agentInternationalAddressRoute)
@@ -154,6 +167,36 @@ class AgentInternationalAddressControllerSpec extends SpecBase {
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+
+      application.stop()
+    }
+
+    "redirect to AgentNamePage when agency name is not answered" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+
+      val request = FakeRequest(GET, agentInternationalAddressRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.AgentNameController.onPageLoad(NormalMode).url
+
+      application.stop()
+    }
+
+    "redirect to unauthorised page when accessing Agent resources with AffinityGroup.Organisation" in {
+
+      val application = applicationBuilder(userAnswers = None, AffinityGroup.Organisation).build()
+
+      val request = FakeRequest(GET, agentInternationalAddressRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.UnauthorisedController.onPageLoad().url
 
       application.stop()
     }

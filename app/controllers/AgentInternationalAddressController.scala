@@ -17,16 +17,17 @@
 package controllers
 
 import controllers.actions._
-import forms.AgentInternationalAddressFormProvider
+import forms.InternationalAddressFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.AgentInternationalAddressPage
+import pages.{AgentInternationalAddressPage, AgentNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import utils.countryOptions.CountryOptionsNonUK
 import views.html.AgentInternationalAddressView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -36,32 +37,46 @@ class AgentInternationalAddressController @Inject()(
                                       sessionRepository: SessionRepository,
                                       navigator: Navigator,
                                       identify: IdentifierAction,
+                                      hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                       getData: DataRetrievalAction,
                                       requireData: DataRequiredAction,
-                                      formProvider: AgentInternationalAddressFormProvider,
+                                      requiredAnswer: RequiredAnswerActionProvider,
+                                      formProvider: InternationalAddressFormProvider,
                                       val controllerComponents: MessagesControllerComponents,
-                                      view: AgentInternationalAddressView
+                                      view: AgentInternationalAddressView,
+                                      val countryOptions: CountryOptionsNonUK
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  private def actions() =
+    identify andThen
+      hasAgentAffinityGroup() andThen
+      getData andThen
+      requireData andThen
+      requiredAnswer(RequiredAnswer(AgentNamePage, routes.AgentNameController.onPageLoad(NormalMode)))
+
+  def onPageLoad(mode: Mode): Action[AnyContent] = actions() {
     implicit request =>
+
+      val agencyName = request.userAnswers.get(AgentNamePage).get
 
       val preparedForm = request.userAnswers.get(AgentInternationalAddressPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, countryOptions.options, mode, agencyName))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = actions().async {
     implicit request =>
+
+      val agencyName = request.userAnswers.get(AgentNamePage).get
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, countryOptions.options, mode, agencyName))),
 
         value => {
           for {

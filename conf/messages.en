@@ -59,6 +59,15 @@ site.address.uk.postcode = Postcode
 site.address.uk.postcode.hint = For example AB1 1AB
 site.address.uk.checkYourAnswersLabel = What is {0}’s address?
 
+site.address.international.title = What is {0}’s address?
+site.address.international.heading = What is {0}’s address?
+site.address.international.line1 = Address line 1
+site.address.international.line2 = Address line 2
+site.address.international.line3 = Address line 3 (optional)
+site.address.international.line4 = Address line 4 (optional)
+site.address.international.country = Country
+site.address.international.checkYourAnswersLabel = What is {0}’s address?
+
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 
@@ -731,13 +740,3 @@ agentAddressYesNo.title = Is {0}’s agency address in the UK?
 agentAddressYesNo.heading = Is {0}’s agency address in the UK?
 agentAddressYesNo.checkYourAnswersLabel = Is {0}’s agency address in the UK?
 agentAddressYesNo.error.required = Select yes if agency’s address in the UK
-
-agentInternationalAddress.title = agentInternationalAddress
-agentInternationalAddress.heading = agentInternationalAddress
-agentInternationalAddress.field1 = Field 1
-agentInternationalAddress.field2 = Field 2
-agentInternationalAddress.checkYourAnswersLabel = agentInternationalAddress
-agentInternationalAddress.error.field1.required = Enter field1
-agentInternationalAddress.error.field2.required = Enter field2
-agentInternationalAddress.error.field1.length = field1 must be 100 characters or less
-agentInternationalAddress.error.field2.length = field2 must be 100 characters or less
