@@ -23,6 +23,7 @@ import navigation.Navigator
 import pages.AgentAnswerPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
+import play.mvc.BodyParser.AnyContent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
@@ -56,6 +57,8 @@ class AgentAnswerController @Inject()(
           Seq(
             checkYourAnswersHelper.agentInternalReference,
             checkYourAnswersHelper.agentName,
+            checkYourAnswersHelper.agentAddressYesNo,
+            checkYourAnswersHelper.agentUKAddress,
             checkYourAnswersHelper.agenciesTelephoneNumber
           ).flatten
         )

@@ -72,6 +72,7 @@ class Navigator @Inject()() {
     case AgentInternalReferencePage => _ => _ => routes.AgentNameController.onPageLoad(NormalMode)
     case AgentNamePage => _ => _ => routes.AgentAddressYesNoController.onPageLoad(NormalMode)
     case AgentAddressYesNoPage => _ => ua => agentAddressYesNoRoute(ua)
+    case AgentUKAddressPage => _ => _ => routes.AgentTelephoneNumberController.onPageLoad(NormalMode)
     case AgentTelephoneNumberPage => _ => _ => routes.AgentAnswerController.onPageLoad()
     case AgentAnswerPage => _ => _ => routes.TaskListController.onPageLoad()
 
@@ -119,7 +120,7 @@ class Navigator @Inject()() {
   private def agentAddressYesNoRoute(userAnswers: UserAnswers) : Call =
     userAnswers.get(AgentAddressYesNoPage) match {
       case Some(false) => routes.AgentTelephoneNumberController.onPageLoad(NormalMode)
-      case Some(true) => routes.AgentTelephoneNumberController.onPageLoad(NormalMode)
+      case Some(true) => routes.AgentUKAddressController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
 
