@@ -40,7 +40,8 @@
             field = form("value"),
             legend = messages("whatTypeOfBeneficiary.heading"),
             legendClass = Some("visually-hidden"),
-            inputs = WhatTypeOfBeneficiary.options
+            inputs = WhatTypeOfBeneficiary.options,
+            hint = Some(messages(s"whatTypeOfBeneficiary.hint"))
         )
 
         @components.submit_button()

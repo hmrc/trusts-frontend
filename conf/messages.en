@@ -741,9 +741,13 @@ classBeneficiaryDescription.error.invalid = The description of class in the trus
 classBeneficiaryDescription.hint = This must be 56 characters or less. For example, future grandchildren and future great-grandchildren.
 
 
-whatTypeOfBeneficiary.title = whatTypeOfBeneficiary
-whatTypeOfBeneficiary.heading = whatTypeOfBeneficiary
-whatTypeOfBeneficiary.option1 = Option 1
-whatTypeOfBeneficiary.option2 = Option 2
+whatTypeOfBeneficiary.title = What kind of beneficiary do you need to add first?
+whatTypeOfBeneficiary.heading = What kind of beneficiary do you need to add first?
+whatTypeOfBeneficiary.Individual = Individual
+whatTypeOfBeneficiary.ClassOfBeneficiary = Class of beneficiaries
+whatTypeOfBeneficiary.CharityOrTrust = Charity or trust
+whatTypeOfBeneficiary.CompanyOrEmployment = Company or employment related
+whatTypeOfBeneficiary.Other = Other beneficiary
 whatTypeOfBeneficiary.checkYourAnswersLabel = whatTypeOfBeneficiary
-whatTypeOfBeneficiary.error.required = Select whatTypeOfBeneficiary
+whatTypeOfBeneficiary.error.required = Select the type of beneficiary you need to add
+whatTypeOfBeneficiary.hint = You can enter a maximum of 25 entries for each beneficiary type
