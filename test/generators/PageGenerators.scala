@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryWhatTypeOfBeneficiaryPage: Arbitrary[WhatTypeOfBeneficiaryPage.type] =
+    Arbitrary(WhatTypeOfBeneficiaryPage)
+
   implicit lazy val arbitraryClassBeneficiaryDescriptionPage: Arbitrary[ClassBeneficiaryDescriptionPage] =
     Arbitrary(ClassBeneficiaryDescriptionPage(0))
 
