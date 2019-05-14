@@ -34,13 +34,15 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("classBeneficiaryDescription.heading")
-
         @components.input_text(
           field = form("value"),
           label = messages("classBeneficiaryDescription.heading"),
-          labelClass=Some("visually-hidden")
+          labelAsHeading = true,
+          hint = Some(messages(s"classBeneficiaryDescription.hint")),
+          labelClass = Some("heading-large"),
+          ariaRequired = true
         )
+
 
         @components.submit_button()
     }

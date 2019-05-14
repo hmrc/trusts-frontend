@@ -27,6 +27,8 @@ import views.html.ClassBeneficiaryDescriptionView
 class ClassBeneficiaryDescriptionViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "classBeneficiaryDescription"
+  val hintKey = "classBeneficiaryDescription.hint"
+
 
   val form = new ClassBeneficiaryDescriptionFormProvider()()
   val index = 0
@@ -42,6 +44,11 @@ class ClassBeneficiaryDescriptionViewSpec extends StringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.ClassBeneficiaryDescriptionController.onSubmit(NormalMode,index).url)
+    behave like stringPage(form, applyView, messageKeyPrefix,
+      routes.ClassBeneficiaryDescriptionController.onSubmit(NormalMode,index).url,
+      Some(hintKey))
+
+    behave like pageWithASubmitButton(applyView(form))
+
   }
 }
