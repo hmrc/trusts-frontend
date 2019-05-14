@@ -50,11 +50,19 @@ trait AgentRoutes {
       }
     }
 
-    "go to AgentTelephoneNumber from AgentAddressYesNo Page when user answers yes" in {
+    "go to AgentUKAddress from AgentAddressYesNo Page when user answers yes" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(AgentAddressYesNoPage, value = true).success.value
           navigator.nextPage(AgentAddressYesNoPage, NormalMode, AffinityGroup.Agent)(answers)
+            .mustBe(routes.AgentUKAddressController.onPageLoad(NormalMode))
+      }
+    }
+
+    "go to AgentTelephoneNumber from AgentUKAddress Page" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          navigator.nextPage(AgentUKAddressPage, NormalMode, AffinityGroup.Agent)(userAnswers)
             .mustBe(routes.AgentTelephoneNumberController.onPageLoad(NormalMode))
       }
     }
