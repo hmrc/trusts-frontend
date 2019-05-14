@@ -58,7 +58,7 @@ class IndividualBeneficiaryIncomeFormProviderSpec extends StringFieldBehaviours 
       form,
       fieldName,
       Validation.percentageRegex,
-      generator =  Validation.percentageRegex,
+      generator =  intsInRange(0,1000),
       error = FormError(fieldName, lengthKey, Seq(Validation.percentageRegex))
     )
 

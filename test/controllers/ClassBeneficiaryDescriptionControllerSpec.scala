@@ -34,8 +34,9 @@ class ClassBeneficiaryDescriptionControllerSpec extends SpecBase {
 
   val formProvider = new ClassBeneficiaryDescriptionFormProvider()
   val form = formProvider()
+  val index = 0
 
-  lazy val classBeneficiaryDescriptionRoute = routes.ClassBeneficiaryDescriptionController.onPageLoad(NormalMode).url
+  lazy val classBeneficiaryDescriptionRoute = routes.ClassBeneficiaryDescriptionController.onPageLoad(NormalMode,index).url
 
   "ClassBeneficiaryDescription Controller" must {
 
@@ -52,14 +53,14 @@ class ClassBeneficiaryDescriptionControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode,index)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClassBeneficiaryDescriptionPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ClassBeneficiaryDescriptionPage(index), "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -72,7 +73,7 @@ class ClassBeneficiaryDescriptionControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill("answer"), NormalMode,index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -113,7 +114,7 @@ class ClassBeneficiaryDescriptionControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode,index)(fakeRequest, messages).toString
 
       application.stop()
     }

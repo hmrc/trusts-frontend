@@ -23,10 +23,10 @@ class ClassBeneficiaryDescriptionPageSpec extends PageBehaviours {
 
   "ClassBeneficiaryDescriptionPage" must {
 
-    beRetrievable[String](ClassBeneficiaryDescriptionPage)
+    beRetrievable[String](ClassBeneficiaryDescriptionPage(0))
 
-    beSettable[String](ClassBeneficiaryDescriptionPage)
+    beSettable[String](ClassBeneficiaryDescriptionPage(0))
 
-    beRemovable[String](ClassBeneficiaryDescriptionPage)
+    beRemovable[String](ClassBeneficiaryDescriptionPage(0))
   }
 }

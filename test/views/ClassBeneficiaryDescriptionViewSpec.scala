@@ -29,18 +29,19 @@ class ClassBeneficiaryDescriptionViewSpec extends StringViewBehaviours {
   val messageKeyPrefix = "classBeneficiaryDescription"
 
   val form = new ClassBeneficiaryDescriptionFormProvider()()
+  val index = 0
 
   "ClassBeneficiaryDescriptionView view" must {
 
     val view = viewFor[ClassBeneficiaryDescriptionView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, NormalMode,index)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.ClassBeneficiaryDescriptionController.onSubmit(NormalMode).url)
+    behave like stringPage(form, applyView, messageKeyPrefix, routes.ClassBeneficiaryDescriptionController.onSubmit(NormalMode,index).url)
   }
 }
