@@ -35,18 +35,22 @@ class AssetInterruptPageViewSpec extends ViewBehaviours {
       "bullet1",
       "bullet2",
       "bullet3",
-      "subheading3",
       "paragraph3",
+      "subheading3",
+      "paragraph4",
       "bullet4",
       "bullet5",
       "bullet6",
-      "paragraph4",
-      "subheading4",
       "paragraph5",
+      "subheading4",
+      "paragraph6",
       "bullet7",
       "bullet8",
       "bullet9",
-      "paragraph6")
+      "subheading5",
+      "paragraph7",
+      "subheading6",
+      "paragraph8")
 
 
     behave like pageWithBackLink(applyView)

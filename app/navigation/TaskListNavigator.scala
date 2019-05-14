@@ -63,6 +63,14 @@ class TaskListNavigator @Inject()() {
     }
   }
 
+  private def assetRoute(answers: UserAnswers) = {
+    answers.get(Assets).getOrElse(Nil) match {
+      case _ :: _ =>
+        routes.AddAssetsController.onPageLoad()
+      case Nil =>
+        routes.AssetInterruptPageController.onPageLoad()
+    }
+  }
 
   private val taskListRoutes : Page => UserAnswers => Call = {
     case TrustDetails => trustDetailsRoute
@@ -70,7 +78,7 @@ class TaskListNavigator @Inject()() {
     case Settlors => settlorRoute
     case Beneficiaries => beneficiaryRoute
     case TaxLiability => _ => routes.TaskListController.onPageLoad()
-    case Assets => _ => routes.AssetInterruptPageController.onPageLoad()
+    case Assets => assetRoute
     case _ => _ => routes.IndexController.onPageLoad()
   }
 
