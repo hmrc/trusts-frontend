@@ -58,30 +58,36 @@ $(document).ready(function() {
 
     }
 
-  //======================================================
-  // countries autocomplete fixes
-  //======================================================
-    // Prevent submission of blank country input
+    //======================================================
+    // countries autocomplete fixes
+    //======================================================
+    // Prevent submission of blank country input. Correctly set country option for a valid country input if not selected from dropdown list
+
     $("#submit.countryLookupHelper").on('click', function(e){
-        var inputText = $("#value").val().trim();
-        if (inputText == "") {$('#value-select option:selected').removeAttr('selected')};
+
+        var idName = $("#value").length == 0 ? "#country" : "#value"
+        var inputText = $(idName).val().trim();
+        var listBox = $(idName+"__listbox li");
+        var optionSelected = $(idName+"-select option:selected");
+        if (inputText == "") {
+            optionSelected.removeAttr('selected')
+        }
+        else {
+            if (listBox.text() == "No results found") {
+                optionSelected.removeAttr('selected');
+            } else {
+                if (listBox.text() != "undefined") {
+                    var match = listBox.filter(function() {
+                          return $(this).text().toUpperCase() == inputText.toUpperCase();
+                    });
+                    if (match.length > 0) {match.trigger("click");} else {optionSelected.removeAttr('selected');}
+                }
+            }
+        }
     })
+
     // Assign aria-labbledby to the dynamically created country input
     if ($(".autocomplete-wrapper .error-message").length) $(".autocomplete__wrapper #value").attr('aria-labelledby', 'error-message-input');
-
-    // fix to correctly set country option for a valid country input if not selected from dropdown list
-    $(".autocomplete__wrapper #value").on('change', function(e){
-        var inputText = $("#value").val().trim();
-        $('#value-select option:selected').removeAttr('selected');
-        $('#value-select option').filter(function() { return $.trim( $(this).text() ) == inputText; }).attr('selected','selected');
-    })
-
-    // fix to correctly set country option for a valid country input if not selected from dropdown list
-    $(".autocomplete__wrapper #country").on('change', function(e){
-        var inputText = $("#country").val().trim();
-        $('#country-select option:selected').removeAttr('selected');
-        $('#country-select option').filter(function() { return $.trim( $(this).text() ) == inputText; }).attr('selected','selected');
-    })
 
 
   //======================================================
