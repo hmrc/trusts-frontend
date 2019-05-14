@@ -20,7 +20,6 @@ import java.time.format.DateTimeFormatter
 
 import controllers.routes
 import javax.inject.Inject
-
 import models.{CheckMode, InternationalAddress, UKAddress, UserAnswers}
 import pages._
 import play.api.i18n.Messages
@@ -39,6 +38,15 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
         internationalAddress(x, countryOptions),
         routes.AgentInternationalAddressController.onPageLoad(CheckMode).url,
         agencyName(userAnswers)
+      )
+  }
+
+  def classBeneficiaryDescription(index: Int): Option[AnswerRow] = userAnswers.get(ClassBeneficiaryDescriptionPage(index)) map {
+    x =>
+      AnswerRow(
+        "classBeneficiaryDescription.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.ClassBeneficiaryDescriptionController.onPageLoad(CheckMode,index).url
       )
   }
 
