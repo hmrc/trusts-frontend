@@ -17,21 +17,21 @@
 package views
 
 import controllers.routes
-import forms.AgentUKAddressFormProvider
-import models.{AgentUKAddress, FullName, NormalMode}
+import forms.UKAddressFormProvider
+import models.{FullName, NormalMode, UKAddress}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
 import views.html.AgentUKAddressView
 
-class AgentUKAddressViewSpec extends QuestionViewBehaviours[AgentUKAddress] {
+class AgentUKAddressViewSpec extends QuestionViewBehaviours[UKAddress] {
 
   val messageKeyPrefix = "site.address.uk"
   val postcodeHintKey = "site.address.uk.postcode.hint"
 
   val agencyName = "Hadrian"
 
-  override val form = new AgentUKAddressFormProvider()()
+  override val form = new UKAddressFormProvider()()
 
   "AgentUKAddressView" must {
 
