@@ -23,11 +23,15 @@ sealed trait WhatTypeOfBeneficiary
 
 object WhatTypeOfBeneficiary extends Enumerable.Implicits {
 
-  case object Option1 extends WithName("option1") with WhatTypeOfBeneficiary
-  case object Option2 extends WithName("option2") with WhatTypeOfBeneficiary
+  case object Individual extends WithName("Individual") with WhatTypeOfBeneficiary
+  case object ClassOfBeneficiary extends WithName("ClassOfBeneficiary") with WhatTypeOfBeneficiary
+  case object CharityOrTrust extends WithName("CharityOrTrust") with WhatTypeOfBeneficiary
+  case object CompanyOrEmployment extends WithName("CompanyOrEmployment") with WhatTypeOfBeneficiary
+  case object Other extends WithName("Other") with WhatTypeOfBeneficiary
+
 
   val values: List[WhatTypeOfBeneficiary] = List(
-    Option1, Option2
+    Individual, ClassOfBeneficiary, CharityOrTrust, CompanyOrEmployment, Other
   )
 
   val options: List[RadioOption] = values.map {
