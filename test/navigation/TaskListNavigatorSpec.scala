@@ -22,6 +22,7 @@ import base.SpecBase
 import controllers.routes
 import models.{FullName, NormalMode, UserAnswers}
 import pages._
+import models.WhatKindOfAsset.Money
 
 class TaskListNavigatorSpec extends SpecBase {
 
@@ -113,8 +114,9 @@ class TaskListNavigatorSpec extends SpecBase {
       "there are assets" must {
 
         "go to AddAAsset" in {
-          val answers = emptyUserAnswers
-          navigator.nextPage(Assets, answers) mustBe routes.AssetInterruptPageController.onPageLoad()
+          val answers = UserAnswers(userAnswersId)
+            .set(WhatKindOfAssetPage(0), Money).success.value
+          navigator.nextPage(Assets, answers) mustBe routes.AddAssetsController.onPageLoad()
         }
 
       }
