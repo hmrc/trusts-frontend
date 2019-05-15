@@ -16,6 +16,7 @@
 
 package controllers
 
+import config.FrontendAppConfig
 import controllers.actions._
 import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -30,12 +31,18 @@ class ConfirmationController @Inject()(
                                        identify: IdentifierAction,
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
+                                       config: FrontendAppConfig,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: ConfirmationView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      Ok(view())
+
+      val printSave = config.printsave
+
+      val postHMRC = config.posthmrc
+
+      Ok(view(printSave, postHMRC))
   }
 }

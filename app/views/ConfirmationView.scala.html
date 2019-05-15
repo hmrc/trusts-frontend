@@ -18,7 +18,7 @@
     main_template: MainTemplate
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@(printSave: String, postHMRC: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("confirmation.title")
@@ -26,5 +26,21 @@
 
     @components.back_link()
 
-    @components.heading("confirmation.heading")
+    <h1 class="form-title heading-large heading-confirmation">
+        Registration received
+        <span class="reference-text">Your reference is:</span>
+        <span class="reference-number">XC TRN 000 000 4911</span>
+    </h1>
+
+    @components.link(printSave,"","confirmationPage.printsave.link")
+
+    <h2>@messages("confirmationPage.subheading1")</h2>
+
+    <p>@messages("confirmationPage.paragraph1")</p>
+
+    <h2>@messages("confirmationPage.subheading2")</h2>
+
+    <p>@messages("confirmationPage.paragraph2")</p>
+
+    <p>@messages("confirmationPage.paragraph3")@components.link(postHMRC,"","confirmationPage.posthmrc.link")@messages("confirmationPage.paragraph4")</p>
 }

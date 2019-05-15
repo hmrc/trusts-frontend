@@ -741,5 +741,16 @@ classBeneficiaryDescription.error.invalid = The description of class in the trus
 classBeneficiaryDescription.hint = This must be 56 characters or less. For example, future grandchildren and future great-grandchildren.
 
 
-confirmation.title = confirmation
-confirmation.heading = confirmation
+confirmationPage.title = confirmation
+confirmationPage.heading = confirmation
+confirmationPage.printsave.link = Print or save a copy of your answers
+confirmationPage.posthmrc.link = post the changes to HMRC.
+
+confirmationPage.subheading1 = What happens next
+confirmationPage.paragraph1 = You can continue to use your Unique Taxpayer Reference as usual. If there is a problem with your registration, we will contact the lead trustee.
+
+confirmationPage.subheading2 = What you need to do next
+confirmationPage.paragraph2 = Keep a note of your reference in case you need to contact HMRC.
+confirmationPage.paragraph3 = You cannot make online changes to the trust. To change the lead trustee or their contact details,
+confirmationPage.paragraph4 = You must keep a record of any other changes until you can change them using the online service.
+
