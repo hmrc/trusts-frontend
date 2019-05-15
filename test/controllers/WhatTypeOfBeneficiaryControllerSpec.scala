@@ -57,7 +57,7 @@ class WhatTypeOfBeneficiaryControllerSpec extends SpecBase {
       application.stop()
     }
 
-    "populate the view correctly on a GET when the question has previously been answered" in {
+    "populate the view without value on a GET when the question has previously been answered" in {
 
       val userAnswers = UserAnswers(userAnswersId).set(WhatTypeOfBeneficiaryPage, WhatTypeOfBeneficiary.values.head).success.value
 
@@ -72,7 +72,7 @@ class WhatTypeOfBeneficiaryControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(WhatTypeOfBeneficiary.values.head), NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
