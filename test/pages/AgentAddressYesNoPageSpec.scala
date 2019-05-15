@@ -16,6 +16,8 @@
 
 package pages
 
+import models.{InternationalAddress, UKAddress, UserAnswers}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
 class AgentAddressYesNoPageSpec extends PageBehaviours {
@@ -27,5 +29,27 @@ class AgentAddressYesNoPageSpec extends PageBehaviours {
     beSettable[Boolean](AgentAddressYesNoPage)
 
     beRemovable[Boolean](AgentAddressYesNoPage)
+  }
+
+  "remove AgentUKAddressPage when AgentAddressYesNoPage is set to false" in {
+    val index = 0
+    forAll(arbitrary[UserAnswers], arbitrary[String]) {
+      (initial, str) =>
+        val answers: UserAnswers = initial.set(AgentUKAddressPage,UKAddress(str, Some(str), Some(str), str, str) ).success.value
+        val result = answers.set(AgentAddressYesNoPage, false).success.value
+
+        result.get(AgentUKAddressPage) mustNot be(defined)
+    }
+  }
+
+  "remove AgentInternationalAddressPage when AgentAddressYesNoPage is set to true" in {
+    val index = 0
+    forAll(arbitrary[UserAnswers], arbitrary[String]) {
+      (initial, str) =>
+        val answers: UserAnswers = initial.set(AgentInternationalAddressPage,InternationalAddress(str, str, Some(str), Some(str), str) ).success.value
+        val result = answers.set(AgentAddressYesNoPage, true).success.value
+
+        result.get(AgentInternationalAddressPage) mustNot be(defined)
+    }
   }
 }

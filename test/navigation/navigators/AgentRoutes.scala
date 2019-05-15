@@ -67,11 +67,19 @@ trait AgentRoutes {
       }
     }
 
-    "go to AgentTelephoneNumber from AgentAddressYesNo Page when user answers no" in {
+    "go to AgentInternationalAddress from AgentAddressYesNo Page when user answers no" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(AgentAddressYesNoPage, value = false).success.value
           navigator.nextPage(AgentAddressYesNoPage, NormalMode, AffinityGroup.Agent)(answers)
+            .mustBe(routes.AgentInternationalAddressController.onPageLoad(NormalMode))
+      }
+    }
+
+    "go to AgentTelephoneNumber from AgentInternationalAddress Page" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          navigator.nextPage(AgentInternationalAddressPage, NormalMode, AffinityGroup.Agent)(userAnswers)
             .mustBe(routes.AgentTelephoneNumberController.onPageLoad(NormalMode))
       }
     }

@@ -27,7 +27,6 @@ trait ModelGenerators {
       Gen.oneOf(AddABeneficiary.values.toSeq)
     }
 
-
   implicit lazy val arbitraryFullName : Arbitrary[FullName] = {
     Arbitrary {
       for {

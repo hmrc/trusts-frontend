@@ -59,6 +59,7 @@ class AgentAnswerController @Inject()(
             checkYourAnswersHelper.agentName,
             checkYourAnswersHelper.agentAddressYesNo,
             checkYourAnswersHelper.agentUKAddress,
+            checkYourAnswersHelper.agentInternationalAddress,
             checkYourAnswersHelper.agenciesTelephoneNumber
           ).flatten
         )

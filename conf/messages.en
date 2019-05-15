@@ -59,6 +59,15 @@ site.address.uk.postcode = Postcode
 site.address.uk.postcode.hint = For example AB1 1AB
 site.address.uk.checkYourAnswersLabel = What is {0}’s address?
 
+site.address.international.title = What is {0}’s address?
+site.address.international.heading = What is {0}’s address?
+site.address.international.line1 = Address line 1
+site.address.international.line2 = Address line 2
+site.address.international.line3 = Address line 3 (optional)
+site.address.international.line4 = Address line 4 (optional)
+site.address.international.country = Country
+site.address.international.checkYourAnswersLabel = What is {0}’s address?
+
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 
@@ -739,4 +748,3 @@ classBeneficiaryDescription.error.required = Enter the description for the class
 classBeneficiaryDescription.error.length = The description of the class in the trust deed must be 56 characters or less
 classBeneficiaryDescription.error.invalid = The description of class in the trust deed must only include letters a to z, numbers, spaces, special characters, ampersands (&), backword slashes, spaces
 classBeneficiaryDescription.hint = This must be 56 characters or less. For example, future grandchildren and future great-grandchildren.
-
