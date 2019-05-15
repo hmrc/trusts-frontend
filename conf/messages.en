@@ -465,8 +465,8 @@ assetInterruptPage.subheading6 = Other assets
 assetInterruptPage.paragraph8 = You need a description and an estimate of the current value of the asset.
 
 
-agentAnswer.title = Check agent details
-agentAnswer.heading = Check agent details
+agentAnswer.title = Check agency details
+agentAnswer.heading = Check agency details
 
 assetMoneyValue.title = What is the total amount of money in the trust?
 assetMoneyValue.heading = What is the total amount of money in the trust?
