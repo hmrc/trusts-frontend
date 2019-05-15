@@ -32,7 +32,7 @@ class WhatTypeOfBeneficiaryControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  lazy val whatTypeOfBeneficiaryRoute = routes.WhatTypeOfBeneficiaryController.onPageLoad(NormalMode).url
+  lazy val whatTypeOfBeneficiaryRoute = routes.WhatTypeOfBeneficiaryController.onPageLoad().url
 
   val formProvider = new WhatTypeOfBeneficiaryFormProvider()
   val form = formProvider()
