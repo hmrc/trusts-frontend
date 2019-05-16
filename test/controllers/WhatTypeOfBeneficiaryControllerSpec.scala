@@ -18,9 +18,9 @@ package controllers
 
 import base.SpecBase
 import forms.WhatTypeOfBeneficiaryFormProvider
-import models.{NormalMode, WhatTypeOfBeneficiary, UserAnswers}
+import models.{NormalMode, UserAnswers, WhatTypeOfBeneficiary}
 import navigation.{FakeNavigator, Navigator}
-import pages.WhatTypeOfBeneficiaryPage
+import pages.{ClassBeneficiaryDescriptionPage, WhatTypeOfBeneficiaryPage}
 import play.api.inject.bind
 import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
@@ -39,7 +39,7 @@ class WhatTypeOfBeneficiaryControllerSpec extends SpecBase {
 
   "WhatTypeOfBeneficiary Controller" must {
 
-    "return OK and the correct view for a GET" in {
+    "return OK and the correct view for a GET when no beneficiaries are added" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
@@ -52,14 +52,33 @@ class WhatTypeOfBeneficiaryControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, false)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view for a GET when beneficiaries are already added." in {
+     val userAnswer =  emptyUserAnswers.set(ClassBeneficiaryDescriptionPage(0), "description").success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswer)).build()
+
+      val request = FakeRequest(GET, whatTypeOfBeneficiaryRoute)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[WhatTypeOfBeneficiaryView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(form, NormalMode,true)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view without value on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(WhatTypeOfBeneficiaryPage, WhatTypeOfBeneficiary.values.head).success.value
+      val userAnswers = emptyUserAnswers.set(WhatTypeOfBeneficiaryPage, WhatTypeOfBeneficiary.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -72,7 +91,7 @@ class WhatTypeOfBeneficiaryControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode,false)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -114,7 +133,7 @@ class WhatTypeOfBeneficiaryControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode,false)(fakeRequest, messages).toString
 
       application.stop()
     }

@@ -16,24 +16,17 @@
 
 package pages
 
-import models.UserAnswers
-import play.api.libs.json.JsPath
+import models.InternationalAddress
+import pages.behaviours.PageBehaviours
 
-import scala.util.Try
+class AgentInternationalAddressPageSpec extends PageBehaviours {
 
-case object AgentAddressYesNoPage extends QuestionPage[Boolean] {
+  "AgentInternationalAddressPage" must {
 
-  override def path: JsPath = JsPath \ Agent \ toString
+    beRetrievable[InternationalAddress](AgentInternationalAddressPage)
 
-  override def toString: String = "agentAddressYesNo"
+    beSettable[InternationalAddress](AgentInternationalAddressPage)
 
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
-    value match {
-      case Some(false) =>
-        userAnswers.remove(AgentUKAddressPage)
-      case Some(true) =>
-        userAnswers.remove(AgentInternationalAddressPage)
-      case _ => super.cleanup(value, userAnswers)
-    }
+    beRemovable[InternationalAddress](AgentInternationalAddressPage)
   }
 }

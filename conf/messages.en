@@ -59,6 +59,15 @@ site.address.uk.postcode = Postcode
 site.address.uk.postcode.hint = For example AB1 1AB
 site.address.uk.checkYourAnswersLabel = What is {0}’s address?
 
+site.address.international.title = What is {0}’s address?
+site.address.international.heading = What is {0}’s address?
+site.address.international.line1 = Address line 1
+site.address.international.line2 = Address line 2
+site.address.international.line3 = Address line 3 (optional)
+site.address.international.line4 = Address line 4 (optional)
+site.address.international.country = Country
+site.address.international.checkYourAnswersLabel = What is {0}’s address?
+
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 
@@ -456,8 +465,8 @@ assetInterruptPage.subheading6 = Other assets
 assetInterruptPage.paragraph8 = You need a description and an estimate of the current value of the asset.
 
 
-agentAnswer.title = Check agent details
-agentAnswer.heading = Check agent details
+agentAnswer.title = Check agency details
+agentAnswer.heading = Check agency details
 
 assetMoneyValue.title = What is the total amount of money in the trust?
 assetMoneyValue.heading = What is the total amount of money in the trust?
@@ -740,9 +749,11 @@ classBeneficiaryDescription.error.length = The description of the class in the t
 classBeneficiaryDescription.error.invalid = The description of class in the trust deed must only include letters a to z, numbers, spaces, special characters, ampersands (&), backword slashes, spaces
 classBeneficiaryDescription.hint = This must be 56 characters or less. For example, future grandchildren and future great-grandchildren.
 
+whatTypeOfBeneficiary.first.title = What kind of beneficiary do you need to add first?
+whatTypeOfBeneficiary.next.title = What kind of beneficiary do you need to add next?
+whatTypeOfBeneficiary.first.heading = What kind of beneficiary do you need to add first?
+whatTypeOfBeneficiary.next.heading = What kind of beneficiary do you need to add next?
 
-whatTypeOfBeneficiary.title = What kind of beneficiary do you need to add first?
-whatTypeOfBeneficiary.heading = What kind of beneficiary do you need to add first?
 whatTypeOfBeneficiary.Individual = Individual
 whatTypeOfBeneficiary.ClassOfBeneficiary = Class of beneficiaries
 whatTypeOfBeneficiary.CharityOrTrust = Charity or trust

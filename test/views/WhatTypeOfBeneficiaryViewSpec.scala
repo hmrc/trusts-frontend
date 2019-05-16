@@ -25,20 +25,27 @@ import views.html.WhatTypeOfBeneficiaryView
 
 class WhatTypeOfBeneficiaryViewSpec extends ViewBehaviours {
 
-  val messageKeyPrefix = "whatTypeOfBeneficiary"
+  val messageKeyPrefixFirst = "whatTypeOfBeneficiary.first"
+  val messageKeyPrefixNext = "whatTypeOfBeneficiary.next"
 
   val form = new WhatTypeOfBeneficiaryFormProvider()()
 
   val view = viewFor[WhatTypeOfBeneficiaryView](Some(emptyUserAnswers))
 
-  def applyView(form: Form[_]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode)(fakeRequest, messages)
+  def applyView(form: Form[_], isAdded :Boolean): HtmlFormat.Appendable =
+    view.apply(form, NormalMode,isAdded)(fakeRequest, messages)
 
   "WhatTypeOfBeneficiaryView" must {
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    "when no beneficiaries have been added" must {
+      behave like normalPage(applyView(form,false), messageKeyPrefixFirst)
+    }
 
-    behave like pageWithBackLink(applyView(form))
+    "when beneficiaries has been added" must {
+      behave like normalPage(applyView(form, true), messageKeyPrefixNext)
+    }
+
+    behave like pageWithBackLink(applyView(form,false))
   }
 
   "WhatTypeOfBeneficiaryView" when {
@@ -47,7 +54,7 @@ class WhatTypeOfBeneficiaryViewSpec extends ViewBehaviours {
 
       "contain radio buttons for the value" in {
 
-        val doc = asDocument(applyView(form))
+        val doc = asDocument(applyView(form,false))
 
         for (option <- WhatTypeOfBeneficiary.options) {
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
@@ -61,7 +68,7 @@ class WhatTypeOfBeneficiaryViewSpec extends ViewBehaviours {
 
         s"have the '${option.value}' radio button selected" in {
 
-          val doc = asDocument(applyView(form.bind(Map("value" -> s"${option.value}"))))
+          val doc = asDocument(applyView(form.bind(Map("value" -> s"${option.value}")), false))
 
           assertContainsRadioButton(doc, option.id, "value", option.value, true)
 

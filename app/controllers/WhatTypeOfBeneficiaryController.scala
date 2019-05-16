@@ -19,9 +19,11 @@ package controllers
 import controllers.actions._
 import forms.WhatTypeOfBeneficiaryFormProvider
 import javax.inject.Inject
+
+import models.requests.DataRequest
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.WhatTypeOfBeneficiaryPage
+import pages.{ClassOfBeneficiaries, IndividualBeneficiaries, WhatTypeOfBeneficiaryPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -47,16 +49,17 @@ class WhatTypeOfBeneficiaryController @Inject()(
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
-      Ok(view(form, mode))
+      Ok(view(form, mode,isAnyBeneficiaryAdded(request)))
   }
+
+
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode,isAnyBeneficiaryAdded(request)))),
 
         value => {
           for {
@@ -65,5 +68,11 @@ class WhatTypeOfBeneficiaryController @Inject()(
           } yield Redirect(navigator.nextPage(WhatTypeOfBeneficiaryPage, mode)(updatedAnswers))
         }
       )
+  }
+
+  private def isAnyBeneficiaryAdded(request: DataRequest[AnyContent]) = {
+   request.userAnswers.get(IndividualBeneficiaries).
+     getOrElse(List.empty).nonEmpty  ||
+     request.userAnswers.get(ClassOfBeneficiaries).getOrElse(List.empty).nonEmpty
   }
 }

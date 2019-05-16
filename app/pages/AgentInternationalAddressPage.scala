@@ -16,24 +16,12 @@
 
 package pages
 
-import models.UserAnswers
+import models.InternationalAddress
 import play.api.libs.json.JsPath
 
-import scala.util.Try
+case object AgentInternationalAddressPage extends QuestionPage[InternationalAddress] {
 
-case object AgentAddressYesNoPage extends QuestionPage[Boolean] {
+  override def path: JsPath = JsPath \ toString
 
-  override def path: JsPath = JsPath \ Agent \ toString
-
-  override def toString: String = "agentAddressYesNo"
-
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
-    value match {
-      case Some(false) =>
-        userAnswers.remove(AgentUKAddressPage)
-      case Some(true) =>
-        userAnswers.remove(AgentInternationalAddressPage)
-      case _ => super.cleanup(value, userAnswers)
-    }
-  }
+  override def toString: String = "agentInternationalAddress"
 }

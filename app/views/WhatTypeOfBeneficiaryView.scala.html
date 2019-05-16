@@ -22,10 +22,26 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode,beneficiaryAdded : Boolean )(implicit request: Request[_], messages: Messages)
+
+@title = {
+    @if(beneficiaryAdded==true) {
+        @messages("whatTypeOfBeneficiary.next.title")
+    } else {
+        @messages("whatTypeOfBeneficiary.first.title")
+    }
+}
+
+@heading = {
+    @if(beneficiaryAdded) {
+        @messages("whatTypeOfBeneficiary.next.heading")
+    } else {
+        @messages("whatTypeOfBeneficiary.first.heading")
+    }
+}
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("whatTypeOfBeneficiary.title")}"
+    title = s"${errorPrefix(form)} $title"
     ) {
 
     @formHelper(action = WhatTypeOfBeneficiaryController.onSubmit(), 'autoComplete -> "off") {
@@ -34,11 +50,11 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("whatTypeOfBeneficiary.heading")
+        @components.heading(heading.toString)
 
         @components.input_radio(
             field = form("value"),
-            legend = messages("whatTypeOfBeneficiary.heading"),
+            legend = heading.toString,
             legendClass = Some("visually-hidden"),
             inputs = WhatTypeOfBeneficiary.options,
             hint = Some(messages(s"whatTypeOfBeneficiary.hint"))
