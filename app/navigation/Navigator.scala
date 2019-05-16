@@ -113,9 +113,42 @@ class Navigator @Inject()() {
     case IndividualBeneficiaryAnswersPage => _ => _ => routes.AddABeneficiaryController.onPageLoad()
 
     case AddABeneficiaryPage => _ => addABeneficiaryRoute
+    case WhatTypeOfBeneficiaryPage => _ => whatTypeOfBeneficiaryRoute
 
     //  Default
     case _ => _ => _ => routes.IndexController.onPageLoad()
+  }
+
+
+  private def whatTypeOfBeneficiaryRoute(userAnswers: UserAnswers) : Call = {
+    val whatBeneficiaryToAdd = userAnswers.get(WhatTypeOfBeneficiaryPage)
+    whatBeneficiaryToAdd match {
+      case Some(WhatTypeOfBeneficiary.Individual) =>
+        routeToIndividualBeneficiaryIndex(userAnswers)
+      case Some(WhatTypeOfBeneficiary.ClassOfBeneficiary) =>
+        routeToClassOfBeneficiaryIndex(userAnswers)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  private def routeToIndividualBeneficiaryIndex(userAnswers: UserAnswers) = {
+    val indBeneficiaries = userAnswers.get(IndividualBeneficiaries).getOrElse(List.empty)
+    indBeneficiaries match {
+      case Nil =>
+        routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, 0)
+      case t if t.nonEmpty =>
+        routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, t.size)
+    }
+  }
+
+  private def routeToClassOfBeneficiaryIndex(userAnswers: UserAnswers) = {
+    val classOfBeneficiaries = userAnswers.get(ClassOfBeneficiaries).getOrElse(List.empty)
+    classOfBeneficiaries match {
+      case Nil =>
+        routes.ClassBeneficiaryDescriptionController.onPageLoad(NormalMode, 0)
+      case t if t.nonEmpty =>
+        routes.ClassBeneficiaryDescriptionController.onPageLoad(NormalMode, t.size)
+    }
   }
 
   private def agentAddressYesNoRoute(userAnswers: UserAnswers) : Call =

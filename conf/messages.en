@@ -748,3 +748,17 @@ classBeneficiaryDescription.error.required = Enter the description for the class
 classBeneficiaryDescription.error.length = The description of the class in the trust deed must be 56 characters or less
 classBeneficiaryDescription.error.invalid = The description of class in the trust deed must only include letters a to z, numbers, special characters, ampersands (&), backward slashes or spaces
 classBeneficiaryDescription.hint = This must be 56 characters or less. For example, future grandchildren and future great-grandchildren.
+
+whatTypeOfBeneficiary.first.title = What kind of beneficiary do you need to add first?
+whatTypeOfBeneficiary.next.title = What kind of beneficiary do you need to add next?
+whatTypeOfBeneficiary.first.heading = What kind of beneficiary do you need to add first?
+whatTypeOfBeneficiary.next.heading = What kind of beneficiary do you need to add next?
+
+whatTypeOfBeneficiary.Individual = Individual
+whatTypeOfBeneficiary.ClassOfBeneficiary = Class of beneficiaries
+whatTypeOfBeneficiary.CharityOrTrust = Charity or trust
+whatTypeOfBeneficiary.CompanyOrEmployment = Company or employment related
+whatTypeOfBeneficiary.Other = Other beneficiary
+whatTypeOfBeneficiary.checkYourAnswersLabel = whatTypeOfBeneficiary
+whatTypeOfBeneficiary.error.required = Select the type of beneficiary you need to add
+whatTypeOfBeneficiary.hint = You can enter a maximum of 25 entries for each beneficiary type
