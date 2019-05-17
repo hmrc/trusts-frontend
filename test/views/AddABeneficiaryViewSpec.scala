@@ -29,13 +29,15 @@ class AddABeneficiaryViewSpec extends OptionsViewBehaviours with TabularDataView
   val completeBeneficiaries = Seq(
     AddRow("beneficiary one", "Individual Beneficiary", "#", "#"),
     AddRow("beneficiary two", "Individual Beneficiary", "#", "#"),
-    AddRow("beneficiary three", "Individual Beneficiary", "#", "#")
+    AddRow("beneficiary three", "Individual Beneficiary", "#", "#"),
+    AddRow("class of beneficiary", "Class of beneficiaries", "#", "#")
   )
 
   val inProgressBeneficiaries = Seq(
     AddRow("beneficiary four", "Individual Beneficiary", "#", "#"),
     AddRow("beneficiary five", "Individual Beneficiary", "#", "#"),
-    AddRow("beneficiary six", "Individual Beneficiary", "#", "#")
+    AddRow("beneficiary six", "Individual Beneficiary", "#", "#"),
+    AddRow("class of beneficiary 2", "Class of beneficiaries", "#", "#")
   )
   val messageKeyPrefix = "addABeneficiary"
 

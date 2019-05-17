@@ -16,9 +16,9 @@
 
 package utils
 
-import models.entities.IndividualBeneficiary
+import models.entities.{ClassOfBeneficiary, IndividualBeneficiary}
 import models.{FullName, UserAnswers}
-import pages.IndividualBeneficiaries
+import pages.{ClassOfBeneficiaries, IndividualBeneficiaries}
 import play.api.i18n.Messages
 import viewmodels.{AddRow, AddToRows}
 
@@ -31,7 +31,7 @@ class AddABeneficiaryViewHelper(userAnswers: UserAnswers)(implicit messages: Mes
     }
   }
 
-  private def parseBeneficiary(individualBeneficiary : IndividualBeneficiary) : AddRow = {
+  private def parseIndividualBeneficiary(individualBeneficiary : IndividualBeneficiary) : AddRow = {
     AddRow(
       parseName(individualBeneficiary.name),
       "Individual Beneficiary",
@@ -40,14 +40,30 @@ class AddABeneficiaryViewHelper(userAnswers: UserAnswers)(implicit messages: Mes
     )
   }
 
+  private def parseClassOfBeneficiary(classOfBeneficiary : ClassOfBeneficiary) : AddRow = {
+    AddRow(
+      classOfBeneficiary.classBeneficiaryDescription.getOrElse(""),
+      "Class of beneficiaries",
+      "#",
+      "#"
+    )
+  }
+
   def rows : AddToRows = {
-    val beneficiaries = userAnswers.get(IndividualBeneficiaries).toList.flatten
+    val individualBeneficiaries = userAnswers.get(IndividualBeneficiaries).toList.flatten
 
-    val complete = beneficiaries.filter(_.isComplete).map(parseBeneficiary)
+    val indBeneficiaryComplete = individualBeneficiaries.filter(_.isComplete).map(parseIndividualBeneficiary)
 
-    val inProgress = beneficiaries.filterNot(_.isComplete).map(parseBeneficiary)
+    val indBenInProgress = individualBeneficiaries.filterNot(_.isComplete).map(parseIndividualBeneficiary)
 
-    AddToRows(inProgress, complete)
+    val classOfBeneficiaries = userAnswers.get(ClassOfBeneficiaries).toList.flatten
+
+    val classOfBeneficiariesComplete = classOfBeneficiaries.filter(_.isComplete).map(parseClassOfBeneficiary)
+
+    val classOfBeneficiariesInProgress = classOfBeneficiaries.filterNot(_.isComplete).map(parseClassOfBeneficiary)
+
+    AddToRows(indBenInProgress ::: classOfBeneficiariesInProgress,
+      indBeneficiaryComplete ::: classOfBeneficiariesComplete)
   }
 
 }
