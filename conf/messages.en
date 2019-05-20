@@ -739,7 +739,7 @@ individualBeneficiaryAddressUKYesNo.error.required = Select yes if the individua
 agentAddressYesNo.title = Is {0}’s agency address in the UK?
 agentAddressYesNo.heading = Is {0}’s agency address in the UK?
 agentAddressYesNo.checkYourAnswersLabel = Is {0}’s agency address in the UK?
-agentAddressYesNo.error.required = Select yes if agency’s address in the UK
+agentAddressYesNo.error.required = Select yes if the agency’s address is in the UK
 
 classBeneficiaryDescription.title = What is the description for the class of beneficiaries?
 classBeneficiaryDescription.heading = What is the description for the class of beneficiaries?
