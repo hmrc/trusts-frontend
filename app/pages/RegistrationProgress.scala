@@ -58,6 +58,8 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator) {
     val addAnother = userAnswers.get(AddABeneficiaryPage)
     (Beneficiaries.inProgress.isEmpty, Beneficiaries.complete.isEmpty, addAnother) match {
       case (true, false, Some(AddABeneficiary.NoComplete)) => Some(Completed) // None in progress, at least one completed and selected No more to add
+      case (_, false, Some(AddABeneficiary.YesNow)) => Some(InProgress)  // Has at least one completed and selected 'add now' or 'add more later'
+      case (_, false, Some(AddABeneficiary.YesLater)) => Some(InProgress)  // Has at least one completed and selected 'add now' or 'add more later'
       case (false, _, _ ) => Some(InProgress)  // Has at least one in progress
       case (_, _, _) => None
     }
@@ -69,6 +71,7 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator) {
     val hasLeadTrustee = userAnswers.get(pages.Trustees).toList.flatten.filter(_.lead).nonEmpty
     (trustees.inProgress.isEmpty, trustees.complete.isEmpty, addAnother, hasLeadTrustee) match {
       case (true, false, Some(AddATrustee.NoComplete), true) => Some(Completed)
+      case (_, false, _, _) => Some(InProgress)
       case (false, _, _ , _) => Some(InProgress)
       case (_, _, _, _) => None
     }
@@ -95,6 +98,7 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator) {
     val addAnother = userAnswers.get(AddAssetsPage)
     (assets.inProgress.isEmpty, assets.complete.isEmpty, addAnother) match {
       case (true, false, Some(AddAssets.NoComplete)) => Some(Completed)
+      case (_, false, _) => Some(InProgress)
       case (false, _, _ ) => Some(InProgress)
       case (_, _, _) => None
     }
