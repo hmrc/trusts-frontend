@@ -25,7 +25,7 @@ case object AgentAddressYesNoPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ Agent \ toString
 
-  override def toString: String = "agentAddressYesNo"
+  override def toString: String = "addressYesNo"
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
