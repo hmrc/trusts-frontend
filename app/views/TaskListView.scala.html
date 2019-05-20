@@ -23,7 +23,7 @@
     main_template: MainTemplate
 )
 
-@(savedUntil : String, sections : List[Task], affinityGroup : AffinityGroup)(implicit request: Request[_], messages: Messages)
+@(savedUntil : String, sections : List[Task], isTaskListComplete: Boolean, affinityGroup : AffinityGroup)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("taskList.title")
@@ -45,5 +45,12 @@
     }
 
     @components.task_list(sections)
+
+    @if(isTaskListComplete) {
+        <h2 id="summaryHeading">@messages("taskList.summary.heading")</h2>
+        <p>@messages("taskList.summary.paragraph","Trust Name")</p>
+        @components.link("#", "printSaveAnswers", "taskList.summary.link")
+        @components.button_link(messages("taskList.summary.continue"), routes.TaskListController.onPageLoad().url)
+    }
 
 }

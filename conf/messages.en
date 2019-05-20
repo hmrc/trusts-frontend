@@ -380,6 +380,12 @@ taskList.agent.agentDetails = Agent details
 taskList.completed = Completed
 taskList.progress = In Progress
 
+taskList.summary.heading = Summary
+taskList.summary.paragraph = After submitting {0}’s registration, if you need to update any asset details use Self Assessment online after completing the trust’s registration.
+taskList.summary.link = Print or save a copy of your answers
+taskList.summary.continue = Continue to declaration
+
+
 agentOverview.title = Register a trust for a client
 agentOverview.heading = Register a trust for a client
 agentOverview.paragraph1 = You can save your registration and come back later. You have 28 days from the time you first save to register a trust. If you do not register within 28 days, your information will be deleted.

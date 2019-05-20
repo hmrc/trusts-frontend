@@ -72,7 +72,7 @@ class TaskListController @Inject()(
         for {
           _              <- sessionRepository.set(updatedAnswers)
         } yield {
-          Ok(view(savedUntil, registrationProgress.sections(updatedAnswers), affinityGroup))
+          Ok(view(savedUntil, registrationProgress.sections(updatedAnswers), registrationProgress.isTaskListComplete(updatedAnswers), affinityGroup))
         }
       }
 
