@@ -16,11 +16,17 @@
 
 package pages
 
-import play.api.libs.json.JsPath
+import models.WhatTypeOfBeneficiary
+import pages.behaviours.PageBehaviours
 
-case object AgentInternalReferencePage extends QuestionPage[String] {
+class WhatTypeOfBeneficiarySpec extends PageBehaviours {
 
-  override def path: JsPath = JsPath \ Agent \ toString
+  "WhatTypeOfBeneficiaryPage" must {
 
-  override def toString: String = "internalReference"
+    beRetrievable[WhatTypeOfBeneficiary](WhatTypeOfBeneficiaryPage)
+
+    beSettable[WhatTypeOfBeneficiary](WhatTypeOfBeneficiaryPage)
+
+    beRemovable[WhatTypeOfBeneficiary](WhatTypeOfBeneficiaryPage)
+  }
 }

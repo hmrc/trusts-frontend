@@ -59,6 +59,15 @@ site.address.uk.postcode = Postcode
 site.address.uk.postcode.hint = For example AB1 1AB
 site.address.uk.checkYourAnswersLabel = What is {0}’s address?
 
+site.address.international.title = What is {0}’s address?
+site.address.international.heading = What is {0}’s address?
+site.address.international.line1 = Address line 1
+site.address.international.line2 = Address line 2
+site.address.international.line3 = Address line 3 (optional)
+site.address.international.line4 = Address line 4 (optional)
+site.address.international.country = Country
+site.address.international.checkYourAnswersLabel = What is {0}’s address?
+
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 
@@ -380,6 +389,12 @@ taskList.agent.agentDetails = Agent details
 taskList.completed = Completed
 taskList.progress = In Progress
 
+taskList.summary.heading = Summary
+taskList.summary.paragraph = After submitting {0}’s registration, if you need to update any asset details use Self Assessment online after completing the trust’s registration.
+taskList.summary.link = Print or save a copy of your answers
+taskList.summary.continue = Continue to declaration
+
+
 agentOverview.title = Register a trust for a client
 agentOverview.heading = Register a trust for a client
 agentOverview.paragraph1 = You can save your registration and come back later. You have 28 days from the time you first save to register a trust. If you do not register within 28 days, your information will be deleted.
@@ -456,8 +471,8 @@ assetInterruptPage.subheading6 = Other assets
 assetInterruptPage.paragraph8 = You need a description and an estimate of the current value of the asset.
 
 
-agentAnswer.title = Check agent details
-agentAnswer.heading = Check agent details
+agentAnswer.title = Check agency details
+agentAnswer.heading = Check agency details
 
 assetMoneyValue.title = What is the total amount of money in the trust?
 assetMoneyValue.heading = What is the total amount of money in the trust?
@@ -730,16 +745,29 @@ individualBeneficiaryAddressUKYesNo.error.required = Select yes if the individua
 agentAddressYesNo.title = Is {0}’s agency address in the UK?
 agentAddressYesNo.heading = Is {0}’s agency address in the UK?
 agentAddressYesNo.checkYourAnswersLabel = Is {0}’s agency address in the UK?
-agentAddressYesNo.error.required = Select yes if agency’s address in the UK
+agentAddressYesNo.error.required = Select yes if the agency’s address is in the UK
 
 classBeneficiaryDescription.title = What is the description for the class of beneficiaries?
 classBeneficiaryDescription.heading = What is the description for the class of beneficiaries?
 classBeneficiaryDescription.checkYourAnswersLabel = What is the description for the class of beneficiaries?
 classBeneficiaryDescription.error.required = Enter the description for the class of beneficiaries
 classBeneficiaryDescription.error.length = The description of the class in the trust deed must be 56 characters or less
-classBeneficiaryDescription.error.invalid = The description of class in the trust deed must only include letters a to z, numbers, spaces, special characters, ampersands (&), backword slashes, spaces
+classBeneficiaryDescription.error.invalid = The description of class in the trust deed must only include letters a to z, numbers, special characters, ampersands (&), backward slashes or spaces
 classBeneficiaryDescription.hint = This must be 56 characters or less. For example, future grandchildren and future great-grandchildren.
 
+whatTypeOfBeneficiary.first.title = What kind of beneficiary do you need to add first?
+whatTypeOfBeneficiary.next.title = What kind of beneficiary do you need to add next?
+whatTypeOfBeneficiary.first.heading = What kind of beneficiary do you need to add first?
+whatTypeOfBeneficiary.next.heading = What kind of beneficiary do you need to add next?
+
+whatTypeOfBeneficiary.Individual = Individual
+whatTypeOfBeneficiary.ClassOfBeneficiary = Class of beneficiaries
+whatTypeOfBeneficiary.CharityOrTrust = Charity or trust
+whatTypeOfBeneficiary.CompanyOrEmployment = Company or employment related
+whatTypeOfBeneficiary.Other = Other beneficiary
+whatTypeOfBeneficiary.checkYourAnswersLabel = whatTypeOfBeneficiary
+whatTypeOfBeneficiary.error.required = Select the type of beneficiary you need to add
+whatTypeOfBeneficiary.hint = You can enter a maximum of 25 entries for each beneficiary type
 
 confirmationPage.title = Registration received Your reference is: {0}
 confirmationPage.heading = Registration received Your reference is: {0}
@@ -753,4 +781,3 @@ confirmationPage.subheading2 = What you need to do next
 confirmationPage.paragraph2 = Keep a note of your reference in case you need to contact HMRC.
 confirmationPage.paragraph3 = You cannot make online changes to the trust. To change the lead trustee or their contact details,
 confirmationPage.paragraph4 = You must keep a record of any other changes until you can change them using the online service.
-

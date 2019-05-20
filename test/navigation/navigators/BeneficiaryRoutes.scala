@@ -19,7 +19,7 @@ package navigation.navigators
 import base.SpecBase
 import controllers.routes
 import generators.Generators
-import models.{AddABeneficiary, FullName, NormalMode, UserAnswers}
+import models.{AddABeneficiary, AddATrustee, FullName, NormalMode, UserAnswers, WhatTypeOfBeneficiary}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
@@ -235,6 +235,56 @@ trait BeneficiaryRoutes {
       }
     }
 
+    "there are no Individual Beneficiaries" must {
+
+      "go to IndividualBeneficiaryNamePage for index 0 from WhatTypeOfBeneficiaryPage when Individual option selected " in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers.set(WhatTypeOfBeneficiaryPage, value = WhatTypeOfBeneficiary.Individual).success.value
+              .remove(IndividualBeneficiaries).success.value
+            navigator.nextPage(WhatTypeOfBeneficiaryPage, NormalMode)(answers)
+              .mustBe(routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, 0))
+        }
+      }
+
+    }
+
+    "there is atleast one Individual Beneficiaries" must {
+
+      "go to the next IndividualBeneficiaryNamePage from WhatTypeOfBeneficiaryPage when Individual option selected" in {
+
+        val answers = UserAnswers(userAnswersId)
+          .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
+          .set(WhatTypeOfBeneficiaryPage, value = WhatTypeOfBeneficiary.Individual).success.value
+
+        navigator.nextPage(WhatTypeOfBeneficiaryPage, NormalMode)(answers)
+          .mustBe(routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, 1))
+      }
+    }
+
+    "there are no Class of Beneficiaries" must {
+      "go to ClassBeneficiaryDescriptionPage for index 0 from WhatTypeOfBeneficiaryPage when ClassOfBeneficiary option selected " in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers.set(WhatTypeOfBeneficiaryPage, value = WhatTypeOfBeneficiary.ClassOfBeneficiary).success.value
+              .remove(ClassOfBeneficiaries).success.value
+            navigator.nextPage(WhatTypeOfBeneficiaryPage, NormalMode)(answers)
+              .mustBe(routes.ClassBeneficiaryDescriptionController.onPageLoad(NormalMode, 0))
+        }
+      }
+    }
+
+    "there is atleast one Class of beneficiary" must {
+      "go to the next ClassBeneficiaryDescriptionPage from WhatTypeOfBeneficiaryPage when ClassOfBeneficiary option selected" in {
+
+        val answers = UserAnswers(userAnswersId)
+          .set(ClassBeneficiaryDescriptionPage(0), "description").success.value
+          .set(WhatTypeOfBeneficiaryPage, value = WhatTypeOfBeneficiary.ClassOfBeneficiary).success.value
+
+        navigator.nextPage(WhatTypeOfBeneficiaryPage, NormalMode)(answers)
+          .mustBe(routes.ClassBeneficiaryDescriptionController.onPageLoad(NormalMode, 1))
+      }
+    }
   }
 
 }

@@ -17,8 +17,8 @@
 package controllers
 
 import base.SpecBase
-import models.{UKAddress, UserAnswers}
-import pages.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentNamePage, AgentTelephoneNumberPage, AgentUKAddressPage}
+import models.{InternationalAddress, UKAddress, UserAnswers}
+import pages.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentNamePage, AgentTelephoneNumberPage, AgentUKAddressPage}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -35,7 +35,7 @@ class AgentAnswerControllerSpec extends SpecBase {
 
   "AgentAnswer Controller" must {
 
-    "return OK and the correct view for a GET" in {
+    "return OK and the correct view for a UK address GET" in {
 
       val answers =
         UserAnswers(userAnswersId)
@@ -44,6 +44,7 @@ class AgentAnswerControllerSpec extends SpecBase {
           .set(AgentAddressYesNoPage, true).success.value
           .set(AgentNamePage, "Sam Curran Trust").success.value
           .set(AgentInternalReferencePage, "123456789").success.value
+
 
       val countryOptions = injector.instanceOf[CountryOptions]
 
@@ -57,6 +58,50 @@ class AgentAnswerControllerSpec extends SpecBase {
             checkYourAnswersHelper.agentName.value,
             checkYourAnswersHelper.agentAddressYesNo.value,
             checkYourAnswersHelper.agentUKAddress.value,
+            checkYourAnswersHelper.agenciesTelephoneNumber.value
+          )
+        )
+      )
+
+      val application = applicationBuilder(userAnswers = Some(answers), agentID).build()
+
+      val request = FakeRequest(GET, routes.AgentAnswerController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[AgentAnswerView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(expectedSections)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view for a International address GET" in {
+
+      val answers =
+        UserAnswers(userAnswersId)
+          .set(AgentTelephoneNumberPage, "123456789").success.value
+          .set(AgentInternationalAddressPage, InternationalAddress("Line1", "Line2", None, None, "Country")).success.value
+          .set(AgentAddressYesNoPage, false).success.value
+          .set(AgentNamePage, "Sam Curran Trust").success.value
+          .set(AgentInternalReferencePage, "123456789").success.value
+
+
+      val countryOptions = injector.instanceOf[CountryOptions]
+
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers)
+
+      val expectedSections = Seq(
+        AnswerSection(
+          None,
+          Seq(
+            checkYourAnswersHelper.agentInternalReference.value,
+            checkYourAnswersHelper.agentName.value,
+            checkYourAnswersHelper.agentAddressYesNo.value,
+            checkYourAnswersHelper.agentInternationalAddress.value,
             checkYourAnswersHelper.agenciesTelephoneNumber.value
           )
         )

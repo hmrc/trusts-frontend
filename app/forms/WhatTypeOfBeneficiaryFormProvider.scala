@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import play.api.libs.json.JsPath
+import javax.inject.Inject
 
-case object AgentInternalReferencePage extends QuestionPage[String] {
+import forms.mappings.Mappings
+import play.api.data.Form
+import models.WhatTypeOfBeneficiary
 
-  override def path: JsPath = JsPath \ Agent \ toString
+class WhatTypeOfBeneficiaryFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "internalReference"
+  def apply(): Form[WhatTypeOfBeneficiary] =
+    Form(
+      "value" -> enumerable[WhatTypeOfBeneficiary]("whatTypeOfBeneficiary.error.required")
+    )
 }

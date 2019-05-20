@@ -16,11 +16,17 @@
 
 package pages
 
-import play.api.libs.json.JsPath
+import models.InternationalAddress
+import pages.behaviours.PageBehaviours
 
-case object AgentInternalReferencePage extends QuestionPage[String] {
+class AgentInternationalAddressPageSpec extends PageBehaviours {
 
-  override def path: JsPath = JsPath \ Agent \ toString
+  "AgentInternationalAddressPage" must {
 
-  override def toString: String = "internalReference"
+    beRetrievable[InternationalAddress](AgentInternationalAddressPage)
+
+    beSettable[InternationalAddress](AgentInternationalAddressPage)
+
+    beRemovable[InternationalAddress](AgentInternationalAddressPage)
+  }
 }
