@@ -69,10 +69,12 @@ class TaskListController @Inject()(
 
         val updatedAnswers = request.userAnswers.copy(progress = InProgress)
 
+        val trustName: String = if (updatedAnswers.get(TrustNamePage).isDefined) updatedAnswers.get(TrustNamePage).get else ""
+
         for {
           _              <- sessionRepository.set(updatedAnswers)
         } yield {
-          Ok(view(savedUntil, registrationProgress.sections(updatedAnswers), affinityGroup))
+          Ok(view(savedUntil, registrationProgress.sections(updatedAnswers), registrationProgress.isTaskListComplete(updatedAnswers), trustName, affinityGroup))
         }
       }
 
