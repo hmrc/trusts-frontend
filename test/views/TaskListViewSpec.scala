@@ -32,27 +32,30 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
   private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
   private val savedUntil : String = LocalDateTime.now.format(dateFormatter)
+  private val trustName: String = "Trust Name"
+
+  private val registrationProgress = new RegistrationProgress(new TaskListNavigator())
 
   private def sections(answers: UserAnswers) =
-    new RegistrationProgress(new TaskListNavigator()).sections(answers)
+    registrationProgress.sections(answers)
 
   private def trustDetailsSectionStatus(answers: UserAnswers) =
-    new RegistrationProgress(new TaskListNavigator()).trustDetailsSectionStatus(answers)
+    registrationProgress.trustDetailsSectionStatus(answers)
 
   private def beneficiariesSectionStatus(answers: UserAnswers) =
-    new RegistrationProgress(new TaskListNavigator()).beneficiariesSectionStatus(answers)
+    registrationProgress.beneficiariesSectionStatus(answers)
 
   private def trusteesSectionStatus(answers: UserAnswers) =
-    new RegistrationProgress(new TaskListNavigator()).trusteesSectionStatus(answers)
+    registrationProgress.trusteesSectionStatus(answers)
 
   private def settlorsSectionStatus(answers: UserAnswers) =
-    new RegistrationProgress(new TaskListNavigator()).settlorsSectionStatus(answers)
+    registrationProgress.settlorsSectionStatus(answers)
 
   private def assetsSectionStatus(answers: UserAnswers) =
-    new RegistrationProgress(new TaskListNavigator()).assetsSectionStatus(answers)
+    registrationProgress.assetsSectionStatus(answers)
 
   private def isTaskListComplete(answers: UserAnswers) =
-    new RegistrationProgress(new TaskListNavigator()).isTaskListComplete(answers)
+    registrationProgress.isTaskListComplete(answers)
 
   "TaskList view" when {
 
@@ -64,7 +67,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
         val view = viewFor[TaskListView](Some(answers))
 
-        val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+        val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
 
         behave like normalPage(applyView, "taskList")
 
@@ -78,7 +81,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         "render no tag when not started (no trust details added)" in {
 
           val view = viewFor[TaskListView](Some(emptyUserAnswers))
-          val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
           trustDetailsSectionStatus(emptyUserAnswers) mustEqual None
           assertNotRenderedById(doc, "task-list__task--trustDetails__tag")
@@ -91,7 +94,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(TrustNamePage, "myTrust").success.value
 
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           trustDetailsSectionStatus(answers) mustEqual Some(InProgress)
@@ -106,7 +109,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(TrustResidentOffshorePage, false).success.value
 
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           trustDetailsSectionStatus(answers) mustEqual Some(Completed)
@@ -122,7 +125,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(TrustPreviouslyResidentPage, "Spain").success.value
 
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           trustDetailsSectionStatus(answers) mustEqual Some(Completed)
@@ -137,7 +140,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(NonResidentTypePage, NonResidentType.Domiciled).success.value
 
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           trustDetailsSectionStatus(answers) mustEqual Some(Completed)
@@ -152,7 +155,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(InheritanceTaxActPage, false).success.value
 
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           trustDetailsSectionStatus(answers) mustEqual Some(Completed)
@@ -167,7 +170,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(AgentOtherThanBarristerPage, true).success.value
 
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           trustDetailsSectionStatus(answers) mustEqual Some(Completed)
@@ -182,7 +185,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         "render no tag when not started (no beneficiaries added)" in {
 
           val view = viewFor[TaskListView](Some(emptyUserAnswers))
-          val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
           beneficiariesSectionStatus(emptyUserAnswers) mustEqual None
           assertNotRenderedById(doc, "task-list__task--beneficiaries__tag")
@@ -193,7 +196,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
           val answers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(0), FullName("individual",None, "beneficiary")).success.value
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           beneficiariesSectionStatus(answers) mustEqual Some(InProgress)
@@ -208,7 +211,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(AddABeneficiaryPage, AddABeneficiary.YesLater).success.value
 
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           beneficiariesSectionStatus(answers) mustEqual Some(InProgress)
@@ -222,7 +225,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(AddABeneficiaryPage, AddABeneficiary.YesNow).success.value
 
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           beneficiariesSectionStatus(answers) mustEqual Some(InProgress)
@@ -237,7 +240,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
 
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           beneficiariesSectionStatus(answers) mustEqual Some(Completed)
@@ -252,7 +255,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         "render no tag when not started (no trustees added)" in {
 
           val view = viewFor[TaskListView](Some(emptyUserAnswers))
-          val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
           trusteesSectionStatus(emptyUserAnswers) mustEqual None
           assertNotRenderedById(doc, "task-list__task--trustees__tag")
@@ -263,7 +266,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
           val answers = emptyUserAnswers.set(TrusteesNamePage(0), FullName("individual",None, "trustee")).success.value
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           trusteesSectionStatus(answers) mustEqual Some(InProgress)
@@ -277,7 +280,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(AddATrusteePage, AddATrustee.YesLater).success.value
 
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           trusteesSectionStatus(answers) mustEqual Some(InProgress)
@@ -291,7 +294,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(AddATrusteePage, AddATrustee.YesNow).success.value
 
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           trusteesSectionStatus(answers) mustEqual Some(InProgress)
@@ -308,7 +311,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           trusteesSectionStatus(answers) mustEqual Some(Completed)
@@ -323,7 +326,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         "render no tag when not started (no settlor added)" in {
 
           val view = viewFor[TaskListView](Some(emptyUserAnswers))
-          val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
           settlorsSectionStatus(emptyUserAnswers) mustEqual None
           assertNotRenderedById(doc, "task-list__task--settlors__tag")
@@ -336,7 +339,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(SetupAfterSettlorDiedPage, true).success.value
 
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           settlorsSectionStatus(answers) mustEqual Some(InProgress)
@@ -351,7 +354,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(SetupAfterSettlorDiedPage, true).success.value
 
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           settlorsSectionStatus(answers) mustEqual Some(Completed)
@@ -366,7 +369,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(SetupAfterSettlorDiedPage, true).success.value
 
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           settlorsSectionStatus(answers) mustEqual Some(Completed)
@@ -381,7 +384,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(SetupAfterSettlorDiedPage, true).success.value
 
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           settlorsSectionStatus(answers) mustEqual Some(Completed)
@@ -396,7 +399,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(SetupAfterSettlorDiedPage, true).success.value
 
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           settlorsSectionStatus(answers) mustEqual Some(Completed)
@@ -412,7 +415,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         "render no tag when not started (no assets added)" in {
 
           val view = viewFor[TaskListView](Some(emptyUserAnswers))
-          val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
           assetsSectionStatus(emptyUserAnswers) mustEqual None
           assertNotRenderedById(doc, "task-list__task--assets__tag")
@@ -423,7 +426,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
           val answers = emptyUserAnswers.set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           assetsSectionStatus(answers) mustEqual Some(InProgress)
@@ -438,7 +441,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(AddAssetsPage, AddAssets.YesLater).success.value
 
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           assetsSectionStatus(answers) mustEqual Some(InProgress)
@@ -452,7 +455,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(AddAssetsPage, AddAssets.YesNow).success.value
 
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           assetsSectionStatus(answers) mustEqual Some(InProgress)
@@ -467,7 +470,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(AddAssetsPage, AddAssets.NoComplete).success.value
 
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           assetsSectionStatus(answers) mustEqual Some(Completed)
@@ -500,7 +503,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(AddAssetsPage, AddAssets.NoComplete).success.value
 
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           assertRenderedById(doc, "summaryHeading")
@@ -518,7 +521,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
 
           val view = viewFor[TaskListView](Some(answers))
-          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           assertNotRenderedById(doc, "summaryHeading")
@@ -534,7 +537,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
       "render Saved Until" in {
         val view = viewFor[TaskListView](Some(emptyUserAnswers))
-        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Organisation)(fakeRequest, messages)
+        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), trustName, Organisation)(fakeRequest, messages)
 
         val doc = asDocument(applyView)
         assertRenderedById(doc, "saved-until")
@@ -546,7 +549,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
       "render return to saved registrations link" in {
         val view = viewFor[TaskListView](Some(emptyUserAnswers))
-        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Agent)(fakeRequest, messages)
+        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), trustName, Agent)(fakeRequest, messages)
 
         val doc = asDocument(applyView)
 
@@ -560,7 +563,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
       "render agent details link" in {
         val view = viewFor[TaskListView](Some(emptyUserAnswers))
 
-        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Agent)(fakeRequest, messages)
+        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), trustName, Agent)(fakeRequest, messages)
 
         val doc = asDocument(applyView)
 
@@ -573,7 +576,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
       "not render saved until" in {
         val view = viewFor[TaskListView](Some(emptyUserAnswers))
-        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Agent)(fakeRequest, messages)
+        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), trustName, Agent)(fakeRequest, messages)
 
         val doc = asDocument(applyView)
         assertNotRenderedById(doc, "saved-until")

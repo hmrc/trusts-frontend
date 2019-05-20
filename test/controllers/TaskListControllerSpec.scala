@@ -32,6 +32,7 @@ class TaskListControllerSpec extends SpecBase {
 
   private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
   private val savedUntil : String = LocalDateTime.now.plusSeconds(frontendAppConfig.ttlInSeconds).format(dateFormatter)
+  private val trustName: String = "Trust Name"
 
   private def sections(answers: UserAnswers) =
     new RegistrationProgress(new TaskListNavigator()).sections(answers)
@@ -98,7 +99,7 @@ class TaskListControllerSpec extends SpecBase {
           status(result) mustEqual OK
 
           contentAsString(result) mustEqual
-            view(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages).toString
+            view(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages).toString
 
           application.stop()
         }
@@ -194,7 +195,7 @@ class TaskListControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages).toString
+          view(savedUntil, sections(answers), isTaskListComplete(answers), trustName, Organisation)(fakeRequest, messages).toString
 
         application.stop()
       }

@@ -36,10 +36,10 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator) {
 
   def trustDetailsSectionStatus(userAnswers: UserAnswers)(implicit messages: Messages): Option[Tag] = {
     val trustName = userAnswers.get(TrustNamePage).nonEmpty
-    val trustResidentOffshore = userAnswers.get(TrustResidentOffshorePage).getOrElse(None)
+    val trustResidentOffshore = if (userAnswers.get(TrustResidentOffshorePage).isDefined) userAnswers.get(TrustResidentOffshorePage).get else None
     val trustPreviouslyResident = userAnswers.get(TrustPreviouslyResidentPage).nonEmpty
     val nonResidentType = userAnswers.get(NonResidentTypePage).nonEmpty
-    val inheritanceTaxAct = userAnswers.get(InheritanceTaxActPage).getOrElse(None)
+    val inheritanceTaxAct = if (userAnswers.get(InheritanceTaxActPage).isDefined) userAnswers.get(InheritanceTaxActPage).get else None
     val agentOtherThanBarrister = userAnswers.get(AgentOtherThanBarristerPage).nonEmpty
     (trustName, trustResidentOffshore, trustPreviouslyResident, nonResidentType, inheritanceTaxAct, agentOtherThanBarrister) match {
       case (true, false, _, _, _, _) => Some(Completed) // completed with trust resident in UK
@@ -80,7 +80,8 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator) {
   def settlorsSectionStatus(userAnswers: UserAnswers)(implicit messages: Messages): Option[Tag] = {
     val settlorTrustSetup= userAnswers.get(SetupAfterSettlorDiedPage).isDefined
     val settlorNino = userAnswers.get(SettlorNationalInsuranceNumberPage).nonEmpty
-    val settlorKnowAddressYesNo = userAnswers.get(SettlorsLastKnownAddressYesNoPage).getOrElse(None)
+    val settlorKnowAddressYesNo = if (userAnswers.get(SettlorsLastKnownAddressYesNoPage).isDefined)
+      {userAnswers.get(SettlorsLastKnownAddressYesNoPage).get} else None
     val settlorAddressUK = userAnswers.get(SettlorsUKAddressPage).nonEmpty
     val settlorAddressInternational = userAnswers.get(SettlorsInternationalAddressPage).nonEmpty
     (settlorTrustSetup, settlorNino, settlorKnowAddressYesNo, settlorAddressUK, settlorAddressInternational) match {
