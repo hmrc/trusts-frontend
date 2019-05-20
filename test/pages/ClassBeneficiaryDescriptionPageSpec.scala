@@ -16,11 +16,17 @@
 
 package pages
 
-import play.api.libs.json.JsPath
+import pages.behaviours.PageBehaviours
 
-case object AgentInternalReferencePage extends QuestionPage[String] {
 
-  override def path: JsPath = JsPath \ Agent \ toString
+class ClassBeneficiaryDescriptionPageSpec extends PageBehaviours {
 
-  override def toString: String = "internalReference"
+  "ClassBeneficiaryDescriptionPage" must {
+
+    beRetrievable[String](ClassBeneficiaryDescriptionPage(0))
+
+    beSettable[String](ClassBeneficiaryDescriptionPage(0))
+
+    beRemovable[String](ClassBeneficiaryDescriptionPage(0))
+  }
 }

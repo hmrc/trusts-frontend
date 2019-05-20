@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package pages
+package models.entities
 
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Json, OFormat}
 
-case object AgentInternalReferencePage extends QuestionPage[String] {
 
-  override def path: JsPath = JsPath \ Agent \ toString
+case class ClassOfBeneficiary(classBeneficiaryDescription: Option[String]) {
+  def isComplete = classBeneficiaryDescription.nonEmpty
+}
 
-  override def toString: String = "internalReference"
+object ClassOfBeneficiary {
+    implicit  val classOfBeneficiaryFormat : OFormat[ClassOfBeneficiary] = Json.format[ClassOfBeneficiary]
 }

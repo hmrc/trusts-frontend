@@ -16,11 +16,12 @@
 
 package pages
 
+import models.entities.{ClassOfBeneficiary}
 import play.api.libs.json.JsPath
 
-case object AgentInternalReferencePage extends QuestionPage[String] {
 
-  override def path: JsPath = JsPath \ Agent \ toString
+case object  ClassOfBeneficiaries extends QuestionPage[List[ClassOfBeneficiary]]{
 
-  override def toString: String = "internalReference"
+    override def path: JsPath = JsPath \ Beneficiaries \ toString
+    override def toString: String = "classOfBeneficiaries"
 }

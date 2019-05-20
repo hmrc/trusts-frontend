@@ -18,9 +18,9 @@ package pages
 
 import play.api.libs.json.JsPath
 
-case object AgentInternalReferencePage extends QuestionPage[String] {
+final case class ClassBeneficiaryDescriptionPage(index: Int) extends QuestionPage[String] {
 
-  override def path: JsPath = JsPath \ Agent \ toString
+  override def path: JsPath = JsPath \  Beneficiaries \ ClassOfBeneficiaries \ index \ toString
 
-  override def toString: String = "internalReference"
+  override def toString: String = "classBeneficiaryDescription"
 }
