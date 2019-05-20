@@ -741,8 +741,8 @@ classBeneficiaryDescription.error.invalid = The description of class in the trus
 classBeneficiaryDescription.hint = This must be 56 characters or less. For example, future grandchildren and future great-grandchildren.
 
 
-confirmationPage.title = confirmation
-confirmationPage.heading = confirmation
+confirmationPage.title = Registration received Your reference is: {0}
+confirmationPage.heading = Registration received Your reference is: {0}
 confirmationPage.printsave.link = Print or save a copy of your answers
 confirmationPage.posthmrc.link = post the changes to HMRC.
 

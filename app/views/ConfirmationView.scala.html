@@ -18,10 +18,10 @@
     main_template: MainTemplate
 )
 
-@(printSave: String, postHMRC: String)(implicit request: Request[_], messages: Messages)
+@(refNumber: String, postHMRC: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("confirmation.title")
+    title = s"${messages("confirmationPage.title",refNumber)}"
     ) {
 
     @components.back_link()
@@ -29,10 +29,10 @@
     <h1 class="form-title heading-large heading-confirmation">
         Registration received
         <span class="reference-text">Your reference is:</span>
-        <span class="reference-number">XC TRN 000 000 4911</span>
+        <span class="reference-number">@refNumber</span>
     </h1>
 
-    @components.link(printSave,"","confirmationPage.printsave.link")
+    @components.link(ConfirmationController.onPageLoad.url,"","confirmationPage.printsave.link")
 
     <h2>@messages("confirmationPage.subheading1")</h2>
 

@@ -21,13 +21,17 @@ import views.html.ConfirmationView
 
 class ConfirmationViewSpec extends ViewBehaviours {
 
+  val messageKeyPrefix = "confirmationPage"
+  val refNumber = "XC TRN 000 000 4911"
+  val postHMRC = "https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts"
+
   "Confirmation view" must {
 
     val view = viewFor[ConfirmationView](Some(emptyUserAnswers))
 
-    val applyView = view.apply()(fakeRequest, messages)
+    val applyView = view.apply(refNumber, postHMRC)(fakeRequest, messages)
 
-    behave like normalPage(applyView, "confirmation")
+    behave like dynamicTitlePage(applyView, messageKeyPrefix, refNumber)
 
     behave like pageWithBackLink(applyView)
   }

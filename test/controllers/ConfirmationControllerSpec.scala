@@ -23,6 +23,9 @@ import views.html.ConfirmationView
 
 class ConfirmationControllerSpec extends SpecBase {
 
+  val refNumber = "XC TRN 000 000 4911"
+  val postHMRC = "https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts"
+
   "Confirmation Controller" must {
 
     "return OK and the correct view for a GET" in {
@@ -38,7 +41,7 @@ class ConfirmationControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view()(fakeRequest, messages).toString
+        view(refNumber,postHMRC)(fakeRequest, messages).toString
 
       application.stop()
     }

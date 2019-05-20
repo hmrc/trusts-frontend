@@ -54,9 +54,8 @@ class FrontendAppConfig @Inject() (configuration: Configuration) {
 
   lazy val ttlInSeconds = configuration.get[Int]("mongodb.timeToLiveInSeconds")
 
-  val printsave = configuration.get[String]("confirmation.printsave")
-
   val posthmrc = configuration.get[String]("confirmation.posthmrc")
+  val refNumber = configuration.get[String]("confirmation.refNumber")
 
   def languageMap: Map[String, Lang] = Map(
     "english" -> Lang("en"),

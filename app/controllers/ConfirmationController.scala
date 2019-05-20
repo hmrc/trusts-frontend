@@ -39,10 +39,10 @@ class ConfirmationController @Inject()(
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val printSave = config.printsave
+      val refNumber = config.refNumber
 
       val postHMRC = config.posthmrc
 
-      Ok(view(printSave, postHMRC))
+      Ok(view(refNumber, postHMRC))
   }
 }
