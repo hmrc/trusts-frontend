@@ -16,7 +16,20 @@
 
 package viewmodels
 
-abstract class Tag(val id : String)
+import models.{Enumerable, WithName}
 
-case object Completed extends Tag("completed")
-case object InProgress extends Tag("progress")
+sealed trait Tag
+
+object Tag extends Enumerable.Implicits {
+
+  case object Completed extends WithName("completed") with Tag
+
+  case object InProgress extends WithName("progress") with Tag
+
+  val values: Set[Tag] = Set(
+    Completed, InProgress
+  )
+
+  implicit val enumerable: Enumerable[Tag] =
+    Enumerable(values.toSeq.map(v => v.toString -> v): _*)
+}

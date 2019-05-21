@@ -16,26 +16,29 @@
 
 package utils
 
-import models.UserAnswers
-import models.entities.{LeadTrusteeIndividual, Trustee, TrusteeIndividual}
-import pages.Trustees
+import models.{IndividualOrBusiness, UserAnswers}
 import play.api.i18n.Messages
-import viewmodels.{AddRow, AddToRows}
+import viewmodels.Tag.{Completed, InProgress}
+import viewmodels._
+import viewmodels.trustees.Trustees
 
 class AddATrusteeViewHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
-  private def parseTrustee(trustee : Trustee) : AddRow = {
+  private def render(trustee : Trustee) : AddRow = {
 
-    val name = trustee match {
-      case t : LeadTrusteeIndividual => t.name.toString
-      case t : TrusteeIndividual => t.name.toString
-      case _ => ""
-    }
+    val name = trustee.name.map(_.toString).getOrElse(messages("entities.no.name.added"))
 
-    val trusteeType = trustee match {
-      case _ : LeadTrusteeIndividual => s"${messages("entities.lead")} ${messages("entities.trustee.individual")}"
-      case _ : TrusteeIndividual => s"${messages("entities.trustee.individual")}"
-      case _ => "Trustee"
+    def renderForLead(message : String) = s"${messages("entities.lead")} $message"
+
+    val trusteeType = trustee.`type` match {
+      case Some(k : IndividualOrBusiness) =>
+        val key = messages(s"entities.trustee.$k")
+        trustee.isLead match {
+          case true => renderForLead(key)
+          case false => key
+        }
+      case None =>
+        s"${messages("entities.trustee")}"
     }
 
     AddRow(name, trusteeType, "#", "#")
@@ -44,10 +47,9 @@ class AddATrusteeViewHelper(userAnswers: UserAnswers)(implicit messages: Message
   def rows : AddToRows = {
     val trustees = userAnswers.get(Trustees).toList.flatten
 
-    val complete = trustees.map(parseTrustee)
+    val complete = trustees.filter(_.status == Completed).map(render)
 
-//    val inProgress = trustees.filterNot(_.isComplete).map(parseTrustee)
-    val inProgress = Nil
+    val inProgress = trustees.filter(_.status == InProgress).map(render)
 
     AddToRows(inProgress, complete)
   }

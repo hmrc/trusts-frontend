@@ -16,21 +16,19 @@
 
 package controllers
 
-import akka.actor.FSM.Normal
 import controllers.actions._
 import javax.inject.Inject
 import models.NormalMode
 import navigation.Navigator
-import pages.{IsThisLeadTrusteePage, Trustees, TrusteesAnswerPage, TrusteesNamePage}
-import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import viewmodels.trustees.Trustees
+import pages.{IsThisLeadTrusteePage, TrusteesAnswerPage, TrusteesNamePage}
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.TrusteesAnswerPageView
-
-
 
 class TrusteesAnswerPageController @Inject()(
                                               override val messagesApi: MessagesApi,

@@ -19,15 +19,16 @@ package controllers
 import controllers.actions._
 import forms.IsThisLeadTrusteeFormProvider
 import javax.inject.Inject
-import models.entities.{LeadTrusteeIndividual, Trustee, TrusteeIndividual}
-import models.{Mode, NormalMode}
+import models.Mode
 import navigation.Navigator
-import pages.{IsThisLeadTrusteePage, Trustees}
+import pages.IsThisLeadTrusteePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import viewmodels.Trustee
+import viewmodels.trustees.Trustees
 import views.html.IsThisLeadTrusteeView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -63,10 +64,8 @@ class IsThisLeadTrusteeController @Inject()(
 
       def leadTrustee : Option[(Trustee, Int)] = {
         val trustees = request.userAnswers.get(Trustees).getOrElse(Nil).zipWithIndex
-        trustees.find {
-          case (_ : LeadTrusteeIndividual, _) => true
-          case _ => false
-        }
+
+        trustees.find{ case (trustee, _) => trustee.isLead}
       }
 
       leadTrustee match {

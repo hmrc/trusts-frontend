@@ -22,13 +22,14 @@ import javax.inject.Inject
 import models.requests.DataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.{IsThisLeadTrusteePage, Trustees, TrusteesNamePage, TrusteesNinoPage}
+import pages.{IsThisLeadTrusteePage, TrusteesNamePage, TrusteesNinoPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.TrusteesNinoView
+import viewmodels.trustees.Trustees
 
 import scala.concurrent.{ExecutionContext, Future}
 

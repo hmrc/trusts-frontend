@@ -21,8 +21,9 @@ import forms.TrusteeIndividualOrBusinessFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode, NormalMode}
 import navigation.Navigator
-import pages.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage, Trustees}
+import pages.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage}
 import play.api.data.Form
+import viewmodels.trustees.Trustees
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository

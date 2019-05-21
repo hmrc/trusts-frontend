@@ -20,6 +20,7 @@ import java.time.LocalDateTime
 
 import models.Progress.NotStarted
 import pages._
+import play.api.Logger
 import play.api.libs.json._
 
 import scala.util.{Failure, Success, Try}
@@ -31,8 +32,15 @@ final case class UserAnswers(
                               createdAt : LocalDateTime = LocalDateTime.now
                             ) {
 
-  def get[A](page: QuestionPage[A])(implicit rds: Reads[A]): Option[A] =
-    Reads.optionNoError(Reads.at(page.path)).reads(data).getOrElse(None)
+  def get[A](page: QuestionPage[A])(implicit rds: Reads[A]): Option[A] = {
+    Reads.at(page.path).reads(data) match {
+      case JsSuccess(value, _) => Some(value)
+      case JsError(errors) =>
+        val errorPaths = errors.collectFirst{ case (path, _) => path}
+        Logger.error(s"[UserAnswers] unable to read to ${page.path} due to errors $errorPaths")
+        None
+    }
+  }
 
   def set[A](page: QuestionPage[A], value: A)(implicit writes: Writes[A]): Try[UserAnswers] = {
 

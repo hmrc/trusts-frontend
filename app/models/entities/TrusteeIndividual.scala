@@ -18,7 +18,7 @@ package models.entities
 
 import java.time.LocalDate
 
-import models.FullName
+import models.{FullName, IndividualOrBusiness}
 import play.api.libs.json._
 
 final case class TrusteeIndividual(name: FullName, dateOfBirth: LocalDate) extends Trustee
@@ -35,9 +35,9 @@ object TrusteeIndividual {
       )(TrusteeIndividual.apply _)
 
     ((__ \ "isThisLeadTrustee").read[Boolean] and
-      (__ \ "individualOrBusiness").read[String]) ((_, _)).flatMap[(Boolean, String)] {
+      (__ \ "individualOrBusiness").read[IndividualOrBusiness]) ((_, _)).flatMap[(Boolean, IndividualOrBusiness)] {
       case (isLead, individualOrBusiness) =>
-        if (individualOrBusiness == "individual" && !isLead) {
+        if (individualOrBusiness == IndividualOrBusiness.Individual && !isLead) {
           Reads(_ => JsSuccess((isLead, individualOrBusiness)))
         } else {
           Reads(_ => JsError("trustee individual must not be a `business` or a `lead`"))

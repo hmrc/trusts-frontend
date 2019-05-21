@@ -19,10 +19,10 @@ package controllers
 import controllers.actions._
 import forms.TrusteesDateOfBirthFormProvider
 import javax.inject.Inject
-import models.{FullName, Mode, NormalMode}
-import models.entities.Trustee
+import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.{Trustees, TrusteesDateOfBirthPage, TrusteesNamePage}
+import viewmodels.trustees.Trustees
+import pages.{TrusteesDateOfBirthPage, TrusteesNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package pages
+package viewmodels.trustees
 
+import pages.QuestionPage
 import play.api.libs.json.JsPath
+import viewmodels.Trustee
 
-final case class TelephoneNumberPage(index : Int) extends QuestionPage[String] {
+case object Trustees extends QuestionPage[List[Trustee]]{
 
-  override def path: JsPath = JsPath \ Trustees \ index \ toString
+  override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "telephoneNumber"
+  override def toString: String = "trustees"
+
 }

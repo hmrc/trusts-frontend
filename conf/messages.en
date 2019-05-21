@@ -75,8 +75,9 @@ individualOrBusiness.individual = Individual
 individualOrBusiness.business = Business
 
 entity.trustee = Trustee
-
+entities.no.name.added = No name added
 entities.lead = Lead
+entities.trustee = Trustee
 entities.trustee.individual = Trustee Individual
 
 createAgentServicesAccount.title = Create an agent services account

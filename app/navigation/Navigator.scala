@@ -277,7 +277,7 @@ class Navigator @Inject()() {
     val addAnother = answers.get(AddATrusteePage)
 
     def routeToTrusteeIndex = {
-      val trustees = answers.get(Trustees).getOrElse(List.empty)
+      val trustees = answers.get(viewmodels.trustees.Trustees).getOrElse(List.empty)
       trustees match {
         case Nil =>
           routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 0)
