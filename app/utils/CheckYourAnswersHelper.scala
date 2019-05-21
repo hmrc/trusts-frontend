@@ -31,6 +31,15 @@ import viewmodels.AnswerRow
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers)(implicit messages: Messages)  {
 
+  def agentDeclaration: Option[AnswerRow] = userAnswers.get(AgentDeclarationPage) map {
+    x =>
+      AnswerRow(
+        "agentDeclaration.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.AgentDeclarationController.onPageLoad(CheckMode).url
+      )
+  }
+
   def agentInternationalAddress: Option[AnswerRow] = userAnswers.get(AgentInternationalAddressPage) map {
     x =>
       AnswerRow(
@@ -42,9 +51,27 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
   }
 
   def classBeneficiaryDescription(index: Int): Option[AnswerRow] = userAnswers.get(ClassBeneficiaryDescriptionPage(index)) map {
+
+  def agentDeclaration: Option[AnswerRow] = userAnswers.get(AgentDeclarationPage) map {
+    x =>
+      AnswerRow(
+        "agentDeclaration.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.AgentDeclarationController.onPageLoad(CheckMode).url
+      )
+  }
     x =>
       AnswerRow(
         "classBeneficiaryDescription.checkYourAnswersLabel",
+
+  def agentDeclaration: Option[AnswerRow] = userAnswers.get(AgentDeclarationPage) map {
+    x =>
+      AnswerRow(
+        "agentDeclaration.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.AgentDeclarationController.onPageLoad(CheckMode).url
+      )
+  }
         HtmlFormat.escape(x),
         routes.ClassBeneficiaryDescriptionController.onPageLoad(CheckMode,index).url
       )

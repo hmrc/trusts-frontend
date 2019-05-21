@@ -748,3 +748,9 @@ classBeneficiaryDescription.error.required = Enter the description for the class
 classBeneficiaryDescription.error.length = The description of the class in the trust deed must be 56 characters or less
 classBeneficiaryDescription.error.invalid = The description of class in the trust deed must only include letters a to z, numbers, spaces, special characters, ampersands (&), backword slashes, spaces
 classBeneficiaryDescription.hint = This must be 56 characters or less. For example, future grandchildren and future great-grandchildren.
+
+agentDeclaration.title = agentDeclaration
+agentDeclaration.heading = agentDeclaration
+agentDeclaration.checkYourAnswersLabel = agentDeclaration
+agentDeclaration.error.required = Enter agentDeclaration
+agentDeclaration.error.length = AgentDeclaration must be 100 characters or less
