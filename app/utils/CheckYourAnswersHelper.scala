@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter
 
 import controllers.routes
 import javax.inject.Inject
-import models.{CheckMode, InternationalAddress, UKAddress, UserAnswers}
+import models.{CheckMode, FullName, InternationalAddress, UKAddress, UserAnswers}
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
@@ -35,7 +35,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x =>
       AnswerRow(
         "agentDeclaration.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(s"${x.firstName} ${x.lastName}"),
         routes.AgentDeclarationController.onPageLoad(CheckMode).url
       )
   }
@@ -51,27 +51,10 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
   }
 
   def classBeneficiaryDescription(index: Int): Option[AnswerRow] = userAnswers.get(ClassBeneficiaryDescriptionPage(index)) map {
-
-  def agentDeclaration: Option[AnswerRow] = userAnswers.get(AgentDeclarationPage) map {
-    x =>
-      AnswerRow(
-        "agentDeclaration.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
-        routes.AgentDeclarationController.onPageLoad(CheckMode).url
-      )
-  }
     x =>
       AnswerRow(
         "classBeneficiaryDescription.checkYourAnswersLabel",
 
-  def agentDeclaration: Option[AnswerRow] = userAnswers.get(AgentDeclarationPage) map {
-    x =>
-      AnswerRow(
-        "agentDeclaration.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
-        routes.AgentDeclarationController.onPageLoad(CheckMode).url
-      )
-  }
         HtmlFormat.escape(x),
         routes.ClassBeneficiaryDescriptionController.onPageLoad(CheckMode,index).url
       )

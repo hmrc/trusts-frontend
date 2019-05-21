@@ -52,7 +52,7 @@ class SettlorsNameControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
