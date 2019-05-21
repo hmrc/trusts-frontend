@@ -17,22 +17,22 @@
 package views
 
 import controllers.routes
-import forms.AgentDeclarationFormProvider
+import forms.DeclarationFormProvider
 import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
-import views.html.AgentDeclarationView
+import views.html.DeclarationView
 
-class AgentDeclarationViewSpec extends QuestionViewBehaviours[FullName] {
+class DeclarationViewSpec extends QuestionViewBehaviours[FullName] {
 
   val messageKeyPrefix = "declaration"
 
-  val form = new AgentDeclarationFormProvider()()
+  val form = new DeclarationFormProvider()()
 
   "DeclarationView view" must {
 
-    val view = viewFor[AgentDeclarationView](Some(emptyUserAnswers))
+    val view = viewFor[DeclarationView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode)(fakeRequest, messages)
@@ -45,7 +45,7 @@ class AgentDeclarationViewSpec extends QuestionViewBehaviours[FullName] {
       form,
       applyView,
       messageKeyPrefix,
-      routes.AgentDeclarationController.onSubmit(NormalMode).url,
+      routes.DeclarationController.onSubmit(NormalMode).url,
       Seq(("firstName",None),("middleName",None),("lastName", None))
     )
   }

@@ -22,31 +22,31 @@ import models.FullName
 import play.api.data.Form
 import play.api.data.Forms.{mapping, optional}
 
-class AgentDeclarationFormProvider @Inject() extends Mappings {
+class DeclarationFormProvider @Inject() extends Mappings {
 
   def apply(): Form[FullName] =
   Form(
     mapping(
 
-      "firstName" -> text("agentDeclaration.error.firstName.required")
+      "firstName" -> text("declaration.error.firstName.required")
         .verifying(
           firstError(
-            maxLength(35, s"agentDeclaration.error.firstName.length"),
-            isNotEmpty("firstName", s"agentDeclaration.error.firstName.required"),
-            regexp(Validation.nameRegex, s"agentDeclaration.error.firstName.invalid")
+            maxLength(35, s"declaration.error.firstName.length"),
+            isNotEmpty("firstName", s"declaration.error.firstName.required"),
+            regexp(Validation.nameRegex, s"declaration.error.firstName.invalid")
           )),
       "middleName" -> optional(text()
         .verifying(
           firstError(
-            maxLength(35, s"agentDeclaration.error.middleName.length"),
-            regexp(Validation.nameRegex, s"agentDeclaration.error.middleName.invalid"))
+            maxLength(35, s"declaration.error.middleName.length"),
+            regexp(Validation.nameRegex, s"declaration.error.middleName.invalid"))
         )),
-      "lastName" -> text("agentDeclaration.error.lastName.required")
+      "lastName" -> text("declaration.error.lastName.required")
         .verifying(
           firstError(
-            maxLength(35, s"agentDeclaration.error.lastName.length"),
-            isNotEmpty("lastName", s"agentDeclaration.error.lastName.required"),
-            regexp(Validation.nameRegex, s"agentDeclaration.error.lastName.invalid")
+            maxLength(35, s"declaration.error.lastName.length"),
+            isNotEmpty("lastName", s"declaration.error.lastName.required"),
+            regexp(Validation.nameRegex, s"declaration.error.lastName.invalid")
           ))
     )(FullName.apply)(FullName.unapply)
   )

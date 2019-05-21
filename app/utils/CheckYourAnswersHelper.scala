@@ -31,15 +31,6 @@ import viewmodels.AnswerRow
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers)(implicit messages: Messages)  {
 
-  def agentDeclaration: Option[AnswerRow] = userAnswers.get(AgentDeclarationPage) map {
-    x =>
-      AnswerRow(
-        "agentDeclaration.checkYourAnswersLabel",
-        HtmlFormat.escape(s"${x.firstName} ${x.lastName}"),
-        routes.AgentDeclarationController.onPageLoad(CheckMode).url
-      )
-  }
-
   def agentInternationalAddress: Option[AnswerRow] = userAnswers.get(AgentInternationalAddressPage) map {
     x =>
       AnswerRow(

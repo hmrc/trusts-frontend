@@ -19,7 +19,7 @@ package pages
 import models.FullName
 import play.api.libs.json.JsPath
 
-case object AgentDeclarationPage extends QuestionPage[FullName] {
+case object DeclarationPage extends QuestionPage[FullName] {
 
   override def path: JsPath = JsPath \"declaration"\ toString
 

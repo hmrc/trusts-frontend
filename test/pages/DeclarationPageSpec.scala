@@ -20,14 +20,14 @@ import models.FullName
 import pages.behaviours.PageBehaviours
 
 
-class AgentDeclarationPageSpec extends PageBehaviours {
+class DeclarationPageSpec extends PageBehaviours {
 
-  "AgentDeclarationPage" must {
+  "DeclarationPage" must {
 
-    beRetrievable[FullName](AgentDeclarationPage)
+    beRetrievable[FullName](DeclarationPage)
 
-    beSettable[FullName](AgentDeclarationPage)
+    beSettable[FullName](DeclarationPage)
 
-    beRemovable[FullName](AgentDeclarationPage)
+    beRemovable[FullName](DeclarationPage)
   }
 }

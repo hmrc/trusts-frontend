@@ -17,38 +17,38 @@
 package controllers
 
 import base.SpecBase
-import forms.AgentDeclarationFormProvider
+import forms.DeclarationFormProvider
 import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.AgentDeclarationPage
+import pages.DeclarationPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
-import views.html.AgentDeclarationView
+import views.html.DeclarationView
 
-class AgentDeclarationControllerSpec extends SpecBase {
+class DeclarationControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new AgentDeclarationFormProvider()
+  val formProvider = new DeclarationFormProvider()
   val form = formProvider()
   val name = "name"
 
-  lazy val agentDeclarationRoute = routes.AgentDeclarationController.onPageLoad(NormalMode).url
+  lazy val declarationRoute = routes.DeclarationController.onPageLoad(NormalMode).url
 
-  "AgentDeclaration Controller" must {
+  "Declaration Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers),AffinityGroup.Agent).build()
 
-      val request = FakeRequest(GET, agentDeclarationRoute)
+      val request = FakeRequest(GET, declarationRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[AgentDeclarationView]
+      val view = application.injector.instanceOf[DeclarationView]
 
       status(result) mustEqual OK
 
@@ -61,13 +61,13 @@ class AgentDeclarationControllerSpec extends SpecBase {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = UserAnswers(userAnswersId)
-        .set(AgentDeclarationPage, FullName("First", None, "Last")).success.value
+        .set(DeclarationPage, FullName("First", None, "Last")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
-      val request = FakeRequest(GET, agentDeclarationRoute)
+      val request = FakeRequest(GET, declarationRoute)
 
-      val view = application.injector.instanceOf[AgentDeclarationView]
+      val view = application.injector.instanceOf[DeclarationView]
 
       val result = route(application, request).value
 
@@ -87,7 +87,7 @@ class AgentDeclarationControllerSpec extends SpecBase {
           .build()
 
       val request =
-        FakeRequest(POST, agentDeclarationRoute)
+        FakeRequest(POST, declarationRoute)
           .withFormUrlEncodedBody(("firstName", "value 1"), ("lastName", "value 2"))
 
       val result = route(application, request).value
@@ -103,12 +103,12 @@ class AgentDeclarationControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers),AffinityGroup.Agent).build()
 
       val request =
-        FakeRequest(POST, agentDeclarationRoute)
+        FakeRequest(POST, declarationRoute)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[AgentDeclarationView]
+      val view = application.injector.instanceOf[DeclarationView]
 
       val result = route(application, request).value
 
@@ -124,7 +124,7 @@ class AgentDeclarationControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
-      val request = FakeRequest(GET, agentDeclarationRoute)
+      val request = FakeRequest(GET, declarationRoute)
 
       val result = route(application, request).value
 
@@ -140,7 +140,7 @@ class AgentDeclarationControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
       val request =
-        FakeRequest(POST, agentDeclarationRoute)
+        FakeRequest(POST, declarationRoute)
           .withFormUrlEncodedBody(("value", "answer"))
 
       val result = route(application, request).value

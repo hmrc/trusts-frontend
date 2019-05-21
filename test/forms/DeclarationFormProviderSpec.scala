@@ -20,15 +20,15 @@ import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
 
-class AgentDeclarationFormProviderSpec extends StringFieldBehaviours {
+class DeclarationFormProviderSpec extends StringFieldBehaviours {
 
-  val form = new AgentDeclarationFormProvider()()
+  val form = new DeclarationFormProvider()()
 
   ".firstName" must {
 
     val fieldName = "firstName"
-    val requiredKey = "agentDeclaration.error.firstName.required"
-    val lengthKey = "agentDeclaration.error.firstName.length"
+    val requiredKey = "declaration.error.firstName.required"
+    val lengthKey = "declaration.error.firstName.length"
     val maxLength = 35
 
     behave like fieldThatBindsValidData(
@@ -60,7 +60,7 @@ class AgentDeclarationFormProviderSpec extends StringFieldBehaviours {
   ".middleName" must {
 
     val fieldName = "middleName"
-    val lengthKey = "agentDeclaration.error.middleName.length"
+    val lengthKey = "declaration.error.middleName.length"
     val maxLength = 35
 
     behave like fieldWithMaxLength(
@@ -80,8 +80,8 @@ class AgentDeclarationFormProviderSpec extends StringFieldBehaviours {
   ".lastName" must {
 
     val fieldName = "lastName"
-    val requiredKey = "agentDeclaration.error.lastName.required"
-    val lengthKey = "agentDeclaration.error.lastName.length"
+    val requiredKey = "declaration.error.lastName.required"
+    val lengthKey = "declaration.error.lastName.length"
     val maxLength = 35
 
     behave like fieldThatBindsValidData(
