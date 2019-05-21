@@ -14,26 +14,25 @@
  * limitations under the License.
  */
 
-package pages
+package views
 
-import models.UserAnswers
-import play.api.libs.json.JsPath
+import views.behaviours.ViewBehaviours
+import views.html.ConfirmationView
 
-import scala.util.Try
+class ConfirmationViewSpec extends ViewBehaviours {
 
-case object AgentAddressYesNoPage extends QuestionPage[Boolean] {
+  val messageKeyPrefix = "confirmationPage"
+  val refNumber = "XC TRN 000 000 4911"
+  val postHMRC = "https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts"
 
-  override def path: JsPath = JsPath \ Agent \ toString
+  "Confirmation view" must {
 
-  override def toString: String = "addressYesNo"
+    val view = viewFor[ConfirmationView](Some(emptyUserAnswers))
 
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
-    value match {
-      case Some(false) =>
-        userAnswers.remove(AgentUKAddressPage)
-      case Some(true) =>
-        userAnswers.remove(AgentInternationalAddressPage)
-      case _ => super.cleanup(value, userAnswers)
-    }
+    val applyView = view.apply(refNumber, postHMRC)(fakeRequest, messages)
+
+    behave like dynamicTitlePage(applyView, messageKeyPrefix, refNumber)
+
+    behave like pageWithBackLink(applyView)
   }
 }

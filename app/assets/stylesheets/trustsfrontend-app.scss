@@ -140,3 +140,23 @@
 }
 
 .autocomplete__wrapper span {display:none;}
+
+.heading-confirmation {
+  background-color: #28a197;
+  color: #fff;
+  padding: .6em;
+  text-align: center;
+  margin-top: 0;
+
+  .reference-text {
+    color: #fff;
+    margin-top: 1em;
+    display: block;
+    font-weight: 100;
+  }
+  .reference-number {
+    font-weight: 800;
+    font-size: 1em;
+    margin-top: 0;
+  }
+}

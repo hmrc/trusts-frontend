@@ -24,6 +24,9 @@ trait PageGenerators {
   implicit lazy val arbitraryDeclarationPage: Arbitrary[DeclarationPage.type] =
     Arbitrary(DeclarationPage)
 
+  implicit lazy val arbitraryWhatTypeOfBeneficiaryPage: Arbitrary[WhatTypeOfBeneficiaryPage.type] =
+    Arbitrary(WhatTypeOfBeneficiaryPage)
+
   implicit lazy val arbitraryAgentInternationalAddressPage: Arbitrary[AgentInternationalAddressPage.type] =
     Arbitrary(AgentInternationalAddressPage)
 

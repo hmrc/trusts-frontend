@@ -750,6 +750,36 @@ classBeneficiaryDescription.error.length = The description of the class in the t
 classBeneficiaryDescription.error.invalid = The description of class in the trust deed must only include letters a to z, numbers, spaces, special characters, ampersands (&), backword slashes, spaces
 classBeneficiaryDescription.hint = This must be 56 characters or less. For example, future grandchildren and future great-grandchildren.
 
+whatTypeOfBeneficiary.first.title = What kind of beneficiary do you need to add first?
+whatTypeOfBeneficiary.next.title = What kind of beneficiary do you need to add next?
+whatTypeOfBeneficiary.first.heading = What kind of beneficiary do you need to add first?
+whatTypeOfBeneficiary.next.heading = What kind of beneficiary do you need to add next?
+
+whatTypeOfBeneficiary.Individual = Individual
+whatTypeOfBeneficiary.ClassOfBeneficiary = Class of beneficiaries
+whatTypeOfBeneficiary.CharityOrTrust = Charity or trust
+whatTypeOfBeneficiary.CompanyOrEmployment = Company or employment related
+whatTypeOfBeneficiary.Other = Other beneficiary
+whatTypeOfBeneficiary.checkYourAnswersLabel = whatTypeOfBeneficiary
+whatTypeOfBeneficiary.error.required = Select the type of beneficiary you need to add
+whatTypeOfBeneficiary.hint = You can enter a maximum of 25 entries for each beneficiary type
+
+confirmationPage.title = Registration received Your reference is: {0}
+confirmationPage.heading = Registration received Your reference is: {0}
+confirmationPage.printsave.link = Print or save a copy of your answers
+confirmationPage.posthmrc.link = post the changes to HMRC.
+
+confirmationPage.heading1 = Registration received
+confirmationPage.heading2 = Your reference is:
+
+confirmationPage.subheading1 = What happens next
+confirmationPage.paragraph1 = You can continue to use your Unique Taxpayer Reference as usual. If there is a problem with your registration, we will contact the lead trustee.
+
+confirmationPage.subheading2 = What you need to do next
+confirmationPage.paragraph2 = Keep a note of your reference in case you need to contact HMRC.
+confirmationPage.paragraph3 = You cannot make online changes to the trust. To change the lead trustee or their contact details,
+confirmationPage.paragraph4 = You must keep a record of any other changes until you can change them using the online service.
+
 declaration.title = Declaration
 declaration.heading = Declaration
 declaration.firstName = Your first name
