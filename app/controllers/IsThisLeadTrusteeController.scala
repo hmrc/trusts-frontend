@@ -19,7 +19,7 @@ package controllers
 import controllers.actions._
 import forms.IsThisLeadTrusteeFormProvider
 import javax.inject.Inject
-import models.entities.Trustee
+import models.entities.{LeadTrusteeIndividual, Trustee, TrusteeIndividual}
 import models.{Mode, NormalMode}
 import navigation.Navigator
 import pages.{IsThisLeadTrusteePage, Trustees}
@@ -63,7 +63,10 @@ class IsThisLeadTrusteeController @Inject()(
 
       def leadTrustee : Option[(Trustee, Int)] = {
         val trustees = request.userAnswers.get(Trustees).getOrElse(Nil).zipWithIndex
-        trustees.find(_._1.lead)
+        trustees.find {
+          case (_ : LeadTrusteeIndividual, _) => true
+          case _ => false
+        }
       }
 
       leadTrustee match {

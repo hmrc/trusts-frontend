@@ -24,5 +24,5 @@ final case class TrusteesDateOfBirthPage(index: Int) extends QuestionPage[LocalD
 
   override def path: JsPath = JsPath \ Trustees \ index \ toString
 
-  override def toString: String = "trusteesDateOfBirth"
+  override def toString: String = "dateOfBirth"
 }

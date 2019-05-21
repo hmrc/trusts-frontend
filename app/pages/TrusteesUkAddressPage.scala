@@ -23,5 +23,5 @@ final case class TrusteesUkAddressPage(index: Int) extends QuestionPage[UKAddres
 
   override def path: JsPath = JsPath \ Trustees \ index \ toString
 
-  override def toString: String = "trusteesUkAddress"
+  override def toString: String = "address"
 }

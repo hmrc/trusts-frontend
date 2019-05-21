@@ -26,7 +26,7 @@ final case class TrusteeIndividualOrBusinessPage(index : Int) extends QuestionPa
 
   override def path: JsPath = JsPath \ Trustees \ index \ toString
 
-  override def toString: String = "trusteeIndividualOrBusiness"
+  override def toString: String = "individualOrBusiness"
 
   override def cleanup(value: Option[IndividualOrBusiness], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {

@@ -76,6 +76,9 @@ individualOrBusiness.business = Business
 
 entity.trustee = Trustee
 
+entities.lead = Lead
+entities.trustee.individual = Trustee Individual
+
 createAgentServicesAccount.title = Create an agent services account
 createAgentServicesAccount.heading = Create an agent services account
 createAgentServicesAccount.paragraph1 = Before you can register a trust you will need to create an agent services account. You can do this now.

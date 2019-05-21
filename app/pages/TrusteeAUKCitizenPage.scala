@@ -22,5 +22,5 @@ final case class  TrusteeAUKCitizenPage(index : Int) extends QuestionPage[Boolea
 
   override def path: JsPath = JsPath \ Trustees \ index \ toString
 
-  override def toString: String = "trusteeAUKCitizen"
+  override def toString: String = "isUKCitizen"
 }

@@ -16,45 +16,38 @@
 
 package utils
 
-import models.entities.Trustee
-import models.{FullName, IndividualOrBusiness, UserAnswers}
+import models.UserAnswers
+import models.entities.{LeadTrusteeIndividual, Trustee, TrusteeIndividual}
 import pages.Trustees
 import play.api.i18n.Messages
 import viewmodels.{AddRow, AddToRows}
 
 class AddATrusteeViewHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
-  private def parseName(name : Option[FullName]) : String = {
-    name match {
-      case Some(x) => s"$x"
-      case None => ""
-    }
-  }
-
-  private def parseType(individualOrBusiness: Option[IndividualOrBusiness]) : String = {
-    individualOrBusiness match {
-      case Some(x) =>
-        s"${messages("entity.trustee")} ${messages(s"individualOrBusiness.$x")}"
-      case None =>
-        messages("entity.trustee")
-    }
-  }
-
   private def parseTrustee(trustee : Trustee) : AddRow = {
-    AddRow(
-      parseName(trustee.name),
-      parseType(trustee.`type`),
-      "#",
-      "#"
-    )
+
+    val name = trustee match {
+      case t : LeadTrusteeIndividual => t.name.toString
+      case t : TrusteeIndividual => t.name.toString
+      case _ => ""
+    }
+
+    val trusteeType = trustee match {
+      case _ : LeadTrusteeIndividual => s"${messages("entities.lead")} ${messages("entities.trustee.individual")}"
+      case _ : TrusteeIndividual => s"${messages("entities.trustee.individual")}"
+      case _ => "Trustee"
+    }
+
+    AddRow(name, trusteeType, "#", "#")
   }
 
   def rows : AddToRows = {
     val trustees = userAnswers.get(Trustees).toList.flatten
 
-    val complete = trustees.filter(_.isComplete).map(parseTrustee)
+    val complete = trustees.map(parseTrustee)
 
-    val inProgress = trustees.filterNot(_.isComplete).map(parseTrustee)
+//    val inProgress = trustees.filterNot(_.isComplete).map(parseTrustee)
+    val inProgress = Nil
 
     AddToRows(inProgress, complete)
   }

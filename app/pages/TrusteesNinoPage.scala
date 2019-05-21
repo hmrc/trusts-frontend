@@ -22,5 +22,5 @@ final case class TrusteesNinoPage(index : Int) extends QuestionPage[String] {
 
   override def path: JsPath = JsPath \ Trustees \ index \ toString
 
-  override def toString: String = "trusteesNino"
+  override def toString: String = "nino"
 }

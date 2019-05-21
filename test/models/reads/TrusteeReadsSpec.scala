@@ -16,67 +16,77 @@
 
 package models.reads
 
-import models.FullName
-import models.IndividualOrBusiness.Individual
-import models.entities.Trustee
+import java.time.LocalDate
+
+import generators.{Generators, ModelGenerators}
+import models.entities.{LeadTrusteeIndividual, Trustee, TrusteeIndividual}
+import models.{FullName, IndividualOrBusiness, UKAddress}
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalacheck.Gen
 import org.scalatest.prop.PropertyChecks
-import org.scalatest.{MustMatchers, WordSpec}
-import play.api.libs.json._
+import org.scalatest.{FreeSpec, MustMatchers}
+import play.api.libs.json.{JsSuccess, Json}
 
-class TrusteeReadsSpec extends WordSpec with MustMatchers with PropertyChecks {
+class TrusteeReadsSpec extends FreeSpec with MustMatchers with PropertyChecks with Generators with ModelGenerators {
 
-  val trusteeWithoutMiddleName: JsObject = Json.obj(
-    "isThisLeadTrustee" -> JsBoolean(true),
-    "trusteeIndividualOrBusiness" -> JsString("individual"),
-    "trusteesName" ->
-      Json.obj(
-      "firstName" -> JsString("First"),
-      "lastName" -> JsString("Last")
-      )
-  )
+  "Trustee" - {
 
-  val trusteeWithMiddleName: JsObject = Json.obj(
-    "isThisLeadTrustee" -> JsBoolean(true),
-    "trusteeIndividualOrBusiness" -> JsString("individual"),
-    "trusteesName" ->
-      Json.obj(
-        "firstName" -> JsString("First"),
-        "middleName" -> JsString("Middle"),
-        "lastName" -> JsString("Last")
-      )
-  )
+    "must deserialise" - {
 
-  val emptyTrustee: JsObject = Json.obj()
+      "from a trustee individual" in {
 
-  val arrayOfTrustees : JsArray = Json.arr(trusteeWithMiddleName, trusteeWithoutMiddleName)
+        forAll(arbitrary[LocalDate], arbitrary[FullName]) {
+          (date, fullName) =>
 
-  "Trustee" must {
+            val json = Json.obj(
+              "name" -> fullName,
+              "dateOfBirth" -> date,
+              "isThisLeadTrustee" -> false,
+              "individualOrBusiness" -> IndividualOrBusiness.Individual.toString
+            )
 
-    "serialise trustee without middle name" in {
-      val result = trusteeWithoutMiddleName.as[Trustee]
+            json.validate[Trustee] mustEqual JsSuccess(TrusteeIndividual(fullName, date))
 
-      result mustBe Trustee(true, Some(FullName("First", None, "Last")), Some(Individual))
-    }
+        }
+      }
 
-    "serialise trustee with middle name" in {
-      val result = trusteeWithMiddleName.as[Trustee]
+      "from a lead trustee individual" in {
 
-      result mustBe Trustee(true, Some(FullName("First", Some("Middle"), "Last")), Some(Individual))
-    }
+        forAll(
+          arbitrary[LocalDate],
+          arbitrary[FullName],
+          arbitrary[UKAddress],
+          Gen.const(IndividualOrBusiness.Individual)
+        ){
+          (date, fullName, address, individual) =>
+            val json = Json.obj(
+              "nino" -> "QQ12121212",
+              "name"-> fullName,
+              "telephoneNumber" -> "+440101010101",
+              "dateOfBirth" -> date,
+              "isUKCitizen" -> true,
+              "isThisLeadTrustee" -> true,
+              "address" -> address,
+              "liveInUK" -> true,
+              "individualOrBusiness" -> individual.toString
+            )
 
-    "serialise an empty object to a trustee" in {
-      val result = emptyTrustee.as[Trustee]
+            json.validate[Trustee] mustEqual JsSuccess(
+              LeadTrusteeIndividual(
+                name = fullName,
+                dateOfBirth = date,
+                nino = Some("QQ12121212"),
+                isUKCitizen = true,
+                liveInUK = true,
+                telephoneNumber = "+440101010101",
+                passport = None,
+                address = address
+              )
+            )
+        }
 
-      result.`type` mustBe None
-      result.name mustBe None
-    }
+      }
 
-    "serialise an array of trustees" in {
-      val result = arrayOfTrustees.as[List[Trustee]]
-
-      result.size mustBe 2
-      result.head mustBe Trustee(true, Some(FullName("First", Some("Middle"), "Last")), Some(Individual))
-      result.tail.head mustBe Trustee(true, Some(FullName("First", None, "Last")), Some(Individual))
     }
 
   }
