@@ -365,7 +365,7 @@ POST       /agent-international-address                        controllers.Agent
 GET        /change-agent-international-address                  controllers.AgentInternationalAddressController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-agent-international-address                  controllers.AgentInternationalAddressController.onSubmit(mode: Mode = CheckMode)
 
-GET        /agentDeclaration                        controllers.AgentDeclarationController.onPageLoad(mode: Mode = NormalMode)
-POST       /agentDeclaration                        controllers.AgentDeclarationController.onSubmit(mode: Mode = NormalMode)
-GET        /changeAgentDeclaration                  controllers.AgentDeclarationController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeAgentDeclaration                  controllers.AgentDeclarationController.onSubmit(mode: Mode = CheckMode)
+GET        /declaration                        controllers.AgentDeclarationController.onPageLoad(mode: Mode = NormalMode)
+POST       /declaration                        controllers.AgentDeclarationController.onSubmit(mode: Mode = NormalMode)
+GET        /change-declaration                  controllers.AgentDeclarationController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-declaration                  controllers.AgentDeclarationController.onSubmit(mode: Mode = CheckMode)

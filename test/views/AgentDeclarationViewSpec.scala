@@ -26,11 +26,11 @@ import views.html.AgentDeclarationView
 
 class AgentDeclarationViewSpec extends QuestionViewBehaviours[FullName] {
 
-  val messageKeyPrefix = "agentDeclaration"
+  val messageKeyPrefix = "declaration"
 
   val form = new AgentDeclarationFormProvider()()
 
-  "AgentDeclarationView view" must {
+  "DeclarationView view" must {
 
     val view = viewFor[AgentDeclarationView](Some(emptyUserAnswers))
 

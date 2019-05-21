@@ -25,7 +25,7 @@
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("agentDeclaration.title")}"
+    title = s"${errorPrefix(form)} ${messages("declaration.title")}"
     ) {
 
     @formHelper(action = AgentDeclarationController.onSubmit(mode), 'autoComplete -> "off") {
@@ -34,24 +34,32 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("agentDeclaration.heading")
+        @components.heading("declaration.heading")
 
         @components.input_text(
         field = form("firstName"),
-        label = messages("agentDeclaration.firstName"),
+        label = messages("declaration.firstName"),
         ariaRequired = true
         )
 
         @components.input_text(
         field = form("middleName"),
-        label = messages("agentDeclaration.middleName")
+        label = messages("declaration.middleName")
         )
 
         @components.input_text(
         field = form("lastName"),
-        label = messages("agentDeclaration.lastName"),
+        label = messages("declaration.lastName"),
         ariaRequired = true
         )
+
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+                <span class="govuk-warning-text__assistive">@messages("site.warning")</span>
+                @messages("declaration.warning")
+            </strong>
+        </div>
 
         @components.submit_button()
     }
