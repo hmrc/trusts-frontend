@@ -27,8 +27,8 @@
     @components.back_link()
 
     <h1 class="form-title heading-large heading-confirmation">
-        Registration received
-        <span class="reference-text">Your reference is:</span>
+        @messages("confirmationPage.heading1")
+        <span class="reference-text">@messages("confirmationPage.heading2")</span>
         <span class="reference-number">@refNumber</span>
     </h1>
 

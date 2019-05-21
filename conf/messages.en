@@ -774,6 +774,9 @@ confirmationPage.heading = Registration received Your reference is: {0}
 confirmationPage.printsave.link = Print or save a copy of your answers
 confirmationPage.posthmrc.link = post the changes to HMRC.
 
+confirmationPage.heading1 = Registration received
+confirmationPage.heading2 = Your reference is:
+
 confirmationPage.subheading1 = What happens next
 confirmationPage.paragraph1 = You can continue to use your Unique Taxpayer Reference as usual. If there is a problem with your registration, we will contact the lead trustee.
 
