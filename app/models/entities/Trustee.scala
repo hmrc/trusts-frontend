@@ -16,21 +16,13 @@
 
 package models.entities
 
-import java.time.LocalDate
-
 import models.{FullName, IndividualOrBusiness}
 import play.api.libs.json.{JsPath, Reads}
 
 
-case class Trustee(lead: Boolean, name : Option[FullName], `type` : Option[IndividualOrBusiness], dob: Option[LocalDate], telephone: Option[String]) {
+case class Trustee(lead: Boolean, name : Option[FullName], `type` : Option[IndividualOrBusiness]) {
 
-  def isComplete = {
-    if (lead) {
-      name.nonEmpty && telephone.nonEmpty
-    } else {
-      name.nonEmpty && `type`.nonEmpty && dob.nonEmpty
-    }
-  }
+  def isComplete = name.nonEmpty && `type`.nonEmpty
 
 }
 
@@ -42,9 +34,7 @@ object Trustee {
   implicit val reads : Reads[Trustee] = (
     (JsPath \ "isThisLeadTrustee").readWithDefault[Boolean](false) and
     (JsPath \ "trusteesName").readNullable[FullName] and
-    (JsPath \ "trusteeIndividualOrBusiness").readNullable[IndividualOrBusiness] and
-    (JsPath \ "trusteesDateOfBirth").readNullable[LocalDate] and
-    (JsPath \ "telephoneNumber").readNullable[String]
+      (JsPath \ "trusteeIndividualOrBusiness").readNullable[IndividualOrBusiness]
     )(Trustee.apply _)
 
 }
