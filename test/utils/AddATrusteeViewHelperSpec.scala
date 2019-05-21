@@ -16,11 +16,9 @@
 
 package utils
 
-import java.time.LocalDate
-
 import base.SpecBase
 import models.{FullName, IndividualOrBusiness, UserAnswers}
-import pages.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage, TrusteesDateOfBirthPage, TrusteesNamePage}
+import pages.{TrusteeIndividualOrBusinessPage, TrusteesNamePage}
 import viewmodels.AddRow
 
 class AddATrusteeViewHelperSpec extends SpecBase {
@@ -28,10 +26,8 @@ class AddATrusteeViewHelperSpec extends SpecBase {
   val userAnswersWithTrusteesComplete = UserAnswers(userAnswersId)
     .set(TrusteesNamePage(0), FullName("First 0", None, "Last 0")).success.value
     .set(TrusteeIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
-    .set(TrusteesDateOfBirthPage(0), LocalDate.of(2010, 10, 10)).success.value
     .set(TrusteesNamePage(1), FullName("First 1", None, "Last 1")).success.value
     .set(TrusteeIndividualOrBusinessPage(1), IndividualOrBusiness.Individual).success.value
-    .set(TrusteesDateOfBirthPage(1), LocalDate.of(2010, 10, 20)).success.value
 
 
   val userAnswersWithTrusteesInProgress = UserAnswers(userAnswersId)
@@ -42,7 +38,6 @@ class AddATrusteeViewHelperSpec extends SpecBase {
     .set(TrusteesNamePage(0), FullName("First 0", Some("Middle"), "Last 0")).success.value
     .set(TrusteesNamePage(1), FullName("First 1", Some("Middle"), "Last 1")).success.value
     .set(TrusteeIndividualOrBusinessPage(1), IndividualOrBusiness.Individual).success.value
-    .set(TrusteesDateOfBirthPage(1), LocalDate.of(2010, 10, 20)).success.value
 
   val userAnswersWithNoTrustees = UserAnswers(userAnswersId)
 
