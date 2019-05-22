@@ -27,8 +27,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import viewmodels.Trustee
-import viewmodels.trustees.Trustees
+import viewmodels.trustees.{TrusteeViewModel, Trustees}
 import views.html.IsThisLeadTrusteeView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -62,7 +61,7 @@ class IsThisLeadTrusteeController @Inject()(
         Future.successful(Ok(view(preparedForm, mode, index)))
       }
 
-      def leadTrustee : Option[(Trustee, Int)] = {
+      def leadTrustee : Option[(TrusteeViewModel, Int)] = {
         val trustees = request.userAnswers.get(Trustees).getOrElse(Nil).zipWithIndex
 
         trustees.find{ case (trustee, _) => trustee.isLead}

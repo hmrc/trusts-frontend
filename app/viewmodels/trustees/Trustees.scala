@@ -18,9 +18,8 @@ package viewmodels.trustees
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import viewmodels.Trustee
 
-case object Trustees extends QuestionPage[List[Trustee]]{
+case object Trustees extends QuestionPage[List[TrusteeViewModel]]{
 
   override def path: JsPath = JsPath \ toString
 

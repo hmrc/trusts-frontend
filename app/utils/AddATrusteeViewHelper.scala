@@ -20,11 +20,11 @@ import models.{IndividualOrBusiness, UserAnswers}
 import play.api.i18n.Messages
 import viewmodels.Tag.{Completed, InProgress}
 import viewmodels._
-import viewmodels.trustees.Trustees
+import viewmodels.trustees.{TrusteeViewModel, Trustees}
 
 class AddATrusteeViewHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
-  private def render(trustee : Trustee) : AddRow = {
+  private def render(trustee : TrusteeViewModel) : AddRow = {
 
     val name = trustee.name.map(_.toString).getOrElse(messages("entities.no.name.added"))
 

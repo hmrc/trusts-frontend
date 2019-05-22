@@ -14,26 +14,30 @@
  * limitations under the License.
  */
 
-package viewmodels
+package viewmodels.trustees
 
 import models.{FullName, IndividualOrBusiness}
 import viewmodels.Tag.InProgress
+import viewmodels.{Tag, trustees}
 
-final case class Trustee(isLead : Boolean, name : Option[FullName], `type` : Option[IndividualOrBusiness], status : Tag)
+final case class TrusteeViewModel(isLead : Boolean,
+                                    name : Option[FullName],
+                                  `type` : Option[IndividualOrBusiness],
+                                  status : Tag)
 
-object Trustee {
+object TrusteeViewModel {
 
   import play.api.libs.functional.syntax._
   import play.api.libs.json._
 
-  implicit lazy val reads : Reads[Trustee] = (
-    (__ \ "isThisLeadTrustee").read[Boolean] and
+  implicit lazy val reads : Reads[TrusteeViewModel] = (
+    (__ \ "isThisLeadTrustee").readWithDefault[Boolean](false) and
       (__ \ "individualOrBusiness").readNullable[IndividualOrBusiness] and
       (__ \ "name").readNullable[FullName] and
       (__ \ "status").readWithDefault[Tag](InProgress)
     )(
       (isLead, individualOrBusiness, name, status) => {
-        Trustee(isLead, name, individualOrBusiness, status)
+        trustees.TrusteeViewModel(isLead, name, individualOrBusiness, status)
       }
     )
 
