@@ -18,6 +18,7 @@ package views
 
 import views.behaviours.ViewBehaviours
 import views.html.IndividualBeneficiaryInfoView
+import controllers.routes
 
 class IndividualBeneficiaryInfoViewSpec extends ViewBehaviours {
 
@@ -51,5 +52,7 @@ class IndividualBeneficiaryInfoViewSpec extends ViewBehaviours {
     )
 
     behave like pageWithBackLink(applyView)
+
+    behave like pageWithContinueButton(applyView,routes.WhatTypeOfBeneficiaryController.onPageLoad().url )
   }
 }
