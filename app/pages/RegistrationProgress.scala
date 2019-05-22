@@ -17,8 +17,10 @@
 package pages
 
 import javax.inject.Inject
+import models.AddATrustee.NoComplete
 import models.UserAnswers
 import navigation.TaskListNavigator
+import viewmodels.Tag.InProgress
 import viewmodels.{Link, Task}
 
 class RegistrationProgress @Inject()(navigator : TaskListNavigator){
@@ -31,5 +33,20 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
     Task(Link(pages.Assets, navigator.nextPage(pages.Assets, userAnswers).url), None),
     Task(Link(TaxLiability, navigator.nextPage(TaxLiability, userAnswers).url), None)
   )
+
+  def isTrusteesComplete(userAnswers: UserAnswers) : Boolean = {
+    val noMoreToAdd = userAnswers.get(AddATrusteePage).contains(NoComplete)
+
+    userAnswers.get(viewmodels.trustees.Trustees) match {
+      case Some(l) =>
+
+        val hasLeadTrustee = l.exists(_.isLead)
+
+        !l.exists(_.status == InProgress) && noMoreToAdd && hasLeadTrustee
+      case None => false
+    }
+  }
+
+
 
 }
