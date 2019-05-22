@@ -295,7 +295,7 @@ POST       /beneficiaries/individual/:index/change-do-you-know-date-of-birth    
 GET        /beneficiaries/individual/:index/date-of-birth                  controllers.IndividualBeneficiaryDateOfBirthController.onPageLoad(mode: Mode = NormalMode,index: Int)
 POST       /beneficiaries/individual/:index/date-of-birth                  controllers.IndividualBeneficiaryDateOfBirthController.onSubmit(mode: Mode = NormalMode,index: Int)
 GET        /beneficiaries/individual/:index/change-date-of-birth                        controllers.IndividualBeneficiaryDateOfBirthController.onPageLoad(mode: Mode = CheckMode,index: Int)
-POST       /beneficiaries/individual/:index/change-date-of-birth                        controllers.IndividualBeneficiaryDateOfBirthController.onSubmit(mode: Mode = CheckMode,index: Int)
+POST       /beneficiaries/individual/:index/cConhange-date-of-birth                        controllers.IndividualBeneficiaryDateOfBirthController.onSubmit(mode: Mode = CheckMode,index: Int)
 
 GET        /beneficiaries/individual/:index/do-you-know-income                        controllers.IndividualBeneficiaryIncomeYesNoController.onPageLoad(mode: Mode = NormalMode,index: Int)
 POST       /beneficiaries/individual/:index/do-you-know-income                        controllers.IndividualBeneficiaryIncomeYesNoController.onSubmit(mode: Mode = NormalMode,index: Int)
@@ -372,3 +372,5 @@ GET        /declaration                        controllers.DeclarationController
 POST       /declaration                        controllers.DeclarationController.onSubmit(mode: Mode = NormalMode)
 GET        /change-declaration                  controllers.DeclarationController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-declaration                  controllers.DeclarationController.onSubmit(mode: Mode = CheckMode)
+
+GET       /confirmation                         controllers.ConfirmationController.onPageLoad()
