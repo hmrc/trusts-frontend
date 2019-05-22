@@ -736,9 +736,9 @@ individualBeneficiaryAddressUKYesNo.heading = Does {0} live in the UK?
 individualBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Does {0} live in the UK?
 individualBeneficiaryAddressUKYesNo.error.required = Select yes if the individual beneficiary lives in the UK
 
-agentAddressYesNo.title = Is {0}’s agency address in the UK?
-agentAddressYesNo.heading = Is {0}’s agency address in the UK?
-agentAddressYesNo.checkYourAnswersLabel = Is {0}’s agency address in the UK?
+agentAddressYesNo.title = Is {0}’s address in the UK?
+agentAddressYesNo.heading = Is {0}’s address in the UK?
+agentAddressYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 agentAddressYesNo.error.required = Select yes if the agency’s address is in the UK
 
 classBeneficiaryDescription.title = What is the description for the class of beneficiaries?
