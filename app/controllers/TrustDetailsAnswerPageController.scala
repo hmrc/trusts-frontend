@@ -20,17 +20,22 @@ import controllers.actions._
 import javax.inject.Inject
 import models.NormalMode
 import navigation.Navigator
-import pages.TrustDetailsAnswerPage
+import pages.{TrustDetailsAnswerPage, TrustDetailsCompleted}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
+import viewmodels.Tag.Completed
 import views.html.TrustDetailsAnswerPageView
+
+import scala.concurrent.{ExecutionContext, Future}
 
 
 class TrustDetailsAnswerPageController @Inject()(
+                                              sessionRepository: SessionRepository,
                                               override val messagesApi: MessagesApi,
                                               identify: IdentifierAction,
                                               navigator: Navigator,
@@ -40,7 +45,7 @@ class TrustDetailsAnswerPageController @Inject()(
                                               val controllerComponents: MessagesControllerComponents,
                                               view: TrustDetailsAnswerPageView,
                                               countryOptions : CountryOptions
-                                            ) extends FrontendBaseController with I18nSupport {
+                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions =
     identify andThen getData andThen requireData
@@ -75,8 +80,12 @@ class TrustDetailsAnswerPageController @Inject()(
       Ok(view(sections))
   }
 
-  def onSubmit() = actions {
+  def onSubmit() = actions.async {
     implicit request =>
-      Redirect(navigator.nextPage(TrustDetailsAnswerPage, NormalMode)(request.userAnswers))
+
+      for {
+        updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustDetailsCompleted, Completed))
+        _              <- sessionRepository.set(updatedAnswers)
+      } yield Redirect(navigator.nextPage(TrustDetailsAnswerPage, NormalMode)(request.userAnswers))
   }
 }

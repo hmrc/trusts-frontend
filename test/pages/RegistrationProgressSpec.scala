@@ -16,17 +16,64 @@
 
 package pages
 
+import java.time.LocalDate
+
 import base.SpecBase
 import models.AddATrustee
 import viewmodels.Tag
+import viewmodels.Tag.Completed
 
 class RegistrationProgressSpec extends SpecBase {
+
+  "Trust details section" must {
+
+    "render no tag" when {
+
+      "no status value in user answers" in {
+        val registrationProgress = injector.instanceOf[RegistrationProgress]
+
+        val userAnswers = emptyUserAnswers
+
+        registrationProgress.isTrustDetailsComplete(userAnswers) mustBe false
+      }
+
+    }
+
+    "render in-progress tag" when {
+
+      "user has entered when the trust was created" in {
+        val registrationProgress = injector.instanceOf[RegistrationProgress]
+
+        val userAnswers = emptyUserAnswers
+            .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
+
+        registrationProgress.isTrustDetailsComplete(userAnswers) mustBe false
+      }
+
+    }
+
+    "render complete tag" when {
+
+      "user answer has reached check-trust-details" in {
+        val registrationProgress = injector.instanceOf[RegistrationProgress]
+
+        val userAnswers = emptyUserAnswers
+          .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
+          .set(TrustDetailsCompleted, Completed).success.value
+
+        registrationProgress.isTrustDetailsComplete(userAnswers) mustBe true
+      }
+
+    }
+
+  }
+
 
   "Trustee section" must {
 
     "render no tag" when {
 
-      "no trustees in mongo" in {
+      "no trustees in user answers" in {
 
         val registrationProgress = injector.instanceOf[RegistrationProgress]
 
@@ -92,6 +139,50 @@ class RegistrationProgressSpec extends SpecBase {
           .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
         registrationProgress.isTrusteesComplete(userAnswers) mustBe true
+      }
+
+    }
+
+  }
+
+  "Settlor section" must {
+
+    "render no tag" when {
+
+      "no deceased settlor in user answers" in {
+        val registrationProgress = injector.instanceOf[RegistrationProgress]
+
+        val userAnswers = emptyUserAnswers
+
+        registrationProgress.isDeceasedSettlorComplete(userAnswers) mustBe false
+      }
+
+    }
+
+    "render in-progress tag" when {
+
+      "there is a deceased settlor that is not completed" in {
+        val registrationProgress = injector.instanceOf[RegistrationProgress]
+
+        val userAnswers = emptyUserAnswers
+            .set(SetupAfterSettlorDiedPage, true).success.value
+            .set(DeceasedSettlorComplete, Tag.InProgress).success.value
+
+        registrationProgress.isDeceasedSettlorComplete(userAnswers) mustBe false
+      }
+
+    }
+
+    "render complete tag" when {
+
+      "there is a deceased settlor marked as complete" in {
+        val registrationProgress = injector.instanceOf[RegistrationProgress]
+
+        val userAnswers = emptyUserAnswers
+          .set(SetupAfterSettlorDiedPage, true).success.value
+          .set(DeceasedSettlorComplete, Tag.Completed).success.value
+
+        registrationProgress.isDeceasedSettlorComplete(userAnswers) mustBe true
       }
 
     }

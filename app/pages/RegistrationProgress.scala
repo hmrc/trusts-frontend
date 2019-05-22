@@ -20,7 +20,7 @@ import javax.inject.Inject
 import models.AddATrustee.NoComplete
 import models.UserAnswers
 import navigation.TaskListNavigator
-import viewmodels.Tag.InProgress
+import viewmodels.Tag.{Completed, InProgress}
 import viewmodels.{Link, Task}
 
 class RegistrationProgress @Inject()(navigator : TaskListNavigator){
@@ -34,6 +34,12 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
     Task(Link(TaxLiability, navigator.nextPage(TaxLiability, userAnswers).url), None)
   )
 
+  def isTrustDetailsComplete(userAnswers: UserAnswers) : Boolean = {
+    val whenSetup = userAnswers.get(WhenTrustSetupPage).isDefined
+
+    whenSetup && userAnswers.get(TrustDetailsCompleted).contains(Completed)
+  }
+
   def isTrusteesComplete(userAnswers: UserAnswers) : Boolean = {
     val noMoreToAdd = userAnswers.get(AddATrusteePage).contains(NoComplete)
 
@@ -45,6 +51,13 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
         !l.exists(_.status == InProgress) && noMoreToAdd && hasLeadTrustee
       case None => false
     }
+  }
+
+  def isDeceasedSettlorComplete(userAnswers: UserAnswers) : Boolean = {
+    val setUpAfterSettlorDied = userAnswers.get(SetupAfterSettlorDiedPage)
+    val deceasedCompleted = userAnswers.get(DeceasedSettlorComplete)
+
+    setUpAfterSettlorDied.contains(true) && deceasedCompleted.contains(Completed)
   }
 
 
