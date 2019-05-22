@@ -28,7 +28,7 @@
     title = s"${errorPrefix(form)} ${messages("declaration.title")}"
     ) {
 
-    @formHelper(action = DeclarationController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = DeclarationController.onSubmit(), 'autoComplete -> "off") {
 
         @components.back_link()
 
@@ -61,6 +61,6 @@
             </strong>
         </div>
 
-        @components.submit_button()
+        @components.submit_button(Some("site.confirm-send"))
     }
 }

@@ -31,35 +31,19 @@ trait BeneficiaryRoutes {
 
   def beneficiaryRoutes()(implicit navigator: Navigator) = {
 
-    "there are no beneficiaries" must {
 
-      "go to the next beneficiary from AddABeneficiaryPage when selected add them now" in {
+      "go WhatTypeOfBeneficiaryPage from AddABeneficiaryPage when selected add them now" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
             val answers = userAnswers.set(AddABeneficiaryPage, AddABeneficiary.YesNow).success.value
-              .remove(Beneficiaries).success.value
 
             navigator.nextPage(AddABeneficiaryPage, NormalMode)(answers)
-              .mustBe(routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, 0))
+              .mustBe(routes.WhatTypeOfBeneficiaryController.onPageLoad())
         }
       }
 
-    }
 
-    "there is atleast one beneficiary" must {
-
-      "go to the next benficiary from AddABeneficiaryPage when selected add them now" in {
-
-        val answers = UserAnswers(userAnswersId)
-          .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
-          .set(AddABeneficiaryPage, AddABeneficiary.YesNow).success.value
-
-        navigator.nextPage(AddABeneficiaryPage, NormalMode)(answers)
-          .mustBe(routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, 1))
-      }
-
-    }
 
     "go to RegistrationProgress from AddABeneficiaryPage when selecting add them later" in {
       forAll(arbitrary[UserAnswers]) {
@@ -274,6 +258,8 @@ trait BeneficiaryRoutes {
       }
     }
 
+
+
     "there is atleast one Class of beneficiary" must {
       "go to the next ClassBeneficiaryDescriptionPage from WhatTypeOfBeneficiaryPage when ClassOfBeneficiary option selected" in {
 
@@ -283,6 +269,14 @@ trait BeneficiaryRoutes {
 
         navigator.nextPage(WhatTypeOfBeneficiaryPage, NormalMode)(answers)
           .mustBe(routes.ClassBeneficiaryDescriptionController.onPageLoad(NormalMode, 1))
+      }
+    }
+
+    "go to AddABeneficiaryPage from ClassBeneficiaryDescriptionPage" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          navigator.nextPage(ClassBeneficiaryDescriptionPage(0), NormalMode)(userAnswers)
+            .mustBe(routes.AddABeneficiaryController.onPageLoad())
       }
     }
   }

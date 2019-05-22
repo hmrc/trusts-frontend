@@ -36,7 +36,7 @@ class DeclarationControllerSpec extends SpecBase {
   val form = formProvider()
   val name = "name"
 
-  lazy val declarationRoute = routes.DeclarationController.onPageLoad(NormalMode).url
+  lazy val declarationRoute = routes.DeclarationController.onPageLoad().url
 
   "Declaration Controller" must {
 

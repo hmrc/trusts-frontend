@@ -49,6 +49,7 @@ site.complete = Completed
 site.onlyContinue = Continue
 site.date.hint = For example, 31 3 1980
 site.warning = Warning
+site.confirm-send = Confirm and send
 
 site.address.uk.title = What is {0}’s address?
 site.address.uk.heading = What is {0}’s address?
@@ -466,8 +467,8 @@ assetInterruptPage.subheading6 = Other assets
 assetInterruptPage.paragraph8 = You need a description and an estimate of the current value of the asset.
 
 
-agentAnswer.title = Check agent details
-agentAnswer.heading = Check agent details
+agentAnswer.title = Check agency details
+agentAnswer.heading = Check agency details
 
 assetMoneyValue.title = What is the total amount of money in the trust?
 assetMoneyValue.heading = What is the total amount of money in the trust?
@@ -737,17 +738,17 @@ individualBeneficiaryAddressUKYesNo.heading = Does {0} live in the UK?
 individualBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Does {0} live in the UK?
 individualBeneficiaryAddressUKYesNo.error.required = Select yes if the individual beneficiary lives in the UK
 
-agentAddressYesNo.title = Is {0}’s agency address in the UK?
-agentAddressYesNo.heading = Is {0}’s agency address in the UK?
-agentAddressYesNo.checkYourAnswersLabel = Is {0}’s agency address in the UK?
-agentAddressYesNo.error.required = Select yes if agency’s address in the UK
+agentAddressYesNo.title = Is {0}’s address in the UK?
+agentAddressYesNo.heading = Is {0}’s address in the UK?
+agentAddressYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+agentAddressYesNo.error.required = Select yes if the agency’s address is in the UK
 
 classBeneficiaryDescription.title = What is the description for the class of beneficiaries?
 classBeneficiaryDescription.heading = What is the description for the class of beneficiaries?
 classBeneficiaryDescription.checkYourAnswersLabel = What is the description for the class of beneficiaries?
 classBeneficiaryDescription.error.required = Enter the description for the class of beneficiaries
 classBeneficiaryDescription.error.length = The description of the class in the trust deed must be 56 characters or less
-classBeneficiaryDescription.error.invalid = The description of class in the trust deed must only include letters a to z, numbers, spaces, special characters, ampersands (&), backword slashes, spaces
+classBeneficiaryDescription.error.invalid = The description of class in the trust deed must only include letters a to z, numbers, special characters, ampersands (&), backward slashes or spaces
 classBeneficiaryDescription.hint = This must be 56 characters or less. For example, future grandchildren and future great-grandchildren.
 
 whatTypeOfBeneficiary.first.title = What kind of beneficiary do you need to add first?

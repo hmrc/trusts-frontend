@@ -194,7 +194,7 @@ POST       /change-agent-telephone-number                  controllers.AgentTele
 GET        /agent-overview                                      controllers.AgentOverviewController.onPageLoad()
 
 GET        /check-agent-details                     controllers.AgentAnswerController.onPageLoad()
-POST       /chack-agent-details                       controllers.AgentAnswerController.onSubmit()
+POST       /check-agent-details                       controllers.AgentAnswerController.onSubmit()
 
 #assets
 
@@ -295,7 +295,7 @@ POST       /beneficiaries/individual/:index/change-do-you-know-date-of-birth    
 GET        /beneficiaries/individual/:index/date-of-birth                  controllers.IndividualBeneficiaryDateOfBirthController.onPageLoad(mode: Mode = NormalMode,index: Int)
 POST       /beneficiaries/individual/:index/date-of-birth                  controllers.IndividualBeneficiaryDateOfBirthController.onSubmit(mode: Mode = NormalMode,index: Int)
 GET        /beneficiaries/individual/:index/change-date-of-birth                        controllers.IndividualBeneficiaryDateOfBirthController.onPageLoad(mode: Mode = CheckMode,index: Int)
-POST       /beneficiaries/individual/:index/cConhange-date-of-birth                        controllers.IndividualBeneficiaryDateOfBirthController.onSubmit(mode: Mode = CheckMode,index: Int)
+POST       /beneficiaries/individual/:index/change-date-of-birth                        controllers.IndividualBeneficiaryDateOfBirthController.onSubmit(mode: Mode = CheckMode,index: Int)
 
 GET        /beneficiaries/individual/:index/do-you-know-income                        controllers.IndividualBeneficiaryIncomeYesNoController.onPageLoad(mode: Mode = NormalMode,index: Int)
 POST       /beneficiaries/individual/:index/do-you-know-income                        controllers.IndividualBeneficiaryIncomeYesNoController.onSubmit(mode: Mode = NormalMode,index: Int)
@@ -370,6 +370,5 @@ POST       /change-agent-international-address                  controllers.Agen
 
 GET        /declaration                        controllers.DeclarationController.onPageLoad(mode: Mode = NormalMode)
 POST       /declaration                        controllers.DeclarationController.onSubmit(mode: Mode = NormalMode)
-
 
 GET       /confirmation                         controllers.ConfirmationController.onPageLoad()
