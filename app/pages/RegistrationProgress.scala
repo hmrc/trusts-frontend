@@ -60,6 +60,8 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
     setUpAfterSettlorDied.contains(true) && deceasedCompleted.contains(Completed)
   }
 
-
+  def isBeneficiariesComplete(userAnswers: UserAnswers) : Boolean = {
+    false
+  }
 
 }

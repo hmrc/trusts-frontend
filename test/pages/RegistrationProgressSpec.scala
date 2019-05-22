@@ -19,7 +19,7 @@ package pages
 import java.time.LocalDate
 
 import base.SpecBase
-import models.AddATrustee
+import models.{AddATrustee, FullName}
 import viewmodels.Tag
 import viewmodels.Tag.Completed
 
@@ -183,6 +183,38 @@ class RegistrationProgressSpec extends SpecBase {
           .set(DeceasedSettlorComplete, Tag.Completed).success.value
 
         registrationProgress.isDeceasedSettlorComplete(userAnswers) mustBe true
+      }
+
+    }
+
+  }
+
+  "Beneficiary section" must {
+
+      "render no tag" when {
+
+        "there is no beneficiaries in user answers" in {
+          val registrationProgress = injector.instanceOf[RegistrationProgress]
+
+          val userAnswers = emptyUserAnswers
+
+          registrationProgress.isBeneficiariesComplete(userAnswers) mustBe false
+        }
+
+      }
+
+    "render in-progress tag" when {
+
+      "there are beneficiaries that are incomplete" in {
+
+        val registrationProgress = injector.instanceOf[RegistrationProgress]
+
+        val userAnswers = emptyUserAnswers
+          .set(ClassBeneficiaryDescriptionPage(0), "Description").success.value
+          .set(BeneficiaryComplete(0), Tag.Completed).success.value
+          .set(IndividualBeneficiaryNamePage(1), FullName("First", None, "Last")).success.value
+
+        registrationProgress.isTrusteesComplete(userAnswers) mustBe false
       }
 
     }
