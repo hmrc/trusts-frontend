@@ -16,8 +16,6 @@
 
 package models.reads
 
-import java.time.LocalDate
-
 import models.FullName
 import models.IndividualOrBusiness.Individual
 import models.entities.Trustee
@@ -34,9 +32,7 @@ class TrusteeReadsSpec extends WordSpec with MustMatchers with PropertyChecks {
       Json.obj(
       "firstName" -> JsString("First"),
       "lastName" -> JsString("Last")
-      ),
-    "trusteesDateOfBirth" -> LocalDate.of(2010, 10, 10),
-    "telephoneNumber" -> JsString("+11112222")
+      )
   )
 
   val trusteeWithMiddleName: JsObject = Json.obj(
@@ -47,9 +43,7 @@ class TrusteeReadsSpec extends WordSpec with MustMatchers with PropertyChecks {
         "firstName" -> JsString("First"),
         "middleName" -> JsString("Middle"),
         "lastName" -> JsString("Last")
-      ),
-    "trusteesDateOfBirth" -> LocalDate.of(2010, 10, 10),
-    "telephoneNumber" -> JsString("+11112222")
+      )
   )
 
   val emptyTrustee: JsObject = Json.obj()
@@ -61,13 +55,13 @@ class TrusteeReadsSpec extends WordSpec with MustMatchers with PropertyChecks {
     "serialise trustee without middle name" in {
       val result = trusteeWithoutMiddleName.as[Trustee]
 
-      result mustBe Trustee(true, Some(FullName("First", None, "Last")), Some(Individual), Some(LocalDate.of(2010, 10, 10)), Some("+11112222"))
+      result mustBe Trustee(true, Some(FullName("First", None, "Last")), Some(Individual))
     }
 
     "serialise trustee with middle name" in {
       val result = trusteeWithMiddleName.as[Trustee]
 
-      result mustBe Trustee(true, Some(FullName("First", Some("Middle"), "Last")), Some(Individual), Some(LocalDate.of(2010, 10, 10)), Some("+11112222"))
+      result mustBe Trustee(true, Some(FullName("First", Some("Middle"), "Last")), Some(Individual))
     }
 
     "serialise an empty object to a trustee" in {
@@ -81,8 +75,8 @@ class TrusteeReadsSpec extends WordSpec with MustMatchers with PropertyChecks {
       val result = arrayOfTrustees.as[List[Trustee]]
 
       result.size mustBe 2
-      result.head mustBe Trustee(true, Some(FullName("First", Some("Middle"), "Last")), Some(Individual), Some(LocalDate.of(2010, 10, 10)), Some("+11112222"))
-      result.tail.head mustBe Trustee(true, Some(FullName("First", None, "Last")), Some(Individual), Some(LocalDate.of(2010, 10, 10)), Some("+11112222"))
+      result.head mustBe Trustee(true, Some(FullName("First", Some("Middle"), "Last")), Some(Individual))
+      result.tail.head mustBe Trustee(true, Some(FullName("First", None, "Last")), Some(Individual))
     }
 
   }

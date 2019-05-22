@@ -46,11 +46,4 @@
 
     @components.task_list(sections)
 
-    @if(isTaskListComplete) {
-        <h2 id="summaryHeading">@messages("taskList.summary.heading")</h2>
-        <p>@messages("taskList.summary.paragraph", trustName)</p>
-        @components.link("#", "printSaveAnswers", "taskList.summary.link")
-        @components.button_link(messages("taskList.summary.continue"), routes.DeclarationController.onPageLoad().url)
-    }
-
 }
