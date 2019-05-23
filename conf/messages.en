@@ -768,3 +768,15 @@ whatTypeOfBeneficiary.Other = Other beneficiary
 whatTypeOfBeneficiary.checkYourAnswersLabel = whatTypeOfBeneficiary
 whatTypeOfBeneficiary.error.required = Select the type of beneficiary you need to add
 whatTypeOfBeneficiary.hint = You can enter a maximum of 25 entries for each beneficiary type
+
+summaryAnswerPage.title = Draft copy of the trust’s registration
+summaryAnswerPage.heading = Draft copy of the trust’s registration
+summaryAnswerPage.paragraph1 = You can save your registration and come back later. You have 28 days from the time you first save to register a trust. If you do not register within 28 days, your information will be deleted.
+summaryAnswerPage.paragraph2 = This is a not a declaration confirming the trust has been registered.
+summaryAnswerPage.section.trustsDetails.heading = Trust details
+summaryAnswerPage.section.settlors.heading = Settlors
+summaryAnswerPage.section.trustees.heading = Trustees
+summaryAnswerPage.section.trustee.subheading = Trustee
+summaryAnswerPage.section.beneficiaries.heading = Beneficiaries
+summaryAnswerPage.section.beneficiary.subheading = Individual beneficiary
+summaryAnswerPage.section.assets.heading = Assets

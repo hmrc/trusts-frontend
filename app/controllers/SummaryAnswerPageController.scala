@@ -20,7 +20,7 @@ import controllers.actions._
 import javax.inject.Inject
 import models.NormalMode
 import navigation.Navigator
-import pages.{IsThisLeadTrusteePage, Trustees, TrusteesAnswerPage, TrusteesNamePage}
+import pages.{IsThisLeadTrusteePage, Trustees, TrusteesNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -53,35 +53,15 @@ class SummaryAnswerPageController @Inject()(
   def onPageLoad(index : Int) = actions(index) {
     implicit request =>
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers)
-
-      val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
-
-      val trusteeIndividualOrBusinessMessagePrefix = if (isLead) "leadTrusteeIndividualOrBusiness" else "trusteeIndividualOrBusiness"
-      val trusteeFullNameMessagePrefix = if (isLead) "leadTrusteesName" else "trusteesName"
-
-      val sections = Seq(
-        AnswerSection(
-          Some("Trustee details"),
-          Seq(
-            checkYourAnswersHelper.isThisLeadTrustee(index),
-            checkYourAnswersHelper.trusteeIndividualOrBusiness(index, trusteeIndividualOrBusinessMessagePrefix),
-            checkYourAnswersHelper.trusteeFullName(index, trusteeFullNameMessagePrefix),
-            checkYourAnswersHelper.trusteesDateOfBirth(index),
-            checkYourAnswersHelper.trusteeAUKCitizen(index),
-            checkYourAnswersHelper.trusteesNino(index),
-            checkYourAnswersHelper.trusteeLiveInTheUK(index),
-            checkYourAnswersHelper.trusteesUkAddress(index),
-            checkYourAnswersHelper.telephoneNumber(index)
-          ).flatten
-        )
-    )
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, isSummary = true)
+      val trustDetails = checkYourAnswersHelper.trustDetails.getOrElse(Nil)
+      val trustees = checkYourAnswersHelper.trustees.getOrElse(Nil)
+      val settlors = checkYourAnswersHelper.settlors.getOrElse(Nil)
+      val beneficiaries = checkYourAnswersHelper.beneficiaries.getOrElse(Nil)
+      val assets = checkYourAnswersHelper.assets.getOrElse(Nil)
+      val sections =  Seq() ++ trustDetails ++ settlors ++ trustees ++ beneficiaries ++ assets
 
       Ok(view(index, sections))
   }
 
-//  def onSubmit(index : Int) = actions(index) {
-//    implicit request =>
-//      Redirect(navigator.nextPage(TrusteesAnswerPage, NormalMode)(request.userAnswers))
-//  }
 }

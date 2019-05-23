@@ -81,7 +81,7 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator) {
     val settlorTrustSetup= userAnswers.get(SetupAfterSettlorDiedPage).isDefined
     val settlorNino = userAnswers.get(SettlorNationalInsuranceNumberPage).nonEmpty
     val settlorKnowAddressYesNo = if (userAnswers.get(SettlorsLastKnownAddressYesNoPage).isDefined)
-      {userAnswers.get(SettlorsLastKnownAddressYesNoPage).get} else None
+      {userAnswers.get(SettlorsLastKnownAddressYesNoPage).get} else {None}
     val settlorAddressUK = userAnswers.get(SettlorsUKAddressPage).nonEmpty
     val settlorAddressInternational = userAnswers.get(SettlorsInternationalAddressPage).nonEmpty
     (settlorTrustSetup, settlorNino, settlorKnowAddressYesNo, settlorAddressUK, settlorAddressInternational) match {
@@ -106,11 +106,11 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator) {
   }
 
   def isTaskListComplete(userAnswers: UserAnswers)(implicit messages: Messages):Boolean = {
-    trustDetailsSectionStatus(userAnswers) == Some(Completed) &&
-    beneficiariesSectionStatus(userAnswers) == Some(Completed) &&
-      trusteesSectionStatus(userAnswers) == Some(Completed) &&
-      settlorsSectionStatus(userAnswers) == Some(Completed) &&
-      assetsSectionStatus(userAnswers) == Some(Completed)
+    trustDetailsSectionStatus(userAnswers).contains(Completed)
+//    beneficiariesSectionStatus(userAnswers).contains(Completed) &&
+//    trusteesSectionStatus(userAnswers).contains(Completed) &&
+//    settlorsSectionStatus(userAnswers).contains(Completed) &&
+//    assetsSectionStatus(userAnswers).contains(Completed)
   }
 
 

@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,23 +12,24 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import viewmodels.AnswerSection
-@import views.html._
+package views
 
-@(answerSection: AnswerSection)(implicit messages: Messages)
+import views.behaviours.ViewBehaviours
+import views.html.SummaryAnswerPageView
 
-@if(answerSection.sectionKey.isDefined){
-    <h2 class="heading-large">@messages(answerSection.sectionKey.get)</h2>
+class SummaryAnswerPageViewSpec extends ViewBehaviours {
+  val index = 0
+
+  "SummaryAnswerPage view" must {
+
+    val view = viewFor[SummaryAnswerPageView](Some(emptyUserAnswers))
+
+    val applyView = view.apply(index, Nil)(fakeRequest, messages)
+
+    behave like normalPage(applyView, "summaryAnswerPage")
+
+    behave like pageWithBackLink(applyView)
+  }
 }
-
-@if(answerSection.headingKey.isDefined){
-    <h2>@messages(answerSection.headingKey.get)</h2>
-}
-
-<ul role="list" class="govuk-check-your-answers cya-questions-long section">
-    @for(row <- answerSection.rows){
-        @components.answer_row(row)
-    }
-</ul>

@@ -367,3 +367,5 @@ GET        /agent-international-address                        controllers.Agent
 POST       /agent-international-address                        controllers.AgentInternationalAddressController.onSubmit(mode: Mode = NormalMode)
 GET        /change-agent-international-address                  controllers.AgentInternationalAddressController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-agent-international-address                  controllers.AgentInternationalAddressController.onSubmit(mode: Mode = CheckMode)
+
+GET        /your-answers-summary                          controllers.SummaryAnswerPageController.onPageLoad(index: Int)

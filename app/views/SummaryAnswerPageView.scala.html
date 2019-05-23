@@ -25,12 +25,16 @@
 @(index : Int, answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("trusteesAnswerPage.title")
+    title = messages("summaryAnswerPage.title")
     ) {
 
     @components.back_link()
 
-    @components.heading("trusteesAnswerPage.heading")
+    @components.heading("summaryAnswerPage.heading", headingSize = "heading-xlarge")
+
+    <p>@messages("summaryAnswerPage.paragraph1")</p>
+
+    <p>@messages("summaryAnswerPage.paragraph2")</p>
 
     @for(section <- answerSections){
         @{
