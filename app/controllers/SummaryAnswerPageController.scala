@@ -18,50 +18,40 @@ package controllers
 
 import controllers.actions._
 import javax.inject.Inject
-import models.NormalMode
-import navigation.Navigator
-import pages.{IsThisLeadTrusteePage, Trustees, TrusteesNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
-import viewmodels.AnswerSection
 import views.html.SummaryAnswerPageView
 
 
 class SummaryAnswerPageController @Inject()(
                                               override val messagesApi: MessagesApi,
                                               identify: IdentifierAction,
-                                              navigator: Navigator,
                                               getData: DataRetrievalAction,
                                               requireData: DataRequiredAction,
-                                              requiredAnswer: RequiredAnswerActionProvider,
-                                              validateIndex : IndexActionFilterProvider,
                                               val controllerComponents: MessagesControllerComponents,
                                               view: SummaryAnswerPageView,
                                               countryOptions : CountryOptions
                                             ) extends FrontendBaseController with I18nSupport {
 
-  private def actions(index : Int) =
-    identify andThen getData andThen
-      requireData andThen
-      validateIndex(index, Trustees) andThen
-      requiredAnswer(RequiredAnswer(TrusteesNamePage(index),routes.TrusteesNameController.onPageLoad(NormalMode, index))) andThen
-      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index)))
+  private def actions() =
+    identify andThen getData andThen requireData
 
-  def onPageLoad(index : Int) = actions(index) {
+  def onPageLoad() = actions() {
     implicit request =>
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, isSummary = true)
       val trustDetails = checkYourAnswersHelper.trustDetails.getOrElse(Nil)
       val trustees = checkYourAnswersHelper.trustees.getOrElse(Nil)
       val settlors = checkYourAnswersHelper.settlors.getOrElse(Nil)
-      val beneficiaries = checkYourAnswersHelper.beneficiaries.getOrElse(Nil)
+      val individualBeneficiaries = checkYourAnswersHelper.individualBeneficiaries.getOrElse(Nil)
+      val classOfBeneficiaries = checkYourAnswersHelper.classOfBeneficiaries.getOrElse(Nil)
       val assets = checkYourAnswersHelper.assets.getOrElse(Nil)
-      val sections =  Seq() ++ trustDetails ++ settlors ++ trustees ++ beneficiaries ++ assets
+      val sections =  Seq() ++ trustDetails ++ settlors ++ trustees ++ individualBeneficiaries ++ classOfBeneficiaries ++ assets
 
-      Ok(view(index, sections))
+      Ok(view(sections))
   }
 
 }

@@ -59,6 +59,8 @@ class SummaryAnswersControllerSpec extends SpecBase {
           .set(IndividualBeneficiaryAddressUKPage(index),UKAddress("Line1",None, None, "TownOrCity","NE62RT" )).success.value
           .set(IndividualBeneficiaryVulnerableYesNoPage(index),true).success.value
 
+          .set(ClassBeneficiaryDescriptionPage(index),"Class of beneficary description").success.value
+
           .set(IsThisLeadTrusteePage(index), true).success.value
           .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
           .set(TrusteesNamePage(index), FullName("First", None, "Trustee")).success.value
@@ -138,7 +140,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
           Some(Messages("summaryAnswerPage.section.trustees.heading"))
         ),
         AnswerSection(
-          Some(Messages("summaryAnswerPage.section.beneficiary.subheading") + " " + (index + 1)),
+          Some(Messages("summaryAnswerPage.section.individualBeneficiary.subheading") + " " + (index + 1)),
           Seq(
             checkYourAnswersHelper.individualBeneficiaryName(index).value,
             checkYourAnswersHelper.individualBeneficiaryDateOfBirthYesNo(index).value,
@@ -155,6 +157,13 @@ class SummaryAnswersControllerSpec extends SpecBase {
           Some(Messages("summaryAnswerPage.section.beneficiaries.heading"))
         ),
         AnswerSection(
+          Some(Messages("summaryAnswerPage.section.classOfBeneficiary.subheading") + " " + (index + 1)),
+          Seq(
+            checkYourAnswersHelper.classBeneficiaryDescription(index).value
+          ),
+          None
+        ),
+        AnswerSection(
           Some(WhatKindOfAsset.Money.toString),
           Seq(
             checkYourAnswersHelper.assetMoneyValue(index).value
@@ -165,7 +174,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.SummaryAnswerPageController.onPageLoad(index).url)
+      val request = FakeRequest(GET, routes.SummaryAnswerPageController.onPageLoad().url)
 
       val result = route(application, request).value
 
@@ -174,7 +183,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(index, expectedSections)(fakeRequest, messages).toString
+        view(expectedSections)(fakeRequest, messages).toString
 
       application.stop()
     }

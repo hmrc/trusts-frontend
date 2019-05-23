@@ -811,5 +811,6 @@ summaryAnswerPage.section.settlors.heading = Settlors
 summaryAnswerPage.section.trustees.heading = Trustees
 summaryAnswerPage.section.trustee.subheading = Trustee
 summaryAnswerPage.section.beneficiaries.heading = Beneficiaries
-summaryAnswerPage.section.beneficiary.subheading = Individual beneficiary
+summaryAnswerPage.section.individualBeneficiary.subheading = Individual beneficiary
+summaryAnswerPage.section.classOfBeneficiary.subheading = Class of beneficiary
 summaryAnswerPage.section.assets.heading = Assets

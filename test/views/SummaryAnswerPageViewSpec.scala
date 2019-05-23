@@ -26,7 +26,7 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
 
     val view = viewFor[SummaryAnswerPageView](Some(emptyUserAnswers))
 
-    val applyView = view.apply(index, Nil)(fakeRequest, messages)
+    val applyView = view.apply(Nil)(fakeRequest, messages)
 
     behave like normalPage(applyView, "summaryAnswerPage")
 

@@ -49,7 +49,7 @@
     @if(isTaskListComplete) {
         <h2 id="summaryHeading">@messages("taskList.summary.heading")</h2>
         <p>@messages("taskList.summary.paragraph", trustName)</p>
-        @components.link(routes.SummaryAnswerPageController.onPageLoad(0).url, "printSaveAnswers", "taskList.summary.link", openInNewWindow = true)
+        @components.link(routes.SummaryAnswerPageController.onPageLoad.url, "printSaveAnswers", "taskList.summary.link", openInNewWindow = true)
         @components.button_link(messages("taskList.summary.continue"), routes.TaskListController.onPageLoad().url)
     }
 

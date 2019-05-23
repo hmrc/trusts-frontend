@@ -373,4 +373,4 @@ POST       /declaration                        controllers.DeclarationController
 
 GET       /confirmation                         controllers.ConfirmationController.onPageLoad()
 
-GET        /your-answers-summary                          controllers.SummaryAnswerPageController.onPageLoad(index: Int)
+GET        /your-answers-summary                          controllers.SummaryAnswerPageController.onPageLoad()

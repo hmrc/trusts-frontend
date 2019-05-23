@@ -93,11 +93,14 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
           telephoneNumber(index)
         ).flatten
 
-        AnswerSection(Some(Messages("summaryAnswerPage.section.trustee.subheading") + " " + (index + 1)), questions, if (index == 0) Some(Messages("summaryAnswerPage.section.trustees.heading")) else None)
+        AnswerSection(Some(Messages("summaryAnswerPage.section.trustee.subheading") + " " + (index + 1)),
+          questions, if (index == 0) Some(Messages("summaryAnswerPage.section.trustees.heading")) else None)
     }
   }
 
-  def beneficiaries : Option[Seq[AnswerSection]] = {
+  private var displaySectionHeading: Boolean = true
+
+  def individualBeneficiaries : Option[Seq[AnswerSection]] = {
     for {
       beneficiaries <- userAnswers.get(IndividualBeneficiaries)
       indexed = beneficiaries.zipWithIndex
@@ -117,7 +120,29 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
           individualBeneficiaryVulnerableYesNo(index)
         ).flatten
 
-        AnswerSection(Some(Messages("summaryAnswerPage.section.beneficiary.subheading") + " " + (index + 1)), questions, if (index == 0) Some(Messages("summaryAnswerPage.section.beneficiaries.heading")) else None)
+        AnswerSection(Some(Messages("summaryAnswerPage.section.individualBeneficiary.subheading") + " " + (index + 1)),
+          questions, if (index == 0 && displaySectionHeading) {
+            displaySectionHeading = false
+            Some(Messages("summaryAnswerPage.section.beneficiaries.heading"))
+          } else None)
+    }
+  }
+
+  def classOfBeneficiaries : Option[Seq[AnswerSection]] = {
+    for {
+      beneficiaries <- userAnswers.get(ClassOfBeneficiaries)
+      indexed = beneficiaries.zipWithIndex
+    } yield indexed.map {
+      case (beneficiary, index) =>
+        val questions = Seq(
+          classBeneficiaryDescription(index)
+        ).flatten
+
+        AnswerSection(Some(Messages("summaryAnswerPage.section.classOfBeneficiary.subheading") + " " + (index + 1)),
+          questions, if (index == 0 && displaySectionHeading) {
+            displaySectionHeading = false
+            Some(Messages("summaryAnswerPage.section.beneficiaries.heading"))
+          } else None)
     }
   }
 
@@ -131,7 +156,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
           assetMoneyValue(index)
         ).flatten
 
-        AnswerSection(Some(userAnswers.get(WhatKindOfAssetPage(index)).get.toString), questions, if (index == 0)  Some(Messages("summaryAnswerPage.section.assets.heading"))  else None)
+        AnswerSection(Some(userAnswers.get(WhatKindOfAssetPage(index)).get.toString),
+          questions, if (index == 0)  Some(Messages("summaryAnswerPage.section.assets.heading"))  else None)
     }
   }
 

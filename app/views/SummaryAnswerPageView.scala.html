@@ -22,7 +22,7 @@
     formHelper: FormWithCSRF
 )
 
-@(index : Int, answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
+@(answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("summaryAnswerPage.title")
