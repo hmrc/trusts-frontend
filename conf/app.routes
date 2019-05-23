@@ -194,7 +194,7 @@ POST       /change-agent-telephone-number                  controllers.AgentTele
 GET        /agent-overview                                      controllers.AgentOverviewController.onPageLoad()
 
 GET        /check-agent-details                     controllers.AgentAnswerController.onPageLoad()
-POST       /chack-agent-details                       controllers.AgentAnswerController.onSubmit()
+POST       /check-agent-details                       controllers.AgentAnswerController.onSubmit()
 
 #assets
 
@@ -368,6 +368,9 @@ POST       /agent-international-address                        controllers.Agent
 GET        /change-agent-international-address                  controllers.AgentInternationalAddressController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-agent-international-address                  controllers.AgentInternationalAddressController.onSubmit(mode: Mode = CheckMode)
 
-GET        /confirmation                       controllers.ConfirmationController.onPageLoad()
+GET        /declaration                        controllers.DeclarationController.onPageLoad(mode: Mode = NormalMode)
+POST       /declaration                        controllers.DeclarationController.onSubmit(mode: Mode = NormalMode)
+
+GET       /confirmation                         controllers.ConfirmationController.onPageLoad()
 
 GET        /your-answers-summary                          controllers.SummaryAnswerPageController.onPageLoad(index: Int)
