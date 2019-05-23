@@ -17,42 +17,43 @@
 package controllers
 
 import base.SpecBase
-import forms.SettlorsNameFormProvider
+import forms.DeclarationFormProvider
 import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.SettlorsNamePage
+import pages.DeclarationPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.SettlorsNameView
+import uk.gov.hmrc.auth.core.AffinityGroup
+import views.html.DeclarationView
 
-class SettlorsNameControllerSpec extends SpecBase {
+class DeclarationControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new SettlorsNameFormProvider()
+  val formProvider = new DeclarationFormProvider()
   val form = formProvider()
+  val name = "name"
 
-  lazy val settlorsNameRoute = routes.SettlorsNameController.onPageLoad(NormalMode).url
+  lazy val declarationRoute = routes.DeclarationController.onPageLoad().url
 
-
-  "SettlorsName Controller" must {
+  "Declaration Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers),AffinityGroup.Agent).build()
 
-      val request = FakeRequest(GET, settlorsNameRoute)
-
-      val view = application.injector.instanceOf[SettlorsNameView]
+      val request = FakeRequest(GET, declarationRoute)
 
       val result = route(application, request).value
+
+      val view = application.injector.instanceOf[DeclarationView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode)(request, messages).toString
 
       application.stop()
     }
@@ -60,13 +61,13 @@ class SettlorsNameControllerSpec extends SpecBase {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = UserAnswers(userAnswersId)
-        .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
+        .set(DeclarationPage, FullName("First", None, "Last")).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
-      val request = FakeRequest(GET, settlorsNameRoute)
+      val request = FakeRequest(GET, declarationRoute)
 
-      val view = application.injector.instanceOf[SettlorsNameView]
+      val view = application.injector.instanceOf[DeclarationView]
 
       val result = route(application, request).value
 
@@ -81,18 +82,17 @@ class SettlorsNameControllerSpec extends SpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
           .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
-        FakeRequest(POST, settlorsNameRoute)
+        FakeRequest(POST, declarationRoute)
           .withFormUrlEncodedBody(("firstName", "value 1"), ("lastName", "value 2"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-
       redirectLocation(result).value mustEqual onwardRoute.url
 
       application.stop()
@@ -100,15 +100,15 @@ class SettlorsNameControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers),AffinityGroup.Agent).build()
 
       val request =
-        FakeRequest(POST, settlorsNameRoute)
-          .withFormUrlEncodedBody(("value", "invalid value"))
+        FakeRequest(POST, declarationRoute)
+          .withFormUrlEncodedBody(("value", ""))
 
-      val boundForm = form.bind(Map("value" -> "invalid value"))
+      val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[SettlorsNameView]
+      val view = application.injector.instanceOf[DeclarationView]
 
       val result = route(application, request).value
 
@@ -122,13 +122,14 @@ class SettlorsNameControllerSpec extends SpecBase {
 
     "redirect to Session Expired for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
-      val request = FakeRequest(GET, settlorsNameRoute)
+      val request = FakeRequest(GET, declarationRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
+
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
@@ -136,11 +137,11 @@ class SettlorsNameControllerSpec extends SpecBase {
 
     "redirect to Session Expired for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
       val request =
-        FakeRequest(POST, settlorsNameRoute)
-          .withFormUrlEncodedBody(("firstName", "value 1"), ("lastName", "value 2"))
+        FakeRequest(POST, declarationRoute)
+          .withFormUrlEncodedBody(("value", "answer"))
 
       val result = route(application, request).value
 

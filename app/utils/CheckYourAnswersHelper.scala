@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter
 
 import controllers.routes
 import javax.inject.Inject
-import models.{CheckMode, InternationalAddress, UKAddress, UserAnswers}
+import models.{CheckMode, FullName, InternationalAddress, UKAddress, UserAnswers}
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
@@ -45,6 +45,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x =>
       AnswerRow(
         "classBeneficiaryDescription.checkYourAnswersLabel",
+
         HtmlFormat.escape(x),
         routes.ClassBeneficiaryDescriptionController.onPageLoad(CheckMode,index).url
       )
