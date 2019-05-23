@@ -28,8 +28,6 @@
     title = messages("summaryAnswerPage.title")
     ) {
 
-    @components.back_link()
-
     @components.heading("summaryAnswerPage.heading", headingSize = "heading-xlarge")
 
     <p>@messages("summaryAnswerPage.paragraph1")</p>
@@ -45,7 +43,4 @@
         }
     }
 
-    @formHelper(action = TrusteesAnswerPageController.onSubmit(index), 'autoComplete -> "off") {
-        @components.submit_button()
-    }
 }

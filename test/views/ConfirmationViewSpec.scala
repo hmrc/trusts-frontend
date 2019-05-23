@@ -14,27 +14,25 @@
  * limitations under the License.
  */
 
-package models.entities
+package views
 
-import models.{FullName, IndividualOrBusiness}
-import play.api.libs.json.{JsPath, Reads}
+import views.behaviours.ViewBehaviours
+import views.html.ConfirmationView
 
+class ConfirmationViewSpec extends ViewBehaviours {
 
-case class Trustee(lead: Boolean, name : Option[FullName], `type` : Option[IndividualOrBusiness]) {
+  val messageKeyPrefix = "confirmationPage"
+  val refNumber = "XC TRN 000 000 4911"
+  val postHMRC = "https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts"
 
-  def isComplete = name.nonEmpty && `type`.nonEmpty
+  "Confirmation view" must {
 
-}
+    val view = viewFor[ConfirmationView](Some(emptyUserAnswers))
 
+    val applyView = view.apply(refNumber, postHMRC)(fakeRequest, messages)
 
-object Trustee {
+    behave like dynamicTitlePage(applyView, messageKeyPrefix, refNumber)
 
-  import play.api.libs.functional.syntax._
-
-  implicit val reads : Reads[Trustee] = (
-    (JsPath \ "isThisLeadTrustee").readWithDefault[Boolean](false) and
-    (JsPath \ "trusteesName").readNullable[FullName] and
-      (JsPath \ "trusteeIndividualOrBusiness").readNullable[IndividualOrBusiness]
-    )(Trustee.apply _)
-
+    behave like pageWithBackLink(applyView)
+  }
 }

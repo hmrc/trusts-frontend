@@ -368,4 +368,6 @@ POST       /agent-international-address                        controllers.Agent
 GET        /change-agent-international-address                  controllers.AgentInternationalAddressController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-agent-international-address                  controllers.AgentInternationalAddressController.onSubmit(mode: Mode = CheckMode)
 
+GET        /confirmation                       controllers.ConfirmationController.onPageLoad()
+
 GET        /your-answers-summary                          controllers.SummaryAnswerPageController.onPageLoad(index: Int)

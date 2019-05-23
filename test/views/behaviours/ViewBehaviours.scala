@@ -16,6 +16,7 @@
 
 package views.behaviours
 
+import controllers.routes
 import play.twirl.api.HtmlFormat
 import views.ViewSpecBase
 
@@ -143,6 +144,21 @@ trait ViewBehaviours extends ViewSpecBase {
       "have a submit button" in {
         val doc = asDocument(view)
         assertRenderedById(doc, "submit")
+      }
+    }
+  }
+
+  def pageWithContinueButton(view: HtmlFormat.Appendable, url : String) = {
+
+    "behave like a page with a Continue button" must {
+      "have a continue button" in {
+        val doc = asDocument(view)
+        assertContainsTextForId(doc,"button", "Continue")
+        assertAttributeValueForElement(
+          doc.getElementById("button"),
+          "href",
+          url
+        )
       }
     }
   }

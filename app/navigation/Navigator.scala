@@ -114,6 +114,8 @@ class Navigator @Inject()() {
 
     case AddABeneficiaryPage => _ => addABeneficiaryRoute
     case WhatTypeOfBeneficiaryPage => _ => whatTypeOfBeneficiaryRoute
+    case ClassBeneficiaryDescriptionPage(index) => _ => _ => routes.AddABeneficiaryController.onPageLoad()
+
 
     //  Default
     case _ => _ => _ => routes.IndexController.onPageLoad()
@@ -299,20 +301,9 @@ class Navigator @Inject()() {
 
   private def addABeneficiaryRoute(answers: UserAnswers) = {
     val addAnother = answers.get(AddABeneficiaryPage)
-
-    def routeToBeneficiaryIndex = {
-      val beneficiaries = answers.get(IndividualBeneficiaries).getOrElse(List.empty)
-      beneficiaries match {
-        case Nil =>
-          routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, 0)
-        case t if t.nonEmpty =>
-          routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, t.size)
-      }
-    }
-
     addAnother match {
       case Some(AddABeneficiary.YesNow) =>
-        routeToBeneficiaryIndex
+        routes.WhatTypeOfBeneficiaryController.onPageLoad()
       case Some(AddABeneficiary.YesLater) =>
         routes.TaskListController.onPageLoad()
       case Some(AddABeneficiary.NoComplete) =>

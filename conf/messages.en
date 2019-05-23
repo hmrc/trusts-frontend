@@ -742,9 +742,9 @@ individualBeneficiaryAddressUKYesNo.heading = Does {0} live in the UK?
 individualBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Does {0} live in the UK?
 individualBeneficiaryAddressUKYesNo.error.required = Select yes if the individual beneficiary lives in the UK
 
-agentAddressYesNo.title = Is {0}’s agency address in the UK?
-agentAddressYesNo.heading = Is {0}’s agency address in the UK?
-agentAddressYesNo.checkYourAnswersLabel = Is {0}’s agency address in the UK?
+agentAddressYesNo.title = Is {0}’s address in the UK?
+agentAddressYesNo.heading = Is {0}’s address in the UK?
+agentAddressYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 agentAddressYesNo.error.required = Select yes if the agency’s address is in the UK
 
 classBeneficiaryDescription.title = What is the description for the class of beneficiaries?
@@ -768,6 +768,22 @@ whatTypeOfBeneficiary.Other = Other beneficiary
 whatTypeOfBeneficiary.checkYourAnswersLabel = whatTypeOfBeneficiary
 whatTypeOfBeneficiary.error.required = Select the type of beneficiary you need to add
 whatTypeOfBeneficiary.hint = You can enter a maximum of 25 entries for each beneficiary type
+
+confirmationPage.title = Registration received Your reference is: {0}
+confirmationPage.heading = Registration received Your reference is: {0}
+confirmationPage.printsave.link = Print or save a copy of your answers
+confirmationPage.posthmrc.link = post the changes to HMRC.
+
+confirmationPage.heading1 = Registration received
+confirmationPage.heading2 = Your reference is:
+
+confirmationPage.subheading1 = What happens next
+confirmationPage.paragraph1 = You can continue to use your Unique Taxpayer Reference as usual. If there is a problem with your registration, we will contact the lead trustee.
+
+confirmationPage.subheading2 = What you need to do next
+confirmationPage.paragraph2 = Keep a note of your reference in case you need to contact HMRC.
+confirmationPage.paragraph3 = You cannot make online changes to the trust. To change the lead trustee or their contact details,
+confirmationPage.paragraph4 = You must keep a record of any other changes until you can change them using the online service.
 
 summaryAnswerPage.title = Draft copy of the trust’s registration
 summaryAnswerPage.heading = Draft copy of the trust’s registration

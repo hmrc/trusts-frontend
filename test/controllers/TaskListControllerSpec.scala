@@ -87,6 +87,7 @@ class TaskListControllerSpec extends SpecBase {
             .set(TrustHaveAUTRPage, true).success.value
             .set(WhatIsTheUTRPage, "SA123456789").success.value
             .set(ExistingTrustMatched, Matched.Success).success.value
+            .set(TrustNamePage, trustName).success.value
 
           val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = Organisation).build()
 
@@ -183,6 +184,7 @@ class TaskListControllerSpec extends SpecBase {
         val answers = UserAnswers(userAnswersId)
           .set(TrustRegisteredOnlinePage, false).success.value
           .set(TrustHaveAUTRPage, false).success.value
+          .set(TrustNamePage, trustName).success.value
 
         val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = Organisation).build()
 

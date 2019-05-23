@@ -38,13 +38,15 @@ class AddABeneficiaryControllerSpec extends SpecBase {
   val formProvider = new AddABeneficiaryFormProvider()
   val form = formProvider()
 
-  val individualBeneficiary = List(
-    AddRow("First Last", typeLabel = "Individual Beneficiary", "#", "#")
+  val beneficiariesComplete = List(
+    AddRow("First Last", typeLabel = "Individual Beneficiary", "#", "#"),
+    AddRow("description", typeLabel = "Class of beneficiaries", "#", "#")
   )
 
-  val userAnswersWithBeneficiariesComplete = UserAnswers(userAnswersId)
+  val userAnswersWithBeneficiariesComplete = emptyUserAnswers
     .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
     .set(IndividualBeneficiaryVulnerableYesNoPage(0), true).success.value
+    .set(ClassBeneficiaryDescriptionPage(0), "description").success.value
 
 
   "AddABeneficiary Controller" must {
@@ -63,7 +65,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, Nil, individualBeneficiary)(fakeRequest, messages).toString
+        view(form, NormalMode, Nil, beneficiariesComplete)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -83,7 +85,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, Nil, individualBeneficiary)(fakeRequest, messages).toString
+        view(form, NormalMode, Nil, beneficiariesComplete)(fakeRequest, messages).toString
 
       application.stop()
     }

@@ -30,6 +30,5 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
 
     behave like normalPage(applyView, "summaryAnswerPage")
 
-    behave like pageWithBackLink(applyView)
   }
 }
