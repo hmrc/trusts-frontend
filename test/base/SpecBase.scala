@@ -19,7 +19,7 @@ package base
 import config.FrontendAppConfig
 import controllers.actions._
 import models.UserAnswers
-import org.scalatest.TryValues
+import org.scalatest.{TestSuite, TryValues}
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice._
 import play.api.i18n.{Messages, MessagesApi}
@@ -31,7 +31,8 @@ import play.api.test.FakeRequest
 import repositories.SessionRepository
 import uk.gov.hmrc.auth.core.AffinityGroup
 
-trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Mocked {
+trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked {
+  this: TestSuite =>
 
   val userAnswersId = "id"
 
@@ -58,4 +59,10 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Moc
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
         bind[SessionRepository].toInstance(mockedSessionRepository)
       )
+
+}
+
+trait SpecBase extends PlaySpec with SpecBaseHelpers {
+
+
 }
