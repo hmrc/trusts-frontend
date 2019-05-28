@@ -33,5 +33,4 @@ object IndividualBeneficiary {
       (JsPath \ "individualBeneficiaryVulnerableYesNo").readNullable[Boolean]
     )(IndividualBeneficiary.apply _)
 
-
 }
