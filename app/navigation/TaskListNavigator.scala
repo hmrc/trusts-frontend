@@ -18,11 +18,9 @@ package navigation
 
 import controllers.routes
 import javax.inject.{Inject, Singleton}
-
-import models.requests.DataRequest
 import models.{NormalMode, UserAnswers}
 import pages._
-import play.api.mvc.{AnyContent, Call}
+import play.api.mvc.Call
 
 @Singleton
 class TaskListNavigator @Inject()() {
@@ -39,7 +37,7 @@ class TaskListNavigator @Inject()() {
   }
 
   private def trusteeRoute(answers: UserAnswers) = {
-    answers.get(Trustees).getOrElse(Nil) match {
+    answers.get(viewmodels.trustees.Trustees).getOrElse(Nil) match {
       case Nil =>
         routes.TrusteesInfoController.onPageLoad()
       case _ :: _ =>
