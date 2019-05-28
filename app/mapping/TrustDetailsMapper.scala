@@ -16,21 +16,22 @@
 
 package mapping
 import mapping.TypeOfTrust.WillTrustOrIntestacyTrust
-import models.UserAnswers
-import pages._
+import models.{NonResidentType, UserAnswers}
+import pages.{NonResidentTypePage, RegisteringTrustFor5APage, _}
 
 class TrustDetailsMapper extends Mapping[TrustDetailsType] {
 
   override def build(userAnswers: UserAnswers): Option[TrustDetailsType] = {
     for {
       startDateOption <- userAnswers.get(WhenTrustSetupPage)
-      administrationCountryOption = administrationCountry(userAnswers)
+      lawCountry = userAnswers.get(CountryGoverningTrustPage)
+      administrationCountryOption <- administrationCountry(userAnswers)
       residentialStatusOption = residentialStatus(userAnswers)
     } yield {
       TrustDetailsType(
         startDate = startDateOption,
-        lawCountry = None,
-        administrationCountry = administrationCountryOption,
+        lawCountry = lawCountry,
+        administrationCountry = Some(administrationCountryOption),
         residentialStatus = residentialStatusOption,
         typeOfTrust = WillTrustOrIntestacyTrust,
         deedOfVariation = None,
@@ -42,8 +43,11 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
 
   private def administrationCountry(userAnswers: UserAnswers): Option[String] = {
     userAnswers.get(AdministrationInsideUKPage) match {
-      case Some(true) => Some("GB")
-      case Some(false) | None => None
+      case Some(true) =>
+        Some("GB")
+      case Some(false) =>
+        userAnswers.get(CountryAdministeringTrustPage)
+      case None => None
     }
   }
 
@@ -68,8 +72,28 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
             )
         }
       case Some(false) =>
-       // non UK trust
-        None
+        val registeringTrustFor5A = userAnswers.get(RegisteringTrustFor5APage)
+        val nonResidentTypePage = userAnswers.get(NonResidentTypePage)
+        val nonResTypeDES = nonResidentTypePage.map(NonResidentType.toDES)
+
+        val nonUKConstruct = (registeringTrustFor5A, nonResTypeDES) match {
+          case (Some(true), r @ Some(_)) =>
+            Some(
+              NonUKType(
+              sch5atcgga92 = true,
+              s218ihta84 = None,
+              agentS218IHTA84 = None,
+              trusteeStatus = r)
+            )
+          case (_, _) => None
+        }
+
+        Some(
+          ResidentialStatusType(
+            uk = None,
+            nonUK = nonUKConstruct
+          )
+        )
       case _ =>
         None
     }

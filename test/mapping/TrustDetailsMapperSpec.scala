@@ -21,6 +21,7 @@ import java.time.LocalDate
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping.TypeOfTrust.WillTrustOrIntestacyTrust
+import models.NonResidentType.Domiciled
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
 
@@ -101,6 +102,38 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
             ),
             nonUK = None
           )),
+          typeOfTrust = WillTrustOrIntestacyTrust,
+          deedOfVariation = None,
+          interVivos = None,
+          efrbsStartDate = None
+        )
+
+      }
+
+      "must able to create TrustDetails for a non-UK governed, non-UK admin, for schedule 5A, resident type domiciled" in {
+        val date = LocalDate.of(2010, 10, 10)
+
+        val userAnswers =
+          emptyUserAnswers
+            .set(TrustNamePage, "New Trust").success.value
+            .set(WhenTrustSetupPage, date).success.value
+            .set(GovernedInsideTheUKPage, false).success.value
+            .set(CountryGoverningTrustPage, "FR").success.value
+            .set(AdministrationInsideUKPage, false).success.value
+            .set(CountryAdministeringTrustPage, "FR").success.value
+            .set(TrustResidentInUKPage, false).success.value
+            .set(RegisteringTrustFor5APage, true).success.value
+            .set(NonResidentTypePage, Domiciled).success.value
+
+        trustDetailsMapper.build(userAnswers).value mustBe TrustDetailsType(
+          startDate = date,
+          lawCountry = Some("FR"),
+          administrationCountry = Some("FR"),
+          residentialStatus = Some(ResidentialStatusType(
+            uk = None,
+            nonUK = Some(NonUKType(true,None,None,Some("Non Resident Domiciled")))
+          )),
+
           typeOfTrust = WillTrustOrIntestacyTrust,
           deedOfVariation = None,
           interVivos = None,
