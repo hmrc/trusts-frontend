@@ -17,9 +17,8 @@
 package models.reads
 
 import generators.{Generators, ModelGenerators}
-import models.Status.{Completed, InProgress}
+import models.Status.Completed
 import models.entities.ClassOfBeneficiary
-import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.{FreeSpec, MustMatchers}
 import play.api.libs.json.{JsSuccess, Json}
@@ -31,16 +30,12 @@ class ClassOfBeneficiaryReadsSpec extends FreeSpec with MustMatchers with Proper
     "must deserialise" - {
 
       "from a class of beneficiary that's in progress" in {
-        forAll(arbitrary[String]) {
-          str =>
+          val json = Json.obj(
+            "description" -> "Grandchildren",
+            "status" -> Completed.toString
+          )
 
-            val json = Json.obj(
-              "description" -> str,
-              "status" -> Completed.toString
-            )
-
-            json.validate[ClassOfBeneficiary] mustEqual JsSuccess(ClassOfBeneficiary(Some(str), InProgress))
-        }
+          json.validate[ClassOfBeneficiary] mustEqual JsSuccess(ClassOfBeneficiary(Some("Grandchildren"), Completed))
       }
 
     }

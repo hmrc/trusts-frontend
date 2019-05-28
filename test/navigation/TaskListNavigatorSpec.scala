@@ -20,6 +20,7 @@ import java.time.LocalDate
 
 import base.SpecBase
 import controllers.routes
+import models.IndividualOrBusiness.Individual
 import models.{FullName, NormalMode, UserAnswers}
 import pages._
 import models.WhatKindOfAsset.Money
@@ -147,7 +148,10 @@ class TaskListNavigatorSpec extends SpecBase {
 
         "go to AddATrustee" in {
           val answers = UserAnswers(userAnswersId)
-            .set(IsThisLeadTrusteePage(0), true).success.value
+            .set(IsThisLeadTrusteePage(0), false).success.value
+            .set(TrusteesDateOfBirthPage(0), LocalDate.of(2010,10,10)).success.value
+            .set(TrusteesNamePage(0), FullName("First", None, "Last")).success.value
+            .set(TrusteeIndividualOrBusinessPage(0), Individual).success.value
 
           navigator.nextPage(Trustees, answers) mustBe routes.AddATrusteeController.onPageLoad()
         }
