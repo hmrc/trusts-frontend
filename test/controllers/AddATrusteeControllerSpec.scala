@@ -20,7 +20,7 @@ import base.SpecBase
 import forms.AddATrusteeFormProvider
 import models.{AddATrustee, FullName, IndividualOrBusiness, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.{AddATrusteePage, TrusteeComplete, TrusteeIndividualOrBusinessPage, TrusteesNamePage}
+import pages.{AddATrusteePage, TrusteeStatus, TrusteeIndividualOrBusinessPage, TrusteesNamePage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -46,10 +46,10 @@ class AddATrusteeControllerSpec extends SpecBase {
   val userAnswersWithTrusteesComplete = UserAnswers(userAnswersId)
     .set(TrusteesNamePage(0), FullName("First 0", None, "Last 0")).success.value
     .set(TrusteeIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
-    .set(TrusteeComplete(0), Completed).success.value
+    .set(TrusteeStatus(0), Completed).success.value
     .set(TrusteesNamePage(1), FullName("First 1", None, "Last 1")).success.value
     .set(TrusteeIndividualOrBusinessPage(1), IndividualOrBusiness.Individual).success.value
-    .set(TrusteeComplete(1), Completed).success.value
+    .set(TrusteeStatus(1), Completed).success.value
 
   "AddATrustee Controller" must {
 

@@ -19,7 +19,7 @@ package pages
 import play.api.libs.json.JsPath
 import viewmodels.Tag
 
-final case class TrusteeComplete(index : Int) extends QuestionPage[Tag] {
+final case class TrusteeStatus(index : Int) extends QuestionPage[Tag] {
 
   override def path: JsPath = JsPath \ Trustees \ index \ toString
 

@@ -49,7 +49,8 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
         val hasLeadTrustee = l.exists(_.isLead)
 
         !l.exists(_.status == InProgress) && noMoreToAdd && hasLeadTrustee
-      case None => false
+      case None =>
+        false
     }
   }
 

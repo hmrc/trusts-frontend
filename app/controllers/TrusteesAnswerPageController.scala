@@ -21,7 +21,7 @@ import javax.inject.Inject
 import models.NormalMode
 import navigation.Navigator
 import viewmodels.trustees.Trustees
-import pages.{IsThisLeadTrusteePage, TrusteeComplete, TrusteesAnswerPage, TrusteesNamePage}
+import pages.{IsThisLeadTrusteePage, TrusteeStatus, TrusteesAnswerPage, TrusteesNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import repositories.SessionRepository
@@ -88,7 +88,7 @@ class TrusteesAnswerPageController @Inject()(
   def onSubmit(index : Int) = actions(index).async {
     implicit request =>
 
-    val answers = request.userAnswers.set(TrusteeComplete(index), Completed)
+    val answers = request.userAnswers.set(TrusteeStatus(index), Completed)
 
     for {
       updatedAnswers <- Future.fromTry(answers)

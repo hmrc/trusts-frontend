@@ -93,7 +93,7 @@ class RegistrationProgressSpec extends SpecBase {
         val userAnswers = emptyUserAnswers
           .set(IsThisLeadTrusteePage(0), true).success.value
           .set(IsThisLeadTrusteePage(1), false).success.value
-          .set(TrusteeComplete(1), Tag.Completed).success.value
+          .set(TrusteeStatus(1), Tag.Completed).success.value
 
         registrationProgress.isTrusteesComplete(userAnswers) mustBe false
       }
@@ -103,9 +103,9 @@ class RegistrationProgressSpec extends SpecBase {
 
         val userAnswers = emptyUserAnswers
           .set(IsThisLeadTrusteePage(0), true).success.value
-          .set(TrusteeComplete(0), Tag.Completed).success.value
+          .set(TrusteeStatus(0), Tag.Completed).success.value
           .set(IsThisLeadTrusteePage(1), false).success.value
-          .set(TrusteeComplete(1), Tag.Completed).success.value
+          .set(TrusteeStatus(1), Tag.Completed).success.value
           .set(AddATrusteePage, AddATrustee.YesLater).success.value
 
         registrationProgress.isTrusteesComplete(userAnswers) mustBe false
@@ -116,9 +116,9 @@ class RegistrationProgressSpec extends SpecBase {
 
         val userAnswers = emptyUserAnswers
           .set(IsThisLeadTrusteePage(0), false).success.value
-          .set(TrusteeComplete(0), Tag.Completed).success.value
+          .set(TrusteeStatus(0), Tag.Completed).success.value
           .set(IsThisLeadTrusteePage(1), false).success.value
-          .set(TrusteeComplete(1), Tag.Completed).success.value
+          .set(TrusteeStatus(1), Tag.Completed).success.value
           .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
         registrationProgress.isTrusteesComplete(userAnswers) mustBe false
@@ -133,9 +133,9 @@ class RegistrationProgressSpec extends SpecBase {
 
         val userAnswers = emptyUserAnswers
           .set(IsThisLeadTrusteePage(0), true).success.value
-          .set(TrusteeComplete(0), Tag.Completed).success.value
+          .set(TrusteeStatus(0), Tag.Completed).success.value
           .set(IsThisLeadTrusteePage(1), false).success.value
-          .set(TrusteeComplete(1), Tag.Completed).success.value
+          .set(TrusteeStatus(1), Tag.Completed).success.value
           .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
         registrationProgress.isTrusteesComplete(userAnswers) mustBe true

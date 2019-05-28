@@ -20,7 +20,6 @@ import models.FullName
 import play.api.libs.json.{JsPath, Reads}
 
 
-
 case class IndividualBeneficiary(name: Option[FullName], isVulnerable: Option[Boolean]) {
   def isComplete = name.nonEmpty && isVulnerable.isDefined
 }
