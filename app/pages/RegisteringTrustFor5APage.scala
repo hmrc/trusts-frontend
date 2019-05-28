@@ -31,9 +31,11 @@ case object RegisteringTrustFor5APage extends QuestionPage[Boolean] {
     value match {
       case Some(false) =>
         userAnswers.remove(NonResidentTypePage)
+          .flatMap(_.remove(TrustDetailsCompleted))
       case Some(true) =>
         userAnswers.remove(InheritanceTaxActPage)
           .flatMap(_.remove(AgentOtherThanBarristerPage))
+          .flatMap(_.remove(TrustDetailsCompleted))
       case _ =>
         super.cleanup(value, userAnswers)
     }

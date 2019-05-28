@@ -41,6 +41,7 @@ class AdministrationInsideUKPageSpec extends PageBehaviours {
         val result = answers.set(AdministrationInsideUKPage, true).success.value
 
         result.get(CountryAdministeringTrustPage) mustNot be (defined)
+        result.get(TrustDetailsCompleted) mustNot be(defined)
     }
 
   }

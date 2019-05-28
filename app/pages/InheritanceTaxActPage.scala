@@ -31,6 +31,7 @@ case object InheritanceTaxActPage extends QuestionPage[Boolean] {
     value match {
       case Some(false) =>
         userAnswers.remove(AgentOtherThanBarristerPage)
+          .flatMap(_.remove(TrustDetailsCompleted))
       case _ =>
         super.cleanup(value, userAnswers)
     }

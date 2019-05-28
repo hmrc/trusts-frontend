@@ -26,10 +26,10 @@ import viewmodels._
 class RegistrationProgress @Inject()(navigator : TaskListNavigator){
 
   def sections(userAnswers: UserAnswers) = List(
-    Task(Link(TrustDetails, navigator.nextPage(TrustDetails, userAnswers).url), None),
-    Task(Link(Settlors, navigator.nextPage(Settlors, userAnswers).url), None),
-    Task(Link(Trustees, navigator.nextPage(Trustees, userAnswers).url), None),
-    Task(Link(Beneficiaries, navigator.nextPage(Beneficiaries, userAnswers).url), None),
+    Task(Link(TrustDetails, navigator.nextPage(TrustDetails, userAnswers).url), isTrustDetailsComplete(userAnswers)),
+    Task(Link(Settlors, navigator.nextPage(Settlors, userAnswers).url), isDeceasedSettlorComplete(userAnswers)),
+    Task(Link(Trustees, navigator.nextPage(Trustees, userAnswers).url), isTrusteesComplete(userAnswers)),
+    Task(Link(Beneficiaries, navigator.nextPage(Beneficiaries, userAnswers).url), isBeneficiariesComplete(userAnswers)),
     Task(Link(pages.Assets, navigator.nextPage(pages.Assets, userAnswers).url), None),
     Task(Link(TaxLiability, navigator.nextPage(TaxLiability, userAnswers).url), None)
   )

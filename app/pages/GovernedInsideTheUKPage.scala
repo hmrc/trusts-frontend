@@ -31,6 +31,7 @@ case object GovernedInsideTheUKPage extends QuestionPage[Boolean] {
     value match {
       case Some(true) =>
         userAnswers.remove(CountryGoverningTrustPage)
+          .flatMap(_.remove(TrustDetailsCompleted))
       case _ =>
         super.cleanup(value, userAnswers)
     }

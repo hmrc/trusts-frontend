@@ -44,6 +44,7 @@ class TrustResidentInUKPageSpec extends PageBehaviours {
         result.get(EstablishedUnderScotsLawPage) mustNot be (defined)
         result.get(TrustResidentOffshorePage) mustNot be (defined)
         result.get(TrustPreviouslyResidentPage) mustNot be (defined)
+        result.get(TrustDetailsCompleted) mustNot be(defined)
     }
 
   }
@@ -61,6 +62,7 @@ class TrustResidentInUKPageSpec extends PageBehaviours {
         result.get(EstablishedUnderScotsLawPage) mustNot be (defined)
         result.get(TrustResidentOffshorePage) mustNot be (defined)
         result.get(TrustPreviouslyResidentPage) mustNot be (defined)
+        result.get(TrustDetailsCompleted) mustNot be(defined)
     }
 
   }
@@ -81,6 +83,7 @@ class TrustResidentInUKPageSpec extends PageBehaviours {
         result.get(NonResidentTypePage) mustNot be (defined)
         result.get(InheritanceTaxActPage) mustNot be (defined)
         result.get(AgentOtherThanBarristerPage) mustNot be (defined)
+        result.get(TrustDetailsCompleted) mustNot be(defined)
     }
 
   }

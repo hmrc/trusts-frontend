@@ -41,6 +41,7 @@ class InheritanceTaxActPageSpec extends PageBehaviours {
         val result = answers.set(InheritanceTaxActPage, false).success.value
 
         result.get(AgentOtherThanBarristerPage) mustNot be (defined)
+        result.get(TrustDetailsCompleted) mustNot be(defined)
     }
 
   }

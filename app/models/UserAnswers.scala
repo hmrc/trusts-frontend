@@ -36,8 +36,7 @@ final case class UserAnswers(
     Reads.at(page.path).reads(data) match {
       case JsSuccess(value, _) => Some(value)
       case JsError(errors) =>
-        val errorPaths = errors.collectFirst{ case (path, _) => path}
-        Logger.error(s"[UserAnswers] unable to read to ${page.path} due to errors $errorPaths")
+        Logger.info(s"[UserAnswers] tried to read path ${page.path}")
         None
     }
   }

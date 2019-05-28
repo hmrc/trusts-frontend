@@ -40,6 +40,7 @@ class TrustResidentOffshorePageSpec extends PageBehaviours {
         val result = answers.set(TrustResidentOffshorePage, false).success.value
 
         result.get(TrustPreviouslyResidentPage) mustNot be (defined)
+        result.get(TrustDetailsCompleted) mustNot be(defined)
     }
   }
 
