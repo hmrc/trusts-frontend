@@ -74,6 +74,41 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
 
       }
 
+      "must able to create TrustDetails for a UK resident trust with trust previously resident offshore " in {
+        val date = LocalDate.of(2010, 10, 10)
+
+        val userAnswers =
+          emptyUserAnswers
+            .set(TrustNamePage, "New Trust").success.value
+            .set(WhenTrustSetupPage, date).success.value
+            .set(GovernedInsideTheUKPage, true).success.value
+            .set(AdministrationInsideUKPage, true).success.value
+            .set(TrustResidentInUKPage, true).success.value
+            .set(EstablishedUnderScotsLawPage, true).success.value
+            .set(TrustResidentOffshorePage, true).success.value
+            .set(TrustPreviouslyResidentPage, "FR").success.value
+
+        trustDetailsMapper.build(userAnswers).value mustBe TrustDetailsType(
+          startDate = date,
+          lawCountry = None,
+          administrationCountry = Some("GB"),
+          residentialStatus = Some(ResidentialStatusType(
+            uk = Some(
+              UkType(
+                scottishLaw = true,
+                preOffShore = Some("FR")
+              )
+            ),
+            nonUK = None
+          )),
+          typeOfTrust = WillTrustOrIntestacyTrust,
+          deedOfVariation = None,
+          interVivos = None,
+          efrbsStartDate = None
+        )
+
+      }
+
     }
 
   }

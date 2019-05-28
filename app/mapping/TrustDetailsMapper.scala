@@ -17,7 +17,7 @@
 package mapping
 import mapping.TypeOfTrust.WillTrustOrIntestacyTrust
 import models.UserAnswers
-import pages.{AdministrationInsideUKPage, EstablishedUnderScotsLawPage, TrustResidentInUKPage, WhenTrustSetupPage}
+import pages._
 
 class TrustDetailsMapper extends Mapping[TrustDetailsType] {
 
@@ -49,6 +49,8 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
 
   private def residentialStatus(userAnswers: UserAnswers): Option[ResidentialStatusType] = {
     val scotsLaw = userAnswers.get(EstablishedUnderScotsLawPage)
+    val trustOffShoreYesNo = userAnswers.get(TrustResidentOffshorePage)
+    val trustOffShoreCountry = userAnswers.get(TrustPreviouslyResidentPage)
 
     userAnswers.get(TrustResidentInUKPage) match {
       case Some(true) =>
@@ -57,7 +59,10 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
             ResidentialStatusType(
               uk = Some(UkType(
                 scottishLaw = scots,
-                preOffShore = None
+                preOffShore = trustOffShoreYesNo match {
+                  case Some(true) => trustOffShoreCountry
+                  case _ => None
+                }
               )),
               nonUK = None
             )
