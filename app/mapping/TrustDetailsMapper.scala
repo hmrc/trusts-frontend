@@ -15,6 +15,7 @@
  */
 
 package mapping
+
 import mapping.TypeOfTrust.WillTrustOrIntestacyTrust
 import models.{NonResidentType, UserAnswers}
 import pages.{NonResidentTypePage, RegisteringTrustFor5APage, _}
@@ -26,20 +27,20 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
       startDateOption <- userAnswers.get(WhenTrustSetupPage)
       lawCountry = userAnswers.get(CountryGoverningTrustPage)
       administrationCountryOption <- administrationCountry(userAnswers)
-      residentialStatusOption = residentialStatus(userAnswers)
+      residentialStatusOption <- residentialStatus(userAnswers)
     } yield {
       TrustDetailsType(
         startDate = startDateOption,
         lawCountry = lawCountry,
         administrationCountry = Some(administrationCountryOption),
-        residentialStatus = residentialStatusOption,
+        residentialStatus = Some(residentialStatusOption),
         typeOfTrust = WillTrustOrIntestacyTrust,
         deedOfVariation = None,
         interVivos = None,
         efrbsStartDate = None
       )
     }
-}
+  }
 
   private def administrationCountry(userAnswers: UserAnswers): Option[String] = {
     userAnswers.get(AdministrationInsideUKPage) match {
@@ -52,63 +53,81 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
   }
 
   private def residentialStatus(userAnswers: UserAnswers): Option[ResidentialStatusType] = {
-    val scotsLaw = userAnswers.get(EstablishedUnderScotsLawPage)
-    val trustOffShoreYesNo = userAnswers.get(TrustResidentOffshorePage)
-    val trustOffShoreCountry = userAnswers.get(TrustPreviouslyResidentPage)
+
 
     userAnswers.get(TrustResidentInUKPage) match {
       case Some(true) =>
-        scotsLaw.map {
-          scots =>
-            ResidentialStatusType(
-              uk = Some(UkType(
-                scottishLaw = scots,
-                preOffShore = trustOffShoreYesNo match {
-                  case Some(true) => trustOffShoreCountry
-                  case _ => None
-                }
-              )),
-              nonUK = None
-            )
-        }
+        ukResidentMap(userAnswers)
       case Some(false) =>
-        val registeringTrustFor5A = userAnswers.get(RegisteringTrustFor5APage)
-        val nonResidentTypePage = userAnswers.get(NonResidentTypePage)
-        val nonResTypeDES = nonResidentTypePage.map(NonResidentType.toDES)
-
-        val nonUKConstruct = (registeringTrustFor5A, nonResTypeDES) match {
-          case (Some(true), r @ Some(_)) =>
-            Some(
-              NonUKType(
-              sch5atcgga92 = true,
-              s218ihta84 = None,
-              agentS218IHTA84 = None,
-              trusteeStatus = r)
-            )
-
-          case (Some(false), None) =>
-            val s218ihta84 = userAnswers.get(InheritanceTaxActPage)
-            val agentS218IHTA84 = userAnswers.get(AgentOtherThanBarristerPage)
-            Some(
-              NonUKType(
-                sch5atcgga92 = false,
-                s218ihta84 = s218ihta84,
-                agentS218IHTA84 = agentS218IHTA84,
-                trusteeStatus = None)
-            )
-
-          case (_, _) => None
-        }
-
-        Some(
-          ResidentialStatusType(
-            uk = None,
-            nonUK = nonUKConstruct
-          )
-        )
+        nonUkResidentMap(userAnswers)
       case _ =>
         None
     }
   }
 
+  private def nonUkResidentMap(userAnswers: UserAnswers) = {
+    val registeringTrustFor5A = userAnswers.get(RegisteringTrustFor5APage)
+    val nonResidentTypePage = userAnswers.get(NonResidentTypePage)
+    val nonResTypeDES = nonResidentTypePage.map(NonResidentType.toDES)
+
+    val nonUKConstruct: Option[NonUKType] = (registeringTrustFor5A, nonResTypeDES) match {
+      case (Some(true), r@Some(_)) =>
+        Some(
+          NonUKType(
+            sch5atcgga92 = true,
+            s218ihta84 = None,
+            agentS218IHTA84 = None,
+            trusteeStatus = r)
+        )
+
+      case (Some(false), None) =>
+        inheritanceTaxAndAgentBarristerMap(userAnswers)
+
+      case (_, _) => None
+    }
+
+    nonUKConstruct match {
+      case x if x.isDefined =>
+        Some(ResidentialStatusType(None, x)
+        )
+      case _ => None
+    }
+  }
+
+  private def ukResidentMap(userAnswers: UserAnswers) = {
+    val scotsLaw = userAnswers.get(EstablishedUnderScotsLawPage)
+    val trustOffShoreYesNo = userAnswers.get(TrustResidentOffshorePage)
+    val trustOffShoreCountry = userAnswers.get(TrustPreviouslyResidentPage)
+    scotsLaw.map {
+      scots =>
+        ResidentialStatusType(
+          uk = Some(UkType(
+            scottishLaw = scots,
+            preOffShore = trustOffShoreYesNo match {
+              case Some(true) => trustOffShoreCountry
+              case _ => None
+            }
+          )),
+          nonUK = None
+        )
+    }
+  }
+
+  private def inheritanceTaxAndAgentBarristerMap(userAnswers: UserAnswers): Option[NonUKType] = {
+    val s218ihta84 = userAnswers.get(InheritanceTaxActPage)
+    val agentS218IHTA84 = userAnswers.get(AgentOtherThanBarristerPage)
+
+    s218ihta84 match {
+      case Some(_) =>
+        Some(
+          NonUKType(
+            sch5atcgga92 = false,
+            s218ihta84 = s218ihta84,
+            agentS218IHTA84 = agentS218IHTA84,
+            trusteeStatus = None)
+        )
+
+      case _ => None
+    }
+  }
 }

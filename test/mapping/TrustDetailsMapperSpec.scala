@@ -40,6 +40,9 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
 
         trustDetailsMapper.build(userAnswers) mustNot be(defined)
       }
+    }
+
+    "when user answers is not empty " - {
 
       "must able to create TrustDetails for a UK resident trust" in {
         val date = LocalDate.of(2010, 10, 10)
@@ -207,6 +210,37 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
 
       }
 
+      "must not able  to create TrustDetails for a non-UK governed, UK admin, not for schedule 5A and no inheritance tax available" in {
+        val date = LocalDate.of(2010, 10, 10)
+
+        val userAnswers =
+          emptyUserAnswers
+            .set(TrustNamePage, "New Trust").success.value
+            .set(WhenTrustSetupPage, date).success.value
+            .set(GovernedInsideTheUKPage, false).success.value
+            .set(CountryGoverningTrustPage, "FR").success.value
+            .set(AdministrationInsideUKPage, true).success.value
+            .set(TrustResidentInUKPage, false).success.value
+            .set(RegisteringTrustFor5APage, false).success.value
+
+
+        trustDetailsMapper.build(userAnswers) mustBe None
+
+      }
+
+      "must not able  to create TrustDetails when only trust name and setup details available" in {
+        val date = LocalDate.of(2010, 10, 10)
+
+        val userAnswers =
+          emptyUserAnswers
+            .set(TrustNamePage, "New Trust").success.value
+            .set(WhenTrustSetupPage, date).success.value
+
+
+
+        trustDetailsMapper.build(userAnswers) mustBe None
+
+      }
     }
 
   }
