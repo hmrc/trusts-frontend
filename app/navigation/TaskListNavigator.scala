@@ -18,9 +18,11 @@ package navigation
 
 import controllers.routes
 import javax.inject.{Inject, Singleton}
+
+import models.requests.DataRequest
 import models.{NormalMode, UserAnswers}
 import pages._
-import play.api.mvc.Call
+import play.api.mvc.{AnyContent, Call}
 
 @Singleton
 class TaskListNavigator @Inject()() {
@@ -55,12 +57,18 @@ class TaskListNavigator @Inject()() {
   }
 
   private def beneficiaryRoute(answers: UserAnswers) = {
-    answers.get(IndividualBeneficiaries).getOrElse(Nil) match {
-      case _ :: _ =>
+    isAnyBeneficiaryAdded(answers) match {
+      case true =>
         routes.AddABeneficiaryController.onPageLoad()
-      case Nil =>
+      case false =>
         routes.IndividualBeneficiaryInfoController.onPageLoad()
     }
+  }
+
+  private def isAnyBeneficiaryAdded(answers: UserAnswers) = {
+    answers.get(IndividualBeneficiaries).
+      getOrElse(List.empty).nonEmpty  ||
+      answers.get(ClassOfBeneficiaries).getOrElse(List.empty).nonEmpty
   }
 
   private def assetRoute(answers: UserAnswers) = {

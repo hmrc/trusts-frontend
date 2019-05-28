@@ -104,6 +104,10 @@ trait ViewSpecBase extends SpecBase {
     }
   }
 
+  def assertContainsTextForId(doc: Document, id: String, expectedText: String) = {
+    assert(doc.getElementById(id).text() == expectedText, s"\n\nElement $id does not have text $expectedText")
+  }
+
   def viewFor[A](data: Option[UserAnswers])(implicit tag : ClassTag[A]) : A = {
     val application = applicationBuilder(data).build()
     val view = application.injector.instanceOf[A]

@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,13 +12,16 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@(
-messageKey: String = "",
-href: String
-)(implicit messages: Messages)
+package pages
 
-<div class="section">
-    <a id="button" href="@href" role="button" class="button">@messages(messageKey)</a>
-</div>
+import models.FullName
+import play.api.libs.json.JsPath
+
+case object DeclarationPage extends QuestionPage[FullName] {
+
+  override def path: JsPath = JsPath \"declaration"\ toString
+
+  override def toString: String = "name"
+}
