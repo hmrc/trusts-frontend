@@ -17,8 +17,9 @@
 package utils
 
 import base.SpecBase
+import models.Status.Completed
 import models.{FullName, IndividualOrBusiness, UserAnswers}
-import pages.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage, TrusteesNamePage}
+import pages.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage, TrusteeStatus, TrusteesNamePage}
 import viewmodels.AddRow
 
 class AddATrusteeViewHelperSpec extends SpecBase {
@@ -27,9 +28,11 @@ class AddATrusteeViewHelperSpec extends SpecBase {
     .set(IsThisLeadTrusteePage(0), true).success.value
     .set(TrusteesNamePage(0), FullName("First 0", None, "Last 0")).success.value
     .set(TrusteeIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
+    .set(TrusteeStatus(0), Completed).success.value
     .set(IsThisLeadTrusteePage(1), false).success.value
     .set(TrusteesNamePage(1), FullName("First 1", None, "Last 1")).success.value
     .set(TrusteeIndividualOrBusinessPage(1), IndividualOrBusiness.Individual).success.value
+    .set(TrusteeStatus(1), Completed).success.value
 
 
   val userAnswersWithTrusteesInProgress = UserAnswers(userAnswersId)
@@ -44,6 +47,7 @@ class AddATrusteeViewHelperSpec extends SpecBase {
     .set(IsThisLeadTrusteePage(1), true).success.value
     .set(TrusteesNamePage(1), FullName("First 1", Some("Middle"), "Last 1")).success.value
     .set(TrusteeIndividualOrBusinessPage(1), IndividualOrBusiness.Individual).success.value
+    .set(TrusteeStatus(1), Completed).success.value
 
   val userAnswersWithNoTrustees = UserAnswers(userAnswersId)
 
