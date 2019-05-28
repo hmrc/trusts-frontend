@@ -48,6 +48,8 @@ final case class UserAnswers(
       case JsSuccess(jsValue, _) =>
         Success(jsValue)
       case JsError(errors) =>
+        val errorPaths = errors.collectFirst{ case (path, e) => s"$path $e"}
+        Logger.warn(s"[UserAnswers] unable to set path ${page.path} due to errors $errorPaths")
         Failure(JsResultException(errors))
     }
 

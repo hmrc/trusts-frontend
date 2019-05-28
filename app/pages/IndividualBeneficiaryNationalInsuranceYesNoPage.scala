@@ -27,7 +27,6 @@ final case class IndividualBeneficiaryNationalInsuranceYesNoPage(index : Int) ex
 
   override def toString: String = "individualBeneficiaryNationalInsuranceYesNo"
 
-
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
       case Some(false) =>

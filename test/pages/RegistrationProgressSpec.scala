@@ -211,10 +211,26 @@ class RegistrationProgressSpec extends SpecBase {
 
         val userAnswers = emptyUserAnswers
           .set(ClassBeneficiaryDescriptionPage(0), "Description").success.value
-          .set(BeneficiaryComplete(0), Tag.Completed).success.value
-          .set(IndividualBeneficiaryNamePage(1), FullName("First", None, "Last")).success.value
+          .set(ClassBeneficiaryStatus(0), Tag.Completed).success.value
+          .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
 
-        registrationProgress.isTrusteesComplete(userAnswers) mustBe false
+        registrationProgress.isBeneficiariesComplete(userAnswers) mustBe false
+      }
+
+    }
+
+    "render complete tag" when {
+
+      "there are beneficiaries marked as complete" in {
+        val registrationProgress = injector.instanceOf[RegistrationProgress]
+
+        val userAnswers = emptyUserAnswers
+          .set(ClassBeneficiaryDescriptionPage(0), "Description").success.value
+          .set(ClassBeneficiaryStatus(0), Tag.Completed).success.value
+          .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
+          .set(IndividualBeneficiaryStatus(0), Tag.Completed).success.value
+
+        registrationProgress.isBeneficiariesComplete(userAnswers) mustBe true
       }
 
     }

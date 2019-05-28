@@ -21,12 +21,13 @@ import forms.ClassBeneficiaryDescriptionFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.ClassBeneficiaryDescriptionPage
+import pages.{ClassBeneficiaryDescriptionPage, ClassBeneficiaryStatus}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import viewmodels.Tag
 import views.html.ClassBeneficiaryDescriptionView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -64,8 +65,12 @@ class ClassBeneficiaryDescriptionController @Inject()(
           Future.successful(BadRequest(view(formWithErrors, mode,index))),
 
         value => {
+
+          val answers = request.userAnswers.set(ClassBeneficiaryDescriptionPage(index), value)
+            .flatMap(_.set(ClassBeneficiaryStatus(index), Tag.Completed))
+
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ClassBeneficiaryDescriptionPage(index), value))
+            updatedAnswers <- Future.fromTry(answers)
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(ClassBeneficiaryDescriptionPage(index), mode)(updatedAnswers))
         }
