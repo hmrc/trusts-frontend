@@ -18,6 +18,7 @@ package pages
 
 import java.time.LocalDate
 
+import models.entities.Trustees
 import play.api.libs.json.JsPath
 
 final case class TrusteesDateOfBirthPage(index: Int) extends QuestionPage[LocalDate] {

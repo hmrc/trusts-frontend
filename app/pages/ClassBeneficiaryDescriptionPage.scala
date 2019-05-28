@@ -17,6 +17,7 @@
 package pages
 
 import play.api.libs.json.JsPath
+import viewmodels.{Beneficiaries, ClassOfBeneficiaries}
 
 final case class ClassBeneficiaryDescriptionPage(index: Int) extends QuestionPage[String] {
 

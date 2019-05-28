@@ -18,22 +18,24 @@ package controllers
 
 import controllers.actions._
 import javax.inject.Inject
-
 import models.NormalMode
+import models.Status.Completed
 import navigation.Navigator
-import pages.{IndividualBeneficiaryAnswersPage, IndividualBeneficiaryNamePage}
+import pages.{IndividualBeneficiaryAnswersPage, IndividualBeneficiaryNamePage, IndividualBeneficiaryStatus, TrusteesAnswerPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
+import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.IndividualBenficiaryAnswersView
-import utils.countryOptions.CountryOptions
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 class IndividualBeneficiaryAnswersController @Inject()(
                                        override val messagesApi: MessagesApi,
+                                       sessionRepository: SessionRepository,
                                        identify: IdentifierAction,
                                        navigator: Navigator,
                                        getData: DataRetrievalAction,
@@ -81,8 +83,14 @@ class IndividualBeneficiaryAnswersController @Inject()(
       Ok(view(index, sections))
   }
 
-  def onSubmit(index : Int) = actions(index) {
+  def onSubmit(index : Int) = actions(index).async {
     implicit request =>
-      Redirect(navigator.nextPage(IndividualBeneficiaryAnswersPage, NormalMode)(request.userAnswers))
+
+      val answers = request.userAnswers.set(IndividualBeneficiaryStatus(index), Completed)
+
+      for {
+        updatedAnswers <- Future.fromTry(answers)
+        _              <- sessionRepository.set(updatedAnswers)
+      } yield Redirect(navigator.nextPage(IndividualBeneficiaryAnswersPage, NormalMode)(request.userAnswers))
   }
 }

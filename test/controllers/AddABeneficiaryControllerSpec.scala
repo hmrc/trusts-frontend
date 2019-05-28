@@ -19,11 +19,10 @@ package controllers
 import base.SpecBase
 import forms.AddABeneficiaryFormProvider
 import models.Status.Completed
-import models.{AddABeneficiary, FullName, IndividualOrBusiness, NormalMode, UserAnswers}
+import models.{AddABeneficiary, FullName, NormalMode}
 import navigation.{FakeNavigator, Navigator}
 import pages._
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -37,6 +36,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
   lazy val addABeneficiaryRoute = routes.AddABeneficiaryController.onPageLoad().url
 
   val formProvider = new AddABeneficiaryFormProvider()
+
   val form = formProvider()
 
   val beneficiariesComplete = List(
@@ -46,7 +46,6 @@ class AddABeneficiaryControllerSpec extends SpecBase {
 
   val userAnswersWithBeneficiariesComplete = emptyUserAnswers
     .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
-    .set(IndividualBeneficiaryVulnerableYesNoPage(0), true).success.value
     .set(IndividualBeneficiaryStatus(0), Completed).success.value
     .set(ClassBeneficiaryDescriptionPage(0), "description").success.value
     .set(ClassBeneficiaryStatus(0), Completed).success.value

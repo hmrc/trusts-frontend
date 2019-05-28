@@ -27,7 +27,8 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import viewmodels.trustees.{TrusteeViewModel, Trustees}
+import viewmodels.Trustees
+import viewmodels.addAnother.TrusteeViewModel
 import views.html.IsThisLeadTrusteeView
 
 import scala.concurrent.{ExecutionContext, Future}

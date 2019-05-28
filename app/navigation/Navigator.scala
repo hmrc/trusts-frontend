@@ -17,7 +17,6 @@
 package navigation
 
 import javax.inject.{Inject, Singleton}
-
 import play.api.mvc.Call
 import controllers.routes
 import models.AddATrustee.{NoComplete, YesLater, YesNow}
@@ -26,6 +25,7 @@ import models.WhatKindOfAsset.{Business, Money, Other, Partnership, PropertyOrLa
 import pages._
 import models._
 import uk.gov.hmrc.auth.core.AffinityGroup
+import viewmodels.{ClassOfBeneficiaries, IndividualBeneficiaries}
 
 @Singleton
 class Navigator @Inject()() {
@@ -279,7 +279,7 @@ class Navigator @Inject()() {
     val addAnother = answers.get(AddATrusteePage)
 
     def routeToTrusteeIndex = {
-      val trustees = answers.get(viewmodels.trustees.Trustees).getOrElse(List.empty)
+      val trustees = answers.get(viewmodels.Trustees).getOrElse(List.empty)
       trustees match {
         case Nil =>
           routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 0)

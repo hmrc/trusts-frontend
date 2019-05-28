@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package viewmodels.trustees
+package viewmodels.addAnother
 
 import models.Status.InProgress
 import models.{FullName, IndividualOrBusiness, Status}
-import viewmodels.trustees
+import viewmodels.addAnother
 
 final case class TrusteeViewModel(isLead : Boolean,
                                     name : Option[FullName],
@@ -37,7 +37,7 @@ object TrusteeViewModel {
       (__ \ "status").readWithDefault[Status](InProgress)
     )(
       (isLead, individualOrBusiness, name, status) => {
-        trustees.TrusteeViewModel(isLead, name, individualOrBusiness, status)
+        addAnother.TrusteeViewModel(isLead, name, individualOrBusiness, status)
       }
     )
 

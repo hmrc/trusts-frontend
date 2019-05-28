@@ -20,7 +20,7 @@ import models.Status.{Completed, InProgress}
 import models.{IndividualOrBusiness, UserAnswers}
 import play.api.i18n.Messages
 import viewmodels._
-import viewmodels.trustees.{TrusteeViewModel, Trustees}
+import viewmodels.addAnother.TrusteeViewModel
 
 class AddATrusteeViewHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 

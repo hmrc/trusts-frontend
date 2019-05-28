@@ -17,11 +17,11 @@
 package pages
 
 import javax.inject.Inject
-import models.AddATrustee.NoComplete
 import models.Status.{Completed, InProgress}
-import models.UserAnswers
+import models.entities.Trustees
+import models.{AddABeneficiary, AddATrustee, Status, UserAnswers}
 import navigation.TaskListNavigator
-import viewmodels.{Link, Task}
+import viewmodels._
 
 class RegistrationProgress @Inject()(navigator : TaskListNavigator){
 
@@ -34,35 +34,74 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
     Task(Link(TaxLiability, navigator.nextPage(TaxLiability, userAnswers).url), None)
   )
 
-  def isTrustDetailsComplete(userAnswers: UserAnswers) : Boolean = {
-    val whenSetup = userAnswers.get(WhenTrustSetupPage).isDefined
-
-    whenSetup && userAnswers.get(TrustDetailsCompleted).contains(Completed)
+  private def determineStatus(complete : Boolean) = {
+    if (complete) {
+      Some(Completed)
+    } else{
+      Some(InProgress)
+    }
   }
 
-  def isTrusteesComplete(userAnswers: UserAnswers) : Boolean = {
-    val noMoreToAdd = userAnswers.get(AddATrusteePage).contains(NoComplete)
+  def isTrustDetailsComplete(userAnswers: UserAnswers) : Option[Status] = {
+    userAnswers.get(WhenTrustSetupPage) match {
+      case None => None
+      case Some(_) =>
+        val completed = userAnswers.get(TrustDetailsCompleted).contains(Completed)
+        determineStatus(completed)
+    }
+  }
 
-    userAnswers.get(viewmodels.trustees.Trustees) match {
+  def isTrusteesComplete(userAnswers: UserAnswers) : Option[Status] = {
+    val noMoreToAdd = userAnswers.get(AddATrusteePage).contains(AddATrustee.NoComplete)
+
+    userAnswers.get(viewmodels.Trustees) match {
       case Some(l) =>
 
         val hasLeadTrustee = l.exists(_.isLead)
 
-        !l.exists(_.status == InProgress) && noMoreToAdd && hasLeadTrustee
+        val isComplete = !l.exists(_.status == InProgress) && noMoreToAdd && hasLeadTrustee
+
+        determineStatus(isComplete)
       case None =>
-        false
+        None
     }
   }
 
-  def isDeceasedSettlorComplete(userAnswers: UserAnswers) : Boolean = {
+  def isDeceasedSettlorComplete(userAnswers: UserAnswers) : Option[Status] = {
     val setUpAfterSettlorDied = userAnswers.get(SetupAfterSettlorDiedPage)
-    val deceasedCompleted = userAnswers.get(DeceasedSettlorComplete)
 
-    setUpAfterSettlorDied.contains(true) && deceasedCompleted.contains(Completed)
+    setUpAfterSettlorDied match {
+      case None => None
+      case Some(x) =>
+        val deceasedCompleted = userAnswers.get(DeceasedSettlorComplete)
+
+        val isComplete = x && deceasedCompleted.contains(Completed)
+
+        determineStatus(isComplete)
+    }
   }
 
-  def isBeneficiariesComplete(userAnswers: UserAnswers) : Boolean = {
-    false
+  def isBeneficiariesComplete(userAnswers: UserAnswers) : Option[Status] = {
+
+    val noMoreToAdd = userAnswers.get(AddABeneficiaryPage).contains(AddABeneficiary.NoComplete)
+
+    val individuals = userAnswers.get(IndividualBeneficiaries)
+    val classes = userAnswers.get(ClassOfBeneficiaries)
+
+    (individuals, classes) match {
+      case (None, None) => None
+      case (Some(ind), None) =>
+        val indComplete = !ind.exists(_.status == InProgress)
+        determineStatus(indComplete && noMoreToAdd)
+      case (None, Some(c)) =>
+        val classComplete = !c.exists(_.status == InProgress)
+        determineStatus(classComplete && noMoreToAdd)
+      case (Some(ind), Some(c)) =>
+        val indComplete = !ind.exists(_.status == InProgress)
+        val classComplete = !c.exists(_.status == InProgress)
+
+        determineStatus(indComplete && classComplete && noMoreToAdd)
+    }
   }
 
 }

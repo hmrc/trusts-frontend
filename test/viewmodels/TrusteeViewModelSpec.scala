@@ -26,7 +26,7 @@ import org.scalacheck.Gen
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.{FreeSpec, MustMatchers}
 import play.api.libs.json.{JsSuccess, Json}
-import viewmodels.trustees.TrusteeViewModel
+import viewmodels.addAnother.TrusteeViewModel
 
 class TrusteeViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks with Generators with ModelGenerators {
 
@@ -48,9 +48,8 @@ class TrusteeViewModelSpec extends FreeSpec with MustMatchers with PropertyCheck
             )
 
             json.validate[TrusteeViewModel] mustEqual JsSuccess(
-              trustees.TrusteeViewModel(isLead = false, Some(fullName), Some(individual), Completed)
+              addAnother.TrusteeViewModel(isLead = false, Some(fullName), Some(individual), Completed)
             )
-
         }
       }
     }

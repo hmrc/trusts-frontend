@@ -14,10 +14,15 @@
  * limitations under the License.
  */
 
-package pages
+package viewmodels
 
-case object TrustDetails extends Page {
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import viewmodels.addAnother.ClassOfBeneficiaryViewModel
 
-  override def toString: String = "trustDetails"
+case object ClassOfBeneficiaries extends QuestionPage[List[ClassOfBeneficiaryViewModel]]{
 
+    override def path: JsPath = JsPath \ Beneficiaries \ toString
+
+    override def toString: String = "classOfBeneficiaries"
 }

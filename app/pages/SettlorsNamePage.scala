@@ -18,6 +18,7 @@ package pages
 
 import models.FullName
 import play.api.libs.json.JsPath
+import viewmodels.{DeceasedSettlor, Settlors}
 
 case object SettlorsNamePage extends QuestionPage[FullName] {
 

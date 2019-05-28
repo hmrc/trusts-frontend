@@ -18,9 +18,11 @@ package navigation
 
 import controllers.routes
 import javax.inject.{Inject, Singleton}
+import models.entities.Trustees
 import models.{NormalMode, UserAnswers}
 import pages._
 import play.api.mvc.Call
+import viewmodels.{Beneficiaries, ClassOfBeneficiaries, IndividualBeneficiaries, Settlors, TaxLiability, TrustDetails}
 
 @Singleton
 class TaskListNavigator @Inject()() {
@@ -37,7 +39,7 @@ class TaskListNavigator @Inject()() {
   }
 
   private def trusteeRoute(answers: UserAnswers) = {
-    answers.get(viewmodels.trustees.Trustees).getOrElse(Nil) match {
+    answers.get(viewmodels.Trustees).getOrElse(Nil) match {
       case Nil =>
         routes.TrusteesInfoController.onPageLoad()
       case _ :: _ =>
@@ -64,9 +66,11 @@ class TaskListNavigator @Inject()() {
   }
 
   private def isAnyBeneficiaryAdded(answers: UserAnswers) = {
-    answers.get(IndividualBeneficiaries).
-      getOrElse(List.empty).nonEmpty  ||
-      answers.get(ClassOfBeneficiaries).getOrElse(List.empty).nonEmpty
+
+    val individuals = answers.get(IndividualBeneficiaries).getOrElse(Nil)
+    val classes = answers.get(ClassOfBeneficiaries).getOrElse(Nil)
+
+    individuals.nonEmpty || classes.nonEmpty
   }
 
   private def assetRoute(answers: UserAnswers) = {

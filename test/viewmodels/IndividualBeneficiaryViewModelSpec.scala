@@ -14,28 +14,37 @@
  * limitations under the License.
  */
 
-package models.reads
+package viewmodels
 
 import generators.{Generators, ModelGenerators}
+import models.FullName
 import models.Status.Completed
-import models.entities.ClassOfBeneficiary
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.{FreeSpec, MustMatchers}
 import play.api.libs.json.{JsSuccess, Json}
+import viewmodels.addAnother.IndividualBeneficiaryViewModel
 
-class ClassOfBeneficiaryReadsSpec extends FreeSpec with MustMatchers with PropertyChecks with Generators with ModelGenerators {
+class IndividualBeneficiaryViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks with Generators with ModelGenerators  {
 
-  "ClassOfBeneficiary" - {
+  "IndividualBeneficiary" - {
 
     "must deserialise" - {
 
-      "from a class of beneficiary that's in progress" in {
-          val json = Json.obj(
-            "description" -> "Grandchildren",
-            "status" -> Completed.toString
-          )
+      "from an individual beneficiary" in {
+        val json = Json.obj(
+          "name" -> Json.obj(
+            "firstName" -> "First",
+            "lastName" -> "Last"
+          ),
+          "status" -> Completed.toString
+        )
 
-          json.validate[ClassOfBeneficiary] mustEqual JsSuccess(ClassOfBeneficiary(Some("Grandchildren"), Completed))
+        json.validate[IndividualBeneficiaryViewModel] mustEqual JsSuccess(
+          IndividualBeneficiaryViewModel(
+            Some(FullName("First", None, "Last")),
+            Completed
+          )
+        )
       }
 
     }

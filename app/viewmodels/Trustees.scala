@@ -14,9 +14,16 @@
  * limitations under the License.
  */
 
-package pages
+package viewmodels
 
-case object Agent extends Page {
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import viewmodels.addAnother.TrusteeViewModel
 
-  override def toString: String = "agent"
+case object Trustees extends QuestionPage[List[TrusteeViewModel]]{
+
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "trustees"
+
 }

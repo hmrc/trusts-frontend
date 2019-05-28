@@ -18,10 +18,11 @@ package pages
 
 import models.FullName
 import play.api.libs.json.JsPath
+import viewmodels.{Beneficiaries, IndividualBeneficiaries}
 
 final case class IndividualBeneficiaryNamePage(index: Int) extends QuestionPage[FullName] {
 
   override def path: JsPath = JsPath \ Beneficiaries \ IndividualBeneficiaries \ index \ toString
 
-  override def toString: String = "individualBeneficiaryName"
+  override def toString: String = "name"
 }

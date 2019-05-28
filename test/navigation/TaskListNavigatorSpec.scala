@@ -21,8 +21,10 @@ import java.time.LocalDate
 import base.SpecBase
 import controllers.routes
 import models.WhatKindOfAsset.Money
+import models.entities.Trustees
 import models.{FullName, NormalMode, UserAnswers}
 import pages._
+import viewmodels.{Beneficiaries, Settlors, TaxLiability, TrustDetails}
 
 class TaskListNavigatorSpec extends SpecBase {
 

@@ -16,11 +16,10 @@
 
 package utils
 
-import models.entities.{ClassOfBeneficiary, IndividualBeneficiary}
 import models.{FullName, UserAnswers}
-import pages.{ClassOfBeneficiaries, IndividualBeneficiaries}
 import play.api.i18n.Messages
-import viewmodels.{AddRow, AddToRows}
+import viewmodels.addAnother.{ClassOfBeneficiaryViewModel, IndividualBeneficiaryViewModel}
+import viewmodels.{AddRow, AddToRows, ClassOfBeneficiaries, IndividualBeneficiaries}
 
 class AddABeneficiaryViewHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
@@ -31,7 +30,7 @@ class AddABeneficiaryViewHelper(userAnswers: UserAnswers)(implicit messages: Mes
     }
   }
 
-  private def parseIndividualBeneficiary(individualBeneficiary : IndividualBeneficiary) : AddRow = {
+  private def parseIndividualBeneficiary(individualBeneficiary : IndividualBeneficiaryViewModel) : AddRow = {
     AddRow(
       parseName(individualBeneficiary.name),
       "Individual Beneficiary",
@@ -40,7 +39,7 @@ class AddABeneficiaryViewHelper(userAnswers: UserAnswers)(implicit messages: Mes
     )
   }
 
-  private def parseClassOfBeneficiary(classOfBeneficiary : ClassOfBeneficiary) : AddRow = {
+  private def parseClassOfBeneficiary(classOfBeneficiary : ClassOfBeneficiaryViewModel) : AddRow = {
     AddRow(
       classOfBeneficiary.description.getOrElse(""),
       "Class of beneficiaries",

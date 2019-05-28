@@ -14,23 +14,15 @@
  * limitations under the License.
  */
 
-package models.entities
+package viewmodels
 
-import models.FullName
-import play.api.libs.json.{JsPath, Reads}
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
+case object DeceasedSettlor extends QuestionPage[Nothing]{
 
-case class IndividualBeneficiary(name: Option[FullName], isVulnerable: Option[Boolean]) {
-  def isComplete = name.nonEmpty && isVulnerable.isDefined
-}
+  override def path: JsPath = JsPath \ Settlors \ toString
 
-object IndividualBeneficiary {
-
-  import play.api.libs.functional.syntax._
-
-  implicit val reads : Reads[IndividualBeneficiary] = (
-      (JsPath \ "individualBeneficiaryName").readNullable[FullName] and
-      (JsPath \ "individualBeneficiaryVulnerableYesNo").readNullable[Boolean]
-    )(IndividualBeneficiary.apply _)
+  override def toString: String = "deceased"
 
 }

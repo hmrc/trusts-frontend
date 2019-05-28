@@ -28,8 +28,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
-import viewmodels.AnswerSection
-import viewmodels.trustees.Trustees
+import viewmodels.{AnswerSection, Trustees}
 import views.html.TrusteesAnswerPageView
 
 import scala.concurrent.{ExecutionContext, Future}

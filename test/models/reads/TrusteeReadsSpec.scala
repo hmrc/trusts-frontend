@@ -46,7 +46,6 @@ class TrusteeReadsSpec extends FreeSpec with MustMatchers with PropertyChecks wi
             )
 
             json.validate[Trustee] mustEqual JsSuccess(TrusteeIndividual(fullName, date))
-
         }
       }
 

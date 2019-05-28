@@ -18,6 +18,7 @@ package pages
 
 import models.Status
 import play.api.libs.json.JsPath
+import viewmodels.TrustDetails
 
 case object TrustDetailsCompleted extends QuestionPage[Status] {
 
