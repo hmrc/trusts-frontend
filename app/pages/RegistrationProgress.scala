@@ -18,9 +18,9 @@ package pages
 
 import javax.inject.Inject
 import models.AddATrustee.NoComplete
+import models.Status.{Completed, InProgress}
 import models.UserAnswers
 import navigation.TaskListNavigator
-import viewmodels.Tag.{Completed, InProgress}
 import viewmodels.{Link, Task}
 
 class RegistrationProgress @Inject()(navigator : TaskListNavigator){

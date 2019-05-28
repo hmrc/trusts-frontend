@@ -16,10 +16,10 @@
 
 package pages
 
+import models.Status
 import play.api.libs.json.JsPath
-import viewmodels.Tag
 
-case object TrustDetailsCompleted extends QuestionPage[Tag] {
+case object TrustDetailsCompleted extends QuestionPage[Status] {
 
   override def path: JsPath = JsPath \ TrustDetails \ toString
 

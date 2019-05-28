@@ -42,7 +42,7 @@ class AddABeneficiaryViewHelper(userAnswers: UserAnswers)(implicit messages: Mes
 
   private def parseClassOfBeneficiary(classOfBeneficiary : ClassOfBeneficiary) : AddRow = {
     AddRow(
-      classOfBeneficiary.classBeneficiaryDescription.getOrElse(""),
+      classOfBeneficiary.description.getOrElse(""),
       "Class of beneficiaries",
       "#",
       "#"

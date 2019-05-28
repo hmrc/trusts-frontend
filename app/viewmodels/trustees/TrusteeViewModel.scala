@@ -16,14 +16,14 @@
 
 package viewmodels.trustees
 
-import models.{FullName, IndividualOrBusiness}
-import viewmodels.Tag.InProgress
-import viewmodels.{Tag, trustees}
+import models.Status.InProgress
+import models.{FullName, IndividualOrBusiness, Status}
+import viewmodels.trustees
 
 final case class TrusteeViewModel(isLead : Boolean,
                                     name : Option[FullName],
                                   `type` : Option[IndividualOrBusiness],
-                                  status : Tag)
+                                  status : Status)
 
 object TrusteeViewModel {
 
@@ -34,7 +34,7 @@ object TrusteeViewModel {
     (__ \ "isThisLeadTrustee").readWithDefault[Boolean](false) and
       (__ \ "individualOrBusiness").readNullable[IndividualOrBusiness] and
       (__ \ "name").readNullable[FullName] and
-      (__ \ "status").readWithDefault[Tag](InProgress)
+      (__ \ "status").readWithDefault[Status](InProgress)
     )(
       (isLead, individualOrBusiness, name, status) => {
         trustees.TrusteeViewModel(isLead, name, individualOrBusiness, status)

@@ -23,7 +23,7 @@ import controllers.actions._
 import javax.inject.Inject
 import models.Matched.{AlreadyRegistered, Failed, Success}
 import models.NormalMode
-import models.Progress.InProgress
+import models.RegistrationProgress.InProgress
 import pages._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

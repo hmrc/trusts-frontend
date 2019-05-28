@@ -19,13 +19,13 @@ package viewmodels
 import java.time.LocalDate
 
 import generators.{Generators, ModelGenerators}
+import models.Status.Completed
 import models.{FullName, IndividualOrBusiness}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.{FreeSpec, MustMatchers}
 import play.api.libs.json.{JsSuccess, Json}
-import viewmodels.Tag.Completed
 import viewmodels.trustees.TrusteeViewModel
 
 class TrusteeViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks with Generators with ModelGenerators {
@@ -43,7 +43,8 @@ class TrusteeViewModelSpec extends FreeSpec with MustMatchers with PropertyCheck
               "name" -> fullName,
               "dateOfBirth" -> date,
               "isThisLeadTrustee" -> false,
-              "individualOrBusiness" -> individual.toString
+              "individualOrBusiness" -> individual.toString,
+              "status" -> Completed.toString
             )
 
             json.validate[TrusteeViewModel] mustEqual JsSuccess(

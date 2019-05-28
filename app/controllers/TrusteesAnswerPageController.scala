@@ -19,8 +19,8 @@ package controllers
 import controllers.actions._
 import javax.inject.Inject
 import models.NormalMode
+import models.Status.Completed
 import navigation.Navigator
-import viewmodels.trustees.Trustees
 import pages.{IsThisLeadTrusteePage, TrusteeStatus, TrusteesAnswerPage, TrusteesNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
@@ -29,7 +29,7 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
-import viewmodels.Tag.Completed
+import viewmodels.trustees.Trustees
 import views.html.TrusteesAnswerPageView
 
 import scala.concurrent.{ExecutionContext, Future}

@@ -19,6 +19,7 @@ package controllers
 import controllers.actions._
 import javax.inject.Inject
 import models.NormalMode
+import models.Status.Completed
 import navigation.Navigator
 import pages.{TrustDetailsAnswerPage, TrustDetailsCompleted}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -28,7 +29,6 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
-import viewmodels.Tag.Completed
 import views.html.TrustDetailsAnswerPageView
 
 import scala.concurrent.{ExecutionContext, Future}

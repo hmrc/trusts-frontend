@@ -18,15 +18,15 @@ package controllers
 
 import base.SpecBase
 import forms.AddATrusteeFormProvider
+import models.Status.Completed
 import models.{AddATrustee, FullName, IndividualOrBusiness, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.{AddATrusteePage, TrusteeStatus, TrusteeIndividualOrBusinessPage, TrusteesNamePage}
+import pages.{TrusteeIndividualOrBusinessPage, TrusteeStatus, TrusteesNamePage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.AddRow
-import viewmodels.Tag.Completed
 import views.html.AddATrusteeView
 
 class AddATrusteeControllerSpec extends SpecBase {

@@ -16,10 +16,10 @@
 
 package pages
 
+import models.Status
 import play.api.libs.json.JsPath
-import viewmodels.Tag
 
-final case class ClassBeneficiaryStatus(index : Int) extends QuestionPage[Tag] {
+final case class ClassBeneficiaryStatus(index : Int) extends QuestionPage[Status] {
 
   override def path: JsPath = JsPath \ Beneficiaries \ ClassOfBeneficiaries \ index \ toString
 

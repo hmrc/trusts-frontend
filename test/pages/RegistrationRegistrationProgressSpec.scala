@@ -19,11 +19,10 @@ package pages
 import java.time.LocalDate
 
 import base.SpecBase
-import models.{AddATrustee, FullName}
-import viewmodels.Tag
-import viewmodels.Tag.Completed
+import models.Status.Completed
+import models.{AddATrustee, FullName, Status}
 
-class RegistrationProgressSpec extends SpecBase {
+class RegistrationRegistrationProgressSpec extends SpecBase {
 
   "Trust details section" must {
 
@@ -93,7 +92,7 @@ class RegistrationProgressSpec extends SpecBase {
         val userAnswers = emptyUserAnswers
           .set(IsThisLeadTrusteePage(0), true).success.value
           .set(IsThisLeadTrusteePage(1), false).success.value
-          .set(TrusteeStatus(1), Tag.Completed).success.value
+          .set(TrusteeStatus(1), Status.Completed).success.value
 
         registrationProgress.isTrusteesComplete(userAnswers) mustBe false
       }
@@ -103,9 +102,9 @@ class RegistrationProgressSpec extends SpecBase {
 
         val userAnswers = emptyUserAnswers
           .set(IsThisLeadTrusteePage(0), true).success.value
-          .set(TrusteeStatus(0), Tag.Completed).success.value
+          .set(TrusteeStatus(0), Status.Completed).success.value
           .set(IsThisLeadTrusteePage(1), false).success.value
-          .set(TrusteeStatus(1), Tag.Completed).success.value
+          .set(TrusteeStatus(1), Status.Completed).success.value
           .set(AddATrusteePage, AddATrustee.YesLater).success.value
 
         registrationProgress.isTrusteesComplete(userAnswers) mustBe false
@@ -116,9 +115,9 @@ class RegistrationProgressSpec extends SpecBase {
 
         val userAnswers = emptyUserAnswers
           .set(IsThisLeadTrusteePage(0), false).success.value
-          .set(TrusteeStatus(0), Tag.Completed).success.value
+          .set(TrusteeStatus(0), Status.Completed).success.value
           .set(IsThisLeadTrusteePage(1), false).success.value
-          .set(TrusteeStatus(1), Tag.Completed).success.value
+          .set(TrusteeStatus(1), Status.Completed).success.value
           .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
         registrationProgress.isTrusteesComplete(userAnswers) mustBe false
@@ -133,9 +132,9 @@ class RegistrationProgressSpec extends SpecBase {
 
         val userAnswers = emptyUserAnswers
           .set(IsThisLeadTrusteePage(0), true).success.value
-          .set(TrusteeStatus(0), Tag.Completed).success.value
+          .set(TrusteeStatus(0), Status.Completed).success.value
           .set(IsThisLeadTrusteePage(1), false).success.value
-          .set(TrusteeStatus(1), Tag.Completed).success.value
+          .set(TrusteeStatus(1), Status.Completed).success.value
           .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
         registrationProgress.isTrusteesComplete(userAnswers) mustBe true
@@ -166,7 +165,7 @@ class RegistrationProgressSpec extends SpecBase {
 
         val userAnswers = emptyUserAnswers
             .set(SetupAfterSettlorDiedPage, true).success.value
-            .set(DeceasedSettlorComplete, Tag.InProgress).success.value
+            .set(DeceasedSettlorComplete, Status.InProgress).success.value
 
         registrationProgress.isDeceasedSettlorComplete(userAnswers) mustBe false
       }
@@ -180,7 +179,7 @@ class RegistrationProgressSpec extends SpecBase {
 
         val userAnswers = emptyUserAnswers
           .set(SetupAfterSettlorDiedPage, true).success.value
-          .set(DeceasedSettlorComplete, Tag.Completed).success.value
+          .set(DeceasedSettlorComplete, Status.Completed).success.value
 
         registrationProgress.isDeceasedSettlorComplete(userAnswers) mustBe true
       }
@@ -211,7 +210,7 @@ class RegistrationProgressSpec extends SpecBase {
 
         val userAnswers = emptyUserAnswers
           .set(ClassBeneficiaryDescriptionPage(0), "Description").success.value
-          .set(ClassBeneficiaryStatus(0), Tag.Completed).success.value
+          .set(ClassBeneficiaryStatus(0), Status.Completed).success.value
           .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
 
         registrationProgress.isBeneficiariesComplete(userAnswers) mustBe false
@@ -226,9 +225,9 @@ class RegistrationProgressSpec extends SpecBase {
 
         val userAnswers = emptyUserAnswers
           .set(ClassBeneficiaryDescriptionPage(0), "Description").success.value
-          .set(ClassBeneficiaryStatus(0), Tag.Completed).success.value
+          .set(ClassBeneficiaryStatus(0), Status.Completed).success.value
           .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
-          .set(IndividualBeneficiaryStatus(0), Tag.Completed).success.value
+          .set(IndividualBeneficiaryStatus(0), Status.Completed).success.value
 
         registrationProgress.isBeneficiariesComplete(userAnswers) mustBe true
       }

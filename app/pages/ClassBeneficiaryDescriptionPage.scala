@@ -22,5 +22,5 @@ final case class ClassBeneficiaryDescriptionPage(index: Int) extends QuestionPag
 
   override def path: JsPath = JsPath \ Beneficiaries \ ClassOfBeneficiaries \ index \ toString
 
-  override def toString: String = "classBeneficiaryDescription"
+  override def toString: String = "description"
 }

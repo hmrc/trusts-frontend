@@ -16,13 +16,23 @@
 
 package models.entities
 
-import play.api.libs.json.{Json, OFormat}
+import models.Status
+import models.Status.{Completed, InProgress}
+import play.api.libs.json.{Reads, __}
 
 
-case class ClassOfBeneficiary(classBeneficiaryDescription: Option[String]) {
-  def isComplete = classBeneficiaryDescription.nonEmpty
+case class ClassOfBeneficiary(description: Option[String], status : Status) {
+
+  def isComplete : Boolean = description.nonEmpty && (status == Completed)
+
 }
 
 object ClassOfBeneficiary {
-    implicit  val classOfBeneficiaryFormat : OFormat[ClassOfBeneficiary] = Json.format[ClassOfBeneficiary]
+
+  import play.api.libs.functional.syntax._
+
+  implicit val trusteeReads: Reads[ClassOfBeneficiary] = (
+    (__ \ "description").readNullable[String] and
+      (__ \ "status").readWithDefault[Status](InProgress)
+    )(ClassOfBeneficiary.apply _)
 }

@@ -20,6 +20,7 @@ import controllers.actions._
 import forms.ClassBeneficiaryDescriptionFormProvider
 import javax.inject.Inject
 import models.Mode
+import models.Status.Completed
 import navigation.Navigator
 import pages.{ClassBeneficiaryDescriptionPage, ClassBeneficiaryStatus}
 import play.api.data.Form
@@ -27,7 +28,6 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import viewmodels.Tag
 import views.html.ClassBeneficiaryDescriptionView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -67,7 +67,7 @@ class ClassBeneficiaryDescriptionController @Inject()(
         value => {
 
           val answers = request.userAnswers.set(ClassBeneficiaryDescriptionPage(index), value)
-            .flatMap(_.set(ClassBeneficiaryStatus(index), Tag.Completed))
+            .flatMap(_.set(ClassBeneficiaryStatus(index), Completed))
 
           for {
             updatedAnswers <- Future.fromTry(answers)

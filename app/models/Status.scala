@@ -14,22 +14,20 @@
  * limitations under the License.
  */
 
-package viewmodels
+package models
 
-import models.{Enumerable, WithName}
+sealed trait Status
 
-sealed trait Tag
+object Status extends Enumerable.Implicits {
 
-object Tag extends Enumerable.Implicits {
+  case object Completed extends WithName("completed") with Status
 
-  case object Completed extends WithName("completed") with Tag
+  case object InProgress extends WithName("progress") with Status
 
-  case object InProgress extends WithName("progress") with Tag
-
-  val values: Set[Tag] = Set(
+  val values: Set[Status] = Set(
     Completed, InProgress
   )
 
-  implicit val enumerable: Enumerable[Tag] =
+  implicit val enumerable: Enumerable[Status] =
     Enumerable(values.toSeq.map(v => v.toString -> v): _*)
 }
