@@ -21,7 +21,7 @@ import java.time.LocalDate
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping.TypeOfTrust.WillTrustOrIntestacyTrust
-import models.NonResidentType.Domiciled
+import models.NonResidentType.{Domiciled, NonDomiciled}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
 
@@ -132,6 +132,71 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
           residentialStatus = Some(ResidentialStatusType(
             uk = None,
             nonUK = Some(NonUKType(true,None,None,Some("Non Resident Domiciled")))
+          )),
+
+          typeOfTrust = WillTrustOrIntestacyTrust,
+          deedOfVariation = None,
+          interVivos = None,
+          efrbsStartDate = None
+        )
+
+      }
+
+
+      "must able to create TrustDetails for a non-UK governed, UK admin, not for schedule 5A, Inheritance tax act 1984" in {
+        val date = LocalDate.of(2010, 10, 10)
+
+        val userAnswers =
+          emptyUserAnswers
+            .set(TrustNamePage, "New Trust").success.value
+            .set(WhenTrustSetupPage, date).success.value
+            .set(GovernedInsideTheUKPage, false).success.value
+            .set(CountryGoverningTrustPage, "FR").success.value
+            .set(AdministrationInsideUKPage, true).success.value
+            .set(TrustResidentInUKPage, false).success.value
+            .set(RegisteringTrustFor5APage, false).success.value
+            .set(InheritanceTaxActPage, true).success.value
+            .set(AgentOtherThanBarristerPage, true).success.value
+
+        trustDetailsMapper.build(userAnswers).value mustBe TrustDetailsType(
+          startDate = date,
+          lawCountry = Some("FR"),
+          administrationCountry = Some("GB"),
+          residentialStatus = Some(ResidentialStatusType(
+            uk = None,
+            nonUK = Some(NonUKType(false,Some(true),Some(true),None))
+          )),
+
+          typeOfTrust = WillTrustOrIntestacyTrust,
+          deedOfVariation = None,
+          interVivos = None,
+          efrbsStartDate = None
+        )
+
+      }
+
+      "must able to create TrustDetails for a non-UK governed, UK admin, not for schedule 5A, no Inheritance tax act 1984" in {
+        val date = LocalDate.of(2010, 10, 10)
+
+        val userAnswers =
+          emptyUserAnswers
+            .set(TrustNamePage, "New Trust").success.value
+            .set(WhenTrustSetupPage, date).success.value
+            .set(GovernedInsideTheUKPage, false).success.value
+            .set(CountryGoverningTrustPage, "FR").success.value
+            .set(AdministrationInsideUKPage, true).success.value
+            .set(TrustResidentInUKPage, false).success.value
+            .set(RegisteringTrustFor5APage, false).success.value
+            .set(InheritanceTaxActPage, false).success.value
+
+
+        trustDetailsMapper.build(userAnswers).value mustBe TrustDetailsType(
+          startDate = date,
+          lawCountry = Some("FR"),
+          administrationCountry = Some("GB"),
+          residentialStatus = Some(ResidentialStatusType(
+            uk = None,
+            nonUK = Some(NonUKType(false,Some(false),None,None))
           )),
 
           typeOfTrust = WillTrustOrIntestacyTrust,

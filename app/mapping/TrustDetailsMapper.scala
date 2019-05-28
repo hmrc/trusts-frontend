@@ -85,6 +85,18 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
               agentS218IHTA84 = None,
               trusteeStatus = r)
             )
+
+          case (Some(false), None) =>
+            val s218ihta84 = userAnswers.get(InheritanceTaxActPage)
+            val agentS218IHTA84 = userAnswers.get(AgentOtherThanBarristerPage)
+            Some(
+              NonUKType(
+                sch5atcgga92 = false,
+                s218ihta84 = s218ihta84,
+                agentS218IHTA84 = agentS218IHTA84,
+                trusteeStatus = None)
+            )
+
           case (_, _) => None
         }
 
