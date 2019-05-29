@@ -16,10 +16,26 @@
 
 package mapping
 import models.{InternationalAddress, UKAddress, UserAnswers}
+import pages.QuestionPage
 
 class AddressMapper  {
 
-   def buildUkAddress(address: Option[UKAddress]): Option[AddressType] = {
+  def build(userAnswers           : UserAnswers,
+            isUk                  : QuestionPage[Boolean],
+            ukAddress             : QuestionPage[UKAddress],
+            internationalAddress  : QuestionPage[InternationalAddress]) : Option[AddressType] = {
+
+    userAnswers.get(isUk) flatMap {
+      uk =>
+        if(uk) {
+          buildUkAddress(userAnswers.get(ukAddress))
+        } else {
+          buildInternationalAddress(userAnswers.get(internationalAddress))
+        }
+    }
+  }
+
+   private def buildUkAddress(address: Option[models.UKAddress]): Option[AddressType] = {
     address.map{
       x=>
         val line2 = x.line2.getOrElse(x.townOrCity)
@@ -35,10 +51,9 @@ class AddressMapper  {
     }
   }
 
-  def buildInternationalAddress(address: Option[InternationalAddress]): Option[AddressType] = {
+  private def buildInternationalAddress(address: Option[models.InternationalAddress]): Option[AddressType] = {
     address.map{
       x=>
-
         AddressType(
           x.line1,
           x.line2,
