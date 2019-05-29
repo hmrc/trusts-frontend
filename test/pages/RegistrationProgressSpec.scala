@@ -21,6 +21,7 @@ import java.time.LocalDate
 import base.SpecBase
 import models.Status.{Completed, InProgress}
 import models.{AddABeneficiary, AddATrustee, FullName, Status}
+import pages.status.{ClassBeneficiaryStatus, IndividualBeneficiaryStatus, TrustDetailsStatus, TrusteeStatus}
 
 class RegistrationProgressSpec extends SpecBase {
 
@@ -58,7 +59,7 @@ class RegistrationProgressSpec extends SpecBase {
 
         val userAnswers = emptyUserAnswers
           .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
-          .set(TrustDetailsCompleted, Completed).success.value
+          .set(TrustDetailsStatus, Completed).success.value
 
         registrationProgress.isTrustDetailsComplete(userAnswers).value mustBe Completed
       }

@@ -21,7 +21,8 @@ import javax.inject.Inject
 import models.NormalMode
 import models.Status.Completed
 import navigation.Navigator
-import pages.{IndividualBeneficiaryAnswersPage, IndividualBeneficiaryNamePage, IndividualBeneficiaryStatus, TrusteesAnswerPage}
+import pages.status.IndividualBeneficiaryStatus
+import pages.{IndividualBeneficiaryAnswersPage, IndividualBeneficiaryNamePage, TrusteesAnswerPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository

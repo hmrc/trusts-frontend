@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package pages
+package pages.status
 
 import models.Status
-import models.entities.Trustees
+import pages.QuestionPage
 import play.api.libs.json.JsPath
+import viewmodels.TrustDetails
 
-final case class TrusteeStatus(index : Int) extends QuestionPage[Status] {
+case object TrustDetailsStatus extends QuestionPage[Status] {
 
-  override def path: JsPath = JsPath \ Trustees \ index \ toString
+  override def path: JsPath = JsPath \ TrustDetails \ toString
 
   override def toString: String = "status"
 }

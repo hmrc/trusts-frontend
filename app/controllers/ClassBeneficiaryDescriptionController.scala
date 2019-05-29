@@ -22,7 +22,8 @@ import javax.inject.Inject
 import models.Mode
 import models.Status.Completed
 import navigation.Navigator
-import pages.{ClassBeneficiaryDescriptionPage, ClassBeneficiaryStatus}
+import pages.ClassBeneficiaryDescriptionPage
+import pages.status.ClassBeneficiaryStatus
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

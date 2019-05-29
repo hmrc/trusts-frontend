@@ -21,6 +21,7 @@ import models.Status.{Completed, InProgress}
 import models.entities.Trustees
 import models.{AddABeneficiary, AddATrustee, Status, UserAnswers}
 import navigation.TaskListNavigator
+import pages.status.TrustDetailsStatus
 import viewmodels._
 
 class RegistrationProgress @Inject()(navigator : TaskListNavigator){
@@ -46,7 +47,7 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
     userAnswers.get(WhenTrustSetupPage) match {
       case None => None
       case Some(_) =>
-        val completed = userAnswers.get(TrustDetailsCompleted).contains(Completed)
+        val completed = userAnswers.get(TrustDetailsStatus).contains(Completed)
         determineStatus(completed)
     }
   }

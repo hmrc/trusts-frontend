@@ -21,7 +21,8 @@ import javax.inject.Inject
 import models.NormalMode
 import models.Status.Completed
 import navigation.Navigator
-import pages.{TrustDetailsAnswerPage, TrustDetailsCompleted}
+import pages.TrustDetailsAnswerPage
+import pages.status.TrustDetailsStatus
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import repositories.SessionRepository
@@ -84,7 +85,7 @@ class TrustDetailsAnswerPageController @Inject()(
     implicit request =>
 
       for {
-        updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustDetailsCompleted, Completed))
+        updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustDetailsStatus, Completed))
         _              <- sessionRepository.set(updatedAnswers)
       } yield Redirect(navigator.nextPage(TrustDetailsAnswerPage, NormalMode)(request.userAnswers))
   }

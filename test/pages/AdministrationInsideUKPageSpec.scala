@@ -19,6 +19,7 @@ package pages
 import models.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
+import pages.status.TrustDetailsStatus
 
 class AdministrationInsideUKPageSpec extends PageBehaviours {
 
@@ -41,7 +42,7 @@ class AdministrationInsideUKPageSpec extends PageBehaviours {
         val result = answers.set(AdministrationInsideUKPage, true).success.value
 
         result.get(CountryAdministeringTrustPage) mustNot be (defined)
-        result.get(TrustDetailsCompleted) mustNot be(defined)
+        result.get(TrustDetailsStatus) mustNot be(defined)
     }
 
   }

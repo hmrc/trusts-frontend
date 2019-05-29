@@ -21,7 +21,8 @@ import javax.inject.Inject
 import models.NormalMode
 import models.Status.Completed
 import navigation.Navigator
-import pages.{IsThisLeadTrusteePage, TrusteeStatus, TrusteesAnswerPage, TrusteesNamePage}
+import pages.status.TrusteeStatus
+import pages.{IsThisLeadTrusteePage, TrusteesAnswerPage, TrusteesNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import repositories.SessionRepository

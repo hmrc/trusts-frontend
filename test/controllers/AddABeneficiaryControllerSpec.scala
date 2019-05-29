@@ -21,7 +21,8 @@ import forms.AddABeneficiaryFormProvider
 import models.Status.Completed
 import models.{AddABeneficiary, FullName, NormalMode}
 import navigation.{FakeNavigator, Navigator}
-import pages._
+import pages.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage, IndividualBeneficiaryNamePage}
+import pages.status.{ClassBeneficiaryStatus, IndividualBeneficiaryStatus}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest

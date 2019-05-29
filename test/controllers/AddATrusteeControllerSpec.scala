@@ -21,7 +21,8 @@ import forms.AddATrusteeFormProvider
 import models.Status.Completed
 import models.{AddATrustee, FullName, IndividualOrBusiness, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.{TrusteeIndividualOrBusinessPage, TrusteeStatus, TrusteesNamePage}
+import pages.status.TrusteeStatus
+import pages.{TrusteeIndividualOrBusinessPage, TrusteesNamePage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest

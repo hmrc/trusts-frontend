@@ -19,6 +19,7 @@ package pages
 import models.{NonResidentType, UserAnswers}
 import pages.behaviours.PageBehaviours
 import org.scalacheck.Arbitrary.arbitrary
+import pages.status.TrustDetailsStatus
 
 class RegisteringTrustFor5APageSpec extends PageBehaviours {
 
@@ -42,7 +43,7 @@ class RegisteringTrustFor5APageSpec extends PageBehaviours {
         val result = answers.set(RegisteringTrustFor5APage, false).success.value
 
         result.get(NonResidentTypePage) mustNot be (defined)
-        result.get(TrustDetailsCompleted) mustNot be(defined)
+        result.get(TrustDetailsStatus) mustNot be(defined)
     }
 
   }
@@ -57,7 +58,7 @@ class RegisteringTrustFor5APageSpec extends PageBehaviours {
 
         result.get(InheritanceTaxActPage) mustNot be (defined)
         result.get(AgentOtherThanBarristerPage) mustNot be (defined)
-        result.get(TrustDetailsCompleted) mustNot be(defined)
+        result.get(TrustDetailsStatus) mustNot be(defined)
 
     }
   }
