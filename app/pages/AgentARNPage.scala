@@ -17,6 +17,7 @@
 package pages
 
 import play.api.libs.json.JsPath
+import viewmodels.Agent
 
 case object AgentARNPage extends QuestionPage[String] {
 
