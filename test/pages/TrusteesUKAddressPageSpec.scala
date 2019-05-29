@@ -19,7 +19,7 @@ package pages
 import models.UKAddress
 import pages.behaviours.PageBehaviours
 
-class UKAddressPageSpec extends PageBehaviours {
+class TrusteesUKAddressPageSpec extends PageBehaviours {
 
   "TrusteesUkAddressPage" must {
 

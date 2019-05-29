@@ -25,5 +25,5 @@ case object SettlorDateOfDeathPage extends QuestionPage[LocalDate] {
 
   override def path: JsPath = JsPath \ Settlors \ DeceasedSettlor \toString
 
-  override def toString: String = "settlorDateOfDeath"
+  override def toString: String = "dateOfDeath"
 }
