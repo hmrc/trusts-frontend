@@ -18,9 +18,11 @@ package navigation
 
 import controllers.routes
 import javax.inject.{Inject, Singleton}
+import models.Status.Completed
 import models.entities.Trustees
 import models.{NormalMode, UserAnswers}
 import pages._
+import pages.entitystatus.TrustDetailsStatus
 import play.api.mvc.Call
 import viewmodels.{Beneficiaries, ClassOfBeneficiaries, IndividualBeneficiaries, Settlors, TaxLiability, TrustDetails}
 
@@ -28,10 +30,9 @@ import viewmodels.{Beneficiaries, ClassOfBeneficiaries, IndividualBeneficiaries,
 class TaskListNavigator @Inject()() {
 
   private def trustDetailsRoute(answers: UserAnswers) = {
-    val (trustName, whenSetup) = (answers.get(TrustNamePage), answers.get(WhenTrustSetupPage))
-
-    (trustName, whenSetup) match {
-      case (Some(_), Some(_)) =>
+    val completed = answers.get(TrustDetailsStatus).contains(Completed)
+    completed match {
+      case true =>
         routes.TrustDetailsAnswerPageController.onPageLoad()
       case _ =>
         routes.TrustNameController.onPageLoad(NormalMode)
@@ -48,10 +49,11 @@ class TaskListNavigator @Inject()() {
   }
 
   private def settlorRoute(answers: UserAnswers) = {
-    answers.get(SettlorsNamePage) match {
-      case Some(_) =>
+    val deceasedCompleted = answers.get(DeceasedSettlorComplete).contains(Completed)
+    deceasedCompleted match {
+      case true =>
         routes.DeceasedSettlorAnswerController.onPageLoad()
-      case None =>
+      case _ =>
         routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode)
     }
   }

@@ -19,7 +19,7 @@ package utils
 import base.SpecBase
 import models.Status.Completed
 import models.{FullName, IndividualOrBusiness, UserAnswers}
-import pages.status.TrusteeStatus
+import pages.entitystatus.TrusteeStatus
 import pages.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage, TrusteesNamePage}
 import viewmodels.AddRow
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package pages.status
+package pages.entitystatus
 
 import models.Status
 import pages.QuestionPage

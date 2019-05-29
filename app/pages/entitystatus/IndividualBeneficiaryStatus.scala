@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package pages.status
+package pages.entitystatus
 
 import models.Status
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import viewmodels.Trustees
+import viewmodels.{Beneficiaries, IndividualBeneficiaries}
 
-final case class TrusteeStatus(index : Int) extends QuestionPage[Status] {
+final case class IndividualBeneficiaryStatus(index : Int) extends QuestionPage[Status] {
 
-  override def path: JsPath = JsPath \ Trustees \ index \ toString
+  override def path: JsPath = JsPath \  Beneficiaries \ IndividualBeneficiaries \ index \ toString
 
   override def toString: String = "status"
 }

@@ -21,7 +21,7 @@ import java.time.LocalDate
 import base.SpecBase
 import models.Status.{Completed, InProgress}
 import models.{AddABeneficiary, AddATrustee, FullName, Status}
-import pages.status.{ClassBeneficiaryStatus, IndividualBeneficiaryStatus, TrustDetailsStatus, TrusteeStatus}
+import pages.entitystatus.{ClassBeneficiaryStatus, IndividualBeneficiaryStatus, TrustDetailsStatus, TrusteeStatus}
 
 class RegistrationProgressSpec extends SpecBase {
 

@@ -22,7 +22,7 @@ import models.NormalMode
 import models.Status.Completed
 import navigation.Navigator
 import pages.TrustDetailsAnswerPage
-import pages.status.TrustDetailsStatus
+import pages.entitystatus.TrustDetailsStatus
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import repositories.SessionRepository

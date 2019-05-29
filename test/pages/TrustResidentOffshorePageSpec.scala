@@ -19,7 +19,7 @@ package pages
 import models.UserAnswers
 import pages.behaviours.PageBehaviours
 import org.scalacheck.Arbitrary.arbitrary
-import pages.status.TrustDetailsStatus
+import pages.entitystatus.TrustDetailsStatus
 
 class TrustResidentOffshorePageSpec extends PageBehaviours {
 

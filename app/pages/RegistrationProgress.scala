@@ -21,7 +21,7 @@ import models.Status.{Completed, InProgress}
 import models.entities.Trustees
 import models.{AddABeneficiary, AddATrustee, Status, UserAnswers}
 import navigation.TaskListNavigator
-import pages.status.TrustDetailsStatus
+import pages.entitystatus.TrustDetailsStatus
 import viewmodels._
 
 class RegistrationProgress @Inject()(navigator : TaskListNavigator){
