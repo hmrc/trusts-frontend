@@ -18,6 +18,7 @@ package pages
 
 import models.UserAnswers
 import play.api.libs.json.JsPath
+import viewmodels.{Beneficiaries, IndividualBeneficiaries}
 
 import scala.util.Try
 
@@ -25,7 +26,7 @@ case class IndividualBeneficiaryAddressYesNoPage(index : Int) extends QuestionPa
 
   override def path: JsPath = JsPath \  Beneficiaries \ IndividualBeneficiaries \ index \ toString
 
-  override def toString: String = "individualBeneficiaryAddressYesNo"
+  override def toString: String = "addressYesNo"
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {

@@ -17,10 +17,11 @@
 package pages
 
 import play.api.libs.json.JsPath
+import viewmodels.TrustDetails
 
 case object TrustPreviouslyResidentPage extends QuestionPage[String] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ TrustDetails \ toString
 
-  override def toString: String = "trustPreviouslyResident"
+  override def toString: String = "previouslyResident"
 }

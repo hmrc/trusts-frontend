@@ -18,10 +18,11 @@ package pages
 
 import models.InternationalAddress
 import play.api.libs.json.JsPath
+import viewmodels.{DeceasedSettlor, Settlors}
 
 case object SettlorsInternationalAddressPage extends QuestionPage[InternationalAddress] {
 
   override def path: JsPath = JsPath \ Settlors \ DeceasedSettlor \toString
 
-  override def toString: String = "settlorsInternationalAddress"
+  override def toString: String = "address"
 }

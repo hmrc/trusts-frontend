@@ -19,10 +19,11 @@ package pages
 import java.time.LocalDate
 
 import play.api.libs.json.JsPath
+import viewmodels.TrustDetails
 
 case object WhenTrustSetupPage extends QuestionPage[LocalDate] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ TrustDetails \ toString
 
   override def toString: String = "whenTrustSetup"
 }

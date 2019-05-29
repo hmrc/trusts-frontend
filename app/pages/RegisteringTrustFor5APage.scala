@@ -17,13 +17,15 @@
 package pages
 
 import models.UserAnswers
+import pages.entitystatus.TrustDetailsStatus
 import play.api.libs.json.JsPath
+import viewmodels.TrustDetails
 
 import scala.util.Try
 
 case object RegisteringTrustFor5APage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ TrustDetails \ toString
 
   override def toString: String = "registeringTrustFor5A"
 
@@ -31,9 +33,11 @@ case object RegisteringTrustFor5APage extends QuestionPage[Boolean] {
     value match {
       case Some(false) =>
         userAnswers.remove(NonResidentTypePage)
+          .flatMap(_.remove(TrustDetailsStatus))
       case Some(true) =>
         userAnswers.remove(InheritanceTaxActPage)
           .flatMap(_.remove(AgentOtherThanBarristerPage))
+          .flatMap(_.remove(TrustDetailsStatus))
       case _ =>
         super.cleanup(value, userAnswers)
     }

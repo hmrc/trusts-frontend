@@ -30,10 +30,10 @@
     </a>
 
     @task.tag.map { t =>
-      <strong class="govuk-tag @{t.id} app-task-list__task-@{t.id}"
+      <strong class="govuk-tag @{t.toString} app-task-list__task-@{t.toString}"
          id="task-list__task--@{task.link.text}__tag">
 
-          @messages(s"taskList.${t.id}")
+          @messages(s"taskList.${t.toString}")
       </strong>
     }
 </li>

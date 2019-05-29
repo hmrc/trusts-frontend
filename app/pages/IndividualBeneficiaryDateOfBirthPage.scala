@@ -19,10 +19,11 @@ package pages
 import java.time.LocalDate
 
 import play.api.libs.json.JsPath
+import viewmodels.{Beneficiaries, IndividualBeneficiaries}
 
 final case class IndividualBeneficiaryDateOfBirthPage(index : Int) extends QuestionPage[LocalDate] {
 
   override def path: JsPath = JsPath \  Beneficiaries \ IndividualBeneficiaries \ index \ toString
 
-  override def toString: String = "individualBeneficiaryDateOfBirth"
+  override def toString: String = "dateOfBirth"
 }
