@@ -43,6 +43,8 @@ class AgentMapperSpec extends FreeSpec with MustMatchers
     }
     "when user answers is not empty " - {
 
+
+
       "must able to create AgentDetails for a UK address" in {
 
         val userAnswers =
@@ -121,6 +123,26 @@ class AgentMapperSpec extends FreeSpec with MustMatchers
           agentTelephoneNumber = "+1234567890",
           clientReference = "1234-5678"
         )
+      }
+
+      "must not be able to create AgentDetails when no address available." in {
+        val userAnswers =
+          emptyUserAnswers
+            .set(AgentARNPage, "SARN123456").success.value
+            .set(AgentNamePage, "Agency Name").success.value
+            .set(AgentInternalReferencePage, "1234-5678").success.value
+            .set(AgentAddressYesNoPage, true).success.value
+        agentMapper.build(userAnswers) mustNot be(defined)
+
+      }
+
+      "must not be able to create AgentDetails when no only agent name available." in {
+        val userAnswers =
+          emptyUserAnswers
+            .set(AgentARNPage, "SARN123456").success.value
+            .set(AgentNamePage, "Agency Name").success.value
+        agentMapper.build(userAnswers) mustNot be(defined)
+
       }
     }
 
