@@ -17,10 +17,11 @@
 package pages
 
 import play.api.libs.json.JsPath
+import viewmodels.{Beneficiaries, IndividualBeneficiaries}
 
 case class IndividualBeneficiaryIncomePage(index: Int) extends QuestionPage[String] {
 
   override def path: JsPath = JsPath \ Beneficiaries \ IndividualBeneficiaries \ index \ toString
 
-  override def toString: String = "individualBeneficiaryIncome"
+  override def toString: String = "income"
 }

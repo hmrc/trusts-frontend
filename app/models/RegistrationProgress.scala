@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-import models.UKAddress
-import pages.behaviours.PageBehaviours
+sealed trait RegistrationProgress
 
-class UKAddressPageSpec extends PageBehaviours {
+object RegistrationProgress extends Enumerable.Implicits {
 
-  "TrusteesUkAddressPage" must {
+  case object NotStarted extends WithName("NotStarted") with RegistrationProgress
+  case object InProgress extends WithName("InProgress") with RegistrationProgress
+  case object Complete extends WithName("Complete") with RegistrationProgress
 
-    beRetrievable[UKAddress](TrusteesUkAddressPage(0))
+  val values: List[RegistrationProgress] = List(
+    NotStarted,InProgress,Complete
+  )
 
-    beSettable[UKAddress](TrusteesUkAddressPage(0))
-
-    beRemovable[UKAddress](TrusteesUkAddressPage(0))
-  }
+  implicit val enumerable: Enumerable[RegistrationProgress] =
+    Enumerable(values.map(v => v.toString -> v): _*)
 }

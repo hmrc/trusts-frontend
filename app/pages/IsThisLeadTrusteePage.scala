@@ -16,7 +16,8 @@
 
 package pages
 
-import models.{UKAddress, UserAnswers}
+import models.UserAnswers
+import models.entities.Trustees
 import play.api.libs.json.JsPath
 
 import scala.util.Try

@@ -16,7 +16,13 @@
 
 package viewmodels
 
-abstract class Tag(val id : String)
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-case object Completed extends Tag("completed")
-case object InProgress extends Tag("progress")
+case object DeceasedSettlor extends QuestionPage[Nothing]{
+
+  override def path: JsPath = JsPath \ Settlors \ toString
+
+  override def toString: String = "deceased"
+
+}

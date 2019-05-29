@@ -20,9 +20,13 @@ import java.time.LocalDate
 
 import base.SpecBase
 import controllers.routes
+import models.Status.Completed
+import models.WhatKindOfAsset.Money
+import models.entities.Trustees
 import models.{FullName, NormalMode, UserAnswers}
 import pages._
-import models.WhatKindOfAsset.Money
+import pages.entitystatus.TrustDetailsStatus
+import viewmodels.{Beneficiaries, Settlors, TaxLiability, TrustDetails}
 
 class TaskListNavigatorSpec extends SpecBase {
 
@@ -38,7 +42,7 @@ class TaskListNavigatorSpec extends SpecBase {
           val answers = UserAnswers(userAnswersId)
             .set(TrustNamePage, "Trust of John").success.value
               .set(WhenTrustSetupPage, LocalDate.of(2010,10,10)).success.value
-
+              .set(TrustDetailsStatus, Completed).success.value
           navigator.nextPage(TrustDetails, answers) mustBe routes.TrustDetailsAnswerPageController.onPageLoad()
         }
 
@@ -70,6 +74,7 @@ class TaskListNavigatorSpec extends SpecBase {
         "go to DeceasedSettlorAnswerPage" in {
           val answers = UserAnswers(userAnswersId).set(SetupAfterSettlorDiedPage, true).success.value
               .set(SettlorsNamePage, FullName("deceased",None, "settlor")).success.value
+              .set(DeceasedSettlorComplete, Completed).success.value
           navigator.nextPage(Settlors, answers) mustBe routes.DeceasedSettlorAnswerController.onPageLoad()
         }
 
@@ -147,7 +152,7 @@ class TaskListNavigatorSpec extends SpecBase {
 
         "go to AddATrustee" in {
           val answers = UserAnswers(userAnswersId)
-            .set(IsThisLeadTrusteePage(0), true).success.value
+            .set(IsThisLeadTrusteePage(0), false).success.value
 
           navigator.nextPage(Trustees, answers) mustBe routes.AddATrusteeController.onPageLoad()
         }

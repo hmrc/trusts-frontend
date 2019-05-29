@@ -18,10 +18,11 @@ package pages
 
 import models.WhatTypeOfBeneficiary
 import play.api.libs.json.JsPath
+import viewmodels.Beneficiaries
 
 case object WhatTypeOfBeneficiaryPage extends QuestionPage[WhatTypeOfBeneficiary] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ Beneficiaries \ toString
 
   override def toString: String = "whatTypeOfBeneficiary"
 }

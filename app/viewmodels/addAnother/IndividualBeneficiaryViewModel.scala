@@ -14,14 +14,25 @@
  * limitations under the License.
  */
 
-package pages
+package viewmodels.addAnother
 
-import play.api.libs.json.JsPath
+import models.Status.{Completed, InProgress}
+import models.{FullName, Status}
+import play.api.libs.json.{Reads, _}
 
-case object Settlors extends QuestionPage[List[Nothing]]{
+case class IndividualBeneficiaryViewModel(name: Option[FullName], status: Status) {
 
-  override def path: JsPath = JsPath \ toString
+  def isComplete = name.nonEmpty && (status == Completed)
 
-  override def toString: String = "settlors"
+}
+
+object IndividualBeneficiaryViewModel {
+
+  import play.api.libs.functional.syntax._
+
+  implicit val reads : Reads[IndividualBeneficiaryViewModel] = (
+    (__ \ "name").readNullable[FullName] and
+      (__ \ "status").readWithDefault[Status](InProgress)
+    )(IndividualBeneficiaryViewModel.apply _)
 
 }

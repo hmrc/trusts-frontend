@@ -23,8 +23,9 @@ import controllers.actions._
 import javax.inject.Inject
 import models.Matched.{AlreadyRegistered, Failed, Success}
 import models.NormalMode
-import models.Progress.InProgress
+import models.RegistrationProgress.InProgress
 import pages._
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -72,7 +73,12 @@ class TaskListController @Inject()(
         for {
           _              <- sessionRepository.set(updatedAnswers)
         } yield {
-          Ok(view(savedUntil, registrationProgress.sections(updatedAnswers), affinityGroup))
+
+          val sections = registrationProgress.sections(updatedAnswers)
+
+          Logger.debug(s"[TaskList][sections] $sections")
+
+          Ok(view(savedUntil, sections, affinityGroup))
         }
       }
 

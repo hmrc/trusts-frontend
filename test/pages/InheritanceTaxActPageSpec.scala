@@ -19,6 +19,7 @@ package pages
 import models.UserAnswers
 import pages.behaviours.PageBehaviours
 import org.scalacheck.Arbitrary.arbitrary
+import pages.entitystatus.TrustDetailsStatus
 
 class InheritanceTaxActPageSpec extends PageBehaviours {
 
@@ -41,6 +42,7 @@ class InheritanceTaxActPageSpec extends PageBehaviours {
         val result = answers.set(InheritanceTaxActPage, false).success.value
 
         result.get(AgentOtherThanBarristerPage) mustNot be (defined)
+        result.get(TrustDetailsStatus) mustNot be(defined)
     }
 
   }

@@ -17,11 +17,12 @@
 package pages
 
 import models.UKAddress
+import models.entities.Trustees
 import play.api.libs.json.JsPath
 
 final case class TrusteesUkAddressPage(index: Int) extends QuestionPage[UKAddress] {
 
   override def path: JsPath = JsPath \ Trustees \ index \ toString
 
-  override def toString: String = "trusteesUkAddress"
+  override def toString: String = "address"
 }

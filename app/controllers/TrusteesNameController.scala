@@ -19,15 +19,15 @@ package controllers
 import controllers.actions._
 import forms.TrusteesNameFormProvider
 import javax.inject.Inject
-import models.requests.DataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.{IsThisLeadTrusteePage, Trustees, TrusteesNamePage}
+import pages.{IsThisLeadTrusteePage, TrusteesNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import viewmodels.Trustees
 import views.html.TrusteesNameView
 
 import scala.concurrent.{ExecutionContext, Future}

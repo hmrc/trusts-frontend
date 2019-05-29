@@ -14,10 +14,20 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-case object TrustDetails extends Page {
+sealed trait Status
 
-  override def toString: String = "trustDetails"
+object Status extends Enumerable.Implicits {
 
+  case object Completed extends WithName("completed") with Status
+
+  case object InProgress extends WithName("progress") with Status
+
+  val values: Set[Status] = Set(
+    Completed, InProgress
+  )
+
+  implicit val enumerable: Enumerable[Status] =
+    Enumerable(values.toSeq.map(v => v.toString -> v): _*)
 }

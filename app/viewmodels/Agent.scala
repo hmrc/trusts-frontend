@@ -14,15 +14,11 @@
  * limitations under the License.
  */
 
-package models.entities
+package viewmodels
 
-import play.api.libs.json.{Json, OFormat}
+import pages.Page
 
+case object Agent extends Page {
 
-case class ClassOfBeneficiary(classBeneficiaryDescription: Option[String]) {
-  def isComplete = classBeneficiaryDescription.nonEmpty
-}
-
-object ClassOfBeneficiary {
-    implicit  val classOfBeneficiaryFormat : OFormat[ClassOfBeneficiary] = Json.format[ClassOfBeneficiary]
+  override def toString: String = "agent"
 }
