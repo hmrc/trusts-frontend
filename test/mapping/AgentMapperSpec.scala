@@ -99,6 +99,25 @@ class AgentMapperSpec extends FreeSpec with MustMatchers
           clientReference = "1234-5678"
         )
       }
+
+      "must able to create AgentDetails for a international address with minimum data" in {
+
+        val userAnswers =
+          emptyUserAnswers
+            .set(AgentNamePage, "Agency Name").success.value
+            .set(AgentInternationalAddressPage,InternationalAddress("line1","line2",None, None, "IN")).success.value
+            .set(AgentTelephoneNumberPage, "+1234567890").success.value
+            .set(AgentInternalReferencePage, "1234-5678").success.value
+            .set(AgentAddressYesNoPage, false).success.value
+
+        agentMapper.build(userAnswers).value mustBe AgentDetails(
+          arn = "",
+          agentName = "Agency Name",
+          agentAddress = AddressType("line1", "line2", None, None, None, "IN"),
+          agentTelephoneNumber = "+1234567890",
+          clientReference = "1234-5678"
+        )
+      }
     }
 
 
