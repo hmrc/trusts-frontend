@@ -24,5 +24,5 @@ final case class IndividualBeneficiaryAddressUKPage(index: Int) extends Question
 
   override def path: JsPath = JsPath \  Beneficiaries \ IndividualBeneficiaries \ index \ toString
 
-  override def toString: String = "addressUK"
+  override def toString: String = "address"
 }
