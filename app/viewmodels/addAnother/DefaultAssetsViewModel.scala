@@ -16,30 +16,23 @@
 
 package viewmodels.addAnother
 
-import models.Status
+import models.Status.InProgress
+import models.{Status, WhatKindOfAsset}
 
-trait AssetViewModel {
+final case class DefaultAssetsViewModel(`type` : WhatKindOfAsset,
+                                        override val status : Status
+                                       ) extends AssetViewModel
 
-  val status : Status
 
-}
+object DefaultAssetsViewModel {
 
-object AssetViewModel {
-
+  import play.api.libs.functional.syntax._
   import play.api.libs.json._
 
-  implicit class ReadsWithContravariantOr[A](a: Reads[A]) {
-
-    def or[B >: A](b: Reads[B]): Reads[B] =
-      a.map[B](identity).orElse(b)
-  }
-
-  implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
-    a.map(identity)
-
-  implicit lazy val reads : Reads[AssetViewModel] = {
-    MoneyAssetViewModel.reads or
-    DefaultAssetsViewModel.reads
-  }
-
+  implicit lazy val reads: Reads[DefaultAssetsViewModel] =
+      ((__ \ "whatKindOfAsset").read[WhatKindOfAsset] and
+        (__ \ "status").readWithDefault[Status](InProgress)
+        )((kind, status) =>
+            DefaultAssetsViewModel(kind, status)
+      )
 }

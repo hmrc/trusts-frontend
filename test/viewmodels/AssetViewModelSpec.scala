@@ -18,7 +18,7 @@ package viewmodels
 
 import generators.{Generators, ModelGenerators}
 import models.Status.{Completed, InProgress}
-import models.WhatKindOfAsset.Money
+import models.WhatKindOfAsset.{Money, PropertyOrLand}
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.{FreeSpec, MustMatchers}
 import play.api.libs.json.{JsSuccess, Json}
@@ -42,16 +42,25 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks 
       }
 
       "from a money asset to a view model that is complete" in {
+          val json = Json.obj(
+            "whatKindOfAsset" -> Money.toString,
+            "assetMoneyValue" -> "4000",
+            "status" -> Completed.toString
+          )
 
-            val json = Json.obj(
-              "whatKindOfAsset" -> Money.toString,
-              "assetMoneyValue" -> "4000",
-              "status" -> Completed.toString
-            )
+          json.validate[AssetViewModel] mustEqual JsSuccess(
+            addAnother.MoneyAssetViewModel(Money, Some("£4000"), Completed)
+          )
+      }
 
-            json.validate[AssetViewModel] mustEqual JsSuccess(
-              addAnother.MoneyAssetViewModel(Money, Some("£4000"), Completed)
-            )
+      "to a default from any other type" in {
+        val json = Json.obj(
+          "whatKindOfAsset" -> PropertyOrLand.toString
+        )
+
+        json.validate[AssetViewModel] mustEqual JsSuccess(
+          addAnother.DefaultAssetsViewModel(PropertyOrLand, InProgress)
+        )
       }
     }
   }

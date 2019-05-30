@@ -23,6 +23,7 @@ import models.{AddABeneficiary, AddATrustee, AddAssets, Status, UserAnswers, ent
 import navigation.TaskListNavigator
 import pages.entitystatus.TrustDetailsStatus
 import viewmodels._
+import viewmodels.addAnother.MoneyAssetViewModel
 
 class RegistrationProgress @Inject()(navigator : TaskListNavigator){
 
@@ -31,7 +32,7 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
     Task(Link(Settlors, navigator.nextPage(Settlors, userAnswers).url), isDeceasedSettlorComplete(userAnswers)),
     Task(Link(Trustees, navigator.nextPage(Trustees, userAnswers).url), isTrusteesComplete(userAnswers)),
     Task(Link(Beneficiaries, navigator.nextPage(Beneficiaries, userAnswers).url), isBeneficiariesComplete(userAnswers)),
-    Task(Link(Assets, navigator.nextPage(entities.Assets, userAnswers).url), None),
+    Task(Link(Assets, navigator.nextPage(entities.Assets, userAnswers).url), assetsStatus(userAnswers)),
     Task(Link(TaxLiability, navigator.nextPage(TaxLiability, userAnswers).url), None)
   )
 
@@ -112,7 +113,8 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
     assets match {
       case Nil => None
       case list =>
-        val status = !list.exists(_.status == InProgress) && noMoreToAdd
+        val filtered = list.filter(x => x.isInstanceOf[MoneyAssetViewModel])
+        val status = !filtered.exists(_.status == InProgress) && noMoreToAdd
         determineStatus(status)
     }
   }

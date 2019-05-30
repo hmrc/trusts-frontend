@@ -275,7 +275,6 @@ class Navigator @Inject()() {
       case _ => routes.SessionExpiredController.onPageLoad()
     }
 
-
   private def addATrusteeRoute(answers: UserAnswers) = {
     val addAnother = answers.get(AddATrusteePage)
 
