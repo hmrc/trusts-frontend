@@ -20,8 +20,10 @@ import controllers.actions._
 import forms.AssetMoneyValueFormProvider
 import javax.inject.Inject
 import models.Mode
+import models.Status.Completed
 import navigation.Navigator
 import pages.AssetMoneyValuePage
+import pages.entitystatus.AssetStatus
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -64,8 +66,12 @@ class AssetMoneyValueController @Inject()(
           Future.successful(BadRequest(view(formWithErrors, mode, index))),
 
         value => {
+
+          val answers = request.userAnswers.set(AssetMoneyValuePage(index), value)
+            .flatMap(_.set(AssetStatus(index), Completed))
+
           for {
-                updatedAnswers <- Future.fromTry(request.userAnswers.set(AssetMoneyValuePage(index), value))
+                updatedAnswers <- Future.fromTry(answers)
                 _              <- sessionRepository.set(updatedAnswers)
               } yield Redirect(navigator.nextPage(AssetMoneyValuePage(index), mode)(updatedAnswers))
           }

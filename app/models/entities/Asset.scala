@@ -16,18 +16,23 @@
 
 package models.entities
 
-import models.WhatKindOfAsset
-import models.WhatKindOfAsset.Money
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.Reads
 
-
-case class Asset(whatKindOfAsset: Option[WhatKindOfAsset], assetMoneyValue: Option[String]){
-  def isComplete = whatKindOfAsset.nonEmpty && assetMoneyValue.nonEmpty
-  def isMoney :Boolean = whatKindOfAsset.isDefined && whatKindOfAsset.contains(Money)
-}
+trait Asset
 
 object Asset {
 
-  implicit val formats : OFormat[Asset] = Json.format[Asset]
+  implicit class ReadsWithContravariantOr[A](a: Reads[A]) {
+
+    def or[B >: A](b: Reads[B]): Reads[B] =
+      a.map[B](identity).orElse(b)
+  }
+
+  implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
+    a.map(identity)
+
+  implicit lazy val reads : Reads[Asset] = {
+    MoneyAsset.reads
+  }
 
 }
