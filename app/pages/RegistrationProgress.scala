@@ -18,11 +18,12 @@ package pages
 
 import javax.inject.Inject
 import models.Status.{Completed, InProgress}
-import models.entities.Trustees
-import models.{AddABeneficiary, AddATrustee, Status, UserAnswers}
+import models.entities.{Assets, Trustees}
+import models.{AddABeneficiary, AddATrustee, AddAssets, Status, UserAnswers, entities}
 import navigation.TaskListNavigator
 import pages.entitystatus.TrustDetailsStatus
 import viewmodels._
+import viewmodels.addAnother.MoneyAssetViewModel
 
 class RegistrationProgress @Inject()(navigator : TaskListNavigator){
 
@@ -31,7 +32,7 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
     Task(Link(Settlors, navigator.nextPage(Settlors, userAnswers).url), isDeceasedSettlorComplete(userAnswers)),
     Task(Link(Trustees, navigator.nextPage(Trustees, userAnswers).url), isTrusteesComplete(userAnswers)),
     Task(Link(Beneficiaries, navigator.nextPage(Beneficiaries, userAnswers).url), isBeneficiariesComplete(userAnswers)),
-    Task(Link(pages.Assets, navigator.nextPage(pages.Assets, userAnswers).url), None),
+    Task(Link(Assets, navigator.nextPage(entities.Assets, userAnswers).url), assetsStatus(userAnswers)),
     Task(Link(TaxLiability, navigator.nextPage(TaxLiability, userAnswers).url), None)
   )
 
@@ -102,6 +103,19 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
         val classComplete = !c.exists(_.status == InProgress)
 
         determineStatus(indComplete && classComplete && noMoreToAdd)
+    }
+  }
+
+  def assetsStatus(userAnswers: UserAnswers) : Option[Status] = {
+    val noMoreToAdd = userAnswers.get(AddAssetsPage).contains(AddAssets.NoComplete)
+    val assets = userAnswers.get(viewmodels.Assets).getOrElse(List.empty)
+
+    assets match {
+      case Nil => None
+      case list =>
+        val filtered = list.filter(x => x.isInstanceOf[MoneyAssetViewModel])
+        val status = !filtered.exists(_.status == InProgress) && noMoreToAdd
+        determineStatus(status)
     }
   }
 

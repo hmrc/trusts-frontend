@@ -81,6 +81,7 @@ entities.no.name.added = No name added
 entities.lead = Lead
 entities.trustee = Trustee
 entities.trustee.individual = Trustee Individual
+entities.trustee.business = Trustee Business
 
 createAgentServicesAccount.title = Create an agent services account
 createAgentServicesAccount.heading = Create an agent services account
