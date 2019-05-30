@@ -18,7 +18,7 @@ package mapping
 
 import javax.inject.Inject
 
-import models.{FullName, UserAnswers}
+import models.UserAnswers
 import models.entities.{Trustee, TrusteeIndividual, Trustees}
 
 

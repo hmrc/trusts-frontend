@@ -16,7 +16,7 @@
 
 package mapping
 
-import models.{FullName, UKAddress, UserAnswers}
+import models.{FullName, UserAnswers}
 import pages.QuestionPage
 
 
