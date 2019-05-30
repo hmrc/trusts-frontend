@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package pages
+package pages.entitystatus
 
+import models.Status
 import models.entities.Assets
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-final case class AssetMoneyValuePage(index: Int) extends QuestionPage[String] {
+final case class AssetStatus(index : Int) extends QuestionPage[Status] {
 
   override def path: JsPath = JsPath \ Assets \ index \ toString
 
-  override def toString: String = "assetMoneyValue"
+  override def toString: String = "status"
 }
-
-

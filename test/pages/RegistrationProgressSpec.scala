@@ -19,9 +19,10 @@ package pages
 import java.time.LocalDate
 
 import base.SpecBase
+import models.AddAssets.NoComplete
 import models.Status.{Completed, InProgress}
-import models.{AddABeneficiary, AddATrustee, FullName, Status}
-import pages.entitystatus.{ClassBeneficiaryStatus, IndividualBeneficiaryStatus, TrustDetailsStatus, TrusteeStatus}
+import models.{AddABeneficiary, AddATrustee, FullName, Status, WhatKindOfAsset}
+import pages.entitystatus.{AssetStatus, ClassBeneficiaryStatus, IndividualBeneficiaryStatus, TrustDetailsStatus, TrusteeStatus}
 
 class RegistrationProgressSpec extends SpecBase {
 
@@ -266,6 +267,52 @@ class RegistrationProgressSpec extends SpecBase {
           .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
 
         registrationProgress.isBeneficiariesComplete(userAnswers).value mustBe Completed
+      }
+
+    }
+
+  }
+
+  "Assets section" must {
+
+    "render no tag" when {
+
+      "there are no assets in user answers" in {
+        val registrationProgress = injector.instanceOf[RegistrationProgress]
+
+        val userAnswers = emptyUserAnswers
+
+        registrationProgress.assetsStatus(userAnswers) mustBe None
+      }
+
+    }
+
+    "render in-progress tag" when {
+
+      "there are assets in user answers that are not complete" in {
+        val registrationProgress = injector.instanceOf[RegistrationProgress]
+
+        val userAnswers = emptyUserAnswers
+            .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
+
+        registrationProgress.assetsStatus(userAnswers).value mustBe InProgress
+      }
+
+    }
+
+    "render complete tag" when {
+
+      "there are assets in user answers that are complete" in {
+
+        val registrationProgress = injector.instanceOf[RegistrationProgress]
+
+        val userAnswers = emptyUserAnswers
+          .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
+          .set(AssetMoneyValuePage(0), "2000").success.value
+          .set(AssetStatus(0), Completed).success.value
+          .set(AddAssetsPage, NoComplete).success.value
+
+        registrationProgress.assetsStatus(userAnswers).value mustBe Completed
       }
 
     }

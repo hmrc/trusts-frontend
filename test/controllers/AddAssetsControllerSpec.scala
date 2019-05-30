@@ -18,9 +18,11 @@ package controllers
 
 import base.SpecBase
 import forms.AddAssetsFormProvider
+import models.Status.Completed
 import models.WhatKindOfAsset.Money
 import models.{AddAssets, FullName, IndividualOrBusiness, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
+import pages.entitystatus.AssetStatus
 import pages.{AddAssetsPage, AssetMoneyValuePage, TrusteeIndividualOrBusinessPage, TrusteesNamePage, WhatKindOfAssetPage}
 import play.api.inject.bind
 import play.api.libs.json.{JsString, Json}
@@ -46,6 +48,7 @@ class AddAssetsControllerSpec extends SpecBase {
   val userAnswersWithAssetsComplete = UserAnswers(userAnswersId)
     .set(WhatKindOfAssetPage(0), Money).success.value
     .set(AssetMoneyValuePage(0), "4800").success.value
+    .set(AssetStatus(0), Completed).success.value
 
   "AddAssets Controller" must {
 

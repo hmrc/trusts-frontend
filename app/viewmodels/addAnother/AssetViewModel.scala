@@ -14,16 +14,31 @@
  * limitations under the License.
  */
 
-package pages
+package viewmodels.addAnother
 
-import models.entities.Assets
-import play.api.libs.json.JsPath
+import models.Status
 
-final case class AssetMoneyValuePage(index: Int) extends QuestionPage[String] {
+trait AssetViewModel {
 
-  override def path: JsPath = JsPath \ Assets \ index \ toString
+  val status : Status
 
-  override def toString: String = "assetMoneyValue"
 }
 
+object AssetViewModel {
 
+  import play.api.libs.json._
+
+  implicit class ReadsWithContravariantOr[A](a: Reads[A]) {
+
+    def or[B >: A](b: Reads[B]): Reads[B] =
+      a.map[B](identity).orElse(b)
+  }
+
+  implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
+    a.map(identity)
+
+  implicit lazy val reads : Reads[AssetViewModel] = {
+    MoneyAssetViewModel.reads
+  }
+
+}
