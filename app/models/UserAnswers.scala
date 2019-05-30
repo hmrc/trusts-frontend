@@ -18,8 +18,9 @@ package models
 
 import java.time.LocalDateTime
 
-import models.Progress.NotStarted
+import models.RegistrationProgress.NotStarted
 import pages._
+import play.api.Logger
 import play.api.libs.json._
 
 import scala.util.{Failure, Success, Try}
@@ -27,12 +28,18 @@ import scala.util.{Failure, Success, Try}
 final case class UserAnswers(
                               id: String,
                               data: JsObject = Json.obj(),
-                              progress : Progress = NotStarted,
+                              progress : RegistrationProgress = NotStarted,
                               createdAt : LocalDateTime = LocalDateTime.now
                             ) {
 
-  def get[A](page: QuestionPage[A])(implicit rds: Reads[A]): Option[A] =
-    Reads.optionNoError(Reads.at(page.path)).reads(data).getOrElse(None)
+  def get[A](page: QuestionPage[A])(implicit rds: Reads[A]): Option[A] = {
+    Reads.at(page.path).reads(data) match {
+      case JsSuccess(value, _) => Some(value)
+      case JsError(errors) =>
+        Logger.info(s"[UserAnswers] tried to read path ${page.path}")
+        None
+    }
+  }
 
   def set[A](page: QuestionPage[A], value: A)(implicit writes: Writes[A]): Try[UserAnswers] = {
 
@@ -40,6 +47,8 @@ final case class UserAnswers(
       case JsSuccess(jsValue, _) =>
         Success(jsValue)
       case JsError(errors) =>
+        val errorPaths = errors.collectFirst{ case (path, e) => s"$path $e"}
+        Logger.warn(s"[UserAnswers] unable to set path ${page.path} due to errors $errorPaths")
         Failure(JsResultException(errors))
     }
 
@@ -76,7 +85,7 @@ object UserAnswers {
     (
       (__ \ "_id").read[String] and
       (__ \ "data").read[JsObject] and
-      (__ \ "progress").read[Progress] and
+      (__ \ "progress").read[RegistrationProgress] and
       (__ \ "createdAt").read(MongoDateTimeFormats.localDateTimeRead)
     ) (UserAnswers.apply _)
   }
@@ -88,7 +97,7 @@ object UserAnswers {
     (
       (__ \ "_id").write[String] and
       (__ \ "data").write[JsObject] and
-      (__ \ "progress").write[Progress] and
+      (__ \ "progress").write[RegistrationProgress] and
       (__ \ "createdAt").write(MongoDateTimeFormats.localDateTimeWrite)
     ) (unlift(UserAnswers.unapply))
   }

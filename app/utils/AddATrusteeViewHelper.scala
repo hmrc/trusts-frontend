@@ -16,45 +16,40 @@
 
 package utils
 
-import models.entities.Trustee
-import models.{FullName, IndividualOrBusiness, UserAnswers}
-import pages.Trustees
+import models.Status.{Completed, InProgress}
+import models.{IndividualOrBusiness, UserAnswers}
 import play.api.i18n.Messages
-import viewmodels.{AddRow, AddToRows}
+import viewmodels._
+import viewmodels.addAnother.TrusteeViewModel
 
 class AddATrusteeViewHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
-  private def parseName(name : Option[FullName]) : String = {
-    name match {
-      case Some(x) => s"$x"
-      case None => ""
-    }
-  }
+  private def render(trustee : TrusteeViewModel) : AddRow = {
 
-  private def parseType(individualOrBusiness: Option[IndividualOrBusiness]) : String = {
-    individualOrBusiness match {
-      case Some(x) =>
-        s"${messages("entity.trustee")} ${messages(s"individualOrBusiness.$x")}"
+    val name = trustee.name.map(_.toString).getOrElse(messages("entities.no.name.added"))
+
+    def renderForLead(message : String) = s"${messages("entities.lead")} $message"
+
+    val trusteeType = trustee.`type` match {
+      case Some(k : IndividualOrBusiness) =>
+        val key = messages(s"entities.trustee.$k")
+        trustee.isLead match {
+          case true => renderForLead(key)
+          case false => key
+        }
       case None =>
-        messages("entity.trustee")
+        s"${messages("entities.trustee")}"
     }
-  }
 
-  private def parseTrustee(trustee : Trustee) : AddRow = {
-    AddRow(
-      parseName(trustee.name),
-      parseType(trustee.`type`),
-      "#",
-      "#"
-    )
+    AddRow(name, trusteeType, "#", "#")
   }
 
   def rows : AddToRows = {
     val trustees = userAnswers.get(Trustees).toList.flatten
 
-    val complete = trustees.filter(_.isComplete).map(parseTrustee)
+    val complete = trustees.filter(_.status == Completed).map(render)
 
-    val inProgress = trustees.filterNot(_.isComplete).map(parseTrustee)
+    val inProgress = trustees.filter(_.status == InProgress).map(render)
 
     AddToRows(inProgress, complete)
   }

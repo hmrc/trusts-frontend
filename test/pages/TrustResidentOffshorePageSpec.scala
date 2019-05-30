@@ -19,6 +19,7 @@ package pages
 import models.UserAnswers
 import pages.behaviours.PageBehaviours
 import org.scalacheck.Arbitrary.arbitrary
+import pages.entitystatus.TrustDetailsStatus
 
 class TrustResidentOffshorePageSpec extends PageBehaviours {
 
@@ -40,6 +41,7 @@ class TrustResidentOffshorePageSpec extends PageBehaviours {
         val result = answers.set(TrustResidentOffshorePage, false).success.value
 
         result.get(TrustPreviouslyResidentPage) mustNot be (defined)
+        result.get(TrustDetailsStatus) mustNot be(defined)
     }
   }
 

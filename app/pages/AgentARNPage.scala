@@ -17,11 +17,11 @@
 package pages
 
 import play.api.libs.json.JsPath
+import viewmodels.Agent
 
-case object Settlors extends QuestionPage[List[Nothing]]{
+case object AgentARNPage extends QuestionPage[String] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ Agent \ toString
 
-  override def toString: String = "settlors"
-
+  override def toString: String = "agentARN"
 }

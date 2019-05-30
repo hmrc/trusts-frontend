@@ -16,24 +16,27 @@
 
 package controllers
 
-import akka.actor.FSM.Normal
 import controllers.actions._
 import javax.inject.Inject
 import models.NormalMode
+import models.Status.Completed
 import navigation.Navigator
-import pages.{IsThisLeadTrusteePage, Trustees, TrusteesAnswerPage, TrusteesNamePage}
-import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import pages.entitystatus.TrusteeStatus
+import pages.{IsThisLeadTrusteePage, TrusteesAnswerPage, TrusteesNamePage}
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
-import viewmodels.AnswerSection
+import viewmodels.{AnswerSection, Trustees}
 import views.html.TrusteesAnswerPageView
 
-
+import scala.concurrent.{ExecutionContext, Future}
 
 class TrusteesAnswerPageController @Inject()(
                                               override val messagesApi: MessagesApi,
+                                              sessionRepository: SessionRepository,
                                               identify: IdentifierAction,
                                               navigator: Navigator,
                                               getData: DataRetrievalAction,
@@ -43,7 +46,7 @@ class TrusteesAnswerPageController @Inject()(
                                               val controllerComponents: MessagesControllerComponents,
                                               view: TrusteesAnswerPageView,
                                               countryOptions : CountryOptions
-                                            ) extends FrontendBaseController with I18nSupport {
+                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(index : Int) =
     identify andThen getData andThen
@@ -82,8 +85,14 @@ class TrusteesAnswerPageController @Inject()(
       Ok(view(index, sections))
   }
 
-  def onSubmit(index : Int) = actions(index) {
+  def onSubmit(index : Int) = actions(index).async {
     implicit request =>
-      Redirect(navigator.nextPage(TrusteesAnswerPage, NormalMode)(request.userAnswers))
+
+    val answers = request.userAnswers.set(TrusteeStatus(index), Completed)
+
+    for {
+      updatedAnswers <- Future.fromTry(answers)
+      _              <- sessionRepository.set(updatedAnswers)
+    } yield Redirect(navigator.nextPage(TrusteesAnswerPage, NormalMode)(request.userAnswers))
   }
 }

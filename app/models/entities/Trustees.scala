@@ -14,20 +14,15 @@
  * limitations under the License.
  */
 
-package models
+package models.entities
 
-sealed trait Progress
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-object Progress extends Enumerable.Implicits {
+case object Trustees extends QuestionPage[List[Trustee]]{
 
-  case object NotStarted extends WithName("NotStarted") with Progress
-  case object InProgress extends WithName("InProgress") with Progress
-  case object Complete extends WithName("Complete") with Progress
+  override def path: JsPath = JsPath \ toString
 
-  val values: List[Progress] = List(
-    NotStarted,InProgress,Complete
-  )
+  override def toString: String = "trustees"
 
-  implicit val enumerable: Enumerable[Progress] =
-    Enumerable(values.map(v => v.toString -> v): _*)
 }

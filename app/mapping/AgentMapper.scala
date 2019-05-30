@@ -17,31 +17,29 @@
 package mapping
 
 import javax.inject.Inject
+
 import models.{UKAddress, UserAnswers}
-import pages.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentNamePage, AgentTelephoneNumberPage, AgentUKAddressPage}
+import pages._
 
 class AgentMapper @Inject()(addressMapper : AddressMapper) extends Mapping[AgentDetails] {
-
-
 
   override def build(userAnswers: UserAnswers): Option[AgentDetails] = {
 
     for {
+      arn <- userAnswers.get(AgentARNPage)
       agentName <- userAnswers.get(AgentNamePage)
-      isUK <- userAnswers.get(AgentAddressYesNoPage)
-      address <- {
-        isUK match {
-          case true =>addressMapper.buildUkAddress(userAnswers.get(AgentUKAddressPage))
-          case false =>addressMapper.buildInternationalAddress(userAnswers.get(AgentInternationalAddressPage))
-        }
-
-
-      }
+      address <- addressMapper.build(
+        userAnswers,
+        AgentAddressYesNoPage,
+        AgentUKAddressPage,
+        AgentInternationalAddressPage
+      )
       telephone <- userAnswers.get(AgentTelephoneNumberPage)
       internalReference <- userAnswers.get(AgentInternalReferencePage)
     } yield {
-      AgentDetails("", agentName, address, telephone, internalReference)
+      AgentDetails(arn, agentName, address, telephone, internalReference)
     }
 
   }
+
 }

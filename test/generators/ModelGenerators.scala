@@ -16,6 +16,8 @@
 
 package generators
 
+import java.time.LocalDate
+
 import models._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
@@ -83,6 +85,11 @@ trait ModelGenerators {
   implicit lazy val arbitraryNonResidentType: Arbitrary[NonResidentType] =
     Arbitrary {
       Gen.oneOf(NonResidentType.values)
+    }
+
+  implicit lazy val arbitraryLocalDate : Arbitrary[LocalDate] =
+    Arbitrary {
+      Gen.const(LocalDate.of(2010, 10, 10))
     }
 
 }

@@ -20,6 +20,7 @@ import com.google.inject.Inject
 import handlers.ErrorHandler
 import models.requests.DataRequest
 import pages.QuestionPage
+import play.api.Logger
 import play.api.http.Status
 import play.api.libs.json.Reads
 import play.api.mvc.{ActionFilter, Result}
@@ -34,9 +35,12 @@ class IndexActionFilter[T](index : Int, entity : QuestionPage[List[T]], errorHan
 
     lazy val entities = request.userAnswers.get(entity).getOrElse(List.empty)
 
+    Logger.info(s"[IndexActionFilter] Validating index on ${entity.path} for entities ${entities.size}")
+
     if (index >= 0 && index <= entities.size) {
       Future.successful(None)
     } else {
+      Logger.info(s"[IndexActionFilter] Out of bounds index for entity ${entity.path} index $index")
       errorHandler.onClientError(request, Status.NOT_FOUND).map(Some(_))
     }
 

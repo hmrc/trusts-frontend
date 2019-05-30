@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-import play.api.libs.json.JsPath
+sealed trait Status
 
-case object TaxLiability extends QuestionPage[List[Nothing]]{
+object Status extends Enumerable.Implicits {
 
-  override def path: JsPath = JsPath \ toString
+  case object Completed extends WithName("completed") with Status
 
-  override def toString: String = "taxLiability"
+  case object InProgress extends WithName("progress") with Status
 
+  val values: Set[Status] = Set(
+    Completed, InProgress
+  )
+
+  implicit val enumerable: Enumerable[Status] =
+    Enumerable(values.toSeq.map(v => v.toString -> v): _*)
 }

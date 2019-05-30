@@ -22,12 +22,13 @@ import javax.inject.Inject
 import models.requests.DataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.{IsThisLeadTrusteePage, TelephoneNumberPage, Trustees, TrusteesNamePage}
+import pages.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteesNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import viewmodels.Trustees
 import views.html.TelephoneNumberView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -96,8 +97,10 @@ class TelephoneNumberController @Inject()(
           Future.successful(BadRequest(view(formWithErrors, mode, index, trusteeName))),
 
         value => {
+          val answers = request.userAnswers.set(TelephoneNumberPage(index), value)
+
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TelephoneNumberPage(index), value))
+            updatedAnswers <- Future.fromTry(answers)
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(TelephoneNumberPage(index), mode)(updatedAnswers))
         }

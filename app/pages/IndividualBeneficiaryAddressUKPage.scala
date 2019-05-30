@@ -16,12 +16,13 @@
 
 package pages
 
-import models.{ UKAddress}
+import models.UKAddress
 import play.api.libs.json.JsPath
+import viewmodels.{Beneficiaries, IndividualBeneficiaries}
 
-final case class  IndividualBeneficiaryAddressUKPage(index: Int) extends QuestionPage[UKAddress] {
+final case class IndividualBeneficiaryAddressUKPage(index: Int) extends QuestionPage[UKAddress] {
 
   override def path: JsPath = JsPath \  Beneficiaries \ IndividualBeneficiaries \ index \ toString
 
-  override def toString: String = "individualBeneficiaryAddressUK"
+  override def toString: String = "address"
 }
