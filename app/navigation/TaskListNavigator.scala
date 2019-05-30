@@ -19,12 +19,12 @@ package navigation
 import controllers.routes
 import javax.inject.{Inject, Singleton}
 import models.Status.Completed
-import models.entities.Trustees
+import models.entities.{Assets, Trustees}
 import models.{NormalMode, UserAnswers}
 import pages._
 import pages.entitystatus.TrustDetailsStatus
 import play.api.mvc.Call
-import viewmodels.{Beneficiaries, ClassOfBeneficiaries, IndividualBeneficiaries, Settlors, TaxLiability, TrustDetails}
+import viewmodels._
 
 @Singleton
 class TaskListNavigator @Inject()() {
@@ -76,7 +76,7 @@ class TaskListNavigator @Inject()() {
   }
 
   private def assetRoute(answers: UserAnswers) = {
-    answers.get(Assets).getOrElse(Nil) match {
+    answers.get(viewmodels.Assets).getOrElse(Nil) match {
       case _ :: _ =>
         routes.AddAssetsController.onPageLoad()
       case Nil =>

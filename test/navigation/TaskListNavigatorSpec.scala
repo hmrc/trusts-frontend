@@ -22,7 +22,7 @@ import base.SpecBase
 import controllers.routes
 import models.Status.Completed
 import models.WhatKindOfAsset.Money
-import models.entities.Trustees
+import models.entities.{Assets, Trustees}
 import models.{FullName, NormalMode, UserAnswers}
 import pages._
 import pages.entitystatus.TrustDetailsStatus
