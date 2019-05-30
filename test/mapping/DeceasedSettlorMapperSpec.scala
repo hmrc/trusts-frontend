@@ -28,6 +28,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {
 
   val deceasedSettlorMapper: Mapping[WillType] = injector.instanceOf[DeceasedSettlorMapper]
+
   val dateOfBirth = LocalDate.of(1944, 10, 10)
   val dateOfDeath = LocalDate.of(1994, 10, 10)
 

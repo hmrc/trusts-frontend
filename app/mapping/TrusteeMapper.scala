@@ -22,7 +22,7 @@ import models.UserAnswers
 import models.entities.{Trustee, TrusteeIndividual, Trustees}
 
 
-class TrusteeMapper @Inject()(nameMapper : NameMapper) extends Mapping[List[TrusteeType]]{
+class TrusteeMapper @Inject()(nameMapper : NameMapper) extends Mapping[List[TrusteeType]] {
 
   override def build(userAnswers: UserAnswers): Option[List[TrusteeType]] = {
     val trustees : List[Trustee] = userAnswers.get(Trustees).getOrElse(List.empty[Trustee])
@@ -45,5 +45,4 @@ class TrusteeMapper @Inject()(nameMapper : NameMapper) extends Mapping[List[Trus
     }
   }
 
-
-  }
+}
