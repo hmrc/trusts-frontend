@@ -18,7 +18,11 @@ package models.entities
 
 import play.api.libs.json.Reads
 
-trait Trustee
+trait Trustee {
+
+  val isLead : Boolean
+
+}
 
 object Trustee {
 
