@@ -45,7 +45,7 @@ class TrusteeReadsSpec extends FreeSpec with MustMatchers with PropertyChecks wi
               "individualOrBusiness" -> IndividualOrBusiness.Individual.toString
             )
 
-            json.validate[Trustee] mustEqual JsSuccess(TrusteeIndividual(fullName, date))
+            json.validate[Trustee] mustEqual JsSuccess(TrusteeIndividual(false,fullName, date))
         }
       }
 
@@ -72,6 +72,7 @@ class TrusteeReadsSpec extends FreeSpec with MustMatchers with PropertyChecks wi
 
             json.validate[Trustee] mustEqual JsSuccess(
               LeadTrusteeIndividual(
+                isLead  =true,
                 name = fullName,
                 dateOfBirth = date,
                 nino = Some("QQ12121212"),

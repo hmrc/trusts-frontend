@@ -229,15 +229,7 @@ case class LeadTrusteeType(
                           )
 
 object LeadTrusteeType {
-
-  implicit val leadTrusteeTypeReads:Reads[LeadTrusteeType] = Json.reads[LeadTrusteeType]
-
-  implicit val leadTrusteeWritesToDes : Writes[LeadTrusteeType] = Writes {
-    leadTrustee=> leadTrustee.leadTrusteeInd match {
-      case Some(indLeadTrutee) => Json.toJson(indLeadTrutee)
-      case None => Json.toJson(leadTrustee.leadTrusteeOrg)
-    }
-  }
+  implicit val leadTrusteeTypeReads:Format[LeadTrusteeType] = Json.format[LeadTrusteeType]
 }
 
 

@@ -20,7 +20,7 @@ import java.time.LocalDate
 
 import base.SpecBaseHelpers
 import generators.Generators
-import models.{FullName, IndividualOrBusiness}
+import models.{FullName, IndividualOrBusiness, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
 
@@ -94,6 +94,23 @@ class TrusteeMapperSpec extends FreeSpec with MustMatchers
             ),
             None
           ))
+      }
+
+      "must not able to create a Trustee Individual when there is only LeadTrustee" in {
+        val index = 0
+        val userAnswers = emptyUserAnswers
+          .set(IsThisLeadTrusteePage(index), true).success.value
+          .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
+          .set(TrusteesNamePage(index), FullName("first name",  Some("middle name"), "Last Name")).success.value
+          .set(TrusteesDateOfBirthPage(index), LocalDate.of(1500,10,10)).success.value
+          .set(TrusteeAUKCitizenPage(index), true).success.value
+          .set(TrusteeLiveInTheUKPage(index), true).success.value
+          .set(TrusteesNinoPage(index), "AB123456C").success.value
+          .set(TelephoneNumberPage(index), "0191 1111111").success.value
+          .set(TrusteesUkAddressPage(index), UKAddress("line1", None,None, "town", "NE65QA")).success.value
+
+        trusteeMapper.build(userAnswers) mustNot be(defined)
+
       }
     }
   }

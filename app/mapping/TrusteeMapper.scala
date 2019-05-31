@@ -22,27 +22,34 @@ import models.UserAnswers
 import models.entities.{Trustee, TrusteeIndividual, Trustees}
 
 
-class TrusteeMapper @Inject()(nameMapper : NameMapper) extends Mapping[List[TrusteeType]] {
+class TrusteeMapper @Inject()(nameMapper: NameMapper) extends Mapping[List[TrusteeType]] {
 
   override def build(userAnswers: UserAnswers): Option[List[TrusteeType]] = {
-    val trustees : List[Trustee] = userAnswers.get(Trustees).getOrElse(List.empty[Trustee])
-    trustees match {
+    val trustees: List[Trustee] = userAnswers.get(Trustees).getOrElse(List.empty[Trustee])
+    val trusteeIndividualList: List[Trustee] = trustees.filter(!_.isLead)
+    trusteeIndividualList match {
       case Nil => None
-      case list => Some(list.map {
-        case trustee : TrusteeIndividual =>
-          TrusteeType(
-            trusteeInd = Some(
-              TrusteeIndividualType(
-                name = nameMapper.build(trustee.name),
-                dateOfBirth = Some(trustee.dateOfBirth),
-                phoneNumber = None,
-                identification = None
-              )
-            ),
-            None
-          )
-      })
+      case list =>
+        Some(list.map {
+          case indTrustee: TrusteeIndividual =>
+            getTrusteeType(indTrustee)
+        })
+
     }
   }
 
+
+  private def getTrusteeType(indTrustee: TrusteeIndividual): TrusteeType = {
+    TrusteeType(
+      trusteeInd = Some(
+        TrusteeIndividualType(
+          name = nameMapper.build(indTrustee.name),
+          dateOfBirth = Some(indTrustee.dateOfBirth),
+          phoneNumber = None,
+          identification = None
+        )
+      ),
+      None
+    )
+  }
 }
