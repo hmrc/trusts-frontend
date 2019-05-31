@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package pages
+package viewmodels
 
-import models.entities.Asset
+import pages.QuestionPage
 import play.api.libs.json.JsPath
+import viewmodels.addAnother.AssetViewModel
 
-case object Assets extends QuestionPage[List[Asset]]{
+case object Assets extends QuestionPage[List[AssetViewModel]]{
 
   override def path: JsPath = JsPath \ toString
 

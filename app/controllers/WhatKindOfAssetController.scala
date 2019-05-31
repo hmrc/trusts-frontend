@@ -20,9 +20,8 @@ import controllers.actions._
 import forms.WhatKindOfAssetFormProvider
 import javax.inject.Inject
 import models.WhatKindOfAsset.Money
-import models.entities.Asset
 import models.requests.DataRequest
-import models.{Enumerable, Mode, WhatKindOfAsset}
+import models.{Enumerable, Mode, WhatKindOfAsset, entities}
 import navigation.Navigator
 import pages.WhatKindOfAssetPage
 import play.api.data.Form
@@ -30,6 +29,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import viewmodels.addAnother.{AssetViewModel, MoneyAssetViewModel}
 import views.html.WhatKindOfAssetView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -49,11 +49,11 @@ class WhatKindOfAssetController @Inject()(
 
   val form = formProvider()
 
-  private def findAssetThatIsMoney(assets : List[Asset]): Option[(Asset, Int)] =
-    assets.zipWithIndex.find(_._1.whatKindOfAsset.contains(Money))
+  private def findAssetThatIsMoney(assets : List[AssetViewModel]): Option[(AssetViewModel, Int)] =
+    assets.zipWithIndex.find {_._1.isInstanceOf[MoneyAssetViewModel]}
 
   private def options(request : DataRequest[AnyContent], index: Int) = {
-    val assets = request.userAnswers.get(pages.Assets).getOrElse(Nil)
+    val assets = request.userAnswers.get(viewmodels.Assets).getOrElse(Nil)
     
     findAssetThatIsMoney(assets) match {
       case Some((_, i)) if i == index =>
@@ -66,7 +66,7 @@ class WhatKindOfAssetController @Inject()(
   }
 
   def routes(index: Int) =
-    identify andThen getData andThen requireData andThen validateIndex(index, pages.Assets)
+    identify andThen getData andThen requireData andThen validateIndex(index, viewmodels.Assets)
 
   def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = routes(index) {
     implicit request =>
@@ -81,7 +81,7 @@ class WhatKindOfAssetController @Inject()(
   def onSubmit(mode: Mode, index: Int): Action[AnyContent] = routes(index).async {
     implicit request =>
 
-      val assets = request.userAnswers.get(pages.Assets).getOrElse(Nil)
+      val assets = request.userAnswers.get(viewmodels.Assets).getOrElse(Nil)
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
