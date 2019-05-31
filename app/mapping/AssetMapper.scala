@@ -16,10 +16,12 @@
 
 package mapping
 
+import java.io
+
 import models.UserAnswers
 import models.WhatKindOfAsset.Money
+import models.entities.MoneyAsset
 import pages.{AssetMoneyValuePage, WhatKindOfAssetPage}
-import viewmodels.addAnother.{AssetViewModel, MoneyAssetViewModel}
 
 import scala.util.Try
 
@@ -41,8 +43,19 @@ class AssetMapper extends Mapping[Assets] {
     }
   }
 
-  private def buildMoney(userAnswers: UserAnswers, index : Int) : Option[List[AssetMonetaryAmount]] = {
-    userAnswers.get(WhatKindOfAssetPage(index)) match {
+  private def buildMoney(userAnswers: UserAnswers) : Option[List[AssetMonetaryAmount]] = {
+    val assets : List[models.entities.Asset] = userAnswers.get(models.entities.Assets).getOrElse(List.empty[models.entities.Asset])
+
+     assets match {
+      case Nil => None
+      case list => Some(list.map{
+        case x: MoneyAsset=>
+          AssetMonetaryAmount(x.value.toLong)
+
+      })
+    }
+
+   /* userAnswers.get(WhatKindOfAssetPage(index)) match {
       case Some(Money) =>
         for {
           money <- userAnswers.get(AssetMoneyValuePage(0))
@@ -53,6 +66,6 @@ class AssetMapper extends Mapping[Assets] {
           )
         }
       case _ => None
-    }
+    }*/
   }
 }
