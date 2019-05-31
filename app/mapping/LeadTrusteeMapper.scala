@@ -27,6 +27,7 @@ class LeadTrusteeMapper @Inject()(
                                    addressMapper: AddressMapper) extends Mapping[LeadTrusteeType] {
 
   override def build(userAnswers: UserAnswers): Option[LeadTrusteeType] = {
+
     val trustees: List[Trustee] = userAnswers.get(Trustees).getOrElse(List.empty[Trustee])
     trustees match {
       case Nil => None

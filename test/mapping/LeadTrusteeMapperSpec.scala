@@ -30,8 +30,6 @@ class LeadTrusteeMapperSpec extends FreeSpec with MustMatchers
 
   val leadTrusteeMapper: Mapping[LeadTrusteeType] = injector.instanceOf[LeadTrusteeMapper]
 
-
-
   "LeadTrusteeMapper" - {
 
     "when user answers is empty" - {
@@ -42,7 +40,7 @@ class LeadTrusteeMapperSpec extends FreeSpec with MustMatchers
     }
 
     "when user answers is not empty " - {
-      "must be able to create LeadTrusteeType" in {
+      "must be able to create LeadTrusteeType with lead trustee individual" in {
 
         val index = 0
         val userAnswers = emptyUserAnswers
@@ -77,7 +75,7 @@ class LeadTrusteeMapperSpec extends FreeSpec with MustMatchers
         leadTrusteeMapper.build(userAnswers) mustNot be(defined)
       }
 
-      "must be able to create LeadTrusteeType with passport and address" in {
+      "must be able to create LeadTrusteeType without telephone number for trustee individual" in {
 
         val index = 0
         val userAnswers = emptyUserAnswers
@@ -86,20 +84,14 @@ class LeadTrusteeMapperSpec extends FreeSpec with MustMatchers
           .set(TrusteesNamePage(index), FullName("first name",  Some("middle name"), "Last Name")).success.value
           .set(TrusteesDateOfBirthPage(index), LocalDate.of(1500,10,10)).success.value
           .set(TrusteeAUKCitizenPage(index), true).success.value
-          .set(TrusteeLiveInTheUKPage(index), false).success.value
-
-          .set(TelephoneNumberPage(index), "0191 1111111").success.value
+          .set(TrusteeLiveInTheUKPage(index), true).success.value
+          .set(TrusteesNinoPage(index), "AB123456C").success.value
           .set(TrusteesUkAddressPage(index), UKAddress("line1", None,None, "town", "NE65QA")).success.value
 
+         leadTrusteeMapper.build(userAnswers) mustNot be(defined)
 
-        leadTrusteeMapper.build(userAnswers).value mustBe  LeadTrusteeType(
-          leadTrusteeInd = Some(LeadTrusteeIndType(NameType("first name", Some("middle name"), "Last Name"),
-            dateOfBirth = LocalDate.of(1500,10,10),
-            phoneNumber = "0191 1111111",
-            email = None,
-            identification = IdentificationType(nino = Some("AB123456C"),None,None)))
-        )
       }
+
     }
   }
 
