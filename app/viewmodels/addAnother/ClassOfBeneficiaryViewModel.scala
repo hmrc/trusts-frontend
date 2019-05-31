@@ -31,7 +31,7 @@ object ClassOfBeneficiaryViewModel {
 
   import play.api.libs.functional.syntax._
 
-  implicit val trusteeReads: Reads[ClassOfBeneficiaryViewModel] = (
+  implicit val reads: Reads[ClassOfBeneficiaryViewModel] = (
     (__ \ "description").readNullable[String] and
       (__ \ "status").readWithDefault[Status](InProgress)
     )(ClassOfBeneficiaryViewModel.apply _)
