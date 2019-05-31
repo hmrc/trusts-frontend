@@ -22,7 +22,6 @@ import pages.QuestionPage
 
 class NameMapper {
 
-
   def build(namePage: QuestionPage[FullName], userAnswers: UserAnswers): Option[NameType] = {
     val fullName: Option[FullName] = userAnswers.get(namePage)
     fullName.map {
