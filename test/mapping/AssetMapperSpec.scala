@@ -45,7 +45,7 @@ class AssetMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers =
           emptyUserAnswers
-            .set(WhatKindOfAssetPage(0),WhatKindOfAsset.Money).success.value
+            .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
 
         assetMapper.build(userAnswers) mustNot be(defined)
       }
@@ -54,7 +54,7 @@ class AssetMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers =
           emptyUserAnswers
-            .set(WhatKindOfAssetPage(0),WhatKindOfAsset.Money).success.value
+            .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
             .set(AssetMoneyValuePage(0), "2000").success.value
 
         assetMapper.build(userAnswers).value mustBe Assets(
@@ -71,5 +71,30 @@ class AssetMapperSpec extends FreeSpec with MustMatchers
         )
       }
     }
+
+    "must be able to create a list of multiple assets" in {
+      val index0 = 0
+      val index1 = 1
+
+      val userAnswers =
+        emptyUserAnswers
+          .set(WhatKindOfAssetPage(index0), WhatKindOfAsset.Money).success.value
+          .set(AssetMoneyValuePage(index0), "2000").success.value
+          .set(WhatKindOfAssetPage(index1), WhatKindOfAsset.Money).success.value
+          .set(AssetMoneyValuePage(index1), "1235").success.value
+
+      assetMapper.build(userAnswers).value mustBe Assets(
+        monetary = Some(
+          List(AssetMonetaryAmount(assetMonetaryAmount = 1235))
+        ),
+        propertyOrLand = None,
+        shares = None,
+        business = None,
+        partnerShip = None,
+        other = None
+      )
+
+    }
+
   }
 }

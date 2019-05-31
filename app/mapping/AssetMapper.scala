@@ -19,6 +19,7 @@ package mapping
 import models.UserAnswers
 import models.WhatKindOfAsset.Money
 import pages.{AssetMoneyValuePage, WhatKindOfAssetPage}
+import viewmodels.addAnother.{AssetViewModel, MoneyAssetViewModel}
 
 import scala.util.Try
 
@@ -40,8 +41,8 @@ class AssetMapper extends Mapping[Assets] {
     }
   }
 
-  private def buildMoney(userAnswers: UserAnswers) : Option[List[AssetMonetaryAmount]] = {
-    userAnswers.get(WhatKindOfAssetPage(0)) match {
+  private def buildMoney(userAnswers: UserAnswers, index : Int) : Option[List[AssetMonetaryAmount]] = {
+    userAnswers.get(WhatKindOfAssetPage(index)) match {
       case Some(Money) =>
         for {
           money <- userAnswers.get(AssetMoneyValuePage(0))
