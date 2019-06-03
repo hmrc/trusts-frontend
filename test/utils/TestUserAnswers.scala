@@ -33,7 +33,7 @@ object TestUserAnswers extends TryValues {
 
   def withAgent(userAnswers: UserAnswers) : UserAnswers = {
       userAnswers
-        .set(AgentARNPage, "SARN123456").success.value
+        .set(AgentARNPage, "SARN1234567").success.value
         .set(AgentNamePage, "Agency Name").success.value
         .set(AgentUKAddressPage, UKAddress("line1", Some("line2"), Some("line3"), "Newcastle", "ab1 1ab")).success.value
         .set(AgentTelephoneNumberPage, "+1234567890").success.value
