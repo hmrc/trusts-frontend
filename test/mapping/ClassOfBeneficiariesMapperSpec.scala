@@ -27,7 +27,7 @@ class ClassOfBeneficiariesMapperSpec extends FreeSpec with MustMatchers
 
   val classOfBeneficiariesMapper: Mapping[List[UnidentifiedType]] = injector.instanceOf[ClassOfBeneficiariesMapper]
 
-  "TrusteeMapper" - {
+  "ClassOfBeneficiaries" - {
 
     "when user answers is empty" - {
 
