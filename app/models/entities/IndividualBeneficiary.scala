@@ -22,11 +22,13 @@ import models.{Address, FullName}
 import play.api.libs.json.{Format, Json}
 
 
-final case class IndividualBeneficiary(name: FullName, dateOfBirth: LocalDate,
+final case class IndividualBeneficiary(name: FullName,
+                                       dateOfBirth: Option[LocalDate],
                                        nationalInsuranceNumber: Option[String],
                                        address : Option[Address],
                                        vulnerableYesNo: Boolean,
-                                       income: Option[String]
+                                       income: Option[String] ,
+                                       incomeYesNo: Boolean
                                       ) {
 }
 
