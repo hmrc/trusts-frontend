@@ -62,7 +62,8 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
           val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(uaWithLead)
           val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithDeceased)
           val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
-          val userAnswers = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
+          val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
+          val userAnswers = TestUserAnswers.withDeclaration(asset)
 
           val result = registrationMapper.build(userAnswers).value
 

@@ -21,6 +21,7 @@ import play.api.Logger
 import play.api.libs.json.Json
 
 class RegistrationMapper @Inject()(
+                                  declarationMapper: DeclarationMapper,
                                   correspondenceMapper: CorrespondenceMapper,
                                   trustDetailsMapper: TrustDetailsMapper,
                                   beneficiariesMapper: BeneficiariesMapper,
@@ -40,6 +41,7 @@ class RegistrationMapper @Inject()(
       correspondence <- correspondenceMapper.build(userAnswers)
       beneficiaries <- beneficiariesMapper.build(userAnswers)
       leadTrustees <- leadTrusteeMapper.build(userAnswers)
+      declaration <- declarationMapper.build(userAnswers)
     } yield {
 
       val agent = agentMapper.build(userAnswers)
@@ -61,7 +63,7 @@ class RegistrationMapper @Inject()(
         matchData = None,
         correspondence = correspondence,
         yearsReturns = taxLiability,
-        declaration = null,
+        declaration = declaration,
         trust = Trust(
           details = trustDetails,
           entities = entities,

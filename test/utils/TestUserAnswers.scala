@@ -97,4 +97,9 @@ object TestUserAnswers extends TryValues {
       .set(AssetStatus(index), Completed).success.value
   }
 
+  def withDeclaration(userAnswers: UserAnswers) : UserAnswers = {
+    userAnswers
+      .set(DeclarationPage, FullName("First", None, "Last")).success.value
+  }
+
 }
