@@ -34,7 +34,7 @@ class CorrespondenceMapper @Inject()(addressMapper: AddressMapper) extends Mappi
             list.find(_.isLead).flatMap {
               case lti: LeadTrusteeIndividual =>
                 val index = list.indexOf(lti)
-                val abroad = userAnswers.get(TrusteeLiveInTheUKPage(index)).contains(false)
+                val abroad = !lti.liveInUK
                 val telephone = lti.telephoneNumber
 
                 addressMapper.build(
