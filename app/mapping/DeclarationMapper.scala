@@ -24,72 +24,26 @@ import play.api.Logger
 
 class DeclarationMapper @Inject()(nameMapper: NameMapper, addressMapper: AddressMapper) extends Mapping[Declaration] {
 
-    override def build(userAnswers: UserAnswers): Option[Declaration] = {
+  override def build(userAnswers: UserAnswers): Option[Declaration] = {
 
-        val declarationName = userAnswers.get(DeclarationPage)
+    val declarationName = userAnswers.get(DeclarationPage)
 
-        addressMapper.build(
-          userAnswers,
-          AgentAddressYesNoPage,
-          AgentUKAddressPage,
-          AgentInternationalAddressPage
-        ) map {
-          declartionAddress =>
+    val address = addressMapper.build(
+      userAnswers,
+      AgentAddressYesNoPage,
+      AgentUKAddressPage,
+      AgentInternationalAddressPage
+    )
+
+    address flatMap {
+      declarationAddress =>
+        declarationName.map {
+          name =>
             Declaration(
-              name = nameMapper.build(declarationName),
-              address = declartionAddress
+              name = nameMapper.build(name),
+              address = declarationAddress
             )
         }
-
-
-//    userAnswers.get(TrustNamePage).flatMap {
-//      trustName =>
-//        userAnswers.get(Trustees).getOrElse(Nil) match {
-//          case Nil => None
-//          case list =>
-//            list.find(_.isLead).flatMap {
-//              case lti: LeadTrusteeIndividual =>
-//                val index = list.indexOf(lti)
-//                val abroad = !lti.liveInUK
-//                val telephone = lti.telephoneNumber
-//
-//                addressMapper.build(
-//                  userAnswers,
-//                  TrusteeLiveInTheUKPage(index),
-//                  TrusteesUkAddressPage(index),
-//                  TrusteesInternationalAddressPage(index)
-//                ) map {
-//                  address =>
-//                    Correspondence(
-//                      abroadIndicator = abroad,
-//                      name = trustName,
-//                      address = address,
-//                      phoneNumber = telephone
-//                    )
-//                }
-//              case _ =>
-//                Logger.info(s"[CorrespondenceMapper][build] unable to create correspondence due to not having a Lead Trustee Individual")
-//                None
-//            }
-//
-//        }
-//    }
-    None
-  }
-
-  private def residentialStatus(userAnswers: UserAnswers): Option[ResidentialStatusType] = {
-
-    userAnswers.get(AgentAddressYesNoPage) match {
-      case Some(true) =>
-        ukResidentMap(userAnswers)
-      case Some(false) =>
-        nonUkResidentMap(userAnswers)
-      case _ =>
-        None
     }
   }
-
-
-
-
 }

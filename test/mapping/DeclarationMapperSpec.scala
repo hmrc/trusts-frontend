@@ -16,11 +16,8 @@
 
 package mapping
 
-import java.time.LocalDate
-
 import base.SpecBaseHelpers
 import generators.Generators
-import models.IndividualOrBusiness.Individual
 import models.{FullName, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
@@ -53,77 +50,22 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
 
           declarationMapper.build(userAnswers) mustNot be(defined)
         }
+
+        "must be able to create declaration when user answers given" in {
+
+          val userAnswers = emptyUserAnswers
+            .set(DeclarationPage, FullName("First", None, "Last")).success.value
+            .set(AgentAddressYesNoPage, true).success.value
+            .set(AgentUKAddressPage, UKAddress("Line1", Some("line2"), None, "Newcastle", "NE62RT")).success.value
+
+          declarationMapper.build(userAnswers).value mustBe Declaration(
+            name = NameType("First", None, "Last"),
+            address = AddressType("Line1", "line2", None, Some("Newcastle"), Some("NE62RT"), "GB")
+          )
+
+        }
       }
     }
-
-//    "when user answers is not empty" - {
-//
-//      "for a UK lead trustee individual" - {
-//
-//        "must not be able to create a correspondence when do not have all answers" in {
-//          val address = UKAddress("First line", Some("Second line"), None, "Newcastle", "NE981ZZ")
-//
-//          val userAnswers = emptyUserAnswers
-//            .set(TrustNamePage, "Trust of a Will").success.value
-//            .set(IsThisLeadTrusteePage(0), true).success.value
-//            .set(TrusteeIndividualOrBusinessPage(0), Individual).success.value
-//            .set(TrusteesNamePage(0), FullName("First", None, "Last")).success.value
-//            .set(TrusteesUkAddressPage(0), address).success.value
-//            .set(TelephoneNumberPage(0), "0191 222222").success.value
-//
-//          correspondenceMapper.build(userAnswers) mustNot be(defined)
-//        }
-//
-//        "must be able to create a correspondence when have all required answers" in {
-//          val address = UKAddress("First line", Some("Second line"), None, "Newcastle", "NE981ZZ")
-//
-//          val userAnswers = emptyUserAnswers
-//            .set(TrustNamePage, "Trust of a Will").success.value
-//            .set(IsThisLeadTrusteePage(0), true).success.value
-//            .set(TrusteeIndividualOrBusinessPage(0), Individual).success.value
-//            .set(TrusteesNamePage(0), FullName("First", None, "Last")).success.value
-//            .set(TrusteesDateOfBirthPage(0), LocalDate.of(2010,10,10)).success.value
-//            .set(TrusteeAUKCitizenPage(0), true).success.value
-//            .set(TrusteeLiveInTheUKPage(0), true).success.value
-//            .set(TrusteesUkAddressPage(0), address).success.value
-//            .set(TelephoneNumberPage(0), "0191 222222").success.value
-//
-//          correspondenceMapper.build(userAnswers).value mustBe Correspondence(
-//            abroadIndicator = false,
-//            name = "Trust of a Will",
-//            address = AddressType(
-//              line1 = "First line",
-//              line2 = "Second line",
-//              line3 = None,
-//              line4 = Some("Newcastle"),
-//              postCode = Some("NE981ZZ"),
-//              country = "GB"
-//            ),
-//            phoneNumber = "0191 222222"
-//          )
-//        }
-//
-//      }
-//
-//      "must not be able to create a correspondence for a UK lead trustee business" in {
-//        val userAnswers = emptyUserAnswers
-//
-//        correspondenceMapper.build(userAnswers) mustNot be(defined)
-//      }
-//
-//      "must not be able to create a correspondence for a Non-UK lead trustee individual" in {
-//        val userAnswers = emptyUserAnswers
-//
-//        correspondenceMapper.build(userAnswers) mustNot be(defined)
-//      }
-//
-//      "must not be able to create a correspondence for a Non-UK lead trustee business" in {
-//        val userAnswers = emptyUserAnswers
-//
-//        correspondenceMapper.build(userAnswers) mustNot be(defined)
-//      }
-//
-//    }
 
   }
 
