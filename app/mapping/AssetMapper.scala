@@ -16,14 +16,8 @@
 
 package mapping
 
-import java.io
-
 import models.UserAnswers
-import models.WhatKindOfAsset.Money
 import models.entities.MoneyAsset
-import pages.{AssetMoneyValuePage, WhatKindOfAssetPage}
-
-import scala.util.Try
 
 class AssetMapper extends Mapping[Assets] {
 
@@ -54,18 +48,5 @@ class AssetMapper extends Mapping[Assets] {
 
       })
     }
-
-   /* userAnswers.get(WhatKindOfAssetPage(index)) match {
-      case Some(Money) =>
-        for {
-          money <- userAnswers.get(AssetMoneyValuePage(0))
-          valueAsLong <- Try(money.toLong).toOption
-        } yield {
-          List(
-            AssetMonetaryAmount(valueAsLong)
-          )
-        }
-      case _ => None
-    }*/
   }
 }
