@@ -59,7 +59,7 @@ class RegistrationMapper @Inject()(
         settlors = None
       )
 
-      val registration = Registration(
+      Registration(
         matchData = None,
         correspondence = correspondence,
         yearsReturns = taxLiability,
@@ -71,10 +71,6 @@ class RegistrationMapper @Inject()(
         ),
         agentDetails = agent
       )
-
-      Logger.info(s"[RegistrationMapper][build] created the following ${Json.toJson(registration)}")
-
-      registration
     }
 
   }
