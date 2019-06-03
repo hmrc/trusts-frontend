@@ -19,9 +19,27 @@ import javax.inject.Inject
 import models.UserAnswers
 
 class BeneficiariesMapper @Inject()(
-                                     individualMapper: IndividualBeneficiaryMapper
+                                     individualMapper: IndividualBeneficiaryMapper,
+                                     unidentifiedMapper: ClassOfBeneficiariesMapper
                                    ) extends Mapping[BeneficiaryType] {
   override def build(userAnswers: UserAnswers): Option[BeneficiaryType] = {
-    None
+    val individuals = individualMapper.build(userAnswers)
+    val unidentified = unidentifiedMapper.build(userAnswers)
+
+    if (individuals.isDefined || unidentified.isDefined) {
+      Some(
+        BeneficiaryType(
+          individualDetails = individuals,
+          company = None,
+          trust = None,
+          charity = None,
+          unidentified = unidentified,
+          large = None,
+          other = None
+        )
+      )
+    } else {
+      None
+    }
   }
 }
