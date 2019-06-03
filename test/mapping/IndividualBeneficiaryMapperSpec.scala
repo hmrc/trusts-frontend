@@ -63,7 +63,7 @@ class IndividualBeneficiaryMapperSpec extends FreeSpec with MustMatchers
           dateOfBirth = Some(dateOfBirth),
           vulnerableBeneficiary = true,
           beneficiaryType = None,
-          beneficiaryDiscretion = Some(false),
+          beneficiaryDiscretion = false,
           beneficiaryShareOfIncome = Some("100"),
           identification = Some(IdentificationType(nino = Some("AB123456C"), None, None))
         )
@@ -92,7 +92,7 @@ class IndividualBeneficiaryMapperSpec extends FreeSpec with MustMatchers
           dateOfBirth = Some(dateOfBirth),
           vulnerableBeneficiary = false,
           beneficiaryType = None,
-          beneficiaryDiscretion = Some(true),
+          beneficiaryDiscretion = true,
           beneficiaryShareOfIncome = None,
           identification = Some(IdentificationType(
             nino = None,
@@ -122,7 +122,7 @@ class IndividualBeneficiaryMapperSpec extends FreeSpec with MustMatchers
           dateOfBirth = None,
           vulnerableBeneficiary = false,
           beneficiaryType = None,
-          beneficiaryDiscretion = Some(true),
+          beneficiaryDiscretion = true,
           beneficiaryShareOfIncome = None,
           identification = None
         )
@@ -163,7 +163,7 @@ class IndividualBeneficiaryMapperSpec extends FreeSpec with MustMatchers
               dateOfBirth = Some(dateOfBirth),
               vulnerableBeneficiary = true,
               beneficiaryType = None,
-              beneficiaryDiscretion = Some(false),
+              beneficiaryDiscretion = false,
               beneficiaryShareOfIncome = Some("100"),
               identification = Some(
                 IdentificationType(
@@ -176,7 +176,7 @@ class IndividualBeneficiaryMapperSpec extends FreeSpec with MustMatchers
               dateOfBirth = Some(dateOfBirth),
               vulnerableBeneficiary = false,
               beneficiaryType = None,
-              beneficiaryDiscretion = Some(false),
+              beneficiaryDiscretion = false,
               beneficiaryShareOfIncome = Some("100"),
               identification = Some(
                 IdentificationType(
