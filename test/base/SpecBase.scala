@@ -25,18 +25,18 @@ import org.scalatestplus.play.guice._
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.inject.{Injector, bind}
-import play.api.libs.json.Json
 import play.api.mvc.PlayBodyParsers
 import play.api.test.FakeRequest
 import repositories.SessionRepository
 import uk.gov.hmrc.auth.core.AffinityGroup
+import utils.TestUserAnswers
 
 trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked {
   this: TestSuite =>
 
-  val userAnswersId = "id"
+  val userAnswersId = TestUserAnswers.userAnswersId
 
-  def emptyUserAnswers = UserAnswers(userAnswersId, Json.obj())
+  def emptyUserAnswers = TestUserAnswers.emptyUserAnswers
 
   def injector: Injector = app.injector
 

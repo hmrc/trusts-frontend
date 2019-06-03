@@ -43,8 +43,6 @@ class AgentMapperSpec extends FreeSpec with MustMatchers
     }
     "when user answers is not empty " - {
 
-
-
       "must able to create AgentDetails for a UK address" in {
 
         val userAnswers =
