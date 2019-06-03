@@ -18,8 +18,10 @@ package mapping
 
 import base.SpecBaseHelpers
 import generators.Generators
+import models.Status.Completed
 import models.WhatKindOfAsset
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
+import pages.entitystatus.AssetStatus
 import pages.{AssetMoneyValuePage, WhatKindOfAssetPage}
 
 class AssetMapperSpec extends FreeSpec with MustMatchers
@@ -31,7 +33,7 @@ class AssetMapperSpec extends FreeSpec with MustMatchers
 
     "when user answers is empty" - {
 
-      "must not be able to create AssetDetails" in {
+      "must be able to create an empty AssetDetails" in {
 
         val userAnswers = emptyUserAnswers
 
@@ -56,6 +58,7 @@ class AssetMapperSpec extends FreeSpec with MustMatchers
           emptyUserAnswers
             .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
             .set(AssetMoneyValuePage(0), "2000").success.value
+            .set(AssetStatus(0), Completed).success.value
 
         assetMapper.build(userAnswers).value mustBe Assets(
           monetary = Some(

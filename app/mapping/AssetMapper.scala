@@ -19,34 +19,41 @@ package mapping
 import models.UserAnswers
 import models.entities.MoneyAsset
 
+import scala.util.Try
+
 class AssetMapper extends Mapping[Assets] {
 
   override def build(userAnswers: UserAnswers): Option[Assets] = {
-    val allMoney = buildMoney(userAnswers)
+    val allMoney = buildMoney(userAnswers) match {
+      case Nil =>
+        None
+      case list =>
+        Some(list)
+    }
 
-    allMoney.map {
-      money =>
-        Assets(
-          monetary = Some(money),
-          propertyOrLand = None,
-          shares = None,
-          business = None,
-          partnerShip = None,
-          other = None
-        )
+    allMoney.map { v =>
+      Assets(
+        monetary = Some(v),
+        propertyOrLand = None,
+        shares = None,
+        business = None,
+        partnerShip = None,
+        other = None
+      )
     }
   }
 
-  private def buildMoney(userAnswers: UserAnswers) : Option[List[AssetMonetaryAmount]] = {
+  private def buildMoney(userAnswers: UserAnswers) : List[AssetMonetaryAmount] = {
     val assets : List[models.entities.Asset] = userAnswers.get(models.entities.Assets).getOrElse(List.empty[models.entities.Asset])
 
-     assets match {
-      case Nil => None
-      case list => Some(list.map{
-        case x: MoneyAsset=>
-          AssetMonetaryAmount(x.value.toLong)
-
-      })
+    assets match {
+      case Nil => Nil
+      case list =>
+        list.flatMap {
+          case x: MoneyAsset =>
+            Try(x.value.toLong).toOption.map(AssetMonetaryAmount(_))
+          case _ => None
+        }
     }
   }
 }
