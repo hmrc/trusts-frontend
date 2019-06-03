@@ -27,17 +27,7 @@ import pages._
 
 class CorrespondenceMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {
-
-  /**
-    * Name from 3 fields to one
-    * Take first initial for First and Middle name if length is too long
-    * correspondence name is 56 characters long in DES
-    *
-    * name is the trusts Name
-    * telephone number is lead trustees
-    * abroadIndicator is determined from LT address
-    */
-
+  
   private val correspondenceMapper: Mapping[Correspondence] = injector.instanceOf[CorrespondenceMapper]
 
   "CorrespondenceMapper" - {
