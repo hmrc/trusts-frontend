@@ -18,7 +18,7 @@ package models.entities
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import viewmodels.addAnother.IndividualBeneficiaryViewModel
+import viewmodels.Beneficiaries
 
 case object IndividualBeneficiaries extends QuestionPage[List[IndividualBeneficiary]]{
 

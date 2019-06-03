@@ -16,25 +16,13 @@
 
 package models.entities
 
-import play.api.libs.json.Reads
+import play.api.libs.json.{Format, Json}
 
-trait ClassOfBeneficiary
 
+final case class ClassOfBeneficiary(description: String)
 
 object ClassOfBeneficiary {
-
-  implicit class ReadsWithContravariantOr[A](a: Reads[A]) {
-
-    def or[B >: A](b: Reads[B]): Reads[B] =
-      a.map[B](identity).orElse(b)
-  }
-
-  implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
-    a.map(identity)
-
-  implicit lazy val reads : Reads[ClassOfBeneficiary] = {
-    ClassOfBeneficiaryNew.classFormat
-  }
-
+  implicit val classFormat : Format[ClassOfBeneficiary] = Json.format[ClassOfBeneficiary]
 }
+
 
