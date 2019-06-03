@@ -41,7 +41,21 @@ class BeneficiariesMapperSpec extends FreeSpec with MustMatchers
       }
     }
 
-    "when user answers is now empty" - {
+    "when user answers is not empty" - {
+
+      "must not be able to create BeneficiaryType when there is incomplete data" in {
+        val index = 0
+        val dateOfBirth = LocalDate.of(2010, 10, 10)
+
+        val userAnswers = emptyUserAnswers
+          .set(IndividualBeneficiaryNamePage(index), FullName("first name", None, "last name")).success.value
+          .set(IndividualBeneficiaryDateOfBirthYesNoPage(index), true).success.value
+          .set(IndividualBeneficiaryDateOfBirthPage(index), dateOfBirth).success.value
+          .set(IndividualBeneficiaryIncomeYesNoPage(index), false).success.value
+          .set(IndividualBeneficiaryIncomePage(index), "100").success.value
+
+        beneficiariesMapper.build(userAnswers) mustNot be(defined)
+      }
 
       "must be able to create BeneficiaryType when there is an individual beneficiary" in {
 
