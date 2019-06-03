@@ -17,24 +17,34 @@
 package mapping
 
 import models.UserAnswers
-import viewmodels.addAnother.ClassOfBeneficiaryViewModel
-import viewmodels.ClassOfBeneficiaries
+import models.entities.ClassOfBeneficiary
 
 
 class ClassOfBeneficiariesMapper extends Mapping[List[UnidentifiedType]]{
 
+  /**
+    * Construct instances of UnidentifiedType, known as 'class of beneficiary'
+    * We never provide the values for 'beneficiaryDiscretion' and 'beneficiaryShareOfIncome' due to a
+    * class being a 'future issue of...'
+    */
+
   override def build(userAnswers: UserAnswers): Option[List[UnidentifiedType]] = {
-    val beneficiaries : List[ClassOfBeneficiaryViewModel] = userAnswers.get(ClassOfBeneficiaries).getOrElse(List.empty[ClassOfBeneficiaryViewModel])
+
+    val beneficiaries : List[ClassOfBeneficiary] =
+      userAnswers.get(models.entities.ClassOfBeneficiaries).getOrElse(List.empty)
+
     beneficiaries match {
       case Nil => None
-      case list => Some(list.map {
-        case beneficiary : ClassOfBeneficiaryViewModel =>
-          UnidentifiedType(
-            description = beneficiary.description.get,
-            beneficiaryDiscretion = None,
-            beneficiaryShareOfIncome = None
-          )
-      })
+      case list =>
+        Some(
+          list.map { b =>
+              UnidentifiedType(
+                description = b.description,
+                beneficiaryDiscretion = None,
+                beneficiaryShareOfIncome = None
+              )
+          }
+        )
     }
   }
 
