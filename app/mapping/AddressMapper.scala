@@ -15,7 +15,6 @@
  */
 
 package mapping
-import models.entities.TrusteeIndividual
 import models.{Address, InternationalAddress, UKAddress, UserAnswers}
 import pages.QuestionPage
 
