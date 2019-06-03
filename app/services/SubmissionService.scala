@@ -18,26 +18,20 @@ package services
 
 import com.google.inject.ImplementedBy
 import javax.inject.Inject
-import mapping.{BeneficiariesMapper, Registration, TrustDetailsMapper}
+import mapping.{Registration, RegistrationMapper}
 import models.UserAnswers
 
 
-class DefaultSubmissionService @Inject()(
-                                          trustDetailsMapper: TrustDetailsMapper,
-                                          beneficiariesMapper: BeneficiariesMapper
-                                        )
+class DefaultSubmissionService @Inject()(registrationMapper: RegistrationMapper)
   extends SubmissionService {
 
   override def submit(userAnswers: UserAnswers): Option[Registration] = {
     for {
-       trustDetails <- trustDetailsMapper.build(userAnswers)
-       beneficiaryDetails <- beneficiariesMapper.build(userAnswers)
+       registration <- registrationMapper.build(userAnswers)
     } yield {
-      None
+      registration
     }
-    None
   }
-
 }
 
 @ImplementedBy(classOf[DefaultSubmissionService])
