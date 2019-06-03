@@ -14,25 +14,15 @@
  * limitations under the License.
  */
 
-package viewmodels.addAnother
+package models.entities
 
-import models.Status
-import models.Status.{Completed, InProgress}
-import play.api.libs.json.{Reads, __}
+import play.api.libs.json.{Format, Json}
 
 
-case class ClassOfBeneficiaryViewModel(description: Option[String], status : Status) {
+final case class ClassOfBeneficiary(description: String)
 
-  def isComplete : Boolean = description.nonEmpty && (status == Completed)
-
+object ClassOfBeneficiary {
+  implicit val classFormat : Format[ClassOfBeneficiary] = Json.format[ClassOfBeneficiary]
 }
 
-object ClassOfBeneficiaryViewModel {
 
-  import play.api.libs.functional.syntax._
-
-  implicit val reads: Reads[ClassOfBeneficiaryViewModel] = (
-    (__ \ "description").readNullable[String] and
-      (__ \ "status").readWithDefault[Status](InProgress)
-    )(ClassOfBeneficiaryViewModel.apply _)
-}

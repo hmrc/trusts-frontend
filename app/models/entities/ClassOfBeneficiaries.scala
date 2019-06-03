@@ -14,25 +14,16 @@
  * limitations under the License.
  */
 
-package viewmodels.addAnother
+package models.entities
 
-import models.Status
-import models.Status.{Completed, InProgress}
-import play.api.libs.json.{Reads, __}
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import viewmodels.Beneficiaries
 
+case object ClassOfBeneficiaries extends QuestionPage[List[ClassOfBeneficiary]]{
 
-case class ClassOfBeneficiaryViewModel(description: Option[String], status : Status) {
+  override def path: JsPath = JsPath \ Beneficiaries \toString
 
-  def isComplete : Boolean = description.nonEmpty && (status == Completed)
+  override def toString: String = "classOfBeneficiaries"
 
-}
-
-object ClassOfBeneficiaryViewModel {
-
-  import play.api.libs.functional.syntax._
-
-  implicit val reads: Reads[ClassOfBeneficiaryViewModel] = (
-    (__ \ "description").readNullable[String] and
-      (__ \ "status").readWithDefault[Status](InProgress)
-    )(ClassOfBeneficiaryViewModel.apply _)
 }
