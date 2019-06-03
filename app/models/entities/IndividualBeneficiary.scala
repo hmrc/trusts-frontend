@@ -18,12 +18,17 @@ package models.entities
 
 import java.time.LocalDate
 
-import models.FullName
+import models.{Address, FullName}
 import play.api.libs.json.{Format, Json}
 
 
-final case class IndividualBeneficiary(name: FullName, dateOfBirth: LocalDate,
-                                       nationalInsuranceNumber: String, income: String
+final case class IndividualBeneficiary(name: FullName,
+                                       dateOfBirth: Option[LocalDate],
+                                       nationalInsuranceNumber: Option[String],
+                                       address : Option[Address],
+                                       vulnerableYesNo: Boolean,
+                                       income: Option[String] ,
+                                       incomeYesNo: Boolean
                                       ) {
 }
 

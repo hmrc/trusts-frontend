@@ -249,7 +249,7 @@ case class IndividualDetailsType(name: NameType,
                                  dateOfBirth: Option[LocalDate],
                                  vulnerableBeneficiary: Boolean,
                                  beneficiaryType: Option[String],
-                                 beneficiaryDiscretion: Option[Boolean],
+                                 beneficiaryDiscretion: Boolean,
                                  beneficiaryShareOfIncome: Option[String],
                                  identification: Option[IdentificationType])
 

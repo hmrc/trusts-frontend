@@ -16,10 +16,48 @@
 
 package mapping
 
-import models.UserAnswers
+import javax.inject.Inject
 
-class IndividualBeneficiaryMapper extends Mapping[IndividualDetailsType] {
-  override def build(userAnswers: UserAnswers): Option[IndividualDetailsType] = {
-    None
+import models.{Address, UserAnswers}
+import models.entities.{ClassOfBeneficiary, IndividualBeneficiary}
+
+class IndividualBeneficiaryMapper @Inject()(nameMapper: NameMapper,
+                                            addressMapper: AddressMapper) extends Mapping[List[IndividualDetailsType]] {
+  override def build(userAnswers: UserAnswers): Option[List[IndividualDetailsType]] = {
+    val individualBeneficiaries : List[models.entities.IndividualBeneficiary] =
+      userAnswers.get(models.entities.IndividualBeneficiaries).getOrElse(List.empty)
+
+    individualBeneficiaries match {
+      case Nil => None
+      case list =>
+        Some(
+          list.map { indBen =>
+            IndividualDetailsType(
+              name = nameMapper.build(indBen.name),
+              dateOfBirth = indBen.dateOfBirth,
+              vulnerableBeneficiary = indBen.vulnerableYesNo,
+              beneficiaryType = None,
+              beneficiaryDiscretion = indBen.incomeYesNo,
+              beneficiaryShareOfIncome = indBen.income,
+              identification = identificationMap(indBen)
+            )
+          }
+        )
+    }
+  }
+
+  private def identificationMap(indBen: IndividualBeneficiary): Option[IdentificationType] = {
+    val nino: Option[String] = indBen.nationalInsuranceNumber
+    val address: Option[Address] = indBen.address
+     (nino, address) match {
+       case (None, None) => None
+       case (_,_) =>
+         Some(IdentificationType(
+           nino = indBen.nationalInsuranceNumber,
+           None,
+           addressMapper.build(indBen.address))
+       )
+     }
+
   }
 }
