@@ -21,7 +21,8 @@ import java.time.LocalDate
 import models.{Address, FullName}
 import play.api.libs.json.{JsError, JsSuccess, Reads, __}
 
-final case class LeadTrusteeIndividual(name: FullName,
+final case class LeadTrusteeIndividual(override val isLead : Boolean = true,
+                                        name: FullName,
                                        dateOfBirth: LocalDate,
                                        isUKCitizen : Boolean,
                                        nino : Option[String],
@@ -38,6 +39,7 @@ object LeadTrusteeIndividual {
   implicit lazy val reads: Reads[LeadTrusteeIndividual] = {
 
     val leadTrusteeReads: Reads[LeadTrusteeIndividual] = (
+      (__ \ "isThisLeadTrustee").read[Boolean] and
         (__ \ "name").read[FullName] and
         (__ \ "dateOfBirth").read[LocalDate] and
         (__ \ "isUKCitizen").read[Boolean] and

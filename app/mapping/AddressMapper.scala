@@ -15,7 +15,8 @@
  */
 
 package mapping
-import models.{InternationalAddress, UKAddress, UserAnswers}
+import models.entities.TrusteeIndividual
+import models.{Address, InternationalAddress, UKAddress, UserAnswers}
 import pages.QuestionPage
 
 class AddressMapper  {
@@ -63,6 +64,14 @@ class AddressMapper  {
           x.country
         )
     }
+  }
+
+  def build (ukOrInternationalAddress : Option[Address]): Option[AddressType] = {
+    ukOrInternationalAddress flatMap {
+      case ukAddress : UKAddress => buildUkAddress(Some(ukAddress))
+      case international : InternationalAddress => buildInternationalAddress(Some(international))
+    }
+
   }
 
 

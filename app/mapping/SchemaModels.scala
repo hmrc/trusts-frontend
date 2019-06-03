@@ -20,7 +20,6 @@ import java.time.LocalDate
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import Constant._
 
 /**
   * DES API Schema - definitions models below
@@ -72,7 +71,7 @@ object Correspondence {
 
 }
 
-case class YearsReturns(var returns: Option[List[YearReturnType]])
+case class YearsReturns(returns: Option[List[YearReturnType]])
 
 object YearsReturns {
   implicit val yearsReturnsFormat: Format[YearsReturns] = Json.format[YearsReturns]
@@ -230,15 +229,7 @@ case class LeadTrusteeType(
                           )
 
 object LeadTrusteeType {
-
-  implicit val leadTrusteeTypeReads:Reads[LeadTrusteeType] = Json.reads[LeadTrusteeType]
-
-  implicit val leadTrusteeWritesToDes : Writes[LeadTrusteeType] = Writes {
-    leadTrustee=> leadTrustee.leadTrusteeInd match {
-      case Some(indLeadTrutee) => Json.toJson(indLeadTrutee)
-      case None => Json.toJson(leadTrustee.leadTrusteeOrg)
-    }
-  }
+  implicit val leadTrusteeTypeReads:Format[LeadTrusteeType] = Json.format[LeadTrusteeType]
 }
 
 
@@ -371,12 +362,7 @@ case class TrustDetailsType(startDate: LocalDate,
                             typeOfTrust: TypeOfTrust,
                             deedOfVariation: Option[String],
                             interVivos: Option[Boolean],
-                            efrbsStartDate: Option[LocalDate]) {
-
- // def isEmploymentRelatedTrust : Boolean = typeOfTrust == EMPLOYMENT_RELATED_TRUST.toString
-
-
-}
+                            efrbsStartDate: Option[LocalDate])
 
 object TrustDetailsType {
 
@@ -455,13 +441,6 @@ case class YearReturnType(taxReturnYear: String, taxConsequence: Boolean)
 object YearReturnType {
   implicit val yearReturnTypeFormat: Format[YearReturnType] = Json.format[YearReturnType]
 }
-
-case class YearsReturnType(returns: Option[Array[YearReturnType]])
-
-object YearsReturnType {
-  implicit val yearsReturnTypeFormat: Format[YearsReturnType] = Json.format[YearsReturnType]
-}
-
 
 case class PassportType(number: String,
                         expirationDate: LocalDate,
