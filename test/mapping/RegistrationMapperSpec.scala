@@ -24,6 +24,18 @@ import utils.TestUserAnswers
 class RegistrationMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {
 
+  private val newTrustUserAnswers = {
+    val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
+    val uaWithLead = TestUserAnswers.withLeadTrustee(emptyUserAnswers)
+    val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(uaWithLead)
+    val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithDeceased)
+    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
+    val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
+    val userAnswers = TestUserAnswers.withDeclaration(asset)
+
+    userAnswers
+  }
+
   val registrationMapper: Mapping[Registration] = injector.instanceOf[RegistrationMapper]
 
   "RegistrationMapper" - {
@@ -49,6 +61,14 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
 
         "registering a new trust" in {
 
+          val result = registrationMapper.build(newTrustUserAnswers).value
+
+          result.agentDetails mustNot be(defined)
+          result.yearsReturns mustBe defined
+          result.yearsReturns mustBe defined
+          result.matchData mustNot be(defined)
+          result.declaration mustBe a[Declaration]
+          result.trust mustBe a[Trust]
         }
 
       }
@@ -56,14 +76,8 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
       "registration is made by an Agent" - {
 
         "registering a new trust" in {
-          val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
-          val uaWithAgent = TestUserAnswers.withAgent(emptyUserAnswers)
-          val uaWithLead = TestUserAnswers.withLeadTrustee(uaWithAgent)
-          val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(uaWithLead)
-          val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithDeceased)
-          val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
-          val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
-          val userAnswers = TestUserAnswers.withDeclaration(asset)
+
+          val userAnswers = TestUserAnswers.withAgent(newTrustUserAnswers)
 
           val result = registrationMapper.build(userAnswers).value
 
