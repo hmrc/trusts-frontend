@@ -21,7 +21,7 @@ import java.time.LocalDate
 import base.SpecBaseHelpers
 import generators.Generators
 import models.IndividualOrBusiness.Individual
-import models.{FullName, UKAddress}
+import models.{FullName, InternationalAddress, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
 
@@ -74,7 +74,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
           declarationMapper.build(userAnswers) mustNot be(defined)
         }
 
-        "must be able to create declaration when agent UK address and declaration name answered" in {
+        "must be able to create declaration when agent has UK address and declaration name answered" in {
 
           val userAnswers = emptyUserAnswers
             .set(AgentInternalReferencePage, "123456789").success.value
@@ -85,6 +85,21 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
           declarationMapper.build(userAnswers).value mustBe Declaration(
             name = NameType("First", None, "Last"),
             address = AddressType("Line1", "line2", None, Some("Newcastle"), Some("NE62RT"), "GB")
+          )
+
+        }
+
+        "must be able to create declaration when agent has international address and declaration name answered" in {
+
+          val userAnswers = emptyUserAnswers
+            .set(AgentInternalReferencePage, "123456789").success.value
+            .set(DeclarationPage, FullName("First", None, "Last")).success.value
+            .set(AgentAddressYesNoPage, false).success.value
+            .set(AgentInternationalAddressPage, InternationalAddress("Line1", "line2", None, None, "IN")).success.value
+
+          declarationMapper.build(userAnswers).value mustBe Declaration(
+            name = NameType("First", None, "Last"),
+            address = AddressType("Line1", "line2", None, None, None, "IN")
           )
 
         }

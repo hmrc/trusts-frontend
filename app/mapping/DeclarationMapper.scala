@@ -28,31 +28,10 @@ class DeclarationMapper @Inject()(nameMapper: NameMapper,
 
     val declarationName = userAnswers.get(DeclarationPage)
     val agentInternalReference = userAnswers.get(AgentInternalReferencePage)
-    val trustees: List[Trustee] = userAnswers.get(Trustees).getOrElse(List.empty[Trustee])
 
     val address = agentInternalReference match {
-      case Some(_) => addressMapper.build(
-        userAnswers,
-        AgentAddressYesNoPage,
-        AgentUKAddressPage,
-        AgentInternationalAddressPage
-      )
-      case _ => {
-        trustees match {
-          case Nil => None
-          case list =>
-            list.find(_.isLead).flatMap {
-              case lti: LeadTrusteeIndividual =>
-                val index = list.indexOf(lti)
-                addressMapper.build(
-                  userAnswers,
-                  TrusteeLiveInTheUKPage(index),
-                  TrusteesUkAddressPage(index),
-                  TrusteesInternationalAddressPage(index)
-                )
-            }
-        }
-      }
+      case Some(_) => getAgentAddress(userAnswers)
+      case _ => getLeadTrusteeAddress(userAnswers)
     }
 
     address flatMap {
@@ -68,4 +47,31 @@ class DeclarationMapper @Inject()(nameMapper: NameMapper,
   }
 
 
+  private def getLeadTrusteeAddress(userAnswers: UserAnswers): Option[AddressType] = {
+    val trustees: List[Trustee] = userAnswers.get(Trustees).getOrElse(List.empty[Trustee])
+    trustees match {
+      case Nil => None
+      case list =>
+        list.find(_.isLead).flatMap {
+          case lti: LeadTrusteeIndividual =>
+            val index = list.indexOf(lti)
+            addressMapper.build(
+              userAnswers,
+              TrusteeLiveInTheUKPage(index),
+              TrusteesUkAddressPage(index),
+              TrusteesInternationalAddressPage(index)
+            )
+        }
+    }
+
+  }
+
+  private def getAgentAddress(userAnswers: UserAnswers): Option[AddressType] = {
+    addressMapper.build(
+      userAnswers,
+      AgentAddressYesNoPage,
+      AgentUKAddressPage,
+      AgentInternationalAddressPage
+    )
+  }
 }
