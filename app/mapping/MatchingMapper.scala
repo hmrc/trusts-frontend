@@ -17,6 +17,7 @@
 package mapping
 import models.{Matched, UserAnswers}
 import pages.{ExistingTrustMatched, PostcodeForTheTrustPage, TrustHaveAUTRPage, TrustNamePage, WhatIsTheUTRPage}
+import play.api.Logger
 
 class MatchingMapper extends Mapping[MatchData] {
 
@@ -26,6 +27,8 @@ class MatchingMapper extends Mapping[MatchData] {
         if (haveAUTR) {
           userAnswers.get(ExistingTrustMatched).flatMap {
             case Matched.Success =>
+
+              Logger.info(s"[MatchingMapper][build] creating match data for a matched trust")
 
               for {
                 utr <- userAnswers.get(WhatIsTheUTRPage)
@@ -40,8 +43,10 @@ class MatchingMapper extends Mapping[MatchData] {
               }
 
             case Matched.AlreadyRegistered =>
+              Logger.info(s"[MatchingMapper][build] unable to create match data as trust is already registered")
               None
             case Matched.Failed =>
+              Logger.info(s"[MatchingMapper][build] unable to create match data as trust is failed matching")
               None
           }
         } else {
