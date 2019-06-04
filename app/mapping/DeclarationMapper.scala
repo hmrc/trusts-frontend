@@ -18,30 +18,54 @@ package mapping
 
 import javax.inject.Inject
 import models.UserAnswers
-import pages._
+import models.entities.{LeadTrusteeIndividual, Trustee, Trustees}
+import pages.{AgentInternalReferencePage, _}
 
-class DeclarationMapper @Inject()(nameMapper: NameMapper, addressMapper: AddressMapper) extends Mapping[Declaration] {
+class DeclarationMapper @Inject()(nameMapper: NameMapper,
+                                  addressMapper: AddressMapper) extends Mapping[Declaration] {
 
   override def build(userAnswers: UserAnswers): Option[Declaration] = {
 
     val declarationName = userAnswers.get(DeclarationPage)
+    val agentInternalReference = userAnswers.get(AgentInternalReferencePage)
+    val trustees: List[Trustee] = userAnswers.get(Trustees).getOrElse(List.empty[Trustee])
 
-    val address = addressMapper.build(
-      userAnswers,
-      AgentAddressYesNoPage,
-      AgentUKAddressPage,
-      AgentInternationalAddressPage
-    )
+    val address = agentInternalReference match {
+      case Some(_) => addressMapper.build(
+        userAnswers,
+        AgentAddressYesNoPage,
+        AgentUKAddressPage,
+        AgentInternationalAddressPage
+      )
+      case _ => {
+        trustees match {
+          case Nil => None
+          case list =>
+            list.find(_.isLead).flatMap {
+              case lti: LeadTrusteeIndividual =>
+                val index = list.indexOf(lti)
+                addressMapper.build(
+                  userAnswers,
+                  TrusteeLiveInTheUKPage(index),
+                  TrusteesUkAddressPage(index),
+                  TrusteesInternationalAddressPage(index)
+                )
+            }
+        }
+      }
+    }
 
     address flatMap {
       declarationAddress =>
         declarationName.map {
-          name =>
+          decName =>
             Declaration(
-              name = nameMapper.build(name),
+              name = nameMapper.build(decName),
               address = declarationAddress
             )
         }
     }
   }
+
+
 }
