@@ -18,9 +18,7 @@ package mapping
 
 import javax.inject.Inject
 import models.UserAnswers
-import models.entities.{LeadTrusteeIndividual, Trustees}
 import pages._
-import play.api.Logger
 
 class DeclarationMapper @Inject()(nameMapper: NameMapper, addressMapper: AddressMapper) extends Mapping[Declaration] {
 
