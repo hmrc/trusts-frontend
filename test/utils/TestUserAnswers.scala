@@ -18,6 +18,7 @@ package utils
 
 import java.time.LocalDate
 
+import models.Matched.{Failed, Success}
 import models.Status.Completed
 import models.{FullName, IndividualOrBusiness, UKAddress, UserAnswers, WhatKindOfAsset}
 import org.scalatest.TryValues
@@ -100,6 +101,20 @@ object TestUserAnswers extends TryValues {
   def withDeclaration(userAnswers: UserAnswers) : UserAnswers = {
     userAnswers
       .set(DeclarationPage, FullName("First", None, "Last")).success.value
+  }
+
+  def withMatchingSuccess(userAnswers: UserAnswers) : UserAnswers = {
+    userAnswers
+      .set(TrustNamePage, "Existing Trust").success.value
+      .set(TrustHaveAUTRPage, true).success.value
+      .set(WhatIsTheUTRPage, "123456789").success.value
+      .set(PostcodeForTheTrustPage, "NE981ZZ").success.value
+      .set(ExistingTrustMatched, Success).success.value
+  }
+
+  def withMatchingFailed(userAnswers: UserAnswers) : UserAnswers = {
+    userAnswers
+      .set(ExistingTrustMatched, Failed).success.value
   }
 
 }
