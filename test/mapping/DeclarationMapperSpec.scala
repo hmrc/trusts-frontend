@@ -43,7 +43,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
 
       "for an Agent" - {
 
-        "must not be able to create declaration when not have all answers" in {
+        "must not be able to create declaration when agent UK address is not answered" in {
 
           val userAnswers = emptyUserAnswers
             .set(DeclarationPage, FullName("First", None, "Last")).success.value
@@ -51,7 +51,24 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
           declarationMapper.build(userAnswers) mustNot be(defined)
         }
 
-        "must be able to create declaration when user answers given" in {
+        "must not be able to create declaration when declaration name is not answered" in {
+
+          val userAnswers = emptyUserAnswers
+            .set(AgentAddressYesNoPage, true).success.value
+            .set(AgentUKAddressPage, UKAddress("Line1", Some("line2"), None, "Newcastle", "NE62RT")).success.value
+
+          declarationMapper.build(userAnswers) mustNot be(defined)
+        }
+
+        "must not be able to create declaration when agent UK address and declaration name not answered" in {
+
+          val userAnswers = emptyUserAnswers
+            .set(AgentAddressYesNoPage, false).success.value
+
+          declarationMapper.build(userAnswers) mustNot be(defined)
+        }
+
+        "must be able to create declaration when agent UK address and declaration name answered" in {
 
           val userAnswers = emptyUserAnswers
             .set(DeclarationPage, FullName("First", None, "Last")).success.value
