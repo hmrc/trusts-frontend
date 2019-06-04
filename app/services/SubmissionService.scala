@@ -18,18 +18,24 @@ package services
 
 import com.google.inject.ImplementedBy
 import javax.inject.Inject
+
+import connector.TrustConnector
 import mapping.{Registration, RegistrationMapper}
-import models.UserAnswers
+import models.{TrustResponse, UnableToRegister, UserAnswers}
+import uk.gov.hmrc.http.HeaderCarrier
+
+import scala.concurrent.Future
 
 
-class DefaultSubmissionService @Inject()(registrationMapper: RegistrationMapper)
+class DefaultSubmissionService @Inject()(
+                                          registrationMapper: RegistrationMapper,
+                                          trustConnector: TrustConnector)
   extends SubmissionService {
 
-  override def submit(userAnswers: UserAnswers): Option[Registration] = {
-    for {
-       registration <- registrationMapper.build(userAnswers)
-    } yield {
-      registration
+  override def submit(userAnswers: UserAnswers)(implicit  hc:HeaderCarrier ): Future[TrustResponse] = {
+    registrationMapper.build(userAnswers) match {
+      case Some(registration) => trustConnector.register(registration)
+      case None =>Future.failed(UnableToRegister())
     }
   }
 }
@@ -37,6 +43,6 @@ class DefaultSubmissionService @Inject()(registrationMapper: RegistrationMapper)
 @ImplementedBy(classOf[DefaultSubmissionService])
 trait SubmissionService {
 
-  def submit(userAnswers: UserAnswers) : Option[Registration]
+  def submit(userAnswers: UserAnswers)(implicit  hc:HeaderCarrier ) : Future[TrustResponse]
 
 }

@@ -21,11 +21,13 @@ import play.api.http.Status._
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
-trait TrustResponse
+sealed trait TrustResponse
 
 final case class RegistrationTRNResponse(trn : String) extends TrustResponse
 case object AlreadyRegistered extends TrustResponse
 case object InternalServerError extends TrustResponse
+final case class UnableToRegister() extends Exception with TrustResponse
+
 
 object TrustResponse {
 
