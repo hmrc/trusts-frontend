@@ -71,7 +71,7 @@ class TaskListController @Inject()(
         val updatedAnswers = request.userAnswers.copy(progress = InProgress)
 
         for {
-          _              <- sessionRepository.set(updatedAnswers)
+          _  <- sessionRepository.set(updatedAnswers)
         } yield {
 
           val sections = registrationProgress.sections(updatedAnswers)

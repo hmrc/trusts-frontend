@@ -41,6 +41,7 @@ class DeceasedSettlorMapper @Inject()(nameMapper: NameMapper, addressMapper: Add
   private def identificationStatus(userAnswers: UserAnswers): Option[Identification] = {
     val settlorNinoYesNo = userAnswers.get(SettlorsNINoYesNoPage)
     val settlorsLastKnownAddressYesNo = userAnswers.get(SettlorsLastKnownAddressYesNoPage)
+
     (settlorNinoYesNo, settlorsLastKnownAddressYesNo) match {
       case (Some(true), _) => ninoMap(userAnswers)
       case (Some(false), Some(true)) =>
@@ -52,6 +53,7 @@ class DeceasedSettlorMapper @Inject()(nameMapper: NameMapper, addressMapper: Add
 
   private def ninoMap(userAnswers: UserAnswers): Option[Identification] = {
     val settlorNino = userAnswers.get(SettlorNationalInsuranceNumberPage)
+
     settlorNino.map {
       nino =>
         Identification(
