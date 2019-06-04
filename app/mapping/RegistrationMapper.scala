@@ -30,7 +30,8 @@ class RegistrationMapper @Inject()(
                                   agentMapper: AgentMapper,
                                   deceasedSettlorMapper: DeceasedSettlorMapper,
                                   taxLiabilityMapper: TaxLiabilityMapper,
-                                  trusteeMapper: TrusteeMapper
+                                  trusteeMapper: TrusteeMapper,
+                                  matchingMapper: MatchingMapper
                                   ) extends Mapping[Registration] {
 
   override def build(userAnswers: UserAnswers): Option[Registration] = {
@@ -60,7 +61,7 @@ class RegistrationMapper @Inject()(
       )
 
       Registration(
-        matchData = None,
+        matchData = matchingMapper.build(userAnswers),
         correspondence = correspondence,
         yearsReturns = taxLiability,
         declaration = declaration,

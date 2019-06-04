@@ -55,12 +55,6 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
 
       "registration is made by an Organisation" - {
 
-        "not register an existing trust that failed matching" - {
-          val userAnswers = TestUserAnswers.withMatchingFailed(newTrustUserAnswers)
-
-          registrationMapper.build(userAnswers) mustNot be(defined)
-        }
-
         "registering an existing trust" in {
           val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
 
@@ -69,7 +63,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
           result.agentDetails mustNot be(defined)
           result.yearsReturns mustBe defined
           result.yearsReturns mustBe defined
-          result.matchData mustNot be(defined)
+          result.matchData must be(defined)
           result.declaration mustBe a[Declaration]
           result.trust mustBe a[Trust]
         }
@@ -100,6 +94,20 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
           result.yearsReturns mustBe defined
           result.yearsReturns mustBe defined
           result.matchData mustNot be(defined)
+          result.declaration mustBe a[Declaration]
+          result.trust mustBe a[Trust]
+        }
+
+        "registering an existing trust" in {
+          val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
+          val userAnswersWithAgent = TestUserAnswers.withAgent(userAnswers)
+
+          val result = registrationMapper.build(userAnswersWithAgent).value
+
+          result.agentDetails must be(defined)
+          result.yearsReturns mustBe defined
+          result.yearsReturns mustBe defined
+          result.matchData must be(defined)
           result.declaration mustBe a[Declaration]
           result.trust mustBe a[Trust]
         }
