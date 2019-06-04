@@ -54,6 +54,8 @@ class FrontendAppConfig @Inject() (configuration: Configuration) {
 
   lazy val ttlInSeconds = configuration.get[Int]("mongodb.timeToLiveInSeconds")
 
+  lazy val trustsUrl = configuration.get[Service]("microservice.services.trusts").baseUrl
+
   val posthmrc = configuration.get[String]("confirmation.posthmrc")
   val refNumber = configuration.get[String]("confirmation.refNumber")
 

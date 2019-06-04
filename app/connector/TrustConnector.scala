@@ -18,12 +18,27 @@ package connector
 
 import config.FrontendAppConfig
 import javax.inject.Inject
+
 import mapping.Registration
+import models.TrustResponse
+import play.api.libs.json.{JsValue, Json, Writes}
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class TrustConnector @Inject()(http: HttpClient, config : FrontendAppConfig) {
 
-  def register(registration: Registration) = ???
+  val trustsEndpoint = s"${config.trustsUrl}/trusts/register"
+
+  def register(registration: Registration)(implicit  hc:HeaderCarrier ): Future[TrustResponse] = {
+
+    val response = http.POST[JsValue, TrustResponse](trustsEndpoint, Json.toJson(registration))
+    (implicitly[Writes[JsValue]], TrustResponse.httpReads, implicitly[HeaderCarrier](hc),global)
+
+    response
+  }
 
 }
 

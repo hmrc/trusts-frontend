@@ -16,6 +16,37 @@
 
 package models
 
+import play.api.Logger
+import play.api.http.Status._
+import play.api.libs.json.Json
+import uk.gov.hmrc.http.{HttpReads, HttpResponse}
+
 trait TrustResponse
 
 final case class RegistrationTRNResponse(trn : String) extends TrustResponse
+case object AlreadyRegistered extends TrustResponse
+case object InternalServerError extends TrustResponse
+
+object TrustResponse {
+
+  implicit val formats = Json.format[RegistrationTRNResponse]
+
+  implicit lazy val httpReads: HttpReads[TrustResponse] =
+    new HttpReads[TrustResponse] {
+      override def read(method: String, url: String, response: HttpResponse): TrustResponse = {
+        Logger.info(s"[TrustResponse]  response status received from trusts api: ${response.status}, body :${response.body}")
+
+        response.status match {
+          case OK =>
+            response.json.as[RegistrationTRNResponse]
+          case CONFLICT =>
+            AlreadyRegistered
+          case _ =>
+            InternalServerError
+
+        }
+      }
+    }
+
+
+}

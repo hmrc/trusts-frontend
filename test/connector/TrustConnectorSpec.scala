@@ -20,7 +20,7 @@ import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock.{aResponse, containing, equalTo, post, urlEqualTo}
 import generators.Generators
 import mapping.{Mapping, Registration, RegistrationMapper}
-import models.{RegistrationTRNResponse, TrustResponse}
+import models.{AlreadyRegistered, InternalServerError, RegistrationTRNResponse, TrustResponse}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.Application
@@ -28,12 +28,15 @@ import play.api.http.Status
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 import play.api.test.Helpers.CONTENT_TYPE
+import uk.gov.hmrc.http.HeaderCarrier
 import utils.{TestUserAnswers, WireMockHelper}
 
-import scala.concurrent.Future
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, Future}
 
 class TrustConnectorSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers with WireMockHelper with ScalaFutures {
+  implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
   override lazy val app: Application = new GuiceApplicationBuilder()
     .configure(
@@ -71,7 +74,6 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
   }
 
   "TrustConnector" - {
-
     "return a Trust Registration Number (TRN)" - {
 
       "valid payload to trusts is sent" in {
@@ -90,14 +92,92 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
           """.stripMargin
         )
 
-        val futureResult : Future[TrustResponse] = connector.register(registration)
-
-        whenReady(futureResult) {
-          result =>
-            result mustBe RegistrationTRNResponse("XTRN1234567")
-        }
+        val result  = Await.result(connector.register(registration),Duration.Inf)
+        result mustBe RegistrationTRNResponse("XTRN1234567")
       }
+    }
 
+
+    "return AlreadyRegistered response " - {
+      "already registered trusts is sent " in {
+        val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
+        val registration = registrationMapper.build(userAnswers).value
+
+        val payload = Json.stringify(Json.toJson(registration))
+
+        wiremock(
+          payload = payload,
+          expectedStatus = Status.CONFLICT,
+          expectedResponse = """
+                               |{
+                               | "code": "ALREADY_REGISTERED",
+                               |  "message": "Trusts already registered."
+                               |}
+                             """.stripMargin
+        )
+
+        val result  = Await.result(connector.register(registration),Duration.Inf)
+        result mustBe AlreadyRegistered
+      }
+    }
+
+    "return InternalServerError response " - {
+      "api returns internal server error response " in {
+        val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
+        val registration = registrationMapper.build(userAnswers).value
+
+        val payload = Json.stringify(Json.toJson(registration))
+
+        wiremock(
+          payload = payload,
+          expectedStatus = Status.INTERNAL_SERVER_ERROR,
+          expectedResponse = """
+                               |{
+                               | "code": "INTERNAL_SERVER_ERROR",
+                               |  "message": "Internal server error."
+                               |}
+                             """.stripMargin
+        )
+
+        val result  = Await.result(connector.register(registration),Duration.Inf)
+        result mustBe InternalServerError
+      }
+    }
+
+    "return InternalServerError response " - {
+      "api returns bad request response " in {
+        val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
+        val registration = registrationMapper.build(userAnswers).value
+
+        val payload = Json.stringify(Json.toJson(registration))
+
+        wiremock(
+          payload = payload,
+          expectedStatus = Status.BAD_REQUEST,
+          expectedResponse = ""
+        )
+
+        val result  = Await.result(connector.register(registration),Duration.Inf)
+        result mustBe InternalServerError
+      }
+    }
+
+    "return InternalServerError response " - {
+      "api returns service unavailable response " in {
+        val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
+        val registration = registrationMapper.build(userAnswers).value
+
+        val payload = Json.stringify(Json.toJson(registration))
+
+        wiremock(
+          payload = payload,
+          expectedStatus = Status.SERVICE_UNAVAILABLE,
+          expectedResponse = ""
+        )
+
+        val result  = Await.result(connector.register(registration),Duration.Inf)
+        result mustBe InternalServerError
+      }
     }
 
   }
