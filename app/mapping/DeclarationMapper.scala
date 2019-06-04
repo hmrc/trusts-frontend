@@ -18,32 +18,60 @@ package mapping
 
 import javax.inject.Inject
 import models.UserAnswers
-import models.entities.{LeadTrusteeIndividual, Trustees}
-import pages._
-import play.api.Logger
+import models.entities.{LeadTrusteeIndividual, Trustee, Trustees}
+import pages.{AgentInternalReferencePage, _}
 
-class DeclarationMapper @Inject()(nameMapper: NameMapper, addressMapper: AddressMapper) extends Mapping[Declaration] {
+class DeclarationMapper @Inject()(nameMapper: NameMapper,
+                                  addressMapper: AddressMapper) extends Mapping[Declaration] {
 
   override def build(userAnswers: UserAnswers): Option[Declaration] = {
 
     val declarationName = userAnswers.get(DeclarationPage)
+    val agentInternalReference = userAnswers.get(AgentInternalReferencePage)
 
-    val address = addressMapper.build(
+    val address = agentInternalReference match {
+      case Some(_) => getAgentAddress(userAnswers)
+      case _ => getLeadTrusteeAddress(userAnswers)
+    }
+
+    address flatMap {
+      declarationAddress =>
+        declarationName.map {
+          decName =>
+            Declaration(
+              name = nameMapper.build(decName),
+              address = declarationAddress
+            )
+        }
+    }
+  }
+
+
+  private def getLeadTrusteeAddress(userAnswers: UserAnswers): Option[AddressType] = {
+    val trustees: List[Trustee] = userAnswers.get(Trustees).getOrElse(List.empty[Trustee])
+    trustees match {
+      case Nil => None
+      case list =>
+        list.find(_.isLead).flatMap {
+          case lti: LeadTrusteeIndividual =>
+            val index = list.indexOf(lti)
+            addressMapper.build(
+              userAnswers,
+              TrusteeLiveInTheUKPage(index),
+              TrusteesUkAddressPage(index),
+              TrusteesInternationalAddressPage(index)
+            )
+        }
+    }
+
+  }
+
+  private def getAgentAddress(userAnswers: UserAnswers): Option[AddressType] = {
+    addressMapper.build(
       userAnswers,
       AgentAddressYesNoPage,
       AgentUKAddressPage,
       AgentInternationalAddressPage
     )
-
-    address flatMap {
-      declarationAddress =>
-        declarationName.map {
-          name =>
-            Declaration(
-              name = nameMapper.build(name),
-              address = declarationAddress
-            )
-        }
-    }
   }
 }
