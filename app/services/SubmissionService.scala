@@ -22,6 +22,7 @@ import javax.inject.Inject
 import connector.TrustConnector
 import mapping.{Registration, RegistrationMapper}
 import models.{TrustResponse, UnableToRegister, UserAnswers}
+import play.api.Logger
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.Future
@@ -33,9 +34,13 @@ class DefaultSubmissionService @Inject()(
   extends SubmissionService {
 
   override def submit(userAnswers: UserAnswers)(implicit  hc:HeaderCarrier ): Future[TrustResponse] = {
+    Logger.info("[SubmissionService][submit] submitting registration")
     registrationMapper.build(userAnswers) match {
       case Some(registration) => trustConnector.register(registration)
-      case None =>Future.failed(UnableToRegister())
+      case None =>{
+        Logger.error ("[SubmissionService][submit] Unable to generate registration to submit.")
+        Future.failed(UnableToRegister())
+      }
     }
   }
 }
