@@ -40,21 +40,24 @@ class AuthenticatedIdentifierAction @Inject()(
                                              (implicit val executionContext: ExecutionContext) extends IdentifierAction with AuthorisedFunctions {
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+
     val hmrcAgentEnrolmentKey = "HMRC-AS-AGENT"
     val arnIdentifier = "AgentReferenceNumber"
+
     authorised().retrieve(Retrievals.internalId and Retrievals.affinityGroup and Retrievals.allEnrolments) {
-      case Some(internalId) ~ Some(Agent) ~ enrolments => {
+      case Some(internalId) ~ Some(Agent) ~ enrolments =>
 
         enrolments.getEnrolment(hmrcAgentEnrolmentKey).fold(doUnauthorizedResponse("missing HMRC-AS-AGENT enrolment group")) { agentEnrolment =>
           agentEnrolment.getIdentifier(arnIdentifier).fold(doUnauthorizedResponse("missing agent reference number")) { enrolmentIdentifier =>
             val arn = enrolmentIdentifier.value
-            arn.isEmpty match {
-              case true => doUnauthorizedResponse("agent reference number is empty")
-              case _ => block(IdentifierRequest(request, internalId, AffinityGroup.Agent, Some(arn)))
+
+            if(arn.isEmpty) {
+              doUnauthorizedResponse("agent reference number is empty")
+            } else {
+              block(IdentifierRequest(request, internalId, AffinityGroup.Agent, Some(arn)))
             }
           }
         }
-      }
       case Some(internalId) ~ Some(Organisation) ~ _ => block(IdentifierRequest(request, internalId, AffinityGroup.Organisation))
       case Some(_) ~ _ ~ _ => Future(Redirect(routes.UnauthorisedController.onPageLoad()))
       case _ => throw new UnauthorizedException("Unable to retrieve internal Id")
@@ -69,7 +72,7 @@ class AuthenticatedIdentifierAction @Inject()(
   }
 
   def doUnauthorizedResponse(reason: String): Future[Result] = {
-    Logger.info(s"[invokeBlock]: Agent services account required - $reason")
+    Logger.info(s"[AuthenticatedIdentifierAction][invokeBlock]: Agent services account required - $reason")
     Future(Redirect(routes.CreateAgentServicesAccountController.onPageLoad()))
   }
 }
