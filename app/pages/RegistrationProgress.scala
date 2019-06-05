@@ -22,6 +22,7 @@ import models.entities.{Assets, Trustees}
 import models.{AddABeneficiary, AddATrustee, AddAssets, Status, UserAnswers, entities}
 import navigation.TaskListNavigator
 import pages.entitystatus.TrustDetailsStatus
+import play.api.i18n.Messages
 import viewmodels._
 import viewmodels.addAnother.MoneyAssetViewModel
 
@@ -118,5 +119,15 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
         determineStatus(status)
     }
   }
+
+  def isTaskListComplete(userAnswers: UserAnswers)(implicit messages: Messages):Boolean = {
+    isTrustDetailsComplete(userAnswers).contains(Completed) &&
+    isDeceasedSettlorComplete(userAnswers).contains(Completed) &&
+    isTrusteesComplete(userAnswers).contains(Completed) &&
+    isBeneficiariesComplete(userAnswers).contains(Completed) &&
+    assetsStatus(userAnswers).contains(Completed)
+  }
+
+
 
 }

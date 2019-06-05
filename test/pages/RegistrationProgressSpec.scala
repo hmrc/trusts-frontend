@@ -319,4 +319,37 @@ class RegistrationProgressSpec extends SpecBase {
 
   }
 
+  "All tasklist complete" when {
+
+    "all entities marked as complete" in {
+
+      val registrationProgress = injector.instanceOf[RegistrationProgress]
+
+      val userAnswers = emptyUserAnswers
+        .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
+        .set(TrustDetailsStatus, Completed).success.value
+        .set(IsThisLeadTrusteePage(0), false).success.value
+        .set(TrusteeStatus(0), Status.Completed).success.value
+        .set(IsThisLeadTrusteePage(1), true).success.value
+        .set(TrusteeStatus(1), Status.Completed).success.value
+        .set(AddATrusteePage, AddATrustee.NoComplete).success.value
+        .set(SetupAfterSettlorDiedPage, true).success.value
+        .set(DeceasedSettlorComplete, Status.Completed).success.value
+        .set(ClassBeneficiaryDescriptionPage(0), "Description").success.value
+        .set(ClassBeneficiaryStatus(0), Status.Completed).success.value
+        .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
+        .set(IndividualBeneficiaryStatus(0), Status.Completed).success.value
+        .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
+        .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
+        .set(AssetMoneyValuePage(0), "2000").success.value
+        .set(AssetStatus(0), Completed).success.value
+        .set(AddAssetsPage, NoComplete).success.value
+
+      registrationProgress.isTaskListComplete(userAnswers) mustBe true
+    }
+
+
+  }
+
+
 }
