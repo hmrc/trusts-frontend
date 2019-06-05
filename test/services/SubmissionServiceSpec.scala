@@ -82,6 +82,21 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
           Await.result( submissionService.submit(userAnswers),Duration.Inf)
         }
       }
+
+      "must not able to submit data  when lead details not available" in {
+
+        val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
+        val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(emptyUserAnswers)
+        val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithDeceased)
+        val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
+        val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
+        val userAnswers = TestUserAnswers.withDeclaration(asset)
+
+
+        intercept[UnableToRegister] {
+          Await.result( submissionService.submit(userAnswers),Duration.Inf)
+        }
+      }
     }
 
 
