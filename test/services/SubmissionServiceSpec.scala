@@ -17,28 +17,113 @@
 package services
 
 import base.SpecBaseHelpers
+import connector.TrustConnector
 import generators.Generators
-import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
+import mapping.{Mapping, Registration, RegistrationMapper}
+import models.{RegistrationTRNResponse, UnableToRegister}
+import org.mockito.Mockito.when
+import org.mockito.Matchers.any
+
+
+import org.scalatest.{AsyncFreeSpec, FreeSpec, MustMatchers, OptionValues}
+import uk.gov.hmrc.http.HeaderCarrier
+import utils.TestUserAnswers
+
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, Future}
 
 class SubmissionServiceSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers
 {
 
-  val submissionService : SubmissionService = injector.instanceOf[SubmissionService]
+  private lazy val registrationMapper: RegistrationMapper = injector.instanceOf[RegistrationMapper]
+
+  val mockConnector = mock[TrustConnector]
+
+  val submissionService = new DefaultSubmissionService(registrationMapper,mockConnector)
+
+  implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
   "SubmissionService" -  {
 
     "for an empty user answers" - {
 
-      "must not be able to create a Registration" in {
+      "must not able to submit data " in {
 
         val userAnswers = emptyUserAnswers
 
-        submissionService.submit(userAnswers) mustNot be(defined)
+        intercept[UnableToRegister] {
+          Await.result( submissionService.submit(userAnswers),Duration.Inf)
+        }
       }
-
     }
 
+    "when user answers is not empty" - {
+
+      "must able to submit data  when all data available for registration by organisation user" in {
+
+        val userAnswers = newTrustUserAnswers
+
+        when(mockConnector.register(any[Registration])(any[HeaderCarrier])).
+          thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))
+
+        val result  = Await.result(submissionService.submit(userAnswers),Duration.Inf)
+        result mustBe RegistrationTRNResponse("XTRN1234567")
+      }
+
+      "must able to submit data  when all data available for registration by agent" in {
+
+        val userAnswers = TestUserAnswers.withAgent(newTrustUserAnswers)
+
+        when(mockConnector.register(any[Registration])(any[HeaderCarrier])).
+          thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))
+
+        val result  = Await.result(submissionService.submit(userAnswers),Duration.Inf)
+        result mustBe RegistrationTRNResponse("XTRN1234567")
+      }
+
+      "must not able to submit data  when all data not available for registration" in {
+
+        val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
+        val uaWithLead = TestUserAnswers.withLeadTrustee(emptyUserAnswers)
+        val userAnswers = TestUserAnswers.withDeceasedSettlor(uaWithLead)
+
+
+        intercept[UnableToRegister] {
+          Await.result( submissionService.submit(userAnswers),Duration.Inf)
+        }
+      }
+
+      "must not able to submit data  when lead details not available" in {
+
+        val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
+        val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(emptyUserAnswers)
+        val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithDeceased)
+        val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
+        val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
+        val userAnswers = TestUserAnswers.withDeclaration(asset)
+
+
+        intercept[UnableToRegister] {
+          Await.result( submissionService.submit(userAnswers),Duration.Inf)
+        }
+      }
+    }
+
+
+
+  }
+
+  private val newTrustUserAnswers = {
+    val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
+    val uaWithLead = TestUserAnswers.withLeadTrustee(emptyUserAnswers)
+    val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(uaWithLead)
+    val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithDeceased)
+    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
+    val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
+    val userAnswers = TestUserAnswers.withDeclaration(asset)
+
+    userAnswers
   }
 
 }
