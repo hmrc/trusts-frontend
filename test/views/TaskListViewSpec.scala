@@ -16,13 +16,16 @@
 
 package views
 
-import java.time.LocalDateTime
+import java.time.{LocalDate, LocalDateTime}
 import java.time.format.DateTimeFormatter
 
 import controllers.routes
-import models.{NormalMode, UserAnswers}
+import models.AddAssets.NoComplete
+import models.Status.Completed
+import models.{AddABeneficiary, AddATrustee, FullName, NormalMode, Status, UserAnswers, WhatKindOfAsset}
 import navigation.TaskListNavigator
-import pages.RegistrationProgress
+import pages.entitystatus._
+import pages._
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import views.behaviours.{TaskListViewBehaviours, ViewBehaviours}
 import views.html.TaskListView
@@ -35,6 +38,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
   private def sections(answers: UserAnswers) =
     new RegistrationProgress(new TaskListNavigator()).sections(answers)
 
+  private def isTaskListComplete(answers: UserAnswers) =
+    new RegistrationProgress(new TaskListNavigator()).isTaskListComplete(answers)
+
   "TaskList view" when {
 
     "rendered for an Organisation or an Agent" must {
@@ -45,7 +51,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
         val view = viewFor[TaskListView](Some(answers))
 
-        val applyView = view.apply(savedUntil, sections(answers), Organisation)(fakeRequest, messages)
+        val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
 
         behave like normalPage(applyView, "taskList")
 
@@ -53,13 +59,67 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
         behave like taskList(applyView, sections(answers))
       }
+
+      "render summary" when {
+
+        "all sections are completed" in {
+
+          val userAnswers = emptyUserAnswers
+            .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
+            .set(TrustDetailsStatus, Completed).success.value
+            .set(IsThisLeadTrusteePage(0), false).success.value
+            .set(TrusteeStatus(0), Status.Completed).success.value
+            .set(IsThisLeadTrusteePage(1), true).success.value
+            .set(TrusteeStatus(1), Status.Completed).success.value
+            .set(AddATrusteePage, AddATrustee.NoComplete).success.value
+            .set(SetupAfterSettlorDiedPage, true).success.value
+            .set(DeceasedSettlorComplete, Status.Completed).success.value
+            .set(ClassBeneficiaryDescriptionPage(0), "Description").success.value
+            .set(ClassBeneficiaryStatus(0), Status.Completed).success.value
+            .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
+            .set(IndividualBeneficiaryStatus(0), Status.Completed).success.value
+            .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
+            .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
+            .set(AssetMoneyValuePage(0), "2000").success.value
+            .set(AssetStatus(0), Completed).success.value
+            .set(AddAssetsPage, NoComplete).success.value
+
+          val view = viewFor[TaskListView](Some(userAnswers))
+          val applyView = view.apply(savedUntil, sections(userAnswers), isTaskListComplete(userAnswers), Organisation)(fakeRequest, messages)
+          val doc = asDocument(applyView)
+
+          assertRenderedById(doc, "summaryHeading")
+          assertRenderedById(doc, "printSaveAnswers")
+
+        }
+
+      }
+
+      "not render summary" when {
+
+        "not all sections are completed" in {
+
+          val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(0), FullName("individual", None, "beneficiary")).success.value
+            .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
+
+          val view = viewFor[TaskListView](Some(userAnswers))
+          val applyView = view.apply(savedUntil, sections(userAnswers), isTaskListComplete(userAnswers), Organisation)(fakeRequest, messages)
+          val doc = asDocument(applyView)
+
+          assertNotRenderedById(doc, "summaryHeading")
+          assertNotRenderedById(doc, "printSaveAnswers")
+
+        }
+
+      }
+
     }
 
     "rendered for an Organisation" must {
 
       "render Saved Until" in {
         val view = viewFor[TaskListView](Some(emptyUserAnswers))
-        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), Organisation)(fakeRequest, messages)
+        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Organisation)(fakeRequest, messages)
 
         val doc = asDocument(applyView)
         assertRenderedById(doc, "saved-until")
@@ -71,7 +131,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
       "render return to saved registrations link" in {
         val view = viewFor[TaskListView](Some(emptyUserAnswers))
-        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), Agent)(fakeRequest, messages)
+        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Agent)(fakeRequest, messages)
 
         val doc = asDocument(applyView)
 
@@ -85,7 +145,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
       "render agent details link" in {
         val view = viewFor[TaskListView](Some(emptyUserAnswers))
 
-        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), Agent)(fakeRequest, messages)
+        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Agent)(fakeRequest, messages)
 
         val doc = asDocument(applyView)
 
@@ -98,7 +158,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
       "not render saved until" in {
         val view = viewFor[TaskListView](Some(emptyUserAnswers))
-        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), Agent)(fakeRequest, messages)
+        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Agent)(fakeRequest, messages)
 
         val doc = asDocument(applyView)
         assertNotRenderedById(doc, "saved-until")
