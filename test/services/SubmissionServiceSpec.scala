@@ -60,9 +60,20 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
     "when user answers is not empty" - {
 
-      "must able to submit data  when all data available for registration" in {
+      "must able to submit data  when all data available for registration by organisation user" in {
 
         val userAnswers = newTrustUserAnswers
+
+        when(mockConnector.register(any[Registration])(any[HeaderCarrier])).
+          thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))
+
+        val result  = Await.result(submissionService.submit(userAnswers),Duration.Inf)
+        result mustBe RegistrationTRNResponse("XTRN1234567")
+      }
+
+      "must able to submit data  when all data available for registration by agent" in {
+
+        val userAnswers = TestUserAnswers.withAgent(newTrustUserAnswers)
 
         when(mockConnector.register(any[Registration])(any[HeaderCarrier])).
           thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))
