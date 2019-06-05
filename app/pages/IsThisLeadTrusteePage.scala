@@ -28,7 +28,6 @@ final case class IsThisLeadTrusteePage(index : Int) extends QuestionPage[Boolean
 
   override def toString: String = "isThisLeadTrustee"
 
-
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
       case Some(false) =>

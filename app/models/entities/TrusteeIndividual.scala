@@ -21,7 +21,8 @@ import java.time.LocalDate
 import models.{FullName, IndividualOrBusiness}
 import play.api.libs.json._
 
-final case class TrusteeIndividual(name: FullName, dateOfBirth: LocalDate) extends Trustee
+final case class TrusteeIndividual(override val isLead : Boolean,
+                                    name: FullName, dateOfBirth: LocalDate) extends Trustee
 
 object TrusteeIndividual {
 
@@ -32,7 +33,7 @@ object TrusteeIndividual {
     val trusteeReads: Reads[TrusteeIndividual] = (
       (__ \ "name").read[FullName] and
         (__ \ "dateOfBirth").read[LocalDate]
-      )(TrusteeIndividual.apply _)
+      )((name, dateOfBirth) => TrusteeIndividual(isLead = false, name, dateOfBirth))
 
     ((__ \ "isThisLeadTrustee").read[Boolean] and
       (__ \ "individualOrBusiness").read[IndividualOrBusiness]) ((_, _)).flatMap[(Boolean, IndividualOrBusiness)] {

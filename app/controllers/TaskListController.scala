@@ -71,15 +71,15 @@ class TaskListController @Inject()(
         val updatedAnswers = request.userAnswers.copy(progress = InProgress)
 
         for {
-          _              <- sessionRepository.set(updatedAnswers)
+          _  <- sessionRepository.set(updatedAnswers)
         } yield {
 
           val sections = registrationProgress.sections(updatedAnswers)
+          val isTaskListComplete = registrationProgress.isTaskListComplete(updatedAnswers)
 
           Logger.debug(s"[TaskList][sections] $sections")
 
-          Ok(view(savedUntil, sections, affinityGroup))
-        }
+          Ok(view(savedUntil, sections, isTaskListComplete, affinityGroup))        }
       }
 
       val isExistingTrust = request.userAnswers.get(TrustHaveAUTRPage).get

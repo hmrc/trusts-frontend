@@ -18,10 +18,12 @@ package models.entities
 
 import java.time.LocalDate
 
+import models.IndividualOrBusiness.Individual
 import models.{Address, FullName}
 import play.api.libs.json.{JsError, JsSuccess, Reads, __}
 
-final case class LeadTrusteeIndividual(name: FullName,
+final case class LeadTrusteeIndividual(override val isLead : Boolean = true,
+                                       name: FullName,
                                        dateOfBirth: LocalDate,
                                        isUKCitizen : Boolean,
                                        nino : Option[String],
@@ -38,6 +40,7 @@ object LeadTrusteeIndividual {
   implicit lazy val reads: Reads[LeadTrusteeIndividual] = {
 
     val leadTrusteeReads: Reads[LeadTrusteeIndividual] = (
+      (__ \ "isThisLeadTrustee").read[Boolean] and
         (__ \ "name").read[FullName] and
         (__ \ "dateOfBirth").read[LocalDate] and
         (__ \ "isUKCitizen").read[Boolean] and
@@ -51,7 +54,7 @@ object LeadTrusteeIndividual {
     ((__ \ "isThisLeadTrustee").read[Boolean] and
       (__ \ "individualOrBusiness").read[String]) ((_, _)).flatMap[(Boolean, String)] {
       case (isLead, individualOrBusiness) =>
-        if (individualOrBusiness == "individual" && isLead) {
+        if (individualOrBusiness == Individual.toString && isLead) {
           Reads(_ => JsSuccess((isLead, individualOrBusiness)))
         } else {
           Reads(_ => JsError("lead trustee individual must not be a `business` or a normal trustee"))

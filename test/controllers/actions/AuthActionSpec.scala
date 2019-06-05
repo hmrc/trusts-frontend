@@ -41,7 +41,7 @@ class AuthActionSpec extends SpecBase {
   private val agentAffinityGroup = AffinityGroup.Agent
   private val orgAffinityGroup = AffinityGroup.Organisation
   private val noEnrollment = Enrolments(Set())
-  private val agentEnrolment = Enrolments(Set(Enrolment("HMRC-AS-AGENT",List(EnrolmentIdentifier("SomeKey","SomeVal")),"Activated",None)))
+  private val agentEnrolment = Enrolments(Set(Enrolment("HMRC-AS-AGENT",List(EnrolmentIdentifier("AgentReferenceNumber","SomeVal")),"Activated",None)))
 
 
   "Auth Action" when {
