@@ -70,7 +70,21 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
         val result  = Await.result(submissionService.submit(userAnswers),Duration.Inf)
         result mustBe RegistrationTRNResponse("XTRN1234567")
       }
+
+      "must not able to submit data  when all data not available for registration" in {
+
+        val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
+        val uaWithLead = TestUserAnswers.withLeadTrustee(emptyUserAnswers)
+        val userAnswers = TestUserAnswers.withDeceasedSettlor(uaWithLead)
+
+
+        intercept[UnableToRegister] {
+          Await.result( submissionService.submit(userAnswers),Duration.Inf)
+        }
+      }
     }
+
+
 
   }
 
