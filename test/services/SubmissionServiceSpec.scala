@@ -17,8 +17,14 @@
 package services
 
 import base.SpecBaseHelpers
+import connector.TrustConnector
 import generators.Generators
+import mapping.{Mapping, Registration, RegistrationMapper}
 import models.{RegistrationTRNResponse, UnableToRegister}
+import org.mockito.Mockito.when
+import org.mockito.Matchers.any
+
+
 import org.scalatest.{AsyncFreeSpec, FreeSpec, MustMatchers, OptionValues}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
@@ -30,7 +36,12 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers
 {
 
-  val submissionService : SubmissionService = injector.instanceOf[SubmissionService]
+  private lazy val registrationMapper: RegistrationMapper = injector.instanceOf[RegistrationMapper]
+
+  val mockConnector = mock[TrustConnector]
+
+  val submissionService = new DefaultSubmissionService(registrationMapper,mockConnector)
+
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
   "SubmissionService" -  {
@@ -52,6 +63,9 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
       "must able to submit data  when all data available for registration" in {
 
         val userAnswers = newTrustUserAnswers
+
+        when(mockConnector.register(any[Registration])(any[HeaderCarrier])).
+          thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))
 
         val result  = Await.result(submissionService.submit(userAnswers),Duration.Inf)
         result mustBe RegistrationTRNResponse("XTRN1234567")
