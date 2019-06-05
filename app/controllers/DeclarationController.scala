@@ -36,7 +36,6 @@ class DeclarationController @Inject()(
                                        sessionRepository: SessionRepository,
                                        navigator: Navigator,
                                        identify: IdentifierAction,
-                                       hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
                                        formProvider: DeclarationFormProvider,
