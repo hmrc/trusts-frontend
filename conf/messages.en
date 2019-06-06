@@ -77,6 +77,11 @@ individualOrBusiness.individual = Individual
 individualOrBusiness.business = Business
 
 entity.trustee = Trustee
+entities.no.name.added = No name added
+entities.lead = Lead
+entities.trustee = Trustee
+entities.trustee.individual = Trustee Individual
+entities.trustee.business = Trustee Business
 
 createAgentServicesAccount.title = Create an agent services account
 createAgentServicesAccount.heading = Create an agent services account
@@ -387,6 +392,11 @@ taskList.assets.label = Assets
 taskList.taxLiability.label = Years of tax liability
 taskList.agent.savedRegistrations = Return to saved registrations
 taskList.agent.agentDetails = Agent details
+
+taskList.summary.heading = Summary
+taskList.summary.paragraph = If you need to update any asset details after making the declaration for this trust, use Self Assessment online or the Trust and Estate Tax Return form (SA900).
+taskList.summary.link = Print or save a copy of your answers
+taskList.summary.continue = Continue to declaration
 
 taskList.completed = Completed
 taskList.progress = In Progress

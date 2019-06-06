@@ -34,7 +34,7 @@ class DeceasedSettlorAnswerControllerSpec extends SpecBase {
 
     lazy val deceasedSettlorsAnswerRoute = routes.DeceasedSettlorAnswerController.onPageLoad().url
 
-    "return OK and the correct view for a GET" in {
+    "return OK and the correct view for a GET (UK National)" in {
 
       val answers =
         UserAnswers(userAnswersId)
@@ -49,7 +49,60 @@ class DeceasedSettlorAnswerControllerSpec extends SpecBase {
         .set(SettlorsLastKnownAddressYesNoPage, true).success.value
         .set(WasSettlorsAddressUKYesNoPage, true).success.value
         .set(SettlorsUKAddressPage, UKAddress("Line1", None, None, "Town", "NE1 1ZZ")).success.value
-        .set(SettlorsInternationalAddressPage, InternationalAddress("Line1", "Line2", None, None, "Country")).success.value
+
+      val countryOptions = injector.instanceOf[CountryOptions]
+
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers)
+
+      val expectedSections = Seq(
+        AnswerSection(
+          None,
+          Seq(checkYourAnswersHelper.setupAfterSettlorDied.value,
+            checkYourAnswersHelper.settlorsName.value,
+            checkYourAnswersHelper.settlorDateOfDeathYesNo.value,
+            checkYourAnswersHelper.settlorDateOfDeath.value,
+            checkYourAnswersHelper.settlorDateOfBirthYesNo.value,
+            checkYourAnswersHelper.settlorsDateOfBirth.value,
+            checkYourAnswersHelper.settlorsNINoYesNo.value,
+            checkYourAnswersHelper.settlorNationalInsuranceNumber.value,
+            checkYourAnswersHelper.settlorsLastKnownAddressYesNo.value,
+            checkYourAnswersHelper.wasSettlorsAddressUKYesNo.value,
+            checkYourAnswersHelper.settlorsUKAddress.value
+          )
+        )
+      )
+
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+      val request = FakeRequest(GET, routes.DeceasedSettlorAnswerController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[DeceasedSettlorAnswerView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(expectedSections)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view for a GET (Non-UK National)" in {
+
+      val answers =
+        UserAnswers(userAnswersId)
+          .set(SetupAfterSettlorDiedPage, true).success.value
+          .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
+          .set(SettlorDateOfDeathYesNoPage, true).success.value
+          .set(SettlorDateOfDeathPage, LocalDate.now).success.value
+          .set(SettlorDateOfBirthYesNoPage, true).success.value
+          .set(SettlorsDateOfBirthPage, LocalDate.now).success.value
+          .set(SettlorsNINoYesNoPage, true).success.value
+          .set(SettlorNationalInsuranceNumberPage, "AB123456C").success.value
+          .set(SettlorsLastKnownAddressYesNoPage, true).success.value
+          .set(WasSettlorsAddressUKYesNoPage, false).success.value
+          .set(SettlorsInternationalAddressPage, InternationalAddress("Line1", "Line2", None, None, "Country")).success.value
 
 
       val countryOptions = injector.instanceOf[CountryOptions]
@@ -69,7 +122,6 @@ class DeceasedSettlorAnswerControllerSpec extends SpecBase {
             checkYourAnswersHelper.settlorNationalInsuranceNumber.value,
             checkYourAnswersHelper.settlorsLastKnownAddressYesNo.value,
             checkYourAnswersHelper.wasSettlorsAddressUKYesNo.value,
-            checkYourAnswersHelper.settlorsUKAddress.value,
             checkYourAnswersHelper.settlorsInternationalAddress.value
           )
         )

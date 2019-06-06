@@ -16,44 +16,38 @@
 
 package models.reads
 
-import models.WhatKindOfAsset.Money
-import models.entities.Asset
-import org.scalatest.{MustMatchers, WordSpec}
-import play.api.libs.json.Json
+import models.entities.{Asset, MoneyAsset}
+import org.scalatest.{FreeSpec, MustMatchers}
+import play.api.libs.json.{JsError, JsSuccess, Json}
 
-class AssetReadsSpec extends WordSpec with MustMatchers {
+class AssetReadsSpec extends FreeSpec with MustMatchers {
 
-  val emptyJson = Json.parse("{}")
+  "Asset" - {
 
-  val moneyJson = Json.parse(
-    """
-      |{
-      | "whatKindOfAsset": "Money",
-      | "assetMoneyValue" : "4000"
-      |}
-    """.stripMargin
-  )
+    "must fail to deserialise" - {
 
-  "Assets" when {
+      "from a money asset of the incorrect structure" in {
+        val json = Json.obj(
+          "whatKindOfAsset" -> "Property",
+          "assetMoneyValue" -> "4000"
+        )
 
-    "type of asset is answered" must {
-
-      "serialise money asset type" in {
-        val result = moneyJson.as[Asset]
-        result mustBe Asset(Some(Money), Some("4000"))
+        json.validate[Asset] mustBe a[JsError]
       }
 
     }
 
-    "type of asset is not answered" must {
+    "must deserialise" - {
 
-      "serialise an empty object" in {
-        val result = emptyJson.as[Asset]
-        result mustBe Asset(None,None)
+      "from a money asset" in {
+        val json = Json.obj(
+          "whatKindOfAsset" -> "Money",
+          "assetMoneyValue" -> "4000"
+        )
+
+        json.validate[Asset] mustEqual JsSuccess(MoneyAsset("4000"))
       }
-
     }
-
   }
 
 }

@@ -16,23 +16,25 @@
 
 package models.entities
 
-import models.FullName
-import play.api.libs.json.{JsPath, Reads}
+import java.time.LocalDate
+
+import models.{Address, FullName}
+import play.api.libs.json.{Format, Json}
 
 
-
-case class IndividualBeneficiary(name: Option[FullName], isVulnerable: Option[Boolean]) {
-  def isComplete = name.nonEmpty && isVulnerable.isDefined
+final case class IndividualBeneficiary(name: FullName,
+                                       dateOfBirth: Option[LocalDate],
+                                       nationalInsuranceNumber: Option[String],
+                                       address : Option[Address],
+                                       vulnerableYesNo: Boolean,
+                                       income: Option[String] ,
+                                       incomeYesNo: Boolean
+                                      ) {
 }
 
 object IndividualBeneficiary {
-
-  import play.api.libs.functional.syntax._
-
-  implicit val reads : Reads[IndividualBeneficiary] = (
-      (JsPath \ "individualBeneficiaryName").readNullable[FullName] and
-      (JsPath \ "individualBeneficiaryVulnerableYesNo").readNullable[Boolean]
-    )(IndividualBeneficiary.apply _)
-
-
+  implicit val classFormat: Format[IndividualBeneficiary] = Json.format[IndividualBeneficiary]
 }
+
+
+

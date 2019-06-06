@@ -18,20 +18,21 @@ package navigation
 
 import controllers.routes
 import javax.inject.{Inject, Singleton}
-
-import models.requests.DataRequest
+import models.Status.Completed
+import models.entities.{Assets, Trustees}
 import models.{NormalMode, UserAnswers}
 import pages._
-import play.api.mvc.{AnyContent, Call}
+import pages.entitystatus.TrustDetailsStatus
+import play.api.mvc.Call
+import viewmodels._
 
 @Singleton
 class TaskListNavigator @Inject()() {
 
   private def trustDetailsRoute(answers: UserAnswers) = {
-    val (trustName, whenSetup) = (answers.get(TrustNamePage), answers.get(WhenTrustSetupPage))
-
-    (trustName, whenSetup) match {
-      case (Some(_), Some(_)) =>
+    val completed = answers.get(TrustDetailsStatus).contains(Completed)
+    completed match {
+      case true =>
         routes.TrustDetailsAnswerPageController.onPageLoad()
       case _ =>
         routes.TrustNameController.onPageLoad(NormalMode)
@@ -39,7 +40,7 @@ class TaskListNavigator @Inject()() {
   }
 
   private def trusteeRoute(answers: UserAnswers) = {
-    answers.get(Trustees).getOrElse(Nil) match {
+    answers.get(viewmodels.Trustees).getOrElse(Nil) match {
       case Nil =>
         routes.TrusteesInfoController.onPageLoad()
       case _ :: _ =>
@@ -48,10 +49,11 @@ class TaskListNavigator @Inject()() {
   }
 
   private def settlorRoute(answers: UserAnswers) = {
-    answers.get(SettlorsNamePage) match {
-      case Some(_) =>
+    val deceasedCompleted = answers.get(DeceasedSettlorComplete).contains(Completed)
+    deceasedCompleted match {
+      case true =>
         routes.DeceasedSettlorAnswerController.onPageLoad()
-      case None =>
+      case _ =>
         routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode)
     }
   }
@@ -66,13 +68,15 @@ class TaskListNavigator @Inject()() {
   }
 
   private def isAnyBeneficiaryAdded(answers: UserAnswers) = {
-    answers.get(IndividualBeneficiaries).
-      getOrElse(List.empty).nonEmpty  ||
-      answers.get(ClassOfBeneficiaries).getOrElse(List.empty).nonEmpty
+
+    val individuals = answers.get(IndividualBeneficiaries).getOrElse(Nil)
+    val classes = answers.get(ClassOfBeneficiaries).getOrElse(Nil)
+
+    individuals.nonEmpty || classes.nonEmpty
   }
 
   private def assetRoute(answers: UserAnswers) = {
-    answers.get(Assets).getOrElse(Nil) match {
+    answers.get(viewmodels.Assets).getOrElse(Nil) match {
       case _ :: _ =>
         routes.AddAssetsController.onPageLoad()
       case Nil =>

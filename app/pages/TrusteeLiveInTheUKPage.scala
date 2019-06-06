@@ -17,6 +17,7 @@
 package pages
 
 import models.UserAnswers
+import models.entities.Trustees
 import play.api.libs.json.JsPath
 
 import scala.util.Try
@@ -25,8 +26,7 @@ final case class TrusteeLiveInTheUKPage(index : Int) extends QuestionPage[Boolea
 
 override def path: JsPath = JsPath \ Trustees \ index \ toString
 
-  override def toString: String = "trusteeLiveInTheUK"
-
+  override def toString: String = "liveInUK"
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {

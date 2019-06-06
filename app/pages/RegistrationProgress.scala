@@ -17,24 +17,117 @@
 package pages
 
 import javax.inject.Inject
-import models.UserAnswers
+import models.Status.{Completed, InProgress}
+import models.entities.{Assets, Trustees}
+import models.{AddABeneficiary, AddATrustee, AddAssets, Status, UserAnswers, entities}
 import navigation.TaskListNavigator
+import pages.entitystatus.TrustDetailsStatus
 import play.api.i18n.Messages
-import viewmodels.{Completed, Link, Task}
+import viewmodels._
+import viewmodels.addAnother.MoneyAssetViewModel
 
 class RegistrationProgress @Inject()(navigator : TaskListNavigator){
 
-  def sections(userAnswers: UserAnswers)(implicit messages: Messages) = List(
-    Task(Link(TrustDetails, navigator.nextPage(TrustDetails, userAnswers).url), None),
-    Task(Link(Settlors, navigator.nextPage(Settlors, userAnswers).url), None),
-    Task(Link(Trustees, navigator.nextPage(Trustees, userAnswers).url), None),
-    Task(Link(Beneficiaries, navigator.nextPage(Beneficiaries, userAnswers).url), None),
-    Task(Link(pages.Assets, navigator.nextPage(pages.Assets, userAnswers).url), None),
+  def sections(userAnswers: UserAnswers) = List(
+    Task(Link(TrustDetails, navigator.nextPage(TrustDetails, userAnswers).url), isTrustDetailsComplete(userAnswers)),
+    Task(Link(Settlors, navigator.nextPage(Settlors, userAnswers).url), isDeceasedSettlorComplete(userAnswers)),
+    Task(Link(Trustees, navigator.nextPage(Trustees, userAnswers).url), isTrusteesComplete(userAnswers)),
+    Task(Link(Beneficiaries, navigator.nextPage(Beneficiaries, userAnswers).url), isBeneficiariesComplete(userAnswers)),
+    Task(Link(Assets, navigator.nextPage(entities.Assets, userAnswers).url), assetsStatus(userAnswers)),
     Task(Link(TaxLiability, navigator.nextPage(TaxLiability, userAnswers).url), None)
   )
 
-  def isTaskListComplete(userAnswers: UserAnswers)(implicit messages: Messages):Boolean = {
-    true
+  private def determineStatus(complete : Boolean) = {
+    if (complete) {
+      Some(Completed)
+    } else{
+      Some(InProgress)
+    }
   }
+
+  def isTrustDetailsComplete(userAnswers: UserAnswers) : Option[Status] = {
+    userAnswers.get(WhenTrustSetupPage) match {
+      case None => None
+      case Some(_) =>
+        val completed = userAnswers.get(TrustDetailsStatus).contains(Completed)
+        determineStatus(completed)
+    }
+  }
+
+  def isTrusteesComplete(userAnswers: UserAnswers) : Option[Status] = {
+    val noMoreToAdd = userAnswers.get(AddATrusteePage).contains(AddATrustee.NoComplete)
+
+    userAnswers.get(viewmodels.Trustees) match {
+      case Some(l) =>
+
+        val hasLeadTrustee = l.exists(_.isLead)
+
+        val isComplete = !l.exists(_.status == InProgress) && noMoreToAdd && hasLeadTrustee
+
+        determineStatus(isComplete)
+      case None =>
+        None
+    }
+  }
+
+  def isDeceasedSettlorComplete(userAnswers: UserAnswers) : Option[Status] = {
+    val setUpAfterSettlorDied = userAnswers.get(SetupAfterSettlorDiedPage)
+
+    setUpAfterSettlorDied match {
+      case None => None
+      case Some(x) =>
+        val deceasedCompleted = userAnswers.get(DeceasedSettlorComplete)
+
+        val isComplete = x && deceasedCompleted.contains(Completed)
+
+        determineStatus(isComplete)
+    }
+  }
+
+  def isBeneficiariesComplete(userAnswers: UserAnswers) : Option[Status] = {
+
+    val noMoreToAdd = userAnswers.get(AddABeneficiaryPage).contains(AddABeneficiary.NoComplete)
+
+    val individuals = userAnswers.get(IndividualBeneficiaries)
+    val classes = userAnswers.get(ClassOfBeneficiaries)
+
+    (individuals, classes) match {
+      case (None, None) => None
+      case (Some(ind), None) =>
+        val indComplete = !ind.exists(_.status == InProgress)
+        determineStatus(indComplete && noMoreToAdd)
+      case (None, Some(c)) =>
+        val classComplete = !c.exists(_.status == InProgress)
+        determineStatus(classComplete && noMoreToAdd)
+      case (Some(ind), Some(c)) =>
+        val indComplete = !ind.exists(_.status == InProgress)
+        val classComplete = !c.exists(_.status == InProgress)
+
+        determineStatus(indComplete && classComplete && noMoreToAdd)
+    }
+  }
+
+  def assetsStatus(userAnswers: UserAnswers) : Option[Status] = {
+    val noMoreToAdd = userAnswers.get(AddAssetsPage).contains(AddAssets.NoComplete)
+    val assets = userAnswers.get(viewmodels.Assets).getOrElse(List.empty)
+
+    assets match {
+      case Nil => None
+      case list =>
+        val filtered = list.filter(x => x.isInstanceOf[MoneyAssetViewModel])
+        val status = !filtered.exists(_.status == InProgress) && noMoreToAdd
+        determineStatus(status)
+    }
+  }
+
+  def isTaskListComplete(userAnswers: UserAnswers)(implicit messages: Messages):Boolean = {
+    isTrustDetailsComplete(userAnswers).contains(Completed) &&
+    isDeceasedSettlorComplete(userAnswers).contains(Completed) &&
+    isTrusteesComplete(userAnswers).contains(Completed) &&
+    isBeneficiariesComplete(userAnswers).contains(Completed) &&
+    assetsStatus(userAnswers).contains(Completed)
+  }
+
+
 
 }

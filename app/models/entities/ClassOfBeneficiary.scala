@@ -16,13 +16,13 @@
 
 package models.entities
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{Format, Json}
 
 
-case class ClassOfBeneficiary(classBeneficiaryDescription: Option[String]) {
-  def isComplete = classBeneficiaryDescription.nonEmpty
-}
+final case class ClassOfBeneficiary(description: String)
 
 object ClassOfBeneficiary {
-    implicit  val classOfBeneficiaryFormat : OFormat[ClassOfBeneficiary] = Json.format[ClassOfBeneficiary]
+  implicit val classFormat : Format[ClassOfBeneficiary] = Json.format[ClassOfBeneficiary]
 }
+
+

@@ -16,48 +16,29 @@
 
 package utils
 
-import models.entities.Asset
-import models.{UserAnswers, WhatKindOfAsset}
-import pages.Assets
+import models.Status.Completed
+import models.UserAnswers
 import play.api.i18n.Messages
+import viewmodels.addAnother.{AssetViewModel, MoneyAssetViewModel}
 import viewmodels.{AddRow, AddToRows}
 
 class AddAssetViewHelper(userAnswers: UserAnswers)(implicit  messages: Messages) {
 
-  private def parseAssetValue(value: Option[String], isMoney: Boolean) : String = {
-    value match {
-      case Some(x) if isMoney => s"£$x"
-      case Some(x) => s"$x"
-      case None => ""
-    }
-  }
-
-  private def parseAssetType(whatKindOfAsset: Option[WhatKindOfAsset]): String = {
-    whatKindOfAsset match {
-      case Some(x) =>
-       x.toString
-      case None =>
-        ""
-    }
-  }
-
-  private def parseAsset(asset: Asset) : AddRow = {
-    AddRow(
-      parseAssetValue(asset.assetMoneyValue, asset.isMoney),
-      parseAssetType(asset.whatKindOfAsset),
-      "#",
-      "#"
-    )
+  private def parseAsset(asset: AssetViewModel) : Option[AddRow] = asset match {
+    case mvm : MoneyAssetViewModel =>
+      Some(AddRow(mvm.value.getOrElse(""), mvm.`type`.toString, "#", "#"))
+    case _ =>
+      None
   }
 
   def rows : AddToRows = {
-    val assets = userAnswers.get(Assets).toList.flatten
+    val assets = userAnswers.get(viewmodels.Assets).toList.flatten
 
-    val complete = assets.filter(_.isComplete).map(parseAsset)
+    val completed : List[AddRow] = assets.filter(_.status == Completed).flatMap(parseAsset)
 
-    val inProgress = assets.filterNot(_.isComplete).map(parseAsset)
+    val inProgress : List[AddRow] = assets.filterNot(_.status == Completed).flatMap(parseAsset)
 
-    AddToRows(inProgress, complete)
+    AddToRows(inProgress, completed)
   }
 
 }

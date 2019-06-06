@@ -18,12 +18,13 @@ package pages
 
 import models.UserAnswers
 import play.api.libs.json.JsPath
+import viewmodels.TrustDetails
 
 import scala.util.Try
 
 case object AdministrationInsideUKPage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ TrustDetails \ toString
 
   override def toString: String = "administrationInsideUK"
 

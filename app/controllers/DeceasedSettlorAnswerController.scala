@@ -19,20 +19,23 @@ package controllers
 import controllers.actions._
 import javax.inject.Inject
 import models.NormalMode
+import models.Status.Completed
 import navigation.Navigator
-import pages.{DeceasedSettlorAnswerPage, SettlorsNamePage, TrusteesAnswerPage}
+import pages.{DeceasedSettlorAnswerPage, DeceasedSettlorComplete, SettlorsNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.DeceasedSettlorAnswerView
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 class DeceasedSettlorAnswerController @Inject()(
                                        override val messagesApi: MessagesApi,
+                                       sessionRepository: SessionRepository,
                                        identify: IdentifierAction,
                                        getData: DataRetrievalAction,
                                        navigator: Navigator,
@@ -77,8 +80,12 @@ class DeceasedSettlorAnswerController @Inject()(
       Ok(view(sections))
   }
 
-  def onSubmit() = actions() {
+  def onSubmit() = actions().async {
     implicit request =>
-      Redirect(navigator.nextPage(DeceasedSettlorAnswerPage, NormalMode)(request.userAnswers))
+
+      for {
+        updatedAnswers <- Future.fromTry(request.userAnswers.set(DeceasedSettlorComplete, Completed))
+        _              <- sessionRepository.set(updatedAnswers)
+      } yield Redirect(navigator.nextPage(DeceasedSettlorAnswerPage, NormalMode)(request.userAnswers))
   }
 }

@@ -16,7 +16,8 @@
 
 package pages
 
-import models.{UKAddress, UserAnswers}
+import models.UserAnswers
+import models.entities.Trustees
 import play.api.libs.json.JsPath
 
 import scala.util.Try
@@ -26,7 +27,6 @@ final case class IsThisLeadTrusteePage(index : Int) extends QuestionPage[Boolean
   override def path: JsPath = JsPath \ Trustees \ index \ toString
 
   override def toString: String = "isThisLeadTrustee"
-
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {

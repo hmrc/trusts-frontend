@@ -20,6 +20,7 @@ import com.google.inject.Inject
 import config.FrontendAppConfig
 import controllers.routes
 import models.requests.IdentifierRequest
+import play.api.Logger
 import play.api.mvc.Results._
 import play.api.mvc._
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
@@ -39,14 +40,24 @@ class AuthenticatedIdentifierAction @Inject()(
                                              (implicit val executionContext: ExecutionContext) extends IdentifierAction with AuthorisedFunctions {
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+
     val hmrcAgentEnrolmentKey = "HMRC-AS-AGENT"
+    val arnIdentifier = "AgentReferenceNumber"
+
     authorised().retrieve(Retrievals.internalId and Retrievals.affinityGroup and Retrievals.allEnrolments) {
-      case Some(internalId) ~ Some(Agent) ~ enrolments => {
-        if (enrolments.getEnrolment(hmrcAgentEnrolmentKey).nonEmpty)
-          block(IdentifierRequest(request, internalId, AffinityGroup.Agent))
-        else
-          Future(Redirect(routes.CreateAgentServicesAccountController.onPageLoad()))
-      }
+      case Some(internalId) ~ Some(Agent) ~ enrolments =>
+
+        enrolments.getEnrolment(hmrcAgentEnrolmentKey).fold(doUnauthorizedResponse("missing HMRC-AS-AGENT enrolment group")) { agentEnrolment =>
+          agentEnrolment.getIdentifier(arnIdentifier).fold(doUnauthorizedResponse("missing agent reference number")) { enrolmentIdentifier =>
+            val arn = enrolmentIdentifier.value
+
+            if(arn.isEmpty) {
+              doUnauthorizedResponse("agent reference number is empty")
+            } else {
+              block(IdentifierRequest(request, internalId, AffinityGroup.Agent, Some(arn)))
+            }
+          }
+        }
       case Some(internalId) ~ Some(Organisation) ~ _ => block(IdentifierRequest(request, internalId, AffinityGroup.Organisation))
       case Some(_) ~ _ ~ _ => Future(Redirect(routes.UnauthorisedController.onPageLoad()))
       case _ => throw new UnauthorizedException("Unable to retrieve internal Id")
@@ -58,6 +69,11 @@ class AuthenticatedIdentifierAction @Inject()(
       case ex: UnsupportedAffinityGroup => Redirect(routes.UnauthorisedController.onPageLoad)
       case ex: UnsupportedCredentialRole => Redirect(routes.UnauthorisedController.onPageLoad)
     }
+  }
+
+  def doUnauthorizedResponse(reason: String): Future[Result] = {
+    Logger.info(s"[AuthenticatedIdentifierAction][invokeBlock]: Agent services account required - $reason")
+    Future(Redirect(routes.CreateAgentServicesAccountController.onPageLoad()))
   }
 }
 

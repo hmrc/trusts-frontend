@@ -16,25 +16,28 @@
 
 package models.entities
 
-import models.{FullName, IndividualOrBusiness}
-import play.api.libs.json.{JsPath, Reads}
+import play.api.libs.json.Reads
 
+trait Trustee {
 
-case class Trustee(lead: Boolean, name : Option[FullName], `type` : Option[IndividualOrBusiness]) {
-
-  def isComplete = name.nonEmpty && `type`.nonEmpty
+  val isLead : Boolean
 
 }
 
-
 object Trustee {
 
-  import play.api.libs.functional.syntax._
+  implicit class ReadsWithContravariantOr[A](a: Reads[A]) {
 
-  implicit val reads : Reads[Trustee] = (
-    (JsPath \ "isThisLeadTrustee").readWithDefault[Boolean](false) and
-    (JsPath \ "trusteesName").readNullable[FullName] and
-      (JsPath \ "trusteeIndividualOrBusiness").readNullable[IndividualOrBusiness]
-    )(Trustee.apply _)
+    def or[B >: A](b: Reads[B]): Reads[B] =
+      a.map[B](identity).orElse(b)
+  }
+
+  implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
+    a.map(identity)
+
+  implicit lazy val reads : Reads[Trustee] = {
+    TrusteeIndividual.reads or
+    LeadTrusteeIndividual.reads
+  }
 
 }

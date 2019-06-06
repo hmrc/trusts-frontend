@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import models.Progress.InProgress
+import models.RegistrationProgress.InProgress
 import models.{NormalMode, UserAnswers}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

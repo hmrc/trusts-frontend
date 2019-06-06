@@ -17,15 +17,17 @@
 package pages
 
 import models.UserAnswers
+import pages.entitystatus.TrustDetailsStatus
 import play.api.libs.json.JsPath
+import viewmodels.TrustDetails
 
 import scala.util.Try
 
 case object TrustResidentInUKPage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ TrustDetails \ toString
 
-  override def toString: String = "trustResidentInUK"
+  override def toString: String = "residentInUK"
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
@@ -33,11 +35,13 @@ case object TrustResidentInUKPage extends QuestionPage[Boolean] {
         userAnswers.remove(EstablishedUnderScotsLawPage)
           .flatMap(_.remove(TrustResidentOffshorePage))
           .flatMap(_.remove(TrustPreviouslyResidentPage))
+          .flatMap(_.remove(TrustDetailsStatus))
       case Some(true) =>
         userAnswers.remove(RegisteringTrustFor5APage)
           .flatMap(_.remove(InheritanceTaxActPage))
           .flatMap(_.remove(NonResidentTypePage))
           .flatMap(_.remove(AgentOtherThanBarristerPage))
+          .flatMap(_.remove(TrustDetailsStatus))
       case _ =>
         super.cleanup(value, userAnswers)
     }
