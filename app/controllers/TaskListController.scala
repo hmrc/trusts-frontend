@@ -24,6 +24,7 @@ import javax.inject.Inject
 import models.Matched.{AlreadyRegistered, Failed, Success}
 import models.NormalMode
 import models.RegistrationProgress.InProgress
+import navigation.TaskListNavigator
 import pages._
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -31,6 +32,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import viewmodels.{Task, TaxLiability}
 import views.html.TaskListView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -45,7 +47,8 @@ class TaskListController @Inject()(
                                        view: TaskListView,
                                        config: FrontendAppConfig,
                                        registrationProgress: RegistrationProgress,
-                                       sessionRepository: SessionRepository
+                                       sessionRepository: SessionRepository,
+                                       taskListNavigator : TaskListNavigator
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
@@ -74,7 +77,13 @@ class TaskListController @Inject()(
           _  <- sessionRepository.set(updatedAnswers)
         } yield {
 
-          val sections = registrationProgress.sections(updatedAnswers)
+          val sections = if (config.removeLinksOnTaskList) {
+            val removeTaxLiabilityFromTaskList = (t : Task) => t.link.url == taskListNavigator.nextPage(TaxLiability, updatedAnswers).url
+            registrationProgress.sections(updatedAnswers).filterNot(removeTaxLiabilityFromTaskList)
+          } else {
+            registrationProgress.sections(updatedAnswers)
+          }
+
           val isTaskListComplete = registrationProgress.isTaskListComplete(updatedAnswers)
 
           Logger.debug(s"[TaskList][sections] $sections")

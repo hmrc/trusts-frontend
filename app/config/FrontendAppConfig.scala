@@ -67,4 +67,7 @@ class FrontendAppConfig @Inject() (configuration: Configuration) {
   def routeToSwitchLanguage: String => Call =
     (lang: String) => routes.LanguageSwitchController.switchToLanguage(lang)
 
+  lazy val removeLinksOnTaskList : Boolean =
+    configuration.get[Boolean]("microservice.services.features.removeLinksOnTaskList")
+
 }

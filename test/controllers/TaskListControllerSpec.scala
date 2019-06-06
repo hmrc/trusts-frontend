@@ -23,8 +23,11 @@ import base.SpecBase
 import models.{Matched, NormalMode, UserAnswers}
 import navigation.TaskListNavigator
 import pages._
+import play.api.Application
+import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import views.html.TaskListView
 
@@ -38,6 +41,9 @@ class TaskListControllerSpec extends SpecBase {
 
   private def isTaskListComplete(answers: UserAnswers) =
     new RegistrationProgress(new TaskListNavigator()).isTaskListComplete(answers)
+
+  override protected def applicationBuilder(userAnswers: Option[UserAnswers], affinityGroup: AffinityGroup): GuiceApplicationBuilder = super.applicationBuilder(userAnswers, affinityGroup)
+    .configure(("microservice.services.features.removeLinksOnTaskList", false))
 
   "TaskList Controller" must {
 
