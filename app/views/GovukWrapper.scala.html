@@ -62,7 +62,7 @@
       navTitle = Some(messages("site.service_name")),
       navTitleLink = None,
       showBetaLink = false,
-      navLinks = Some(headerNavLinks))
+      navLinks = None)
 }
 
 @afterHeader = {}
@@ -80,9 +80,18 @@
 @footerTop = {}
 @footerLinks = {}
 
+@banner = {
+    @betaBanner(
+        userLoggedIn = true,
+        betaFeedbackUrl = appConfig.betaFeedbackUrl,
+        betaFeedbackUnauthenticatedUrl = appConfig.betaFeedbackUnauthenticatedUrl,
+        showFeedbackLinkInBetaBanner = true
+    )
+}
+
 @serviceInfoBlock = {
     @serviceInfo(
-      betaBanner = HtmlFormat.empty,
+      betaBanner = banner,
       includeHMRCBranding = false,
       includeGridWrapper = false,
       serviceInfoContent = Some(serviceInfoContent))
