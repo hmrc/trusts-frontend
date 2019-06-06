@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers.actions
+package controllers.filters
 
 import com.google.inject.Inject
 import handlers.ErrorHandler

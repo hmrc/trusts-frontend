@@ -117,4 +117,16 @@ object TestUserAnswers extends TryValues {
       .set(ExistingTrustMatched, Failed).success.value
   }
 
+  val newTrustCompleteUserAnswers = {
+    val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
+    val uaWithLead = TestUserAnswers.withLeadTrustee(emptyUserAnswers)
+    val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(uaWithLead)
+    val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithDeceased)
+    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
+    val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
+    val userAnswers = TestUserAnswers.withDeclaration(asset)
+
+    userAnswers
+  }
+
 }

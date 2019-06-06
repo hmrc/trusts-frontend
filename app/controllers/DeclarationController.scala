@@ -44,12 +44,15 @@ class DeclarationController @Inject()(
                                        formProvider: DeclarationFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: DeclarationView,
-                                       submissionService: SubmissionService
+                                       submissionService: SubmissionService,
+                                       registrationComplete : RegistrationCompleteActionRefiner
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def actions = identify andThen getData andThen requireData andThen registrationComplete
+
+  def onPageLoad(mode: Mode): Action[AnyContent] = actions {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(DeclarationPage) match {
@@ -60,7 +63,7 @@ class DeclarationController @Inject()(
       Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = actions.async {
     implicit request =>
 
       form.bindFromRequest().fold(

@@ -17,6 +17,7 @@
 package controllers
 
 import controllers.actions._
+import controllers.filters.IndexActionFilterProvider
 import forms.TrusteesDateOfBirthFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}

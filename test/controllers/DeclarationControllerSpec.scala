@@ -31,6 +31,7 @@ import org.mockito.Matchers.any
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.{when, _}
 import uk.gov.hmrc.http.HeaderCarrier
+import utils.TestUserAnswers
 
 import scala.concurrent.Future
 
@@ -52,9 +53,25 @@ class DeclarationControllerSpec extends SpecBase {
 
   "Declaration Controller" must {
 
+    "redirect when registration is not complete" in {
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers),AffinityGroup.Agent).build()
+
+      val request = FakeRequest(GET, declarationRoute)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[DeclarationView]
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad().url
+
+      application.stop()
+    }
+
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers),AffinityGroup.Agent).build()
+      val application = applicationBuilder(userAnswers = Some(TestUserAnswers.newTrustCompleteUserAnswers),AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, declarationRoute)
 
@@ -72,7 +89,7 @@ class DeclarationControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = TestUserAnswers.newTrustCompleteUserAnswers
         .set(DeclarationPage, FullName("First", None, "Last")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
@@ -98,7 +115,7 @@ class DeclarationControllerSpec extends SpecBase {
 
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
+        applicationBuilder(userAnswers = Some(TestUserAnswers.newTrustCompleteUserAnswers), AffinityGroup.Agent)
           .overrides(bind[Navigator].toInstance(new FakeNavigator(confirmationRoute)))
           .build()
 
@@ -121,7 +138,7 @@ class DeclarationControllerSpec extends SpecBase {
 
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
+        applicationBuilder(userAnswers = Some(TestUserAnswers.newTrustCompleteUserAnswers), AffinityGroup.Agent)
           .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
@@ -144,7 +161,7 @@ class DeclarationControllerSpec extends SpecBase {
 
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
+        applicationBuilder(userAnswers = Some(TestUserAnswers.newTrustCompleteUserAnswers), AffinityGroup.Agent)
           .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
@@ -162,7 +179,7 @@ class DeclarationControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers),AffinityGroup.Agent).build()
+      val application = applicationBuilder(userAnswers = Some(TestUserAnswers.newTrustCompleteUserAnswers),AffinityGroup.Agent).build()
 
       val request =
         FakeRequest(POST, declarationRoute)
