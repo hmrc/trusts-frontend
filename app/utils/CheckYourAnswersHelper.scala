@@ -20,6 +20,7 @@ import java.time.format.DateTimeFormatter
 
 import controllers.routes
 import javax.inject.Inject
+import models.entities._
 import models.{CheckMode, FullName, InternationalAddress, UKAddress, UserAnswers}
 import pages._
 import play.api.i18n.Messages
@@ -146,20 +147,20 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     }
   }
 
-  def assets : Option[Seq[AnswerSection]] = {
-    for {
-      assets <- userAnswers.get(Assets)
-      indexed = assets.zipWithIndex
-    } yield indexed.map {
-      case (asset, index) =>
-        val questions = Seq(
-          assetMoneyValue(index)
-        ).flatten
 
-        AnswerSection(Some(userAnswers.get(WhatKindOfAssetPage(index)).get.toString),
-          questions, if (index == 0)  Some(Messages("summaryAnswerPage.section.assets.heading"))  else None)
-    }
+  def moneyAsset : Option[Seq[AnswerSection]] = {
+    displaySectionHeading = true
+    val questions = Seq(
+      assetMoneyValue(0)
+    ).flatten
+
+    if (questions.nonEmpty) Some(Seq(AnswerSection(Some(Messages("summaryAnswerPage.section.moneyAsset.subheading")),
+      questions, if (displaySectionHeading) {
+        displaySectionHeading = false
+        Some(Messages("summaryAnswerPage.section.assets.heading"))
+      } else None))) else None
   }
+
 
   def agentInternationalAddress: Option[AnswerRow] = userAnswers.get(AgentInternationalAddressPage) map {
     x =>

@@ -19,8 +19,12 @@ package controllers
 import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
-import models.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress, UserAnswers, WhatKindOfAsset}
+import models.AddAssets.NoComplete
+import models.Status.Completed
+import models.{AddABeneficiary, AddATrustee, FullName, IndividualOrBusiness, InternationalAddress, Status, UKAddress, UserAnswers, WhatKindOfAsset}
+import navigation.TaskListNavigator
 import pages._
+import pages.entitystatus._
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -35,7 +39,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
 
   "SummaryAnswersController Controller" must {
 
-    "return OK and the correct view for a GET" in {
+    "return OK and the correct view for a GET when tasklist completed" in {
 
       val userAnswers =
         UserAnswers(userAnswersId)
@@ -46,6 +50,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
           .set(TrustResidentInUKPage, true).success.value
           .set(EstablishedUnderScotsLawPage, true).success.value
           .set(TrustResidentOffshorePage, false).success.value
+          .set(TrustDetailsStatus, Completed).success.value
 
           .set(IndividualBeneficiaryNamePage(index), FullName("first name", None, "last name")).success.value
           .set(IndividualBeneficiaryDateOfBirthYesNoPage(index),true).success.value
@@ -58,8 +63,11 @@ class SummaryAnswersControllerSpec extends SpecBase {
           .set(IndividualBeneficiaryAddressUKYesNoPage(index),true).success.value
           .set(IndividualBeneficiaryAddressUKPage(index),UKAddress("Line1",None, None, "TownOrCity","NE62RT" )).success.value
           .set(IndividualBeneficiaryVulnerableYesNoPage(index),true).success.value
+          .set(IndividualBeneficiaryStatus(index), Status.Completed).success.value
 
           .set(ClassBeneficiaryDescriptionPage(index),"Class of beneficary description").success.value
+          .set(ClassBeneficiaryStatus(index), Status.Completed).success.value
+          .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
 
           .set(IsThisLeadTrusteePage(index), true).success.value
           .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
@@ -70,6 +78,8 @@ class SummaryAnswersControllerSpec extends SpecBase {
           .set(TelephoneNumberPage(index), "0191 1111111").success.value
           .set(TrusteeLiveInTheUKPage(index), true).success.value
           .set(TrusteesUkAddressPage(index), UKAddress("line1", Some("line2"), Some("line3"), "town or city", "AB1 1AB")).success.value
+          .set(TrusteeStatus(index), Status.Completed).success.value
+          .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
           .set(SetupAfterSettlorDiedPage, true).success.value
           .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
@@ -82,10 +92,12 @@ class SummaryAnswersControllerSpec extends SpecBase {
           .set(SettlorsLastKnownAddressYesNoPage, true).success.value
           .set(WasSettlorsAddressUKYesNoPage, true).success.value
           .set(SettlorsUKAddressPage, UKAddress("Line1", None, None, "Town", "NE1 1ZZ")).success.value
-          .set(SettlorsInternationalAddressPage, InternationalAddress("Line1", "Line2", None, None, "Country")).success.value
+          .set(DeceasedSettlorComplete, Status.Completed).success.value
 
           .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
           .set(AssetMoneyValuePage(index), "100").success.value
+          .set(AssetStatus(index), Completed).success.value
+          .set(AddAssetsPage, NoComplete).success.value
 
 
       val countryOptions = injector.instanceOf[CountryOptions]
@@ -119,8 +131,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
             checkYourAnswersHelper.settlorNationalInsuranceNumber.value,
             checkYourAnswersHelper.settlorsLastKnownAddressYesNo.value,
             checkYourAnswersHelper.wasSettlorsAddressUKYesNo.value,
-            checkYourAnswersHelper.settlorsUKAddress.value,
-            checkYourAnswersHelper.settlorsInternationalAddress.value
+            checkYourAnswersHelper.settlorsUKAddress.value
           ),
           Some(Messages("summaryAnswerPage.section.settlors.heading"))
         ),
@@ -164,7 +175,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
           None
         ),
         AnswerSection(
-          Some(WhatKindOfAsset.Money.toString),
+          Some(Messages("summaryAnswerPage.section.moneyAsset.subheading")),
           Seq(
             checkYourAnswersHelper.assetMoneyValue(index).value
           ),
@@ -187,5 +198,33 @@ class SummaryAnswersControllerSpec extends SpecBase {
 
       application.stop()
     }
+
+    "redirect to tasklist page when tasklist not completed" in {
+
+      val userAnswers =
+        UserAnswers(userAnswersId)
+          .set(TrustNamePage, "New Trust").success.value
+          .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
+          .set(GovernedInsideTheUKPage, true).success.value
+          .set(AdministrationInsideUKPage, true).success.value
+          .set(TrustResidentInUKPage, true).success.value
+          .set(EstablishedUnderScotsLawPage, true).success.value
+          .set(TrustResidentOffshorePage, false).success.value
+          .set(TrustDetailsStatus, Completed).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.SummaryAnswerPageController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad().url
+
+      application.stop()
+
+    }
+
   }
 }

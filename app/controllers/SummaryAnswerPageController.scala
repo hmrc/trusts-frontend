@@ -18,6 +18,7 @@ package controllers
 
 import controllers.actions._
 import javax.inject.Inject
+import pages.RegistrationProgress
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -33,7 +34,8 @@ class SummaryAnswerPageController @Inject()(
                                               requireData: DataRequiredAction,
                                               val controllerComponents: MessagesControllerComponents,
                                               view: SummaryAnswerPageView,
-                                              countryOptions : CountryOptions
+                                              countryOptions : CountryOptions,
+                                              registrationProgress: RegistrationProgress
                                             ) extends FrontendBaseController with I18nSupport {
 
   private def actions() =
@@ -48,10 +50,16 @@ class SummaryAnswerPageController @Inject()(
       val settlors = checkYourAnswersHelper.settlors.getOrElse(Nil)
       val individualBeneficiaries = checkYourAnswersHelper.individualBeneficiaries.getOrElse(Nil)
       val classOfBeneficiaries = checkYourAnswersHelper.classOfBeneficiaries.getOrElse(Nil)
-      val assets = checkYourAnswersHelper.assets.getOrElse(Nil)
-      val sections =  Seq() ++ trustDetails ++ settlors ++ trustees ++ individualBeneficiaries ++ classOfBeneficiaries ++ assets
+      val moneyAsset = checkYourAnswersHelper.moneyAsset.getOrElse(Nil)
+      val sections =  Seq() ++ trustDetails ++ settlors ++ trustees ++ individualBeneficiaries ++ classOfBeneficiaries ++ moneyAsset
 
-      Ok(view(sections))
+      val isTaskListComplete = registrationProgress.isTaskListComplete(request.userAnswers)
+
+      isTaskListComplete match {
+        case true => Ok(view(sections))
+        case _ => Redirect(routes.TaskListController.onPageLoad().url)
+      }
+
   }
 
 }
