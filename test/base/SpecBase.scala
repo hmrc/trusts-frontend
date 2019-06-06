@@ -62,7 +62,4 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked {
 
 }
 
-trait SpecBase extends PlaySpec with SpecBaseHelpers {
-
-
-}
+trait SpecBase extends PlaySpec with SpecBaseHelpers
