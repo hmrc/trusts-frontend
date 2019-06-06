@@ -77,7 +77,7 @@ class TaskListController @Inject()(
           _  <- sessionRepository.set(updatedAnswers)
         } yield {
 
-          val sections = if (config.removeLinksOnTaskList) {
+          val sections = if (config.removeTaxLiabilityOnTaskList) {
             val removeTaxLiabilityFromTaskList = (t : Task) => t.link.url == taskListNavigator.nextPage(TaxLiability, updatedAnswers).url
             registrationProgress.sections(updatedAnswers).filterNot(removeTaxLiabilityFromTaskList)
           } else {

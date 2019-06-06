@@ -43,7 +43,7 @@ class TaskListControllerSpec extends SpecBase {
     new RegistrationProgress(new TaskListNavigator()).isTaskListComplete(answers)
 
   override protected def applicationBuilder(userAnswers: Option[UserAnswers], affinityGroup: AffinityGroup): GuiceApplicationBuilder = super.applicationBuilder(userAnswers, affinityGroup)
-    .configure(("microservice.services.features.removeLinksOnTaskList", false))
+    .configure(("microservice.services.features.removeTaxLiabilityOnTaskList", false))
 
   "TaskList Controller" must {
 
