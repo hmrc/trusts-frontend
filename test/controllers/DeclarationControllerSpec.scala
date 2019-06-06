@@ -18,6 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.DeclarationFormProvider
+import models.RegistrationProgress.InProgress
 import models.{AlreadyRegistered, FullName, NormalMode, RegistrationTRNResponse, UnableToRegister, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.DeclarationPage
@@ -60,8 +61,6 @@ class DeclarationControllerSpec extends SpecBase {
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[DeclarationView]
-
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad().url
@@ -71,7 +70,14 @@ class DeclarationControllerSpec extends SpecBase {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(TestUserAnswers.newTrustCompleteUserAnswers),AffinityGroup.Agent).build()
+      val userAnswers =
+        TestUserAnswers.withCompleteSections(
+          TestUserAnswers.withAgent(
+            TestUserAnswers.newTrustCompleteUserAnswers.copy(progress = InProgress)
+          )
+        )
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers),AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, declarationRoute)
 
@@ -89,7 +95,12 @@ class DeclarationControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = TestUserAnswers.newTrustCompleteUserAnswers
+      val userAnswers =
+        TestUserAnswers.withCompleteSections(
+          TestUserAnswers.withAgent(
+            TestUserAnswers.newTrustCompleteUserAnswers.copy(progress = InProgress)
+          )
+        )
         .set(DeclarationPage, FullName("First", None, "Last")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
@@ -110,12 +121,18 @@ class DeclarationControllerSpec extends SpecBase {
 
     "redirect to the confirmation page when valid data is submitted and registration submitted successfully " in {
 
+      val userAnswers =
+        TestUserAnswers.withCompleteSections(
+          TestUserAnswers.withAgent(
+            TestUserAnswers.newTrustCompleteUserAnswers.copy(progress = InProgress)
+          )
+        )
+
       when(mockSubmissionService.submit(any[UserAnswers])(any[HeaderCarrier])).
         thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
 
-
       val application =
-        applicationBuilder(userAnswers = Some(TestUserAnswers.newTrustCompleteUserAnswers), AffinityGroup.Agent)
+        applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent)
           .overrides(bind[Navigator].toInstance(new FakeNavigator(confirmationRoute)))
           .build()
 
@@ -133,12 +150,18 @@ class DeclarationControllerSpec extends SpecBase {
 
     "redirect to the task list page when valid data is submitted and submission service can not register successfully" in {
 
+      val userAnswers =
+        TestUserAnswers.withCompleteSections(
+          TestUserAnswers.withAgent(
+            TestUserAnswers.newTrustCompleteUserAnswers.copy(progress = InProgress)
+          )
+        )
+
       when(mockSubmissionService.submit(any[UserAnswers])(any[HeaderCarrier])).
         thenReturn(Future.failed(UnableToRegister()))
 
-
       val application =
-        applicationBuilder(userAnswers = Some(TestUserAnswers.newTrustCompleteUserAnswers), AffinityGroup.Agent)
+        applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent)
           .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
@@ -156,12 +179,19 @@ class DeclarationControllerSpec extends SpecBase {
 
     "redirect to the already registered page when valid data is submitted and trust is already registered" in {
 
+      val userAnswers =
+        TestUserAnswers.withCompleteSections(
+          TestUserAnswers.withAgent(
+            TestUserAnswers.newTrustCompleteUserAnswers.copy(progress = InProgress)
+          )
+        )
+
       when(mockSubmissionService.submit(any[UserAnswers])(any[HeaderCarrier])).
         thenReturn(Future.successful(AlreadyRegistered))
 
 
       val application =
-        applicationBuilder(userAnswers = Some(TestUserAnswers.newTrustCompleteUserAnswers), AffinityGroup.Agent)
+        applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent)
           .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
@@ -179,7 +209,14 @@ class DeclarationControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(TestUserAnswers.newTrustCompleteUserAnswers),AffinityGroup.Agent).build()
+      val userAnswers =
+        TestUserAnswers.withCompleteSections(
+          TestUserAnswers.withAgent(
+            TestUserAnswers.newTrustCompleteUserAnswers.copy(progress = InProgress)
+          )
+        )
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
       val request =
         FakeRequest(POST, declarationRoute)

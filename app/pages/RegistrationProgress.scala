@@ -21,7 +21,7 @@ import models.Status.{Completed, InProgress}
 import models.entities.{Assets, Trustees}
 import models.{AddABeneficiary, AddATrustee, AddAssets, Status, UserAnswers, entities}
 import navigation.TaskListNavigator
-import pages.entitystatus.TrustDetailsStatus
+import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
 import viewmodels._
 import viewmodels.addAnother.MoneyAssetViewModel
 
@@ -75,7 +75,7 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
     setUpAfterSettlorDied match {
       case None => None
       case Some(x) =>
-        val deceasedCompleted = userAnswers.get(DeceasedSettlorComplete)
+        val deceasedCompleted = userAnswers.get(DeceasedSettlorStatus)
 
         val isComplete = x && deceasedCompleted.contains(Completed)
 

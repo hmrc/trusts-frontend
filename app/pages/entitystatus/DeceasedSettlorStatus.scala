@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package pages
+package pages.entitystatus
 
 import models.Status
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 import viewmodels.{DeceasedSettlor, Settlors}
 
-case object DeceasedSettlorComplete extends QuestionPage[Status] {
+case object DeceasedSettlorStatus extends QuestionPage[Status] {
 
   override def path: JsPath = JsPath \ Settlors \ DeceasedSettlor \toString
 
