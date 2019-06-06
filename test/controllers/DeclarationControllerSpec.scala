@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.DeclarationFormProvider
-import models.{FullName, NormalMode, RegistrationTRNResponse, UnableToRegister, UserAnswers}
+import models.{AlreadyRegistered, FullName, NormalMode, RegistrationTRNResponse, UnableToRegister, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.DeclarationPage
 import play.api.inject.bind
@@ -109,7 +109,7 @@ class DeclarationControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual confirmationRoute.url
+      redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad().url
       verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any[HeaderCarrier])
       application.stop()
     }
@@ -132,7 +132,30 @@ class DeclarationControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad().url
+      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any[HeaderCarrier])
+      application.stop()
+    }
+
+    "redirect to the already registered page when valid data is submitted and trust is already registered" in {
+
+      when(mockSubmissionService.submit(any[UserAnswers])(any[HeaderCarrier])).
+        thenReturn(Future.successful(AlreadyRegistered))
+
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
+          .build()
+
+      val request =
+        FakeRequest(POST, declarationRoute)
+          .withFormUrlEncodedBody(("firstName", "value 1"), ("lastName", "value 2"))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual routes.UTRSentByPostController.onPageLoad().url
       verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any[HeaderCarrier])
       application.stop()
     }

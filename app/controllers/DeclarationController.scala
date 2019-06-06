@@ -19,10 +19,10 @@ package controllers
 import controllers.actions._
 import forms.DeclarationFormProvider
 import javax.inject.Inject
-
-import models.{Mode, NormalMode, RegistrationTRNResponse}
+import models.{AlreadyRegistered, Mode, NormalMode, RegistrationTRNResponse, UnableToRegister}
 import navigation.Navigator
 import pages.DeclarationPage
+import play.api.Logger
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -32,6 +32,7 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.DeclarationView
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.control.NonFatal
 
 class DeclarationController @Inject()(
                                        override val messagesApi: MessagesApi,
@@ -67,17 +68,26 @@ class DeclarationController @Inject()(
           Future.successful(BadRequest(view(formWithErrors, mode))),
 
         value => {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield {
-            submissionService.submit(updatedAnswers) map{
-              case trustResponse : RegistrationTRNResponse =>
-                routes.ConfirmationController.onPageLoad()
-              case _ => routes.TaskListController.onPageLoad()
-
+          {
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, value))
+              _ <- sessionRepository.set(updatedAnswers)
+              response <- submissionService.submit(updatedAnswers)
+            } yield {
+              response match {
+                case trn: RegistrationTRNResponse =>
+                  Redirect(routes.ConfirmationController.onPageLoad())
+                case AlreadyRegistered =>
+                  Redirect(routes.UTRSentByPostController.onPageLoad())
+                case _ => Redirect(routes.TaskListController.onPageLoad())
+              }
             }
-            Redirect(navigator.nextPage(DeclarationPage, mode)(updatedAnswers))
+          }.recover{
+            case unableToSubmist :UnableToRegister => {
+              Logger.error("Not able to register , redirecting to registration in progress")
+              Redirect(routes.TaskListController.onPageLoad())
+            }
+            case NonFatal(e) => throw e
           }
         }
       )
