@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.DeclarationFormProvider
-import models.{FullName, NormalMode, UserAnswers}
+import models.{FullName, NormalMode, RegistrationTRNResponse, UnableToRegister, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.DeclarationPage
 import play.api.inject.bind
@@ -27,16 +27,28 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
 import views.html.DeclarationView
+import org.mockito.Matchers.any
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.{when, _}
+import uk.gov.hmrc.http.HeaderCarrier
+
+import scala.concurrent.Future
+
 
 class DeclarationControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
+  def confirmationRoute = Call("GET", "/confirmation")
 
   val formProvider = new DeclarationFormProvider()
   val form = formProvider()
   val name = "name"
 
   lazy val declarationRoute = routes.DeclarationController.onPageLoad().url
+
+  before {
+    reset(mockSubmissionService)
+  }
 
   "Declaration Controller" must {
 
@@ -79,7 +91,34 @@ class DeclarationControllerSpec extends SpecBase {
       application.stop()
     }
 
-    "redirect to the next page when valid data is submitted" in {
+    "redirect to the confirmation page when valid data is submitted and registration submitted successfully " in {
+
+      when(mockSubmissionService.submit(any[UserAnswers])(any[HeaderCarrier])).
+        thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
+
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(confirmationRoute)))
+          .build()
+
+      val request =
+        FakeRequest(POST, declarationRoute)
+          .withFormUrlEncodedBody(("firstName", "value 1"), ("lastName", "value 2"))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual confirmationRoute.url
+      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any[HeaderCarrier])
+      application.stop()
+    }
+
+    "redirect to the task list page when valid data is submitted and submission service can not register successfully" in {
+
+      when(mockSubmissionService.submit(any[UserAnswers])(any[HeaderCarrier])).
+        thenReturn(Future.failed(UnableToRegister()))
+
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
@@ -94,7 +133,7 @@ class DeclarationControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual onwardRoute.url
-
+      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any[HeaderCarrier])
       application.stop()
     }
 

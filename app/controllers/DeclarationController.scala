@@ -19,13 +19,15 @@ package controllers
 import controllers.actions._
 import forms.DeclarationFormProvider
 import javax.inject.Inject
-import models.Mode
+
+import models.{Mode, NormalMode, RegistrationTRNResponse}
 import navigation.Navigator
 import pages.DeclarationPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import services.SubmissionService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.DeclarationView
 
@@ -40,7 +42,8 @@ class DeclarationController @Inject()(
                                        requireData: DataRequiredAction,
                                        formProvider: DeclarationFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
-                                       view: DeclarationView
+                                       view: DeclarationView,
+                                       submissionService: SubmissionService
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -67,7 +70,15 @@ class DeclarationController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(DeclarationPage, mode)(updatedAnswers))
+          } yield {
+            submissionService.submit(updatedAnswers) map{
+              case trustResponse : RegistrationTRNResponse =>
+                routes.ConfirmationController.onPageLoad()
+              case _ => routes.TaskListController.onPageLoad()
+
+            }
+            Redirect(navigator.nextPage(DeclarationPage, mode)(updatedAnswers))
+          }
         }
       )
   }

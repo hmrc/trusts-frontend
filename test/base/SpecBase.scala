@@ -19,7 +19,7 @@ package base
 import config.FrontendAppConfig
 import controllers.actions._
 import models.UserAnswers
-import org.scalatest.{TestSuite, TryValues}
+import org.scalatest.{BeforeAndAfter, TestSuite, TryValues}
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice._
 import play.api.i18n.{Messages, MessagesApi}
@@ -28,10 +28,11 @@ import play.api.inject.{Injector, bind}
 import play.api.mvc.PlayBodyParsers
 import play.api.test.FakeRequest
 import repositories.SessionRepository
+import services.SubmissionService
 import uk.gov.hmrc.auth.core.AffinityGroup
 import utils.TestUserAnswers
 
-trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked {
+trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked with BeforeAndAfter {
   this: TestSuite =>
 
   val userAnswersId = TestUserAnswers.userAnswersId
@@ -57,7 +58,8 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked {
         bind[DataRequiredAction].to[DataRequiredActionImpl],
         bind[IdentifierAction].toInstance(new FakeIdentifierAction(affinityGroup)(injectedParsers)),
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
-        bind[SessionRepository].toInstance(mockedSessionRepository)
+        bind[SessionRepository].toInstance(mockedSessionRepository),
+        bind[SubmissionService].toInstance(mockSubmissionService)
       )
 
 }

@@ -20,12 +20,14 @@ import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.mockito.MockitoSugar
 import repositories.SessionRepository
+import services.SubmissionService
 
 import scala.concurrent.Future
 
 trait Mocked extends MockitoSugar {
 
   val mockedSessionRepository : SessionRepository = mock[SessionRepository]
+  val mockSubmissionService : SubmissionService = mock[SubmissionService]
 
   when(mockedSessionRepository.set(any())).thenReturn(Future.successful(true))
 
