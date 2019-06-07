@@ -18,19 +18,17 @@ package controllers
 
 import config.FrontendAppConfig
 import controllers.actions._
+import handlers.ErrorHandler
 import javax.inject.Inject
-
 import models.{NormalMode, RegistrationProgress}
-import models.RegistrationProgress.Complete
 import pages.RegistrationTRNPage
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.ConfirmationView
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 class ConfirmationController @Inject()(
                                        override val messagesApi: MessagesApi,
@@ -39,28 +37,30 @@ class ConfirmationController @Inject()(
                                        requireData: DataRequiredAction,
                                        config: FrontendAppConfig,
                                        val controllerComponents: MessagesControllerComponents,
-                                       view: ConfirmationView
+                                       view: ConfirmationView,
+                                       errorHandler: ErrorHandler
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val userAnswers = request.userAnswers
-       userAnswers.progress match {
-        case  Complete => userAnswers.get(RegistrationTRNPage) match {
-          case None =>
-            Logger.error("[ConfirmationController][onPageLoad] No TRN available for completed trusts. Throwing exception.")
-            throw new Exception("TRN is not available for completed trust.")
 
-          case Some(trn) =>
-            val postHMRC = config.posthmrc
-            Ok(view(trn, postHMRC))
-        }
+       userAnswers.progress match {
+        case RegistrationProgress.Complete =>
+          userAnswers.get(RegistrationTRNPage) match {
+            case None =>
+              Logger.info("[ConfirmationController][onPageLoad] No TRN available for completed trusts. Throwing exception.")
+              errorHandler.onServerError(request, new Exception("TRN is not available for completed trust."))
+            case Some(trn) =>
+              val postHMRC = config.posthmrc
+              Future.successful(Ok(view(trn, postHMRC)))
+          }
         case RegistrationProgress.InProgress =>
-          Logger.error("[ConfirmationController][onPageLoad] Registration inProgress status,redirecting to task list.")
-          Redirect(routes.TaskListController.onPageLoad())
+          Logger.info("[ConfirmationController][onPageLoad] Registration inProgress status,redirecting to task list.")
+          Future.successful(Redirect(routes.TaskListController.onPageLoad()))
         case RegistrationProgress.NotStarted =>
-          Logger.error("[ConfirmationController][onPageLoad] Registration NotStarted status,redirecting to trust registered page online.")
-          Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode))
+          Logger.info("[ConfirmationController][onPageLoad] Registration NotStarted status,redirecting to trust registered page online.")
+          Future.successful(Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode)))
       }
   }
 }

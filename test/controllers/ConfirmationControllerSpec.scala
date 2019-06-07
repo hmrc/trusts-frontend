@@ -61,8 +61,6 @@ class ConfirmationControllerSpec extends SpecBase {
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[ConfirmationView]
-
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad().url
 
@@ -85,7 +83,20 @@ class ConfirmationControllerSpec extends SpecBase {
       application.stop()
     }
 
+    "return InternalServerError when TRN is not available" in {
 
+      val userAnswers = emptyUserAnswers.copy(progress = RegistrationProgress.Complete)
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual INTERNAL_SERVER_ERROR
+
+      application.stop()
+    }
 
   }
 }
