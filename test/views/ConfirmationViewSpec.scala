@@ -32,7 +32,5 @@ class ConfirmationViewSpec extends ViewBehaviours {
     val applyView = view.apply(refNumber, postHMRC)(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView, messageKeyPrefix, refNumber)
-
-    behave like pageWithBackLink(applyView)
   }
 }

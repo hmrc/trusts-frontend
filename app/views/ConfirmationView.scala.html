@@ -26,8 +26,6 @@
     title = s"${messages("confirmationPage.title",refNumber)}"
     ) {
 
-    @components.back_link()
-
     <h1 class="form-title heading-large heading-confirmation">
         @messages("confirmationPage.heading1")
         <span class="reference-text">@messages("confirmationPage.heading2")</span>
@@ -44,5 +42,5 @@
 
     <p>@messages("confirmationPage.paragraph2")</p>
 
-    <p>@messages("confirmationPage.paragraph3")@components.link(postHMRC,"","confirmationPage.posthmrc.link")@messages("confirmationPage.paragraph4")</p>
+    <p>@messages("confirmationPage.paragraph3") @components.link(postHMRC,"","confirmationPage.posthmrc.link") @messages("confirmationPage.paragraph4")</p>
 }
