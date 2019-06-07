@@ -21,7 +21,7 @@ import viewmodels.Agent
 
 case object RegistrationTRNPage extends QuestionPage[String] {
 
-  override def path: JsPath = JsPath \ Agent \ toString
+  override def path: JsPath = JsPath \  toString
 
   override def toString: String = "trn"
 }
