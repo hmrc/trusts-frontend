@@ -16,12 +16,15 @@
 
 package controllers
 
+import javax.inject.Inject
+
 import controllers.actions._
 import forms.DeclarationFormProvider
-import javax.inject.Inject
-import models.{AlreadyRegistered, Mode, NormalMode, RegistrationTRNResponse, UnableToRegister}
+import models.RegistrationProgress.InProgress
+import models.Status.Completed
+import models.{AlreadyRegistered, Mode, RegistrationProgress, RegistrationTRNResponse, UnableToRegister, UserAnswers}
 import navigation.Navigator
-import pages.DeclarationPage
+import pages.{DeclarationPage, RegistrationTRNPage}
 import play.api.Logger
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -79,20 +82,33 @@ class DeclarationController @Inject()(
             } yield {
               response match {
                 case trn: RegistrationTRNResponse =>
+                  Logger.info("[saveTrnAndRedirect] Saving trust registration trn.")
+                  saveTrn(updatedAnswers, trn)
                   Redirect(routes.ConfirmationController.onPageLoad())
+
                 case AlreadyRegistered =>
                   Redirect(routes.UTRSentByPostController.onPageLoad())
                 case _ => Redirect(routes.TaskListController.onPageLoad())
               }
             }
           }.recover{
-            case unableToSubmist :UnableToRegister => {
-              Logger.error("Not able to register , redirecting to registration in progress")
+            case _ : UnableToRegister => {
+              Logger.error(s"[onSubmit] Not able to register , redirecting to registration in progress.")
               Redirect(routes.TaskListController.onPageLoad())
             }
-            case NonFatal(e) => throw e
+            case NonFatal(e) =>
+              Logger.error(s"[onSubmit] Non fatal exception, throwing again. ${e.getMessage}")
+              throw e
           }
         }
       )
+  }
+
+
+  private def saveTrn(updatedAnswers: UserAnswers, trn: RegistrationTRNResponse): Future[Boolean] = {
+    for {
+      trnSavedAnswers <- Future.fromTry(updatedAnswers.set(RegistrationTRNPage, trn.trn))
+      _ <- sessionRepository.set(trnSavedAnswers.copy(progress = RegistrationProgress.Complete))
+    } yield true
   }
 }
