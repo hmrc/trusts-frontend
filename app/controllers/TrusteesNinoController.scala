@@ -17,6 +17,7 @@
 package controllers
 
 import controllers.actions._
+import controllers.filters.IndexActionFilterProvider
 import forms.TrusteesNinoFormProvider
 import javax.inject.Inject
 import models.requests.DataRequest

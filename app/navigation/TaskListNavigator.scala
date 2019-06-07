@@ -22,7 +22,7 @@ import models.Status.Completed
 import models.entities.{Assets, Trustees}
 import models.{NormalMode, UserAnswers}
 import pages._
-import pages.entitystatus.TrustDetailsStatus
+import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
 import play.api.mvc.Call
 import viewmodels._
 
@@ -49,7 +49,7 @@ class TaskListNavigator @Inject()() {
   }
 
   private def settlorRoute(answers: UserAnswers) = {
-    val deceasedCompleted = answers.get(DeceasedSettlorComplete).contains(Completed)
+    val deceasedCompleted = answers.get(DeceasedSettlorStatus).contains(Completed)
     deceasedCompleted match {
       case true =>
         routes.DeceasedSettlorAnswerController.onPageLoad()

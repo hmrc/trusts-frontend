@@ -17,6 +17,7 @@
 package controllers
 
 import controllers.actions._
+import controllers.filters.IndexActionFilterProvider
 import forms.TrusteeIndividualOrBusinessFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode, NormalMode}

@@ -21,7 +21,8 @@ import javax.inject.Inject
 import models.NormalMode
 import models.Status.Completed
 import navigation.Navigator
-import pages.{DeceasedSettlorAnswerPage, DeceasedSettlorComplete, SettlorsNamePage}
+import pages.entitystatus.DeceasedSettlorStatus
+import pages.{DeceasedSettlorAnswerPage, SettlorsNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -84,7 +85,7 @@ class DeceasedSettlorAnswerController @Inject()(
     implicit request =>
 
       for {
-        updatedAnswers <- Future.fromTry(request.userAnswers.set(DeceasedSettlorComplete, Completed))
+        updatedAnswers <- Future.fromTry(request.userAnswers.set(DeceasedSettlorStatus, Completed))
         _              <- sessionRepository.set(updatedAnswers)
       } yield Redirect(navigator.nextPage(DeceasedSettlorAnswerPage, NormalMode)(request.userAnswers))
   }

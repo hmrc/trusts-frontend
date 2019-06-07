@@ -130,7 +130,6 @@
 
 .label-as-heading {margin-top:0; margin-bottom:0;}
 .heading-large {margin-top:0;}
-.multiple-choice{display: inline-block;}
 
 #value__listbox, #country__listbox {
     width: 100%;
@@ -159,4 +158,12 @@
     font-size: 1em;
     margin-top: 0;
   }
+}
+
+.govuk-main-wrapper--l {
+    padding-top: 50px;
+
+    @include media(mobile) {
+        padding-top: 0;
+    }
 }

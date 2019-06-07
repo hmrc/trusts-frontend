@@ -25,7 +25,7 @@ import models.WhatKindOfAsset.Money
 import models.entities.{Assets, Trustees}
 import models.{FullName, NormalMode, UserAnswers}
 import pages._
-import pages.entitystatus.TrustDetailsStatus
+import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
 import viewmodels.{Beneficiaries, Settlors, TaxLiability, TrustDetails}
 
 class TaskListNavigatorSpec extends SpecBase {
@@ -74,7 +74,7 @@ class TaskListNavigatorSpec extends SpecBase {
         "go to DeceasedSettlorAnswerPage" in {
           val answers = UserAnswers(userAnswersId).set(SetupAfterSettlorDiedPage, true).success.value
               .set(SettlorsNamePage, FullName("deceased",None, "settlor")).success.value
-              .set(DeceasedSettlorComplete, Completed).success.value
+              .set(DeceasedSettlorStatus, Completed).success.value
           navigator.nextPage(Settlors, answers) mustBe routes.DeceasedSettlorAnswerController.onPageLoad()
         }
 

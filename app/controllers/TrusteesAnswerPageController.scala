@@ -17,6 +17,7 @@
 package controllers
 
 import controllers.actions._
+import controllers.filters.IndexActionFilterProvider
 import javax.inject.Inject
 import models.NormalMode
 import models.Status.Completed
