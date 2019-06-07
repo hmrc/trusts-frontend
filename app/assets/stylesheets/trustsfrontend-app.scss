@@ -159,3 +159,11 @@
     margin-top: 0;
   }
 }
+
+.govuk-main-wrapper--l {
+    padding-top: 50px;
+
+    @include media(mobile) {
+        padding-top: 0;
+    }
+}
