@@ -17,20 +17,25 @@
 package controllers
 
 import base.SpecBase
+import models.{NormalMode, RegistrationProgress}
+import models.Status.Completed
+import pages.{RegistrationTRNPage, TrustNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.ConfirmationView
 
 class ConfirmationControllerSpec extends SpecBase {
 
-  val refNumber = "XC TRN 000 000 4911"
   val postHMRC = "https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts"
 
   "Confirmation Controller" must {
 
-    "return OK and the correct view for a GET" in {
+    "return OK and the correct view for a GET when TRN is available" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = emptyUserAnswers.copy(progress = RegistrationProgress.Complete)
+        .set(RegistrationTRNPage, "xTRN1234678").success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad().url)
 
@@ -41,9 +46,57 @@ class ConfirmationControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(refNumber,postHMRC)(fakeRequest, messages).toString
+        view("xTRN1234678",postHMRC)(fakeRequest, messages).toString
 
       application.stop()
     }
+
+    "return to Task List view  when registration is in progress " in {
+
+      val userAnswers = emptyUserAnswers.copy(progress = RegistrationProgress.InProgress)
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad().url
+
+      application.stop()
+    }
+
+    "return to trust registered online page when registration is not started. " in {
+
+      val userAnswers = emptyUserAnswers.copy(progress = RegistrationProgress.NotStarted)
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual routes.TrustRegisteredOnlineController.onPageLoad(NormalMode).url
+
+      application.stop()
+    }
+
+    "return InternalServerError when TRN is not available" in {
+
+      val userAnswers = emptyUserAnswers.copy(progress = RegistrationProgress.Complete)
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual INTERNAL_SERVER_ERROR
+
+      application.stop()
+    }
+
   }
 }

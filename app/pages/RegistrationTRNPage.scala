@@ -16,13 +16,12 @@
 
 package pages
 
-import models.Status
 import play.api.libs.json.JsPath
-import viewmodels.{DeceasedSettlor, Settlors}
+import viewmodels.Agent
 
-case object DeceasedSettlorComplete extends QuestionPage[Status] {
+case object RegistrationTRNPage extends QuestionPage[String] {
 
-  override def path: JsPath = JsPath \ Settlors \ DeceasedSettlor \toString
+  override def path: JsPath = JsPath \  toString
 
-  override def toString: String = "status"
+  override def toString: String = "trn"
 }

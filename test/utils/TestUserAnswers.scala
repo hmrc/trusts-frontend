@@ -20,10 +20,10 @@ import java.time.LocalDate
 
 import models.Matched.{Failed, Success}
 import models.Status.Completed
-import models.{FullName, IndividualOrBusiness, UKAddress, UserAnswers, WhatKindOfAsset}
+import models.{AddABeneficiary, AddATrustee, AddAssets, FullName, IndividualOrBusiness, UKAddress, UserAnswers, WhatKindOfAsset}
 import org.scalatest.TryValues
-import pages.entitystatus.AssetStatus
 import pages._
+import pages.entitystatus._
 import play.api.libs.json.Json
 
 object TestUserAnswers extends TryValues {
@@ -54,6 +54,7 @@ object TestUserAnswers extends TryValues {
       .set(TrusteesNinoPage(index), "AB123456C").success.value
       .set(TelephoneNumberPage(index), "0191 1111111").success.value
       .set(TrusteesUkAddressPage(index), UKAddress("line1", None,None, "town", "NE65QA")).success.value
+      .set(TrusteeStatus(index), Completed).success.value
   }
 
   def withIndividualBeneficiary(userAnswers: UserAnswers) : UserAnswers = {
@@ -67,6 +68,7 @@ object TestUserAnswers extends TryValues {
       .set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), true).success.value
       .set(IndividualBeneficiaryNationalInsuranceNumberPage(index), "AB123456C").success.value
       .set(IndividualBeneficiaryVulnerableYesNoPage(index), true).success.value
+      .set(IndividualBeneficiaryStatus(index), Completed).success.value
   }
 
   def withDeceasedSettlor(userAnswers: UserAnswers) : UserAnswers = {
@@ -77,6 +79,7 @@ object TestUserAnswers extends TryValues {
       .set(SettlorDateOfBirthYesNoPage, false).success.value
       .set(SettlorsNINoYesNoPage, false).success.value
       .set(SettlorsLastKnownAddressYesNoPage, false).success.value
+      .set(DeceasedSettlorStatus, Completed).success.value
   }
 
   def withTrustDetails(userAnswers: UserAnswers) : UserAnswers = {
@@ -88,6 +91,7 @@ object TestUserAnswers extends TryValues {
       .set(TrustResidentInUKPage, true).success.value
       .set(EstablishedUnderScotsLawPage, true).success.value
       .set(TrustResidentOffshorePage, false).success.value
+      .set(TrustDetailsStatus, Completed).success.value
   }
 
   def withMoneyAsset(userAnswers : UserAnswers) : UserAnswers = {
@@ -115,6 +119,24 @@ object TestUserAnswers extends TryValues {
   def withMatchingFailed(userAnswers: UserAnswers) : UserAnswers = {
     userAnswers
       .set(ExistingTrustMatched, Failed).success.value
+  }
+
+  def withCompleteSections(userAnswers: UserAnswers) : UserAnswers = {
+    userAnswers
+      .set(AddATrusteePage, AddATrustee.NoComplete).success.value
+      .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
+      .set(AddAssetsPage, AddAssets.NoComplete).success.value
+  }
+
+  val newTrustCompleteUserAnswers = {
+    val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
+    val uaWithLead = TestUserAnswers.withLeadTrustee(emptyUserAnswers)
+    val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(uaWithLead)
+    val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithDeceased)
+    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
+    val userAnswers = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
+
+    userAnswers
   }
 
 }

@@ -73,7 +73,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(TrusteeStatus(1), Status.Completed).success.value
             .set(AddATrusteePage, AddATrustee.NoComplete).success.value
             .set(SetupAfterSettlorDiedPage, true).success.value
-            .set(DeceasedSettlorComplete, Status.Completed).success.value
+            .set(DeceasedSettlorStatus, Status.Completed).success.value
             .set(ClassBeneficiaryDescriptionPage(0), "Description").success.value
             .set(ClassBeneficiaryStatus(0), Status.Completed).success.value
             .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value

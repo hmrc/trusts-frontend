@@ -14,21 +14,16 @@
  * limitations under the License.
  */
 
-package base
+package pages.entitystatus
 
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
-import org.scalatest.mockito.MockitoSugar
-import repositories.SessionRepository
-import services.SubmissionService
+import models.Status
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import viewmodels.{DeceasedSettlor, Settlors}
 
-import scala.concurrent.Future
+case object DeceasedSettlorStatus extends QuestionPage[Status] {
 
-trait Mocked extends MockitoSugar {
+  override def path: JsPath = JsPath \ Settlors \ DeceasedSettlor \toString
 
-  val mockedSessionRepository : SessionRepository = mock[SessionRepository]
-  val mockSubmissionService : SubmissionService = mock[SubmissionService]
-
-  when(mockedSessionRepository.set(any())).thenReturn(Future.successful(true))
-
+  override def toString: String = "status"
 }

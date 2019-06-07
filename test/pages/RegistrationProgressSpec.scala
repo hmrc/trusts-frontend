@@ -22,7 +22,7 @@ import base.SpecBase
 import models.AddAssets.NoComplete
 import models.Status.{Completed, InProgress}
 import models.{AddABeneficiary, AddATrustee, FullName, Status, WhatKindOfAsset}
-import pages.entitystatus.{AssetStatus, ClassBeneficiaryStatus, IndividualBeneficiaryStatus, TrustDetailsStatus, TrusteeStatus}
+import pages.entitystatus.{AssetStatus, ClassBeneficiaryStatus, DeceasedSettlorStatus, IndividualBeneficiaryStatus, TrustDetailsStatus, TrusteeStatus}
 
 class RegistrationProgressSpec extends SpecBase {
 
@@ -167,7 +167,7 @@ class RegistrationProgressSpec extends SpecBase {
 
         val userAnswers = emptyUserAnswers
             .set(SetupAfterSettlorDiedPage, true).success.value
-            .set(DeceasedSettlorComplete, Status.InProgress).success.value
+            .set(DeceasedSettlorStatus, Status.InProgress).success.value
 
         registrationProgress.isDeceasedSettlorComplete(userAnswers).value mustBe InProgress
       }
@@ -181,7 +181,7 @@ class RegistrationProgressSpec extends SpecBase {
 
         val userAnswers = emptyUserAnswers
           .set(SetupAfterSettlorDiedPage, true).success.value
-          .set(DeceasedSettlorComplete, Status.Completed).success.value
+          .set(DeceasedSettlorStatus, Status.Completed).success.value
 
         registrationProgress.isDeceasedSettlorComplete(userAnswers).value mustBe Completed
       }
@@ -334,7 +334,7 @@ class RegistrationProgressSpec extends SpecBase {
         .set(TrusteeStatus(1), Status.Completed).success.value
         .set(AddATrusteePage, AddATrustee.NoComplete).success.value
         .set(SetupAfterSettlorDiedPage, true).success.value
-        .set(DeceasedSettlorComplete, Status.Completed).success.value
+        .set(DeceasedSettlorStatus, Status.Completed).success.value
         .set(ClassBeneficiaryDescriptionPage(0), "Description").success.value
         .set(ClassBeneficiaryStatus(0), Status.Completed).success.value
         .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
