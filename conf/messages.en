@@ -819,3 +819,19 @@ summaryAnswerPage.section.individualBeneficiary.subheading = Individual benefici
 summaryAnswerPage.section.classOfBeneficiary.subheading = Class of beneficiary
 summaryAnswerPage.section.assets.heading = Assets
 summaryAnswerPage.section.moneyAsset.subheading = Money
+
+
+confirmationAnswerPage.title = Declared copy of the trust’s registration
+confirmationAnswerPage.heading = Declared copy of the trust’s registration
+confirmationAnswerPage.paragraph1 = Declaration reference number is: {0}
+confirmationAnswerPage.paragraph2 = The trust’s registration was sent on {0}
+confirmationAnswerPage.warning = You need to declare every year through this service the details we have are up to date.
+confirmationAnswerPage.section.trustsDetails.heading = Trust details
+confirmationAnswerPage.section.settlors.heading = Settlors
+confirmationAnswerPage.section.trustees.heading = Trustees
+confirmationAnswerPage.section.trustee.subheading = Trustee
+confirmationAnswerPage.section.beneficiaries.heading = Beneficiaries
+confirmationAnswerPage.section.individualBeneficiary.subheading = Individual beneficiary
+confirmationAnswerPage.section.classOfBeneficiary.subheading = Class of beneficiary
+confirmationAnswerPage.section.assets.heading = Assets
+confirmationAnswerPage.section.moneyAsset.subheading = Money
