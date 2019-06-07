@@ -16,11 +16,9 @@
 
 package controllers
 
-import javax.inject.Inject
 import controllers.actions._
 import forms.DeclarationFormProvider
-import models.RegistrationProgress.InProgress
-import models.Status.Completed
+import javax.inject.Inject
 import models.{AlreadyRegistered, Mode, RegistrationProgress, RegistrationTRNResponse, TrustResponse, UnableToRegister, UserAnswers}
 import navigation.Navigator
 import pages.{DeclarationPage, RegistrationTRNPage}
