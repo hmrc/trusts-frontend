@@ -19,8 +19,13 @@ package controllers
 import config.FrontendAppConfig
 import controllers.actions._
 import javax.inject.Inject
+
+import models.{NormalMode, RegistrationProgress}
+import models.RegistrationProgress.Complete
+import pages.RegistrationTRNPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.ConfirmationView
 
@@ -38,11 +43,16 @@ class ConfirmationController @Inject()(
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
-      val refNumber = config.refNumber
-
-      val postHMRC = config.posthmrc
-
-      Ok(view(refNumber, postHMRC))
+      val userAnswers = request.userAnswers
+       userAnswers.progress match {
+        case  Complete => userAnswers.get(RegistrationTRNPage) match {
+          case None => throw new Exception("TRN is not available for completed trust. ")
+          case Some(trn) =>
+            val postHMRC = config.posthmrc
+            Ok(view(trn, postHMRC))
+        }
+        case RegistrationProgress.InProgress => Redirect(routes.TaskListController.onPageLoad())
+        case RegistrationProgress.NotStarted => Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode))
+      }
   }
 }
