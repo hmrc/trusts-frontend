@@ -68,7 +68,32 @@ class DeclarationControllerSpec extends SpecBase {
       application.stop()
     }
 
-    "return OK and the correct view for a GET" in {
+    "return OK and the correct view for a GET for Organisation user" in {
+
+      val userAnswers =
+        TestUserAnswers.withCompleteSections(
+          TestUserAnswers.withAgent(
+            TestUserAnswers.newTrustCompleteUserAnswers.copy(progress = InProgress)
+          )
+        )
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers),AffinityGroup.Organisation).build()
+
+      val request = FakeRequest(GET, declarationRoute)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[DeclarationView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(form, NormalMode,AffinityGroup.Organisation)(request, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view for a GET for Agent" in {
 
       val userAnswers =
         TestUserAnswers.withCompleteSections(
@@ -88,7 +113,7 @@ class DeclarationControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form, NormalMode,AffinityGroup.Agent)(request, messages).toString
 
       application.stop()
     }
@@ -114,7 +139,7 @@ class DeclarationControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(FullName("First",None, "Last")), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(FullName("First",None, "Last")), NormalMode,AffinityGroup.Agent)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -231,7 +256,7 @@ class DeclarationControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode,AffinityGroup.Agent)(fakeRequest, messages).toString
 
       application.stop()
     }
