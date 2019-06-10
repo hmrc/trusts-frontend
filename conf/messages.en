@@ -775,8 +775,7 @@ whatTypeOfBeneficiary.checkYourAnswersLabel = whatTypeOfBeneficiary
 whatTypeOfBeneficiary.error.required = Select the type of beneficiary you need to add
 whatTypeOfBeneficiary.hint = You can enter a maximum of 25 entries for each beneficiary type
 
-confirmationPage.title = Registration received Your reference is: {0}
-confirmationPage.heading = Registration received Your reference is: {0}
+confirmationPage.title = Registration received, your reference is: {0}
 confirmationPage.printsave.link = Print or save a copy of your answers
 confirmationPage.posthmrc.link = post the changes to HMRC.
 
