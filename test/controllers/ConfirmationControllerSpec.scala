@@ -49,7 +49,7 @@ class ConfirmationControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(isExistingTrust = false, "xTRN1234678",postHMRC, FullName("first name", None, "Last Name"))(fakeRequest, messages).toString
+        view(isExistingTrust = false, isAgent = false, "xTRN1234678",postHMRC, "#",FullName("first name", None, "Last Name"))(fakeRequest, messages).toString
 
       application.stop()
     }

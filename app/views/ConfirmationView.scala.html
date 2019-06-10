@@ -21,7 +21,7 @@
     main_template: MainTemplate
 )
 
-@(isExistingTrust: Boolean, refNumber: String, postHMRC: String, leadTrusteeName : FullName)(implicit request: Request[_], messages: Messages)
+@(isExistingTrust: Boolean, isAgent: Boolean, refNumber: String, postHMRC: String, agentOverviewUrl: String, leadTrusteeName : FullName)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${messages("confirmationPage.title", refNumber)}"
@@ -60,6 +60,10 @@
         <p>@messages("confirmationPage.existing.paragraph2")</p>
 
         <p>@messages("confirmationPage.paragraph3") @components.link(postHMRC, "post-to-hmrc-contact", "confirmationPage.posthmrc.link", "_blank") @messages("confirmationPage.paragraph4")</p>
+    }
+
+    @if(isAgent) {
+        @messages("confirmationPage.agent.you.can") @components.link(agentOverviewUrl, "agent-overview", "confirmationPage.agent.link", "_self")
     }
 
 }

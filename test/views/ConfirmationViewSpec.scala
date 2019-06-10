@@ -79,10 +79,21 @@ class ConfirmationViewSpec extends ViewBehaviours {
 
   }
 
+  private def confirmationForAgent(view: HtmlFormat.Appendable) : Unit = {
+
+    "display return to agent overview link" in {
+
+      val doc = asDocument(view)
+      val agentOverviewLink = doc.getElementById("agent-overview")
+      assertAttributeValueForElement(agentOverviewLink, "href", "#")
+      assertContainsTextForId(doc, "agent-overview", "return to register and maintain a trust for a client.")
+    }
+  }
+
   "Confirmation view for a new trust" must {
     val view = viewFor[ConfirmationView](Some(emptyUserAnswers))
 
-    val applyView = view.apply(isExistingTrust = false, refNumber, postHMRC, FullName("John", None, "Smith"))(fakeRequest, messages)
+    val applyView = view.apply(isExistingTrust = false, isAgent = false, refNumber, postHMRC, "#", FullName("John", None, "Smith"))(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView, messageKeyPrefix, refNumber)
 
@@ -92,10 +103,22 @@ class ConfirmationViewSpec extends ViewBehaviours {
   "Confirmation view for an existing trust" must {
     val view = viewFor[ConfirmationView](Some(emptyUserAnswers))
 
-    val applyView = view.apply(isExistingTrust = true, refNumber, postHMRC, FullName("John", None, "Smith"))(fakeRequest, messages)
+    val applyView = view.apply(isExistingTrust = true, isAgent = false, refNumber, postHMRC, "#", FullName("John", None, "Smith"))(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView, messageKeyPrefix, refNumber)
 
     behave like existingTrust(applyView)
+  }
+
+  "Confirmation view for an agent" must {
+    val view = viewForAgent[ConfirmationView](Some(emptyUserAnswers))
+
+    val applyView = view.apply(isExistingTrust = true, isAgent = true, refNumber, postHMRC, "#", FullName("John", None, "Smith"))(fakeRequest, messages)
+
+    behave like dynamicTitlePage(applyView, messageKeyPrefix, refNumber)
+
+    behave like existingTrust(applyView)
+
+    behave like confirmationForAgent(applyView)
   }
 }

@@ -21,11 +21,13 @@ import controllers.actions._
 import handlers.ErrorHandler
 import javax.inject.Inject
 import models.entities.{LeadTrusteeIndividual, Trustees}
+import models.requests.DataRequest
 import models.{FullName, NormalMode, RegistrationProgress, UserAnswers}
 import pages.{RegistrationTRNPage, TrustHaveAUTRPage}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request, Result}
+import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.ConfirmationView
 
@@ -44,8 +46,10 @@ class ConfirmationController @Inject()(
                                        errorHandler: ErrorHandler
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def renderView(trn : String, userAnswers: UserAnswers)(implicit request : Request[AnyContent]) : Future[Result] = {
+  private def renderView(trn : String, userAnswers: UserAnswers)(implicit request : DataRequest[AnyContent]) : Future[Result] = {
     val trustees = userAnswers.get(Trustees).getOrElse(Nil)
+    val isAgent = request.affinityGroup == Agent
+    val agentOverviewUrl = routes.AgentOverviewController.onPageLoad().url
 
     trustees.find(_.isLead) match {
       case Some(lt : LeadTrusteeIndividual) =>
@@ -53,7 +57,7 @@ class ConfirmationController @Inject()(
         userAnswers.get(TrustHaveAUTRPage) match {
           case Some(isExistingTrust) =>
             val postHMRC = config.posthmrc
-            Future.successful(Ok(view(isExistingTrust, trn, postHMRC, lt.name)))
+            Future.successful(Ok(view(isExistingTrust, isAgent, trn, postHMRC, agentOverviewUrl, lt.name)))
           case None =>
             errorHandler.onServerError(request, new Exception("Could not determine if trust was new or existing."))
         }
