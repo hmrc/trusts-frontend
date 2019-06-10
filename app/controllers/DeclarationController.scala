@@ -16,12 +16,15 @@
 
 package controllers
 
+import java.time.{LocalDate, LocalDateTime, ZoneOffset}
+
 import controllers.actions._
 import forms.DeclarationFormProvider
 import javax.inject.Inject
+
 import models.{AlreadyRegistered, Mode, RegistrationProgress, RegistrationTRNResponse, TrustResponse, UnableToRegister, UserAnswers}
 import navigation.Navigator
-import pages.{DeclarationPage, RegistrationTRNPage}
+import pages.{DeclarationPage, RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.Logger
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -30,8 +33,11 @@ import repositories.SessionRepository
 import services.SubmissionService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.DeclarationView
+import java.time.temporal.ChronoUnit.DAYS
+
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.Try
 import scala.util.control.NonFatal
 
 class DeclarationController @Inject()(
@@ -109,9 +115,15 @@ class DeclarationController @Inject()(
   private def saveTRNAndCompleteRegistration(updatedAnswers: UserAnswers, trn: RegistrationTRNResponse): Future[Result] = {
       Future.fromTry(updatedAnswers.set(RegistrationTRNPage, trn.trn)).flatMap {
         trnSaved =>
-          sessionRepository.set(trnSaved.copy(progress = RegistrationProgress.Complete)).map {
-            _ =>
-              Redirect(routes.ConfirmationController.onPageLoad())
+          val submissionDate = LocalDateTime.now(ZoneOffset.UTC)
+          Future.fromTry(trnSaved.set(RegistrationSubmissionDatePage,  submissionDate)).flatMap {
+            dateSaved =>
+              val days = DAYS.between(updatedAnswers.createdAt,submissionDate )
+              Logger.info(s"[saveTRNAndCompleteRegistration] Days between creation and submission : ${days}")
+              sessionRepository.set(dateSaved.copy(progress = RegistrationProgress.Complete)).map {
+              _ =>
+                Redirect(routes.ConfirmationController.onPageLoad())
+            }
           }
       }
   }
