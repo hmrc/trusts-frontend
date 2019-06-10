@@ -16,6 +16,8 @@
 
 package views
 
+import models.FullName
+import play.twirl.api.HtmlFormat
 import views.behaviours.ViewBehaviours
 import views.html.ConfirmationView
 
@@ -25,12 +27,75 @@ class ConfirmationViewSpec extends ViewBehaviours {
   val refNumber = "XC TRN 000 000 4911"
   val postHMRC = "https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts"
 
-  "Confirmation view" must {
+  val name = "John Smith"
 
+  private def newTrust(view : HtmlFormat.Appendable) : Unit = {
+
+    "assert content" in  {
+      val doc = asDocument(view)
+
+      assertContainsText(doc, "Registration received")
+      assertContainsText(doc, "Your reference is:")
+      assertRenderedById(doc, "trusts-registration-number")
+
+      assertRenderedById(doc, "confirmation-print-and-save")
+      assertRenderedById(doc, "post-to-hmrc-contact")
+
+      assertContainsText(doc, s"We will post $name a Unique Taxpayer Reference (UTR). If they are based in the UK, this can take 15 working days. For international trustees, this can take up to 21 working days.")
+
+      assertContainsText(doc, "Make a note of your reference number in case you need to contact HMRC. If you do not get your UTR within 15 working days,")
+
+      assertRenderedById(doc, "contact-hmrc-for-utr")
+
+      assertContainsText(doc, "You cannot make online changes to the trust.")
+
+      assertContainsText(doc, "You must keep a record of any other changes until you can change them using the online service.")
+    }
+
+  }
+
+  private def existingTrust(view: HtmlFormat.Appendable) : Unit = {
+
+    "assert content" in {
+      val doc = asDocument(view)
+
+      assertContainsText(doc, "Registration received")
+      assertContainsText(doc, "Your reference is:")
+      assertRenderedById(doc, "trusts-registration-number")
+
+      assertRenderedById(doc, "confirmation-print-and-save")
+      assertRenderedById(doc, "post-to-hmrc-contact")
+
+      assertNotRenderedById(doc, "contact-hmrc-for-utr")
+
+      assertContainsText(doc, s"You can continue to use your Unique Taxpayer Reference as usual. If there is a problem with your registration, we will contact $name.")
+
+      assertContainsText(doc, "Make a note of your reference number in case you need to contact HMRC.")
+
+      assertContainsText(doc, "You cannot make online changes to the trust.")
+
+      assertContainsText(doc, "You must keep a record of any other changes until you can change them using the online service.")
+    }
+
+  }
+
+  "Confirmation view for a new trust" must {
     val view = viewFor[ConfirmationView](Some(emptyUserAnswers))
 
-    val applyView = view.apply(refNumber, postHMRC)(fakeRequest, messages)
+    val applyView = view.apply(isExistingTrust = false, refNumber, postHMRC, FullName("John", None, "Smith"))(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView, messageKeyPrefix, refNumber)
+
+    behave like newTrust(applyView)
+  }
+
+  "Confirmation view for an existing trust" must {
+    val view = viewFor[ConfirmationView](Some(emptyUserAnswers))
+
+    val applyView = view.apply(isExistingTrust = true, refNumber, postHMRC, FullName("John", None, "Smith"))(fakeRequest, messages)
+
+    behave like dynamicTitlePage(applyView, messageKeyPrefix, refNumber)
+
+    behave like existingTrust(applyView)
   }
 }

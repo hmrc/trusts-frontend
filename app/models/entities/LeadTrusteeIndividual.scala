@@ -23,7 +23,7 @@ import models.{Address, FullName}
 import play.api.libs.json.{JsError, JsSuccess, Reads, __}
 
 final case class LeadTrusteeIndividual(override val isLead : Boolean = true,
-                                       name: FullName,
+                                       override val name: FullName,
                                        dateOfBirth: LocalDate,
                                        isUKCitizen : Boolean,
                                        nino : Option[String],

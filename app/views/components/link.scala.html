@@ -14,6 +14,6 @@
  * limitations under the License.
  *@
 
-@(href : String, id : String = "", key : String)(implicit messages: Messages)
+@(href : String, id : String = "", key : String, target : String = "")(implicit messages: Messages)
 
-<a id="@id" href="@href">@messages(key)</a>
+<a id="@id" target="@target" href="@href">@messages(key)</a>
