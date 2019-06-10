@@ -22,9 +22,8 @@ import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.auth.core.AffinityGroup
-import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import views.behaviours.QuestionViewBehaviours
-import views.html.{DeclarationView, TaskListView}
+import views.html.DeclarationView
 
 class DeclarationViewSpec extends QuestionViewBehaviours[FullName] {
 
@@ -37,7 +36,7 @@ class DeclarationViewSpec extends QuestionViewBehaviours[FullName] {
     val view = viewFor[DeclarationView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode,AffinityGroup.Agent)(fakeRequest, messages)
+      view.apply(form, NormalMode, AffinityGroup.Agent)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
@@ -48,7 +47,7 @@ class DeclarationViewSpec extends QuestionViewBehaviours[FullName] {
       applyView,
       messageKeyPrefix,
       routes.DeclarationController.onSubmit().url,
-      Seq(("firstName",None),("middleName",None),("lastName", None))
+      Seq(("firstName", None), ("middleName", None), ("lastName", None))
     )
   }
 
@@ -58,7 +57,7 @@ class DeclarationViewSpec extends QuestionViewBehaviours[FullName] {
       val view = viewFor[DeclarationView](Some(emptyUserAnswers))
 
       def applyView(form: Form[_]): HtmlFormat.Appendable =
-        view.apply(form, NormalMode,AffinityGroup.Organisation)(fakeRequest, messages)
+        view.apply(form, NormalMode, AffinityGroup.Organisation)(fakeRequest, messages)
 
       val doc = asDocument(applyView(form))
       assertContainsText(doc, "I confirm that I have taken all reasonable steps to obtain up to " +
@@ -75,7 +74,7 @@ class DeclarationViewSpec extends QuestionViewBehaviours[FullName] {
       val view = viewFor[DeclarationView](Some(emptyUserAnswers))
 
       def applyView(form: Form[_]): HtmlFormat.Appendable =
-        view.apply(form, NormalMode,AffinityGroup.Agent)(fakeRequest, messages)
+        view.apply(form, NormalMode, AffinityGroup.Agent)(fakeRequest, messages)
 
       val doc = asDocument(applyView(form))
       assertContainsText(doc, "I confirm that my client has taken all reasonable steps to obtain up " +

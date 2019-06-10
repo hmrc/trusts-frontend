@@ -16,12 +16,12 @@
 
 package controllers
 
-import java.time.{LocalDate, LocalDateTime, ZoneOffset}
+import java.time.temporal.ChronoUnit.DAYS
+import java.time.{LocalDateTime, ZoneOffset}
+import javax.inject.Inject
 
 import controllers.actions._
 import forms.DeclarationFormProvider
-import javax.inject.Inject
-
 import models.{AlreadyRegistered, Mode, RegistrationProgress, RegistrationTRNResponse, TrustResponse, UnableToRegister, UserAnswers}
 import navigation.Navigator
 import pages.{DeclarationPage, RegistrationSubmissionDatePage, RegistrationTRNPage}
@@ -33,11 +33,8 @@ import repositories.SessionRepository
 import services.SubmissionService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.DeclarationView
-import java.time.temporal.ChronoUnit.DAYS
-
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.Try
 import scala.util.control.NonFatal
 
 class DeclarationController @Inject()(
