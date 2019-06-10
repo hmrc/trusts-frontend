@@ -16,12 +16,12 @@
 
 package controllers
 
-import java.time.{LocalDate, LocalDateTime, ZoneOffset}
+import java.time.temporal.ChronoUnit.DAYS
+import java.time.{LocalDateTime, ZoneOffset}
+import javax.inject.Inject
 
 import controllers.actions._
 import forms.DeclarationFormProvider
-import javax.inject.Inject
-
 import models.{AlreadyRegistered, Mode, RegistrationProgress, RegistrationTRNResponse, TrustResponse, UnableToRegister, UserAnswers}
 import navigation.Navigator
 import pages.{DeclarationPage, RegistrationSubmissionDatePage, RegistrationTRNPage}
@@ -33,11 +33,8 @@ import repositories.SessionRepository
 import services.SubmissionService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.DeclarationView
-import java.time.temporal.ChronoUnit.DAYS
-
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.Try
 import scala.util.control.NonFatal
 
 class DeclarationController @Inject()(
@@ -66,7 +63,7 @@ class DeclarationController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode,request.affinityGroup))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = actions.async {
@@ -74,7 +71,7 @@ class DeclarationController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode,request.affinityGroup))),
 
         value => {
 
