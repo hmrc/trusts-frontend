@@ -16,7 +16,8 @@
 
 package controllers
 
-import java.time.{LocalDate, ZoneOffset}
+import java.time.format.DateTimeFormatter
+import java.time.{LocalDate, LocalDateTime, ZoneOffset}
 
 import base.SpecBase
 import models.AddAssets.NoComplete
@@ -30,12 +31,13 @@ import play.api.test.Helpers._
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
+import views.html.ConfirmationAnswerPageView
 
-class ComfirmationAnswersControllerSpec extends SpecBase {
+class ConfirmationAnswersControllerSpec extends SpecBase {
 
   val index = 0
 
-  "ComfirmationAnswersController Controller" must {
+  "ConfirmationAnswersController Controller" must {
 
     "return OK and the correct view for a GET when tasklist completed" in {
 
@@ -90,12 +92,15 @@ class ComfirmationAnswersControllerSpec extends SpecBase {
           .set(SettlorsLastKnownAddressYesNoPage, true).success.value
           .set(WasSettlorsAddressUKYesNoPage, true).success.value
           .set(SettlorsUKAddressPage, UKAddress("Line1", None, None, "Town", "NE1 1ZZ")).success.value
-          .set(DeceasedSettlorComplete, Status.Completed).success.value
+          .set(DeceasedSettlorStatus, Status.Completed).success.value
 
           .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
           .set(AssetMoneyValuePage(index), "100").success.value
           .set(AssetStatus(index), Completed).success.value
           .set(AddAssetsPage, NoComplete).success.value
+
+          .set(RegistrationTRNPage, "XNTRN000000001").success.value
+          .set(RegistrationSubmissionDatePage, LocalDateTime.now).success.value
 
 
       val countryOptions = injector.instanceOf[CountryOptions]
@@ -115,7 +120,7 @@ class ComfirmationAnswersControllerSpec extends SpecBase {
             checkYourAnswersHelper.establishedUnderScotsLaw.value,
             checkYourAnswersHelper.trustResidentOffshore.value
           ),
-          Some(Messages("summaryAnswerPage.section.trustsDetails.heading"))
+          Some(Messages("answerPage.section.trustsDetails.heading"))
         ),
         AnswerSection(
           None,
@@ -131,10 +136,10 @@ class ComfirmationAnswersControllerSpec extends SpecBase {
             checkYourAnswersHelper.wasSettlorsAddressUKYesNo.value,
             checkYourAnswersHelper.settlorsUKAddress.value
           ),
-          Some(Messages("summaryAnswerPage.section.settlors.heading"))
+          Some(Messages("answerPage.section.settlors.heading"))
         ),
         AnswerSection(
-          Some(Messages("summaryAnswerPage.section.trustee.subheading") + " " + (index + 1)),
+          Some(Messages("answerPage.section.trustee.subheading") + " " + (index + 1)),
           Seq(
             checkYourAnswersHelper.isThisLeadTrustee(index).value,
             checkYourAnswersHelper.trusteeIndividualOrBusiness(index, leadTrusteeIndividualOrBusinessMessagePrefix).value,
@@ -146,10 +151,10 @@ class ComfirmationAnswersControllerSpec extends SpecBase {
             checkYourAnswersHelper.trusteesUkAddress(index).value,
             checkYourAnswersHelper.telephoneNumber(index).value
           ),
-          Some(Messages("summaryAnswerPage.section.trustees.heading"))
+          Some(Messages("answerPage.section.trustees.heading"))
         ),
         AnswerSection(
-          Some(Messages("summaryAnswerPage.section.individualBeneficiary.subheading") + " " + (index + 1)),
+          Some(Messages("answerPage.section.individualBeneficiary.subheading") + " " + (index + 1)),
           Seq(
             checkYourAnswersHelper.individualBeneficiaryName(index).value,
             checkYourAnswersHelper.individualBeneficiaryDateOfBirthYesNo(index).value,
@@ -163,36 +168,39 @@ class ComfirmationAnswersControllerSpec extends SpecBase {
             checkYourAnswersHelper.individualBeneficiaryAddressUK(index).value,
             checkYourAnswersHelper.individualBeneficiaryVulnerableYesNo(index).value
           ),
-          Some(Messages("summaryAnswerPage.section.beneficiaries.heading"))
+          Some(Messages("answerPage.section.beneficiaries.heading"))
         ),
         AnswerSection(
-          Some(Messages("summaryAnswerPage.section.classOfBeneficiary.subheading") + " " + (index + 1)),
+          Some(Messages("answerPage.section.classOfBeneficiary.subheading") + " " + (index + 1)),
           Seq(
             checkYourAnswersHelper.classBeneficiaryDescription(index).value
           ),
           None
         ),
         AnswerSection(
-          Some(Messages("summaryAnswerPage.section.moneyAsset.subheading")),
+          Some(Messages("answerPage.section.moneyAsset.subheading")),
           Seq(
             checkYourAnswersHelper.assetMoneyValue(index).value
           ),
-          Some(Messages("summaryAnswerPage.section.assets.heading"))
+          Some(Messages("answerPage.section.assets.heading"))
         )
       )
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.ComfirmationAnswerPageController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.ConfirmationAnswerPageController.onPageLoad().url)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[SummaryAnswerPageView]
+      val view = application.injector.instanceOf[ConfirmationAnswerPageView]
 
       status(result) mustEqual OK
 
+      val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
+      val trnDateTime = LocalDateTime.now.format(dateFormatter)
+
       contentAsString(result) mustEqual
-        view(expectedSections)(fakeRequest, messages).toString
+        view(expectedSections, "XNTRN000000001", trnDateTime)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -212,7 +220,7 @@ class ComfirmationAnswersControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.SummaryAnswerPageController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.ConfirmationAnswerPageController.onPageLoad().url)
 
       val result = route(application, request).value
 

@@ -18,7 +18,7 @@ package controllers
 
 import controllers.actions._
 import javax.inject.Inject
-import pages.{RegistrationProgress, RegistrationTRNPage}
+import pages.{RegistrationProgress, RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -58,9 +58,10 @@ class ConfirmationAnswerPageController @Inject()(
       val isTaskListComplete = registrationProgress.isTaskListComplete(request.userAnswers)
 
       val trn = request.userAnswers.get(RegistrationTRNPage).getOrElse("")
+      val trnDateTime = request.userAnswers.get(RegistrationSubmissionDatePage).getOrElse(LocalDateTime.now)
 
       val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
-      val declarationSent : String = LocalDateTime.now.format(dateFormatter)
+      val declarationSent : String = trnDateTime.format(dateFormatter)
 
       isTaskListComplete match {
         case true => Ok(view(sections, trn, declarationSent))

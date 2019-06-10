@@ -26,7 +26,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
     val view = viewFor[ConfirmationAnswerPageView](Some(emptyUserAnswers))
 
-    val applyView = view.apply(Nil)(fakeRequest, messages)
+    val applyView = view.apply(Nil, "", "")(fakeRequest, messages)
 
     behave like normalPage(applyView, "confirmationAnswerPage")
 

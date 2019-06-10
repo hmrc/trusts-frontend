@@ -92,7 +92,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
           .set(SettlorsLastKnownAddressYesNoPage, true).success.value
           .set(WasSettlorsAddressUKYesNoPage, true).success.value
           .set(SettlorsUKAddressPage, UKAddress("Line1", None, None, "Town", "NE1 1ZZ")).success.value
-          .set(DeceasedSettlorComplete, Status.Completed).success.value
+          .set(DeceasedSettlorStatus, Status.Completed).success.value
 
           .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
           .set(AssetMoneyValuePage(index), "100").success.value
@@ -117,7 +117,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
             checkYourAnswersHelper.establishedUnderScotsLaw.value,
             checkYourAnswersHelper.trustResidentOffshore.value
           ),
-          Some(Messages("summaryAnswerPage.section.trustsDetails.heading"))
+          Some(Messages("answerPage.section.trustsDetails.heading"))
         ),
         AnswerSection(
           None,
@@ -133,10 +133,10 @@ class SummaryAnswersControllerSpec extends SpecBase {
             checkYourAnswersHelper.wasSettlorsAddressUKYesNo.value,
             checkYourAnswersHelper.settlorsUKAddress.value
           ),
-          Some(Messages("summaryAnswerPage.section.settlors.heading"))
+          Some(Messages("answerPage.section.settlors.heading"))
         ),
         AnswerSection(
-          Some(Messages("summaryAnswerPage.section.trustee.subheading") + " " + (index + 1)),
+          Some(Messages("answerPage.section.trustee.subheading") + " " + (index + 1)),
           Seq(
             checkYourAnswersHelper.isThisLeadTrustee(index).value,
             checkYourAnswersHelper.trusteeIndividualOrBusiness(index, leadTrusteeIndividualOrBusinessMessagePrefix).value,
@@ -148,10 +148,10 @@ class SummaryAnswersControllerSpec extends SpecBase {
             checkYourAnswersHelper.trusteesUkAddress(index).value,
             checkYourAnswersHelper.telephoneNumber(index).value
           ),
-          Some(Messages("summaryAnswerPage.section.trustees.heading"))
+          Some(Messages("answerPage.section.trustees.heading"))
         ),
         AnswerSection(
-          Some(Messages("summaryAnswerPage.section.individualBeneficiary.subheading") + " " + (index + 1)),
+          Some(Messages("answerPage.section.individualBeneficiary.subheading") + " " + (index + 1)),
           Seq(
             checkYourAnswersHelper.individualBeneficiaryName(index).value,
             checkYourAnswersHelper.individualBeneficiaryDateOfBirthYesNo(index).value,
@@ -165,21 +165,21 @@ class SummaryAnswersControllerSpec extends SpecBase {
             checkYourAnswersHelper.individualBeneficiaryAddressUK(index).value,
             checkYourAnswersHelper.individualBeneficiaryVulnerableYesNo(index).value
           ),
-          Some(Messages("summaryAnswerPage.section.beneficiaries.heading"))
+          Some(Messages("answerPage.section.beneficiaries.heading"))
         ),
         AnswerSection(
-          Some(Messages("summaryAnswerPage.section.classOfBeneficiary.subheading") + " " + (index + 1)),
+          Some(Messages("answerPage.section.classOfBeneficiary.subheading") + " " + (index + 1)),
           Seq(
             checkYourAnswersHelper.classBeneficiaryDescription(index).value
           ),
           None
         ),
         AnswerSection(
-          Some(Messages("summaryAnswerPage.section.moneyAsset.subheading")),
+          Some(Messages("answerPage.section.moneyAsset.subheading")),
           Seq(
             checkYourAnswersHelper.assetMoneyValue(index).value
           ),
-          Some(Messages("summaryAnswerPage.section.assets.heading"))
+          Some(Messages("answerPage.section.assets.heading"))
         )
       )
 
