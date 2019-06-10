@@ -62,7 +62,7 @@ class DeclarationViewSpec extends QuestionViewBehaviours[FullName] {
       val doc = asDocument(applyView(form))
       assertContainsText(doc, "I confirm that I have taken all reasonable steps to obtain up to " +
         "date and accurate information for all of the entities given in this registration. I understand " +
-        "that if I knowingly provides false information and cannot demonstrate that I have taken all " +
+        "that if I knowingly provide false information and I cannot demonstrate that I have taken all " +
         "reasonable steps, I could be subject to penalties.")
     }
 
