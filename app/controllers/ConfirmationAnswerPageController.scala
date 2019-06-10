@@ -18,14 +18,14 @@ package controllers
 
 import controllers.actions._
 import javax.inject.Inject
-import pages.RegistrationProgress
+import pages.{RegistrationProgress, RegistrationTRNPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import views.html.ConfirmationAnswerPageView
-import java.time.{LocalDate, LocalDateTime}
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
@@ -57,13 +57,13 @@ class ConfirmationAnswerPageController @Inject()(
 
       val isTaskListComplete = registrationProgress.isTaskListComplete(request.userAnswers)
 
-      //val trn = request.userAnswers.get(SettlorsNamePage)
+      val trn = request.userAnswers.get(RegistrationTRNPage).getOrElse("")
 
       val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
       val declarationSent : String = LocalDateTime.now.format(dateFormatter)
 
       isTaskListComplete match {
-        case true => Ok(view(sections, "XX12345678", declarationSent))
+        case true => Ok(view(sections, trn, declarationSent))
         case _ => Redirect(routes.TaskListController.onPageLoad().url)
       }
 

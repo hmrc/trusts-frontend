@@ -167,3 +167,16 @@
         padding-top: 0;
     }
 }
+
+.declarationReferenceNumber {font-weight:700;}
+
+@media print {
+    .print-hidden, .header-wrapper, .service-info, .report-error  {
+        display: none !important;
+    }
+    .content__body {width: 100%;}
+    h2 {font-size: 19px;}
+    .heading-xlarge {font-size: 27px;}
+    .heading-large {font-size: 24px;}
+    ul li, p, .govuk-warning-text {font-size: 16px;}
+}
