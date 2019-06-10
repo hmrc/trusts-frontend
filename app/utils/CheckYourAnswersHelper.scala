@@ -50,7 +50,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       agentOtherThanBarrister
     ).flatten
 
-    if (questions.nonEmpty) Some(Seq(AnswerSection(None, questions, Some(Messages("summaryAnswerPage.section.trustsDetails.heading"))))) else None
+    if (questions.nonEmpty) Some(Seq(AnswerSection(None, questions, Some(Messages("answerPage.section.trustsDetails.heading"))))) else None
   }
 
   def settlors : Option[Seq[AnswerSection]] = {
@@ -70,7 +70,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       settlorsInternationalAddress
     ).flatten
 
-    if (questions.nonEmpty) Some(Seq(AnswerSection(None, questions, Some(Messages("summaryAnswerPage.section.settlors.heading"))))) else None
+    if (questions.nonEmpty) Some(Seq(AnswerSection(None, questions, Some(Messages("answerPage.section.settlors.heading"))))) else None
   }
 
   def trustees : Option[Seq[AnswerSection]] = {
@@ -94,8 +94,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
           telephoneNumber(index)
         ).flatten
 
-        AnswerSection(Some(Messages("summaryAnswerPage.section.trustee.subheading") + " " + (index + 1)),
-          questions, if (index == 0) Some(Messages("summaryAnswerPage.section.trustees.heading")) else None)
+        AnswerSection(Some(Messages("answerPage.section.trustee.subheading") + " " + (index + 1)),
+          questions, if (index == 0) Some(Messages("answerPage.section.trustees.heading")) else None)
     }
   }
 
@@ -121,10 +121,10 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
           individualBeneficiaryVulnerableYesNo(index)
         ).flatten
 
-        AnswerSection(Some(Messages("summaryAnswerPage.section.individualBeneficiary.subheading") + " " + (index + 1)),
+        AnswerSection(Some(Messages("answerPage.section.individualBeneficiary.subheading") + " " + (index + 1)),
           questions, if (index == 0 && displaySectionHeading) {
             displaySectionHeading = false
-            Some(Messages("summaryAnswerPage.section.beneficiaries.heading"))
+            Some(Messages("answerPage.section.beneficiaries.heading"))
           } else None)
     }
   }
@@ -139,10 +139,10 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
           classBeneficiaryDescription(index)
         ).flatten
 
-        AnswerSection(Some(Messages("summaryAnswerPage.section.classOfBeneficiary.subheading") + " " + (index + 1)),
+        AnswerSection(Some(Messages("answerPage.section.classOfBeneficiary.subheading") + " " + (index + 1)),
           questions, if (index == 0 && displaySectionHeading) {
             displaySectionHeading = false
-            Some(Messages("summaryAnswerPage.section.beneficiaries.heading"))
+            Some(Messages("answerPage.section.beneficiaries.heading"))
           } else None)
     }
   }
@@ -154,10 +154,10 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       assetMoneyValue(0)
     ).flatten
 
-    if (questions.nonEmpty) Some(Seq(AnswerSection(Some(Messages("summaryAnswerPage.section.moneyAsset.subheading")),
+    if (questions.nonEmpty) Some(Seq(AnswerSection(Some(Messages("answerPage.section.moneyAsset.subheading")),
       questions, if (displaySectionHeading) {
         displaySectionHeading = false
-        Some(Messages("summaryAnswerPage.section.assets.heading"))
+        Some(Messages("answerPage.section.assets.heading"))
       } else None))) else None
   }
 
