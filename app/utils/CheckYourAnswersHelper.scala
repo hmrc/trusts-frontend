@@ -480,7 +480,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x =>
       AnswerRow(
         "assetMoneyValue.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
+        HtmlFormat.escape("£"+x),
         routes.AssetMoneyValueController.onPageLoad(CheckMode, index).url,
         isSummary = isSummary
       )
