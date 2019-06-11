@@ -60,14 +60,16 @@ class DefaultSessionRepository @Inject()(
   override def get(id: String): Future[Option[UserAnswers]] =
     collection.flatMap(_.find(Json.obj("_id" -> id), None).one[UserAnswers])
 
-  override def getByInternalId(internalId: String): Future[List[UserAnswers]] = {
+  override def getByInternalId(internalId: String): Future[Option[UserAnswers]]  = {
     val arbitraryLimit = 50
-    val listOfUserAnswers = collection.flatMap(_.find(
+    val listOfUserAnswers: Future[List[UserAnswers]] = collection.flatMap(_.find(
       Json.obj("internalId" -> internalId), None)
       .cursor[UserAnswers]()
       .collect[List](arbitraryLimit, Cursor.FailOnError()))
-
-    listOfUserAnswers
+    val singleUserAnswer : Future[Option[UserAnswers]] = listOfUserAnswers.map {
+      list => if(list.isEmpty) None else Some(list.head)
+    }
+    singleUserAnswer
   }
 
   override def set(userAnswers: UserAnswers): Future[Boolean] = {
@@ -97,5 +99,5 @@ trait SessionRepository {
 
   def set(userAnswers: UserAnswers): Future[Boolean]
 
-  def getByInternalId(internalId: String): Future[List[UserAnswers]]
+  def getByInternalId(internalId: String): Future[Option[UserAnswers]]
 }

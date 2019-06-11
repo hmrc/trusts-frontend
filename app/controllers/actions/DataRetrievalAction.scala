@@ -33,7 +33,7 @@ class DataRetrievalActionImpl @Inject()(
 
     implicit val hc = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
-    sessionRepository.get(request.identifier).map {
+    sessionRepository.getByInternalId(request.identifier).map {
       case None =>
         OptionalDataRequest(request.request, request.identifier, None, request.affinityGroup, request.agentARN)
       case Some(userAnswers) =>
