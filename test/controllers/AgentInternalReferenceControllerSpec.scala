@@ -60,7 +60,7 @@ class AgentInternalReferenceControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(AgentInternalReferencePage, "answer").success.value
+      val userAnswers = emptyUserAnswers.set(AgentInternalReferencePage, "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 

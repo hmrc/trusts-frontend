@@ -42,7 +42,7 @@ class SettlorsNINoYesNoControllerSpec extends SpecBase {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
+      val userAnswers = emptyUserAnswers.set(SettlorsNamePage,
         name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -63,7 +63,7 @@ class SettlorsNINoYesNoControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(SettlorsNINoYesNoPage, true).success.value.set(SettlorsNamePage,
+      val userAnswers = emptyUserAnswers.set(SettlorsNINoYesNoPage, true).success.value.set(SettlorsNamePage,
         name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -84,7 +84,7 @@ class SettlorsNINoYesNoControllerSpec extends SpecBase {
 
     "redirect to the next page when valid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
+      val userAnswers = emptyUserAnswers.set(SettlorsNamePage,
         name).success.value
 
       val application =
@@ -107,7 +107,7 @@ class SettlorsNINoYesNoControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
+      val userAnswers = emptyUserAnswers.set(SettlorsNamePage,
         name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()

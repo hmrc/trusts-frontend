@@ -68,7 +68,7 @@ trait AssetRoutes {
 
       "go to the WhatKindOfAssetPage from AddAssetsPage when selected add them now" in {
 
-        val answers = UserAnswers(userAnswersId)
+        val answers = emptyUserAnswers
           .set(WhatKindOfAssetPage(0), Money).success.value
           .set(AddAssetsPage, AddAssets.YesNow).success.value
 
@@ -81,7 +81,7 @@ trait AssetRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          val answers = UserAnswers(userAnswersId)
+          val answers = emptyUserAnswers
             .set(WhatKindOfAssetPage(0), Money).success.value
             .set(AddAssetsPage, AddAssets.YesLater).success.value
 
@@ -94,7 +94,7 @@ trait AssetRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          val answers = UserAnswers(userAnswersId)
+          val answers = emptyUserAnswers
             .set(WhatKindOfAssetPage(0), Money).success.value
             .set(AddAssetsPage, AddAssets.NoComplete).success.value
 

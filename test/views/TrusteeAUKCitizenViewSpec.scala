@@ -38,7 +38,7 @@ class TrusteeAUKCitizenViewSpec extends YesNoViewBehaviours {
 
   "trusteeAUKCitizen view" must {
 
-    val userAnswers = UserAnswers(userAnswersId)
+    val userAnswers = emptyUserAnswers
       .set(TrusteesNamePage(index), fullName).success.value
 
     val view = viewFor[TrusteeAUKCitizenView](Some(userAnswers))

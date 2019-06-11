@@ -59,7 +59,7 @@ class SettlorsNameControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()

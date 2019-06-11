@@ -55,7 +55,7 @@ trait TrusteeRoutes {
 
       "go to the next trustee from AddATrusteePage when selected add them now" in {
 
-            val answers = UserAnswers(userAnswersId)
+            val answers = emptyUserAnswers
               .set(IsThisLeadTrusteePage(0), true).success.value
               .set(AddATrusteePage, AddATrustee.YesNow).success.value
 

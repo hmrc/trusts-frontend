@@ -36,7 +36,7 @@ class IndividualBeneficiaryIncomeViewSpec extends StringViewBehaviours {
 
   "IndividualBeneficiaryIncomeView view" must {
 
-    val userAnswers = UserAnswers(userAnswersId)
+    val userAnswers = emptyUserAnswers
       .set(IndividualBeneficiaryNamePage(index), fullName).success.value
 
     val view = viewFor[IndividualBeneficiaryIncomeView](Some(emptyUserAnswers))

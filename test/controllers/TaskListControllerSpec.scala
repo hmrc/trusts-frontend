@@ -49,7 +49,7 @@ class TaskListControllerSpec extends SpecBase {
 
     "redirect to RegisteredOnline when no required answer" in {
 
-      val answers = UserAnswers(userAnswersId)
+      val answers = emptyUserAnswers
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
@@ -66,7 +66,7 @@ class TaskListControllerSpec extends SpecBase {
 
     "redirect to TrustHaveAUTR when no required answer" in {
 
-      val answers = UserAnswers(userAnswersId).set(TrustRegisteredOnlinePage, true).success.value
+      val answers = emptyUserAnswers.set(TrustRegisteredOnlinePage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
@@ -87,7 +87,7 @@ class TaskListControllerSpec extends SpecBase {
 
         "return OK and the correct view for a GET" in {
 
-          val answers = UserAnswers(userAnswersId)
+          val answers = emptyUserAnswers
             .set(TrustRegisteredOnlinePage, false).success.value
             .set(TrustHaveAUTRPage, true).success.value
             .set(WhatIsTheUTRPage, "SA123456789").success.value
@@ -114,7 +114,7 @@ class TaskListControllerSpec extends SpecBase {
       "has not matched" must {
 
         "already registered redirect to AlreadyRegistered" in {
-          val answers = UserAnswers(userAnswersId)
+          val answers = emptyUserAnswers
             .set(TrustRegisteredOnlinePage, false).success.value
             .set(TrustHaveAUTRPage, true).success.value
             .set(WhatIsTheUTRPage, "SA123456789").success.value
@@ -135,7 +135,7 @@ class TaskListControllerSpec extends SpecBase {
 
         "failed matching redirect to FailedMatching" in {
 
-          val answers = UserAnswers(userAnswersId)
+          val answers = emptyUserAnswers
             .set(TrustRegisteredOnlinePage, false).success.value
             .set(TrustHaveAUTRPage, true).success.value
             .set(WhatIsTheUTRPage, "SA123456789").success.value
@@ -159,7 +159,7 @@ class TaskListControllerSpec extends SpecBase {
       "has not attempted matching" must {
 
         "redirect to WhatIsTrustUTR" in {
-          val answers = UserAnswers(userAnswersId)
+          val answers = emptyUserAnswers
             .set(TrustRegisteredOnlinePage, false).success.value
             .set(TrustHaveAUTRPage, true).success.value
             .set(WhatIsTheUTRPage, "SA123456789").success.value
@@ -185,7 +185,7 @@ class TaskListControllerSpec extends SpecBase {
 
       "return OK and the correct view for a GET" in {
 
-        val answers = UserAnswers(userAnswersId)
+        val answers = emptyUserAnswers
           .set(TrustRegisteredOnlinePage, false).success.value
           .set(TrustHaveAUTRPage, false).success.value
 

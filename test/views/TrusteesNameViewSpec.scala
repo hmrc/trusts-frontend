@@ -42,7 +42,7 @@ class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generat
 
   "LeadTrusteeFullName view" must {
 
-    val userAnswers = UserAnswers(userAnswersId)
+    val userAnswers = emptyUserAnswers
       .set(IsThisLeadTrusteePage(index), true).success.value
 
     val view = viewFor[TrusteesNameView](Some(userAnswers))
@@ -66,7 +66,7 @@ class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generat
 
   "TrusteeFullName view" must {
 
-    val userAnswers = UserAnswers(userAnswersId)
+    val userAnswers = emptyUserAnswers
       .set(IsThisLeadTrusteePage(index), false).success.value
 
     val view = viewFor[TrusteesNameView](Some(userAnswers))

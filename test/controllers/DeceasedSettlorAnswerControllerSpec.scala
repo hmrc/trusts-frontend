@@ -37,7 +37,7 @@ class DeceasedSettlorAnswerControllerSpec extends SpecBase {
     "return OK and the correct view for a GET (UK National)" in {
 
       val answers =
-        UserAnswers(userAnswersId)
+        emptyUserAnswers
         .set(SetupAfterSettlorDiedPage, true).success.value
         .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
         .set(SettlorDateOfDeathYesNoPage, true).success.value
@@ -91,7 +91,7 @@ class DeceasedSettlorAnswerControllerSpec extends SpecBase {
     "return OK and the correct view for a GET (Non-UK National)" in {
 
       val answers =
-        UserAnswers(userAnswersId)
+        emptyUserAnswers
           .set(SetupAfterSettlorDiedPage, true).success.value
           .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
           .set(SettlorDateOfDeathYesNoPage, true).success.value

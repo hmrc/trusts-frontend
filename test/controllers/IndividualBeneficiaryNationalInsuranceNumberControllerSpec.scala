@@ -43,7 +43,7 @@ class IndividualBeneficiaryNationalInsuranceNumberControllerSpec extends SpecBas
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryNamePage(index),
+      val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(index),
         name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -64,7 +64,7 @@ class IndividualBeneficiaryNationalInsuranceNumberControllerSpec extends SpecBas
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryNationalInsuranceNumberPage(index), "answer").success.value
+      val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNationalInsuranceNumberPage(index), "answer").success.value
         .set(IndividualBeneficiaryNamePage(index),name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -85,7 +85,7 @@ class IndividualBeneficiaryNationalInsuranceNumberControllerSpec extends SpecBas
 
     "redirect to the next page when valid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryNamePage(index),
+      val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(index),
         name).success.value
 
       val application =
@@ -107,7 +107,7 @@ class IndividualBeneficiaryNationalInsuranceNumberControllerSpec extends SpecBas
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryNamePage(index),
+      val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(index),
         name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()

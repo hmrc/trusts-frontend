@@ -45,7 +45,7 @@ class AddAssetsControllerSpec extends SpecBase {
     AddRow("£4800", typeLabel = "Money", "#", "#")
   )
 
-  val userAnswersWithAssetsComplete = UserAnswers(userAnswersId)
+  val userAnswersWithAssetsComplete = emptyUserAnswers
     .set(WhatKindOfAssetPage(0), Money).success.value
     .set(AssetMoneyValuePage(0), "4800").success.value
     .set(AssetStatus(0), Completed).success.value

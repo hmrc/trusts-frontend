@@ -36,7 +36,7 @@ class IndividualBeneficiaryVulnerableYesNoViewSpec extends YesNoViewBehaviours {
 
   "IndividualBeneficiaryVulnerableYesNo view" must {
 
-    val userAnswers = UserAnswers(userAnswersId)
+    val userAnswers = emptyUserAnswers
       .set(IndividualBeneficiaryNamePage(index), fullName).success.value
 
     val view = viewFor[IndividualBeneficiaryVulnerableYesNoView](Some(userAnswers))

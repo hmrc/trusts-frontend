@@ -238,7 +238,7 @@ trait BeneficiaryRoutes {
 
       "go to the next IndividualBeneficiaryNamePage from WhatTypeOfBeneficiaryPage when Individual option selected" in {
 
-        val answers = UserAnswers(userAnswersId)
+        val answers = emptyUserAnswers
           .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
           .set(WhatTypeOfBeneficiaryPage, value = WhatTypeOfBeneficiary.Individual).success.value
 
@@ -264,7 +264,7 @@ trait BeneficiaryRoutes {
     "there is atleast one Class of beneficiary" must {
       "go to the next ClassBeneficiaryDescriptionPage from WhatTypeOfBeneficiaryPage when ClassOfBeneficiary option selected" in {
 
-        val answers = UserAnswers(userAnswersId)
+        val answers = emptyUserAnswers
           .set(ClassBeneficiaryDescriptionPage(0), "description").success.value
           .set(WhatTypeOfBeneficiaryPage, value = WhatTypeOfBeneficiary.ClassOfBeneficiary).success.value
 

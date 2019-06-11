@@ -50,7 +50,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
 
         val heading = Messages(s"$messageKeyPrefix.heading")
 
-        val userAnswers = UserAnswers(userAnswersId)
+        val userAnswers = emptyUserAnswers
           .set(IsThisLeadTrusteePage(index), true).success.value
 
         val application = applicationBuilder(Some(userAnswers)).build()
@@ -77,7 +77,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
 
         val heading = Messages(s"$messageKeyPrefix.heading")
 
-        val userAnswers = UserAnswers(userAnswersId)
+        val userAnswers = emptyUserAnswers
           .set(IsThisLeadTrusteePage(index), false).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -108,7 +108,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
 
         val heading = Messages(s"$messageKeyPrefix.heading")
 
-        val userAnswers = UserAnswers(userAnswersId)
+        val userAnswers = emptyUserAnswers
           .set(IsThisLeadTrusteePage(index), true).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -140,7 +140,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
 
         val heading = Messages(s"$messageKeyPrefix.heading")
 
-        val userAnswers = UserAnswers(userAnswersId)
+        val userAnswers = emptyUserAnswers
           .set(IsThisLeadTrusteePage(index), false).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -170,7 +170,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
 
       "redirect to IsThisLeadTrustee a GET when no answer to IsThisLeadTrustee" in {
 
-        val userAnswers = UserAnswers(userAnswersId)
+        val userAnswers = emptyUserAnswers
 
         val application = applicationBuilder(Some(userAnswers)).build()
 
@@ -191,7 +191,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
 
         val name = FullName("first name", Some("middle name"), "last name")
 
-        val userAnswers = UserAnswers(userAnswersId)
+        val userAnswers = emptyUserAnswers
           .set(TrusteesNamePage(index), name).success.value
           .set(IsThisLeadTrusteePage(index), false).success.value
 
@@ -222,7 +222,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
 
           val name = FullName("first name", Some("middle name"), "last name")
 
-          val userAnswers = UserAnswers(userAnswersId)
+          val userAnswers = emptyUserAnswers
             .set(TrusteesNamePage(index), name).success.value
             .set(IsThisLeadTrusteePage(index), false).success.value
 
@@ -245,7 +245,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
 
         "no answer to IsThisLeadTrustee is given" in {
 
-          val userAnswers = UserAnswers(userAnswersId)
+          val userAnswers = emptyUserAnswers
 
           val application =
             applicationBuilder(userAnswers = Some(userAnswers))

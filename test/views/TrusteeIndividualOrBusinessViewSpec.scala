@@ -40,7 +40,7 @@ class TrusteeIndividualOrBusinessViewSpec extends OptionsViewBehaviours {
 
   "IndividualOrBusinessView as lead trustee" must {
 
-    val userAnswers = UserAnswers(userAnswersId)
+    val userAnswers = emptyUserAnswers
       .set(IsThisLeadTrusteePage(index), true).success.value
 
     val view = viewFor[TrusteeIndividualOrBusinessView](Some(userAnswers))
@@ -58,7 +58,7 @@ class TrusteeIndividualOrBusinessViewSpec extends OptionsViewBehaviours {
 
   "IndividualOrBusinessView as nonlead trustee" must {
 
-    val userAnswers = UserAnswers(userAnswersId)
+    val userAnswers = emptyUserAnswers
       .set(IsThisLeadTrusteePage(index), false).success.value
 
     val view = viewFor[TrusteeIndividualOrBusinessView](Some(userAnswers))

@@ -44,7 +44,7 @@ class AddATrusteeControllerSpec extends SpecBase {
     AddRow("First 1 Last 1", typeLabel = "Trustee Individual", "#", "#")
   )
 
-  val userAnswersWithTrusteesComplete = UserAnswers(userAnswersId)
+  val userAnswersWithTrusteesComplete = emptyUserAnswers
     .set(TrusteesNamePage(0), FullName("First 0", None, "Last 0")).success.value
     .set(TrusteeIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
     .set(TrusteeStatus(0), Completed).success.value

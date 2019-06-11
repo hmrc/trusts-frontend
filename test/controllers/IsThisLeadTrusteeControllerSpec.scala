@@ -67,7 +67,7 @@ class IsThisLeadTrusteeControllerSpec extends SpecBase with IndexValidation {
 
       "redirect to TrusteeIndividualOrBusiness Page for a different index to previously answered" in {
 
-        val answers = UserAnswers(userAnswersId)
+        val answers = emptyUserAnswers
           .set(IsThisLeadTrusteePage(0), true).success.value
           .set(IsThisLeadTrusteePage(1), false).success.value
 
@@ -86,7 +86,7 @@ class IsThisLeadTrusteeControllerSpec extends SpecBase with IndexValidation {
 
       "populate the view correctly on a GET when the question has previously been answered for the same trustee index" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(IsThisLeadTrusteePage(index), true).success.value
+        val userAnswers = emptyUserAnswers.set(IsThisLeadTrusteePage(index), true).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

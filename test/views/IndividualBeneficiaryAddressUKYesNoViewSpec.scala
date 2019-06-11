@@ -36,7 +36,7 @@ class IndividualBeneficiaryAddressUKYesNoViewSpec extends YesNoViewBehaviours {
 
   "IndividualBeneficiaryAddressUKYesNo view" must {
 
-    val userAnswers = UserAnswers(userAnswersId)
+    val userAnswers = emptyUserAnswers
       .set(IndividualBeneficiaryNamePage(index), fullName).success.value
 
     val view = viewFor[IndividualBeneficiaryAddressUKYesNoView](Some(emptyUserAnswers))

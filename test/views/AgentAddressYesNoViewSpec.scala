@@ -35,7 +35,7 @@ class AgentAddressYesNoViewSpec extends YesNoViewBehaviours {
 
   "AgentAddressYesNo view" must {
 
-    val userAnswers = UserAnswers(userAnswersId)
+    val userAnswers = emptyUserAnswers
       .set(AgentNamePage, name).success.value
 
     val view = viewFor[AgentAddressYesNoView](Some(userAnswers))

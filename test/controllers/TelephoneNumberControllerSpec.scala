@@ -46,7 +46,7 @@ class TelephoneNumberControllerSpec extends SpecBase with IndexValidation {
 
     "return OK and the correct view (lead trustee) for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(IsThisLeadTrusteePage(index), true).success.value
 
@@ -68,7 +68,7 @@ class TelephoneNumberControllerSpec extends SpecBase with IndexValidation {
 
     "return OK and the correct view (trustee) for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(IsThisLeadTrusteePage(index), false).success.value
 
@@ -90,7 +90,7 @@ class TelephoneNumberControllerSpec extends SpecBase with IndexValidation {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(TelephoneNumberPage(index), "0191 1111111").success.value
         .set(IsThisLeadTrusteePage(index), true).success.value
@@ -112,7 +112,7 @@ class TelephoneNumberControllerSpec extends SpecBase with IndexValidation {
     }
 
     "redirect to TrusteeName when TrusteesName is not answered" in {
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(TrusteeAUKCitizenPage(index), true).success.value
         .set(IsThisLeadTrusteePage(index), false).success.value
 
@@ -131,7 +131,7 @@ class TelephoneNumberControllerSpec extends SpecBase with IndexValidation {
 
     "redirect to IsThisLeadTrustee page when IsThisLeadTrustee is not answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(TrusteeAUKCitizenPage(index), true).success.value
 
@@ -150,7 +150,7 @@ class TelephoneNumberControllerSpec extends SpecBase with IndexValidation {
 
     "redirect to the next page when valid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(TrusteeAUKCitizenPage(index), true).success.value
         .set(IsThisLeadTrusteePage(index), false).success.value
@@ -177,7 +177,7 @@ class TelephoneNumberControllerSpec extends SpecBase with IndexValidation {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(IsThisLeadTrusteePage(index), false).success.value
 

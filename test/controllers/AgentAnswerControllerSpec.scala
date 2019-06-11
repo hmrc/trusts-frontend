@@ -38,7 +38,7 @@ class AgentAnswerControllerSpec extends SpecBase {
     "return OK and the correct view for a UK address GET" in {
 
       val answers =
-        UserAnswers(userAnswersId)
+        emptyUserAnswers
           .set(AgentTelephoneNumberPage, "123456789").success.value
           .set(AgentUKAddressPage,UKAddress("Line1",None, None, "TownOrCity","NE62RT")).success.value
           .set(AgentAddressYesNoPage, true).success.value
@@ -82,7 +82,7 @@ class AgentAnswerControllerSpec extends SpecBase {
     "return OK and the correct view for a International address GET" in {
 
       val answers =
-        UserAnswers(userAnswersId)
+        emptyUserAnswers
           .set(AgentTelephoneNumberPage, "123456789").success.value
           .set(AgentInternationalAddressPage, InternationalAddress("Line1", "Line2", None, None, "Country")).success.value
           .set(AgentAddressYesNoPage, false).success.value

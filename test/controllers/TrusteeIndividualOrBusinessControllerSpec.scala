@@ -50,7 +50,7 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
 
         val leadHeading = Messages(s"$messageKeyPrefix.heading")
 
-        val userAnswers = UserAnswers(userAnswersId)
+        val userAnswers = emptyUserAnswers
           .set(IsThisLeadTrusteePage(index), true).success.value
 
         val application = applicationBuilder(Some(userAnswers)).build()
@@ -78,7 +78,7 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
 
         val heading = Messages(s"$messageKeyPrefix.heading")
 
-        val userAnswers = UserAnswers(userAnswersId)
+        val userAnswers = emptyUserAnswers
           .set(IsThisLeadTrusteePage(index), false).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -107,7 +107,7 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
 
         val messageKeyPrefix = "leadTrusteeIndividualOrBusiness"
 
-        val userAnswers = UserAnswers(userAnswersId)
+        val userAnswers = emptyUserAnswers
           .set(IsThisLeadTrusteePage(index), true).success.value
           .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.values.head).success.value
 
@@ -136,7 +136,7 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
 
         val messageKeyPrefix = "trusteeIndividualOrBusiness"
 
-        val userAnswers = UserAnswers(userAnswersId)
+        val userAnswers = emptyUserAnswers
           .set(IsThisLeadTrusteePage(index), false).success.value
           .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.values.head).success.value
 
@@ -178,7 +178,7 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
 
     "redirect to the next page when valid data is submitted (lead trustee)" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(IsThisLeadTrusteePage(index), true).success.value
 
       val application =
@@ -201,7 +201,7 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
 
     "redirect to the next page when valid data is submitted (trustee)" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(IsThisLeadTrusteePage(index), false).success.value
 
       val application =
@@ -228,7 +228,7 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
 
       val heading = Messages(s"$messageKeyPrefix.heading")
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(IsThisLeadTrusteePage(index), false).success.value
 
 

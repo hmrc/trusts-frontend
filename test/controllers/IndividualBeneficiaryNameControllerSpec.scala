@@ -39,7 +39,7 @@ class IndividualBeneficiaryNameControllerSpec extends SpecBase {
   lazy val individualBeneficiaryNameRoute = routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, index).url
 
 
-  val userAnswers = UserAnswers(userAnswersId)
+  val userAnswers = emptyUserAnswers
     .set(IndividualBeneficiaryNamePage(index), name).success.value
 
   "IndividualBeneficiaryName Controller" must {

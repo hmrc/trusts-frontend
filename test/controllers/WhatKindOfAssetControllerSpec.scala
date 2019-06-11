@@ -67,7 +67,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
 
       "populate the view correctly on a GET when the question has previously been answered" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(WhatKindOfAssetPage(index), Money).success.value
+        val userAnswers = emptyUserAnswers.set(WhatKindOfAssetPage(index), Money).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -91,7 +91,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
 
       "populate the view correctly on a GET when the question has previously been answered" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(WhatKindOfAssetPage(index), Money).success.value
+        val userAnswers = emptyUserAnswers.set(WhatKindOfAssetPage(index), Money).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -133,7 +133,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
 
     "redirect to the next page when money is submitted again for the same index" in {
 
-      val answers = UserAnswers(userAnswersId).set(WhatKindOfAssetPage(index), Money).success.value
+      val answers = emptyUserAnswers.set(WhatKindOfAssetPage(index), Money).success.value
 
       val application =
         applicationBuilder(userAnswers = Some(answers))
@@ -177,7 +177,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
 
     "return a BadRequest when money is submitted and already exists for a different index" in {
 
-      val answers = UserAnswers(userAnswersId).set(WhatKindOfAssetPage(index), Money).success.value
+      val answers = emptyUserAnswers.set(WhatKindOfAssetPage(index), Money).success.value
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 

@@ -42,7 +42,7 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
     "return OK and the correct view (for a lead trustee) for a GET" in {
 
       val answers =
-        UserAnswers(userAnswersId)
+        emptyUserAnswers
           .set(IsThisLeadTrusteePage(index), true).success.value
           .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
           .set(TrusteesNamePage(index), FullName("First", None, "Trustee")).success.value
@@ -97,7 +97,7 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
     "return OK and the correct view (for a trustee) for a GET" in {
 
       val answers =
-        UserAnswers(userAnswersId)
+        emptyUserAnswers
           .set(IsThisLeadTrusteePage(index), false).success.value
           .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
           .set(TrusteesNamePage(index), FullName("First", None, "Trustee")).success.value
@@ -151,7 +151,7 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
 
     "redirect to TrusteeName on a GET if no name for trustee at index" in {
       val answers =
-        UserAnswers(userAnswersId)
+        emptyUserAnswers
           .set(IsThisLeadTrusteePage(index), false).success.value
           .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
           .set(TrusteesDateOfBirthPage(index), LocalDate.now(ZoneOffset.UTC)).success.value
@@ -173,7 +173,7 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val answers =
-        UserAnswers(userAnswersId)
+        emptyUserAnswers
           .set(TrusteesNamePage(index), FullName("First", None, "Trustee")).success.value
           .set(IsThisLeadTrusteePage(index), false).success.value
 
@@ -197,7 +197,7 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
     "redirect to TrusteeNamePage when valid data is submitted with no Trustee Name required answer" in {
 
       val answers =
-        UserAnswers(userAnswersId)
+        emptyUserAnswers
           .set(IsThisLeadTrusteePage(index), false).success.value
 
       val application =
@@ -219,7 +219,7 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
     "redirect to IsThisLeadTrusteePage when valid data is submitted with no Is This Lead Trustee required answer" in {
 
       val answers =
-        UserAnswers(userAnswersId)
+        emptyUserAnswers
           .set(TrusteesNamePage(index), FullName("First", None, "Trustee")).success.value
 
       val application =

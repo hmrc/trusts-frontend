@@ -42,7 +42,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
       "return OK and the correct view for a GET" in {
 
         val answers =
-          UserAnswers(userAnswersId)
+          emptyUserAnswers
             .set(TrustNamePage, "New Trust").success.value
             .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
             .set(GovernedInsideTheUKPage, true).success.value
@@ -92,7 +92,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
       "return OK and the correct view for a GET" in {
 
         val answers =
-          UserAnswers(userAnswersId)
+          emptyUserAnswers
             .set(TrustNamePage, "New Trust").success.value
             .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
             .set(GovernedInsideTheUKPage, true).success.value
@@ -143,7 +143,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
       "return OK and the correct view for a GET" in {
 
         val answers =
-          UserAnswers(userAnswersId)
+          emptyUserAnswers
             .set(TrustNamePage, "New Trust").success.value
             .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
             .set(GovernedInsideTheUKPage, true).success.value
@@ -196,7 +196,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
       "return OK and the correct view for a GET" in {
 
         val answers =
-          UserAnswers(userAnswersId)
+          emptyUserAnswers
             .set(TrustNamePage, "New Trust").success.value
             .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
             .set(GovernedInsideTheUKPage, false).success.value
@@ -251,7 +251,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val answers =
-        UserAnswers(userAnswersId)
+        emptyUserAnswers
 
       val application =
         applicationBuilder(userAnswers = Some(answers))

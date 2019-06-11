@@ -37,7 +37,7 @@ class IndividualBeneficiaryAnswersControllerSpec extends SpecBase {
     "return OK and the correct view for a GET" in {
 
       val userAnswers =
-        UserAnswers(userAnswersId)
+        emptyUserAnswers
           .set(IndividualBeneficiaryNamePage(index), FullName("first name", None, "last name")).success.value
           .set(IndividualBeneficiaryDateOfBirthYesNoPage(index),true).success.value
           .set(IndividualBeneficiaryDateOfBirthPage(index),LocalDate.now(ZoneOffset.UTC)).success.value

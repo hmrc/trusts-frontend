@@ -46,7 +46,7 @@ class TrusteeLiveInTheUKControllerSpec extends SpecBase {
 
     "return OK and the correct view (lead trustee) for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(IsThisLeadTrusteePage(index), true).success.value
 
@@ -68,7 +68,7 @@ class TrusteeLiveInTheUKControllerSpec extends SpecBase {
 
     "return OK and the correct view (trustee) for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(IsThisLeadTrusteePage(index), false).success.value
 
@@ -90,7 +90,7 @@ class TrusteeLiveInTheUKControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(TrusteeLiveInTheUKPage(index), true).success.value
         .set(IsThisLeadTrusteePage(index), true).success.value
@@ -113,7 +113,7 @@ class TrusteeLiveInTheUKControllerSpec extends SpecBase {
 
     "redirect to IsThisLeadTrustee when IsThisLeadTrustee is not answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(TrusteeLiveInTheUKPage(index), true).success.value
 
@@ -132,7 +132,7 @@ class TrusteeLiveInTheUKControllerSpec extends SpecBase {
 
     "redirect to the next page when valid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(TrusteeLiveInTheUKPage(index), true).success.value
         .set(IsThisLeadTrusteePage(index), false).success.value
@@ -160,7 +160,7 @@ class TrusteeLiveInTheUKControllerSpec extends SpecBase {
 
       "a GET when no name is found" in {
 
-        val userAnswers = UserAnswers(userAnswersId)
+        val userAnswers = emptyUserAnswers
           .set(TrusteeLiveInTheUKPage(index), true).success.value
           .set(IsThisLeadTrusteePage(index), false).success.value
 
@@ -179,7 +179,7 @@ class TrusteeLiveInTheUKControllerSpec extends SpecBase {
       }
       "a POST when no name is found" in {
 
-        val userAnswers = UserAnswers(userAnswersId)
+        val userAnswers = emptyUserAnswers
           .set(TrusteeLiveInTheUKPage(index), true).success.value
           .set(IsThisLeadTrusteePage(index), false).success.value
 
@@ -204,7 +204,7 @@ class TrusteeLiveInTheUKControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(IsThisLeadTrusteePage(index), false).success.value
 

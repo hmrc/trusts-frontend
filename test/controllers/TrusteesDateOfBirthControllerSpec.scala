@@ -51,7 +51,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -72,7 +72,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(TrusteesDateOfBirthPage(index), validAnswer).success.value
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
@@ -93,7 +93,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
     }
 
     "redirect to Trustee Name page when TrusteesName is not answered" in {
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(TrusteesDateOfBirthPage(index), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -111,7 +111,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
 
     "redirect to the next page when valid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
       val application =
@@ -140,7 +140,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
