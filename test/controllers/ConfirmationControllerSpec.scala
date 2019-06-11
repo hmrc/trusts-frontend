@@ -17,11 +17,11 @@
 package controllers
 
 import base.SpecBase
-import models.{NormalMode, RegistrationProgress}
-import models.Status.Completed
-import pages.{RegistrationTRNPage, TrustNamePage}
+import models.{FullName, NormalMode, RegistrationProgress}
+import pages.{RegistrationTRNPage, TrustHaveAUTRPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import utils.TestUserAnswers
 import views.html.ConfirmationView
 
 class ConfirmationControllerSpec extends SpecBase {
@@ -32,8 +32,11 @@ class ConfirmationControllerSpec extends SpecBase {
 
     "return OK and the correct view for a GET when TRN is available" in {
 
-      val userAnswers = emptyUserAnswers.copy(progress = RegistrationProgress.Complete)
-        .set(RegistrationTRNPage, "xTRN1234678").success.value
+      val userAnswers = TestUserAnswers.withLeadTrustee(
+        emptyUserAnswers.copy(progress = RegistrationProgress.Complete)
+          .set(RegistrationTRNPage, "xTRN1234678").success.value
+          .set(TrustHaveAUTRPage, false).success.value
+      )
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -46,7 +49,7 @@ class ConfirmationControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view("xTRN1234678",postHMRC)(fakeRequest, messages).toString
+        view(isExistingTrust = false, isAgent = false, "xTRN1234678",postHMRC, "#",FullName("first name", None, "Last Name"))(fakeRequest, messages).toString
 
       application.stop()
     }

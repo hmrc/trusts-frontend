@@ -22,7 +22,8 @@ import models.{FullName, IndividualOrBusiness}
 import play.api.libs.json._
 
 final case class TrusteeIndividual(override val isLead : Boolean,
-                                    name: FullName, dateOfBirth: LocalDate) extends Trustee
+                                   override val name: FullName,
+                                   dateOfBirth: LocalDate) extends Trustee
 
 object TrusteeIndividual {
 

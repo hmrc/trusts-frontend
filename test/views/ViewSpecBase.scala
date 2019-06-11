@@ -21,6 +21,7 @@ import org.jsoup.nodes.{Document, Element}
 import play.twirl.api.Html
 import base.SpecBase
 import models.UserAnswers
+import uk.gov.hmrc.auth.core.AffinityGroup
 
 import scala.reflect.ClassTag
 
@@ -110,6 +111,13 @@ trait ViewSpecBase extends SpecBase {
 
   def viewFor[A](data: Option[UserAnswers])(implicit tag : ClassTag[A]) : A = {
     val application = applicationBuilder(data).build()
+    val view = application.injector.instanceOf[A]
+    application.stop()
+    view
+  }
+
+  def viewForAgent[A](data: Option[UserAnswers])(implicit tag : ClassTag[A]) : A = {
+    val application = applicationBuilder(data, affinityGroup = AffinityGroup.Agent).build()
     val view = application.injector.instanceOf[A]
     application.stop()
     view

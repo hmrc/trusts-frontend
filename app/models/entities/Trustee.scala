@@ -16,11 +16,14 @@
 
 package models.entities
 
+import models.FullName
 import play.api.libs.json.Reads
 
 trait Trustee {
 
   val isLead : Boolean
+
+  val name : FullName
 
 }
 

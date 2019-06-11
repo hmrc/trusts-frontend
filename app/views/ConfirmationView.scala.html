@@ -15,34 +15,55 @@
  *@
 
 @import controllers.routes._
+@import models.FullName
 
 @this(
     main_template: MainTemplate
 )
 
-@(refNumber: String, postHMRC: String)(implicit request: Request[_], messages: Messages)
+@(isExistingTrust: Boolean, isAgent: Boolean, refNumber: String, postHMRC: String, agentOverviewUrl: String, leadTrusteeName : FullName)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${messages("confirmationPage.title",refNumber)}"
+    title = s"${messages("confirmationPage.title", refNumber)}"
     ) {
 
     <div class="govuk-main-wrapper--l">
         <h1 class="form-title heading-large heading-confirmation ">
             @messages("confirmationPage.heading1")
             <span class="reference-text">@messages("confirmationPage.heading2")</span>
-            <span class="reference-number">@refNumber</span>
+            <span id="trusts-registration-number" class="reference-number">@refNumber</span>
         </h1>
     </div>
 
     @components.link(ConfirmationAnswerPageController.onPageLoad.url,"printSaveAnswers","confirmationPage.printsave.link", openInNewWindow = true)
 
-    <h2>@messages("confirmationPage.subheading1")</h2>
+    @if(!isExistingTrust) {
 
-    <p>@messages("confirmationPage.paragraph1")</p>
+        <h2>@messages("confirmationPage.subheading1")</h2>
 
-    <h2>@messages("confirmationPage.subheading2")</h2>
+        <p>@messages("confirmationPage.new.paragraph1", leadTrusteeName.toString)</p>
 
-    <p>@messages("confirmationPage.paragraph2")</p>
+        <h2>@messages("confirmationPage.subheading2")</h2>
 
-    <p>@messages("confirmationPage.paragraph3") @components.link(postHMRC,"","confirmationPage.posthmrc.link") @messages("confirmationPage.paragraph4")</p>
+        <p>@messages("confirmationPage.new.paragraph2") @components.link(postHMRC, "contact-hmrc-for-utr", "confirmationPage.contacthmrc.link", "_blank")</p>
+
+        <p>@messages("confirmationPage.paragraph3") @components.link(postHMRC, "post-to-hmrc-contact", "confirmationPage.posthmrc.link", "_blank") @messages("confirmationPage.paragraph4")</p>
+
+    } else {
+
+        <h2>@messages("confirmationPage.subheading1")</h2>
+
+        <p>@messages("confirmationPage.existing.paragraph1", leadTrusteeName.toString)</p>
+
+        <h2>@messages("confirmationPage.subheading2")</h2>
+
+        <p>@messages("confirmationPage.existing.paragraph2")</p>
+
+        <p>@messages("confirmationPage.paragraph3") @components.link(postHMRC, "post-to-hmrc-contact", "confirmationPage.posthmrc.link", "_blank") @messages("confirmationPage.paragraph4")</p>
+    }
+
+    @if(isAgent) {
+        @messages("confirmationPage.agent.you.can") @components.link(agentOverviewUrl, "agent-overview", "confirmationPage.agent.link", "_self")
+    }
+
 }

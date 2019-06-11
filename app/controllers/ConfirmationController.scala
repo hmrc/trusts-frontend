@@ -20,15 +20,20 @@ import config.FrontendAppConfig
 import controllers.actions._
 import handlers.ErrorHandler
 import javax.inject.Inject
-import models.{NormalMode, RegistrationProgress}
-import pages.RegistrationTRNPage
+import models.entities.{LeadTrusteeIndividual, Trustees}
+import models.requests.DataRequest
+import models.{FullName, NormalMode, RegistrationProgress, UserAnswers}
+import pages.{RegistrationTRNPage, TrustHaveAUTRPage}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request, Result}
+import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.ConfirmationView
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.Try
+import scala.util.control.NonFatal
 
 class ConfirmationController @Inject()(
                                        override val messagesApi: MessagesApi,
@@ -41,6 +46,26 @@ class ConfirmationController @Inject()(
                                        errorHandler: ErrorHandler
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private def renderView(trn : String, userAnswers: UserAnswers)(implicit request : DataRequest[AnyContent]) : Future[Result] = {
+    val trustees = userAnswers.get(Trustees).getOrElse(Nil)
+    val isAgent = request.affinityGroup == Agent
+    val agentOverviewUrl = routes.AgentOverviewController.onPageLoad().url
+
+    trustees.find(_.isLead) match {
+      case Some(lt : LeadTrusteeIndividual) =>
+
+        userAnswers.get(TrustHaveAUTRPage) match {
+          case Some(isExistingTrust) =>
+            val postHMRC = config.posthmrc
+            Future.successful(Ok(view(isExistingTrust, isAgent, trn, postHMRC, agentOverviewUrl, lt.name)))
+          case None =>
+            errorHandler.onServerError(request, new Exception("Could not determine if trust was new or existing."))
+        }
+      case _ =>
+        errorHandler.onServerError(request, new Exception("Could not retrieve lead trustee from user answers."))
+    }
+  }
+
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val userAnswers = request.userAnswers
@@ -52,8 +77,7 @@ class ConfirmationController @Inject()(
               Logger.info("[ConfirmationController][onPageLoad] No TRN available for completed trusts. Throwing exception.")
               errorHandler.onServerError(request, new Exception("TRN is not available for completed trust."))
             case Some(trn) =>
-              val postHMRC = config.posthmrc
-              Future.successful(Ok(view(trn, postHMRC)))
+              renderView(trn, userAnswers)
           }
         case RegistrationProgress.InProgress =>
           Logger.info("[ConfirmationController][onPageLoad] Registration inProgress status,redirecting to task list.")
