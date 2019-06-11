@@ -14,8 +14,16 @@
  * limitations under the License.
  */
 
-package viewmodels
+package utils
 
-import play.twirl.api.Html
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
-case class AnswerRow(label: String, answer: Html, changeUrl: String, labelArg: String = "", canEdit: Boolean = false)
+object DateFormat {
+
+  def formatDate(dateTime: LocalDateTime, format: String): String = {
+    val dateFormatter = DateTimeFormatter.ofPattern(format)
+    dateTime.format(dateFormatter)
+  }
+
+}

@@ -101,7 +101,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
 
 
       val countryOptions = injector.instanceOf[CountryOptions]
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, isSummary = true)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, canEdit = true)
       val leadTrusteeIndividualOrBusinessMessagePrefix = "leadTrusteeIndividualOrBusiness"
       val leadTrusteeFullNameMessagePrefix = "leadTrusteesName"
 

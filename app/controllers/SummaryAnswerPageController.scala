@@ -35,16 +35,17 @@ class SummaryAnswerPageController @Inject()(
                                               val controllerComponents: MessagesControllerComponents,
                                               view: SummaryAnswerPageView,
                                               countryOptions : CountryOptions,
-                                              registrationProgress: RegistrationProgress
+                                              registrationProgress: RegistrationProgress,
+                                              registrationComplete : RegistrationCompleteActionRefiner
                                             ) extends FrontendBaseController with I18nSupport {
 
   private def actions() =
-    identify andThen getData andThen requireData
+    identify andThen getData andThen requireData andThen registrationComplete
 
   def onPageLoad() = actions() {
     implicit request =>
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, isSummary = true)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, canEdit = true)
       val trustDetails = checkYourAnswersHelper.trustDetails.getOrElse(Nil)
       val trustees = checkYourAnswersHelper.trustees.getOrElse(Nil)
       val settlors = checkYourAnswersHelper.settlors.getOrElse(Nil)
@@ -53,12 +54,7 @@ class SummaryAnswerPageController @Inject()(
       val moneyAsset = checkYourAnswersHelper.moneyAsset.getOrElse(Nil)
       val sections =  Seq() ++ trustDetails ++ settlors ++ trustees ++ individualBeneficiaries ++ classOfBeneficiaries ++ moneyAsset
 
-      val isTaskListComplete = registrationProgress.isTaskListComplete(request.userAnswers)
-
-      isTaskListComplete match {
-        case true => Ok(view(sections))
-        case _ => Redirect(routes.TaskListController.onPageLoad().url)
-      }
+      Ok(view(sections))
 
   }
 
