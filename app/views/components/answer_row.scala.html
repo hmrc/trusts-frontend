@@ -24,7 +24,7 @@
         @row.answer
     </div>
     <div class="cya-change">
-        @if(!row.isSummary) {
+        @if(!row.canEdit) {
         <a href='@row.changeUrl'>
             <span aria-hidden="true">@messages("site.edit")</span>
             <span class="visually-hidden">@messages("site.hidden-edit", messages(row.label))</span>

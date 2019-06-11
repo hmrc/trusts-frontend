@@ -16,6 +16,10 @@
 
 package views
 
+import java.time.LocalDateTime
+import models.UserAnswers
+import pages.{RegistrationSubmissionDatePage, RegistrationTRNPage}
+import utils.DateFormat
 import views.behaviours.ViewBehaviours
 import views.html.ConfirmationAnswerPageView
 
@@ -24,11 +28,25 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
   "ConfirmationAnswerPage view" must {
 
-    val view = viewFor[ConfirmationAnswerPageView](Some(emptyUserAnswers))
+    val userAnswers =
+      UserAnswers(userAnswersId)
+        .set(RegistrationTRNPage, "XNTRN000000001").success.value
+        .set(RegistrationSubmissionDatePage, LocalDateTime.now).success.value
 
-    val applyView = view.apply(Nil, "", "")(fakeRequest, messages)
+    val trnDateTime : String = DateFormat.formatDate(LocalDateTime.now, "d MMMM yyyy")
+
+    val view = viewFor[ConfirmationAnswerPageView](Some(userAnswers))
+
+    val applyView = view.apply(Nil, "XNTRN000000001", trnDateTime)(fakeRequest, messages)
 
     behave like normalPage(applyView, "confirmationAnswerPage")
+
+
+    "assert content" in {
+      val doc = asDocument(applyView)
+      assertContainsText(doc, messages("confirmationAnswerPage.paragraph1", "XNTRN000000001"))
+      assertContainsText(doc, messages("confirmationAnswerPage.paragraph2", trnDateTime))
+    }
 
   }
 }

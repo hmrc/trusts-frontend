@@ -16,8 +16,6 @@
 
 package controllers
 
-import java.time.format.DateTimeFormatter
-
 import config.FrontendAppConfig
 import controllers.actions._
 import javax.inject.Inject
@@ -32,6 +30,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import utils.DateFormat
 import viewmodels.{Task, TaxLiability}
 import views.html.TaskListView
 
@@ -51,8 +50,6 @@ class TaskListController @Inject()(
                                        taskListNavigator : TaskListNavigator
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
-
   private def actions =
     identify andThen getData andThen requireData andThen
       requiredAnswer(
@@ -69,7 +66,7 @@ class TaskListController @Inject()(
 
       def renderView(affinityGroup : AffinityGroup) = {
         val ttlInSeconds = config.ttlInSeconds
-        val savedUntil = request.userAnswers.createdAt.plusSeconds(ttlInSeconds).format(dateFormatter)
+        val savedUntil : String = DateFormat.formatDate(request.userAnswers.createdAt.plusSeconds(ttlInSeconds), "d MMMM yyyy")
 
         val updatedAnswers = request.userAnswers.copy(progress = InProgress)
 

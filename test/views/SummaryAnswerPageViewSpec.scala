@@ -28,7 +28,7 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
 
     val applyView = view.apply(Nil)(fakeRequest, messages)
 
-    behave like normalPage(applyView, "summaryAnswerPage")
+    behave like normalPage(applyView, "summaryAnswerPage", "paragraph1", "paragraph2")
 
   }
 }
