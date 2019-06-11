@@ -20,10 +20,12 @@ import java.time.LocalDateTime
 
 import akka.stream.Materializer
 import javax.inject.Inject
+
 import models.UserAnswers
 import play.api.Configuration
 import play.api.libs.json._
 import play.modules.reactivemongo.ReactiveMongoApi
+import reactivemongo.api.Cursor
 import reactivemongo.api.indexes.{Index, IndexType}
 import reactivemongo.bson.BSONDocument
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
@@ -58,6 +60,16 @@ class DefaultSessionRepository @Inject()(
   override def get(id: String): Future[Option[UserAnswers]] =
     collection.flatMap(_.find(Json.obj("_id" -> id), None).one[UserAnswers])
 
+  override def getByInternalId(internalId: String): Future[List[UserAnswers]] = {
+    val arbitraryLimit = 50
+    val listOfUserAnswers = collection.flatMap(_.find(
+      Json.obj("internalId" -> internalId), None)
+      .cursor[UserAnswers]()
+      .collect[List](arbitraryLimit, Cursor.FailOnError()))
+
+    listOfUserAnswers
+  }
+
   override def set(userAnswers: UserAnswers): Future[Boolean] = {
 
     val selector = Json.obj(
@@ -84,4 +96,6 @@ trait SessionRepository {
   def get(id: String): Future[Option[UserAnswers]]
 
   def set(userAnswers: UserAnswers): Future[Boolean]
+
+  def getByInternalId(internalId: String): Future[List[UserAnswers]]
 }

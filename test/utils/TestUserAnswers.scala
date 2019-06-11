@@ -28,9 +28,11 @@ import play.api.libs.json.Json
 
 object TestUserAnswers extends TryValues {
 
-  val userAnswersId = "id"
+  val userAnswersId = "id"//draftId
+  val userInternalId = "internalId"
 
-  def emptyUserAnswers = UserAnswers(userAnswersId, Json.obj())
+
+  def emptyUserAnswers = UserAnswers(userAnswersId, Json.obj(),internalId = userInternalId)
 
   def withAgent(userAnswers: UserAnswers) : UserAnswers = {
       userAnswers

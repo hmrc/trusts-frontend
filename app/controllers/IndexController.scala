@@ -16,8 +16,11 @@
 
 package controllers
 
+import java.util.UUID
+
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import javax.inject.Inject
+
 import models.{NormalMode, UserAnswers}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -62,7 +65,8 @@ class IndexController @Inject()(
           Future.successful(routeAffinityGroupInProgress)
         case None =>
           // Created a userAnswers set to NotStarted and redirect
-          val userAnswers = UserAnswers(request.internalId)
+          val draftId = UUID.randomUUID().toString
+          val userAnswers = UserAnswers(draftId,internalId = request.internalId)
           for {
             _ <- sessionRepository.set(userAnswers)
           } yield {

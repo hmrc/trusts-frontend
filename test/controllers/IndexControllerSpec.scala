@@ -65,7 +65,7 @@ class IndexControllerSpec extends SpecBase {
 
     "redirect to RegistrationProgress with Non-Agent affinityGroup" in {
 
-      val answers = UserAnswers(userAnswersId, progress = InProgress)
+      val answers = emptyUserAnswers.copy(progress = InProgress)
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
@@ -82,7 +82,7 @@ class IndexControllerSpec extends SpecBase {
 
     "redirect to AgentOverview with Agent affinityGroup" in {
 
-      val answers = UserAnswers(userAnswersId, progress = InProgress)
+      val answers = emptyUserAnswers.copy(progress = InProgress)
 
       val application = applicationBuilder(userAnswers = Some(answers), AffinityGroup.Agent).build()
 

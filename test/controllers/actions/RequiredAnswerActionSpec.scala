@@ -72,7 +72,7 @@ class RequiredAnswerActionSpec extends SpecBase with MockitoSugar with ScalaFutu
     "there is a required answer" must {
 
       "continue with refining the request" in {
-        val answers = UserAnswers("id").set(TrusteesNamePage(0), FullName("Adam", None, "Conder")).success.value
+        val answers = emptyUserAnswers.set(TrusteesNamePage(0), FullName("Adam", None, "Conder")).success.value
 
         val dataRequest = new DataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation)
 

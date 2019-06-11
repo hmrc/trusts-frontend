@@ -107,12 +107,14 @@ trait UserAnswersGenerator extends TryValues {
           case Nil => Gen.const(Map[QuestionPage[_], JsValue]())
           case _   => Gen.mapOf(oneOf(generators))
         }
+        internalId <- nonEmptyString
       } yield UserAnswers (
         id = id,
         data = data.foldLeft(Json.obj()) {
           case (obj, (path, value)) =>
             obj.setObject(path.path, value).get
-        }
+        },
+        internalId = internalId
       )
     }
   }
