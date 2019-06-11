@@ -373,6 +373,6 @@ POST       /declaration                        controllers.DeclarationController
 
 GET       /confirmation                         controllers.ConfirmationController.onPageLoad()
 
-GET        /your-answers-summary                          controllers.SummaryAnswerPageController.onPageLoad()
+GET        /your-draft-registration                          controllers.SummaryAnswerPageController.onPageLoad()
 
-GET        /your-answers-confirmation                          controllers.ConfirmationAnswerPageController.onPageLoad()
+GET        /your-declared-registration                          controllers.ConfirmationAnswerPageController.onPageLoad()

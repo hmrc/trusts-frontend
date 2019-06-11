@@ -17,10 +17,9 @@
 package views
 
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
 import models.UserAnswers
 import pages.{RegistrationSubmissionDatePage, RegistrationTRNPage}
+import utils.DateFormat
 import views.behaviours.ViewBehaviours
 import views.html.ConfirmationAnswerPageView
 
@@ -34,8 +33,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
         .set(RegistrationTRNPage, "XNTRN000000001").success.value
         .set(RegistrationSubmissionDatePage, LocalDateTime.now).success.value
 
-    val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
-    val trnDateTime = LocalDateTime.now.format(dateFormatter)
+    val trnDateTime : String = DateFormat.formatDate(LocalDateTime.now, "d MMMM yyyy")
 
     val view = viewFor[ConfirmationAnswerPageView](Some(userAnswers))
 

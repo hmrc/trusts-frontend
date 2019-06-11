@@ -98,7 +98,6 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     }
   }
 
-  private var displaySectionHeading: Boolean = true
 
   def individualBeneficiaries : Option[Seq[AnswerSection]] = {
     for {
@@ -121,14 +120,13 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
         ).flatten
 
         AnswerSection(Some(Messages("answerPage.section.individualBeneficiary.subheading") + " " + (index + 1)),
-          questions, if (index == 0 && displaySectionHeading) {
-            displaySectionHeading = false
+          questions, if (index == 0) {
             Some(Messages("answerPage.section.beneficiaries.heading"))
           } else None)
     }
   }
 
-  def classOfBeneficiaries : Option[Seq[AnswerSection]] = {
+  def classOfBeneficiaries(individualBeneficiariesExist: Boolean) : Option[Seq[AnswerSection]] = {
     for {
       beneficiaries <- userAnswers.get(ClassOfBeneficiaries)
       indexed = beneficiaries.zipWithIndex
@@ -138,26 +136,24 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
           classBeneficiaryDescription(index)
         ).flatten
 
+        val sectionKey = if (index == 0 && !individualBeneficiariesExist) {
+          Some(Messages("answerPage.section.beneficiaries.heading"))
+        } else None
+
         AnswerSection(Some(Messages("answerPage.section.classOfBeneficiary.subheading") + " " + (index + 1)),
-          questions, if (index == 0 && displaySectionHeading) {
-            displaySectionHeading = false
-            Some(Messages("answerPage.section.beneficiaries.heading"))
-          } else None)
+          questions, sectionKey)
     }
   }
 
 
   def moneyAsset : Option[Seq[AnswerSection]] = {
-    displaySectionHeading = true
     val questions = Seq(
       assetMoneyValue(0)
     ).flatten
 
     if (questions.nonEmpty) Some(Seq(AnswerSection(Some(Messages("answerPage.section.moneyAsset.subheading")),
-      questions, if (displaySectionHeading) {
-        displaySectionHeading = false
-        Some(Messages("answerPage.section.assets.heading"))
-      } else None))) else None
+      questions, Some(Messages("answerPage.section.assets.heading"))
+      ))) else None
   }
 
 

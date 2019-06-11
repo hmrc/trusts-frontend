@@ -50,9 +50,10 @@ class SummaryAnswerPageController @Inject()(
       val trustees = checkYourAnswersHelper.trustees.getOrElse(Nil)
       val settlors = checkYourAnswersHelper.settlors.getOrElse(Nil)
       val individualBeneficiaries = checkYourAnswersHelper.individualBeneficiaries.getOrElse(Nil)
-      val classOfBeneficiaries = checkYourAnswersHelper.classOfBeneficiaries.getOrElse(Nil)
+      val individualBeneficiariesExist: Boolean = individualBeneficiaries.nonEmpty
+      val classOfBeneficiaries = checkYourAnswersHelper.classOfBeneficiaries(individualBeneficiariesExist).getOrElse(Nil)
       val moneyAsset = checkYourAnswersHelper.moneyAsset.getOrElse(Nil)
-      val sections =  Seq() ++ trustDetails ++ settlors ++ trustees ++ individualBeneficiaries ++ classOfBeneficiaries ++ moneyAsset
+      val sections = trustDetails ++ settlors ++ trustees ++ individualBeneficiaries ++ classOfBeneficiaries ++ moneyAsset
 
       Ok(view(sections))
 
