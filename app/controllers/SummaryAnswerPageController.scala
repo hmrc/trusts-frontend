@@ -51,7 +51,7 @@ class SummaryAnswerPageController @Inject()(
       val individualBeneficiaries = checkYourAnswersHelper.individualBeneficiaries.getOrElse(Nil)
       val classOfBeneficiaries = checkYourAnswersHelper.classOfBeneficiaries.getOrElse(Nil)
       val moneyAsset = checkYourAnswersHelper.moneyAsset.getOrElse(Nil)
-      val sections =  Seq() ++ trustDetails ++ settlors ++ trustees ++ individualBeneficiaries ++ classOfBeneficiaries ++ moneyAsset
+      val sections =  trustDetails ++ settlors ++ trustees ++ individualBeneficiaries ++ classOfBeneficiaries ++ moneyAsset
 
       val isTaskListComplete = registrationProgress.isTaskListComplete(request.userAnswers)
 

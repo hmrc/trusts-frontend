@@ -79,9 +79,11 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       indexed = trustees.zipWithIndex
     } yield indexed.map {
       case (trustee, index) =>
+
         val isLead = userAnswers.get(IsThisLeadTrusteePage(index)).get
         val trusteeIndividualOrBusinessMessagePrefix = if (isLead) "leadTrusteeIndividualOrBusiness" else "trusteeIndividualOrBusiness"
         val trusteeFullNameMessagePrefix = if (isLead) "leadTrusteesName" else "trusteesName"
+
         val questions = Seq(
           isThisLeadTrustee(index),
           trusteeIndividualOrBusiness(index, trusteeIndividualOrBusinessMessagePrefix),
@@ -94,8 +96,14 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
           telephoneNumber(index)
         ).flatten
 
-        AnswerSection(Some(Messages("answerPage.section.trustee.subheading") + " " + (index + 1)),
-          questions, if (index == 0) Some(Messages("answerPage.section.trustees.heading")) else None)
+
+        val sectionKey = if (index == 0) Some(Messages("answerPage.section.trustees.heading")) else None
+
+        AnswerSection(
+          headingKey = Some(Messages("answerPage.section.trustee.subheading") + " " + (index + 1)),
+          rows = questions,
+          sectionKey = sectionKey
+        )
     }
   }
 
@@ -107,6 +115,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       indexed = beneficiaries.zipWithIndex
     } yield indexed.map {
       case (beneficiary, index) =>
+
         val questions = Seq(
           individualBeneficiaryName(index),
           individualBeneficiaryDateOfBirthYesNo(index),
@@ -121,11 +130,17 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
           individualBeneficiaryVulnerableYesNo(index)
         ).flatten
 
-        AnswerSection(Some(Messages("answerPage.section.individualBeneficiary.subheading") + " " + (index + 1)),
-          questions, if (index == 0 && displaySectionHeading) {
-            displaySectionHeading = false
-            Some(Messages("answerPage.section.beneficiaries.heading"))
-          } else None)
+        val sectionKey = if (index == 0 && displaySectionHeading) {
+          displaySectionHeading = false
+          Some(Messages("answerPage.section.beneficiaries.heading"))
+        } else {
+          None
+        }
+
+        AnswerSection(
+          headingKey = Some(Messages("answerPage.section.individualBeneficiary.subheading") + " " + (index + 1)),
+          rows = questions,
+          sectionKey = sectionKey)
     }
   }
 
@@ -135,15 +150,23 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       indexed = beneficiaries.zipWithIndex
     } yield indexed.map {
       case (beneficiary, index) =>
+
         val questions = Seq(
           classBeneficiaryDescription(index)
         ).flatten
 
-        AnswerSection(Some(Messages("answerPage.section.classOfBeneficiary.subheading") + " " + (index + 1)),
-          questions, if (index == 0 && displaySectionHeading) {
-            displaySectionHeading = false
-            Some(Messages("answerPage.section.beneficiaries.heading"))
-          } else None)
+        val sectionKey = if (index == 0 && displaySectionHeading) {
+          displaySectionHeading = false
+          Some(Messages("answerPage.section.beneficiaries.heading"))
+        } else {
+          None
+        }
+
+        AnswerSection(
+          Some(Messages("answerPage.section.classOfBeneficiary.subheading") + " " + (index + 1)),
+          questions,
+          sectionKey
+        )
     }
   }
 
@@ -154,11 +177,26 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       assetMoneyValue(0)
     ).flatten
 
-    if (questions.nonEmpty) Some(Seq(AnswerSection(Some(Messages("answerPage.section.moneyAsset.subheading")),
-      questions, if (displaySectionHeading) {
-        displaySectionHeading = false
-        Some(Messages("answerPage.section.assets.heading"))
-      } else None))) else None
+    val sectionKey = if (displaySectionHeading) {
+      displaySectionHeading = false
+      Some(Messages("answerPage.section.assets.heading"))
+    } else {
+      None
+    }
+
+    if (questions.nonEmpty) {
+      Some(
+        Seq(
+          AnswerSection(
+            headingKey = Some(Messages("answerPage.section.moneyAsset.subheading")),
+            rows = questions,
+            sectionKey = sectionKey
+          )
+        )
+      )
+    } else {
+      None
+    }
   }
 
 

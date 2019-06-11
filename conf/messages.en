@@ -826,7 +826,7 @@ confirmationAnswerPage.title = Declared copy of the trust’s registration
 confirmationAnswerPage.heading = Declared copy of the trust’s registration
 confirmationAnswerPage.paragraph1 = Declaration reference number is: {0}
 confirmationAnswerPage.paragraph2 = The trust’s registration was sent on {0}
-confirmationAnswerPage.warning = You need to declare every year through this service the details we have are up to date.
+confirmationAnswerPage.warning = You need to declare every year through this service that the details we have are up to date.
 
 answerPage.section.trustsDetails.heading = Trust details
 answerPage.section.settlors.heading = Settlors
