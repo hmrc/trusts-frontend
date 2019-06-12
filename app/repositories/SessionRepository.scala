@@ -61,15 +61,9 @@ class DefaultSessionRepository @Inject()(
     collection.flatMap(_.find(Json.obj("_id" -> id), None).one[UserAnswers])
 
   override def getByInternalId(internalId: String): Future[Option[UserAnswers]]  = {
-    val arbitraryLimit = 50
-    val listOfUserAnswers: Future[List[UserAnswers]] = collection.flatMap(_.find(
+    collection.flatMap(_.find(
       Json.obj("internalId" -> internalId), None)
-      .cursor[UserAnswers]()
-      .collect[List](arbitraryLimit, Cursor.FailOnError()))
-    val singleUserAnswer : Future[Option[UserAnswers]] = listOfUserAnswers.map {
-      list => if(list.isEmpty) None else Some(list.head)
-    }
-    singleUserAnswer
+        .sort(Json.obj("createdAt" -> -1)).one[UserAnswers])
   }
 
   override def set(userAnswers: UserAnswers): Future[Boolean] = {
