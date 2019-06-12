@@ -79,6 +79,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       indexed = trustees.zipWithIndex
     } yield indexed.map {
       case (trustee, index) =>
+
         val trusteeIndividualOrBusinessMessagePrefix = if (trustee.isLead) "leadTrusteeIndividualOrBusiness" else "trusteeIndividualOrBusiness"
         val trusteeFullNameMessagePrefix = if (trustee.isLead) "leadTrusteesName" else "trusteesName"
         val questions = Seq(
@@ -93,8 +94,14 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
           telephoneNumber(index)
         ).flatten
 
-        AnswerSection(Some(Messages("answerPage.section.trustee.subheading") + " " + (index + 1)),
-          questions, if (index == 0) Some(Messages("answerPage.section.trustees.heading")) else None)
+
+        val sectionKey = if (index == 0) Some(Messages("answerPage.section.trustees.heading")) else None
+
+        AnswerSection(
+          headingKey = Some(Messages("answerPage.section.trustee.subheading") + " " + (index + 1)),
+          rows = questions,
+          sectionKey = sectionKey
+        )
     }
   }
 
@@ -105,6 +112,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       indexed = beneficiaries.zipWithIndex
     } yield indexed.map {
       case (beneficiary, index) =>
+
         val questions = Seq(
           individualBeneficiaryName(index),
           individualBeneficiaryDateOfBirthYesNo(index),
@@ -132,6 +140,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       indexed = beneficiaries.zipWithIndex
     } yield indexed.map {
       case (beneficiary, index) =>
+
         val questions = Seq(
           classBeneficiaryDescription(index)
         ).flatten

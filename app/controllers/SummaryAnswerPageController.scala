@@ -53,6 +53,7 @@ class SummaryAnswerPageController @Inject()(
       val individualBeneficiariesExist: Boolean = individualBeneficiaries.nonEmpty
       val classOfBeneficiaries = checkYourAnswersHelper.classOfBeneficiaries(individualBeneficiariesExist).getOrElse(Nil)
       val moneyAsset = checkYourAnswersHelper.moneyAsset.getOrElse(Nil)
+      
       val sections = trustDetails ++ settlors ++ trustees ++ individualBeneficiaries ++ classOfBeneficiaries ++ moneyAsset
 
       Ok(view(sections))
