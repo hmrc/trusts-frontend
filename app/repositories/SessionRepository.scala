@@ -57,13 +57,15 @@ class DefaultSessionRepository @Inject()(
       _.indexesManager.ensure(createdAtIndex)
     }.map(_ => ())
 
-  override def get(id: String): Future[Option[UserAnswers]] =
-    collection.flatMap(_.find(Json.obj("_id" -> id), None).one[UserAnswers])
+  override def get(id: String, internalId: String): Future[Option[UserAnswers]] =
+    collection.flatMap(_.find(Json.obj("_id" -> id, "internalId" -> internalId), None).one[UserAnswers])
 
-  override def getByInternalId(internalId: String): Future[Option[UserAnswers]]  = {
-    collection.flatMap(_.find(
-      Json.obj("internalId" -> internalId), None)
-        .sort(Json.obj("createdAt" -> IndexType.Descending.valueStr)).one[UserAnswers])
+  override def getAllDraftsByInternalId(internalId: String): Future[Option[UserAnswers]]  = {
+    collection.flatMap(
+      _.find(
+        Json.obj("internalId" -> internalId), None
+      )
+      .sort(Json.obj("createdAt" -> IndexType.Descending.valueStr)).one[UserAnswers])
   }
 
   override def set(userAnswers: UserAnswers): Future[Boolean] = {
@@ -89,9 +91,9 @@ trait SessionRepository {
 
   val started: Future[Unit]
 
-  def get(id: String): Future[Option[UserAnswers]]
+  def get(id: String, internalId : String): Future[Option[UserAnswers]]
 
   def set(userAnswers: UserAnswers): Future[Boolean]
 
-  def getByInternalId(internalId: String): Future[Option[UserAnswers]]
+  def getAllDraftsByInternalId(internalId: String): Future[Option[UserAnswers]]
 }
