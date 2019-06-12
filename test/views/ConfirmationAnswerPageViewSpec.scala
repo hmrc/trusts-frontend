@@ -47,7 +47,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
         .set(IndividualBeneficiaryNamePage(index), FullName("First", None, "Last")).success.value
         .set(IndividualBeneficiaryDateOfBirthYesNoPage(index),true).success.value
-        .set(IndividualBeneficiaryDateOfBirthPage(index),LocalDate.now(ZoneOffset.UTC)).success.value
+        .set(IndividualBeneficiaryDateOfBirthPage(index),LocalDate.of(2010, 10, 10)).success.value
         .set(IndividualBeneficiaryIncomeYesNoPage(index),true).success.value
         .set(IndividualBeneficiaryIncomePage(index),"100").success.value
         .set(IndividualBeneficiaryNationalInsuranceYesNoPage(index),true).success.value
@@ -97,6 +97,8 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
     val trnDateTime : String = DateFormat.formatDate(LocalDateTime.now, "d MMMM yyyy")
     val name = "First Last"
+    val yes = "Yes"
+    val no = "No"
 
     val view = viewFor[ConfirmationAnswerPageView](Some(userAnswers))
 
@@ -131,61 +133,62 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
     }
 
     "assert question labels for Trusts" in {
-      assertContainsText(doc, messages("trustName.checkYourAnswersLabel"))
-      assertContainsText(doc, messages("whenTrustSetup.checkYourAnswersLabel"))
-      assertContainsText(doc, messages("governedInsideTheUK.checkYourAnswersLabel"))
-      assertContainsText(doc, messages("administrationInsideUK.checkYourAnswersLabel"))
-      assertContainsText(doc, messages("trustResidentInUK.checkYourAnswersLabel"))
-      assertContainsText(doc, messages("establishedUnderScotsLaw.checkYourAnswersLabel"))
-      assertContainsText(doc, messages("trustResidentOffshore.checkYourAnswersLabel"))
+      assertContainsQuestionAnswerPair(doc, messages("trustName.checkYourAnswersLabel"), "New Trust")
+      assertContainsQuestionAnswerPair(doc, messages("whenTrustSetup.checkYourAnswersLabel"), "10 October 2010")
+      assertContainsQuestionAnswerPair(doc, messages("governedInsideTheUK.checkYourAnswersLabel"), yes)
+      assertContainsQuestionAnswerPair(doc, messages("administrationInsideUK.checkYourAnswersLabel"), yes)
+      assertContainsQuestionAnswerPair(doc, messages("trustResidentInUK.checkYourAnswersLabel"), yes)
+      assertContainsQuestionAnswerPair(doc, messages("establishedUnderScotsLaw.checkYourAnswersLabel"), yes)
+      assertContainsQuestionAnswerPair(doc, messages("trustResidentOffshore.checkYourAnswersLabel"), no)
     }
 
     "assert question labels for Individual Beneficiaries" in {
-      assertContainsText(doc, messages("individualBeneficiaryName.checkYourAnswersLabel"))
-      assertContainsText(doc, messages("individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel", name))
-      assertContainsText(doc, messages("individualBeneficiaryDateOfBirth.checkYourAnswersLabel", name))
-      assertContainsText(doc, messages("individualBeneficiaryIncomeYesNo.checkYourAnswersLabel", name))
-      assertContainsText(doc, messages("individualBeneficiaryIncome.checkYourAnswersLabel", name))
-      assertContainsText(doc, messages("individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel", name))
-      assertContainsText(doc, messages("individualBeneficiaryNationalInsuranceNumber.checkYourAnswersLabel", name))
+      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryName.checkYourAnswersLabel"), name)
+      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryDateOfBirth.checkYourAnswersLabel", name), "12 June 2019")
+      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryIncomeYesNo.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryIncome.checkYourAnswersLabel", name), "100")
+      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryNationalInsuranceNumber.checkYourAnswersLabel", name), "AB 12 34 56 C")
 
-      assertContainsText(doc, messages("individualBeneficiaryAddressYesNo.checkYourAnswersLabel", name))
-      assertContainsText(doc, messages("individualBeneficiaryAddressUK.checkYourAnswersLabel", name))
-      assertContainsText(doc, messages("site.address.uk.checkYourAnswersLabel", name))
-      assertContainsText(doc, messages("individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel", name))
+      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryAddressYesNo.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryAddressUK.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("site.address.uk.checkYourAnswersLabel", name), "Line1\nTownOrCity\nNE62RT")
+      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel", name), yes)
     }
 
     "assert question labels for Class Of Beneficiaries" in {
-      assertContainsText(doc, messages("classBeneficiaryDescription.checkYourAnswersLabel"))
+      assertContainsQuestionAnswerPair(doc, messages("classBeneficiaryDescription.checkYourAnswersLabel"), "Class of beneficary description")
     }
 
     "assert question labels for Trustees" in {
-      assertContainsText(doc, messages("isThisLeadTrustee.checkYourAnswersLabel"))
-      assertContainsText(doc, messages("leadTrusteeIndividualOrBusiness.checkYourAnswersLabel"))
-      assertContainsText(doc, messages("leadTrusteesName.checkYourAnswersLabel"))
-      assertContainsText(doc, messages("trusteesDateOfBirth.checkYourAnswersLabel", name))
-      assertContainsText(doc, messages("trusteeAUKCitizen.checkYourAnswersLabel", name))
-      assertContainsText(doc, messages("trusteesNino.checkYourAnswersLabel", name))
-      assertContainsText(doc, messages("telephoneNumber.checkYourAnswersLabel", name))
-      assertContainsText(doc, messages("trusteeLiveInTheUK.checkYourAnswersLabel", name))
-      assertContainsText(doc, messages("trusteesUkAddress.checkYourAnswersLabel", name))
+      assertContainsQuestionAnswerPair(doc, messages("isThisLeadTrustee.checkYourAnswersLabel"), yes)
+      assertContainsQuestionAnswerPair(doc, messages("leadTrusteeIndividualOrBusiness.checkYourAnswersLabel"), "Individual")
+      assertContainsQuestionAnswerPair(doc, messages("leadTrusteesName.checkYourAnswersLabel"), name)
+      assertContainsQuestionAnswerPair(doc, messages("trusteesDateOfBirth.checkYourAnswersLabel", name), "12 June 2019")
+      assertContainsQuestionAnswerPair(doc, messages("trusteeAUKCitizen.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("trusteesNino.checkYourAnswersLabel", name), "AB 12 34 56 C")
+      assertContainsQuestionAnswerPair(doc, messages("telephoneNumber.checkYourAnswersLabel", name), "0191 1111111")
+      assertContainsQuestionAnswerPair(doc, messages("trusteeLiveInTheUK.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("trusteesUkAddress.checkYourAnswersLabel", name), "line1\nline2\nline3\ntown or city\nAB1 1AB")
     }
 
     "assert question labels for Settlors" in {
-      assertContainsText(doc, messages("settlorsName.checkYourAnswersLabel"))
-      assertContainsText(doc, messages("settlorDateOfBirthYesNo.checkYourAnswersLabel", name))
-      assertContainsText(doc, messages("settlorsDateOfBirth.checkYourAnswersLabel", name))
-      assertContainsText(doc, messages("settlorDateOfDeathYesNo.checkYourAnswersLabel", name))
-      assertContainsText(doc, messages("settlorDateOfDeath.checkYourAnswersLabel", name))
-      assertContainsText(doc, messages("settlorsNINoYesNo.checkYourAnswersLabel", name))
-      assertContainsText(doc, messages("settlorNationalInsuranceNumber.checkYourAnswersLabel", name))
-      assertContainsText(doc, messages("settlorsLastKnownAddressYesNo.checkYourAnswersLabel", name))
-      assertContainsText(doc, messages("wasSettlorsAddressUKYesNo.checkYourAnswersLabel", name))
-      assertContainsText(doc, messages("settlorsUKAddress.checkYourAnswersLabel", name))
+      assertContainsQuestionAnswerPair(doc, messages("setupAfterSettlorDied.checkYourAnswersLabel"), yes)
+      assertContainsQuestionAnswerPair(doc, messages("settlorsName.checkYourAnswersLabel"), name)
+      assertContainsQuestionAnswerPair(doc, messages("settlorDateOfBirthYesNo.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("settlorsDateOfBirth.checkYourAnswersLabel", name), "12 June 2019")
+      assertContainsQuestionAnswerPair(doc, messages("settlorDateOfDeathYesNo.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("settlorDateOfDeath.checkYourAnswersLabel", name), "12 June 2019")
+      assertContainsQuestionAnswerPair(doc, messages("settlorsNINoYesNo.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("settlorNationalInsuranceNumber.checkYourAnswersLabel", name), "AB 12 34 56 C")
+      assertContainsQuestionAnswerPair(doc, messages("settlorsLastKnownAddressYesNo.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("wasSettlorsAddressUKYesNo.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("settlorsUKAddress.checkYourAnswersLabel", name), "Line1\nTown\nNE1 1ZZ")
     }
 
     "assert question labels for Money Assets" in {
-      assertContainsText(doc, messages("assetMoneyValue.checkYourAnswersLabel"))
+      assertContainsQuestionAnswerPair(doc, messages("assetMoneyValue.checkYourAnswersLabel"), "£100")
     }
 
   }
