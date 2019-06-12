@@ -37,7 +37,7 @@ class TrustRegisteredOnlineController @Inject()(
                                          navigator: Navigator,
                                          identify: IdentifierAction,
                                          getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,x
+                                         requireData: DataRequiredAction,
                                          formProvider: TrustRegisteredOnlineFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: TrustRegisteredOnlineView

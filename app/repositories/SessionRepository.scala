@@ -54,8 +54,9 @@ class DefaultSessionRepository @Inject()(
       _.indexesManager.ensure(createdAtIndex)
     }.map(_ => ())
 
-  override def get(draftId: String, internalId: String): Future[Option[UserAnswers]] =
+  override def get(draftId: String, internalId: String): Future[Option[UserAnswers]] = {
     collection.flatMap(_.find(Json.obj("_id" -> draftId, "internalId" -> internalId), None).one[UserAnswers])
+  }
 
   override def getDraftIds(internalId: String): Future[List[UserAnswers]] = {
     val selector = Json.obj(
@@ -66,9 +67,9 @@ class DefaultSessionRepository @Inject()(
     collection.flatMap(
       _.find(
         selector = selector,
-        projection = Some(Json.obj("_id" -> 1, "createdAt" -> 1))
+        projection = None
       )
-//        .sort(Json.obj("createdAt" -> IndexType.Descending.valueStr))
+        .sort(Json.obj("createdAt" -> -1))
         .cursor[UserAnswers]()
         .collect[List](20, Cursor.FailOnError[List[UserAnswers]]()))
   }
