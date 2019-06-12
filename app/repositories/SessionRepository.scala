@@ -44,8 +44,8 @@ class DefaultSessionRepository @Inject()(
     mongo.database.map(_.collection[JSONCollection](collectionName))
 
   private val createdAtIndex = Index(
-    key     = Seq("createdAt" -> IndexType.Ascending),
-    name    = Some("user-answers-created-at-index"),
+    key = Seq("createdAt" -> IndexType.Ascending),
+    name = Some("user-answers-created-at-index"),
     options = BSONDocument("expireAfterSeconds" -> cacheTtl)
   )
 
@@ -59,10 +59,12 @@ class DefaultSessionRepository @Inject()(
   }
 
   override def getDraftIds(internalId: String): Future[List[UserAnswers]] = {
+    val draftIdLimit = 20
+
     val selector = Json.obj(
-        "internalId" -> internalId,
-        "progress" -> Json.obj("$ne" -> RegistrationProgress.Complete.toString)
-      )
+      "internalId" -> internalId,
+      "progress" -> Json.obj("$ne" -> RegistrationProgress.Complete.toString)
+    )
 
     collection.flatMap(
       _.find(
@@ -71,7 +73,7 @@ class DefaultSessionRepository @Inject()(
       )
         .sort(Json.obj("createdAt" -> -1))
         .cursor[UserAnswers]()
-        .collect[List](20, Cursor.FailOnError[List[UserAnswers]]()))
+        .collect[List](draftIdLimit, Cursor.FailOnError[List[UserAnswers]]()))
   }
 
   override def set(userAnswers: UserAnswers): Future[Boolean] = {
@@ -97,7 +99,7 @@ trait SessionRepository {
 
   val started: Future[Unit]
 
-  def get(draftId: String, internalId : String): Future[Option[UserAnswers]]
+  def get(draftId: String, internalId: String): Future[Option[UserAnswers]]
 
   def set(userAnswers: UserAnswers): Future[Boolean]
 
