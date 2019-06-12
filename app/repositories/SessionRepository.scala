@@ -61,9 +61,13 @@ class DefaultSessionRepository @Inject()(
     collection.flatMap(_.find(Json.obj("_id" -> id), None).one[UserAnswers])
 
   override def getByInternalId(internalId: String): Future[Option[UserAnswers]]  = {
+
     collection.flatMap(_.find(
-      Json.obj("internalId" -> internalId), None)
-        .sort(Json.obj("createdAt" -> IndexType.Descending.valueStr)).one[UserAnswers])
+      Json.obj(
+        "internalId" -> internalId,
+        "progress" -> Json.obj("$ne" -> "Complete")), None)
+      .sort(Json.obj("createdAt" -> IndexType.Descending.valueStr)).one[UserAnswers])
+
   }
 
   override def set(userAnswers: UserAnswers): Future[Boolean] = {
