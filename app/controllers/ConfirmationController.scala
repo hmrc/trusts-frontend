@@ -22,18 +22,16 @@ import handlers.ErrorHandler
 import javax.inject.Inject
 import models.entities.{LeadTrusteeIndividual, Trustees}
 import models.requests.DataRequest
-import models.{FullName, NormalMode, RegistrationProgress, UserAnswers}
+import models.{NormalMode, RegistrationProgress, UserAnswers}
 import pages.{RegistrationTRNPage, TrustHaveAUTRPage}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request, Result}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.ConfirmationView
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.Try
-import scala.util.control.NonFatal
 
 class ConfirmationController @Inject()(
                                        override val messagesApi: MessagesApi,
@@ -66,7 +64,7 @@ class ConfirmationController @Inject()(
     }
   }
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onPageLoad(draftId: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val userAnswers = request.userAnswers
 

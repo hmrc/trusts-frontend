@@ -16,12 +16,9 @@
 
 package repositories
 
-import java.time.LocalDateTime
-
 import akka.stream.Materializer
 import javax.inject.Inject
-
-import models.UserAnswers
+import models.{RegistrationProgress, UserAnswers}
 import play.api.Configuration
 import play.api.libs.json._
 import play.modules.reactivemongo.ReactiveMongoApi
@@ -57,15 +54,23 @@ class DefaultSessionRepository @Inject()(
       _.indexesManager.ensure(createdAtIndex)
     }.map(_ => ())
 
-  override def get(id: String, internalId: String): Future[Option[UserAnswers]] =
-    collection.flatMap(_.find(Json.obj("_id" -> id, "internalId" -> internalId), None).one[UserAnswers])
+  override def get(draftId: String, internalId: String): Future[Option[UserAnswers]] =
+    collection.flatMap(_.find(Json.obj("_id" -> draftId, "internalId" -> internalId), None).one[UserAnswers])
 
-  override def getAllDraftsByInternalId(internalId: String): Future[Option[UserAnswers]]  = {
+  override def getDraftIds(internalId: String): Future[List[UserAnswers]] = {
+    val selector = Json.obj(
+        "internalId" -> internalId,
+        "progress" -> Json.obj("$ne" -> RegistrationProgress.Complete.toString)
+      )
+
     collection.flatMap(
       _.find(
-        Json.obj("internalId" -> internalId), None
+        selector = selector,
+        projection = Some(Json.obj("_id" -> 1, "createdAt" -> 1))
       )
-      .sort(Json.obj("createdAt" -> IndexType.Descending.valueStr)).one[UserAnswers])
+//        .sort(Json.obj("createdAt" -> IndexType.Descending.valueStr))
+        .cursor[UserAnswers]()
+        .collect[List](20, Cursor.FailOnError[List[UserAnswers]]()))
   }
 
   override def set(userAnswers: UserAnswers): Future[Boolean] = {
@@ -91,9 +96,9 @@ trait SessionRepository {
 
   val started: Future[Unit]
 
-  def get(id: String, internalId : String): Future[Option[UserAnswers]]
+  def get(draftId: String, internalId : String): Future[Option[UserAnswers]]
 
   def set(userAnswers: UserAnswers): Future[Boolean]
 
-  def getAllDraftsByInternalId(internalId: String): Future[Option[UserAnswers]]
+  def getDraftIds(internalId: String): Future[List[UserAnswers]]
 }

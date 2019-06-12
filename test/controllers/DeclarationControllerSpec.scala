@@ -168,7 +168,7 @@ class DeclarationControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad(userAnswersId).url
       verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any[HeaderCarrier])
       application.stop()
     }

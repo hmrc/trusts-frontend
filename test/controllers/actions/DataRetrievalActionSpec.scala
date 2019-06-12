@@ -20,6 +20,7 @@ import base.SpecBase
 import models.UserAnswers
 import models.requests.{IdentifierRequest, OptionalDataRequest}
 import org.mockito.Mockito._
+import org.mockito.Matchers._
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.Json
@@ -42,7 +43,7 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar with ScalaFutur
       "set userAnswers to 'None' in the request" in {
 
         val sessionRepository = mock[SessionRepository]
-        when(sessionRepository.getAllDraftsByInternalId("internalId")) thenReturn Future(None)
+        when(sessionRepository.getDraftIds("internalId")) thenReturn Future(Nil)
         val action = new Harness(sessionRepository)
 
         val futureResult = action.callTransform(new IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Individual))
@@ -58,13 +59,28 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar with ScalaFutur
       "build a userAnswers object and add it to the request" in {
 
         val sessionRepository = mock[SessionRepository]
-        when(sessionRepository.getAllDraftsByInternalId("internalId")) thenReturn Future(Some(emptyUserAnswers))
+        when(sessionRepository.getDraftIds("internalId")) thenReturn Future(List("89749847598347598765987359"))
+        when(sessionRepository.get(draftId = any(), internalId = any())) thenReturn Future(Some(emptyUserAnswers))
         val action = new Harness(sessionRepository)
 
         val futureResult = action.callTransform(new IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Individual))
 
         whenReady(futureResult) { result =>
           result.userAnswers.isDefined mustBe true
+        }
+      }
+
+      "set userAnswers to 'None' because 'get' query returns 'None'" in {
+        val sessionRepository = mock[SessionRepository]
+        when(sessionRepository.getDraftIds("internalId")) thenReturn Future(List("89749847598347598765987359"))
+        when(sessionRepository.get(draftId = any(), internalId = any())) thenReturn Future(None)
+
+        val action = new Harness(sessionRepository)
+
+        val futureResult = action.callTransform(new IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Individual))
+
+        whenReady(futureResult) { result =>
+          result.userAnswers.isEmpty mustBe true
         }
       }
     }

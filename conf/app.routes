@@ -371,4 +371,4 @@ POST       /change-agent-international-address                  controllers.Agen
 GET        /declaration                        controllers.DeclarationController.onPageLoad(mode: Mode = NormalMode)
 POST       /declaration                        controllers.DeclarationController.onSubmit(mode: Mode = NormalMode)
 
-GET       /confirmation                         controllers.ConfirmationController.onPageLoad()
+GET       /:draftId/confirmation                         controllers.ConfirmationController.onPageLoad(draftId: String)

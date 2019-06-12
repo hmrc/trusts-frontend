@@ -40,7 +40,7 @@ class ConfirmationControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(userAnswersId).url)
 
       val result = route(application, request).value
 
@@ -60,7 +60,7 @@ class ConfirmationControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(userAnswersId).url)
 
       val result = route(application, request).value
 
@@ -76,7 +76,7 @@ class ConfirmationControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(userAnswersId).url)
 
       val result = route(application, request).value
 
@@ -92,7 +92,7 @@ class ConfirmationControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(userAnswersId).url)
 
       val result = route(application, request).value
 
