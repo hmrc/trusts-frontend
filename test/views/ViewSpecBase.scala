@@ -29,6 +29,10 @@ trait ViewSpecBase extends SpecBase {
 
   def asDocument(html: Html): Document = Jsoup.parse(html.toString())
 
+  def assertLabelAndAnswer(doc:Document, label: String, answer: String) = {
+    assert(doc.toString.contains(label), "\n\ntext " + label + " was not rendered on the page.\n")
+  }
+
   def assertEqualsMessage(doc: Document, cssSelector: String, expectedMessageKey: String, args: Any*) =
     assertEqualsValue(doc, cssSelector, messages(expectedMessageKey,  args:_*))
 
