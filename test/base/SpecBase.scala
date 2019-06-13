@@ -58,6 +58,7 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
         bind[DataRequiredAction].to[DataRequiredActionImpl],
         bind[IdentifierAction].toInstance(new FakeIdentifierAction(affinityGroup)(injectedParsers)),
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
+        bind[DraftIdRetrievalActionProvider].toInstance(new FakeDraftIdRetrievalActionProvider("draftId",userAnswers, mockedSessionRepository)),
         bind[SessionRepository].toInstance(mockedSessionRepository),
         bind[SubmissionService].toInstance(mockSubmissionService)
       )
