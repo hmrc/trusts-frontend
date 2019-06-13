@@ -79,7 +79,7 @@ class DefaultSessionRepository @Inject()(
   override def set(userAnswers: UserAnswers): Future[Boolean] = {
 
     val selector = Json.obj(
-      "_id" -> userAnswers.id
+      "_id" -> userAnswers.draftId
     )
 
     val modifier = Json.obj(

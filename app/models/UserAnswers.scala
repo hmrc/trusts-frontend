@@ -26,11 +26,11 @@ import play.api.libs.json._
 import scala.util.{Failure, Success, Try}
 
 final case class UserAnswers(
-                              id: String,//draftId
+                              draftId: String,
                               data: JsObject = Json.obj(),
                               progress : RegistrationProgress = NotStarted,
                               createdAt : LocalDateTime = LocalDateTime.now,
-                              internalId :String
+                              internalAuthId :String
                             ) {
 
   def get[A](page: QuestionPage[A])(implicit rds: Reads[A]): Option[A] = {

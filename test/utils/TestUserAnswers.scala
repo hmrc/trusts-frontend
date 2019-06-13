@@ -32,7 +32,7 @@ object TestUserAnswers extends TryValues {
   val userInternalId = "internalId"
 
 
-  def emptyUserAnswers = UserAnswers(userAnswersId, Json.obj(),internalId = userInternalId)
+  def emptyUserAnswers = UserAnswers(userAnswersId, Json.obj(),internalAuthId = userInternalId)
 
   def withAgent(userAnswers: UserAnswers) : UserAnswers = {
       userAnswers

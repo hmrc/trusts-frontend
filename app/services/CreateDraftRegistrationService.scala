@@ -33,7 +33,7 @@ class CreateDraftRegistrationService @Inject()(
 
   def create[A](request : OptionalDataRequest[A], body: => Result) : Future[Result] = {
     val draftId = UUID.randomUUID().toString
-    val userAnswers = UserAnswers(id = draftId, internalId = request.internalId)
+    val userAnswers = UserAnswers(draftId = draftId, internalAuthId = request.internalId)
 
     sessionRepository.set(userAnswers).map {
       _ =>

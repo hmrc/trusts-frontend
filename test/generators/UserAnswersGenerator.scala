@@ -109,12 +109,12 @@ trait UserAnswersGenerator extends TryValues {
         }
         internalId <- nonEmptyString
       } yield UserAnswers (
-        id = id,
+        draftId = id,
         data = data.foldLeft(Json.obj()) {
           case (obj, (path, value)) =>
             obj.setObject(path.path, value).get
         },
-        internalId = internalId
+        internalAuthId = internalId
       )
     }
   }

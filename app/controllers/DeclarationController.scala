@@ -119,7 +119,7 @@ class DeclarationController @Inject()(
               Logger.info(s"[saveTRNAndCompleteRegistration] Days between creation and submission : ${days}")
               sessionRepository.set(dateSaved.copy(progress = RegistrationProgress.Complete)).map {
               _ =>
-                Redirect(routes.ConfirmationController.onPageLoad(updatedAnswers.id))
+                Redirect(routes.ConfirmationController.onPageLoad(updatedAnswers.draftId))
             }
           }
       }

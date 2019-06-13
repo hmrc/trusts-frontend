@@ -39,7 +39,7 @@ class DataRetrievalActionImpl @Inject()(val sessionRepository: SessionRepository
           case None =>
             Future.successful(createdOptionalDataRequest(request, None))
           case Some(userAnswer) =>
-            sessionRepository.get(userAnswer.id, userAnswer.internalId).map {
+            sessionRepository.get(userAnswer.draftId, userAnswer.internalAuthId).map {
               case None =>
                 createdOptionalDataRequest(request, None)
               case Some(userAnswers) =>
