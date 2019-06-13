@@ -19,6 +19,7 @@ package repositories
 import akka.stream.Materializer
 import javax.inject.Inject
 import models.{RegistrationProgress, UserAnswers}
+import pages.AgentInternalReferencePage
 import play.api.Configuration
 import play.api.libs.json._
 import play.modules.reactivemongo.ReactiveMongoApi
@@ -27,6 +28,7 @@ import reactivemongo.api.indexes.{Index, IndexType}
 import reactivemongo.bson.BSONDocument
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import reactivemongo.play.json.collection.JSONCollection
+import viewmodels.DraftRegistration
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -76,10 +78,18 @@ class DefaultSessionRepository @Inject()(
         .collect[List](draftIdLimit, Cursor.FailOnError[List[UserAnswers]]()))
   }
 
-  override def listDrafts(internalId : String) : Future[List[String]] = {
+  override def listDrafts(internalId : String) : Future[List[DraftRegistration]] = {
     getDraftRegistrations(internalId).map {
       drafts =>
-        drafts.map(_.draftId)
+
+        drafts.flatMap {
+          x =>
+            x.get(AgentInternalReferencePage).map {
+              reference =>
+                DraftRegistration(x.draftId, reference, x.createdAt)
+            }
+
+        }
     }
   }
 
@@ -112,5 +122,5 @@ trait SessionRepository {
 
   def getDraftRegistrations(internalId: String): Future[List[UserAnswers]]
 
-  def listDrafts(internalId : String) : Future[List[String]]
+  def listDrafts(internalId : String) : Future[List[DraftRegistration]]
 }
