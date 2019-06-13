@@ -76,6 +76,13 @@ class DefaultSessionRepository @Inject()(
         .collect[List](draftIdLimit, Cursor.FailOnError[List[UserAnswers]]()))
   }
 
+  override def listDrafts(internalId : String) : Future[List[String]] = {
+    getDraftRegistrations(internalId).map {
+      drafts =>
+        drafts.map(_.draftId)
+    }
+  }
+
   override def set(userAnswers: UserAnswers): Future[Boolean] = {
 
     val selector = Json.obj(
@@ -104,4 +111,6 @@ trait SessionRepository {
   def set(userAnswers: UserAnswers): Future[Boolean]
 
   def getDraftRegistrations(internalId: String): Future[List[UserAnswers]]
+
+  def listDrafts(internalId : String) : Future[List[String]]
 }
