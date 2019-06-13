@@ -16,15 +16,13 @@
 
 package controllers
 
-import java.util.UUID
-
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import javax.inject.Inject
-
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import services.CreateDraftRegistrationService
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.IndexView
@@ -36,7 +34,8 @@ class IndexController @Inject()(
                                  getData: DataRetrievalAction,
                                  sessionRepository: SessionRepository,
                                  val controllerComponents: MessagesControllerComponents,
-                                 view: IndexView
+                                 view: IndexView,
+                                 draftService : CreateDraftRegistrationService
                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData).async {
@@ -64,14 +63,7 @@ class IndexController @Inject()(
         case Some(_) =>
           Future.successful(routeAffinityGroupInProgress)
         case None =>
-          // Created a userAnswers set to NotStarted and redirect
-          val draftId = UUID.randomUUID().toString
-          val userAnswers = UserAnswers(draftId,internalId = request.internalId)
-          for {
-            _ <- sessionRepository.set(userAnswers)
-          } yield {
-            routeAffinityGroupNotStarted
-          }
+          draftService.create(request, routeAffinityGroupNotStarted)
       }
   }
 }

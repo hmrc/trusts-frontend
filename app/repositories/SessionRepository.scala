@@ -58,7 +58,7 @@ class DefaultSessionRepository @Inject()(
     collection.flatMap(_.find(Json.obj("_id" -> draftId, "internalId" -> internalId), None).one[UserAnswers])
   }
 
-  override def getDraftIds(internalId: String): Future[List[UserAnswers]] = {
+  override def getDraftIds(internalId: String): Future[List[String]] = {
     val draftIdLimit = 20
 
     val selector = Json.obj(
@@ -69,11 +69,11 @@ class DefaultSessionRepository @Inject()(
     collection.flatMap(
       _.find(
         selector = selector,
-        projection = None
+        projection = Some(Json.obj("_id" -> 1))
       )
         .sort(Json.obj("createdAt" -> -1))
-        .cursor[UserAnswers]()
-        .collect[List](draftIdLimit, Cursor.FailOnError[List[UserAnswers]]()))
+        .cursor[String]()
+        .collect[List](draftIdLimit, Cursor.FailOnError[List[String]]()))
   }
 
   override def set(userAnswers: UserAnswers): Future[Boolean] = {
@@ -103,5 +103,5 @@ trait SessionRepository {
 
   def set(userAnswers: UserAnswers): Future[Boolean]
 
-  def getDraftIds(internalId: String): Future[List[UserAnswers]]
+  def getDraftIds(internalId: String): Future[List[String]]
 }

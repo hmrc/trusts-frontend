@@ -33,15 +33,15 @@ class DataRetrievalActionImpl @Inject()(val sessionRepository: SessionRepository
     implicit val hc = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
     def createdOptionalDataRequest(request: IdentifierRequest[A], userAnswers: Option[UserAnswers]) =
-      OptionalDataRequest(request.request, request.identifier, None, request.affinityGroup, request.agentARN)
-    
+      OptionalDataRequest(request.request, request.identifier, userAnswers, request.affinityGroup, request.agentARN)
+
     sessionRepository.getDraftIds(request.identifier).flatMap {
       ids =>
         ids.headOption match {
           case None =>
             Future.successful(createdOptionalDataRequest(request, None))
-          case Some(ua) =>
-            sessionRepository.get(ua.id, request.identifier).map {
+          case Some(id) =>
+            sessionRepository.get(id, request.identifier).map {
               case None =>
                 createdOptionalDataRequest(request, None)
               case Some(userAnswers) =>
