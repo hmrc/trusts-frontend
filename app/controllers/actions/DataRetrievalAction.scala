@@ -25,25 +25,27 @@ import uk.gov.hmrc.play.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DataRetrievalActionImpl @Inject()(
-                                         val sessionRepository: SessionRepository
-                                       )(implicit val executionContext: ExecutionContext) extends DataRetrievalAction {
+class DataRetrievalActionImpl @Inject()(val sessionRepository: SessionRepository)
+                                       (implicit val executionContext: ExecutionContext) extends DataRetrievalAction {
 
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] = {
 
     implicit val hc = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
-    val dataRequest = OptionalDataRequest(request.request, request.identifier, None, request.affinityGroup, request.agentARN)
 
-
+    def createdOptionalDataRequest(request: IdentifierRequest[A], userAnswers: Option[UserAnswers]) =
+      OptionalDataRequest(request.request, request.identifier, None, request.affinityGroup, request.agentARN)
+    
     sessionRepository.getDraftIds(request.identifier).flatMap {
       ids =>
         ids.headOption match {
-          case None => Future.successful(dataRequest)
-          case Some(ua) => sessionRepository.get(ua.id, request.identifier).map {
-            case None =>
-              dataRequest
-            case Some(userAnswers) =>
-              OptionalDataRequest(request.request, request.identifier, Some(userAnswers), request.affinityGroup, request.agentARN)
+          case None =>
+            Future.successful(createdOptionalDataRequest(request, None))
+          case Some(ua) =>
+            sessionRepository.get(ua.id, request.identifier).map {
+              case None =>
+                createdOptionalDataRequest(request, None)
+              case Some(userAnswers) =>
+                createdOptionalDataRequest(request, Some(userAnswers))
           }
         }
     }
