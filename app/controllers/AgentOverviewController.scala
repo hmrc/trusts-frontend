@@ -18,9 +18,13 @@ package controllers
 
 import controllers.actions._
 import javax.inject.Inject
+import models.NormalMode
+import navigation.Navigator
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import services.CreateDraftRegistrationService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.AgentOverviewView
 
@@ -31,19 +35,26 @@ class AgentOverviewController @Inject()(
                                          identify: IdentifierAction,
                                          hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                          sessionRepository: SessionRepository,
+                                         navigator: Navigator,
                                          val controllerComponents: MessagesControllerComponents,
-                                         view: AgentOverviewView
+                                         view: AgentOverviewView,
+                                         draftRegistrationService: CreateDraftRegistrationService
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions = identify andThen hasAgentAffinityGroup()
 
   def onPageLoad: Action[AnyContent] = actions.async {
     implicit request =>
-      sessionRepository.listDrafts(request.identifier).map{
+      sessionRepository.listDrafts(request.identifier).map {
         drafts =>
+          Logger.debug(s"[AgentOverViewController] $drafts")
           Ok(view(drafts))
       }
-
   }
 
+  def onSubmit = actions.async {
+    implicit request =>
+      val redirect = Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode))
+      draftRegistrationService.create(request, redirect)
+  }
 }

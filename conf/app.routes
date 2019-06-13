@@ -192,6 +192,7 @@ GET        /change-agent-telephone-number                   controllers.AgentTel
 POST       /change-agent-telephone-number                  controllers.AgentTelephoneNumberController.onSubmit(mode: Mode = CheckMode)
 
 GET        /agent-overview                                      controllers.AgentOverviewController.onPageLoad()
+POST       /agent-overview                                      controllers.AgentOverviewController.onSubmit()
 
 GET        /check-agent-details                     controllers.AgentAnswerController.onPageLoad()
 POST       /check-agent-details                       controllers.AgentAnswerController.onSubmit()

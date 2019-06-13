@@ -21,7 +21,8 @@ import java.util.UUID
 import akka.stream.Materializer
 import javax.inject.Inject
 import models.UserAnswers
-import models.requests.OptionalDataRequest
+import models.requests.{IdentifierRequest, OptionalDataRequest}
+import play.api.Logger
 import play.api.mvc.Result
 import repositories.SessionRepository
 
@@ -31,15 +32,25 @@ class CreateDraftRegistrationService @Inject()(
                                               sessionRepository: SessionRepository
                                               )(implicit ec: ExecutionContext, m: Materializer) {
 
-  def create[A](request : OptionalDataRequest[A], body: => Result) : Future[Result] = {
+  private def build[A](request: OptionalDataRequest[A], body : => Result) : Future[Result] = {
     val draftId = UUID.randomUUID().toString
     val userAnswers = UserAnswers(draftId = draftId, internalAuthId = request.internalId)
 
+    Logger.debug(s"[CreateDraftRegistrationService][build] created new draft registration $draftId")
+
     sessionRepository.set(userAnswers).map {
       _ =>
-      body
+        body
     }
   }
+
+  def create[A](request: IdentifierRequest[A], body : => Result) : Future[Result] = {
+    val transformed = OptionalDataRequest(request.request, request.identifier, None, request.affinityGroup, request.agentARN)
+    build(transformed, body)
+  }
+
+  def create[A](request : OptionalDataRequest[A], body: => Result) : Future[Result] =
+    build(request, body)
 
 }
 

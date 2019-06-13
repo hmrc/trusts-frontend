@@ -32,6 +32,8 @@
 
     <p>@messages("agentOverview.paragraph1")</p>
 
+    @components.draft_registration_list(drafts, "agent-registrations")
+
     <details role="group" class="details">
         <summary role="button" aria-controls="details-content-0" aria-expanded="false">
             <span class="summary">@messages("agentOverview.helper")</span>
@@ -46,8 +48,6 @@
                     "bulletpoint4"
                 )
             )
-
-            @components.draft_registration_list(drafts, "agent-registrations")
 
             <p>@messages("agentOverview.paragraph3")</p>
             @components.bullet_list("agentOverview",

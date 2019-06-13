@@ -19,18 +19,20 @@ package controllers
 import java.time.LocalDateTime
 
 import base.SpecBase
+import models.{AddAssets, NormalMode}
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
-import views.html.AgentOverviewView
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
-import org.scalatest.mockito.MockitoSugar
 import viewmodels.DraftRegistration
+import views.html.AgentOverviewView
 
 import scala.concurrent.Future
 
 class AgentOverviewControllerSpec extends SpecBase {
+
+  lazy val agentOverviewRoute = routes.AgentOverviewController.onSubmit().url
 
   "AgentOverview Controller" when {
 
@@ -55,6 +57,26 @@ class AgentOverviewControllerSpec extends SpecBase {
 
         application.stop()
       }
+
+      "redirect for a POST" in {
+
+        val application =
+          applicationBuilder(userAnswers = None, AffinityGroup.Agent)
+            .build()
+
+        val request =
+          FakeRequest(POST, agentOverviewRoute)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual routes.TrustRegisteredOnlineController.onPageLoad(NormalMode).url
+
+        application.stop()
+
+      }
+
     }
 
     "there are drafts" must {
