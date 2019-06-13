@@ -33,13 +33,13 @@ class DataRetrievalActionImpl @Inject()(val sessionRepository: SessionRepository
     def createdOptionalDataRequest(request: IdentifierRequest[A], userAnswers: Option[UserAnswers]) =
       OptionalDataRequest(request.request, request.identifier, userAnswers, request.affinityGroup, request.agentARN)
 
-    sessionRepository.getDraftIds(request.identifier).flatMap {
+    sessionRepository.getDraftRegistrations(request.identifier).flatMap {
       ids =>
         ids.headOption match {
           case None =>
             Future.successful(createdOptionalDataRequest(request, None))
-          case Some(id) =>
-            sessionRepository.get(id, request.identifier).map {
+          case Some(userAnswer) =>
+            sessionRepository.get(userAnswer.id, userAnswer.internalId).map {
               case None =>
                 createdOptionalDataRequest(request, None)
               case Some(userAnswers) =>
