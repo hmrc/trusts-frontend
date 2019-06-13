@@ -31,8 +31,6 @@ class CreateDraftRegistrationService @Inject()(
                                               sessionRepository: SessionRepository
                                               )(implicit ec: ExecutionContext, m: Materializer) {
 
-
-
   def create[A](request : OptionalDataRequest[A], body: => Result) : Future[Result] = {
     val draftId = UUID.randomUUID().toString
     val userAnswers = UserAnswers(id = draftId, internalId = request.internalId)
@@ -45,4 +43,3 @@ class CreateDraftRegistrationService @Inject()(
 
 }
 
-trait DraftRegistrationService
