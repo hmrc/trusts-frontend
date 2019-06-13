@@ -30,8 +30,6 @@ class DataRetrievalActionImpl @Inject()(val sessionRepository: SessionRepository
 
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] = {
 
-    implicit val hc = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
-
     def createdOptionalDataRequest(request: IdentifierRequest[A], userAnswers: Option[UserAnswers]) =
       OptionalDataRequest(request.request, request.identifier, userAnswers, request.affinityGroup, request.agentARN)
 
@@ -53,3 +51,5 @@ class DataRetrievalActionImpl @Inject()(val sessionRepository: SessionRepository
 }
 
 trait DataRetrievalAction extends ActionTransformer[IdentifierRequest, OptionalDataRequest]
+
+

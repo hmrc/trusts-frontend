@@ -36,7 +36,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class ConfirmationController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
+                                       getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
                                        config: FrontendAppConfig,
                                        val controllerComponents: MessagesControllerComponents,
@@ -64,7 +64,7 @@ class ConfirmationController @Inject()(
     }
   }
 
-  def onPageLoad(draftId: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onPageLoad(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
       val userAnswers = request.userAnswers
 
