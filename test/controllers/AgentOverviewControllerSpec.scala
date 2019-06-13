@@ -16,32 +16,71 @@
 
 package controllers
 
+import java.time.LocalDateTime
+
 import base.SpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
 import views.html.AgentOverviewView
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
+import org.scalatest.mockito.MockitoSugar
+import viewmodels.DraftRegistration
+
+import scala.concurrent.Future
 
 class AgentOverviewControllerSpec extends SpecBase {
 
-  "AgentOverview Controller" must {
+  "AgentOverview Controller" when {
 
-    "return OK and the correct view for a GET" in {
+    "there are no drafts" must {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+      "return OK and the correct view for a GET" in {
 
-      val request = FakeRequest(GET, routes.AgentOverviewController.onPageLoad().url)
+        when(mockedSessionRepository.listDrafts(any())).thenReturn(Future.successful(Nil))
 
-      val result = route(application, request).value
+        val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
-      val view = application.injector.instanceOf[AgentOverviewView]
+        val request = FakeRequest(GET, routes.AgentOverviewController.onPageLoad().url)
 
-      status(result) mustEqual OK
+        val result = route(application, request).value
 
-      contentAsString(result) mustEqual
-        view()(fakeRequest, messages).toString
+        val view = application.injector.instanceOf[AgentOverviewView]
 
-      application.stop()
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(Nil)(fakeRequest, messages).toString
+
+        application.stop()
+      }
+    }
+
+    "there are drafts" must {
+
+      "return OK and the correct view for a GET" in {
+
+        val draft = List(DraftRegistration("draftId", "InternalRef", LocalDateTime.now()))
+
+        when(mockedSessionRepository.listDrafts(any()))
+          .thenReturn(Future.successful(draft))
+
+        val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
+
+        val request = FakeRequest(GET, routes.AgentOverviewController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[AgentOverviewView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(draft)(fakeRequest, messages).toString
+
+        application.stop()
+      }
     }
   }
 }

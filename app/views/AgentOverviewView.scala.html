@@ -14,11 +14,13 @@
  * limitations under the License.
  *@
 
+@import viewmodels.DraftRegistration
+
 @this(
     main_template: MainTemplate
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@(drafts: List[DraftRegistration])(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("agentOverview.title")
@@ -44,6 +46,9 @@
                     "bulletpoint4"
                 )
             )
+
+            @components.draft_registration_list(drafts, "agent-registrations")
+
             <p>@messages("agentOverview.paragraph3")</p>
             @components.bullet_list("agentOverview",
                 List(

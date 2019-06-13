@@ -16,6 +16,9 @@
 
 package views
 
+import java.time.LocalDateTime
+
+import viewmodels.DraftRegistration
 import views.behaviours.ViewBehaviours
 import views.html.AgentOverviewView
 
@@ -25,7 +28,7 @@ class AgentOverviewViewSpec extends ViewBehaviours {
 
     val view = viewFor[AgentOverviewView](Some(emptyUserAnswers))
 
-    val applyView = view.apply()(fakeRequest, messages)
+    val applyView = view.apply(List(DraftRegistration("Fake", "Fake2", LocalDateTime.now)))(fakeRequest, messages)
 
     behave like normalPage(applyView, "agentOverview",
       "paragraph1",
