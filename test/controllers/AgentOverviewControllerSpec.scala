@@ -19,7 +19,7 @@ package controllers
 import java.time.LocalDateTime
 
 import base.SpecBase
-import models.{AddAssets, NormalMode}
+import models.NormalMode
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import play.api.test.FakeRequest

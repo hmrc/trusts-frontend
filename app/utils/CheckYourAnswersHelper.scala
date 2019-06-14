@@ -90,12 +90,12 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
-  def addABeneficiary: Option[AnswerRow] = userAnswers.get(AddABeneficiaryPage) map {
+  def addABeneficiary(draftId: String): Option[AnswerRow] = userAnswers.get(AddABeneficiaryPage) map {
     x =>
       AnswerRow(
         "addABeneficiary.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"addABeneficiary.$x")),
-        routes.AddABeneficiaryController.onPageLoad().url
+        routes.AddABeneficiaryController.onPageLoad(draftId).url
       )
   }
 

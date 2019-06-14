@@ -47,7 +47,6 @@ class AgentOverviewController @Inject()(
     implicit request =>
       sessionRepository.listDrafts(request.identifier).map {
         drafts =>
-          Logger.debug(s"[AgentOverViewController] $drafts")
           Ok(view(drafts))
       }
   }

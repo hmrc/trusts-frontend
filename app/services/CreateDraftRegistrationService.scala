@@ -36,8 +36,6 @@ class CreateDraftRegistrationService @Inject()(
     val draftId = UUID.randomUUID().toString
     val userAnswers = UserAnswers(draftId = draftId, internalAuthId = request.internalId)
 
-    Logger.debug(s"[CreateDraftRegistrationService][build] created new draft registration $draftId")
-
     sessionRepository.set(userAnswers).map {
       _ =>
         body

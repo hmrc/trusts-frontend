@@ -109,13 +109,13 @@ class Navigator @Inject()() {
       routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index)
     case IndividualBeneficiaryAddressYesNoPage(index) => _ => ua => individualBeneficiaryAddressRoute(ua, index)
     case IndividualBeneficiaryAddressUKYesNoPage(index) => _ => ua => individualBeneficiaryAddressUKYesNoRoute(ua, index)
-    case IndividualBeneficiaryAddressUKPage(index)  => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index)
+    case IndividualBeneficiaryAddressUKPage(index) => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index)
     case IndividualBeneficiaryVulnerableYesNoPage(index) => _ => _ => routes.IndividualBeneficiaryAnswersController.onPageLoad(index)
-    case IndividualBeneficiaryAnswersPage => _ => _ => routes.AddABeneficiaryController.onPageLoad()
+    case IndividualBeneficiaryAnswersPage => _ => _ => routes.AddABeneficiaryController.onPageLoad(draftId)
 
     case AddABeneficiaryPage => _ => addABeneficiaryRoute
     case WhatTypeOfBeneficiaryPage => _ => whatTypeOfBeneficiaryRoute
-    case ClassBeneficiaryDescriptionPage(index) => _ => _ => routes.AddABeneficiaryController.onPageLoad()
+    case ClassBeneficiaryDescriptionPage(index) => _ => _ => routes.AddABeneficiaryController.onPageLoad(draftId)
 
 
     //  Default

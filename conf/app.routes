@@ -335,8 +335,8 @@ POST       /beneficiaries/individual/:index/change-is-elected-vulnerable        
 
 GET        /beneficiaries/information-you-need                       controllers.IndividualBeneficiaryInfoController.onPageLoad()
 
-GET        /beneficiaries/add                        controllers.AddABeneficiaryController.onPageLoad(mode: Mode = NormalMode)
-POST       /beneficiaries/add                        controllers.AddABeneficiaryController.onSubmit(mode: Mode = NormalMode)
+GET        /beneficiaries/add                        controllers.AddABeneficiaryController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /beneficiaries/add                        controllers.AddABeneficiaryController.onSubmit(mode: Mode = NormalMode, draftId: String)
 
 GET        /beneficiaries/individual/:index/check-answers                       controllers.IndividualBeneficiaryAnswersController.onPageLoad(index: Int)
 POST       /beneficiaries/individual/:index/check-answers                       controllers.IndividualBeneficiaryAnswersController.onSubmit(index: Int)

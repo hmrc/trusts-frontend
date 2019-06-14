@@ -39,7 +39,6 @@ class DataRetrievalActionImpl @Inject()(val sessionRepository: SessionRepository
           case None =>
             Future.successful(createdOptionalDataRequest(request, None))
           case Some(userAnswer) =>
-            Logger.debug(s"[DataRetrievalAction][transform] returned draft registration: ${userAnswer.draftId}")
             sessionRepository.get(userAnswer.draftId, userAnswer.internalAuthId).map {
               case None =>
                 createdOptionalDataRequest(request, None)
