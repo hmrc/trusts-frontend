@@ -397,7 +397,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x =>
       AnswerRow(
         "settlorsName.checkYourAnswersLabel",
-        HtmlFormat.escape(s"${x.firstName} ${x.lastName}"),
+        HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"),
         routes.SettlorsNameController.onPageLoad(CheckMode).url,
         canEdit = canEdit
       )

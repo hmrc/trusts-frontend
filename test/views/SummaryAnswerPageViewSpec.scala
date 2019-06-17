@@ -65,7 +65,7 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
         .set(IsThisLeadTrusteePage(index), true).success.value
         .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
         .set(TrusteesNamePage(index), FullName("TrusteeFirst", None, "TrusteeLast")).success.value
-        .set(TrusteesDateOfBirthPage(index), LocalDate.now(ZoneOffset.UTC)).success.value
+        .set(TrusteesDateOfBirthPage(index), LocalDate.of(2010, 10, 10)).success.value
         .set(TrusteeAUKCitizenPage(index), true).success.value
         .set(TrusteesNinoPage(index), "AB123456C").success.value
         .set(TelephoneNumberPage(index), "0191 1111111").success.value
@@ -77,9 +77,9 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
         .set(SetupAfterSettlorDiedPage, true).success.value
         .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
         .set(SettlorDateOfDeathYesNoPage, true).success.value
-        .set(SettlorDateOfDeathPage, LocalDate.now).success.value
+        .set(SettlorDateOfDeathPage, LocalDate.of(2010, 10, 10)).success.value
         .set(SettlorDateOfBirthYesNoPage, true).success.value
-        .set(SettlorsDateOfBirthPage, LocalDate.now).success.value
+        .set(SettlorsDateOfBirthPage, LocalDate.of(2010, 10, 10)).success.value
         .set(SettlorsNINoYesNoPage, true).success.value
         .set(SettlorNationalInsuranceNumberPage, "AB123456C").success.value
         .set(SettlorsLastKnownAddressYesNoPage, true).success.value
@@ -93,9 +93,9 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
         .set(AddAssetsPage, NoComplete).success.value
 
         .set(RegistrationTRNPage, "XNTRN000000001").success.value
-        .set(RegistrationSubmissionDatePage, LocalDateTime.now).success.value
+        .set(RegistrationSubmissionDatePage, LocalDateTime.of(2010, 10, 10, 13, 10, 10)).success.value
 
-    val trnDateTime : String = DateFormat.formatDate(LocalDateTime.now, "d MMMM yyyy")
+    val trnDateTime : String = DateFormat.formatDate(LocalDateTime.of(2010, 10, 10, 13, 10, 10), "d MMMM yyyy")
     val name = "First Last"
     val benName = "BenFirst BenLast"
     val trusteeName = "TrusteeFirst TrusteeLast"
@@ -170,7 +170,7 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
       assertContainsQuestionAnswerPair(doc, messages("isThisLeadTrustee.checkYourAnswersLabel"), yes)
       assertContainsQuestionAnswerPair(doc, messages("leadTrusteeIndividualOrBusiness.checkYourAnswersLabel"), "Individual")
       assertContainsQuestionAnswerPair(doc, messages("leadTrusteesName.checkYourAnswersLabel"), trusteeName)
-      assertContainsQuestionAnswerPair(doc, messages("trusteesDateOfBirth.checkYourAnswersLabel", trusteeName), "13 June 2019")
+      assertContainsQuestionAnswerPair(doc, messages("trusteesDateOfBirth.checkYourAnswersLabel", trusteeName), "10 October 2010")
       assertContainsQuestionAnswerPair(doc, messages("trusteeAUKCitizen.checkYourAnswersLabel", trusteeName), yes)
       assertContainsQuestionAnswerPair(doc, messages("trusteesNino.checkYourAnswersLabel", trusteeName), "AB 12 34 56 C")
       assertContainsQuestionAnswerPair(doc, messages("telephoneNumber.checkYourAnswersLabel", trusteeName), "0191 1111111")
@@ -182,9 +182,9 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
       assertContainsQuestionAnswerPair(doc, messages("setupAfterSettlorDied.checkYourAnswersLabel"), yes)
       assertContainsQuestionAnswerPair(doc, messages("settlorsName.checkYourAnswersLabel"), name)
       assertContainsQuestionAnswerPair(doc, messages("settlorDateOfBirthYesNo.checkYourAnswersLabel", name), yes)
-      assertContainsQuestionAnswerPair(doc, messages("settlorsDateOfBirth.checkYourAnswersLabel", name), "13 June 2019")
+      assertContainsQuestionAnswerPair(doc, messages("settlorsDateOfBirth.checkYourAnswersLabel", name), "10 October 2010")
       assertContainsQuestionAnswerPair(doc, messages("settlorDateOfDeathYesNo.checkYourAnswersLabel", name), yes)
-      assertContainsQuestionAnswerPair(doc, messages("settlorDateOfDeath.checkYourAnswersLabel", name), "13 June 2019")
+      assertContainsQuestionAnswerPair(doc, messages("settlorDateOfDeath.checkYourAnswersLabel", name), "10 October 2010")
       assertContainsQuestionAnswerPair(doc, messages("settlorsNINoYesNo.checkYourAnswersLabel", name), yes)
       assertContainsQuestionAnswerPair(doc, messages("settlorNationalInsuranceNumber.checkYourAnswersLabel", name), "AB 12 34 56 C")
       assertContainsQuestionAnswerPair(doc, messages("settlorsLastKnownAddressYesNo.checkYourAnswersLabel", name), yes)
