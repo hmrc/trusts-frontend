@@ -22,13 +22,13 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId:String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("registeringTrustFor5A.title")}"
     ) {
 
-    @formHelper(action = RegisteringTrustFor5AController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = RegisteringTrustFor5AController.onSubmit(mode, draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 

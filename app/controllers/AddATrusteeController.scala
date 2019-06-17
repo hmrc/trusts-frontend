@@ -37,7 +37,7 @@ class AddATrusteeController @Inject()(
                                        sessionRepository: SessionRepository,
                                        navigator: Navigator,
                                        identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
+                                       getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
                                        formProvider: AddATrusteeFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
@@ -46,19 +46,19 @@ class AddATrusteeController @Inject()(
 
   val form = formProvider()
 
-  private def routes =
-    identify andThen getData andThen requireData
+  private def routes(draftId: String) =
+    identify andThen getData(draftId) andThen requireData
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = routes {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = routes(draftId) {
     implicit request =>
 
       val trustees = new AddATrusteeViewHelper(request.userAnswers).rows
 
 
-      Ok(view(form, mode, trustees.inProgress, trustees.complete))
+      Ok(view(form, mode, draftId, trustees.inProgress, trustees.complete))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = routes.async {
+  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = routes(draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -72,7 +72,7 @@ class AddATrusteeController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AddATrusteePage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(AddATrusteePage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(AddATrusteePage, mode, draftId)(updatedAnswers))
         }
       )
   }

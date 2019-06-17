@@ -38,7 +38,7 @@ class IndexController @Inject()(
                                  draftService : CreateDraftRegistrationService
                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData).async {
+  def onPageLoad(draftId: String): Action[AnyContent] = (identify andThen getData).async {
     implicit request =>
 
       def routeAffinityGroupNotStarted = {
@@ -46,7 +46,7 @@ class IndexController @Inject()(
           case AffinityGroup.Agent =>
             Redirect(routes.AgentOverviewController.onPageLoad())
           case _ =>
-            Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode))
+            Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId))
         }
       }
 
@@ -63,7 +63,10 @@ class IndexController @Inject()(
         case Some(_) =>
           Future.successful(routeAffinityGroupInProgress)
         case None =>
-          draftService.create(request, routeAffinityGroupNotStarted)
+          draftService.create(request).map {
+            _ =>
+              routeAffinityGroupNotStarted
+          }
       }
   }
 }

@@ -46,10 +46,10 @@ class AddABeneficiaryController @Inject()(
 
   val form = formProvider()
 
-//  private def routes =
-//    identify andThen getData(draftId) andThen requireData
+  private def routes(draftId: String) =
+    identify andThen getData(draftId) andThen requireData
 
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = routes(draftId) {
     implicit request =>
 
       val beneficiaries = new AddABeneficiaryViewHelper(request.userAnswers).rows
@@ -57,7 +57,7 @@ class AddABeneficiaryController @Inject()(
       Ok(view(form, mode, draftId, beneficiaries.inProgress, beneficiaries.complete))
   }
 
-  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = routes(draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -73,7 +73,7 @@ class AddABeneficiaryController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AddABeneficiaryPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(AddABeneficiaryPage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(AddABeneficiaryPage, mode, draftId)(updatedAnswers))
         }
       )
   }

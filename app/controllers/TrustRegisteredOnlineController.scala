@@ -36,16 +36,18 @@ class TrustRegisteredOnlineController @Inject()(
                                          sessionRepository: SessionRepository,
                                          navigator: Navigator,
                                          identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
+                                         getData: DraftIdRetrievalActionProvider,
                                          requireData: DataRequiredAction,
                                          formProvider: TrustRegisteredOnlineFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: TrustRegisteredOnlineView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
+
   val form: Form[Boolean] = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(TrustRegisteredOnlinePage) match {
@@ -53,21 +55,21 @@ class TrustRegisteredOnlineController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, draftId))
   }
 
-  def onSubmit(mode: Mode) = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode, draftId: String) = actions(draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId))),
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustRegisteredOnlinePage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrustRegisteredOnlinePage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrustRegisteredOnlinePage, mode, draftId)(updatedAnswers))
         }
       )
   }

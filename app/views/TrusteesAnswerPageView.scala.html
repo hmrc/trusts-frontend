@@ -22,7 +22,7 @@
     formHelper: FormWithCSRF
 )
 
-@(index : Int, answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
+@(index : Int, draftId: String, answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("trusteesAnswerPage.title")
@@ -41,7 +41,7 @@
         }
     }
 
-    @formHelper(action = TrusteesAnswerPageController.onSubmit(index), 'autoComplete -> "off") {
+    @formHelper(action = TrusteesAnswerPageController.onSubmit(index, draftId), 'autoComplete -> "off") {
         @components.submit_button()
     }
 }

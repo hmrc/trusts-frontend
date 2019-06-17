@@ -37,7 +37,7 @@ class TrustPreviouslyResidentController @Inject()(
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
                                         identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
+                                        getData: DraftIdRetrievalActionProvider,
                                         requireData: DataRequiredAction,
                                         formProvider: TrustPreviouslyResidentFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
@@ -45,9 +45,11 @@ class TrustPreviouslyResidentController @Inject()(
                                         val countryOptions: CountryOptionsNonUK
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
+
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(TrustPreviouslyResidentPage) match {
@@ -58,7 +60,7 @@ class TrustPreviouslyResidentController @Inject()(
       Ok(view(preparedForm, countryOptions.options, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -69,7 +71,7 @@ class TrustPreviouslyResidentController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustPreviouslyResidentPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrustPreviouslyResidentPage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrustPreviouslyResidentPage, mode, draftId)(updatedAnswers))
         }
       )
   }

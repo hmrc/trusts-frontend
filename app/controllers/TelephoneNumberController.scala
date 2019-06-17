@@ -40,7 +40,7 @@ class TelephoneNumberController @Inject()(
                                            navigator: Navigator,
                                            validateIndex: IndexActionFilterProvider,
                                            identify: IdentifierAction,
-                                           getData: DataRetrievalAction,
+                                           getData: DraftIdRetrievalActionProvider,
                                            requireData: DataRequiredAction,
                                            requiredAnswer: RequiredAnswerActionProvider,
                                            formProvider: TelephoneNumberFormProvider,
@@ -48,15 +48,15 @@ class TelephoneNumberController @Inject()(
                                            view: TelephoneNumberView
                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(index: Int) =
+  private def actions(index: Int, draftId: String) =
     identify andThen
-      getData andThen
+      getData(draftId) andThen
       requireData andThen
       validateIndex(index, Trustees) andThen
-      requiredAnswer(RequiredAnswer(TrusteesNamePage(index), routes.TrusteesNameController.onPageLoad(NormalMode, index))) andThen
-      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index)))
+      requiredAnswer(RequiredAnswer(TrusteesNamePage(index), routes.TrusteesNameController.onPageLoad(NormalMode, index, draftId))) andThen
+      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, draftId)))
 
-  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = actions(index) {
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
       val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
@@ -70,7 +70,7 @@ class TelephoneNumberController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, index, trusteeName))
+      Ok(view(preparedForm, mode, index, draftId, trusteeName))
   }
 
   private def getMessagePrefix(index: Int, request: DataRequest[AnyContent]) = {
@@ -84,7 +84,7 @@ class TelephoneNumberController @Inject()(
     messagePrefix
   }
 
-  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = actions(index).async {
+  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
     implicit request =>
 
       val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
@@ -95,7 +95,7 @@ class TelephoneNumberController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, index, trusteeName))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, trusteeName))),
 
         value => {
           val answers = request.userAnswers.set(TelephoneNumberPage(index), value)
@@ -103,7 +103,7 @@ class TelephoneNumberController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(answers)
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TelephoneNumberPage(index), mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TelephoneNumberPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

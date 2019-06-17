@@ -44,7 +44,7 @@ class ConfirmationController @Inject()(
                                        errorHandler: ErrorHandler
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def renderView(trn : String, userAnswers: UserAnswers)(implicit request : DataRequest[AnyContent]) : Future[Result] = {
+  private def renderView(trn : String, userAnswers: UserAnswers, draftId: String)(implicit request : DataRequest[AnyContent]) : Future[Result] = {
     val trustees = userAnswers.get(Trustees).getOrElse(Nil)
     val isAgent = request.affinityGroup == Agent
     val agentOverviewUrl = routes.AgentOverviewController.onPageLoad().url
@@ -75,14 +75,14 @@ class ConfirmationController @Inject()(
               Logger.info("[ConfirmationController][onPageLoad] No TRN available for completed trusts. Throwing exception.")
               errorHandler.onServerError(request, new Exception("TRN is not available for completed trust."))
             case Some(trn) =>
-              renderView(trn, userAnswers)
+              renderView(trn, userAnswers, draftId)
           }
         case RegistrationProgress.InProgress =>
           Logger.info("[ConfirmationController][onPageLoad] Registration inProgress status,redirecting to task list.")
           Future.successful(Redirect(routes.TaskListController.onPageLoad()))
         case RegistrationProgress.NotStarted =>
           Logger.info("[ConfirmationController][onPageLoad] Registration NotStarted status,redirecting to trust registered page online.")
-          Future.successful(Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode)))
+          Future.successful(Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId)))
       }
   }
 }

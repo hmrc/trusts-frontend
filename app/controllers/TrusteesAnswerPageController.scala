@@ -40,7 +40,7 @@ class TrusteesAnswerPageController @Inject()(
                                               sessionRepository: SessionRepository,
                                               identify: IdentifierAction,
                                               navigator: Navigator,
-                                              getData: DataRetrievalAction,
+                                              getData: DraftIdRetrievalActionProvider,
                                               requireData: DataRequiredAction,
                                               requiredAnswer: RequiredAnswerActionProvider,
                                               validateIndex : IndexActionFilterProvider,
@@ -49,17 +49,17 @@ class TrusteesAnswerPageController @Inject()(
                                               countryOptions : CountryOptions
                                             )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(index : Int) =
-    identify andThen getData andThen
+  private def actions(index : Int, draftId: String) =
+    identify andThen getData(draftId) andThen
       requireData andThen
       validateIndex(index, Trustees) andThen
-      requiredAnswer(RequiredAnswer(TrusteesNamePage(index),routes.TrusteesNameController.onPageLoad(NormalMode, index))) andThen
-      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index)))
+      requiredAnswer(RequiredAnswer(TrusteesNamePage(index),routes.TrusteesNameController.onPageLoad(NormalMode, index, draftId))) andThen
+      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, draftId)))
 
-  def onPageLoad(index : Int) = actions(index) {
+  def onPageLoad(index : Int, draftId: String) = actions(index, draftId) {
     implicit request =>
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId)
 
       val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
 
@@ -86,7 +86,7 @@ class TrusteesAnswerPageController @Inject()(
       Ok(view(index, sections))
   }
 
-  def onSubmit(index : Int) = actions(index).async {
+  def onSubmit(index : Int, draftId: String) = actions(index, draftId).async {
     implicit request =>
 
     val answers = request.userAnswers.set(TrusteeStatus(index), Completed)
@@ -94,6 +94,6 @@ class TrusteesAnswerPageController @Inject()(
     for {
       updatedAnswers <- Future.fromTry(answers)
       _              <- sessionRepository.set(updatedAnswers)
-    } yield Redirect(navigator.nextPage(TrusteesAnswerPage, NormalMode)(request.userAnswers))
+    } yield Redirect(navigator.nextPage(TrusteesAnswerPage, NormalMode, draftId)(request.userAnswers))
   }
 }

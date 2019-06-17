@@ -36,7 +36,7 @@ class AdministrationInsideUKController @Inject()(
                                                   sessionRepository: SessionRepository,
                                                   navigator: Navigator,
                                                   identify: IdentifierAction,
-                                                  getData: DataRetrievalAction,
+                                                  getData: DraftIdRetrievalActionProvider,
                                                   requireData: DataRequiredAction,
                                                   formProvider: AdministrationInsideUKFormProvider,
                                                   val controllerComponents: MessagesControllerComponents,
@@ -45,7 +45,7 @@ class AdministrationInsideUKController @Inject()(
 
   val form: Form[Boolean] = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(AdministrationInsideUKPage) match {
@@ -53,21 +53,21 @@ class AdministrationInsideUKController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, draftId))
   }
 
-  def onSubmit(mode: Mode) = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode, draftId: String) = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId))),
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AdministrationInsideUKPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(AdministrationInsideUKPage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(AdministrationInsideUKPage, mode, draftId)(updatedAnswers))
         }
       )
   }

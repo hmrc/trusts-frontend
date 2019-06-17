@@ -37,16 +37,18 @@ class IndividualBeneficiaryNameController @Inject()(
                                       sessionRepository: SessionRepository,
                                       navigator: Navigator,
                                       identify: IdentifierAction,
-                                      getData: DataRetrievalAction,
+                                      getData: DraftIdRetrievalActionProvider,
                                       requireData: DataRequiredAction,
                                       formProvider: IndividualBeneficiaryNameFormProvider,
                                       val controllerComponents: MessagesControllerComponents,
                                       view: IndividualBeneficiaryNameView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
+
   val form = formProvider()
 
-  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
       
       val preparedForm = request.userAnswers.get(IndividualBeneficiaryNamePage(index)) match {
@@ -57,7 +59,7 @@ class IndividualBeneficiaryNameController @Inject()(
       Ok(view(preparedForm, mode,index))
   }
 
-  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -68,7 +70,7 @@ class IndividualBeneficiaryNameController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(IndividualBeneficiaryNamePage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(IndividualBeneficiaryNamePage(index), mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(IndividualBeneficiaryNamePage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

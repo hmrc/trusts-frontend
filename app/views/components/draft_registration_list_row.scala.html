@@ -27,13 +27,13 @@
         @data.createdAt
     </dd>
     <dd class="hmrc-add-to-a-list__change">
-        <a href="@{TrustRegisteredOnlineController.onPageLoad(NormalMode)}">
+        <a href="@{TrustRegisteredOnlineController.onPageLoad(NormalMode, data.draftId)}">
             <span aria-hidden="true">@messages("site.edit")</span>
             <span class="visually-hidden">@messages("site.hidden-edit")</span>
         </a>
     </dd>
     <dd class="hmrc-add-to-a-list__remove">
-        <a href="@{TrustRegisteredOnlineController.onPageLoad(NormalMode)}">
+        <a href="@{TrustRegisteredOnlineController.onPageLoad(NormalMode, data.draftId)}">
             <span aria-hidden="true">@messages("site.delete")</span>
             <span class="visually-hidden">@messages("site.hidden-delete")</span>
         </a>

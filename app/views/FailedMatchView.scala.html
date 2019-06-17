@@ -21,7 +21,7 @@
 main_template: MainTemplate
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@(draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
 title = messages("FailedMatch.title")
@@ -51,7 +51,7 @@ List(
 
 <p>@messages("FailedMatch.paragraph3")</p>
 
-@components.button_link(messages("site.try-again"), WhatIsTheUTRController.onPageLoad(NormalMode).url)
+@components.button_link(messages("site.try-again"), WhatIsTheUTRController.onPageLoad(NormalMode, draftId).url)
 
 <h2>@messages("FailedMatch.h2")</h2>
 

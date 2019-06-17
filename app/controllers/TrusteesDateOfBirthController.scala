@@ -38,7 +38,7 @@ class TrusteesDateOfBirthController @Inject()(
                                                   sessionRepository: SessionRepository,
                                                   navigator: Navigator,
                                                   identify: IdentifierAction,
-                                                  getData: DataRetrievalAction,
+                                                  getData: DraftIdRetrievalActionProvider,
                                                   requireData: DataRequiredAction,
                                                   validateIndex : IndexActionFilterProvider,
                                                   requiredAnswer: RequiredAnswerActionProvider,
@@ -49,17 +49,17 @@ class TrusteesDateOfBirthController @Inject()(
 
   val form = formProvider()
 
-  private def actions(index : Int) =
+  private def actions(index : Int, draftId: String) =
       identify andThen
-      getData andThen
+      getData(draftId) andThen
       requireData andThen
       validateIndex(index, Trustees) andThen
       requiredAnswer(RequiredAnswer(
         TrusteesNamePage(index),
-        routes.TrusteesNameController.onPageLoad(NormalMode, index)
+        routes.TrusteesNameController.onPageLoad(NormalMode, index, draftId)
       ))
 
-  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = actions(index) {
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(TrusteesDateOfBirthPage(index)) match {
@@ -69,23 +69,23 @@ class TrusteesDateOfBirthController @Inject()(
 
       val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
 
-      Ok(view(preparedForm, mode, index, trusteeName))
+      Ok(view(preparedForm, mode, draftId, index, trusteeName))
   }
 
-  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = actions(index).async {
+  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
     implicit request =>
 
       val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, index, trusteeName))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, trusteeName))),
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteesDateOfBirthPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrusteesDateOfBirthPage(index), mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrusteesDateOfBirthPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

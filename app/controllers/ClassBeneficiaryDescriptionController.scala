@@ -38,16 +38,18 @@ class ClassBeneficiaryDescriptionController @Inject()(
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
                                         identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
+                                        getData: DraftIdRetrievalActionProvider,
                                         requireData: DataRequiredAction,
                                         formProvider: ClassBeneficiaryDescriptionFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: ClassBeneficiaryDescriptionView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
+
   val form = formProvider()
 
-  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(ClassBeneficiaryDescriptionPage(index)) match {
@@ -58,7 +60,7 @@ class ClassBeneficiaryDescriptionController @Inject()(
       Ok(view(preparedForm, mode,index))
   }
 
-  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -73,7 +75,7 @@ class ClassBeneficiaryDescriptionController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(answers)
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ClassBeneficiaryDescriptionPage(index), mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(ClassBeneficiaryDescriptionPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

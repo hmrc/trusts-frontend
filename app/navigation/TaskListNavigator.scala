@@ -29,41 +29,41 @@ import viewmodels._
 @Singleton
 class TaskListNavigator @Inject()() {
 
-  private def trustDetailsRoute(answers: UserAnswers) = {
+  private def trustDetailsRoute(draftId: String)(answers: UserAnswers) = {
     val completed = answers.get(TrustDetailsStatus).contains(Completed)
     completed match {
       case true =>
-        routes.TrustDetailsAnswerPageController.onPageLoad()
+        routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
       case _ =>
-        routes.TrustNameController.onPageLoad(NormalMode)
+        routes.TrustNameController.onPageLoad(NormalMode, draftId)
     }
   }
 
-  private def trusteeRoute(answers: UserAnswers) = {
+  private def trusteeRoute(draftId: String)(answers: UserAnswers) = {
     answers.get(viewmodels.Trustees).getOrElse(Nil) match {
       case Nil =>
-        routes.TrusteesInfoController.onPageLoad()
+        routes.TrusteesInfoController.onPageLoad(draftId)
       case _ :: _ =>
-        routes.AddATrusteeController.onPageLoad()
+        routes.AddATrusteeController.onPageLoad(draftId)
     }
   }
 
-  private def settlorRoute(answers: UserAnswers) = {
+  private def settlorRoute(draftId: String)(answers: UserAnswers) = {
     val deceasedCompleted = answers.get(DeceasedSettlorStatus).contains(Completed)
     deceasedCompleted match {
       case true =>
-        routes.DeceasedSettlorAnswerController.onPageLoad()
+        routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
       case _ =>
-        routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode)
+        routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode,draftId)
     }
   }
 
-  private def beneficiaryRoute(answers: UserAnswers) = {
+  private def beneficiaryRoute(draftId: String)(answers: UserAnswers) = {
     isAnyBeneficiaryAdded(answers) match {
       case true =>
-        routes.AddABeneficiaryController.onPageLoad()
+        routes.AddABeneficiaryController.onPageLoad(draftId)
       case false =>
-        routes.IndividualBeneficiaryInfoController.onPageLoad()
+        routes.IndividualBeneficiaryInfoController.onPageLoad(draftId)
     }
   }
 
@@ -75,27 +75,27 @@ class TaskListNavigator @Inject()() {
     individuals.nonEmpty || classes.nonEmpty
   }
 
-  private def assetRoute(answers: UserAnswers) = {
+  private def assetRoute(draftId: String)(answers: UserAnswers) = {
     answers.get(viewmodels.Assets).getOrElse(Nil) match {
       case _ :: _ =>
-        routes.AddAssetsController.onPageLoad()
+        routes.AddAssetsController.onPageLoad(draftId)
       case Nil =>
-        routes.AssetInterruptPageController.onPageLoad()
+        routes.AssetInterruptPageController.onPageLoad(draftId)
     }
   }
 
-  private val taskListRoutes : Page => UserAnswers => Call = {
-    case TrustDetails => trustDetailsRoute
-    case Trustees => trusteeRoute
-    case Settlors => settlorRoute
-    case Beneficiaries => beneficiaryRoute
-    case TaxLiability => _ => routes.TaskListController.onPageLoad()
-    case Assets => assetRoute
-    case _ => _ => routes.IndexController.onPageLoad()
+  private def taskListRoutes(draftId: String): Page => UserAnswers => Call = {
+    case TrustDetails => trustDetailsRoute(draftId)
+    case Trustees => trusteeRoute(draftId)
+    case Settlors => settlorRoute(draftId)
+    case Beneficiaries => beneficiaryRoute(draftId)
+    case TaxLiability => _ => routes.TaskListController.onPageLoad(draftId)
+    case Assets => assetRoute(draftId)
+    case _ => _ => routes.IndexController.onPageLoad(draftId)
   }
 
-  def nextPage(page: Page, userAnswers: UserAnswers) : Call = {
-    taskListRoutes(page)(userAnswers)
+  def nextPage(page: Page, userAnswers: UserAnswers, draftId: String) : Call = {
+    taskListRoutes(draftId)(page)(userAnswers)
   }
 
 }

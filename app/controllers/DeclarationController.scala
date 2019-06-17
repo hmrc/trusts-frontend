@@ -42,7 +42,7 @@ class DeclarationController @Inject()(
                                        sessionRepository: SessionRepository,
                                        navigator: Navigator,
                                        identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
+                                       getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
                                        formProvider: DeclarationFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
@@ -53,9 +53,9 @@ class DeclarationController @Inject()(
 
   val form = formProvider()
 
-  def actions = identify andThen getData andThen requireData andThen registrationComplete
+  def actions(draftId: String) = identify andThen getData(draftId) andThen requireData andThen registrationComplete
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = actions {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(DeclarationPage) match {
@@ -63,10 +63,10 @@ class DeclarationController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode,request.affinityGroup))
+      Ok(view(preparedForm, mode, draftId,request.affinityGroup))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = actions.async {
+  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(

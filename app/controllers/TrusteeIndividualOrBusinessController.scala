@@ -38,7 +38,7 @@ class TrusteeIndividualOrBusinessController @Inject()(
                                                 sessionRepository: SessionRepository,
                                                 navigator: Navigator,
                                                 identify: IdentifierAction,
-                                                getData: DataRetrievalAction,
+                                                getData: DraftIdRetrievalActionProvider,
                                                 requireData: DataRequiredAction,
                                                 validateIndex: IndexActionFilterProvider,
                                                 formProvider: TrusteeIndividualOrBusinessFormProvider,
@@ -49,13 +49,13 @@ class TrusteeIndividualOrBusinessController @Inject()(
   with I18nSupport
   with Enumerable.Implicits {
 
-  private def actions(index: Int) =
-    identify andThen getData andThen
+  private def actions(index: Int, draftId: String) =
+    identify andThen getData(draftId) andThen
       requireData andThen
       validateIndex(index, Trustees) andThen
-      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index)))
+      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, draftId)))
 
-  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = actions(index) {
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
       val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
@@ -71,10 +71,10 @@ class TrusteeIndividualOrBusinessController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, index, heading))
+      Ok(view(preparedForm, mode, index, draftId, heading))
   }
 
-  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = actions(index).async {
+  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
     implicit request =>
 
       val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
@@ -87,13 +87,13 @@ class TrusteeIndividualOrBusinessController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, index, heading))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, heading))),
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeIndividualOrBusinessPage(index), value))
             _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrusteeIndividualOrBusinessPage(index), mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrusteeIndividualOrBusinessPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

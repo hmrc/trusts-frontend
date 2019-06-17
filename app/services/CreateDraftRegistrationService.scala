@@ -32,23 +32,23 @@ class CreateDraftRegistrationService @Inject()(
                                               sessionRepository: SessionRepository
                                               )(implicit ec: ExecutionContext, m: Materializer) {
 
-  private def build[A](request: OptionalDataRequest[A], body : => Result) : Future[Result] = {
+  private def build[A](request: OptionalDataRequest[A]) : Future[String] = {
     val draftId = UUID.randomUUID().toString
     val userAnswers = UserAnswers(draftId = draftId, internalAuthId = request.internalId)
 
     sessionRepository.set(userAnswers).map {
       _ =>
-        body
+        draftId
     }
   }
 
-  def create[A](request: IdentifierRequest[A], body : => Result) : Future[Result] = {
+  def create[A](request: IdentifierRequest[A]) : Future[String] = {
     val transformed = OptionalDataRequest(request.request, request.identifier, None, request.affinityGroup, request.agentARN)
-    build(transformed, body)
+    build(transformed)
   }
 
-  def create[A](request : OptionalDataRequest[A], body: => Result) : Future[Result] =
-    build(request, body)
+  def create[A](request : OptionalDataRequest[A]) : Future[String] =
+    build(request)
 
 }
 

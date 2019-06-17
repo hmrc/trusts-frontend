@@ -38,7 +38,7 @@ class CountryAdministeringTrustController @Inject()(
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
                                         identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
+                                        getData: DraftIdRetrievalActionProvider,
                                         requireData: DataRequiredAction,
                                         formProvider: CountryAdministeringTrustFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
@@ -46,9 +46,11 @@ class CountryAdministeringTrustController @Inject()(
                                         val countryOptions: CountryOptionsNonUK
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
+
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(CountryAdministeringTrustPage) match {
@@ -59,7 +61,7 @@ class CountryAdministeringTrustController @Inject()(
       Ok(view(preparedForm, countryOptions.options, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -70,7 +72,7 @@ class CountryAdministeringTrustController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(CountryAdministeringTrustPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(CountryAdministeringTrustPage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(CountryAdministeringTrustPage, mode, draftId)(updatedAnswers))
         }
       )
   }

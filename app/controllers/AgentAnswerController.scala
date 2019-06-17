@@ -37,19 +37,19 @@ class AgentAnswerController @Inject()(
                                        identify: IdentifierAction,
                                        navigator: Navigator,
                                        hasAgentAffinityGroup: RequireStateActionProviderImpl,
-                                       getData: DataRetrievalAction,
+                                       getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: AgentAnswerView, countryOptions : CountryOptions
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions =
-    identify andThen hasAgentAffinityGroup() andThen getData andThen requireData
+  private def actions(draftId: String) =
+    identify andThen hasAgentAffinityGroup() andThen getData(draftId) andThen requireData
 
-  def onPageLoad= actions {
+  def onPageLoad(draftId: String)= actions(draftId) {
     implicit request =>
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId)
 
       val sections = Seq(
         AnswerSection(
@@ -65,11 +65,11 @@ class AgentAnswerController @Inject()(
         )
       )
 
-      Ok(view(sections))
+      Ok(view(draftId ,sections))
   }
 
-  def onSubmit = actions {
+  def onSubmit(draftId: String) = actions(draftId) {
     implicit request =>
-      Redirect(navigator.nextPage(AgentAnswerPage ,NormalMode)(request.userAnswers))
+      Redirect(navigator.nextPage(AgentAnswerPage ,NormalMode, draftId)(request.userAnswers))
   }
 }

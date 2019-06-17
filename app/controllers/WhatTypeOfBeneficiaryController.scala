@@ -38,23 +38,25 @@ class WhatTypeOfBeneficiaryController @Inject()(
                                        sessionRepository: SessionRepository,
                                        navigator: Navigator,
                                        identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
+                                       getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
                                        formProvider: WhatTypeOfBeneficiaryFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: WhatTypeOfBeneficiaryView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
+  private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
+
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
       Ok(view(form, mode,isAnyBeneficiaryAdded(request)))
   }
 
 
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -65,7 +67,7 @@ class WhatTypeOfBeneficiaryController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatTypeOfBeneficiaryPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(WhatTypeOfBeneficiaryPage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(WhatTypeOfBeneficiaryPage, mode, draftId)(updatedAnswers))
         }
       )
   }

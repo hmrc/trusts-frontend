@@ -40,7 +40,7 @@ class IndividualBeneficiaryAnswersController @Inject()(
                                        sessionRepository: SessionRepository,
                                        identify: IdentifierAction,
                                        navigator: Navigator,
-                                       getData: DataRetrievalAction,
+                                       getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,
                                        requiredAnswer: RequiredAnswerActionProvider,
@@ -50,18 +50,18 @@ class IndividualBeneficiaryAnswersController @Inject()(
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
-  private def actions(index : Int) =
+  private def actions(index : Int, draftId: String) =
     identify andThen
-      getData andThen
+      getData(draftId) andThen
       requireData andThen
-      requiredAnswer(RequiredAnswer(IndividualBeneficiaryNamePage(index), routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, 0)))
+      requiredAnswer(RequiredAnswer(IndividualBeneficiaryNamePage(index), routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, 0, draftId)))
 
 
 
-  def onPageLoad(index : Int): Action[AnyContent] = actions(index) {
+  def onPageLoad(index : Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
-      val answers = new CheckYourAnswersHelper(countryOptions)(request.userAnswers)
+      val answers = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId)
 
       val sections = Seq(
         AnswerSection(
@@ -85,7 +85,7 @@ class IndividualBeneficiaryAnswersController @Inject()(
       Ok(view(index, sections))
   }
 
-  def onSubmit(index : Int) = actions(index).async {
+  def onSubmit(index : Int, draftId: String) = actions(index, draftId).async {
     implicit request =>
 
       val answers = request.userAnswers.set(IndividualBeneficiaryStatus(index), Completed)
@@ -93,6 +93,6 @@ class IndividualBeneficiaryAnswersController @Inject()(
       for {
         updatedAnswers <- Future.fromTry(answers)
         _              <- sessionRepository.set(updatedAnswers)
-      } yield Redirect(navigator.nextPage(IndividualBeneficiaryAnswersPage, NormalMode)(request.userAnswers))
+      } yield Redirect(navigator.nextPage(IndividualBeneficiaryAnswersPage, NormalMode, draftId)(request.userAnswers))
   }
 }

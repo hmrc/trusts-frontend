@@ -51,9 +51,12 @@ class AgentOverviewController @Inject()(
       }
   }
 
-  def onSubmit = actions.async {
+  def onSubmit() = actions.async {
     implicit request =>
-      val redirect = Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode))
-      draftRegistrationService.create(request, redirect)
+
+      draftRegistrationService.create(request).map {
+        draftId =>
+          Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId))
+      }
   }
 }

@@ -31,218 +31,218 @@ import viewmodels.{ClassOfBeneficiaries, IndividualBeneficiaries}
 @Singleton
 class Navigator @Inject()() {
 
-  private val normalRoutes: Page => AffinityGroup => UserAnswers => Call = {
+  private def normalRoutes(draftId: String): Page => AffinityGroup => UserAnswers => Call = {
     //  Matching
-    case TrustRegisteredOnlinePage => _ => _ => routes.TrustHaveAUTRController.onPageLoad(NormalMode)
-    case TrustHaveAUTRPage => af => userAnswers => trustHaveAUTRRoute(userAnswers, af)
-    case WhatIsTheUTRPage => _ => _ => routes.TrustNameController.onPageLoad(NormalMode)
+    case TrustRegisteredOnlinePage => _ => _ => routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId)
+    case TrustHaveAUTRPage => af => userAnswers => trustHaveAUTRRoute(userAnswers, af, draftId)
+    case WhatIsTheUTRPage => _ => _ => routes.TrustNameController.onPageLoad(NormalMode, draftId)
     case PostcodeForTheTrustPage => _ => _ => routes.FailedMatchController.onPageLoad()
 
     //  Trust Details
-    case TrustNamePage => _ => trustNameRoute
-    case WhenTrustSetupPage => _ => _ => routes.GovernedInsideTheUKController.onPageLoad(NormalMode)
-    case GovernedInsideTheUKPage => _ => isTrustGovernedInsideUKRoute
-    case CountryGoverningTrustPage => _ => _ => routes.AdministrationInsideUKController.onPageLoad(NormalMode)
-    case AdministrationInsideUKPage => _ => isTrustGeneralAdministrationRoute
-    case CountryAdministeringTrustPage => _ => _ => routes.TrustResidentInUKController.onPageLoad(NormalMode)
-    case TrustResidentInUKPage => _ => isTrustResidentInUKRoute
-    case EstablishedUnderScotsLawPage => _ => _ => routes.TrustResidentOffshoreController.onPageLoad(NormalMode)
-    case TrustResidentOffshorePage => _ => wasTrustPreviouslyResidentOffshoreRoute
-    case TrustPreviouslyResidentPage => _ => _ => routes.TrustDetailsAnswerPageController.onPageLoad()
-    case RegisteringTrustFor5APage => _ => registeringForPurposeOfSchedule5ARoute
-    case NonResidentTypePage => _ => _ => routes.TrustDetailsAnswerPageController.onPageLoad()
-    case InheritanceTaxActPage => _ => inheritanceTaxRoute
-    case AgentOtherThanBarristerPage => _ => _ => routes.TrustDetailsAnswerPageController.onPageLoad()
-    case TrustDetailsAnswerPage => _ => _ => routes.TaskListController.onPageLoad()
+    case TrustNamePage => _ => trustNameRoute(draftId)
+    case WhenTrustSetupPage => _ => _ => routes.GovernedInsideTheUKController.onPageLoad(NormalMode, draftId)
+    case GovernedInsideTheUKPage => _ => isTrustGovernedInsideUKRoute(draftId)
+    case CountryGoverningTrustPage => _ => _ => routes.AdministrationInsideUKController.onPageLoad(NormalMode, draftId)
+    case AdministrationInsideUKPage => _ => isTrustGeneralAdministrationRoute(draftId)
+    case CountryAdministeringTrustPage => _ => _ => routes.TrustResidentInUKController.onPageLoad(NormalMode, draftId)
+    case TrustResidentInUKPage => _ => isTrustResidentInUKRoute(draftId)
+    case EstablishedUnderScotsLawPage => _ => _ => routes.TrustResidentOffshoreController.onPageLoad(NormalMode, draftId)
+    case TrustResidentOffshorePage => _ => wasTrustPreviouslyResidentOffshoreRoute(draftId)
+    case TrustPreviouslyResidentPage => _ => _ => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
+    case RegisteringTrustFor5APage => _ => registeringForPurposeOfSchedule5ARoute(draftId)
+    case NonResidentTypePage => _ => _ => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
+    case InheritanceTaxActPage => _ => inheritanceTaxRoute(draftId)
+    case AgentOtherThanBarristerPage => _ => _ => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
+    case TrustDetailsAnswerPage => _ => _ => routes.TaskListController.onPageLoad(draftId)
 
     //  Trustees
-    case IsThisLeadTrusteePage(index) => _ =>_ => routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index)
-    case TrusteeIndividualOrBusinessPage(index)  => _ => ua => trusteeIndividualOrBusinessRoute(ua, index)
+    case IsThisLeadTrusteePage(index) => _ =>_ => routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId)
+    case TrusteeIndividualOrBusinessPage(index)  => _ => ua => trusteeIndividualOrBusinessRoute(ua, index, draftId)
 
-    case TrusteesNamePage(index) => _ => _ => routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index)
-    case TrusteesDateOfBirthPage(index) => _ => ua => trusteeDateOfBirthRoute(ua, index)
-    case TrusteeAUKCitizenPage(index) => _ => ua => trusteeAUKCitizenRoute(ua, index)
-    case TrusteesNinoPage(index) => _ => _ => routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index)
-    case TrusteeLiveInTheUKPage(index)  => _ => ua => trusteeLiveInTheUKRoute(ua, index)
-    case TrusteesUkAddressPage(index) => _ => _ => routes.TelephoneNumberController.onPageLoad(NormalMode, index)
-    case TelephoneNumberPage(index) => _ => _ => routes.TrusteesAnswerPageController.onPageLoad(index)
-    case TrusteesAnswerPage => _ => _ => routes.AddATrusteeController.onPageLoad()
-    case AddATrusteePage => _ => addATrusteeRoute
+    case TrusteesNamePage(index) => _ => _ => routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, draftId)
+    case TrusteesDateOfBirthPage(index) => _ => ua => trusteeDateOfBirthRoute(ua, index, draftId)
+    case TrusteeAUKCitizenPage(index) => _ => ua => trusteeAUKCitizenRoute(ua, index, draftId)
+    case TrusteesNinoPage(index) => _ => _ => routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index, draftId)
+    case TrusteeLiveInTheUKPage(index)  => _ => ua => trusteeLiveInTheUKRoute(ua, index, draftId)
+    case TrusteesUkAddressPage(index) => _ => _ => routes.TelephoneNumberController.onPageLoad(NormalMode, index, draftId)
+    case TelephoneNumberPage(index) => _ => _ => routes.TrusteesAnswerPageController.onPageLoad(index, draftId)
+    case TrusteesAnswerPage => _ => _ => routes.AddATrusteeController.onPageLoad(draftId)
+    case AddATrusteePage => _ => addATrusteeRoute(draftId)
 
     //Agents
-    case AgentInternalReferencePage => _ => _ => routes.AgentNameController.onPageLoad(NormalMode)
-    case AgentNamePage => _ => _ => routes.AgentAddressYesNoController.onPageLoad(NormalMode)
-    case AgentAddressYesNoPage => _ => ua => agentAddressYesNoRoute(ua)
-    case AgentUKAddressPage => _ => _ => routes.AgentTelephoneNumberController.onPageLoad(NormalMode)
-    case AgentInternationalAddressPage => _ => _ => routes.AgentTelephoneNumberController.onPageLoad(NormalMode)
-    case AgentTelephoneNumberPage => _ => _ => routes.AgentAnswerController.onPageLoad()
-    case AgentAnswerPage => _ => _ => routes.TaskListController.onPageLoad()
+    case AgentInternalReferencePage => _ => _ => routes.AgentNameController.onPageLoad(NormalMode, draftId)
+    case AgentNamePage => _ => _ => routes.AgentAddressYesNoController.onPageLoad(NormalMode, draftId)
+    case AgentAddressYesNoPage => _ => ua => agentAddressYesNoRoute(ua, draftId)
+    case AgentUKAddressPage => _ => _ => routes.AgentTelephoneNumberController.onPageLoad(NormalMode, draftId)
+    case AgentInternationalAddressPage => _ => _ => routes.AgentTelephoneNumberController.onPageLoad(NormalMode, draftId)
+    case AgentTelephoneNumberPage => _ => _ => routes.AgentAnswerController.onPageLoad(draftId)
+    case AgentAnswerPage => _ => _ => routes.TaskListController.onPageLoad(draftId)
 
     //Assets
-    case AssetMoneyValuePage(index) => _ => ua => assetMoneyValueRoute(ua, index)
-    case WhatKindOfAssetPage(index) => _ => ua => whatKindOfAssetRoute(ua, index)
-    case AddAssetsPage => _ => addAssetsRoute
+    case AssetMoneyValuePage(index) => _ => ua => assetMoneyValueRoute(ua, index, draftId)
+    case WhatKindOfAssetPage(index) => _ => ua => whatKindOfAssetRoute(ua, index, draftId)
+    case AddAssetsPage => _ => addAssetsRoute(draftId)
 
     //Settlors
-    case SetupAfterSettlorDiedPage => _ => setupAfterSettlorDiedRoute
-    case SettlorsNamePage => _ => _ => routes.SettlorDateOfDeathYesNoController.onPageLoad(NormalMode)
-    case SettlorDateOfDeathYesNoPage => _ => deceasedSettlorDateOfDeathRoute
-    case SettlorDateOfBirthYesNoPage => _ => deceasedSettlorDateOfBirthRoute
-    case SettlorsDateOfBirthPage => _ => _ => routes.SettlorsNINoYesNoController.onPageLoad(NormalMode)
-    case SettlorsNINoYesNoPage => _ => deceasedSettlorNinoRoute
-    case SettlorsLastKnownAddressYesNoPage => _ => deceasedSettlorLastKnownAddressRoute
-    case SettlorDateOfDeathPage => _ => _ => routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode)
-    case SettlorNationalInsuranceNumberPage => _ => _ => routes.DeceasedSettlorAnswerController.onPageLoad()
-    case WasSettlorsAddressUKYesNoPage => _ => deceasedSettlorAddressRoute
-    case SettlorsInternationalAddressPage => _ => _ => routes.DeceasedSettlorAnswerController.onPageLoad()
-    case SettlorsUKAddressPage => _ => _ => routes.DeceasedSettlorAnswerController.onPageLoad()
-    case DeceasedSettlorAnswerPage => _ => _ => routes.TaskListController.onPageLoad()
+    case SetupAfterSettlorDiedPage => _ => setupAfterSettlorDiedRoute(draftId)
+    case SettlorsNamePage => _ => _ => routes.SettlorDateOfDeathYesNoController.onPageLoad(NormalMode, draftId)
+    case SettlorDateOfDeathYesNoPage => _ => deceasedSettlorDateOfDeathRoute(draftId)
+    case SettlorDateOfBirthYesNoPage => _ => deceasedSettlorDateOfBirthRoute(draftId)
+    case SettlorsDateOfBirthPage => _ => _ => routes.SettlorsNINoYesNoController.onPageLoad(NormalMode, draftId)
+    case SettlorsNINoYesNoPage => _ => deceasedSettlorNinoRoute(draftId)
+    case SettlorsLastKnownAddressYesNoPage => _ => deceasedSettlorLastKnownAddressRoute(draftId)
+    case SettlorDateOfDeathPage => _ => _ => routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode, draftId)
+    case SettlorNationalInsuranceNumberPage => _ => _ => routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
+    case WasSettlorsAddressUKYesNoPage => _ => deceasedSettlorAddressRoute(draftId)
+    case SettlorsInternationalAddressPage => _ => _ => routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
+    case SettlorsUKAddressPage => _ => _ => routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
+    case DeceasedSettlorAnswerPage => _ => _ => routes.TaskListController.onPageLoad(draftId)
 
      //Beneficiary
-    case IndividualBeneficiaryNamePage(index) => _ => _ => routes.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(NormalMode, index)
-    case IndividualBeneficiaryDateOfBirthYesNoPage(index) => _ => ua => individualBeneficiaryDateOfBirthRoute(ua, index)
-    case IndividualBeneficiaryDateOfBirthPage(index) => _ => _ => routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode, index)
-    case IndividualBeneficiaryIncomeYesNoPage(index) => _ => ua => individualBeneficiaryIncomeRoute(ua, index)
-    case IndividualBeneficiaryIncomePage(index) => _ => _ => routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode, index)
-    case IndividualBeneficiaryNationalInsuranceYesNoPage(index) => _ => ua => individualBeneficiaryNationalInsuranceYesNoRoute(ua, index)
+    case IndividualBeneficiaryNamePage(index) => _ => _ => routes.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(NormalMode, index, draftId)
+    case IndividualBeneficiaryDateOfBirthYesNoPage(index) => _ => ua => individualBeneficiaryDateOfBirthRoute(ua, index, draftId)
+    case IndividualBeneficiaryDateOfBirthPage(index) => _ => _ => routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode, index, draftId)
+    case IndividualBeneficiaryIncomeYesNoPage(index) => _ => ua => individualBeneficiaryIncomeRoute(ua, index, draftId)
+    case IndividualBeneficiaryIncomePage(index) => _ => _ => routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode, index, draftId)
+    case IndividualBeneficiaryNationalInsuranceYesNoPage(index) => _ => ua => individualBeneficiaryNationalInsuranceYesNoRoute(ua, index, draftId)
     case IndividualBeneficiaryNationalInsuranceNumberPage(index) => _ => _ =>
-      routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index)
-    case IndividualBeneficiaryAddressYesNoPage(index) => _ => ua => individualBeneficiaryAddressRoute(ua, index)
-    case IndividualBeneficiaryAddressUKYesNoPage(index) => _ => ua => individualBeneficiaryAddressUKYesNoRoute(ua, index)
-    case IndividualBeneficiaryAddressUKPage(index) => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index)
-    case IndividualBeneficiaryVulnerableYesNoPage(index) => _ => _ => routes.IndividualBeneficiaryAnswersController.onPageLoad(index)
+      routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index, draftId)
+    case IndividualBeneficiaryAddressYesNoPage(index) => _ => ua => individualBeneficiaryAddressRoute(ua, index, draftId)
+    case IndividualBeneficiaryAddressUKYesNoPage(index) => _ => ua => individualBeneficiaryAddressUKYesNoRoute(ua, index, draftId)
+    case IndividualBeneficiaryAddressUKPage(index) => _ => _ => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index, draftId)
+    case IndividualBeneficiaryVulnerableYesNoPage(index) => _ => _ => routes.IndividualBeneficiaryAnswersController.onPageLoad(index, draftId)
     case IndividualBeneficiaryAnswersPage => _ => _ => routes.AddABeneficiaryController.onPageLoad(draftId)
 
-    case AddABeneficiaryPage => _ => addABeneficiaryRoute
-    case WhatTypeOfBeneficiaryPage => _ => whatTypeOfBeneficiaryRoute
+    case AddABeneficiaryPage => _ => addABeneficiaryRoute(draftId)
+    case WhatTypeOfBeneficiaryPage => _ => whatTypeOfBeneficiaryRoute(draftId)
     case ClassBeneficiaryDescriptionPage(index) => _ => _ => routes.AddABeneficiaryController.onPageLoad(draftId)
 
 
     //  Default
-    case _ => _ => _ => routes.IndexController.onPageLoad()
+    case _ => _ => _ => routes.IndexController.onPageLoad(draftId)
   }
 
 
-  private def whatTypeOfBeneficiaryRoute(userAnswers: UserAnswers) : Call = {
+  private def whatTypeOfBeneficiaryRoute(draftId: String)(userAnswers: UserAnswers) : Call = {
     val whatBeneficiaryToAdd = userAnswers.get(WhatTypeOfBeneficiaryPage)
     whatBeneficiaryToAdd match {
       case Some(WhatTypeOfBeneficiary.Individual) =>
-        routeToIndividualBeneficiaryIndex(userAnswers)
+        routeToIndividualBeneficiaryIndex(userAnswers, draftId)
       case Some(WhatTypeOfBeneficiary.ClassOfBeneficiary) =>
-        routeToClassOfBeneficiaryIndex(userAnswers)
+        routeToClassOfBeneficiaryIndex(userAnswers, draftId)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
 
-  private def routeToIndividualBeneficiaryIndex(userAnswers: UserAnswers) = {
+  private def routeToIndividualBeneficiaryIndex(userAnswers: UserAnswers, draftId: String) = {
     val indBeneficiaries = userAnswers.get(IndividualBeneficiaries).getOrElse(List.empty)
     indBeneficiaries match {
       case Nil =>
-        routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, 0)
+        routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, 0, draftId)
       case t if t.nonEmpty =>
-        routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, t.size)
+        routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, t.size, draftId)
     }
   }
 
-  private def routeToClassOfBeneficiaryIndex(userAnswers: UserAnswers) = {
+  private def routeToClassOfBeneficiaryIndex(userAnswers: UserAnswers, draftId: String) = {
     val classOfBeneficiaries = userAnswers.get(ClassOfBeneficiaries).getOrElse(List.empty)
     classOfBeneficiaries match {
       case Nil =>
-        routes.ClassBeneficiaryDescriptionController.onPageLoad(NormalMode, 0)
+        routes.ClassBeneficiaryDescriptionController.onPageLoad(NormalMode, 0, draftId)
       case t if t.nonEmpty =>
-        routes.ClassBeneficiaryDescriptionController.onPageLoad(NormalMode, t.size)
+        routes.ClassBeneficiaryDescriptionController.onPageLoad(NormalMode, t.size, draftId)
     }
   }
 
-  private def agentAddressYesNoRoute(userAnswers: UserAnswers) : Call =
+  private def agentAddressYesNoRoute(userAnswers: UserAnswers, draftId: String) : Call =
     userAnswers.get(AgentAddressYesNoPage) match {
-      case Some(false) => routes.AgentInternationalAddressController.onPageLoad(NormalMode)
-      case Some(true) => routes.AgentUKAddressController.onPageLoad(NormalMode)
+      case Some(false) => routes.AgentInternationalAddressController.onPageLoad(NormalMode, draftId)
+      case Some(true) => routes.AgentUKAddressController.onPageLoad(NormalMode, draftId)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
 
-  private def individualBeneficiaryAddressRoute(userAnswers: UserAnswers, index: Int) : Call =
+  private def individualBeneficiaryAddressRoute(userAnswers: UserAnswers, index: Int, draftId: String) : Call =
     userAnswers.get(IndividualBeneficiaryAddressYesNoPage(index)) match {
-      case Some(false) => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index)
-      case Some(true) => routes.IndividualBeneficiaryAddressUKYesNoController.onPageLoad(NormalMode, index)
+      case Some(false) => routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index, draftId)
+      case Some(true) => routes.IndividualBeneficiaryAddressUKYesNoController.onPageLoad(NormalMode, index, draftId)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
 
-  private def individualBeneficiaryAddressUKYesNoRoute(userAnswers: UserAnswers, index: Int) : Call =
+  private def individualBeneficiaryAddressUKYesNoRoute(userAnswers: UserAnswers, index: Int, draftId: String) : Call =
     userAnswers.get(IndividualBeneficiaryAddressUKYesNoPage(index)) match {
-      case Some(false) => routes.IndividualBeneficiaryAddressUKYesNoController.onPageLoad(NormalMode, index)
-      case Some(true) => routes.IndividualBeneficiaryAddressUKController.onPageLoad(NormalMode, index)
+      case Some(false) => routes.IndividualBeneficiaryAddressUKYesNoController.onPageLoad(NormalMode, index, draftId)
+      case Some(true) => routes.IndividualBeneficiaryAddressUKController.onPageLoad(NormalMode, index, draftId)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
 
-  private def individualBeneficiaryNationalInsuranceYesNoRoute(userAnswers: UserAnswers, index: Int) : Call =
+  private def individualBeneficiaryNationalInsuranceYesNoRoute(userAnswers: UserAnswers, index: Int, draftId: String) : Call =
     userAnswers.get(IndividualBeneficiaryNationalInsuranceYesNoPage(index)) match {
-      case Some(false) => routes.IndividualBeneficiaryAddressYesNoController.onPageLoad(NormalMode, index)
-      case Some(true) => routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(NormalMode, index)
+      case Some(false) => routes.IndividualBeneficiaryAddressYesNoController.onPageLoad(NormalMode, index, draftId)
+      case Some(true) => routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(NormalMode, index, draftId)
       case _ => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def individualBeneficiaryIncomeRoute(userAnswers: UserAnswers, index: Int) : Call =
+  private def individualBeneficiaryIncomeRoute(userAnswers: UserAnswers, index: Int, draftId: String) : Call =
     userAnswers.get(IndividualBeneficiaryIncomeYesNoPage(index)) match {
-      case Some(false) => routes.IndividualBeneficiaryIncomeController.onPageLoad(NormalMode, index)
-      case Some(true) => routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode, index)
+      case Some(false) => routes.IndividualBeneficiaryIncomeController.onPageLoad(NormalMode, index, draftId)
+      case Some(true) => routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode, index, draftId)
       case _ => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def individualBeneficiaryDateOfBirthRoute(userAnswers: UserAnswers, index: Int) : Call =
+  private def individualBeneficiaryDateOfBirthRoute(userAnswers: UserAnswers, index: Int, draftId: String) : Call =
     userAnswers.get(IndividualBeneficiaryDateOfBirthYesNoPage(index)) match {
-    case Some(false) => routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode, index)
-    case Some(true) => routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(NormalMode, index)
+    case Some(false) => routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode, index, draftId)
+    case Some(true) => routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(NormalMode, index, draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 
 
-  private def setupAfterSettlorDiedRoute(userAnswers: UserAnswers) : Call = userAnswers.get(SetupAfterSettlorDiedPage) match {
-    case Some(false) => routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode)
-    case Some(true) => routes.SettlorsNameController.onPageLoad(NormalMode)
+  private def setupAfterSettlorDiedRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(SetupAfterSettlorDiedPage) match {
+    case Some(false) => routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode, draftId)
+    case Some(true) => routes.SettlorsNameController.onPageLoad(NormalMode, draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def deceasedSettlorAddressRoute(userAnswers: UserAnswers) : Call = userAnswers.get(WasSettlorsAddressUKYesNoPage) match {
-    case Some(false) => routes.SettlorsInternationalAddressController.onPageLoad(NormalMode)
-    case Some(true) => routes.SettlorsUKAddressController.onPageLoad(NormalMode)
+  private def deceasedSettlorAddressRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(WasSettlorsAddressUKYesNoPage) match {
+    case Some(false) => routes.SettlorsInternationalAddressController.onPageLoad(NormalMode, draftId)
+    case Some(true) => routes.SettlorsUKAddressController.onPageLoad(NormalMode, draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def deceasedSettlorLastKnownAddressRoute(userAnswers: UserAnswers) : Call = userAnswers.get(SettlorsLastKnownAddressYesNoPage) match {
-    case Some(false) => routes.DeceasedSettlorAnswerController.onPageLoad()
-    case Some(true) => routes.WasSettlorsAddressUKYesNoController.onPageLoad(NormalMode)
+  private def deceasedSettlorLastKnownAddressRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(SettlorsLastKnownAddressYesNoPage) match {
+    case Some(false) => routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
+    case Some(true) => routes.WasSettlorsAddressUKYesNoController.onPageLoad(NormalMode, draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def deceasedSettlorNinoRoute(userAnswers: UserAnswers) : Call = userAnswers.get(SettlorsNINoYesNoPage) match {
-    case Some(false) => routes.SettlorsLastKnownAddressYesNoController.onPageLoad(NormalMode)
-    case Some(true) => routes.SettlorNationalInsuranceNumberController.onPageLoad(NormalMode)
+  private def deceasedSettlorNinoRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(SettlorsNINoYesNoPage) match {
+    case Some(false) => routes.SettlorsLastKnownAddressYesNoController.onPageLoad(NormalMode, draftId)
+    case Some(true) => routes.SettlorNationalInsuranceNumberController.onPageLoad(NormalMode, draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def deceasedSettlorDateOfBirthRoute(userAnswers: UserAnswers): Call = userAnswers.get(SettlorDateOfBirthYesNoPage) match {
-    case Some(false) => routes.SettlorsNINoYesNoController.onPageLoad(NormalMode)
-    case Some(true) => routes.SettlorsDateOfBirthController.onPageLoad(NormalMode)
+  private def deceasedSettlorDateOfBirthRoute(draftId: String)(userAnswers: UserAnswers): Call = userAnswers.get(SettlorDateOfBirthYesNoPage) match {
+    case Some(false) => routes.SettlorsNINoYesNoController.onPageLoad(NormalMode, draftId)
+    case Some(true) => routes.SettlorsDateOfBirthController.onPageLoad(NormalMode, draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def deceasedSettlorDateOfDeathRoute(userAnswers: UserAnswers) : Call = userAnswers.get(SettlorDateOfDeathYesNoPage) match {
-    case Some(false) => routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode)
-    case Some(true) => routes.SettlorDateOfDeathController.onPageLoad(NormalMode)
+  private def deceasedSettlorDateOfDeathRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(SettlorDateOfDeathYesNoPage) match {
+    case Some(false) => routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode, draftId)
+    case Some(true) => routes.SettlorDateOfDeathController.onPageLoad(NormalMode, draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def addAssetsRoute(answers: UserAnswers) = {
+  private def addAssetsRoute(draftId: String)(answers: UserAnswers) = {
     val addAnother = answers.get(AddAssetsPage)
 
     def routeToAssetIndex = {
       val assets = answers.get(viewmodels.Assets).getOrElse(List.empty)
       assets match {
         case Nil =>
-          routes.WhatKindOfAssetController.onPageLoad(NormalMode, 0)
+          routes.WhatKindOfAssetController.onPageLoad(NormalMode, 0, draftId)
         case t if t.nonEmpty =>
-          routes.WhatKindOfAssetController.onPageLoad(NormalMode, t.size)
+          routes.WhatKindOfAssetController.onPageLoad(NormalMode, t.size, draftId)
       }
     }
 
@@ -250,41 +250,41 @@ class Navigator @Inject()() {
       case Some(models.AddAssets.YesNow) =>
         routeToAssetIndex
       case Some(models.AddAssets.YesLater) =>
-        routes.TaskListController.onPageLoad()
+        routes.TaskListController.onPageLoad(draftId)
       case Some(models.AddAssets.NoComplete) =>
-        routes.TaskListController.onPageLoad()
+        routes.TaskListController.onPageLoad(draftId)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
 
-  private def assetMoneyValueRoute(answers: UserAnswers, index: Int) = {
+  private def assetMoneyValueRoute(answers: UserAnswers, index: Int, draftId: String) = {
     val assets = answers.get(viewmodels.Assets).getOrElse(List.empty)
     assets match  {
-      case Nil => routes.WhatKindOfAssetController.onPageLoad(NormalMode, 0)
-      case _ => routes.AddAssetsController.onPageLoad()
+      case Nil => routes.WhatKindOfAssetController.onPageLoad(NormalMode, 0, draftId)
+      case _ => routes.AddAssetsController.onPageLoad(draftId)
     }
   }
 
-  private def whatKindOfAssetRoute(answers: UserAnswers, index: Int) = answers.get(WhatKindOfAssetPage(index)) match {
-      case Some(Money) => routes.AssetMoneyValueController.onPageLoad(NormalMode, index)
-      case Some(PropertyOrLand) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index)
-      case Some(Shares) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index)
-      case Some(Business) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index)
-      case Some(Partnership) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index)
-      case Some(Other) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index)
+  private def whatKindOfAssetRoute(answers: UserAnswers, index: Int, draftId: String) = answers.get(WhatKindOfAssetPage(index)) match {
+      case Some(Money) => routes.AssetMoneyValueController.onPageLoad(NormalMode, index, draftId)
+      case Some(PropertyOrLand) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
+      case Some(Shares) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
+      case Some(Business) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
+      case Some(Partnership) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
+      case Some(Other) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
 
-  private def addATrusteeRoute(answers: UserAnswers) = {
+  private def addATrusteeRoute(draftId: String)(answers: UserAnswers) = {
     val addAnother = answers.get(AddATrusteePage)
 
     def routeToTrusteeIndex = {
       val trustees = answers.get(viewmodels.Trustees).getOrElse(List.empty)
       trustees match {
         case Nil =>
-          routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 0)
+          routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 0, draftId)
         case t if t.nonEmpty =>
-          routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, t.size)
+          routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, t.size, draftId)
       }
     }
 
@@ -292,38 +292,38 @@ class Navigator @Inject()() {
       case Some(YesNow) =>
         routeToTrusteeIndex
       case Some(YesLater) =>
-        routes.TaskListController.onPageLoad()
+        routes.TaskListController.onPageLoad(draftId)
       case Some(NoComplete) =>
-        routes.TaskListController.onPageLoad()
+        routes.TaskListController.onPageLoad(draftId)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
 
-  private def addABeneficiaryRoute(answers: UserAnswers) = {
+  private def addABeneficiaryRoute(draftId: String)(answers: UserAnswers) = {
     val addAnother = answers.get(AddABeneficiaryPage)
     addAnother match {
       case Some(AddABeneficiary.YesNow) =>
-        routes.WhatTypeOfBeneficiaryController.onPageLoad()
+        routes.WhatTypeOfBeneficiaryController.onPageLoad(draftId)
       case Some(AddABeneficiary.YesLater) =>
-        routes.TaskListController.onPageLoad()
+        routes.TaskListController.onPageLoad(draftId)
       case Some(AddABeneficiary.NoComplete) =>
-        routes.TaskListController.onPageLoad()
+        routes.TaskListController.onPageLoad(draftId)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
 
 
-  private def trustHaveAUTRRoute(answers: UserAnswers, af: AffinityGroup) = {
+  private def trustHaveAUTRRoute(answers: UserAnswers, af: AffinityGroup, draftId: String) = {
     val condition = (answers.get(TrustRegisteredOnlinePage), answers.get(TrustHaveAUTRPage))
 
     condition match {
-      case (Some(false), Some(true)) => routes.WhatIsTheUTRController.onPageLoad(NormalMode)
+      case (Some(false), Some(true)) => routes.WhatIsTheUTRController.onPageLoad(NormalMode, draftId)
       case (Some(false), Some(false)) =>
 
         if(af == AffinityGroup.Organisation){
-          routes.TaskListController.onPageLoad()
+          routes.TaskListController.onPageLoad(draftId)
         } else {
-          routes.AgentInternalReferenceController.onPageLoad(NormalMode)
+          routes.AgentInternalReferenceController.onPageLoad(NormalMode, draftId)
         }
 
       case (Some(true), Some(false)) => routes.UTRSentByPostController.onPageLoad()
@@ -332,89 +332,89 @@ class Navigator @Inject()() {
     }
   }
 
-  private def trustNameRoute(answers: UserAnswers) = {
+  private def trustNameRoute(draftId: String)(answers: UserAnswers) = {
     val hasUTR = answers.get(TrustHaveAUTRPage).contains(true)
 
     if (hasUTR) {
-      routes.PostcodeForTheTrustController.onPageLoad(NormalMode)
+      routes.PostcodeForTheTrustController.onPageLoad(NormalMode, draftId)
     } else {
-      routes.WhenTrustSetupController.onPageLoad(NormalMode)
+      routes.WhenTrustSetupController.onPageLoad(NormalMode, draftId)
     }
   }
 
-  private def isTrustGovernedInsideUKRoute(answers: UserAnswers) = answers.get(GovernedInsideTheUKPage) match {
-    case Some(true)  => routes.AdministrationInsideUKController.onPageLoad(NormalMode)
-    case Some(false) => routes.CountryGoverningTrustController.onPageLoad(NormalMode)
+  private def isTrustGovernedInsideUKRoute(draftId: String)(answers: UserAnswers) = answers.get(GovernedInsideTheUKPage) match {
+    case Some(true)  => routes.AdministrationInsideUKController.onPageLoad(NormalMode, draftId)
+    case Some(false) => routes.CountryGoverningTrustController.onPageLoad(NormalMode, draftId)
     case None        => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def isTrustGeneralAdministrationRoute(answers: UserAnswers) = answers.get(AdministrationInsideUKPage) match {
-    case Some(true)  => routes.TrustResidentInUKController.onPageLoad(NormalMode)
-    case Some(false) => routes.CountryAdministeringTrustController.onPageLoad(NormalMode)
+  private def isTrustGeneralAdministrationRoute(draftId: String)(answers: UserAnswers) = answers.get(AdministrationInsideUKPage) match {
+    case Some(true)  => routes.TrustResidentInUKController.onPageLoad(NormalMode, draftId)
+    case Some(false) => routes.CountryAdministeringTrustController.onPageLoad(NormalMode, draftId)
     case None        => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def isTrustResidentInUKRoute(answers: UserAnswers) = answers.get(TrustResidentInUKPage) match {
-    case Some(true)   => routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode)
-    case Some(false)  => routes.RegisteringTrustFor5AController.onPageLoad(NormalMode)
+  private def isTrustResidentInUKRoute(draftId: String)(answers: UserAnswers) = answers.get(TrustResidentInUKPage) match {
+    case Some(true)   => routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode, draftId)
+    case Some(false)  => routes.RegisteringTrustFor5AController.onPageLoad(NormalMode, draftId)
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def wasTrustPreviouslyResidentOffshoreRoute(answers: UserAnswers) = answers.get(TrustResidentOffshorePage) match {
-    case Some(true)   => routes.TrustPreviouslyResidentController.onPageLoad(NormalMode)
-    case Some(false)  => routes.TrustDetailsAnswerPageController.onPageLoad()
+  private def wasTrustPreviouslyResidentOffshoreRoute(draftId: String)(answers: UserAnswers) = answers.get(TrustResidentOffshorePage) match {
+    case Some(true)   => routes.TrustPreviouslyResidentController.onPageLoad(NormalMode, draftId)
+    case Some(false)  => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def registeringForPurposeOfSchedule5ARoute(answers: UserAnswers) = answers.get(RegisteringTrustFor5APage) match {
-    case Some(true)   => routes.NonResidentTypeController.onPageLoad(NormalMode)
-    case Some(false)  => routes.InheritanceTaxActController.onPageLoad(NormalMode)
+  private def registeringForPurposeOfSchedule5ARoute(draftId: String)(answers: UserAnswers) = answers.get(RegisteringTrustFor5APage) match {
+    case Some(true)   => routes.NonResidentTypeController.onPageLoad(NormalMode, draftId)
+    case Some(false)  => routes.InheritanceTaxActController.onPageLoad(NormalMode, draftId)
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def inheritanceTaxRoute(answers: UserAnswers) = answers.get(InheritanceTaxActPage) match {
-    case Some(true)   => routes.AgentOtherThanBarristerController.onPageLoad(NormalMode)
-    case Some(false)  => routes.TrustDetailsAnswerPageController.onPageLoad()
+  private def inheritanceTaxRoute(draftId: String)(answers: UserAnswers) = answers.get(InheritanceTaxActPage) match {
+    case Some(true)   => routes.AgentOtherThanBarristerController.onPageLoad(NormalMode, draftId)
+    case Some(false)  => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def trusteeAUKCitizenRoute(answers: UserAnswers, index: Int) = answers.get(TrusteeAUKCitizenPage(index)) match {
-    case Some(true)   => routes.TrusteesNinoController.onPageLoad(NormalMode,index)
-    case Some(false)  => routes.TrusteeAUKCitizenController.onPageLoad(NormalMode,index)
+  private def trusteeAUKCitizenRoute(answers: UserAnswers, index: Int, draftId: String) = answers.get(TrusteeAUKCitizenPage(index)) match {
+    case Some(true)   => routes.TrusteesNinoController.onPageLoad(NormalMode,index, draftId)
+    case Some(false)  => routes.TrusteeAUKCitizenController.onPageLoad(NormalMode,index, draftId)
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def trusteeLiveInTheUKRoute(answers: UserAnswers, index: Int) = answers.get(TrusteeLiveInTheUKPage(index)) match {
-    case Some(true)   => routes.TrusteesUkAddressController.onPageLoad(NormalMode,index)
-    case Some(false)  => routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode,index)
+  private def trusteeLiveInTheUKRoute(answers: UserAnswers, index: Int, draftId: String) = answers.get(TrusteeLiveInTheUKPage(index)) match {
+    case Some(true)   => routes.TrusteesUkAddressController.onPageLoad(NormalMode,index, draftId)
+    case Some(false)  => routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode,index, draftId)
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def trusteeDateOfBirthRoute(answers: UserAnswers, index : Int) = answers.get(IsThisLeadTrusteePage(index)) match {
-    case Some(true) => routes.TrusteeAUKCitizenController.onPageLoad(NormalMode, index)
-    case Some(false) => routes.TrusteesAnswerPageController.onPageLoad(index)
+  private def trusteeDateOfBirthRoute(answers: UserAnswers, index : Int, draftId: String) = answers.get(IsThisLeadTrusteePage(index)) match {
+    case Some(true) => routes.TrusteeAUKCitizenController.onPageLoad(NormalMode, index, draftId)
+    case Some(false) => routes.TrusteesAnswerPageController.onPageLoad(index, draftId)
     case None => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def trusteeIndividualOrBusinessRoute(answers: UserAnswers, index : Int) = answers.get(TrusteeIndividualOrBusinessPage(index)) match {
-    case Some(Individual) => routes.TrusteesNameController.onPageLoad(NormalMode, index)
-    case Some(IndividualOrBusiness.Business) => routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode,index)
+  private def trusteeIndividualOrBusinessRoute(answers: UserAnswers, index : Int, draftId: String) = answers.get(TrusteeIndividualOrBusinessPage(index)) match {
+    case Some(Individual) => routes.TrusteesNameController.onPageLoad(NormalMode, index, draftId)
+    case Some(IndividualOrBusiness.Business) => routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode,index, draftId)
     case None => routes.SessionExpiredController.onPageLoad()
   }
 
 
-  private val checkRouteMap: Page => UserAnswers => Call = {
+  private def checkRouteMap(draftId: String): Page => UserAnswers => Call = {
     // TrustDetails
-    case TrustNamePage => _ => routes.TrustDetailsAnswerPageController.onPageLoad()
-    case WhenTrustSetupPage => _ => routes.TrustDetailsAnswerPageController.onPageLoad()
-    case _ => _ => routes.CheckYourAnswersController.onPageLoad()
+    case TrustNamePage => _ => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
+    case WhenTrustSetupPage => _ => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
+    case _ => _ => routes.CheckYourAnswersController.onPageLoad(draftId)
   }
 
-  def nextPage(page: Page, mode: Mode, af :AffinityGroup = AffinityGroup.Organisation): UserAnswers => Call = mode match {
+  def nextPage(page: Page, mode: Mode, draftId: String,  af :AffinityGroup = AffinityGroup.Organisation): UserAnswers => Call = mode match {
     case NormalMode =>
-      normalRoutes(page)(af)
+      normalRoutes(draftId)(page)(af)
     case CheckMode =>
-      checkRouteMap(page)
+      checkRouteMap(draftId)(page)
   }
 
 }

@@ -28,8 +28,6 @@ import scala.concurrent.ExecutionContext
 class UTRSentByPostController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: UTRSentByPostView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
