@@ -116,11 +116,18 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
     val moneyAsset = checkYourAnswersHelper.moneyAsset.getOrElse(Nil)
     val sections =  trustDetails ++ settlors ++ trustees ++ individualBeneficiaries ++ classOfBeneficiaries ++ moneyAsset
 
-    val applyView = view.apply(sections)(fakeRequest, messages)
+    val applyOrganisationView = view.apply(sections, false, "")(fakeRequest, messages)
+    val applyAgentView = view.apply(sections, true, "agentClientReference")(fakeRequest, messages)
 
-    behave like normalPage(applyView, "summaryAnswerPage", "paragraph1", "paragraph2")
+    behave like normalPage(applyOrganisationView, "summaryAnswerPage", "paragraph1", "paragraph2")
 
-    val doc = asDocument(applyView)
+    val doc = asDocument(applyOrganisationView)
+    val agentDoc = asDocument(applyAgentView)
+
+    "assert header content for Agent user" in {
+      assertContainsText(agentDoc, messages("answerPage.agentClientRef", "agentClientReference"))
+    }
+
 
     "assert correct number of headers and subheaders" in {
       val wrapper = doc.getElementById("wrapper")

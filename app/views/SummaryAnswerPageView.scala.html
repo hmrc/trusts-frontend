@@ -22,13 +22,17 @@
     formHelper: FormWithCSRF
 )
 
-@(answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
+@(answerSections: Seq[Section], isAgent: Boolean, agentClientRef: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("summaryAnswerPage.title")
     ) {
 
     @components.heading("summaryAnswerPage.heading", headingSize = "heading-xlarge")
+
+    @if(isAgent) {
+        <p class="agentClientRef">@messages("answerPage.agentClientRef", agentClientRef)</p>
+    }
 
     <p>@messages("summaryAnswerPage.paragraph1")</p>
 

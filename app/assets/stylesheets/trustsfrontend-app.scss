@@ -168,7 +168,7 @@
     }
 }
 
-.declarationReferenceNumber {font-weight:700;}
+.agentClientRef, .declarationReferenceNumber {font-weight:700;}
 
 @media print {
     .print-hidden, .header-wrapper, .service-info, .report-error  {

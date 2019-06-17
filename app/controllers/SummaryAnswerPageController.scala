@@ -18,9 +18,10 @@ package controllers
 
 import controllers.actions._
 import javax.inject.Inject
-import pages.RegistrationProgress
+import pages.{AgentInternalReferencePage, RegistrationProgress}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
+import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
@@ -45,6 +46,7 @@ class SummaryAnswerPageController @Inject()(
   def onPageLoad() = actions() {
     implicit request =>
 
+      val isAgent = request.affinityGroup == Agent
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, canEdit = false)
       val trustDetails = checkYourAnswersHelper.trustDetails.getOrElse(Nil)
       val trustees = checkYourAnswersHelper.trustees.getOrElse(Nil)
@@ -56,7 +58,9 @@ class SummaryAnswerPageController @Inject()(
       
       val sections = trustDetails ++ settlors ++ trustees ++ individualBeneficiaries ++ classOfBeneficiaries ++ moneyAsset
 
-      Ok(view(sections))
+      val agentClientRef = request.userAnswers.get(AgentInternalReferencePage).getOrElse("")
+
+      Ok(view(sections, isAgent, agentClientRef))
 
   }
 

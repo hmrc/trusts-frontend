@@ -837,3 +837,4 @@ answerPage.section.individualBeneficiary.subheading = Individual beneficiary
 answerPage.section.classOfBeneficiary.subheading = Class of beneficiary
 answerPage.section.assets.heading = Assets
 answerPage.section.moneyAsset.subheading = Money
+answerPage.agentClientRef = Client reference number: {0}
