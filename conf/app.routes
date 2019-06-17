@@ -372,3 +372,7 @@ GET        /declaration                        controllers.DeclarationController
 POST       /declaration                        controllers.DeclarationController.onSubmit(mode: Mode = NormalMode)
 
 GET       /confirmation                         controllers.ConfirmationController.onPageLoad()
+
+GET        /your-draft-registration                          controllers.SummaryAnswerPageController.onPageLoad()
+
+GET        /your-declared-registration                          controllers.ConfirmationAnswerPageController.onPageLoad()
