@@ -129,7 +129,16 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
     }
 
 
-    "assert correct number of headers and subheaders" in {
+    "assert correct number of headers and subheaders for Agent user" in {
+      val wrapper = agentDoc.getElementById("wrapper")
+      val headers = wrapper.getElementsByTag("h2")
+      val subHeaders = wrapper.getElementsByTag("h3")
+
+      headers.size mustBe 6
+      subHeaders.size mustBe 4
+    }
+
+    "assert correct number of headers and subheaders for Organisation user" in {
       val wrapper = doc.getElementById("wrapper")
       val headers = wrapper.getElementsByTag("h2")
       val subHeaders = wrapper.getElementsByTag("h3")

@@ -98,6 +98,8 @@ class SummaryAnswersControllerSpec extends SpecBase {
         .set(AssetStatus(index), Completed).success.value
         .set(AddAssetsPage, NoComplete).success.value
 
+        .set(AgentInternalReferencePage, "agentClientReference").success.value
+
 
     val countryOptions = injector.instanceOf[CountryOptions]
     val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, canEdit = false)
@@ -184,7 +186,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
 
     "return OK and the correct view for a GET when tasklist completed for Organisation user" in {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Organisation).build()
 
       val request = FakeRequest(GET, routes.SummaryAnswerPageController.onPageLoad().url)
 
@@ -202,7 +204,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
 
     "return OK and the correct view for a GET when tasklist completed for Agent user" in {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, routes.SummaryAnswerPageController.onPageLoad().url)
 
