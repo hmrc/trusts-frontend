@@ -38,7 +38,7 @@ class ConfirmationViewSpec extends ViewBehaviours {
       assertContainsText(doc, "Your reference is:")
       assertRenderedById(doc, "trusts-registration-number")
 
-      assertRenderedById(doc, "confirmation-print-and-save")
+      assertRenderedById(doc, "print-and-save")
       assertRenderedById(doc, "post-to-hmrc-contact")
 
       assertContainsText(doc, s"We will post $name a Unique Taxpayer Reference (UTR). If they are based in the UK, this can take 15 working days. For international trustees, this can take up to 21 working days.")
@@ -63,7 +63,7 @@ class ConfirmationViewSpec extends ViewBehaviours {
       assertContainsText(doc, "Your reference is:")
       assertRenderedById(doc, "trusts-registration-number")
 
-      assertRenderedById(doc, "confirmation-print-and-save")
+      assertRenderedById(doc, "print-and-save")
       assertRenderedById(doc, "post-to-hmrc-contact")
 
       assertNotRenderedById(doc, "contact-hmrc-for-utr")
@@ -93,7 +93,14 @@ class ConfirmationViewSpec extends ViewBehaviours {
   "Confirmation view for a new trust" must {
     val view = viewFor[ConfirmationView](Some(emptyUserAnswers))
 
-    val applyView = view.apply(isExistingTrust = false, isAgent = false, refNumber, postHMRC, "#", FullName("John", None, "Smith"))(fakeRequest, messages)
+    val applyView = view.apply(
+      isExistingTrust = false,
+      isAgent = false,
+      draftId = fakeDraftId,
+      refNumber = refNumber,
+      postHMRC = postHMRC,
+      agentOverviewUrl = "#",
+      leadTrusteeName= FullName("John", None, "Smith"))(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView, messageKeyPrefix, refNumber)
 
@@ -103,7 +110,14 @@ class ConfirmationViewSpec extends ViewBehaviours {
   "Confirmation view for an existing trust" must {
     val view = viewFor[ConfirmationView](Some(emptyUserAnswers))
 
-    val applyView = view.apply(isExistingTrust = true, isAgent = false, refNumber, postHMRC, "#", FullName("John", None, "Smith"))(fakeRequest, messages)
+    val applyView = view.apply(
+      isExistingTrust = false,
+      isAgent = false,
+      draftId = fakeDraftId,
+      refNumber = refNumber,
+      postHMRC = postHMRC,
+      agentOverviewUrl = "#",
+      leadTrusteeName= FullName("John", None, "Smith"))(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView, messageKeyPrefix, refNumber)
 
@@ -113,7 +127,14 @@ class ConfirmationViewSpec extends ViewBehaviours {
   "Confirmation view for an agent" must {
     val view = viewForAgent[ConfirmationView](Some(emptyUserAnswers))
 
-    val applyView = view.apply(isExistingTrust = true, isAgent = true, refNumber, postHMRC, "#", FullName("John", None, "Smith"))(fakeRequest, messages)
+    val applyView = view.apply(
+      isExistingTrust = false,
+      isAgent = false,
+      draftId = fakeDraftId,
+      refNumber = refNumber,
+      postHMRC = postHMRC,
+      agentOverviewUrl = "#",
+      leadTrusteeName= FullName("John", None, "Smith"))(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView, messageKeyPrefix, refNumber)
 

@@ -21,7 +21,7 @@
     main_template: MainTemplate
 )
 
-@(isExistingTrust: Boolean, isAgent: Boolean, refNumber: String, postHMRC: String, agentOverviewUrl: String, leadTrusteeName : FullName)(implicit request: Request[_], messages: Messages)
+@(draftId : String, isExistingTrust: Boolean, isAgent: Boolean, refNumber: String, postHMRC: String, agentOverviewUrl: String, leadTrusteeName : FullName)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${messages("confirmationPage.title", refNumber)}"
@@ -35,7 +35,7 @@
         </h1>
     </div>
 
-    @components.link("", "confirmation-print-and-save","confirmationPage.printsave.link", "_blank")
+    @components.link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save","confirmationPage.printsave.link", openInNewWindow = true)
 
     @if(!isExistingTrust) {
 

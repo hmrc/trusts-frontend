@@ -57,7 +57,7 @@ class WhitelistFilterSpec extends FreeSpec with MustMatchers with PropertyChecks
               )
 
               assertThrows[ConfigException] {
-                new WhitelistFilter(config, mockMaterializer)
+                new WhitelistFilter(config, mockMaterializer).whitelist
               }
             }
         }
@@ -132,7 +132,7 @@ class WhitelistFilterSpec extends FreeSpec with MustMatchers with PropertyChecks
               )
 
               assertThrows[ConfigException] {
-                new WhitelistFilter(config, mockMaterializer)
+                new WhitelistFilter(config, mockMaterializer).destination
               }
             }
         }
@@ -178,7 +178,7 @@ class WhitelistFilterSpec extends FreeSpec with MustMatchers with PropertyChecks
               )
 
               assertThrows[ConfigException] {
-                new WhitelistFilter(config, mockMaterializer)
+                new WhitelistFilter(config, mockMaterializer).excludedPaths
               }
             }
         }

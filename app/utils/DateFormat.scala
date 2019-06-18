@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,23 +12,18 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import viewmodels.AnswerSection
-@import views.html._
+package utils
 
-@(answerSection: AnswerSection)(implicit messages: Messages)
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
-@if(answerSection.sectionKey.isDefined){
-    <h2 class="heading-large">@messages(answerSection.sectionKey.get)</h2>
+object DateFormat {
+
+  def formatDate(dateTime: LocalDateTime, format: String): String = {
+    val dateFormatter = DateTimeFormatter.ofPattern(format)
+    dateTime.format(dateFormatter)
+  }
+
 }
-
-@if(answerSection.headingKey.isDefined){
-    <h3 class="heading-medium">@messages(answerSection.headingKey.get)</h3>
-}
-
-<ul role="list" class="govuk-check-your-answers cya-questions-long section">
-    @for(row <- answerSection.rows){
-        @components.answer_row(row)
-    }
-</ul>

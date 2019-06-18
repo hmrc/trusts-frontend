@@ -19,7 +19,7 @@ package navigation.navigators
 import base.SpecBase
 import controllers.routes
 import generators.Generators
-import models.{AddABeneficiary, AddATrustee, FullName, NormalMode, UserAnswers, WhatTypeOfBeneficiary}
+import models.{AddABeneficiary, FullName, NormalMode, UserAnswers, WhatTypeOfBeneficiary}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
@@ -32,7 +32,6 @@ trait BeneficiaryRoutes {
 
   def beneficiaryRoutes()(implicit navigator: Navigator) = {
 
-
       "go WhatTypeOfBeneficiaryPage from AddABeneficiaryPage when selected add them now" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
@@ -43,8 +42,6 @@ trait BeneficiaryRoutes {
               .mustBe(routes.WhatTypeOfBeneficiaryController.onPageLoad(fakeDraftId))
         }
       }
-
-
 
     "go to RegistrationProgress from AddABeneficiaryPage when selecting add them later" in {
       forAll(arbitrary[UserAnswers]) {

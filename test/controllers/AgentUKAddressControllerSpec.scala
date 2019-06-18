@@ -59,7 +59,7 @@ class AgentUKAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,agencyName,fakeDraftId)(request, messages).toString
+        view(form, NormalMode, fakeDraftId, agencyName)(request, messages).toString
 
       application.stop()
     }
@@ -129,7 +129,7 @@ class AgentUKAddressControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode,agencyName,fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode,fakeDraftId, agencyName)(fakeRequest, messages).toString
 
       application.stop()
     }

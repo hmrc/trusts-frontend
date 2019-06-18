@@ -395,7 +395,7 @@ taskList.agent.agentDetails = Agent details
 
 taskList.summary.heading = Summary
 taskList.summary.paragraph = If you need to update any asset details after making the declaration for this trust, use Self Assessment online or the Trust and Estate Tax Return form (SA900).
-taskList.summary.link = Print or save a copy of your answers
+taskList.summary.link = Print or save a copy of your answers (opens in a new window or tab).
 taskList.summary.continue = Continue to declaration
 
 taskList.completed = Completed
@@ -667,13 +667,13 @@ individualBeneficiaryIncomeYesNo.checkYourAnswersLabel = Do the trustees have di
 individualBeneficiaryIncomeYesNo.hint = See the trust deed for details
 individualBeneficiaryIncomeYesNo.error.required = Select yes if the trustees have discretion over how much income the individual beneficiary may get
 
-individualBeneficiaryIncome.title = How much income does the trust deed say {0} will get?
-individualBeneficiaryIncome.heading = How much income does the trust deed say {0} will get?
-individualBeneficiaryIncome.checkYourAnswersLabel = How much income does the trust deed say {0} will get?
-individualBeneficiaryIncome.hint = Round this down to a whole number. This should be a percentage of the trust’s value.
-individualBeneficiaryIncome.error.required = Enter how much income the trust deed says the individual beneficiary will get
-individualBeneficiaryIncome.error.length = How much income the trust deed says the individual beneficiary will get must be 100 or less
-individualBeneficiaryIncome.error.invalid = How much income the trust deed says the individual beneficiary will get must be a whole number
+individualBeneficiaryIncome.title = What percentage of the trust’s assets is {0} entitled to?
+individualBeneficiaryIncome.heading = What percentage of the trust’s assets is {0} entitled to?
+individualBeneficiaryIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
+individualBeneficiaryIncome.hint = Round this down to a whole number.
+individualBeneficiaryIncome.error.required = Enter what percentage of trust’s assets the beneficiary is entitled to
+individualBeneficiaryIncome.error.length = The percentage of the trust’s assets the beneficiary is entitled to must be 100 or less
+individualBeneficiaryIncome.error.invalid = The percentage of the trust’s assets the beneficiary is entitled to must be a whole number
 
 individualBeneficiaryNationalInsuranceYesNo.title = Do you know {0}’s National Insurance number?
 individualBeneficiaryNationalInsuranceYesNo.heading = Do you know {0}’s National Insurance number?
@@ -758,7 +758,7 @@ classBeneficiaryDescription.heading = What is the description for the class of b
 classBeneficiaryDescription.checkYourAnswersLabel = What is the description for the class of beneficiaries?
 classBeneficiaryDescription.error.required = Enter the description for the class of beneficiaries
 classBeneficiaryDescription.error.length = The description of the class in the trust deed must be 56 characters or less
-classBeneficiaryDescription.error.invalid = The description of class in the trust deed must only include letters a to z, numbers, special characters, ampersands (&), backward slashes or spaces
+classBeneficiaryDescription.error.invalid = The description of the class in the trust deed must only include letters a to z, numbers, ampersands (&), backward slashes or spaces
 classBeneficiaryDescription.hint = This must be 56 characters or less. For example, future grandchildren and future great-grandchildren.
 
 whatTypeOfBeneficiary.first.title = What kind of beneficiary do you need to add first?
@@ -816,3 +816,25 @@ declaration.error.middleName.invalid = Your middle names must only include lette
 declaration.error.lastName.length = Your last name must be 35 characters or less
 declaration.agent.warning = I confirm that my client has taken all reasonable steps to obtain up to date and accurate information for all of the entities given in this registration. I understand that if my client knowingly provides false information and cannot demonstrate that they have taken all reasonable steps, they could be subject to penalties.
 declaration.individual.warning = I confirm that I have taken all reasonable steps to obtain up to date and accurate information for all of the entities given in this registration. I understand that if I knowingly provide false information and I cannot demonstrate that I have taken all reasonable steps, I could be subject to penalties.
+
+summaryAnswerPage.title = Draft copy of the trust’s registration
+summaryAnswerPage.heading = Draft copy of the trust’s registration
+summaryAnswerPage.paragraph1 = You can save your registration and come back later. You have 28 days from the time you first save to register a trust. If you do not register within 28 days, your information will be deleted.
+summaryAnswerPage.paragraph2 = This is a not a declaration confirming the trust has been registered.
+
+confirmationAnswerPage.title = Declared copy of the trust’s registration
+confirmationAnswerPage.heading = Declared copy of the trust’s registration
+confirmationAnswerPage.paragraph1 = Declaration reference number is: {0}
+confirmationAnswerPage.paragraph2 = The trust’s registration was sent on {0}.
+confirmationAnswerPage.warning = You need to declare every year through this service that the details we have are up to date.
+
+answerPage.section.trustsDetails.heading = Trust details
+answerPage.section.settlors.heading = Settlors
+answerPage.section.trustees.heading = Trustees
+answerPage.section.trustee.subheading = Trustee
+answerPage.section.beneficiaries.heading = Beneficiaries
+answerPage.section.individualBeneficiary.subheading = Individual beneficiary
+answerPage.section.classOfBeneficiary.subheading = Class of beneficiary
+answerPage.section.assets.heading = Assets
+answerPage.section.moneyAsset.subheading = Money
+answerPage.agentClientRef = Client reference number: {0}

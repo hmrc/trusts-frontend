@@ -135,7 +135,7 @@ class AgentInternationalAddressControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, countryOptions, NormalMode,agencyName,fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, countryOptions, NormalMode,fakeDraftId,agencyName)(fakeRequest, messages).toString
 
       application.stop()
     }

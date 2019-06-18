@@ -35,7 +35,7 @@ import utils.TestUserAnswers
 trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked with BeforeAndAfter {
   this: TestSuite =>
 
-  val userAnswersId = TestUserAnswers.userAnswersId
+  val userAnswersId = TestUserAnswers.draftId
 
   def emptyUserAnswers = TestUserAnswers.emptyUserAnswers
 
@@ -47,7 +47,7 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
 
   def fakeRequest = FakeRequest("", "")
 
-  def fakeDraftId: String = "fakeDraftId"
+  def fakeDraftId: String = TestUserAnswers.draftId
 
   def injectedParsers = injector.instanceOf[PlayBodyParsers]
 

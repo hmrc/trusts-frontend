@@ -41,7 +41,7 @@ class AgentAddressYesNoViewSpec extends YesNoViewBehaviours {
     val view = viewFor[AgentAddressYesNoView](Some(userAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, name, fakeDraftId)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, name)(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name)
 

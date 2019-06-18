@@ -55,7 +55,7 @@ class ConfirmationController @Inject()(
         userAnswers.get(TrustHaveAUTRPage) match {
           case Some(isExistingTrust) =>
             val postHMRC = config.posthmrc
-            Future.successful(Ok(view(isExistingTrust, isAgent, trn, postHMRC, agentOverviewUrl, lt.name)))
+            Future.successful(Ok(view(draftId, isExistingTrust, isAgent, trn, postHMRC, agentOverviewUrl, lt.name)))
           case None =>
             errorHandler.onServerError(request, new Exception("Could not determine if trust was new or existing."))
         }
