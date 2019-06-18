@@ -66,7 +66,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(form, NormalMode, index, heading)(fakeRequest, messages).toString
+          view(form, NormalMode, fakeDraftId, index, heading)(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -93,7 +93,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(form, NormalMode, index, heading)(fakeRequest, messages).toString
+          view(form, NormalMode, fakeDraftId, index, heading)(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -129,7 +129,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
         status(result) mustEqual BAD_REQUEST
 
         contentAsString(result) mustEqual
-          view(boundForm, NormalMode, index, heading)(fakeRequest, messages).toString
+          view(boundForm, NormalMode, fakeDraftId, index, heading)(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -161,7 +161,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
         status(result) mustEqual BAD_REQUEST
 
         contentAsString(result) mustEqual
-          view(boundForm, NormalMode, index, heading)(fakeRequest, messages).toString
+          view(boundForm, NormalMode, fakeDraftId, index, heading)(fakeRequest, messages).toString
 
         application.stop()
 
@@ -210,7 +210,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(form.fill(name), NormalMode, index, heading)(fakeRequest, messages).toString
+          view(form.fill(name), NormalMode, fakeDraftId, index, heading)(fakeRequest, messages).toString
 
         application.stop()
       }
