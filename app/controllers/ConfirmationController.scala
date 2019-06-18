@@ -55,7 +55,7 @@ class ConfirmationController @Inject()(
         userAnswers.get(TrustHaveAUTRPage) match {
           case Some(isExistingTrust) =>
             val postHMRC = config.posthmrc
-            Future.successful(Ok(view(isExistingTrust, isAgent, trn, postHMRC, agentOverviewUrl, lt.name)))
+            Future.successful(Ok(view(draftId, isExistingTrust, isAgent, trn, postHMRC, agentOverviewUrl, lt.name)))
           case None =>
             errorHandler.onServerError(request, new Exception("Could not determine if trust was new or existing."))
         }
@@ -79,7 +79,7 @@ class ConfirmationController @Inject()(
           }
         case RegistrationProgress.InProgress =>
           Logger.info("[ConfirmationController][onPageLoad] Registration inProgress status,redirecting to task list.")
-          Future.successful(Redirect(routes.TaskListController.onPageLoad()))
+          Future.successful(Redirect(routes.TaskListController.onPageLoad(draftId)))
         case RegistrationProgress.NotStarted =>
           Logger.info("[ConfirmationController][onPageLoad] Registration NotStarted status,redirecting to trust registered page online.")
           Future.successful(Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId)))

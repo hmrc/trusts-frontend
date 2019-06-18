@@ -29,6 +29,12 @@ trait ViewSpecBase extends SpecBase {
 
   def asDocument(html: Html): Document = Jsoup.parse(html.toString())
 
+  def assertContainsQuestionAnswerPair(doc:Document, questionText: String, answerText: String) = {
+    val question = doc.getElementsMatchingOwnText(questionText)
+    val answer = question.next.text
+    assert(answer == answerText, "\n\nquestion: " + questionText +" answer: " + answerText + " was not rendered on the page.\n")
+  }
+
   def assertEqualsMessage(doc: Document, cssSelector: String, expectedMessageKey: String, args: Any*) =
     assertEqualsValue(doc, cssSelector, messages(expectedMessageKey,  args:_*))
 

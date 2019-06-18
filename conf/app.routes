@@ -60,7 +60,7 @@ POST       /:draftId/trust-offshore                               controllers.Tr
 GET        /:draftId/change-trust-offshore                        controllers.TrustResidentOffshoreController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/change-trust-offshore                        controllers.TrustResidentOffshoreController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
-GET        /:draftId/trust-offshore-country/                       controllers.TrustPreviouslyResidentController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/trust-offshore-country                       controllers.TrustPreviouslyResidentController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/trust-offshore-country                       controllers.TrustPreviouslyResidentController.onSubmit(mode: Mode = NormalMode, draftId: String)
 GET        /:draftId/change-trust-offshore-country                controllers.TrustPreviouslyResidentController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/change-trust-offshore-country                controllers.TrustPreviouslyResidentController.onSubmit(mode: Mode = CheckMode, draftId: String)
@@ -107,7 +107,7 @@ POST       /:draftId/change-trust-postcode                        controllers.Po
 
 GET        /matching-failed                             controllers.FailedMatchController.onPageLoad()
 
-GET        /cannot-change                                controllers.CannotMakeChangesController.onPageLoad()
+GET        /cannot-change                               controllers.CannotMakeChangesController.onPageLoad()
 
 GET        /trust-utr-post                              controllers.UTRSentByPostController.onPageLoad()
 
@@ -205,7 +205,7 @@ GET        /:draftId/asset/:index/change-assets-type                  controller
 POST       /:draftId/asset/:index/change-assets-type                  controllers.WhatKindOfAssetController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
 GET        /:draftId/asset/information-you-need                     controllers.AssetInterruptPageController.onPageLoad(draftId: String)
-POST       /:draftId/asset/information-you-need/                     controllers.AssetInterruptPageController.onSubmit(draftId: String)
+POST       /:draftId/asset/information-you-need                     controllers.AssetInterruptPageController.onSubmit(draftId: String)
 
 GET        /:draftId/asset/:index/money                          controllers.AssetMoneyValueController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
 POST       /:draftId/asset/:index/money                          controllers.AssetMoneyValueController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
@@ -373,3 +373,7 @@ GET        /:draftId/declaration                        controllers.DeclarationC
 POST       /:draftId/declaration                        controllers.DeclarationController.onSubmit(mode: Mode = NormalMode, draftId: String)
 
 GET        /:draftId/confirmation                         controllers.ConfirmationController.onPageLoad(draftId: String)
+
+GET        /:draftId/your-draft-registration                          controllers.SummaryAnswerPageController.onPageLoad(draftId : String)
+
+GET        /:draftId/your-declared-registration                          controllers.ConfirmationAnswerPageController.onPageLoad(draftId : String)

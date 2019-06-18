@@ -38,7 +38,7 @@ class ConfirmationViewSpec extends ViewBehaviours {
       assertContainsText(doc, "Your reference is:")
       assertRenderedById(doc, "trusts-registration-number")
 
-      assertRenderedById(doc, "confirmation-print-and-save")
+      assertRenderedById(doc, "print-and-save")
       assertRenderedById(doc, "post-to-hmrc-contact")
 
       assertContainsText(doc, s"We will post $name a Unique Taxpayer Reference (UTR). If they are based in the UK, this can take 15 working days. For international trustees, this can take up to 21 working days.")
@@ -63,7 +63,7 @@ class ConfirmationViewSpec extends ViewBehaviours {
       assertContainsText(doc, "Your reference is:")
       assertRenderedById(doc, "trusts-registration-number")
 
-      assertRenderedById(doc, "confirmation-print-and-save")
+      assertRenderedById(doc, "print-and-save")
       assertRenderedById(doc, "post-to-hmrc-contact")
 
       assertNotRenderedById(doc, "contact-hmrc-for-utr")
