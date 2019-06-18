@@ -17,6 +17,7 @@
 package mapping
 import javax.inject.Inject
 import models.UserAnswers
+import play.api.Logger
 
 class BeneficiariesMapper @Inject()(
                                      individualMapper: IndividualBeneficiaryMapper,
@@ -39,6 +40,7 @@ class BeneficiariesMapper @Inject()(
         )
       )
     } else {
+      Logger.info(s"[BeneficiariesMapper][build] unable to map beneficiaries")
       None
     }
   }

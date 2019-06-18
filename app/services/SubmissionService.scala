@@ -37,17 +37,16 @@ class DefaultSubmissionService @Inject()(
     Logger.info("[SubmissionService][submit] submitting registration")
     registrationMapper.build(userAnswers) match {
       case Some(registration) => trustConnector.register(registration)
-      case None =>{
-        Logger.error ("[SubmissionService][submit] Unable to generate registration to submit.")
+      case None =>
+        Logger.warn("[SubmissionService][submit] Unable to generate registration to submit.")
         Future.failed(UnableToRegister())
       }
     }
-  }
 }
 
 @ImplementedBy(classOf[DefaultSubmissionService])
 trait SubmissionService {
 
-  def submit(userAnswers: UserAnswers)(implicit  hc:HeaderCarrier ) : Future[TrustResponse]
+  def submit(userAnswers: UserAnswers)(implicit  hc:HeaderCarrier) : Future[TrustResponse]
 
 }

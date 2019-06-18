@@ -20,6 +20,7 @@ import javax.inject.Inject
 import models.UserAnswers
 import models.entities.{LeadTrusteeIndividual, Trustee, Trustees}
 import pages.{AgentInternalReferencePage, _}
+import play.api.Logger
 
 class DeclarationMapper @Inject()(nameMapper: NameMapper,
                                   addressMapper: AddressMapper) extends Mapping[Declaration] {
@@ -50,7 +51,9 @@ class DeclarationMapper @Inject()(nameMapper: NameMapper,
   private def getLeadTrusteeAddress(userAnswers: UserAnswers): Option[AddressType] = {
     val trustees: List[Trustee] = userAnswers.get(Trustees).getOrElse(List.empty[Trustee])
     trustees match {
-      case Nil => None
+      case Nil =>
+        Logger.info(s"[DeclarationMapper][build] unable to create declaration due to not having any trustees")
+        None
       case list =>
         list.find(_.isLead).flatMap {
           case lti: LeadTrusteeIndividual =>
@@ -61,6 +64,9 @@ class DeclarationMapper @Inject()(nameMapper: NameMapper,
               TrusteesUkAddressPage(index),
               TrusteesInternationalAddressPage(index)
             )
+          case _ =>
+            Logger.info(s"[CorrespondenceMapper][build] unable to create correspondence due to trustees not having a lead")
+            None
         }
     }
 
