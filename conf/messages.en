@@ -667,13 +667,13 @@ individualBeneficiaryIncomeYesNo.checkYourAnswersLabel = Do the trustees have di
 individualBeneficiaryIncomeYesNo.hint = See the trust deed for details
 individualBeneficiaryIncomeYesNo.error.required = Select yes if the trustees have discretion over how much income the individual beneficiary may get
 
-individualBeneficiaryIncome.title = How much income does the trust deed say {0} will get?
-individualBeneficiaryIncome.heading = How much income does the trust deed say {0} will get?
-individualBeneficiaryIncome.checkYourAnswersLabel = How much income does the trust deed say {0} will get?
-individualBeneficiaryIncome.hint = Round this down to a whole number. This should be a percentage of the trust’s value.
-individualBeneficiaryIncome.error.required = Enter how much income the trust deed says the individual beneficiary will get
-individualBeneficiaryIncome.error.length = How much income the trust deed says the individual beneficiary will get must be 100 or less
-individualBeneficiaryIncome.error.invalid = How much income the trust deed says the individual beneficiary will get must be a whole number
+individualBeneficiaryIncome.title = What percentage of the trust’s assets is {0} entitled to?
+individualBeneficiaryIncome.heading = What percentage of the trust’s assets is {0} entitled to?
+individualBeneficiaryIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
+individualBeneficiaryIncome.hint = Round this down to a whole number.
+individualBeneficiaryIncome.error.required = Enter what percentage of trust’s assets the beneficiary is entitled to
+individualBeneficiaryIncome.error.length = The percentage of the trust’s assets the beneficiary is entitled to must be 100 or less
+individualBeneficiaryIncome.error.invalid = The percentage of the trust’s assets the beneficiary is entitled to must be a whole number
 
 individualBeneficiaryNationalInsuranceYesNo.title = Do you know {0}’s National Insurance number?
 individualBeneficiaryNationalInsuranceYesNo.heading = Do you know {0}’s National Insurance number?
@@ -758,7 +758,7 @@ classBeneficiaryDescription.heading = What is the description for the class of b
 classBeneficiaryDescription.checkYourAnswersLabel = What is the description for the class of beneficiaries?
 classBeneficiaryDescription.error.required = Enter the description for the class of beneficiaries
 classBeneficiaryDescription.error.length = The description of the class in the trust deed must be 56 characters or less
-classBeneficiaryDescription.error.invalid = The description of class in the trust deed must only include letters a to z, numbers, ampersands (&), backward slashes or spaces
+classBeneficiaryDescription.error.invalid = The description of the class in the trust deed must only include letters a to z, numbers, ampersands (&), backward slashes or spaces
 classBeneficiaryDescription.hint = This must be 56 characters or less. For example, future grandchildren and future great-grandchildren.
 
 whatTypeOfBeneficiary.first.title = What kind of beneficiary do you need to add first?
