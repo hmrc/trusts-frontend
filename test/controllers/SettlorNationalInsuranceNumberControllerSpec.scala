@@ -34,7 +34,7 @@ class SettlorNationalInsuranceNumberControllerSpec extends SpecBase {
   val formProvider = new SettlorNationalInsuranceNumberFormProvider()
   val form = formProvider()
 
-  lazy val settlorNationalInsuranceNumberRoute = routes.SettlorNationalInsuranceNumberController.onPageLoad(NormalMode).url
+  lazy val settlorNationalInsuranceNumberRoute = routes.SettlorNationalInsuranceNumberController.onPageLoad(NormalMode,fakeDraftId).url
 
   val name = FullName("first name", None, "Last name")
 
@@ -56,7 +56,7 @@ class SettlorNationalInsuranceNumberControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,name)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, name)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -77,7 +77,7 @@ class SettlorNationalInsuranceNumberControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode, name)(fakeRequest, messages).toString
+        view(form.fill("answer"), NormalMode, fakeDraftId, name)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -124,7 +124,7 @@ class SettlorNationalInsuranceNumberControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, name)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, name)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -172,7 +172,7 @@ class SettlorNationalInsuranceNumberControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SettlorsNameController.onPageLoad(NormalMode).url
+      redirectLocation(result).value mustEqual routes.SettlorsNameController.onPageLoad(NormalMode,fakeDraftId).url
 
       application.stop()
     }

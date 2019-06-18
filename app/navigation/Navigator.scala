@@ -36,7 +36,7 @@ class Navigator @Inject()() {
     case TrustRegisteredOnlinePage => _ => _ => routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId)
     case TrustHaveAUTRPage => af => userAnswers => trustHaveAUTRRoute(userAnswers, af, draftId)
     case WhatIsTheUTRPage => _ => _ => routes.TrustNameController.onPageLoad(NormalMode, draftId)
-    case PostcodeForTheTrustPage => _ => _ => routes.FailedMatchController.onPageLoad()
+    case PostcodeForTheTrustPage => _ => _ => routes.FailedMatchController.onPageLoad(draftId)
 
     //  Trust Details
     case TrustNamePage => _ => trustNameRoute(draftId)
@@ -119,7 +119,7 @@ class Navigator @Inject()() {
 
 
     //  Default
-    case _ => _ => _ => routes.IndexController.onPageLoad(draftId)
+    case _ => _ => _ => routes.IndexController.onPageLoad()
   }
 
 

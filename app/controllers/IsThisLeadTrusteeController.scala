@@ -94,7 +94,7 @@ class IsThisLeadTrusteeController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, index))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index))),
 
         value => {
           for {

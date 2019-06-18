@@ -45,7 +45,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
   val emptyTrusteeName = ""
   val trusteeName = "FirstName LastName"
 
-  lazy val trusteesDateOfBirthRoute = routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index).url
+  lazy val trusteesDateOfBirthRoute = routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "TrusteesDateOfBirth Controller" must {
 
@@ -104,7 +104,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index).url
+      redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       application.stop()
     }
@@ -202,7 +202,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
     "for a GET" must {
 
       def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
-        val route = routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index).url
+        val route = routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         FakeRequest(GET, route)
       }
@@ -219,7 +219,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
       def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
         val route =
-          routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index).url
+          routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         FakeRequest(POST, route)
           .withFormUrlEncodedBody(

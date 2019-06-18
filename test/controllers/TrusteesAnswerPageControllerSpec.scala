@@ -56,7 +56,7 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
 
       val countryOptions = injector.instanceOf[CountryOptions]
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId)
 
       val leadTrusteeIndividualOrBusinessMessagePrefix = "leadTrusteeIndividualOrBusiness"
       val leadTrusteeFullNameMessagePrefix = "leadTrusteesName"
@@ -111,7 +111,7 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
 
       val countryOptions = injector.instanceOf[CountryOptions]
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId)
 
       val trusteeIndividualOrBusinessMessagePrefix = "trusteeIndividualOrBusiness"
       val trusteeFullNameMessagePrefix = "trusteesName"
@@ -165,7 +165,7 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index).url
+      redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       application.stop()
     }
@@ -211,7 +211,7 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index).url
+      redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       application.stop()
     }
@@ -233,7 +233,7 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index).url
+      redirectLocation(result).value mustEqual routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       application.stop()
     }

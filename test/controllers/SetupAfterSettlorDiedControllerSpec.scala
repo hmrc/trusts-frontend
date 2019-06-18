@@ -35,7 +35,7 @@ class SetupAfterSettlorDiedControllerSpec extends SpecBase {
   val formProvider = new SetupAfterSettlorDiedFormProvider()
   val form = formProvider()
 
-  lazy val setupAfterSettlorDiedRoute = routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode).url
+  lazy val setupAfterSettlorDiedRoute = routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode,fakeDraftId).url
 
   "SetupAfterSettlorDied Controller" must {
 

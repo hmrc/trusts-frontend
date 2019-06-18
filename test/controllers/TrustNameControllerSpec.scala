@@ -38,7 +38,7 @@ class TrustNameControllerSpec extends SpecBase with MockitoSugar with Generators
   val formProvider = new TrustNameFormProvider()
   val form = formProvider()
 
-  lazy val trustNameRoute = routes.TrustNameController.onPageLoad(NormalMode).url
+  lazy val trustNameRoute = routes.TrustNameController.onPageLoad(NormalMode,fakeDraftId).url
 
   "TrustName Controller" when {
 

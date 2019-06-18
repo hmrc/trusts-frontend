@@ -59,7 +59,7 @@ class TaskListControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.TrustRegisteredOnlineController.onPageLoad(NormalMode).url
+      redirectLocation(result).value mustEqual routes.TrustRegisteredOnlineController.onPageLoad(NormalMode,fakeDraftId).url
 
       application.stop()
     }
@@ -76,7 +76,7 @@ class TaskListControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.TrustHaveAUTRController.onPageLoad(NormalMode).url
+      redirectLocation(result).value mustEqual routes.TrustHaveAUTRController.onPageLoad(NormalMode,fakeDraftId).url
 
       application.stop()
     }
@@ -172,7 +172,7 @@ class TaskListControllerSpec extends SpecBase {
 
           status(result) mustEqual SEE_OTHER
 
-          redirectLocation(result).value mustEqual routes.WhatIsTheUTRController.onPageLoad(NormalMode).url
+          redirectLocation(result).value mustEqual routes.WhatIsTheUTRController.onPageLoad(NormalMode,fakeDraftId).url
 
           application.stop()
         }

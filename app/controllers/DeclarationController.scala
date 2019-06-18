@@ -71,7 +71,7 @@ class DeclarationController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode,request.affinityGroup))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, request.affinityGroup))),
 
         value => {
 
@@ -79,13 +79,13 @@ class DeclarationController @Inject()(
               updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, value))
               _ <- sessionRepository.set(updatedAnswers)
               response <- submissionService.submit(updatedAnswers)
-              result <- handleResponse(updatedAnswers, response)
+              result <- handleResponse(updatedAnswers, response, draftId)
             } yield result
 
             r.recover {
               case _ : UnableToRegister =>
                 Logger.error(s"[onSubmit] Not able to register , redirecting to registration in progress.")
-                Redirect(routes.TaskListController.onPageLoad())
+                Redirect(routes.TaskListController.onPageLoad(draftId))
               case NonFatal(e) =>
                 Logger.error(s"[onSubmit] Non fatal exception, throwing again. ${e.getMessage}")
                 throw e
@@ -95,7 +95,7 @@ class DeclarationController @Inject()(
       )
   }
 
-  private def handleResponse(updatedAnswers: UserAnswers, response: TrustResponse) : Future[Result] = {
+  private def handleResponse(updatedAnswers: UserAnswers, response: TrustResponse, draftId: String) : Future[Result] = {
     response match {
       case trn: RegistrationTRNResponse =>
         Logger.info("[DeclarationController][handleResponse] Saving trust registration trn.")
@@ -105,7 +105,7 @@ class DeclarationController @Inject()(
         Future.successful(Redirect(routes.UTRSentByPostController.onPageLoad()))
       case e =>
         Logger.warn(s"[DeclarationController][handleResponse] unable to submit due to error $e")
-        Future.successful(Redirect(routes.TaskListController.onPageLoad()))
+        Future.successful(Redirect(routes.TaskListController.onPageLoad(draftId)))
     }
   }
 

@@ -57,7 +57,7 @@ class TrustNameController @Inject()(
 
       val hintTextShown = request.userAnswers.get(TrustHaveAUTRPage).contains(true)
 
-      Ok(view(preparedForm, mode, hintTextShown))
+      Ok(view(preparedForm, mode, draftId, hintTextShown))
   }
 
   def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId: String).async {
@@ -67,7 +67,7 @@ class TrustNameController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, hintTextShown))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, hintTextShown))),
 
         value => {
           for {

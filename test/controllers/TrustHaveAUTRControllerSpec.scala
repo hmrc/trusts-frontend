@@ -39,7 +39,7 @@ class TrustHaveAUTRControllerSpec extends SpecBase {
   val url = "https://www.gov.uk/find-lost-utr-number"
   val link = Link(messages("trustHaveAUTR.link"), url)
 
-  lazy val trustHaveAUTRRoute = routes.TrustHaveAUTRController.onPageLoad(NormalMode).url
+  lazy val trustHaveAUTRRoute = routes.TrustHaveAUTRController.onPageLoad(NormalMode,fakeDraftId).url
 
   "TrustHaveAUTR Controller" must {
 

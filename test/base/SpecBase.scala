@@ -47,6 +47,8 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
 
   def fakeRequest = FakeRequest("", "")
 
+  def fakeDraftId: String = "fakeDraftId"
+
   def injectedParsers = injector.instanceOf[PlayBodyParsers]
 
   implicit def messages: Messages = messagesApi.preferred(fakeRequest)

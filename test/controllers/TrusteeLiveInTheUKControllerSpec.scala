@@ -40,7 +40,7 @@ class TrusteeLiveInTheUKControllerSpec extends SpecBase {
   val emptyTrusteeName = ""
   val trusteeName = "FirstName LastName"
 
-  lazy val trusteeLiveInTheUKRoute = routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index).url
+  lazy val trusteeLiveInTheUKRoute = routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "TrusteeLiveInTheUK Controller" must {
 
@@ -125,7 +125,7 @@ class TrusteeLiveInTheUKControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index).url
+      redirectLocation(result).value mustEqual routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       application.stop()
     }
@@ -173,7 +173,7 @@ class TrusteeLiveInTheUKControllerSpec extends SpecBase {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index).url
+        redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         application.stop()
       }
@@ -194,7 +194,7 @@ class TrusteeLiveInTheUKControllerSpec extends SpecBase {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index).url
+        redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         application.stop()
 

@@ -65,7 +65,7 @@ class ConfirmationControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad(fakeDraftId).url
 
       application.stop()
     }
@@ -81,7 +81,7 @@ class ConfirmationControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.TrustRegisteredOnlineController.onPageLoad(NormalMode).url
+      redirectLocation(result).value mustEqual routes.TrustRegisteredOnlineController.onPageLoad(NormalMode,fakeDraftId).url
 
       application.stop()
     }

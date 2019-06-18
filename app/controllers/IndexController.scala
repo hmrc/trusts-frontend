@@ -38,10 +38,10 @@ class IndexController @Inject()(
                                  draftService : CreateDraftRegistrationService
                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(draftId: String): Action[AnyContent] = (identify andThen getData).async {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData).async {
     implicit request =>
 
-      def routeAffinityGroupNotStarted = {
+      def routeAffinityGroupNotStarted(draftId: String) = {
         request.affinityGroup match {
           case AffinityGroup.Agent =>
             Redirect(routes.AgentOverviewController.onPageLoad())
@@ -50,22 +50,22 @@ class IndexController @Inject()(
         }
       }
 
-      def routeAffinityGroupInProgress = {
+      def routeAffinityGroupInProgress(draftId: String) = {
         request.affinityGroup match {
           case AffinityGroup.Agent =>
             Redirect(routes.AgentOverviewController.onPageLoad())
           case _ =>
-            Redirect(routes.TaskListController.onPageLoad())
+            Redirect(routes.TaskListController.onPageLoad(draftId))
         }
       }
 
       request.userAnswers match {
-        case Some(_) =>
-          Future.successful(routeAffinityGroupInProgress)
+        case Some(userAnswers) =>
+          Future.successful(routeAffinityGroupInProgress(userAnswers.draftId) )
         case None =>
           draftService.create(request).map {
-            _ =>
-              routeAffinityGroupNotStarted
+            draftId =>
+              routeAffinityGroupNotStarted(draftId)
           }
       }
   }

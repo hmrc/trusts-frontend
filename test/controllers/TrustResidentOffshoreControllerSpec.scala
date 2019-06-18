@@ -41,7 +41,7 @@ class TrustResidentOffshoreControllerSpec extends SpecBase with MockitoSugar {
   val formProvider = new TrustResidentOffshoreFormProvider()
   val form = formProvider()
 
-  lazy val trustResidentOffshoreRoute = routes.TrustResidentOffshoreController.onPageLoad(NormalMode).url
+  lazy val trustResidentOffshoreRoute = routes.TrustResidentOffshoreController.onPageLoad(NormalMode,fakeDraftId).url
 
   "TrustResidentOffshore Controller" must {
 

@@ -34,7 +34,7 @@ class TrusteesInfoController @Inject()(
 
   def onPageLoad(draftId: String): Action[AnyContent] = identify {
     implicit request =>
-      Ok(view())
+      Ok(view(draftId))
   }
 
 }

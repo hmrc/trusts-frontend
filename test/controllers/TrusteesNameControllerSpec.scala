@@ -38,7 +38,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
 
   val index = 0
 
-  lazy val trusteesNameRoute: String = routes.TrusteesNameController.onPageLoad(NormalMode, index).url
+  lazy val trusteesNameRoute: String = routes.TrusteesNameController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "TrusteesName Controller" must {
 
@@ -180,7 +180,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index).url
+        redirectLocation(result).value mustEqual routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         application.stop()
       }
@@ -259,7 +259,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index).url
+          redirectLocation(result).value mustEqual routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId).url
 
           application.stop()
         }
@@ -300,7 +300,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
       "for a GET" must {
 
         def getForIndex(index: Int): FakeRequest[AnyContentAsEmpty.type] = {
-          val route = routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index).url
+          val route = routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
 
           FakeRequest(GET, route)
         }
@@ -317,7 +317,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
         def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
           val route =
-            routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index).url
+            routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
 
           FakeRequest(POST, route)
             .withFormUrlEncodedBody(("firstName", "first"), ("middleName", "middle"), ("lastName", "last"))

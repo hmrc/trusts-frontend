@@ -29,7 +29,7 @@ class IndividualBeneficiaryInfoControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, routes.IndividualBeneficiaryInfoController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.IndividualBeneficiaryInfoController.onPageLoad(fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -38,7 +38,7 @@ class IndividualBeneficiaryInfoControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view()(fakeRequest, messages).toString
+        view(fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }

@@ -32,9 +32,10 @@ class SettlorsNameControllerSpec extends SpecBase {
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new SettlorsNameFormProvider()
+
   val form = formProvider()
 
-  lazy val settlorsNameRoute = routes.SettlorsNameController.onPageLoad(NormalMode).url
+  lazy val settlorsNameRoute = routes.SettlorsNameController.onPageLoad(NormalMode, fakeDraftId).url
 
 
   "SettlorsName Controller" must {
@@ -52,7 +53,7 @@ class SettlorsNameControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -73,7 +74,7 @@ class SettlorsNameControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(FullName("First",None, "Last")), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(FullName("First",None, "Last")), NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -115,7 +116,7 @@ class SettlorsNameControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }

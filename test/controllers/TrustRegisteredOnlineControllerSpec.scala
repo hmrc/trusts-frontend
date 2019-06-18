@@ -35,7 +35,7 @@ class TrustRegisteredOnlineControllerSpec extends SpecBase {
   val formProvider = new TrustRegisteredOnlineFormProvider()
   val form = formProvider()
 
-  lazy val trustRegisteredOnlineRoute = routes.TrustRegisteredOnlineController.onPageLoad(NormalMode).url
+  lazy val trustRegisteredOnlineRoute = routes.TrustRegisteredOnlineController.onPageLoad(NormalMode,fakeDraftId).url
 
   "TrustRegisteredOnline Controller" must {
 

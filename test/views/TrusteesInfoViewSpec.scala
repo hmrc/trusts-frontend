@@ -24,7 +24,8 @@ import controllers._
 
 class TrusteesInfoViewSpec extends ViewBehaviours {
 
-  val url = routes.TrustRegisteredOnlineController.onPageLoad(NormalMode).url
+
+  val url = routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, "fakeDraftId").url
 
   "TrusteesInfo view" must {
 

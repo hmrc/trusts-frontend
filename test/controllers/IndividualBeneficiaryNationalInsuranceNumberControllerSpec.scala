@@ -18,11 +18,10 @@ package controllers
 
 import base.SpecBase
 import forms.IndividualBeneficiaryNationalInsuranceNumberFormProvider
-import models.{FullName, NormalMode, UserAnswers}
+import models.{FullName, NormalMode}
 import navigation.{FakeNavigator, Navigator}
 import pages.{IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage}
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -35,9 +34,10 @@ class IndividualBeneficiaryNationalInsuranceNumberControllerSpec extends SpecBas
   val formProvider = new IndividualBeneficiaryNationalInsuranceNumberFormProvider()
   val form = formProvider()
   val index: Int = 0
+
   val name = FullName("first name", None, "Last name")
 
-  lazy val individualBeneficiaryNationalInsuranceNumberRoute = routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(NormalMode, index).url
+  lazy val individualBeneficiaryNationalInsuranceNumberRoute = routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "IndividualBeneficiaryNationalInsuranceNumber Controller" must {
 
@@ -57,7 +57,7 @@ class IndividualBeneficiaryNationalInsuranceNumberControllerSpec extends SpecBas
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, name, index)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -78,7 +78,7 @@ class IndividualBeneficiaryNationalInsuranceNumberControllerSpec extends SpecBas
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode, name, index)(fakeRequest, messages).toString
+        view(form.fill("answer"), NormalMode, fakeDraftId, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -125,7 +125,7 @@ class IndividualBeneficiaryNationalInsuranceNumberControllerSpec extends SpecBas
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, name, index)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }

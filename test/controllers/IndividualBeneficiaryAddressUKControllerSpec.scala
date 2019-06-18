@@ -17,12 +17,11 @@
 package controllers
 
 import base.SpecBase
-import forms.{ UKAddressFormProvider}
-import models.{FullName,  NormalMode, UKAddress, UserAnswers}
+import forms.UKAddressFormProvider
+import models.{FullName, NormalMode, UKAddress}
 import navigation.{FakeNavigator, Navigator}
 import pages.{IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryNamePage}
 import play.api.inject.bind
-import play.api.libs.json.Json
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -35,9 +34,10 @@ class IndividualBeneficiaryAddressUKControllerSpec extends SpecBase {
   val formProvider = new UKAddressFormProvider()
   val form = formProvider()
   val index: Int = 0
+
   val name = FullName("first name", None, "Last name")
 
-  lazy val individualBeneficiaryAddressUKRoute = routes.IndividualBeneficiaryAddressUKController.onPageLoad(NormalMode, index).url
+  lazy val individualBeneficiaryAddressUKRoute = routes.IndividualBeneficiaryAddressUKController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "IndividualBeneficiaryAddressUK Controller" must {
 
@@ -57,7 +57,7 @@ class IndividualBeneficiaryAddressUKControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, name, index)(request, messages).toString
+        view(form, NormalMode, fakeDraftId, name, index)(request, messages).toString
 
       application.stop()
     }
@@ -79,7 +79,7 @@ class IndividualBeneficiaryAddressUKControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")), NormalMode, name, index)(fakeRequest, messages).toString
+        view(form.fill(UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")), NormalMode, fakeDraftId, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -127,7 +127,7 @@ class IndividualBeneficiaryAddressUKControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, name, index)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, name, index )(fakeRequest, messages).toString
 
       application.stop()
     }

@@ -35,9 +35,10 @@ class IndividualBeneficiaryVulnerableYesNoControllerSpec extends SpecBase {
   val formProvider = new IndividualBeneficiaryVulnerableYesNoFormProvider()
   val form = formProvider()
   val index: Int = 0
+
   val name = FullName("first name", None, "Last name")
 
-  lazy val individualBeneficiaryVulnerableYesNoRoute = routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index).url
+  lazy val individualBeneficiaryVulnerableYesNoRoute = routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "IndividualBeneficiaryVulnerableYesNo Controller" must {
 
@@ -57,7 +58,7 @@ class IndividualBeneficiaryVulnerableYesNoControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, name, index)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -78,7 +79,7 @@ class IndividualBeneficiaryVulnerableYesNoControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, name, index)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, fakeDraftId, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -126,7 +127,7 @@ class IndividualBeneficiaryVulnerableYesNoControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, name, index)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }

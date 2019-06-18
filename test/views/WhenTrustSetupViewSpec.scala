@@ -30,6 +30,7 @@ class WhenTrustSetupViewSpec extends QuestionViewBehaviours[LocalDate] {
 
   val messageKeyPrefix = "whenTrustSetup"
 
+
   val form = new WhenTrustSetupFormProvider()()
 
   "WhenTrustSetupView view" must {
@@ -45,7 +46,7 @@ class WhenTrustSetupViewSpec extends QuestionViewBehaviours[LocalDate] {
 
     behave like pageWithDateFields(form, applyViewF,
       messageKeyPrefix,
-      routes.WhenTrustSetupController.onPageLoad(NormalMode).url
+      routes.WhenTrustSetupController.onPageLoad(NormalMode, fakeDraftId).url
     )
 
     behave like pageWithBackLink(applyView(form))

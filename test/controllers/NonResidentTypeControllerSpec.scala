@@ -18,11 +18,10 @@ package controllers
 
 import base.SpecBase
 import forms.NonResidentTypeFormProvider
-import models.{NormalMode, NonResidentType, UserAnswers}
+import models.{NonResidentType, NormalMode}
 import navigation.{FakeNavigator, Navigator}
 import pages.NonResidentTypePage
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -32,7 +31,7 @@ class NonResidentTypeControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  lazy val nonresidentTypeRoute = routes.NonResidentTypeController.onPageLoad(NormalMode).url
+  lazy val nonresidentTypeRoute = routes.NonResidentTypeController.onPageLoad(NormalMode,fakeDraftId).url
 
   val formProvider = new NonResidentTypeFormProvider()
   val form = formProvider()
@@ -52,7 +51,7 @@ class NonResidentTypeControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -72,7 +71,7 @@ class NonResidentTypeControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(NonResidentType.values.head), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(NonResidentType.values.head), NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -114,7 +113,7 @@ class NonResidentTypeControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }

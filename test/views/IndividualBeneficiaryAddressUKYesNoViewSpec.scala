@@ -30,6 +30,7 @@ class IndividualBeneficiaryAddressUKYesNoViewSpec extends YesNoViewBehaviours {
   val messageKeyPrefix = "individualBeneficiaryAddressUKYesNo"
   val index = 0
   val name = "First Last"
+
   val fullName = FullName("First", None, "Last")
 
   val form = new IndividualBeneficiaryAddressUKYesNoFormProvider()()
@@ -42,14 +43,14 @@ class IndividualBeneficiaryAddressUKYesNoViewSpec extends YesNoViewBehaviours {
     val view = viewFor[IndividualBeneficiaryAddressUKYesNoView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fullName, index)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, fullName, index)(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.IndividualBeneficiaryAddressUKYesNoController.onSubmit(NormalMode, index).url, None, Seq(fullName.toString))
 
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.IndividualBeneficiaryAddressUKYesNoController.onSubmit(NormalMode, index, fakeDraftId).url, None, Seq(fullName.toString))
     behave like pageWithASubmitButton(applyView(form))
 
   }

@@ -34,9 +34,8 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
   private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
   private val savedUntil : String = LocalDateTime.now.format(dateFormatter)
-
   private def sections(answers: UserAnswers) =
-    new RegistrationProgress(new TaskListNavigator()).sections(answers)
+    new RegistrationProgress(new TaskListNavigator()).sections(answers,fakeDraftId)
 
   private def isTaskListComplete(answers: UserAnswers) =
     new RegistrationProgress(new TaskListNavigator()).isTaskListComplete(answers)
@@ -51,7 +50,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
         val view = viewFor[TaskListView](Some(answers))
 
-        val applyView = view.apply(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+        val applyView = view.apply(fakeDraftId, savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
 
         behave like normalPage(applyView, "taskList")
 
@@ -85,7 +84,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(AddAssetsPage, NoComplete).success.value
 
           val view = viewFor[TaskListView](Some(userAnswers))
-          val applyView = view.apply(savedUntil, sections(userAnswers), isTaskListComplete(userAnswers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(fakeDraftId, savedUntil, sections(userAnswers), isTaskListComplete(userAnswers), Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           assertRenderedById(doc, "summaryHeading")
@@ -103,7 +102,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
 
           val view = viewFor[TaskListView](Some(userAnswers))
-          val applyView = view.apply(savedUntil, sections(userAnswers), isTaskListComplete(userAnswers), Organisation)(fakeRequest, messages)
+          val applyView = view.apply(fakeDraftId, savedUntil, sections(userAnswers), isTaskListComplete(userAnswers), Organisation)(fakeRequest, messages)
           val doc = asDocument(applyView)
 
           assertNotRenderedById(doc, "summaryHeading")
@@ -119,7 +118,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
       "render Saved Until" in {
         val view = viewFor[TaskListView](Some(emptyUserAnswers))
-        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Organisation)(fakeRequest, messages)
+        val applyView = view.apply(fakeDraftId, savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Organisation)(fakeRequest, messages)
 
         val doc = asDocument(applyView)
         assertRenderedById(doc, "saved-until")
@@ -131,7 +130,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
       "render return to saved registrations link" in {
         val view = viewFor[TaskListView](Some(emptyUserAnswers))
-        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Agent)(fakeRequest, messages)
+        val applyView = view.apply(fakeDraftId, savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Agent)(fakeRequest, messages)
 
         val doc = asDocument(applyView)
 
@@ -145,20 +144,20 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
       "render agent details link" in {
         val view = viewFor[TaskListView](Some(emptyUserAnswers))
 
-        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Agent)(fakeRequest, messages)
+        val applyView = view.apply(fakeDraftId, savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Agent)(fakeRequest, messages)
 
         val doc = asDocument(applyView)
 
         assertAttributeValueForElement(
           doc.getElementById("agent-details"),
           "href",
-          routes.AgentInternalReferenceController.onPageLoad(NormalMode).url
+          routes.AgentInternalReferenceController.onPageLoad(NormalMode, fakeDraftId).url
         )
       }
 
       "not render saved until" in {
         val view = viewFor[TaskListView](Some(emptyUserAnswers))
-        val applyView = view.apply(savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Agent)(fakeRequest, messages)
+        val applyView = view.apply(fakeDraftId, savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Agent)(fakeRequest, messages)
 
         val doc = asDocument(applyView)
         assertNotRenderedById(doc, "saved-until")

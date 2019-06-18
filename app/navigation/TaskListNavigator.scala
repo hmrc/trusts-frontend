@@ -91,7 +91,7 @@ class TaskListNavigator @Inject()() {
     case Beneficiaries => beneficiaryRoute(draftId)
     case TaxLiability => _ => routes.TaskListController.onPageLoad(draftId)
     case Assets => assetRoute(draftId)
-    case _ => _ => routes.IndexController.onPageLoad(draftId)
+    case _ => _ => routes.IndexController.onPageLoad()
   }
 
   def nextPage(page: Page, userAnswers: UserAnswers, draftId: String) : Call = {
