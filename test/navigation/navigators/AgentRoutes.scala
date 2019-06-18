@@ -36,8 +36,8 @@ trait AgentRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(AgentInternalReferencePage, NormalMode, AffinityGroup.Agent)(userAnswers)
-            .mustBe(routes.AgentNameController.onPageLoad(NormalMode))
+          navigator.nextPage(AgentInternalReferencePage, NormalMode, fakeDraftId, AffinityGroup.Agent)(userAnswers)
+            .mustBe(routes.AgentNameController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -45,8 +45,8 @@ trait AgentRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(AgentNamePage, NormalMode, AffinityGroup.Agent)(userAnswers)
-            .mustBe(routes.AgentAddressYesNoController.onPageLoad(NormalMode))
+          navigator.nextPage(AgentNamePage, NormalMode, fakeDraftId, AffinityGroup.Agent)(userAnswers)
+            .mustBe(routes.AgentAddressYesNoController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -54,16 +54,16 @@ trait AgentRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(AgentAddressYesNoPage, value = true).success.value
-          navigator.nextPage(AgentAddressYesNoPage, NormalMode, AffinityGroup.Agent)(answers)
-            .mustBe(routes.AgentUKAddressController.onPageLoad(NormalMode))
+          navigator.nextPage(AgentAddressYesNoPage, NormalMode, fakeDraftId, AffinityGroup.Agent)(answers)
+            .mustBe(routes.AgentUKAddressController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
     "go to AgentTelephoneNumber from AgentUKAddress Page" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          navigator.nextPage(AgentUKAddressPage, NormalMode, AffinityGroup.Agent)(userAnswers)
-            .mustBe(routes.AgentTelephoneNumberController.onPageLoad(NormalMode))
+          navigator.nextPage(AgentUKAddressPage, NormalMode, fakeDraftId, AffinityGroup.Agent)(userAnswers)
+            .mustBe(routes.AgentTelephoneNumberController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -71,16 +71,16 @@ trait AgentRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(AgentAddressYesNoPage, value = false).success.value
-          navigator.nextPage(AgentAddressYesNoPage, NormalMode, AffinityGroup.Agent)(answers)
-            .mustBe(routes.AgentInternationalAddressController.onPageLoad(NormalMode))
+          navigator.nextPage(AgentAddressYesNoPage, NormalMode, fakeDraftId, AffinityGroup.Agent)(answers)
+            .mustBe(routes.AgentInternationalAddressController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
     "go to AgentTelephoneNumber from AgentInternationalAddress Page" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          navigator.nextPage(AgentInternationalAddressPage, NormalMode, AffinityGroup.Agent)(userAnswers)
-            .mustBe(routes.AgentTelephoneNumberController.onPageLoad(NormalMode))
+          navigator.nextPage(AgentInternationalAddressPage, NormalMode, fakeDraftId, AffinityGroup.Agent)(userAnswers)
+            .mustBe(routes.AgentTelephoneNumberController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -88,8 +88,8 @@ trait AgentRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(AgentTelephoneNumberPage, NormalMode, AffinityGroup.Agent)(userAnswers)
-            .mustBe(routes.AgentAnswerController.onPageLoad())
+          navigator.nextPage(AgentTelephoneNumberPage, NormalMode, fakeDraftId, AffinityGroup.Agent)(userAnswers)
+            .mustBe(routes.AgentAnswerController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -97,8 +97,8 @@ trait AgentRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(AgentAnswerPage, NormalMode, AffinityGroup.Agent)(userAnswers)
-            .mustBe(routes.TaskListController.onPageLoad())
+          navigator.nextPage(AgentAnswerPage, NormalMode, fakeDraftId, AffinityGroup.Agent)(userAnswers)
+            .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
       }
     }
   }

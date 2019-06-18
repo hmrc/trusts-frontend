@@ -62,7 +62,7 @@ class TrusteesNinoControllerSpec extends SpecBase with IndexValidation {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, index, trusteeName)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -84,7 +84,7 @@ class TrusteesNinoControllerSpec extends SpecBase with IndexValidation {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, index, trusteeName)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -107,7 +107,7 @@ class TrusteesNinoControllerSpec extends SpecBase with IndexValidation {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), NormalMode, index, trusteeName)(fakeRequest, messages).toString
+        view(form.fill(validAnswer), NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -174,7 +174,7 @@ class TrusteesNinoControllerSpec extends SpecBase with IndexValidation {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, index, trusteeName)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }

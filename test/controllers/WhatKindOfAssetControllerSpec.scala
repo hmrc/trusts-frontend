@@ -58,7 +58,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, index, options)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index, options)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -80,7 +80,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(form.fill(WhatKindOfAsset.values.head), NormalMode, index, options)(fakeRequest, messages).toString
+          view(form.fill(WhatKindOfAsset.values.head), NormalMode, fakeDraftId, index, options)(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -95,7 +95,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
 
         val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-        val request = FakeRequest(GET, routes.WhatKindOfAssetController.onPageLoad(NormalMode, 1).url)
+        val request = FakeRequest(GET, routes.WhatKindOfAssetController.onPageLoad(NormalMode, 1, fakeDraftId).url)
 
         val view = application.injector.instanceOf[WhatKindOfAssetView]
 
@@ -104,7 +104,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(form.fill(WhatKindOfAsset.values.head), NormalMode, 1, optionsWithoutMoney)(fakeRequest, messages).toString
+          view(form.fill(WhatKindOfAsset.values.head), NormalMode, fakeDraftId, 1, optionsWithoutMoney)(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -170,7 +170,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, index, options)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index, options)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -181,7 +181,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-      val request = FakeRequest(routes.WhatKindOfAssetController.onSubmit(NormalMode, 1))
+      val request = FakeRequest(routes.WhatKindOfAssetController.onSubmit(NormalMode, 1, fakeDraftId))
         .withFormUrlEncodedBody(("value", "Money"))
 
       val boundForm = form.bind(Map("value" -> "Money"))
@@ -193,7 +193,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, 1, optionsWithoutMoney)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, 1, optionsWithoutMoney)(fakeRequest, messages).toString
 
       application.stop()
     }

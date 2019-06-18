@@ -61,7 +61,7 @@ class TrusteeLiveInTheUKControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, index, trusteeName)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -83,7 +83,7 @@ class TrusteeLiveInTheUKControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, index, trusteeName)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -106,7 +106,7 @@ class TrusteeLiveInTheUKControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, index, trusteeName)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -223,7 +223,7 @@ class TrusteeLiveInTheUKControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, index, trusteeName)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }

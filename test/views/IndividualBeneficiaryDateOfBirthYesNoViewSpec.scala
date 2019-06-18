@@ -42,13 +42,13 @@ class IndividualBeneficiaryDateOfBirthYesNoViewSpec extends YesNoViewBehaviours 
     val view = viewFor[IndividualBeneficiaryDateOfBirthYesNoView](Some(userAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fullName, index)(fakeRequest, messages)
+      view.apply(form, NormalMode , fakeDraftId, fullName, index)(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.IndividualBeneficiaryDateOfBirthYesNoController.onSubmit(NormalMode, index).url, None, Seq(fullName.toString))
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.IndividualBeneficiaryDateOfBirthYesNoController.onSubmit(NormalMode, index, fakeDraftId).url, None, Seq(fullName.toString))
 
     behave like pageWithASubmitButton(applyView(form))
 

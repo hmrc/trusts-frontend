@@ -72,7 +72,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
           )
         )
 
-        val request = FakeRequest(GET, routes.TrustDetailsAnswerPageController.onPageLoad.url)
+        val request = FakeRequest(GET, routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId).url)
 
         val result = route(application, request).value
 
@@ -81,7 +81,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(expectedSections)(fakeRequest, messages).toString
+          view(fakeDraftId, expectedSections)(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -122,7 +122,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
           )
         )
 
-        val request = FakeRequest(GET, routes.TrustDetailsAnswerPageController.onPageLoad.url)
+        val request = FakeRequest(GET, routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId).url)
 
         val result = route(application, request).value
 
@@ -131,7 +131,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(expectedSections)(fakeRequest, messages).toString
+          view(fakeDraftId, expectedSections)(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -175,7 +175,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
           )
         )
 
-        val request = FakeRequest(GET, routes.TrustDetailsAnswerPageController.onPageLoad.url)
+        val request = FakeRequest(GET, routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId).url)
 
         val result = route(application, request).value
 
@@ -184,7 +184,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(expectedSections)(fakeRequest, messages).toString
+          view(fakeDraftId, expectedSections)(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -232,7 +232,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
           )
         )
 
-        val request = FakeRequest(GET, routes.TrustDetailsAnswerPageController.onPageLoad.url)
+        val request = FakeRequest(GET, routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId).url)
 
         val result = route(application, request).value
 
@@ -241,7 +241,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(expectedSections)(fakeRequest, messages).toString
+          view(fakeDraftId, expectedSections)(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -259,7 +259,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
           .build()
 
       val request =
-        FakeRequest(POST, routes.TrustDetailsAnswerPageController.onSubmit.url)
+        FakeRequest(POST, routes.TrustDetailsAnswerPageController.onSubmit(fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -274,7 +274,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, routes.TrustDetailsAnswerPageController.onPageLoad.url)
+      val request = FakeRequest(GET, routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -288,7 +288,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(POST, routes.TrustDetailsAnswerPageController.onSubmit.url)
+      val request = FakeRequest(POST, routes.TrustDetailsAnswerPageController.onSubmit(fakeDraftId).url)
 
       val result = route(application, request).value
 

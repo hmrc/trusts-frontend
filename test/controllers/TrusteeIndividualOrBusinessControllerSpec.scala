@@ -66,7 +66,7 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(form, NormalMode, index, leadHeading)(fakeRequest, messages).toString
+          view(form, NormalMode, fakeDraftId, index, leadHeading)(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -94,7 +94,7 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(form, NormalMode, index, heading)(fakeRequest, messages).toString
+          view(form, NormalMode, fakeDraftId, index, heading)(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -126,7 +126,7 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(form.fill(IndividualOrBusiness.values.head), NormalMode, index, leadHeading)(fakeRequest, messages).toString
+          view(form.fill(IndividualOrBusiness.values.head), NormalMode, fakeDraftId, index, leadHeading)(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -155,7 +155,7 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(form.fill(IndividualOrBusiness.values.head), NormalMode, index, heading)(fakeRequest, messages).toString
+          view(form.fill(IndividualOrBusiness.values.head), NormalMode, fakeDraftId, index, heading)(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -249,7 +249,7 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, index, heading)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index, heading)(fakeRequest, messages).toString
 
       application.stop()
     }

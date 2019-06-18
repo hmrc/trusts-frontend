@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.UKAddressFormProvider
-import models.{FullName, NormalMode, UKAddress, UserAnswers}
+import models.{FullName, NormalMode, UKAddress}
 import navigation.{FakeNavigator, Navigator}
 import pages.{SettlorsNamePage, SettlorsUKAddressPage}
 import play.api.inject.bind
@@ -56,7 +56,7 @@ class SettlorsUKAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, name)(request, messages).toString
+        view(form, NormalMode, fakeDraftId, name)(request, messages).toString
 
       application.stop()
     }
@@ -77,7 +77,7 @@ class SettlorsUKAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")), NormalMode, name)(fakeRequest, messages).toString
+        view(form.fill(UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")), NormalMode, fakeDraftId, name)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -125,7 +125,7 @@ class SettlorsUKAddressControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, name)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, name)(fakeRequest, messages).toString
 
       application.stop()
     }

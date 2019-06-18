@@ -31,7 +31,7 @@ class TrusteesInfoViewSpec extends ViewBehaviours {
 
     val view = viewFor[TrusteesInfoView](Some(emptyUserAnswers))
 
-    val applyView = view.apply()(fakeRequest, messages)
+    val applyView = view.apply(fakeDraftId)(fakeRequest, messages)
 
     behave like normalPage(applyView, "trusteesInfo",
     "subheading1",

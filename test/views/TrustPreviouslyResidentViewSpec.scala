@@ -39,13 +39,13 @@ class TrustPreviouslyResidentViewSpec extends SelectCountryViewBehaviours {
     val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, countryOptions, NormalMode)(fakeRequest, messages)
+      view.apply(form, countryOptions, NormalMode, fakeDraftId)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like selectCountryPage(form, applyView, messageKeyPrefix, routes.TrustPreviouslyResidentController.onSubmit(NormalMode).url)
+    behave like selectCountryPage(form, applyView, messageKeyPrefix, routes.TrustPreviouslyResidentController.onSubmit(NormalMode, fakeDraftId).url)
 
     behave like pageWithASubmitButton(applyView(form))
   }

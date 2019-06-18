@@ -56,7 +56,7 @@ class TrustPreviouslyResidentControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, countryOptions, NormalMode)(fakeRequest, messages).toString
+        view(form, countryOptions, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -78,7 +78,7 @@ class TrustPreviouslyResidentControllerSpec extends SpecBase {
        status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("Spain"), countryOptions, NormalMode)(fakeRequest, messages).toString
+        view(form.fill("Spain"), countryOptions, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -121,7 +121,7 @@ class TrustPreviouslyResidentControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, countryOptions, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, countryOptions, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }

@@ -37,7 +37,7 @@ class TaskListControllerSpec extends SpecBase {
   private val savedUntil : String = LocalDateTime.now.plusSeconds(frontendAppConfig.ttlInSeconds).format(dateFormatter)
 
   private def sections(answers: UserAnswers) =
-    new RegistrationProgress(new TaskListNavigator()).sections(answers)
+    new RegistrationProgress(new TaskListNavigator()).sections(answers, fakeDraftId)
 
   private def isTaskListComplete(answers: UserAnswers) =
     new RegistrationProgress(new TaskListNavigator()).isTaskListComplete(answers)
@@ -53,7 +53,7 @@ class TaskListControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-      val request = FakeRequest(GET, routes.TaskListController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -70,7 +70,7 @@ class TaskListControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-      val request = FakeRequest(GET, routes.TaskListController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -95,7 +95,7 @@ class TaskListControllerSpec extends SpecBase {
 
           val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = Organisation).build()
 
-          val request = FakeRequest(GET, routes.TaskListController.onPageLoad().url)
+          val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
 
           val result = route(application, request).value
 
@@ -104,7 +104,7 @@ class TaskListControllerSpec extends SpecBase {
           status(result) mustEqual OK
 
           contentAsString(result) mustEqual
-            view(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages).toString
+            view(fakeDraftId, savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages).toString
 
           application.stop()
         }
@@ -122,13 +122,13 @@ class TaskListControllerSpec extends SpecBase {
 
           val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-          val request = FakeRequest(GET, routes.TaskListController.onPageLoad().url)
+          val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
 
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
 
-          redirectLocation(result).value mustEqual routes.FailedMatchController.onPageLoad().url
+          redirectLocation(result).value mustEqual routes.FailedMatchController.onPageLoad(fakeDraftId).url
 
           application.stop()
         }
@@ -143,13 +143,13 @@ class TaskListControllerSpec extends SpecBase {
 
           val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-          val request = FakeRequest(GET, routes.TaskListController.onPageLoad().url)
+          val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
 
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
 
-          redirectLocation(result).value mustEqual routes.FailedMatchController.onPageLoad().url
+          redirectLocation(result).value mustEqual routes.FailedMatchController.onPageLoad(fakeDraftId).url
 
           application.stop()
         }
@@ -166,7 +166,7 @@ class TaskListControllerSpec extends SpecBase {
 
           val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-          val request = FakeRequest(GET, routes.TaskListController.onPageLoad().url)
+          val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
 
           val result = route(application, request).value
 
@@ -191,7 +191,7 @@ class TaskListControllerSpec extends SpecBase {
 
         val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = Organisation).build()
 
-        val request = FakeRequest(GET, routes.TaskListController.onPageLoad().url)
+        val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
 
         val result = route(application, request).value
 
@@ -200,7 +200,7 @@ class TaskListControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages).toString
+          view(fakeDraftId, savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages).toString
 
         application.stop()
       }

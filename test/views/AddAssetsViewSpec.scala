@@ -42,10 +42,10 @@ class AddAssetsViewSpec extends ViewBehaviours {
   val view = viewFor[AddAssetsView](Some(emptyUserAnswers))
 
   def applyView(form: Form[_]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode, Nil, Nil)(fakeRequest, messages)
+    view.apply(form, NormalMode, fakeDraftId, Nil, Nil)(fakeRequest, messages)
 
   def applyView(form: Form[_], inProgressAssets: Seq[AddRow], completeAssets: Seq[AddRow]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode, inProgressAssets, completeAssets)(fakeRequest, messages)
+    view.apply(form, NormalMode, fakeDraftId, inProgressAssets, completeAssets)(fakeRequest, messages)
 
   "AddAssetsView" must {
 

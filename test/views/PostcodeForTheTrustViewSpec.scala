@@ -35,12 +35,12 @@ class PostcodeForTheTrustViewSpec extends OptionStringViewBehaviours {
     val view = viewFor[PostcodeForTheTrustView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like optionalStringPage(form, applyView, messageKeyPrefix, routes.PostcodeForTheTrustController.onSubmit(NormalMode).url)
+    behave like optionalStringPage(form, applyView, messageKeyPrefix, routes.PostcodeForTheTrustController.onSubmit(NormalMode, fakeDraftId).url)
   }
 }

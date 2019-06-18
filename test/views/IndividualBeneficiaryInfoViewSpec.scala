@@ -26,7 +26,7 @@ class IndividualBeneficiaryInfoViewSpec extends ViewBehaviours {
 
     val view = viewFor[IndividualBeneficiaryInfoView](Some(emptyUserAnswers))
 
-    val applyView = view.apply()(fakeRequest, messages)
+    val applyView = view.apply(fakeDraftId)(fakeRequest, messages)
 
     behave like normalPage(applyView, "individualBeneficiaryInfo",
       "caption",
@@ -53,6 +53,6 @@ class IndividualBeneficiaryInfoViewSpec extends ViewBehaviours {
 
     behave like pageWithBackLink(applyView)
 
-    behave like pageWithContinueButton(applyView,routes.WhatTypeOfBeneficiaryController.onPageLoad().url )
+    behave like pageWithContinueButton(applyView,routes.WhatTypeOfBeneficiaryController.onPageLoad(fakeDraftId).url )
   }
 }

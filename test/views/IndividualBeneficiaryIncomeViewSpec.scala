@@ -42,13 +42,13 @@ class IndividualBeneficiaryIncomeViewSpec extends StringViewBehaviours {
     val view = viewFor[IndividualBeneficiaryIncomeView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fullName, index)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, fullName, index)(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, name.toString, routes.IndividualBeneficiaryIncomeController.onSubmit(NormalMode, index).url)
+    behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, name.toString, routes.IndividualBeneficiaryIncomeController.onSubmit(NormalMode, index, fakeDraftId).url)
 
     behave like pageWithASubmitButton(applyView(form))
   }

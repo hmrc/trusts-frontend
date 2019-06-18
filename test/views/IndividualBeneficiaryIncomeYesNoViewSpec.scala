@@ -42,7 +42,7 @@ class IndividualBeneficiaryIncomeYesNoViewSpec extends YesNoViewBehaviours {
     val view = viewFor[IndividualBeneficiaryIncomeYesNoView](Some(userAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fullName, index)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, fullName, index)(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name)
 
@@ -52,7 +52,7 @@ class IndividualBeneficiaryIncomeYesNoViewSpec extends YesNoViewBehaviours {
       form,
       applyView,
       messageKeyPrefix,
-      routes.IndividualBeneficiaryIncomeYesNoController.onSubmit(NormalMode, index).url,
+      routes.IndividualBeneficiaryIncomeYesNoController.onSubmit(NormalMode, index, fakeDraftId).url,
       None,
       Seq(fullName.toString)
     )

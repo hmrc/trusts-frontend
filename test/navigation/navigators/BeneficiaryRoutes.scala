@@ -39,8 +39,8 @@ trait BeneficiaryRoutes {
 
             val answers = userAnswers.set(AddABeneficiaryPage, AddABeneficiary.YesNow).success.value
 
-            navigator.nextPage(AddABeneficiaryPage, NormalMode)(answers)
-              .mustBe(routes.WhatTypeOfBeneficiaryController.onPageLoad())
+            navigator.nextPage(AddABeneficiaryPage, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.WhatTypeOfBeneficiaryController.onPageLoad(fakeDraftId))
         }
       }
 
@@ -54,8 +54,8 @@ trait BeneficiaryRoutes {
             .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
             .set(AddABeneficiaryPage, AddABeneficiary.YesLater).success.value
 
-          navigator.nextPage(AddABeneficiaryPage, NormalMode)(answers)
-            .mustBe(routes.TaskListController.onPageLoad())
+          navigator.nextPage(AddABeneficiaryPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -67,8 +67,8 @@ trait BeneficiaryRoutes {
             .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
             .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
 
-          navigator.nextPage(AddABeneficiaryPage, NormalMode)(answers)
-            .mustBe(routes.TaskListController.onPageLoad())
+          navigator.nextPage(AddABeneficiaryPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -77,8 +77,8 @@ trait BeneficiaryRoutes {
     "go to IndividualBeneficiaryDateOfBirthYesNoPage from IndividualBeneficiaryNamePage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          navigator.nextPage(IndividualBeneficiaryNamePage(indexForBeneficiary), NormalMode)(userAnswers)
-            .mustBe(routes.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(NormalMode, indexForBeneficiary))
+          navigator.nextPage(IndividualBeneficiaryNamePage(indexForBeneficiary), NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(NormalMode, indexForBeneficiary, fakeDraftId))
       }
     }
 
@@ -86,8 +86,8 @@ trait BeneficiaryRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(IndividualBeneficiaryDateOfBirthYesNoPage(indexForBeneficiary), value = true).success.value
-          navigator.nextPage(IndividualBeneficiaryDateOfBirthYesNoPage(indexForBeneficiary), NormalMode)(answers)
-            .mustBe(routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(NormalMode, indexForBeneficiary))
+          navigator.nextPage(IndividualBeneficiaryDateOfBirthYesNoPage(indexForBeneficiary), NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(NormalMode, indexForBeneficiary, fakeDraftId))
       }
     }
 
@@ -95,16 +95,16 @@ trait BeneficiaryRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(IndividualBeneficiaryDateOfBirthYesNoPage(indexForBeneficiary), value = false).success.value
-          navigator.nextPage(IndividualBeneficiaryDateOfBirthYesNoPage(indexForBeneficiary), NormalMode)(answers)
-            .mustBe(routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode, indexForBeneficiary))
+          navigator.nextPage(IndividualBeneficiaryDateOfBirthYesNoPage(indexForBeneficiary), NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode, indexForBeneficiary, fakeDraftId))
       }
     }
 
     "go to IndividualBeneficiaryIncomeYesNoPage from IndividualBeneficiaryDateOfBirthPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          navigator.nextPage(IndividualBeneficiaryDateOfBirthPage(indexForBeneficiary), NormalMode)(userAnswers)
-            .mustBe(routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode, indexForBeneficiary))
+          navigator.nextPage(IndividualBeneficiaryDateOfBirthPage(indexForBeneficiary), NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode, indexForBeneficiary, fakeDraftId))
       }
     }
 
@@ -112,8 +112,8 @@ trait BeneficiaryRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(IndividualBeneficiaryIncomeYesNoPage(indexForBeneficiary), value = false).success.value
-          navigator.nextPage(IndividualBeneficiaryIncomeYesNoPage(indexForBeneficiary), NormalMode)(answers)
-            .mustBe(routes.IndividualBeneficiaryIncomeController.onPageLoad(NormalMode, indexForBeneficiary))
+          navigator.nextPage(IndividualBeneficiaryIncomeYesNoPage(indexForBeneficiary), NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.IndividualBeneficiaryIncomeController.onPageLoad(NormalMode, indexForBeneficiary, fakeDraftId))
       }
     }
 
@@ -121,16 +121,16 @@ trait BeneficiaryRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(IndividualBeneficiaryIncomeYesNoPage(indexForBeneficiary), value = true).success.value
-          navigator.nextPage(IndividualBeneficiaryIncomeYesNoPage(indexForBeneficiary), NormalMode)(answers)
-            .mustBe(routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode, indexForBeneficiary))
+          navigator.nextPage(IndividualBeneficiaryIncomeYesNoPage(indexForBeneficiary), NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode, indexForBeneficiary, fakeDraftId))
       }
     }
 
     "go to IndividualBeneficiaryNationalInsuranceYesNoPage from IndividualBeneficiaryIncomePage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          navigator.nextPage(IndividualBeneficiaryIncomePage(indexForBeneficiary), NormalMode)(userAnswers)
-            .mustBe(routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode, indexForBeneficiary))
+          navigator.nextPage(IndividualBeneficiaryIncomePage(indexForBeneficiary), NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode, indexForBeneficiary, fakeDraftId))
       }
     }
 
@@ -138,8 +138,8 @@ trait BeneficiaryRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(indexForBeneficiary), value = false).success.value
-          navigator.nextPage(IndividualBeneficiaryNationalInsuranceYesNoPage(indexForBeneficiary), NormalMode)(answers)
-            .mustBe(routes.IndividualBeneficiaryAddressYesNoController.onPageLoad(NormalMode, indexForBeneficiary))
+          navigator.nextPage(IndividualBeneficiaryNationalInsuranceYesNoPage(indexForBeneficiary), NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.IndividualBeneficiaryAddressYesNoController.onPageLoad(NormalMode, indexForBeneficiary, fakeDraftId))
       }
     }
 
@@ -147,16 +147,16 @@ trait BeneficiaryRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(indexForBeneficiary), value = true).success.value
-          navigator.nextPage(IndividualBeneficiaryNationalInsuranceYesNoPage(indexForBeneficiary), NormalMode)(answers)
-            .mustBe(routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(NormalMode, indexForBeneficiary))
+          navigator.nextPage(IndividualBeneficiaryNationalInsuranceYesNoPage(indexForBeneficiary), NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(NormalMode, indexForBeneficiary, fakeDraftId))
       }
     }
 
     "go to IndividualBeneficiaryVulnerableYesNoPage from IndividualBeneficiaryNationalInsuranceNumberPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          navigator.nextPage(IndividualBeneficiaryNationalInsuranceNumberPage(indexForBeneficiary), NormalMode)(userAnswers)
-            .mustBe(routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, indexForBeneficiary))
+          navigator.nextPage(IndividualBeneficiaryNationalInsuranceNumberPage(indexForBeneficiary), NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, indexForBeneficiary, fakeDraftId))
       }
     }
 
@@ -164,8 +164,8 @@ trait BeneficiaryRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(IndividualBeneficiaryAddressYesNoPage(indexForBeneficiary), value = true).success.value
-          navigator.nextPage(IndividualBeneficiaryAddressYesNoPage(indexForBeneficiary), NormalMode)(answers)
-            .mustBe(routes.IndividualBeneficiaryAddressUKYesNoController.onPageLoad(NormalMode, indexForBeneficiary))
+          navigator.nextPage(IndividualBeneficiaryAddressYesNoPage(indexForBeneficiary), NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.IndividualBeneficiaryAddressUKYesNoController.onPageLoad(NormalMode, indexForBeneficiary, fakeDraftId))
       }
     }
 
@@ -173,8 +173,8 @@ trait BeneficiaryRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(IndividualBeneficiaryAddressYesNoPage(indexForBeneficiary), value = false).success.value
-          navigator.nextPage(IndividualBeneficiaryAddressYesNoPage(indexForBeneficiary), NormalMode)(answers)
-            .mustBe(routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, indexForBeneficiary))
+          navigator.nextPage(IndividualBeneficiaryAddressYesNoPage(indexForBeneficiary), NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, indexForBeneficiary, fakeDraftId))
       }
     }
 
@@ -182,8 +182,8 @@ trait BeneficiaryRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(IndividualBeneficiaryAddressUKYesNoPage(indexForBeneficiary), value = true).success.value
-          navigator.nextPage(IndividualBeneficiaryAddressUKYesNoPage(indexForBeneficiary), NormalMode)(answers)
-            .mustBe(routes.IndividualBeneficiaryAddressUKController.onPageLoad(NormalMode, indexForBeneficiary))
+          navigator.nextPage(IndividualBeneficiaryAddressUKYesNoPage(indexForBeneficiary), NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.IndividualBeneficiaryAddressUKController.onPageLoad(NormalMode, indexForBeneficiary, fakeDraftId))
       }
     }
 
@@ -191,32 +191,32 @@ trait BeneficiaryRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(IndividualBeneficiaryAddressUKYesNoPage(indexForBeneficiary), value = false).success.value
-          navigator.nextPage(IndividualBeneficiaryAddressUKYesNoPage(indexForBeneficiary), NormalMode)(answers)
-            .mustBe(routes.IndividualBeneficiaryAddressUKYesNoController.onPageLoad(NormalMode, indexForBeneficiary))
+          navigator.nextPage(IndividualBeneficiaryAddressUKYesNoPage(indexForBeneficiary), NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.IndividualBeneficiaryAddressUKYesNoController.onPageLoad(NormalMode, indexForBeneficiary, fakeDraftId))
       }
     }
 
     "go to IndividualBeneficiaryVulnerableYesNoPage from IndividualBeneficiaryAddressUKPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          navigator.nextPage(IndividualBeneficiaryAddressUKPage(indexForBeneficiary), NormalMode)(userAnswers)
-            .mustBe(routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, indexForBeneficiary))
+          navigator.nextPage(IndividualBeneficiaryAddressUKPage(indexForBeneficiary), NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, indexForBeneficiary, fakeDraftId))
       }
     }
 
     "go to IndividualBeneficiaryAnswersPage from IndividualBeneficiaryVulnerableYesNoPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          navigator.nextPage(IndividualBeneficiaryVulnerableYesNoPage(indexForBeneficiary), NormalMode)(userAnswers)
-            .mustBe(routes.IndividualBeneficiaryAnswersController.onPageLoad(indexForBeneficiary))
+          navigator.nextPage(IndividualBeneficiaryVulnerableYesNoPage(indexForBeneficiary), NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.IndividualBeneficiaryAnswersController.onPageLoad(indexForBeneficiary, fakeDraftId))
       }
     }
 
     "go to AddABeneficiaryPage from IndividualBeneficiaryAnswersPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          navigator.nextPage(IndividualBeneficiaryAnswersPage, NormalMode)(userAnswers)
-            .mustBe(routes.AddABeneficiaryController.onPageLoad())
+          navigator.nextPage(IndividualBeneficiaryAnswersPage, NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.AddABeneficiaryController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -227,8 +227,8 @@ trait BeneficiaryRoutes {
           userAnswers =>
             val answers = userAnswers.set(WhatTypeOfBeneficiaryPage, value = WhatTypeOfBeneficiary.Individual).success.value
               .remove(IndividualBeneficiaries).success.value
-            navigator.nextPage(WhatTypeOfBeneficiaryPage, NormalMode)(answers)
-              .mustBe(routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, 0))
+            navigator.nextPage(WhatTypeOfBeneficiaryPage, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, 0, fakeDraftId))
         }
       }
 
@@ -242,8 +242,8 @@ trait BeneficiaryRoutes {
           .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
           .set(WhatTypeOfBeneficiaryPage, value = WhatTypeOfBeneficiary.Individual).success.value
 
-        navigator.nextPage(WhatTypeOfBeneficiaryPage, NormalMode)(answers)
-          .mustBe(routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, 1))
+        navigator.nextPage(WhatTypeOfBeneficiaryPage, NormalMode, fakeDraftId)(answers)
+          .mustBe(routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, 1, fakeDraftId))
       }
     }
 
@@ -253,8 +253,8 @@ trait BeneficiaryRoutes {
           userAnswers =>
             val answers = userAnswers.set(WhatTypeOfBeneficiaryPage, value = WhatTypeOfBeneficiary.ClassOfBeneficiary).success.value
               .remove(ClassOfBeneficiaries).success.value
-            navigator.nextPage(WhatTypeOfBeneficiaryPage, NormalMode)(answers)
-              .mustBe(routes.ClassBeneficiaryDescriptionController.onPageLoad(NormalMode, 0))
+            navigator.nextPage(WhatTypeOfBeneficiaryPage, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.ClassBeneficiaryDescriptionController.onPageLoad(NormalMode, 0, fakeDraftId))
         }
       }
     }
@@ -268,16 +268,16 @@ trait BeneficiaryRoutes {
           .set(ClassBeneficiaryDescriptionPage(0), "description").success.value
           .set(WhatTypeOfBeneficiaryPage, value = WhatTypeOfBeneficiary.ClassOfBeneficiary).success.value
 
-        navigator.nextPage(WhatTypeOfBeneficiaryPage, NormalMode)(answers)
-          .mustBe(routes.ClassBeneficiaryDescriptionController.onPageLoad(NormalMode, 1))
+        navigator.nextPage(WhatTypeOfBeneficiaryPage, NormalMode, fakeDraftId)(answers)
+          .mustBe(routes.ClassBeneficiaryDescriptionController.onPageLoad(NormalMode, 1, fakeDraftId))
       }
     }
 
     "go to AddABeneficiaryPage from ClassBeneficiaryDescriptionPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          navigator.nextPage(ClassBeneficiaryDescriptionPage(0), NormalMode)(userAnswers)
-            .mustBe(routes.AddABeneficiaryController.onPageLoad())
+          navigator.nextPage(ClassBeneficiaryDescriptionPage(0), NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.AddABeneficiaryController.onPageLoad(fakeDraftId))
       }
     }
   }

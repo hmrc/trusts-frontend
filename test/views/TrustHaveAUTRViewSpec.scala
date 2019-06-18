@@ -38,7 +38,7 @@ class TrustHaveAUTRViewSpec extends YesNoViewBehaviours {
     val url = "https://www.gov.uk/find-lost-utr-number"
     val link = Link(messages("trustHaveAUTR.link"), url)
 
-    def applyView(form: Form[_]): HtmlFormat.Appendable = view.apply(form, NormalMode, Some(link))(fakeRequest, messages)
+    def applyView(form: Form[_]): HtmlFormat.Appendable = view.apply(form, NormalMode, fakeDraftId, Some(link))(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
@@ -46,7 +46,7 @@ class TrustHaveAUTRViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithLink(applyView(form), "link", url)
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.TrustHaveAUTRController.onSubmit(NormalMode).url, Some(messageKeyPrefix))
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.TrustHaveAUTRController.onSubmit(NormalMode, fakeDraftId).url, Some(messageKeyPrefix))
 
     behave like pageWithASubmitButton(applyView(form))
   }

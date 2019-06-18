@@ -38,7 +38,7 @@ class TrusteeUKAddressViewSpec extends QuestionViewBehaviours[UKAddress] {
     val view = viewFor[TrusteesUkAddressView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, index, trusteeName)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, trusteeName)
 
@@ -48,7 +48,7 @@ class TrusteeUKAddressViewSpec extends QuestionViewBehaviours[UKAddress] {
       form,
       applyView,
       messageKeyPrefix,
-      routes.TrusteesUkAddressController.onSubmit(NormalMode, index).url,
+      routes.TrusteesUkAddressController.onSubmit(NormalMode, index, fakeDraftId).url,
       Seq(("line1",None), ("line2",None), ("line3",None), ("townOrCity",None), ("postcode",Some(postcodeHintKey))),
       trusteeName
     )

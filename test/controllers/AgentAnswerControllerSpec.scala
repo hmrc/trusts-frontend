@@ -109,7 +109,7 @@ class AgentAnswerControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(answers), agentID).build()
 
-      val request = FakeRequest(GET, routes.AgentAnswerController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.AgentAnswerController.onPageLoad(fakeDraftId).url)
 
       val result = route(application, request).value
 

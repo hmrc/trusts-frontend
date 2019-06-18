@@ -44,8 +44,8 @@ trait TrusteeRoutes {
             val answers = userAnswers.set(AddATrusteePage, AddATrustee.YesNow).success.value
                 .remove(Trustees).success.value
 
-            navigator.nextPage(AddATrusteePage, NormalMode)(answers)
-              .mustBe(routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 0))
+            navigator.nextPage(AddATrusteePage, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 0, fakeDraftId))
         }
       }
 
@@ -59,8 +59,8 @@ trait TrusteeRoutes {
               .set(IsThisLeadTrusteePage(0), true).success.value
               .set(AddATrusteePage, AddATrustee.YesNow).success.value
 
-            navigator.nextPage(AddATrusteePage, NormalMode)(answers)
-              .mustBe(routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 1))
+            navigator.nextPage(AddATrusteePage, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 1, fakeDraftId))
       }
 
     }
@@ -72,8 +72,8 @@ trait TrusteeRoutes {
           val answers = userAnswers.set(IsThisLeadTrusteePage(0), true).success.value
             .set(AddATrusteePage, AddATrustee.YesLater).success.value
 
-          navigator.nextPage(AddATrusteePage, NormalMode)(answers)
-            .mustBe(routes.TaskListController.onPageLoad())
+          navigator.nextPage(AddATrusteePage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -84,8 +84,8 @@ trait TrusteeRoutes {
           val answers = userAnswers.set(IsThisLeadTrusteePage(0), true).success.value
             .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
-          navigator.nextPage(AddATrusteePage, NormalMode)(answers)
-            .mustBe(routes.TaskListController.onPageLoad())
+          navigator.nextPage(AddATrusteePage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -93,7 +93,7 @@ trait TrusteeRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(IsThisLeadTrusteePage(index), NormalMode)(userAnswers)
+          navigator.nextPage(IsThisLeadTrusteePage(index), NormalMode, fakeDraftId)(userAnswers)
             .mustBe(routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
@@ -103,7 +103,7 @@ trait TrusteeRoutes {
         userAnswers =>
           val answers = userAnswers.set(TrusteeIndividualOrBusinessPage(0), Individual).success.value
 
-          navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode)(answers)
+          navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode, fakeDraftId)(answers)
             .mustBe(routes.TrusteesNameController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
@@ -113,7 +113,7 @@ trait TrusteeRoutes {
         userAnswers =>
           val answers = userAnswers.set(TrusteeIndividualOrBusinessPage(0), Business).success.value
 
-          navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode)(answers)
+          navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode, fakeDraftId)(answers)
             .mustBe(routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
@@ -122,7 +122,7 @@ trait TrusteeRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(TrusteesNamePage(index), NormalMode)(userAnswers)
+          navigator.nextPage(TrusteesNamePage(index), NormalMode, fakeDraftId)(userAnswers)
             .mustBe(routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
@@ -135,8 +135,8 @@ trait TrusteeRoutes {
 
             val answers = userAnswers.set(IsThisLeadTrusteePage(index), false).success.value
 
-            navigator.nextPage(TrusteesDateOfBirthPage(index), NormalMode)(answers)
-              .mustBe(routes.TrusteesAnswerPageController.onPageLoad(index))
+            navigator.nextPage(TrusteesDateOfBirthPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.TrusteesAnswerPageController.onPageLoad(index, fakeDraftId))
         }
       }
 
@@ -150,7 +150,7 @@ trait TrusteeRoutes {
 
             val answers = userAnswers.set(IsThisLeadTrusteePage(index), true).success.value
 
-            navigator.nextPage(TrusteesDateOfBirthPage(index), NormalMode)(answers)
+            navigator.nextPage(TrusteesDateOfBirthPage(index), NormalMode, fakeDraftId)(answers)
               .mustBe(routes.TrusteeAUKCitizenController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
@@ -161,7 +161,7 @@ trait TrusteeRoutes {
 
             val answers = userAnswers.set(TrusteeAUKCitizenPage(index), value = true).success.value
 
-            navigator.nextPage(TrusteeAUKCitizenPage(index), NormalMode)(answers)
+            navigator.nextPage(TrusteeAUKCitizenPage(index), NormalMode, fakeDraftId)(answers)
               .mustBe(routes.TrusteesNinoController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
@@ -172,8 +172,8 @@ trait TrusteeRoutes {
 
             val answers = userAnswers.set(TrusteeAUKCitizenPage(index), value = false).success.value
 
-            navigator.nextPage(TrusteeAUKCitizenPage(index), NormalMode)(answers)
-              .mustBe(routes.TrusteeAUKCitizenController.onPageLoad(NormalMode,index))
+            navigator.nextPage(TrusteeAUKCitizenPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.TrusteeAUKCitizenController.onPageLoad(NormalMode,index, fakeDraftId))
         }
       }
 
@@ -181,7 +181,7 @@ trait TrusteeRoutes {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
-            navigator.nextPage(TrusteesNinoPage(index), NormalMode)(userAnswers)
+            navigator.nextPage(TrusteesNinoPage(index), NormalMode, fakeDraftId)(userAnswers)
               .mustBe(routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
@@ -192,7 +192,7 @@ trait TrusteeRoutes {
 
             val answers = userAnswers.set(TrusteeLiveInTheUKPage(index), value = true).success.value
 
-            navigator.nextPage(TrusteeLiveInTheUKPage(index), NormalMode)(answers)
+            navigator.nextPage(TrusteeLiveInTheUKPage(index), NormalMode, fakeDraftId)(answers)
               .mustBe(routes.TrusteesUkAddressController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
@@ -203,7 +203,7 @@ trait TrusteeRoutes {
 
             val answers = userAnswers.set(TrusteeLiveInTheUKPage(index), value = false).success.value
 
-            navigator.nextPage(TrusteeLiveInTheUKPage(index), NormalMode)(answers)
+            navigator.nextPage(TrusteeLiveInTheUKPage(index), NormalMode, fakeDraftId)(answers)
               .mustBe(routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
@@ -212,7 +212,7 @@ trait TrusteeRoutes {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
-            navigator.nextPage(TrusteesUkAddressPage(index), NormalMode)(userAnswers)
+            navigator.nextPage(TrusteesUkAddressPage(index), NormalMode, fakeDraftId)(userAnswers)
               .mustBe(routes.TelephoneNumberController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
@@ -221,8 +221,8 @@ trait TrusteeRoutes {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
-            navigator.nextPage(TelephoneNumberPage(index), NormalMode)(userAnswers)
-              .mustBe(routes.TrusteesAnswerPageController.onPageLoad(index))
+            navigator.nextPage(TelephoneNumberPage(index), NormalMode, fakeDraftId)(userAnswers)
+              .mustBe(routes.TrusteesAnswerPageController.onPageLoad(index, fakeDraftId))
         }
       }
 
@@ -232,8 +232,8 @@ trait TrusteeRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(TrusteesAnswerPage, NormalMode)(userAnswers)
-            .mustBe(routes.AddATrusteeController.onPageLoad())
+          navigator.nextPage(TrusteesAnswerPage, NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.AddATrusteeController.onPageLoad(fakeDraftId))
       }
     }
 

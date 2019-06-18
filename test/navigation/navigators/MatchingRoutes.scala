@@ -37,8 +37,8 @@ trait MatchingRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          navigator.nextPage(TrustRegisteredOnlinePage, NormalMode)(userAnswers)
-            .mustBe(routes.TrustHaveAUTRController.onPageLoad(NormalMode))
+          navigator.nextPage(TrustRegisteredOnlinePage, NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.TrustHaveAUTRController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -53,8 +53,8 @@ trait MatchingRoutes {
               val answers = userAnswers.set(TrustRegisteredOnlinePage, false).success.value
                 .set(TrustHaveAUTRPage, true).success.value
 
-              navigator.nextPage(TrustHaveAUTRPage, NormalMode)(answers)
-                .mustBe(routes.WhatIsTheUTRController.onPageLoad(NormalMode))
+              navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId)(answers)
+                .mustBe(routes.WhatIsTheUTRController.onPageLoad(NormalMode, fakeDraftId))
           }
         }
 
@@ -62,8 +62,8 @@ trait MatchingRoutes {
           forAll(arbitrary[UserAnswers]) {
             userAnswers =>
 
-              navigator.nextPage(WhatIsTheUTRPage, NormalMode)(userAnswers)
-                .mustBe(routes.TrustNameController.onPageLoad(NormalMode))
+              navigator.nextPage(WhatIsTheUTRPage, NormalMode, fakeDraftId)(userAnswers)
+                .mustBe(routes.TrustNameController.onPageLoad(NormalMode, fakeDraftId))
           }
         }
 
@@ -73,8 +73,8 @@ trait MatchingRoutes {
 
               val answers = userAnswers.set(TrustHaveAUTRPage, true).success.value
 
-              navigator.nextPage(TrustNamePage, NormalMode)(answers)
-                .mustBe(routes.PostcodeForTheTrustController.onPageLoad(NormalMode))
+              navigator.nextPage(TrustNamePage, NormalMode, fakeDraftId)(answers)
+                .mustBe(routes.PostcodeForTheTrustController.onPageLoad(NormalMode, fakeDraftId))
           }
         }
 
@@ -91,8 +91,8 @@ trait MatchingRoutes {
                 val answers = userAnswers.set(TrustRegisteredOnlinePage, false).success.value
                   .set(TrustHaveAUTRPage, false).success.value
 
-                navigator.nextPage(TrustHaveAUTRPage, NormalMode, AffinityGroup.Agent)(answers)
-                  .mustBe(routes.AgentInternalReferenceController.onPageLoad(NormalMode))
+                navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId, AffinityGroup.Agent)(answers)
+                  .mustBe(routes.AgentInternalReferenceController.onPageLoad(NormalMode, fakeDraftId))
             }
           }
         }
@@ -106,8 +106,8 @@ trait MatchingRoutes {
                 val answers = userAnswers.set(TrustRegisteredOnlinePage, false).success.value
                   .set(TrustHaveAUTRPage, false).success.value
 
-                navigator.nextPage(TrustHaveAUTRPage, NormalMode, AffinityGroup.Organisation)(answers)
-                  .mustBe(routes.TaskListController.onPageLoad())
+                navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId, AffinityGroup.Organisation)(answers)
+                  .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
             }
           }
 
@@ -126,7 +126,7 @@ trait MatchingRoutes {
             val answers = userAnswers.set(TrustRegisteredOnlinePage, true).success.value
               .set(TrustHaveAUTRPage, false).success.value
 
-            navigator.nextPage(TrustHaveAUTRPage, NormalMode)(answers)
+            navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId)(answers)
               .mustBe(routes.UTRSentByPostController.onPageLoad())
         }
       }
@@ -138,7 +138,7 @@ trait MatchingRoutes {
             val answers = userAnswers.set(TrustRegisteredOnlinePage, true).success.value
               .set(TrustHaveAUTRPage, true).success.value
 
-            navigator.nextPage(TrustHaveAUTRPage, NormalMode)(answers)
+            navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId)(answers)
               .mustBe(routes.CannotMakeChangesController.onPageLoad())
         }
       }

@@ -60,7 +60,7 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, countryOptions, NormalMode, name)(request, messages).toString
+        view(form, countryOptions, NormalMode, fakeDraftId, name)(request, messages).toString
 
       application.stop()
     }
@@ -84,7 +84,7 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(InternationalAddress("line 1", "line 2", None, None, "country")), countryOptions, NormalMode, name)(fakeRequest, messages).toString
+        view(form.fill(InternationalAddress("line 1", "line 2", None, None, "country")), countryOptions, NormalMode, fakeDraftId, name)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -134,7 +134,7 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, countryOptions, NormalMode, name)(fakeRequest, messages).toString
+        view(boundForm, countryOptions, NormalMode, fakeDraftId, name)(fakeRequest, messages).toString
 
       application.stop()
     }

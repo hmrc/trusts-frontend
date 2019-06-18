@@ -35,12 +35,12 @@ class WhatIsTheUTRViewSpec extends StringViewBehaviours {
     val view = viewFor[WhatIsTheUTRView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.WhatIsTheUTRController.onSubmit(NormalMode).url)
+    behave like stringPage(form, applyView, messageKeyPrefix, routes.WhatIsTheUTRController.onSubmit(NormalMode, fakeDraftId).url)
   }
 }

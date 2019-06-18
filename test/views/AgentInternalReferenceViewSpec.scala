@@ -37,12 +37,12 @@ class AgentInternalReferenceViewSpec extends StringViewBehaviours {
     val view = application.injector.instanceOf[AgentInternalReferenceView]
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.AgentInternalReferenceController.onSubmit(NormalMode).url)
+    behave like stringPage(form, applyView, messageKeyPrefix, routes.AgentInternalReferenceController.onSubmit(NormalMode, fakeDraftId).url)
   }
 }

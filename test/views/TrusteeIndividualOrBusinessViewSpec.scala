@@ -46,7 +46,7 @@ class TrusteeIndividualOrBusinessViewSpec extends OptionsViewBehaviours {
     val view = viewFor[TrusteeIndividualOrBusinessView](Some(userAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, index, leadHeading)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index, leadHeading)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
@@ -64,7 +64,7 @@ class TrusteeIndividualOrBusinessViewSpec extends OptionsViewBehaviours {
     val view = viewFor[TrusteeIndividualOrBusinessView](Some(userAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, index, heading)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index, heading)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
