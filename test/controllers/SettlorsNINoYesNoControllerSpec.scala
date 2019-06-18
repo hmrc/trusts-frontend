@@ -34,7 +34,7 @@ class SettlorsNINoYesNoControllerSpec extends SpecBase {
   val formProvider = new SettlorsNINoYesNoFormProvider()
   val form = formProvider()
 
-  lazy val settlorsNINoYesNoRoute = routes.SettlorsNINoYesNoController.onPageLoad(NormalMode).url
+  lazy val settlorsNINoYesNoRoute = routes.SettlorsNINoYesNoController.onPageLoad(NormalMode,fakeDraftId).url
 
   val name = FullName("first name", None, "Last name")
 
@@ -172,7 +172,7 @@ class SettlorsNINoYesNoControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SettlorsNameController.onPageLoad(NormalMode).url
+      redirectLocation(result).value mustEqual routes.SettlorsNameController.onPageLoad(NormalMode,fakeDraftId).url
 
       application.stop()
     }

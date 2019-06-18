@@ -57,7 +57,7 @@ class DeceasedSettlorAnswerController @Inject()(
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId)
 
       val sections = Seq(
         AnswerSection(
@@ -78,7 +78,7 @@ class DeceasedSettlorAnswerController @Inject()(
         )
       )
 
-      Ok(view(sections))
+      Ok(view(draftId, sections))
   }
 
   def onSubmit(draftId: String) = actions(draftId).async {

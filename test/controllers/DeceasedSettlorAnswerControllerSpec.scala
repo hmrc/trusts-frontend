@@ -32,7 +32,7 @@ class DeceasedSettlorAnswerControllerSpec extends SpecBase {
 
   "DeceasedSettlorAnswer Controller" must {
 
-    lazy val deceasedSettlorsAnswerRoute = routes.DeceasedSettlorAnswerController.onPageLoad().url
+    lazy val deceasedSettlorsAnswerRoute = routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId).url
 
     "return OK and the correct view for a GET (UK National)" in {
 
@@ -52,7 +52,7 @@ class DeceasedSettlorAnswerControllerSpec extends SpecBase {
 
       val countryOptions = injector.instanceOf[CountryOptions]
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId)
 
       val expectedSections = Seq(
         AnswerSection(
@@ -74,7 +74,7 @@ class DeceasedSettlorAnswerControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-      val request = FakeRequest(GET, routes.DeceasedSettlorAnswerController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -83,7 +83,7 @@ class DeceasedSettlorAnswerControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(expectedSections)(fakeRequest, messages).toString
+        view(fakeDraftId,expectedSections)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -107,7 +107,7 @@ class DeceasedSettlorAnswerControllerSpec extends SpecBase {
 
       val countryOptions = injector.instanceOf[CountryOptions]
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId)
 
       val expectedSections = Seq(
         AnswerSection(
@@ -129,7 +129,7 @@ class DeceasedSettlorAnswerControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-      val request = FakeRequest(GET, routes.DeceasedSettlorAnswerController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -138,7 +138,7 @@ class DeceasedSettlorAnswerControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(expectedSections)(fakeRequest, messages).toString
+        view(fakeDraftId,expectedSections)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -185,7 +185,7 @@ class DeceasedSettlorAnswerControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SettlorsNameController.onPageLoad(NormalMode).url
+      redirectLocation(result).value mustEqual routes.SettlorsNameController.onPageLoad(NormalMode,fakeDraftId).url
 
       application.stop()
     }

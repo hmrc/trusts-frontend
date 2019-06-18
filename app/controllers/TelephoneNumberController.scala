@@ -70,7 +70,7 @@ class TelephoneNumberController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, index, draftId, trusteeName))
+      Ok(view(preparedForm, mode, draftId, index, trusteeName))
   }
 
   private def getMessagePrefix(index: Int, request: DataRequest[AnyContent]) = {

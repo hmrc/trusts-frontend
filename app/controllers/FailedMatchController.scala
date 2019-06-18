@@ -32,8 +32,8 @@ class FailedMatchController @Inject()(
                                        view: FailedMatchView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = identify {
+  def onPageLoad(draftId: String): Action[AnyContent] = identify {
     implicit request =>
-      Ok(view())
+      Ok(view(draftId))
   }
 }

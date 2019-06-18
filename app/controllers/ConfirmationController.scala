@@ -79,7 +79,7 @@ class ConfirmationController @Inject()(
           }
         case RegistrationProgress.InProgress =>
           Logger.info("[ConfirmationController][onPageLoad] Registration inProgress status,redirecting to task list.")
-          Future.successful(Redirect(routes.TaskListController.onPageLoad()))
+          Future.successful(Redirect(routes.TaskListController.onPageLoad(draftId)))
         case RegistrationProgress.NotStarted =>
           Logger.info("[ConfirmationController][onPageLoad] Registration NotStarted status,redirecting to trust registered page online.")
           Future.successful(Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId)))

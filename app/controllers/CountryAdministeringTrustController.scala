@@ -58,7 +58,7 @@ class CountryAdministeringTrustController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, countryOptions.options, mode))
+      Ok(view(preparedForm, countryOptions.options, mode, draftId))
   }
 
   def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
@@ -66,7 +66,7 @@ class CountryAdministeringTrustController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, countryOptions.options, mode))),
+          Future.successful(BadRequest(view(formWithErrors, countryOptions.options, mode, draftId))),
 
         value => {
           for {

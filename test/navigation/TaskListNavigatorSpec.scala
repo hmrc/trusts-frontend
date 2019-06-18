@@ -32,6 +32,7 @@ class TaskListNavigatorSpec extends SpecBase {
 
   val navigator : TaskListNavigator = new TaskListNavigator
 
+
   "TaskList Navigator" must {
 
     "for trust details task" when {
@@ -43,7 +44,7 @@ class TaskListNavigatorSpec extends SpecBase {
             .set(TrustNamePage, "Trust of John").success.value
               .set(WhenTrustSetupPage, LocalDate.of(2010,10,10)).success.value
               .set(TrustDetailsStatus, Completed).success.value
-          navigator.nextPage(TrustDetails, answers) mustBe routes.TrustDetailsAnswerPageController.onPageLoad()
+          navigator.nextPage(TrustDetails, answers, fakeDraftId) mustBe routes.TrustDetailsAnswerPageController.onPageLoad()
         }
 
       }
@@ -51,7 +52,7 @@ class TaskListNavigatorSpec extends SpecBase {
       "trust details has not been answered" must {
 
         "go to TrustName Page" in {
-          navigator.nextPage(TrustDetails, emptyUserAnswers) mustBe routes.TrustNameController.onPageLoad(NormalMode)
+          navigator.nextPage(TrustDetails, emptyUserAnswers, fakeDraftId) mustBe routes.TrustNameController.onPageLoad(NormalMode, fakeDraftId)
         }
 
       }
@@ -63,7 +64,7 @@ class TaskListNavigatorSpec extends SpecBase {
       "there are no settlors" must {
 
         "go to SetupAfterSettlorDiedPage" in {
-          navigator.nextPage(Settlors, emptyUserAnswers) mustBe routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode)
+          navigator.nextPage(Settlors, emptyUserAnswers, fakeDraftId) mustBe routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode, fakeDraftId)
         }
 
       }

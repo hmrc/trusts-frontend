@@ -83,7 +83,7 @@ class TrusteesAnswerPageController @Inject()(
         )
     )
 
-      Ok(view(index, sections))
+      Ok(view(index, draftId, sections))
   }
 
   def onSubmit(index : Int, draftId: String) = actions(index, draftId).async {

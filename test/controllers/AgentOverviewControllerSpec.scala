@@ -71,7 +71,7 @@ class AgentOverviewControllerSpec extends SpecBase {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual routes.TrustRegisteredOnlineController.onPageLoad(NormalMode).url
+        redirectLocation(result).value mustEqual routes.TrustRegisteredOnlineController.onPageLoad(NormalMode,fakeDraftId).url
 
         application.stop()
 
@@ -83,7 +83,7 @@ class AgentOverviewControllerSpec extends SpecBase {
 
       "return OK and the correct view for a GET" in {
 
-        val draft = List(DraftRegistration("draftId", "InternalRef", LocalDateTime.now()))
+        val draft = List(DraftRegistration(fakeDraftId, "InternalRef", LocalDateTime.now()))
 
         when(mockedSessionRepository.listDrafts(any()))
           .thenReturn(Future.successful(draft))

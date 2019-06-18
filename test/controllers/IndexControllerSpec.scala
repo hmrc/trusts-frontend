@@ -17,8 +17,8 @@
 package controllers
 
 import base.SpecBase
+import models.NormalMode
 import models.RegistrationProgress.InProgress
-import models.{NormalMode, UserAnswers}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
@@ -39,7 +39,7 @@ class IndexControllerSpec extends SpecBase {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustBe routes.TrustRegisteredOnlineController.onPageLoad(NormalMode).url
+        redirectLocation(result).value mustBe routes.TrustRegisteredOnlineController.onPageLoad(NormalMode,fakeDraftId).url
 
         application.stop()
       }
@@ -75,7 +75,7 @@ class IndexControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustBe routes.TaskListController.onPageLoad().url
+      redirectLocation(result).value mustBe routes.TaskListController.onPageLoad(fakeDraftId).url
 
       application.stop()
     }

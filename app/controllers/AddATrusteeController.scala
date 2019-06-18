@@ -66,7 +66,7 @@ class AddATrusteeController @Inject()(
 
           val trustees = new AddATrusteeViewHelper(request.userAnswers).rows
 
-          Future.successful(BadRequest(view(formWithErrors, mode, trustees.inProgress, trustees.complete)))
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, trustees.inProgress, trustees.complete)))
         },
         value => {
           for {

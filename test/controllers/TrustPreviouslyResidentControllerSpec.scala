@@ -37,7 +37,7 @@ class TrustPreviouslyResidentControllerSpec extends SpecBase {
   val formProvider = new TrustPreviouslyResidentFormProvider()
   val form = formProvider()
 
-  lazy val trustPreviouslyResidentRoute = routes.TrustPreviouslyResidentController.onPageLoad(NormalMode).url
+  lazy val trustPreviouslyResidentRoute = routes.TrustPreviouslyResidentController.onPageLoad(NormalMode,fakeDraftId).url
 
   "TrustPreviouslyResident Controller" must {
 

@@ -36,7 +36,7 @@ class AddAssetsControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  lazy val addAssetsRoute = routes.AddAssetsController.onPageLoad().url
+  lazy val addAssetsRoute = routes.AddAssetsController.onPageLoad(fakeDraftId).url
 
   val formProvider = new AddAssetsFormProvider()
   val form = formProvider()
@@ -65,7 +65,7 @@ class AddAssetsControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, Nil, assets)(fakeRequest, messages).toString
+        view(form, NormalMode,fakeDraftId, Nil, assets)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -107,7 +107,7 @@ class AddAssetsControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, Nil, assets)(fakeRequest, messages).toString
+        view(boundForm, NormalMode,fakeDraftId, Nil, assets)(fakeRequest, messages).toString
 
       application.stop()
     }

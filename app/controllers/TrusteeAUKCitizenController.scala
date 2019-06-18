@@ -70,7 +70,7 @@ class TrusteeAUKCitizenController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, index, draftId, trusteeName))
+      Ok(view(preparedForm, mode, draftId, index, trusteeName))
   }
 
   def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {

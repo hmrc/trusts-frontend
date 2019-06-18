@@ -18,11 +18,10 @@ package controllers
 
 import base.SpecBase
 import forms.IndividualBeneficiaryAddressYesNoFormProvider
-import models.{FullName, NormalMode, UserAnswers}
+import models.{FullName, NormalMode}
 import navigation.{FakeNavigator, Navigator}
 import pages.{IndividualBeneficiaryAddressYesNoPage, IndividualBeneficiaryNamePage}
 import play.api.inject.bind
-import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -37,7 +36,7 @@ class IndividualBeneficiaryAddressYesNoControllerSpec extends SpecBase {
   val index: Int = 0
   val name = FullName("first name", None, "Last name")
 
-  lazy val individualBeneficiaryAddressYesNoRoute = routes.IndividualBeneficiaryAddressYesNoController.onPageLoad(NormalMode, index).url
+  lazy val individualBeneficiaryAddressYesNoRoute = routes.IndividualBeneficiaryAddressYesNoController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "IndividualBeneficiaryAddressYesNo Controller" must {
 
@@ -57,7 +56,7 @@ class IndividualBeneficiaryAddressYesNoControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, name, index)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -78,7 +77,7 @@ class IndividualBeneficiaryAddressYesNoControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, name, index)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, fakeDraftId, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -126,7 +125,7 @@ class IndividualBeneficiaryAddressYesNoControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, name, index)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }

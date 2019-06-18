@@ -57,7 +57,7 @@ class ClassBeneficiaryDescriptionController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode,index))
+      Ok(view(preparedForm, mode, draftId, index))
   }
 
   def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
@@ -65,7 +65,7 @@ class ClassBeneficiaryDescriptionController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode,index))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index))),
 
         value => {
 

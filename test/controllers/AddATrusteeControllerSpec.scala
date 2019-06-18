@@ -34,7 +34,7 @@ class AddATrusteeControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  lazy val addATrusteeRoute : String = routes.AddATrusteeController.onPageLoad().url
+  lazy val addATrusteeRoute : String = routes.AddATrusteeController.onPageLoad(fakeDraftId).url
 
   val formProvider = new AddATrusteeFormProvider()
   val form = formProvider()
@@ -67,7 +67,7 @@ class AddATrusteeControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, Nil, trustee)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId,Nil, trustee)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -109,7 +109,7 @@ class AddATrusteeControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, Nil, trustee)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId,Nil, trustee)(fakeRequest, messages).toString
 
       application.stop()
     }

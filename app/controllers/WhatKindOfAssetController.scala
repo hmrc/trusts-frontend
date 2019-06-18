@@ -76,7 +76,7 @@ class WhatKindOfAssetController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId, options(request, index)))
+      Ok(view(preparedForm, mode, draftId, index, options(request, index)))
   }
 
   def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
@@ -102,7 +102,7 @@ class WhatKindOfAssetController @Inject()(
                 case Some((_ , i)) if i == index =>
                   insertAndRedirect
                 case Some((_, i)) if i != index =>
-                  Future.successful(BadRequest(view(form.fill(Money), mode, index, options(request, index))))
+                  Future.successful(BadRequest(view(form.fill(Money), mode, draftId, index, options(request, index))))
                 case _ => insertAndRedirect
             }
             case _ =>

@@ -41,7 +41,7 @@ class SettlorDateOfDeathControllerSpec extends SpecBase with MockitoSugar {
 
   private val fullName = FullName("first name", None, "Last name")
 
-  lazy val settlorDateOfDeathRoute = routes.SettlorDateOfDeathController.onPageLoad(NormalMode).url
+  lazy val settlorDateOfDeathRoute = routes.SettlorDateOfDeathController.onPageLoad(NormalMode, fakeDraftId).url
 
   "SettlorDateOfDeath Controller" must {
 
@@ -61,7 +61,7 @@ class SettlorDateOfDeathControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fullName)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, fullName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -82,7 +82,7 @@ class SettlorDateOfDeathControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), NormalMode, fullName)(fakeRequest, messages).toString
+        view(form.fill(validAnswer), NormalMode, fakeDraftId, fullName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -129,7 +129,7 @@ class SettlorDateOfDeathControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SettlorsNameController.onPageLoad(NormalMode).url
+      redirectLocation(result).value mustEqual routes.SettlorsNameController.onPageLoad(NormalMode, fakeDraftId).url
 
       application.stop()
     }
@@ -155,7 +155,7 @@ class SettlorDateOfDeathControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fullName)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, fullName)(fakeRequest, messages).toString
 
       application.stop()
     }

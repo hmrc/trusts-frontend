@@ -36,7 +36,7 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
 
   val index = 0
 
-  lazy val trusteeIndividualOrBusinessRoute = routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index).url
+  lazy val trusteeIndividualOrBusinessRoute = routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   val formProvider = new TrusteeIndividualOrBusinessFormProvider()
 
@@ -171,7 +171,7 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index).url
+      redirectLocation(result).value mustEqual routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       application.stop()
     }
@@ -288,7 +288,7 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
     "for a GET" must {
 
       def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
-        val route = routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index).url
+        val route = routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         FakeRequest(GET, route)
       }
@@ -305,7 +305,7 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
       def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
         val route =
-          routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index).url
+          routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         FakeRequest(POST, route)
           .withFormUrlEncodedBody(("value", IndividualOrBusiness.values.head.toString))

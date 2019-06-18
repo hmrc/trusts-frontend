@@ -44,7 +44,7 @@ class WhenTrustSetupControllerSpec extends SpecBase with MockitoSugar {
 
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
 
-  lazy val whenTrustSetupRoute = routes.WhenTrustSetupController.onPageLoad(NormalMode).url
+  lazy val whenTrustSetupRoute = routes.WhenTrustSetupController.onPageLoad(NormalMode,fakeDraftId).url
 
   "WhenTrustSetup Controller" must {
 

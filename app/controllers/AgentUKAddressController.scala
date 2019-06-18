@@ -65,7 +65,7 @@ class AgentUKAddressController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode,agencyName))
+      Ok(view(preparedForm, mode, draftId, agencyName))
   }
 
   def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
@@ -75,7 +75,7 @@ class AgentUKAddressController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode,agencyName))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, agencyName))),
 
         value => {
           for {

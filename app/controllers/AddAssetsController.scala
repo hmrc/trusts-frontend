@@ -54,7 +54,7 @@ class AddAssetsController @Inject()(
 
       val assets = new AddAssetViewHelper(request.userAnswers).rows
 
-      Ok(view(form, mode, assets.inProgress, assets.complete))
+      Ok(view(form, mode, draftId, assets.inProgress, assets.complete))
   }
 
   def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = routes(draftId).async {
@@ -63,7 +63,7 @@ class AddAssetsController @Inject()(
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) => {
           val assets = new AddAssetViewHelper(request.userAnswers).rows
-           Future.successful(BadRequest(view(formWithErrors, mode,assets.inProgress, assets.complete)))
+           Future.successful(BadRequest(view(formWithErrors, mode, draftId, assets.inProgress, assets.complete)))
         },
 
         value => {

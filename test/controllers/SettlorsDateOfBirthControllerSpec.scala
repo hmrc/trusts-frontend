@@ -39,7 +39,7 @@ class SettlorsDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
 
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
 
-  lazy val settlorsDateOfBirthRoute = routes.SettlorsDateOfBirthController.onPageLoad(NormalMode).url
+  lazy val settlorsDateOfBirthRoute = routes.SettlorsDateOfBirthController.onPageLoad(NormalMode,fakeDraftId).url
 
   val name = FullName("first name", None, "Last name")
 
@@ -186,7 +186,7 @@ class SettlorsDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SettlorsNameController.onPageLoad(NormalMode).url
+      redirectLocation(result).value mustEqual routes.SettlorsNameController.onPageLoad(NormalMode,fakeDraftId).url
 
       application.stop()
     }

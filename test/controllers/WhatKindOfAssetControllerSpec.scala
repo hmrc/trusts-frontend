@@ -35,7 +35,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
 
   val index = 0
 
-  lazy val whatKindOfAssetRoute = routes.WhatKindOfAssetController.onPageLoad(NormalMode, index).url
+  lazy val whatKindOfAssetRoute = routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   val formProvider = new WhatKindOfAssetFormProvider()
   val form = formProvider()
@@ -232,7 +232,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
     "for a GET" must {
 
       def getForIndex(index: Int): FakeRequest[AnyContentAsEmpty.type] = {
-        val route = routes.WhatKindOfAssetController.onPageLoad(NormalMode, index).url
+        val route = routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         FakeRequest(GET, route)
       }
@@ -249,7 +249,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
       def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
         val route =
-          routes.WhatKindOfAssetController.onPageLoad(NormalMode, index).url
+          routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         FakeRequest(POST, route)
           .withFormUrlEncodedBody(("value", WhatKindOfAsset.values.head.toString))

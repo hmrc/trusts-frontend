@@ -35,7 +35,7 @@ class WhatIsTheUTRControllerSpec extends SpecBase {
   val formProvider = new WhatIsTheUTRFormProvider()
   val form = formProvider()
 
-  lazy val whatIsTheUTRRoute = routes.WhatIsTheUTRController.onPageLoad(NormalMode).url
+  lazy val whatIsTheUTRRoute = routes.WhatIsTheUTRController.onPageLoad(NormalMode,fakeDraftId).url
 
   "WhatIsTheUTR Controller" must {
 

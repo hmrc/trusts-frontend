@@ -18,11 +18,10 @@ package controllers
 
 import base.SpecBase
 import forms.CountryGoverningTrustFormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
 import pages.CountryGoverningTrustPage
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -37,7 +36,7 @@ class CountryGoverningTrustControllerSpec extends SpecBase {
   val formProvider = new CountryGoverningTrustFormProvider()
   val form = formProvider()
 
-  lazy val countryGoverningTrustRoute = routes.CountryGoverningTrustController.onPageLoad(NormalMode).url
+  lazy val countryGoverningTrustRoute = routes.CountryGoverningTrustController.onPageLoad(NormalMode,fakeDraftId).url
 
   "CountryGoverningTrust Controller" must {
 
@@ -56,7 +55,7 @@ class CountryGoverningTrustControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, countryOptions, NormalMode)(fakeRequest, messages).toString
+        view(form, countryOptions, NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -78,7 +77,7 @@ class CountryGoverningTrustControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("Spain"), countryOptions, NormalMode)(fakeRequest, messages).toString
+        view(form.fill("Spain"), countryOptions, NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -121,7 +120,7 @@ class CountryGoverningTrustControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, countryOptions, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, countryOptions, NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }

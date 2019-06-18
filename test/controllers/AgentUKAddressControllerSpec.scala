@@ -38,7 +38,7 @@ class AgentUKAddressControllerSpec extends SpecBase {
   val agencyName = "Hadrian"
 
 
-  lazy val agentUKAddressRoute = routes.AgentUKAddressController.onPageLoad(NormalMode).url
+  lazy val agentUKAddressRoute = routes.AgentUKAddressController.onPageLoad(NormalMode,fakeDraftId).url
 
 
   "AgentUKAddress Controller" must {
@@ -59,7 +59,7 @@ class AgentUKAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,agencyName)(request, messages).toString
+        view(form, NormalMode,agencyName,fakeDraftId)(request, messages).toString
 
       application.stop()
     }
@@ -81,7 +81,7 @@ class AgentUKAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")), NormalMode,agencyName)(fakeRequest, messages).toString
+        view(form.fill(UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")), NormalMode,fakeDraftId,agencyName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -129,7 +129,7 @@ class AgentUKAddressControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode,agencyName)(fakeRequest, messages).toString
+        view(boundForm, NormalMode,agencyName,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -175,7 +175,7 @@ class AgentUKAddressControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.AgentNameController.onPageLoad(NormalMode).url
+      redirectLocation(result).value mustEqual routes.AgentNameController.onPageLoad(NormalMode,fakeDraftId).url
 
       application.stop()
     }

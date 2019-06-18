@@ -61,7 +61,7 @@ class TrustHaveAUTRController @Inject()( override val messagesApi: MessagesApi,
 
       val link = Link(Messages(lostUtrKey), config.lostUtrUrl)
 
-      Ok(view(preparedForm, mode, Some(link)))
+      Ok(view(preparedForm, mode, draftId, Some(link)))
   }
 
   def onSubmit(mode: Mode, draftId: String) = actions(draftId).async {
@@ -71,7 +71,7 @@ class TrustHaveAUTRController @Inject()( override val messagesApi: MessagesApi,
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, Some(link)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, Some(link)))),
 
         value => {
           for {

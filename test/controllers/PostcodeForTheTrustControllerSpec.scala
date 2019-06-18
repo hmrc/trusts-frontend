@@ -30,8 +30,8 @@ class PostcodeForTheTrustControllerSpec extends SpecBase {
   val formProvider = new PostcodeForTheTrustFormProvider()
   val form : Form[Option[String]] = formProvider()
 
-  lazy val postcodeForTheTrustRoute : String = routes.PostcodeForTheTrustController.onPageLoad(NormalMode).url
-  lazy val matchingFailedRoute : String = routes.FailedMatchController.onPageLoad().url
+  lazy val postcodeForTheTrustRoute : String = routes.PostcodeForTheTrustController.onPageLoad(NormalMode,fakeDraftId).url
+  lazy val matchingFailedRoute : String = routes.FailedMatchController.onPageLoad(fakeDraftId).url
 
   "PostcodeForTheTrust Controller" must {
 
@@ -48,7 +48,7 @@ class PostcodeForTheTrustControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -68,7 +68,7 @@ class PostcodeForTheTrustControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(Some("AA9A 9AA")), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(Some("AA9A 9AA")), NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -144,7 +144,7 @@ class PostcodeForTheTrustControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }

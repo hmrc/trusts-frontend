@@ -39,7 +39,7 @@ class AgentInternationalAddressControllerSpec extends SpecBase {
   val form = formProvider()
   val agencyName = "Hadrian"
 
-  lazy val agentInternationalAddressRoute = routes.AgentInternationalAddressController.onPageLoad(NormalMode).url
+  lazy val agentInternationalAddressRoute = routes.AgentInternationalAddressController.onPageLoad(NormalMode,fakeDraftId).url
 
   "AgentInternationalAddress Controller" must {
 
@@ -61,7 +61,7 @@ class AgentInternationalAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, countryOptions, NormalMode, agencyName)(request, messages).toString
+        view(form, countryOptions, NormalMode, fakeDraftId,agencyName)(request, messages).toString
 
       application.stop()
     }
@@ -85,7 +85,7 @@ class AgentInternationalAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(InternationalAddress("line 1", "line 2", Some("line 3"), Some("line 4"),"country")), countryOptions, NormalMode, agencyName)(fakeRequest, messages).toString
+        view(form.fill(InternationalAddress("line 1", "line 2", Some("line 3"), Some("line 4"),"country")), countryOptions, NormalMode,fakeDraftId, agencyName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -135,7 +135,7 @@ class AgentInternationalAddressControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, countryOptions, NormalMode,agencyName)(fakeRequest, messages).toString
+        view(boundForm, countryOptions, NormalMode,agencyName,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -181,7 +181,7 @@ class AgentInternationalAddressControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.AgentNameController.onPageLoad(NormalMode).url
+      redirectLocation(result).value mustEqual routes.AgentNameController.onPageLoad(NormalMode,fakeDraftId).url
 
       application.stop()
     }

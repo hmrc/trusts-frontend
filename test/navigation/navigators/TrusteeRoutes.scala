@@ -94,7 +94,7 @@ trait TrusteeRoutes {
         userAnswers =>
 
           navigator.nextPage(IsThisLeadTrusteePage(index), NormalMode)(userAnswers)
-            .mustBe(routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index))
+            .mustBe(routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
 
@@ -104,7 +104,7 @@ trait TrusteeRoutes {
           val answers = userAnswers.set(TrusteeIndividualOrBusinessPage(0), Individual).success.value
 
           navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode)(answers)
-            .mustBe(routes.TrusteesNameController.onPageLoad(NormalMode, index))
+            .mustBe(routes.TrusteesNameController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
 
@@ -114,7 +114,7 @@ trait TrusteeRoutes {
           val answers = userAnswers.set(TrusteeIndividualOrBusinessPage(0), Business).success.value
 
           navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode)(answers)
-            .mustBe(routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index))
+            .mustBe(routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
 
@@ -123,7 +123,7 @@ trait TrusteeRoutes {
         userAnswers =>
 
           navigator.nextPage(TrusteesNamePage(index), NormalMode)(userAnswers)
-            .mustBe(routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index))
+            .mustBe(routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
 
@@ -151,7 +151,7 @@ trait TrusteeRoutes {
             val answers = userAnswers.set(IsThisLeadTrusteePage(index), true).success.value
 
             navigator.nextPage(TrusteesDateOfBirthPage(index), NormalMode)(answers)
-              .mustBe(routes.TrusteeAUKCitizenController.onPageLoad(NormalMode, index))
+              .mustBe(routes.TrusteeAUKCitizenController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 
@@ -162,7 +162,7 @@ trait TrusteeRoutes {
             val answers = userAnswers.set(TrusteeAUKCitizenPage(index), value = true).success.value
 
             navigator.nextPage(TrusteeAUKCitizenPage(index), NormalMode)(answers)
-              .mustBe(routes.TrusteesNinoController.onPageLoad(NormalMode, index))
+              .mustBe(routes.TrusteesNinoController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 
@@ -182,7 +182,7 @@ trait TrusteeRoutes {
           userAnswers =>
 
             navigator.nextPage(TrusteesNinoPage(index), NormalMode)(userAnswers)
-              .mustBe(routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index))
+              .mustBe(routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 
@@ -193,7 +193,7 @@ trait TrusteeRoutes {
             val answers = userAnswers.set(TrusteeLiveInTheUKPage(index), value = true).success.value
 
             navigator.nextPage(TrusteeLiveInTheUKPage(index), NormalMode)(answers)
-              .mustBe(routes.TrusteesUkAddressController.onPageLoad(NormalMode, index))
+              .mustBe(routes.TrusteesUkAddressController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 
@@ -204,7 +204,7 @@ trait TrusteeRoutes {
             val answers = userAnswers.set(TrusteeLiveInTheUKPage(index), value = false).success.value
 
             navigator.nextPage(TrusteeLiveInTheUKPage(index), NormalMode)(answers)
-              .mustBe(routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index))
+              .mustBe(routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 
@@ -213,7 +213,7 @@ trait TrusteeRoutes {
           userAnswers =>
 
             navigator.nextPage(TrusteesUkAddressPage(index), NormalMode)(userAnswers)
-              .mustBe(routes.TelephoneNumberController.onPageLoad(NormalMode, index))
+              .mustBe(routes.TelephoneNumberController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 

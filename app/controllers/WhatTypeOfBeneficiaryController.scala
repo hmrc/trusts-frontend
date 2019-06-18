@@ -51,7 +51,7 @@ class WhatTypeOfBeneficiaryController @Inject()(
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
-      Ok(view(form, mode,isAnyBeneficiaryAdded(request)))
+      Ok(view(form, mode, draftId, isAnyBeneficiaryAdded(request)))
   }
 
 
@@ -61,7 +61,7 @@ class WhatTypeOfBeneficiaryController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode,isAnyBeneficiaryAdded(request)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId ,isAnyBeneficiaryAdded(request)))),
 
         value => {
           for {

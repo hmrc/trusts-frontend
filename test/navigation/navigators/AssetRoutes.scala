@@ -59,7 +59,7 @@ trait AssetRoutes {
           val answers = userAnswers.set(WhatKindOfAssetPage(index), Money).success.value
 
           navigator.nextPage(WhatKindOfAssetPage(index), NormalMode)(answers)
-            .mustBe(routes.AssetMoneyValueController.onPageLoad(NormalMode, index))
+            .mustBe(routes.AssetMoneyValueController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
 

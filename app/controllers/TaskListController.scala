@@ -88,7 +88,7 @@ class TaskListController @Inject()(
 
           Logger.debug(s"[TaskList][sections] $sections")
 
-          Ok(view(savedUntil, sections, isTaskListComplete, affinityGroup))        }
+          Ok(view(draftId ,savedUntil, sections, isTaskListComplete, affinityGroup))        }
       }
 
       val isExistingTrust = request.userAnswers.get(TrustHaveAUTRPage).get
@@ -99,7 +99,7 @@ class TaskListController @Inject()(
             renderView(request.affinityGroup)
 
           case Some(AlreadyRegistered) | Some(Failed) =>
-            Future.successful(Redirect(routes.FailedMatchController.onPageLoad().url))
+            Future.successful(Redirect(routes.FailedMatchController.onPageLoad(draftId).url))
 
           case None =>
             Future.successful(Redirect(routes.WhatIsTheUTRController.onPageLoad(NormalMode, draftId).url))

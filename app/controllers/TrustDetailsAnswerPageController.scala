@@ -55,7 +55,7 @@ class TrustDetailsAnswerPageController @Inject()(
   def onPageLoad(draftId: String) = actions(draftId) {
     implicit request =>
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId)
 
       val sections = Seq(
         AnswerSection(
@@ -65,7 +65,7 @@ class TrustDetailsAnswerPageController @Inject()(
             checkYourAnswersHelper.whenTrustSetup,
             checkYourAnswersHelper.governedInsideTheUK,
             checkYourAnswersHelper.countryGoverningTrust,
-            checkYourAnswersHelper.administrationInsideUK(draftId),
+            checkYourAnswersHelper.administrationInsideUK,
             checkYourAnswersHelper.countryAdministeringTrust,
             checkYourAnswersHelper.trustResidentInUK,
             checkYourAnswersHelper.establishedUnderScotsLaw,
@@ -79,7 +79,7 @@ class TrustDetailsAnswerPageController @Inject()(
         )
       )
 
-      Ok(view(sections))
+      Ok(view(draftId, sections))
   }
 
   def onSubmit(draftId: String) = actions(draftId).async {

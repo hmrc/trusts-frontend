@@ -34,7 +34,7 @@ class SettlorsUKAddressControllerSpec extends SpecBase {
   val formProvider = new UKAddressFormProvider()
   val form = formProvider()
 
-  lazy val settlorsUKAddressRoute = routes.SettlorsUKAddressController.onPageLoad(NormalMode).url
+  lazy val settlorsUKAddressRoute = routes.SettlorsUKAddressController.onPageLoad(NormalMode,fakeDraftId).url
 
   val name = FullName("first name", None, "Last name")
 
@@ -171,7 +171,7 @@ class SettlorsUKAddressControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SettlorsNameController.onPageLoad(NormalMode).url
+      redirectLocation(result).value mustEqual routes.SettlorsNameController.onPageLoad(NormalMode,fakeDraftId).url
 
       application.stop()
     }
