@@ -18,16 +18,19 @@ package filters
 
 import akka.stream.Materializer
 import com.google.inject.Inject
+import config.FrontendAppConfig
 import play.api.Configuration
-import play.api.mvc.Call
+import play.api.mvc.{Call, RequestHeader, Result}
 import uk.gov.hmrc.whitelist.AkamaiWhitelistFilter
+
+import scala.concurrent.Future
 
 class WhitelistFilter @Inject() (
                                   config: Configuration,
                                   override val mat: Materializer
                                 ) extends AkamaiWhitelistFilter {
 
-  override val whitelist: Seq[String] = {
+  override def whitelist: Seq[String] = {
     config
       .underlying
       .getString("filters.whitelist.ips")
@@ -36,15 +39,30 @@ class WhitelistFilter @Inject() (
       .filter(_.nonEmpty)
   }
 
-  override val destination: Call = {
+  override def destination: Call = {
     val path = config.underlying.getString("filters.whitelist.destination")
     Call("GET", path)
   }
 
-  override val excludedPaths: Seq[Call] = {
+  override def excludedPaths: Seq[Call] = {
     config.underlying.getString("filters.whitelist.excluded").split(",").map {
       path =>
         Call("GET", path.trim)
     }
   }
+}
+
+class TrustWhitelistFilter @Inject()(
+                                      config: FrontendAppConfig,
+                                      override val mat: Materializer
+                             ) extends WhitelistFilter(config.configuration, mat) {
+
+  override def apply(f: RequestHeader => Future[Result])(rh: RequestHeader): Future[Result] = {
+    if (config.enableWhitelist) {
+      super.apply(f)(rh)
+    } else {
+      f(rh)
+    }
+  }
+
 }
