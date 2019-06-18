@@ -39,8 +39,8 @@ trait TrustDetailsRoutes {
 
           val answers = userAnswers.set(TrustHaveAUTRPage, false).success.value
 
-          navigator.nextPage(TrustNamePage, NormalMode)(answers)
-            .mustBe(routes.WhenTrustSetupController.onPageLoad(NormalMode))
+          navigator.nextPage(TrustNamePage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.WhenTrustSetupController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -50,8 +50,8 @@ trait TrustDetailsRoutes {
 
           val answers = userAnswers.set(WhenTrustSetupPage, value = LocalDate.of(2010, 10, 10)).success.value
 
-          navigator.nextPage(WhenTrustSetupPage, NormalMode)(answers)
-            .mustBe(routes.GovernedInsideTheUKController.onPageLoad(NormalMode))
+          navigator.nextPage(WhenTrustSetupPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.GovernedInsideTheUKController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -61,8 +61,8 @@ trait TrustDetailsRoutes {
 
           val answers = userAnswers.set(GovernedInsideTheUKPage, value = true).success.value
 
-          navigator.nextPage(GovernedInsideTheUKPage, NormalMode)(answers)
-            .mustBe(routes.AdministrationInsideUKController.onPageLoad(NormalMode))
+          navigator.nextPage(GovernedInsideTheUKPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.AdministrationInsideUKController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -72,8 +72,8 @@ trait TrustDetailsRoutes {
 
           val answers = userAnswers.set(GovernedInsideTheUKPage, value = false).success.value
 
-          navigator.nextPage(GovernedInsideTheUKPage, NormalMode)(answers)
-            .mustBe(routes.CountryGoverningTrustController.onPageLoad(NormalMode))
+          navigator.nextPage(GovernedInsideTheUKPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.CountryGoverningTrustController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -83,8 +83,8 @@ trait TrustDetailsRoutes {
 
           val answers = userAnswers.set(CountryGoverningTrustPage, value = "France").success.value
 
-          navigator.nextPage(CountryGoverningTrustPage, NormalMode)(answers)
-            .mustBe(routes.AdministrationInsideUKController.onPageLoad(NormalMode))
+          navigator.nextPage(CountryGoverningTrustPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.AdministrationInsideUKController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -94,8 +94,8 @@ trait TrustDetailsRoutes {
 
           val answers = userAnswers.set(AdministrationInsideUKPage, value = false).success.value
 
-          navigator.nextPage(AdministrationInsideUKPage, NormalMode)(answers)
-            .mustBe(routes.CountryAdministeringTrustController.onPageLoad(NormalMode))
+          navigator.nextPage(AdministrationInsideUKPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.CountryAdministeringTrustController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -105,8 +105,8 @@ trait TrustDetailsRoutes {
 
           val answers = userAnswers.set(AdministrationInsideUKPage, value = true).success.value
 
-          navigator.nextPage(AdministrationInsideUKPage, NormalMode)(answers)
-            .mustBe(routes.TrustResidentInUKController.onPageLoad(NormalMode))
+          navigator.nextPage(AdministrationInsideUKPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.TrustResidentInUKController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -116,8 +116,8 @@ trait TrustDetailsRoutes {
 
           val answers = userAnswers.set(CountryAdministeringTrustPage, value = "France").success.value
 
-          navigator.nextPage(CountryAdministeringTrustPage, NormalMode)(answers)
-            .mustBe(routes.TrustResidentInUKController.onPageLoad(NormalMode))
+          navigator.nextPage(CountryAdministeringTrustPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.TrustResidentInUKController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -127,8 +127,8 @@ trait TrustDetailsRoutes {
 
           val answers = userAnswers.set(TrustResidentInUKPage, value = false).success.value
 
-          navigator.nextPage(TrustResidentInUKPage, NormalMode)(answers)
-            .mustBe(routes.RegisteringTrustFor5AController.onPageLoad(NormalMode))
+          navigator.nextPage(TrustResidentInUKPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.RegisteringTrustFor5AController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -138,8 +138,8 @@ trait TrustDetailsRoutes {
 
           val answers = userAnswers.set(RegisteringTrustFor5APage, value = false).success.value
 
-          navigator.nextPage(RegisteringTrustFor5APage, NormalMode)(answers)
-            .mustBe(routes.InheritanceTaxActController.onPageLoad(NormalMode))
+          navigator.nextPage(RegisteringTrustFor5APage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.InheritanceTaxActController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -149,8 +149,8 @@ trait TrustDetailsRoutes {
 
           val answers = userAnswers.set(InheritanceTaxActPage, value = false).success.value
 
-          navigator.nextPage(InheritanceTaxActPage, NormalMode)(answers)
-            .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad())
+          navigator.nextPage(InheritanceTaxActPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -160,8 +160,8 @@ trait TrustDetailsRoutes {
 
           val answers = userAnswers.set(InheritanceTaxActPage, value = true).success.value
 
-          navigator.nextPage(InheritanceTaxActPage, NormalMode)(answers)
-            .mustBe(routes.AgentOtherThanBarristerController.onPageLoad(NormalMode))
+          navigator.nextPage(InheritanceTaxActPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.AgentOtherThanBarristerController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -171,8 +171,8 @@ trait TrustDetailsRoutes {
 
           val answers = userAnswers.set(AgentOtherThanBarristerPage, value = true).success.value
 
-          navigator.nextPage(AgentOtherThanBarristerPage, NormalMode)(answers)
-            .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad())
+          navigator.nextPage(AgentOtherThanBarristerPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -182,8 +182,8 @@ trait TrustDetailsRoutes {
 
           val answers = userAnswers.set(NonResidentTypePage, value = NonResidentType.Domiciled).success.value
 
-          navigator.nextPage(NonResidentTypePage, NormalMode)(answers)
-            .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad())
+          navigator.nextPage(NonResidentTypePage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -193,8 +193,8 @@ trait TrustDetailsRoutes {
 
           val answers = userAnswers.set(RegisteringTrustFor5APage, value = true).success.value
 
-          navigator.nextPage(RegisteringTrustFor5APage, NormalMode)(answers)
-            .mustBe(routes.NonResidentTypeController.onPageLoad(NormalMode))
+          navigator.nextPage(RegisteringTrustFor5APage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.NonResidentTypeController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -204,8 +204,8 @@ trait TrustDetailsRoutes {
 
           val answers = userAnswers.set(TrustResidentInUKPage, value = true).success.value
 
-          navigator.nextPage(TrustResidentInUKPage, NormalMode)(answers)
-            .mustBe(routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode))
+          navigator.nextPage(TrustResidentInUKPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -215,8 +215,8 @@ trait TrustDetailsRoutes {
 
           val answers = userAnswers.set(EstablishedUnderScotsLawPage, value = false).success.value
 
-          navigator.nextPage(EstablishedUnderScotsLawPage, NormalMode)(answers)
-            .mustBe(routes.TrustResidentOffshoreController.onPageLoad(NormalMode))
+          navigator.nextPage(EstablishedUnderScotsLawPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.TrustResidentOffshoreController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -226,8 +226,8 @@ trait TrustDetailsRoutes {
 
           val answers = userAnswers.set(TrustResidentOffshorePage, value = true).success.value
 
-          navigator.nextPage(TrustResidentOffshorePage, NormalMode)(answers)
-            .mustBe(routes.TrustPreviouslyResidentController.onPageLoad(NormalMode))
+          navigator.nextPage(TrustResidentOffshorePage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.TrustPreviouslyResidentController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -237,8 +237,8 @@ trait TrustDetailsRoutes {
 
           val answers = userAnswers.set(TrustResidentOffshorePage, value = false).success.value
 
-          navigator.nextPage(TrustResidentOffshorePage, NormalMode)(answers)
-            .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad())
+          navigator.nextPage(TrustResidentOffshorePage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -248,8 +248,8 @@ trait TrustDetailsRoutes {
 
           val answers = userAnswers.set(TrustPreviouslyResidentPage, value = "France").success.value
 
-          navigator.nextPage(TrustPreviouslyResidentPage, NormalMode)(answers)
-            .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad())
+          navigator.nextPage(TrustPreviouslyResidentPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -261,8 +261,8 @@ trait TrustDetailsRoutes {
           val answers = userAnswers.set(TrustRegisteredOnlinePage, false).success.value
             .set(TrustHaveAUTRPage, false).success.value
 
-          navigator.nextPage(TrustDetailsAnswerPage, NormalMode)(answers)
-            .mustBe(routes.TaskListController.onPageLoad())
+          navigator.nextPage(TrustDetailsAnswerPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
       }
 
     }
@@ -280,8 +280,8 @@ trait TrustDetailsRoutes {
 
             val answers = userAnswers.set(TrustNamePage, value = "New Trust").success.value
 
-            navigator.nextPage(TrustNamePage, CheckMode)(answers)
-              .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad())
+            navigator.nextPage(TrustNamePage, CheckMode, fakeDraftId)(answers)
+              .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId))
         }
 
       }
@@ -292,8 +292,8 @@ trait TrustDetailsRoutes {
 
             val answers = userAnswers.set(WhenTrustSetupPage, value = LocalDate.of(2010,10,10)).success.value
 
-            navigator.nextPage(WhenTrustSetupPage, CheckMode)(answers)
-              .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad())
+            navigator.nextPage(WhenTrustSetupPage, CheckMode, fakeDraftId)(answers)
+              .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId))
         }
       }
 
