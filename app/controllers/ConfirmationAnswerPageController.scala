@@ -44,7 +44,7 @@ class ConfirmationAnswerPageController @Inject()(
   private def actions(draftId : String) =
     identify andThen getData(draftId) andThen requireData andThen registrationComplete
 
-  def onPageLoad(draftId: String) = actions() {
+  def onPageLoad(draftId: String) = actions(draftId) {
     implicit request =>
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId, canEdit = false)
