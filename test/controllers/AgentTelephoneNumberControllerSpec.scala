@@ -99,7 +99,7 @@ class AgentTelephoneNumberControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers),AffinityGroup.Agent).build()
 
       val request =
         FakeRequest(POST, agentTelephoneNumberRoute)
