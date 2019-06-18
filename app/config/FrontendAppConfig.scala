@@ -23,7 +23,7 @@ import play.api.i18n.Lang
 import play.api.mvc.Call
 
 @Singleton
-class FrontendAppConfig @Inject() (configuration: Configuration) {
+class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   private val contactHost = configuration.get[String]("contact-frontend.host")
   private val contactFormServiceIdentifier = "trustsfrontend"
@@ -68,5 +68,7 @@ class FrontendAppConfig @Inject() (configuration: Configuration) {
 
   lazy val removeTaxLiabilityOnTaskList : Boolean =
     configuration.get[Boolean]("microservice.services.features.removeTaxLiabilityOnTaskList")
+
+  lazy val enableWhitelist : Boolean = configuration.get[Boolean]("microservice.services.features.whitelist.enabled")
 
 }
