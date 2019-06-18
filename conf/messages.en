@@ -758,7 +758,7 @@ classBeneficiaryDescription.heading = What is the description for the class of b
 classBeneficiaryDescription.checkYourAnswersLabel = What is the description for the class of beneficiaries?
 classBeneficiaryDescription.error.required = Enter the description for the class of beneficiaries
 classBeneficiaryDescription.error.length = The description of the class in the trust deed must be 56 characters or less
-classBeneficiaryDescription.error.invalid = The description of class in the trust deed must only include letters a to z, numbers, ampersands (&), backward slashes or spaces
+classBeneficiaryDescription.error.invalid = The description of the class in the trust deed must only include letters a to z, numbers, ampersands (&), backward slashes or spaces
 classBeneficiaryDescription.hint = This must be 56 characters or less. For example, future grandchildren and future great-grandchildren.
 
 whatTypeOfBeneficiary.first.title = What kind of beneficiary do you need to add first?
