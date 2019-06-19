@@ -32,7 +32,7 @@ import scala.concurrent.Future
 
 class AgentOverviewControllerSpec extends SpecBase {
 
-  lazy val agentOverviewRoute = routes.AgentOverviewController.onSubmit().url
+  lazy val agentOverviewRoute: String = routes.AgentOverviewController.onSubmit().url
 
   "AgentOverview Controller" when {
 

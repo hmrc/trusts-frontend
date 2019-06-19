@@ -94,9 +94,9 @@ class ConfirmationViewSpec extends ViewBehaviours {
     val view = viewFor[ConfirmationView](Some(emptyUserAnswers))
 
     val applyView = view.apply(
+      draftId = fakeDraftId,
       isExistingTrust = false,
       isAgent = false,
-      draftId = fakeDraftId,
       refNumber = refNumber,
       postHMRC = postHMRC,
       agentOverviewUrl = "#",
@@ -111,9 +111,9 @@ class ConfirmationViewSpec extends ViewBehaviours {
     val view = viewFor[ConfirmationView](Some(emptyUserAnswers))
 
     val applyView = view.apply(
-      isExistingTrust = false,
-      isAgent = false,
       draftId = fakeDraftId,
+      isExistingTrust = true,
+      isAgent = false,
       refNumber = refNumber,
       postHMRC = postHMRC,
       agentOverviewUrl = "#",
@@ -128,8 +128,8 @@ class ConfirmationViewSpec extends ViewBehaviours {
     val view = viewForAgent[ConfirmationView](Some(emptyUserAnswers))
 
     val applyView = view.apply(
-      isExistingTrust = false,
-      isAgent = false,
+      isExistingTrust = true,
+      isAgent = true,
       draftId = fakeDraftId,
       refNumber = refNumber,
       postHMRC = postHMRC,

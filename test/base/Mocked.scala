@@ -16,8 +16,7 @@
 
 package base
 
-import models.UserAnswers
-import models.requests.OptionalDataRequest
+import models.requests.{IdentifierRequest, OptionalDataRequest}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.mockito.MockitoSugar
@@ -36,6 +35,9 @@ trait Mocked extends MockitoSugar {
 
   when(mockCreateDraftRegistrationService.create(any[OptionalDataRequest[AnyContent]]))
     .thenReturn(Future.successful(TestUserAnswers.draftId))
+
+  when(mockCreateDraftRegistrationService.create(any[IdentifierRequest[AnyContent]]))
+      .thenReturn(Future.successful(TestUserAnswers.draftId))
 
   when(mockedSessionRepository.set(any())).thenReturn(Future.successful(true))
 

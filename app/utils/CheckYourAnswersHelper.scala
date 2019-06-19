@@ -378,6 +378,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "settlorsUKAddress.checkYourAnswersLabel",
         ukAddress(x),
         routes.SettlorsUKAddressController.onPageLoad(CheckMode, draftId).url,
+        deceasedSettlorName(userAnswers),
         canEdit = canEdit
       )
   }
@@ -388,6 +389,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "settlorsNINoYesNo.checkYourAnswersLabel",
         yesOrNo(x),
         routes.SettlorsNINoYesNoController.onPageLoad(CheckMode, draftId).url,
+        deceasedSettlorName(userAnswers),
         canEdit = canEdit
       )
   }
@@ -441,6 +443,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "settlorNationalInsuranceNumber.checkYourAnswersLabel",
         HtmlFormat.escape(formatNino(x)),
         routes.SettlorNationalInsuranceNumberController.onPageLoad(CheckMode, draftId).url,
+        deceasedSettlorName(userAnswers),
         canEdit = canEdit
       )
   }
@@ -451,6 +454,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "settlorDateOfDeathYesNo.checkYourAnswersLabel",
         yesOrNo(x),
         routes.SettlorDateOfDeathYesNoController.onPageLoad(CheckMode, draftId).url,
+        deceasedSettlorName(userAnswers),
         canEdit = canEdit
       )
   }
@@ -545,6 +549,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "trusteesUkAddress.checkYourAnswersLabel",
         ukAddress(x),
         routes.TrusteesUkAddressController.onPageLoad(CheckMode, index, draftId).url,
+        trusteeName(index, userAnswers),
         canEdit = canEdit
       )
   }
