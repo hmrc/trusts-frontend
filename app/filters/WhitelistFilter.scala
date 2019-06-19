@@ -19,7 +19,7 @@ package filters
 import akka.stream.Materializer
 import com.google.inject.Inject
 import config.FrontendAppConfig
-import play.api.Configuration
+import play.api.{Configuration, Logger}
 import play.api.mvc.{Call, RequestHeader, Result}
 import uk.gov.hmrc.whitelist.AkamaiWhitelistFilter
 
@@ -45,7 +45,9 @@ class WhitelistFilter @Inject() (
   }
 
   override def excludedPaths: Seq[Call] = {
-    config.underlying.getString("filters.whitelist.excluded").split(",").map {
+    val excludedPaths = config.underlying.getString("filters.whitelist.excluded").split(",")
+    Logger.info(s"[WhitelistFilter] excludedPaths $excludedPaths")
+    excludedPaths.map {
       path =>
         Call("GET", path.trim)
     }
