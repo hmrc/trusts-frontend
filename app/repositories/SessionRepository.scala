@@ -51,10 +51,19 @@ class DefaultSessionRepository @Inject()(
     options = BSONDocument("expireAfterSeconds" -> cacheTtl)
   )
 
-  val started: Future[Unit] =
-    collection.flatMap {
-      _.indexesManager.ensure(createdAtIndex)
-    }.map(_ => ())
+  private val internalAuthIdIndex = Index(
+    key = Seq("internalId" -> IndexType.Ascending),
+    name = Some("internal-auth-id-index")
+  )
+
+    val started : Future[Unit] = {
+      Future.sequence {
+        Seq(
+          collection.map(_.indexesManager.ensure(createdAtIndex)),
+          collection.map(_.indexesManager.ensure(internalAuthIdIndex))
+        )
+      }.map(_ => ())
+    }
 
   override def get(draftId: String, internalId: String): Future[Option[UserAnswers]] = {
     collection.flatMap(_.find(Json.obj("_id" -> draftId, "internalId" -> internalId), None).one[UserAnswers])
