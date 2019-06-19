@@ -69,6 +69,6 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val removeTaxLiabilityOnTaskList : Boolean =
     configuration.get[Boolean]("microservice.services.features.removeTaxLiabilityOnTaskList")
 
-  lazy val enableWhitelist : Boolean = configuration.get[Boolean]("microservice.services.features.whitelist.enabled")
+  lazy val enableWhitelist : Boolean = configuration.get[String]("microservice.services.features.whitelist.enabled").toBoolean
 
 }
