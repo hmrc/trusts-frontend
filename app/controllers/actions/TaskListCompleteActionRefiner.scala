@@ -25,10 +25,10 @@ import play.api.mvc.{ActionRefiner, Result}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class RegistrationCompleteActionRefinerImpl @Inject()(
+class TaskListCompleteActionRefinerImpl @Inject()(
                                                      registrationProgress: RegistrationProgress,
                                                      implicit val executionContext: ExecutionContext
-                                                     ) extends RegistrationCompleteActionRefiner {
+                                                     ) extends TaskListCompleteActionRefiner {
 
   override protected def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
 
@@ -40,4 +40,4 @@ class RegistrationCompleteActionRefinerImpl @Inject()(
   }
 }
 
-trait RegistrationCompleteActionRefiner extends ActionRefiner[DataRequest, DataRequest]
+trait TaskListCompleteActionRefiner extends ActionRefiner[DataRequest, DataRequest]

@@ -34,9 +34,9 @@ class FakeDraftIdRetrievalActionProvider(draftId: String,
 
   val mockedSession = mock[SessionRepository]
 
-  when(mockedSession.get(any(), any(),  any())).thenReturn(Future.successful(dataToReturn))
+  when(mockedSession.get(any(), any())).thenReturn(Future.successful(dataToReturn))
 
-  override def apply(draftId : String, status :  RegistrationProgress  ) = new DraftIdDataRetrievalAction(draftId,status ,mockedSession, executionContext)
+  override def apply(draftId : String) = new DraftIdDataRetrievalAction(draftId, mockedSession, executionContext)
 
 }
 
