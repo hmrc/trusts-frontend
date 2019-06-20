@@ -71,7 +71,7 @@ class AgentOverviewControllerSpec extends SpecBase {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual routes.TrustRegisteredOnlineController.onPageLoad(NormalMode,fakeDraftId).url
+        redirectLocation(result).value mustEqual routes.CreateDraftRegistrationController.create().url
 
         application.stop()
 

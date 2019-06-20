@@ -18,54 +18,31 @@ package controllers
 
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import javax.inject.Inject
-import models.NormalMode
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
-import services.CreateDraftRegistrationService
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.IndexView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class IndexController @Inject()(
                                  identify: IdentifierAction,
                                  getData: DataRetrievalAction,
-                                 sessionRepository: SessionRepository,
-                                 val controllerComponents: MessagesControllerComponents,
-                                 view: IndexView,
-                                 draftService : CreateDraftRegistrationService
+                                 val controllerComponents: MessagesControllerComponents
                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData).async {
     implicit request =>
 
-      def routeAffinityGroupNotStarted(draftId: String) = {
-        request.affinityGroup match {
-          case AffinityGroup.Agent =>
-            Redirect(routes.AgentOverviewController.onPageLoad())
-          case _ =>
-            Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId))
-        }
-      }
-
-      def routeAffinityGroupInProgress(draftId: String) = {
-        request.affinityGroup match {
-          case AffinityGroup.Agent =>
-            Redirect(routes.AgentOverviewController.onPageLoad())
-          case _ =>
-            Redirect(routes.TaskListController.onPageLoad(draftId))
-        }
-      }
-
-      request.userAnswers match {
-        case Some(userAnswers) =>
-          Future.successful(routeAffinityGroupInProgress(userAnswers.draftId) )
-        case None =>
-          draftService.create(request).map {
-            draftId =>
-              routeAffinityGroupNotStarted(draftId)
+      request.affinityGroup match {
+        case AffinityGroup.Agent =>
+          Future.successful(Redirect(routes.AgentOverviewController.onPageLoad()))
+        case _ =>
+          request.userAnswers match {
+            case Some(userAnswers) =>
+              Future.successful(Redirect(routes.TaskListController.onPageLoad(userAnswers.draftId)))
+            case None =>
+              Future.successful(Redirect(routes.CreateDraftRegistrationController.create()))
           }
       }
   }
