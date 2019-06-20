@@ -28,13 +28,11 @@ import scala.concurrent.ExecutionContext
 class CannotMakeChangesController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: CannotMakeChangesView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify) {
+  def onPageLoad: Action[AnyContent] = identify {
     implicit request =>
       Ok(view())
   }

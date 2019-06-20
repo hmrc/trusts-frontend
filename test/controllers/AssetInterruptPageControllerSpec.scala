@@ -33,7 +33,7 @@ class AssetInterruptPageControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, routes.AssetInterruptPageController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.AssetInterruptPageController.onPageLoad(fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -42,7 +42,7 @@ class AssetInterruptPageControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view()(fakeRequest, messages).toString
+        view(fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -51,13 +51,13 @@ class AssetInterruptPageControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(POST, routes.AssetInterruptPageController.onSubmit().url)
+      val request = FakeRequest(POST, routes.AssetInterruptPageController.onSubmit(fakeDraftId).url)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustBe routes.WhatKindOfAssetController.onPageLoad(NormalMode, 0).url
+      redirectLocation(result).value mustBe routes.WhatKindOfAssetController.onPageLoad(NormalMode, 0,fakeDraftId).url
 
       application.stop()
     }

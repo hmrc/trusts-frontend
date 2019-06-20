@@ -22,7 +22,7 @@ main_template: MainTemplate,
 formHelper: FormWithCSRF
 )
 
-@(answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
+@(draftId: String, answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @main_template(
 title = messages("deceasedSettlorAnswer.title")
@@ -41,7 +41,7 @@ case r: RepeaterAnswerSection => components.repeater_answer_section(r)
 }
 }
 
-@formHelper(action = DeceasedSettlorAnswerController.onSubmit(), 'autoComplete -> "off") {
+@formHelper(action = DeceasedSettlorAnswerController.onSubmit(draftId), 'autoComplete -> "off") {
 @components.submit_button()
 }
 }

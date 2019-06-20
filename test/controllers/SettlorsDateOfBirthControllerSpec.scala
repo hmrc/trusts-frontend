@@ -39,7 +39,7 @@ class SettlorsDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
 
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
 
-  lazy val settlorsDateOfBirthRoute = routes.SettlorsDateOfBirthController.onPageLoad(NormalMode).url
+  lazy val settlorsDateOfBirthRoute = routes.SettlorsDateOfBirthController.onPageLoad(NormalMode,fakeDraftId).url
 
   val name = FullName("first name", None, "Last name")
 
@@ -47,7 +47,7 @@ class SettlorsDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
+      val userAnswers = emptyUserAnswers.set(SettlorsNamePage,
         name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -61,14 +61,14 @@ class SettlorsDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, name)(fakeRequest, messages).toString
+        view(form, NormalMode,fakeDraftId, name)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(SettlorsDateOfBirthPage, validAnswer).success.value.set(SettlorsNamePage,
+      val userAnswers = emptyUserAnswers.set(SettlorsDateOfBirthPage, validAnswer).success.value.set(SettlorsNamePage,
         name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -82,14 +82,14 @@ class SettlorsDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), NormalMode, name)(fakeRequest, messages).toString
+        view(form.fill(validAnswer), NormalMode,fakeDraftId, name)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
+      val userAnswers = emptyUserAnswers.set(SettlorsNamePage,
         name).success.value
 
       val application =
@@ -117,7 +117,7 @@ class SettlorsDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
-      val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
+      val userAnswers = emptyUserAnswers.set(SettlorsNamePage,
         name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -135,7 +135,7 @@ class SettlorsDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, name)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, name)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -186,7 +186,7 @@ class SettlorsDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SettlorsNameController.onPageLoad(NormalMode).url
+      redirectLocation(result).value mustEqual routes.SettlorsNameController.onPageLoad(NormalMode, fakeDraftId).url
 
       application.stop()
     }

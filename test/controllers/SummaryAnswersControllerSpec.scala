@@ -21,16 +21,15 @@ import java.time.{LocalDate, ZoneOffset}
 import base.SpecBase
 import models.AddAssets.NoComplete
 import models.Status.Completed
-import models.{AddABeneficiary, AddATrustee, FullName, IndividualOrBusiness, InternationalAddress, Status, UKAddress, UserAnswers, WhatKindOfAsset}
-import navigation.TaskListNavigator
+import models.{AddABeneficiary, AddATrustee, FullName, IndividualOrBusiness, Status, UKAddress, WhatKindOfAsset}
 import pages._
 import pages.entitystatus._
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
-import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
+import utils.{CheckYourAnswersHelper, TestUserAnswers}
 import viewmodels.AnswerSection
 import views.html.SummaryAnswerPageView
 
@@ -41,7 +40,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
   "SummaryAnswersController Controller" must {
 
     val userAnswers =
-      UserAnswers(userAnswersId)
+      TestUserAnswers.emptyUserAnswers
         .set(TrustNamePage, "New Trust").success.value
         .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
         .set(GovernedInsideTheUKPage, true).success.value
@@ -102,7 +101,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
 
 
     val countryOptions = injector.instanceOf[CountryOptions]
-    val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, canEdit = false)
+    val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers,fakeDraftId, canEdit = false)
     val leadTrusteeIndividualOrBusinessMessagePrefix = "leadTrusteeIndividualOrBusiness"
     val leadTrusteeFullNameMessagePrefix = "leadTrusteesName"
 
@@ -188,7 +187,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Organisation).build()
 
-      val request = FakeRequest(GET, routes.SummaryAnswerPageController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.SummaryAnswerPageController.onPageLoad(fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -206,7 +205,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
-      val request = FakeRequest(GET, routes.SummaryAnswerPageController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.SummaryAnswerPageController.onPageLoad(fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -223,7 +222,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
     "redirect to tasklist page when tasklist not completed" in {
 
       val userAnswers =
-        UserAnswers(userAnswersId)
+        TestUserAnswers.emptyUserAnswers
           .set(TrustNamePage, "New Trust").success.value
           .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
           .set(GovernedInsideTheUKPage, true).success.value
@@ -235,13 +234,13 @@ class SummaryAnswersControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.SummaryAnswerPageController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.SummaryAnswerPageController.onPageLoad(fakeDraftId).url)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad(fakeDraftId).url
 
       application.stop()
 

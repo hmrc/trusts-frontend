@@ -16,29 +16,39 @@
 
 package controllers
 
+import config.FrontendAppConfig
 import controllers.actions._
 import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.AgentOverviewView
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 class AgentOverviewController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
-                                       hasAgentAffinityGroup: RequireStateActionProviderImpl,
-                                       getData: DataRetrievalAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: AgentOverviewView
+                                         override val messagesApi: MessagesApi,
+                                         identify: IdentifierAction,
+                                         hasAgentAffinityGroup: RequireStateActionProviderImpl,
+                                         sessionRepository: SessionRepository,
+                                         config: FrontendAppConfig,
+                                         val controllerComponents: MessagesControllerComponents,
+                                         view: AgentOverviewView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions = identify andThen hasAgentAffinityGroup()
 
-  def onPageLoad: Action[AnyContent] = actions {
+  def onPageLoad: Action[AnyContent] = actions.async {
     implicit request =>
-      Ok(view())
+      sessionRepository.listDrafts(request.identifier).map {
+        drafts =>
+          Ok(view(drafts))
+      }
   }
 
+  def onSubmit() = actions.async {
+    implicit request =>
+      Future.successful(Redirect(routes.CreateDraftRegistrationController.create()))
+  }
 }

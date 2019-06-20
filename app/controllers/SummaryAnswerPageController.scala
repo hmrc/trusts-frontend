@@ -31,7 +31,7 @@ import views.html.SummaryAnswerPageView
 class SummaryAnswerPageController @Inject()(
                                               override val messagesApi: MessagesApi,
                                               identify: IdentifierAction,
-                                              getData: DataRetrievalAction,
+                                              getData: DraftIdRetrievalActionProvider,
                                               requireData: DataRequiredAction,
                                               val controllerComponents: MessagesControllerComponents,
                                               view: SummaryAnswerPageView,
@@ -40,14 +40,14 @@ class SummaryAnswerPageController @Inject()(
                                               registrationComplete : RegistrationCompleteActionRefiner
                                             ) extends FrontendBaseController with I18nSupport {
 
-  private def actions() =
-    identify andThen getData andThen requireData andThen registrationComplete
+  private def actions(draftId : String) =
+    identify andThen getData(draftId) andThen requireData andThen registrationComplete
 
-  def onPageLoad() = actions() {
+  def onPageLoad(draftId : String) = actions(draftId) {
     implicit request =>
 
       val isAgent = request.affinityGroup == Agent
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, canEdit = false)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId, canEdit = false)
       val trustDetails = checkYourAnswersHelper.trustDetails.getOrElse(Nil)
       val trustees = checkYourAnswersHelper.trustees.getOrElse(Nil)
       val settlors = checkYourAnswersHelper.settlors.getOrElse(Nil)

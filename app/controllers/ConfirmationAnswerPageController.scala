@@ -16,22 +16,23 @@
 
 package controllers
 
+import java.time.LocalDateTime
+
 import controllers.actions._
 import javax.inject.Inject
 import pages.{RegistrationProgress, RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.{CheckYourAnswersHelper, DateFormat}
 import utils.countryOptions.CountryOptions
+import utils.{CheckYourAnswersHelper, DateFormat}
 import views.html.ConfirmationAnswerPageView
-import java.time.LocalDateTime
 
 
 class ConfirmationAnswerPageController @Inject()(
                                               override val messagesApi: MessagesApi,
                                               identify: IdentifierAction,
-                                              getData: DataRetrievalAction,
+                                              getData: DraftIdRetrievalActionProvider,
                                               requireData: DataRequiredAction,
                                               val controllerComponents: MessagesControllerComponents,
                                               view: ConfirmationAnswerPageView,
@@ -40,13 +41,13 @@ class ConfirmationAnswerPageController @Inject()(
                                               registrationComplete : RegistrationCompleteActionRefiner
                                             ) extends FrontendBaseController with I18nSupport {
 
-  private def actions() =
-    identify andThen getData andThen requireData andThen registrationComplete
+  private def actions(draftId : String) =
+    identify andThen getData(draftId) andThen requireData andThen registrationComplete
 
-  def onPageLoad() = actions() {
+  def onPageLoad(draftId: String) = actions(draftId) {
     implicit request =>
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, canEdit = false)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId, canEdit = false)
       val trustDetails = checkYourAnswersHelper.trustDetails.getOrElse(Nil)
       val trustees = checkYourAnswersHelper.trustees.getOrElse(Nil)
       val settlors = checkYourAnswersHelper.settlors.getOrElse(Nil)

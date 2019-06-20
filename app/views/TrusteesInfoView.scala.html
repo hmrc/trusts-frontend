@@ -18,7 +18,7 @@
     main_template: MainTemplate
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@(draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("trusteesInfo.title")
@@ -76,5 +76,5 @@
         </strong>
     </div>
 
-    @components.button_link(messages("site.onlyContinue"), IsThisLeadTrusteeController.onPageLoad(NormalMode, 0).url)
+    @components.button_link(messages("site.onlyContinue"), IsThisLeadTrusteeController.onPageLoad(NormalMode, 0, draftId).url)
 }

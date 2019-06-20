@@ -22,7 +22,7 @@ main_template: MainTemplate,
 formHelper: FormWithCSRF
 )
 
-@(index : Int, answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
+@(index : Int, draftId: String, answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @main_template(
 title = messages("individualBenficiaryAnswers.title")
@@ -41,7 +41,7 @@ section match {
     }
 }
 
-@formHelper(action = IndividualBeneficiaryAnswersController.onSubmit(index), 'autoComplete -> "off") {
+@formHelper(action = IndividualBeneficiaryAnswersController.onSubmit(index, draftId), 'autoComplete -> "off") {
 @components.submit_button()
 }
 }

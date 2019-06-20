@@ -37,7 +37,7 @@ class IndividualBeneficiaryAnswersControllerSpec extends SpecBase {
     "return OK and the correct view for a GET" in {
 
       val userAnswers =
-        UserAnswers(userAnswersId)
+        emptyUserAnswers
           .set(IndividualBeneficiaryNamePage(index), FullName("first name", None, "last name")).success.value
           .set(IndividualBeneficiaryDateOfBirthYesNoPage(index),true).success.value
           .set(IndividualBeneficiaryDateOfBirthPage(index),LocalDate.now(ZoneOffset.UTC)).success.value
@@ -52,7 +52,7 @@ class IndividualBeneficiaryAnswersControllerSpec extends SpecBase {
 
 
       val countryOptions = injector.instanceOf[CountryOptions]
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId)
 
       val expectedSections = Seq(
         AnswerSection(
@@ -75,7 +75,7 @@ class IndividualBeneficiaryAnswersControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.IndividualBeneficiaryAnswersController.onPageLoad(index).url)
+      val request = FakeRequest(GET, routes.IndividualBeneficiaryAnswersController.onPageLoad(index, fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -84,7 +84,7 @@ class IndividualBeneficiaryAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(index, expectedSections)(fakeRequest, messages).toString
+        view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
 
       application.stop()
     }

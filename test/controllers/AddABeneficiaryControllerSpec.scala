@@ -34,7 +34,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  lazy val addABeneficiaryRoute = routes.AddABeneficiaryController.onPageLoad().url
+  lazy val addABeneficiaryRoute = routes.AddABeneficiaryController.onPageLoad(fakeDraftId).url
 
   val formProvider = new AddABeneficiaryFormProvider()
 
@@ -66,7 +66,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, Nil, beneficiariesComplete)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, Nil, beneficiariesComplete)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -86,7 +86,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, Nil, beneficiariesComplete)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, Nil, beneficiariesComplete)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -128,7 +128,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, Nil, Nil)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, Nil, Nil)(fakeRequest, messages).toString
 
       application.stop()
     }

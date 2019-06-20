@@ -42,7 +42,7 @@ class SettlorsInternationalAddressViewSpec extends QuestionViewBehaviours[Intern
     val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, countryOptions, NormalMode, name)(fakeRequest, messages)
+      view.apply(form, countryOptions, NormalMode, fakeDraftId, name)(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString)
 
@@ -52,7 +52,7 @@ class SettlorsInternationalAddressViewSpec extends QuestionViewBehaviours[Intern
       form,
       applyView,
       messageKeyPrefix,
-      routes.SettlorsInternationalAddressController.onSubmit(NormalMode).url,
+      routes.SettlorsInternationalAddressController.onSubmit(NormalMode, fakeDraftId).url,
       Seq(("line1",None), ("line2",None), ("line3", None), ("line4", None), ("country", None)),
       name.toString
     )

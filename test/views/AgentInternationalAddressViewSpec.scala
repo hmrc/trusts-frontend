@@ -40,7 +40,7 @@ class AgentInternationalAddressViewSpec extends QuestionViewBehaviours[Internati
     val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, countryOptions, NormalMode, agencyName)(fakeRequest, messages)
+      view.apply(form, countryOptions, NormalMode, fakeDraftId, agencyName)(fakeRequest, messages)
 
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, agencyName)
@@ -51,7 +51,7 @@ class AgentInternationalAddressViewSpec extends QuestionViewBehaviours[Internati
       form,
       applyView,
       messageKeyPrefix,
-      routes.AgentInternationalAddressController.onSubmit(NormalMode).url,
+      routes.AgentInternationalAddressController.onSubmit(NormalMode, fakeDraftId).url,
       Seq(("line1",None), ("line2",None), ("line3", None), ("line4", None), ("country", None)),
       agencyName
     )

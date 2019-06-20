@@ -36,16 +36,18 @@ class PostcodeForTheTrustController @Inject()(
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
                                         identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
+                                        getData: DraftIdRetrievalActionProvider,
                                         requireData: DataRequiredAction,
                                         formProvider: PostcodeForTheTrustFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: PostcodeForTheTrustView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
+
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(PostcodeForTheTrustPage) match {
@@ -53,17 +55,17 @@ class PostcodeForTheTrustController @Inject()(
         case v @ Some(_) => form.fill(v)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, draftId))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
-      def redirect(userAnswers : UserAnswers) = Redirect(navigator.nextPage(PostcodeForTheTrustPage, mode)(userAnswers))
+      def redirect(userAnswers : UserAnswers) = Redirect(navigator.nextPage(PostcodeForTheTrustPage, mode, draftId)(userAnswers))
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId))),
         value =>
           value match {
           case Some(v) =>

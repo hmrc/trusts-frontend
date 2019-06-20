@@ -36,16 +36,18 @@ class TrustNameController @Inject()(
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
                                         identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
+                                        getData: DraftIdRetrievalActionProvider,
                                         requireData: DataRequiredAction,
                                         formProvider: TrustNameFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: TrustNameView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
+
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(TrustNamePage) match {
@@ -55,23 +57,23 @@ class TrustNameController @Inject()(
 
       val hintTextShown = request.userAnswers.get(TrustHaveAUTRPage).contains(true)
 
-      Ok(view(preparedForm, mode, hintTextShown))
+      Ok(view(preparedForm, mode, draftId, hintTextShown))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId: String).async {
     implicit request =>
 
       val hintTextShown = request.userAnswers.get(TrustHaveAUTRPage).contains(true)
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, hintTextShown))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, hintTextShown))),
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustNamePage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrustNamePage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrustNamePage, mode, draftId)(updatedAnswers))
         }
       )
   }

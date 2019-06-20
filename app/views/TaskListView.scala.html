@@ -23,7 +23,7 @@
     main_template: MainTemplate
 )
 
-@(savedUntil : String, sections : List[Task], isTaskListComplete: Boolean, affinityGroup : AffinityGroup)(implicit request: Request[_], messages: Messages)
+@(draftId: String, savedUntil : String, sections : List[Task], isTaskListComplete: Boolean, affinityGroup : AffinityGroup)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("taskList.title")
@@ -38,7 +38,7 @@
     @if(affinityGroup == AffinityGroup.Agent) {
         <p>@components.link(AgentOverviewController.onPageLoad.url, "saved-registrations", "taskList.agent.savedRegistrations")</p>
 
-        <p>@components.link(AgentInternalReferenceController.onPageLoad(NormalMode).url, "agent-details", "taskList.agent.agentDetails")</p>
+        <p>@components.link(AgentInternalReferenceController.onPageLoad(NormalMode, draftId).url, "agent-details", "taskList.agent.agentDetails")</p>
     } else {
         <h2>@messages("taskList.savedUntil.heading")</h2>
         <p id="saved-until">@savedUntil</p>
@@ -49,8 +49,8 @@
     @if(isTaskListComplete) {
         <h2 id="summaryHeading">@messages("taskList.summary.heading")</h2>
         <p>@messages("taskList.summary.paragraph")</p>
-        @components.link(routes.SummaryAnswerPageController.onPageLoad.url, "print-and-save", "taskList.summary.link", openInNewWindow = true)
-        @components.button_link(messages("taskList.summary.continue"), routes.DeclarationController.onPageLoad().url)
+        @components.link(routes.SummaryAnswerPageController.onPageLoad(draftId).url, "print-and-save", "taskList.summary.link", openInNewWindow = true)
+        @components.button_link(messages("taskList.summary.continue"), routes.DeclarationController.onPageLoad(draftId).url)
     }
 
 }

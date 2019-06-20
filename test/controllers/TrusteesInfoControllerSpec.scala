@@ -29,7 +29,7 @@ class TrusteesInfoControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, routes.TrusteesInfoController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.TrusteesInfoController.onPageLoad(fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -38,7 +38,7 @@ class TrusteesInfoControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view()(fakeRequest, messages).toString
+        view(fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }

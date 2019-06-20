@@ -16,11 +16,14 @@
 
 package base
 
+import models.requests.{IdentifierRequest, OptionalDataRequest}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.mockito.MockitoSugar
+import play.api.mvc.AnyContent
 import repositories.SessionRepository
-import services.SubmissionService
+import services.{CreateDraftRegistrationService, SubmissionService}
+import utils.TestUserAnswers
 
 import scala.concurrent.Future
 
@@ -28,6 +31,13 @@ trait Mocked extends MockitoSugar {
 
   val mockedSessionRepository : SessionRepository = mock[SessionRepository]
   val mockSubmissionService : SubmissionService = mock[SubmissionService]
+  val mockCreateDraftRegistrationService : CreateDraftRegistrationService = mock[CreateDraftRegistrationService]
+
+  when(mockCreateDraftRegistrationService.create(any[OptionalDataRequest[AnyContent]]))
+    .thenReturn(Future.successful(TestUserAnswers.draftId))
+
+  when(mockCreateDraftRegistrationService.create(any[IdentifierRequest[AnyContent]]))
+      .thenReturn(Future.successful(TestUserAnswers.draftId))
 
   when(mockedSessionRepository.set(any())).thenReturn(Future.successful(true))
 

@@ -38,7 +38,7 @@ class CountryGoverningTrustController @Inject()(
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
                                         identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
+                                        getData: DraftIdRetrievalActionProvider,
                                         requireData: DataRequiredAction,
                                         formProvider: CountryGoverningTrustFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
@@ -46,9 +46,11 @@ class CountryGoverningTrustController @Inject()(
                                         val countryOptions: CountryOptionsNonUK
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
+
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(CountryGoverningTrustPage) match {
@@ -56,21 +58,21 @@ class CountryGoverningTrustController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, countryOptions.options, mode))
+      Ok(view(preparedForm, countryOptions.options, mode, draftId))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, countryOptions.options, mode))),
+          Future.successful(BadRequest(view(formWithErrors, countryOptions.options, mode, draftId))),
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(CountryGoverningTrustPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(CountryGoverningTrustPage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(CountryGoverningTrustPage, mode, draftId)(updatedAnswers))
         }
       )
   }

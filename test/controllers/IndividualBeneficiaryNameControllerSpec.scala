@@ -36,10 +36,11 @@ class IndividualBeneficiaryNameControllerSpec extends SpecBase {
   val form = formProvider()
   val name = FullName("first name", Some("middle name"), "last name")
   val index: Int = 0
-  lazy val individualBeneficiaryNameRoute = routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, index).url
+
+  lazy val individualBeneficiaryNameRoute = routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, index, fakeDraftId).url
 
 
-  val userAnswers = UserAnswers(userAnswersId)
+  val userAnswers = emptyUserAnswers
     .set(IndividualBeneficiaryNamePage(index), name).success.value
 
   "IndividualBeneficiaryName Controller" must {
@@ -57,7 +58,7 @@ class IndividualBeneficiaryNameControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,index)(request, messages).toString
+        view(form, NormalMode, fakeDraftId, index)(request, messages).toString
 
       application.stop()
     }
@@ -75,7 +76,7 @@ class IndividualBeneficiaryNameControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(name), NormalMode,index)(fakeRequest, messages).toString
+        view(form.fill(name), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -117,7 +118,7 @@ class IndividualBeneficiaryNameControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode,index)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
 
       application.stop()
     }

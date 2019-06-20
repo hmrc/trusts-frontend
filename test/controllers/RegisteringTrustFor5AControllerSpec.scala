@@ -18,11 +18,10 @@ package controllers
 
 import base.SpecBase
 import forms.RegisteringTrustFor5AFormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
 import pages.RegisteringTrustFor5APage
 import play.api.inject.bind
-import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -35,7 +34,7 @@ class RegisteringTrustFor5AControllerSpec extends SpecBase {
   val formProvider = new RegisteringTrustFor5AFormProvider()
   val form = formProvider()
 
-  lazy val registeringTrustFor5ARoute = routes.RegisteringTrustFor5AController.onPageLoad(NormalMode).url
+  lazy val registeringTrustFor5ARoute = routes.RegisteringTrustFor5AController.onPageLoad(NormalMode,fakeDraftId).url
 
   "RegisteringTrustFor5A Controller" must {
 
@@ -52,14 +51,14 @@ class RegisteringTrustFor5AControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(RegisteringTrustFor5APage, true).success.value
+      val userAnswers = emptyUserAnswers.set(RegisteringTrustFor5APage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -72,7 +71,7 @@ class RegisteringTrustFor5AControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -114,7 +113,7 @@ class RegisteringTrustFor5AControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }

@@ -38,7 +38,7 @@ class SettlorsUKAddressViewSpec extends QuestionViewBehaviours[UKAddress] {
     val view = viewFor[SettlorsUKAddressView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, name)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, name)(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString)
 
@@ -48,7 +48,7 @@ class SettlorsUKAddressViewSpec extends QuestionViewBehaviours[UKAddress] {
       form,
       applyView,
       messageKeyPrefix,
-      routes.SettlorsUKAddressController.onSubmit(NormalMode).url,
+      routes.SettlorsUKAddressController.onSubmit(NormalMode, fakeDraftId).url,
       Seq(("line1",None), ("line2",None), ("line3", None), ("townOrCity", None), ("postcode", Some(postcodeHintKey))),
       name.toString
     )

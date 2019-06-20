@@ -46,10 +46,10 @@ class AddABeneficiaryViewSpec extends OptionsViewBehaviours with TabularDataView
   val view = viewFor[AddABeneficiaryView](Some(emptyUserAnswers))
 
   def applyView(form: Form[_]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode, Nil, Nil)(fakeRequest, messages)
+    view.apply(form, NormalMode, fakeDraftId, Nil, Nil)(fakeRequest, messages)
 
   def applyView(form: Form[_], inProgressBeneficiaries: Seq[AddRow], completeBeneficiaries: Seq[AddRow]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode, inProgressBeneficiaries, completeBeneficiaries)(fakeRequest, messages)
+    view.apply(form, NormalMode, fakeDraftId, inProgressBeneficiaries, completeBeneficiaries)(fakeRequest, messages)
 
 
   "AddABeneficiaryView" when {

@@ -39,7 +39,7 @@ class SettlorDateOfDeathViewSpec extends QuestionViewBehaviours[LocalDate] {
     val view = viewFor[SettlorDateOfDeathView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, name)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, name)(fakeRequest, messages)
 
     val applyViewF = (form : Form[_]) => applyView(form)
 
@@ -47,7 +47,7 @@ class SettlorDateOfDeathViewSpec extends QuestionViewBehaviours[LocalDate] {
 
     behave like pageWithDateFields(form, applyViewF,
       messageKeyPrefix,
-      routes.SettlorDateOfDeathController.onPageLoad(NormalMode).url,
+      routes.SettlorDateOfDeathController.onPageLoad(NormalMode, fakeDraftId).url,
       name.toString
     )
 

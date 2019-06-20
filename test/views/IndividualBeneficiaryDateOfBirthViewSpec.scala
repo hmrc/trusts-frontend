@@ -40,7 +40,7 @@ class IndividualBeneficiaryDateOfBirthViewSpec extends QuestionViewBehaviours[Lo
     val view = viewFor[IndividualBeneficiaryDateOfBirthView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fullName, index)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, fullName, index)(fakeRequest, messages)
 
     val applyViewF = (form : Form[_]) => applyView(form)
 
@@ -48,7 +48,7 @@ class IndividualBeneficiaryDateOfBirthViewSpec extends QuestionViewBehaviours[Lo
 
     behave like pageWithDateFields(form, applyViewF,
       messageKeyPrefix,
-      routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(NormalMode, index).url,
+      routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(NormalMode, index, fakeDraftId).url,
       name.toString
     )
 

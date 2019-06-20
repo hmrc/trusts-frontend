@@ -23,13 +23,13 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, inProgressTrustees: Seq[AddRow] ,completeTrustees: Seq[AddRow])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode,draftId: String, inProgressTrustees: Seq[AddRow] ,completeTrustees: Seq[AddRow])(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("addATrustee.title")}"
     ) {
 
-    @formHelper(action = AddATrusteeController.onSubmit(), 'autoComplete -> "off") {
+    @formHelper(action = AddATrusteeController.onSubmit(draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 

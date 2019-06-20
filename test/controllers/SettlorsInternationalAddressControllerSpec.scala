@@ -36,7 +36,7 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
   val formProvider = new InternationalAddressFormProvider()
   val form = formProvider()
 
-  lazy val settlorsInternationalAddressRoute = routes.SettlorsInternationalAddressController.onPageLoad(NormalMode).url
+  lazy val settlorsInternationalAddressRoute = routes.SettlorsInternationalAddressController.onPageLoad(NormalMode,fakeDraftId).url
 
   val name = FullName("first name", None, "Last name")
 
@@ -44,7 +44,7 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
+      val userAnswers = emptyUserAnswers.set(SettlorsNamePage,
         name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -60,14 +60,14 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, countryOptions, NormalMode, name)(request, messages).toString
+        view(form, countryOptions, NormalMode, fakeDraftId, name)(request, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(SettlorsInternationalAddressPage, InternationalAddress("line 1", "line 2", None, None, "country")).success.value.set(SettlorsNamePage,
         name).success.value
 
@@ -84,14 +84,14 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(InternationalAddress("line 1", "line 2", None, None, "country")), countryOptions, NormalMode, name)(fakeRequest, messages).toString
+        view(form.fill(InternationalAddress("line 1", "line 2", None, None, "country")), countryOptions, NormalMode, fakeDraftId, name)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
+      val userAnswers = emptyUserAnswers.set(SettlorsNamePage,
         name).success.value
 
       val application =
@@ -114,7 +114,7 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(SettlorsNamePage,
+      val userAnswers = emptyUserAnswers.set(SettlorsNamePage,
         name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -134,7 +134,7 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, countryOptions, NormalMode, name)(fakeRequest, messages).toString
+        view(boundForm, countryOptions, NormalMode, fakeDraftId, name)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -181,7 +181,7 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SettlorsNameController.onPageLoad(NormalMode).url
+      redirectLocation(result).value mustEqual routes.SettlorsNameController.onPageLoad(NormalMode,fakeDraftId).url
 
       application.stop()
     }

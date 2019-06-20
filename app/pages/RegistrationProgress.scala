@@ -27,13 +27,13 @@ import viewmodels.addAnother.MoneyAssetViewModel
 
 class RegistrationProgress @Inject()(navigator : TaskListNavigator){
 
-  def sections(userAnswers: UserAnswers) = List(
-    Task(Link(TrustDetails, navigator.nextPage(TrustDetails, userAnswers).url), isTrustDetailsComplete(userAnswers)),
-    Task(Link(Settlors, navigator.nextPage(Settlors, userAnswers).url), isDeceasedSettlorComplete(userAnswers)),
-    Task(Link(Trustees, navigator.nextPage(Trustees, userAnswers).url), isTrusteesComplete(userAnswers)),
-    Task(Link(Beneficiaries, navigator.nextPage(Beneficiaries, userAnswers).url), isBeneficiariesComplete(userAnswers)),
-    Task(Link(Assets, navigator.nextPage(entities.Assets, userAnswers).url), assetsStatus(userAnswers)),
-    Task(Link(TaxLiability, navigator.nextPage(TaxLiability, userAnswers).url), None)
+  def sections(userAnswers: UserAnswers, draftId: String) = List(
+    Task(Link(TrustDetails, navigator.nextPage(TrustDetails, userAnswers, draftId).url), isTrustDetailsComplete(userAnswers)),
+    Task(Link(Settlors, navigator.nextPage(Settlors, userAnswers, draftId).url), isDeceasedSettlorComplete(userAnswers)),
+    Task(Link(Trustees, navigator.nextPage(Trustees, userAnswers, draftId).url), isTrusteesComplete(userAnswers)),
+    Task(Link(Beneficiaries, navigator.nextPage(Beneficiaries, userAnswers, draftId).url), isBeneficiariesComplete(userAnswers)),
+    Task(Link(Assets, navigator.nextPage(entities.Assets, userAnswers, draftId).url), assetsStatus(userAnswers)),
+    Task(Link(TaxLiability, navigator.nextPage(TaxLiability, userAnswers, draftId).url), None)
   )
 
   private def determineStatus(complete : Boolean) = {

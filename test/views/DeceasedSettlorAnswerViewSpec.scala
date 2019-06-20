@@ -25,7 +25,7 @@ class DeceasedSettlorAnswerViewSpec extends ViewBehaviours {
 
     val view = viewFor[DeceasedSettlorAnswerView](Some(emptyUserAnswers))
 
-    val applyView = view.apply(Nil)(fakeRequest, messages)
+    val applyView = view.apply(fakeDraftId, Nil)(fakeRequest, messages)
 
     behave like normalPage(applyView, "deceasedSettlorAnswer")
 

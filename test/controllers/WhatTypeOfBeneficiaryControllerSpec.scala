@@ -32,7 +32,7 @@ class WhatTypeOfBeneficiaryControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  lazy val whatTypeOfBeneficiaryRoute = routes.WhatTypeOfBeneficiaryController.onPageLoad().url
+  lazy val whatTypeOfBeneficiaryRoute = routes.WhatTypeOfBeneficiaryController.onPageLoad(fakeDraftId).url
 
   val formProvider = new WhatTypeOfBeneficiaryFormProvider()
   val form = formProvider()
@@ -52,7 +52,7 @@ class WhatTypeOfBeneficiaryControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, false)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, false)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -71,7 +71,7 @@ class WhatTypeOfBeneficiaryControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,true)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, true)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -91,7 +91,7 @@ class WhatTypeOfBeneficiaryControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,false)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, false)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -133,7 +133,7 @@ class WhatTypeOfBeneficiaryControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode,false)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId,false)(fakeRequest, messages).toString
 
       application.stop()
     }

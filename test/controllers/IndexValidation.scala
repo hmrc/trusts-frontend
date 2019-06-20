@@ -50,7 +50,7 @@ trait IndexValidation extends SpecBase with PropertyChecks with MockitoSugar wit
       forAll(gen) {
         case (answers, index) =>
 
-          val userAnswers = answers.foldLeft(UserAnswers("id")) {
+          val userAnswers = answers.foldLeft(emptyUserAnswers) {
             case (uA, (answer, i)) =>
               uA.set(createPage(i), answer).success.value
           }

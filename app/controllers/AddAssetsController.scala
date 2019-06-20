@@ -37,7 +37,7 @@ class AddAssetsController @Inject()(
                                        sessionRepository: SessionRepository,
                                        navigator: Navigator,
                                        identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
+                                       getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
                                        formProvider: AddAssetsFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
@@ -46,31 +46,31 @@ class AddAssetsController @Inject()(
 
   val form = formProvider()
 
-  private def routes =
-    identify andThen getData andThen requireData
+  private def routes(draftId: String) =
+    identify andThen getData(draftId) andThen requireData
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = routes {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = routes(draftId) {
     implicit request =>
 
       val assets = new AddAssetViewHelper(request.userAnswers).rows
 
-      Ok(view(form, mode, assets.inProgress, assets.complete))
+      Ok(view(form, mode, draftId, assets.inProgress, assets.complete))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = routes.async {
+  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = routes(draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) => {
           val assets = new AddAssetViewHelper(request.userAnswers).rows
-           Future.successful(BadRequest(view(formWithErrors, mode,assets.inProgress, assets.complete)))
+           Future.successful(BadRequest(view(formWithErrors, mode, draftId, assets.inProgress, assets.complete)))
         },
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AddAssetsPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(AddAssetsPage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(AddAssetsPage, mode, draftId)(updatedAnswers))
         }
       )
   }

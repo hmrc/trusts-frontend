@@ -35,19 +35,19 @@ class AgentAddressYesNoViewSpec extends YesNoViewBehaviours {
 
   "AgentAddressYesNo view" must {
 
-    val userAnswers = UserAnswers(userAnswersId)
+    val userAnswers = emptyUserAnswers
       .set(AgentNamePage, name).success.value
 
     val view = viewFor[AgentAddressYesNoView](Some(userAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, name)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, name)(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.AgentAddressYesNoController.onSubmit(NormalMode).url, None, Seq(name))
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.AgentAddressYesNoController.onSubmit(NormalMode, fakeDraftId).url, None, Seq(name))
 
     behave like pageWithASubmitButton(applyView(form))
   }

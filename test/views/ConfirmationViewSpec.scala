@@ -93,7 +93,14 @@ class ConfirmationViewSpec extends ViewBehaviours {
   "Confirmation view for a new trust" must {
     val view = viewFor[ConfirmationView](Some(emptyUserAnswers))
 
-    val applyView = view.apply(isExistingTrust = false, isAgent = false, refNumber, postHMRC, "#", FullName("John", None, "Smith"))(fakeRequest, messages)
+    val applyView = view.apply(
+      draftId = fakeDraftId,
+      isExistingTrust = false,
+      isAgent = false,
+      refNumber = refNumber,
+      postHMRC = postHMRC,
+      agentOverviewUrl = "#",
+      leadTrusteeName= FullName("John", None, "Smith"))(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView, messageKeyPrefix, refNumber)
 
@@ -103,7 +110,14 @@ class ConfirmationViewSpec extends ViewBehaviours {
   "Confirmation view for an existing trust" must {
     val view = viewFor[ConfirmationView](Some(emptyUserAnswers))
 
-    val applyView = view.apply(isExistingTrust = true, isAgent = false, refNumber, postHMRC, "#", FullName("John", None, "Smith"))(fakeRequest, messages)
+    val applyView = view.apply(
+      draftId = fakeDraftId,
+      isExistingTrust = true,
+      isAgent = false,
+      refNumber = refNumber,
+      postHMRC = postHMRC,
+      agentOverviewUrl = "#",
+      leadTrusteeName= FullName("John", None, "Smith"))(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView, messageKeyPrefix, refNumber)
 
@@ -113,7 +127,14 @@ class ConfirmationViewSpec extends ViewBehaviours {
   "Confirmation view for an agent" must {
     val view = viewForAgent[ConfirmationView](Some(emptyUserAnswers))
 
-    val applyView = view.apply(isExistingTrust = true, isAgent = true, refNumber, postHMRC, "#", FullName("John", None, "Smith"))(fakeRequest, messages)
+    val applyView = view.apply(
+      isExistingTrust = true,
+      isAgent = true,
+      draftId = fakeDraftId,
+      refNumber = refNumber,
+      postHMRC = postHMRC,
+      agentOverviewUrl = "#",
+      leadTrusteeName= FullName("John", None, "Smith"))(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView, messageKeyPrefix, refNumber)
 

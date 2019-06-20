@@ -43,7 +43,7 @@ class $className$ControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set($className$Page, true).success.value
+      val userAnswers = emptyUserAnswers.set($className$Page, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

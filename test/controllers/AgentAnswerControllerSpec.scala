@@ -38,7 +38,7 @@ class AgentAnswerControllerSpec extends SpecBase {
     "return OK and the correct view for a UK address GET" in {
 
       val answers =
-        UserAnswers(userAnswersId)
+        emptyUserAnswers
           .set(AgentTelephoneNumberPage, "123456789").success.value
           .set(AgentUKAddressPage,UKAddress("Line1",None, None, "TownOrCity","NE62RT")).success.value
           .set(AgentAddressYesNoPage, true).success.value
@@ -48,7 +48,7 @@ class AgentAnswerControllerSpec extends SpecBase {
 
       val countryOptions = injector.instanceOf[CountryOptions]
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId)
 
       val expectedSections = Seq(
         AnswerSection(
@@ -65,7 +65,7 @@ class AgentAnswerControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(answers), agentID).build()
 
-      val request = FakeRequest(GET, routes.AgentAnswerController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.AgentAnswerController.onPageLoad(fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -74,7 +74,7 @@ class AgentAnswerControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(expectedSections)(fakeRequest, messages).toString
+        view(fakeDraftId,expectedSections)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -82,7 +82,7 @@ class AgentAnswerControllerSpec extends SpecBase {
     "return OK and the correct view for a International address GET" in {
 
       val answers =
-        UserAnswers(userAnswersId)
+        emptyUserAnswers
           .set(AgentTelephoneNumberPage, "123456789").success.value
           .set(AgentInternationalAddressPage, InternationalAddress("Line1", "Line2", None, None, "Country")).success.value
           .set(AgentAddressYesNoPage, false).success.value
@@ -92,7 +92,7 @@ class AgentAnswerControllerSpec extends SpecBase {
 
       val countryOptions = injector.instanceOf[CountryOptions]
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId)
 
       val expectedSections = Seq(
         AnswerSection(
@@ -109,7 +109,7 @@ class AgentAnswerControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(answers), agentID).build()
 
-      val request = FakeRequest(GET, routes.AgentAnswerController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.AgentAnswerController.onPageLoad(fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -118,7 +118,7 @@ class AgentAnswerControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(expectedSections)(fakeRequest, messages).toString
+        view(fakeDraftId,expectedSections)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -130,13 +130,13 @@ class AgentAnswerControllerSpec extends SpecBase {
           .build()
 
       val request =
-        FakeRequest(POST, routes.AgentAnswerController.onSubmit().url)
+        FakeRequest(POST, routes.AgentAnswerController.onSubmit(fakeDraftId).url)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad(fakeDraftId).url
 
       application.stop()
     }
@@ -145,7 +145,7 @@ class AgentAnswerControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = None, agentID).build()
 
-      val request = FakeRequest(GET, routes.AgentAnswerController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.AgentAnswerController.onPageLoad(fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -159,7 +159,7 @@ class AgentAnswerControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = None, agentID).build()
 
-      val request = FakeRequest(POST, routes.AgentAnswerController.onSubmit().url)
+      val request = FakeRequest(POST, routes.AgentAnswerController.onSubmit(fakeDraftId).url)
 
       val result = route(application, request).value
 

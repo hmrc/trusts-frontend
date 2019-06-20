@@ -26,10 +26,11 @@ import play.api.libs.json._
 import scala.util.{Failure, Success, Try}
 
 final case class UserAnswers(
-                              id: String,
+                              draftId: String,
                               data: JsObject = Json.obj(),
                               progress : RegistrationProgress = NotStarted,
-                              createdAt : LocalDateTime = LocalDateTime.now
+                              createdAt : LocalDateTime = LocalDateTime.now,
+                              internalAuthId :String
                             ) {
 
   def get[A](page: QuestionPage[A])(implicit rds: Reads[A]): Option[A] = {
@@ -86,7 +87,8 @@ object UserAnswers {
       (__ \ "_id").read[String] and
       (__ \ "data").read[JsObject] and
       (__ \ "progress").read[RegistrationProgress] and
-      (__ \ "createdAt").read(MongoDateTimeFormats.localDateTimeRead)
+      (__ \ "createdAt").read(MongoDateTimeFormats.localDateTimeRead) and
+      (__ \ "internalId").read[String]
     ) (UserAnswers.apply _)
   }
 
@@ -98,7 +100,8 @@ object UserAnswers {
       (__ \ "_id").write[String] and
       (__ \ "data").write[JsObject] and
       (__ \ "progress").write[RegistrationProgress] and
-      (__ \ "createdAt").write(MongoDateTimeFormats.localDateTimeWrite)
+      (__ \ "createdAt").write(MongoDateTimeFormats.localDateTimeWrite) and
+      (__ \ "internalId").write[String]
     ) (unlift(UserAnswers.unapply))
   }
 }

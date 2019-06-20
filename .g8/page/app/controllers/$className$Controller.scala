@@ -12,7 +12,7 @@ import scala.concurrent.ExecutionContext
 class $className$Controller @Inject()(
                                        override val messagesApi: MessagesApi,
                                        identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
+                                       getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: $className$View

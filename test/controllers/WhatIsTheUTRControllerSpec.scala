@@ -35,7 +35,7 @@ class WhatIsTheUTRControllerSpec extends SpecBase {
   val formProvider = new WhatIsTheUTRFormProvider()
   val form = formProvider()
 
-  lazy val whatIsTheUTRRoute = routes.WhatIsTheUTRController.onPageLoad(NormalMode).url
+  lazy val whatIsTheUTRRoute = routes.WhatIsTheUTRController.onPageLoad(NormalMode,fakeDraftId).url
 
   "WhatIsTheUTR Controller" must {
 
@@ -52,14 +52,14 @@ class WhatIsTheUTRControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(WhatIsTheUTRPage, "1111111111").success.value
+      val userAnswers = emptyUserAnswers.set(WhatIsTheUTRPage, "1111111111").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -72,7 +72,7 @@ class WhatIsTheUTRControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("1111111111"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill("1111111111"), NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -113,7 +113,7 @@ class WhatIsTheUTRControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }

@@ -37,7 +37,7 @@ class TrustPreviouslyResidentControllerSpec extends SpecBase {
   val formProvider = new TrustPreviouslyResidentFormProvider()
   val form = formProvider()
 
-  lazy val trustPreviouslyResidentRoute = routes.TrustPreviouslyResidentController.onPageLoad(NormalMode).url
+  lazy val trustPreviouslyResidentRoute = routes.TrustPreviouslyResidentController.onPageLoad(NormalMode,fakeDraftId).url
 
   "TrustPreviouslyResident Controller" must {
 
@@ -56,14 +56,14 @@ class TrustPreviouslyResidentControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, countryOptions, NormalMode)(fakeRequest, messages).toString
+        view(form, countryOptions, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(TrustPreviouslyResidentPage, "answer").success.value
+      val userAnswers = emptyUserAnswers.set(TrustPreviouslyResidentPage, "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -78,7 +78,7 @@ class TrustPreviouslyResidentControllerSpec extends SpecBase {
        status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("Spain"), countryOptions, NormalMode)(fakeRequest, messages).toString
+        view(form.fill("Spain"), countryOptions, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -121,7 +121,7 @@ class TrustPreviouslyResidentControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, countryOptions, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, countryOptions, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }

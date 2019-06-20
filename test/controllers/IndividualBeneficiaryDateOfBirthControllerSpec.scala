@@ -20,39 +20,35 @@ import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
 import forms.IndividualBeneficiaryDateOfBirthFormProvider
-import models.{FullName, NormalMode, UserAnswers}
+import models.{FullName, NormalMode}
 import navigation.{FakeNavigator, Navigator}
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
 import org.scalatest.mockito.MockitoSugar
 import pages.{IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryNamePage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import repositories.SessionRepository
 import views.html.IndividualBeneficiaryDateOfBirthView
-
-import scala.concurrent.Future
 
 class IndividualBeneficiaryDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new IndividualBeneficiaryDateOfBirthFormProvider()
   val form = formProvider()
   val index: Int = 0
+
   val name = FullName("first name", None, "Last name")
 
   def onwardRoute = Call("GET", "/foo")
 
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
 
-  lazy val individualBeneficiaryDateOfBirthRoute = routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(NormalMode, index).url
+  lazy val individualBeneficiaryDateOfBirthRoute = routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "IndividualBeneficiaryDateOfBirth Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryNamePage(index),
+      val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(index),
         name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -66,14 +62,14 @@ class IndividualBeneficiaryDateOfBirthControllerSpec extends SpecBase with Mocki
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, name, index)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryDateOfBirthPage(index), validAnswer).success.value
+      val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryDateOfBirthPage(index), validAnswer).success.value
         .set(IndividualBeneficiaryNamePage(index),name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -87,14 +83,14 @@ class IndividualBeneficiaryDateOfBirthControllerSpec extends SpecBase with Mocki
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), NormalMode, name, index)(fakeRequest, messages).toString
+        view(form.fill(validAnswer), NormalMode, fakeDraftId, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryNamePage(index),
+      val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(index),
         name).success.value
 
       val application =
@@ -123,7 +119,7 @@ class IndividualBeneficiaryDateOfBirthControllerSpec extends SpecBase with Mocki
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryNamePage(index),
+      val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(index),
         name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -141,7 +137,7 @@ class IndividualBeneficiaryDateOfBirthControllerSpec extends SpecBase with Mocki
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, name, index)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }

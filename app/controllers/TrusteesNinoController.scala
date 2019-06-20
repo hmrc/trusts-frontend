@@ -39,7 +39,7 @@ class TrusteesNinoController @Inject()(
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
                                         identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
+                                        getData: DraftIdRetrievalActionProvider,
                                         requireData: DataRequiredAction,
                                         validateIndex : IndexActionFilterProvider,
                                         requiredAnswer: RequiredAnswerActionProvider,
@@ -48,15 +48,15 @@ class TrusteesNinoController @Inject()(
                                         view: TrusteesNinoView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(index : Int) =
+  private def actions(index : Int, draftId: String) =
       identify andThen
-      getData andThen
+      getData(draftId) andThen
       requireData andThen
       validateIndex(index, Trustees) andThen
-      requiredAnswer(RequiredAnswer(TrusteesNamePage(index), routes.TrusteesNameController.onPageLoad(NormalMode, index))) andThen
-      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index)))
+      requiredAnswer(RequiredAnswer(TrusteesNamePage(index), routes.TrusteesNameController.onPageLoad(NormalMode, index, draftId))) andThen
+      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, draftId)))
 
-  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = actions(index) {
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
       val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
@@ -70,7 +70,7 @@ class TrusteesNinoController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, index, trusteeName))
+      Ok(view(preparedForm, mode, draftId, index, trusteeName))
   }
 
   private def getMessagePrefix(index: Int, request: DataRequest[AnyContent]) = {
@@ -84,7 +84,7 @@ class TrusteesNinoController @Inject()(
     messagePrefix
   }
 
-  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = actions(index).async {
+  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index,draftId).async {
     implicit request =>
 
       val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
@@ -95,13 +95,13 @@ class TrusteesNinoController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, index, trusteeName))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, trusteeName))),
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteesNinoPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrusteesNinoPage(index), mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrusteesNinoPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

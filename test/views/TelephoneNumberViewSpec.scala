@@ -40,13 +40,13 @@ class TelephoneNumberViewSpec extends StringViewBehaviours {
     val view = viewFor[TelephoneNumberView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, index, trusteeName)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, trusteeName, "hint")
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, trusteeName, routes.TelephoneNumberController.onSubmit(NormalMode, index).url, Some(hintKey))
+    behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, trusteeName, routes.TelephoneNumberController.onSubmit(NormalMode, index, fakeDraftId).url, Some(hintKey))
 
     behave like pageWithASubmitButton(applyView(form))
   }

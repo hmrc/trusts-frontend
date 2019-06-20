@@ -39,7 +39,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class TaskListController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
+                                       getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
                                        requiredAnswer: RequiredAnswerActionProvider,
                                        val controllerComponents: MessagesControllerComponents,
@@ -50,18 +50,18 @@ class TaskListController @Inject()(
                                        taskListNavigator : TaskListNavigator
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions =
-    identify andThen getData andThen requireData andThen
+  private def actions(draftId: String) =
+    identify andThen getData(draftId) andThen requireData andThen
       requiredAnswer(
         RequiredAnswer(
-          TrustRegisteredOnlinePage, routes.TrustRegisteredOnlineController.onPageLoad(NormalMode))
+          TrustRegisteredOnlinePage, routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId))
       ) andThen
       requiredAnswer(
         RequiredAnswer(
-          TrustHaveAUTRPage, routes.TrustHaveAUTRController.onPageLoad(NormalMode))
+          TrustHaveAUTRPage, routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId))
       )
 
-  def onPageLoad: Action[AnyContent] = actions.async {
+  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
       def renderView(affinityGroup : AffinityGroup) = {
@@ -75,17 +75,17 @@ class TaskListController @Inject()(
         } yield {
 
           val sections = if (config.removeTaxLiabilityOnTaskList) {
-            val removeTaxLiabilityFromTaskList = (t : Task) => t.link.url == taskListNavigator.nextPage(TaxLiability, updatedAnswers).url
-            registrationProgress.sections(updatedAnswers).filterNot(removeTaxLiabilityFromTaskList)
+            val removeTaxLiabilityFromTaskList = (t : Task) => t.link.url == taskListNavigator.nextPage(TaxLiability, updatedAnswers, draftId).url
+            registrationProgress.sections(updatedAnswers, draftId).filterNot(removeTaxLiabilityFromTaskList)
           } else {
-            registrationProgress.sections(updatedAnswers)
+            registrationProgress.sections(updatedAnswers, draftId)
           }
 
           val isTaskListComplete = registrationProgress.isTaskListComplete(updatedAnswers)
 
           Logger.debug(s"[TaskList][sections] $sections")
 
-          Ok(view(savedUntil, sections, isTaskListComplete, affinityGroup))        }
+          Ok(view(draftId ,savedUntil, sections, isTaskListComplete, affinityGroup))        }
       }
 
       val isExistingTrust = request.userAnswers.get(TrustHaveAUTRPage).get
@@ -96,10 +96,10 @@ class TaskListController @Inject()(
             renderView(request.affinityGroup)
 
           case Some(AlreadyRegistered) | Some(Failed) =>
-            Future.successful(Redirect(routes.FailedMatchController.onPageLoad().url))
+            Future.successful(Redirect(routes.FailedMatchController.onPageLoad(draftId).url))
 
           case None =>
-            Future.successful(Redirect(routes.WhatIsTheUTRController.onPageLoad(NormalMode).url))
+            Future.successful(Redirect(routes.WhatIsTheUTRController.onPageLoad(NormalMode, draftId).url))
         }
       } else {
         renderView(request.affinityGroup)

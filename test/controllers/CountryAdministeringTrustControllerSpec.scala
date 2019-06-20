@@ -18,11 +18,10 @@ package controllers
 
 import base.SpecBase
 import forms.CountryAdministeringTrustFormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
 import pages.CountryAdministeringTrustPage
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -37,7 +36,7 @@ class CountryAdministeringTrustControllerSpec extends SpecBase {
   val formProvider = new CountryAdministeringTrustFormProvider()
   val form = formProvider()
 
-  lazy val countryAdministeringTrustRoute = routes.CountryAdministeringTrustController.onPageLoad(NormalMode).url
+  lazy val countryAdministeringTrustRoute = routes.CountryAdministeringTrustController.onPageLoad(NormalMode,fakeDraftId).url
 
   "CountryAdministeringTrust Controller" must {
 
@@ -56,14 +55,14 @@ class CountryAdministeringTrustControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, countryOptions, NormalMode)(fakeRequest, messages).toString
+        view(form, countryOptions, NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(CountryAdministeringTrustPage, "answer").success.value
+      val userAnswers = emptyUserAnswers.set(CountryAdministeringTrustPage, "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -78,7 +77,7 @@ class CountryAdministeringTrustControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("Spain"), countryOptions, NormalMode)(fakeRequest, messages).toString
+        view(form.fill("Spain"), countryOptions, NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -121,7 +120,7 @@ class CountryAdministeringTrustControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, countryOptions, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, countryOptions, NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }

@@ -46,7 +46,7 @@ class DeclarationControllerSpec extends SpecBase {
   val form = formProvider()
   val name = "name"
 
-  lazy val declarationRoute = routes.DeclarationController.onPageLoad().url
+  lazy val declarationRoute = routes.DeclarationController.onPageLoad(fakeDraftId).url
 
   before {
     reset(mockSubmissionService)
@@ -63,7 +63,7 @@ class DeclarationControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad(fakeDraftId).url
 
       application.stop()
     }
@@ -88,7 +88,7 @@ class DeclarationControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,AffinityGroup.Organisation)(request, messages).toString
+        view(form, NormalMode,fakeDraftId,AffinityGroup.Organisation)(request, messages).toString
 
       application.stop()
     }
@@ -113,7 +113,7 @@ class DeclarationControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,AffinityGroup.Agent)(request, messages).toString
+        view(form, NormalMode,fakeDraftId,AffinityGroup.Agent)(request, messages).toString
 
       application.stop()
     }
@@ -139,7 +139,7 @@ class DeclarationControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(FullName("First",None, "Last")), NormalMode,AffinityGroup.Agent)(fakeRequest, messages).toString
+        view(form.fill(FullName("First",None, "Last")), NormalMode,fakeDraftId,AffinityGroup.Agent)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -168,7 +168,7 @@ class DeclarationControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad(userAnswersId).url
       verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any[HeaderCarrier])
       application.stop()
     }
@@ -197,7 +197,7 @@ class DeclarationControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad(fakeDraftId).url
       verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any[HeaderCarrier])
       application.stop()
     }
@@ -256,7 +256,7 @@ class DeclarationControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode,AffinityGroup.Agent)(fakeRequest, messages).toString
+        view(boundForm, NormalMode,fakeDraftId,AffinityGroup.Agent)(fakeRequest, messages).toString
 
       application.stop()
     }

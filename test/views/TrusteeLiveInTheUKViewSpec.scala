@@ -37,12 +37,12 @@ class TrusteeLiveInTheUKViewSpec extends YesNoViewBehaviours {
     val view = viewFor[TrusteeLiveInTheUKView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, index, trusteeName)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, trusteeName)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.TrusteeLiveInTheUKController.onSubmit(NormalMode, index).url, None, Seq(trusteeName))
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.TrusteeLiveInTheUKController.onSubmit(NormalMode, index, fakeDraftId).url, None, Seq(trusteeName))
   }
 }

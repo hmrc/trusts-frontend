@@ -37,7 +37,7 @@ class AssetMoneyValueControllerSpec extends SpecBase {
 
   val index = 0
 
-  lazy val assetMoneyValueRoute = routes.AssetMoneyValueController.onPageLoad(NormalMode, index).url
+  lazy val assetMoneyValueRoute = routes.AssetMoneyValueController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "AssetMoneyValue Controller" must {
 
@@ -54,14 +54,14 @@ class AssetMoneyValueControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, index)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId,index)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(AssetMoneyValuePage(index), "answer").success.value
+      val userAnswers = emptyUserAnswers.set(AssetMoneyValuePage(index), "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -74,7 +74,7 @@ class AssetMoneyValueControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode, index)(fakeRequest, messages).toString
+        view(form.fill("answer"), NormalMode, fakeDraftId,index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -115,7 +115,7 @@ class AssetMoneyValueControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, index)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId,index)(fakeRequest, messages).toString
 
       application.stop()
     }

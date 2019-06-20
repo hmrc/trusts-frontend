@@ -35,7 +35,7 @@ class SetupAfterSettlorDiedControllerSpec extends SpecBase {
   val formProvider = new SetupAfterSettlorDiedFormProvider()
   val form = formProvider()
 
-  lazy val setupAfterSettlorDiedRoute = routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode).url
+  lazy val setupAfterSettlorDiedRoute = routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode,fakeDraftId).url
 
   "SetupAfterSettlorDied Controller" must {
 
@@ -52,14 +52,14 @@ class SetupAfterSettlorDiedControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(SetupAfterSettlorDiedPage, true).success.value
+      val userAnswers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -72,7 +72,7 @@ class SetupAfterSettlorDiedControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -114,7 +114,7 @@ class SetupAfterSettlorDiedControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
