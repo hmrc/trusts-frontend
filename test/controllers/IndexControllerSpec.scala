@@ -29,7 +29,7 @@ class IndexControllerSpec extends SpecBase {
 
     "redirect when form has not been started" should {
 
-      "redirect to TrustRegisteredOnline with Non-Agent affinityGroup for a GET" in {
+      "redirect to CreateDraftController with Non-Agent affinityGroup for a GET" in {
 
         val application = applicationBuilder(userAnswers = None).build()
 
@@ -39,7 +39,7 @@ class IndexControllerSpec extends SpecBase {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustBe routes.TrustRegisteredOnlineController.onPageLoad(NormalMode,fakeDraftId).url
+        redirectLocation(result).value mustBe routes.CreateDraftRegistrationController.create().url
 
         application.stop()
       }
