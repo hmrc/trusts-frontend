@@ -18,11 +18,10 @@ package controllers
 
 import base.SpecBase
 import forms.ClassBeneficiaryDescriptionFormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
 import pages.ClassBeneficiaryDescriptionPage
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -36,7 +35,7 @@ class ClassBeneficiaryDescriptionControllerSpec extends SpecBase {
   val form = formProvider()
   val index = 0
 
-  lazy val classBeneficiaryDescriptionRoute = routes.ClassBeneficiaryDescriptionController.onPageLoad(NormalMode,index).url
+  lazy val classBeneficiaryDescriptionRoute = routes.ClassBeneficiaryDescriptionController.onPageLoad(NormalMode,index,fakeDraftId).url
 
   "ClassBeneficiaryDescription Controller" must {
 
@@ -53,14 +52,14 @@ class ClassBeneficiaryDescriptionControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,index)(fakeRequest, messages).toString
+        view(form, NormalMode,fakeDraftId,index)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClassBeneficiaryDescriptionPage(index), "answer").success.value
+      val userAnswers = emptyUserAnswers.set(ClassBeneficiaryDescriptionPage(index), "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -73,7 +72,7 @@ class ClassBeneficiaryDescriptionControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode,index)(fakeRequest, messages).toString
+        view(form.fill("answer"), NormalMode,fakeDraftId,index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -114,7 +113,7 @@ class ClassBeneficiaryDescriptionControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode,index)(fakeRequest, messages).toString
+        view(boundForm, NormalMode,fakeDraftId,index)(fakeRequest, messages).toString
 
       application.stop()
     }

@@ -16,6 +16,10 @@
 
 package views
 
+import java.time.LocalDateTime
+
+import utils.TestUserAnswers
+import viewmodels.DraftRegistration
 import views.behaviours.ViewBehaviours
 import views.html.AgentOverviewView
 
@@ -25,7 +29,7 @@ class AgentOverviewViewSpec extends ViewBehaviours {
 
     val view = viewFor[AgentOverviewView](Some(emptyUserAnswers))
 
-    val applyView = view.apply()(fakeRequest, messages)
+    val applyView = view.apply(List(DraftRegistration("Fake", "Fake2", LocalDateTime.now)))(fakeRequest, messages)
 
     behave like normalPage(applyView, "agentOverview",
       "paragraph1",
@@ -42,5 +46,24 @@ class AgentOverviewViewSpec extends ViewBehaviours {
     )
 
     behave like pageWithBackLink(applyView)
+  }
+
+  "render draft registrations" in {
+
+    val drafts = List(
+      DraftRegistration("FakeDraftId1", "Fake2", LocalDateTime.now),
+      DraftRegistration("FakeDraftId2", "Fake2", LocalDateTime.now),
+      DraftRegistration("FakeDraftId3", "Fake2", LocalDateTime.now)
+    )
+
+    val view = viewFor[AgentOverviewView](Some(emptyUserAnswers))
+
+    val applyView = view.apply(drafts)(fakeRequest, messages)
+
+    val doc = asDocument(applyView)
+
+    assertContainsText(doc, "FakeDraftId1")
+    assertContainsText(doc, "FakeDraftId2")
+    assertContainsText(doc, "FakeDraftId3")
   }
 }

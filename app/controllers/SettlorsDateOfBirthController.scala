@@ -36,7 +36,7 @@ class SettlorsDateOfBirthController @Inject()(
                                                   sessionRepository: SessionRepository,
                                                   navigator: Navigator,
                                                   identify: IdentifierAction,
-                                                  getData: DataRetrievalAction,
+                                                  getData: DraftIdRetrievalActionProvider,
                                                   requireData: DataRequiredAction,
                                                   formProvider: SettlorsDateOfBirthFormProvider,
                                                   requiredAnswer: RequiredAnswerActionProvider,
@@ -46,13 +46,13 @@ class SettlorsDateOfBirthController @Inject()(
 
   val form = formProvider()
 
-  private def actions() =
+  private def actions(draftId: String) =
     identify andThen
-      getData andThen
+      getData(draftId) andThen
       requireData andThen
-      requiredAnswer(RequiredAnswer(SettlorsNamePage, routes.SettlorsNameController.onPageLoad(NormalMode)))
+      requiredAnswer(RequiredAnswer(SettlorsNamePage, routes.SettlorsNameController.onPageLoad(NormalMode, draftId)))
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = actions() {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
       val name = request.userAnswers.get(SettlorsNamePage).get
@@ -62,23 +62,23 @@ class SettlorsDateOfBirthController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, name))
+      Ok(view(preparedForm, mode, draftId, name))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = actions().async {
+  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
       val name = request.userAnswers.get(SettlorsNamePage).get
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, name))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, name))),
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorsDateOfBirthPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SettlorsDateOfBirthPage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(SettlorsDateOfBirthPage, mode, draftId)(updatedAnswers))
         }
       )
   }

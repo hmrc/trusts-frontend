@@ -36,7 +36,7 @@ class IndividualBeneficiaryNationalInsuranceYesNoController @Inject()(
                                          sessionRepository: SessionRepository,
                                          navigator: Navigator,
                                          identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
+                                         getData: DraftIdRetrievalActionProvider,
                                          requireData: DataRequiredAction,
                                          requiredAnswer: RequiredAnswerActionProvider,
                                          formProvider: IndividualBeneficiaryNationalInsuranceYesNoFormProvider,
@@ -46,13 +46,13 @@ class IndividualBeneficiaryNationalInsuranceYesNoController @Inject()(
 
   val form: Form[Boolean] = formProvider()
 
-  private def actions(index: Int) =
+  private def actions(index: Int, draftId: String) =
     identify andThen
-      getData andThen
+      getData(draftId) andThen
       requireData andThen
-      requiredAnswer(RequiredAnswer(IndividualBeneficiaryNamePage(index), routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode,index)))
+      requiredAnswer(RequiredAnswer(IndividualBeneficiaryNamePage(index), routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode,index, draftId)))
 
-  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = actions(index) {
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
       val name = request.userAnswers.get(IndividualBeneficiaryNamePage(index)).get
@@ -62,23 +62,23 @@ class IndividualBeneficiaryNationalInsuranceYesNoController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, name, index))
+      Ok(view(preparedForm, mode, draftId, name, index))
   }
 
-  def onSubmit(mode: Mode, index: Int) = actions(index).async {
+  def onSubmit(mode: Mode, index: Int, draftId: String) = actions(index, draftId).async {
     implicit request =>
 
       val name = request.userAnswers.get(IndividualBeneficiaryNamePage(index)).get
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, name, index))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, name, index))),
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(IndividualBeneficiaryNationalInsuranceYesNoPage(index), mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(IndividualBeneficiaryNationalInsuranceYesNoPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

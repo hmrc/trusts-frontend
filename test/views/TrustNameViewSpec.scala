@@ -38,7 +38,7 @@ class TrustNameViewSpec extends StringViewBehaviours {
       val view = viewFor[TrustNameView](Some(emptyUserAnswers))
 
       def applyView(form: Form[_]): HtmlFormat.Appendable =
-        view.apply(form, NormalMode, hintTextShown = true)(fakeRequest, messages)
+        view.apply(form, NormalMode, fakeDraftId, hintTextShown = true)(fakeRequest, messages)
 
       behave like normalPage(applyView(form), messageKeyPrefix)
 
@@ -47,7 +47,7 @@ class TrustNameViewSpec extends StringViewBehaviours {
       behave like stringPage(form,
         applyView,
         messageKeyPrefix,
-        routes.TrustNameController.onSubmit(NormalMode).url,
+        routes.TrustNameController.onSubmit(NormalMode, fakeDraftId).url,
         Some(hintKey)
       )
 
@@ -59,7 +59,7 @@ class TrustNameViewSpec extends StringViewBehaviours {
       val view = viewFor[TrustNameView](Some(emptyUserAnswers))
 
       def applyView(form: Form[_]): HtmlFormat.Appendable =
-        view.apply(form, NormalMode, hintTextShown = false)(fakeRequest, messages)
+        view.apply(form, NormalMode, fakeDraftId, hintTextShown = false)(fakeRequest, messages)
 
       behave like normalPage(applyView(form), messageKeyPrefix)
 
@@ -69,7 +69,7 @@ class TrustNameViewSpec extends StringViewBehaviours {
         form,
         applyView,
         messageKeyPrefix,
-        routes.TrustNameController.onSubmit(NormalMode).url
+        routes.TrustNameController.onSubmit(NormalMode, fakeDraftId).url
       )
 
       behave like pageWithASubmitButton(applyView(form))

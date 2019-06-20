@@ -37,7 +37,7 @@ class TrustHaveAUTRController @Inject()( override val messagesApi: MessagesApi,
                                          sessionRepository: SessionRepository,
                                          navigator: Navigator,
                                          identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
+                                         getData: DraftIdRetrievalActionProvider,
                                          requireData: DataRequiredAction,
                                          formProvider: TrustHaveAUTRFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
@@ -45,11 +45,13 @@ class TrustHaveAUTRController @Inject()( override val messagesApi: MessagesApi,
                                          config : FrontendAppConfig
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
+
   private val lostUtrKey : String = "trustHaveAUTR.link"
 
   val form: Form[Boolean] = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(TrustHaveAUTRPage) match {
@@ -59,23 +61,23 @@ class TrustHaveAUTRController @Inject()( override val messagesApi: MessagesApi,
 
       val link = Link(Messages(lostUtrKey), config.lostUtrUrl)
 
-      Ok(view(preparedForm, mode, Some(link)))
+      Ok(view(preparedForm, mode, draftId, Some(link)))
   }
 
-  def onSubmit(mode: Mode) = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode, draftId: String) = actions(draftId).async {
     implicit request =>
 
       val link = Link(Messages(lostUtrKey), config.lostUtrUrl)
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, Some(link)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, Some(link)))),
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustHaveAUTRPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrustHaveAUTRPage, mode, request.affinityGroup)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrustHaveAUTRPage, mode, draftId, request.affinityGroup)(updatedAnswers))
         }
       )
   }

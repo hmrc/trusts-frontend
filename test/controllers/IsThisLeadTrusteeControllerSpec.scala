@@ -37,7 +37,7 @@ class IsThisLeadTrusteeControllerSpec extends SpecBase with IndexValidation {
 
   val index = 0
 
-  lazy val isThisLeadTrusteeRoute = routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index).url
+  lazy val isThisLeadTrusteeRoute = routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "IsThisLeadTrustee Controller" must {
 
@@ -56,7 +56,7 @@ class IsThisLeadTrusteeControllerSpec extends SpecBase with IndexValidation {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(form, NormalMode, index)(fakeRequest, messages).toString
+          view(form, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -67,7 +67,7 @@ class IsThisLeadTrusteeControllerSpec extends SpecBase with IndexValidation {
 
       "redirect to TrusteeIndividualOrBusiness Page for a different index to previously answered" in {
 
-        val answers = UserAnswers(userAnswersId)
+        val answers = emptyUserAnswers
           .set(IsThisLeadTrusteePage(0), true).success.value
           .set(IsThisLeadTrusteePage(1), false).success.value
 
@@ -75,18 +75,18 @@ class IsThisLeadTrusteeControllerSpec extends SpecBase with IndexValidation {
           applicationBuilder(userAnswers = Some(answers))
             .build()
 
-        val request = FakeRequest(GET, routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 1).url)
+        val request = FakeRequest(GET, routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 1, fakeDraftId).url)
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, 1).url
+        redirectLocation(result).value mustEqual routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, 1,fakeDraftId).url
       }
 
       "populate the view correctly on a GET when the question has previously been answered for the same trustee index" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(IsThisLeadTrusteePage(index), true).success.value
+        val userAnswers = emptyUserAnswers.set(IsThisLeadTrusteePage(index), true).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -99,7 +99,7 @@ class IsThisLeadTrusteeControllerSpec extends SpecBase with IndexValidation {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(form.fill(true), NormalMode, index)(fakeRequest, messages).toString
+          view(form.fill(true), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -143,7 +143,7 @@ class IsThisLeadTrusteeControllerSpec extends SpecBase with IndexValidation {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, index)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -183,7 +183,7 @@ class IsThisLeadTrusteeControllerSpec extends SpecBase with IndexValidation {
     "for a GET" must {
 
       def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
-        val route = routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index).url
+        val route = routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         FakeRequest(GET, route)
       }
@@ -200,7 +200,7 @@ class IsThisLeadTrusteeControllerSpec extends SpecBase with IndexValidation {
       def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
         val route =
-          routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index).url
+          routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         FakeRequest(POST, route)
           .withFormUrlEncodedBody(("value", "true"))

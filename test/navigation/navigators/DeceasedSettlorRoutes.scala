@@ -38,8 +38,8 @@ trait DeceasedSettlorRoutes {
 
           val answers = userAnswers.set(SetupAfterSettlorDiedPage, value = false).success.value
 
-          navigator.nextPage(SetupAfterSettlorDiedPage, NormalMode)(answers)
-            .mustBe(routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode))
+          navigator.nextPage(SetupAfterSettlorDiedPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -49,23 +49,23 @@ trait DeceasedSettlorRoutes {
 
             val answers = userAnswers.set(SetupAfterSettlorDiedPage, value = true).success.value
 
-            navigator.nextPage(SetupAfterSettlorDiedPage, NormalMode)(answers)
-              .mustBe(routes.SettlorsNameController.onPageLoad(NormalMode))
+            navigator.nextPage(SetupAfterSettlorDiedPage, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.SettlorsNameController.onPageLoad(NormalMode, fakeDraftId))
         }
     }
     "go to SettlorDateOfDeathYesNoPage from SettlorsNamePage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          navigator.nextPage(SettlorsNamePage, NormalMode)(userAnswers)
-            .mustBe(routes.SettlorDateOfDeathYesNoController.onPageLoad(NormalMode))
+          navigator.nextPage(SettlorsNamePage, NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.SettlorDateOfDeathYesNoController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
     "go to SettlorDateOfBirthYesNoPage from SettlorDateOfDeathYesNoPage when user answers no" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(SettlorDateOfDeathYesNoPage, value = false).success.value
-          navigator.nextPage(SettlorDateOfDeathYesNoPage, NormalMode)(answers)
-            .mustBe(routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode))
+          navigator.nextPage(SettlorDateOfDeathYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -73,16 +73,16 @@ trait DeceasedSettlorRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(SettlorDateOfDeathYesNoPage, value = true).success.value
-          navigator.nextPage(SettlorDateOfDeathYesNoPage, NormalMode)(answers)
-            .mustBe(routes.SettlorDateOfDeathController.onPageLoad(NormalMode))
+          navigator.nextPage(SettlorDateOfDeathYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.SettlorDateOfDeathController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
     "go to SettlorDateOfBirthYesNoPage from SettlorDateOfDeathPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          navigator.nextPage(SettlorDateOfDeathPage, NormalMode)(userAnswers)
-            .mustBe(routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode))
+          navigator.nextPage(SettlorDateOfDeathPage, NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -91,16 +91,16 @@ trait DeceasedSettlorRoutes {
         userAnswers =>
           val answers = userAnswers.set(SettlorDateOfBirthYesNoPage, value = true).success.value
 
-          navigator.nextPage(SettlorDateOfBirthYesNoPage, NormalMode)(answers)
-            .mustBe(routes.SettlorsDateOfBirthController.onPageLoad(NormalMode))
+          navigator.nextPage(SettlorDateOfBirthYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.SettlorsDateOfBirthController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
     "go to SettlorNINoYesNoPage from SettlorsDateOfBirthPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          navigator.nextPage(SettlorsDateOfBirthPage, NormalMode)(userAnswers)
-            .mustBe(routes.SettlorsNINoYesNoController.onPageLoad(NormalMode))
+          navigator.nextPage(SettlorsDateOfBirthPage, NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.SettlorsNINoYesNoController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -110,16 +110,16 @@ trait DeceasedSettlorRoutes {
 
           val answers = userAnswers.set(SettlorsNINoYesNoPage, true).success.value
 
-          navigator.nextPage(SettlorsNINoYesNoPage, NormalMode)(answers)
-            .mustBe(routes.SettlorNationalInsuranceNumberController.onPageLoad(NormalMode))
+          navigator.nextPage(SettlorsNINoYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.SettlorNationalInsuranceNumberController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
     "go to DeceasedSettlorAnswerPage from SettlorNationalInsuranceNumberPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          navigator.nextPage(SettlorNationalInsuranceNumberPage, NormalMode)(userAnswers)
-            .mustBe(routes.DeceasedSettlorAnswerController.onPageLoad())
+          navigator.nextPage(SettlorNationalInsuranceNumberPage, NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -127,16 +127,16 @@ trait DeceasedSettlorRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(SettlorDateOfBirthYesNoPage, value = false).success.value
-          navigator.nextPage(SettlorDateOfBirthYesNoPage, NormalMode)(answers)
-            .mustBe(routes.SettlorsNINoYesNoController.onPageLoad(NormalMode))
+          navigator.nextPage(SettlorDateOfBirthYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.SettlorsNINoYesNoController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
     "go to SettlorsLastKnownAddressYesNoPage from SettlorsNINoYesNoPage when user answers no" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(SettlorsNINoYesNoPage, value = false).success.value
-          navigator.nextPage(SettlorsNINoYesNoPage, NormalMode)(answers)
-            .mustBe(routes.SettlorsLastKnownAddressYesNoController.onPageLoad(NormalMode))
+          navigator.nextPage(SettlorsNINoYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.SettlorsLastKnownAddressYesNoController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -144,53 +144,53 @@ trait DeceasedSettlorRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(SettlorsLastKnownAddressYesNoPage, value = false).success.value
-          navigator.nextPage(SettlorsLastKnownAddressYesNoPage, NormalMode)(answers)
-            .mustBe(routes.DeceasedSettlorAnswerController.onPageLoad())
+          navigator.nextPage(SettlorsLastKnownAddressYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId))
       }
     }
     "go to WasSettlorsAddressUKYesNoPage from SettlorsLastKnownAddressYesNoPage when user answers yes" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(SettlorsLastKnownAddressYesNoPage, value = true).success.value
-          navigator.nextPage(SettlorsLastKnownAddressYesNoPage, NormalMode)(answers)
-            .mustBe(routes.WasSettlorsAddressUKYesNoController.onPageLoad(NormalMode))
+          navigator.nextPage(SettlorsLastKnownAddressYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.WasSettlorsAddressUKYesNoController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
     "go to SettlorsUKAddressPage from WasSettlorsAddressUKYesNoPage when user answers yes" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(WasSettlorsAddressUKYesNoPage, value = true).success.value
-          navigator.nextPage(WasSettlorsAddressUKYesNoPage, NormalMode)(answers)
-            .mustBe(routes.SettlorsUKAddressController.onPageLoad(NormalMode))
+          navigator.nextPage(WasSettlorsAddressUKYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.SettlorsUKAddressController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
     "go to SettlorsInternationalAddressPage from WasSettlorsAddressUKYesNoPage when user answers no" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(WasSettlorsAddressUKYesNoPage, value = false).success.value
-          navigator.nextPage(WasSettlorsAddressUKYesNoPage, NormalMode)(answers)
-            .mustBe(routes.SettlorsInternationalAddressController.onPageLoad(NormalMode))
+          navigator.nextPage(WasSettlorsAddressUKYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.SettlorsInternationalAddressController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
     "go to DeceasedSettlorAnswerPage from SettlorsInternationalAddressPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          navigator.nextPage(SettlorsInternationalAddressPage, NormalMode)(userAnswers)
-            .mustBe(routes.DeceasedSettlorAnswerController.onPageLoad())
+          navigator.nextPage(SettlorsInternationalAddressPage, NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId))
       }
     }
     "go to DeceasedSettlorAnswerPage from SettlorsUKAddressPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          navigator.nextPage(SettlorsUKAddressPage, NormalMode)(userAnswers)
-            .mustBe(routes.DeceasedSettlorAnswerController.onPageLoad())
+          navigator.nextPage(SettlorsUKAddressPage, NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId))
       }
     }
     "go to TaskList from DeceasedSettlorAnswerPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          navigator.nextPage(DeceasedSettlorAnswerPage, NormalMode)(userAnswers)
-            .mustBe(routes.TaskListController.onPageLoad())
+          navigator.nextPage(DeceasedSettlorAnswerPage, NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
       }
     }
   }

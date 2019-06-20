@@ -28,7 +28,7 @@ import pages.entitystatus._
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import utils.CheckYourAnswersHelper
+import utils.{CheckYourAnswersHelper, TestUserAnswers}
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.ConfirmationAnswerPageView
@@ -42,7 +42,7 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
     "return OK and the correct view for a GET when tasklist completed" in {
 
       val userAnswers =
-        UserAnswers(userAnswersId)
+        TestUserAnswers.emptyUserAnswers
           .set(TrustNamePage, "New Trust").success.value
           .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
           .set(GovernedInsideTheUKPage, true).success.value
@@ -104,7 +104,7 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
 
 
       val countryOptions = injector.instanceOf[CountryOptions]
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, canEdit = false)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = false)
       val leadTrusteeIndividualOrBusinessMessagePrefix = "leadTrusteeIndividualOrBusiness"
       val leadTrusteeFullNameMessagePrefix = "leadTrusteesName"
 
@@ -188,7 +188,7 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.ConfirmationAnswerPageController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.ConfirmationAnswerPageController.onPageLoad(fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -208,7 +208,7 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
     "redirect to tasklist page when tasklist not completed" in {
 
       val userAnswers =
-        UserAnswers(userAnswersId)
+        TestUserAnswers.emptyUserAnswers
           .set(TrustNamePage, "New Trust").success.value
           .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
           .set(GovernedInsideTheUKPage, true).success.value
@@ -220,13 +220,13 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.ConfirmationAnswerPageController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.ConfirmationAnswerPageController.onPageLoad(fakeDraftId).url)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad(fakeDraftId).url
 
       application.stop()
 

@@ -18,7 +18,7 @@
     main_template: MainTemplate
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@(draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("individualBeneficiaryInfo.title")
@@ -71,6 +71,6 @@
 
     <p>@messages("individualBeneficiaryInfo.paragraph8")</p>
 
-    @components.button_link(messages("site.onlyContinue"), WhatTypeOfBeneficiaryController.onPageLoad().url)
+    @components.button_link(messages("site.onlyContinue"), WhatTypeOfBeneficiaryController.onPageLoad(draftId).url)
 
 }

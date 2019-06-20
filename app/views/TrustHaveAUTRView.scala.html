@@ -23,13 +23,13 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, link: Option[Link] =None)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId: String, link: Option[Link] =None)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("trustHaveAUTR.title")}"
     ) {
 
-    @formHelper(action = TrustHaveAUTRController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = TrustHaveAUTRController.onSubmit(mode, draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 

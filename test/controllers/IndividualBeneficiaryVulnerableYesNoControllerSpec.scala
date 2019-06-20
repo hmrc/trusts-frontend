@@ -35,15 +35,16 @@ class IndividualBeneficiaryVulnerableYesNoControllerSpec extends SpecBase {
   val formProvider = new IndividualBeneficiaryVulnerableYesNoFormProvider()
   val form = formProvider()
   val index: Int = 0
+
   val name = FullName("first name", None, "Last name")
 
-  lazy val individualBeneficiaryVulnerableYesNoRoute = routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index).url
+  lazy val individualBeneficiaryVulnerableYesNoRoute = routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "IndividualBeneficiaryVulnerableYesNo Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryNamePage(index),
+      val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(index),
         name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -57,14 +58,14 @@ class IndividualBeneficiaryVulnerableYesNoControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, name, index)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryVulnerableYesNoPage(index), true).success.value
+      val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryVulnerableYesNoPage(index), true).success.value
         .set(IndividualBeneficiaryNamePage(index),name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -78,14 +79,14 @@ class IndividualBeneficiaryVulnerableYesNoControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, name, index)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, fakeDraftId, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryNamePage(index),
+      val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(index),
         name).success.value
 
       val application =
@@ -108,7 +109,7 @@ class IndividualBeneficiaryVulnerableYesNoControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryNamePage(index),
+      val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(index),
         name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -126,7 +127,7 @@ class IndividualBeneficiaryVulnerableYesNoControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, name, index)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }

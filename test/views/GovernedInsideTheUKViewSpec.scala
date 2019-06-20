@@ -35,13 +35,13 @@ class GovernedInsideTheUKViewSpec extends YesNoViewBehaviours {
     val view = viewFor[GovernedInsideTheUKView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.GovernedInsideTheUKController.onSubmit(NormalMode).url)
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.GovernedInsideTheUKController.onSubmit(NormalMode, fakeDraftId).url)
 
     behave like pageWithASubmitButton(applyView(form))
   }

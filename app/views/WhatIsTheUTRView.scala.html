@@ -22,13 +22,13 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("whatIsTheUTR.title")}"
     ) {
 
-    @formHelper(action = WhatIsTheUTRController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = WhatIsTheUTRController.onSubmit(mode, draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 

@@ -34,7 +34,7 @@ class AddATrusteeControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  lazy val addATrusteeRoute : String = routes.AddATrusteeController.onPageLoad().url
+  lazy val addATrusteeRoute : String = routes.AddATrusteeController.onPageLoad(fakeDraftId).url
 
   val formProvider = new AddATrusteeFormProvider()
   val form = formProvider()
@@ -44,7 +44,7 @@ class AddATrusteeControllerSpec extends SpecBase {
     AddRow("First 1 Last 1", typeLabel = "Trustee Individual", "#", "#")
   )
 
-  val userAnswersWithTrusteesComplete = UserAnswers(userAnswersId)
+  val userAnswersWithTrusteesComplete = emptyUserAnswers
     .set(TrusteesNamePage(0), FullName("First 0", None, "Last 0")).success.value
     .set(TrusteeIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
     .set(TrusteeStatus(0), Completed).success.value
@@ -67,7 +67,7 @@ class AddATrusteeControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, Nil, trustee)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId,Nil, trustee)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -109,7 +109,7 @@ class AddATrusteeControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, Nil, trustee)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId,Nil, trustee)(fakeRequest, messages).toString
 
       application.stop()
     }

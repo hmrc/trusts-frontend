@@ -17,29 +17,39 @@
 package controllers.actions
 
 import javax.inject.Inject
-import models.UserAnswers
+import models.{RegistrationProgress, UserAnswers}
 import models.requests.{IdentifierRequest, OptionalDataRequest}
+import play.api.Logger
 import play.api.mvc.ActionTransformer
 import repositories.SessionRepository
-import uk.gov.hmrc.play.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DataRetrievalActionImpl @Inject()(
-                                         val sessionRepository: SessionRepository
-                                       )(implicit val executionContext: ExecutionContext) extends DataRetrievalAction {
+class DataRetrievalActionImpl @Inject()(val sessionRepository: SessionRepository)
+                                       (implicit val executionContext: ExecutionContext) extends DataRetrievalAction {
 
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] = {
 
-    implicit val hc = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+    def createdOptionalDataRequest(request: IdentifierRequest[A], userAnswers: Option[UserAnswers]) =
+      OptionalDataRequest(request.request, request.identifier, userAnswers, request.affinityGroup, request.agentARN)
 
-    sessionRepository.get(request.identifier).map {
-      case None =>
-        OptionalDataRequest(request.request, request.identifier, None, request.affinityGroup, request.agentARN)
-      case Some(userAnswers) =>
-        OptionalDataRequest(request.request, request.identifier, Some(userAnswers), request.affinityGroup, request.agentARN)
+    sessionRepository.getDraftRegistrations(request.identifier).flatMap {
+      ids =>
+        ids.headOption match {
+          case None =>
+            Future.successful(createdOptionalDataRequest(request, None))
+          case Some(userAnswer) =>
+            sessionRepository.get(userAnswer.draftId, userAnswer.internalAuthId, RegistrationProgress.InProgress).map {
+              case None =>
+                createdOptionalDataRequest(request, None)
+              case Some(userAnswers) =>
+                createdOptionalDataRequest(request, Some(userAnswers))
+          }
+        }
     }
   }
 }
 
 trait DataRetrievalAction extends ActionTransformer[IdentifierRequest, OptionalDataRequest]
+
+

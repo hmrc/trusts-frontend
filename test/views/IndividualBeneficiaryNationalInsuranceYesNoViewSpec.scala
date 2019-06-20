@@ -36,19 +36,19 @@ class IndividualBeneficiaryNationalInsuranceYesNoViewSpec extends YesNoViewBehav
 
   "IndividualBeneficiaryNationalInsuranceYesNo view" must {
 
-    val userAnswers = UserAnswers(userAnswersId)
+    val userAnswers = emptyUserAnswers
       .set(IndividualBeneficiaryNamePage(index), fullName).success.value
 
     val view = viewFor[IndividualBeneficiaryNationalInsuranceYesNoView](Some(userAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fullName, index)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, fullName, index)(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.IndividualBeneficiaryNationalInsuranceYesNoController.onSubmit(NormalMode, index).url, None, Seq(fullName.toString))
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.IndividualBeneficiaryNationalInsuranceYesNoController.onSubmit(NormalMode, index, fakeDraftId).url, None, Seq(fullName.toString))
 
     behave like pageWithASubmitButton(applyView(form))
 

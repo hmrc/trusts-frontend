@@ -28,15 +28,13 @@ import scala.concurrent.ExecutionContext
 class TrusteesInfoController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: TrusteesInfoView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(draftId: String): Action[AnyContent] = identify {
     implicit request =>
-      Ok(view())
+      Ok(view(draftId))
   }
 
 }

@@ -39,7 +39,7 @@ class TrusteesDateOfBirthViewSpec extends QuestionViewBehaviours[LocalDate] {
     val view = viewFor[TrusteesDateOfBirthView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, index, trusteeName)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages)
 
     val applyViewF = (form : Form[_]) => applyView(form)
 
@@ -49,7 +49,7 @@ class TrusteesDateOfBirthViewSpec extends QuestionViewBehaviours[LocalDate] {
 
     behave like pageWithDateFields(form, applyViewF,
       messageKeyPrefix,
-      routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index).url,
+      routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, fakeDraftId).url,
       trusteeName
     )
 

@@ -37,7 +37,7 @@ class SettlorsInternationalAddressController @Inject()(
                                                         sessionRepository: SessionRepository,
                                                         navigator: Navigator,
                                                         identify: IdentifierAction,
-                                                        getData: DataRetrievalAction,
+                                                        getData: DraftIdRetrievalActionProvider,
                                                         requireData: DataRequiredAction,
                                                         formProvider: InternationalAddressFormProvider,
                                                         requiredAnswer: RequiredAnswerActionProvider,
@@ -48,13 +48,13 @@ class SettlorsInternationalAddressController @Inject()(
 
   val form = formProvider()
 
-  private def actions() =
+  private def actions(draftId: String) =
     identify andThen
-      getData andThen
+      getData(draftId) andThen
       requireData andThen
-      requiredAnswer(RequiredAnswer(SettlorsNamePage, routes.SettlorsNameController.onPageLoad(NormalMode)))
+      requiredAnswer(RequiredAnswer(SettlorsNamePage, routes.SettlorsNameController.onPageLoad(NormalMode, draftId)))
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = actions() {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
       val name = request.userAnswers.get(SettlorsNamePage).get
@@ -64,23 +64,23 @@ class SettlorsInternationalAddressController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, countryOptions.options, mode, name))
+      Ok(view(preparedForm, countryOptions.options, mode, draftId, name))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = actions().async {
+  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
       val name = request.userAnswers.get(SettlorsNamePage).get
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, countryOptions.options, mode, name))),
+          Future.successful(BadRequest(view(formWithErrors, countryOptions.options, mode, draftId, name))),
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorsInternationalAddressPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SettlorsInternationalAddressPage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(SettlorsInternationalAddressPage, mode, draftId)(updatedAnswers))
         }
       )
   }

@@ -18,7 +18,7 @@ package base
 
 import config.FrontendAppConfig
 import controllers.actions._
-import models.UserAnswers
+import models.{RegistrationProgress, UserAnswers}
 import org.scalatest.{BeforeAndAfter, TestSuite, TryValues}
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice._
@@ -28,14 +28,14 @@ import play.api.inject.{Injector, bind}
 import play.api.mvc.PlayBodyParsers
 import play.api.test.FakeRequest
 import repositories.SessionRepository
-import services.SubmissionService
+import services.{CreateDraftRegistrationService, SubmissionService}
 import uk.gov.hmrc.auth.core.AffinityGroup
 import utils.TestUserAnswers
 
 trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked with BeforeAndAfter {
   this: TestSuite =>
 
-  val userAnswersId = TestUserAnswers.userAnswersId
+  val userAnswersId = TestUserAnswers.draftId
 
   def emptyUserAnswers = TestUserAnswers.emptyUserAnswers
 
@@ -46,6 +46,8 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
   def messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
 
   def fakeRequest = FakeRequest("", "")
+
+  def fakeDraftId: String = TestUserAnswers.draftId
 
   def injectedParsers = injector.instanceOf[PlayBodyParsers]
 
@@ -58,8 +60,11 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
         bind[DataRequiredAction].to[DataRequiredActionImpl],
         bind[IdentifierAction].toInstance(new FakeIdentifierAction(affinityGroup)(injectedParsers)),
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
+        bind[DraftIdRetrievalActionProvider].toInstance(
+          new FakeDraftIdRetrievalActionProvider("draftId", RegistrationProgress.InProgress,userAnswers, mockedSessionRepository)),
         bind[SessionRepository].toInstance(mockedSessionRepository),
-        bind[SubmissionService].toInstance(mockSubmissionService)
+        bind[SubmissionService].toInstance(mockSubmissionService),
+        bind[CreateDraftRegistrationService].toInstance(mockCreateDraftRegistrationService)
       )
 
 }

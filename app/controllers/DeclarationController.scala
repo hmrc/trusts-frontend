@@ -42,7 +42,7 @@ class DeclarationController @Inject()(
                                        sessionRepository: SessionRepository,
                                        navigator: Navigator,
                                        identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
+                                       getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
                                        formProvider: DeclarationFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
@@ -53,9 +53,9 @@ class DeclarationController @Inject()(
 
   val form = formProvider()
 
-  def actions = identify andThen getData andThen requireData andThen registrationComplete
+  def actions(draftId: String) = identify andThen getData(draftId) andThen requireData andThen registrationComplete
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = actions {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(DeclarationPage) match {
@@ -63,15 +63,15 @@ class DeclarationController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode,request.affinityGroup))
+      Ok(view(preparedForm, mode, draftId,request.affinityGroup))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = actions.async {
+  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode,request.affinityGroup))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, request.affinityGroup))),
 
         value => {
 
@@ -79,13 +79,13 @@ class DeclarationController @Inject()(
               updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, value))
               _ <- sessionRepository.set(updatedAnswers)
               response <- submissionService.submit(updatedAnswers)
-              result <- handleResponse(updatedAnswers, response)
+              result <- handleResponse(updatedAnswers, response, draftId)
             } yield result
 
             r.recover {
               case _ : UnableToRegister =>
                 Logger.error(s"[onSubmit] Not able to register , redirecting to registration in progress.")
-                Redirect(routes.TaskListController.onPageLoad())
+                Redirect(routes.TaskListController.onPageLoad(draftId))
               case NonFatal(e) =>
                 Logger.error(s"[onSubmit] Non fatal exception, throwing again. ${e.getMessage}")
                 throw e
@@ -95,7 +95,7 @@ class DeclarationController @Inject()(
       )
   }
 
-  private def handleResponse(updatedAnswers: UserAnswers, response: TrustResponse) : Future[Result] = {
+  private def handleResponse(updatedAnswers: UserAnswers, response: TrustResponse, draftId: String) : Future[Result] = {
     response match {
       case trn: RegistrationTRNResponse =>
         Logger.info("[DeclarationController][handleResponse] Saving trust registration trn.")
@@ -105,7 +105,7 @@ class DeclarationController @Inject()(
         Future.successful(Redirect(routes.UTRSentByPostController.onPageLoad()))
       case e =>
         Logger.warn(s"[DeclarationController][handleResponse] unable to submit due to error $e")
-        Future.successful(Redirect(routes.TaskListController.onPageLoad()))
+        Future.successful(Redirect(routes.TaskListController.onPageLoad(draftId)))
     }
   }
 
@@ -119,7 +119,7 @@ class DeclarationController @Inject()(
               Logger.info(s"[saveTRNAndCompleteRegistration] Days between creation and submission : ${days}")
               sessionRepository.set(dateSaved.copy(progress = RegistrationProgress.Complete)).map {
               _ =>
-                Redirect(routes.ConfirmationController.onPageLoad())
+                Redirect(routes.ConfirmationController.onPageLoad(updatedAnswers.draftId))
             }
           }
       }

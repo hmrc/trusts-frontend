@@ -42,13 +42,13 @@ class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generat
 
   "LeadTrusteeFullName view" must {
 
-    val userAnswers = UserAnswers(userAnswersId)
+    val userAnswers = emptyUserAnswers
       .set(IsThisLeadTrusteePage(index), true).success.value
 
     val view = viewFor[TrusteesNameView](Some(userAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, index, leadHeading)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index, leadHeading)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), leadMessageKeyPrefix)
 
@@ -58,7 +58,7 @@ class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generat
       form,
       applyView,
       leadMessageKeyPrefix,
-      routes.TrusteesNameController.onSubmit(NormalMode, index).url,
+      routes.TrusteesNameController.onSubmit(NormalMode, index, fakeDraftId).url,
       Seq(("firstName",None), ("middleName",None), ("lastName",None))
     )
 
@@ -66,13 +66,13 @@ class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generat
 
   "TrusteeFullName view" must {
 
-    val userAnswers = UserAnswers(userAnswersId)
+    val userAnswers = emptyUserAnswers
       .set(IsThisLeadTrusteePage(index), false).success.value
 
     val view = viewFor[TrusteesNameView](Some(userAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, index, heading)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index, heading)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
@@ -82,7 +82,7 @@ class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generat
       form,
       applyView,
       messageKeyPrefix,
-      routes.TrusteesNameController.onSubmit(NormalMode, index).url,
+      routes.TrusteesNameController.onSubmit(NormalMode, index, fakeDraftId).url,
       Seq(("firstName",None), ("middleName",None), ("lastName",None))
     )
 

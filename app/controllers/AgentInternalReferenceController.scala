@@ -37,16 +37,20 @@ class AgentInternalReferenceController @Inject()(
                                         navigator: Navigator,
                                         identify: IdentifierAction,
                                         hasAgentAffinityGroup: RequireStateActionProviderImpl,
-                                        getData: DataRetrievalAction,
+                                        getData: DraftIdRetrievalActionProvider,
                                         requireData: DataRequiredAction,
                                         formProvider: AgentInternalReferenceFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: AgentInternalReferenceView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+
+
+  def actions(draftId: String)= identify andThen hasAgentAffinityGroup() andThen getData(draftId) andThen requireData
+
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen hasAgentAffinityGroup() andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(AgentInternalReferencePage) match {
@@ -54,22 +58,22 @@ class AgentInternalReferenceController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, draftId))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen hasAgentAffinityGroup() andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId))),
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentInternalReferencePage, value))
             updatedAnswersWithARN <- Future.fromTry(updatedAnswers.set(AgentARNPage, request.agentARN.getOrElse("")))
             _              <- sessionRepository.set(updatedAnswersWithARN)
-          } yield Redirect(navigator.nextPage(AgentInternalReferencePage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(AgentInternalReferencePage, mode, draftId)(updatedAnswers))
         }
       )
   }

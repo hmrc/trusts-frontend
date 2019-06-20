@@ -16,18 +16,19 @@
 
 package repositories
 
-import java.time.LocalDateTime
-
 import akka.stream.Materializer
 import javax.inject.Inject
-import models.UserAnswers
+import models.{RegistrationProgress, UserAnswers}
+import pages.AgentInternalReferencePage
 import play.api.Configuration
 import play.api.libs.json._
 import play.modules.reactivemongo.ReactiveMongoApi
+import reactivemongo.api.Cursor
 import reactivemongo.api.indexes.{Index, IndexType}
 import reactivemongo.bson.BSONDocument
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import reactivemongo.play.json.collection.JSONCollection
+import viewmodels.DraftRegistration
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -45,23 +46,80 @@ class DefaultSessionRepository @Inject()(
     mongo.database.map(_.collection[JSONCollection](collectionName))
 
   private val createdAtIndex = Index(
-    key     = Seq("createdAt" -> IndexType.Ascending),
-    name    = Some("user-answers-created-at-index"),
+    key = Seq("createdAt" -> IndexType.Ascending),
+    name = Some("user-answers-created-at-index"),
     options = BSONDocument("expireAfterSeconds" -> cacheTtl)
   )
 
-  val started: Future[Unit] =
-    collection.flatMap {
-      _.indexesManager.ensure(createdAtIndex)
-    }.map(_ => ())
+  private val internalAuthIdIndex = Index(
+    key = Seq("internalId" -> IndexType.Ascending),
+    name = Some("internal-auth-id-index")
+  )
 
-  override def get(id: String): Future[Option[UserAnswers]] =
-    collection.flatMap(_.find(Json.obj("_id" -> id), None).one[UserAnswers])
+    val started : Future[Unit] = {
+      Future.sequence {
+        Seq(
+          collection.map(_.indexesManager.ensure(createdAtIndex)),
+          collection.map(_.indexesManager.ensure(internalAuthIdIndex))
+        )
+      }.map(_ => ())
+    }
+
+  override def get(draftId: String, internalId: String, status : RegistrationProgress  ): Future[Option[UserAnswers]] = {
+  val selector =   status match {
+      case RegistrationProgress.Complete =>
+        Json.obj("_id" -> draftId,
+          "internalId" -> internalId,
+          "progress" -> status.toString
+        )
+      case _ =>
+        Json.obj("_id" -> draftId,
+          "internalId" -> internalId,
+          "progress" -> Json.obj("$ne" -> RegistrationProgress.Complete.toString)
+        )
+
+    }
+      collection.flatMap(_.find(
+        selector = selector, None).one[UserAnswers])
+  }
+
+  override def getDraftRegistrations(internalId: String): Future[List[UserAnswers]] = {
+    val draftIdLimit = 20
+
+    val selector = Json.obj(
+      "internalId" -> internalId,
+      "progress" -> Json.obj("$ne" -> RegistrationProgress.Complete.toString)
+    )
+
+    collection.flatMap(
+      _.find(
+        selector = selector,
+        projection = None
+      )
+        .sort(Json.obj("createdAt" -> -1))
+        .cursor[UserAnswers]()
+        .collect[List](draftIdLimit, Cursor.FailOnError[List[UserAnswers]]()))
+  }
+
+  override def listDrafts(internalId : String) : Future[List[DraftRegistration]] = {
+    getDraftRegistrations(internalId).map {
+      drafts =>
+
+        drafts.flatMap {
+          x =>
+            x.get(AgentInternalReferencePage).map {
+              reference =>
+                DraftRegistration(x.draftId, reference, x.createdAt)
+            }
+
+        }
+    }
+  }
 
   override def set(userAnswers: UserAnswers): Future[Boolean] = {
 
     val selector = Json.obj(
-      "_id" -> userAnswers.id
+      "_id" -> userAnswers.draftId
     )
 
     val modifier = Json.obj(
@@ -81,7 +139,11 @@ trait SessionRepository {
 
   val started: Future[Unit]
 
-  def get(id: String): Future[Option[UserAnswers]]
+  def get(draftId: String, internalId: String,status : RegistrationProgress): Future[Option[UserAnswers]]
 
   def set(userAnswers: UserAnswers): Future[Boolean]
+
+  def getDraftRegistrations(internalId: String): Future[List[UserAnswers]]
+
+  def listDrafts(internalId : String) : Future[List[DraftRegistration]]
 }

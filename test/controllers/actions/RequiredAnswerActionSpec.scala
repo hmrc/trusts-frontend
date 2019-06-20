@@ -59,11 +59,11 @@ class RequiredAnswerActionSpec extends SpecBase with MockitoSugar with ScalaFutu
         "redirect to page specified" in {
           val answers = emptyUserAnswers
 
-          val action = new Harness(RequiredAnswer(TrusteesNamePage(0), routes.TrusteesNameController.onPageLoad(NormalMode, 0)))
+          val action = new Harness(RequiredAnswer(TrusteesNamePage(0), routes.TrusteesNameController.onPageLoad(NormalMode, 0, fakeDraftId)))
           val futureResult = action.callRefine(new DataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation))
 
           whenReady(futureResult) { result =>
-            result.left.value.header.headers(HeaderNames.LOCATION) mustBe routes.TrusteesNameController.onPageLoad(NormalMode, 0).url
+            result.left.value.header.headers(HeaderNames.LOCATION) mustBe routes.TrusteesNameController.onPageLoad(NormalMode, 0, fakeDraftId).url
           }
         }
 
@@ -72,7 +72,7 @@ class RequiredAnswerActionSpec extends SpecBase with MockitoSugar with ScalaFutu
     "there is a required answer" must {
 
       "continue with refining the request" in {
-        val answers = UserAnswers("id").set(TrusteesNamePage(0), FullName("Adam", None, "Conder")).success.value
+        val answers = emptyUserAnswers.set(TrusteesNamePage(0), FullName("Adam", None, "Conder")).success.value
 
         val dataRequest = new DataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation)
 

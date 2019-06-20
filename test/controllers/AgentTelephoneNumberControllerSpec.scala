@@ -36,7 +36,7 @@ class AgentTelephoneNumberControllerSpec extends SpecBase {
   val formProvider = new AgentTelephoneNumber()
   val form = formProvider()
 
-  lazy val agentTelephoneNumberRoute = routes.AgentTelephoneNumberController.onPageLoad(NormalMode).url
+  lazy val agentTelephoneNumberRoute = routes.AgentTelephoneNumberController.onPageLoad(NormalMode,fakeDraftId).url
 
   "AgentTelephoneNumber Controller" must {
 
@@ -53,14 +53,14 @@ class AgentTelephoneNumberControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(AgentTelephoneNumberPage, "answer").success.value
+      val userAnswers = emptyUserAnswers.set(AgentTelephoneNumberPage, "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
@@ -73,7 +73,7 @@ class AgentTelephoneNumberControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill("answer"), NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -81,7 +81,7 @@ class AgentTelephoneNumberControllerSpec extends SpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
           .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
@@ -99,7 +99,7 @@ class AgentTelephoneNumberControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers),AffinityGroup.Agent).build()
 
       val request =
         FakeRequest(POST, agentTelephoneNumberRoute)
@@ -114,7 +114,7 @@ class AgentTelephoneNumberControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }

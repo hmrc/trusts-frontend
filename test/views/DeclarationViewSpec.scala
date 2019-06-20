@@ -36,7 +36,7 @@ class DeclarationViewSpec extends QuestionViewBehaviours[FullName] {
     val view = viewFor[DeclarationView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, AffinityGroup.Agent)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, AffinityGroup.Agent)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
@@ -46,7 +46,7 @@ class DeclarationViewSpec extends QuestionViewBehaviours[FullName] {
       form,
       applyView,
       messageKeyPrefix,
-      routes.DeclarationController.onSubmit().url,
+      routes.DeclarationController.onSubmit(fakeDraftId).url,
       Seq(("firstName", None), ("middleName", None), ("lastName", None))
     )
   }
@@ -57,7 +57,7 @@ class DeclarationViewSpec extends QuestionViewBehaviours[FullName] {
       val view = viewFor[DeclarationView](Some(emptyUserAnswers))
 
       def applyView(form: Form[_]): HtmlFormat.Appendable =
-        view.apply(form, NormalMode, AffinityGroup.Organisation)(fakeRequest, messages)
+        view.apply(form, NormalMode, fakeDraftId, AffinityGroup.Organisation)(fakeRequest, messages)
 
       val doc = asDocument(applyView(form))
       assertContainsText(doc, "I confirm that I have taken all reasonable steps to obtain up to " +
@@ -74,7 +74,7 @@ class DeclarationViewSpec extends QuestionViewBehaviours[FullName] {
       val view = viewFor[DeclarationView](Some(emptyUserAnswers))
 
       def applyView(form: Form[_]): HtmlFormat.Appendable =
-        view.apply(form, NormalMode, AffinityGroup.Agent)(fakeRequest, messages)
+        view.apply(form, NormalMode, fakeDraftId, AffinityGroup.Agent)(fakeRequest, messages)
 
       val doc = asDocument(applyView(form))
       assertContainsText(doc, "I confirm that my client has taken all reasonable steps to obtain up " +

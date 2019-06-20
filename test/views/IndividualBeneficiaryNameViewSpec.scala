@@ -38,7 +38,7 @@ class IndividualBeneficiaryNameViewSpec extends QuestionViewBehaviours[FullName]
     val view = viewFor[IndividualBeneficiaryNameView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode,index)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId,index)(fakeRequest, messages)
 
 
     behave like normalPage(applyView(form), messageKeyPrefix)
@@ -49,7 +49,7 @@ class IndividualBeneficiaryNameViewSpec extends QuestionViewBehaviours[FullName]
       form,
       applyView,
       messageKeyPrefix,
-      routes.IndividualBeneficiaryNameController.onSubmit(NormalMode, index).url,
+      routes.IndividualBeneficiaryNameController.onSubmit(NormalMode, index, fakeDraftId).url,
       Seq(("firstName",None), ("middleName",None), ("lastName",None))
     )
   }

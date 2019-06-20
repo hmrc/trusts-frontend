@@ -16,32 +16,93 @@
 
 package controllers
 
+import java.time.LocalDateTime
+
 import base.SpecBase
+import models.NormalMode
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
+import viewmodels.DraftRegistration
 import views.html.AgentOverviewView
+
+import scala.concurrent.Future
 
 class AgentOverviewControllerSpec extends SpecBase {
 
-  "AgentOverview Controller" must {
+  lazy val agentOverviewRoute: String = routes.AgentOverviewController.onSubmit().url
 
-    "return OK and the correct view for a GET" in {
+  "AgentOverview Controller" when {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+    "there are no drafts" must {
 
-      val request = FakeRequest(GET, routes.AgentOverviewController.onPageLoad().url)
+      "return OK and the correct view for a GET" in {
 
-      val result = route(application, request).value
+        when(mockedSessionRepository.listDrafts(any())).thenReturn(Future.successful(Nil))
 
-      val view = application.injector.instanceOf[AgentOverviewView]
+        val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
-      status(result) mustEqual OK
+        val request = FakeRequest(GET, routes.AgentOverviewController.onPageLoad().url)
 
-      contentAsString(result) mustEqual
-        view()(fakeRequest, messages).toString
+        val result = route(application, request).value
 
-      application.stop()
+        val view = application.injector.instanceOf[AgentOverviewView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(Nil)(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
+      "redirect for a POST" in {
+
+        val application =
+          applicationBuilder(userAnswers = None, AffinityGroup.Agent)
+            .build()
+
+        val request =
+          FakeRequest(POST, agentOverviewRoute)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual routes.CreateDraftRegistrationController.create().url
+
+        application.stop()
+
+      }
+
+    }
+
+    "there are drafts" must {
+
+      "return OK and the correct view for a GET" in {
+
+        val draft = List(DraftRegistration(fakeDraftId, "InternalRef", LocalDateTime.now()))
+
+        when(mockedSessionRepository.listDrafts(any()))
+          .thenReturn(Future.successful(draft))
+
+        val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
+
+        val request = FakeRequest(GET, routes.AgentOverviewController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[AgentOverviewView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(draft)(fakeRequest, messages).toString
+
+        application.stop()
+      }
     }
   }
 }

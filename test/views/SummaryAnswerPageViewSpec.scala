@@ -16,15 +16,15 @@
 
 package views
 
-import java.time.{LocalDate, LocalDateTime, ZoneOffset}
+import java.time.{LocalDate, LocalDateTime}
 
 import models.AddAssets.NoComplete
 import models.Status.Completed
-import models.{AddABeneficiary, AddATrustee, FullName, IndividualOrBusiness, Status, UKAddress, UserAnswers, WhatKindOfAsset}
-import pages.entitystatus._
+import models.{AddABeneficiary, AddATrustee, FullName, IndividualOrBusiness, Status, UKAddress, WhatKindOfAsset}
 import pages._
+import pages.entitystatus._
 import utils.countryOptions.CountryOptions
-import utils.{CheckYourAnswersHelper, DateFormat}
+import utils.{CheckYourAnswersHelper, DateFormat, TestUserAnswers}
 import views.behaviours.ViewBehaviours
 import views.html.SummaryAnswerPageView
 
@@ -34,8 +34,7 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
   "SummaryAnswerPage view" must {
 
     val userAnswers =
-      UserAnswers(userAnswersId)
-
+      TestUserAnswers.emptyUserAnswers
         .set(TrustNamePage, "New Trust").success.value
         .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
         .set(GovernedInsideTheUKPage, true).success.value
@@ -106,7 +105,7 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
 
     val countryOptions = injector.instanceOf[CountryOptions]
 
-    val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, canEdit = false)
+    val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = false)
     val trustDetails = checkYourAnswersHelper.trustDetails.getOrElse(Nil)
     val trustees = checkYourAnswersHelper.trustees.getOrElse(Nil)
     val settlors = checkYourAnswersHelper.settlors.getOrElse(Nil)

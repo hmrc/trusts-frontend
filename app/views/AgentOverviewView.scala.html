@@ -14,11 +14,15 @@
  * limitations under the License.
  *@
 
+@import viewmodels.DraftRegistration
+@import controllers.routes._
+
 @this(
-    main_template: MainTemplate
+    main_template: MainTemplate,
+    formHelper: FormWithCSRF
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@(drafts: List[DraftRegistration])(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("agentOverview.title")
@@ -29,6 +33,10 @@
     @components.heading("agentOverview.heading")
 
     <p>@messages("agentOverview.paragraph1")</p>
+
+    <h2 class="saved-registration">Saved registrations</h2>
+
+    @components.draft_registration_list(drafts, "agent-registrations")
 
     <details role="group" class="details">
         <summary role="button" aria-controls="details-content-0" aria-expanded="false">
@@ -44,6 +52,7 @@
                     "bulletpoint4"
                 )
             )
+
             <p>@messages("agentOverview.paragraph3")</p>
             @components.bullet_list("agentOverview",
                 List(
@@ -55,6 +64,8 @@
         </div>
     </details>
 
-    @components.button_link(messages("agentOverview.start"), TrustRegisteredOnlineController.onPageLoad(NormalMode).url)
+    @formHelper(action = AgentOverviewController.onSubmit(), 'autoComplete -> "off") {
+        @components.submit_button(Some("agentOverview.start"))
+    }
 
 }

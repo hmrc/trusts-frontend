@@ -33,7 +33,7 @@ class WhatTypeOfBeneficiaryViewSpec extends ViewBehaviours {
   val view = viewFor[WhatTypeOfBeneficiaryView](Some(emptyUserAnswers))
 
   def applyView(form: Form[_], isAdded :Boolean): HtmlFormat.Appendable =
-    view.apply(form, NormalMode,isAdded)(fakeRequest, messages)
+    view.apply(form, NormalMode, fakeDraftId,isAdded)(fakeRequest, messages)
 
   "WhatTypeOfBeneficiaryView" must {
 

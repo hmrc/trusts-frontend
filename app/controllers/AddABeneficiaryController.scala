@@ -37,7 +37,7 @@ class AddABeneficiaryController @Inject()(
                                        sessionRepository: SessionRepository,
                                        navigator: Navigator,
                                        identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
+                                       getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
                                        formProvider: AddABeneficiaryFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
@@ -46,18 +46,18 @@ class AddABeneficiaryController @Inject()(
 
   val form = formProvider()
 
-  private def routes =
-    identify andThen getData andThen requireData
+  private def routes(draftId: String) =
+    identify andThen getData(draftId) andThen requireData
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = routes {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = routes(draftId) {
     implicit request =>
 
       val beneficiaries = new AddABeneficiaryViewHelper(request.userAnswers).rows
 
-      Ok(view(form, mode, beneficiaries.inProgress, beneficiaries.complete))
+      Ok(view(form, mode, draftId, beneficiaries.inProgress, beneficiaries.complete))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = routes.async {
+  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = routes(draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -65,7 +65,7 @@ class AddABeneficiaryController @Inject()(
 
           val beneficiaries = new AddABeneficiaryViewHelper(request.userAnswers).rows
 
-          Future.successful(BadRequest(view(formWithErrors, mode, beneficiaries.inProgress, beneficiaries.complete)))
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId,  beneficiaries.inProgress, beneficiaries.complete)))
 
         },
 
@@ -73,7 +73,7 @@ class AddABeneficiaryController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AddABeneficiaryPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(AddABeneficiaryPage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(AddABeneficiaryPage, mode, draftId)(updatedAnswers))
         }
       )
   }

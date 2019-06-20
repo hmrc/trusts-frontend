@@ -35,7 +35,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
 
   val index = 0
 
-  lazy val whatKindOfAssetRoute = routes.WhatKindOfAssetController.onPageLoad(NormalMode, index).url
+  lazy val whatKindOfAssetRoute = routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   val formProvider = new WhatKindOfAssetFormProvider()
   val form = formProvider()
@@ -58,7 +58,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, index, options)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index, options)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -67,7 +67,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
 
       "populate the view correctly on a GET when the question has previously been answered" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(WhatKindOfAssetPage(index), Money).success.value
+        val userAnswers = emptyUserAnswers.set(WhatKindOfAssetPage(index), Money).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -80,7 +80,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(form.fill(WhatKindOfAsset.values.head), NormalMode, index, options)(fakeRequest, messages).toString
+          view(form.fill(WhatKindOfAsset.values.head), NormalMode, fakeDraftId, index, options)(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -91,11 +91,11 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
 
       "populate the view correctly on a GET when the question has previously been answered" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(WhatKindOfAssetPage(index), Money).success.value
+        val userAnswers = emptyUserAnswers.set(WhatKindOfAssetPage(index), Money).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-        val request = FakeRequest(GET, routes.WhatKindOfAssetController.onPageLoad(NormalMode, 1).url)
+        val request = FakeRequest(GET, routes.WhatKindOfAssetController.onPageLoad(NormalMode, 1, fakeDraftId).url)
 
         val view = application.injector.instanceOf[WhatKindOfAssetView]
 
@@ -104,7 +104,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(form.fill(WhatKindOfAsset.values.head), NormalMode, 1, optionsWithoutMoney)(fakeRequest, messages).toString
+          view(form.fill(WhatKindOfAsset.values.head), NormalMode, fakeDraftId, 1, optionsWithoutMoney)(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -133,7 +133,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
 
     "redirect to the next page when money is submitted again for the same index" in {
 
-      val answers = UserAnswers(userAnswersId).set(WhatKindOfAssetPage(index), Money).success.value
+      val answers = emptyUserAnswers.set(WhatKindOfAssetPage(index), Money).success.value
 
       val application =
         applicationBuilder(userAnswers = Some(answers))
@@ -170,18 +170,18 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, index, options)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index, options)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "return a BadRequest when money is submitted and already exists for a different index" in {
 
-      val answers = UserAnswers(userAnswersId).set(WhatKindOfAssetPage(index), Money).success.value
+      val answers = emptyUserAnswers.set(WhatKindOfAssetPage(index), Money).success.value
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-      val request = FakeRequest(routes.WhatKindOfAssetController.onSubmit(NormalMode, 1))
+      val request = FakeRequest(routes.WhatKindOfAssetController.onSubmit(NormalMode, 1, fakeDraftId))
         .withFormUrlEncodedBody(("value", "Money"))
 
       val boundForm = form.bind(Map("value" -> "Money"))
@@ -193,7 +193,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, 1, optionsWithoutMoney)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, 1, optionsWithoutMoney)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -232,7 +232,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
     "for a GET" must {
 
       def getForIndex(index: Int): FakeRequest[AnyContentAsEmpty.type] = {
-        val route = routes.WhatKindOfAssetController.onPageLoad(NormalMode, index).url
+        val route = routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         FakeRequest(GET, route)
       }
@@ -249,7 +249,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
       def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
         val route =
-          routes.WhatKindOfAssetController.onPageLoad(NormalMode, index).url
+          routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         FakeRequest(POST, route)
           .withFormUrlEncodedBody(("value", WhatKindOfAsset.values.head.toString))

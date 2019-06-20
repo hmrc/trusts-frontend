@@ -17,8 +17,8 @@
 package controllers
 
 import base.SpecBase
+import models.NormalMode
 import models.RegistrationProgress.InProgress
-import models.{NormalMode, UserAnswers}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
@@ -29,7 +29,7 @@ class IndexControllerSpec extends SpecBase {
 
     "redirect when form has not been started" should {
 
-      "redirect to TrustRegisteredOnline with Non-Agent affinityGroup for a GET" in {
+      "redirect to CreateDraftController with Non-Agent affinityGroup for a GET" in {
 
         val application = applicationBuilder(userAnswers = None).build()
 
@@ -39,7 +39,7 @@ class IndexControllerSpec extends SpecBase {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustBe routes.TrustRegisteredOnlineController.onPageLoad(NormalMode).url
+        redirectLocation(result).value mustBe routes.CreateDraftRegistrationController.create().url
 
         application.stop()
       }
@@ -65,7 +65,7 @@ class IndexControllerSpec extends SpecBase {
 
     "redirect to RegistrationProgress with Non-Agent affinityGroup" in {
 
-      val answers = UserAnswers(userAnswersId, progress = InProgress)
+      val answers = emptyUserAnswers.copy(progress = InProgress)
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
@@ -75,14 +75,14 @@ class IndexControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustBe routes.TaskListController.onPageLoad().url
+      redirectLocation(result).value mustBe routes.TaskListController.onPageLoad(fakeDraftId).url
 
       application.stop()
     }
 
     "redirect to AgentOverview with Agent affinityGroup" in {
 
-      val answers = UserAnswers(userAnswersId, progress = InProgress)
+      val answers = emptyUserAnswers.copy(progress = InProgress)
 
       val application = applicationBuilder(userAnswers = Some(answers), AffinityGroup.Agent).build()
 

@@ -36,7 +36,7 @@ class AgentNameControllerSpec extends SpecBase {
   val formProvider = new AgentNameFormProvider()
   val form = formProvider()
 
-  lazy val agentNameRoute = routes.AgentNameController.onPageLoad(NormalMode).url
+  lazy val agentNameRoute = routes.AgentNameController.onPageLoad(NormalMode,fakeDraftId).url
 
   "AgentName Controller" must {
 
@@ -53,14 +53,14 @@ class AgentNameControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(AgentNamePage, "answer").success.value
+      val userAnswers = emptyUserAnswers.set(AgentNamePage, "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
@@ -73,7 +73,7 @@ class AgentNameControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill("answer"), NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -114,7 +114,7 @@ class AgentNameControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }

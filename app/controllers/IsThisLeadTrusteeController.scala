@@ -39,7 +39,7 @@ class IsThisLeadTrusteeController @Inject()(
                                              sessionRepository: SessionRepository,
                                              navigator: Navigator,
                                              identify: IdentifierAction,
-                                             getData: DataRetrievalAction,
+                                             getData: DraftIdRetrievalActionProvider,
                                              requireData: DataRequiredAction,
                                              validateIndex : IndexActionFilterProvider,
                                              formProvider: IsThisLeadTrusteeFormProvider,
@@ -49,9 +49,9 @@ class IsThisLeadTrusteeController @Inject()(
 
   val form: Form[Boolean] = formProvider()
 
-  def actions(index : Int) = identify andThen getData andThen requireData andThen validateIndex(index, Trustees)
+  def actions(index : Int, draftId: String) = identify andThen getData(draftId) andThen requireData andThen validateIndex(index, Trustees)
 
-  def onPageLoad(mode: Mode, index : Int): Action[AnyContent] = actions(index).async {
+  def onPageLoad(mode: Mode, index : Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
     implicit request =>
 
       def renderView = {
@@ -60,7 +60,7 @@ class IsThisLeadTrusteeController @Inject()(
           case Some(value) => form.fill(value)
         }
 
-        Future.successful(Ok(view(preparedForm, mode, index)))
+        Future.successful(Ok(view(preparedForm, mode, draftId, index)))
       }
 
       def leadTrustee : Option[(TrusteeViewModel, Int)] = {
@@ -79,7 +79,7 @@ class IsThisLeadTrusteeController @Inject()(
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(IsThisLeadTrusteePage(index), false))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(IsThisLeadTrusteePage(index), mode)(updatedAnswers))
+            } yield Redirect(navigator.nextPage(IsThisLeadTrusteePage(index), mode, draftId)(updatedAnswers))
           } else {
             renderView
           }
@@ -89,18 +89,18 @@ class IsThisLeadTrusteeController @Inject()(
   }
 
 
-  def onSubmit(mode: Mode, index : Int) = actions(index).async {
+  def onSubmit(mode: Mode, index : Int, draftId: String) = actions(index, draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, index))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index))),
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(IsThisLeadTrusteePage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(IsThisLeadTrusteePage(index), mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(IsThisLeadTrusteePage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

@@ -40,7 +40,7 @@ class WhatKindOfAssetController @Inject()(
                                            sessionRepository: SessionRepository,
                                            navigator: Navigator,
                                            identify: IdentifierAction,
-                                           getData: DataRetrievalAction,
+                                           getData: DraftIdRetrievalActionProvider,
                                            requireData: DataRequiredAction,
                                            validateIndex: IndexActionFilterProvider,
                                            formProvider: WhatKindOfAssetFormProvider,
@@ -66,27 +66,27 @@ class WhatKindOfAssetController @Inject()(
     }
   }
 
-  def routes(index: Int) =
-    identify andThen getData andThen requireData andThen validateIndex(index, viewmodels.Assets)
+  private def actions (index: Int, draftId: String) =
+    identify andThen getData(draftId) andThen requireData andThen validateIndex(index, viewmodels.Assets)
 
-  def onPageLoad(mode: Mode, index: Int): Action[AnyContent] = routes(index) {
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
       val preparedForm = request.userAnswers.get(WhatKindOfAssetPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, index, options(request, index)))
+      Ok(view(preparedForm, mode, draftId, index, options(request, index)))
   }
 
-  def onSubmit(mode: Mode, index: Int): Action[AnyContent] = routes(index).async {
+  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
     implicit request =>
 
       val assets = request.userAnswers.get(viewmodels.Assets).getOrElse(Nil)
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, index, options(request, index)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, options(request, index)))),
 
         value => {
 
@@ -94,7 +94,7 @@ class WhatKindOfAssetController @Inject()(
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatKindOfAssetPage(index), value))
               _ <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(WhatKindOfAssetPage(index), mode)(updatedAnswers))
+            } yield Redirect(navigator.nextPage(WhatKindOfAssetPage(index), mode, draftId)(updatedAnswers))
 
           value match {
             case Money =>
@@ -102,7 +102,7 @@ class WhatKindOfAssetController @Inject()(
                 case Some((_ , i)) if i == index =>
                   insertAndRedirect
                 case Some((_, i)) if i != index =>
-                  Future.successful(BadRequest(view(form.fill(Money), mode, index, options(request, index))))
+                  Future.successful(BadRequest(view(form.fill(Money), mode, draftId, index, options(request, index))))
                 case _ => insertAndRedirect
             }
             case _ =>

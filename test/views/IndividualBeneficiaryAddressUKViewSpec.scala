@@ -39,7 +39,7 @@ class IndividualBeneficiaryAddressUKViewSpec extends QuestionViewBehaviours[UKAd
     val view = viewFor[IndividualBeneficiaryAddressUKView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fullName, index)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, fullName, index)(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name)
 
@@ -49,7 +49,7 @@ class IndividualBeneficiaryAddressUKViewSpec extends QuestionViewBehaviours[UKAd
       form,
       applyView,
       messageKeyPrefix,
-      routes.IndividualBeneficiaryAddressUKController.onSubmit(NormalMode, index).url,
+      routes.IndividualBeneficiaryAddressUKController.onSubmit(NormalMode, index, fakeDraftId).url,
       Seq(("line1",None), ("line2",None), ("line3", None), ("townOrCity", None), ("postcode", Some(postcodeHintKey))),
       name.toString
     )

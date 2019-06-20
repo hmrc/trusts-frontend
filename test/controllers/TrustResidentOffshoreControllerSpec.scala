@@ -41,7 +41,7 @@ class TrustResidentOffshoreControllerSpec extends SpecBase with MockitoSugar {
   val formProvider = new TrustResidentOffshoreFormProvider()
   val form = formProvider()
 
-  lazy val trustResidentOffshoreRoute = routes.TrustResidentOffshoreController.onPageLoad(NormalMode).url
+  lazy val trustResidentOffshoreRoute = routes.TrustResidentOffshoreController.onPageLoad(NormalMode,fakeDraftId).url
 
   "TrustResidentOffshore Controller" must {
 
@@ -58,14 +58,14 @@ class TrustResidentOffshoreControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(TrustResidentOffshorePage, true).success.value
+      val userAnswers = emptyUserAnswers.set(TrustResidentOffshorePage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -78,7 +78,7 @@ class TrustResidentOffshoreControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -120,7 +120,7 @@ class TrustResidentOffshoreControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }

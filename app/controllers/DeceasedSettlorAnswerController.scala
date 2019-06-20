@@ -38,7 +38,7 @@ class DeceasedSettlorAnswerController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        sessionRepository: SessionRepository,
                                        identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
+                                       getData: DraftIdRetrievalActionProvider,
                                        navigator: Navigator,
                                        requireData: DataRequiredAction,
                                        requiredAnswer: RequiredAnswerActionProvider,
@@ -47,17 +47,17 @@ class DeceasedSettlorAnswerController @Inject()(
                                        countryOptions : CountryOptions
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions() =
+  private def actions(draftId: String) =
     identify andThen
-      getData andThen
+      getData(draftId) andThen
       requireData andThen
-      requiredAnswer(RequiredAnswer(SettlorsNamePage, routes.SettlorsNameController.onPageLoad(NormalMode)))
+      requiredAnswer(RequiredAnswer(SettlorsNamePage, routes.SettlorsNameController.onPageLoad(NormalMode, draftId)))
 
 
-  def onPageLoad: Action[AnyContent] = actions() {
+  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId)
 
       val sections = Seq(
         AnswerSection(
@@ -78,15 +78,15 @@ class DeceasedSettlorAnswerController @Inject()(
         )
       )
 
-      Ok(view(sections))
+      Ok(view(draftId, sections))
   }
 
-  def onSubmit() = actions().async {
+  def onSubmit(draftId: String) = actions(draftId).async {
     implicit request =>
 
       for {
         updatedAnswers <- Future.fromTry(request.userAnswers.set(DeceasedSettlorStatus, Completed))
         _              <- sessionRepository.set(updatedAnswers)
-      } yield Redirect(navigator.nextPage(DeceasedSettlorAnswerPage, NormalMode)(request.userAnswers))
+      } yield Redirect(navigator.nextPage(DeceasedSettlorAnswerPage, NormalMode, draftId)(request.userAnswers))
   }
 }

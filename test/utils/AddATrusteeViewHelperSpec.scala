@@ -25,7 +25,7 @@ import viewmodels.AddRow
 
 class AddATrusteeViewHelperSpec extends SpecBase {
 
-  val userAnswersWithTrusteesComplete = UserAnswers(userAnswersId)
+  val userAnswersWithTrusteesComplete = emptyUserAnswers
     .set(IsThisLeadTrusteePage(0), true).success.value
     .set(TrusteesNamePage(0), FullName("First 0", None, "Last 0")).success.value
     .set(TrusteeIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
@@ -36,13 +36,13 @@ class AddATrusteeViewHelperSpec extends SpecBase {
     .set(TrusteeStatus(1), Completed).success.value
 
 
-  val userAnswersWithTrusteesInProgress = UserAnswers(userAnswersId)
+  val userAnswersWithTrusteesInProgress = emptyUserAnswers
     .set(IsThisLeadTrusteePage(0), false).success.value
     .set(TrusteesNamePage(0), FullName("First 0", Some("Middle"), "Last 0")).success.value
     .set(IsThisLeadTrusteePage(1), false).success.value
     .set(TrusteesNamePage(1), FullName("First 1", Some("Middle"), "Last 1")).success.value
 
-  val userAnswersWithCompleteAndInProgres = UserAnswers(userAnswersId)
+  val userAnswersWithCompleteAndInProgres = emptyUserAnswers
     .set(IsThisLeadTrusteePage(0), false).success.value
     .set(TrusteesNamePage(0), FullName("First 0", Some("Middle"), "Last 0")).success.value
     .set(IsThisLeadTrusteePage(1), true).success.value
@@ -50,7 +50,7 @@ class AddATrusteeViewHelperSpec extends SpecBase {
     .set(TrusteeIndividualOrBusinessPage(1), IndividualOrBusiness.Individual).success.value
     .set(TrusteeStatus(1), Completed).success.value
 
-  val userAnswersWithNoTrustees = UserAnswers(userAnswersId)
+  val userAnswersWithNoTrustees = emptyUserAnswers
 
   "AddATrusteeViewHelper" when {
 

@@ -38,7 +38,7 @@ class AgentInternationalAddressController @Inject()(
                                       navigator: Navigator,
                                       identify: IdentifierAction,
                                       hasAgentAffinityGroup: RequireStateActionProviderImpl,
-                                      getData: DataRetrievalAction,
+                                      getData: DraftIdRetrievalActionProvider,
                                       requireData: DataRequiredAction,
                                       requiredAnswer: RequiredAnswerActionProvider,
                                       formProvider: InternationalAddressFormProvider,
@@ -49,14 +49,14 @@ class AgentInternationalAddressController @Inject()(
 
   val form = formProvider()
 
-  private def actions() =
+  private def actions(draftId: String) =
     identify andThen
       hasAgentAffinityGroup() andThen
-      getData andThen
+      getData(draftId) andThen
       requireData andThen
-      requiredAnswer(RequiredAnswer(AgentNamePage, routes.AgentNameController.onPageLoad(NormalMode)))
+      requiredAnswer(RequiredAnswer(AgentNamePage, routes.AgentNameController.onPageLoad(NormalMode, draftId)))
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = actions() {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
       val agencyName = request.userAnswers.get(AgentNamePage).get
@@ -66,23 +66,23 @@ class AgentInternationalAddressController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, countryOptions.options, mode, agencyName))
+      Ok(view(preparedForm, countryOptions.options, mode, draftId, agencyName))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = actions().async {
+  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
       val agencyName = request.userAnswers.get(AgentNamePage).get
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, countryOptions.options, mode, agencyName))),
+          Future.successful(BadRequest(view(formWithErrors, countryOptions.options, mode, draftId, agencyName))),
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentInternationalAddressPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(AgentInternationalAddressPage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(AgentInternationalAddressPage, mode, draftId)(updatedAnswers))
         }
       )
   }

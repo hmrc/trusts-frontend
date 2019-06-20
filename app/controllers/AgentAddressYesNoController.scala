@@ -37,7 +37,7 @@ class AgentAddressYesNoController @Inject()(
                                          navigator: Navigator,
                                          identify: IdentifierAction,
                                          hasAgentAffinityGroup: RequireStateActionProviderImpl,
-                                         getData: DataRetrievalAction,
+                                         getData: DraftIdRetrievalActionProvider,
                                          requireData: DataRequiredAction,
                                          requiredAnswer: RequiredAnswerActionProvider,
                                          formProvider: AgentAddressYesNoFormProvider,
@@ -47,14 +47,14 @@ class AgentAddressYesNoController @Inject()(
 
   val form: Form[Boolean] = formProvider()
 
-  private def actions =
+  private def actions(draftId: String) =
     identify andThen
       hasAgentAffinityGroup() andThen
-      getData andThen
+      getData(draftId) andThen
       requireData andThen
-      requiredAnswer(RequiredAnswer(AgentNamePage, routes.AgentNameController.onPageLoad(NormalMode)))
+      requiredAnswer(RequiredAnswer(AgentNamePage, routes.AgentNameController.onPageLoad(NormalMode, draftId)))
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = actions {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
       val name = request.userAnswers.get(AgentNamePage).get
@@ -64,23 +64,23 @@ class AgentAddressYesNoController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, name))
+      Ok(view(preparedForm, mode, draftId, name))
   }
 
-  def onSubmit(mode: Mode) = actions.async {
+  def onSubmit(mode: Mode, draftId: String) = actions(draftId).async {
     implicit request =>
 
       val name = request.userAnswers.get(AgentNamePage).get
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, name))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, name))),
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentAddressYesNoPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(AgentAddressYesNoPage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(AgentAddressYesNoPage, mode, draftId)(updatedAnswers))
         }
       )
   }

@@ -45,13 +45,13 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
   val emptyTrusteeName = ""
   val trusteeName = "FirstName LastName"
 
-  lazy val trusteesDateOfBirthRoute = routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index).url
+  lazy val trusteesDateOfBirthRoute = routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "TrusteesDateOfBirth Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -65,14 +65,14 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, index, trusteeName)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(TrusteesDateOfBirthPage(index), validAnswer).success.value
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
@@ -87,13 +87,13 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), NormalMode, index, trusteeName)(fakeRequest, messages).toString
+        view(form.fill(validAnswer), NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to Trustee Name page when TrusteesName is not answered" in {
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(TrusteesDateOfBirthPage(index), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -104,14 +104,14 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index).url
+      redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
       val application =
@@ -140,7 +140,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -158,7 +158,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, index, trusteeName)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -202,7 +202,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
     "for a GET" must {
 
       def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
-        val route = routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index).url
+        val route = routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         FakeRequest(GET, route)
       }
@@ -219,7 +219,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
       def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
         val route =
-          routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index).url
+          routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         FakeRequest(POST, route)
           .withFormUrlEncodedBody(

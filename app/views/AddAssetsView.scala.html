@@ -24,13 +24,13 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, inProgressAssets: Seq[AddRow] ,completeAssets: Seq[AddRow])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId: String, inProgressAssets: Seq[AddRow] ,completeAssets: Seq[AddRow])(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("addAssets.title")}"
     ) {
 
-    @formHelper(action = AddAssetsController.onSubmit(), 'autoComplete -> "off") {
+    @formHelper(action = AddAssetsController.onSubmit(draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 

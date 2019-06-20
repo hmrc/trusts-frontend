@@ -18,11 +18,10 @@ package controllers
 
 import base.SpecBase
 import forms.IndividualBeneficiaryNationalInsuranceNumberFormProvider
-import models.{FullName, NormalMode, UserAnswers}
+import models.{FullName, NormalMode}
 import navigation.{FakeNavigator, Navigator}
 import pages.{IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage}
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -35,15 +34,16 @@ class IndividualBeneficiaryNationalInsuranceNumberControllerSpec extends SpecBas
   val formProvider = new IndividualBeneficiaryNationalInsuranceNumberFormProvider()
   val form = formProvider()
   val index: Int = 0
+
   val name = FullName("first name", None, "Last name")
 
-  lazy val individualBeneficiaryNationalInsuranceNumberRoute = routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(NormalMode, index).url
+  lazy val individualBeneficiaryNationalInsuranceNumberRoute = routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "IndividualBeneficiaryNationalInsuranceNumber Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryNamePage(index),
+      val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(index),
         name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -57,14 +57,14 @@ class IndividualBeneficiaryNationalInsuranceNumberControllerSpec extends SpecBas
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, name, index)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryNationalInsuranceNumberPage(index), "answer").success.value
+      val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNationalInsuranceNumberPage(index), "answer").success.value
         .set(IndividualBeneficiaryNamePage(index),name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -78,14 +78,14 @@ class IndividualBeneficiaryNationalInsuranceNumberControllerSpec extends SpecBas
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode, name, index)(fakeRequest, messages).toString
+        view(form.fill("answer"), NormalMode, fakeDraftId, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryNamePage(index),
+      val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(index),
         name).success.value
 
       val application =
@@ -107,7 +107,7 @@ class IndividualBeneficiaryNationalInsuranceNumberControllerSpec extends SpecBas
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IndividualBeneficiaryNamePage(index),
+      val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(index),
         name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -125,7 +125,7 @@ class IndividualBeneficiaryNationalInsuranceNumberControllerSpec extends SpecBas
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, name, index)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }

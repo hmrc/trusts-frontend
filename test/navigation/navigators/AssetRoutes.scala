@@ -44,8 +44,8 @@ trait AssetRoutes {
 
           val answers = userAnswers.set(WhatKindOfAssetPage(index), Money).success.value
 
-          navigator.nextPage(AssetMoneyValuePage(index), NormalMode)(answers)
-            .mustBe(routes.AddAssetsController.onPageLoad())
+          navigator.nextPage(AssetMoneyValuePage(index), NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.AddAssetsController.onPageLoad(fakeDraftId))
 
       }
     }
@@ -58,8 +58,8 @@ trait AssetRoutes {
 
           val answers = userAnswers.set(WhatKindOfAssetPage(index), Money).success.value
 
-          navigator.nextPage(WhatKindOfAssetPage(index), NormalMode)(answers)
-            .mustBe(routes.AssetMoneyValueController.onPageLoad(NormalMode, index))
+          navigator.nextPage(WhatKindOfAssetPage(index), NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.AssetMoneyValueController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
 
@@ -68,12 +68,12 @@ trait AssetRoutes {
 
       "go to the WhatKindOfAssetPage from AddAssetsPage when selected add them now" in {
 
-        val answers = UserAnswers(userAnswersId)
+        val answers = emptyUserAnswers
           .set(WhatKindOfAssetPage(0), Money).success.value
           .set(AddAssetsPage, AddAssets.YesNow).success.value
 
-        navigator.nextPage(AddAssetsPage, NormalMode)(answers)
-          .mustBe(routes.WhatKindOfAssetController.onPageLoad(NormalMode, 1))
+        navigator.nextPage(AddAssetsPage, NormalMode, fakeDraftId)(answers)
+          .mustBe(routes.WhatKindOfAssetController.onPageLoad(NormalMode, 1, fakeDraftId))
       }
     }
 
@@ -81,12 +81,12 @@ trait AssetRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          val answers = UserAnswers(userAnswersId)
+          val answers = emptyUserAnswers
             .set(WhatKindOfAssetPage(0), Money).success.value
             .set(AddAssetsPage, AddAssets.YesLater).success.value
 
-          navigator.nextPage(AddAssetsPage, NormalMode)(answers)
-            .mustBe(routes.TaskListController.onPageLoad())
+          navigator.nextPage(AddAssetsPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -94,12 +94,12 @@ trait AssetRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          val answers = UserAnswers(userAnswersId)
+          val answers = emptyUserAnswers
             .set(WhatKindOfAssetPage(0), Money).success.value
             .set(AddAssetsPage, AddAssets.NoComplete).success.value
 
-          navigator.nextPage(AddAssetsPage, NormalMode)(answers)
-            .mustBe(routes.TaskListController.onPageLoad())
+          navigator.nextPage(AddAssetsPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
       }
     }
   }

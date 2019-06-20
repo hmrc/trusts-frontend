@@ -37,13 +37,13 @@ class SettlorsNINoYesNoViewSpec extends YesNoViewBehaviours {
     val view = viewFor[SettlorsNINoYesNoView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, name)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, name)(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.SettlorsNINoYesNoController.onSubmit(NormalMode).url,
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.SettlorsNINoYesNoController.onSubmit(NormalMode, fakeDraftId).url,
       None, Seq(name.toString))
 
     behave like pageWithASubmitButton(applyView(form))

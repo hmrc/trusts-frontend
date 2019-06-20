@@ -37,7 +37,7 @@ class TaskListControllerSpec extends SpecBase {
   private val savedUntil : String = LocalDateTime.now.plusSeconds(frontendAppConfig.ttlInSeconds).format(dateFormatter)
 
   private def sections(answers: UserAnswers) =
-    new RegistrationProgress(new TaskListNavigator()).sections(answers)
+    new RegistrationProgress(new TaskListNavigator()).sections(answers, fakeDraftId)
 
   private def isTaskListComplete(answers: UserAnswers) =
     new RegistrationProgress(new TaskListNavigator()).isTaskListComplete(answers)
@@ -49,34 +49,34 @@ class TaskListControllerSpec extends SpecBase {
 
     "redirect to RegisteredOnline when no required answer" in {
 
-      val answers = UserAnswers(userAnswersId)
+      val answers = emptyUserAnswers
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-      val request = FakeRequest(GET, routes.TaskListController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.TrustRegisteredOnlineController.onPageLoad(NormalMode).url
+      redirectLocation(result).value mustEqual routes.TrustRegisteredOnlineController.onPageLoad(NormalMode,fakeDraftId).url
 
       application.stop()
     }
 
     "redirect to TrustHaveAUTR when no required answer" in {
 
-      val answers = UserAnswers(userAnswersId).set(TrustRegisteredOnlinePage, true).success.value
+      val answers = emptyUserAnswers.set(TrustRegisteredOnlinePage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-      val request = FakeRequest(GET, routes.TaskListController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.TrustHaveAUTRController.onPageLoad(NormalMode).url
+      redirectLocation(result).value mustEqual routes.TrustHaveAUTRController.onPageLoad(NormalMode,fakeDraftId).url
 
       application.stop()
     }
@@ -87,7 +87,7 @@ class TaskListControllerSpec extends SpecBase {
 
         "return OK and the correct view for a GET" in {
 
-          val answers = UserAnswers(userAnswersId)
+          val answers = emptyUserAnswers
             .set(TrustRegisteredOnlinePage, false).success.value
             .set(TrustHaveAUTRPage, true).success.value
             .set(WhatIsTheUTRPage, "SA123456789").success.value
@@ -95,7 +95,7 @@ class TaskListControllerSpec extends SpecBase {
 
           val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = Organisation).build()
 
-          val request = FakeRequest(GET, routes.TaskListController.onPageLoad().url)
+          val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
 
           val result = route(application, request).value
 
@@ -104,7 +104,7 @@ class TaskListControllerSpec extends SpecBase {
           status(result) mustEqual OK
 
           contentAsString(result) mustEqual
-            view(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages).toString
+            view(fakeDraftId, savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages).toString
 
           application.stop()
         }
@@ -114,7 +114,7 @@ class TaskListControllerSpec extends SpecBase {
       "has not matched" must {
 
         "already registered redirect to AlreadyRegistered" in {
-          val answers = UserAnswers(userAnswersId)
+          val answers = emptyUserAnswers
             .set(TrustRegisteredOnlinePage, false).success.value
             .set(TrustHaveAUTRPage, true).success.value
             .set(WhatIsTheUTRPage, "SA123456789").success.value
@@ -122,20 +122,20 @@ class TaskListControllerSpec extends SpecBase {
 
           val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-          val request = FakeRequest(GET, routes.TaskListController.onPageLoad().url)
+          val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
 
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
 
-          redirectLocation(result).value mustEqual routes.FailedMatchController.onPageLoad().url
+          redirectLocation(result).value mustEqual routes.FailedMatchController.onPageLoad(fakeDraftId).url
 
           application.stop()
         }
 
         "failed matching redirect to FailedMatching" in {
 
-          val answers = UserAnswers(userAnswersId)
+          val answers = emptyUserAnswers
             .set(TrustRegisteredOnlinePage, false).success.value
             .set(TrustHaveAUTRPage, true).success.value
             .set(WhatIsTheUTRPage, "SA123456789").success.value
@@ -143,13 +143,13 @@ class TaskListControllerSpec extends SpecBase {
 
           val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-          val request = FakeRequest(GET, routes.TaskListController.onPageLoad().url)
+          val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
 
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
 
-          redirectLocation(result).value mustEqual routes.FailedMatchController.onPageLoad().url
+          redirectLocation(result).value mustEqual routes.FailedMatchController.onPageLoad(fakeDraftId).url
 
           application.stop()
         }
@@ -159,20 +159,20 @@ class TaskListControllerSpec extends SpecBase {
       "has not attempted matching" must {
 
         "redirect to WhatIsTrustUTR" in {
-          val answers = UserAnswers(userAnswersId)
+          val answers = emptyUserAnswers
             .set(TrustRegisteredOnlinePage, false).success.value
             .set(TrustHaveAUTRPage, true).success.value
             .set(WhatIsTheUTRPage, "SA123456789").success.value
 
           val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-          val request = FakeRequest(GET, routes.TaskListController.onPageLoad().url)
+          val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
 
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
 
-          redirectLocation(result).value mustEqual routes.WhatIsTheUTRController.onPageLoad(NormalMode).url
+          redirectLocation(result).value mustEqual routes.WhatIsTheUTRController.onPageLoad(NormalMode,fakeDraftId).url
 
           application.stop()
         }
@@ -185,13 +185,13 @@ class TaskListControllerSpec extends SpecBase {
 
       "return OK and the correct view for a GET" in {
 
-        val answers = UserAnswers(userAnswersId)
+        val answers = emptyUserAnswers
           .set(TrustRegisteredOnlinePage, false).success.value
           .set(TrustHaveAUTRPage, false).success.value
 
         val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = Organisation).build()
 
-        val request = FakeRequest(GET, routes.TaskListController.onPageLoad().url)
+        val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
 
         val result = route(application, request).value
 
@@ -200,7 +200,7 @@ class TaskListControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages).toString
+          view(fakeDraftId, savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages).toString
 
         application.stop()
       }

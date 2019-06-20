@@ -22,23 +22,21 @@ import handlers.ErrorHandler
 import javax.inject.Inject
 import models.entities.{LeadTrusteeIndividual, Trustees}
 import models.requests.DataRequest
-import models.{FullName, NormalMode, RegistrationProgress, UserAnswers}
+import models.{NormalMode, RegistrationProgress, UserAnswers}
 import pages.{RegistrationTRNPage, TrustHaveAUTRPage}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request, Result}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.ConfirmationView
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.Try
-import scala.util.control.NonFatal
 
 class ConfirmationController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
+                                       getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
                                        config: FrontendAppConfig,
                                        val controllerComponents: MessagesControllerComponents,
@@ -46,7 +44,7 @@ class ConfirmationController @Inject()(
                                        errorHandler: ErrorHandler
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def renderView(trn : String, userAnswers: UserAnswers)(implicit request : DataRequest[AnyContent]) : Future[Result] = {
+  private def renderView(trn : String, userAnswers: UserAnswers, draftId: String)(implicit request : DataRequest[AnyContent]) : Future[Result] = {
     val trustees = userAnswers.get(Trustees).getOrElse(Nil)
     val isAgent = request.affinityGroup == Agent
     val agentOverviewUrl = routes.AgentOverviewController.onPageLoad().url
@@ -57,7 +55,7 @@ class ConfirmationController @Inject()(
         userAnswers.get(TrustHaveAUTRPage) match {
           case Some(isExistingTrust) =>
             val postHMRC = config.posthmrc
-            Future.successful(Ok(view(isExistingTrust, isAgent, trn, postHMRC, agentOverviewUrl, lt.name)))
+            Future.successful(Ok(view(draftId, isExistingTrust, isAgent, trn, postHMRC, agentOverviewUrl, lt.name)))
           case None =>
             errorHandler.onServerError(request, new Exception("Could not determine if trust was new or existing."))
         }
@@ -66,7 +64,7 @@ class ConfirmationController @Inject()(
     }
   }
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onPageLoad(draftId: String): Action[AnyContent] = (identify andThen getData(draftId, models.RegistrationProgress.Complete) andThen requireData).async {
     implicit request =>
       val userAnswers = request.userAnswers
 
@@ -77,14 +75,14 @@ class ConfirmationController @Inject()(
               Logger.info("[ConfirmationController][onPageLoad] No TRN available for completed trusts. Throwing exception.")
               errorHandler.onServerError(request, new Exception("TRN is not available for completed trust."))
             case Some(trn) =>
-              renderView(trn, userAnswers)
+              renderView(trn, userAnswers, draftId)
           }
         case RegistrationProgress.InProgress =>
           Logger.info("[ConfirmationController][onPageLoad] Registration inProgress status,redirecting to task list.")
-          Future.successful(Redirect(routes.TaskListController.onPageLoad()))
+          Future.successful(Redirect(routes.TaskListController.onPageLoad(draftId)))
         case RegistrationProgress.NotStarted =>
           Logger.info("[ConfirmationController][onPageLoad] Registration NotStarted status,redirecting to trust registered page online.")
-          Future.successful(Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode)))
+          Future.successful(Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId)))
       }
   }
 }

@@ -41,7 +41,7 @@ class TrustDetailsAnswerPageController @Inject()(
                                               override val messagesApi: MessagesApi,
                                               identify: IdentifierAction,
                                               navigator: Navigator,
-                                              getData: DataRetrievalAction,
+                                              getData: DraftIdRetrievalActionProvider,
                                               requireData: DataRequiredAction,
                                               validateIndex : IndexActionFilterProvider,
                                               val controllerComponents: MessagesControllerComponents,
@@ -49,13 +49,13 @@ class TrustDetailsAnswerPageController @Inject()(
                                               countryOptions : CountryOptions
                                             )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions =
-    identify andThen getData andThen requireData
+  private def actions(draftId: String) =
+    identify andThen getData(draftId) andThen requireData
 
-  def onPageLoad = actions {
+  def onPageLoad(draftId: String) = actions(draftId) {
     implicit request =>
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId)
 
       val sections = Seq(
         AnswerSection(
@@ -79,15 +79,15 @@ class TrustDetailsAnswerPageController @Inject()(
         )
       )
 
-      Ok(view(sections))
+      Ok(view(draftId, sections))
   }
 
-  def onSubmit() = actions.async {
+  def onSubmit(draftId: String) = actions(draftId).async {
     implicit request =>
 
       for {
         updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustDetailsStatus, Completed))
         _              <- sessionRepository.set(updatedAnswers)
-      } yield Redirect(navigator.nextPage(TrustDetailsAnswerPage, NormalMode)(request.userAnswers))
+      } yield Redirect(navigator.nextPage(TrustDetailsAnswerPage, NormalMode, draftId)(request.userAnswers))
   }
 }
