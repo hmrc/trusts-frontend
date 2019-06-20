@@ -419,6 +419,8 @@ agentOverview.bulletpoint5 = settlor
 agentOverview.bulletpoint6 = trustee
 agentOverview.bulletpoint7 = beneficiary
 agentOverview.start = Start a new registration
+agentOverview.internalClientReference = Internal client reference
+agentOverview.savedUntil = Saved until
 
 trusteesInfo.title = Information you need to add a trustee
 trusteesInfo.heading = Information you need to add a trustee
