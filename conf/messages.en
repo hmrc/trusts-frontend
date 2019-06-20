@@ -170,17 +170,17 @@ agentOtherThanBarrister.heading = Has an agent who is not a barrister created th
 agentOtherThanBarrister.checkYourAnswersLabel = Has an agent who is not a barrister created the trust being registered?
 agentOtherThanBarrister.error.required = Select yes if an agent who is not a barrister created the trust being registered
 
-whenTrustSetup.title = What date was the trust deed signed?
-whenTrustSetup.heading = What date was the trust deed signed?
-whenTrustSetup.checkYourAnswersLabel = What date was the trust deed signed?
-whenTrustSetup.error.required.all = Enter the date the trust deed was signed
-whenTrustSetup.error.required.two = The date the trust deed was signed must include a {0} and a {1}
-whenTrustSetup.error.required = The date the trust deed was signed must include a {0}
+whenTrustSetup.title = When was the trust created?
+whenTrustSetup.heading = When was the trust created?
+whenTrustSetup.checkYourAnswersLabel = When was the trust created?
+whenTrustSetup.error.required.all = Enter the date the trust was created
+whenTrustSetup.error.required.two = The date the trust was created must include a {0} and a {1}
+whenTrustSetup.error.required = The date the trust was created must include a {0}
 
-whenTrustSetup.error.invalid = Enter a real date the trust deed was signed
-whenTrustSetup.error.future = The date the trust deed was signed must be today or in the past
-whenTrustSetup.error.past = The date the trust deed was signed must be after 31 December 1499
-whenTrustSetup.hint = For example, 31 3 1980
+whenTrustSetup.error.invalid = Enter a real date the trust was created
+whenTrustSetup.error.future = The date the trust was created must be today or in the past
+whenTrustSetup.error.past = The date the trust was created must be after 31 December 1499
+whenTrustSetup.hint = This is the date the trust deed was signed. Use the date the settlor died for will trusts. For example, 31 3 2015
 
 trustRegisteredOnline.title = Has the trust already been registered online?
 trustRegisteredOnline.heading = Has the trust already been registered online?

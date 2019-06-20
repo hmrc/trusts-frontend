@@ -14,28 +14,33 @@
  * limitations under the License.
  *@
 
+@import viewmodels.Link
+
 @(
   field: Field,
   legend: String,
   legendClass: String = "",
-  hint: Option[String] = None
+  hint: Option[String] = None,
+  readerHint: Option[String] = None,
+  link : Option[Link] = None,
+  labelAsHeading: Boolean = false
 )(implicit messages: Messages)
 
 <div class="form-group @if(field("day").hasErrors || field("month").hasErrors || field("year").hasErrors || field.hasErrors){form-group-error}">
     <fieldset>
-        <legend>
-            <span class="form-label bold @legendClass">
-                @legend
-            </span>
-            @if(hint.nonEmpty){
-                <span class="form-hint form-field" id="@field.id-hint">@hint</span>
-            } else {
-                <span class="form-hint form-field" id="@field.id-hint">@messages("site.date.hint")</span>
-            }
+        <div>
+            @if(labelAsHeading){<h1 class="label-as-heading">}
+            <legend>
+                <span class="@legendClass">
+                    @legend
+                </span>
+            </legend>
+            @if(labelAsHeading){</h1>}
+            @form_hint(hint = hint, readerHint = readerHint, link = link)
             @field.errors.map { error =>
-                <span class="error-message" id="error-message-@{field.id}-input">@messages(error.message, error.args: _*)</span>
+            <span class="error-message" id="error-message-@{field.id}-input">@messages(error.message, error.args: _*)</span>
             }
-        </legend>
+        </div>
         <div class="form-date">
             @List("day", "month", "year").map { part =>
               <div class="form-control-wrapper form-group form-group-@part">
