@@ -402,7 +402,6 @@ class Navigator @Inject()() {
     case None => routes.SessionExpiredController.onPageLoad()
   }
 
-
   private def checkRouteMap(draftId: String): Page => UserAnswers => Call = {
     // TrustDetails
     case TrustNamePage => _ => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)

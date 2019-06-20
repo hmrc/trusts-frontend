@@ -65,20 +65,12 @@ class DefaultSessionRepository @Inject()(
       }.map(_ => ())
     }
 
-  override def get(draftId: String, internalId: String, status : RegistrationProgress  ): Future[Option[UserAnswers]] = {
-  val selector =   status match {
-      case RegistrationProgress.Complete =>
-        Json.obj("_id" -> draftId,
-          "internalId" -> internalId,
-          "progress" -> status.toString
-        )
-      case _ =>
-        Json.obj("_id" -> draftId,
-          "internalId" -> internalId,
-          "progress" -> Json.obj("$ne" -> RegistrationProgress.Complete.toString)
-        )
+  override def get(draftId: String, internalId: String): Future[Option[UserAnswers]] = {
+      val selector = Json.obj(
+        "_id" -> draftId,
+        "internalId" -> internalId
+      )
 
-    }
       collection.flatMap(_.find(
         selector = selector, None).one[UserAnswers])
   }
@@ -139,7 +131,7 @@ trait SessionRepository {
 
   val started: Future[Unit]
 
-  def get(draftId: String, internalId: String,status : RegistrationProgress): Future[Option[UserAnswers]]
+  def get(draftId: String, internalId: String): Future[Option[UserAnswers]]
 
   def set(userAnswers: UserAnswers): Future[Boolean]
 

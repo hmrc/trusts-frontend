@@ -47,7 +47,8 @@ class TaskListController @Inject()(
                                        config: FrontendAppConfig,
                                        registrationProgress: RegistrationProgress,
                                        sessionRepository: SessionRepository,
-                                       taskListNavigator : TaskListNavigator
+                                       taskListNavigator : TaskListNavigator,
+                                       requireDraft : RequireDraftRegistrationActionRefiner
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) =
@@ -59,7 +60,7 @@ class TaskListController @Inject()(
       requiredAnswer(
         RequiredAnswer(
           TrustHaveAUTRPage, routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId))
-      )
+      ) andThen requireDraft
 
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
