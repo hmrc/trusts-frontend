@@ -17,6 +17,7 @@
 package controllers.actions
 
 import javax.inject.Inject
+import models.RegistrationProgress
 import models.requests.{IdentifierRequest, OptionalDataRequest}
 import play.api.mvc.ActionTransformer
 import repositories.SessionRepository
@@ -26,20 +27,21 @@ import scala.concurrent.{ExecutionContext, Future}
 class DraftIdDataRetrievalActionProviderImpl @Inject()(sessionRepository: SessionRepository, executionContext: ExecutionContext)
   extends DraftIdRetrievalActionProvider {
 
-  def apply(draftId: String): DraftIdDataRetrievalAction =
-    new DraftIdDataRetrievalAction(draftId, sessionRepository, executionContext)
+  def apply(draftId: String, status : RegistrationProgress): DraftIdDataRetrievalAction =
+    new DraftIdDataRetrievalAction(draftId, status,sessionRepository, executionContext)
 
 }
 
 class DraftIdDataRetrievalAction(
                                   draftId : String,
+                                  status : RegistrationProgress,
                                   sessionRepository: SessionRepository,
                                   implicit protected val executionContext: ExecutionContext
                                 )
   extends ActionTransformer[IdentifierRequest, OptionalDataRequest] {
 
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] = {
-    sessionRepository.get(draftId, request.identifier).map {
+    sessionRepository.get(draftId, request.identifier,status).map {
       userAnswers =>
         OptionalDataRequest(request.request, request.identifier, userAnswers, request.affinityGroup, request.agentARN)
     }
@@ -49,6 +51,6 @@ class DraftIdDataRetrievalAction(
 
 trait DraftIdRetrievalActionProvider {
 
-  def apply(draftId : String) : DraftIdDataRetrievalAction
+  def apply(draftId : String, status : RegistrationProgress = RegistrationProgress.InProgress) : DraftIdDataRetrievalAction
 
 }

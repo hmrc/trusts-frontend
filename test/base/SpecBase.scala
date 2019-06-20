@@ -18,7 +18,7 @@ package base
 
 import config.FrontendAppConfig
 import controllers.actions._
-import models.UserAnswers
+import models.{RegistrationProgress, UserAnswers}
 import org.scalatest.{BeforeAndAfter, TestSuite, TryValues}
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice._
@@ -60,7 +60,8 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
         bind[DataRequiredAction].to[DataRequiredActionImpl],
         bind[IdentifierAction].toInstance(new FakeIdentifierAction(affinityGroup)(injectedParsers)),
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
-        bind[DraftIdRetrievalActionProvider].toInstance(new FakeDraftIdRetrievalActionProvider("draftId",userAnswers, mockedSessionRepository)),
+        bind[DraftIdRetrievalActionProvider].toInstance(
+          new FakeDraftIdRetrievalActionProvider("draftId", RegistrationProgress.InProgress,userAnswers, mockedSessionRepository)),
         bind[SessionRepository].toInstance(mockedSessionRepository),
         bind[SubmissionService].toInstance(mockSubmissionService),
         bind[CreateDraftRegistrationService].toInstance(mockCreateDraftRegistrationService)

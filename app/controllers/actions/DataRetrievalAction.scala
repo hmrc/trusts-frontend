@@ -17,7 +17,7 @@
 package controllers.actions
 
 import javax.inject.Inject
-import models.UserAnswers
+import models.{RegistrationProgress, UserAnswers}
 import models.requests.{IdentifierRequest, OptionalDataRequest}
 import play.api.Logger
 import play.api.mvc.ActionTransformer
@@ -39,7 +39,7 @@ class DataRetrievalActionImpl @Inject()(val sessionRepository: SessionRepository
           case None =>
             Future.successful(createdOptionalDataRequest(request, None))
           case Some(userAnswer) =>
-            sessionRepository.get(userAnswer.draftId, userAnswer.internalAuthId).map {
+            sessionRepository.get(userAnswer.draftId, userAnswer.internalAuthId, RegistrationProgress.InProgress).map {
               case None =>
                 createdOptionalDataRequest(request, None)
               case Some(userAnswers) =>

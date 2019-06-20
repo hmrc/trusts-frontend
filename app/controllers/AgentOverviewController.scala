@@ -16,6 +16,7 @@
 
 package controllers
 
+import config.FrontendAppConfig
 import controllers.actions._
 import javax.inject.Inject
 import models.NormalMode
@@ -26,6 +27,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import services.CreateDraftRegistrationService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import utils.DateFormat
 import views.html.AgentOverviewView
 
 import scala.concurrent.ExecutionContext
@@ -36,6 +38,7 @@ class AgentOverviewController @Inject()(
                                          hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                          sessionRepository: SessionRepository,
                                          navigator: Navigator,
+                                         config: FrontendAppConfig,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: AgentOverviewView,
                                          draftRegistrationService: CreateDraftRegistrationService
@@ -44,7 +47,9 @@ class AgentOverviewController @Inject()(
   private def actions = identify andThen hasAgentAffinityGroup()
 
   def onPageLoad: Action[AnyContent] = actions.async {
+
     implicit request =>
+
       sessionRepository.listDrafts(request.identifier).map {
         drafts =>
           Ok(view(drafts))

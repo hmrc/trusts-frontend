@@ -64,7 +64,7 @@ class ConfirmationController @Inject()(
     }
   }
 
-  def onPageLoad(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+  def onPageLoad(draftId: String): Action[AnyContent] = (identify andThen getData(draftId, models.RegistrationProgress.Complete) andThen requireData).async {
     implicit request =>
       val userAnswers = request.userAnswers
 
