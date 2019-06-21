@@ -24,6 +24,8 @@
 
 @(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
 
+@optionalHtmlContent = {<p>@messages("agentInternalReference.paragraph1")</p>}
+
 @main_template(
     title = s"${errorPrefix(form)} ${messages("agentInternalReference.title")}"
     ) {
@@ -34,15 +36,14 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("agentInternalReference.heading")
-
-        <p>@messages("agentInternalReference.paragraph1")</p>
-
         @components.input_text(
           field = form("value"),
+          inputClass = Some("agent-internal-reference"),
           label = messages("agentInternalReference.heading"),
-          labelClass=Some("visually-hidden"),
-          hint = Some(messages(s"agentInternalReference.hint"))
+          labelClass = Some("heading-large"),
+          hint = Some(messages(s"agentInternalReference.hint")),
+          optionalHtmlContent = Some(optionalHtmlContent),
+          ariaRequired = true
         )
 
         @components.submit_button()
