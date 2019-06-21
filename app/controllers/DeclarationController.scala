@@ -48,12 +48,13 @@ class DeclarationController @Inject()(
                                        val controllerComponents: MessagesControllerComponents,
                                        view: DeclarationView,
                                        submissionService: SubmissionService,
-                                       registrationComplete : RegistrationCompleteActionRefiner
+                                       registrationComplete : TaskListCompleteActionRefiner,
+                                       requireDraft : RequireDraftRegistrationActionRefiner
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
-  def actions(draftId: String) = identify andThen getData(draftId) andThen requireData andThen registrationComplete
+  def actions(draftId: String) = identify andThen getData(draftId) andThen requireData andThen registrationComplete andThen requireDraft
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
