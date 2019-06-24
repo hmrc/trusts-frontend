@@ -20,7 +20,7 @@ import java.time.LocalDateTime
 
 import controllers.actions._
 import javax.inject.Inject
-import pages.{RegistrationProgress, RegistrationSubmissionDatePage, RegistrationTRNPage}
+import pages.{RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -37,8 +37,7 @@ class ConfirmationAnswerPageController @Inject()(
                                               val controllerComponents: MessagesControllerComponents,
                                               view: ConfirmationAnswerPageView,
                                               countryOptions : CountryOptions,
-                                              registrationProgress: RegistrationProgress,
-                                              registrationComplete : RegistrationCompleteActionRefiner
+                                              registrationComplete : TaskListCompleteActionRefiner
                                             ) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId : String) =

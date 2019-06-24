@@ -37,7 +37,7 @@ class SummaryAnswerPageController @Inject()(
                                               view: SummaryAnswerPageView,
                                               countryOptions : CountryOptions,
                                               registrationProgress: RegistrationProgress,
-                                              registrationComplete : RegistrationCompleteActionRefiner
+                                              registrationComplete : TaskListCompleteActionRefiner
                                             ) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId : String) =
