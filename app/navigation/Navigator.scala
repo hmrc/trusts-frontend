@@ -406,6 +406,9 @@ class Navigator @Inject()() {
     // TrustDetails
     case TrustNamePage => _ => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
     case WhenTrustSetupPage => _ => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
+    case TrustPreviouslyResidentPage => _ => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
+    case CountryAdministeringTrustPage => _ => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
+
     case _ => _ => routes.CheckYourAnswersController.onPageLoad(draftId)
   }
 
