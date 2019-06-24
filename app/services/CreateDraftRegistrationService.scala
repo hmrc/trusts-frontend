@@ -22,32 +22,42 @@ import akka.stream.Materializer
 import javax.inject.Inject
 import models.UserAnswers
 import models.requests.{IdentifierRequest, OptionalDataRequest}
-import play.api.Logger
-import play.api.mvc.Result
 import repositories.SessionRepository
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.play.audit.http.connector.AuditConnector
+import utils.TrustAuditing
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class CreateDraftRegistrationService @Inject()(
-                                              sessionRepository: SessionRepository
+                                              sessionRepository: SessionRepository,
+                                              auditConnector: AuditConnector
                                               )(implicit ec: ExecutionContext, m: Materializer) {
 
-  private def build[A](request: OptionalDataRequest[A]) : Future[String] = {
+  private def build[A](request: OptionalDataRequest[A])(implicit hc : HeaderCarrier) : Future[String] = {
     val draftId = UUID.randomUUID().toString
     val userAnswers = UserAnswers(draftId = draftId, internalAuthId = request.internalId)
 
     sessionRepository.set(userAnswers).map {
       _ =>
+
+        auditConnector.sendExplicitAudit(TrustAuditing.CREATE_DRAFT_EVENT, Map(
+          "draftId" -> draftId,
+          "internalAuthId" -> request.internalId,
+          "agentReferenceNumber" -> request.agentARN.getOrElse("Affinity group not Agent"),
+          "affinityGroup" -> request.affinityGroup.toString
+        ))
+
         draftId
     }
   }
 
-  def create[A](request: IdentifierRequest[A]) : Future[String] = {
+  def create[A](request: IdentifierRequest[A])(implicit hc : HeaderCarrier) : Future[String] = {
     val transformed = OptionalDataRequest(request.request, request.identifier, None, request.affinityGroup, request.agentARN)
     build(transformed)
   }
 
-  def create[A](request : OptionalDataRequest[A]) : Future[String] =
+  def create[A](request : OptionalDataRequest[A])(implicit hc : HeaderCarrier) : Future[String] =
     build(request)
 
 }
