@@ -19,18 +19,17 @@ package services
 import base.SpecBaseHelpers
 import connector.TrustConnector
 import generators.Generators
-import mapping.{Mapping, Registration, RegistrationMapper}
+import mapping.{Registration, RegistrationMapper}
 import models.{RegistrationTRNResponse, UnableToRegister}
-import org.mockito.Mockito.when
 import org.mockito.Matchers.any
-
-
-import org.scalatest.{AsyncFreeSpec, FreeSpec, MustMatchers, OptionValues}
+import org.mockito.Mockito.when
+import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class SubmissionServiceSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers
@@ -40,7 +39,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
   val mockConnector = mock[TrustConnector]
 
-  val submissionService = new DefaultSubmissionService(registrationMapper,mockConnector)
+  val submissionService = new DefaultSubmissionService(registrationMapper,mockConnector, mockedAuditConnector)
 
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
