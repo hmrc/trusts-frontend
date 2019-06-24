@@ -34,6 +34,8 @@ class CreateDraftRegistrationService @Inject()(
                                               auditConnector: AuditConnector
                                               )(implicit ec: ExecutionContext, m: Materializer) {
 
+  import utils.implicits.MapImplicits._
+
   private def build[A](request: OptionalDataRequest[A])(implicit hc : HeaderCarrier) : Future[String] = {
     val draftId = UUID.randomUUID().toString
     val userAnswers = UserAnswers(draftId = draftId, internalAuthId = request.internalId)
@@ -41,12 +43,15 @@ class CreateDraftRegistrationService @Inject()(
     sessionRepository.set(userAnswers).map {
       _ =>
 
-        auditConnector.sendExplicitAudit(TrustAuditing.CREATE_DRAFT_EVENT, Map(
-          "draftId" -> draftId,
-          "internalAuthId" -> request.internalId,
-          "agentReferenceNumber" -> request.agentARN.getOrElse("Affinity group not Agent"),
-          "affinityGroup" -> request.affinityGroup.toString
-        ))
+        auditConnector.sendExplicitAudit(
+          TrustAuditing.CREATE_DRAFT_EVENT,
+          Map(
+            "draftId" -> draftId,
+            "internalAuthId" -> request.internalId,
+            "agentReferenceNumber" -> request.agentARN.getOrElse(""),
+            "affinityGroup" -> request.affinityGroup.toString
+          ).clean
+        )
 
         draftId
     }
