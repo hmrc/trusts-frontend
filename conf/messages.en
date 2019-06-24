@@ -677,7 +677,7 @@ individualBeneficiaryIncome.title = What percentage of the trust’s assets is {
 individualBeneficiaryIncome.heading = What percentage of the trust’s assets is {0} entitled to?
 individualBeneficiaryIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
 individualBeneficiaryIncome.hint = Round this down to a whole number.
-individualBeneficiaryIncome.error.required = Enter what percentage of trust’s assets the beneficiary is entitled to
+individualBeneficiaryIncome.error.required = Enter what percentage of the trust’s assets the beneficiary is entitled to
 individualBeneficiaryIncome.error.length = The percentage of the trust’s assets the beneficiary is entitled to must be 100 or less
 individualBeneficiaryIncome.error.invalid = The percentage of the trust’s assets the beneficiary is entitled to must be a whole number
 
