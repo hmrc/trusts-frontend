@@ -35,7 +35,8 @@ object WhatKindOfAsset extends Enumerable.Implicits {
 
   val options: List[RadioOption] = values.map {
     value =>
-      RadioOption("whatKindOfAsset", value.toString)
+      val disabledStatus: Boolean = if(value == Money) false else true
+      RadioOption("whatKindOfAsset", value.toString, disabledStatus = disabledStatus)
   }
 
   implicit val enumerable: Enumerable[WhatKindOfAsset] =

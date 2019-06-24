@@ -36,7 +36,8 @@ object WhatTypeOfBeneficiary extends Enumerable.Implicits {
 
   val options: List[RadioOption] = values.map {
     value =>
-      RadioOption("whatTypeOfBeneficiary", value.toString)
+      val disabledStatus: Boolean = if(value == Individual || value == ClassOfBeneficiary) false else true
+      RadioOption("whatTypeOfBeneficiary", value.toString, disabledStatus)
   }
 
   implicit val enumerable: Enumerable[WhatTypeOfBeneficiary] =

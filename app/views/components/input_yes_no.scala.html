@@ -27,7 +27,9 @@
         noAssoc: Option[String] = None,
         labelClass: Option[String] = None,
         link : Option[Link] = None,
-        labelAsHeading: Boolean = false
+        labelAsHeading: Boolean = false,
+        yesDisabled: Boolean = false,
+        noDisabled: Boolean = false
 )(implicit messages: Messages)
 
 
@@ -60,6 +62,7 @@
                         aria-labelledby="error-message-@{field.id}-input aria-period @{field.id}-yes-label"
                     }
                     @if(field.value.contains("true")){checked="checked"}
+                    @if(yesDisabled){disabled}
             />
             <label id="@{field.id}-yes-label" class="block-label selection-button-radio" for="@{field.id}-yes" data-target="@if(yesAssoc.nonEmpty){@yesAssoc}">
                 @messages("site.yes")
@@ -80,6 +83,7 @@
                         aria-labelledby="error-message-@{field.id}-input aria-period @{field.id}-no-label"
                     }
                     @if(field.value.contains("false")){checked="checked"}
+                    @if(noDisabled){disabled}
             />
             <label id="@{field.id}-no-label"class="block-label selection-button-radio" for="@{field.id}-no" data-target="@if(noAssoc.nonEmpty){@noAssoc}">
                 @messages("site.no")

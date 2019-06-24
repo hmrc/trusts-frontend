@@ -16,13 +16,14 @@
 
 package viewmodels
 
-case class RadioOption(id: String, value: String, messageKey: String)
+case class RadioOption(id: String, value: String, messageKey: String, disabled: Boolean)
 
 object RadioOption {
-  def apply(keyPrefix: String, option: String): RadioOption = RadioOption(
+  def apply(keyPrefix: String, option: String, disabledStatus: Boolean = false): RadioOption = RadioOption(
     s"$keyPrefix.$option",
     option,
-    s"$keyPrefix.$option"
+    s"$keyPrefix.$option",
+    disabledStatus
   )
 
 }

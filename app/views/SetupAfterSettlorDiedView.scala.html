@@ -40,7 +40,8 @@
             field = form("value"),
             label = messages("setupAfterSettlorDied.heading"),
             labelClass = Some("visually-hidden"),
-            hint = Some(messages("setupAfterSettlorDied.hint"))
+            hint = Some(messages("setupAfterSettlorDied.hint")),
+            noDisabled = true
         )
 
         @components.submit_button()
