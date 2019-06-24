@@ -82,10 +82,10 @@ POST       /:draftId/trust-barrister                              controllers.Ag
 GET        /:draftId/change-trust-barrister                       controllers.AgentOtherThanBarristerController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/change-trust-barrister                       controllers.AgentOtherThanBarristerController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
-GET        /:draftId/trust-signed                                 controllers.WhenTrustSetupController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-signed                                 controllers.WhenTrustSetupController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-signed                          controllers.WhenTrustSetupController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-signed                         controllers.WhenTrustSetupController.onSubmit(mode: Mode = CheckMode, draftId: String)
+GET        /:draftId/trust-created                                 controllers.WhenTrustSetupController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/trust-created                                 controllers.WhenTrustSetupController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/change-trust-created                          controllers.WhenTrustSetupController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/change-trust-created                         controllers.WhenTrustSetupController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
 GET        /:draftId/trust-registered-online                      controllers.TrustRegisteredOnlineController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/trust-registered-online                      controllers.TrustRegisteredOnlineController.onSubmit(mode: Mode = NormalMode, draftId: String)
