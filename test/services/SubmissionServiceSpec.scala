@@ -63,7 +63,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
         val userAnswers = newTrustUserAnswers
 
-        when(mockConnector.register(any[Registration])(any[HeaderCarrier])).
+        when(mockConnector.register(any[Registration], any())(any[HeaderCarrier], any())).
           thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))
 
         val result  = Await.result(submissionService.submit(userAnswers),Duration.Inf)
@@ -74,7 +74,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
         val userAnswers = TestUserAnswers.withAgent(newTrustUserAnswers)
 
-        when(mockConnector.register(any[Registration])(any[HeaderCarrier])).
+        when(mockConnector.register(any[Registration], any())(any[HeaderCarrier], any())).
           thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))
 
         val result  = Await.result(submissionService.submit(userAnswers),Duration.Inf)

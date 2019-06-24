@@ -42,7 +42,7 @@ class DefaultSubmissionService @Inject()(
     Logger.info("[SubmissionService][submit] submitting registration")
 
     registrationMapper.build(userAnswers) match {
-      case Some(registration) => trustConnector.register(registration)
+      case Some(registration) => trustConnector.register(registration, userAnswers.draftId)
       case None =>
 
         auditConnector.sendExplicitAudit(
