@@ -33,7 +33,7 @@ class TrustConnector @Inject()(http: HttpClient, config : FrontendAppConfig) {
   def register(registration: Registration, draftId : String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[TrustResponse] = {
 
     val newHc : HeaderCarrier = hc.withExtraHeaders(
-      "Draft-Registration-ID" -> draftId
+      Headers.DraftRegistrationId -> draftId
     )
 
     val response = http.POST[JsValue, TrustResponse](trustsEndpoint, Json.toJson(registration))(implicitly[Writes[JsValue]], TrustResponse.httpReads, newHc, ec)
