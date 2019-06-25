@@ -34,12 +34,11 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("setupAfterSettlorDied.heading")
-
         @components.input_yes_no(
             field = form("value"),
             label = messages("setupAfterSettlorDied.heading"),
-            labelClass = Some("visually-hidden"),
+            labelClass = Some("heading-large"),
+            labelAsHeading = true,
             hint = Some(messages("setupAfterSettlorDied.hint"))
         )
 
