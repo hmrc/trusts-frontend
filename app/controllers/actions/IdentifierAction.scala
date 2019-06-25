@@ -22,13 +22,12 @@ import controllers.routes
 import models.requests.IdentifierRequest
 import play.api.Logger
 import play.api.mvc.Results._
-import play.api.mvc._
+import play.api.mvc.{ActionBuilder, ActionFunction, Request, Result, _}
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.{Retrievals, ~}
 import uk.gov.hmrc.http.{HeaderCarrier, UnauthorizedException}
 import uk.gov.hmrc.play.HeaderCarrierConverter
-import play.api.mvc.{ActionBuilder, ActionFunction, Request, Result}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -38,43 +37,71 @@ class AuthenticatedIdentifierAction @Inject()(
                                                val parser: BodyParsers.Default
                                              )
                                              (implicit val executionContext: ExecutionContext) extends IdentifierAction with AuthorisedFunctions {
-  override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+
+  private def authoriseAgent[A](request : Request[A],
+                                enrolments : Enrolments,
+                                internalId : String,
+                                block: IdentifierRequest[A] => Future[Result]
+                               ) = {
+
+    def redirectToCreateAgentServicesAccount(reason: String): Future[Result] = {
+      Logger.info(s"[AuthenticatedIdentifierAction][authoriseAgent]: Agent services account required - $reason")
+      Future.successful(Redirect(routes.CreateAgentServicesAccountController.onPageLoad()))
+    }
 
     val hmrcAgentEnrolmentKey = "HMRC-AS-AGENT"
     val arnIdentifier = "AgentReferenceNumber"
 
-    authorised().retrieve(Retrievals.internalId and Retrievals.affinityGroup and Retrievals.allEnrolments) {
-      case Some(internalId) ~ Some(Agent) ~ enrolments =>
-
-        enrolments.getEnrolment(hmrcAgentEnrolmentKey).fold(doUnauthorizedResponse("missing HMRC-AS-AGENT enrolment group")) { agentEnrolment =>
-          agentEnrolment.getIdentifier(arnIdentifier).fold(doUnauthorizedResponse("missing agent reference number")) { enrolmentIdentifier =>
+    enrolments.getEnrolment(hmrcAgentEnrolmentKey).fold(
+      redirectToCreateAgentServicesAccount("missing HMRC-AS-AGENT enrolment group")
+    ){
+      agentEnrolment =>
+        agentEnrolment.getIdentifier(arnIdentifier).fold(
+          redirectToCreateAgentServicesAccount("missing agent reference number")
+        ){
+          enrolmentIdentifier =>
             val arn = enrolmentIdentifier.value
 
             if(arn.isEmpty) {
-              doUnauthorizedResponse("agent reference number is empty")
+              redirectToCreateAgentServicesAccount("agent reference number is empty")
             } else {
               block(IdentifierRequest(request, internalId, AffinityGroup.Agent, Some(arn)))
             }
-          }
-        }
-      case Some(internalId) ~ Some(Organisation) ~ _ => block(IdentifierRequest(request, internalId, AffinityGroup.Organisation))
-      case Some(_) ~ _ ~ _ => Future(Redirect(routes.UnauthorisedController.onPageLoad()))
-      case _ => throw new UnauthorizedException("Unable to retrieve internal Id")
-    } recover {
-      case ex: NoActiveSession => Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl)))
-      case ex: InsufficientEnrolments => Redirect(routes.UnauthorisedController.onPageLoad)
-      case ex: InsufficientConfidenceLevel => Redirect(routes.UnauthorisedController.onPageLoad)
-      case ex: UnsupportedAuthProvider => Redirect(routes.UnauthorisedController.onPageLoad)
-      case ex: UnsupportedAffinityGroup => Redirect(routes.UnauthorisedController.onPageLoad)
-      case ex: UnsupportedCredentialRole => Redirect(routes.UnauthorisedController.onPageLoad)
+      }
     }
   }
 
-  def doUnauthorizedResponse(reason: String): Future[Result] = {
-    Logger.info(s"[AuthenticatedIdentifierAction][invokeBlock]: Agent services account required - $reason")
-    Future(Redirect(routes.CreateAgentServicesAccountController.onPageLoad()))
+  private def recoverFromAuthorisation : PartialFunction[Throwable, Result] = {
+    case _: NoActiveSession => Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl)))
+    case _: InsufficientEnrolments => Redirect(routes.UnauthorisedController.onPageLoad())
+    case _: InsufficientConfidenceLevel => Redirect(routes.UnauthorisedController.onPageLoad())
+    case _: UnsupportedAuthProvider => Redirect(routes.UnauthorisedController.onPageLoad())
+    case _: UnsupportedAffinityGroup => Redirect(routes.UnauthorisedController.onPageLoad())
+    case _: UnsupportedCredentialRole => Redirect(routes.UnauthorisedController.onPageLoad())
   }
+
+  override def invokeBlock[A](request: Request[A],
+                              block: IdentifierRequest[A] => Future[Result]
+                             ): Future[Result] = {
+
+    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+
+    val retrievals = Retrievals.internalId and
+                     Retrievals.affinityGroup and
+                     Retrievals.allEnrolments
+
+    authorised().retrieve(retrievals) {
+      case Some(internalId) ~ Some(Agent) ~ enrolments =>
+        authoriseAgent(request, enrolments, internalId, block)
+      case Some(internalId) ~ Some(Organisation) ~ _ =>
+        block(IdentifierRequest(request, internalId, AffinityGroup.Organisation))
+      case Some(_) ~ _ ~ _ =>
+        Future.successful(Redirect(routes.UnauthorisedController.onPageLoad()))
+      case _ =>
+        throw new UnauthorizedException("Unable to retrieve internal Id")
+    } recover recoverFromAuthorisation
+  }
+
 }
 
 trait IdentifierAction extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest]

@@ -297,6 +297,26 @@ trait TrustDetailsRoutes {
         }
       }
 
+      "user answers where Was The Trust Previously Resident" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers.set(TrustPreviouslyResidentPage, value = "France").success.value
+            navigator.nextPage(TrustPreviouslyResidentPage, CheckMode, fakeDraftId)(answers)
+              .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId))
+        }
+      }
+
+      "user answers Trust Resident from What Is Country Administering" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(CountryAdministeringTrustPage, value = "France").success.value
+
+            navigator.nextPage(CountryAdministeringTrustPage, CheckMode, fakeDraftId)(answers)
+              .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId))
+        }
+      }
+
     }
 
   }
