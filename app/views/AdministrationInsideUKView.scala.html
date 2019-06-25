@@ -34,12 +34,11 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("administrationInsideUK.heading")
-
         @components.input_yes_no(
             field = form("value"),
             label = messages("administrationInsideUK.heading"),
-            labelClass = Some("visually-hidden")
+            labelClass = Some("heading-large"),
+            labelAsHeading = true
         )
 
         @components.submit_button()
