@@ -39,7 +39,8 @@
         @components.input_yes_no(
             field = form("value"),
             label = messages("trusteeLiveInTheUK.heading",trusteeName),
-            labelClass = Some("visually-hidden")
+            labelClass = Some("visually-hidden"),
+            noDisabled = true
         )
 
         @components.submit_button()
