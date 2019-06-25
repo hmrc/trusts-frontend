@@ -24,6 +24,8 @@
 
 @(form: Form[_], mode: Mode, draftId: String, index: Int)(implicit request: Request[_], messages: Messages)
 
+@optionalHtmlContent = {<p>@messages("assetMoneyValue.paragraph1")</p>}
+
 @main_template(
     title = s"${errorPrefix(form)} ${messages("assetMoneyValue.title")}"
     ) {
@@ -34,16 +36,15 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("assetMoneyValue.heading")
-
-        <p>@messages("assetMoneyValue.paragraph1")</p>
-
         @components.input_text(
           field = form("value"),
           label = messages("assetMoneyValue.heading"),
-          labelClass=Some("visually-hidden"),
+          labelClass=Some("heading-large"),
           symbol = Some("£"),
-          hint = Some(messages(s"assetMoneyValue.hint"))
+          hint = Some(messages(s"assetMoneyValue.hint")),
+          optionalHtmlContent = Some(optionalHtmlContent),
+          labelAsHeading = true,
+          ariaRequired = true
         )
 
         @components.submit_button()
