@@ -39,7 +39,8 @@
             field = form("value"),
             label = messages("individualBeneficiaryAddressUKYesNo.heading", name.toString),
             labelClass = Some("heading-large"),
-            labelAsHeading = true
+            labelAsHeading = true,
+            noDisabled = true
         )
 
         @components.submit_button()
