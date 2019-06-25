@@ -169,6 +169,7 @@
 }
 
 .agentClientRef, .declarationReferenceNumber {font-weight:700;}
+.form-control.agent-internal-reference {width: 100%;}
 
 @media print {
     .print-hidden, .header-wrapper, .service-info, .report-error  {
