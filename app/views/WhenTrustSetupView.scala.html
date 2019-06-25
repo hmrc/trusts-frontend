@@ -31,13 +31,12 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("whenTrustSetup.heading")
-
         @components.input_date(
             field = form("value"),
             legend = messages("whenTrustSetup.heading"),
             hint = Some(messages(s"whenTrustSetup.hint")),
-            legendClass = "visually-hidden"
+            legendClass = "heading-large",
+            labelAsHeading = true
         )
 
         @components.submit_button()
