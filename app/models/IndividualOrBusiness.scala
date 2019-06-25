@@ -31,7 +31,8 @@ object IndividualOrBusiness extends Enumerable.Implicits {
 
   val options: Set[RadioOption] = values.map {
     value =>
-      RadioOption("individualOrBusiness", value.toString)
+      val disabledStatus: Boolean = if(value == Individual) false else true
+      RadioOption("individualOrBusiness", value.toString, disabledStatus)
   }
 
   implicit val enumerable: Enumerable[IndividualOrBusiness] =
