@@ -31,12 +31,11 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("individualBeneficiaryDateOfBirth.heading", Some(name.toString))
-
         @components.input_date(
             field = form("value"),
             legend = messages("individualBeneficiaryDateOfBirth.heading", name.toString),
-            legendClass = "visually-hidden"
+            legendClass = "heading-large",
+            labelAsHeading = true
         )
 
         @components.submit_button()
