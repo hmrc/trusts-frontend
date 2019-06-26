@@ -19,6 +19,6 @@ package utils
 object TrustAuditing {
 
   val CREATE_DRAFT_EVENT = "CreateDraftRegistration"
-  val CANNOT_CREATE_REGISTRATION = "CannotCreateRegistration"
+  val CANNOT_SUBMIT_REGISTRATION = "CannotSubmitRegistration"
 
 }

@@ -22,7 +22,6 @@ import javax.inject.Inject
 import mapping.RegistrationMapper
 import models.{TrustResponse, UnableToRegister, UserAnswers}
 import play.api.Logger
-import play.api.libs.json.Json
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import utils.TrustAuditing
@@ -46,12 +45,8 @@ class DefaultSubmissionService @Inject()(
       case None =>
 
         auditConnector.sendExplicitAudit(
-          TrustAuditing.CANNOT_CREATE_REGISTRATION,
-          Map(
-            "draftId" -> userAnswers.draftId,
-            "internalAuthId" -> userAnswers.internalAuthId,
-            "userAnswers" -> Json.stringify(Json.toJson(userAnswers))
-          )
+          TrustAuditing.CANNOT_SUBMIT_REGISTRATION,
+          userAnswers
         )
 
         Logger.warn("[SubmissionService][submit] Unable to generate registration to submit.")
