@@ -17,10 +17,10 @@
 package connector
 
 import base.SpecBaseHelpers
-import com.github.tomakehurst.wiremock.client.WireMock.{aResponse, containing, equalTo, post, urlEqualTo}
+import com.github.tomakehurst.wiremock.client.WireMock._
 import generators.Generators
 import mapping.{Mapping, Registration, RegistrationMapper}
-import models.{AlreadyRegistered, InternalServerError, RegistrationTRNResponse, TrustResponse}
+import models.{AlreadyRegistered, InternalServerError, RegistrationTRNResponse}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.Application
@@ -31,8 +31,10 @@ import play.api.test.Helpers.CONTENT_TYPE
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.{TestUserAnswers, WireMockHelper}
 
+import scala.concurrent.Await
 import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, Future}
+
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class TrustConnectorSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers with WireMockHelper with ScalaFutures {
@@ -92,7 +94,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
           """.stripMargin
         )
 
-        val result  = Await.result(connector.register(registration),Duration.Inf)
+        val result  = Await.result(connector.register(registration, TestUserAnswers.draftId),Duration.Inf)
         result mustBe RegistrationTRNResponse("XTRN1234567")
       }
     }
@@ -116,7 +118,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
                              """.stripMargin
         )
 
-        val result  = Await.result(connector.register(registration),Duration.Inf)
+        val result  = Await.result(connector.register(registration, TestUserAnswers.draftId),Duration.Inf)
         result mustBe AlreadyRegistered
       }
     }
@@ -139,7 +141,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
                              """.stripMargin
         )
 
-        val result  = Await.result(connector.register(registration),Duration.Inf)
+        val result  = Await.result(connector.register(registration, TestUserAnswers.draftId),Duration.Inf)
         result mustBe InternalServerError
       }
     }
@@ -157,7 +159,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
           expectedResponse = ""
         )
 
-        val result  = Await.result(connector.register(registration),Duration.Inf)
+        val result  = Await.result(connector.register(registration, TestUserAnswers.draftId),Duration.Inf)
         result mustBe InternalServerError
       }
     }
@@ -175,7 +177,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
           expectedResponse = ""
         )
 
-        val result  = Await.result(connector.register(registration),Duration.Inf)
+        val result  = Await.result(connector.register(registration, TestUserAnswers.draftId),Duration.Inf)
         result mustBe InternalServerError
       }
     }

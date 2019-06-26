@@ -153,7 +153,7 @@ class DeclarationControllerSpec extends SpecBase {
           )
         )
 
-      when(mockSubmissionService.submit(any[UserAnswers])(any[HeaderCarrier])).
+      when(mockSubmissionService.submit(any[UserAnswers])(any[HeaderCarrier], any())).
         thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
 
       val application =
@@ -169,7 +169,7 @@ class DeclarationControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad(userAnswersId).url
-      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any[HeaderCarrier])
+      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any[HeaderCarrier], any())
       application.stop()
     }
 
@@ -182,7 +182,7 @@ class DeclarationControllerSpec extends SpecBase {
           )
         )
 
-      when(mockSubmissionService.submit(any[UserAnswers])(any[HeaderCarrier])).
+      when(mockSubmissionService.submit(any[UserAnswers])(any[HeaderCarrier], any())).
         thenReturn(Future.failed(UnableToRegister()))
 
       val application =
@@ -198,7 +198,7 @@ class DeclarationControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad(fakeDraftId).url
-      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any[HeaderCarrier])
+      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any[HeaderCarrier], any())
       application.stop()
     }
 
@@ -211,7 +211,7 @@ class DeclarationControllerSpec extends SpecBase {
           )
         )
 
-      when(mockSubmissionService.submit(any[UserAnswers])(any[HeaderCarrier])).
+      when(mockSubmissionService.submit(any[UserAnswers])(any[HeaderCarrier], any())).
         thenReturn(Future.successful(AlreadyRegistered))
 
 
@@ -228,7 +228,7 @@ class DeclarationControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.UTRSentByPostController.onPageLoad().url
-      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any[HeaderCarrier])
+      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any[HeaderCarrier], any())
       application.stop()
     }
 
