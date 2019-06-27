@@ -16,7 +16,6 @@
 
 package views.behaviours
 
-import controllers.routes
 import play.twirl.api.HtmlFormat
 import views.ViewSpecBase
 
@@ -99,6 +98,45 @@ trait ViewBehaviours extends ViewSpecBase {
 
           val doc = asDocument(view)
           for (key <- expectedGuidanceKeys) assertContainsText(doc, messages(s"$messageKeyPrefix.$key"))
+        }
+
+        "display language toggles" in {
+
+          val doc = asDocument(view)
+          assertNotRenderedById(doc, "cymraeg-switch")
+        }
+
+      }
+    }
+  }
+
+  def confirmationPage(view: HtmlFormat.Appendable,
+                       messageKeyPrefix: String,
+                       messageKeyParam: String,
+                       accessibleKeyParam: String): Unit = {
+
+    "behave like a confirmation page" when {
+
+      "rendered" must {
+
+        "have the correct banner title" in {
+
+          val doc = asDocument(view)
+          val nav = doc.getElementById("proposition-menu")
+          val span = nav.children.first
+          span.text mustBe messages("site.service_name")
+        }
+
+        "display the correct browser title" in {
+
+          val doc = asDocument(view)
+          assertEqualsMessage(doc, "title", s"$messageKeyPrefix.title", accessibleKeyParam)
+        }
+
+        "display the correct page title" in {
+
+          val doc = asDocument(view)
+          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading", messageKeyParam + " " + accessibleKeyParam)
         }
 
         "display language toggles" in {
