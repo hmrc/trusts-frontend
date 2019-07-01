@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package utils
+package auditing
 
 object TrustAuditing {
 
   val CREATE_DRAFT_EVENT = "CreateDraftRegistration"
   val CANNOT_SUBMIT_REGISTRATION = "CannotSubmitRegistration"
+  val TRUST_REGISTRATION_SUBMITTED = "TrustRegistrationSubmitted"
 
 }
