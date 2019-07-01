@@ -27,6 +27,7 @@ import utils.countryOptions.CountryOptions
 import utils.{CheckYourAnswersHelper, DateFormat, TestUserAnswers}
 import views.behaviours.ViewBehaviours
 import views.html.ConfirmationAnswerPageView
+import utils.AccessibilityHelper._
 
 class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
   val index = 0
@@ -115,14 +116,14 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
     val moneyAsset = checkYourAnswersHelper.moneyAsset.getOrElse(Nil)
     val sections =  trustDetails ++ settlors ++ trustees ++ individualBeneficiaries ++ classOfBeneficiaries ++ moneyAsset
 
-    val applyView = view.apply(sections, "XNTRN000000001", trnDateTime)(fakeRequest, messages)
+    val applyView = view.apply(sections, formatTRN("XNTRN000000001"), trnDateTime)(fakeRequest, messages)
 
     behave like normalPage(applyView, "confirmationAnswerPage")
 
     val doc = asDocument(applyView)
 
     "assert header content" in {
-      assertContainsText(doc, messages("confirmationAnswerPage.paragraph1", "XNTRN000000001"))
+      assertContainsText(doc, messages("confirmationAnswerPage.paragraph1", formatTRN("XNTRN000000001")))
       assertContainsText(doc, messages("confirmationAnswerPage.paragraph2", trnDateTime))
     }
 

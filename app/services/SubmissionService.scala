@@ -17,27 +17,38 @@
 package services
 
 import com.google.inject.ImplementedBy
-import javax.inject.Inject
-
 import connector.TrustConnector
-import mapping.{Registration, RegistrationMapper}
+import javax.inject.Inject
+import mapping.RegistrationMapper
 import models.{TrustResponse, UnableToRegister, UserAnswers}
 import play.api.Logger
 import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.play.audit.http.connector.AuditConnector
+import utils.TrustAuditing
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 
 class DefaultSubmissionService @Inject()(
                                           registrationMapper: RegistrationMapper,
-                                          trustConnector: TrustConnector)
+                                          trustConnector: TrustConnector,
+                                          auditConnector: AuditConnector
+                                        )
   extends SubmissionService {
 
-  override def submit(userAnswers: UserAnswers)(implicit  hc:HeaderCarrier ): Future[TrustResponse] = {
+  override def submit(userAnswers: UserAnswers)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
+
     Logger.info("[SubmissionService][submit] submitting registration")
+
     registrationMapper.build(userAnswers) match {
-      case Some(registration) => trustConnector.register(registration)
+      case Some(registration) => trustConnector.register(registration, userAnswers.draftId)
       case None =>
+
+        auditConnector.sendExplicitAudit(
+          TrustAuditing.CANNOT_SUBMIT_REGISTRATION,
+          userAnswers
+        )
+
         Logger.warn("[SubmissionService][submit] Unable to generate registration to submit.")
         Future.failed(UnableToRegister())
       }
@@ -47,6 +58,6 @@ class DefaultSubmissionService @Inject()(
 @ImplementedBy(classOf[DefaultSubmissionService])
 trait SubmissionService {
 
-  def submit(userAnswers: UserAnswers)(implicit  hc:HeaderCarrier) : Future[TrustResponse]
+  def submit(userAnswers: UserAnswers)(implicit hc: HeaderCarrier, ec: ExecutionContext) : Future[TrustResponse]
 
 }
