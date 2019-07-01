@@ -43,6 +43,8 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")
   lazy val lostUtrUrl : String = configuration.get[String]("urls.lostUtr")
 
+  lazy val otacUrl : String = configuration.get[String]("urls.otacLogin")
+
   lazy val agentsSubscriptionsUrl : String = configuration.get[String]("urls.agentSubscriptions")
   lazy val agentServiceRegistrationUrl = s"$agentsSubscriptionsUrl?continue=$loginContinueUrl"
 
@@ -55,6 +57,8 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val ttlInSeconds = configuration.get[Int]("mongodb.timeToLiveInSeconds")
 
   lazy val trustsUrl = configuration.get[Service]("microservice.services.trusts").baseUrl
+
+  lazy val authUrl = configuration.get[Service]("microservice.services.auth").baseUrl
 
   lazy val  posthmrc: String = configuration.get[String]("confirmation.posthmrc")
 
@@ -71,6 +75,7 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   lazy val enableWhitelist : Boolean = configuration.get[String]("microservice.services.features.whitelist.enabled").toBoolean
 
+  lazy val campaignWhitelistEnabled : Boolean = configuration.get[Boolean]("microservice.services.features.campaignWhitelist.enabled")
   lazy val auditSubmissions : Boolean =
     configuration.get[Boolean]("microservice.services.features.auditing.submissions.enabled")
 
