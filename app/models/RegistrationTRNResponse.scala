@@ -16,22 +16,38 @@
 
 package models
 
+import auditing.RegistrationErrorAuditEvent
 import play.api.Logger
 import play.api.http.Status._
-import play.api.libs.json.Json
+import play.api.libs.json.{Format, JsResult, JsValue, Json, OFormat}
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
-sealed trait TrustResponse
+trait TrustResponse
 
 final case class RegistrationTRNResponse(trn : String) extends TrustResponse
-case object AlreadyRegistered extends TrustResponse
-case object InternalServerError extends TrustResponse
-final case class UnableToRegister() extends Exception with TrustResponse
 
+object RegistrationTRNResponse {
+  implicit val formats : OFormat[RegistrationTRNResponse] = Json.format[RegistrationTRNResponse]
+}
+
+case object AlreadyRegistered extends TrustResponse
+
+case object InternalServerError extends TrustResponse
+
+final case class UnableToRegister() extends Exception with TrustResponse
 
 object TrustResponse {
 
-  implicit val formats = Json.format[RegistrationTRNResponse]
+  implicit object RegistrationResponseFormats extends Format[TrustResponse] {
+
+    override def reads(json: JsValue): JsResult[TrustResponse] = json.validate[RegistrationTRNResponse]
+
+    override def writes(o: TrustResponse): JsValue = o match {
+      case x : RegistrationTRNResponse => Json.toJson(x)(RegistrationTRNResponse.formats)
+      case x : RegistrationErrorAuditEvent => Json.toJson(x)(RegistrationErrorAuditEvent.formats)
+    }
+
+  }
 
   implicit lazy val httpReads: HttpReads[TrustResponse] =
     new HttpReads[TrustResponse] {
@@ -45,7 +61,6 @@ object TrustResponse {
             AlreadyRegistered
           case _ =>
             InternalServerError
-
         }
       }
     }

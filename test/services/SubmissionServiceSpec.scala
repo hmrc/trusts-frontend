@@ -37,9 +37,11 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
   private lazy val registrationMapper: RegistrationMapper = injector.instanceOf[RegistrationMapper]
 
-  val mockConnector = mock[TrustConnector]
+  val mockConnector : TrustConnector = mock[TrustConnector]
 
-  val submissionService = new DefaultSubmissionService(registrationMapper,mockConnector, mockedAuditConnector)
+  val auditService : AuditService = injector.instanceOf[FakeAuditService]
+
+  val submissionService = new DefaultSubmissionService(registrationMapper,mockConnector,auditService)
 
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
@@ -52,7 +54,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
         val userAnswers = emptyUserAnswers
 
         intercept[UnableToRegister] {
-          Await.result( submissionService.submit(userAnswers),Duration.Inf)
+          Await.result(submissionService.submit(userAnswers),Duration.Inf)
         }
       }
     }

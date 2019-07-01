@@ -25,7 +25,6 @@ import models.requests.{IdentifierRequest, OptionalDataRequest}
 import repositories.SessionRepository
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
-import utils.TrustAuditing
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -34,25 +33,12 @@ class CreateDraftRegistrationService @Inject()(
                                               auditConnector: AuditConnector
                                               )(implicit ec: ExecutionContext, m: Materializer) {
 
-  import utils.implicits.MapImplicits._
-
   private def build[A](request: OptionalDataRequest[A])(implicit hc : HeaderCarrier) : Future[String] = {
     val draftId = UUID.randomUUID().toString
     val userAnswers = UserAnswers(draftId = draftId, internalAuthId = request.internalId)
 
     sessionRepository.set(userAnswers).map {
       _ =>
-
-        auditConnector.sendExplicitAudit(
-          TrustAuditing.CREATE_DRAFT_EVENT,
-          Map(
-            "draftId" -> draftId,
-            "internalAuthId" -> request.internalId,
-            "agentReferenceNumber" -> request.agentARN.getOrElse(""),
-            "affinityGroup" -> request.affinityGroup.toString
-          ).clean
-        )
-
         draftId
     }
   }

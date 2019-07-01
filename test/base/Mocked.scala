@@ -23,23 +23,15 @@ import org.scalatest.mockito.MockitoSugar
 import play.api.mvc.AnyContent
 import repositories.SessionRepository
 import services.{CreateDraftRegistrationService, SubmissionService}
-import uk.gov.hmrc.play.audit.http.connector.{AuditConnector, AuditResult}
-import uk.gov.hmrc.play.audit.model.ExtendedDataEvent
 import utils.TestUserAnswers
 
 import scala.concurrent.Future
 
 trait Mocked extends MockitoSugar {
 
-  import scala.concurrent.ExecutionContext.Implicits.global
-
   val mockedSessionRepository : SessionRepository = mock[SessionRepository]
   val mockSubmissionService : SubmissionService = mock[SubmissionService]
   val mockCreateDraftRegistrationService : CreateDraftRegistrationService = mock[CreateDraftRegistrationService]
-  val mockedAuditConnector : AuditConnector = mock[AuditConnector]
-
-  when(mockedAuditConnector.sendExtendedEvent(any[ExtendedDataEvent]))
-    .thenReturn(Future.successful(AuditResult.Success))
 
   when(mockCreateDraftRegistrationService.create(any[OptionalDataRequest[AnyContent]])(any()))
     .thenReturn(Future.successful(TestUserAnswers.draftId))
