@@ -24,17 +24,20 @@
         hint: Option[String] = None,
         trackGa: Boolean = false,
         inputs: Seq[RadioOption],
-        legendAsHeading: Boolean = false
+        legendAsHeading: Boolean = false,
+        legendAsH2Heading: Boolean = false
 )(implicit messages: Messages)
 
 <div class="form-group @if(field.hasErrors){form-group-error}">
     <fieldset @if(fieldSetClass.nonEmpty){class="@fieldSetClass.get"} id="@{field.id}">
         <div>
-            @if(legendAsHeading){<h1 class="label-as-heading">}
+            @if(legendAsHeading){<h1 class="legend-as-heading">}
+            @if(legendAsH2Heading){<h2 class="legend-as-heading">}
                 <legend>
                     <span class="bold-small @if(legendClass.nonEmpty){@{legendClass.get}}">@legend</span>
                 </legend>
-            @if(legendAsHeading){</h1>}
+            @if(legendAsH2Heading){</h2>}
+            @if(legendAsHeading){</h2>}
             @if(hint.nonEmpty){
             <span class="form-hint form-field">@{hint.get}</span>
             }
