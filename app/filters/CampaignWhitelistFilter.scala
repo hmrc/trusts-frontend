@@ -54,6 +54,8 @@ class CampaignWhitelistFilter @Inject()(
 
             implicit val hc : HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(rh.headers, Some(rh.session))
 
+            Logger.info(s"[CampaignWhitelistFilter] token retrieved $token")
+
             withVerifiedPasscode("trusts", Some(token)){
               f(rh)
             }.recover {
