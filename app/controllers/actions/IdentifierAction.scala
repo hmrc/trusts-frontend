@@ -93,12 +93,16 @@ class AuthenticatedIdentifierAction @Inject()(
 
     authorised().retrieve(retrievals) {
       case Some(internalId) ~ Some(Agent) ~ enrolments =>
+        Logger.info(s"[IdentifierAction] successfully identified as an Agent")
         authoriseAgent(request, enrolments, internalId, block)
       case Some(internalId) ~ Some(Organisation) ~ _ =>
+        Logger.info(s"[IdentifierAction] successfully identified as Organisation")
         block(IdentifierRequest(request, internalId, AffinityGroup.Organisation))
       case Some(_) ~ _ ~ _ =>
+        Logger.info(s"[IdentifierAction] Unauthorised due to affinityGroup being Individual")
         Future.successful(Redirect(routes.UnauthorisedController.onPageLoad()))
       case _ =>
+        Logger.warn(s"[IdentifierAction] Unable to retrieve internal id")
         throw new UnauthorizedException("Unable to retrieve internal Id")
     } recover recoverFromAuthorisation
   }
