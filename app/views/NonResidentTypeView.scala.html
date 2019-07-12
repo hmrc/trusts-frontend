@@ -34,13 +34,12 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("nonresidentType.heading")
-
         @components.input_radio(
             field = form("value"),
             legend = messages("nonresidentType.heading"),
-            legendClass = Some("visually-hidden"),
-            inputs = NonResidentType.options
+            legendClass = Some("heading-large"),
+            inputs = NonResidentType.options,
+            legendAsHeading = true
         )
 
         @components.submit_button()

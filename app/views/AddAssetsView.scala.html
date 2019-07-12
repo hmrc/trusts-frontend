@@ -42,13 +42,12 @@
 
         @components.data_list(completeAssets, "complete", "asset")
 
-        <h2>@messages("addAssets.additional-content")</h2>
-
         @components.input_radio(
             field = form("value"),
-            legend = messages("addAssets.heading"),
-            legendClass = Some("visually-hidden"),
-            inputs = AddAssets.options
+            legend = messages("addAssets.additional-content"),
+            legendClass = Some("heading-medium"),
+            inputs = AddAssets.options,
+            legendAsH2Heading = true
         )
 
         @components.submit_button()

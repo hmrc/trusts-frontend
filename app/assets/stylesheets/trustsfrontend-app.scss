@@ -128,8 +128,8 @@
     margin: 0;
 }
 
-.label-as-heading {margin-top:0; margin-bottom:0;}
-.heading-large {margin-top:0;}
+.label-as-heading, .legend-as-heading {margin-top:0; margin-bottom:0;}
+.heading-large, .heading-medium {margin-top:0;}
 
 #value__listbox, #country__listbox {
     width: 100%;
@@ -170,6 +170,8 @@
 
 .agentClientRef, .declarationReferenceNumber {font-weight:700;}
 .form-control.agent-internal-reference {width: 100%;}
+
+.error-message {margin-bottom:15px;}
 
 @media print {
     .print-hidden, .header-wrapper, .service-info, .report-error  {

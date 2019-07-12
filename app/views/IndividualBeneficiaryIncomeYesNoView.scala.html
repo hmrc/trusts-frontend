@@ -38,9 +38,9 @@
         @components.input_yes_no(
             field = form("value"),
             label = messages("individualBeneficiaryIncomeYesNo.heading", name.toString),
-            labelClass = Some("heading-large"),
             hint = Some(messages(s"individualBeneficiaryIncomeYesNo.hint")),
-            labelAsHeading = true
+            legendClass = Some("heading-large"),
+            legendAsHeading = true
         )
 
         @components.submit_button()
