@@ -35,7 +35,6 @@
 
     <fieldset class="inline" id="@{field.id}">
 
-        <div>
         <legend id="@{field.id}-legend">
             @if(legendAsHeading){<h1 class="legend-as-heading">}
             <span id="@{field.id}-id" @if(legendClass.nonEmpty){class="@legendClass"}>@label</span>
@@ -45,8 +44,7 @@
         @field.errors.map { error =>
         <span class="error-message" id="error-message-@{field.id}-input">@messages(error.message, error.args: _*)</span><span id="aria-period" class="visuallyhidden">.</span>
         }
-        </div>
-        <div class="multiple-choice">
+        <div class="multiple-choice first">
             <input
                     id="@{field.id}-yes"
                     type="radio"
