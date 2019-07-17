@@ -47,7 +47,7 @@ trait TabularDataViewBehaviours extends ViewSpecBase {
       val removeLink = element.getElementsByClass("hmrc-add-to-a-list__remove").first()
 
       removeLink.getElementsByTag("a").attr("href") must include(item.removeUrl)
-      removeLink.text must include(s"Delete ${item.name}")
+      removeLink.text must include(s"Remove ${item.name}")
     }
   }
 
