@@ -34,13 +34,12 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("agentTelephoneNumber.heading")
-
         @components.input_text(
           field = form("value"),
           label = messages("agentTelephoneNumber.heading"),
-          labelClass=Some("visually-hidden"),
-          hint = Some(messages(s"agentTelephoneNumber.hint"))
+          labelClass = Some("heading-large"),
+          hint = Some(messages(s"agentTelephoneNumber.hint")),
+          labelAsHeading = true
         )
 
         @components.submit_button()

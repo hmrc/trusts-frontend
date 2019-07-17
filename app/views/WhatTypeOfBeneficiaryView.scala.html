@@ -50,14 +50,13 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading(heading.toString)
-
         @components.input_radio(
             field = form("value"),
             legend = heading.toString,
-            legendClass = Some("visually-hidden"),
+            legendClass = Some("heading-large"),
             inputs = WhatTypeOfBeneficiary.options,
-            hint = Some(messages(s"whatTypeOfBeneficiary.hint"))
+            hint = Some(messages(s"whatTypeOfBeneficiary.hint")),
+            legendAsHeading = true
         )
 
         @components.submit_button()

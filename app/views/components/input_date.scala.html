@@ -23,24 +23,22 @@
   hint: Option[String] = None,
   readerHint: Option[String] = None,
   link : Option[Link] = None,
-  labelAsHeading: Boolean = false
+  legendAsHeading: Boolean = false
 )(implicit messages: Messages)
 
 <div class="form-group @if(field("day").hasErrors || field("month").hasErrors || field("year").hasErrors || field.hasErrors){form-group-error}">
     <fieldset>
-        <div>
-            @if(labelAsHeading){<h1 class="label-as-heading">}
-            <legend>
-                <span class="@legendClass">
-                    @legend
-                </span>
-            </legend>
-            @if(labelAsHeading){</h1>}
-            @form_hint(hint = hint, readerHint = readerHint, link = link)
-            @field.errors.map { error =>
-            <span class="error-message" id="error-message-@{field.id}-input">@messages(error.message, error.args: _*)</span>
-            }
-        </div>
+        <legend>
+            @if(legendAsHeading){<h1 class="legend-as-heading">}
+            <span class="@legendClass">
+                @legend
+            </span>
+            @if(legendAsHeading){</h1>}
+        </legend>
+        @form_hint(hint = hint, readerHint = readerHint, link = link)
+        @field.errors.map { error =>
+        <span class="error-message" id="error-message-@{field.id}-input">@messages(error.message, error.args: _*)</span>
+        }
         <div class="form-date">
             @List("day", "month", "year").map { part =>
               <div class="form-control-wrapper form-group form-group-@part">

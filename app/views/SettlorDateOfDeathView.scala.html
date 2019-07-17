@@ -33,12 +33,11 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("settlorDateOfDeath.heading", Some(name.toString))
-
         @components.input_date(
             field = form("value"),
             legend = messages("settlorDateOfDeath.heading", name.toString),
-            legendClass = "visually-hidden"
+            legendClass = "heading-large",
+            legendAsHeading = true
         )
 
         @components.submit_button()

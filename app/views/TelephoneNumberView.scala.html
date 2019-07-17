@@ -34,12 +34,11 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading(messages("telephoneNumber.heading", trusteeName))
-
         @components.input_text(
           field = form("value"),
           label = messages("telephoneNumber.heading", trusteeName),
-          labelClass=Some("visually-hidden"),
+          labelClass = Some("heading-large"),
+          labelAsHeading = true,
           hint = Some(messages(s"telephoneNumber.hint"))
         )
 

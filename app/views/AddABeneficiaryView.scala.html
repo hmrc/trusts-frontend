@@ -41,13 +41,12 @@
 
         @components.data_list(completeIndividualBeneficiaries, "complete", "individual beneficiary")
 
-        <h2>@messages("addABeneficiary.additional-content")</h2>
-
         @components.input_radio(
             field = form("value"),
-            legend = messages("addABeneficiary.heading"),
-            legendClass = Some("visually-hidden"),
-            inputs = AddABeneficiary.options
+            legend = messages("addABeneficiary.additional-content"),
+            legendClass = Some("heading-medium"),
+            inputs = AddABeneficiary.options,
+            legendAsH2Heading = true
         )
 
         @components.submit_button()

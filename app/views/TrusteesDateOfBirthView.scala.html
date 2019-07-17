@@ -31,12 +31,11 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("trusteesDateOfBirth.heading", optionalParam = Some(trusteeName))
-
         @components.input_date(
             field = form("value"),
             legend = messages("trusteesDateOfBirth.heading", trusteeName),
-            legendClass = "visually-hidden",
+            legendClass = "heading-large",
+            legendAsHeading = true,
             hint = Some(messages(s"trusteesDateOfBirth.hint"))
         )
 

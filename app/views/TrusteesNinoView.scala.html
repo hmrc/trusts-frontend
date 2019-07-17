@@ -34,12 +34,11 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("trusteesNino.heading", optionalParam = Some(trusteeName))
-
         @components.input_text(
           field = form("value"),
           label = messages("trusteesNino.heading", trusteeName),
-          labelClass=Some("visually-hidden"),
+          labelClass = Some("heading-large"),
+          labelAsHeading = true,
           hint = Some(messages(s"trusteesNino.hint"))
         )
 

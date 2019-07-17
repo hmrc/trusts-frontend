@@ -51,13 +51,12 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading(heading.toString)
-
         @components.input_radio(
             field = form("value"),
             legend = heading.toString,
-            legendClass = Some("visually-hidden"),
-            inputs = options
+            legendClass = Some("heading-large"),
+            inputs = options,
+            legendAsHeading = true
         )
 
         @components.submit_button()
