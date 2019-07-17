@@ -20,11 +20,13 @@ import models.FullName
 import play.twirl.api.HtmlFormat
 import views.behaviours.ViewBehaviours
 import views.html.ConfirmationView
+import utils.AccessibilityHelper._
 
 class ConfirmationViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "confirmationPage"
-  val refNumber = "XC TRN 000 000 4911"
+  val refNumber = "XC TRN 00 00 00 49 11"
+  val accessibleRefNumber = formatTRN(refNumber)
   val postHMRC = "https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts"
 
   val name = "John Smith"
@@ -102,7 +104,7 @@ class ConfirmationViewSpec extends ViewBehaviours {
       agentOverviewUrl = "#",
       leadTrusteeName= FullName("John", None, "Smith"))(fakeRequest, messages)
 
-    behave like dynamicTitlePage(applyView, messageKeyPrefix, refNumber)
+    behave like confirmationPage(applyView, messageKeyPrefix, refNumber, accessibleRefNumber)
 
     behave like newTrust(applyView)
   }
@@ -119,7 +121,7 @@ class ConfirmationViewSpec extends ViewBehaviours {
       agentOverviewUrl = "#",
       leadTrusteeName= FullName("John", None, "Smith"))(fakeRequest, messages)
 
-    behave like dynamicTitlePage(applyView, messageKeyPrefix, refNumber)
+    behave like confirmationPage(applyView, messageKeyPrefix, refNumber, accessibleRefNumber)
 
     behave like existingTrust(applyView)
   }
@@ -136,7 +138,7 @@ class ConfirmationViewSpec extends ViewBehaviours {
       agentOverviewUrl = "#",
       leadTrusteeName= FullName("John", None, "Smith"))(fakeRequest, messages)
 
-    behave like dynamicTitlePage(applyView, messageKeyPrefix, refNumber)
+    behave like confirmationPage(applyView, messageKeyPrefix, refNumber, accessibleRefNumber)
 
     behave like existingTrust(applyView)
 

@@ -19,18 +19,17 @@ package services
 import base.SpecBaseHelpers
 import connector.TrustConnector
 import generators.Generators
-import mapping.{Mapping, Registration, RegistrationMapper}
+import mapping.{Registration, RegistrationMapper}
 import models.{RegistrationTRNResponse, UnableToRegister}
-import org.mockito.Mockito.when
 import org.mockito.Matchers.any
-
-
-import org.scalatest.{AsyncFreeSpec, FreeSpec, MustMatchers, OptionValues}
+import org.mockito.Mockito.when
+import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class SubmissionServiceSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers
@@ -38,9 +37,11 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
   private lazy val registrationMapper: RegistrationMapper = injector.instanceOf[RegistrationMapper]
 
-  val mockConnector = mock[TrustConnector]
+  val mockConnector : TrustConnector = mock[TrustConnector]
 
-  val submissionService = new DefaultSubmissionService(registrationMapper,mockConnector)
+  val auditService : AuditService = injector.instanceOf[FakeAuditService]
+
+  val submissionService = new DefaultSubmissionService(registrationMapper,mockConnector,auditService)
 
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
@@ -53,7 +54,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
         val userAnswers = emptyUserAnswers
 
         intercept[UnableToRegister] {
-          Await.result( submissionService.submit(userAnswers),Duration.Inf)
+          Await.result(submissionService.submit(userAnswers),Duration.Inf)
         }
       }
     }
@@ -64,7 +65,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
         val userAnswers = newTrustUserAnswers
 
-        when(mockConnector.register(any[Registration])(any[HeaderCarrier])).
+        when(mockConnector.register(any[Registration], any())(any[HeaderCarrier], any())).
           thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))
 
         val result  = Await.result(submissionService.submit(userAnswers),Duration.Inf)
@@ -75,7 +76,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
         val userAnswers = TestUserAnswers.withAgent(newTrustUserAnswers)
 
-        when(mockConnector.register(any[Registration])(any[HeaderCarrier])).
+        when(mockConnector.register(any[Registration], any())(any[HeaderCarrier], any())).
           thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))
 
         val result  = Await.result(submissionService.submit(userAnswers),Duration.Inf)

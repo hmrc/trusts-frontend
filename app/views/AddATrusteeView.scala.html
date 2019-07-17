@@ -41,13 +41,12 @@
 
         @components.data_list(completeTrustees, "complete", "trustee")
 
-        <h2>@messages("addATrustee.additional-content")</h2>
-
         @components.input_radio(
             field = form("value"),
-            legend = messages("addATrustee.heading"),
-            legendClass = Some("visually-hidden"),
-            inputs = AddATrustee.options
+            legend = messages("addATrustee.additional-content"),
+            legendClass = Some("heading-medium"),
+            inputs = AddATrustee.options,
+            legendAsH2Heading = true
         )
 
         @components.submit_button()

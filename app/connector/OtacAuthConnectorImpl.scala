@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,10 +12,20 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@()(implicit messages: Messages)
+package connector
 
-<div class="js-visible">
-  <p><a id="back-link" class="link-back" href="#">@messages("site.back")</a></p>
-</div>
+import config.FrontendAppConfig
+import javax.inject.Inject
+import uk.gov.hmrc.auth.otac.PlayOtacAuthConnector
+import uk.gov.hmrc.play.bootstrap.http.HttpClient
+
+class OtacAuthConnectorImpl @Inject()(
+                                     val http: HttpClient,
+                                     config: FrontendAppConfig
+                                     ) extends PlayOtacAuthConnector {
+
+  override val serviceUrl: String = config.authUrl
+
+}

@@ -33,10 +33,10 @@ trait Mocked extends MockitoSugar {
   val mockSubmissionService : SubmissionService = mock[SubmissionService]
   val mockCreateDraftRegistrationService : CreateDraftRegistrationService = mock[CreateDraftRegistrationService]
 
-  when(mockCreateDraftRegistrationService.create(any[OptionalDataRequest[AnyContent]]))
+  when(mockCreateDraftRegistrationService.create(any[OptionalDataRequest[AnyContent]])(any()))
     .thenReturn(Future.successful(TestUserAnswers.draftId))
 
-  when(mockCreateDraftRegistrationService.create(any[IdentifierRequest[AnyContent]]))
+  when(mockCreateDraftRegistrationService.create(any[IdentifierRequest[AnyContent]])(any()))
       .thenReturn(Future.successful(TestUserAnswers.draftId))
 
   when(mockedSessionRepository.set(any())).thenReturn(Future.successful(true))

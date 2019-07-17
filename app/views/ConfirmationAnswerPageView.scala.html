@@ -16,6 +16,7 @@
 
 @import controllers.routes._
 @import viewmodels.{AnswerSection, RepeaterAnswerSection, Section}
+@import utils.AccessibilityHelper._
 
 @this(
     main_template: MainTemplate,
@@ -35,7 +36,10 @@
 
     @components.heading("confirmationAnswerPage.heading", headingSize = "heading-xlarge")
 
-    <p class="declarationReferenceNumber">@messages("confirmationAnswerPage.paragraph1", trn)</p>
+    <p class="declarationReferenceNumber">
+        <span aria-hidden=true>@messages("confirmationAnswerPage.paragraph1", trn)</span>
+        <span class="visually-hidden">@messages("confirmationAnswerPage.paragraph1", formatTRN(trn))</span>
+    </p>
 
     <p>@messages("confirmationAnswerPage.paragraph2", declarationSent)</p>
 

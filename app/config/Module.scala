@@ -17,8 +17,10 @@
 package config
 
 import com.google.inject.AbstractModule
+import connector.OtacAuthConnectorImpl
 import controllers.actions._
 import repositories.{DefaultSessionRepository, SessionRepository}
+import uk.gov.hmrc.auth.otac.OtacAuthConnector
 
 class Module extends AbstractModule {
 
@@ -37,5 +39,7 @@ class Module extends AbstractModule {
     bind(classOf[RequiredAgentAffinityGroupActionProvider]).to(classOf[RequireStateActionProviderImpl]).asEagerSingleton()
 
     bind(classOf[SessionRepository]).to(classOf[DefaultSessionRepository]).asEagerSingleton()
+
+    bind(classOf[OtacAuthConnector]).to(classOf[OtacAuthConnectorImpl]).asEagerSingleton()
   }
 }

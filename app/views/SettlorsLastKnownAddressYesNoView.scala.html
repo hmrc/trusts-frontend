@@ -35,12 +35,11 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("settlorsLastKnownAddressYesNo.heading", Some(name.toString))
-
         @components.input_yes_no(
             field = form("value"),
             label = messages("settlorsLastKnownAddressYesNo.heading", name.toString),
-            labelClass = Some("visually-hidden")
+            legendClass = Some("heading-large"),
+            legendAsHeading = true
         )
 
         @components.submit_button()

@@ -25,9 +25,9 @@
         readerHint: Option[String] = None,
         yesAssoc: Option[String] = None,
         noAssoc: Option[String] = None,
-        labelClass: Option[String] = None,
+        legendClass: Option[String] = None,
         link : Option[Link] = None,
-        labelAsHeading: Boolean = false,
+        legendAsHeading: Boolean = false
         yesDisabled: Boolean = false,
         noDisabled: Boolean = false
 )(implicit messages: Messages)
@@ -37,18 +37,16 @@
 
     <fieldset class="inline" id="@{field.id}">
 
-        <div>
-        @if(labelAsHeading){<h1 class="label-as-heading">}
         <legend id="@{field.id}-legend">
-            <span id="@{field.id}-id" @if(labelClass.nonEmpty){class="@labelClass"}>@label</span>
+            @if(legendAsHeading){<h1 class="legend-as-heading">}
+            <span id="@{field.id}-id" @if(legendClass.nonEmpty){class="@legendClass"}>@label</span>
+            @if(legendAsHeading){</h1>}
         </legend>
-        @if(labelAsHeading){</h1>}
         @form_hint(hint = hint, readerHint = readerHint, link = link)
         @field.errors.map { error =>
         <span class="error-message" id="error-message-@{field.id}-input">@messages(error.message, error.args: _*)</span><span id="aria-period" class="visuallyhidden">.</span>
         }
-        </div>
-        <div class="multiple-choice">
+        <div class="multiple-choice first">
             <input
                     id="@{field.id}-yes"
                     type="radio"
