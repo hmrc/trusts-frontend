@@ -44,15 +44,15 @@ class IndividualBeneficiaryDateOfBirthViewSpec extends QuestionViewBehaviours[Lo
 
     val applyViewF = (form : Form[_]) => applyView(form)
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name, "hint")
+
+    behave like pageWithBackLink(applyView(form))
 
     behave like pageWithDateFields(form, applyViewF,
       messageKeyPrefix,
       routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(NormalMode, index, fakeDraftId).url,
       name.toString
     )
-
-    behave like pageWithBackLink(applyView(form))
 
     behave like pageWithASubmitButton(applyView(form))
 
