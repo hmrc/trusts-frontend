@@ -399,6 +399,7 @@ taskList.agent.agentDetails = Agent details
 
 taskList.summary.heading = Summary
 taskList.summary.paragraph = If you need to update any asset details after making the declaration for this trust, use Self Assessment online or the Trust and Estate Tax Return form (SA900).
+taskList.summary.paragraph.reader = If you need to update any asset details after making the declaration for this trust, use Self Assessment online or the Trust and Estate Tax Return form (S A 900).
 taskList.summary.link = Print or save a copy of your answers (opens in a new window or tab).
 taskList.summary.continue = Continue to declaration
 

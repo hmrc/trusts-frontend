@@ -48,7 +48,10 @@
 
     @if(isTaskListComplete) {
         <h2 id="summaryHeading">@messages("taskList.summary.heading")</h2>
-        <p>@messages("taskList.summary.paragraph")</p>
+        <span id="summary-paragraph" class="paragraph">
+            <p aria-hidden=true>@messages("taskList.summary.paragraph")</p>
+            <p class="visually-hidden">@messages("taskList.summary.paragraph.reader")</p>
+        </span>
         @components.link(routes.SummaryAnswerPageController.onPageLoad(draftId).url, "print-and-save", "taskList.summary.link", openInNewWindow = true)
         @components.button_link(messages("taskList.summary.continue"), routes.DeclarationController.onPageLoad(draftId).url)
     }
