@@ -37,7 +37,8 @@
             field = form("value"),
             legend = messages("settlorsDateOfBirth.heading", name.toString),
             legendClass = "heading-large",
-            legendAsHeading = true
+            legendAsHeading = true,
+            hint = Some(messages(s"site.date.hint"))
         )
 
         @components.submit_button()
