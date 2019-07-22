@@ -22,7 +22,6 @@ import models.requests.IdentifierRequest
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionFilter, Result}
 import uk.gov.hmrc.auth.core._
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 
 sealed trait RequiredAgentAction extends ActionFilter[IdentifierRequest]
@@ -38,7 +37,7 @@ class RequiredAgentAffinityGroupAction @Inject()(implicit val executionContext: 
   }
 }
 
-class RequireStateActionProviderImpl @Inject()(ec: ExecutionContext) extends RequiredAgentAffinityGroupActionProvider {
+class RequireStateActionProviderImpl @Inject()(implicit val ec: ExecutionContext) extends RequiredAgentAffinityGroupActionProvider {
   override def apply() = new RequiredAgentAffinityGroupAction()
 }
 

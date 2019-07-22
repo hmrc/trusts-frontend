@@ -17,13 +17,14 @@
 package controllers.actions
 
 import base.SpecBase
+import javax.inject.Inject
 import play.api.mvc.{BodyParsers, Results}
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.SessionKeys
 
-import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.ExecutionContext
 
-class SessionActionSpec extends SpecBase {
+class SessionActionSpec @Inject()(implicit val ec: ExecutionContext) extends SpecBase {
 
   class Harness(action: IdentifierAction) {
     def onPageLoad() = action { request => Results.Ok }

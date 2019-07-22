@@ -19,6 +19,7 @@ package services
 import base.SpecBaseHelpers
 import connector.TrustConnector
 import generators.Generators
+import javax.inject.Inject
 import mapping.{Registration, RegistrationMapper}
 import models.{RegistrationTRNResponse, UnableToRegister}
 import org.mockito.Matchers.any
@@ -28,10 +29,9 @@ import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
 
 import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, Future}
-import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.{Await, ExecutionContext, Future}
 
-class SubmissionServiceSpec extends FreeSpec with MustMatchers
+class SubmissionServiceSpec @Inject()(implicit val ec: ExecutionContext) extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers
 {
 

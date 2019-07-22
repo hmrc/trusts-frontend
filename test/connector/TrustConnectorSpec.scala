@@ -19,6 +19,7 @@ package connector
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
 import generators.Generators
+import javax.inject.Inject
 import mapping.{Mapping, Registration, RegistrationMapper}
 import models.{AlreadyRegistered, InternalServerError, RegistrationTRNResponse}
 import org.scalatest.concurrent.ScalaFutures
@@ -31,12 +32,10 @@ import play.api.test.Helpers.CONTENT_TYPE
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.{TestUserAnswers, WireMockHelper}
 
-import scala.concurrent.Await
+import scala.concurrent.{Await, ExecutionContext}
 import scala.concurrent.duration.Duration
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
-class TrustConnectorSpec extends FreeSpec with MustMatchers
+class TrustConnectorSpec @Inject()(implicit val ec: ExecutionContext) extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers with WireMockHelper with ScalaFutures {
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 

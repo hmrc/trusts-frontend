@@ -17,6 +17,7 @@
 package controllers.actions
 
 import base.SpecBase
+import javax.inject.Inject
 import models.requests.{IdentifierRequest, OptionalDataRequest}
 import org.mockito.Matchers._
 import org.mockito.Mockito._
@@ -25,10 +26,9 @@ import org.scalatest.mockito.MockitoSugar
 import repositories.SessionRepository
 import uk.gov.hmrc.auth.core.AffinityGroup
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
-class DataRetrievalActionSpec extends SpecBase with MockitoSugar with ScalaFutures {
+class DataRetrievalActionSpec @Inject()(implicit val ec: ExecutionContext) extends SpecBase with MockitoSugar with ScalaFutures {
 
   class Harness(sessionRepository: SessionRepository) extends DataRetrievalActionImpl(sessionRepository) {
     def callTransform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] = transform(request)
