@@ -16,11 +16,13 @@
 
 package pages
 
+import models.ShareClass
+import models.entities.Assets
 import play.api.libs.json.JsPath
 
-case object SharesOnStockExchangePage extends QuestionPage[Boolean] {
+final case class  SharesOnStockExchangePage(index : Int) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ Assets \ index \ toString
 
   override def toString: String = "sharesOnStockExchange"
 }

@@ -188,84 +188,84 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       )
   }
 
-  def sharesOnStockExchange: Option[AnswerRow] = userAnswers.get(SharesOnStockExchangePage) map {
+  def sharesOnStockExchange(index: Int): Option[AnswerRow] = userAnswers.get(SharesOnStockExchangePage(index)) map {
     x =>
       AnswerRow(
         "sharesOnStockExchange.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SharesOnStockExchangeController.onPageLoad(CheckMode, draftId).url
+        routes.SharesOnStockExchangeController.onPageLoad(CheckMode, index, draftId).url
       )
   }
 
-  def sharesInAPortfolio: Option[AnswerRow] = userAnswers.get(SharesInAPortfolioPage) map {
+  def sharesInAPortfolio(index: Int): Option[AnswerRow] = userAnswers.get(SharesInAPortfolioPage(index)) map {
     x =>
       AnswerRow(
         "sharesInAPortfolio.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SharesInAPortfolioController.onPageLoad(CheckMode, draftId).url
+        routes.SharesInAPortfolioController.onPageLoad(CheckMode, index, draftId).url
       )
   }
 
-  def shareValueInTrust: Option[AnswerRow] = userAnswers.get(ShareValueInTrustPage) map {
+  def shareValueInTrust(index: Int): Option[AnswerRow] = userAnswers.get(ShareValueInTrustPage(index)) map {
     x =>
       AnswerRow(
         "shareValueInTrust.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        routes.ShareValueInTrustController.onPageLoad(CheckMode, draftId).url
+        routes.ShareValueInTrustController.onPageLoad(CheckMode, index, draftId).url
       )
   }
 
-  def shareQuantityInTrust: Option[AnswerRow] = userAnswers.get(ShareQuantityInTrustPage) map {
+  def shareQuantityInTrust(index: Int): Option[AnswerRow] = userAnswers.get(ShareQuantityInTrustPage(index)) map {
     x =>
       AnswerRow(
         "shareQuantityInTrust.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        routes.ShareQuantityInTrustController.onPageLoad(CheckMode, draftId).url
+        routes.ShareQuantityInTrustController.onPageLoad(CheckMode, index, draftId).url
       )
   }
 
-  def sharePortfolioValueInTrust: Option[AnswerRow] = userAnswers.get(SharePortfolioValueInTrustPage) map {
+  def sharePortfolioValueInTrust(index: Int): Option[AnswerRow] = userAnswers.get(SharePortfolioValueInTrustPage(index)) map {
     x =>
       AnswerRow(
         "sharePortfolioValueInTrust.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        routes.SharePortfolioValueInTrustController.onPageLoad(CheckMode, draftId).url
+        routes.SharePortfolioValueInTrustController.onPageLoad(CheckMode, index, draftId).url
       )
   }
 
-  def sharePortfolioQuantityInTrust: Option[AnswerRow] = userAnswers.get(SharePortfolioQuantityInTrustPage) map {
+  def sharePortfolioQuantityInTrust(index: Int): Option[AnswerRow] = userAnswers.get(SharePortfolioQuantityInTrustPage(index)) map {
     x =>
       AnswerRow(
         "sharePortfolioQuantityInTrust.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        routes.SharePortfolioQuantityInTrustController.onPageLoad(CheckMode, draftId).url
+        routes.SharePortfolioQuantityInTrustController.onPageLoad(CheckMode, index, draftId).url
       )
   }
 
-  def sharePortfolioOnStockExchange: Option[AnswerRow] = userAnswers.get(SharePortfolioOnStockExchangePage) map {
+  def sharePortfolioOnStockExchange(index: Int): Option[AnswerRow] = userAnswers.get(SharePortfolioOnStockExchangePage(index)) map {
     x =>
       AnswerRow(
         "sharePortfolioOnStockExchange.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SharePortfolioOnStockExchangeController.onPageLoad(CheckMode, draftId).url
+        routes.SharePortfolioOnStockExchangeController.onPageLoad(CheckMode, index, draftId).url
       )
   }
 
-  def sharePortfolioName: Option[AnswerRow] = userAnswers.get(SharePortfolioNamePage) map {
+  def sharePortfolioName(index: Int): Option[AnswerRow] = userAnswers.get(SharePortfolioNamePage(index)) map {
     x =>
       AnswerRow(
         "sharePortfolioName.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        routes.SharePortfolioNameController.onPageLoad(CheckMode, draftId).url
+        routes.SharePortfolioNameController.onPageLoad(CheckMode, index, draftId).url
       )
   }
 
-  def shareClass: Option[AnswerRow] = userAnswers.get(ShareClassPage) map {
+  def shareClass(index: Int): Option[AnswerRow] = userAnswers.get(ShareClassPage(index)) map {
     x =>
       AnswerRow(
         "shareClass.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"shareClass.$x")),
-        routes.ShareClassController.onPageLoad(CheckMode, draftId).url
+        routes.ShareClassController.onPageLoad(CheckMode, index, draftId).url
       )
   }
 

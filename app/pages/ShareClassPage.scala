@@ -17,11 +17,12 @@
 package pages
 
 import models.ShareClass
+import models.entities.Assets
 import play.api.libs.json.JsPath
 
-case object ShareClassPage extends QuestionPage[ShareClass] {
+final case class ShareClassPage(index : Int) extends QuestionPage[ShareClass] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ Assets \ index \ toString
 
   override def toString: String = "shareClass"
 }

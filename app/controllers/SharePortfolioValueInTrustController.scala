@@ -17,6 +17,7 @@
 package controllers
 
 import controllers.actions._
+import controllers.filters.IndexActionFilterProvider
 import forms.SharePortfolioValueInTrustFormProvider
 import javax.inject.Inject
 import models.Mode
@@ -38,6 +39,7 @@ class SharePortfolioValueInTrustController @Inject()(
                                         identify: IdentifierAction,
                                         getData: DraftIdRetrievalActionProvider,
                                         requireData: DataRequiredAction,
+                                        validateIndex: IndexActionFilterProvider,
                                         formProvider: SharePortfolioValueInTrustFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: SharePortfolioValueInTrustView
@@ -45,29 +47,29 @@ class SharePortfolioValueInTrustController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(SharePortfolioValueInTrustPage) match {
+      val preparedForm = request.userAnswers.get(SharePortfolioValueInTrustPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId))
+      Ok(view(preparedForm, mode, draftId, index))
   }
 
-  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index))),
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(SharePortfolioValueInTrustPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(SharePortfolioValueInTrustPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SharePortfolioValueInTrustPage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(SharePortfolioValueInTrustPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

@@ -860,10 +860,10 @@ sharePortfolioName.checkYourAnswersLabel = sharePortfolioName
 sharePortfolioName.error.required = Enter sharePortfolioName
 sharePortfolioName.error.length = SharePortfolioName must be 100 characters or less
 
-sharePortfolioOnStockExchange.title = sharePortfolioOnStockExchange
-sharePortfolioOnStockExchange.heading = sharePortfolioOnStockExchange
-sharePortfolioOnStockExchange.checkYourAnswersLabel = sharePortfolioOnStockExchange
-sharePortfolioOnStockExchange.error.required = Select yes if sharePortfolioOnStockExchange
+sharePortfolioOnStockExchange.title = Are {0}’s shares listed on a stock exchange?
+sharePortfolioOnStockExchange.heading = Are {0}’s shares listed on a stock exchange?
+sharePortfolioOnStockExchange.checkYourAnswersLabel = Are {0}’s shares listed on a stock exchange?
+sharePortfolioOnStockExchange.error.required = Select yes if the shares are listed on a stock exchanged
 
 sharePortfolioQuantityInTrust.title = sharePortfolioQuantityInTrust
 sharePortfolioQuantityInTrust.heading = sharePortfolioQuantityInTrust

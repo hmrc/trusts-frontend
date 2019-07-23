@@ -34,6 +34,7 @@ class ShareQuantityInTrustControllerSpec extends SpecBase {
 
   val formProvider = new ShareQuantityInTrustFormProvider()
   val form = formProvider()
+  val index: Int = 0
 
   lazy val shareQuantityInTrustRoute = routes.ShareQuantityInTrustController.onPageLoad(NormalMode, fakeDraftId).url
 

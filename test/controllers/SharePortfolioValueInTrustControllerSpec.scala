@@ -34,6 +34,7 @@ class SharePortfolioValueInTrustControllerSpec extends SpecBase {
 
   val formProvider = new SharePortfolioValueInTrustFormProvider()
   val form = formProvider()
+  val index: Int = 0
 
   lazy val sharePortfolioValueInTrustRoute = routes.SharePortfolioValueInTrustController.onPageLoad(NormalMode, fakeDraftId).url
 

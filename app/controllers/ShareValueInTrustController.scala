@@ -17,6 +17,7 @@
 package controllers
 
 import controllers.actions._
+import controllers.filters.IndexActionFilterProvider
 import forms.ShareValueInTrustFormProvider
 import javax.inject.Inject
 import models.Mode
@@ -38,6 +39,7 @@ class ShareValueInTrustController @Inject()(
                                         identify: IdentifierAction,
                                         getData: DraftIdRetrievalActionProvider,
                                         requireData: DataRequiredAction,
+                                        validateIndex: IndexActionFilterProvider,
                                         formProvider: ShareValueInTrustFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: ShareValueInTrustView
@@ -45,29 +47,29 @@ class ShareValueInTrustController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(ShareValueInTrustPage) match {
+      val preparedForm = request.userAnswers.get(ShareValueInTrustPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId))
+      Ok(view(preparedForm, mode, draftId, index))
   }
 
-  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index))),
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ShareValueInTrustPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ShareValueInTrustPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ShareValueInTrustPage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(ShareValueInTrustPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

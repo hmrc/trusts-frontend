@@ -34,6 +34,7 @@ class SharePortfolioNameControllerSpec extends SpecBase {
 
   val formProvider = new SharePortfolioNameFormProvider()
   val form = formProvider()
+  val index: Int = 0
 
   lazy val sharePortfolioNameRoute = routes.SharePortfolioNameController.onPageLoad(NormalMode, fakeDraftId).url
 

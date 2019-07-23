@@ -17,6 +17,7 @@
 package controllers
 
 import controllers.actions._
+import controllers.filters.IndexActionFilterProvider
 import forms.SharePortfolioOnStockExchangeFormProvider
 import javax.inject.Inject
 import models.{Mode, UserAnswers}
@@ -38,6 +39,7 @@ class SharePortfolioOnStockExchangeController @Inject()(
                                          identify: IdentifierAction,
                                          getData: DraftIdRetrievalActionProvider,
                                          requireData: DataRequiredAction,
+                                         validateIndex: IndexActionFilterProvider,
                                          formProvider: SharePortfolioOnStockExchangeFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: SharePortfolioOnStockExchangeView
@@ -45,29 +47,31 @@ class SharePortfolioOnStockExchangeController @Inject()(
 
   val form: Form[Boolean] = formProvider()
 
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(SharePortfolioOnStockExchangePage) match {
+//      val name = request.userAnswers.get(AssetsShareCompanyNameController(index)).get
+
+      val preparedForm = request.userAnswers.get(SharePortfolioOnStockExchangePage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId))
+      Ok(view(preparedForm, mode, draftId, index))
   }
 
-  def onSubmit(mode: Mode, draftId: String) = (identify andThen getData(draftId) andThen requireData).async {
+  def onSubmit(mode: Mode, index: Int, draftId: String) = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index))),
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(SharePortfolioOnStockExchangePage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(SharePortfolioOnStockExchangePage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SharePortfolioOnStockExchangePage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(SharePortfolioOnStockExchangePage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

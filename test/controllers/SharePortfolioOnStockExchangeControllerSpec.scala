@@ -34,6 +34,7 @@ class SharePortfolioOnStockExchangeControllerSpec extends SpecBase {
 
   val formProvider = new SharePortfolioOnStockExchangeFormProvider()
   val form = formProvider()
+  val index: Int = 0
 
   lazy val sharePortfolioOnStockExchangeRoute = routes.SharePortfolioOnStockExchangeController.onPageLoad(NormalMode, fakeDraftId).url
 
@@ -150,5 +151,20 @@ class SharePortfolioOnStockExchangeControllerSpec extends SpecBase {
 
       application.stop()
     }
+
+//    "redirect to AssetsShareCompanyNamePage when company name is not answered" in {
+//
+//      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+//
+//      val request = FakeRequest(GET, AssetsShareCompanyNameController)
+//
+//      val result = route(application, request).value
+//
+//      status(result) mustEqual SEE_OTHER
+//
+//      redirectLocation(result).value mustEqual routes.AssetsShareCompanyNameController.onPageLoad(NormalMode, index, fakeDraftId).url
+//
+//      application.stop()
+//    }
   }
 }

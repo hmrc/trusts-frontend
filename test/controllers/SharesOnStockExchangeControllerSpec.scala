@@ -34,6 +34,7 @@ class SharesOnStockExchangeControllerSpec extends SpecBase {
 
   val formProvider = new SharesOnStockExchangeFormProvider()
   val form = formProvider()
+  val index: Int = 0
 
   lazy val sharesOnStockExchangeRoute = routes.SharesOnStockExchangeController.onPageLoad(NormalMode, fakeDraftId).url
 

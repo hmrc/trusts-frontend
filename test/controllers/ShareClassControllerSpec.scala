@@ -36,6 +36,7 @@ class ShareClassControllerSpec extends SpecBase {
 
   val formProvider = new ShareClassFormProvider()
   val form = formProvider()
+  val index: Int = 0
 
   "ShareClass Controller" must {
 
