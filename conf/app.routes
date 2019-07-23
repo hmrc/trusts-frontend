@@ -424,3 +424,6 @@ GET        /:draftId/asset/:index/sharesOnStockExchange                        c
 POST       /:draftId/asset/:index/sharesOnStockExchange                        controllers.SharesOnStockExchangeController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
 GET        /:draftId/asset/:index/changeSharesOnStockExchange                  controllers.SharesOnStockExchangeController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
 POST       /:draftId/asset/:index/changeSharesOnStockExchange                  controllers.SharesOnStockExchangeController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+
+GET       /:draftId/asset/:index/check-share-answers                           controllers.ShareAnswerController.onPageLoad(mode : Mode = NormalMode, index : Int, draftId : String)
+POST      /:draftId/asset/:index/check-share-answers                           controllers.ShareAnswerController.onSubmit(mode : Mode = NormalMode, index : Int, draftId : String)

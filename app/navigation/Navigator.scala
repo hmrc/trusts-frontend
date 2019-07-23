@@ -81,6 +81,11 @@ class Navigator @Inject()() {
     //Assets
     case AssetMoneyValuePage(index) => _ => ua => assetMoneyValueRoute(ua, index, draftId)
     case WhatKindOfAssetPage(index) => _ => ua => whatKindOfAssetRoute(ua, index, draftId)
+    case SharesInAPortfolioPage(index) => _ => ua => routes.SharePortfolioNameController.onPageLoad(NormalMode, index, draftId)
+    case SharePortfolioNamePage(index) => _ => ua => routes.SharePortfolioOnStockExchangeController.onPageLoad(NormalMode, index, draftId)
+    case SharePortfolioOnStockExchangePage(index) => _ => ua => routes.SharePortfolioQuantityInTrustController.onPageLoad(NormalMode, index, draftId)
+    case SharePortfolioQuantityInTrustPage(index) => _ => _ => routes.SharePortfolioValueInTrustController.onPageLoad(NormalMode, index, draftId)
+    case SharePortfolioValueInTrustPage(index) => _ => _ => routes.ShareAnswerController.onPageLoad(index, draftId)
     case AddAssetsPage => _ => addAssetsRoute(draftId)
 
     //Settlors
@@ -268,7 +273,7 @@ class Navigator @Inject()() {
   private def whatKindOfAssetRoute(answers: UserAnswers, index: Int, draftId: String) = answers.get(WhatKindOfAssetPage(index)) match {
       case Some(Money) => routes.AssetMoneyValueController.onPageLoad(NormalMode, index, draftId)
       case Some(PropertyOrLand) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
-      case Some(Shares) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
+      case Some(Shares) => routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, draftId)
       case Some(Business) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
       case Some(Partnership) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
       case Some(Other) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)

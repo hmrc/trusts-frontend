@@ -20,11 +20,10 @@ package navigation.navigators
 import base.SpecBase
 import controllers.routes
 import generators.Generators
-import models.WhatKindOfAsset.Money
-import models.{NormalMode, UserAnswers, AddAssets}
+import models.WhatKindOfAsset.{Money, Shares}
+import models.{AddAssets, NormalMode, UserAnswers}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalacheck.Gen
 import org.scalatest.prop.PropertyChecks
 import pages._
 
@@ -34,37 +33,110 @@ trait AssetRoutes {
 
   def assetRoutes()(implicit navigator: Navigator) = {
 
+    "money assets" must {
 
-    "go to AddAssetsPage from AssetMoneyValue page when the amount submitted" in {
+      "go to AssetMoneyValuePage from WhatKindOfAsset page when the money option is selected" in {
+        val index = 0
 
-      val index = 0
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
 
-      forAll(arbitrary[UserAnswers]) {
-        userAnswers =>
+            val answers = userAnswers.set(WhatKindOfAssetPage(index), Money).success.value
 
-          val answers = userAnswers.set(WhatKindOfAssetPage(index), Money).success.value
-
-          navigator.nextPage(AssetMoneyValuePage(index), NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.AddAssetsController.onPageLoad(fakeDraftId))
-
+            navigator.nextPage(WhatKindOfAssetPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.AssetMoneyValueController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
       }
+
+      "go to AddAssetsPage from AssetMoneyValue page when the amount submitted" in {
+
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(WhatKindOfAssetPage(index), Money).success.value
+
+            navigator.nextPage(AssetMoneyValuePage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.AddAssetsController.onPageLoad(fakeDraftId))
+
+        }
+      }
+
     }
 
-    "go to AssetMoneyValuePage from WhatKindOfAsset page when the money option is selected" in {
-      val index = 0
+    "share assets" must {
 
-      forAll(arbitrary[UserAnswers]) {
-        userAnswers =>
+      "go to SharesInAPortfolio from WhatKindOfAsset when share option is selected" in {
+        val index = 0
 
-          val answers = userAnswers.set(WhatKindOfAssetPage(index), Money).success.value
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
 
-          navigator.nextPage(WhatKindOfAssetPage(index), NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.AssetMoneyValueController.onPageLoad(NormalMode, index, fakeDraftId))
+            val answers = userAnswers.set(WhatKindOfAssetPage(index), Shares).success.value
+
+            navigator.nextPage(WhatKindOfAssetPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
       }
+
+      "go to SharePortfolioName from SharesInAPortfolio when user answers yes" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(SharesInAPortfolioPage(index), true).success.value
+
+            navigator.nextPage(SharesInAPortfolioPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.SharePortfolioNameController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+
+      "go to SharePortfolioOnStockExchange from SharePortfolioName" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            navigator.nextPage(SharePortfolioNamePage(index), NormalMode, fakeDraftId)(userAnswers)
+              .mustBe(routes.SharePortfolioOnStockExchangeController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+
+      "go to SharePortfolioQuantityInTrust from SharePortfolioOnStockExchange" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            navigator.nextPage(SharePortfolioOnStockExchangePage(index), NormalMode, fakeDraftId)(userAnswers)
+              .mustBe(routes.SharePortfolioQuantityInTrustController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+
+      "go to SharePortfolioValueInTrust from SharePortfolioQuantityInTrust" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            navigator.nextPage(SharePortfolioQuantityInTrustPage(index), NormalMode, fakeDraftId)(userAnswers)
+              .mustBe(routes.SharePortfolioValueInTrustController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+
+      "go to ShareAnswers from SharePortfolioValueInTrust" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            navigator.nextPage(SharePortfolioValueInTrustPage(index), NormalMode, fakeDraftId)(userAnswers)
+              .mustBe(routes.ShareAnswerController.onPageLoad(index, fakeDraftId))
+        }
+      }
+
     }
 
 
-   "there is atleast one assets" must {
+   "add another asset" must {
 
       "go to the WhatKindOfAssetPage from AddAssetsPage when selected add them now" in {
 
