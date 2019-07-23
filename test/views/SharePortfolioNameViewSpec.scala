@@ -30,17 +30,19 @@ class SharePortfolioNameViewSpec extends StringViewBehaviours {
 
   val form = new SharePortfolioNameFormProvider()()
 
+  val index = 0
+
   "SharePortfolioNameView view" must {
 
     val view = viewFor[SharePortfolioNameView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.SharePortfolioNameController.onSubmit(NormalMode, fakeDraftId).url)
+    behave like stringPage(form, applyView, messageKeyPrefix, routes.SharePortfolioNameController.onSubmit(NormalMode, index, fakeDraftId).url)
   }
 }

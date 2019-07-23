@@ -23,10 +23,10 @@ class SharePortfolioQuantityInTrustPageSpec extends PageBehaviours {
 
   "SharePortfolioQuantityInTrustPage" must {
 
-    beRetrievable[String](SharePortfolioQuantityInTrustPage)
+    beRetrievable[String](SharePortfolioQuantityInTrustPage(0))
 
-    beSettable[String](SharePortfolioQuantityInTrustPage)
+    beSettable[String](SharePortfolioQuantityInTrustPage(0))
 
-    beRemovable[String](SharePortfolioQuantityInTrustPage)
+    beRemovable[String](SharePortfolioQuantityInTrustPage(0))
   }
 }

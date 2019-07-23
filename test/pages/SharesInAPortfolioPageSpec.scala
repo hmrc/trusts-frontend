@@ -22,10 +22,10 @@ class SharesInAPortfolioPageSpec extends PageBehaviours {
 
   "SharesInAPortfolioPage" must {
 
-    beRetrievable[Boolean](SharesInAPortfolioPage)
+    beRetrievable[Boolean](SharesInAPortfolioPage(0))
 
-    beSettable[Boolean](SharesInAPortfolioPage)
+    beSettable[Boolean](SharesInAPortfolioPage(0))
 
-    beRemovable[Boolean](SharesInAPortfolioPage)
+    beRemovable[Boolean](SharesInAPortfolioPage(0))
   }
 }

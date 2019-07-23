@@ -28,7 +28,7 @@
     title = s"${errorPrefix(form)} ${messages("shareQuantityInTrust.title")}"
     ) {
 
-    @formHelper(action = ShareQuantityInTrustController.onSubmit(mode, draftId, index), 'autoComplete -> "off") {
+    @formHelper(action = ShareQuantityInTrustController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 

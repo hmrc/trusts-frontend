@@ -19,14 +19,14 @@ package pages
 import models.ShareClass
 import pages.behaviours.PageBehaviours
 
-class ShareClassSpec extends PageBehaviours {
+class ShareClassPageSpec extends PageBehaviours {
 
   "ShareClassPage" must {
 
-    beRetrievable[ShareClass](ShareClassPage)
+    beRetrievable[ShareClass](ShareClassPage(0))
 
-    beSettable[ShareClass](ShareClassPage)
+    beSettable[ShareClass](ShareClassPage(0))
 
-    beRemovable[ShareClass](ShareClassPage)
+    beRemovable[ShareClass](ShareClassPage(0))
   }
 }

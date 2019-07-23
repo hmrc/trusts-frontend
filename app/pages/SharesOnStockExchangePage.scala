@@ -16,7 +16,6 @@
 
 package pages
 
-import models.ShareClass
 import models.entities.Assets
 import play.api.libs.json.JsPath
 

@@ -22,10 +22,10 @@ class SharesOnStockExchangePageSpec extends PageBehaviours {
 
   "SharesOnStockExchangePage" must {
 
-    beRetrievable[Boolean](SharesOnStockExchangePage)
+    beRetrievable[Boolean](SharesOnStockExchangePage(0))
 
-    beSettable[Boolean](SharesOnStockExchangePage)
+    beSettable[Boolean](SharesOnStockExchangePage(0))
 
-    beRemovable[Boolean](SharesOnStockExchangePage)
+    beRemovable[Boolean](SharesOnStockExchangePage(0))
   }
 }

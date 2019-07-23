@@ -23,10 +23,10 @@ class SharePortfolioNamePageSpec extends PageBehaviours {
 
   "SharePortfolioNamePage" must {
 
-    beRetrievable[String](SharePortfolioNamePage)
+    beRetrievable[String](SharePortfolioNamePage(0))
 
-    beSettable[String](SharePortfolioNamePage)
+    beSettable[String](SharePortfolioNamePage(0))
 
-    beRemovable[String](SharePortfolioNamePage)
+    beRemovable[String](SharePortfolioNamePage(0))
   }
 }

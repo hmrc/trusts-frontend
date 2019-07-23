@@ -30,17 +30,19 @@ class SharePortfolioQuantityInTrustViewSpec extends StringViewBehaviours {
 
   val form = new SharePortfolioQuantityInTrustFormProvider()()
 
+  val index = 0
+
   "SharePortfolioQuantityInTrustView view" must {
 
     val view = viewFor[SharePortfolioQuantityInTrustView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.SharePortfolioQuantityInTrustController.onSubmit(NormalMode, fakeDraftId).url)
+    behave like stringPage(form, applyView, messageKeyPrefix, routes.SharePortfolioQuantityInTrustController.onSubmit(NormalMode, index, fakeDraftId).url)
   }
 }

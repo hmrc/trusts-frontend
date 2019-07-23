@@ -22,10 +22,10 @@ class SharePortfolioOnStockExchangePageSpec extends PageBehaviours {
 
   "SharePortfolioOnStockExchangePage" must {
 
-    beRetrievable[Boolean](SharePortfolioOnStockExchangePage)
+    beRetrievable[Boolean](SharePortfolioOnStockExchangePage(0))
 
-    beSettable[Boolean](SharePortfolioOnStockExchangePage)
+    beSettable[Boolean](SharePortfolioOnStockExchangePage(0))
 
-    beRemovable[Boolean](SharePortfolioOnStockExchangePage)
+    beRemovable[Boolean](SharePortfolioOnStockExchangePage(0))
   }
 }
