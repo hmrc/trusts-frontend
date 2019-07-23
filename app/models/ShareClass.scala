@@ -26,7 +26,7 @@ object ShareClass extends Enumerable.Implicits {
   case object Class extends WithName("class") with ShareClass
 
   val values: List[ShareClass] = List(
-    Class, Class
+    Class
   )
 
   val options: List[RadioOption] = values.map {
