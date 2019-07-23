@@ -27,6 +27,15 @@ trait UserAnswersGenerator extends TryValues {
   self: Generators =>
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
+    arbitrary[(SharesOnStockExchangePage.type, JsValue)] ::
+    arbitrary[(SharesInAPortfolioPage.type, JsValue)] ::
+    arbitrary[(ShareValueInTrustPage.type, JsValue)] ::
+    arbitrary[(ShareQuantityInTrustPage.type, JsValue)] ::
+    arbitrary[(SharePortfolioValueInTrustPage.type, JsValue)] ::
+    arbitrary[(SharePortfolioQuantityInTrustPage.type, JsValue)] ::
+    arbitrary[(SharePortfolioOnStockExchangePage.type, JsValue)] ::
+    arbitrary[(SharePortfolioNamePage.type, JsValue)] ::
+    arbitrary[(ShareClassPage.type, JsValue)] ::
     arbitrary[(DeclarationPage.type, JsValue)] ::
     arbitrary[(WhatTypeOfBeneficiaryPage.type, JsValue)] ::
     arbitrary[(AgentInternationalAddressPage.type, JsValue)] ::

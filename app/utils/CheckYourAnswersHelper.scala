@@ -23,16 +23,16 @@ import javax.inject.Inject
 import models.entities._
 import models.{CheckMode, InternationalAddress, UKAddress, UserAnswers}
 import pages._
+import utils.CheckYourAnswersHelper._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
 import uk.gov.hmrc.domain.Nino
-import utils.CheckYourAnswersHelper.{indBeneficiaryName, trusteeName, _}
 import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
                                       (userAnswers: UserAnswers, draftId : String, canEdit: Boolean = true)
-                                      (implicit messages: Messages)  {
+                                      (implicit messages: Messages) {
 
   def trustDetails : Option[Seq[AnswerSection]] = {
     val questions = Seq(
@@ -156,7 +156,6 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
     }
   }
 
-
   def moneyAsset : Option[Seq[AnswerSection]] = {
     val questions = Seq(
       assetMoneyValue(0)
@@ -186,6 +185,87 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         HtmlFormat.escape(x),
         routes.ClassBeneficiaryDescriptionController.onPageLoad(CheckMode,index, draftId).url,
         canEdit = canEdit
+      )
+  }
+
+  def sharesOnStockExchange: Option[AnswerRow] = userAnswers.get(SharesOnStockExchangePage) map {
+    x =>
+      AnswerRow(
+        "sharesOnStockExchange.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.SharesOnStockExchangeController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def sharesInAPortfolio: Option[AnswerRow] = userAnswers.get(SharesInAPortfolioPage) map {
+    x =>
+      AnswerRow(
+        "sharesInAPortfolio.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.SharesInAPortfolioController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def shareValueInTrust: Option[AnswerRow] = userAnswers.get(ShareValueInTrustPage) map {
+    x =>
+      AnswerRow(
+        "shareValueInTrust.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.ShareValueInTrustController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def shareQuantityInTrust: Option[AnswerRow] = userAnswers.get(ShareQuantityInTrustPage) map {
+    x =>
+      AnswerRow(
+        "shareQuantityInTrust.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.ShareQuantityInTrustController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def sharePortfolioValueInTrust: Option[AnswerRow] = userAnswers.get(SharePortfolioValueInTrustPage) map {
+    x =>
+      AnswerRow(
+        "sharePortfolioValueInTrust.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.SharePortfolioValueInTrustController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def sharePortfolioQuantityInTrust: Option[AnswerRow] = userAnswers.get(SharePortfolioQuantityInTrustPage) map {
+    x =>
+      AnswerRow(
+        "sharePortfolioQuantityInTrust.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.SharePortfolioQuantityInTrustController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def sharePortfolioOnStockExchange: Option[AnswerRow] = userAnswers.get(SharePortfolioOnStockExchangePage) map {
+    x =>
+      AnswerRow(
+        "sharePortfolioOnStockExchange.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.SharePortfolioOnStockExchangeController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def sharePortfolioName: Option[AnswerRow] = userAnswers.get(SharePortfolioNamePage) map {
+    x =>
+      AnswerRow(
+        "sharePortfolioName.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.SharePortfolioNameController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def shareClass: Option[AnswerRow] = userAnswers.get(ShareClassPage) map {
+    x =>
+      AnswerRow(
+        "shareClass.checkYourAnswersLabel",
+        HtmlFormat.escape(messages(s"shareClass.$x")),
+        routes.ShareClassController.onPageLoad(CheckMode).url
       )
   }
 
@@ -723,40 +803,41 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
 
 object CheckYourAnswersHelper {
 
-  private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
+  val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
 
-  private def yesOrNo(answer: Boolean)(implicit messages: Messages): Html =
+  def yesOrNo(answer: Boolean)(implicit messages: Messages): Html = {
     if (answer) {
       HtmlFormat.escape(messages("site.yes"))
     } else {
       HtmlFormat.escape(messages("site.no"))
     }
+  }
 
-  private def formatNino(nino: String): String = Nino(nino).formatted
+  def formatNino(nino: String): String = Nino(nino).formatted
 
-  private def country(code : String, countryOptions: CountryOptions) : String =
+  def country(code : String, countryOptions: CountryOptions) : String =
     countryOptions.options.find(_.value.equals(code)).map(_.label).getOrElse("")
 
-  private def trusteeName(index: Int, userAnswers: UserAnswers): String =
+  def trusteeName(index: Int, userAnswers: UserAnswers): String =
     userAnswers.get(TrusteesNamePage(index)).get.toString
 
-  private def answer[T](key : String, answer: T)(implicit messages: Messages) : Html =
+  def answer[T](key : String, answer: T)(implicit messages: Messages) : Html =
     HtmlFormat.escape(messages(s"$key.$answer"))
 
-  private def escape(x : String) = HtmlFormat.escape(x)
+  def escape(x : String) = HtmlFormat.escape(x)
 
-  private def deceasedSettlorName(userAnswers: UserAnswers): String =
+  def deceasedSettlorName(userAnswers: UserAnswers): String =
     userAnswers.get(SettlorsNamePage).get.toString
 
-  private def indBeneficiaryName(index: Int, userAnswers: UserAnswers): String = {
+  def indBeneficiaryName(index: Int, userAnswers: UserAnswers): String = {
     userAnswers.get(IndividualBeneficiaryNamePage(index)).get.toString
   }
 
-  private def agencyName(userAnswers: UserAnswers): String = {
+  def agencyName(userAnswers: UserAnswers): String = {
     userAnswers.get(AgentNamePage).get.toString
   }
 
-  private def ukAddress(address: UKAddress): Html = {
+  def ukAddress(address: UKAddress): Html = {
     val lines =
       Seq(
         Some(HtmlFormat.escape(address.line1)),
@@ -769,7 +850,7 @@ object CheckYourAnswersHelper {
     Html(lines.mkString("<br />"))
   }
 
-  private def internationalAddress(address: InternationalAddress, countryOptions: CountryOptions): Html = {
+  def internationalAddress(address: InternationalAddress, countryOptions: CountryOptions): Html = {
     val lines =
       Seq(
         Some(HtmlFormat.escape(address.line1)),
