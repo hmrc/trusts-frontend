@@ -35,7 +35,7 @@ class SharesInAPortfolioControllerSpec extends SpecBase {
   val formProvider = new SharesInAPortfolioFormProvider()
   val form = formProvider()
 
-  lazy val sharesInAPortfolioRoute = routes.SharesInAPortfolioController.onPageLoad(NormalMode).url
+  lazy val sharesInAPortfolioRoute = routes.SharesInAPortfolioController.onPageLoad(NormalMode, fakeDraftId).url
 
   "SharesInAPortfolio Controller" must {
 
@@ -52,7 +52,7 @@ class SharesInAPortfolioControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -72,7 +72,7 @@ class SharesInAPortfolioControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -114,7 +114,7 @@ class SharesInAPortfolioControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }

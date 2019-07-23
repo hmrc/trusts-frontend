@@ -45,7 +45,7 @@ class SharePortfolioValueInTrustController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(SharePortfolioValueInTrustPage) match {
@@ -56,7 +56,7 @@ class SharePortfolioValueInTrustController @Inject()(
       Ok(view(preparedForm, mode, draftId))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -67,7 +67,7 @@ class SharePortfolioValueInTrustController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(SharePortfolioValueInTrustPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SharePortfolioValueInTrustPage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(SharePortfolioValueInTrustPage, mode, draftId)(updatedAnswers))
         }
       )
   }

@@ -22,13 +22,13 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("sharePortfolioOnStockExchange.title")}"
     ) {
 
-    @formHelper(action = SharePortfolioOnStockExchangeController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = SharePortfolioOnStockExchangeController.onSubmit(mode, draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 
@@ -39,7 +39,7 @@
         @components.input_yes_no(
             field = form("value"),
             label = messages("sharePortfolioOnStockExchange.heading"),
-            labelClass = Some("visually-hidden")
+            legendClass = Some("visually-hidden")
         )
 
         @components.submit_button()

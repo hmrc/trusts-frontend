@@ -193,7 +193,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "sharesOnStockExchange.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SharesOnStockExchangeController.onPageLoad(CheckMode).url
+        routes.SharesOnStockExchangeController.onPageLoad(CheckMode, draftId).url
       )
   }
 
@@ -202,7 +202,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "sharesInAPortfolio.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SharesInAPortfolioController.onPageLoad(CheckMode).url
+        routes.SharesInAPortfolioController.onPageLoad(CheckMode, draftId).url
       )
   }
 
@@ -211,7 +211,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "shareValueInTrust.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        routes.ShareValueInTrustController.onPageLoad(CheckMode).url
+        routes.ShareValueInTrustController.onPageLoad(CheckMode, draftId).url
       )
   }
 
@@ -220,7 +220,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "shareQuantityInTrust.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        routes.ShareQuantityInTrustController.onPageLoad(CheckMode).url
+        routes.ShareQuantityInTrustController.onPageLoad(CheckMode, draftId).url
       )
   }
 
@@ -229,7 +229,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "sharePortfolioValueInTrust.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        routes.SharePortfolioValueInTrustController.onPageLoad(CheckMode).url
+        routes.SharePortfolioValueInTrustController.onPageLoad(CheckMode, draftId).url
       )
   }
 
@@ -238,7 +238,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "sharePortfolioQuantityInTrust.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        routes.SharePortfolioQuantityInTrustController.onPageLoad(CheckMode).url
+        routes.SharePortfolioQuantityInTrustController.onPageLoad(CheckMode, draftId).url
       )
   }
 
@@ -247,7 +247,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "sharePortfolioOnStockExchange.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SharePortfolioOnStockExchangeController.onPageLoad(CheckMode).url
+        routes.SharePortfolioOnStockExchangeController.onPageLoad(CheckMode, draftId).url
       )
   }
 
@@ -256,7 +256,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "sharePortfolioName.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        routes.SharePortfolioNameController.onPageLoad(CheckMode).url
+        routes.SharePortfolioNameController.onPageLoad(CheckMode, draftId).url
       )
   }
 
@@ -265,7 +265,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "shareClass.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"shareClass.$x")),
-        routes.ShareClassController.onPageLoad(CheckMode).url
+        routes.ShareClassController.onPageLoad(CheckMode, draftId).url
       )
   }
 

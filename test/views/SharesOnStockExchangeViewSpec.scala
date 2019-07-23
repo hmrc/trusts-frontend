@@ -35,12 +35,12 @@ class SharesOnStockExchangeViewSpec extends YesNoViewBehaviours {
     val view = viewFor[SharesOnStockExchangeView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.SharesOnStockExchangeController.onSubmit(NormalMode).url)
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.SharesOnStockExchangeController.onSubmit(NormalMode, fakeDraftId).url)
   }
 }

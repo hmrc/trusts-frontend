@@ -35,7 +35,7 @@ class SharePortfolioValueInTrustControllerSpec extends SpecBase {
   val formProvider = new SharePortfolioValueInTrustFormProvider()
   val form = formProvider()
 
-  lazy val sharePortfolioValueInTrustRoute = routes.SharePortfolioValueInTrustController.onPageLoad(NormalMode).url
+  lazy val sharePortfolioValueInTrustRoute = routes.SharePortfolioValueInTrustController.onPageLoad(NormalMode, fakeDraftId).url
 
   "SharePortfolioValueInTrust Controller" must {
 
@@ -52,7 +52,7 @@ class SharePortfolioValueInTrustControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -72,7 +72,7 @@ class SharePortfolioValueInTrustControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill("answer"), NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -113,7 +113,7 @@ class SharePortfolioValueInTrustControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }

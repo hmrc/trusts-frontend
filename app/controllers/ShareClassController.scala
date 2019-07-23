@@ -45,7 +45,7 @@ class ShareClassController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(ShareClassPage) match {
@@ -56,7 +56,7 @@ class ShareClassController @Inject()(
       Ok(view(preparedForm, mode, draftId))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode,  draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -67,7 +67,7 @@ class ShareClassController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ShareClassPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ShareClassPage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(ShareClassPage, mode, draftId)(updatedAnswers))
         }
       )
   }

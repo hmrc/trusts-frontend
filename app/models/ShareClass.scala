@@ -24,7 +24,6 @@ sealed trait ShareClass
 object ShareClass extends Enumerable.Implicits {
 
   case object Class extends WithName("class") with ShareClass
-  case object Class extends WithName("class") with ShareClass
 
   val values: List[ShareClass] = List(
     Class, Class

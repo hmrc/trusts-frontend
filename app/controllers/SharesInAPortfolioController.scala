@@ -45,7 +45,7 @@ class SharesInAPortfolioController @Inject()(
 
   val form: Form[Boolean] = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(SharesInAPortfolioPage) match {
@@ -56,7 +56,7 @@ class SharesInAPortfolioController @Inject()(
       Ok(view(preparedForm, mode, draftId))
   }
 
-  def onSubmit(mode: Mode) = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode, draftId: String) = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -67,7 +67,7 @@ class SharesInAPortfolioController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(SharesInAPortfolioPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SharesInAPortfolioPage, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(SharesInAPortfolioPage, mode, draftId)(updatedAnswers))
         }
       )
   }
