@@ -30,9 +30,7 @@ import uk.gov.hmrc.domain.Nino
 import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 
-class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
-                                      (userAnswers: UserAnswers, draftId : String, canEdit: Boolean = true)
-                                      (implicit messages: Messages) {
+class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers, draftId : String, canEdit: Boolean = true)(implicit messages: Messages) {
 
   def trustDetails : Option[Seq[AnswerSection]] = {
     val questions = Seq(
