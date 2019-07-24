@@ -28,7 +28,7 @@ class $className$ControllerSpec extends SpecBase with MockitoSugar {
 
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
 
-  lazy val $className;format="decap"$Route = routes.$className$Controller.onPageLoad(NormalMode).url
+  lazy val $className;format="decap"$Route = routes.$className$Controller.onPageLoad(NormalMode, fakeDraftId).url
 
   "$className$ Controller" must {
 
@@ -45,7 +45,7 @@ class $className$ControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -65,7 +65,7 @@ class $className$ControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(validAnswer), NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -113,7 +113,7 @@ class $className$ControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
