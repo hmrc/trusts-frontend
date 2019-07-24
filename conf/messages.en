@@ -847,14 +847,6 @@ answerPage.section.classOfBeneficiary.subheading = Class of beneficiary
 answerPage.section.assets.heading = Assets
 answerPage.section.moneyAsset.subheading = Money
 answerPage.agentClientRef = Client reference number: {0}
-shareClass.title = What class are the shares
-shareClass.heading = What class are the shares
-shareClass.class = Ordinary
-shareClass.class = Preference
-shareClass.checkYourAnswersLabel = What class are the shares
-shareClass.error.required = Select shareClass
-
-
 
 sharePortfolioName.title = What is the share portfolio’s name?
 sharePortfolioName.heading = What is the share portfolio’s name?
@@ -885,26 +877,40 @@ sharePortfolioValueInTrust.error.length = Total assets value must be 12 numbers 
 sharePortfolioValueInTrust.error.invalid = Total assets value must be a number
 sharePortfolioValueInTrust.hint = Rounded down to the nearest pound. For example, 4000
 
+sharesOnStockExchange.title = Are {0}’s shares listed on a stock exchange?
+sharesOnStockExchange.heading = Are {0}’s shares listed on a stock exchange?
+sharesOnStockExchange.checkYourAnswersLabel = Are {0}’s shares listed on a stock exchange?
+sharesOnStockExchange.error.required = Select yes if the shares are listed on a stock exchanged
+shareQuantityInTrust.hint = A quoted share is listed on a stock exchange
 
+shareClass.title = What class are the {0} shares?
+shareClass.heading = What class are the {0} shares?
+shareClass.ordinary = Ordinary
+shareClass.preference = Preference
+shareClass.deferred = Deferred
+shareClass.growth = Growth
+shareClass.other = Other
+shareClass.checkYourAnswersLabel = What class are the {0} shares?
+shareClass.error.required = Select the class of shares
 
-shareQuantityInTrust.title = shareQuantityInTrust
-shareQuantityInTrust.heading = shareQuantityInTrust
-shareQuantityInTrust.checkYourAnswersLabel = shareQuantityInTrust
-shareQuantityInTrust.error.required = Enter shareQuantityInTrust
-shareQuantityInTrust.error.length = ShareQuantityInTrust must be 12 characters or less
+shareQuantityInTrust.title = How many {0} shares are in the trust?
+shareQuantityInTrust.heading = How many {0} shares are in the trust?
+shareQuantityInTrust.checkYourAnswersLabel = How many {0} shares are in the trust?
+shareQuantityInTrust.hint = Add together the total number of shares across all share holdings. This can be an estimate.
+shareQuantityInTrust.error.invalid = Total assets value must be a number
+shareQuantityInTrust.error.length =Total assets value must be 12 numbers or less
+shareQuantityInTrust.error.required = Enter the current number of shares in the trust
 
-shareValueInTrust.title = shareValueInTrust
-shareValueInTrust.heading = shareValueInTrust
-shareValueInTrust.checkYourAnswersLabel = shareValueInTrust
-shareValueInTrust.error.required = Enter shareValueInTrust
+shareValueInTrust.title = What is the current value of {0} shares in the trust?
+shareValueInTrust.heading = What is the current value of {0} shares in the trust?
+shareValueInTrust.checkYourAnswersLabel = What is the current value of {0} shares in the trust?
+shareValueInTrust.hint = Rounded down to the nearest pound. For example, 4000
+shareValueInTrust.error.required = Enter the current value of the shares in the trust
 shareValueInTrust.error.length = ShareValueInTrust must be 12 characters or less
+shareValueInTrust.error.invalid = Total assets value must be a number
 
 sharesInAPortfolio.title = Are the shares in a portfolio?
 sharesInAPortfolio.heading = Are the shares in a portfolio?
 sharesInAPortfolio.checkYourAnswersLabel = Are the shares in a portfolio?
 sharesInAPortfolio.error.required = Select yes if the shares are in a portfolio
 
-sharesOnStockExchange.title = sharesOnStockExchange
-sharesOnStockExchange.heading = sharesOnStockExchange
-sharesOnStockExchange.checkYourAnswersLabel = sharesOnStockExchange
-sharesOnStockExchange.error.required = Select yes if sharesOnStockExchange

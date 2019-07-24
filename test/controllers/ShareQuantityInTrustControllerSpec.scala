@@ -87,7 +87,7 @@ class ShareQuantityInTrustControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, shareQuantityInTrustRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("value", "12345"))
 
       val result = route(application, request).value
 
