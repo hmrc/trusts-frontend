@@ -23,5 +23,5 @@ final case class  SharePortfolioValueInTrustPage(index : Int) extends QuestionPa
 
   override def path: JsPath = JsPath \ Assets \ index \ toString
 
-  override def toString: String = "sharePortfolioValueInTrust"
+  override def toString: String = "valueInTheTrust"
 }

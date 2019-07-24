@@ -23,5 +23,5 @@ final case class  SharePortfolioOnStockExchangePage(index : Int) extends Questio
 
   override def path: JsPath = JsPath \ Assets \ index \ toString
 
-  override def toString: String = "sharePortfolioOnStockExchange"
+  override def toString: String = "listedOnTheStockExchange"
 }

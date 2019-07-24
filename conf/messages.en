@@ -854,6 +854,8 @@ shareClass.class = Preference
 shareClass.checkYourAnswersLabel = What class are the shares
 shareClass.error.required = Select shareClass
 
+
+
 sharePortfolioName.title = What is the share portfolio’s name?
 sharePortfolioName.heading = What is the share portfolio’s name?
 sharePortfolioName.checkYourAnswersLabel = What is the share portfolio’s name?
@@ -874,9 +876,6 @@ sharePortfolioQuantityInTrust.error.required = Enter the current number of share
 sharePortfolioQuantityInTrust.error.length = Total assets value must be 12 numbers or less
 sharePortfolioQuantityInTrust.error.invalid = Total assets value must be a number
 sharePortfolioQuantityInTrust.hint = Add together the total number of shares across all share holdings. This can be an estimate.
-
-
-
 
 sharePortfolioValueInTrust.title = What is the current value of the portfolio?
 sharePortfolioValueInTrust.heading = What is the current value of the portfolio?

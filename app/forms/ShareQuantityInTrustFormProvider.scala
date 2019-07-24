@@ -25,7 +25,7 @@ class ShareQuantityInTrustFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
     Form(
-      "value" -> text("shareQuantityInTrust.error.required")
+      "value" -> currency("shareQuantityInTrust.error.required")
         .verifying(maxLength(12, "shareQuantityInTrust.error.length"))
     )
 }
