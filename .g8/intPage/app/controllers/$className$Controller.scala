@@ -29,7 +29,7 @@ class $className$Controller @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get($className$Page) match {
@@ -40,7 +40,7 @@ class $className$Controller @Inject()(
       Ok(view(preparedForm, mode, draftId))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -51,7 +51,7 @@ class $className$Controller @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set($className$Page, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage($className$Page, mode)(updatedAnswers))
+          } yield Redirect(navigator.nextPage($className$Page, mode, draftId)(updatedAnswers))
         }
       )
   }
