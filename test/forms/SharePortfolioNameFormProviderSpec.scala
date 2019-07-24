@@ -18,12 +18,14 @@ package forms
 
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
+import wolfendale.scalacheck.regexp.RegexpGen
 
 class SharePortfolioNameFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "sharePortfolioName.error.required"
   val lengthKey = "sharePortfolioName.error.length"
-  val maxLength = 100
+  val invalidFormatKey = "sharePortfolioName.error.invalid"
+  val maxLength = 53
 
   val form = new SharePortfolioNameFormProvider()()
 
@@ -34,7 +36,7 @@ class SharePortfolioNameFormProviderSpec extends StringFieldBehaviours {
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      RegexpGen.from(Validation.nameRegex)
     )
 
     behave like fieldWithMaxLength(

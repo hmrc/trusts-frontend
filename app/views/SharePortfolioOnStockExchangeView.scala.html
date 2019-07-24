@@ -39,7 +39,8 @@
         @components.input_yes_no(
             field = form("value"),
             label = messages("sharePortfolioOnStockExchange.heading"),
-            legendClass = Some("visually-hidden")
+            legendClass = Some("visually-hidden"),
+            hint = Some(messages("sharePortfolioOnStockExchange.hint"))
         )
 
         @components.submit_button()

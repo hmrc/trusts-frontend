@@ -854,28 +854,39 @@ shareClass.class = Preference
 shareClass.checkYourAnswersLabel = What class are the shares
 shareClass.error.required = Select shareClass
 
-sharePortfolioName.title = sharePortfolioName
-sharePortfolioName.heading = sharePortfolioName
-sharePortfolioName.checkYourAnswersLabel = sharePortfolioName
-sharePortfolioName.error.required = Enter sharePortfolioName
-sharePortfolioName.error.length = SharePortfolioName must be 100 characters or less
+sharePortfolioName.title = What is the share portfolio’s name?
+sharePortfolioName.heading = What is the share portfolio’s name?
+sharePortfolioName.checkYourAnswersLabel = What is the share portfolio’s name?
+sharePortfolioName.error.required = Enter the share portfolio’s name
+sharePortfolioName.error.length = Company’s name cannot be more than 53 characters
+sharePortfolioName.error.invalid = Company’s name must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
 
-sharePortfolioOnStockExchange.title = Are {0}’s shares listed on a stock exchange?
-sharePortfolioOnStockExchange.heading = Are {0}’s shares listed on a stock exchange?
-sharePortfolioOnStockExchange.checkYourAnswersLabel = Are {0}’s shares listed on a stock exchange?
-sharePortfolioOnStockExchange.error.required = Select yes if the shares are listed on a stock exchanged
+sharePortfolioOnStockExchange.title = Are the majority of the shares in the portfolio listed on a stock exchange?
+sharePortfolioOnStockExchange.heading = Are the majority of the shares in the portfolio listed on a stock exchange?
+sharePortfolioOnStockExchange.checkYourAnswersLabel = Are the majority of the shares in the portfolio listed on a stock exchange?
+sharePortfolioOnStockExchange.error.required = Select yes if the majority of the shares are listed on a stock exchanged
+sharePortfolioOnStockExchange.hint = A quoted share is listed on a stock exchange
 
-sharePortfolioQuantityInTrust.title = sharePortfolioQuantityInTrust
-sharePortfolioQuantityInTrust.heading = sharePortfolioQuantityInTrust
-sharePortfolioQuantityInTrust.checkYourAnswersLabel = sharePortfolioQuantityInTrust
-sharePortfolioQuantityInTrust.error.required = Enter sharePortfolioQuantityInTrust
-sharePortfolioQuantityInTrust.error.length = SharePortfolioQuantityInTrust must be 100 characters or less
+sharePortfolioQuantityInTrust.title = How many individual shares are in the portfolio?
+sharePortfolioQuantityInTrust.heading = How many individual shares are in the portfolio?
+sharePortfolioQuantityInTrust.checkYourAnswersLabel = How many individual shares are in the portfolio?
+sharePortfolioQuantityInTrust.error.required = Enter the current number of shares in the portfolio
+sharePortfolioQuantityInTrust.error.length = Total assets value must be 12 numbers or less
+sharePortfolioQuantityInTrust.error.invalid = Total assets value must be a number
+sharePortfolioQuantityInTrust.hint = Add together the total number of shares across all share holdings. This can be an estimate.
 
-sharePortfolioValueInTrust.title = sharePortfolioValueInTrust
-sharePortfolioValueInTrust.heading = sharePortfolioValueInTrust
-sharePortfolioValueInTrust.checkYourAnswersLabel = sharePortfolioValueInTrust
-sharePortfolioValueInTrust.error.required = Enter sharePortfolioValueInTrust
-sharePortfolioValueInTrust.error.length = SharePortfolioValueInTrust must be 100 characters or less
+
+
+
+sharePortfolioValueInTrust.title = What is the current value of the portfolio?
+sharePortfolioValueInTrust.heading = What is the current value of the portfolio?
+sharePortfolioValueInTrust.checkYourAnswersLabel = What is the current value of the portfolio?
+sharePortfolioValueInTrust.error.required = Enter the current value of the shares in the portfolio
+sharePortfolioValueInTrust.error.length = Total assets value must be 12 numbers or less
+sharePortfolioValueInTrust.error.invalid = Total assets value must be a number
+sharePortfolioValueInTrust.hint = Rounded down to the nearest pound. For example, 4000
+
+
 
 shareQuantityInTrust.title = shareQuantityInTrust
 shareQuantityInTrust.heading = shareQuantityInTrust
@@ -889,10 +900,10 @@ shareValueInTrust.checkYourAnswersLabel = shareValueInTrust
 shareValueInTrust.error.required = Enter shareValueInTrust
 shareValueInTrust.error.length = ShareValueInTrust must be 12 characters or less
 
-sharesInAPortfolio.title = sharesInAPortfolio
-sharesInAPortfolio.heading = sharesInAPortfolio
-sharesInAPortfolio.checkYourAnswersLabel = sharesInAPortfolio
-sharesInAPortfolio.error.required = Select yes if sharesInAPortfolio
+sharesInAPortfolio.title = Are the shares in a portfolio?
+sharesInAPortfolio.heading = Are the shares in a portfolio?
+sharesInAPortfolio.checkYourAnswersLabel = Are the shares in a portfolio?
+sharesInAPortfolio.error.required = Select yes if the shares are in a portfolio
 
 sharesOnStockExchange.title = sharesOnStockExchange
 sharesOnStockExchange.heading = sharesOnStockExchange
