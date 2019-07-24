@@ -29,7 +29,7 @@ class AssetMoneyValueFormProvider @Inject() extends Mappings {
         firstError(
           isNotEmpty("value", "assetMoneyValue.error.required"),
           maxLength(12, "assetMoneyValue.error.length"),
-          regexp(Validation.currencyRegex, "assetMoneyValue.error.invalidFormat"),
+          regexp(Validation.onlyNumbersRegex, "assetMoneyValue.error.invalidFormat"),
           regexp(Validation.decimalCheck, "assetMoneyValue.error.wholeNumber"),
           minimumValue("1", "assetMoneyValue.error.zero")
         )

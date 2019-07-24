@@ -26,6 +26,10 @@ class SharePortfolioNameFormProvider @Inject() extends Mappings {
   def apply(): Form[String] =
     Form(
       "value" -> text("sharePortfolioName.error.required")
-        .verifying(maxLength(100, "sharePortfolioName.error.length"))
-    )
+        .verifying(
+          firstError(
+            maxLength(53, "sharePortfolioName.error.length"),
+            isNotEmpty("value", "sharePortfolioName.error.required"),
+            regexp(Validation.nameRegex, "sharePortfolioName.error.invalid")
+          )))
 }

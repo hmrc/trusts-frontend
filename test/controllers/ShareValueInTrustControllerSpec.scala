@@ -87,7 +87,7 @@ class ShareValueInTrustControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, shareValueInTrustRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("value", "123456"))
 
       val result = route(application, request).value
 

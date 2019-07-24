@@ -22,10 +22,15 @@ sealed trait ShareClass
 
 object ShareClass extends Enumerable.Implicits {
 
-  case object Class extends WithName("class") with ShareClass
+  case object Ordinary extends WithName("ordinary") with ShareClass
+  case object Preference extends WithName("preference") with ShareClass
+  case object Deferred extends WithName("deferred") with ShareClass
+  case object Growth extends WithName("growth") with ShareClass
+  case object Other extends WithName("other") with ShareClass
+
 
   val values: List[ShareClass] = List(
-    Class
+    Ordinary, Preference, Deferred, Growth, Other
   )
 
   val options: List[RadioOption] = values.map {

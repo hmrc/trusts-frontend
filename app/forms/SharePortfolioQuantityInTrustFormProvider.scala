@@ -25,7 +25,11 @@ class SharePortfolioQuantityInTrustFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
     Form(
-      "value" -> text("sharePortfolioQuantityInTrust.error.required")
-        .verifying(maxLength(100, "sharePortfolioQuantityInTrust.error.length"))
-    )
+      "value" -> currency("sharePortfolioQuantityInTrust.error.required")
+        .verifying(
+          firstError(
+            maxLength(12, "sharePortfolioQuantityInTrust.error.length"),
+            isNotEmpty("value", "sharePortfolioQuantityInTrust.error.required"),
+            regexp(Validation.onlyNumbersRegex, "sharePortfolioQuantityInTrust.error.invalid")
+          )))
 }

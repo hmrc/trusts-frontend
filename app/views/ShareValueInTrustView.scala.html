@@ -39,7 +39,8 @@
         @components.input_text(
           field = form("value"),
           label = messages("shareValueInTrust.heading"),
-          labelClass = Some("visually-hidden")
+          labelClass = Some("visually-hidden"),
+          hint = Some(messages("shareValueInTrust.hint"))
         )
 
         @components.submit_button()
