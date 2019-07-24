@@ -23,7 +23,7 @@ import play.api.libs.json.JsPath
 
 import scala.util.Try
 
-final case class  SharesInAPortfolioPage(index : Int) extends QuestionPage[Boolean] {
+final case class SharesInAPortfolioPage(index : Int) extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ Assets \ index \ toString
 

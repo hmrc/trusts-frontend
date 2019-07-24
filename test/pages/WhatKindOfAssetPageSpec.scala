@@ -32,7 +32,7 @@ class WhatKindOfAssetPageSpec extends PageBehaviours {
     beRemovable[WhatKindOfAsset](WhatKindOfAssetPage(0))
   }
 
-  "remove relevant data when changing type of asset" in {
+  "remove share data when changing type of asset" in {
     forAll(arbitrary[UserAnswers]) {
       initial =>
         val answers: UserAnswers = initial

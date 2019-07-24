@@ -19,9 +19,9 @@ package models
 import java.time.LocalDateTime
 
 import models.RegistrationProgress.NotStarted
-import pages._
 import play.api.Logger
 import play.api.libs.json._
+import queries.{Gettable, Settable}
 
 import scala.util.{Failure, Success, Try}
 
@@ -33,7 +33,7 @@ final case class UserAnswers(
                               internalAuthId :String
                             ) {
 
-  def get[A](page: QuestionPage[A])(implicit rds: Reads[A]): Option[A] = {
+  def get[A](page: Gettable[A])(implicit rds: Reads[A]): Option[A] = {
     Reads.at(page.path).reads(data) match {
       case JsSuccess(value, _) => Some(value)
       case JsError(errors) =>
@@ -42,7 +42,7 @@ final case class UserAnswers(
     }
   }
 
-  def set[A](page: QuestionPage[A], value: A)(implicit writes: Writes[A]): Try[UserAnswers] = {
+  def set[A](page: Settable[A], value: A)(implicit writes: Writes[A]): Try[UserAnswers] = {
 
     val updatedData = data.setObject(page.path, Json.toJson(value)) match {
       case JsSuccess(jsValue, _) =>
@@ -60,7 +60,7 @@ final case class UserAnswers(
     }
   }
 
-  def remove[A](page: QuestionPage[A]): Try[UserAnswers] = {
+  def remove[A](page: Settable[A]): Try[UserAnswers] = {
 
     val updatedData = data.setObject(page.path, JsNull) match {
       case JsSuccess(jsValue, _) =>

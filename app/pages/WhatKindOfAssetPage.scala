@@ -16,11 +16,11 @@
 
 package pages
 
-import models.WhatKindOfAsset.Money
 import models.{UserAnswers, WhatKindOfAsset}
+import models.WhatKindOfAsset.Money
 import models.entities.Assets
+import pages.entitystatus.AssetStatus
 import play.api.libs.json.JsPath
-import sections.RemoveShareAsset
 
 import scala.util.Try
 
@@ -34,8 +34,21 @@ final case class WhatKindOfAssetPage(index: Int) extends QuestionPage[WhatKindOf
   override def cleanup(value: Option[WhatKindOfAsset], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
       case Some(Money) =>
-        RemoveShareAsset(index).apply(userAnswers)
+        removeShare(userAnswers)
       case _ => super.cleanup(value, userAnswers)
     }
+  }
+
+  private def removeShare(userAnswers: UserAnswers): Try[UserAnswers] = {
+    userAnswers.remove(SharesInAPortfolioPage(index))
+      .flatMap(_.remove(SharesOnStockExchangePage(index)))
+      .flatMap(_.remove(ShareClassPage(index)))
+      .flatMap(_.remove(ShareQuantityInTrustPage(index)))
+      .flatMap(_.remove(ShareValueInTrustPage(index)))
+      .flatMap(_.remove(SharePortfolioNamePage(index)))
+      .flatMap(_.remove(SharePortfolioOnStockExchangePage(index)))
+      .flatMap(_.remove(SharePortfolioQuantityInTrustPage(index)))
+      .flatMap(_.remove(SharePortfolioValueInTrustPage(index)))
+      .flatMap(_.remove(AssetStatus(index)))
   }
 }

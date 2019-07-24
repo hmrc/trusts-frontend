@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
-package pages
+package queries
 
-import queries.{Gettable, Settable}
+import play.api.libs.json.JsPath
+import sections.Assets
 
-trait QuestionPage[A] extends Page with Gettable[A] with Settable[A]
+final case class RemoveAssetQuery(index : Int) extends Settable[Nothing] {
+
+    override def path: JsPath = JsPath \ Assets \ index
+}
