@@ -16,7 +16,7 @@ class $className$ViewSpec extends ViewBehaviours {
   val view = viewFor[$className$View](Some(emptyUserAnswers))
 
   def applyView(form: Form[_]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode)(fakeRequest, messages)
+    view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
 
   "$className$View" must {
 
