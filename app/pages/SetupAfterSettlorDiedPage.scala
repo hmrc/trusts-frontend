@@ -18,7 +18,7 @@ package pages
 
 import models.UserAnswers
 import play.api.libs.json.JsPath
-import viewmodels.Settlors
+import sections.Settlors
 
 import scala.util.Try
 

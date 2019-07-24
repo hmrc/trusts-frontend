@@ -19,6 +19,7 @@ package utils
 import models.Status.Completed
 import models.UserAnswers
 import play.api.i18n.Messages
+import sections.Assets
 import viewmodels.addAnother.{AssetViewModel, MoneyAssetViewModel}
 import viewmodels.{AddRow, AddToRows}
 
@@ -32,7 +33,7 @@ class AddAssetViewHelper(userAnswers: UserAnswers)(implicit  messages: Messages)
   }
 
   def rows : AddToRows = {
-    val assets = userAnswers.get(viewmodels.Assets).toList.flatten
+    val assets = userAnswers.get(Assets).toList.flatten
 
     val completed : List[AddRow] = assets.filter(_.status == Completed).flatMap(parseAsset)
 

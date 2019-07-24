@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package viewmodels
+package sections
 
 import pages.Page
 
-case object TrustDetails extends Page {
+case object Agent extends Page {
 
-  override def toString: String = "trustDetails"
-
+  override def toString: String = "agent"
 }

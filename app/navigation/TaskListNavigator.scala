@@ -24,6 +24,7 @@ import models.{NormalMode, UserAnswers}
 import pages._
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
 import play.api.mvc.Call
+import sections.{Beneficiaries, ClassOfBeneficiaries, IndividualBeneficiaries, Settlors, TaxLiability, TrustDetails}
 import viewmodels._
 
 @Singleton
@@ -40,7 +41,7 @@ class TaskListNavigator @Inject()() {
   }
 
   private def trusteeRoute(draftId: String)(answers: UserAnswers) = {
-    answers.get(viewmodels.Trustees).getOrElse(Nil) match {
+    answers.get(sections.Trustees).getOrElse(Nil) match {
       case Nil =>
         routes.TrusteesInfoController.onPageLoad(draftId)
       case _ :: _ =>
@@ -76,7 +77,7 @@ class TaskListNavigator @Inject()() {
   }
 
   private def assetRoute(draftId: String)(answers: UserAnswers) = {
-    answers.get(viewmodels.Assets).getOrElse(Nil) match {
+    answers.get(sections.Assets).getOrElse(Nil) match {
       case _ :: _ =>
         routes.AddAssetsController.onPageLoad(draftId)
       case Nil =>

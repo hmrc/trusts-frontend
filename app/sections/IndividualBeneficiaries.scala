@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package pages
+package sections
 
-import models.UKAddress
+import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.{DeceasedSettlor, Settlors}
+import viewmodels.addAnother.IndividualBeneficiaryViewModel
 
-case object SettlorsUKAddressPage extends QuestionPage[UKAddress] {
+case object IndividualBeneficiaries extends QuestionPage[List[IndividualBeneficiaryViewModel]]{
 
-  override def path: JsPath = JsPath \ Settlors \ DeceasedSettlor \toString
+  override def path: JsPath = JsPath \ Beneficiaries \ toString
 
-  override def toString: String = "address"
+  override def toString: String = "individualBeneficiaries"
+
 }

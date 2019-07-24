@@ -19,7 +19,7 @@ package pages.entitystatus
 import models.Status
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import viewmodels.{Beneficiaries, ClassOfBeneficiaries}
+import sections.{Beneficiaries, ClassOfBeneficiaries}
 
 final case class ClassBeneficiaryStatus(index : Int) extends QuestionPage[Status] {
 

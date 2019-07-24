@@ -18,8 +18,9 @@ package utils
 
 import models.{FullName, UserAnswers}
 import play.api.i18n.Messages
+import sections.{ClassOfBeneficiaries, IndividualBeneficiaries}
 import viewmodels.addAnother.{ClassOfBeneficiaryViewModel, IndividualBeneficiaryViewModel}
-import viewmodels.{AddRow, AddToRows, ClassOfBeneficiaries, IndividualBeneficiaries}
+import viewmodels.{AddRow, AddToRows}
 
 class AddABeneficiaryViewHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 

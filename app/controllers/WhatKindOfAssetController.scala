@@ -22,7 +22,7 @@ import forms.WhatKindOfAssetFormProvider
 import javax.inject.Inject
 import models.WhatKindOfAsset.Money
 import models.requests.DataRequest
-import models.{Enumerable, Mode, WhatKindOfAsset, entities}
+import models.{Enumerable, Mode, WhatKindOfAsset}
 import navigation.Navigator
 import pages.WhatKindOfAssetPage
 import play.api.data.Form
@@ -54,7 +54,7 @@ class WhatKindOfAssetController @Inject()(
     assets.zipWithIndex.find {_._1.isInstanceOf[MoneyAssetViewModel]}
 
   private def options(request : DataRequest[AnyContent], index: Int) = {
-    val assets = request.userAnswers.get(viewmodels.Assets).getOrElse(Nil)
+    val assets = request.userAnswers.get(sections.Assets).getOrElse(Nil)
     
     findAssetThatIsMoney(assets) match {
       case Some((_, i)) if i == index =>
@@ -67,7 +67,7 @@ class WhatKindOfAssetController @Inject()(
   }
 
   private def actions (index: Int, draftId: String) =
-    identify andThen getData(draftId) andThen requireData andThen validateIndex(index, viewmodels.Assets)
+    identify andThen getData(draftId) andThen requireData andThen validateIndex(index, sections.Assets)
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
@@ -82,7 +82,7 @@ class WhatKindOfAssetController @Inject()(
   def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
     implicit request =>
 
-      val assets = request.userAnswers.get(viewmodels.Assets).getOrElse(Nil)
+      val assets = request.userAnswers.get(sections.Assets).getOrElse(Nil)
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package viewmodels
+package pages.entitystatus
 
+import models.Status
+import models.entities.Assets
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import viewmodels.addAnother.AssetViewModel
 
-case object Assets extends QuestionPage[List[AssetViewModel]]{
+final case class ShareAssetStatus(index : Int) extends QuestionPage[Status] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ Assets \ index \ toString
 
-  override def toString: String = "assets"
-
+  override def toString: String = "status"
 }

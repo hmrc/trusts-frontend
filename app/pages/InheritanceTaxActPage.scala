@@ -19,7 +19,7 @@ package pages
 import models.UserAnswers
 import pages.entitystatus.TrustDetailsStatus
 import play.api.libs.json.JsPath
-import viewmodels.TrustDetails
+import sections.TrustDetails
 
 import scala.util.Try
 

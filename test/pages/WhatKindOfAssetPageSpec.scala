@@ -16,10 +16,12 @@
 
 package pages
 
-import models.WhatKindOfAsset
+import models.{Status, UserAnswers, WhatKindOfAsset}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
+import pages.entitystatus.AssetStatus
 
-class WhatKindOfAssetSpec extends PageBehaviours {
+class WhatKindOfAssetPageSpec extends PageBehaviours {
 
   "WhatKindOfAssetPage" must {
 
@@ -29,4 +31,30 @@ class WhatKindOfAssetSpec extends PageBehaviours {
 
     beRemovable[WhatKindOfAsset](WhatKindOfAssetPage(0))
   }
+
+  "remove relevant data when changing type of asset" in {
+    forAll(arbitrary[UserAnswers]) {
+      initial =>
+        val answers: UserAnswers = initial
+          .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Shares).success.value
+          .set(SharesInAPortfolioPage(0), true).success.value
+          .set(SharePortfolioNamePage(0), "Shares").success.value
+          .set(SharePortfolioOnStockExchangePage(0), true).success.value
+          .set(SharePortfolioQuantityInTrustPage(0), "20").success.value
+          .set(SharePortfolioValueInTrustPage(0), "2000").success.value
+          .set(AssetStatus(0), Status.Completed).success.value // TODO? DO WE INDEX EACH ASSET INDIVIDUALLY?
+
+        val result = answers.set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
+
+        result.get(WhatKindOfAssetPage(0)).value mustEqual WhatKindOfAsset.Money
+
+        result.get(SharesInAPortfolioPage(0)) mustNot be(defined)
+        result.get(SharePortfolioNamePage(0)) mustNot be(defined)
+        result.get(SharePortfolioOnStockExchangePage(0)) mustNot be(defined)
+        result.get(SharePortfolioQuantityInTrustPage(0)) mustNot be(defined)
+        result.get(SharePortfolioValueInTrustPage(0)) mustNot be(defined)
+        result.get(AssetStatus(0)) mustNot be(defined)
+    }
+  }
+
 }

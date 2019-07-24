@@ -16,12 +16,38 @@
 
 package pages
 
+import models.UserAnswers
 import models.entities.Assets
+import pages.entitystatus.AssetStatus
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 final case class  SharesInAPortfolioPage(index : Int) extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ Assets \ index \ toString
 
   override def toString: String = "sharesInAPortfolio"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
+    value match {
+      case Some(true) =>
+
+        userAnswers.remove(SharesOnStockExchangePage(index))
+          .flatMap(_.remove(ShareClassPage(index)))
+          .flatMap(_.remove(ShareQuantityInTrustPage(index)))
+          .flatMap(_.remove(ShareValueInTrustPage(index)))
+          .flatMap(_.remove(AssetStatus(index)))
+
+      case Some(false) =>
+
+        userAnswers.remove(SharePortfolioNamePage(index))
+          .flatMap(_.remove(SharePortfolioOnStockExchangePage(index)))
+          .flatMap(_.remove(SharePortfolioQuantityInTrustPage(index)))
+          .flatMap(_.remove(SharePortfolioValueInTrustPage(index)))
+          .flatMap(_.remove(AssetStatus(index)))
+
+      case _ => super.cleanup(value, userAnswers)
+    }
+  }
 }

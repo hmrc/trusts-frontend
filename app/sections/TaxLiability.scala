@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package viewmodels
+package sections
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
