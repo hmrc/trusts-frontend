@@ -63,6 +63,16 @@ trait AssetRoutes {
         }
       }
 
+      "go to AddAssetPage from ShareAnswerPage" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            navigator.nextPage(ShareAnswerPage, NormalMode, fakeDraftId)(userAnswers)
+              .mustBe(routes.AddAssetsController.onPageLoad(fakeDraftId))
+
+        }
+      }
+
     }
 
     "share assets" must {
@@ -80,57 +90,122 @@ trait AssetRoutes {
         }
       }
 
-      "go to SharePortfolioName from SharesInAPortfolio when user answers yes" in {
-        val index = 0
+      "for a portfolio" must {
 
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
+        "go to SharePortfolioName from SharesInAPortfolio when user answers yes" in {
+          val index = 0
 
-            val answers = userAnswers.set(SharesInAPortfolioPage(index), true).success.value
+          forAll(arbitrary[UserAnswers]) {
+            userAnswers =>
 
-            navigator.nextPage(SharesInAPortfolioPage(index), NormalMode, fakeDraftId)(answers)
-              .mustBe(routes.SharePortfolioNameController.onPageLoad(NormalMode, index, fakeDraftId))
+              val answers = userAnswers.set(SharesInAPortfolioPage(index), true).success.value
+
+              navigator.nextPage(SharesInAPortfolioPage(index), NormalMode, fakeDraftId)(answers)
+                .mustBe(routes.SharePortfolioNameController.onPageLoad(NormalMode, index, fakeDraftId))
+          }
         }
+
+        "go to SharePortfolioOnStockExchange from SharePortfolioName" in {
+          val index = 0
+
+          forAll(arbitrary[UserAnswers]) {
+            userAnswers =>
+              navigator.nextPage(SharePortfolioNamePage(index), NormalMode, fakeDraftId)(userAnswers)
+                .mustBe(routes.SharePortfolioOnStockExchangeController.onPageLoad(NormalMode, index, fakeDraftId))
+          }
+        }
+
+        "go to SharePortfolioQuantityInTrust from SharePortfolioOnStockExchange" in {
+          val index = 0
+
+          forAll(arbitrary[UserAnswers]) {
+            userAnswers =>
+              navigator.nextPage(SharePortfolioOnStockExchangePage(index), NormalMode, fakeDraftId)(userAnswers)
+                .mustBe(routes.SharePortfolioQuantityInTrustController.onPageLoad(NormalMode, index, fakeDraftId))
+          }
+        }
+
+        "go to SharePortfolioValueInTrust from SharePortfolioQuantityInTrust" in {
+          val index = 0
+
+          forAll(arbitrary[UserAnswers]) {
+            userAnswers =>
+              navigator.nextPage(SharePortfolioQuantityInTrustPage(index), NormalMode, fakeDraftId)(userAnswers)
+                .mustBe(routes.SharePortfolioValueInTrustController.onPageLoad(NormalMode, index, fakeDraftId))
+          }
+        }
+
+        "go to ShareAnswers from SharePortfolioValueInTrust" in {
+          val index = 0
+
+          forAll(arbitrary[UserAnswers]) {
+            userAnswers =>
+              navigator.nextPage(SharePortfolioValueInTrustPage(index), NormalMode, fakeDraftId)(userAnswers)
+                .mustBe(routes.ShareAnswerController.onPageLoad(index, fakeDraftId))
+          }
+        }
+
       }
 
-      "go to SharePortfolioOnStockExchange from SharePortfolioName" in {
-        val index = 0
+      "for shares" must {
 
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
-            navigator.nextPage(SharePortfolioNamePage(index), NormalMode, fakeDraftId)(userAnswers)
-              .mustBe(routes.SharePortfolioOnStockExchangeController.onPageLoad(NormalMode, index, fakeDraftId))
+        "go to SharesOnStockExchange from SharesInAPortfolio when user answers no" in {
+          val index = 0
+
+          forAll(arbitrary[UserAnswers]) {
+            userAnswers =>
+
+              val answers = userAnswers.set(SharesInAPortfolioPage(index), false).success.value
+
+              navigator.nextPage(SharesInAPortfolioPage(index), NormalMode, fakeDraftId)(answers)
+                .mustBe(routes.SharesOnStockExchangeController.onPageLoad(NormalMode, index, fakeDraftId))
+          }
         }
-      }
 
-      "go to SharePortfolioQuantityInTrust from SharePortfolioOnStockExchange" in {
-        val index = 0
+        "go to ShareClass from SharesOnStockExchange" in {
+          val index = 0
 
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
-            navigator.nextPage(SharePortfolioOnStockExchangePage(index), NormalMode, fakeDraftId)(userAnswers)
-              .mustBe(routes.SharePortfolioQuantityInTrustController.onPageLoad(NormalMode, index, fakeDraftId))
+          forAll(arbitrary[UserAnswers]) {
+            userAnswers =>
+
+              navigator.nextPage(SharesOnStockExchangePage(index), NormalMode, fakeDraftId)(userAnswers)
+                .mustBe(routes.ShareClassController.onPageLoad(NormalMode, index, fakeDraftId))
+          }
         }
-      }
 
-      "go to SharePortfolioValueInTrust from SharePortfolioQuantityInTrust" in {
-        val index = 0
+        "go to ShareQuantityInTrust from ShareClass" in {
+          val index = 0
 
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
-            navigator.nextPage(SharePortfolioQuantityInTrustPage(index), NormalMode, fakeDraftId)(userAnswers)
-              .mustBe(routes.SharePortfolioValueInTrustController.onPageLoad(NormalMode, index, fakeDraftId))
+          forAll(arbitrary[UserAnswers]) {
+            userAnswers =>
+
+              navigator.nextPage(ShareClassPage(index), NormalMode, fakeDraftId)(userAnswers)
+                .mustBe(routes.ShareQuantityInTrustController.onPageLoad(NormalMode, index, fakeDraftId))
+          }
         }
-      }
 
-      "go to ShareAnswers from SharePortfolioValueInTrust" in {
-        val index = 0
+        "go to ShareValueInTrust from ShareQuantityInTrust" in {
+          val index = 0
 
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
-            navigator.nextPage(SharePortfolioValueInTrustPage(index), NormalMode, fakeDraftId)(userAnswers)
-              .mustBe(routes.ShareAnswerController.onPageLoad(index, fakeDraftId))
+          forAll(arbitrary[UserAnswers]) {
+            userAnswers =>
+
+              navigator.nextPage(ShareQuantityInTrustPage(index), NormalMode, fakeDraftId)(userAnswers)
+                .mustBe(routes.ShareValueInTrustController.onPageLoad(NormalMode, index, fakeDraftId))
+          }
         }
+
+        "go to ShareAnswers from ShareValueInTrust" in {
+          val index = 0
+
+          forAll(arbitrary[UserAnswers]) {
+            userAnswers =>
+
+              navigator.nextPage(ShareValueInTrustPage(index), NormalMode, fakeDraftId)(userAnswers)
+                .mustBe(routes.ShareAnswerController.onPageLoad(index, fakeDraftId))
+          }
+        }
+
       }
 
     }

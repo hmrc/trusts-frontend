@@ -81,12 +81,17 @@ class Navigator @Inject()() {
     //Assets
     case AssetMoneyValuePage(index) => _ => ua => assetMoneyValueRoute(ua, index, draftId)
     case WhatKindOfAssetPage(index) => _ => ua => whatKindOfAssetRoute(ua, index, draftId)
-    case SharesInAPortfolioPage(index) => _ => ua => routes.SharePortfolioNameController.onPageLoad(NormalMode, index, draftId)
+    case SharesInAPortfolioPage(index) => _ => ua => sharesInAPortfolio(ua, index, draftId)
     case SharePortfolioNamePage(index) => _ => ua => routes.SharePortfolioOnStockExchangeController.onPageLoad(NormalMode, index, draftId)
     case SharePortfolioOnStockExchangePage(index) => _ => ua => routes.SharePortfolioQuantityInTrustController.onPageLoad(NormalMode, index, draftId)
     case SharePortfolioQuantityInTrustPage(index) => _ => _ => routes.SharePortfolioValueInTrustController.onPageLoad(NormalMode, index, draftId)
     case SharePortfolioValueInTrustPage(index) => _ => _ => routes.ShareAnswerController.onPageLoad(index, draftId)
+    case SharesOnStockExchangePage(index) => _ => _ => routes.ShareClassController.onPageLoad(NormalMode, index, draftId)
+    case ShareClassPage(index) => _ => _ => routes.ShareQuantityInTrustController.onPageLoad(NormalMode, index, draftId)
     case AddAssetsPage => _ => addAssetsRoute(draftId)
+    case ShareQuantityInTrustPage(index) => _ => _ => routes.ShareValueInTrustController.onPageLoad(NormalMode, index, draftId)
+    case ShareValueInTrustPage(index) => _ => _ => routes.ShareAnswerController.onPageLoad(index, draftId)
+    case ShareAnswerPage => _ => _ => routes.AddAssetsController.onPageLoad(draftId)
 
     //Settlors
     case SetupAfterSettlorDiedPage => _ => setupAfterSettlorDiedRoute(draftId)
@@ -127,6 +132,16 @@ class Navigator @Inject()() {
     case _ => _ => _ => routes.IndexController.onPageLoad()
   }
 
+  private def sharesInAPortfolio(userAnswers: UserAnswers, index : Int, draftId: String) : Call = {
+    userAnswers.get(SharesInAPortfolioPage(index)) match {
+      case Some(true) =>
+        routes.SharePortfolioNameController.onPageLoad(NormalMode, index, draftId)
+      case Some(false) =>
+        routes.SharesOnStockExchangeController.onPageLoad(NormalMode, index, draftId)
+      case _=>
+        routes.SessionExpiredController.onPageLoad()
+    }
+  }
 
   private def whatTypeOfBeneficiaryRoute(draftId: String)(userAnswers: UserAnswers) : Call = {
     val whatBeneficiaryToAdd = userAnswers.get(WhatTypeOfBeneficiaryPage)
