@@ -32,7 +32,8 @@ object Asset {
     a.map(identity)
 
   implicit lazy val reads : Reads[Asset] = {
-    MoneyAsset.reads
+    MoneyAsset.reads or
+    ShareAsset.reads
   }
 
 }
