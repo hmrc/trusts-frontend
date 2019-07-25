@@ -47,7 +47,12 @@ class SharePortfolioNameController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
+  private def actions(mode: Mode, index : Int, draftId: String) =
+    identify andThen getData(draftId) andThen
+      requireData andThen
+      validateIndex(index, sections.Assets)
+
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(mode, index, draftId) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(SharePortfolioNamePage(index)) match {
@@ -58,7 +63,7 @@ class SharePortfolioNameController @Inject()(
       Ok(view(preparedForm, mode, draftId, index))
   }
 
-  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(mode, index, draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(

@@ -19,12 +19,11 @@ package controllers
 import base.SpecBase
 import forms.SharesOnStockExchangeFormProvider
 import generators.ModelGenerators
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.{ShareCompanyNamePage, SharesInAPortfolioPage, SharesOnStockExchangePage}
+import pages.{ShareCompanyNamePage, SharesOnStockExchangePage}
 import play.api.inject.bind
-import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

@@ -18,17 +18,18 @@ package controllers
 
 import base.SpecBase
 import forms.ShareCompanyNameFormProvider
-import models.{NormalMode, UserAnswers}
+import generators.ModelGenerators
+import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.ShareCompanyNamePage
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
-import play.api.mvc.Call
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.ShareCompanyNameView
 
-class ShareCompanyNameControllerSpec extends SpecBase {
+class ShareCompanyNameControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -150,5 +151,38 @@ class ShareCompanyNameControllerSpec extends SpecBase {
 
       application.stop()
     }
+  }
+
+  "for a GET" must {
+
+    def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
+      val route = routes.ShareCompanyNameController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+      FakeRequest(GET, route)
+    }
+
+    validateIndex(
+      arbitrary[String],
+      ShareCompanyNamePage.apply,
+      getForIndex
+    )
+
+  }
+
+  "for a POST" must {
+    def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+
+      val route =
+        routes.ShareCompanyNameController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+      FakeRequest(POST, route)
+        .withFormUrlEncodedBody(("value", "true"))
+    }
+
+    validateIndex(
+      arbitrary[String],
+      ShareCompanyNamePage.apply,
+      postForIndex
+    )
   }
 }

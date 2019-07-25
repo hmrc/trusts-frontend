@@ -22,7 +22,7 @@ import generators.ModelGenerators
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.{SharePortfolioValueInTrustPage, ShareQuantityInTrustPage}
+import pages.{ShareCompanyNamePage, SharePortfolioValueInTrustPage, ShareQuantityInTrustPage}
 import play.api.inject.bind
 import play.api.libs.json.{JsString, Json}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
@@ -40,11 +40,13 @@ class ShareQuantityInTrustControllerSpec extends SpecBase with ModelGenerators w
 
   lazy val shareQuantityInTrustRoute = routes.ShareQuantityInTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
 
-  "ShareQuantityInTrust Controller" must {
+  "ShareQuantityInTrustController" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val ua = emptyUserAnswers.set(ShareCompanyNamePage(0), "Company").success.value
+
+      val application = applicationBuilder(userAnswers = Some(ua)).build()
 
       val request = FakeRequest(GET, shareQuantityInTrustRoute)
 
@@ -62,9 +64,10 @@ class ShareQuantityInTrustControllerSpec extends SpecBase with ModelGenerators w
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(ShareQuantityInTrustPage(index), "answer").success.value
+      val ua = emptyUserAnswers.set(ShareCompanyNamePage(0), "Company").success.value
+        .set(ShareQuantityInTrustPage(index), "answer").success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(ua)).build()
 
       val request = FakeRequest(GET, shareQuantityInTrustRoute)
 
@@ -82,8 +85,10 @@ class ShareQuantityInTrustControllerSpec extends SpecBase with ModelGenerators w
 
     "redirect to the next page when valid data is submitted" in {
 
+      val ua = emptyUserAnswers.set(ShareCompanyNamePage(0), "Company").success.value
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(ua))
           .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
@@ -101,7 +106,9 @@ class ShareQuantityInTrustControllerSpec extends SpecBase with ModelGenerators w
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val ua = emptyUserAnswers.set(ShareCompanyNamePage(0), "Company").success.value
+
+      val application = applicationBuilder(userAnswers = Some(ua)).build()
 
       val request =
         FakeRequest(POST, shareQuantityInTrustRoute)
@@ -153,20 +160,20 @@ class ShareQuantityInTrustControllerSpec extends SpecBase with ModelGenerators w
       application.stop()
     }
 
-    //    "redirect to AssetsShareCompanyNamePage when company name is not answered" in {
-    //
-    //      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-    //
-    //      val request = FakeRequest(GET, AssetsShareCompanyNameController)
-    //
-    //      val result = route(application, request).value
-    //
-    //      status(result) mustEqual SEE_OTHER
-    //
-    //      redirectLocation(result).value mustEqual routes.ShareQuantityInTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
-    //
-    //      application.stop()
-    //    }
+    "redirect to AssetsShareCompanyNamePage when company name is not answered" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      val request = FakeRequest(GET, shareQuantityInTrustRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.ShareCompanyNameController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+      application.stop()
+    }
   }
 
   "for a GET" must {

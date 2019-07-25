@@ -17,6 +17,7 @@
 package controllers
 
 import controllers.actions._
+import controllers.filters.IndexActionFilterProvider
 import forms.ShareCompanyNameFormProvider
 import javax.inject.Inject
 import models.Mode
@@ -40,12 +41,18 @@ class ShareCompanyNameController @Inject()(
                                         requireData: DataRequiredAction,
                                         formProvider: ShareCompanyNameFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: ShareCompanyNameView
+                                        view: ShareCompanyNameView,
+                                        validateIndex: IndexActionFilterProvider
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+
+  private def actions(mode: Mode, index : Int, draftId: String) =
+    identify andThen getData(draftId) andThen
+      requireData andThen
+      validateIndex(index, sections.Assets)
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(mode, index, draftId) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(ShareCompanyNamePage(index)) match {
@@ -56,7 +63,7 @@ class ShareCompanyNameController @Inject()(
       Ok(view(preparedForm, mode, draftId, index))
   }
 
-  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(mode, index, draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(
