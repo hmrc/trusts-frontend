@@ -47,15 +47,16 @@ class ShareClassController @Inject()(
                                        requiredAnswer: RequiredAnswerActionProvider
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
+  val form = formProvider()
+
   private def actions(mode: Mode, index : Int, draftId: String) =
     identify andThen getData(draftId) andThen
       requireData andThen
       validateIndex(index, sections.Assets) andThen
       requiredAnswer(RequiredAnswer(
         ShareCompanyNamePage(index),
-        routes.ShareCompanyNameController.onPageLoad(NormalMode, index, draftId)))
-
-  val form = formProvider()
+        routes.ShareCompanyNameController.onPageLoad(NormalMode, index, draftId))
+      )
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(mode, index, draftId) {
     implicit request =>

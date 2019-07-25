@@ -45,12 +45,12 @@ class SharesInAPortfolioController @Inject()(
                                          validateIndex: IndexActionFilterProvider
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  val form: Form[Boolean] = formProvider()
+
   private def actions(mode: Mode, index : Int, draftId: String) =
     identify andThen getData(draftId) andThen
       requireData andThen
       validateIndex(index, sections.Assets)
-
-  val form: Form[Boolean] = formProvider()
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(mode, index, draftId) {
     implicit request =>

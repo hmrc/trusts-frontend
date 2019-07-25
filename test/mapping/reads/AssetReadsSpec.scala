@@ -16,6 +16,7 @@
 
 package mapping.reads
 
+import models.{ShareClass, Status, WhatKindOfAsset}
 import org.scalatest.{FreeSpec, MustMatchers}
 import play.api.libs.json.{JsError, JsSuccess, Json}
 
@@ -34,6 +35,24 @@ class AssetReadsSpec extends FreeSpec with MustMatchers {
         json.validate[Asset] mustBe a[JsError]
       }
 
+      "from a share asset of the incorrect structure" in {
+
+        val json = Json.parse(
+          """
+            |{
+            |"listedOnTheStockExchange" : true,
+            |"shareCompanyName" : "adam",
+            |"sharesInAPortfolio" : false,
+            |"quantityInTheTrust" : "200",
+            |"value" : "200",
+            |"whatKindOfAsset" : "Shares"
+            |}
+          """.stripMargin)
+
+        json.validate[Asset] mustBe a[JsError]
+
+      }
+
     }
 
     "must deserialise" - {
@@ -45,6 +64,36 @@ class AssetReadsSpec extends FreeSpec with MustMatchers {
         )
 
         json.validate[Asset] mustEqual JsSuccess(MoneyAsset("4000"))
+      }
+
+      "from a share asset" in {
+
+        val json = Json.parse(
+          """
+            |{
+            |"listedOnTheStockExchange" : true,
+            |"shareCompanyName" : "adam",
+            |"sharesInAPortfolio" : false,
+            |"quantityInTheTrust" : "200",
+            |"value" : "200",
+            |"whatKindOfAsset" : "Shares",
+            |"class" : "ordinary",
+            |"status": "completed"
+            |}
+          """.stripMargin)
+
+        json.validate[Asset] mustEqual JsSuccess(
+          ShareAsset(
+          listedOnTheStockExchange = true,
+          shareCompanyName = "adam",
+          sharesInAPortfolio = false,
+          quantityInTheTrust = "200",
+          value = "200",
+          whatKindOfAsset = WhatKindOfAsset.Shares,
+          `class` = ShareClass.Ordinary,
+          status = Status.Completed
+        ))
+
       }
     }
   }

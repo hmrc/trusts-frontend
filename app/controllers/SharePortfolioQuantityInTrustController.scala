@@ -20,9 +20,9 @@ import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
 import forms.SharePortfolioQuantityInTrustFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.SharePortfolioQuantityInTrustPage
+import pages.{ShareCompanyNamePage, SharePortfolioQuantityInTrustPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -45,12 +45,12 @@ class SharePortfolioQuantityInTrustController @Inject()(
                                         validateIndex: IndexActionFilterProvider
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  val form = formProvider()
+
   private def actions(mode: Mode, index : Int, draftId: String) =
     identify andThen getData(draftId) andThen
       requireData andThen
       validateIndex(index, sections.Assets)
-
-  val form = formProvider()
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(mode, index, draftId) {
     implicit request =>

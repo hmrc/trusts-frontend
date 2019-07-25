@@ -19,9 +19,9 @@ package pages
 import mapping.reads.Assets
 import play.api.libs.json.JsPath
 
-final case class  SharePortfolioValueInTrustPage(index : Int) extends QuestionPage[String] {
+final case class SharePortfolioValueInTrustPage(index : Int) extends QuestionPage[String] {
 
   override def path: JsPath = JsPath \ Assets \ index \ toString
 
-  override def toString: String = "valueInTheTrust"
+  override def toString: String = "value"
 }
