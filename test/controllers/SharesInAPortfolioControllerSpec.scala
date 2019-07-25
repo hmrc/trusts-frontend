@@ -18,17 +18,19 @@ package controllers
 
 import base.SpecBase
 import forms.SharesInAPortfolioFormProvider
+import generators.ModelGenerators
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.SharesInAPortfolioPage
+import org.scalacheck.Arbitrary.arbitrary
+import pages.{ShareQuantityInTrustPage, SharesInAPortfolioPage}
 import play.api.inject.bind
 import play.api.libs.json.{JsBoolean, Json}
-import play.api.mvc.Call
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.SharesInAPortfolioView
 
-class SharesInAPortfolioControllerSpec extends SpecBase {
+class SharesInAPortfolioControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -151,5 +153,53 @@ class SharesInAPortfolioControllerSpec extends SpecBase {
 
       application.stop()
     }
+
+    //    "redirect to AssetsShareCompanyNamePage when company name is not answered" in {
+    //
+    //      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+    //
+    //      val request = FakeRequest(GET, AssetsShareCompanyNameController)
+    //
+    //      val result = route(application, request).value
+    //
+    //      status(result) mustEqual SEE_OTHER
+    //
+    //      redirectLocation(result).value mustEqual routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, fakeDraftId).url
+    //
+    //      application.stop()
+    //    }
+  }
+
+  "for a GET" must {
+
+    def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
+      val route = routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+      FakeRequest(GET, route)
+    }
+
+    validateIndex(
+      arbitrary[Boolean],
+      SharesInAPortfolioPage.apply,
+      getForIndex
+    )
+
+  }
+
+  "for a POST" must {
+    def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+
+      val route =
+        routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+      FakeRequest(POST, route)
+        .withFormUrlEncodedBody(("value", "true"))
+    }
+
+    validateIndex(
+      arbitrary[Boolean],
+      SharesInAPortfolioPage.apply,
+      postForIndex
+    )
   }
 }
