@@ -37,7 +37,7 @@ class SharesInAPortfolioPageSpec extends PageBehaviours {
       initial =>
         val answers: UserAnswers = initial.set(SharesInAPortfolioPage(0), false).success.value
           .set(SharesOnStockExchangePage(0), false).success.value
-          .set(ShareClassPage(0), ShareClass.Class).success.value
+          .set(ShareClassPage(0), ShareClass.Ordinary).success.value
           .set(ShareQuantityInTrustPage(0), "20").success.value
           .set(ShareValueInTrustPage(0), "2000").success.value
           .set(AssetStatus(0), Status.Completed).success.value // TODO? DO WE INDEX EACH ASSET INDIVIDUALLY?
