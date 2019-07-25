@@ -17,40 +17,42 @@
 package mapping.reads
 
 import models.WhatKindOfAsset.Shares
-import models.{ShareClass, Status, WhatKindOfAsset}
+import models.{Status, WhatKindOfAsset}
 import play.api.libs.json._
 
-final case class ShareAsset(
+final case class SharePortfolioAsset(
                            listedOnTheStockExchange: Boolean,
-                           shareCompanyName: String,
+                           name: String,
                            sharesInAPortfolio: Boolean,
                            quantityInTheTrust: String,
                            value: String,
                            whatKindOfAsset: WhatKindOfAsset,
-                           `class`: ShareClass,
                            status: Status
                            ) extends Asset
 
-object ShareAsset {
+object SharePortfolioAsset {
 
   import play.api.libs.functional.syntax._
 
-  implicit lazy val reads: Reads[ShareAsset] = {
+  implicit lazy val reads: Reads[SharePortfolioAsset] = {
 
-    val shareReads : Reads[ShareAsset] = Json.reads[ShareAsset]
+    val shareReads : Reads[SharePortfolioAsset] = Json.reads[SharePortfolioAsset]
 
     (
       (__ \ "whatKindOfAsset").read[WhatKindOfAsset] and
-      (__ \ "sharesInAPortfolio").read[Boolean]
-    )((_, _)).flatMap[(WhatKindOfAsset, Boolean)] {
+        (__ \ "sharesInAPortfolio").read[Boolean]
+      )((_, _)).flatMap[(WhatKindOfAsset, Boolean)] {
       case (whatKindOfAsset, portfolio) =>
-        if (whatKindOfAsset == Shares && !portfolio) {
+        if (whatKindOfAsset == Shares && portfolio) {
           Reads(_ => JsSuccess((whatKindOfAsset, portfolio)))
         } else {
-          Reads(_ => JsError("share asset must be of type `Shares`"))
+          Reads(_ => JsError("share portfolio asset must be of type `Shares`"))
         }
     }.andKeep(shareReads)
 
   }
 
 }
+
+
+
