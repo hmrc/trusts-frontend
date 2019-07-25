@@ -20,9 +20,9 @@ import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
 import forms.ShareValueInTrustFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.ShareValueInTrustPage
+import pages.{ShareCompanyNamePage, ShareValueInTrustPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -42,12 +42,22 @@ class ShareValueInTrustController @Inject()(
                                         validateIndex: IndexActionFilterProvider,
                                         formProvider: ShareValueInTrustFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: ShareValueInTrustView
+                                        view: ShareValueInTrustView,
+                                        requiredAnswer: RequiredAnswerActionProvider
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
+  private def actions(mode: Mode, index : Int, draftId: String) =
+    identify andThen getData(draftId) andThen
+      requireData andThen
+      validateIndex(index, sections.Assets) andThen
+      requiredAnswer(RequiredAnswer(
+        ShareCompanyNamePage(index),
+        routes.ShareCompanyNameController.onPageLoad(NormalMode, index, draftId))
+      )
+
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(mode, index, draftId) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(ShareValueInTrustPage(index)) match {
@@ -58,7 +68,7 @@ class ShareValueInTrustController @Inject()(
       Ok(view(preparedForm, mode, draftId, index))
   }
 
-  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(mode, index, draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(
