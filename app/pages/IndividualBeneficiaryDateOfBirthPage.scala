@@ -19,7 +19,7 @@ package pages
 import java.time.LocalDate
 
 import play.api.libs.json.JsPath
-import viewmodels.{Beneficiaries, IndividualBeneficiaries}
+import sections.{Beneficiaries, IndividualBeneficiaries}
 
 final case class IndividualBeneficiaryDateOfBirthPage(index : Int) extends QuestionPage[LocalDate] {
 

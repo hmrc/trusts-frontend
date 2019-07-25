@@ -14,33 +14,15 @@
  * limitations under the License.
  */
 
-package models.entities
+package sections
 
-import models.FullName
-import play.api.libs.json.Reads
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-trait Trustee {
+case object DeceasedSettlor extends QuestionPage[Nothing]{
 
-  val isLead : Boolean
+  override def path: JsPath = JsPath \ Settlors \ toString
 
-  val name : FullName
-
-}
-
-object Trustee {
-
-  implicit class ReadsWithContravariantOr[A](a: Reads[A]) {
-
-    def or[B >: A](b: Reads[B]): Reads[B] =
-      a.map[B](identity).orElse(b)
-  }
-
-  implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
-    a.map(identity)
-
-  implicit lazy val reads : Reads[Trustee] = {
-    TrusteeIndividual.reads or
-    LeadTrusteeIndividual.reads
-  }
+  override def toString: String = "deceased"
 
 }

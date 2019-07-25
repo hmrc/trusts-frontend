@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter
 
 import controllers.routes
 import javax.inject.Inject
-import models.entities._
+import mapping.reads._
 import models.{CheckMode, InternationalAddress, UKAddress, UserAnswers}
 import pages._
 import utils.CheckYourAnswersHelper._
@@ -185,6 +185,15 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         HtmlFormat.escape(x),
         routes.ClassBeneficiaryDescriptionController.onPageLoad(CheckMode,index, draftId).url,
         canEdit = canEdit
+      )
+  }
+
+  def shareCompanyName(index: Int): Option[AnswerRow] = userAnswers.get(ShareCompanyNamePage(index)) map {
+    x =>
+      AnswerRow(
+        "shareCompanyName.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.ShareCompanyNameController.onPageLoad(CheckMode, index, draftId).url
       )
   }
 

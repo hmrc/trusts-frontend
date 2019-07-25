@@ -17,7 +17,7 @@
 package pages
 
 import models.ShareClass
-import models.entities.Assets
+import mapping.reads.Assets
 import play.api.libs.json.JsPath
 
 final case class  ShareValueInTrustPage(index : Int) extends QuestionPage[String] {

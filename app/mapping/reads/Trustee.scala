@@ -14,13 +14,20 @@
  * limitations under the License.
  */
 
-package models.entities
+package mapping.reads
 
+import models.FullName
 import play.api.libs.json.Reads
 
-trait Asset
+trait Trustee {
 
-object Asset {
+  val isLead : Boolean
+
+  val name : FullName
+
+}
+
+object Trustee {
 
   implicit class ReadsWithContravariantOr[A](a: Reads[A]) {
 
@@ -31,8 +38,9 @@ object Asset {
   implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
     a.map(identity)
 
-  implicit lazy val reads : Reads[Asset] = {
-    MoneyAsset.reads
+  implicit lazy val reads : Reads[Trustee] = {
+    TrusteeIndividual.reads or
+    LeadTrusteeIndividual.reads
   }
 
 }

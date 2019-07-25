@@ -14,16 +14,25 @@
  * limitations under the License.
  */
 
-package models.entities
+package mapping.reads
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import viewmodels.Beneficiaries
+import play.api.libs.json.Reads
 
-case object IndividualBeneficiaries extends QuestionPage[List[IndividualBeneficiary]]{
+trait Asset
 
-  override def path: JsPath = JsPath \ Beneficiaries \ toString
+object Asset {
 
-  override def toString: String = "individualBeneficiaries"
+  implicit class ReadsWithContravariantOr[A](a: Reads[A]) {
+
+    def or[B >: A](b: Reads[B]): Reads[B] =
+      a.map[B](identity).orElse(b)
+  }
+
+  implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
+    a.map(identity)
+
+  implicit lazy val reads : Reads[Asset] = {
+    MoneyAsset.reads
+  }
 
 }

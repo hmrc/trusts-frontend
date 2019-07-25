@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package models.entities
+package pages
 
-import play.api.libs.json.{Format, Json}
+import pages.behaviours.PageBehaviours
 
 
-final case class ClassOfBeneficiary(description: String)
+class ShareCompanyNamePageSpec extends PageBehaviours {
 
-object ClassOfBeneficiary {
-  implicit val classFormat : Format[ClassOfBeneficiary] = Json.format[ClassOfBeneficiary]
+  "ShareCompanyNamePage" must {
+
+    beRetrievable[String](ShareCompanyNamePage(0))
+
+    beSettable[String](ShareCompanyNamePage(0))
+
+    beRemovable[String](ShareCompanyNamePage(0))
+  }
 }
-
-

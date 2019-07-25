@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package viewmodels
+package pages
 
-import pages.QuestionPage
+import mapping.reads.Assets
 import play.api.libs.json.JsPath
-import viewmodels.addAnother.AssetViewModel
 
-case object Assets extends QuestionPage[List[AssetViewModel]]{
+final case class ShareCompanyNamePage(index : Int) extends QuestionPage[String] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ Assets \ index \ toString
 
-  override def toString: String = "assets"
-
+  override def toString: String = "shareCompanyName"
 }

@@ -24,7 +24,7 @@ import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages._
-import viewmodels.{ClassOfBeneficiaries, IndividualBeneficiaries}
+import sections.{ClassOfBeneficiaries, IndividualBeneficiaries}
 
 
 trait BeneficiaryRoutes {

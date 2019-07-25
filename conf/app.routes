@@ -380,6 +380,11 @@ GET        /:draftId/your-draft-registration                          controller
 
 GET        /:draftId/your-declared-registration                          controllers.ConfirmationAnswerPageController.onPageLoad(draftId : String)
 
+GET        /:draftId/asset/:index/share-company-name                        controllers.ShareCompanyNameController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId/asset/:index/share-company-name                        controllers.ShareCompanyNameController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/asset/:index/change-share-company-name                  controllers.ShareCompanyNameController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/asset/:index/change-share-company-name                  controllers.ShareCompanyNameController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+
 GET        /:draftId/asset/:index/share-class                        controllers.ShareClassController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
 POST       /:draftId/asset/:index/share-class                        controllers.ShareClassController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
 GET        /:draftId/asset/:index/change-share-class                   controllers.ShareClassController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)

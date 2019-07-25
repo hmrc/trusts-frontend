@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 
-package viewmodels
+package queries
 
-import pages.QuestionPage
 import play.api.libs.json.JsPath
+import sections.Assets
 
-case object DeceasedSettlor extends QuestionPage[Nothing]{
+final case class RemoveAssetQuery(index : Int) extends Settable[Nothing] {
 
-  override def path: JsPath = JsPath \ Settlors \ toString
-
-  override def toString: String = "deceased"
-
+    override def path: JsPath = JsPath \ Assets \ index
 }

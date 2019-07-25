@@ -19,13 +19,13 @@ package mapping
 import javax.inject.Inject
 
 import models.{Address, UserAnswers}
-import models.entities.{ClassOfBeneficiary, IndividualBeneficiary}
+import mapping.reads.{ClassOfBeneficiary, IndividualBeneficiary}
 
 class IndividualBeneficiaryMapper @Inject()(nameMapper: NameMapper,
                                             addressMapper: AddressMapper) extends Mapping[List[IndividualDetailsType]] {
   override def build(userAnswers: UserAnswers): Option[List[IndividualDetailsType]] = {
-    val individualBeneficiaries : List[models.entities.IndividualBeneficiary] =
-      userAnswers.get(models.entities.IndividualBeneficiaries).getOrElse(List.empty)
+    val individualBeneficiaries : List[mapping.reads.IndividualBeneficiary] =
+      userAnswers.get(mapping.reads.IndividualBeneficiaries).getOrElse(List.empty)
 
     individualBeneficiaries match {
       case Nil => None

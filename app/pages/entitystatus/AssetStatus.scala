@@ -17,7 +17,7 @@
 package pages.entitystatus
 
 import models.Status
-import models.entities.Assets
+import mapping.reads.Assets
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 

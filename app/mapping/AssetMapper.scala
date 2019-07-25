@@ -17,7 +17,7 @@
 package mapping
 
 import models.UserAnswers
-import models.entities.MoneyAsset
+import mapping.reads.MoneyAsset
 
 import scala.util.Try
 
@@ -44,7 +44,7 @@ class AssetMapper extends Mapping[Assets] {
   }
 
   private def buildMoney(userAnswers: UserAnswers) : List[AssetMonetaryAmount] = {
-    val assets : List[models.entities.Asset] = userAnswers.get(models.entities.Assets).getOrElse(List.empty[models.entities.Asset])
+    val assets : List[mapping.reads.Asset] = userAnswers.get(mapping.reads.Assets).getOrElse(List.empty[mapping.reads.Asset])
 
     assets match {
       case Nil => Nil

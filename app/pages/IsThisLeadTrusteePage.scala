@@ -17,7 +17,7 @@
 package pages
 
 import models.UserAnswers
-import models.entities.Trustees
+import mapping.reads.Trustees
 import play.api.libs.json.JsPath
 
 import scala.util.Try

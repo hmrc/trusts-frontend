@@ -24,9 +24,9 @@ import models.IndividualOrBusiness.Individual
 import models.WhatKindOfAsset.{Business, Money, Other, Partnership, PropertyOrLand, Shares}
 import pages._
 import models._
-import models.entities.Assets
+import mapping.reads.Assets
+import sections.{ClassOfBeneficiaries, IndividualBeneficiaries, Trustees}
 import uk.gov.hmrc.auth.core.AffinityGroup
-import viewmodels.{ClassOfBeneficiaries, IndividualBeneficiaries}
 
 @Singleton
 class Navigator @Inject()() {
@@ -257,7 +257,7 @@ class Navigator @Inject()() {
     val addAnother = answers.get(AddAssetsPage)
 
     def routeToAssetIndex = {
-      val assets = answers.get(viewmodels.Assets).getOrElse(List.empty)
+      val assets = answers.get(sections.Assets).getOrElse(List.empty)
       assets match {
         case Nil =>
           routes.WhatKindOfAssetController.onPageLoad(NormalMode, 0, draftId)
@@ -278,7 +278,7 @@ class Navigator @Inject()() {
   }
 
   private def assetMoneyValueRoute(answers: UserAnswers, index: Int, draftId: String) = {
-    val assets = answers.get(viewmodels.Assets).getOrElse(List.empty)
+    val assets = answers.get(sections.Assets).getOrElse(List.empty)
     assets match  {
       case Nil => routes.WhatKindOfAssetController.onPageLoad(NormalMode, 0, draftId)
       case _ => routes.AddAssetsController.onPageLoad(draftId)
@@ -299,7 +299,7 @@ class Navigator @Inject()() {
     val addAnother = answers.get(AddATrusteePage)
 
     def routeToTrusteeIndex = {
-      val trustees = answers.get(viewmodels.Trustees).getOrElse(List.empty)
+      val trustees = answers.get(Trustees).getOrElse(List.empty)
       trustees match {
         case Nil =>
           routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 0, draftId)

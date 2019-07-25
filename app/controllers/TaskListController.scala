@@ -28,10 +28,11 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import sections.TaxLiability
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.DateFormat
-import viewmodels.{Task, TaxLiability}
+import viewmodels.Task
 import views.html.TaskListView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -77,9 +78,9 @@ class TaskListController @Inject()(
 
           val sections = if (config.removeTaxLiabilityOnTaskList) {
             val removeTaxLiabilityFromTaskList = (t : Task) => t.link.url == taskListNavigator.nextPage(TaxLiability, updatedAnswers, draftId).url
-            registrationProgress.sections(updatedAnswers, draftId).filterNot(removeTaxLiabilityFromTaskList)
+            registrationProgress.items(updatedAnswers, draftId).filterNot(removeTaxLiabilityFromTaskList)
           } else {
-            registrationProgress.sections(updatedAnswers, draftId)
+            registrationProgress.items(updatedAnswers, draftId)
           }
 
           val isTaskListComplete = registrationProgress.isTaskListComplete(updatedAnswers)

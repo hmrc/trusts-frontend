@@ -14,15 +14,22 @@
  * limitations under the License.
  */
 
-package viewmodels
+package queries
 
-import pages.QuestionPage
+import models.UserAnswers
 import play.api.libs.json.JsPath
 
-case object Beneficiaries extends QuestionPage[List[Nothing]]{
+import scala.util.{Success, Try}
 
-  override def path: JsPath = JsPath \ toString
+sealed trait Query {
 
-  override def toString: String = "beneficiaries"
+  def path: JsPath
+}
 
+trait Gettable[A] extends Query
+
+trait Settable[A] extends Query {
+
+  def cleanup(value: Option[A], userAnswers: UserAnswers): Try[UserAnswers] =
+    Success(userAnswers)
 }

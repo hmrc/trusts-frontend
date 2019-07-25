@@ -16,9 +16,13 @@
 
 package pages
 
-import models.WhatKindOfAsset
-import models.entities.Assets
+import models.{UserAnswers, WhatKindOfAsset}
+import models.WhatKindOfAsset.Money
+import mapping.reads.Assets
+import pages.entitystatus.AssetStatus
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 
 final case class WhatKindOfAssetPage(index: Int) extends QuestionPage[WhatKindOfAsset] {
@@ -26,4 +30,26 @@ final case class WhatKindOfAssetPage(index: Int) extends QuestionPage[WhatKindOf
   override def path: JsPath = JsPath \ Assets \ index \ toString
 
   override def toString: String = "whatKindOfAsset"
+
+  override def cleanup(value: Option[WhatKindOfAsset], userAnswers: UserAnswers): Try[UserAnswers] = {
+    value match {
+      case Some(Money) =>
+        removeShare(userAnswers)
+      case _ => super.cleanup(value, userAnswers)
+    }
+  }
+
+  // TODO add in share company name
+  private def removeShare(userAnswers: UserAnswers): Try[UserAnswers] = {
+    userAnswers.remove(SharesInAPortfolioPage(index))
+      .flatMap(_.remove(SharesOnStockExchangePage(index)))
+      .flatMap(_.remove(ShareClassPage(index)))
+      .flatMap(_.remove(ShareQuantityInTrustPage(index)))
+      .flatMap(_.remove(ShareValueInTrustPage(index)))
+      .flatMap(_.remove(SharePortfolioNamePage(index)))
+      .flatMap(_.remove(SharePortfolioOnStockExchangePage(index)))
+      .flatMap(_.remove(SharePortfolioQuantityInTrustPage(index)))
+      .flatMap(_.remove(SharePortfolioValueInTrustPage(index)))
+      .flatMap(_.remove(AssetStatus(index)))
+  }
 }

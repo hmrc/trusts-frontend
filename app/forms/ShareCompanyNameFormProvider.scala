@@ -14,12 +14,24 @@
  * limitations under the License.
  */
 
-package viewmodels
+package forms
 
-import pages.Page
+import javax.inject.Inject
 
-case object TrustDetails extends Page {
+import forms.mappings.Mappings
+import play.api.data.Form
 
-  override def toString: String = "trustDetails"
+class ShareCompanyNameFormProvider @Inject() extends Mappings {
 
+  def apply(): Form[String] =
+    Form(
+      "value" -> text("shareCompanyName.error.required")
+        .verifying(
+          firstError(
+            maxLength(53, "shareCompanyName.error.length"),
+            isNotEmpty("value","shareCompanyName.error.required"),
+            regexp(Validation.shareCompanyNameRegex, "shareCompanyName.error.invalid")
+          )
+        )
+    )
 }

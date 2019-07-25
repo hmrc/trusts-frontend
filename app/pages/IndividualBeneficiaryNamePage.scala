@@ -18,7 +18,7 @@ package pages
 
 import models.FullName
 import play.api.libs.json.JsPath
-import viewmodels.{Beneficiaries, IndividualBeneficiaries}
+import sections.{Beneficiaries, IndividualBeneficiaries}
 
 final case class IndividualBeneficiaryNamePage(index: Int) extends QuestionPage[FullName] {
 

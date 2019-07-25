@@ -19,7 +19,7 @@ package pages
 import java.time.LocalDate
 
 import play.api.libs.json.JsPath
-import viewmodels.TrustDetails
+import sections.TrustDetails
 
 case object WhenTrustSetupPage extends QuestionPage[LocalDate] {
 
