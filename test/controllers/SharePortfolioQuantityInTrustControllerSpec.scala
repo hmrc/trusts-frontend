@@ -153,20 +153,6 @@ class SharePortfolioQuantityInTrustControllerSpec extends SpecBase with ModelGen
       application.stop()
     }
 
-    //    "redirect to AssetsShareCompanyNamePage when company name is not answered" in {
-    //
-    //      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-    //
-    //      val request = FakeRequest(GET, AssetsShareCompanyNameController)
-    //
-    //      val result = route(application, request).value
-    //
-    //      status(result) mustEqual SEE_OTHER
-    //
-    //      redirectLocation(result).value mustEqual routes.SharePortfolioQuantityInTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
-    //
-    //      application.stop()
-    //    }
   }
 
   "for a GET" must {

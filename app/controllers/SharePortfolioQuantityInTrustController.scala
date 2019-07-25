@@ -20,9 +20,9 @@ import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
 import forms.SharePortfolioQuantityInTrustFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.SharePortfolioQuantityInTrustPage
+import pages.{ShareCompanyNamePage, SharePortfolioQuantityInTrustPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -47,7 +47,12 @@ class SharePortfolioQuantityInTrustController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
+  private def actions(mode: Mode, index : Int, draftId: String) =
+    identify andThen getData(draftId) andThen
+      requireData andThen
+      validateIndex(index, sections.Assets)
+
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(mode, index, draftId) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(SharePortfolioQuantityInTrustPage(index)) match {
@@ -58,7 +63,7 @@ class SharePortfolioQuantityInTrustController @Inject()(
       Ok(view(preparedForm, mode, draftId, index))
   }
 
-  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(mode, index, draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(
