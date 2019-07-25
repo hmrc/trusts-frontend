@@ -22,7 +22,7 @@ import generators.ModelGenerators
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.{SharesInAPortfolioPage, SharesOnStockExchangePage}
+import pages.{ShareCompanyNamePage, SharesInAPortfolioPage, SharesOnStockExchangePage}
 import play.api.inject.bind
 import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
@@ -44,7 +44,9 @@ class SharesOnStockExchangeControllerSpec extends SpecBase with ModelGenerators 
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val ua = emptyUserAnswers.set(ShareCompanyNamePage(index), "Share").success.value
+
+      val application = applicationBuilder(userAnswers = Some(ua)).build()
 
       val request = FakeRequest(GET, sharesOnStockExchangeRoute)
 
@@ -62,9 +64,10 @@ class SharesOnStockExchangeControllerSpec extends SpecBase with ModelGenerators 
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(SharesOnStockExchangePage(index), true).success.value
+      val ua = emptyUserAnswers.set(ShareCompanyNamePage(index), "Share").success.value
+        .set(SharesOnStockExchangePage(index), true).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(ua)).build()
 
       val request = FakeRequest(GET, sharesOnStockExchangeRoute)
 
@@ -82,8 +85,10 @@ class SharesOnStockExchangeControllerSpec extends SpecBase with ModelGenerators 
 
     "redirect to the next page when valid data is submitted" in {
 
+      val ua = emptyUserAnswers.set(ShareCompanyNamePage(index), "Share").success.value
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(ua))
           .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
@@ -102,7 +107,9 @@ class SharesOnStockExchangeControllerSpec extends SpecBase with ModelGenerators 
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val ua = emptyUserAnswers.set(ShareCompanyNamePage(index), "Share").success.value
+
+      val application = applicationBuilder(userAnswers = Some(ua)).build()
 
       val request =
         FakeRequest(POST, sharesOnStockExchangeRoute)
@@ -154,20 +161,20 @@ class SharesOnStockExchangeControllerSpec extends SpecBase with ModelGenerators 
       application.stop()
     }
 
-    //    "redirect to AssetsShareCompanyNamePage when company name is not answered" in {
-    //
-    //      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-    //
-    //      val request = FakeRequest(GET, AssetsShareCompanyNameController)
-    //
-    //      val result = route(application, request).value
-    //
-    //      status(result) mustEqual SEE_OTHER
-    //
-    //      redirectLocation(result).value mustEqual routes.SharesOnStockExchangeController.onPageLoad(NormalMode, index, fakeDraftId).url
-    //
-    //      application.stop()
-    //    }
+    "redirect to ShareCompanyName when company name is not answered" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      val request = FakeRequest(GET, sharesOnStockExchangeRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.ShareCompanyNameController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+      application.stop()
+    }
   }
 
   "for a GET" must {

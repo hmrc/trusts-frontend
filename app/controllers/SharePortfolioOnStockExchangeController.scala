@@ -20,15 +20,14 @@ import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
 import forms.SharePortfolioOnStockExchangeFormProvider
 import javax.inject.Inject
-import models.{Mode, NormalMode, UserAnswers}
+import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.{SharePortfolioOnStockExchangePage, TrusteesNamePage}
+import pages.{ShareCompanyNamePage, SharePortfolioOnStockExchangePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import viewmodels.Trustees
 import views.html.SharePortfolioOnStockExchangeView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -48,16 +47,13 @@ class SharePortfolioOnStockExchangeController @Inject()(
 
   val form: Form[Boolean] = formProvider()
 
-//  private def actions(mode: Mode, index : Int, draftId: String) =
-//    identify andThen getData(draftId) andThen
-//      requireData andThen
-//      validateIndex(index, Trustees) andThen
-//      requiredAnswer(RequiredAnswer(AssetsShareCompanyNamePage(index),routes.AssetsShareCompanyNameController.onPageLoad(NormalMode, index, draftId)))
+  private def actions(mode: Mode, index : Int, draftId: String) =
+    identify andThen getData(draftId) andThen
+      requireData andThen
+      validateIndex(index, sections.Assets)
 
-  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(mode, index, draftId) {
     implicit request =>
-
-//      val name = request.userAnswers.get(AssetsShareCompanyNameController(index)).get
 
       val preparedForm = request.userAnswers.get(SharePortfolioOnStockExchangePage(index)) match {
         case None => form
@@ -67,7 +63,7 @@ class SharePortfolioOnStockExchangeController @Inject()(
       Ok(view(preparedForm, mode, draftId, index))
   }
 
-  def onSubmit(mode: Mode, index: Int, draftId: String) = (identify andThen getData(draftId) andThen requireData).async {
+  def onSubmit(mode: Mode, index: Int, draftId: String) = actions(mode, index, draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(
