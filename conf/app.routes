@@ -379,3 +379,48 @@ GET        /:draftId/confirmation                         controllers.Confirmati
 GET        /:draftId/your-draft-registration                          controllers.SummaryAnswerPageController.onPageLoad(draftId : String)
 
 GET        /:draftId/your-declared-registration                          controllers.ConfirmationAnswerPageController.onPageLoad(draftId : String)
+
+GET        /shareClass                        controllers.ShareClassController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /shareClass                        controllers.ShareClassController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /changeShareClass                  controllers.ShareClassController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /changeShareClass                  controllers.ShareClassController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /sharePortfolioName                        controllers.SharePortfolioNameController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /sharePortfolioName                        controllers.SharePortfolioNameController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /changeSharePortfolioName                  controllers.SharePortfolioNameController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /changeSharePortfolioName                  controllers.SharePortfolioNameController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /sharePortfolioOnStockExchange                        controllers.SharePortfolioOnStockExchangeController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /sharePortfolioOnStockExchange                        controllers.SharePortfolioOnStockExchangeController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /changeSharePortfolioOnStockExchange                  controllers.SharePortfolioOnStockExchangeController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /changeSharePortfolioOnStockExchange                  controllers.SharePortfolioOnStockExchangeController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /sharePortfolioQuantityInTrust                        controllers.SharePortfolioQuantityInTrustController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /sharePortfolioQuantityInTrust                        controllers.SharePortfolioQuantityInTrustController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /changeSharePortfolioQuantityInTrust                  controllers.SharePortfolioQuantityInTrustController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /changeSharePortfolioQuantityInTrust                  controllers.SharePortfolioQuantityInTrustController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /sharePortfolioValueInTrust                        controllers.SharePortfolioValueInTrustController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /sharePortfolioValueInTrust                        controllers.SharePortfolioValueInTrustController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /changeSharePortfolioValueInTrust                  controllers.SharePortfolioValueInTrustController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /changeSharePortfolioValueInTrust                  controllers.SharePortfolioValueInTrustController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /shareQuantityInTrust                        controllers.ShareQuantityInTrustController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /shareQuantityInTrust                        controllers.ShareQuantityInTrustController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /changeShareQuantityInTrust                  controllers.ShareQuantityInTrustController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /changeShareQuantityInTrust                  controllers.ShareQuantityInTrustController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /shareValueInTrust                        controllers.ShareValueInTrustController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /shareValueInTrust                        controllers.ShareValueInTrustController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /changeShareValueInTrust                  controllers.ShareValueInTrustController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /changeShareValueInTrust                  controllers.ShareValueInTrustController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /sharesInAPortfolio                        controllers.SharesInAPortfolioController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /sharesInAPortfolio                        controllers.SharesInAPortfolioController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /changeSharesInAPortfolio                  controllers.SharesInAPortfolioController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /changeSharesInAPortfolio                  controllers.SharesInAPortfolioController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /sharesOnStockExchange                        controllers.SharesOnStockExchangeController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /sharesOnStockExchange                        controllers.SharesOnStockExchangeController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /changeSharesOnStockExchange                  controllers.SharesOnStockExchangeController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /changeSharesOnStockExchange                  controllers.SharesOnStockExchangeController.onSubmit(mode: Mode = CheckMode, draftId: String)

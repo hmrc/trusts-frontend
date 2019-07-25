@@ -16,7 +16,7 @@ class $className$ControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  lazy val $className;format="decap"$Route = routes.$className$Controller.onPageLoad(NormalMode).url
+  lazy val $className;format="decap"$Route = routes.$className$Controller.onPageLoad(NormalMode, fakeDraftId).url
 
   val formProvider = new $className$FormProvider()
   val form = formProvider()
@@ -36,7 +36,7 @@ class $className$ControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -56,7 +56,7 @@ class $className$ControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill($className$.values.head), NormalMode)(fakeRequest, messages).toString
+        view(form.fill($className$.values.head), NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -98,7 +98,7 @@ class $className$ControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }

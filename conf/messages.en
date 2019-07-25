@@ -847,3 +847,54 @@ answerPage.section.classOfBeneficiary.subheading = Class of beneficiary
 answerPage.section.assets.heading = Assets
 answerPage.section.moneyAsset.subheading = Money
 answerPage.agentClientRef = Client reference number: {0}
+shareClass.title = What class are the shares
+shareClass.heading = What class are the shares
+shareClass.class = Ordinary
+shareClass.class = Preference
+shareClass.checkYourAnswersLabel = What class are the shares
+shareClass.error.required = Select shareClass
+
+sharePortfolioName.title = sharePortfolioName
+sharePortfolioName.heading = sharePortfolioName
+sharePortfolioName.checkYourAnswersLabel = sharePortfolioName
+sharePortfolioName.error.required = Enter sharePortfolioName
+sharePortfolioName.error.length = SharePortfolioName must be 100 characters or less
+
+sharePortfolioOnStockExchange.title = sharePortfolioOnStockExchange
+sharePortfolioOnStockExchange.heading = sharePortfolioOnStockExchange
+sharePortfolioOnStockExchange.checkYourAnswersLabel = sharePortfolioOnStockExchange
+sharePortfolioOnStockExchange.error.required = Select yes if sharePortfolioOnStockExchange
+
+sharePortfolioQuantityInTrust.title = sharePortfolioQuantityInTrust
+sharePortfolioQuantityInTrust.heading = sharePortfolioQuantityInTrust
+sharePortfolioQuantityInTrust.checkYourAnswersLabel = sharePortfolioQuantityInTrust
+sharePortfolioQuantityInTrust.error.required = Enter sharePortfolioQuantityInTrust
+sharePortfolioQuantityInTrust.error.length = SharePortfolioQuantityInTrust must be 100 characters or less
+
+sharePortfolioValueInTrust.title = sharePortfolioValueInTrust
+sharePortfolioValueInTrust.heading = sharePortfolioValueInTrust
+sharePortfolioValueInTrust.checkYourAnswersLabel = sharePortfolioValueInTrust
+sharePortfolioValueInTrust.error.required = Enter sharePortfolioValueInTrust
+sharePortfolioValueInTrust.error.length = SharePortfolioValueInTrust must be 100 characters or less
+
+shareQuantityInTrust.title = shareQuantityInTrust
+shareQuantityInTrust.heading = shareQuantityInTrust
+shareQuantityInTrust.checkYourAnswersLabel = shareQuantityInTrust
+shareQuantityInTrust.error.required = Enter shareQuantityInTrust
+shareQuantityInTrust.error.length = ShareQuantityInTrust must be 12 characters or less
+
+shareValueInTrust.title = shareValueInTrust
+shareValueInTrust.heading = shareValueInTrust
+shareValueInTrust.checkYourAnswersLabel = shareValueInTrust
+shareValueInTrust.error.required = Enter shareValueInTrust
+shareValueInTrust.error.length = ShareValueInTrust must be 12 characters or less
+
+sharesInAPortfolio.title = sharesInAPortfolio
+sharesInAPortfolio.heading = sharesInAPortfolio
+sharesInAPortfolio.checkYourAnswersLabel = sharesInAPortfolio
+sharesInAPortfolio.error.required = Select yes if sharesInAPortfolio
+
+sharesOnStockExchange.title = sharesOnStockExchange
+sharesOnStockExchange.heading = sharesOnStockExchange
+sharesOnStockExchange.checkYourAnswersLabel = sharesOnStockExchange
+sharesOnStockExchange.error.required = Select yes if sharesOnStockExchange

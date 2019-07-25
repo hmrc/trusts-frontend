@@ -11,6 +11,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.$className$View
+import utils._
 
 class $className$ControllerSpec extends SpecBase {
 
@@ -19,16 +20,17 @@ class $className$ControllerSpec extends SpecBase {
   val formProvider = new $className$FormProvider()
   val form = formProvider()
 
-  lazy val $className;format="decap"$Route = routes.$className$Controller.onPageLoad(NormalMode).url
+  lazy val $className;format="decap"$Route = routes.$className$Controller.onPageLoad(NormalMode, fakeDraftId).url
 
   val userAnswers = UserAnswers(
-    userAnswersId,
-    Json.obj(
+    draftId = userAnswersId,
+    data = Json.obj(
       $className$Page.toString -> Json.obj(
         "field1" -> "value 1",
         "field2" -> "value 2"
       )
-    )
+    ),
+    internalAuthId = TestUserAnswers.userInternalId
   )
 
   "$className$ Controller" must {
@@ -46,7 +48,7 @@ class $className$ControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form, NormalMode, fakeDraftId)(request, messages).toString
 
       application.stop()
     }
@@ -64,7 +66,7 @@ class $className$ControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill($className$("value 1", "value 2")), NormalMode)(fakeRequest, messages).toString
+        view(form.fill($className$("value 1", "value 2")), NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -106,7 +108,7 @@ class $className$ControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }

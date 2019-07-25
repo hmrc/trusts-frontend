@@ -21,6 +21,33 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitrarySharesOnStockExchangePage: Arbitrary[SharesOnStockExchangePage.type] =
+    Arbitrary(SharesOnStockExchangePage)
+
+  implicit lazy val arbitrarySharesInAPortfolioPage: Arbitrary[SharesInAPortfolioPage.type] =
+    Arbitrary(SharesInAPortfolioPage)
+
+  implicit lazy val arbitraryShareValueInTrustPage: Arbitrary[ShareValueInTrustPage.type] =
+    Arbitrary(ShareValueInTrustPage)
+
+  implicit lazy val arbitraryShareQuantityInTrustPage: Arbitrary[ShareQuantityInTrustPage.type] =
+    Arbitrary(ShareQuantityInTrustPage)
+
+  implicit lazy val arbitrarySharePortfolioValueInTrustPage: Arbitrary[SharePortfolioValueInTrustPage.type] =
+    Arbitrary(SharePortfolioValueInTrustPage)
+
+  implicit lazy val arbitrarySharePortfolioQuantityInTrustPage: Arbitrary[SharePortfolioQuantityInTrustPage.type] =
+    Arbitrary(SharePortfolioQuantityInTrustPage)
+
+  implicit lazy val arbitrarySharePortfolioOnStockExchangePage: Arbitrary[SharePortfolioOnStockExchangePage.type] =
+    Arbitrary(SharePortfolioOnStockExchangePage)
+
+  implicit lazy val arbitrarySharePortfolioNamePage: Arbitrary[SharePortfolioNamePage.type] =
+    Arbitrary(SharePortfolioNamePage)
+
+  implicit lazy val arbitraryShareClassPage: Arbitrary[ShareClassPage.type] =
+    Arbitrary(ShareClassPage)
+
   implicit lazy val arbitraryDeclarationPage: Arbitrary[DeclarationPage.type] =
     Arbitrary(DeclarationPage)
 

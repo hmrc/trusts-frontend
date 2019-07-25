@@ -24,6 +24,78 @@ import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
 
+  implicit lazy val arbitrarySharesOnStockExchangeUserAnswersEntry: Arbitrary[(SharesOnStockExchangePage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[SharesOnStockExchangePage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitrarySharesInAPortfolioUserAnswersEntry: Arbitrary[(SharesInAPortfolioPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[SharesInAPortfolioPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryShareValueInTrustUserAnswersEntry: Arbitrary[(ShareValueInTrustPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[ShareValueInTrustPage.type]
+        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryShareQuantityInTrustUserAnswersEntry: Arbitrary[(ShareQuantityInTrustPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[ShareQuantityInTrustPage.type]
+        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitrarySharePortfolioValueInTrustUserAnswersEntry: Arbitrary[(SharePortfolioValueInTrustPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[SharePortfolioValueInTrustPage.type]
+        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitrarySharePortfolioQuantityInTrustUserAnswersEntry: Arbitrary[(SharePortfolioQuantityInTrustPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[SharePortfolioQuantityInTrustPage.type]
+        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitrarySharePortfolioOnStockExchangeUserAnswersEntry: Arbitrary[(SharePortfolioOnStockExchangePage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[SharePortfolioOnStockExchangePage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitrarySharePortfolioNameUserAnswersEntry: Arbitrary[(SharePortfolioNamePage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[SharePortfolioNamePage.type]
+        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryShareClassUserAnswersEntry: Arbitrary[(ShareClassPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[ShareClassPage.type]
+        value <- arbitrary[ShareClass].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
   implicit lazy val arbitraryDeclarationUserAnswersEntry: Arbitrary[(DeclarationPage.type, JsValue)] =
     Arbitrary {
       for {

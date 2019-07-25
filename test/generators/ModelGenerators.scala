@@ -24,6 +24,11 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
+  implicit lazy val arbitraryShareClass: Arbitrary[ShareClass] =
+    Arbitrary {
+      Gen.oneOf(ShareClass.values.toSeq)
+    }
+
   implicit lazy val arbitraryWhatTypeOfBeneficiary: Arbitrary[WhatTypeOfBeneficiary] =
     Arbitrary {
       Gen.oneOf(WhatTypeOfBeneficiary.values.toSeq)
