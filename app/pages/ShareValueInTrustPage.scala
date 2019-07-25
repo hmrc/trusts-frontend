@@ -20,7 +20,7 @@ import models.ShareClass
 import mapping.reads.Assets
 import play.api.libs.json.JsPath
 
-final case class  ShareValueInTrustPage(index : Int) extends QuestionPage[String] {
+final case class ShareValueInTrustPage(index : Int) extends QuestionPage[String] {
 
   override def path: JsPath = JsPath \ Assets \ index \ toString
 
