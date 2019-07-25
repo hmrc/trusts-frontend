@@ -427,3 +427,7 @@ POST       /:draftId/asset/:index/change-shares-on-stock-exchange               
 
 GET       /:draftId/asset/:index/check-share-answers                           controllers.ShareAnswerController.onPageLoad(mode : Mode = NormalMode, index : Int, draftId : String)
 POST      /:draftId/asset/:index/check-share-answers                           controllers.ShareAnswerController.onSubmit(mode : Mode = NormalMode, index : Int, draftId : String)
+GET        /shareCompanyName                        controllers.ShareCompanyNameController.onPageLoad(mode: Mode = NormalMode)
+POST       /shareCompanyName                        controllers.ShareCompanyNameController.onSubmit(mode: Mode = NormalMode)
+GET        /changeShareCompanyName                  controllers.ShareCompanyNameController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeShareCompanyName                  controllers.ShareCompanyNameController.onSubmit(mode: Mode = CheckMode)

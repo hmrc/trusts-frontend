@@ -914,3 +914,9 @@ sharesInAPortfolio.heading = Are the shares in a portfolio?
 sharesInAPortfolio.checkYourAnswersLabel = Are the shares in a portfolio?
 sharesInAPortfolio.error.required = Select yes if the shares are in a portfolio
 
+
+shareCompanyName.title = shareCompanyName
+shareCompanyName.heading = shareCompanyName
+shareCompanyName.checkYourAnswersLabel = shareCompanyName
+shareCompanyName.error.required = Enter shareCompanyName
+shareCompanyName.error.length = ShareCompanyName must be 100 characters or less

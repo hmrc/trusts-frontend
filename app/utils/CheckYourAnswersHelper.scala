@@ -31,6 +31,15 @@ import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
+
+  def shareCompanyName: Option[AnswerRow] = userAnswers.get(ShareCompanyNamePage) map {
+    x =>
+      AnswerRow(
+        "shareCompanyName.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.ShareCompanyNameController.onPageLoad(CheckMode).url
+      )
+  }
                                       (userAnswers: UserAnswers, draftId : String, canEdit: Boolean = true)
                                       (implicit messages: Messages) {
 
@@ -137,6 +146,15 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
   }
 
   def classOfBeneficiaries(individualBeneficiariesExist: Boolean) : Option[Seq[AnswerSection]] = {
+
+  def shareCompanyName: Option[AnswerRow] = userAnswers.get(ShareCompanyNamePage) map {
+    x =>
+      AnswerRow(
+        "shareCompanyName.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.ShareCompanyNameController.onPageLoad(CheckMode).url
+      )
+  }
     for {
       beneficiaries <- userAnswers.get(ClassOfBeneficiaries)
       indexed = beneficiaries.zipWithIndex
@@ -145,6 +163,15 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
 
         val questions = Seq(
           classBeneficiaryDescription(index)
+
+  def shareCompanyName: Option[AnswerRow] = userAnswers.get(ShareCompanyNamePage) map {
+    x =>
+      AnswerRow(
+        "shareCompanyName.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.ShareCompanyNameController.onPageLoad(CheckMode).url
+      )
+  }
         ).flatten
 
         val sectionKey = if (index == 0 && !individualBeneficiariesExist) {
@@ -152,6 +179,15 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         } else None
 
         AnswerSection(Some(Messages("answerPage.section.classOfBeneficiary.subheading") + " " + (index + 1)),
+
+  def shareCompanyName: Option[AnswerRow] = userAnswers.get(ShareCompanyNamePage) map {
+    x =>
+      AnswerRow(
+        "shareCompanyName.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.ShareCompanyNameController.onPageLoad(CheckMode).url
+      )
+  }
           questions, sectionKey)
     }
   }
@@ -178,9 +214,27 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
   }
 
   def classBeneficiaryDescription(index: Int): Option[AnswerRow] = userAnswers.get(ClassBeneficiaryDescriptionPage(index)) map {
+
+  def shareCompanyName: Option[AnswerRow] = userAnswers.get(ShareCompanyNamePage) map {
+    x =>
+      AnswerRow(
+        "shareCompanyName.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.ShareCompanyNameController.onPageLoad(CheckMode).url
+      )
+  }
     x =>
       AnswerRow(
         "classBeneficiaryDescription.checkYourAnswersLabel",
+
+  def shareCompanyName: Option[AnswerRow] = userAnswers.get(ShareCompanyNamePage) map {
+    x =>
+      AnswerRow(
+        "shareCompanyName.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.ShareCompanyNameController.onPageLoad(CheckMode).url
+      )
+  }
 
         HtmlFormat.escape(x),
         routes.ClassBeneficiaryDescriptionController.onPageLoad(CheckMode,index, draftId).url,
