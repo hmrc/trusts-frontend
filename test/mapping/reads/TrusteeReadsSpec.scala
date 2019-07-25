@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package models.reads
+package mapping.reads
 
 import java.time.LocalDate
 
 import generators.{Generators, ModelGenerators}
-import models.entities.{LeadTrusteeIndividual, Trustee, TrusteeIndividual}
 import models.{FullName, IndividualOrBusiness, UKAddress}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
@@ -72,7 +71,7 @@ class TrusteeReadsSpec extends FreeSpec with MustMatchers with PropertyChecks wi
 
             json.validate[Trustee] mustEqual JsSuccess(
               LeadTrusteeIndividual(
-                isLead  =true,
+                isLead = true,
                 name = fullName,
                 dateOfBirth = date,
                 nino = Some("QQ12121212"),

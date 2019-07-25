@@ -14,25 +14,15 @@
  * limitations under the License.
  */
 
-package models.entities
+package mapping.reads
 
-import play.api.libs.json.Reads
+import play.api.libs.json.{Format, Json}
 
-trait Asset
 
-object Asset {
+final case class ClassOfBeneficiary(description: String)
 
-  implicit class ReadsWithContravariantOr[A](a: Reads[A]) {
-
-    def or[B >: A](b: Reads[B]): Reads[B] =
-      a.map[B](identity).orElse(b)
-  }
-
-  implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
-    a.map(identity)
-
-  implicit lazy val reads : Reads[Asset] = {
-    MoneyAsset.reads
-  }
-
+object ClassOfBeneficiary {
+  implicit val classFormat : Format[ClassOfBeneficiary] = Json.format[ClassOfBeneficiary]
 }
+
+

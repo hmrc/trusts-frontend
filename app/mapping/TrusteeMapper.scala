@@ -19,7 +19,7 @@ package mapping
 import javax.inject.Inject
 
 import models.UserAnswers
-import models.entities.{Trustee, TrusteeIndividual, Trustees}
+import mapping.reads.{Trustee, TrusteeIndividual, Trustees}
 
 
 class TrusteeMapper @Inject()(nameMapper: NameMapper) extends Mapping[List[TrusteeType]] {

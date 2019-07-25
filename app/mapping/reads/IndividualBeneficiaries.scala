@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package models.entities
+package mapping.reads
 
-import play.api.libs.json.{Format, Json}
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import sections.Beneficiaries
 
+case object IndividualBeneficiaries extends QuestionPage[List[IndividualBeneficiary]]{
 
-final case class ClassOfBeneficiary(description: String)
+  override def path: JsPath = JsPath \ Beneficiaries \ toString
 
-object ClassOfBeneficiary {
-  implicit val classFormat : Format[ClassOfBeneficiary] = Json.format[ClassOfBeneficiary]
+  override def toString: String = "individualBeneficiaries"
+
 }
-
-

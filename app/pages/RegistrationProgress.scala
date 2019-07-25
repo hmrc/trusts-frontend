@@ -18,8 +18,8 @@ package pages
 
 import javax.inject.Inject
 import models.Status.{Completed, InProgress}
-import models.entities.{Assets, Trustees}
-import models.{AddABeneficiary, AddATrustee, AddAssets, Status, UserAnswers, entities}
+import mapping.reads.{Assets, Trustees}
+import models.{AddABeneficiary, AddATrustee, AddAssets, Status, UserAnswers}
 import navigation.TaskListNavigator
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
 import sections.{Beneficiaries, ClassOfBeneficiaries, IndividualBeneficiaries, Settlors, TaxLiability, TrustDetails}
@@ -33,7 +33,7 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
     Task(Link(Settlors, navigator.nextPage(Settlors, userAnswers, draftId).url), isDeceasedSettlorComplete(userAnswers)),
     Task(Link(Trustees, navigator.nextPage(Trustees, userAnswers, draftId).url), isTrusteesComplete(userAnswers)),
     Task(Link(Beneficiaries, navigator.nextPage(Beneficiaries, userAnswers, draftId).url), isBeneficiariesComplete(userAnswers)),
-    Task(Link(Assets, navigator.nextPage(entities.Assets, userAnswers, draftId).url), assetsStatus(userAnswers)),
+    Task(Link(Assets, navigator.nextPage(Assets, userAnswers, draftId).url), assetsStatus(userAnswers)),
     Task(Link(TaxLiability, navigator.nextPage(TaxLiability, userAnswers, draftId).url), None)
   )
 

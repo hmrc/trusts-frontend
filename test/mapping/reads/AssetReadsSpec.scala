@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package models.reads
+package mapping.reads
 
-import models.entities.{Asset, MoneyAsset}
 import org.scalatest.{FreeSpec, MustMatchers}
 import play.api.libs.json.{JsError, JsSuccess, Json}
 

@@ -18,7 +18,7 @@ package pages
 
 import models.{UserAnswers, WhatKindOfAsset}
 import models.WhatKindOfAsset.Money
-import models.entities.Assets
+import mapping.reads.Assets
 import pages.entitystatus.AssetStatus
 import play.api.libs.json.JsPath
 

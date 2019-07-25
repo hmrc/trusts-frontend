@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package models.entities
+package mapping.reads
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath

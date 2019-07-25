@@ -17,7 +17,7 @@
 package pages
 
 import models.UKAddress
-import models.entities.Trustees
+import mapping.reads.Trustees
 import play.api.libs.json.JsPath
 
 final case class TrusteesUkAddressPage(index: Int) extends QuestionPage[UKAddress] {

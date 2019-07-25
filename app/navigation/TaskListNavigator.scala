@@ -19,7 +19,7 @@ package navigation
 import controllers.routes
 import javax.inject.{Inject, Singleton}
 import models.Status.Completed
-import models.entities.{Assets, Trustees}
+import mapping.reads.{Assets, Trustees}
 import models.{NormalMode, UserAnswers}
 import pages._
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
