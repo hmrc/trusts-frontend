@@ -914,9 +914,9 @@ sharesInAPortfolio.heading = Are the shares in a portfolio?
 sharesInAPortfolio.checkYourAnswersLabel = Are the shares in a portfolio?
 sharesInAPortfolio.error.required = Select yes if the shares are in a portfolio
 
-
-shareCompanyName.title = shareCompanyName
-shareCompanyName.heading = shareCompanyName
-shareCompanyName.checkYourAnswersLabel = shareCompanyName
-shareCompanyName.error.required = Enter shareCompanyName
-shareCompanyName.error.length = ShareCompanyName must be 100 characters or less
+shareCompanyName.title = What is the share company’s name?
+shareCompanyName.heading = What is the share company’s name?
+shareCompanyName.checkYourAnswersLabel = What is the share company’s name?
+shareCompanyName.error.required = Enter the share company’s name
+shareCompanyName.error.length = Company’s name must be 53 characters or less
+shareCompanyName.error.invalid = Company’s name must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces

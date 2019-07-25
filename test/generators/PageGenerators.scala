@@ -21,8 +21,8 @@ import pages._
 
 trait PageGenerators {
 
-  implicit lazy val arbitraryShareCompanyNamePage: Arbitrary[ShareCompanyNamePage.type] =
-    Arbitrary(ShareCompanyNamePage)
+  implicit lazy val arbitraryShareCompanyNamePage: Arbitrary[ShareCompanyNamePage] =
+    Arbitrary(ShareCompanyNamePage(0))
 
   implicit lazy val arbitrarySharesOnStockExchangePage: Arbitrary[SharesOnStockExchangePage] =
     Arbitrary(SharesOnStockExchangePage(0))
