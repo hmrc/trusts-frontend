@@ -22,10 +22,10 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, index : Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId: String, index : Int, companyName: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("shareQuantityInTrust.title")}"
+    title = s"${errorPrefix(form)} ${messages("shareQuantityInTrust.title", companyName)}"
     ) {
 
     @formHelper(action = ShareQuantityInTrustController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
@@ -34,7 +34,7 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("shareQuantityInTrust.heading")
+        @components.heading("shareQuantityInTrust.heading", optionalParam = Some(companyName))
 
         @components.input_text(
           field = form("value"),

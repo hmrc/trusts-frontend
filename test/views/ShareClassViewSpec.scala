@@ -33,14 +33,18 @@ class ShareClassViewSpec extends ViewBehaviours {
 
   val index = 0
 
+  val companyName = "Company"
+
   def applyView(form: Form[_]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
+    view.apply(form, NormalMode, fakeDraftId, index, companyName)(fakeRequest, messages)
 
   "ShareClassView" must {
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, companyName, "hint")
 
     behave like pageWithBackLink(applyView(form))
+
+    pageWithASubmitButton(applyView(form))
   }
 
   "ShareClassView" when {

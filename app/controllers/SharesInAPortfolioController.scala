@@ -39,15 +39,20 @@ class SharesInAPortfolioController @Inject()(
                                          identify: IdentifierAction,
                                          getData: DraftIdRetrievalActionProvider,
                                          requireData: DataRequiredAction,
-                                         validateIndex: IndexActionFilterProvider,
                                          formProvider: SharesInAPortfolioFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
-                                         view: SharesInAPortfolioView
+                                         view: SharesInAPortfolioView,
+                                         validateIndex: IndexActionFilterProvider
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+
+  private def actions(mode: Mode, index : Int, draftId: String) =
+    identify andThen getData(draftId) andThen
+      requireData andThen
+      validateIndex(index, sections.Assets)
 
   val form: Form[Boolean] = formProvider()
 
-  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(mode, index, draftId) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(SharesInAPortfolioPage(index)) match {
@@ -58,7 +63,7 @@ class SharesInAPortfolioController @Inject()(
       Ok(view(preparedForm, mode, draftId, index))
   }
 
-  def onSubmit(mode: Mode, index: Int, draftId: String) = (identify andThen getData(draftId) andThen requireData).async {
+  def onSubmit(mode: Mode, index: Int, draftId: String) = actions(mode, index, draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(

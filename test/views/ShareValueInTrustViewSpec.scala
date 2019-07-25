@@ -32,17 +32,20 @@ class ShareValueInTrustViewSpec extends StringViewBehaviours {
 
   val index = 0
 
+  val companyName = "Company"
+
   "ShareValueInTrustView view" must {
 
     val view = viewFor[ShareValueInTrustView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index, companyName)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, companyName, "hint")
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.ShareValueInTrustController.onSubmit(NormalMode, index, fakeDraftId).url)
+    behave like stringPage(form, applyView, messageKeyPrefix, routes.ShareQuantityInTrustController.onSubmit(NormalMode, index, fakeDraftId).url, Some(s"$messageKeyPrefix.hint"))
+
   }
 }

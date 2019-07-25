@@ -193,7 +193,7 @@ class SharesInAPortfolioControllerSpec extends SpecBase with ModelGenerators wit
         routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       FakeRequest(POST, route)
-        .withFormUrlEncodedBody(("value", "true"))
+        .withFormUrlEncodedBody(("value", "yes"))
     }
 
     validateIndex(
