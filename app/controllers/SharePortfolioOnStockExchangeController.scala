@@ -20,14 +20,15 @@ import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
 import forms.SharePortfolioOnStockExchangeFormProvider
 import javax.inject.Inject
-import models.{Mode, UserAnswers}
+import models.{Mode, NormalMode, UserAnswers}
 import navigation.Navigator
-import pages.SharePortfolioOnStockExchangePage
+import pages.{SharePortfolioOnStockExchangePage, TrusteesNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import viewmodels.Trustees
 import views.html.SharePortfolioOnStockExchangeView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -46,6 +47,12 @@ class SharePortfolioOnStockExchangeController @Inject()(
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = formProvider()
+
+//  private def actions(mode: Mode, index : Int, draftId: String) =
+//    identify andThen getData(draftId) andThen
+//      requireData andThen
+//      validateIndex(index, Trustees) andThen
+//      requiredAnswer(RequiredAnswer(AssetsShareCompanyNamePage(index),routes.AssetsShareCompanyNameController.onPageLoad(NormalMode, index, draftId)))
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
     implicit request =>
