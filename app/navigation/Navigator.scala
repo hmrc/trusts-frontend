@@ -16,15 +16,14 @@
 
 package navigation
 
-import javax.inject.{Inject, Singleton}
-import play.api.mvc.Call
 import controllers.routes
+import javax.inject.{Inject, Singleton}
 import models.AddATrustee.{NoComplete, YesLater, YesNow}
 import models.IndividualOrBusiness.Individual
 import models.WhatKindOfAsset.{Business, Money, Other, Partnership, PropertyOrLand, Shares}
-import pages._
 import models._
-import mapping.reads.Assets
+import pages._
+import play.api.mvc.Call
 import sections.{ClassOfBeneficiaries, IndividualBeneficiaries, Trustees}
 import uk.gov.hmrc.auth.core.AffinityGroup
 
@@ -92,6 +91,7 @@ class Navigator @Inject()() {
     case ShareQuantityInTrustPage(index) => _ => _ => routes.ShareValueInTrustController.onPageLoad(NormalMode, index, draftId)
     case ShareValueInTrustPage(index) => _ => _ => routes.ShareAnswerController.onPageLoad(index, draftId)
     case ShareAnswerPage => _ => _ => routes.AddAssetsController.onPageLoad(draftId)
+    case ShareCompanyNamePage(index) => _ => _ => routes.SharesOnStockExchangeController.onPageLoad(NormalMode, index, draftId)
 
     //Settlors
     case SetupAfterSettlorDiedPage => _ => setupAfterSettlorDiedRoute(draftId)
@@ -137,7 +137,7 @@ class Navigator @Inject()() {
       case Some(true) =>
         routes.SharePortfolioNameController.onPageLoad(NormalMode, index, draftId)
       case Some(false) =>
-        routes.SharesOnStockExchangeController.onPageLoad(NormalMode, index, draftId)
+        routes.ShareCompanyNameController.onPageLoad(NormalMode, index, draftId)
       case _=>
         routes.SessionExpiredController.onPageLoad()
     }

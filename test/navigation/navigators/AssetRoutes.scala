@@ -149,7 +149,7 @@ trait AssetRoutes {
 
       "for shares" must {
 
-        "go to SharesOnStockExchange from SharesInAPortfolio when user answers no" in {
+        "go to ShareCompanyName from SharesInAPortfolio when user answers no" in {
           val index = 0
 
           forAll(arbitrary[UserAnswers]) {
@@ -158,6 +158,17 @@ trait AssetRoutes {
               val answers = userAnswers.set(SharesInAPortfolioPage(index), false).success.value
 
               navigator.nextPage(SharesInAPortfolioPage(index), NormalMode, fakeDraftId)(answers)
+                .mustBe(routes.ShareCompanyNameController.onPageLoad(NormalMode, index, fakeDraftId))
+          }
+        }
+
+        "go to SharesOnStockExchange from ShareCompanyName" in {
+          val index = 0
+
+          forAll(arbitrary[UserAnswers]) {
+            userAnswers =>
+
+              navigator.nextPage(ShareCompanyNamePage(index), NormalMode, fakeDraftId)(userAnswers)
                 .mustBe(routes.SharesOnStockExchangeController.onPageLoad(NormalMode, index, fakeDraftId))
           }
         }
