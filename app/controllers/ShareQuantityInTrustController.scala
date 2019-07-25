@@ -39,11 +39,11 @@ class ShareQuantityInTrustController @Inject()(
                                         identify: IdentifierAction,
                                         getData: DraftIdRetrievalActionProvider,
                                         requireData: DataRequiredAction,
-                                        validateIndex: IndexActionFilterProvider,
                                         formProvider: ShareQuantityInTrustFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: ShareQuantityInTrustView,
-                                        requiredAnswer: RequiredAnswerActionProvider
+                                        requiredAnswer: RequiredAnswerActionProvider,
+                                        validateIndex: IndexActionFilterProvider
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -60,20 +60,24 @@ class ShareQuantityInTrustController @Inject()(
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(mode, index, draftId) {
     implicit request =>
 
+      val companyName = request.userAnswers.get(ShareCompanyNamePage(index)).get.toString
+
       val preparedForm = request.userAnswers.get(ShareQuantityInTrustPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId, index))
+      Ok(view(preparedForm, mode, draftId, index, companyName))
   }
 
   def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(mode, index, draftId).async {
     implicit request =>
 
+      val companyName = request.userAnswers.get(ShareCompanyNamePage(index)).get.toString
+
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, companyName))),
 
         value => {
           for {

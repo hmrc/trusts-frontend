@@ -22,7 +22,7 @@ import forms.ShareClassFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode, NormalMode}
 import navigation.Navigator
-import pages.{ShareClassPage, ShareCompanyNamePage}
+import pages.{ShareClassPage, ShareCompanyNamePage, TrusteesNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -39,10 +39,11 @@ class ShareClassController @Inject()(
                                        identify: IdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
-                                       validateIndex: IndexActionFilterProvider,
                                        formProvider: ShareClassFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: ShareClassView,
+                                       requiredAnswerActionProvider: RequiredAnswerActionProvider,
+                                       validateIndex: IndexActionFilterProvider,
                                        requiredAnswer: RequiredAnswerActionProvider
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
@@ -60,20 +61,24 @@ class ShareClassController @Inject()(
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(mode, index, draftId) {
     implicit request =>
 
+      val companyName = request.userAnswers.get(ShareCompanyNamePage(index)).get.toString
+
       val preparedForm = request.userAnswers.get(ShareClassPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId, index))
+      Ok(view(preparedForm, mode, draftId, index, companyName))
   }
 
   def onSubmit(mode: Mode, index: Int,  draftId: String): Action[AnyContent] = actions(mode, index, draftId).async {
     implicit request =>
 
+      val companyName = request.userAnswers.get(ShareCompanyNamePage(index)).get.toString
+
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, companyName))),
 
         value => {
           for {

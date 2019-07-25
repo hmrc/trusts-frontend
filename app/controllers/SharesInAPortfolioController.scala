@@ -39,10 +39,10 @@ class SharesInAPortfolioController @Inject()(
                                          identify: IdentifierAction,
                                          getData: DraftIdRetrievalActionProvider,
                                          requireData: DataRequiredAction,
-                                         validateIndex: IndexActionFilterProvider,
                                          formProvider: SharesInAPortfolioFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
-                                         view: SharesInAPortfolioView
+                                         view: SharesInAPortfolioView,
+                                         validateIndex: IndexActionFilterProvider
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = formProvider()

@@ -36,6 +36,7 @@ class ShareClassControllerSpec extends SpecBase with ModelGenerators with IndexV
   val formProvider = new ShareClassFormProvider()
   val form = formProvider()
   val index: Int = 0
+  val companyName = "Company"
 
   lazy val shareClassRoute = routes.ShareClassController.onPageLoad(NormalMode, index, fakeDraftId).url
 
@@ -56,7 +57,7 @@ class ShareClassControllerSpec extends SpecBase with ModelGenerators with IndexV
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index, companyName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -77,7 +78,7 @@ class ShareClassControllerSpec extends SpecBase with ModelGenerators with IndexV
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(ShareClass.values.head), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(form.fill(ShareClass.values.head), NormalMode, fakeDraftId, index, companyName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -123,7 +124,7 @@ class ShareClassControllerSpec extends SpecBase with ModelGenerators with IndexV
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index, companyName)(fakeRequest, messages).toString
 
       application.stop()
     }

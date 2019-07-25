@@ -39,10 +39,10 @@ class SharePortfolioQuantityInTrustController @Inject()(
                                         identify: IdentifierAction,
                                         getData: DraftIdRetrievalActionProvider,
                                         requireData: DataRequiredAction,
-                                        validateIndex: IndexActionFilterProvider,
                                         formProvider: SharePortfolioQuantityInTrustFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: SharePortfolioQuantityInTrustView
+                                        view: SharePortfolioQuantityInTrustView,
+                                        validateIndex: IndexActionFilterProvider
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
