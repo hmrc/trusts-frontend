@@ -53,6 +53,21 @@ class AssetReadsSpec extends FreeSpec with MustMatchers {
 
       }
 
+      "from a share portfolio asset of the incorrect structure" in {
+        val json = Json.parse(
+          """
+            |{
+            |"listedOnTheStockExchange" : true,
+            |"sharesInAPortfolio" : true,
+            |"value" : "290000",
+            |"whatKindOfAsset" : "Shares",
+            |"status" : "progress"
+            |}
+          """.stripMargin)
+
+        json.validate[Asset] mustBe a[JsError]
+      }
+
     }
 
     "must deserialise" - {
@@ -94,6 +109,32 @@ class AssetReadsSpec extends FreeSpec with MustMatchers {
           status = Status.Completed
         ))
 
+      }
+
+      "from a share portfolio asset" in {
+        val json = Json.parse(
+          """
+            |{
+            |"listedOnTheStockExchange" : true,
+            |"sharesInAPortfolio" : true,
+            |"name" : "Adam",
+            |"quantityInTheTrust" : "200",
+            |"value" : "290000",
+            |"whatKindOfAsset" : "Shares",
+            |"status" : "completed"
+            |}
+          """.stripMargin)
+
+        json.validate[Asset] mustEqual JsSuccess(
+          SharePortfolioAsset(
+            listedOnTheStockExchange = true,
+            name = "Adam",
+            sharesInAPortfolio = true,
+            quantityInTheTrust = "200",
+            value = "290000",
+            whatKindOfAsset = WhatKindOfAsset.Shares,
+            status = Status.Completed
+          ))
       }
     }
   }
