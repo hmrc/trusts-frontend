@@ -41,11 +41,10 @@ class ShareValueInTrustViewSpec extends StringViewBehaviours {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId, index, companyName)(fakeRequest, messages)
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, companyName, "hint")
-
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.ShareQuantityInTrustController.onSubmit(NormalMode, index, fakeDraftId).url, Some(s"$messageKeyPrefix.hint"))
+    behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, companyName, routes.ShareValueInTrustController.onSubmit(
+      NormalMode, index, fakeDraftId).url, Some(messages(s"$messageKeyPrefix.hint")))
 
   }
 }

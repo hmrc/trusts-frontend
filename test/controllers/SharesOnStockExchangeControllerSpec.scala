@@ -44,7 +44,7 @@ class SharesOnStockExchangeControllerSpec extends SpecBase with ModelGenerators 
 
     "return OK and the correct view for a GET" in {
 
-      val ua = emptyUserAnswers.set(ShareCompanyNamePage(index), "Share").success.value
+      val ua = emptyUserAnswers.set(ShareCompanyNamePage(index), companyName).success.value
 
       val application = applicationBuilder(userAnswers = Some(ua)).build()
 
@@ -64,7 +64,7 @@ class SharesOnStockExchangeControllerSpec extends SpecBase with ModelGenerators 
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val ua = emptyUserAnswers.set(ShareCompanyNamePage(index), "Share").success.value
+      val ua = emptyUserAnswers.set(ShareCompanyNamePage(index), companyName).success.value
         .set(SharesOnStockExchangePage(index), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(ua)).build()
@@ -107,7 +107,7 @@ class SharesOnStockExchangeControllerSpec extends SpecBase with ModelGenerators 
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val ua = emptyUserAnswers.set(ShareCompanyNamePage(index), "Share").success.value
+      val ua = emptyUserAnswers.set(ShareCompanyNamePage(index), companyName).success.value
 
       val application = applicationBuilder(userAnswers = Some(ua)).build()
 

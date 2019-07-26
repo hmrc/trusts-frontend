@@ -39,11 +39,11 @@ class ShareQuantityInTrustController @Inject()(
                                         identify: IdentifierAction,
                                         getData: DraftIdRetrievalActionProvider,
                                         requireData: DataRequiredAction,
+                                        validateIndex: IndexActionFilterProvider,
+                                        requiredAnswer: RequiredAnswerActionProvider,
                                         formProvider: ShareQuantityInTrustFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: ShareQuantityInTrustView,
-                                        requiredAnswer: RequiredAnswerActionProvider,
-                                        validateIndex: IndexActionFilterProvider
+                                        view: ShareQuantityInTrustView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()

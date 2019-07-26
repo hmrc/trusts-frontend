@@ -881,7 +881,7 @@ sharesOnStockExchange.title = Are {0}’s shares listed on a stock exchange?
 sharesOnStockExchange.heading = Are {0}’s shares listed on a stock exchange?
 sharesOnStockExchange.checkYourAnswersLabel = Are {0}’s shares listed on a stock exchange?
 sharesOnStockExchange.error.required = Select yes if the shares are listed on a stock exchanged
-shareQuantityInTrust.hint = A quoted share is listed on a stock exchange
+sharesOnStockExchange.hint = A quoted share is listed on a stock exchange
 
 shareClass.title = What class are the {0} shares?
 shareClass.heading = What class are the {0} shares?
@@ -900,6 +900,7 @@ shareQuantityInTrust.hint = Add together the total number of shares across all s
 shareQuantityInTrust.error.invalid = Total assets value must be a number
 shareQuantityInTrust.error.length =Total assets value must be 12 numbers or less
 shareQuantityInTrust.error.required = Enter the current number of shares in the trust
+shareQuantityInTrust.hint = Add together the total number of shares across all share holdings. This can be an estimate.
 
 shareValueInTrust.title = What is the current value of {0} shares in the trust?
 shareValueInTrust.heading = What is the current value of {0} shares in the trust?
