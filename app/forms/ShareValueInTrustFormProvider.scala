@@ -30,6 +30,7 @@ class ShareValueInTrustFormProvider @Inject() extends Mappings {
           firstError(
             maxLength(12, "shareValueInTrust.error.length"),
             isNotEmpty("value", "shareValueInTrust.error.required"),
-            regexp(Validation.onlyNumbersRegex, "shareValueInTrust.error.invalid")
+            regexp(Validation.onlyNumbersRegex, "shareValueInTrust.error.invalid"),
+            minimumValue("1", "shareValueInTrust.error.zero")
           )))
 }

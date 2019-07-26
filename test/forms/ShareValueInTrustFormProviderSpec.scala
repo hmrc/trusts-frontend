@@ -16,15 +16,17 @@
 
 package forms
 
-import forms.behaviours.StringFieldBehaviours
+import forms.behaviours.{IntFieldBehaviours, StringFieldBehaviours}
+import org.scalacheck.Gen
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
 
-class ShareValueInTrustFormProviderSpec extends StringFieldBehaviours {
+class ShareValueInTrustFormProviderSpec extends StringFieldBehaviours with IntFieldBehaviours {
 
   val requiredKey = "shareValueInTrust.error.required"
   val lengthKey = "shareValueInTrust.error.length"
   val maxLength = 12
+  val zeroNumberkey = "shareValueInTrust.error.zero"
 
   val form = new ShareValueInTrustFormProvider()()
 
@@ -43,6 +45,14 @@ class ShareValueInTrustFormProviderSpec extends StringFieldBehaviours {
       fieldName,
       maxLength = maxLength,
       lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+    )
+
+    behave like intFieldWithMinimumWithGenerator(
+      form,
+      fieldName,
+      1,
+      Gen.const(0),
+      FormError(fieldName, zeroNumberkey, Array("1"))
     )
 
     behave like mandatoryField(

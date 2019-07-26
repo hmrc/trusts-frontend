@@ -848,6 +848,8 @@ answerPage.section.assets.heading = Assets
 answerPage.section.moneyAsset.subheading = Money
 answerPage.agentClientRef = Client reference number: {0}
 
+
+
 sharePortfolioName.title = What is the share portfolio’s name?
 sharePortfolioName.heading = What is the share portfolio’s name?
 sharePortfolioName.checkYourAnswersLabel = What is the share portfolio’s name?
@@ -868,6 +870,7 @@ sharePortfolioQuantityInTrust.error.required = Enter the current number of share
 sharePortfolioQuantityInTrust.error.length = Total assets value must be 12 numbers or less
 sharePortfolioQuantityInTrust.error.invalid = Total assets value must be a number
 sharePortfolioQuantityInTrust.hint = Add together the total number of shares across all share holdings. This can be an estimate.
+sharePortfolioQuantityInTrust.error.zero = Total amount of money in the trust must be 1 or more
 
 sharePortfolioValueInTrust.title = What is the current value of the portfolio?
 sharePortfolioValueInTrust.heading = What is the current value of the portfolio?
@@ -876,6 +879,7 @@ sharePortfolioValueInTrust.error.required = Enter the current value of the share
 sharePortfolioValueInTrust.error.length = Total assets value must be 12 numbers or less
 sharePortfolioValueInTrust.error.invalid = Total assets value must be a number
 sharePortfolioValueInTrust.hint = Rounded down to the nearest pound. For example, 4000
+sharePortfolioValueInTrust.error.zero = Total amount of money in the trust must be 1 or more
 
 sharesOnStockExchange.title = Are {0}’s shares listed on a stock exchange?
 sharesOnStockExchange.heading = Are {0}’s shares listed on a stock exchange?
@@ -901,6 +905,7 @@ shareQuantityInTrust.error.invalid = Total assets value must be a number
 shareQuantityInTrust.error.length =Total assets value must be 12 numbers or less
 shareQuantityInTrust.error.required = Enter the current number of shares in the trust
 shareQuantityInTrust.hint = Add together the total number of shares across all share holdings. This can be an estimate.
+shareQuantityInTrust.error.zero = Total amount of money in the trust must be 1 or more
 
 shareValueInTrust.title = What is the current value of {0} shares in the trust?
 shareValueInTrust.heading = What is the current value of {0} shares in the trust?
@@ -909,6 +914,7 @@ shareValueInTrust.hint = Rounded down to the nearest pound. For example, 4000
 shareValueInTrust.error.required = Enter the current value of the shares in the trust
 shareValueInTrust.error.length = ShareValueInTrust must be 12 characters or less
 shareValueInTrust.error.invalid = Total assets value must be a number
+shareValueInTrust.error.zero = Total amount of money in the trust must be 1 or more
 
 sharesInAPortfolio.title = Are the shares in a portfolio?
 sharesInAPortfolio.heading = Are the shares in a portfolio?

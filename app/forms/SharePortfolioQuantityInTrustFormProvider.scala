@@ -30,6 +30,7 @@ class SharePortfolioQuantityInTrustFormProvider @Inject() extends Mappings {
           firstError(
             maxLength(12, "sharePortfolioQuantityInTrust.error.length"),
             isNotEmpty("value", "sharePortfolioQuantityInTrust.error.required"),
-            regexp(Validation.onlyNumbersRegex, "sharePortfolioQuantityInTrust.error.invalid")
+            regexp(Validation.onlyNumbersRegex, "sharePortfolioQuantityInTrust.error.invalid"),
+            minimumValue("1", "sharePortfolioQuantityInTrust.error.zero")
           )))
 }
