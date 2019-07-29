@@ -30,7 +30,7 @@ class ShareCompanyNameFormProvider @Inject() extends Mappings {
           firstError(
             maxLength(53, "shareCompanyName.error.length"),
             isNotEmpty("value","shareCompanyName.error.required"),
-            regexp(Validation.shareCompanyNameRegex, "shareCompanyName.error.invalid")
+            regexp(Validation.nameRegex, "shareCompanyName.error.invalid")
           )
         )
     )
