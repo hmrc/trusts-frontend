@@ -41,7 +41,8 @@ lazy val root = (project in file("."))
       EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
     resolvers ++= Seq(
       Resolver.bintrayRepo("hmrc", "releases"),
-      Resolver.jcenterRepo
+      Resolver.jcenterRepo,
+      "hmrc-artefactory-releases" at "https://artefacts.tax.service.gov.uk/artifactory/hmrc-releases/"
     ),
     // concatenate js
     Concat.groups := Seq(
