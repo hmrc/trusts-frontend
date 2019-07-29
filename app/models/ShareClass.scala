@@ -28,7 +28,6 @@ object ShareClass extends Enumerable.Implicits {
   case object Growth extends WithName("growth") with ShareClass
   case object Other extends WithName("other") with ShareClass
 
-
   val values: List[ShareClass] = List(
     Ordinary, Preference, Deferred, Growth, Other
   )
@@ -40,4 +39,12 @@ object ShareClass extends Enumerable.Implicits {
 
   implicit val enumerable: Enumerable[ShareClass] =
     Enumerable(values.map(v => v.toString -> v): _*)
+
+  def toDES(value : ShareClass) : String = value match {
+    case Ordinary => "Ordinary shares"
+    case Preference => "Preference shares"
+    case Deferred => "Deferred ordinary shares"
+    case Growth => "Other"
+    case Other => "Other"
+  }
 }

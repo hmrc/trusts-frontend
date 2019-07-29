@@ -20,13 +20,12 @@ import models.WhatKindOfAsset.Shares
 import models.{ShareClass, Status, WhatKindOfAsset}
 import play.api.libs.json._
 
-final case class ShareAsset(
+final case class ShareAsset(override val whatKindOfAsset: WhatKindOfAsset,
                            listedOnTheStockExchange: Boolean,
                            shareCompanyName: String,
                            sharesInAPortfolio: Boolean,
                            quantityInTheTrust: String,
                            value: String,
-                           whatKindOfAsset: WhatKindOfAsset,
                            `class`: ShareClass,
                            status: Status
                            ) extends Asset

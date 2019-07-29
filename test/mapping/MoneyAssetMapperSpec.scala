@@ -16,24 +16,13 @@
 
 package mapping
 
-import javax.inject.Inject
-import models.UserAnswers
+import base.SpecBaseHelpers
+import generators.Generators
+import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 
-class AssetMapper @Inject()(moneyAssetMapper: MoneyAssetMapper) extends Mapping[Assets] {
+class MoneyAssetMapperSpec extends FreeSpec with MustMatchers
+  with OptionValues with Generators with SpecBaseHelpers {
 
-  override def build(userAnswers: UserAnswers): Option[Assets] = {
+//  val moneyAssetMapper : Mapping[AssetMonetaryAmount] = injector.instanceOf[MoneyAssetMapper]
 
-    val money = moneyAssetMapper.build(userAnswers)
-
-    money.map { v =>
-      Assets(
-        monetary = Some(v),
-        propertyOrLand = None,
-        shares = None,
-        business = None,
-        partnerShip = None,
-        other = None
-      )
-    }
-  }
 }

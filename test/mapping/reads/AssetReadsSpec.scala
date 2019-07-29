@@ -16,6 +16,7 @@
 
 package mapping.reads
 
+import models.WhatKindOfAsset.Money
 import models.{ShareClass, Status, WhatKindOfAsset}
 import org.scalatest.{FreeSpec, MustMatchers}
 import play.api.libs.json.{JsError, JsSuccess, Json}
@@ -78,7 +79,7 @@ class AssetReadsSpec extends FreeSpec with MustMatchers {
           "assetMoneyValue" -> "4000"
         )
 
-        json.validate[Asset] mustEqual JsSuccess(MoneyAsset("4000"))
+        json.validate[Asset] mustEqual JsSuccess(MoneyAsset(Money,"4000"))
       }
 
       "from a share asset" in {

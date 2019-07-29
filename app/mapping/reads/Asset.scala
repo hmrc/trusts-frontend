@@ -16,9 +16,14 @@
 
 package mapping.reads
 
+import models.WhatKindOfAsset
 import play.api.libs.json.Reads
 
-trait Asset
+trait Asset {
+
+  val whatKindOfAsset : WhatKindOfAsset
+
+}
 
 object Asset {
 
