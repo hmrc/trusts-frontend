@@ -33,7 +33,7 @@ class AssetMapperSpec extends FreeSpec with MustMatchers
 
     "when user answers is empty" - {
 
-      "must be able to create an empty AssetDetails" in {
+      "must not be able to create an AssetDetails" in {
 
         val userAnswers = emptyUserAnswers
 
@@ -43,36 +43,60 @@ class AssetMapperSpec extends FreeSpec with MustMatchers
 
     "when user answers is not empty " - {
 
-      "must not be able to create a money asset when no value is in user answers" in {
+      "money" - {
 
-        val userAnswers =
-          emptyUserAnswers
-            .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
+        "must not be able to create a money asset when no value is in user answers" in {
 
-        assetMapper.build(userAnswers) mustNot be(defined)
+          val userAnswers =
+            emptyUserAnswers
+              .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
+
+          assetMapper.build(userAnswers) mustNot be(defined)
+        }
+
+        "must able to create a Monetary Asset" in {
+
+          val userAnswers =
+            emptyUserAnswers
+              .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
+              .set(AssetMoneyValuePage(0), "2000").success.value
+              .set(AssetStatus(0), Completed).success.value
+
+          assetMapper.build(userAnswers).value mustBe Assets(
+            monetary = Some(
+              List(
+                AssetMonetaryAmount(2000)
+              )
+            ),
+            propertyOrLand = None,
+            shares = None,
+            business = None,
+            partnerShip = None,
+            other = None
+          )
+        }
+
       }
 
-      "must able to create a Monetary Asset" in {
+      "shares" - {
 
-        val userAnswers =
-          emptyUserAnswers
-            .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
-            .set(AssetMoneyValuePage(0), "2000").success.value
-            .set(AssetStatus(0), Completed).success.value
+        "must not be able to create a share asset when missing values in user answers" in {
 
-        assetMapper.build(userAnswers).value mustBe Assets(
-          monetary = Some(
-            List(
-              AssetMonetaryAmount(2000)
-            )
-          ),
-          propertyOrLand = None,
-          shares = None,
-          business = None,
-          partnerShip = None,
-          other = None
-        )
+//          val userAnswers = emptyUserAnswers
+//            .set()
+
+        }
+
+        "non-portfolio" - {
+
+        }
+
+        "portfolio" - {
+
+        }
+
       }
+
     }
   }
 }

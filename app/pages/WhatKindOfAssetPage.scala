@@ -20,6 +20,7 @@ import models.{UserAnswers, WhatKindOfAsset}
 import models.WhatKindOfAsset.Money
 import mapping.reads.Assets
 import pages.entitystatus.AssetStatus
+import pages.shares.{ShareClassPage, SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, ShareQuantityInTrustPage, ShareValueInTrustPage, SharesInAPortfolioPage, SharesOnStockExchangePage}
 import play.api.libs.json.JsPath
 
 import scala.util.Try

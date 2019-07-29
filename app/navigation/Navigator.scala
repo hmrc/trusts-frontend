@@ -23,6 +23,7 @@ import models.IndividualOrBusiness.Individual
 import models.WhatKindOfAsset.{Business, Money, Other, Partnership, PropertyOrLand, Shares}
 import models._
 import pages._
+import pages.shares.{ShareAnswerPage, ShareClassPage, ShareCompanyNamePage, SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, ShareQuantityInTrustPage, ShareValueInTrustPage, SharesInAPortfolioPage, SharesOnStockExchangePage}
 import play.api.mvc.Call
 import sections.{ClassOfBeneficiaries, IndividualBeneficiaries, Trustees}
 import uk.gov.hmrc.auth.core.AffinityGroup
@@ -81,17 +82,17 @@ class Navigator @Inject()() {
     case AssetMoneyValuePage(index) => _ => ua => assetMoneyValueRoute(ua, index, draftId)
     case WhatKindOfAssetPage(index) => _ => ua => whatKindOfAssetRoute(ua, index, draftId)
     case SharesInAPortfolioPage(index) => _ => ua => sharesInAPortfolio(ua, index, draftId)
-    case SharePortfolioNamePage(index) => _ => ua => routes.SharePortfolioOnStockExchangeController.onPageLoad(NormalMode, index, draftId)
-    case SharePortfolioOnStockExchangePage(index) => _ => ua => routes.SharePortfolioQuantityInTrustController.onPageLoad(NormalMode, index, draftId)
-    case SharePortfolioQuantityInTrustPage(index) => _ => _ => routes.SharePortfolioValueInTrustController.onPageLoad(NormalMode, index, draftId)
-    case SharePortfolioValueInTrustPage(index) => _ => _ => routes.ShareAnswerController.onPageLoad(index, draftId)
-    case SharesOnStockExchangePage(index) => _ => _ => routes.ShareClassController.onPageLoad(NormalMode, index, draftId)
-    case ShareClassPage(index) => _ => _ => routes.ShareQuantityInTrustController.onPageLoad(NormalMode, index, draftId)
+    case SharePortfolioNamePage(index) => _ => ua => controllers.shares.routes.SharePortfolioOnStockExchangeController.onPageLoad(NormalMode, index, draftId)
+    case SharePortfolioOnStockExchangePage(index) => _ => ua => controllers.shares.routes.SharePortfolioQuantityInTrustController.onPageLoad(NormalMode, index, draftId)
+    case SharePortfolioQuantityInTrustPage(index) => _ => _ => controllers.shares.routes.SharePortfolioValueInTrustController.onPageLoad(NormalMode, index, draftId)
+    case SharePortfolioValueInTrustPage(index) => _ => _ => controllers.shares.routes.ShareAnswerController.onPageLoad(index, draftId)
+    case SharesOnStockExchangePage(index) => _ => _ => controllers.shares.routes.ShareClassController.onPageLoad(NormalMode, index, draftId)
+    case ShareClassPage(index) => _ => _ => controllers.shares.routes.ShareQuantityInTrustController.onPageLoad(NormalMode, index, draftId)
     case AddAssetsPage => _ => addAssetsRoute(draftId)
-    case ShareQuantityInTrustPage(index) => _ => _ => routes.ShareValueInTrustController.onPageLoad(NormalMode, index, draftId)
-    case ShareValueInTrustPage(index) => _ => _ => routes.ShareAnswerController.onPageLoad(index, draftId)
+    case ShareQuantityInTrustPage(index) => _ => _ => controllers.shares.routes.ShareValueInTrustController.onPageLoad(NormalMode, index, draftId)
+    case ShareValueInTrustPage(index) => _ => _ => controllers.shares.routes.ShareAnswerController.onPageLoad(index, draftId)
     case ShareAnswerPage => _ => _ => routes.AddAssetsController.onPageLoad(draftId)
-    case ShareCompanyNamePage(index) => _ => _ => routes.SharesOnStockExchangeController.onPageLoad(NormalMode, index, draftId)
+    case ShareCompanyNamePage(index) => _ => _ => controllers.shares.routes.SharesOnStockExchangeController.onPageLoad(NormalMode, index, draftId)
 
     //Settlors
     case SetupAfterSettlorDiedPage => _ => setupAfterSettlorDiedRoute(draftId)
@@ -135,9 +136,9 @@ class Navigator @Inject()() {
   private def sharesInAPortfolio(userAnswers: UserAnswers, index : Int, draftId: String) : Call = {
     userAnswers.get(SharesInAPortfolioPage(index)) match {
       case Some(true) =>
-        routes.SharePortfolioNameController.onPageLoad(NormalMode, index, draftId)
+        controllers.shares.routes.SharePortfolioNameController.onPageLoad(NormalMode, index, draftId)
       case Some(false) =>
-        routes.ShareCompanyNameController.onPageLoad(NormalMode, index, draftId)
+        controllers.shares.routes.ShareCompanyNameController.onPageLoad(NormalMode, index, draftId)
       case _=>
         routes.SessionExpiredController.onPageLoad()
     }
@@ -288,7 +289,7 @@ class Navigator @Inject()() {
   private def whatKindOfAssetRoute(answers: UserAnswers, index: Int, draftId: String) = answers.get(WhatKindOfAssetPage(index)) match {
       case Some(Money) => routes.AssetMoneyValueController.onPageLoad(NormalMode, index, draftId)
       case Some(PropertyOrLand) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
-      case Some(Shares) => routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, draftId)
+      case Some(Shares) => controllers.shares.routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, draftId)
       case Some(Business) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
       case Some(Partnership) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
       case Some(Other) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
