@@ -902,7 +902,6 @@ shareQuantityInTrust.hint = Add together the total number of shares across all s
 shareQuantityInTrust.error.invalid = Total shares in the trust must be a number
 shareQuantityInTrust.error.length = Total shares in the trust must be 12 numbers or less
 shareQuantityInTrust.error.required = Enter the current number of shares in the trust
-shareQuantityInTrust.hint = Add together the total number of shares across all share holdings. This can be an estimate.
 shareQuantityInTrust.error.zero = Total shares in the trust must be 1 or more
 
 shareValueInTrust.title = What is the current value of {0} shares in the trust?
