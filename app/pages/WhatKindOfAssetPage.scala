@@ -16,11 +16,11 @@
 
 package pages
 
-import models.{UserAnswers, WhatKindOfAsset}
-import models.WhatKindOfAsset.Money
 import mapping.reads.Assets
+import models.WhatKindOfAsset.{Money, Shares}
+import models.{UserAnswers, WhatKindOfAsset}
 import pages.entitystatus.AssetStatus
-import pages.shares.{ShareClassPage, SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, ShareQuantityInTrustPage, ShareValueInTrustPage, SharesInAPortfolioPage, SharesOnStockExchangePage}
+import pages.shares._
 import play.api.libs.json.JsPath
 
 import scala.util.Try
@@ -36,11 +36,17 @@ final case class WhatKindOfAssetPage(index: Int) extends QuestionPage[WhatKindOf
     value match {
       case Some(Money) =>
         removeShare(userAnswers)
+      case Some(Shares) =>
+        removeMoney(userAnswers)
       case _ => super.cleanup(value, userAnswers)
     }
   }
 
-  // TODO add in share company name
+  private def removeMoney(userAnswers: UserAnswers) : Try[UserAnswers] = {
+    userAnswers.remove(AssetMoneyValuePage(index))
+      .flatMap(_.remove(AssetStatus(index)))
+  }
+
   private def removeShare(userAnswers: UserAnswers): Try[UserAnswers] = {
     userAnswers.remove(SharesInAPortfolioPage(index))
       .flatMap(_.remove(SharesOnStockExchangePage(index)))
@@ -52,5 +58,6 @@ final case class WhatKindOfAssetPage(index: Int) extends QuestionPage[WhatKindOf
       .flatMap(_.remove(SharePortfolioQuantityInTrustPage(index)))
       .flatMap(_.remove(SharePortfolioValueInTrustPage(index)))
       .flatMap(_.remove(AssetStatus(index)))
+      .flatMap(_.remove(ShareCompanyNamePage(index)))
   }
 }

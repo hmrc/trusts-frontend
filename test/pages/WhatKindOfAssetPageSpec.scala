@@ -16,11 +16,11 @@
 
 package pages
 
-import models.{Status, UserAnswers, WhatKindOfAsset}
+import models.{ShareClass, Status, UserAnswers, WhatKindOfAsset}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 import pages.entitystatus.AssetStatus
-import pages.shares.{SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, SharesInAPortfolioPage}
+import pages.shares._
 
 class WhatKindOfAssetPageSpec extends PageBehaviours {
 
@@ -33,7 +33,23 @@ class WhatKindOfAssetPageSpec extends PageBehaviours {
     beRemovable[WhatKindOfAsset](WhatKindOfAssetPage(0))
   }
 
-  "remove share data when changing type of asset" in {
+  "remove money when changing type of asset" in {
+    forAll(arbitrary[UserAnswers]) {
+      initial =>
+        val answers: UserAnswers = initial
+          .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
+          .set(AssetMoneyValuePage(0), "200").success.value
+          .set(AssetStatus(0), Status.Completed).success.value
+
+        val result = answers.set(WhatKindOfAssetPage(0), WhatKindOfAsset.Shares).success.value
+
+        result.get(WhatKindOfAssetPage(0)).value mustEqual WhatKindOfAsset.Shares
+        result.get(AssetMoneyValuePage(0)) mustNot be(defined)
+        result.get(AssetStatus(0)) mustNot be(defined)
+    }
+  }
+
+  "remove share portfolio data when changing type of asset" in {
     forAll(arbitrary[UserAnswers]) {
       initial =>
         val answers: UserAnswers = initial
@@ -43,7 +59,7 @@ class WhatKindOfAssetPageSpec extends PageBehaviours {
           .set(SharePortfolioOnStockExchangePage(0), true).success.value
           .set(SharePortfolioQuantityInTrustPage(0), "20").success.value
           .set(SharePortfolioValueInTrustPage(0), "2000").success.value
-          .set(AssetStatus(0), Status.Completed).success.value // TODO? DO WE INDEX EACH ASSET INDIVIDUALLY?
+          .set(AssetStatus(0), Status.Completed).success.value
 
         val result = answers.set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
 
@@ -54,6 +70,33 @@ class WhatKindOfAssetPageSpec extends PageBehaviours {
         result.get(SharePortfolioOnStockExchangePage(0)) mustNot be(defined)
         result.get(SharePortfolioQuantityInTrustPage(0)) mustNot be(defined)
         result.get(SharePortfolioValueInTrustPage(0)) mustNot be(defined)
+        result.get(AssetStatus(0)) mustNot be(defined)
+    }
+  }
+
+  "remove share data when changing type of asset" in {
+    forAll(arbitrary[UserAnswers]) {
+      initial =>
+
+        val answers: UserAnswers = initial
+          .set(SharesInAPortfolioPage(0), false).success.value
+          .set(ShareCompanyNamePage(0), "Company").success.value
+          .set(SharesOnStockExchangePage(0), false).success.value
+          .set(ShareClassPage(0), ShareClass.Ordinary).success.value
+          .set(ShareQuantityInTrustPage(0), "20").success.value
+          .set(ShareValueInTrustPage(0), "2000").success.value
+          .set(AssetStatus(0), Status.Completed).success.value
+
+        val result = answers.set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
+
+        result.get(WhatKindOfAssetPage(0)).value mustEqual WhatKindOfAsset.Money
+
+        result.get(SharesInAPortfolioPage(0)) mustNot be(defined)
+        result.get(ShareCompanyNamePage(0)) mustNot be(defined)
+        result.get(SharesOnStockExchangePage(0)) mustNot be(defined)
+        result.get(ShareClassPage(0)) mustNot be(defined)
+        result.get(ShareQuantityInTrustPage(0)) mustNot be(defined)
+        result.get(ShareValueInTrustPage(0)) mustNot be(defined)
         result.get(AssetStatus(0)) mustNot be(defined)
     }
   }
