@@ -39,6 +39,7 @@ object AssetViewModel {
 
   implicit lazy val reads : Reads[AssetViewModel] = {
     MoneyAssetViewModel.reads or
+    ShareAssetViewModel.reads or
     DefaultAssetsViewModel.reads
   }
 

@@ -114,8 +114,10 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
     assets match {
       case Nil => None
       case list =>
-        val filtered = list.filter(x => x.isInstanceOf[MoneyAssetViewModel])
-        val status = !filtered.exists(_.status == InProgress) && noMoreToAdd
+
+        println(s"Determining status for assets $list")
+
+        val status = !list.exists(_.status == InProgress) && noMoreToAdd
         determineStatus(status)
     }
   }

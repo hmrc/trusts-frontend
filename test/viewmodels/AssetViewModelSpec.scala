@@ -18,11 +18,11 @@ package viewmodels
 
 import generators.{Generators, ModelGenerators}
 import models.Status.{Completed, InProgress}
-import models.WhatKindOfAsset.{Money, PropertyOrLand}
+import models.WhatKindOfAsset.{Money, PropertyOrLand, Shares}
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.{FreeSpec, MustMatchers}
 import play.api.libs.json.{JsSuccess, Json}
-import viewmodels.addAnother.AssetViewModel
+import viewmodels.addAnother.{AssetViewModel, DefaultAssetsViewModel, MoneyAssetViewModel, ShareAssetViewModel}
 
 class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks with Generators with ModelGenerators {
 
@@ -30,18 +30,20 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks 
 
     "must deserialise" - {
 
-      "from a money asset to a view model that is not complete" in {
+      "money" - {
 
-        val json = Json.obj(
-          "whatKindOfAsset" -> Money.toString
-        )
+        "to a view model that is not complete" in {
 
-        json.validate[AssetViewModel] mustEqual JsSuccess(
-          addAnother.MoneyAssetViewModel(Money, None, InProgress)
-        )
-      }
+          val json = Json.obj(
+            "whatKindOfAsset" -> Money.toString
+          )
 
-      "from a money asset to a view model that is complete" in {
+          json.validate[AssetViewModel] mustEqual JsSuccess(
+            MoneyAssetViewModel(Money, None, InProgress)
+          )
+        }
+
+        "to a view model that is complete" in {
           val json = Json.obj(
             "whatKindOfAsset" -> Money.toString,
             "assetMoneyValue" -> "4000",
@@ -49,8 +51,51 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks 
           )
 
           json.validate[AssetViewModel] mustEqual JsSuccess(
-            addAnother.MoneyAssetViewModel(Money, Some("£4000"), Completed)
+            MoneyAssetViewModel(Money, Some("£4000"), Completed)
           )
+        }
+
+      }
+
+      "share non-portfolio" - {
+
+        "to a view model that is not complete" in {
+
+          val json = Json.parse(
+            """
+              |{
+              |"whatKindOfAsset" : "Shares",
+              |"sharesInAPortfolio" : false,
+              |"status": "progress"
+              |}
+            """.stripMargin)
+
+          json.validate[AssetViewModel] mustEqual JsSuccess(
+            ShareAssetViewModel(Shares, None, InProgress)
+          )
+
+        }
+
+        "to a view model that is complete" in {
+          val json = Json.parse(
+            """
+              |{
+              |"listedOnTheStockExchange" : true,
+              |"shareCompanyName" : "adam",
+              |"sharesInAPortfolio" : false,
+              |"quantityInTheTrust" : "200",
+              |"value" : "200",
+              |"whatKindOfAsset" : "Shares",
+              |"class" : "ordinary",
+              |"status": "completed"
+              |}
+            """.stripMargin)
+
+          json.validate[AssetViewModel] mustEqual JsSuccess(
+            ShareAssetViewModel(Shares, Some("adam"), Completed)
+          )
+        }
+
       }
 
       "to a default from any other type" in {
@@ -59,7 +104,7 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks 
         )
 
         json.validate[AssetViewModel] mustEqual JsSuccess(
-          addAnother.DefaultAssetsViewModel(PropertyOrLand, InProgress)
+          DefaultAssetsViewModel(PropertyOrLand, InProgress)
         )
       }
     }
