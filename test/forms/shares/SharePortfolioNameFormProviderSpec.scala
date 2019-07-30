@@ -37,7 +37,7 @@ class SharePortfolioNameFormProviderSpec extends StringFieldBehaviours {
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      RegexpGen.from(Validation.nameRegex)
+      RegexpGen.from(Validation.shareCompanyNameRegex)
     )
 
     behave like fieldWithMaxLength(

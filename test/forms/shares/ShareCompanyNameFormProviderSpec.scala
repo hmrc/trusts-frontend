@@ -61,9 +61,9 @@ class ShareCompanyNameFormProviderSpec extends StringFieldBehaviours {
     behave like fieldWithRegexpWithGenerator(
       form,
       fieldName,
-      Validation.nameRegex,
+      Validation.shareCompanyNameRegex,
       generator = stringsWithMaxLength(maxLength),
-      error = FormError(fieldName, invalidFormatKey, Seq(Validation.nameRegex))
+      error = FormError(fieldName, invalidFormatKey, Seq(Validation.shareCompanyNameRegex))
     )
 
 
