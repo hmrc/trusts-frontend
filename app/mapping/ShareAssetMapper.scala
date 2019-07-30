@@ -17,14 +17,30 @@
 package mapping
 
 import javax.inject.Inject
-import mapping.reads.MoneyAsset
-import models.UserAnswers
-import models.WhatKindOfAsset.Money
-
-import scala.util.Try
+import mapping.reads.{Asset, ShareAsset, SharePortfolioAsset}
+import models.WhatKindOfAsset.Shares
+import models.{ShareClass, UserAnswers}
 
 class ShareAssetMapper @Inject() extends Mapping[List[SharesType]]{
   override def build(userAnswers: UserAnswers): Option[List[SharesType]] = {
-    ???
+
+    val shares: List[Asset] =
+      userAnswers.get(mapping.reads.Assets)
+        .getOrElse(List.empty[mapping.reads.Asset])
+        .filter(_.whatKindOfAsset == Shares)
+
+    shares match {
+      case Nil => None
+      case list =>
+        Some(
+          list.flatMap {
+            case x : ShareAsset =>
+              Some(SharesType(x.quantityInTheTrust, x.shareCompanyName, ShareClass.toDES(x.`class`), x.quoted, x.value.toLong))
+            case x : SharePortfolioAsset =>
+              Some(SharesType(x.quantityInTheTrust, x.name, "Other", x.quoted, x.value.toLong))
+            case _ => None
+          }
+        )
+    }
   }
 }

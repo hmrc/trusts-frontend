@@ -18,22 +18,29 @@ package mapping
 
 import javax.inject.Inject
 import models.UserAnswers
+import play.api.Logger
 
-class AssetMapper @Inject()(moneyAssetMapper: MoneyAssetMapper) extends Mapping[Assets] {
+class AssetMapper @Inject()(moneyAssetMapper: MoneyAssetMapper, shareAssetMapper: ShareAssetMapper) extends Mapping[Assets] {
 
   override def build(userAnswers: UserAnswers): Option[Assets] = {
 
     val money = moneyAssetMapper.build(userAnswers)
+    val shares = shareAssetMapper.build(userAnswers)
 
-    money.map { v =>
-      Assets(
-        monetary = Some(v),
-        propertyOrLand = None,
-        shares = None,
-        business = None,
-        partnerShip = None,
-        other = None
+    if (money.isDefined || shares.isDefined) {
+      Some(
+        Assets(
+          monetary = money,
+          propertyOrLand = None,
+          shares = shares,
+          business = None,
+          partnerShip = None,
+          other = None
+        )
       )
+    } else {
+      Logger.info(s"[AssetMapper][build] unable to map assets")
+      None
     }
   }
 }

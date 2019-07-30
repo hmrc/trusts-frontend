@@ -48,31 +48,46 @@ class ShareAssetMapperSpec extends FreeSpec with MustMatchers
         val userAnswers = emptyUserAnswers
           .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Shares).success.value
           .set(SharesInAPortfolioPage(0), false).success.value
-          .set(ShareCompanyNamePage(0), "Portfolio").success.value
+          .set(ShareCompanyNamePage(0), "Non-Portfolio").success.value
           .set(ShareQuantityInTrustPage(0), "20").success.value
           .set(ShareValueInTrustPage(0), "300").success.value
           .set(SharesOnStockExchangePage(0), true).success.value
           .set(ShareClassPage(0), ShareClass.Deferred).success.value
           .set(AssetStatus(0), Completed).success.value
 
-        shareAssetMapper.build(userAnswers).value mustBe Assets(
-          monetary = None,
-          propertyOrLand = None,
-          shares = Some(
+        shareAssetMapper.build(userAnswers).value mustBe
             List(
               SharesType(
                 numberOfShares = "20",
-                orgName = "Portfolio",
+                orgName = "Non-Portfolio",
                 shareClass = "Deferred ordinary shares",
                 typeOfShare = "Quoted",
                 value = 300
               )
             )
-          ),
-          business = None,
-          partnerShip = None,
-          other = None
-        )
+      }
+
+      "must be able to create multiple Share Assets" in {
+        val userAnswers = emptyUserAnswers
+          .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Shares).success.value
+          .set(SharesInAPortfolioPage(0), false).success.value
+          .set(ShareCompanyNamePage(0), "Non-Portfolio").success.value
+          .set(ShareQuantityInTrustPage(0), "20").success.value
+          .set(ShareValueInTrustPage(0), "300").success.value
+          .set(SharesOnStockExchangePage(0), true).success.value
+          .set(ShareClassPage(0), ShareClass.Deferred).success.value
+          .set(AssetStatus(0), Completed).success.value
+          .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
+          .set(SharesInAPortfolioPage(1), false).success.value
+          .set(ShareCompanyNamePage(1), "Non-Portfolio").success.value
+          .set(ShareQuantityInTrustPage(1), "20").success.value
+          .set(ShareValueInTrustPage(1), "300").success.value
+          .set(SharesOnStockExchangePage(1), true).success.value
+          .set(ShareClassPage(1), ShareClass.Deferred).success.value
+          .set(AssetStatus(1), Completed).success.value
+
+
+        shareAssetMapper.build(userAnswers).value.length mustBe 2
       }
 
     }
@@ -89,10 +104,7 @@ class ShareAssetMapperSpec extends FreeSpec with MustMatchers
           .set(SharePortfolioOnStockExchangePage(0), false).success.value
           .set(AssetStatus(0), Completed).success.value
 
-        shareAssetMapper.build(userAnswers).value mustBe Assets(
-          monetary = None,
-          propertyOrLand = None,
-          shares = Some(
+        shareAssetMapper.build(userAnswers).value mustBe
             List(
               SharesType(
                 numberOfShares = "30",
@@ -102,13 +114,29 @@ class ShareAssetMapperSpec extends FreeSpec with MustMatchers
                 value = 999999999999L
               )
             )
-          ),
-          business = None,
-          partnerShip = None,
-          other = None
-        )
       }
 
+      "must be able to create multiple Share Assets" in {
+
+        val userAnswers = emptyUserAnswers
+          .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Shares).success.value
+          .set(SharesInAPortfolioPage(0), true).success.value
+          .set(SharePortfolioNamePage(0), "Portfolio").success.value
+          .set(SharePortfolioQuantityInTrustPage(0), "30").success.value
+          .set(SharePortfolioValueInTrustPage(0), "999999999999").success.value
+          .set(SharePortfolioOnStockExchangePage(0), false).success.value
+          .set(AssetStatus(0), Completed).success.value
+          .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
+          .set(SharesInAPortfolioPage(1), true).success.value
+          .set(SharePortfolioNamePage(1), "Portfolio").success.value
+          .set(SharePortfolioQuantityInTrustPage(1), "30").success.value
+          .set(SharePortfolioValueInTrustPage(1), "999999999999").success.value
+          .set(SharePortfolioOnStockExchangePage(1), false).success.value
+          .set(AssetStatus(1), Completed).success.value
+
+
+        shareAssetMapper.build(userAnswers).value.length mustBe 2
+      }
     }
   }
 }

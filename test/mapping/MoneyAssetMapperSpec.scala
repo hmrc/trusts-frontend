@@ -50,5 +50,19 @@ class MoneyAssetMapperSpec extends FreeSpec with MustMatchers
 
       moneyAssetMapper.build(userAnswers).value mustBe List(AssetMonetaryAmount(2000))
     }
+
+    "must able to create multiple Monetary Assets" in {
+
+      val userAnswers =
+        emptyUserAnswers
+          .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
+          .set(AssetMoneyValuePage(0), "2000").success.value
+          .set(AssetStatus(0), Completed).success.value
+          .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Money).success.value
+          .set(AssetMoneyValuePage(1), "2000").success.value
+          .set(AssetStatus(1), Completed).success.value
+
+      moneyAssetMapper.build(userAnswers).value.length mustBe 2
+    }
   }
 }

@@ -34,7 +34,7 @@ class AssetMapperSpec extends FreeSpec with MustMatchers
 
     "when user answers is empty" - {
 
-      "must not be able to create an AssetDetails" in {
+      "must not be able to create Assets" in {
 
         val userAnswers = emptyUserAnswers
 
@@ -44,7 +44,55 @@ class AssetMapperSpec extends FreeSpec with MustMatchers
 
     "when user answers is not empty " - {
 
-      
+      "must be able to create Assets for money" in {
+
+        val userAnswers = emptyUserAnswers
+          .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
+          .set(AssetMoneyValuePage(0), "2000").success.value
+          .set(AssetStatus(0), Completed).success.value
+
+
+        val expected = Some(Assets(Some(List(AssetMonetaryAmount(2000))),None,None,None,None,None))
+
+        assetMapper.build(userAnswers) mustBe expected
+      }
+
+      "must be able to create Assets for shares" in {
+
+        val userAnswers = emptyUserAnswers
+          .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Shares).success.value
+          .set(SharesInAPortfolioPage(0), true).success.value
+          .set(SharePortfolioNamePage(0), "Portfolio").success.value
+          .set(SharePortfolioQuantityInTrustPage(0), "30").success.value
+          .set(SharePortfolioValueInTrustPage(0), "999999999999").success.value
+          .set(SharePortfolioOnStockExchangePage(0), false).success.value
+          .set(AssetStatus(0), Completed).success.value
+
+
+        val expected = Some(Assets(None,None,Some(List(SharesType("30","Portfolio","Other","Unquoted",999999999999L))),None,None,None))
+
+        assetMapper.build(userAnswers) mustBe expected
+      }
+
+      "must be able to create Assets for both shares and money" in {
+
+        val userAnswers = emptyUserAnswers
+          .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Shares).success.value
+          .set(SharesInAPortfolioPage(0), true).success.value
+          .set(SharePortfolioNamePage(0), "Portfolio").success.value
+          .set(SharePortfolioQuantityInTrustPage(0), "30").success.value
+          .set(SharePortfolioValueInTrustPage(0), "999999999999").success.value
+          .set(SharePortfolioOnStockExchangePage(0), false).success.value
+          .set(AssetStatus(0), Completed).success.value
+          .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Money).success.value
+          .set(AssetMoneyValuePage(1), "2000").success.value
+          .set(AssetStatus(1), Completed).success.value
+
+
+        val expected = Some(Assets(Some(List(AssetMonetaryAmount(2000))),None,Some(List(SharesType("30","Portfolio","Other","Unquoted",999999999999L))),None,None,None))
+
+        assetMapper.build(userAnswers) mustBe expected
+      }
     }
   }
 }
