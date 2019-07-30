@@ -36,15 +36,17 @@ class SharesInAPortfolioPageSpec extends PageBehaviours {
     forAll(arbitrary[UserAnswers]) {
       initial =>
         val answers: UserAnswers = initial.set(SharesInAPortfolioPage(0), false).success.value
+          .set(ShareCompanyNamePage(0), "Company").success.value
           .set(SharesOnStockExchangePage(0), false).success.value
           .set(ShareClassPage(0), ShareClass.Ordinary).success.value
           .set(ShareQuantityInTrustPage(0), "20").success.value
           .set(ShareValueInTrustPage(0), "2000").success.value
-          .set(AssetStatus(0), Status.Completed).success.value // TODO? DO WE INDEX EACH ASSET INDIVIDUALLY?
+          .set(AssetStatus(0), Status.Completed).success.value
 
         val result = answers.set(SharesInAPortfolioPage(0), true).success.value
 
         result.get(SharesOnStockExchangePage(0)) mustNot be(defined)
+        result.get(ShareCompanyNamePage(0)) mustNot be(defined)
         result.get(ShareClassPage(0)) mustNot be(defined)
         result.get(ShareQuantityInTrustPage(0)) mustNot be(defined)
         result.get(ShareValueInTrustPage(0)) mustNot be(defined)
@@ -60,7 +62,7 @@ class SharesInAPortfolioPageSpec extends PageBehaviours {
           .set(SharePortfolioOnStockExchangePage(0), true).success.value
           .set(SharePortfolioQuantityInTrustPage(0), "20").success.value
           .set(SharePortfolioValueInTrustPage(0), "2000").success.value
-          .set(AssetStatus(0), Status.Completed).success.value // TODO? DO WE INDEX EACH ASSET INDIVIDUALLY?
+          .set(AssetStatus(0), Status.Completed).success.value
 
         val result = answers.set(SharesInAPortfolioPage(0), false).success.value
 

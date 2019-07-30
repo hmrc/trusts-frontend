@@ -35,6 +35,7 @@ final case class SharesInAPortfolioPage(index : Int) extends QuestionPage[Boolea
       case Some(true) =>
 
         userAnswers.remove(SharesOnStockExchangePage(index))
+          .flatMap(_.remove(ShareCompanyNamePage(index)))
           .flatMap(_.remove(ShareClassPage(index)))
           .flatMap(_.remove(ShareQuantityInTrustPage(index)))
           .flatMap(_.remove(ShareValueInTrustPage(index)))

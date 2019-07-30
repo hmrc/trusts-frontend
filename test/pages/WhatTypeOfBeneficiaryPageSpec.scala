@@ -19,7 +19,7 @@ package pages
 import models.WhatTypeOfBeneficiary
 import pages.behaviours.PageBehaviours
 
-class WhatTypeOfBeneficiarySpec extends PageBehaviours {
+class WhatTypeOfBeneficiaryPageSpec extends PageBehaviours {
 
   "WhatTypeOfBeneficiaryPage" must {
 
