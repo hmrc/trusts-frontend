@@ -21,9 +21,11 @@ import java.time.{LocalDate, ZoneOffset}
 import base.SpecBase
 import models.AddAssets.NoComplete
 import models.Status.Completed
+import models.WhatKindOfAsset.Shares
 import models.{AddABeneficiary, AddATrustee, FullName, IndividualOrBusiness, Status, UKAddress, WhatKindOfAsset}
 import pages._
 import pages.entitystatus._
+import pages.shares._
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -95,8 +97,14 @@ class SummaryAnswersControllerSpec extends SpecBase {
         .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
         .set(AssetMoneyValuePage(index), "100").success.value
         .set(AssetStatus(index), Completed).success.value
+        .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
+        .set(SharesInAPortfolioPage(1), true).success.value
+        .set(SharePortfolioNamePage(1), "Company").success.value
+        .set(SharePortfolioOnStockExchangePage(1), true ).success.value
+        .set(SharePortfolioQuantityInTrustPage(1), "1234").success.value
+        .set(SharePortfolioValueInTrustPage(1), "4000").success.value
+        .set(AssetStatus(1), Completed).success.value
         .set(AddAssetsPage, NoComplete).success.value
-
         .set(AgentInternalReferencePage, "agentClientReference").success.value
 
 
@@ -177,7 +185,12 @@ class SummaryAnswersControllerSpec extends SpecBase {
       AnswerSection(
         Some(Messages("answerPage.section.moneyAsset.subheading")),
         Seq(
-          checkYourAnswersHelper.assetMoneyValue(index).value
+          checkYourAnswersHelper.assetMoneyValue(index).value,
+          checkYourAnswersHelper.sharesInAPortfolio(1).value,
+          checkYourAnswersHelper.sharePortfolioName(1).value,
+          checkYourAnswersHelper.sharePortfolioOnStockExchange(1).value,
+          checkYourAnswersHelper.sharePortfolioQuantityInTrust(1).value,
+          checkYourAnswersHelper.sharePortfolioValueInTrust(1).value
         ),
         Some(Messages("answerPage.section.assets.heading"))
       )
@@ -193,6 +206,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
 
       val view = application.injector.instanceOf[SummaryAnswerPageView]
 
+//      redirectLocation(result) mustEqual true
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
@@ -210,6 +224,8 @@ class SummaryAnswersControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       val view = application.injector.instanceOf[SummaryAnswerPageView]
+
+//      redirectLocation(result) mustEqual true
 
       status(result) mustEqual OK
 
