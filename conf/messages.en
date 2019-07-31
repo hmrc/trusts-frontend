@@ -865,19 +865,19 @@ sharePortfolioQuantityInTrust.title = How many individual shares are in the port
 sharePortfolioQuantityInTrust.heading = How many individual shares are in the portfolio?
 sharePortfolioQuantityInTrust.checkYourAnswersLabel = How many individual shares are in the portfolio?
 sharePortfolioQuantityInTrust.error.required = Enter the current number of shares in the portfolio
-sharePortfolioQuantityInTrust.error.length = Total amount of individual shares must be 12 numbers or less
-sharePortfolioQuantityInTrust.error.invalid = Total amount of individual shares must be a number
+sharePortfolioQuantityInTrust.error.length = Total amount of individual shares in the portfolio must be 12 numbers or less
+sharePortfolioQuantityInTrust.error.invalid = Total amount of individual shares in the portfolio must be a number
 sharePortfolioQuantityInTrust.hint = Add together the total number of shares across all share holdings. This can be an estimate.
-sharePortfolioQuantityInTrust.error.zero = Total amount of individual shares in the trust must be 1 or more
+sharePortfolioQuantityInTrust.error.zero = Total amount of individual shares in the portfolio must be 1 or more
 
 sharePortfolioValueInTrust.title = What is the current value of the portfolio?
 sharePortfolioValueInTrust.heading = What is the current value of the portfolio?
 sharePortfolioValueInTrust.checkYourAnswersLabel = What is the current value of the portfolio?
-sharePortfolioValueInTrust.error.required = Enter the current value of the shares in the portfolio
-sharePortfolioValueInTrust.error.length = Total current value of the shares in the portfolio must be 12 numbers or less
-sharePortfolioValueInTrust.error.invalid = Total current value of the shares in the portfolio must be a number
+sharePortfolioValueInTrust.error.required = Enter the current value of the portfolio
+sharePortfolioValueInTrust.error.length = Total current value of the portfolio must be 12 numbers or less
+sharePortfolioValueInTrust.error.invalid = Total current value of the portfolio must be a number
 sharePortfolioValueInTrust.hint = Rounded down to the nearest pound. For example, 4000
-sharePortfolioValueInTrust.error.zero = The total current value of the shares in the portfolio must be 1 or more
+sharePortfolioValueInTrust.error.zero = Total current value of the portfolio must be 1 or more
 
 sharesOnStockExchange.title = Are {0}’s shares listed on a stock exchange?
 sharesOnStockExchange.heading = Are {0}’s shares listed on a stock exchange?
