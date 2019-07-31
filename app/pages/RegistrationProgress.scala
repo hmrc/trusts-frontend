@@ -115,8 +115,6 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
       case Nil => None
       case list =>
 
-        println(s"Determining status for assets $list")
-
         val status = !list.exists(_.status == InProgress) && noMoreToAdd
         determineStatus(status)
     }
