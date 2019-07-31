@@ -20,7 +20,7 @@ import models.Status.Completed
 import models.UserAnswers
 import play.api.i18n.Messages
 import sections.Assets
-import viewmodels.addAnother.{AssetViewModel, MoneyAssetViewModel}
+import viewmodels.addAnother.{AssetViewModel, MoneyAssetViewModel, ShareAssetViewModel}
 import viewmodels.{AddRow, AddToRows}
 
 class AddAssetViewHelper(userAnswers: UserAnswers)(implicit  messages: Messages) {
@@ -28,6 +28,8 @@ class AddAssetViewHelper(userAnswers: UserAnswers)(implicit  messages: Messages)
   private def parseAsset(asset: AssetViewModel) : Option[AddRow] = asset match {
     case mvm : MoneyAssetViewModel =>
       Some(AddRow(mvm.value.getOrElse(""), mvm.`type`.toString, "#", "#"))
+    case mvm : ShareAssetViewModel =>
+      Some(AddRow(mvm.name.getOrElse(""), mvm.`type`.toString, "#", "#"))
     case _ =>
       None
   }

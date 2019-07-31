@@ -49,6 +49,7 @@ final case class WhatKindOfAssetPage(index: Int) extends QuestionPage[WhatKindOf
 
   private def removeShare(userAnswers: UserAnswers): Try[UserAnswers] = {
     userAnswers.remove(SharesInAPortfolioPage(index))
+      .flatMap(_.remove(ShareCompanyNamePage(index)))
       .flatMap(_.remove(SharesOnStockExchangePage(index)))
       .flatMap(_.remove(ShareClassPage(index)))
       .flatMap(_.remove(ShareQuantityInTrustPage(index)))

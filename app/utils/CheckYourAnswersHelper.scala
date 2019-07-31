@@ -194,7 +194,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "shareCompanyName.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        controllers.shares.routes.ShareCompanyNameController.onPageLoad(CheckMode, index, draftId).url
+        controllers.shares.routes.ShareCompanyNameController.onPageLoad(CheckMode, index, draftId).url,
+        canEdit = canEdit
       )
   }
 
@@ -203,7 +204,9 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "sharesOnStockExchange.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.shares.routes.SharesOnStockExchangeController.onPageLoad(CheckMode, index, draftId).url
+        controllers.shares.routes.SharesOnStockExchangeController.onPageLoad(CheckMode, index, draftId).url,
+        shareCompName(index,userAnswers),
+        canEdit = canEdit
       )
   }
 
@@ -212,7 +215,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "sharesInAPortfolio.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.shares.routes.SharesInAPortfolioController.onPageLoad(CheckMode, index, draftId).url
+        controllers.shares.routes.SharesInAPortfolioController.onPageLoad(CheckMode, index, draftId).url,
+        canEdit = canEdit
       )
   }
 
@@ -221,7 +225,9 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "shareValueInTrust.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        controllers.shares.routes.ShareValueInTrustController.onPageLoad(CheckMode, index, draftId).url
+        controllers.shares.routes.ShareValueInTrustController.onPageLoad(CheckMode, index, draftId).url,
+        shareCompName(index,userAnswers),
+        canEdit = canEdit
       )
   }
 
@@ -230,7 +236,9 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "shareQuantityInTrust.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        controllers.shares.routes.ShareQuantityInTrustController.onPageLoad(CheckMode, index, draftId).url
+        controllers.shares.routes.ShareQuantityInTrustController.onPageLoad(CheckMode, index, draftId).url,
+        shareCompName(index,userAnswers),
+        canEdit = canEdit
       )
   }
 
@@ -266,7 +274,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "sharePortfolioName.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        controllers.shares.routes.SharePortfolioNameController.onPageLoad(CheckMode, index, draftId).url
+        controllers.shares.routes.SharePortfolioNameController.onPageLoad(CheckMode, index, draftId).url,
+        canEdit = canEdit
       )
   }
 
@@ -841,6 +850,10 @@ object CheckYourAnswersHelper {
 
   def indBeneficiaryName(index: Int, userAnswers: UserAnswers): String = {
     userAnswers.get(IndividualBeneficiaryNamePage(index)).get.toString
+  }
+
+  def shareCompName(index: Int, userAnswers: UserAnswers): String = {
+    userAnswers.get(ShareCompanyNamePage(index)).get.toString
   }
 
   def agencyName(userAnswers: UserAnswers): String = {
