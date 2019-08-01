@@ -35,6 +35,15 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
                                       (userAnswers: UserAnswers, draftId : String, canEdit: Boolean = true)
                                       (implicit messages: Messages) {
 
+  def propertyOrLandAddress(index: Int): Option[AnswerRow] = userAnswers.get(PropertyOrLandAddressPage(index)) map {
+    x =>
+      AnswerRow(
+        "propertyOrLandAddress.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.PropertyOrLandAddressController.onPageLoad(CheckMode,index, draftId).url
+      )
+  }
+
   def trustDetails : Option[Seq[AnswerSection]] = {
     val questions = Seq(
       trustName,

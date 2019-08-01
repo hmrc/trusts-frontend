@@ -22,6 +22,9 @@ import pages.shares.{ShareClassPage, ShareCompanyNamePage, SharePortfolioNamePag
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryPropertyOrLandAddressPage: Arbitrary[PropertyOrLandAddressPage] =
+    Arbitrary(PropertyOrLandAddressPage(0))
+
   implicit lazy val arbitraryShareCompanyNamePage: Arbitrary[ShareCompanyNamePage] =
     Arbitrary(ShareCompanyNamePage(0))
 
