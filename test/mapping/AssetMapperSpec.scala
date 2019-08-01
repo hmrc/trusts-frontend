@@ -18,11 +18,11 @@ package mapping
 
 import base.SpecBaseHelpers
 import generators.Generators
-import models.Status.{Completed, InProgress}
-import models.{ShareClass, WhatKindOfAsset}
+import models.Status.Completed
+import models.WhatKindOfAsset
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.entitystatus.AssetStatus
-import pages.shares.{ShareClassPage, ShareCompanyNamePage, SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, ShareQuantityInTrustPage, ShareValueInTrustPage, SharesInAPortfolioPage, SharesOnStockExchangePage}
+import pages.shares._
 import pages.{AssetMoneyValuePage, WhatKindOfAssetPage}
 
 class AssetMapperSpec extends FreeSpec with MustMatchers

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package views
+package viewsx
 
 import views.behaviours.ViewBehaviours
 import views.html.DeceasedSettlorAnswerView

@@ -39,7 +39,6 @@ class ShareAssetMapperSpec extends FreeSpec with MustMatchers
         .set(AssetStatus(0), InProgress).success.value
 
       shareAssetMapper.build(userAnswers) mustNot be(defined)
-
     }
 
     "non-portfolio" - {
@@ -133,7 +132,6 @@ class ShareAssetMapperSpec extends FreeSpec with MustMatchers
           .set(SharePortfolioValueInTrustPage(1), "999999999999").success.value
           .set(SharePortfolioOnStockExchangePage(1), false).success.value
           .set(AssetStatus(1), Completed).success.value
-
 
         shareAssetMapper.build(userAnswers).value.length mustBe 2
       }

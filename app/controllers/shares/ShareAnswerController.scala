@@ -65,7 +65,7 @@ class ShareAnswerController @Inject()(
         AnswerSection(
           None,
           request.userAnswers.get(SharesInAPortfolioPage(index)) match {
-            case Some(false) => {
+            case Some(false) =>
               Seq(
                 answers.sharesInAPortfolio(index),
                 answers.shareCompanyName(index),
@@ -74,8 +74,7 @@ class ShareAnswerController @Inject()(
                 answers.shareQuantityInTrust(index),
                 answers.shareValueInTrust(index)
               ).flatten
-            }
-            case Some(true) => {
+            case Some(true) =>
               Seq(
                 answers.sharesInAPortfolio(index),
                 answers.sharePortfolioName(index),
@@ -83,10 +82,8 @@ class ShareAnswerController @Inject()(
                 answers.sharePortfolioQuantityInTrust(index),
                 answers.sharePortfolioValueInTrust(index)
               ).flatten
-            }
-            case None => {
-              Seq()
-            }
+            case None =>
+              Nil
           }
         )
       )
