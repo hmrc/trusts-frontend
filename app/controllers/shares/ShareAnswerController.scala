@@ -67,6 +67,7 @@ class ShareAnswerController @Inject()(
           request.userAnswers.get(SharesInAPortfolioPage(index)) match {
             case Some(false) =>
               Seq(
+                answers.whatKindOfAsset(index),
                 answers.sharesInAPortfolio(index),
                 answers.shareCompanyName(index),
                 answers.sharesOnStockExchange(index),
@@ -76,6 +77,7 @@ class ShareAnswerController @Inject()(
               ).flatten
             case Some(true) =>
               Seq(
+                answers.whatKindOfAsset(index),
                 answers.sharesInAPortfolio(index),
                 answers.sharePortfolioName(index),
                 answers.sharePortfolioOnStockExchange(index),
