@@ -24,10 +24,10 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, inProgressAssets: Seq[AddRow] ,completeAssets: Seq[AddRow])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId: String, inProgressAssets: Seq[AddRow] ,completeAssets: Seq[AddRow], heading : String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("addAssets.title")}"
+    title = s"${errorPrefix(form)} $heading"
     ) {
 
     @formHelper(action = AddAssetsController.onSubmit(draftId), 'autoComplete -> "off") {
@@ -36,7 +36,7 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading(messages("addAssets.heading"))
+        @components.heading(heading)
 
         @components.data_list(inProgressAssets, "inprogress", "asset")
 

@@ -74,7 +74,7 @@ class AddAssetsControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,fakeDraftId, Nil, assets)(fakeRequest, messages).toString
+        view(form, NormalMode,fakeDraftId, Nil, assets, "You have added 2 assets")(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -116,7 +116,7 @@ class AddAssetsControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode,fakeDraftId, Nil, assets)(fakeRequest, messages).toString
+        view(boundForm, NormalMode,fakeDraftId, Nil, assets, "You have added 2 assets")(fakeRequest, messages).toString
 
       application.stop()
     }

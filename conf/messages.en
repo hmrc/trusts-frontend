@@ -515,6 +515,12 @@ whatKindOfAsset.error.required = Select the kind of asset you need to add
 
 addAssets.title = Add assets
 addAssets.heading = Add assets
+addAssets.singular.heading = You have added 1 asset
+addAssets.singular.title = You have added 1 asset
+
+addAssets.count.heading = You have added {0} assets
+addAssets.count.title = You have added {0} assets
+
 addAssets.additional-content = Do you want to add another asset?
 addAssets.add-them-now = Yes, I want to add them now
 addAssets.add-them-later = Yes, I want to add them later
