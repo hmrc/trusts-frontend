@@ -17,10 +17,11 @@
 package utils
 
 import base.SpecBase
+import mapping.AssetMonetaryAmount
 import models.ShareClass
 import models.Status.Completed
-import models.WhatKindOfAsset.Shares
-import pages.WhatKindOfAssetPage
+import models.WhatKindOfAsset.{Money, Shares}
+import pages.{AssetMoneyValuePage, WhatKindOfAssetPage}
 import pages.entitystatus.AssetStatus
 import pages.shares._
 import viewmodels.AddRow
@@ -42,10 +43,12 @@ class AddAssetViewHelperSpec extends SpecBase {
         val userAnswers = emptyUserAnswers
           .set(WhatKindOfAssetPage(0), Shares).success.value
           .set(SharesInAPortfolioPage(0), true).success.value
+          .set(WhatKindOfAssetPage(1), Money).success.value
 
         val rows = new AddAssetViewHelper(userAnswers).rows
         rows.inProgress mustBe List(
-          AddRow("No name added", typeLabel = "Shares", "#", "#")
+          AddRow("No name added", typeLabel = "Shares", "#", "#"),
+          AddRow("No value added", typeLabel = "Money", "#", "#")
         )
         rows.complete mustBe Nil
       }
@@ -61,10 +64,14 @@ class AddAssetViewHelperSpec extends SpecBase {
           .set(ShareQuantityInTrustPage(0), "1000").success.value
           .set(ShareValueInTrustPage(0), "10").success.value
           .set(AssetStatus(0), Completed).success.value
+          .set(WhatKindOfAssetPage(1), Money).success.value
+          .set(AssetMoneyValuePage(1), "200").success.value
+          .set(AssetStatus(1), Completed).success.value
 
         val rows = new AddAssetViewHelper(userAnswers).rows
         rows.complete mustBe List(
-          AddRow("Share Company Name", typeLabel = "Shares", "#", "#")
+          AddRow("Share Company Name", typeLabel = "Shares", "#", "#"),
+          AddRow("£200", typeLabel = "Money", "#", "#")
         )
         rows.inProgress mustBe Nil
       }
