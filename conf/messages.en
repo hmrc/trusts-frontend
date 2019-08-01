@@ -81,6 +81,7 @@ individualOrBusiness.business = Business
 
 entity.trustee = Trustee
 entities.no.name.added = No name added
+entities.no.value.added = No value added
 entities.lead = Lead
 entities.trustee = Trustee
 entities.trustee.individual = Trustee Individual

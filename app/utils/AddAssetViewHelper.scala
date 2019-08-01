@@ -27,9 +27,11 @@ class AddAssetViewHelper(userAnswers: UserAnswers)(implicit  messages: Messages)
 
   private def parseAsset(asset: AssetViewModel) : Option[AddRow] = asset match {
     case mvm : MoneyAssetViewModel =>
-      Some(AddRow(mvm.value.getOrElse(""), mvm.`type`.toString, "#", "#"))
+      val defaultValue = messages("entities.no.value.added")
+      Some(AddRow(mvm.value.getOrElse(defaultValue), mvm.`type`.toString, "#", "#"))
     case mvm : ShareAssetViewModel =>
-      Some(AddRow(mvm.name.getOrElse(""), mvm.`type`.toString, "#", "#"))
+      val defaultName = messages("entities.no.name.added")
+      Some(AddRow(mvm.name.getOrElse(defaultName), mvm.`type`.toString, "#", "#"))
     case _ =>
       None
   }
