@@ -17,15 +17,14 @@
 package views
 
 import forms.AddAssetsFormProvider
-import models.{AddAssets, IndividualOrBusiness, NormalMode, WhatKindOfAsset}
+import models.{AddATrustee, AddAssets, IndividualOrBusiness, NormalMode, WhatKindOfAsset}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import viewmodels.AddRow
-import views.behaviours.ViewBehaviours
+import views.behaviours.{OptionsViewBehaviours, TabularDataViewBehaviours, ViewBehaviours}
 import views.html.AddAssetsView
 
-class AddAssetsViewSpec extends ViewBehaviours {
-
+class AddAssetsViewSpec extends OptionsViewBehaviours with TabularDataViewBehaviours {
 
   val completeAssets = Seq(
     AddRow("4500", WhatKindOfAsset.Money.toString, "#", "#")
@@ -47,42 +46,44 @@ class AddAssetsViewSpec extends ViewBehaviours {
   def applyView(form: Form[_], inProgressAssets: Seq[AddRow], completeAssets: Seq[AddRow]): HtmlFormat.Appendable =
     view.apply(form, NormalMode, fakeDraftId, inProgressAssets, completeAssets)(fakeRequest, messages)
 
-  "AddAssetsView" must {
-
-    behave like normalPage(applyView(form), messageKeyPrefix)
-
-    behave like pageWithBackLink(applyView(form))
-  }
-
   "AddAssetsView" when {
 
-    "rendered" must {
+    "there are no assets" must {
+      behave like normalPage(applyView(form), messageKeyPrefix)
 
-      "contain radio buttons for the value" in {
+      behave like pageWithNoTabularData(applyView(form))
 
-        val doc = asDocument(applyView(form))
+      behave like pageWithBackLink(applyView(form))
 
-        for (option <- AddAssets.options) {
-          assertContainsRadioButton(doc, option.id, "value", option.value, false)
-        }
-      }
+      behave like pageWithOptions(form, applyView, AddAssets.options.toSet)
     }
 
-    for (option <- AddAssets.options) {
+    "there is data in progress" must {
 
-      s"rendered with a value of '${option.value}'" must {
+      val viewWithData = applyView(form, inProgressAssets, Nil)
 
-        s"have the '${option.value}' radio button selected" in {
+      behave like normalPage(applyView(form), messageKeyPrefix)
 
-          val doc = asDocument(applyView(form.bind(Map("value" -> s"${option.value}"))))
+      behave like pageWithBackLink(applyView(form))
 
-          assertContainsRadioButton(doc, option.id, "value", option.value, true)
+      behave like pageWithInProgressTabularData(viewWithData, inProgressAssets)
 
-          for (unselectedOption <- AddAssets.options.filterNot(o => o == option)) {
-            assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
-          }
-        }
-      }
+      behave like pageWithOptions(form, applyView, AddAssets.options.toSet)
+
     }
+
+    "there is complete data" must {
+
+      val viewWithData = applyView(form, Nil, completeAssets)
+
+      behave like normalPage(applyView(form), messageKeyPrefix)
+
+      behave like pageWithBackLink(applyView(form))
+
+      behave like pageWithCompleteTabularData(viewWithData, completeAssets)
+
+      behave like pageWithOptions(form, applyView, AddAssets.options.toSet)
+    }
+
   }
 }
