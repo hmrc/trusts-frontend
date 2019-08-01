@@ -424,3 +424,8 @@ GET        /sharesOnStockExchange                        controllers.SharesOnSto
 POST       /sharesOnStockExchange                        controllers.SharesOnStockExchangeController.onSubmit(mode: Mode = NormalMode, draftId: String)
 GET        /changeSharesOnStockExchange                  controllers.SharesOnStockExchangeController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /changeSharesOnStockExchange                  controllers.SharesOnStockExchangeController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /:draftId/asset/:index/what-is-the-property-land-address                        controllers.WhatIsThePropertyOrLandAddressController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId/asset/:index/what-is-the-property-land-address                         controllers.WhatIsThePropertyOrLandAddressController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/asset/:index/change-what-is-the-property-land-address                   controllers.WhatIsThePropertyOrLandAddressController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/asset/:index/change-what-is-the-property-land-address                 controllers.WhatIsThePropertyOrLandAddressController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)

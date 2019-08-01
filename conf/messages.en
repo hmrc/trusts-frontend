@@ -898,3 +898,9 @@ sharesOnStockExchange.title = sharesOnStockExchange
 sharesOnStockExchange.heading = sharesOnStockExchange
 sharesOnStockExchange.checkYourAnswersLabel = sharesOnStockExchange
 sharesOnStockExchange.error.required = Select yes if sharesOnStockExchange
+
+whatIsThePropertyOrLandAddress.title = What is the property or land’s address?
+whatIsThePropertyOrLandAddress.heading = What is the property or land’s address?
+whatIsThePropertyOrLandAddress.checkYourAnswersLabel = What is the property or land’s address?
+
+
