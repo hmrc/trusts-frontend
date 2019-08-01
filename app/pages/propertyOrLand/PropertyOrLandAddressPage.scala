@@ -14,18 +14,15 @@
  * limitations under the License.
  */
 
-package pages
+package pages.propertyOrLand
 
-import pages.behaviours.PageBehaviours
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import sections.Assets
 
-class PropertyOrLandAddressPageSpec extends PageBehaviours {
+final case class  PropertyOrLandAddressPage(index : Int) extends QuestionPage[Boolean] {
 
-  "propertyOrLandAddressPage" must {
+  override def path: JsPath = JsPath \ Assets \ index \ toString
 
-    beRetrievable[Boolean](PropertyOrLandAddressPage(0))
-
-    beSettable[Boolean](PropertyOrLandAddressPage(0))
-
-    beRemovable[Boolean](PropertyOrLandAddressPage(0))
-  }
+  override def toString: String = "propertyOrLandAddress"
 }

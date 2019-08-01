@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package views
+package views.propertyOrLand
 
-import controllers.routes
-import forms.PropertyOrLandAddressFormProvider
+import controllers.propertyOrLand.routes
+import forms.propertyOrLand.PropertyOrLandAddressFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.PropertyOrLandAddressView
+import views.html.propertyOrLand.PropertyOrLandAddressView
 
 class PropertyOrLandAddressViewSpec extends YesNoViewBehaviours {
 

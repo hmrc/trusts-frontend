@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package forms
-
-import javax.inject.Inject
+package forms.propertyOrLand
 
 import forms.mappings.Mappings
+import javax.inject.Inject
 import play.api.data.Form
 
 class PropertyOrLandAddressFormProvider @Inject() extends Mappings {

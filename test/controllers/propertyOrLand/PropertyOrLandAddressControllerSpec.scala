@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.propertyOrLand
 
 import base.SpecBase
-import forms.PropertyOrLandAddressFormProvider
+import controllers.IndexValidation
+import forms.propertyOrLand.PropertyOrLandAddressFormProvider
 import generators.ModelGenerators
 import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.PropertyOrLandAddressPage
+import pages.propertyOrLand.PropertyOrLandAddressPage
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
-import views.html.PropertyOrLandAddressView
+import play.api.test.Helpers.{route, _}
+import views.html.propertyOrLand.PropertyOrLandAddressView
+
 
 class PropertyOrLandAddressControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
 
@@ -131,7 +133,7 @@ class PropertyOrLandAddressControllerSpec extends SpecBase with ModelGenerators 
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -148,7 +150,7 @@ class PropertyOrLandAddressControllerSpec extends SpecBase with ModelGenerators 
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }

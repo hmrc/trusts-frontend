@@ -23,6 +23,7 @@ import javax.inject.Inject
 import mapping.reads._
 import models.{CheckMode, InternationalAddress, UKAddress, UserAnswers}
 import pages._
+import pages.propertyOrLand.PropertyOrLandAddressPage
 import pages.shares.{ShareClassPage, ShareCompanyNamePage, SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, ShareQuantityInTrustPage, ShareValueInTrustPage, SharesInAPortfolioPage, SharesOnStockExchangePage}
 import utils.CheckYourAnswersHelper._
 import play.api.i18n.Messages
@@ -40,7 +41,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "propertyOrLandAddress.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.PropertyOrLandAddressController.onPageLoad(CheckMode,index, draftId).url
+        controllers.propertyOrLand.routes.PropertyOrLandAddressController.onPageLoad(CheckMode,index, draftId).url
       )
   }
 

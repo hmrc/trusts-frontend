@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.propertyOrLand
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.PropertyOrLandAddressFormProvider
+import forms.propertyOrLand.PropertyOrLandAddressFormProvider
 import javax.inject.Inject
-import models.{Mode, UserAnswers}
+import models.Mode
 import navigation.Navigator
-import pages.PropertyOrLandAddressPage
+import pages.propertyOrLand.PropertyOrLandAddressPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.PropertyOrLandAddressView
+import views.html.propertyOrLand.PropertyOrLandAddressView
 
 import scala.concurrent.{ExecutionContext, Future}
 
