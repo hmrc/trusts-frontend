@@ -27,7 +27,7 @@ final case class SharePortfolioAsset(override val whatKindOfAsset: WhatKindOfAss
                                      quantityInTheTrust: String,
                                      value: String,
                                      status: Status
-                                    ) extends Asset {
+                                    ) extends Asset with ShareAsset {
   val quoted = if (this.listedOnTheStockExchange) "Quoted" else "Unquoted"
 }
 

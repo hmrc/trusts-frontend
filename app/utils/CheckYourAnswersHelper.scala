@@ -21,14 +21,13 @@ import java.time.format.DateTimeFormatter
 import controllers.routes
 import javax.inject.Inject
 import mapping.reads._
-import models.Status.Completed
-import models.{CheckMode, InternationalAddress, UKAddress, UserAnswers, WhatKindOfAsset}
+import models.{CheckMode, InternationalAddress, UKAddress, UserAnswers}
 import pages._
-import pages.shares.{ShareClassPage, ShareCompanyNamePage, SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, ShareQuantityInTrustPage, ShareValueInTrustPage, SharesInAPortfolioPage, SharesOnStockExchangePage}
-import utils.CheckYourAnswersHelper._
+import pages.shares._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
 import uk.gov.hmrc.domain.Nino
+import utils.CheckYourAnswersHelper._
 import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 
@@ -158,42 +157,68 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
     }
   }
 
-//  def allAssets: Option[Seq[AnswerSection]] = {
-//    for {
-//      assets <- userAnswers.get(Assets)
-//      indexed = assets.zipWithIndex
-//    } yield indexed.map {
-//      case (assets, index) =>
-//
-//        val questions: Seq[AnswerRow] = (userAnswers.get(WhatKindOfAssetPage(index)), userAnswers.get(SharesInAPortfolioPage(index))) match {
-//          case (Some(WhatKindOfAsset.Shares), Some(false)) =>
-//            Seq(
-//              sharesInAPortfolio(index),
-//              shareCompanyName(index),
-//              sharesOnStockExchange(index),
-//              shareClass(index),
-//              shareQuantityInTrust(index),
-//              shareValueInTrust(index)
-//            ).flatten
-//          case (Some(WhatKindOfAsset.Shares), Some(true)) =>
-//            Seq(
-//              sharesInAPortfolio(index),
-//              sharePortfolioName(index),
-//              sharePortfolioOnStockExchange(index),
-//              sharePortfolioQuantityInTrust(index),
-//              sharePortfolioValueInTrust(index)
-//            ).flatten
-//          case (_, _) => Seq(assetMoneyValue(index))
-//        }
-//
-//        val sectionKey = if (index == 0) {
-//          Some(Messages("answerPage.section.assets.heading"))
-//        } else None
-//
-//        AnswerSection(Some(Messages("answerPage.section.shareAsset.subheading") + " " + (index + 1)),
-//          questions, sectionKey)
-//    }
-//  }
+  def money : Seq[AnswerSection] = {
+    val answers = userAnswers.get(Assets).getOrElse(Nil).zipWithIndex.collect {
+      case (x : MoneyAsset, index) => (x, index)
+    }
+
+    answers.flatMap {
+      case o @ (m, index) =>
+        Seq(
+          AnswerSection(
+            Some(messages("answerPage.section.moneyAsset.subheading")),
+            Seq(
+              assetMoneyValue(index)
+            ).flatten,
+            None
+          )
+        )
+    }
+  }
+
+  def shares : Seq[AnswerSection] = {
+    val answers : Seq[(ShareAsset, Int)] = userAnswers.get(Assets).getOrElse(Nil).zipWithIndex.collect {
+      case (x : ShareNonPortfolioAsset, index) => (x, index)
+      case (x : SharePortfolioAsset, index) => (x, index)
+    }
+
+    answers.flatMap {
+      case o @ (m, index) =>
+        m match {
+          case _ : ShareNonPortfolioAsset =>
+            Seq(
+              AnswerSection(
+                Some(s"Share ${answers.indexOf(o)+1}"),
+                Seq(
+                  sharesInAPortfolio(index),
+                  shareCompanyName(index),
+                  sharesOnStockExchange(index),
+                  shareClass(index),
+                  shareQuantityInTrust(index),
+                  shareValueInTrust(index)
+                ).flatten,
+                None
+              )
+            )
+          case _ : SharePortfolioAsset =>
+            Seq(
+              AnswerSection(
+                Some(s"Share ${answers.indexOf(o)+1}"),
+                Seq(
+                  sharesInAPortfolio(index),
+                  sharePortfolioName(index),
+                  sharePortfolioOnStockExchange(index),
+                  sharePortfolioQuantityInTrust(index),
+                  sharePortfolioValueInTrust(index)
+                ).flatten,
+                None
+              )
+            )
+          case _ => Nil
+        }
+    }
+
+  }
 
   def moneyAsset: Option[Seq[AnswerSection]] = {
     val questions = Seq(
@@ -204,52 +229,6 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       questions
     ))) else None
   }
-
-  def shareAssets: Option[Seq[AnswerSection]] = {
-
-    val shares = userAnswers.get(Assets).getOrElse(List.empty[Asset]).filter(_.whatKindOfAsset == WhatKindOfAsset.Shares).size
-
-    println("*****************")
-    println(shares)
-
-    val sections = Some(
-      for (index <- 0 to shares) yield {
-
-        println(userAnswers.get(WhatKindOfAssetPage(index)) + "   " + userAnswers.get(SharesInAPortfolioPage(index)))
-
-        val questions: Seq[AnswerRow] = (userAnswers.get(WhatKindOfAssetPage(index)), userAnswers.get(SharesInAPortfolioPage(index))) match {
-          case (Some(WhatKindOfAsset.Shares), Some(false)) =>
-            Seq(
-              sharesInAPortfolio(index),
-              shareCompanyName(index),
-              sharesOnStockExchange(index),
-              shareClass(index),
-              shareQuantityInTrust(index),
-              shareValueInTrust(index)
-            ).flatten
-          case (Some(WhatKindOfAsset.Shares), Some(true)) =>
-            Seq(
-              sharesInAPortfolio(index),
-              sharePortfolioName(index),
-              sharePortfolioOnStockExchange(index),
-              sharePortfolioQuantityInTrust(index),
-              sharePortfolioValueInTrust(index)
-            ).flatten
-          case (_, _) => Nil
-        }
-
-        val subheading = Some(Messages(s"answerPage.section.shareAsset.subheading") + " " + index)
-
-        questions match {
-          case Nil => AnswerSection(None, Seq())
-          case _ => AnswerSection(subheading, questions)
-        }
-
-      }
-    )
-    sections
-  }
-
 
   def agentInternationalAddress: Option[AnswerRow] = userAnswers.get(AgentInternationalAddressPage) map {
     x =>
@@ -926,7 +905,7 @@ object CheckYourAnswersHelper {
     countryOptions.options.find(_.value.equals(code)).map(_.label).getOrElse("")
 
   def trusteeName(index: Int, userAnswers: UserAnswers): String =
-    userAnswers.get(TrusteesNamePage(index)).get.toString
+    userAnswers.get(TrusteesNamePage(index)).map(_.toString).getOrElse("")
 
   def answer[T](key: String, answer: T)(implicit messages: Messages): Html =
     HtmlFormat.escape(messages(s"$key.$answer"))
@@ -934,18 +913,18 @@ object CheckYourAnswersHelper {
   def escape(x: String) = HtmlFormat.escape(x)
 
   def deceasedSettlorName(userAnswers: UserAnswers): String =
-    userAnswers.get(SettlorsNamePage).get.toString
+    userAnswers.get(SettlorsNamePage).map(_.toString).getOrElse("")
 
   def indBeneficiaryName(index: Int, userAnswers: UserAnswers): String = {
-    userAnswers.get(IndividualBeneficiaryNamePage(index)).get.toString
+    userAnswers.get(IndividualBeneficiaryNamePage(index)).map(_.toString).getOrElse("")
   }
 
   def shareCompName(index: Int, userAnswers: UserAnswers): String = {
-    userAnswers.get(ShareCompanyNamePage(index)).get.toString
+    userAnswers.get(ShareCompanyNamePage(index)).map(_.toString).getOrElse("")
   }
 
   def agencyName(userAnswers: UserAnswers): String = {
-    userAnswers.get(AgentNamePage).get.toString
+    userAnswers.get(AgentNamePage).map(_.toString).getOrElse("")
   }
 
   def ukAddress(address: UKAddress): Html = {

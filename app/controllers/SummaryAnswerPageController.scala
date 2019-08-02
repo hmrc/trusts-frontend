@@ -23,9 +23,8 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.CheckYourAnswersHelper
+import utils.PrintUserAnswersHelper
 import utils.countryOptions.CountryOptions
-import viewmodels.AnswerSection
 import views.html.SummaryAnswerPageView
 
 
@@ -38,7 +37,8 @@ class SummaryAnswerPageController @Inject()(
                                               view: SummaryAnswerPageView,
                                               countryOptions : CountryOptions,
                                               registrationProgress: RegistrationProgress,
-                                              registrationComplete : TaskListCompleteActionRefiner
+                                              registrationComplete : TaskListCompleteActionRefiner,
+                                              printUserAnswersHelper: PrintUserAnswersHelper
                                             ) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId : String) =
@@ -48,21 +48,8 @@ class SummaryAnswerPageController @Inject()(
     implicit request =>
 
       val isAgent = request.affinityGroup == Agent
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId, canEdit = false)
-      val trustDetails = checkYourAnswersHelper.trustDetails.getOrElse(Nil)
-      val trustees = checkYourAnswersHelper.trustees.getOrElse(Nil)
-      val settlors = checkYourAnswersHelper.settlors.getOrElse(Nil)
-      val individualBeneficiaries = checkYourAnswersHelper.individualBeneficiaries.getOrElse(Nil)
-      val individualBeneficiariesExist: Boolean = individualBeneficiaries.nonEmpty
-      val classOfBeneficiaries = checkYourAnswersHelper.classOfBeneficiaries(individualBeneficiariesExist).getOrElse(Nil)
-      val moneyAsset = checkYourAnswersHelper.moneyAsset.getOrElse(Nil)
-      val shareAsset = checkYourAnswersHelper.shareAssets.getOrElse(Nil)
 
-//      val allAssets = checkYourAnswersHelper.allAssets.getOrElse(Nil)
-            val allAssets = Seq(AnswerSection(None, Seq(), Some("Assets"))) ++ moneyAsset ++ shareAsset
-//      val allAssetsSections = Seq(AnswerSection(None, Seq(), Some("Assets"))) ++ allAssets
-
-      val sections = trustDetails ++ settlors ++ trustees ++ individualBeneficiaries ++ classOfBeneficiaries ++ allAssets
+      val sections = printUserAnswersHelper.summary(draftId, request.userAnswers)
 
       val agentClientRef = request.userAnswers.get(AgentInternalReferencePage).getOrElse("")
 

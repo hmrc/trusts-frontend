@@ -20,25 +20,27 @@ import models.WhatKindOfAsset.Shares
 import models.{ShareClass, Status, WhatKindOfAsset}
 import play.api.libs.json._
 
-final case class ShareAsset(override val whatKindOfAsset: WhatKindOfAsset,
-                           listedOnTheStockExchange: Boolean,
-                           shareCompanyName: String,
-                           sharesInAPortfolio: Boolean,
-                           quantityInTheTrust: String,
-                           value: String,
-                           `class`: ShareClass,
-                           status: Status
-                           ) extends Asset {
+trait ShareAsset
+
+final case class ShareNonPortfolioAsset(override val whatKindOfAsset: WhatKindOfAsset,
+                                        listedOnTheStockExchange: Boolean,
+                                        shareCompanyName: String,
+                                        sharesInAPortfolio: Boolean,
+                                        quantityInTheTrust: String,
+                                        value: String,
+                                        `class`: ShareClass,
+                                        status: Status
+                           ) extends Asset with ShareAsset {
   val quoted = if (this.listedOnTheStockExchange) "Quoted" else "Unquoted"
 }
 
-object ShareAsset {
+object ShareNonPortfolioAsset {
 
   import play.api.libs.functional.syntax._
 
-  implicit lazy val reads: Reads[ShareAsset] = {
+  implicit lazy val reads: Reads[ShareNonPortfolioAsset] = {
 
-    val shareReads : Reads[ShareAsset] = Json.reads[ShareAsset]
+    val shareReads : Reads[ShareNonPortfolioAsset] = Json.reads[ShareNonPortfolioAsset]
 
     (
       (__ \ "whatKindOfAsset").read[WhatKindOfAsset] and
