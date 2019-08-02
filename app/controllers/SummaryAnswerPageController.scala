@@ -25,6 +25,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
+import viewmodels.AnswerSection
 import views.html.SummaryAnswerPageView
 
 
@@ -55,8 +56,13 @@ class SummaryAnswerPageController @Inject()(
       val individualBeneficiariesExist: Boolean = individualBeneficiaries.nonEmpty
       val classOfBeneficiaries = checkYourAnswersHelper.classOfBeneficiaries(individualBeneficiariesExist).getOrElse(Nil)
       val moneyAsset = checkYourAnswersHelper.moneyAsset.getOrElse(Nil)
-      
-      val sections = trustDetails ++ settlors ++ trustees ++ individualBeneficiaries ++ classOfBeneficiaries ++ moneyAsset
+      val shareAsset = checkYourAnswersHelper.shareAssets.getOrElse(Nil)
+
+//      val allAssets = checkYourAnswersHelper.allAssets.getOrElse(Nil)
+            val allAssets = Seq(AnswerSection(None, Seq(), Some("Assets"))) ++ moneyAsset ++ shareAsset
+//      val allAssetsSections = Seq(AnswerSection(None, Seq(), Some("Assets"))) ++ allAssets
+
+      val sections = trustDetails ++ settlors ++ trustees ++ individualBeneficiaries ++ classOfBeneficiaries ++ allAssets
 
       val agentClientRef = request.userAnswers.get(AgentInternalReferencePage).getOrElse("")
 

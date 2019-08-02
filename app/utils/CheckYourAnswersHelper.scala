@@ -21,7 +21,8 @@ import java.time.format.DateTimeFormatter
 import controllers.routes
 import javax.inject.Inject
 import mapping.reads._
-import models.{CheckMode, InternationalAddress, UKAddress, UserAnswers}
+import models.Status.Completed
+import models.{CheckMode, InternationalAddress, UKAddress, UserAnswers, WhatKindOfAsset}
 import pages._
 import pages.shares.{ShareClassPage, ShareCompanyNamePage, SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, ShareQuantityInTrustPage, ShareValueInTrustPage, SharesInAPortfolioPage, SharesOnStockExchangePage}
 import utils.CheckYourAnswersHelper._
@@ -32,10 +33,10 @@ import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
-                                      (userAnswers: UserAnswers, draftId : String, canEdit: Boolean = true)
+                                      (userAnswers: UserAnswers, draftId: String, canEdit: Boolean = true)
                                       (implicit messages: Messages) {
 
-  def trustDetails : Option[Seq[AnswerSection]] = {
+  def trustDetails: Option[Seq[AnswerSection]] = {
     val questions = Seq(
       trustName,
       whenTrustSetup,
@@ -56,7 +57,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
     if (questions.nonEmpty) Some(Seq(AnswerSection(None, questions, Some(Messages("answerPage.section.trustsDetails.heading"))))) else None
   }
 
-  def settlors : Option[Seq[AnswerSection]] = {
+  def settlors: Option[Seq[AnswerSection]] = {
 
     val questions = Seq(
       setupAfterSettlorDied,
@@ -76,7 +77,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
     if (questions.nonEmpty) Some(Seq(AnswerSection(None, questions, Some(Messages("answerPage.section.settlors.heading"))))) else None
   }
 
-  def trustees : Option[Seq[AnswerSection]] = {
+  def trustees: Option[Seq[AnswerSection]] = {
     for {
       trustees <- userAnswers.get(Trustees)
       indexed = trustees.zipWithIndex
@@ -109,7 +110,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
   }
 
 
-  def individualBeneficiaries : Option[Seq[AnswerSection]] = {
+  def individualBeneficiaries: Option[Seq[AnswerSection]] = {
     for {
       beneficiaries <- userAnswers.get(IndividualBeneficiaries)
       indexed = beneficiaries.zipWithIndex
@@ -137,7 +138,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
     }
   }
 
-  def classOfBeneficiaries(individualBeneficiariesExist: Boolean) : Option[Seq[AnswerSection]] = {
+  def classOfBeneficiaries(individualBeneficiariesExist: Boolean): Option[Seq[AnswerSection]] = {
     for {
       beneficiaries <- userAnswers.get(ClassOfBeneficiaries)
       indexed = beneficiaries.zipWithIndex
@@ -157,15 +158,98 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
     }
   }
 
-  def moneyAsset : Option[Seq[AnswerSection]] = {
+//  def allAssets: Option[Seq[AnswerSection]] = {
+//    for {
+//      assets <- userAnswers.get(Assets)
+//      indexed = assets.zipWithIndex
+//    } yield indexed.map {
+//      case (assets, index) =>
+//
+//        val questions: Seq[AnswerRow] = (userAnswers.get(WhatKindOfAssetPage(index)), userAnswers.get(SharesInAPortfolioPage(index))) match {
+//          case (Some(WhatKindOfAsset.Shares), Some(false)) =>
+//            Seq(
+//              sharesInAPortfolio(index),
+//              shareCompanyName(index),
+//              sharesOnStockExchange(index),
+//              shareClass(index),
+//              shareQuantityInTrust(index),
+//              shareValueInTrust(index)
+//            ).flatten
+//          case (Some(WhatKindOfAsset.Shares), Some(true)) =>
+//            Seq(
+//              sharesInAPortfolio(index),
+//              sharePortfolioName(index),
+//              sharePortfolioOnStockExchange(index),
+//              sharePortfolioQuantityInTrust(index),
+//              sharePortfolioValueInTrust(index)
+//            ).flatten
+//          case (_, _) => Seq(assetMoneyValue(index))
+//        }
+//
+//        val sectionKey = if (index == 0) {
+//          Some(Messages("answerPage.section.assets.heading"))
+//        } else None
+//
+//        AnswerSection(Some(Messages("answerPage.section.shareAsset.subheading") + " " + (index + 1)),
+//          questions, sectionKey)
+//    }
+//  }
+
+  def moneyAsset: Option[Seq[AnswerSection]] = {
     val questions = Seq(
       assetMoneyValue(0)
     ).flatten
 
     if (questions.nonEmpty) Some(Seq(AnswerSection(Some(Messages("answerPage.section.moneyAsset.subheading")),
-      questions, Some(Messages("answerPage.section.assets.heading"))
-      ))) else None
+      questions
+    ))) else None
   }
+
+  def shareAssets: Option[Seq[AnswerSection]] = {
+
+    val shares = userAnswers.get(Assets).getOrElse(List.empty[Asset]).filter(_.whatKindOfAsset == WhatKindOfAsset.Shares).size
+
+    println("*****************")
+    println(shares)
+
+    val sections = Some(
+      for (index <- 0 to shares) yield {
+
+        println(userAnswers.get(WhatKindOfAssetPage(index)) + "   " + userAnswers.get(SharesInAPortfolioPage(index)))
+
+        val questions: Seq[AnswerRow] = (userAnswers.get(WhatKindOfAssetPage(index)), userAnswers.get(SharesInAPortfolioPage(index))) match {
+          case (Some(WhatKindOfAsset.Shares), Some(false)) =>
+            Seq(
+              sharesInAPortfolio(index),
+              shareCompanyName(index),
+              sharesOnStockExchange(index),
+              shareClass(index),
+              shareQuantityInTrust(index),
+              shareValueInTrust(index)
+            ).flatten
+          case (Some(WhatKindOfAsset.Shares), Some(true)) =>
+            Seq(
+              sharesInAPortfolio(index),
+              sharePortfolioName(index),
+              sharePortfolioOnStockExchange(index),
+              sharePortfolioQuantityInTrust(index),
+              sharePortfolioValueInTrust(index)
+            ).flatten
+          case (_, _) => Nil
+        }
+
+        val subheading = Some(Messages(s"answerPage.section.shareAsset.subheading") + " " + index)
+
+        questions match {
+          case Nil => AnswerSection(None, Seq())
+          case _ => AnswerSection(subheading, questions)
+        }
+
+      }
+    )
+    sections
+  }
+
 
   def agentInternationalAddress: Option[AnswerRow] = userAnswers.get(AgentInternationalAddressPage) map {
     x =>
@@ -182,9 +266,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
     x =>
       AnswerRow(
         "classBeneficiaryDescription.checkYourAnswersLabel",
-
         HtmlFormat.escape(x),
-        routes.ClassBeneficiaryDescriptionController.onPageLoad(CheckMode,index, draftId).url,
+        routes.ClassBeneficiaryDescriptionController.onPageLoad(CheckMode, index, draftId).url,
         canEdit = canEdit
       )
   }
@@ -205,7 +288,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "sharesOnStockExchange.checkYourAnswersLabel",
         yesOrNo(x),
         controllers.shares.routes.SharesOnStockExchangeController.onPageLoad(CheckMode, index, draftId).url,
-        shareCompName(index,userAnswers),
+        shareCompName(index, userAnswers),
         canEdit = canEdit
       )
   }
@@ -226,7 +309,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "shareValueInTrust.checkYourAnswersLabel",
         HtmlFormat.escape(x),
         controllers.shares.routes.ShareValueInTrustController.onPageLoad(CheckMode, index, draftId).url,
-        shareCompName(index,userAnswers),
+        shareCompName(index, userAnswers),
         canEdit = canEdit
       )
   }
@@ -237,7 +320,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "shareQuantityInTrust.checkYourAnswersLabel",
         HtmlFormat.escape(x),
         controllers.shares.routes.ShareQuantityInTrustController.onPageLoad(CheckMode, index, draftId).url,
-        shareCompName(index,userAnswers),
+        shareCompName(index, userAnswers),
         canEdit = canEdit
       )
   }
@@ -247,7 +330,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "sharePortfolioValueInTrust.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        controllers.shares.routes.SharePortfolioValueInTrustController.onPageLoad(CheckMode, index, draftId).url
+        controllers.shares.routes.SharePortfolioValueInTrustController.onPageLoad(CheckMode, index, draftId).url,
+        canEdit = canEdit
       )
   }
 
@@ -256,7 +340,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "sharePortfolioQuantityInTrust.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        controllers.shares.routes.SharePortfolioQuantityInTrustController.onPageLoad(CheckMode, index, draftId).url
+        controllers.shares.routes.SharePortfolioQuantityInTrustController.onPageLoad(CheckMode, index, draftId).url,
+        canEdit = canEdit
       )
   }
 
@@ -265,7 +350,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "sharePortfolioOnStockExchange.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.shares.routes.SharePortfolioOnStockExchangeController.onPageLoad(CheckMode, index, draftId).url
+        controllers.shares.routes.SharePortfolioOnStockExchangeController.onPageLoad(CheckMode, index, draftId).url,
+        canEdit = canEdit
       )
   }
 
@@ -284,7 +370,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "shareClass.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"shareClass.$x")),
-        controllers.shares.routes.ShareClassController.onPageLoad(CheckMode, index, draftId).url
+        controllers.shares.routes.ShareClassController.onPageLoad(CheckMode, index, draftId).url,
+        canEdit = canEdit
       )
   }
 
@@ -316,7 +403,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "individualBeneficiaryAddressUKYesNo.checkYourAnswersLabel",
         yesOrNo(x),
         routes.IndividualBeneficiaryAddressUKYesNoController.onPageLoad(CheckMode, index, draftId).url,
-        indBeneficiaryName(index,userAnswers),
+        indBeneficiaryName(index, userAnswers),
         canEdit = canEdit
       )
   }
@@ -347,7 +434,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel",
         yesOrNo(x),
         routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(CheckMode, index, draftId).url,
-        indBeneficiaryName(index,userAnswers),
+        indBeneficiaryName(index, userAnswers),
         canEdit = canEdit
       )
   }
@@ -358,7 +445,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "individualBeneficiaryAddressUK.checkYourAnswersLabel",
         ukAddress(x),
         routes.IndividualBeneficiaryAddressUKController.onPageLoad(CheckMode, index, draftId).url,
-        indBeneficiaryName(index,userAnswers),
+        indBeneficiaryName(index, userAnswers),
         canEdit = canEdit
       )
   }
@@ -369,7 +456,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "individualBeneficiaryAddressYesNo.checkYourAnswersLabel",
         yesOrNo(x),
         routes.IndividualBeneficiaryAddressYesNoController.onPageLoad(CheckMode, index, draftId).url,
-        indBeneficiaryName(index,userAnswers),
+        indBeneficiaryName(index, userAnswers),
         canEdit = canEdit
       )
   }
@@ -380,7 +467,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "individualBeneficiaryNationalInsuranceNumber.checkYourAnswersLabel",
         HtmlFormat.escape(formatNino(x)),
         routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(CheckMode, index, draftId).url,
-        indBeneficiaryName(index,userAnswers),
+        indBeneficiaryName(index, userAnswers),
         canEdit = canEdit
       )
   }
@@ -391,7 +478,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel",
         yesOrNo(x),
         routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(CheckMode, index, draftId).url,
-        indBeneficiaryName(index,userAnswers),
+        indBeneficiaryName(index, userAnswers),
         canEdit = canEdit
       )
   }
@@ -413,7 +500,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "individualBeneficiaryIncomeYesNo.checkYourAnswersLabel",
         yesOrNo(x),
         routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(CheckMode, index, draftId).url,
-        indBeneficiaryName(index,userAnswers),
+        indBeneficiaryName(index, userAnswers),
         canEdit = canEdit
       )
   }
@@ -424,7 +511,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "individualBeneficiaryDateOfBirth.checkYourAnswersLabel",
         HtmlFormat.escape(x.format(dateFormatter)),
         routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(CheckMode, index, draftId).url,
-        indBeneficiaryName(index,userAnswers),
+        indBeneficiaryName(index, userAnswers),
         canEdit = canEdit
       )
   }
@@ -435,7 +522,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel",
         yesOrNo(x),
         routes.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(CheckMode, index, draftId).url,
-        indBeneficiaryName(index,userAnswers),
+        indBeneficiaryName(index, userAnswers),
         canEdit = canEdit
       )
   }
@@ -631,7 +718,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       )
   }
 
-  def trusteeLiveInTheUK(index : Int): Option[AnswerRow] = userAnswers.get(TrusteeLiveInTheUKPage(index)) map {
+  def trusteeLiveInTheUK(index: Int): Option[AnswerRow] = userAnswers.get(TrusteeLiveInTheUKPage(index)) map {
     x =>
       AnswerRow(
         "trusteeLiveInTheUK.checkYourAnswersLabel",
@@ -653,7 +740,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       )
   }
 
-  def trusteesDateOfBirth(index : Int): Option[AnswerRow] = userAnswers.get(TrusteesDateOfBirthPage(index)) map {
+  def trusteesDateOfBirth(index: Int): Option[AnswerRow] = userAnswers.get(TrusteesDateOfBirthPage(index)) map {
     x =>
       AnswerRow(
         "trusteesDateOfBirth.checkYourAnswersLabel",
@@ -664,7 +751,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       )
   }
 
-  def telephoneNumber(index : Int): Option[AnswerRow] = userAnswers.get(TelephoneNumberPage(index)) map {
+  def telephoneNumber(index: Int): Option[AnswerRow] = userAnswers.get(TelephoneNumberPage(index)) map {
     x =>
       AnswerRow(
         "telephoneNumber.checkYourAnswersLabel",
@@ -675,28 +762,29 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       )
   }
 
-  def trusteeAUKCitizen(index : Int): Option[AnswerRow] = userAnswers.get(TrusteeAUKCitizenPage(index)) map {
+  def trusteeAUKCitizen(index: Int): Option[AnswerRow] = userAnswers.get(TrusteeAUKCitizenPage(index)) map {
     x =>
       AnswerRow(
         "trusteeAUKCitizen.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.TrusteeAUKCitizenController.onPageLoad(CheckMode,index, draftId).url,
+        routes.TrusteeAUKCitizenController.onPageLoad(CheckMode, index, draftId).url,
         trusteeName(index, userAnswers),
         canEdit = canEdit
       )
   }
 
 
-  def trusteeFullName(index : Int, messagePrefix: String): Option[AnswerRow] = userAnswers.get(TrusteesNamePage(index)) map {
-    x => AnswerRow(
-      s"$messagePrefix.checkYourAnswersLabel",
-      HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"),
-      routes.TrusteesNameController.onPageLoad(CheckMode, index, draftId).url,
-      canEdit = canEdit
-    )
+  def trusteeFullName(index: Int, messagePrefix: String): Option[AnswerRow] = userAnswers.get(TrusteesNamePage(index)) map {
+    x =>
+      AnswerRow(
+        s"$messagePrefix.checkYourAnswersLabel",
+        HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"),
+        routes.TrusteesNameController.onPageLoad(CheckMode, index, draftId).url,
+        canEdit = canEdit
+      )
   }
 
-  def trusteeIndividualOrBusiness(index : Int, messagePrefix: String): Option[AnswerRow] = userAnswers.get(TrusteeIndividualOrBusinessPage(index)) map {
+  def trusteeIndividualOrBusiness(index: Int, messagePrefix: String): Option[AnswerRow] = userAnswers.get(TrusteeIndividualOrBusinessPage(index)) map {
     x =>
       AnswerRow(
         s"$messagePrefix.checkYourAnswersLabel",
@@ -834,16 +922,16 @@ object CheckYourAnswersHelper {
 
   def formatNino(nino: String): String = Nino(nino).formatted
 
-  def country(code : String, countryOptions: CountryOptions) : String =
+  def country(code: String, countryOptions: CountryOptions): String =
     countryOptions.options.find(_.value.equals(code)).map(_.label).getOrElse("")
 
   def trusteeName(index: Int, userAnswers: UserAnswers): String =
     userAnswers.get(TrusteesNamePage(index)).get.toString
 
-  def answer[T](key : String, answer: T)(implicit messages: Messages) : Html =
+  def answer[T](key: String, answer: T)(implicit messages: Messages): Html =
     HtmlFormat.escape(messages(s"$key.$answer"))
 
-  def escape(x : String) = HtmlFormat.escape(x)
+  def escape(x: String) = HtmlFormat.escape(x)
 
   def deceasedSettlorName(userAnswers: UserAnswers): String =
     userAnswers.get(SettlorsNamePage).get.toString
