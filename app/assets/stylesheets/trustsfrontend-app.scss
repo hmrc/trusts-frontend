@@ -13,6 +13,7 @@
 @import 'colours/palette';
 @import 'location-autocomplete.min';
 @import 'patterns/add-to-a-list';
+@import 'patterns/symbol-input';
 
 @import 'partials/task-list';
 
@@ -185,3 +186,7 @@
 }
 
 .multiple-choice.first {clear:both;}
+
+.clearfix {
+    @include govuk-clearfix;
+}
