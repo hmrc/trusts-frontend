@@ -274,7 +274,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x =>
       AnswerRow(
         "shareValueInTrust.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
+        currency(x),
         controllers.shares.routes.ShareValueInTrustController.onPageLoad(CheckMode, index, draftId).url,
         shareCompName(index, userAnswers),
         canEdit = canEdit
@@ -296,7 +296,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x =>
       AnswerRow(
         "sharePortfolioValueInTrust.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
+        currency(x),
         controllers.shares.routes.SharePortfolioValueInTrustController.onPageLoad(CheckMode, index, draftId).url,
         canEdit = canEdit
       )
@@ -638,7 +638,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x =>
       AnswerRow(
         "assetMoneyValue.checkYourAnswersLabel",
-        HtmlFormat.escape(s"£$x"),
+        currency(x),
         routes.AssetMoneyValueController.onPageLoad(CheckMode, index, draftId).url,
         canEdit = canEdit
       )
@@ -891,6 +891,8 @@ object CheckYourAnswersHelper {
 
   def country(code: String, countryOptions: CountryOptions): String =
     countryOptions.options.find(_.value.equals(code)).map(_.label).getOrElse("")
+
+  def currency(value : String) : Html = escape(s"£$value")
 
   def trusteeName(index: Int, userAnswers: UserAnswers): String =
     userAnswers.get(TrusteesNamePage(index)).map(_.toString).getOrElse("")
