@@ -638,7 +638,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x =>
       AnswerRow(
         "assetMoneyValue.checkYourAnswersLabel",
-        HtmlFormat.escape(s"£$x"),
+        currency(x),
         routes.AssetMoneyValueController.onPageLoad(CheckMode, index, draftId).url,
         canEdit = canEdit
       )
