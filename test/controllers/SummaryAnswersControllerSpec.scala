@@ -39,7 +39,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
 
   val index = 0
 
-  "SummaryAnswersController Controller" must {
+  "SummaryAnswersController" must {
 
     val userAnswers =
       TestUserAnswers.emptyUserAnswers
@@ -265,8 +265,6 @@ class SummaryAnswersControllerSpec extends SpecBase {
       application.stop()
 
     }
-
-
 
   }
 }

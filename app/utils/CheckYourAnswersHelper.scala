@@ -188,7 +188,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
           case _ : ShareNonPortfolioAsset =>
             Seq(
               AnswerSection(
-                Some(s"Share ${answers.indexOf(o)+1}"),
+                Some(s"${messages("answerPage.section.shareAsset.subheading")} ${answers.indexOf(o)+1}"),
                 Seq(
                   sharesInAPortfolio(index),
                   shareCompanyName(index),
@@ -203,7 +203,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
           case _ : SharePortfolioAsset =>
             Seq(
               AnswerSection(
-                Some(s"Share ${answers.indexOf(o)+1}"),
+                Some(s"${messages("answerPage.section.shareAsset.subheading")} ${answers.indexOf(o)+1}"),
                 Seq(
                   sharesInAPortfolio(index),
                   sharePortfolioName(index),
@@ -218,16 +218,6 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         }
     }
 
-  }
-
-  def moneyAsset: Option[Seq[AnswerSection]] = {
-    val questions = Seq(
-      assetMoneyValue(0)
-    ).flatten
-
-    if (questions.nonEmpty) Some(Seq(AnswerSection(Some(Messages("answerPage.section.moneyAsset.subheading")),
-      questions
-    ))) else None
   }
 
   def agentInternationalAddress: Option[AnswerRow] = userAnswers.get(AgentInternationalAddressPage) map {

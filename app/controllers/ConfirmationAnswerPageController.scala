@@ -25,7 +25,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.countryOptions.CountryOptions
-import utils.{CheckYourAnswersHelper, DateFormat, PrintUserAnswersHelper}
+import utils.{DateFormat, PrintUserAnswersHelper}
 import views.html.ConfirmationAnswerPageView
 
 
@@ -50,6 +50,7 @@ class ConfirmationAnswerPageController @Inject()(
       val sections = printUserAnswersHelper.summary(draftId, request.userAnswers)
 
       val trn = request.userAnswers.get(RegistrationTRNPage).getOrElse("")
+
       val trnDateTime = request.userAnswers.get(RegistrationSubmissionDatePage).getOrElse(LocalDateTime.now)
 
       val declarationSent : String = DateFormat.formatDate(trnDateTime, "d MMMM yyyy")

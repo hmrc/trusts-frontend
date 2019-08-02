@@ -25,6 +25,7 @@ import models.Status.Completed
 import models.{AddABeneficiary, AddATrustee, FullName, IndividualOrBusiness, Status, UKAddress, UserAnswers, WhatKindOfAsset}
 import pages._
 import pages.entitystatus._
+import pages.shares.{SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, SharesInAPortfolioPage}
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -37,7 +38,7 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
 
   val index = 0
 
-  "ConfirmationAnswersController Controller" must {
+  "ConfirmationAnswersController" must {
 
     "return OK and the correct view for a GET when tasklist completed" in {
 
@@ -97,6 +98,13 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
           .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
           .set(AssetMoneyValuePage(index), "100").success.value
           .set(AssetStatus(index), Completed).success.value
+          .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
+          .set(SharesInAPortfolioPage(1), true).success.value
+          .set(SharePortfolioNamePage(1), "Company").success.value
+          .set(SharePortfolioOnStockExchangePage(1), true ).success.value
+          .set(SharePortfolioQuantityInTrustPage(1), "1234").success.value
+          .set(SharePortfolioValueInTrustPage(1), "4000").success.value
+          .set(AssetStatus(1), Completed).success.value
           .set(AddAssetsPage, NoComplete).success.value
 
           .set(RegistrationTRNPage, "XNTRN000000001").success.value
@@ -120,7 +128,7 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
             checkYourAnswersHelper.establishedUnderScotsLaw.value,
             checkYourAnswersHelper.trustResidentOffshore.value
           ),
-          Some(Messages("answerPage.section.trustsDetails.heading"))
+          Some("Trust details")
         ),
         AnswerSection(
           None,
@@ -136,10 +144,10 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
             checkYourAnswersHelper.wasSettlorsAddressUKYesNo.value,
             checkYourAnswersHelper.settlorsUKAddress.value
           ),
-          Some(Messages("answerPage.section.settlors.heading"))
+          Some("Settlors")
         ),
         AnswerSection(
-          Some(Messages("answerPage.section.trustee.subheading") + " " + (index + 1)),
+          Some("Trustee 1"),
           Seq(
             checkYourAnswersHelper.isThisLeadTrustee(index).value,
             checkYourAnswersHelper.trusteeIndividualOrBusiness(index, leadTrusteeIndividualOrBusinessMessagePrefix).value,
@@ -151,10 +159,10 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
             checkYourAnswersHelper.trusteesUkAddress(index).value,
             checkYourAnswersHelper.telephoneNumber(index).value
           ),
-          Some(Messages("answerPage.section.trustees.heading"))
+          Some("Trustees")
         ),
         AnswerSection(
-          Some(Messages("answerPage.section.individualBeneficiary.subheading") + " " + (index + 1)),
+          Some("Individual beneficiary 1"),
           Seq(
             checkYourAnswersHelper.individualBeneficiaryName(index).value,
             checkYourAnswersHelper.individualBeneficiaryDateOfBirthYesNo(index).value,
@@ -168,21 +176,33 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
             checkYourAnswersHelper.individualBeneficiaryAddressUK(index).value,
             checkYourAnswersHelper.individualBeneficiaryVulnerableYesNo(index).value
           ),
-          Some(Messages("answerPage.section.beneficiaries.heading"))
+          Some("Beneficiaries")
         ),
         AnswerSection(
-          Some(Messages("answerPage.section.classOfBeneficiary.subheading") + " " + (index + 1)),
+          Some("Class of beneficiary 1"),
           Seq(
             checkYourAnswersHelper.classBeneficiaryDescription(index).value
           ),
           None
         ),
+        AnswerSection(None, Nil, Some("Assets")),
         AnswerSection(
-          Some(Messages("answerPage.section.moneyAsset.subheading")),
+          Some("Money"),
           Seq(
             checkYourAnswersHelper.assetMoneyValue(index).value
           ),
-          Some(Messages("answerPage.section.assets.heading"))
+          None
+        ),
+        AnswerSection(
+          Some("Share 1"),
+          Seq(
+            checkYourAnswersHelper.sharesInAPortfolio(1).value,
+            checkYourAnswersHelper.sharePortfolioName(1).value,
+            checkYourAnswersHelper.sharePortfolioOnStockExchange(1).value,
+            checkYourAnswersHelper.sharePortfolioQuantityInTrust(1).value,
+            checkYourAnswersHelper.sharePortfolioValueInTrust(1).value
+          ),
+          None
         )
       )
 

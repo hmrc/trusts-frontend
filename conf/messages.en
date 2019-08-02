@@ -856,7 +856,7 @@ answerPage.section.individualBeneficiary.subheading = Individual beneficiary
 answerPage.section.classOfBeneficiary.subheading = Class of beneficiary
 answerPage.section.assets.heading = Assets
 answerPage.section.moneyAsset.subheading = Money
-answerPage.section.shareAsset.subheading = Shares
+answerPage.section.shareAsset.subheading = Share
 answerPage.agentClientRef = Client reference number: {0}
 
 sharePortfolioName.title = What is the share portfolio’s name?
