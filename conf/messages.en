@@ -81,10 +81,14 @@ individualOrBusiness.business = Business
 
 entity.trustee = Trustee
 entities.no.name.added = No name added
+entities.no.value.added = No value added
+entities.no.description.added = No description added
 entities.lead = Lead
 entities.trustee = Trustee
 entities.trustee.individual = Trustee Individual
 entities.trustee.business = Trustee Business
+entities.beneficiary.individual = Individual Beneficiary
+entities.beneficiary.class = Class of beneficiaries
 
 createAgentServicesAccount.title = Create an agent services account
 createAgentServicesAccount.heading = Create an agent services account
@@ -514,6 +518,12 @@ whatKindOfAsset.error.required = Select the kind of asset you need to add
 
 addAssets.title = Add assets
 addAssets.heading = Add assets
+addAssets.singular.heading = You have added 1 asset
+addAssets.singular.title = You have added 1 asset
+
+addAssets.count.heading = You have added {0} assets
+addAssets.count.title = You have added {0} assets
+
 addAssets.additional-content = Do you want to add another asset?
 addAssets.add-them-now = Yes, I want to add them now
 addAssets.add-them-later = Yes, I want to add them later

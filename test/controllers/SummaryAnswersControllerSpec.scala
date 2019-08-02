@@ -110,6 +110,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
 
     val countryOptions = injector.instanceOf[CountryOptions]
     val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers,fakeDraftId, canEdit = false)
+
     val leadTrusteeIndividualOrBusinessMessagePrefix = "leadTrusteeIndividualOrBusiness"
     val leadTrusteeFullNameMessagePrefix = "leadTrusteesName"
 
@@ -206,11 +207,10 @@ class SummaryAnswersControllerSpec extends SpecBase {
 
       val view = application.injector.instanceOf[SummaryAnswerPageView]
 
-//      redirectLocation(result) mustEqual true
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(expectedSections, false, "")(fakeRequest, messages).toString
+        view(expectedSections, isAgent = false, agentClientRef = "")(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -225,12 +225,10 @@ class SummaryAnswersControllerSpec extends SpecBase {
 
       val view = application.injector.instanceOf[SummaryAnswerPageView]
 
-//      redirectLocation(result) mustEqual true
-
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(expectedSections, true, "agentClientReference")(fakeRequest, messages).toString
+        view(expectedSections, isAgent = true, agentClientRef = "agentClientReference")(fakeRequest, messages).toString
 
       application.stop()
     }

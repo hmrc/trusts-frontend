@@ -41,8 +41,9 @@ class AddATrusteeViewHelperSpec extends SpecBase {
     .set(TrusteesNamePage(0), FullName("First 0", Some("Middle"), "Last 0")).success.value
     .set(IsThisLeadTrusteePage(1), false).success.value
     .set(TrusteesNamePage(1), FullName("First 1", Some("Middle"), "Last 1")).success.value
+    .set(IsThisLeadTrusteePage(2),false).success.value
 
-  val userAnswersWithCompleteAndInProgres = emptyUserAnswers
+  val userAnswersWithCompleteAndInProgress = emptyUserAnswers
     .set(IsThisLeadTrusteePage(0), false).success.value
     .set(TrusteesNamePage(0), FullName("First 0", Some("Middle"), "Last 0")).success.value
     .set(IsThisLeadTrusteePage(1), true).success.value
@@ -66,7 +67,8 @@ class AddATrusteeViewHelperSpec extends SpecBase {
         val rows = new AddATrusteeViewHelper(userAnswersWithTrusteesInProgress).rows
         rows.inProgress mustBe List(
           AddRow("First 0 Last 0", typeLabel = "Trustee", "#", "#"),
-          AddRow("First 1 Last 1", typeLabel = "Trustee", "#", "#")
+          AddRow("First 1 Last 1", typeLabel = "Trustee", "#", "#"),
+          AddRow("No name added", typeLabel = "Trustee", "#", "#")
         )
         rows.complete mustBe Nil
       }
@@ -81,7 +83,7 @@ class AddATrusteeViewHelperSpec extends SpecBase {
       }
 
       "generate rows from user answers for complete and in progress trustees" in {
-        val rows = new AddATrusteeViewHelper(userAnswersWithCompleteAndInProgres).rows
+        val rows = new AddATrusteeViewHelper(userAnswersWithCompleteAndInProgress).rows
         rows.complete mustBe List(
           AddRow("First 1 Last 1", typeLabel = "Lead Trustee Individual", "#", "#")
         )

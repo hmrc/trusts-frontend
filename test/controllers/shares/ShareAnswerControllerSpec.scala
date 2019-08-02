@@ -17,8 +17,12 @@
 package controllers.shares
 
 import base.SpecBase
-import models.ShareClass
-import pages.shares.{ShareClassPage, ShareCompanyNamePage, SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, ShareQuantityInTrustPage, ShareValueInTrustPage, SharesInAPortfolioPage, SharesOnStockExchangePage}
+import models.{ShareClass, WhatKindOfAsset}
+import models.Status.Completed
+import models.WhatKindOfAsset.Shares
+import pages.WhatKindOfAssetPage
+import pages.entitystatus.AssetStatus
+import pages.shares._
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -30,7 +34,7 @@ import views.html.shares.ShareAnswersView
 class ShareAnswerControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
-  
+
   val index: Int = 0
 
   lazy val shareAnswerRoute = controllers.shares.routes.ShareAnswerController.onPageLoad(index, fakeDraftId).url
@@ -47,6 +51,7 @@ class ShareAnswerControllerSpec extends SpecBase {
         .set(ShareClassPage(index), ShareClass.Ordinary).success.value
         .set(ShareQuantityInTrustPage(index), "1000").success.value
         .set(ShareValueInTrustPage(index), "10").success.value
+        .set(AssetStatus(index), Completed).success.value
 
       val countryOptions = injector.instanceOf[CountryOptions]
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId)
@@ -64,7 +69,6 @@ class ShareAnswerControllerSpec extends SpecBase {
           )
         )
       )
-
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -86,6 +90,7 @@ class ShareAnswerControllerSpec extends SpecBase {
 
       val userAnswers =
         emptyUserAnswers
+          .set(WhatKindOfAssetPage(index), Shares).success.value
           .set(SharesInAPortfolioPage(index), true).success.value
           .set(SharePortfolioNamePage(index), "Share Portfolio Name").success.value
           .set(SharePortfolioOnStockExchangePage(index), true).success.value
@@ -99,6 +104,7 @@ class ShareAnswerControllerSpec extends SpecBase {
         AnswerSection(
           None,
           Seq(
+            checkYourAnswersHelper.whatKindOfAsset(index).value,
             checkYourAnswersHelper.sharesInAPortfolio(index).value,
             checkYourAnswersHelper.sharePortfolioName(index).value,
             checkYourAnswersHelper.sharePortfolioOnStockExchange(index).value,
@@ -107,7 +113,6 @@ class ShareAnswerControllerSpec extends SpecBase {
           )
         )
       )
-
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
