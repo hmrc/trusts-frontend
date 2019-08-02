@@ -16,7 +16,7 @@
 
 package pages
 
-import models.entities.Trustees
+import mapping.reads.Trustees
 import play.api.libs.json.JsPath
 
 final case class TrusteesNinoPage(index : Int) extends QuestionPage[String] {

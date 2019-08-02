@@ -22,11 +22,11 @@ import base.SpecBase
 import controllers.routes
 import models.Status.Completed
 import models.WhatKindOfAsset.Money
-import models.entities.{Assets, Trustees}
+import mapping.reads.{Assets, Trustees}
 import models.{FullName, NormalMode, UserAnswers}
 import pages._
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
-import viewmodels.{Beneficiaries, Settlors, TaxLiability, TrustDetails}
+import sections.{Beneficiaries, Settlors, TaxLiability, TrustDetails}
 
 class TaskListNavigatorSpec extends SpecBase {
 

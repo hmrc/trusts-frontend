@@ -16,7 +16,7 @@
 
 package pages
 
-import models.entities.Assets
+import mapping.reads.Assets
 import play.api.libs.json.JsPath
 
 final case class AssetMoneyValuePage(index: Int) extends QuestionPage[String] {

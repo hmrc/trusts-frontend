@@ -20,7 +20,7 @@ import config.FrontendAppConfig
 import controllers.actions._
 import handlers.ErrorHandler
 import javax.inject.Inject
-import models.entities.{LeadTrusteeIndividual, Trustees}
+import mapping.reads.{LeadTrusteeIndividual, Trustees}
 import models.requests.DataRequest
 import models.{NormalMode, RegistrationProgress, UserAnswers}
 import pages.{RegistrationTRNPage, TrustHaveAUTRPage}

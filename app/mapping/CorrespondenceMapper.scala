@@ -18,7 +18,7 @@ package mapping
 
 import javax.inject.Inject
 import models.UserAnswers
-import models.entities.{LeadTrusteeIndividual, Trustees}
+import mapping.reads.{LeadTrusteeIndividual, Trustees}
 import pages.{TrustNamePage, TrusteeLiveInTheUKPage, TrusteesInternationalAddressPage, TrusteesUkAddressPage}
 import play.api.Logger
 

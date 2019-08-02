@@ -18,7 +18,7 @@ package pages
 
 import models.UserAnswers
 import play.api.libs.json.JsPath
-import viewmodels.{Beneficiaries, IndividualBeneficiaries}
+import sections.{Beneficiaries, IndividualBeneficiaries}
 
 import scala.util.Try
 

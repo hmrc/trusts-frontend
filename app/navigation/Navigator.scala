@@ -16,17 +16,17 @@
 
 package navigation
 
-import javax.inject.{Inject, Singleton}
-import play.api.mvc.Call
 import controllers.routes
+import javax.inject.{Inject, Singleton}
 import models.AddATrustee.{NoComplete, YesLater, YesNow}
 import models.IndividualOrBusiness.Individual
 import models.WhatKindOfAsset.{Business, Money, Other, Partnership, PropertyOrLand, Shares}
-import pages._
 import models._
-import models.entities.Assets
+import pages._
+import pages.shares.{ShareAnswerPage, ShareClassPage, ShareCompanyNamePage, SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, ShareQuantityInTrustPage, ShareValueInTrustPage, SharesInAPortfolioPage, SharesOnStockExchangePage}
+import play.api.mvc.Call
+import sections.{ClassOfBeneficiaries, IndividualBeneficiaries, Trustees}
 import uk.gov.hmrc.auth.core.AffinityGroup
-import viewmodels.{ClassOfBeneficiaries, IndividualBeneficiaries}
 
 @Singleton
 class Navigator @Inject()() {
@@ -81,7 +81,18 @@ class Navigator @Inject()() {
     //Assets
     case AssetMoneyValuePage(index) => _ => ua => assetMoneyValueRoute(ua, index, draftId)
     case WhatKindOfAssetPage(index) => _ => ua => whatKindOfAssetRoute(ua, index, draftId)
+    case SharesInAPortfolioPage(index) => _ => ua => sharesInAPortfolio(ua, index, draftId)
+    case SharePortfolioNamePage(index) => _ => ua => controllers.shares.routes.SharePortfolioOnStockExchangeController.onPageLoad(NormalMode, index, draftId)
+    case SharePortfolioOnStockExchangePage(index) => _ => ua => controllers.shares.routes.SharePortfolioQuantityInTrustController.onPageLoad(NormalMode, index, draftId)
+    case SharePortfolioQuantityInTrustPage(index) => _ => _ => controllers.shares.routes.SharePortfolioValueInTrustController.onPageLoad(NormalMode, index, draftId)
+    case SharePortfolioValueInTrustPage(index) => _ => _ => controllers.shares.routes.ShareAnswerController.onPageLoad(index, draftId)
+    case SharesOnStockExchangePage(index) => _ => _ => controllers.shares.routes.ShareClassController.onPageLoad(NormalMode, index, draftId)
+    case ShareClassPage(index) => _ => _ => controllers.shares.routes.ShareQuantityInTrustController.onPageLoad(NormalMode, index, draftId)
     case AddAssetsPage => _ => addAssetsRoute(draftId)
+    case ShareQuantityInTrustPage(index) => _ => _ => controllers.shares.routes.ShareValueInTrustController.onPageLoad(NormalMode, index, draftId)
+    case ShareValueInTrustPage(index) => _ => _ => controllers.shares.routes.ShareAnswerController.onPageLoad(index, draftId)
+    case ShareAnswerPage => _ => _ => routes.AddAssetsController.onPageLoad(draftId)
+    case ShareCompanyNamePage(index) => _ => _ => controllers.shares.routes.SharesOnStockExchangeController.onPageLoad(NormalMode, index, draftId)
 
     //Settlors
     case SetupAfterSettlorDiedPage => _ => setupAfterSettlorDiedRoute(draftId)
@@ -122,6 +133,16 @@ class Navigator @Inject()() {
     case _ => _ => _ => routes.IndexController.onPageLoad()
   }
 
+  private def sharesInAPortfolio(userAnswers: UserAnswers, index : Int, draftId: String) : Call = {
+    userAnswers.get(SharesInAPortfolioPage(index)) match {
+      case Some(true) =>
+        controllers.shares.routes.SharePortfolioNameController.onPageLoad(NormalMode, index, draftId)
+      case Some(false) =>
+        controllers.shares.routes.ShareCompanyNameController.onPageLoad(NormalMode, index, draftId)
+      case _=>
+        routes.SessionExpiredController.onPageLoad()
+    }
+  }
 
   private def whatTypeOfBeneficiaryRoute(draftId: String)(userAnswers: UserAnswers) : Call = {
     val whatBeneficiaryToAdd = userAnswers.get(WhatTypeOfBeneficiaryPage)
@@ -237,7 +258,7 @@ class Navigator @Inject()() {
     val addAnother = answers.get(AddAssetsPage)
 
     def routeToAssetIndex = {
-      val assets = answers.get(viewmodels.Assets).getOrElse(List.empty)
+      val assets = answers.get(sections.Assets).getOrElse(List.empty)
       assets match {
         case Nil =>
           routes.WhatKindOfAssetController.onPageLoad(NormalMode, 0, draftId)
@@ -258,7 +279,7 @@ class Navigator @Inject()() {
   }
 
   private def assetMoneyValueRoute(answers: UserAnswers, index: Int, draftId: String) = {
-    val assets = answers.get(viewmodels.Assets).getOrElse(List.empty)
+    val assets = answers.get(sections.Assets).getOrElse(List.empty)
     assets match  {
       case Nil => routes.WhatKindOfAssetController.onPageLoad(NormalMode, 0, draftId)
       case _ => routes.AddAssetsController.onPageLoad(draftId)
@@ -268,7 +289,7 @@ class Navigator @Inject()() {
   private def whatKindOfAssetRoute(answers: UserAnswers, index: Int, draftId: String) = answers.get(WhatKindOfAssetPage(index)) match {
       case Some(Money) => routes.AssetMoneyValueController.onPageLoad(NormalMode, index, draftId)
       case Some(PropertyOrLand) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
-      case Some(Shares) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
+      case Some(Shares) => controllers.shares.routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, draftId)
       case Some(Business) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
       case Some(Partnership) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
       case Some(Other) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
@@ -279,7 +300,7 @@ class Navigator @Inject()() {
     val addAnother = answers.get(AddATrusteePage)
 
     def routeToTrusteeIndex = {
-      val trustees = answers.get(viewmodels.Trustees).getOrElse(List.empty)
+      val trustees = answers.get(Trustees).getOrElse(List.empty)
       trustees match {
         case Nil =>
           routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 0, draftId)

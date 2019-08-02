@@ -18,31 +18,31 @@ package utils
 
 import models.{FullName, UserAnswers}
 import play.api.i18n.Messages
+import sections.{ClassOfBeneficiaries, IndividualBeneficiaries}
 import viewmodels.addAnother.{ClassOfBeneficiaryViewModel, IndividualBeneficiaryViewModel}
-import viewmodels.{AddRow, AddToRows, ClassOfBeneficiaries, IndividualBeneficiaries}
+import viewmodels.{AddRow, AddToRows}
 
 class AddABeneficiaryViewHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
   private def parseName(name : Option[FullName]) : String = {
-    name match {
-      case Some(x) => s"$x"
-      case None => ""
-    }
+    val defaultValue = messages("entities.no.name.added")
+    name.map(_.toString).getOrElse(defaultValue)
   }
 
   private def parseIndividualBeneficiary(individualBeneficiary : IndividualBeneficiaryViewModel) : AddRow = {
     AddRow(
       parseName(individualBeneficiary.name),
-      "Individual Beneficiary",
+      messages("entities.beneficiary.individual"),
       "#",
       "#"
     )
   }
 
   private def parseClassOfBeneficiary(classOfBeneficiary : ClassOfBeneficiaryViewModel) : AddRow = {
+    val defaultValue = messages("entities.no.description.added")
     AddRow(
-      classOfBeneficiary.description.getOrElse(""),
-      "Class of beneficiaries",
+      classOfBeneficiary.description.getOrElse(defaultValue),
+      messages("entities.beneficiary.class"),
       "#",
       "#"
     )
@@ -61,8 +61,10 @@ class AddABeneficiaryViewHelper(userAnswers: UserAnswers)(implicit messages: Mes
 
     val classOfBeneficiariesInProgress = classOfBeneficiaries.filterNot(_.isComplete).map(parseClassOfBeneficiary)
 
-    AddToRows(indBenInProgress ::: classOfBeneficiariesInProgress,
-      indBeneficiaryComplete ::: classOfBeneficiariesComplete)
+    AddToRows(
+      inProgress = indBenInProgress ::: classOfBeneficiariesInProgress,
+      complete = indBeneficiaryComplete ::: classOfBeneficiariesComplete
+    )
   }
 
 }

@@ -37,7 +37,7 @@ class TaskListControllerSpec extends SpecBase {
   private val savedUntil : String = LocalDateTime.now.plusSeconds(frontendAppConfig.ttlInSeconds).format(dateFormatter)
 
   private def sections(answers: UserAnswers) =
-    new RegistrationProgress(new TaskListNavigator()).sections(answers, fakeDraftId)
+    new RegistrationProgress(new TaskListNavigator()).items(answers, fakeDraftId)
 
   private def isTaskListComplete(answers: UserAnswers) =
     new RegistrationProgress(new TaskListNavigator()).isTaskListComplete(answers)

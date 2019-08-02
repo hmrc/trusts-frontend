@@ -19,7 +19,7 @@ package pages.entitystatus
 import models.Status
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import viewmodels.Trustees
+import sections.Trustees
 
 final case class TrusteeStatus(index : Int) extends QuestionPage[Status] {
 

@@ -17,7 +17,7 @@
 package pages
 
 import models.FullName
-import models.entities.Trustees
+import mapping.reads.Trustees
 import play.api.libs.json.JsPath
 
 final case class TrusteesNamePage(index : Int) extends QuestionPage[FullName] {

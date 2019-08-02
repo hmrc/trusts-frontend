@@ -17,7 +17,7 @@
 package pages
 
 import play.api.libs.json.JsPath
-import viewmodels.Agent
+import sections.Agent
 
 case object RegistrationTRNPage extends QuestionPage[String] {
 

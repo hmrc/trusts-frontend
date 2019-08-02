@@ -6,11 +6,11 @@ echo "Applying migration SharesInAPortfolio"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /sharesInAPortfolio                        controllers.SharesInAPortfolioController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /sharesInAPortfolio                        controllers.SharesInAPortfolioController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /sharesInAPortfolio                        controllers.shares.SharesInAPortfolioController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /sharesInAPortfolio                        controllers.shares.SharesInAPortfolioController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeSharesInAPortfolio                  controllers.SharesInAPortfolioController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeSharesInAPortfolio                  controllers.SharesInAPortfolioController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeSharesInAPortfolio                  controllers.shares.SharesInAPortfolioController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeSharesInAPortfolio                  controllers.shares.SharesInAPortfolioController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

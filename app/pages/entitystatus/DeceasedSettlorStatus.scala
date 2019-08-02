@@ -19,7 +19,7 @@ package pages.entitystatus
 import models.Status
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import viewmodels.{DeceasedSettlor, Settlors}
+import sections.{DeceasedSettlor, Settlors}
 
 case object DeceasedSettlorStatus extends QuestionPage[Status] {
 

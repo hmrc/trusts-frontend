@@ -21,21 +21,23 @@ import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.TryValues
 import pages._
+import pages.shares.{ShareClassPage, ShareCompanyNamePage, SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, ShareQuantityInTrustPage, ShareValueInTrustPage, SharesInAPortfolioPage, SharesOnStockExchangePage}
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersGenerator extends TryValues {
   self: Generators =>
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
-    arbitrary[(SharesOnStockExchangePage.type, JsValue)] ::
-    arbitrary[(SharesInAPortfolioPage.type, JsValue)] ::
-    arbitrary[(ShareValueInTrustPage.type, JsValue)] ::
-    arbitrary[(ShareQuantityInTrustPage.type, JsValue)] ::
-    arbitrary[(SharePortfolioValueInTrustPage.type, JsValue)] ::
-    arbitrary[(SharePortfolioQuantityInTrustPage.type, JsValue)] ::
-    arbitrary[(SharePortfolioOnStockExchangePage.type, JsValue)] ::
-    arbitrary[(SharePortfolioNamePage.type, JsValue)] ::
-    arbitrary[(ShareClassPage.type, JsValue)] ::
+    arbitrary[(ShareCompanyNamePage, JsValue)] ::
+    arbitrary[(SharesOnStockExchangePage, JsValue)] ::
+    arbitrary[(SharesInAPortfolioPage, JsValue)] ::
+    arbitrary[(ShareValueInTrustPage, JsValue)] ::
+    arbitrary[(ShareQuantityInTrustPage, JsValue)] ::
+    arbitrary[(SharePortfolioValueInTrustPage, JsValue)] ::
+    arbitrary[(SharePortfolioQuantityInTrustPage, JsValue)] ::
+    arbitrary[(SharePortfolioOnStockExchangePage, JsValue)] ::
+    arbitrary[(SharePortfolioNamePage, JsValue)] ::
+    arbitrary[(ShareClassPage, JsValue)] ::
     arbitrary[(DeclarationPage.type, JsValue)] ::
     arbitrary[(WhatTypeOfBeneficiaryPage.type, JsValue)] ::
     arbitrary[(AgentInternationalAddressPage.type, JsValue)] ::

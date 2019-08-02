@@ -21,9 +21,11 @@ import java.time.{LocalDate, ZoneOffset}
 import base.SpecBase
 import models.AddAssets.NoComplete
 import models.Status.Completed
+import models.WhatKindOfAsset.Shares
 import models.{AddABeneficiary, AddATrustee, FullName, IndividualOrBusiness, Status, UKAddress, WhatKindOfAsset}
 import pages._
 import pages.entitystatus._
+import pages.shares._
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -37,7 +39,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
 
   val index = 0
 
-  "SummaryAnswersController Controller" must {
+  "SummaryAnswersController" must {
 
     val userAnswers =
       TestUserAnswers.emptyUserAnswers
@@ -95,13 +97,19 @@ class SummaryAnswersControllerSpec extends SpecBase {
         .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
         .set(AssetMoneyValuePage(index), "100").success.value
         .set(AssetStatus(index), Completed).success.value
+        .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
+        .set(SharesInAPortfolioPage(1), true).success.value
+        .set(SharePortfolioNamePage(1), "Company").success.value
+        .set(SharePortfolioOnStockExchangePage(1), true ).success.value
+        .set(SharePortfolioQuantityInTrustPage(1), "1234").success.value
+        .set(SharePortfolioValueInTrustPage(1), "4000").success.value
+        .set(AssetStatus(1), Completed).success.value
         .set(AddAssetsPage, NoComplete).success.value
-
         .set(AgentInternalReferencePage, "agentClientReference").success.value
-
 
     val countryOptions = injector.instanceOf[CountryOptions]
     val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers,fakeDraftId, canEdit = false)
+
     val leadTrusteeIndividualOrBusinessMessagePrefix = "leadTrusteeIndividualOrBusiness"
     val leadTrusteeFullNameMessagePrefix = "leadTrusteesName"
 
@@ -117,7 +125,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
           checkYourAnswersHelper.establishedUnderScotsLaw.value,
           checkYourAnswersHelper.trustResidentOffshore.value
         ),
-        Some(Messages("answerPage.section.trustsDetails.heading"))
+        Some("Trust details")
       ),
       AnswerSection(
         None,
@@ -133,10 +141,10 @@ class SummaryAnswersControllerSpec extends SpecBase {
           checkYourAnswersHelper.wasSettlorsAddressUKYesNo.value,
           checkYourAnswersHelper.settlorsUKAddress.value
         ),
-        Some(Messages("answerPage.section.settlors.heading"))
+        Some("Settlors")
       ),
       AnswerSection(
-        Some(Messages("answerPage.section.trustee.subheading") + " " + (index + 1)),
+        Some("Trustee 1"),
         Seq(
           checkYourAnswersHelper.isThisLeadTrustee(index).value,
           checkYourAnswersHelper.trusteeIndividualOrBusiness(index, leadTrusteeIndividualOrBusinessMessagePrefix).value,
@@ -148,10 +156,10 @@ class SummaryAnswersControllerSpec extends SpecBase {
           checkYourAnswersHelper.trusteesUkAddress(index).value,
           checkYourAnswersHelper.telephoneNumber(index).value
         ),
-        Some(Messages("answerPage.section.trustees.heading"))
+        Some("Trustees")
       ),
       AnswerSection(
-        Some(Messages("answerPage.section.individualBeneficiary.subheading") + " " + (index + 1)),
+        Some("Individual beneficiary 1"),
         Seq(
           checkYourAnswersHelper.individualBeneficiaryName(index).value,
           checkYourAnswersHelper.individualBeneficiaryDateOfBirthYesNo(index).value,
@@ -165,21 +173,33 @@ class SummaryAnswersControllerSpec extends SpecBase {
           checkYourAnswersHelper.individualBeneficiaryAddressUK(index).value,
           checkYourAnswersHelper.individualBeneficiaryVulnerableYesNo(index).value
         ),
-        Some(Messages("answerPage.section.beneficiaries.heading"))
+        Some("Beneficiaries")
       ),
       AnswerSection(
-        Some(Messages("answerPage.section.classOfBeneficiary.subheading") + " " + (index + 1)),
+        Some("Class of beneficiary 1"),
         Seq(
           checkYourAnswersHelper.classBeneficiaryDescription(index).value
         ),
         None
       ),
+      AnswerSection(None, Nil, Some("Assets")),
       AnswerSection(
-        Some(Messages("answerPage.section.moneyAsset.subheading")),
+        Some("Money"),
         Seq(
           checkYourAnswersHelper.assetMoneyValue(index).value
         ),
-        Some(Messages("answerPage.section.assets.heading"))
+        None
+      ),
+      AnswerSection(
+        Some("Share 1"),
+        Seq(
+          checkYourAnswersHelper.sharesInAPortfolio(1).value,
+          checkYourAnswersHelper.sharePortfolioName(1).value,
+          checkYourAnswersHelper.sharePortfolioOnStockExchange(1).value,
+          checkYourAnswersHelper.sharePortfolioQuantityInTrust(1).value,
+          checkYourAnswersHelper.sharePortfolioValueInTrust(1).value
+        ),
+        None
       )
     )
 
@@ -196,7 +216,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(expectedSections, false, "")(fakeRequest, messages).toString
+        view(expectedSections, isAgent = false, agentClientRef = "")(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -214,7 +234,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(expectedSections, true, "agentClientReference")(fakeRequest, messages).toString
+        view(expectedSections, isAgent = true, agentClientRef = "agentClientReference")(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -245,8 +265,6 @@ class SummaryAnswersControllerSpec extends SpecBase {
       application.stop()
 
     }
-
-
 
   }
 }
