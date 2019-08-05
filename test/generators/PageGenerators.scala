@@ -22,9 +22,6 @@ import pages.shares.{ShareClassPage, ShareCompanyNamePage, SharePortfolioNamePag
 
 trait PageGenerators {
 
-  implicit lazy val arbitraryRemoveIndexPage: Arbitrary[RemoveIndexPage.type] =
-    Arbitrary(RemoveIndexPage)
-
   implicit lazy val arbitraryShareCompanyNamePage: Arbitrary[ShareCompanyNamePage] =
     Arbitrary(ShareCompanyNamePage(0))
 
