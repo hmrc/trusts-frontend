@@ -16,58 +16,51 @@
 
 package controllers
 
-import controllers.actions._
-import forms.RemoveIndexFormProvider
-import javax.inject.Inject
-import models.{Mode, UserAnswers}
-import navigation.Navigator
-import pages.RemoveIndexPage
+import models.Mode
+import models.requests.DataRequest
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{AnyContent, Call, Result}
+import play.twirl.api.HtmlFormat
+import queries.Settable
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.RemoveIndexView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class RemoveIndexController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DraftIdRetrievalActionProvider,
-                                         requireData: DataRequiredAction,
-                                         formProvider: RemoveIndexFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: RemoveIndexView
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+trait RemoveIndexController extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = formProvider()
+  val form: Form[Boolean]
 
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
-    implicit request =>
+  def sessionRepository : SessionRepository
 
-      val preparedForm = request.userAnswers.get(RemoveIndexPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
+  def redirect(draftId : String) : Call
 
-      Ok(view(preparedForm, mode, draftId))
-  }
+  def removeQuery(index : Int) : Settable[_]
 
-  def onSubmit(mode: Mode, draftId : String) = (identify andThen getData(draftId) andThen requireData).async {
-    implicit request =>
+  def content(index: Int)(implicit request: DataRequest[AnyContent]) : String
 
+  def view(form: Form[_], mode: Mode, index : Int, draftId : String)
+          (implicit request: DataRequest[AnyContent], messagesApi: MessagesApi) : HtmlFormat.Appendable
+
+  def get(mode: Mode, index : Int, draftId: String)(implicit request: DataRequest[AnyContent]) : Result =
+    Ok(view(form, mode, index, draftId))
+
+  def remove(mode: Mode, index : Int, draftId : String)
+            (implicit request : DataRequest[AnyContent], ec: ExecutionContext) = {
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId))),
+          Future.successful(BadRequest(view(formWithErrors, mode, index, draftId))),
 
         value => {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(RemoveIndexPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(RemoveIndexPage, mode, draftId)(updatedAnswers))
+          if (value) {
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.remove(removeQuery(index)))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(redirect(draftId).url)
+          } else {
+            Future.successful(Redirect(redirect(draftId).url))
+          }
         }
       )
   }

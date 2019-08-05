@@ -18,88 +18,78 @@ package controllers
 
 import base.SpecBase
 import forms.RemoveIndexFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
-import pages.RemoveIndexPage
-import play.api.inject.bind
-import play.api.libs.json.{JsBoolean, Json}
-import play.api.mvc.Call
+import models.{FullName, NormalMode}
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalatest.prop.PropertyChecks
+import pages.IndividualBeneficiaryNamePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.RemoveIndexView
+import views.html.RemoveIndividualBeneficiaryView
 
-class RemoveIndexControllerSpec extends SpecBase {
-
-  def onwardRoute = Call("GET", "/foo")
+class RemoveIndividualBeneficiaryControllerSpec extends SpecBase with PropertyChecks {
 
   val formProvider = new RemoveIndexFormProvider()
-  val form = formProvider()
+  val form = formProvider("removeIndividualBeneficiary")
 
-  lazy val removeIndexRoute = routes.RemoveIndexController.onPageLoad(NormalMode, fakeDraftId).url
+  val index = 0
 
-  "RemoveIndex Controller" must {
+  lazy val removeIndexRoute = routes.RemoveIndividualBeneficiaryController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+  "RemoveIndividualBeneficiary Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      val request = FakeRequest(GET, removeIndexRoute)
-
-      val result = route(application, request).value
-
-      val view = application.injector.instanceOf[RemoveIndexView]
-
-      status(result) mustEqual OK
-
-      contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
-
-      application.stop()
-    }
-
-    "populate the view correctly on a GET when the question has previously been answered" in {
-
-      val userAnswers = emptyUserAnswers.set(RemoveIndexPage, true).success.value
+      val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(0),
+        FullName("First", None, "Last")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, removeIndexRoute)
 
-      val view = application.injector.instanceOf[RemoveIndexView]
-
       val result = route(application, request).value
+
+      val view = application.injector.instanceOf[RemoveIndividualBeneficiaryView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form, NormalMode, index, fakeDraftId, "First Last")(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+      val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(0),
+        FullName("First", None, "Last")).success.value
 
-      val request =
-        FakeRequest(POST, removeIndexRoute)
-          .withFormUrlEncodedBody(("value", "true"))
+      forAll(arbitrary[Boolean]) {
+        value =>
+        val application =
+          applicationBuilder(userAnswers = Some(userAnswers))
+            .build()
 
-      val result = route(application, request).value
+        val request =
+          FakeRequest(POST, removeIndexRoute)
+            .withFormUrlEncodedBody(("value", value.toString))
 
-      status(result) mustEqual SEE_OTHER
+        val result = route(application, request).value
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+        status(result) mustEqual SEE_OTHER
 
-      application.stop()
+        redirectLocation(result).value mustEqual routes.AddABeneficiaryController.onPageLoad(fakeDraftId).url
+
+        application.stop()
+      }
+
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(0),
+        FullName("First", None, "Last")).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, removeIndexRoute)
@@ -107,14 +97,14 @@ class RemoveIndexControllerSpec extends SpecBase {
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[RemoveIndexView]
+      val view = application.injector.instanceOf[RemoveIndividualBeneficiaryView]
 
       val result = route(application, request).value
 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, index, fakeDraftId, "First Last")(fakeRequest, messages).toString
 
       application.stop()
     }

@@ -794,6 +794,10 @@ whatTypeOfBeneficiary.checkYourAnswersLabel = whatTypeOfBeneficiary
 whatTypeOfBeneficiary.error.required = Select the type of beneficiary you need to add
 whatTypeOfBeneficiary.hint = You can enter a maximum of 25 entries for each beneficiary type
 
+removeIndividualBeneficiary.title = Are you sure you want to remove {0}?
+removeIndividualBeneficiary.heading = Are you sure you want to remove {0}?
+removeIndividualBeneficiary.error.required = Select yes if you want to remove the individual beneficiary
+
 confirmationPage.title = Registration received, your reference is: {0}
 confirmationPage.heading = Registration received Your reference is: {0}
 
@@ -943,3 +947,4 @@ removeIndex.title = removeIndex
 removeIndex.heading = removeIndex
 removeIndex.checkYourAnswersLabel = removeIndex
 removeIndex.error.required = Select yes if removeIndex
+

@@ -24,7 +24,7 @@ class RemoveIndexFormProviderSpec extends BooleanFieldBehaviours {
   val requiredKey = "removeIndex.error.required"
   val invalidKey = "error.boolean"
 
-  val form = new RemoveIndexFormProvider()()
+  val form = new RemoveIndexFormProvider()("removeIndex")
 
   ".value" must {
 

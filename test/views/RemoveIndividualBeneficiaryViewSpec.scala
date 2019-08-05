@@ -18,29 +18,35 @@ package views
 
 import controllers.routes
 import forms.RemoveIndexFormProvider
-import models.NormalMode
+import models.{FullName, NormalMode}
+import pages.IndividualBeneficiaryNamePage
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.RemoveIndexView
+import views.html.RemoveIndividualBeneficiaryView
 
-class RemoveIndexViewSpec extends YesNoViewBehaviours {
+class RemoveIndividualBeneficiaryViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "removeIndex"
+  val messageKeyPrefix = "removeIndividualBeneficiary"
 
-  val form = new RemoveIndexFormProvider()()
+  val form = new RemoveIndexFormProvider()(messageKeyPrefix)
+
+  val index = 0
 
   "RemoveIndex view" must {
 
-    val view = viewFor[RemoveIndexView](Some(emptyUserAnswers))
+    val userAnswers = emptyUserAnswers
+      .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
+
+    val view = viewFor[RemoveIndividualBeneficiaryView](Some(userAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
+      view.apply(form, NormalMode, index, fakeDraftId, nameOrDescription = "First Last")(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, "First Last")
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.RemoveIndexController.onSubmit(NormalMode, fakeDraftId).url)
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.RemoveIndividualBeneficiaryController.onSubmit(NormalMode, index, fakeDraftId).url, None, Seq("First Last"))
   }
 }

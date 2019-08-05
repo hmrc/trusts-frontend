@@ -52,7 +52,7 @@ class AddABeneficiaryController @Inject()(
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = routes(draftId) {
     implicit request =>
 
-      val beneficiaries = new AddABeneficiaryViewHelper(request.userAnswers).rows
+      val beneficiaries = new AddABeneficiaryViewHelper(request.userAnswers, draftId).rows
 
       Ok(view(form, mode, draftId, beneficiaries.inProgress, beneficiaries.complete))
   }
@@ -63,9 +63,9 @@ class AddABeneficiaryController @Inject()(
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) => {
 
-          val beneficiaries = new AddABeneficiaryViewHelper(request.userAnswers).rows
+          val beneficiaries = new AddABeneficiaryViewHelper(request.userAnswers, draftId).rows
 
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId,  beneficiaries.inProgress, beneficiaries.complete)))
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, beneficiaries.inProgress, beneficiaries.complete)))
 
         },
 

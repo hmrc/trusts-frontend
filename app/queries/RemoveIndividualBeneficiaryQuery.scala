@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-package forms
+package queries
 
-import javax.inject.Inject
+import play.api.libs.json.JsPath
+import sections.{Beneficiaries, IndividualBeneficiaries}
 
-import forms.mappings.Mappings
-import play.api.data.Form
+final case class RemoveIndividualBeneficiaryQuery(index : Int) extends Settable[Boolean] {
 
-class RemoveIndexFormProvider @Inject() extends Mappings {
-
-  def apply(prefix : String = "removeIndex"): Form[Boolean] =
-    Form(
-      "value" -> boolean(s"$prefix.error.required")
-    )
+    override def path: JsPath = JsPath \ Beneficiaries \ IndividualBeneficiaries \ index
 }

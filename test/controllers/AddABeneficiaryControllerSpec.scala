@@ -34,6 +34,9 @@ class AddABeneficiaryControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
+  def removeIndividualRoute(index : Int) =
+    routes.RemoveIndividualBeneficiaryController.onPageLoad(NormalMode, index, fakeDraftId).url
+
   lazy val addABeneficiaryRoute = routes.AddABeneficiaryController.onPageLoad(fakeDraftId).url
 
   val formProvider = new AddABeneficiaryFormProvider()
@@ -41,7 +44,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
   val form = formProvider()
 
   val beneficiariesComplete = List(
-    AddRow("First Last", typeLabel = "Individual Beneficiary", "#", "#"),
+    AddRow("First Last", typeLabel = "Individual Beneficiary", "#", removeIndividualRoute(0)),
     AddRow("description", typeLabel = "Class of beneficiaries", "#", "#")
   )
 

@@ -17,20 +17,24 @@
 package utils
 
 import base.SpecBase
+import controllers.routes
 import models.Status.Completed
-import models.{FullName, WhatTypeOfBeneficiary}
+import models.{FullName, NormalMode, WhatTypeOfBeneficiary}
 import pages.entitystatus.{ClassBeneficiaryStatus, IndividualBeneficiaryStatus}
 import pages.{ClassBeneficiaryDescriptionPage, IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage, WhatTypeOfBeneficiaryPage}
 import viewmodels.AddRow
 
 class AddABeneficiaryViewHelperSpec extends SpecBase {
 
+  def removeIndividualRoute(index : Int) =
+    routes.RemoveIndividualBeneficiaryController.onPageLoad(NormalMode, index, fakeDraftId).url
+
   "AddABeneficiaryViewHelper" when {
 
     ".row" must {
 
       "generate Nil for no user answers" in {
-        val rows = new AddABeneficiaryViewHelper(emptyUserAnswers).rows
+        val rows = new AddABeneficiaryViewHelper(emptyUserAnswers, fakeDraftId).rows
         rows.inProgress mustBe Nil
         rows.complete mustBe Nil
       }
@@ -42,10 +46,10 @@ class AddABeneficiaryViewHelperSpec extends SpecBase {
           .set(WhatTypeOfBeneficiaryPage, WhatTypeOfBeneficiary.ClassOfBeneficiary).success.value
           .set(ClassBeneficiaryDescriptionPage(0), "Future issues").success.value
 
-        val rows = new AddABeneficiaryViewHelper(userAnswers).rows
+        val rows = new AddABeneficiaryViewHelper(userAnswers, fakeDraftId).rows
 
         rows.inProgress mustBe List(
-          AddRow("No name added", typeLabel = "Individual Beneficiary", "#", "#"),
+          AddRow("No name added", typeLabel = "Individual Beneficiary", "#", removeIndividualRoute(0)),
           AddRow("Future issues", typeLabel = "Class of beneficiaries", "#", "#")
         )
         rows.complete mustBe Nil
@@ -57,13 +61,16 @@ class AddABeneficiaryViewHelperSpec extends SpecBase {
           .set(WhatTypeOfBeneficiaryPage, WhatTypeOfBeneficiary.Individual).success.value
           .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
           .set(IndividualBeneficiaryStatus(0), Completed).success.value
+          .set(IndividualBeneficiaryNamePage(1), FullName("Second", None, "Last")).success.value
+          .set(IndividualBeneficiaryStatus(1), Completed).success.value
           .set(WhatTypeOfBeneficiaryPage, WhatTypeOfBeneficiary.ClassOfBeneficiary).success.value
           .set(ClassBeneficiaryDescriptionPage(0), "Future issues").success.value
           .set(ClassBeneficiaryStatus(0), Completed).success.value
 
-        val rows = new AddABeneficiaryViewHelper(userAnswers).rows
+        val rows = new AddABeneficiaryViewHelper(userAnswers, fakeDraftId).rows
         rows.complete mustBe List(
-          AddRow("First Last", typeLabel = "Individual Beneficiary", "#", "#"),
+          AddRow("First Last", typeLabel = "Individual Beneficiary", "#", removeIndividualRoute(0)),
+          AddRow("Second Last", typeLabel = "Individual Beneficiary", "#", removeIndividualRoute(1)),
           AddRow("Future issues", typeLabel = "Class of beneficiaries", "#", "#")
         )
         rows.inProgress mustBe Nil
