@@ -938,3 +938,8 @@ shareCompanyName.error.invalid = Share company’s name must only include letter
 
 shareAnswers.title = Check share details
 shareAnswers.heading = Check share details
+
+removeIndex.title = removeIndex
+removeIndex.heading = removeIndex
+removeIndex.checkYourAnswersLabel = removeIndex
+removeIndex.error.required = Select yes if removeIndex

@@ -33,6 +33,15 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers, draftId : String, canEdit: Boolean = true)(implicit messages: Messages) {
 
+  def removeIndex: Option[AnswerRow] = userAnswers.get(RemoveIndexPage) map {
+    x =>
+      AnswerRow(
+        "removeIndex.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.RemoveIndexController.onPageLoad(CheckMode, draftId).url
+      )
+  }
+
   def trustDetails: Option[Seq[AnswerSection]] = {
     val questions = Seq(
       trustName,

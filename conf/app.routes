@@ -432,3 +432,8 @@ POST       /:draftId/asset/:index/change-shares-on-stock-exchange               
 
 GET       /:draftId/asset/:index/check-share-answers                           controllers.shares.ShareAnswerController.onPageLoad(index : Int, draftId : String)
 POST      /:draftId/asset/:index/check-share-answers                           controllers.shares.ShareAnswerController.onSubmit(index : Int, draftId : String)
+
+GET        /:draftId/removeIndex                        controllers.RemoveIndexController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/removeIndex                        controllers.RemoveIndexController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/changeRemoveIndex                  controllers.RemoveIndexController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/changeRemoveIndex                  controllers.RemoveIndexController.onSubmit(mode: Mode = CheckMode, draftId: String)
