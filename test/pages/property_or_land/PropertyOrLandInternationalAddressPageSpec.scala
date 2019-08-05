@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package pages
+package pages.property_or_land
 
 import models.InternationalAddress
 import pages.behaviours.PageBehaviours

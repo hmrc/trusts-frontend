@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package views
+package views.property_or_land
 
 import controllers.routes
 import forms.InternationalAddressFormProvider
@@ -24,7 +24,7 @@ import play.twirl.api.HtmlFormat
 import utils.InputOption
 import utils.countryOptions.CountryOptionsNonUK
 import views.behaviours.QuestionViewBehaviours
-import views.html.PropertyOrLandInternationalAddressView
+import views.html.property_or_land.PropertyOrLandInternationalAddressView
 
 class PropertyOrLandInternationalAddressViewSpec extends QuestionViewBehaviours[InternationalAddress] {
 
@@ -52,7 +52,7 @@ class PropertyOrLandInternationalAddressViewSpec extends QuestionViewBehaviours[
       form,
       applyView,
       messageKeyPrefix,
-      routes.PropertyOrLandInternationalAddressController.onSubmit(NormalMode, index, fakeDraftId).url,
+      controllers.property_or_land.routes.PropertyOrLandInternationalAddressController.onSubmit(NormalMode, index, fakeDraftId).url,
       Seq(("line1",None), ("line2",None), ("line3", None), ("line4", None), ("country", None)),
       entityName
     )

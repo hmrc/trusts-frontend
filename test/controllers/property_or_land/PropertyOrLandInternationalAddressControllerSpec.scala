@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.property_or_land
 
 import base.SpecBase
 import forms.InternationalAddressFormProvider
 import models.{InternationalAddress, NormalMode}
 import navigation.{FakeNavigator, Navigator}
-import pages.PropertyOrLandInternationalAddressPage
+import pages.property_or_land.PropertyOrLandInternationalAddressPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.PropertyOrLandInternationalAddressView
 import utils._
 import utils.countryOptions.CountryOptionsNonUK
+import views.html.property_or_land.PropertyOrLandInternationalAddressView
 
 class PropertyOrLandInternationalAddressControllerSpec extends SpecBase {
 
@@ -37,7 +37,7 @@ class PropertyOrLandInternationalAddressControllerSpec extends SpecBase {
   val form = formProvider()
   val index: Int = 0
 
-  lazy val propertyOrLandInternationalAddressRoute = routes.PropertyOrLandInternationalAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
+  lazy val propertyOrLandInternationalAddressRoute = controllers.property_or_land.routes.PropertyOrLandInternationalAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "PropertyOrLandInternationalAddress Controller" must {
 
@@ -137,7 +137,7 @@ class PropertyOrLandInternationalAddressControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -154,7 +154,7 @@ class PropertyOrLandInternationalAddressControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
