@@ -17,6 +17,7 @@
 package controllers.property_or_land
 
 import controllers.actions._
+import controllers.filters.IndexActionFilterProvider
 import forms.property_or_land.TrustOwnAllThePropertyOrLandFormProvider
 import javax.inject.Inject
 import models.Mode
@@ -38,6 +39,7 @@ class TrustOwnAllThePropertyOrLandController @Inject()(
                                          identify: IdentifierAction,
                                          getData: DraftIdRetrievalActionProvider,
                                          requireData: DataRequiredAction,
+                                         validateIndex: IndexActionFilterProvider,
                                          formProvider: TrustOwnAllThePropertyOrLandFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: TrustOwnAllThePropertyOrLandView
@@ -45,7 +47,13 @@ class TrustOwnAllThePropertyOrLandController @Inject()(
 
   val form: Form[Boolean] = formProvider()
 
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
+  private def actions(index: Int, draftId: String) =
+    identify andThen
+      getData(draftId) andThen
+      requireData andThen
+      validateIndex(index, sections.Assets)
+
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(TrustOwnAllThePropertyOrLandPage) match {
@@ -53,15 +61,15 @@ class TrustOwnAllThePropertyOrLandController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId))
+      Ok(view(preparedForm, mode, index, draftId))
   }
 
-  def onSubmit(mode: Mode, draftId : String) = (identify andThen getData(draftId) andThen requireData).async {
+  def onSubmit(mode: Mode, index: Int, draftId : String) = actions(index, draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId))),
+          Future.successful(BadRequest(view(formWithErrors, mode, index, draftId))),
 
         value => {
           for {

@@ -30,17 +30,19 @@ class TrustOwnAllThePropertyOrLandViewSpec extends YesNoViewBehaviours {
 
   val form = new TrustOwnAllThePropertyOrLandFormProvider()()
 
+  val index: Int = 0
+
   "TrustOwnAllThePropertyOrLand view" must {
 
     val view = viewFor[TrustOwnAllThePropertyOrLandView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
+      view.apply(form, NormalMode, index, fakeDraftId)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.TrustOwnAllThePropertyOrLandController.onSubmit(NormalMode, fakeDraftId).url)
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.TrustOwnAllThePropertyOrLandController.onSubmit(NormalMode, index, fakeDraftId).url)
   }
 }

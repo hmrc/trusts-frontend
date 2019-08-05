@@ -34,7 +34,9 @@ class TrustOwnAllThePropertyOrLandControllerSpec extends SpecBase {
   val formProvider = new TrustOwnAllThePropertyOrLandFormProvider()
   val form = formProvider()
 
-  lazy val trustOwnAllThePropertyOrLandRoute = routes.TrustOwnAllThePropertyOrLandController.onPageLoad(NormalMode, fakeDraftId).url
+  val index: Int = 0
+
+  lazy val trustOwnAllThePropertyOrLandRoute = routes.TrustOwnAllThePropertyOrLandController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "TrustOwnAllThePropertyOrLand Controller" must {
 
@@ -51,7 +53,7 @@ class TrustOwnAllThePropertyOrLandControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form, NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -71,7 +73,7 @@ class TrustOwnAllThePropertyOrLandControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -113,7 +115,7 @@ class TrustOwnAllThePropertyOrLandControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
