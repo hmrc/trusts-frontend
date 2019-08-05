@@ -19,14 +19,13 @@ package forms
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
 
-class ClassBeneficiaryDescriptionFormProviderSpec extends StringFieldBehaviours {
+class PropertyOrLandDescriptionFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "classBeneficiaryDescription.error.required"
-  val lengthKey = "classBeneficiaryDescription.error.length"
-  val invalidKey = "classBeneficiaryDescription.error.invalid"
+  val requiredKey = "propertyOrLandDescription.error.required"
+  val lengthKey = "propertyOrLandDescription.error.length"
   val maxLength = 56
 
-  val form = new ClassBeneficiaryDescriptionFormProvider()()
+  val form = new PropertyOrLandDescriptionFormProvider()()
 
   ".value" must {
 
@@ -49,20 +48,6 @@ class ClassBeneficiaryDescriptionFormProviderSpec extends StringFieldBehaviours 
       form,
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
-    )
-
-    behave like nonEmptyField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
-    )
-
-    behave like fieldWithRegexpWithGenerator(
-      form,
-      fieldName,
-      Validation.descriptionRegex,
-      generator = stringsWithMaxLength(maxLength),
-      error = FormError(fieldName, invalidKey, Seq(Validation.descriptionRegex))
     )
   }
 }

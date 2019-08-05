@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryPropertyOrLandDescriptionPage: Arbitrary[PropertyOrLandDescriptionPage] =
+    Arbitrary(PropertyOrLandDescriptionPage(0))
+
   implicit lazy val arbitrarySharesOnStockExchangePage: Arbitrary[SharesOnStockExchangePage.type] =
     Arbitrary(SharesOnStockExchangePage)
 

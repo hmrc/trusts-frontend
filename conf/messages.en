@@ -898,3 +898,10 @@ sharesOnStockExchange.title = sharesOnStockExchange
 sharesOnStockExchange.heading = sharesOnStockExchange
 sharesOnStockExchange.checkYourAnswersLabel = sharesOnStockExchange
 sharesOnStockExchange.error.required = Select yes if sharesOnStockExchange
+
+propertyOrLandDescription.title = What is the description of the property or land?
+propertyOrLandDescription.heading = What is the description of the property or land?
+propertyOrLandDescription.checkYourAnswersLabel = propertyOrLandDescription
+propertyOrLandDescription.hint = This must be 56 characters or less
+propertyOrLandDescription.error.required = Enter a description of the property or land
+propertyOrLandDescription.error.length = The description of the property or land must be 56 characters or less

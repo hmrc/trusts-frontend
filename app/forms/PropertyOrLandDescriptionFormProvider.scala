@@ -21,19 +21,19 @@ import javax.inject.Inject
 import forms.mappings.Mappings
 import play.api.data.Form
 
-class ClassBeneficiaryDescriptionFormProvider @Inject() extends Mappings {
-  val maxLengthClassOfBeneficiary = 56
+class PropertyOrLandDescriptionFormProvider @Inject() extends Mappings {
+
+  val propertyOrLandDescriptionMaxLength = 56
 
   def apply(): Form[String] =
-  Form(
-    "value" -> text("classBeneficiaryDescription.error.required")
-      .verifying(
-        firstError(
-          isNotEmpty("value", "classBeneficiaryDescription.error.required"),
-          maxLength(maxLengthClassOfBeneficiary, "classBeneficiaryDescription.error.length"),
-          regexp(Validation.descriptionRegex, "classBeneficiaryDescription.error.invalid")
-        ))
-  )
-
-
+    Form(
+      "value" -> text("propertyOrLandDescription.error.required")
+        .verifying(
+          firstError(
+            isNotEmpty("value", "propertyOrLandDescription.error.required"),
+            maxLength(propertyOrLandDescriptionMaxLength, "propertyOrLandDescription.error.length"),
+            regexp(Validation.descriptionRegex, "propertyOrLandDescription.error.invalid")
+          )
+        )
+    )
 }
