@@ -14,12 +14,19 @@
  * limitations under the License.
  */
 
-package models
+package pages
 
-import play.api.libs.json._
+import models.InternationalAddress
+import pages.behaviours.PageBehaviours
 
-case class PropertyOrLandInternationalAddressYesNo (field1: String, field2: String)
+class PropertyOrLandInternationalAddressPageSpec extends PageBehaviours {
 
-object PropertyOrLandInternationalAddressYesNo {
-  implicit val format = Json.format[PropertyOrLandInternationalAddressYesNo]
+  "PropertyOrLandInternationalAddressPage" must {
+
+    beRetrievable[InternationalAddress](PropertyOrLandInternationalAddressPage(0))
+
+    beSettable[InternationalAddress](PropertyOrLandInternationalAddressPage(0))
+
+    beRemovable[InternationalAddress](PropertyOrLandInternationalAddressPage(0))
+  }
 }

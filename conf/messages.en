@@ -939,12 +939,6 @@ shareCompanyName.error.invalid = Share company’s name must only include letter
 shareAnswers.title = Check share details
 shareAnswers.heading = Check share details
 
-propertyOrLandInternationalAddressYesNo.title = propertyOrLandInternationalAddressYesNo
-propertyOrLandInternationalAddressYesNo.heading = propertyOrLandInternationalAddressYesNo
-propertyOrLandInternationalAddressYesNo.field1 = Field 1
-propertyOrLandInternationalAddressYesNo.field2 = Field 2
-propertyOrLandInternationalAddressYesNo.checkYourAnswersLabel = propertyOrLandInternationalAddressYesNo
-propertyOrLandInternationalAddressYesNo.error.field1.required = Enter field1
-propertyOrLandInternationalAddressYesNo.error.field2.required = Enter field2
-propertyOrLandInternationalAddressYesNo.error.field1.length = field1 must be 100 characters or less
-propertyOrLandInternationalAddressYesNo.error.field2.length = field2 must be 100 characters or less
+propertyOrLandInternationalAddress.title = What is the property or land’s address?
+propertyOrLandInternationalAddress.heading = What is the property or land’s address?
+propertyOrLandInternationalAddress.checkYourAnswersLabel = What is the property or land’s address?

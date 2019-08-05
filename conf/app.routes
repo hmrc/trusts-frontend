@@ -433,7 +433,7 @@ POST       /:draftId/asset/:index/change-shares-on-stock-exchange               
 GET       /:draftId/asset/:index/check-share-answers                           controllers.shares.ShareAnswerController.onPageLoad(index : Int, draftId : String)
 POST      /:draftId/asset/:index/check-share-answers                           controllers.shares.ShareAnswerController.onSubmit(index : Int, draftId : String)
 
-GET        /:draftId/propertyOrLandInternationalAddressYesNo                        controllers.PropertyOrLandInternationalAddressYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/propertyOrLandInternationalAddressYesNo                        controllers.PropertyOrLandInternationalAddressYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/changePropertyOrLandInternationalAddressYesNo                  controllers.PropertyOrLandInternationalAddressYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/changePropertyOrLandInternationalAddressYesNo                  controllers.PropertyOrLandInternationalAddressYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
+GET        /:draftId/asset/:index/property-or-land/international-address                        controllers.PropertyOrLandInternationalAddressController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId/asset/:index/property-or-land/international-address                        controllers.PropertyOrLandInternationalAddressController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/asset/:index/change-property-or-land/international-address                 controllers.PropertyOrLandInternationalAddressController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/asset/:index/change-property-or-land/international-address                 controllers.PropertyOrLandInternationalAddressController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)

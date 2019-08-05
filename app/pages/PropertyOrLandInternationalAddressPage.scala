@@ -16,12 +16,13 @@
 
 package pages
 
-import models.PropertyOrLandInternationalAddressYesNo
+import models.InternationalAddress
 import play.api.libs.json.JsPath
+import sections.Assets
 
-case object PropertyOrLandInternationalAddressYesNoPage extends QuestionPage[PropertyOrLandInternationalAddressYesNo] {
+final case class PropertyOrLandInternationalAddressPage(index: Int) extends QuestionPage[InternationalAddress] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ Assets \ index \ toString
 
-  override def toString: String = "propertyOrLandInternationalAddressYesNo"
+  override def toString: String = "propertyOrLandInternationalAddress"
 }

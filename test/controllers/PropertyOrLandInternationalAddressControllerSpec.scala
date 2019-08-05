@@ -17,72 +17,69 @@
 package controllers
 
 import base.SpecBase
-import forms.PropertyOrLandInternationalAddressYesNoFormProvider
-import models.{NormalMode, PropertyOrLandInternationalAddressYesNo, UserAnswers}
+import forms.InternationalAddressFormProvider
+import models.{InternationalAddress, NormalMode}
 import navigation.{FakeNavigator, Navigator}
-import pages.PropertyOrLandInternationalAddressYesNoPage
+import pages.PropertyOrLandInternationalAddressPage
 import play.api.inject.bind
-import play.api.libs.json.Json
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.PropertyOrLandInternationalAddressYesNoView
+import views.html.PropertyOrLandInternationalAddressView
 import utils._
+import utils.countryOptions.CountryOptionsNonUK
 
-class PropertyOrLandInternationalAddressYesNoControllerSpec extends SpecBase {
+class PropertyOrLandInternationalAddressControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new PropertyOrLandInternationalAddressYesNoFormProvider()
+  val formProvider = new InternationalAddressFormProvider()
   val form = formProvider()
+  val index: Int = 0
 
-  lazy val propertyOrLandInternationalAddressYesNoRoute = routes.PropertyOrLandInternationalAddressYesNoController.onPageLoad(NormalMode, fakeDraftId).url
+  lazy val propertyOrLandInternationalAddressRoute = routes.PropertyOrLandInternationalAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
 
-  val userAnswers = UserAnswers(
-    draftId = userAnswersId,
-    data = Json.obj(
-      PropertyOrLandInternationalAddressYesNoPage.toString -> Json.obj(
-        "field1" -> "value 1",
-        "field2" -> "value 2"
-      )
-    ),
-    internalAuthId = TestUserAnswers.userInternalId
-  )
-
-  "PropertyOrLandInternationalAddressYesNo Controller" must {
+  "PropertyOrLandInternationalAddress Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, propertyOrLandInternationalAddressYesNoRoute)
+      val request = FakeRequest(GET, propertyOrLandInternationalAddressRoute)
 
-      val view = application.injector.instanceOf[PropertyOrLandInternationalAddressYesNoView]
+      val view = application.injector.instanceOf[PropertyOrLandInternationalAddressView]
 
       val result = route(application, request).value
+
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId)(request, messages).toString
+        view(form, countryOptions, NormalMode, fakeDraftId, index)(request, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
+      val userAnswers = emptyUserAnswers
+        .set(PropertyOrLandInternationalAddressPage(index), InternationalAddress("line 1", "line 2", Some("line 3"), Some("line 4"),"country")).success.value
+
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, propertyOrLandInternationalAddressYesNoRoute)
+      val request = FakeRequest(GET, propertyOrLandInternationalAddressRoute)
 
-      val view = application.injector.instanceOf[PropertyOrLandInternationalAddressYesNoView]
+      val view = application.injector.instanceOf[PropertyOrLandInternationalAddressView]
 
       val result = route(application, request).value
+
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(PropertyOrLandInternationalAddressYesNo("value 1", "value 2")), NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill(InternationalAddress("line 1", "line 2", Some("line 3"), Some("line 4"),"country")), countryOptions, NormalMode,fakeDraftId, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -95,8 +92,8 @@ class PropertyOrLandInternationalAddressYesNoControllerSpec extends SpecBase {
           .build()
 
       val request =
-        FakeRequest(POST, propertyOrLandInternationalAddressYesNoRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+        FakeRequest(POST, propertyOrLandInternationalAddressRoute)
+          .withFormUrlEncodedBody(("line1", "value 1"), ("line2", "value 2"), ("country", "IN"))
 
       val result = route(application, request).value
 
@@ -112,19 +109,21 @@ class PropertyOrLandInternationalAddressYesNoControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, propertyOrLandInternationalAddressYesNoRoute)
+        FakeRequest(POST, propertyOrLandInternationalAddressRoute)
           .withFormUrlEncodedBody(("value", "invalid value"))
 
       val boundForm = form.bind(Map("value" -> "invalid value"))
 
-      val view = application.injector.instanceOf[PropertyOrLandInternationalAddressYesNoView]
+      val view = application.injector.instanceOf[PropertyOrLandInternationalAddressView]
 
       val result = route(application, request).value
+
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, countryOptions, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -133,7 +132,7 @@ class PropertyOrLandInternationalAddressYesNoControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, propertyOrLandInternationalAddressYesNoRoute)
+      val request = FakeRequest(GET, propertyOrLandInternationalAddressRoute)
 
       val result = route(application, request).value
 
@@ -148,8 +147,8 @@ class PropertyOrLandInternationalAddressYesNoControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, propertyOrLandInternationalAddressYesNoRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+        FakeRequest(POST, propertyOrLandInternationalAddressRoute)
+          .withFormUrlEncodedBody(("line 1", "value 1"), ("line 2", "value 2"))
 
       val result = route(application, request).value
 

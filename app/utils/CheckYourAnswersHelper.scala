@@ -33,15 +33,6 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers, draftId : String, canEdit: Boolean = true)(implicit messages: Messages) {
 
-  def propertyOrLandInternationalAddressYesNo: Option[AnswerRow] = userAnswers.get(PropertyOrLandInternationalAddressYesNoPage) map {
-    x =>
-      AnswerRow(
-        "propertyOrLandInternationalAddressYesNo.checkYourAnswersLabel",
-        HtmlFormat.escape(s"${x.field1} ${x.field2}"),
-        routes.PropertyOrLandInternationalAddressYesNoController.onPageLoad(CheckMode, draftId).url
-      )
-  }
-
   def trustDetails: Option[Seq[AnswerSection]] = {
     val questions = Seq(
       trustName,
@@ -225,6 +216,16 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
         }
     }
 
+  }
+
+  def propertyOrLandInternationalAddress(index: Int): Option[AnswerRow] = userAnswers.get(PropertyOrLandInternationalAddressPage(index)) map {
+    x =>
+      AnswerRow(
+        "site.address.international.checkYourAnswersLabel",
+        internationalAddress(x, countryOptions),
+        routes.PropertyOrLandInternationalAddressController.onPageLoad(CheckMode, index, draftId).url,
+        canEdit = canEdit
+      )
   }
 
   def agentInternationalAddress: Option[AnswerRow] = userAnswers.get(AgentInternationalAddressPage) map {
