@@ -943,3 +943,10 @@ trustOwnAllThePropertyOrLand.title = Does the trust own all of the property or l
 trustOwnAllThePropertyOrLand.heading = Does the trust own all of the property or land?
 trustOwnAllThePropertyOrLand.checkYourAnswersLabel = Does the trust own all of the property or land?
 trustOwnAllThePropertyOrLand.error.required = Select yes if Select yes if the trust owns all of the property or land
+
+propertyOrLandDescription.title = What is the description of the property or land?
+propertyOrLandDescription.heading = What is the description of the property or land?
+propertyOrLandDescription.checkYourAnswersLabel = propertyOrLandDescription
+propertyOrLandDescription.hint = This must be 56 characters or less
+propertyOrLandDescription.error.required = Enter a description of the property or land
+propertyOrLandDescription.error.length = The description of the property or land must be 56 characters or less

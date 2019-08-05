@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-package pages
+package pages.property_or_land
 
-import pages.behaviours.PageBehaviours
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-class TrustOwnAllThePropertyOrLandPageSpec extends PageBehaviours {
+case object TrustOwnAllThePropertyOrLandPage extends QuestionPage[Boolean] {
 
-  "TrustOwnAllThePropertyOrLandPage" must {
+  override def path: JsPath = JsPath \ toString
 
-    beRetrievable[Boolean](TrustOwnAllThePropertyOrLandPage)
-
-    beSettable[Boolean](TrustOwnAllThePropertyOrLandPage)
-
-    beRemovable[Boolean](TrustOwnAllThePropertyOrLandPage)
-  }
+  override def toString: String = "trustOwnAllThePropertyOrLand"
 }

@@ -23,6 +23,7 @@ import javax.inject.Inject
 import mapping.reads._
 import models.{CheckMode, InternationalAddress, UKAddress, UserAnswers}
 import pages._
+import pages.property_or_land._
 import pages.shares._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
@@ -31,14 +32,23 @@ import utils.CheckYourAnswersHelper._
 import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 
-class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers, draftId : String, canEdit: Boolean = true)(implicit messages: Messages) {
+class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers, draftId: String, canEdit: Boolean = true)(implicit messages: Messages) {
+
+  def propertyOrLandDescription(index: Int): Option[AnswerRow] = userAnswers.get(PropertyOrLandDescriptionPage(index)) map {
+    x =>
+      AnswerRow(
+        "propertyOrLandDescription.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        controllers.property_or_land.routes.PropertyOrLandDescriptionController.onPageLoad(CheckMode, index, draftId).url
+      )
+  }
 
   def trustOwnAllThePropertyOrLand: Option[AnswerRow] = userAnswers.get(TrustOwnAllThePropertyOrLandPage) map {
     x =>
       AnswerRow(
         "trustOwnAllThePropertyOrLand.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.TrustOwnAllThePropertyOrLandController.onPageLoad(CheckMode, draftId).url
+        controllers.property_or_land.routes.TrustOwnAllThePropertyOrLandController.onPageLoad(CheckMode, draftId).url
       )
   }
 

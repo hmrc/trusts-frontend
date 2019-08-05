@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package forms
+package pages.property_or_land
 
-import javax.inject.Inject
+import pages.behaviours.PageBehaviours
 
-import forms.mappings.Mappings
-import play.api.data.Form
 
-class TrustOwnAllThePropertyOrLandFormProvider @Inject() extends Mappings {
+class PropertyOrLandDescriptionPageSpec extends PageBehaviours {
 
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("trustOwnAllThePropertyOrLand.error.required")
-    )
+  "PropertyOrLandDescriptionPage" must {
+
+    beRetrievable[String](PropertyOrLandDescriptionPage(0))
+
+    beSettable[String](PropertyOrLandDescriptionPage(0))
+
+    beRemovable[String](PropertyOrLandDescriptionPage(0))
+  }
 }

@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package views
+package views.property_or_land
 
-import controllers.routes
-import forms.TrustOwnAllThePropertyOrLandFormProvider
+import controllers.property_or_land.routes
+import forms.property_or_land.TrustOwnAllThePropertyOrLandFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.TrustOwnAllThePropertyOrLandView
+import views.html.property_or_land.TrustOwnAllThePropertyOrLandView
 
 class TrustOwnAllThePropertyOrLandViewSpec extends YesNoViewBehaviours {
 

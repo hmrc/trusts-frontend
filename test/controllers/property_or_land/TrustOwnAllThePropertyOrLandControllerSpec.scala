@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.property_or_land
 
 import base.SpecBase
-import forms.TrustOwnAllThePropertyOrLandFormProvider
-import models.{NormalMode, UserAnswers}
+import forms.property_or_land.TrustOwnAllThePropertyOrLandFormProvider
+import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
-import pages.TrustOwnAllThePropertyOrLandPage
+import pages.property_or_land.TrustOwnAllThePropertyOrLandPage
 import play.api.inject.bind
-import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.TrustOwnAllThePropertyOrLandView
+import views.html.property_or_land.TrustOwnAllThePropertyOrLandView
 
 class TrustOwnAllThePropertyOrLandControllerSpec extends SpecBase {
 
@@ -129,7 +128,7 @@ class TrustOwnAllThePropertyOrLandControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -146,7 +145,7 @@ class TrustOwnAllThePropertyOrLandControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
