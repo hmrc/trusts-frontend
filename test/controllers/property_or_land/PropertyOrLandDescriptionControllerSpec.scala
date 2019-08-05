@@ -14,21 +14,22 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.property_or_land
 
 import base.SpecBase
+import controllers.IndexValidation
 import forms.property_or_land.PropertyOrLandDescriptionFormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.property_or_land.PropertyOrLandDescriptionPage
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
-import play.api.mvc.Call
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.{route, _}
 import views.html.PropertyOrLandDescriptionView
 
-class PropertyOrLandDescriptionControllerSpec extends SpecBase {
+class PropertyOrLandDescriptionControllerSpec extends SpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -129,7 +130,7 @@ class PropertyOrLandDescriptionControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -146,9 +147,42 @@ class PropertyOrLandDescriptionControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
+  }
+
+  "for a GET" must {
+
+    def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
+      val route = controllers.property_or_land.routes.PropertyOrLandDescriptionController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+      FakeRequest(GET, route)
+    }
+
+    validateIndex(
+      arbitrary[String],
+      PropertyOrLandDescriptionPage.apply,
+      getForIndex
+    )
+
+  }
+
+  "for a POST" must {
+    def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+
+      val route =
+        controllers.property_or_land.routes.PropertyOrLandDescriptionController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+      FakeRequest(POST, route)
+        .withFormUrlEncodedBody(("value", "true"))
+    }
+
+    validateIndex(
+      arbitrary[String],
+      PropertyOrLandDescriptionPage.apply,
+      postForIndex
+    )
   }
 }

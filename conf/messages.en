@@ -858,12 +858,6 @@ answerPage.section.assets.heading = Assets
 answerPage.section.moneyAsset.subheading = Money
 answerPage.section.shareAsset.subheading = Share
 answerPage.agentClientRef = Client reference number: {0}
-shareClass.title = What class are the shares
-shareClass.heading = What class are the shares
-shareClass.class = Ordinary
-shareClass.class = Preference
-shareClass.checkYourAnswersLabel = What class are the shares
-shareClass.error.required = Select shareClass
 
 sharePortfolioName.title = What is the share portfolio’s name?
 sharePortfolioName.heading = What is the share portfolio’s name?

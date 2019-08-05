@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package pages
+package pages.property_or_land
 
 import pages.behaviours.PageBehaviours
-import pages.property_or_land.PropertyOrLandDescriptionPage
 
 
 class PropertyOrLandDescriptionPageSpec extends PageBehaviours {

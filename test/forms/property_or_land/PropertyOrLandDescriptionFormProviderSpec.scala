@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package forms
+package forms.property_or_land
 
+import forms.Validation
 import forms.behaviours.StringFieldBehaviours
-import forms.property_or_land.PropertyOrLandDescriptionFormProvider
 import play.api.data.FormError
 
 class PropertyOrLandDescriptionFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "propertyOrLandDescription.error.required"
   val lengthKey = "propertyOrLandDescription.error.length"
+  val invalidFormatKey = "propertyOrLandDescription.error.invalid"
+
   val maxLength = 56
 
   val form = new PropertyOrLandDescriptionFormProvider()()
@@ -49,6 +51,20 @@ class PropertyOrLandDescriptionFormProviderSpec extends StringFieldBehaviours {
       form,
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
+    )
+
+    behave like nonEmptyField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
+    )
+
+    behave like fieldWithRegexpWithGenerator(
+      form,
+      fieldName,
+      Validation.descriptionRegex,
+      generator = stringsWithMaxLength(maxLength),
+      error = FormError(fieldName, invalidFormatKey, Seq(Validation.descriptionRegex))
     )
   }
 }

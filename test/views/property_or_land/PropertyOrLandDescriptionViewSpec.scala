@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package views
+package views.property_or_land
 
-import controllers.routes
 import forms.property_or_land.PropertyOrLandDescriptionFormProvider
 import models.NormalMode
 import play.api.data.Form
