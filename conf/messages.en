@@ -938,3 +938,8 @@ shareCompanyName.error.invalid = Share company’s name must only include letter
 
 shareAnswers.title = Check share details
 shareAnswers.heading = Check share details
+
+propertyOrLandAddress.title = propertyOrLandAddress
+propertyOrLandAddress.heading = propertyOrLandAddress
+propertyOrLandAddress.checkYourAnswersLabel = propertyOrLandAddress
+propertyOrLandAddress.error.required = Select yes if propertyOrLandAddress
