@@ -33,6 +33,15 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers, draftId : String, canEdit: Boolean = true)(implicit messages: Messages) {
 
+  def trustOwnAllThePropertyOrLand: Option[AnswerRow] = userAnswers.get(TrustOwnAllThePropertyOrLandPage) map {
+    x =>
+      AnswerRow(
+        "trustOwnAllThePropertyOrLand.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.TrustOwnAllThePropertyOrLandController.onPageLoad(CheckMode, draftId).url
+      )
+  }
+
   def trustDetails: Option[Seq[AnswerSection]] = {
     val questions = Seq(
       trustName,
