@@ -22,6 +22,7 @@ import models.{FullName, NormalMode}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages.IndividualBeneficiaryNamePage
+import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RemoveIndexView
@@ -33,11 +34,9 @@ class RemoveIndividualBeneficiaryControllerSpec extends SpecBase with PropertyCh
   val formProvider = new RemoveIndexFormProvider()
   val form = formProvider(prefix)
 
-  val formRoute = routes.RemoveIndividualBeneficiaryController.onSubmit(NormalMode, 0, fakeDraftId)
+  val formRoute = Call("POST", "/id/beneficiaries/individual/0/remove")
 
   val index = 0
-
-  lazy val removeIndexRoute = routes.RemoveIndividualBeneficiaryController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "RemoveIndividualBeneficiary Controller" must {
 
@@ -48,7 +47,7 @@ class RemoveIndividualBeneficiaryControllerSpec extends SpecBase with PropertyCh
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, removeIndexRoute)
+      val request = FakeRequest(GET, routes.RemoveIndividualBeneficiaryController.onPageLoad(NormalMode, index, fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -74,7 +73,7 @@ class RemoveIndividualBeneficiaryControllerSpec extends SpecBase with PropertyCh
             .build()
 
         val request =
-          FakeRequest(POST, removeIndexRoute)
+          FakeRequest(POST, routes.RemoveIndividualBeneficiaryController.onSubmit(NormalMode, index, fakeDraftId).url)
             .withFormUrlEncodedBody(("value", value.toString))
 
         val result = route(application, request).value
@@ -96,7 +95,7 @@ class RemoveIndividualBeneficiaryControllerSpec extends SpecBase with PropertyCh
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
-        FakeRequest(POST, removeIndexRoute)
+        FakeRequest(POST, routes.RemoveIndividualBeneficiaryController.onSubmit(NormalMode, index, fakeDraftId).url)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
@@ -108,7 +107,7 @@ class RemoveIndividualBeneficiaryControllerSpec extends SpecBase with PropertyCh
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(prefix, form, NormalMode, index, fakeDraftId, "First Last", formRoute)(fakeRequest, messages).toString
+        view(prefix, boundForm, NormalMode, index, fakeDraftId, "First Last", formRoute)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -117,7 +116,7 @@ class RemoveIndividualBeneficiaryControllerSpec extends SpecBase with PropertyCh
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, removeIndexRoute)
+      val request = FakeRequest(GET, routes.RemoveIndividualBeneficiaryController.onPageLoad(NormalMode, index, fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -133,7 +132,7 @@ class RemoveIndividualBeneficiaryControllerSpec extends SpecBase with PropertyCh
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, removeIndexRoute)
+        FakeRequest(POST, routes.RemoveIndividualBeneficiaryController.onSubmit(NormalMode, index, fakeDraftId).url)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
