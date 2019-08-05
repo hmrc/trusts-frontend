@@ -23,8 +23,9 @@ import models.Status.Completed
 import models.{AddABeneficiary, AddATrustee, FullName, IndividualOrBusiness, Status, UKAddress, WhatKindOfAsset}
 import pages._
 import pages.entitystatus._
+import pages.shares._
 import utils.countryOptions.CountryOptions
-import utils.{CheckYourAnswersHelper, DateFormat, TestUserAnswers}
+import utils.{DateFormat, PrintUserAnswersHelper, TestUserAnswers}
 import views.behaviours.ViewBehaviours
 import views.html.SummaryAnswerPageView
 
@@ -89,6 +90,13 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
         .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
         .set(AssetMoneyValuePage(index), "100").success.value
         .set(AssetStatus(index), Completed).success.value
+        .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
+        .set(SharesInAPortfolioPage(1), true).success.value
+        .set(SharePortfolioNamePage(1), "Company").success.value
+        .set(SharePortfolioOnStockExchangePage(1), true).success.value
+        .set(SharePortfolioQuantityInTrustPage(1), "1234").success.value
+        .set(SharePortfolioValueInTrustPage(1), "4000").success.value
+        .set(AssetStatus(1), Completed).success.value
         .set(AddAssetsPage, NoComplete).success.value
 
         .set(RegistrationTRNPage, "XNTRN000000001").success.value
@@ -105,18 +113,10 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
 
     val countryOptions = injector.instanceOf[CountryOptions]
 
-    val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = false)
-    val trustDetails = checkYourAnswersHelper.trustDetails.getOrElse(Nil)
-    val trustees = checkYourAnswersHelper.trustees.getOrElse(Nil)
-    val settlors = checkYourAnswersHelper.settlors.getOrElse(Nil)
-    val individualBeneficiaries = checkYourAnswersHelper.individualBeneficiaries.getOrElse(Nil)
-    val individualBeneficiariesExist: Boolean = individualBeneficiaries.nonEmpty
-    val classOfBeneficiaries = checkYourAnswersHelper.classOfBeneficiaries(individualBeneficiariesExist).getOrElse(Nil)
-    val moneyAsset = checkYourAnswersHelper.moneyAsset.getOrElse(Nil)
-    val sections =  trustDetails ++ settlors ++ trustees ++ individualBeneficiaries ++ classOfBeneficiaries ++ moneyAsset
+    val sections = new PrintUserAnswersHelper(countryOptions).summary(fakeDraftId, userAnswers)
 
-    val applyOrganisationView = view.apply(sections, false, "")(fakeRequest, messages)
-    val applyAgentView = view.apply(sections, true, "agentClientReference")(fakeRequest, messages)
+    val applyOrganisationView = view.apply(sections, isAgent = false, "")(fakeRequest, messages)
+    val applyAgentView = view.apply(sections, isAgent = true, "agentClientReference")(fakeRequest, messages)
 
     behave like normalPage(applyOrganisationView, "summaryAnswerPage", "paragraph1", "paragraph2")
 
@@ -127,14 +127,13 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
       assertContainsText(agentDoc, messages("answerPage.agentClientRef", "agentClientReference"))
     }
 
-
     "assert correct number of headers and subheaders for Agent user" in {
       val wrapper = agentDoc.getElementById("wrapper")
       val headers = wrapper.getElementsByTag("h2")
       val subHeaders = wrapper.getElementsByTag("h3")
 
       headers.size mustBe 6
-      subHeaders.size mustBe 4
+      subHeaders.size mustBe 5
     }
 
     "assert correct number of headers and subheaders for Organisation user" in {
@@ -143,7 +142,7 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
       val subHeaders = wrapper.getElementsByTag("h3")
 
       headers.size mustBe 5
-      subHeaders.size mustBe 4
+      subHeaders.size mustBe 5
     }
 
     "assert question labels for Trusts" in {
@@ -202,6 +201,15 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
 
     "assert question labels for Money Assets" in {
       assertContainsQuestionAnswerPair(doc, messages("assetMoneyValue.checkYourAnswersLabel"), "£100")
+    }
+
+    "assert question labels for share assets" in {
+      assertContainsQuestionAnswerPair(doc, messages("sharePortfolioName.checkYourAnswersLabel"), "Company")
+      assertContainsQuestionAnswerPair(doc, messages("sharePortfolioOnStockExchange.checkYourAnswersLabel"), yes)
+      assertContainsQuestionAnswerPair(doc, messages("sharePortfolioQuantityInTrust.checkYourAnswersLabel"), "1234")
+      assertContainsQuestionAnswerPair(doc, messages("sharePortfolioValueInTrust.checkYourAnswersLabel"), "£4000")
+      assertContainsQuestionAnswerPair(doc, messages("sharesInAPortfolio.checkYourAnswersLabel"), yes)
+      assertContainsQuestionAnswerPair(doc, messages("sharesInAPortfolio.checkYourAnswersLabel"), yes)
     }
 
   }

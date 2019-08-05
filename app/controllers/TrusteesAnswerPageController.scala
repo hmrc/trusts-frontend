@@ -27,10 +27,11 @@ import pages.{IsThisLeadTrusteePage, TrusteesAnswerPage, TrusteesNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import repositories.SessionRepository
+import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
-import viewmodels.{AnswerSection, Trustees}
+import viewmodels.AnswerSection
 import views.html.TrusteesAnswerPageView
 
 import scala.concurrent.{ExecutionContext, Future}

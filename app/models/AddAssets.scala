@@ -27,7 +27,7 @@ object AddAssets extends Enumerable.Implicits {
   case object NoComplete extends WithName("no-complete") with AddAssets
 
   val values: List[AddAssets] = List(
-    YesNow,      YesLater,      NoComplete
+    YesNow, YesLater, NoComplete
   )
 
   val options: List[RadioOption] = values.map {

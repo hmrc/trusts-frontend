@@ -18,7 +18,7 @@ package pages
 
 import models.UserAnswers
 import play.api.libs.json.JsPath
-import viewmodels.Agent
+import sections.Agent
 
 import scala.util.Try
 

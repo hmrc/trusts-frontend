@@ -81,10 +81,14 @@ individualOrBusiness.business = Business
 
 entity.trustee = Trustee
 entities.no.name.added = No name added
+entities.no.value.added = No value added
+entities.no.description.added = No description added
 entities.lead = Lead
 entities.trustee = Trustee
 entities.trustee.individual = Trustee Individual
 entities.trustee.business = Trustee Business
+entities.beneficiary.individual = Individual Beneficiary
+entities.beneficiary.class = Class of beneficiaries
 
 createAgentServicesAccount.title = Create an agent services account
 createAgentServicesAccount.heading = Create an agent services account
@@ -514,6 +518,12 @@ whatKindOfAsset.error.required = Select the kind of asset you need to add
 
 addAssets.title = Add assets
 addAssets.heading = Add assets
+addAssets.singular.heading = You have added 1 asset
+addAssets.singular.title = You have added 1 asset
+
+addAssets.count.heading = You have added {0} assets
+addAssets.count.title = You have added {0} assets
+
 addAssets.additional-content = Do you want to add another asset?
 addAssets.add-them-now = Yes, I want to add them now
 addAssets.add-them-later = Yes, I want to add them later
@@ -846,6 +856,7 @@ answerPage.section.individualBeneficiary.subheading = Individual beneficiary
 answerPage.section.classOfBeneficiary.subheading = Class of beneficiary
 answerPage.section.assets.heading = Assets
 answerPage.section.moneyAsset.subheading = Money
+answerPage.section.shareAsset.subheading = Share
 answerPage.agentClientRef = Client reference number: {0}
 shareClass.title = What class are the shares
 shareClass.heading = What class are the shares
@@ -854,50 +865,85 @@ shareClass.class = Preference
 shareClass.checkYourAnswersLabel = What class are the shares
 shareClass.error.required = Select shareClass
 
-sharePortfolioName.title = sharePortfolioName
-sharePortfolioName.heading = sharePortfolioName
-sharePortfolioName.checkYourAnswersLabel = sharePortfolioName
-sharePortfolioName.error.required = Enter sharePortfolioName
-sharePortfolioName.error.length = SharePortfolioName must be 100 characters or less
+sharePortfolioName.title = What is the share portfolio’s name?
+sharePortfolioName.heading = What is the share portfolio’s name?
+sharePortfolioName.checkYourAnswersLabel = What is the share portfolio’s name?
+sharePortfolioName.error.required = Enter the share portfolio’s name
+sharePortfolioName.error.length = Share portfolio’s name cannot be more than 53 characters
+sharePortfolioName.error.invalid = Share portfolio’s name must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
-sharePortfolioOnStockExchange.title = sharePortfolioOnStockExchange
-sharePortfolioOnStockExchange.heading = sharePortfolioOnStockExchange
-sharePortfolioOnStockExchange.checkYourAnswersLabel = sharePortfolioOnStockExchange
-sharePortfolioOnStockExchange.error.required = Select yes if sharePortfolioOnStockExchange
+sharePortfolioOnStockExchange.title = Are the majority of the shares in the portfolio listed on a stock exchange?
+sharePortfolioOnStockExchange.heading = Are the majority of the shares in the portfolio listed on a stock exchange?
+sharePortfolioOnStockExchange.checkYourAnswersLabel = Are the majority of the shares in the portfolio listed on a stock exchange?
+sharePortfolioOnStockExchange.error.required = Select yes if the majority of the shares are listed on a stock exchange
+sharePortfolioOnStockExchange.hint = A quoted share is listed on a stock exchange
 
-sharePortfolioQuantityInTrust.title = sharePortfolioQuantityInTrust
-sharePortfolioQuantityInTrust.heading = sharePortfolioQuantityInTrust
-sharePortfolioQuantityInTrust.checkYourAnswersLabel = sharePortfolioQuantityInTrust
-sharePortfolioQuantityInTrust.error.required = Enter sharePortfolioQuantityInTrust
-sharePortfolioQuantityInTrust.error.length = SharePortfolioQuantityInTrust must be 100 characters or less
+sharePortfolioQuantityInTrust.title = How many individual shares are in the portfolio?
+sharePortfolioQuantityInTrust.heading = How many individual shares are in the portfolio?
+sharePortfolioQuantityInTrust.checkYourAnswersLabel = How many individual shares are in the portfolio?
+sharePortfolioQuantityInTrust.error.required = Enter the current number of shares in the portfolio
+sharePortfolioQuantityInTrust.error.length = Total amount of individual shares in the portfolio must be 12 numbers or less
+sharePortfolioQuantityInTrust.error.invalid = Total amount of individual shares in the portfolio must be a number
+sharePortfolioQuantityInTrust.hint = Add together the total number of shares across all share holdings. This can be an estimate.
+sharePortfolioQuantityInTrust.error.zero = Total amount of individual shares in the portfolio must be 1 or more
 
-sharePortfolioValueInTrust.title = sharePortfolioValueInTrust
-sharePortfolioValueInTrust.heading = sharePortfolioValueInTrust
-sharePortfolioValueInTrust.checkYourAnswersLabel = sharePortfolioValueInTrust
-sharePortfolioValueInTrust.error.required = Enter sharePortfolioValueInTrust
-sharePortfolioValueInTrust.error.length = SharePortfolioValueInTrust must be 100 characters or less
+sharePortfolioValueInTrust.title = What is the current value of the portfolio?
+sharePortfolioValueInTrust.heading = What is the current value of the portfolio?
+sharePortfolioValueInTrust.checkYourAnswersLabel = What is the current value of the portfolio?
+sharePortfolioValueInTrust.error.required = Enter the current value of the portfolio
+sharePortfolioValueInTrust.error.length = Total current value of the portfolio must be 12 numbers or less
+sharePortfolioValueInTrust.error.invalid = Total current value of the portfolio must be a number
+sharePortfolioValueInTrust.hint = Rounded down to the nearest pound. For example, 4000
+sharePortfolioValueInTrust.error.zero = Total current value of the portfolio must be 1 or more
 
-shareQuantityInTrust.title = shareQuantityInTrust
-shareQuantityInTrust.heading = shareQuantityInTrust
-shareQuantityInTrust.checkYourAnswersLabel = shareQuantityInTrust
-shareQuantityInTrust.error.required = Enter shareQuantityInTrust
-shareQuantityInTrust.error.length = ShareQuantityInTrust must be 12 characters or less
+sharesOnStockExchange.title = Are {0}’s shares listed on a stock exchange?
+sharesOnStockExchange.heading = Are {0}’s shares listed on a stock exchange?
+sharesOnStockExchange.checkYourAnswersLabel = Are {0}’s shares listed on a stock exchange?
+sharesOnStockExchange.error.required = Select yes if the shares are listed on a stock exchange
+sharesOnStockExchange.hint = A quoted share is listed on a stock exchange
 
-shareValueInTrust.title = shareValueInTrust
-shareValueInTrust.heading = shareValueInTrust
-shareValueInTrust.checkYourAnswersLabel = shareValueInTrust
-shareValueInTrust.error.required = Enter shareValueInTrust
-shareValueInTrust.error.length = ShareValueInTrust must be 12 characters or less
+shareClass.title = What class are the {0} shares?
+shareClass.heading = What class are the {0} shares?
+shareClass.ordinary = Ordinary
+shareClass.preference = Preference
+shareClass.deferred = Deferred
+shareClass.growth = Growth
+shareClass.other = Other
+shareClass.checkYourAnswersLabel = What class are the {0} shares?
+shareClass.error.required = Select the class of shares
 
-sharesInAPortfolio.title = sharesInAPortfolio
-sharesInAPortfolio.heading = sharesInAPortfolio
-sharesInAPortfolio.checkYourAnswersLabel = sharesInAPortfolio
-sharesInAPortfolio.error.required = Select yes if sharesInAPortfolio
+shareQuantityInTrust.title = How many {0} shares are in the trust?
+shareQuantityInTrust.heading = How many {0} shares are in the trust?
+shareQuantityInTrust.checkYourAnswersLabel = How many {0} shares are in the trust?
+shareQuantityInTrust.hint = Add together the total number of shares across all share holdings. This can be an estimate.
+shareQuantityInTrust.error.invalid = Total shares in the trust must be a number
+shareQuantityInTrust.error.length = Total shares in the trust must be 12 numbers or less
+shareQuantityInTrust.error.required = Enter the current number of shares in the trust
+shareQuantityInTrust.error.zero = Total shares in the trust must be 1 or more
 
-sharesOnStockExchange.title = sharesOnStockExchange
-sharesOnStockExchange.heading = sharesOnStockExchange
-sharesOnStockExchange.checkYourAnswersLabel = sharesOnStockExchange
-sharesOnStockExchange.error.required = Select yes if sharesOnStockExchange
+shareValueInTrust.title = What is the current value of {0} shares in the trust?
+shareValueInTrust.heading = What is the current value of {0} shares in the trust?
+shareValueInTrust.checkYourAnswersLabel = What is the current value of {0} shares in the trust?
+shareValueInTrust.hint = Rounded down to the nearest pound. For example, 4000
+shareValueInTrust.error.required = Enter the current value of the shares in the trust
+shareValueInTrust.error.length = Total value of shares in the trust must be 12 characters or less
+shareValueInTrust.error.invalid = Total value of shares in the trust must be a number
+shareValueInTrust.error.zero = Total value of shares in the trust must be 1 or more
+
+sharesInAPortfolio.title = Are the shares in a portfolio?
+sharesInAPortfolio.heading = Are the shares in a portfolio?
+sharesInAPortfolio.checkYourAnswersLabel = Are the shares in a portfolio?
+sharesInAPortfolio.error.required = Select yes if the shares are in a portfolio
+
+shareCompanyName.title = What is the share company’s name?
+shareCompanyName.heading = What is the share company’s name?
+shareCompanyName.checkYourAnswersLabel = What is the share company’s name?
+shareCompanyName.error.required = Enter the share company’s name
+shareCompanyName.error.length = Share company’s name must be 53 characters or less
+shareCompanyName.error.invalid = Share company’s name must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+
+shareAnswers.title = Check share details
+shareAnswers.heading = Check share details
 
 propertyOrLandDescription.title = What is the description of the property or land?
 propertyOrLandDescription.heading = What is the description of the property or land?

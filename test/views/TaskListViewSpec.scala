@@ -35,7 +35,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
   private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
   private val savedUntil : String = LocalDateTime.now.format(dateFormatter)
   private def sections(answers: UserAnswers) =
-    new RegistrationProgress(new TaskListNavigator()).sections(answers,fakeDraftId)
+    new RegistrationProgress(new TaskListNavigator()).items(answers,fakeDraftId)
 
   private def isTaskListComplete(answers: UserAnswers) =
     new RegistrationProgress(new TaskListNavigator()).isTaskListComplete(answers)

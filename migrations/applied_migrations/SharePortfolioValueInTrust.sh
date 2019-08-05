@@ -6,11 +6,11 @@ echo "Applying migration SharePortfolioValueInTrust"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /sharePortfolioValueInTrust                        controllers.SharePortfolioValueInTrustController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /sharePortfolioValueInTrust                        controllers.SharePortfolioValueInTrustController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /sharePortfolioValueInTrust                        controllers.shares.SharePortfolioValueInTrustController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /sharePortfolioValueInTrust                        controllers.shares.SharePortfolioValueInTrustController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeSharePortfolioValueInTrust                  controllers.SharePortfolioValueInTrustController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeSharePortfolioValueInTrust                  controllers.SharePortfolioValueInTrustController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeSharePortfolioValueInTrust                  controllers.shares.SharePortfolioValueInTrustController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeSharePortfolioValueInTrust                  controllers.shares.SharePortfolioValueInTrustController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

@@ -18,7 +18,7 @@ package pages
 
 import models.UKAddress
 import play.api.libs.json.JsPath
-import viewmodels.{Beneficiaries, IndividualBeneficiaries}
+import sections.{Beneficiaries, IndividualBeneficiaries}
 
 final case class IndividualBeneficiaryAddressUKPage(index: Int) extends QuestionPage[UKAddress] {
 

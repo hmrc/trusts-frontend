@@ -27,8 +27,10 @@
     <h3 class="heading-medium">@messages(answerSection.headingKey.get)</h3>
 }
 
-<ul role="list" class="govuk-check-your-answers cya-questions-long section">
-    @for(row <- answerSection.rows){
-        @components.answer_row(row)
-    }
-</ul>
+@if(answerSection.rows) {
+    <ul role="list" class="govuk-check-your-answers cya-questions-long section">
+        @for(row <- answerSection.rows){
+            @components.answer_row(row)
+        }
+    </ul>
+}

@@ -19,7 +19,7 @@ package pages
 import java.time.LocalDate
 
 import play.api.libs.json.JsPath
-import viewmodels.{DeceasedSettlor, Settlors}
+import sections.{DeceasedSettlor, Settlors}
 
 case object SettlorsDateOfBirthPage extends QuestionPage[LocalDate] {
 

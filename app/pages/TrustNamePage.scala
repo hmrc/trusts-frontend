@@ -17,7 +17,7 @@
 package pages
 
 import play.api.libs.json.JsPath
-import viewmodels.TrustDetails
+import sections.TrustDetails
 
 case object TrustNamePage extends QuestionPage[String] {
 

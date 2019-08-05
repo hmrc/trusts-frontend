@@ -23,6 +23,7 @@ import models.AddAssets.NoComplete
 import models.Status.{Completed, InProgress}
 import models.{AddABeneficiary, AddATrustee, FullName, Status, WhatKindOfAsset}
 import pages.entitystatus.{AssetStatus, ClassBeneficiaryStatus, DeceasedSettlorStatus, IndividualBeneficiaryStatus, TrustDetailsStatus, TrusteeStatus}
+import pages.shares.{SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, SharesInAPortfolioPage}
 
 class RegistrationProgressSpec extends SpecBase {
 
@@ -294,6 +295,7 @@ class RegistrationProgressSpec extends SpecBase {
 
         val userAnswers = emptyUserAnswers
             .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
+            .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
 
         registrationProgress.assetsStatus(userAnswers).value mustBe InProgress
       }
@@ -310,6 +312,13 @@ class RegistrationProgressSpec extends SpecBase {
           .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
           .set(AssetMoneyValuePage(0), "2000").success.value
           .set(AssetStatus(0), Completed).success.value
+          .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
+          .set(SharesInAPortfolioPage(1), true).success.value
+          .set(SharePortfolioNamePage(1), "Portfolio").success.value
+          .set(SharePortfolioQuantityInTrustPage(1), "30").success.value
+          .set(SharePortfolioValueInTrustPage(1), "999999999999").success.value
+          .set(SharePortfolioOnStockExchangePage(1), false).success.value
+          .set(AssetStatus(1), Completed).success.value
           .set(AddAssetsPage, NoComplete).success.value
 
         registrationProgress.assetsStatus(userAnswers).value mustBe Completed
@@ -343,6 +352,13 @@ class RegistrationProgressSpec extends SpecBase {
         .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
         .set(AssetMoneyValuePage(0), "2000").success.value
         .set(AssetStatus(0), Completed).success.value
+        .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
+        .set(SharesInAPortfolioPage(1), true).success.value
+        .set(SharePortfolioNamePage(1), "Portfolio").success.value
+        .set(SharePortfolioQuantityInTrustPage(1), "30").success.value
+        .set(SharePortfolioValueInTrustPage(1), "999999999999").success.value
+        .set(SharePortfolioOnStockExchangePage(1), false).success.value
+        .set(AssetStatus(1), Completed).success.value
         .set(AddAssetsPage, NoComplete).success.value
 
       registrationProgress.isTaskListComplete(userAnswers) mustBe true

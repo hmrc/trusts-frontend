@@ -16,7 +16,7 @@
 
 package pages
 
-import models.entities.Trustees
+import mapping.reads.Trustees
 import play.api.libs.json.JsPath
 
 final case class  TrusteeAUKCitizenPage(index : Int) extends QuestionPage[Boolean] {

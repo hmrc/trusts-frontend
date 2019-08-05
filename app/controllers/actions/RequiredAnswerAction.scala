@@ -19,15 +19,15 @@ package controllers.actions
 import controllers.routes
 import javax.inject.Inject
 import models.requests.DataRequest
-import pages.QuestionPage
 import play.api.libs.json.Reads
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Call, Result}
+import queries.Gettable
 
 import scala.concurrent.{ExecutionContext, Future}
 
-final case class RequiredAnswer[T](answer : QuestionPage[T],
-                             redirect : Call = routes.SessionExpiredController.onPageLoad())
+final case class RequiredAnswer[T](answer : Gettable[T],
+                                   redirect : Call = routes.SessionExpiredController.onPageLoad())
 
 class RequiredAnswerAction[T] @Inject()(required : RequiredAnswer[T])
                                        (implicit val executionContext: ExecutionContext,

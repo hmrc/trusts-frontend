@@ -19,13 +19,13 @@ package controllers
 import base.SpecBase
 import forms.AddAssetsFormProvider
 import models.Status.Completed
-import models.WhatKindOfAsset.Money
-import models.{AddAssets, FullName, IndividualOrBusiness, NormalMode, UserAnswers}
+import models.WhatKindOfAsset.{Money, Shares}
+import models.{AddAssets, NormalMode, ShareClass}
 import navigation.{FakeNavigator, Navigator}
 import pages.entitystatus.AssetStatus
-import pages.{AddAssetsPage, AssetMoneyValuePage, TrusteeIndividualOrBusinessPage, TrusteesNamePage, WhatKindOfAssetPage}
+import pages.shares._
+import pages.{AssetMoneyValuePage, WhatKindOfAssetPage}
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -42,13 +42,22 @@ class AddAssetsControllerSpec extends SpecBase {
   val form = formProvider()
 
   val assets = List(
-    AddRow("£4800", typeLabel = "Money", "#", "#")
+    AddRow("£4800", typeLabel = "Money", "#", "#"),
+    AddRow("Share Company Name", typeLabel = "Shares", "#", "#")
   )
 
   val userAnswersWithAssetsComplete = emptyUserAnswers
     .set(WhatKindOfAssetPage(0), Money).success.value
     .set(AssetMoneyValuePage(0), "4800").success.value
     .set(AssetStatus(0), Completed).success.value
+    .set(WhatKindOfAssetPage(1), Shares).success.value
+    .set(SharesInAPortfolioPage(1), false).success.value
+    .set(ShareCompanyNamePage(1), "Share Company Name").success.value
+    .set(SharesOnStockExchangePage(1), true).success.value
+    .set(ShareClassPage(1), ShareClass.Ordinary).success.value
+    .set(ShareQuantityInTrustPage(1), "1000").success.value
+    .set(ShareValueInTrustPage(1), "10").success.value
+    .set(AssetStatus(1), Completed).success.value
 
   "AddAssets Controller" must {
 
@@ -65,7 +74,7 @@ class AddAssetsControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,fakeDraftId, Nil, assets)(fakeRequest, messages).toString
+        view(form, NormalMode,fakeDraftId, Nil, assets, "You have added 2 assets")(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -107,7 +116,7 @@ class AddAssetsControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode,fakeDraftId, Nil, assets)(fakeRequest, messages).toString
+        view(boundForm, NormalMode,fakeDraftId, Nil, assets, "You have added 2 assets")(fakeRequest, messages).toString
 
       application.stop()
     }
