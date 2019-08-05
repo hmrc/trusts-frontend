@@ -433,7 +433,7 @@ POST       /:draftId/asset/:index/change-shares-on-stock-exchange               
 GET       /:draftId/asset/:index/check-share-answers                           controllers.shares.ShareAnswerController.onPageLoad(index : Int, draftId : String)
 POST      /:draftId/asset/:index/check-share-answers                           controllers.shares.ShareAnswerController.onSubmit(index : Int, draftId : String)
 
-GET        /:draftId/trustOwnAllThePropertyOrLand                        controllers.TrustOwnAllThePropertyOrLandController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trustOwnAllThePropertyOrLand                        controllers.TrustOwnAllThePropertyOrLandController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/changeTrustOwnAllThePropertyOrLand                  controllers.TrustOwnAllThePropertyOrLandController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/changeTrustOwnAllThePropertyOrLand                  controllers.TrustOwnAllThePropertyOrLandController.onSubmit(mode: Mode = CheckMode, draftId: String)
+GET        /:draftId/assets-property-or-land-owned                              controllers.TrustOwnAllThePropertyOrLandController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/assets-property-or-land-owned                              controllers.TrustOwnAllThePropertyOrLandController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/change-assets-property-or-land-owned                       controllers.TrustOwnAllThePropertyOrLandController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/change-assets-property-or-land-owned                       controllers.TrustOwnAllThePropertyOrLandController.onSubmit(mode: Mode = CheckMode, draftId: String)
