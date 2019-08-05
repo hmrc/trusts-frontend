@@ -33,6 +33,15 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers, draftId : String, canEdit: Boolean = true)(implicit messages: Messages) {
 
+  def propertyOrLandInternationalAddressYesNo: Option[AnswerRow] = userAnswers.get(PropertyOrLandInternationalAddressYesNoPage) map {
+    x =>
+      AnswerRow(
+        "propertyOrLandInternationalAddressYesNo.checkYourAnswersLabel",
+        HtmlFormat.escape(s"${x.field1} ${x.field2}"),
+        routes.PropertyOrLandInternationalAddressYesNoController.onPageLoad(CheckMode, draftId).url
+      )
+  }
+
   def trustDetails: Option[Seq[AnswerSection]] = {
     val questions = Seq(
       trustName,
