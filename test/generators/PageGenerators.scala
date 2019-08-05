@@ -26,8 +26,8 @@ trait PageGenerators {
   implicit lazy val arbitraryPropertyOrLandDescriptionPage: Arbitrary[PropertyOrLandDescriptionPage] =
     Arbitrary(PropertyOrLandDescriptionPage(0))
 
-  implicit lazy val arbitraryTrustOwnAllThePropertyOrLandPage: Arbitrary[TrustOwnAllThePropertyOrLandPage.type] =
-    Arbitrary(TrustOwnAllThePropertyOrLandPage)
+  implicit lazy val arbitraryTrustOwnAllThePropertyOrLandPage: Arbitrary[TrustOwnAllThePropertyOrLandPage] =
+    Arbitrary(TrustOwnAllThePropertyOrLandPage(0))
 
   implicit lazy val arbitraryShareCompanyNamePage: Arbitrary[ShareCompanyNamePage] =
     Arbitrary(ShareCompanyNamePage(0))

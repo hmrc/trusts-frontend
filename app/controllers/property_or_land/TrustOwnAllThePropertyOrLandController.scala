@@ -56,7 +56,7 @@ class TrustOwnAllThePropertyOrLandController @Inject()(
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(TrustOwnAllThePropertyOrLandPage) match {
+      val preparedForm = request.userAnswers.get(TrustOwnAllThePropertyOrLandPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -73,9 +73,9 @@ class TrustOwnAllThePropertyOrLandController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustOwnAllThePropertyOrLandPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustOwnAllThePropertyOrLandPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrustOwnAllThePropertyOrLandPage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrustOwnAllThePropertyOrLandPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

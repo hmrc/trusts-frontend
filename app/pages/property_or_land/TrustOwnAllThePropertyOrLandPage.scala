@@ -18,10 +18,11 @@ package pages.property_or_land
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
+import sections.Assets
 
-case object TrustOwnAllThePropertyOrLandPage extends QuestionPage[Boolean] {
+final case class TrustOwnAllThePropertyOrLandPage(index: Int) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ Assets \ index \ toString
 
   override def toString: String = "trustOwnAllThePropertyOrLand"
 }

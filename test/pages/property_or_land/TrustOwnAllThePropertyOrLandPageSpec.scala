@@ -22,10 +22,10 @@ class TrustOwnAllThePropertyOrLandPageSpec extends PageBehaviours {
 
   "TrustOwnAllThePropertyOrLandPage" must {
 
-    beRetrievable[Boolean](TrustOwnAllThePropertyOrLandPage)
+    beRetrievable[Boolean](TrustOwnAllThePropertyOrLandPage(0))
 
-    beSettable[Boolean](TrustOwnAllThePropertyOrLandPage)
+    beSettable[Boolean](TrustOwnAllThePropertyOrLandPage(0))
 
-    beRemovable[Boolean](TrustOwnAllThePropertyOrLandPage)
+    beRemovable[Boolean](TrustOwnAllThePropertyOrLandPage(0))
   }
 }
