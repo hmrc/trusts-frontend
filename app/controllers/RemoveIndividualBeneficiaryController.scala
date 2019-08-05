@@ -19,17 +19,16 @@ package controllers
 import controllers.actions._
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, NormalMode}
 import models.requests.DataRequest
-import navigation.Navigator
 import pages.IndividualBeneficiaryNamePage
 import play.api.data.Form
 import play.api.i18n.MessagesApi
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import play.twirl.api.HtmlFormat
-import queries.{RemoveAssetQuery, RemoveIndividualBeneficiaryQuery, Settable}
+import queries.{RemoveIndividualBeneficiaryQuery, Settable}
 import repositories.SessionRepository
-import views.html.RemoveIndividualBeneficiaryView
+import views.html.RemoveIndexView
 
 import scala.concurrent.ExecutionContext
 
@@ -41,27 +40,33 @@ class RemoveIndividualBeneficiaryController @Inject()(
                                          requireData: DataRequiredAction,
                                          formProvider: RemoveIndexFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
-                                         removeView: RemoveIndividualBeneficiaryView,
+                                         removeView: RemoveIndexView,
                                          require: RequiredAnswerActionProvider
                                  )(implicit ec: ExecutionContext) extends RemoveIndexController {
+
+  override val prefix : String = "removeIndividualBeneficiary"
+
+  override val form: Form[Boolean] = formProvider.apply(prefix)
 
   def actions(draftId : String, index: Int) =
     identify andThen getData(draftId) andThen
       requireData andThen
       require(RequiredAnswer(IndividualBeneficiaryNamePage(index), redirect(draftId)))
 
-  override def redirect(draftId : String) : Call = routes.AddABeneficiaryController.onPageLoad(draftId)
+  override def redirect(draftId : String) : Call =
+    routes.AddABeneficiaryController.onPageLoad(draftId)
+
+  override def formRoute(draftId: String, index: Int): Call =
+    routes.RemoveIndividualBeneficiaryController.onSubmit(NormalMode, index, draftId)
 
   override def removeQuery(index: Int): Settable[_] = RemoveIndividualBeneficiaryQuery(index)
-
-  override val form: Form[Boolean] = formProvider.apply("removeIndividualBeneficiary")
 
   override def content(index: Int)(implicit request: DataRequest[AnyContent]) : String =
     request.userAnswers.get(IndividualBeneficiaryNamePage(index)).get.toString
 
   override def view(form: Form[_], mode: Mode, index: Int, draftId: String)
                    (implicit request: DataRequest[AnyContent], messagesApi: MessagesApi): HtmlFormat.Appendable = {
-    removeView(form, mode, index, draftId, content(index))
+    removeView(prefix, form, mode, index, draftId, content(index), formRoute(draftId, index))
   }
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(draftId, index) {

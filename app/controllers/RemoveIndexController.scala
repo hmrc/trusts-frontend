@@ -30,11 +30,15 @@ import scala.concurrent.{ExecutionContext, Future}
 
 trait RemoveIndexController extends FrontendBaseController with I18nSupport {
 
+  val prefix : String
+
   val form: Form[Boolean]
 
   def sessionRepository : SessionRepository
 
   def redirect(draftId : String) : Call
+
+  def formRoute(draftId : String, index: Int) : Call
 
   def removeQuery(index : Int) : Settable[_]
 

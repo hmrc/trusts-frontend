@@ -23,13 +23,15 @@ import pages.IndividualBeneficiaryNamePage
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.RemoveIndividualBeneficiaryView
+import views.html.RemoveIndexView
 
-class RemoveIndividualBeneficiaryViewSpec extends YesNoViewBehaviours {
+class RemoveIndexViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "removeIndividualBeneficiary"
 
   val form = new RemoveIndexFormProvider()(messageKeyPrefix)
+
+  val route = routes.RemoveIndividualBeneficiaryController.onPageLoad(NormalMode, 0, fakeDraftId)
 
   val index = 0
 
@@ -38,10 +40,10 @@ class RemoveIndividualBeneficiaryViewSpec extends YesNoViewBehaviours {
     val userAnswers = emptyUserAnswers
       .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
 
-    val view = viewFor[RemoveIndividualBeneficiaryView](Some(userAnswers))
+    val view = viewFor[RemoveIndexView](Some(userAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, index, fakeDraftId, nameOrDescription = "First Last")(fakeRequest, messages)
+      view.apply(messageKeyPrefix, form, NormalMode, index, fakeDraftId, nameOrDescription = "First Last", route)(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, "First Last")
 

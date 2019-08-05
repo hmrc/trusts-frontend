@@ -16,29 +16,30 @@
 
 @import controllers.routes._
 @import models.Mode
+@import play.api.mvc.Call
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, index: Int, draftId: String, nameOrDescription : String)(implicit request: Request[_], messages: Messages)
+@(prefix : String, form: Form[_], mode: Mode, index: Int, draftId: String, nameOrDescription : String, route : Call)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("removeIndividualBeneficiary.title", nameOrDescription)}"
+    title = s"${errorPrefix(form)} ${messages(s"$prefix.title", nameOrDescription)}"
     ) {
 
-    @formHelper(action = RemoveIndividualBeneficiaryController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
+    @formHelper(action = route, 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("removeIndividualBeneficiary.heading", Some(nameOrDescription))
+        @components.heading(s"$prefix.heading", Some(nameOrDescription))
 
         @components.input_yes_no(
             field = form("value"),
-            label = messages("removeIndividualBeneficiary.heading", nameOrDescription),
+            label = messages(s"$prefix.heading", nameOrDescription),
             legendClass = Some("visually-hidden")
         )
 

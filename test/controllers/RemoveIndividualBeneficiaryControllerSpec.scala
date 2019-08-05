@@ -24,12 +24,16 @@ import org.scalatest.prop.PropertyChecks
 import pages.IndividualBeneficiaryNamePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.RemoveIndividualBeneficiaryView
+import views.html.RemoveIndexView
 
 class RemoveIndividualBeneficiaryControllerSpec extends SpecBase with PropertyChecks {
 
+  val prefix = "removeIndividualBeneficiary"
+
   val formProvider = new RemoveIndexFormProvider()
-  val form = formProvider("removeIndividualBeneficiary")
+  val form = formProvider(prefix)
+
+  val formRoute = routes.RemoveIndividualBeneficiaryController.onSubmit(NormalMode, 0, fakeDraftId)
 
   val index = 0
 
@@ -48,12 +52,12 @@ class RemoveIndividualBeneficiaryControllerSpec extends SpecBase with PropertyCh
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[RemoveIndividualBeneficiaryView]
+      val view = application.injector.instanceOf[RemoveIndexView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, index, fakeDraftId, "First Last")(fakeRequest, messages).toString
+        view(prefix, form, NormalMode, index, fakeDraftId, "First Last", formRoute)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -97,14 +101,14 @@ class RemoveIndividualBeneficiaryControllerSpec extends SpecBase with PropertyCh
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[RemoveIndividualBeneficiaryView]
+      val view = application.injector.instanceOf[RemoveIndexView]
 
       val result = route(application, request).value
 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, index, fakeDraftId, "First Last")(fakeRequest, messages).toString
+        view(prefix, form, NormalMode, index, fakeDraftId, "First Last", formRoute)(fakeRequest, messages).toString
 
       application.stop()
     }
