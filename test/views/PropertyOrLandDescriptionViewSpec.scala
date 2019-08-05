@@ -17,7 +17,7 @@
 package views
 
 import controllers.routes
-import forms.PropertyOrLandDescriptionFormProvider
+import forms.property_or_land.PropertyOrLandDescriptionFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -43,6 +43,6 @@ class PropertyOrLandDescriptionViewSpec extends StringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.PropertyOrLandDescriptionController.onSubmit(NormalMode, index, fakeDraftId).url, Some(hintKey))
+    behave like stringPage(form, applyView, messageKeyPrefix, controllers.property_or_land.routes.PropertyOrLandDescriptionController.onSubmit(NormalMode, index, fakeDraftId).url, Some(hintKey))
   }
 }

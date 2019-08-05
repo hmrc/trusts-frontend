@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package pages
+package pages.property_or_land
 
-import models.entities.Assets
+import pages.QuestionPage
 import play.api.libs.json.JsPath
+import sections.Assets
 
 final case class PropertyOrLandDescriptionPage(index: Int) extends QuestionPage[String] {
 

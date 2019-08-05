@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.property_or_land
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.PropertyOrLandDescriptionFormProvider
+import forms.property_or_land.PropertyOrLandDescriptionFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.PropertyOrLandDescriptionPage
+import pages.property_or_land.PropertyOrLandDescriptionPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -51,7 +51,7 @@ class PropertyOrLandDescriptionController @Inject()(
     identify andThen
     getData(draftId) andThen
     requireData andThen
-    validateIndex(index, models.entities.Assets)
+    validateIndex(index, sections.Assets)
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>

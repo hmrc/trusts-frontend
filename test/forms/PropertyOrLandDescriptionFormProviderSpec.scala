@@ -17,6 +17,7 @@
 package forms
 
 import forms.behaviours.StringFieldBehaviours
+import forms.property_or_land.PropertyOrLandDescriptionFormProvider
 import play.api.data.FormError
 
 class PropertyOrLandDescriptionFormProviderSpec extends StringFieldBehaviours {

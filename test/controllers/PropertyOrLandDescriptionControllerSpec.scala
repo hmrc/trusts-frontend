@@ -17,10 +17,10 @@
 package controllers
 
 import base.SpecBase
-import forms.PropertyOrLandDescriptionFormProvider
+import forms.property_or_land.PropertyOrLandDescriptionFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.PropertyOrLandDescriptionPage
+import pages.property_or_land.PropertyOrLandDescriptionPage
 import play.api.inject.bind
 import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
@@ -36,7 +36,7 @@ class PropertyOrLandDescriptionControllerSpec extends SpecBase {
   val form = formProvider()
   val index = 0
 
-  lazy val propertyOrLandDescriptionRoute = routes.PropertyOrLandDescriptionController.onPageLoad(NormalMode, index, fakeDraftId).url
+  lazy val propertyOrLandDescriptionRoute = controllers.property_or_land.routes.PropertyOrLandDescriptionController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "PropertyOrLandDescription Controller" must {
 

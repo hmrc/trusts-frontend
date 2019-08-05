@@ -6,11 +6,11 @@ echo "Applying migration PropertyOrLandDescription"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /:draftId/propertyOrLandDescription                        controllers.PropertyOrLandDescriptionController.onPageLoad(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
-echo "POST       /:draftId/propertyOrLandDescription                        controllers.PropertyOrLandDescriptionController.onSubmit(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
+echo "GET        /:draftId/propertyOrLandDescription                        controllers.propertyorland.PropertyOrLandDescriptionController.onPageLoad(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
+echo "POST       /:draftId/propertyOrLandDescription                        controllers.propertyorland.PropertyOrLandDescriptionController.onSubmit(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
 
-echo "GET        /:draftId/changePropertyOrLandDescription                  controllers.PropertyOrLandDescriptionController.onPageLoad(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
-echo "POST       /:draftId/changePropertyOrLandDescription                  controllers.PropertyOrLandDescriptionController.onSubmit(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
+echo "GET        /:draftId/changePropertyOrLandDescription                  controllers.propertyorland.PropertyOrLandDescriptionController.onPageLoad(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
+echo "POST       /:draftId/changePropertyOrLandDescription                  controllers.propertyorland.PropertyOrLandDescriptionController.onSubmit(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en
