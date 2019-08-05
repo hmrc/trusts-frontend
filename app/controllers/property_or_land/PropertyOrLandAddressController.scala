@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.property_or_land
 
 import controllers.actions._
+import controllers.filters.IndexActionFilterProvider
 import forms.PropertyOrLandAddressFormProvider
 import javax.inject.Inject
-import models.{Mode, UserAnswers}
+import models.Mode
 import navigation.Navigator
-import pages.PropertyOrLandAddressPage
+import pages.property_or_land.PropertyOrLandAddressPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -38,6 +39,7 @@ class PropertyOrLandAddressController @Inject()(
                                          identify: IdentifierAction,
                                          getData: DraftIdRetrievalActionProvider,
                                          requireData: DataRequiredAction,
+                                         validateIndex: IndexActionFilterProvider,
                                          formProvider: PropertyOrLandAddressFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: PropertyOrLandAddressView
@@ -45,29 +47,35 @@ class PropertyOrLandAddressController @Inject()(
 
   val form: Form[Boolean] = formProvider()
 
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
+  private def actions(index: Int, draftId: String) =
+    identify andThen
+      getData(draftId) andThen
+      requireData andThen
+      validateIndex(index, sections.Assets)
+
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(PropertyOrLandAddressPage) match {
+      val preparedForm = request.userAnswers.get(PropertyOrLandAddressPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId))
+      Ok(view(preparedForm, mode, draftId, index))
   }
 
-  def onSubmit(mode: Mode, draftId : String) = (identify andThen getData(draftId) andThen requireData).async {
+  def onSubmit(mode: Mode, index: Int, draftId : String) = actions(index, draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index))),
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(PropertyOrLandAddressPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(PropertyOrLandAddressPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(PropertyOrLandAddressPage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(PropertyOrLandAddressPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.property_or_land
 
 import base.SpecBase
+import controllers.property_or_land.routes._
+import controllers.routes._
 import forms.PropertyOrLandAddressFormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
-import pages.PropertyOrLandAddressPage
+import pages.property_or_land.PropertyOrLandAddressPage
+import play.api.data.Form
 import play.api.inject.bind
-import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -33,9 +35,11 @@ class PropertyOrLandAddressControllerSpec extends SpecBase {
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new PropertyOrLandAddressFormProvider()
-  val form = formProvider()
+  val form: Form[Boolean] = formProvider()
 
-  lazy val propertyOrLandAddressRoute = routes.PropertyOrLandAddressController.onPageLoad(NormalMode, fakeDraftId).url
+  val index: Int = 0
+
+  lazy val propertyOrLandAddressRoute: String = PropertyOrLandAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "PropertyOrLandAddress Controller" must {
 
@@ -52,14 +56,14 @@ class PropertyOrLandAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(PropertyOrLandAddressPage, true).success.value
+      val userAnswers = emptyUserAnswers.set(PropertyOrLandAddressPage(index), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -72,7 +76,7 @@ class PropertyOrLandAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -114,7 +118,7 @@ class PropertyOrLandAddressControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -129,7 +133,7 @@ class PropertyOrLandAddressControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -146,7 +150,7 @@ class PropertyOrLandAddressControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual SessionExpiredController.onPageLoad().url
 
       application.stop()
     }

@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package forms
+package forms.property_or_land
 
+import forms.PropertyOrLandAddressFormProvider
 import forms.behaviours.BooleanFieldBehaviours
 import play.api.data.FormError
 

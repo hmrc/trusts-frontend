@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package pages
+package pages.property_or_land
 
 import pages.behaviours.PageBehaviours
 
@@ -22,10 +22,10 @@ class PropertyOrLandAddressPageSpec extends PageBehaviours {
 
   "PropertyOrLandAddressPage" must {
 
-    beRetrievable[Boolean](PropertyOrLandAddressPage)
+    beRetrievable[Boolean](PropertyOrLandAddressPage(0))
 
-    beSettable[Boolean](PropertyOrLandAddressPage)
+    beSettable[Boolean](PropertyOrLandAddressPage(0))
 
-    beRemovable[Boolean](PropertyOrLandAddressPage)
+    beRemovable[Boolean](PropertyOrLandAddressPage(0))
   }
 }

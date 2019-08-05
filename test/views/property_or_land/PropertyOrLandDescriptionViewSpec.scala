@@ -14,33 +14,34 @@
  * limitations under the License.
  */
 
-package views
+package views.property_or_land
 
-import controllers.routes
-import forms.PropertyOrLandAddressFormProvider
+import forms.property_or_land.PropertyOrLandDescriptionFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.YesNoViewBehaviours
-import views.html.PropertyOrLandAddressView
+import views.behaviours.StringViewBehaviours
+import views.html.PropertyOrLandDescriptionView
 
-class PropertyOrLandAddressViewSpec extends YesNoViewBehaviours {
+class PropertyOrLandDescriptionViewSpec extends StringViewBehaviours {
 
-  val messageKeyPrefix = "propertyOrLandAddress"
+  val messageKeyPrefix = "propertyOrLandDescription"
+  val hintKey = "propertyOrLandDescription.hint"
 
-  val form = new PropertyOrLandAddressFormProvider()()
+  val form = new PropertyOrLandDescriptionFormProvider()()
 
-  "PropertyOrLandAddress view" must {
+  "PropertyOrLandDescriptionView view" must {
 
-    val view = viewFor[PropertyOrLandAddressView](Some(emptyUserAnswers))
+    val view = viewFor[PropertyOrLandDescriptionView](Some(emptyUserAnswers))
+    val index = 0
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
+      view.apply(form, NormalMode, index, fakeDraftId)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.PropertyOrLandAddressController.onSubmit(NormalMode, fakeDraftId).url)
+    behave like stringPage(form, applyView, messageKeyPrefix, controllers.property_or_land.routes.PropertyOrLandDescriptionController.onSubmit(NormalMode, index, fakeDraftId).url, Some(hintKey))
   }
 }
