@@ -31,7 +31,7 @@ class RemoveIndexViewSpec extends YesNoViewBehaviours {
 
   val form = new RemoveIndexFormProvider()(messageKeyPrefix)
 
-  val route = routes.RemoveIndividualBeneficiaryController.onPageLoad(NormalMode, 0, fakeDraftId)
+  val route = routes.RemoveIndividualBeneficiaryController.onPageLoad(0, fakeDraftId)
 
   val index = 0
 
@@ -43,12 +43,12 @@ class RemoveIndexViewSpec extends YesNoViewBehaviours {
     val view = viewFor[RemoveIndexView](Some(userAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(messageKeyPrefix, form, NormalMode, index, fakeDraftId, nameOrDescription = "First Last", route)(fakeRequest, messages)
+      view.apply(messageKeyPrefix, form, index, fakeDraftId, nameOrDescription = "First Last", route)(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, "First Last")
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.RemoveIndividualBeneficiaryController.onSubmit(NormalMode, index, fakeDraftId).url, None, Seq("First Last"))
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.RemoveIndividualBeneficiaryController.onSubmit(index, fakeDraftId).url, None, Seq("First Last"))
   }
 }

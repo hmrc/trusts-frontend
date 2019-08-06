@@ -17,37 +17,40 @@
 package controllers
 
 import base.SpecBase
-import controllers.routes._
 import forms.RemoveIndexFormProvider
-import models.{FullName, NormalMode}
+import models.Status.Completed
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages.IndividualBeneficiaryNamePage
+import pages.ClassBeneficiaryDescriptionPage
+import pages.entitystatus.AssetStatus
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RemoveIndexView
 
-class RemoveIndividualBeneficiaryControllerSpec extends SpecBase with PropertyChecks {
+class RemoveClassOfBeneficiaryControllerSpec extends SpecBase with PropertyChecks {
 
-  val messagesPrefix = "removeIndividualBeneficiary"
+  val messagesPrefix = "removeClassOfBeneficiary"
 
-  val formProvider = new RemoveIndexFormProvider()
-  val form = formProvider(messagesPrefix)
+  lazy val formProvider = new RemoveIndexFormProvider()
+  lazy val form = formProvider(messagesPrefix)
 
-  lazy val formRoute = RemoveIndividualBeneficiaryController.onSubmit(0, fakeDraftId)
+  lazy val formRoute = routes.RemoveClassOfBeneficiaryController.onSubmit(0, fakeDraftId)
+
+  lazy val content : String = "Future issues of grandchildren"
 
   val index = 0
 
-  "RemoveIndividualBeneficiary Controller" must {
+  "RemoveClassOfBeneficiary Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(0),
-        FullName("First", None, "Last")).success.value
+      val userAnswers = emptyUserAnswers
+        .set(ClassBeneficiaryDescriptionPage(0), "Future issues of grandchildren").success.value
+        .set(AssetStatus(0), Completed).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.RemoveIndividualBeneficiaryController.onPageLoad(index, fakeDraftId).url)
+      val request = FakeRequest(GET, routes.RemoveClassOfBeneficiaryController.onPageLoad(index, fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -55,15 +58,16 @@ class RemoveIndividualBeneficiaryControllerSpec extends SpecBase with PropertyCh
 
       status(result) mustEqual OK
 
-      contentAsString(result) mustEqual view(messagesPrefix, form, index, fakeDraftId, "First Last", formRoute)(fakeRequest, messages).toString
+      contentAsString(result) mustEqual view(messagesPrefix, form, index, fakeDraftId, content, formRoute)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
-      val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(0),
-        FullName("First", None, "Last")).success.value
+      val userAnswers = emptyUserAnswers
+        .set(ClassBeneficiaryDescriptionPage(0), "Future issues of grandchildren").success.value
+        .set(AssetStatus(0), Completed).success.value
 
       forAll(arbitrary[Boolean]) {
         value =>
@@ -72,7 +76,7 @@ class RemoveIndividualBeneficiaryControllerSpec extends SpecBase with PropertyCh
             .build()
 
         val request =
-          FakeRequest(POST, routes.RemoveIndividualBeneficiaryController.onSubmit(index, fakeDraftId).url)
+          FakeRequest(POST, routes.RemoveClassOfBeneficiaryController.onSubmit(index, fakeDraftId).url)
             .withFormUrlEncodedBody(("value", value.toString))
 
         val result = route(application, request).value
@@ -88,13 +92,14 @@ class RemoveIndividualBeneficiaryControllerSpec extends SpecBase with PropertyCh
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(0),
-        FullName("First", None, "Last")).success.value
+      val userAnswers = emptyUserAnswers
+        .set(ClassBeneficiaryDescriptionPage(0), "Future issues of grandchildren").success.value
+        .set(AssetStatus(0), Completed).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
-        FakeRequest(POST, routes.RemoveIndividualBeneficiaryController.onSubmit(index, fakeDraftId).url)
+        FakeRequest(POST, routes.RemoveClassOfBeneficiaryController.onSubmit(index, fakeDraftId).url)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
@@ -106,7 +111,7 @@ class RemoveIndividualBeneficiaryControllerSpec extends SpecBase with PropertyCh
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(messagesPrefix, boundForm, index, fakeDraftId, "First Last", formRoute)(fakeRequest, messages).toString
+        view(messagesPrefix, boundForm, index, fakeDraftId, content, formRoute)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -115,7 +120,7 @@ class RemoveIndividualBeneficiaryControllerSpec extends SpecBase with PropertyCh
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, routes.RemoveIndividualBeneficiaryController.onPageLoad(index, fakeDraftId).url)
+      val request = FakeRequest(GET, routes.RemoveClassOfBeneficiaryController.onPageLoad(index, fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -131,7 +136,7 @@ class RemoveIndividualBeneficiaryControllerSpec extends SpecBase with PropertyCh
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, routes.RemoveIndividualBeneficiaryController.onSubmit(index, fakeDraftId).url)
+        FakeRequest(POST, routes.RemoveClassOfBeneficiaryController.onSubmit(index, fakeDraftId).url)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value

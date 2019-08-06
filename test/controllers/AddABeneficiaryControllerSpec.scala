@@ -35,7 +35,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
   def onwardRoute = Call("GET", "/foo")
 
   def removeIndividualRoute(index : Int) =
-    routes.RemoveIndividualBeneficiaryController.onPageLoad(NormalMode, index, fakeDraftId).url
+    routes.RemoveIndividualBeneficiaryController.onPageLoad(index, fakeDraftId).url
 
   lazy val addABeneficiaryRoute = routes.AddABeneficiaryController.onPageLoad(fakeDraftId).url
 

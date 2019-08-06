@@ -780,6 +780,10 @@ classBeneficiaryDescription.error.length = The description of the class in the t
 classBeneficiaryDescription.error.invalid = The description of the class in the trust deed must only include letters a to z, numbers, ampersands (&), backward slashes or spaces
 classBeneficiaryDescription.hint = This must be 56 characters or less. For example, future grandchildren and future great-grandchildren.
 
+removeClassOfBeneficiary.title = Are you sure you want to remove {0}?
+removeClassOfBeneficiary.heading = Are you sure you want to remove {0}?
+removeClassOfBeneficiary.error.required = Select yes if you want to remove the class of beneficiary
+
 whatTypeOfBeneficiary.first.title = What kind of beneficiary do you need to add first?
 whatTypeOfBeneficiary.next.title = What kind of beneficiary do you need to add next?
 whatTypeOfBeneficiary.first.heading = What kind of beneficiary do you need to add first?

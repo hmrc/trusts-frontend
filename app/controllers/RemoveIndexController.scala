@@ -16,7 +16,6 @@
 
 package controllers
 
-import models.Mode
 import models.requests.DataRequest
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -30,7 +29,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 trait RemoveIndexController extends FrontendBaseController with I18nSupport {
 
-  val prefix : String
+  val messagesPrefix : String
 
   val form: Form[Boolean]
 
@@ -44,17 +43,17 @@ trait RemoveIndexController extends FrontendBaseController with I18nSupport {
 
   def content(index: Int)(implicit request: DataRequest[AnyContent]) : String
 
-  def view(form: Form[_], mode: Mode, index : Int, draftId : String)
+  def view(form: Form[_], index : Int, draftId : String)
           (implicit request: DataRequest[AnyContent], messagesApi: MessagesApi) : HtmlFormat.Appendable
 
-  def get(mode: Mode, index : Int, draftId: String)(implicit request: DataRequest[AnyContent]) : Result =
-    Ok(view(form, mode, index, draftId))
+  def get(index : Int, draftId: String)(implicit request: DataRequest[AnyContent]) : Result =
+    Ok(view(form, index, draftId))
 
-  def remove(mode: Mode, index : Int, draftId : String)
+  def remove(index : Int, draftId : String)
             (implicit request : DataRequest[AnyContent], ec: ExecutionContext) = {
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, index, draftId))),
+          Future.successful(BadRequest(view(formWithErrors, index, draftId))),
 
         value => {
           if (value) {
@@ -68,4 +67,5 @@ trait RemoveIndexController extends FrontendBaseController with I18nSupport {
         }
       )
   }
+
 }

@@ -40,7 +40,7 @@ class AddABeneficiaryViewHelper(userAnswers: UserAnswers, draftId : String)(impl
       name = parseName(vm.name),
       typeLabel = messages("entities.beneficiary.individual"),
       changeUrl = "#",
-      removeUrl = routes.RemoveIndividualBeneficiaryController.onPageLoad(NormalMode, index, draftId).url
+      removeUrl = routes.RemoveIndividualBeneficiaryController.onPageLoad(index, draftId).url
     )
   }
 

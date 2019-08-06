@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
-import models.{Mode, NormalMode}
 import models.requests.DataRequest
-import pages.IndividualBeneficiaryNamePage
+import models.{Mode, NormalMode}
+import pages.{ClassBeneficiaryDescriptionPage, IndividualBeneficiaryNamePage}
 import play.api.data.Form
 import play.api.i18n.MessagesApi
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
@@ -32,7 +32,7 @@ import views.html.RemoveIndexView
 
 import scala.concurrent.ExecutionContext
 
-class RemoveIndividualBeneficiaryController @Inject()(
+class RemoveClassOfBeneficiaryController @Inject()(
                                          override val messagesApi: MessagesApi,
                                          override val sessionRepository: SessionRepository,
                                          identify: IdentifierAction,
@@ -44,25 +44,25 @@ class RemoveIndividualBeneficiaryController @Inject()(
                                          require: RequiredAnswerActionProvider
                                  )(implicit ec: ExecutionContext) extends RemoveIndexController {
 
-  override val messagesPrefix : String = "removeIndividualBeneficiary"
+  override val messagesPrefix : String = "removeClassOfBeneficiary"
 
   override val form: Form[Boolean] = formProvider.apply(messagesPrefix)
 
   def actions(draftId : String, index: Int) =
     identify andThen getData(draftId) andThen
       requireData andThen
-      require(RequiredAnswer(IndividualBeneficiaryNamePage(index), redirect(draftId)))
+      require(RequiredAnswer(ClassBeneficiaryDescriptionPage(index), redirect(draftId)))
 
   override def redirect(draftId : String) : Call =
     routes.AddABeneficiaryController.onPageLoad(draftId)
 
   override def formRoute(draftId: String, index: Int): Call =
-    routes.RemoveIndividualBeneficiaryController.onSubmit(index, draftId)
+    routes.RemoveClassOfBeneficiaryController.onSubmit(index, draftId)
 
   override def removeQuery(index: Int): Settable[_] = RemoveIndividualBeneficiaryQuery(index)
 
   override def content(index: Int)(implicit request: DataRequest[AnyContent]) : String =
-    request.userAnswers.get(IndividualBeneficiaryNamePage(index)).get.toString
+    request.userAnswers.get(ClassBeneficiaryDescriptionPage(index)).get.toString
 
   override def view(form: Form[_], index: Int, draftId: String)
                    (implicit request: DataRequest[AnyContent], messagesApi: MessagesApi): HtmlFormat.Appendable = {

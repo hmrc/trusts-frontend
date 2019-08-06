@@ -27,7 +27,7 @@ import viewmodels.AddRow
 class AddABeneficiaryViewHelperSpec extends SpecBase {
 
   def removeIndividualRoute(index : Int) =
-    routes.RemoveIndividualBeneficiaryController.onPageLoad(NormalMode, index, fakeDraftId).url
+    routes.RemoveIndividualBeneficiaryController.onPageLoad(index, fakeDraftId).url
 
   "AddABeneficiaryViewHelper" when {
 
