@@ -37,6 +37,9 @@ class AddABeneficiaryControllerSpec extends SpecBase {
   def removeIndividualRoute(index : Int) =
     routes.RemoveIndividualBeneficiaryController.onPageLoad(index, fakeDraftId).url
 
+  def removeClassRoute(index : Int) =
+    routes.RemoveClassOfBeneficiaryController.onPageLoad(index, fakeDraftId).url
+
   lazy val addABeneficiaryRoute = routes.AddABeneficiaryController.onPageLoad(fakeDraftId).url
 
   val formProvider = new AddABeneficiaryFormProvider()
@@ -45,7 +48,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
 
   val beneficiariesComplete = List(
     AddRow("First Last", typeLabel = "Individual Beneficiary", "#", removeIndividualRoute(0)),
-    AddRow("description", typeLabel = "Class of beneficiaries", "#", "#")
+    AddRow("description", typeLabel = "Class of beneficiaries", "#", removeClassRoute(0))
   )
 
   val userAnswersWithBeneficiariesComplete = emptyUserAnswers

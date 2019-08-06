@@ -26,7 +26,7 @@ import play.api.data.Form
 import play.api.i18n.MessagesApi
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import play.twirl.api.HtmlFormat
-import queries.{RemoveIndividualBeneficiaryQuery, Settable}
+import queries.{RemoveClassOfBeneficiaryQuery, RemoveIndividualBeneficiaryQuery, Settable}
 import repositories.SessionRepository
 import views.html.RemoveIndexView
 
@@ -59,7 +59,7 @@ class RemoveClassOfBeneficiaryController @Inject()(
   override def formRoute(draftId: String, index: Int): Call =
     routes.RemoveClassOfBeneficiaryController.onSubmit(index, draftId)
 
-  override def removeQuery(index: Int): Settable[_] = RemoveIndividualBeneficiaryQuery(index)
+  override def removeQuery(index: Int): Settable[_] = RemoveClassOfBeneficiaryQuery(index)
 
   override def content(index: Int)(implicit request: DataRequest[AnyContent]) : String =
     request.userAnswers.get(ClassBeneficiaryDescriptionPage(index)).get.toString

@@ -44,13 +44,17 @@ class AddABeneficiaryViewHelper(userAnswers: UserAnswers, draftId : String)(impl
     )
   }
 
-  private def parseClassOfBeneficiary(classOfBeneficiary : ClassOfBeneficiaryViewModel) : AddRow = {
+  private def parseClassOfBeneficiary(classOfBeneficiary : (ClassOfBeneficiaryViewModel, Int)) : AddRow = {
+
+    val vm = classOfBeneficiary._1
+    val index = classOfBeneficiary._2
+
     val defaultValue = messages("entities.no.description.added")
     AddRow(
-      classOfBeneficiary.description.getOrElse(defaultValue),
+      vm.description.getOrElse(defaultValue),
       messages("entities.beneficiary.class"),
       "#",
-      "#"
+      removeUrl = routes.RemoveClassOfBeneficiaryController.onPageLoad(index, draftId).url
     )
   }
 
@@ -65,11 +69,11 @@ class AddABeneficiaryViewHelper(userAnswers: UserAnswers, draftId : String)(impl
   }
 
   private def classOfBeneficiaries = {
-    val classOfBeneficiaries = userAnswers.get(ClassOfBeneficiaries).toList.flatten
+    val classOfBeneficiaries = userAnswers.get(ClassOfBeneficiaries).toList.flatten.zipWithIndex
 
-    val completed = classOfBeneficiaries.filter(_.isComplete).map(parseClassOfBeneficiary)
+    val completed = classOfBeneficiaries.filter(_._1.isComplete).map(parseClassOfBeneficiary)
 
-    val progress = classOfBeneficiaries.filterNot(_.isComplete).map(parseClassOfBeneficiary)
+    val progress = classOfBeneficiaries.filterNot(_._1.isComplete).map(parseClassOfBeneficiary)
 
     InProgressComplete(inProgress = progress, complete = completed)
   }

@@ -29,6 +29,9 @@ class AddABeneficiaryViewHelperSpec extends SpecBase {
   def removeIndividualRoute(index : Int) =
     routes.RemoveIndividualBeneficiaryController.onPageLoad(index, fakeDraftId).url
 
+  def removeClassRoute(index : Int) =
+    routes.RemoveClassOfBeneficiaryController.onPageLoad(index, fakeDraftId).url
+
   "AddABeneficiaryViewHelper" when {
 
     ".row" must {
@@ -50,7 +53,7 @@ class AddABeneficiaryViewHelperSpec extends SpecBase {
 
         rows.inProgress mustBe List(
           AddRow("No name added", typeLabel = "Individual Beneficiary", "#", removeIndividualRoute(0)),
-          AddRow("Future issues", typeLabel = "Class of beneficiaries", "#", "#")
+          AddRow("Future issues", typeLabel = "Class of beneficiaries", "#", removeClassRoute(0))
         )
         rows.complete mustBe Nil
       }
@@ -71,7 +74,7 @@ class AddABeneficiaryViewHelperSpec extends SpecBase {
         rows.complete mustBe List(
           AddRow("First Last", typeLabel = "Individual Beneficiary", "#", removeIndividualRoute(0)),
           AddRow("Second Last", typeLabel = "Individual Beneficiary", "#", removeIndividualRoute(1)),
-          AddRow("Future issues", typeLabel = "Class of beneficiaries", "#", "#")
+          AddRow("Future issues", typeLabel = "Class of beneficiaries", "#", removeClassRoute(0))
         )
         rows.inProgress mustBe Nil
       }
