@@ -30,12 +30,14 @@ class PropertyLandValueTrustViewSpec extends QuestionViewBehaviours[PropertyLand
 
   override val form = new PropertyLandValueTrustFormProvider()()
 
+  val index: Int = 0
+
   "PropertyLandValueTrustView" must {
 
     val view = viewFor[PropertyLandValueTrustView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
+      view.apply(form, NormalMode, index, fakeDraftId)(fakeRequest, messages)
 
 
     behave like normalPage(applyView(form), messageKeyPrefix)
@@ -46,7 +48,7 @@ class PropertyLandValueTrustViewSpec extends QuestionViewBehaviours[PropertyLand
       form,
       applyView,
       messageKeyPrefix,
-      routes.PropertyLandValueTrustController.onSubmit(NormalMode, fakeDraftId).url,
+      routes.PropertyLandValueTrustController.onSubmit(NormalMode, index, fakeDraftId).url,
       Seq(("field1", None))
     )
   }

@@ -21,6 +21,7 @@ import forms.property_or_land.PropertyLandValueTrustFormProvider
 import models.{NormalMode, PropertyLandValueTrust, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.PropertyLandValueTrustPage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.libs.json.Json
 import play.api.mvc.Call
@@ -34,9 +35,11 @@ class PropertyLandValueTrustControllerSpec extends SpecBase {
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new PropertyLandValueTrustFormProvider()
-  val form = formProvider()
+  val form: Form[PropertyLandValueTrust] = formProvider()
 
-  lazy val propertyLandValueTrustRoute = routes.PropertyLandValueTrustController.onPageLoad(NormalMode, fakeDraftId).url
+  val index: Int = 0
+
+  lazy val propertyLandValueTrustRoute = routes.PropertyLandValueTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   val userAnswers = UserAnswers(
     draftId = userAnswersId,
@@ -63,7 +66,7 @@ class PropertyLandValueTrustControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId)(request, messages).toString
+        view(form, NormalMode, index, fakeDraftId)(request, messages).toString
 
       application.stop()
     }
@@ -81,7 +84,7 @@ class PropertyLandValueTrustControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(PropertyLandValueTrust("value 1")), NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill(PropertyLandValueTrust("value 1")), NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -95,7 +98,7 @@ class PropertyLandValueTrustControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, propertyLandValueTrustRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+          .withFormUrlEncodedBody(("field1", "value 1"))
 
       val result = route(application, request).value
 
@@ -123,7 +126,7 @@ class PropertyLandValueTrustControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -148,7 +151,7 @@ class PropertyLandValueTrustControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, propertyLandValueTrustRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+          .withFormUrlEncodedBody(("field1", "value 1"))
 
       val result = route(application, request).value
 
