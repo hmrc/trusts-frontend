@@ -16,17 +16,20 @@
 
 package models
 
-import play.api.libs.json._
 import viewmodels.RadioOption
 
 sealed trait ShareClass
 
 object ShareClass extends Enumerable.Implicits {
 
-  case object Class extends WithName("class") with ShareClass
+  case object Ordinary extends WithName("ordinary") with ShareClass
+  case object Preference extends WithName("preference") with ShareClass
+  case object Deferred extends WithName("deferred") with ShareClass
+  case object Growth extends WithName("growth") with ShareClass
+  case object Other extends WithName("other") with ShareClass
 
   val values: List[ShareClass] = List(
-    Class
+    Ordinary, Preference, Deferred, Growth, Other
   )
 
   val options: List[RadioOption] = values.map {
@@ -36,4 +39,12 @@ object ShareClass extends Enumerable.Implicits {
 
   implicit val enumerable: Enumerable[ShareClass] =
     Enumerable(values.map(v => v.toString -> v): _*)
+
+  def toDES(value : ShareClass) : String = value match {
+    case Ordinary => "Ordinary shares"
+    case Preference => "Preference shares"
+    case Deferred => "Deferred ordinary shares"
+    case Growth => "Other"
+    case Other => "Other"
+  }
 }

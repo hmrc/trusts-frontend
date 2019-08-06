@@ -19,20 +19,25 @@ package utils
 import models.Status.Completed
 import models.UserAnswers
 import play.api.i18n.Messages
-import viewmodels.addAnother.{AssetViewModel, MoneyAssetViewModel}
+import sections.Assets
+import viewmodels.addAnother.{AssetViewModel, MoneyAssetViewModel, ShareAssetViewModel}
 import viewmodels.{AddRow, AddToRows}
 
 class AddAssetViewHelper(userAnswers: UserAnswers)(implicit  messages: Messages) {
 
   private def parseAsset(asset: AssetViewModel) : Option[AddRow] = asset match {
     case mvm : MoneyAssetViewModel =>
-      Some(AddRow(mvm.value.getOrElse(""), mvm.`type`.toString, "#", "#"))
+      val defaultValue = messages("entities.no.value.added")
+      Some(AddRow(mvm.value.getOrElse(defaultValue), mvm.`type`.toString, "#", "#"))
+    case mvm : ShareAssetViewModel =>
+      val defaultName = messages("entities.no.name.added")
+      Some(AddRow(mvm.name.getOrElse(defaultName), mvm.`type`.toString, "#", "#"))
     case _ =>
       None
   }
 
   def rows : AddToRows = {
-    val assets = userAnswers.get(viewmodels.Assets).toList.flatten
+    val assets = userAnswers.get(Assets).toList.flatten
 
     val completed : List[AddRow] = assets.filter(_.status == Completed).flatMap(parseAsset)
 

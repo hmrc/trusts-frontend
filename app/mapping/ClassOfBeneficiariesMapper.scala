@@ -17,7 +17,7 @@
 package mapping
 
 import models.UserAnswers
-import models.entities.ClassOfBeneficiary
+import mapping.reads.ClassOfBeneficiary
 
 
 class ClassOfBeneficiariesMapper extends Mapping[List[UnidentifiedType]]{
@@ -31,7 +31,7 @@ class ClassOfBeneficiariesMapper extends Mapping[List[UnidentifiedType]]{
   override def build(userAnswers: UserAnswers): Option[List[UnidentifiedType]] = {
 
     val beneficiaries : List[ClassOfBeneficiary] =
-      userAnswers.get(models.entities.ClassOfBeneficiaries).getOrElse(List.empty)
+      userAnswers.get(mapping.reads.ClassOfBeneficiaries).getOrElse(List.empty)
 
     beneficiaries match {
       case Nil => None

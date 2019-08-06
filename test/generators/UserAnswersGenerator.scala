@@ -21,22 +21,25 @@ import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.TryValues
 import pages._
+import pages.property_or_land.PropertyOrLandDescriptionPage
+import pages.shares.{ShareClassPage, ShareCompanyNamePage, SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, ShareQuantityInTrustPage, ShareValueInTrustPage, SharesInAPortfolioPage, SharesOnStockExchangePage}
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersGenerator extends TryValues {
   self: Generators =>
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
+    arbitrary[(ShareCompanyNamePage, JsValue)] ::
+    arbitrary[(SharesOnStockExchangePage, JsValue)] ::
+    arbitrary[(SharesInAPortfolioPage, JsValue)] ::
+    arbitrary[(ShareValueInTrustPage, JsValue)] ::
+    arbitrary[(ShareQuantityInTrustPage, JsValue)] ::
+    arbitrary[(SharePortfolioValueInTrustPage, JsValue)] ::
+    arbitrary[(SharePortfolioQuantityInTrustPage, JsValue)] ::
+    arbitrary[(SharePortfolioOnStockExchangePage, JsValue)] ::
+    arbitrary[(SharePortfolioNamePage, JsValue)] ::
+    arbitrary[(ShareClassPage, JsValue)] ::
     arbitrary[(WhatIsThePropertyOrLandAddressPage, JsValue)] ::
-    arbitrary[(SharesOnStockExchangePage.type, JsValue)] ::
-    arbitrary[(SharesInAPortfolioPage.type, JsValue)] ::
-    arbitrary[(ShareValueInTrustPage.type, JsValue)] ::
-    arbitrary[(ShareQuantityInTrustPage.type, JsValue)] ::
-    arbitrary[(SharePortfolioValueInTrustPage.type, JsValue)] ::
-    arbitrary[(SharePortfolioQuantityInTrustPage.type, JsValue)] ::
-    arbitrary[(SharePortfolioOnStockExchangePage.type, JsValue)] ::
-    arbitrary[(SharePortfolioNamePage.type, JsValue)] ::
-    arbitrary[(ShareClassPage.type, JsValue)] ::
     arbitrary[(DeclarationPage.type, JsValue)] ::
     arbitrary[(WhatTypeOfBeneficiaryPage.type, JsValue)] ::
     arbitrary[(AgentInternationalAddressPage.type, JsValue)] ::
@@ -45,6 +48,7 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(ClassBeneficiaryDescriptionPage, JsValue)] ::
     arbitrary[(AgentNamePage.type, JsValue)] ::
     arbitrary[(AddABeneficiaryPage.type, JsValue)] ::
+    arbitrary[(PropertyOrLandDescriptionPage, JsValue)] ::
     arbitrary[(IndividualBeneficiaryVulnerableYesNoPage, JsValue)] ::
     arbitrary[(IndividualBeneficiaryAddressUKPage, JsValue)] ::
     arbitrary[(IndividualBeneficiaryAddressYesNoPage, JsValue)] ::

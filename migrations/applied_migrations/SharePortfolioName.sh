@@ -6,11 +6,11 @@ echo "Applying migration SharePortfolioName"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /sharePortfolioName                        controllers.SharePortfolioNameController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /sharePortfolioName                        controllers.SharePortfolioNameController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /sharePortfolioName                        controllers.shares.SharePortfolioNameController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /sharePortfolioName                        controllers.shares.SharePortfolioNameController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeSharePortfolioName                  controllers.SharePortfolioNameController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeSharePortfolioName                  controllers.SharePortfolioNameController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeSharePortfolioName                  controllers.shares.SharePortfolioNameController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeSharePortfolioName                  controllers.shares.SharePortfolioNameController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

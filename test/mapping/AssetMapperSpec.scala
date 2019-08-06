@@ -22,6 +22,7 @@ import models.Status.Completed
 import models.WhatKindOfAsset
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.entitystatus.AssetStatus
+import pages.shares._
 import pages.{AssetMoneyValuePage, WhatKindOfAssetPage}
 
 class AssetMapperSpec extends FreeSpec with MustMatchers
@@ -33,7 +34,7 @@ class AssetMapperSpec extends FreeSpec with MustMatchers
 
     "when user answers is empty" - {
 
-      "must be able to create an empty AssetDetails" in {
+      "must not be able to create Assets" in {
 
         val userAnswers = emptyUserAnswers
 
@@ -43,35 +44,54 @@ class AssetMapperSpec extends FreeSpec with MustMatchers
 
     "when user answers is not empty " - {
 
-      "must not be able to create a money asset when no value is in user answers" in {
+      "must be able to create Assets for money" in {
 
-        val userAnswers =
-          emptyUserAnswers
-            .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
+        val userAnswers = emptyUserAnswers
+          .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
+          .set(AssetMoneyValuePage(0), "2000").success.value
+          .set(AssetStatus(0), Completed).success.value
 
-        assetMapper.build(userAnswers) mustNot be(defined)
+
+        val expected = Some(Assets(Some(List(AssetMonetaryAmount(2000))),None,None,None,None,None))
+
+        assetMapper.build(userAnswers) mustBe expected
       }
 
-      "must able to create a Monetary Asset" in {
+      "must be able to create Assets for shares" in {
 
-        val userAnswers =
-          emptyUserAnswers
-            .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
-            .set(AssetMoneyValuePage(0), "2000").success.value
-            .set(AssetStatus(0), Completed).success.value
+        val userAnswers = emptyUserAnswers
+          .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Shares).success.value
+          .set(SharesInAPortfolioPage(0), true).success.value
+          .set(SharePortfolioNamePage(0), "Portfolio").success.value
+          .set(SharePortfolioQuantityInTrustPage(0), "30").success.value
+          .set(SharePortfolioValueInTrustPage(0), "999999999999").success.value
+          .set(SharePortfolioOnStockExchangePage(0), false).success.value
+          .set(AssetStatus(0), Completed).success.value
 
-        assetMapper.build(userAnswers).value mustBe Assets(
-          monetary = Some(
-            List(
-              AssetMonetaryAmount(2000)
-            )
-          ),
-          propertyOrLand = None,
-          shares = None,
-          business = None,
-          partnerShip = None,
-          other = None
-        )
+
+        val expected = Some(Assets(None,None,Some(List(SharesType("30","Portfolio","Other","Unquoted",999999999999L))),None,None,None))
+
+        assetMapper.build(userAnswers) mustBe expected
+      }
+
+      "must be able to create Assets for both shares and money" in {
+
+        val userAnswers = emptyUserAnswers
+          .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Shares).success.value
+          .set(SharesInAPortfolioPage(0), true).success.value
+          .set(SharePortfolioNamePage(0), "Portfolio").success.value
+          .set(SharePortfolioQuantityInTrustPage(0), "30").success.value
+          .set(SharePortfolioValueInTrustPage(0), "999999999999").success.value
+          .set(SharePortfolioOnStockExchangePage(0), false).success.value
+          .set(AssetStatus(0), Completed).success.value
+          .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Money).success.value
+          .set(AssetMoneyValuePage(1), "2000").success.value
+          .set(AssetStatus(1), Completed).success.value
+
+
+        val expected = Some(Assets(Some(List(AssetMonetaryAmount(2000))),None,Some(List(SharesType("30","Portfolio","Other","Unquoted",999999999999L))),None,None,None))
+
+        assetMapper.build(userAnswers) mustBe expected
       }
     }
   }

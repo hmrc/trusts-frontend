@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.routes
 import generators.Generators
 import models.IndividualOrBusiness.{Business, Individual}
-import models.entities.Trustees
+import mapping.reads.Trustees
 import models.{AddATrustee, NormalMode, UserAnswers}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary

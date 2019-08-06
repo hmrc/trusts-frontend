@@ -27,12 +27,13 @@ object Validation {
   val telephoneRegex = """^\+[0-9 ]{1,18}$|^[0-9 ]{1,19}$"""
   val addressLineRegex = "^[A-Za-z0-9 ,.()/&'-]*$"
   val clientRefRegex = "^[A-Za-z0-9 ,.()/&'-]*$"
-  val currencyRegex = "^[0-9]{1,12}$"
+  val onlyNumbersRegex = "^[0-9]{1,12}$"
   val numericRegex = "^[0-9]*$"
   val percentageRegex = "^([0-9]|[1-9][0-9]|100)$"
   val decimalCheck = "^[^.]*$"
   val validNinoFormat: String = "[[A-Z]&&[^DFIQUV]][[A-Z]&&[^DFIQUVO]] ?\\d{2} ?\\d{2} ?\\d{2} ?[A-D]{1}"
-  val classOfBeneficiaryDescRegex = "^[0-9a-zA-Z{\\u00C0-\\u02FF\\u2019} \\u005C&`'^\\-]*$"
+  val descriptionRegex = "^[0-9a-zA-Z{\\u00C0-\\u02FF\\u2019} \\u005C&`'^\\-]*$"
+
 
 
 

@@ -19,15 +19,15 @@ package controllers.filters
 import com.google.inject.Inject
 import handlers.ErrorHandler
 import models.requests.DataRequest
-import pages.QuestionPage
 import play.api.Logger
 import play.api.http.Status
 import play.api.libs.json.Reads
 import play.api.mvc.{ActionFilter, Result}
+import queries.Gettable
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class IndexActionFilter[T](index : Int, entity : QuestionPage[List[T]], errorHandler : ErrorHandler)
+class IndexActionFilter[T](index : Int, entity : Gettable[List[T]], errorHandler : ErrorHandler)
                           (implicit val reads : Reads[T], val executionContext: ExecutionContext)
   extends ActionFilter[DataRequest] {
 
@@ -52,7 +52,7 @@ class IndexActionFilterProvider @Inject()(executionContext: ExecutionContext,
                                           errorHandler: ErrorHandler)
 {
 
-  def apply[T](index: Int, entity : QuestionPage[List[T]])(implicit reads: Reads[T]) =
+  def apply[T](index: Int, entity : Gettable[List[T]])(implicit reads: Reads[T]) =
     new IndexActionFilter[T](index, entity, errorHandler)(reads, executionContext)
 
 }

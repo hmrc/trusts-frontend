@@ -29,7 +29,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.WhatIsThePropertyOrLandAddressView
-import models.entities.Assets
+import mapping.reads.Assets
 import scala.concurrent.{ExecutionContext, Future}
 
 class WhatIsThePropertyOrLandAddressController @Inject()(
@@ -50,7 +50,7 @@ class WhatIsThePropertyOrLandAddressController @Inject()(
   private def actions(index : Int, draftId: String) =
     identify andThen getData(draftId) andThen
       requireData andThen
-      validateIndex(index, models.entities.Assets)
+      validateIndex(index, mapping.reads.Assets)
 
   def onPageLoad(mode: Mode, index : Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
   implicit request =>

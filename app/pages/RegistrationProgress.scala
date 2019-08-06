@@ -18,21 +18,22 @@ package pages
 
 import javax.inject.Inject
 import models.Status.{Completed, InProgress}
-import models.entities.{Assets, Trustees}
-import models.{AddABeneficiary, AddATrustee, AddAssets, Status, UserAnswers, entities}
+import mapping.reads.{Assets, Trustees}
+import models.{AddABeneficiary, AddATrustee, AddAssets, Status, UserAnswers}
 import navigation.TaskListNavigator
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
+import sections.{Beneficiaries, ClassOfBeneficiaries, IndividualBeneficiaries, Settlors, TaxLiability, TrustDetails}
 import viewmodels._
 import viewmodels.addAnother.MoneyAssetViewModel
 
 class RegistrationProgress @Inject()(navigator : TaskListNavigator){
 
-  def sections(userAnswers: UserAnswers, draftId: String) = List(
+  def items(userAnswers: UserAnswers, draftId: String) = List(
     Task(Link(TrustDetails, navigator.nextPage(TrustDetails, userAnswers, draftId).url), isTrustDetailsComplete(userAnswers)),
     Task(Link(Settlors, navigator.nextPage(Settlors, userAnswers, draftId).url), isDeceasedSettlorComplete(userAnswers)),
     Task(Link(Trustees, navigator.nextPage(Trustees, userAnswers, draftId).url), isTrusteesComplete(userAnswers)),
     Task(Link(Beneficiaries, navigator.nextPage(Beneficiaries, userAnswers, draftId).url), isBeneficiariesComplete(userAnswers)),
-    Task(Link(Assets, navigator.nextPage(entities.Assets, userAnswers, draftId).url), assetsStatus(userAnswers)),
+    Task(Link(Assets, navigator.nextPage(Assets, userAnswers, draftId).url), assetsStatus(userAnswers)),
     Task(Link(TaxLiability, navigator.nextPage(TaxLiability, userAnswers, draftId).url), None)
   )
 
@@ -56,7 +57,7 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
   def isTrusteesComplete(userAnswers: UserAnswers) : Option[Status] = {
     val noMoreToAdd = userAnswers.get(AddATrusteePage).contains(AddATrustee.NoComplete)
 
-    userAnswers.get(viewmodels.Trustees) match {
+    userAnswers.get(_root_.sections.Trustees) match {
       case Some(l) =>
 
         val hasLeadTrustee = l.exists(_.isLead)
@@ -108,13 +109,13 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
 
   def assetsStatus(userAnswers: UserAnswers) : Option[Status] = {
     val noMoreToAdd = userAnswers.get(AddAssetsPage).contains(AddAssets.NoComplete)
-    val assets = userAnswers.get(viewmodels.Assets).getOrElse(List.empty)
+    val assets = userAnswers.get(sections.Assets).getOrElse(List.empty)
 
     assets match {
       case Nil => None
       case list =>
-        val filtered = list.filter(x => x.isInstanceOf[MoneyAssetViewModel])
-        val status = !filtered.exists(_.status == InProgress) && noMoreToAdd
+
+        val status = !list.exists(_.status == InProgress) && noMoreToAdd
         determineStatus(status)
     }
   }

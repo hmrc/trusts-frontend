@@ -17,7 +17,7 @@
 package pages
 
 import models.UKAddress
-import models.entities.Assets
+import mapping.reads.Assets
 import play.api.libs.json.JsPath
 
 

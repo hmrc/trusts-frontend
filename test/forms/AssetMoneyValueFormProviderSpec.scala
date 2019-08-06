@@ -45,7 +45,7 @@ class AssetMoneyValueFormProviderSpec extends StringFieldBehaviours with IntFiel
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      RegexpGen.from(Validation.currencyRegex)
+      RegexpGen.from(Validation.onlyNumbersRegex)
     )
 
     behave like intFieldWithMinimumWithGenerator(

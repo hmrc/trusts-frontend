@@ -28,7 +28,7 @@ class WhatIsThePropertyOrLandAddressViewSpec extends QuestionViewBehaviours[UKAd
 
   val propertyOrLandPrefix = "whatIsThePropertyOrLandAddress"
   val genericAddressPrefix = "site.address.uk"
-  val postcodeHintKey = "site.address.uk.postcode.hint"
+  val postCodeHintKey = "site.address.uk.postcode.hint"
   val index = 0
 
   override val form = new UKAddressFormProvider()()
@@ -40,18 +40,19 @@ class WhatIsThePropertyOrLandAddressViewSpec extends QuestionViewBehaviours[UKAd
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), propertyOrLandPrefix)
+    behave like dynamicTitlePage(applyView(form), genericAddressPrefix, "the property or land")
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like staticTitlePageWithTextFields(
+    behave like pageWithTextFields(
       form,
       applyView,
-      propertyOrLandPrefix,
       genericAddressPrefix,
       routes.IndividualBeneficiaryAddressUKController.onSubmit(NormalMode, index, fakeDraftId).url,
-      Seq(("line1",None), ("line2",None), ("line3", None), ("townOrCity", None), ("postcode", Some(postcodeHintKey)))
+      Seq(("line1", None), ("line2", None), ("line3", None), ("townOrCity", None), ("postcode", Some(postCodeHintKey))),
+      "the property or land"
     )
 
-    behave like pageWithASubmitButton(applyView(form))}
+    behave like pageWithASubmitButton(applyView(form))
+  }
 }

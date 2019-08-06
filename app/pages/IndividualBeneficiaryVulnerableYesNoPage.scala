@@ -17,7 +17,7 @@
 package pages
 
 import play.api.libs.json.JsPath
-import viewmodels.{Beneficiaries, IndividualBeneficiaries}
+import sections.{Beneficiaries, IndividualBeneficiaries}
 
 final case class IndividualBeneficiaryVulnerableYesNoPage(index : Int) extends QuestionPage[Boolean] {
 

@@ -16,44 +16,25 @@
 
 package mapping
 
+import javax.inject.Inject
 import models.UserAnswers
-import models.entities.MoneyAsset
+import play.api.Logger
 
-import scala.util.Try
-
-class AssetMapper extends Mapping[Assets] {
+class AssetMapper @Inject()(moneyAssetMapper: MoneyAssetMapper, shareAssetMapper: ShareAssetMapper) extends Mapping[Assets] {
 
   override def build(userAnswers: UserAnswers): Option[Assets] = {
-    val allMoney = buildMoney(userAnswers) match {
-      case Nil =>
+
+    val money = moneyAssetMapper.build(userAnswers)
+    val shares = shareAssetMapper.build(userAnswers)
+
+    (money, shares) match {
+      case (None, None) =>
+        Logger.info(s"[AssetMapper][build] unable to map assets")
         None
-      case list =>
-        Some(list)
-    }
-
-    allMoney.map { v =>
-      Assets(
-        monetary = Some(v),
-        propertyOrLand = None,
-        shares = None,
-        business = None,
-        partnerShip = None,
-        other = None
-      )
-    }
-  }
-
-  private def buildMoney(userAnswers: UserAnswers) : List[AssetMonetaryAmount] = {
-    val assets : List[models.entities.Asset] = userAnswers.get(models.entities.Assets).getOrElse(List.empty[models.entities.Asset])
-
-    assets match {
-      case Nil => Nil
-      case list =>
-        list.flatMap {
-          case x: MoneyAsset =>
-            Try(x.value.toLong).toOption.map(AssetMonetaryAmount(_))
-          case _ => None
-        }
+      case (_, _) =>
+        Some(
+          Assets(monetary = money, propertyOrLand = None, shares = shares, business = None, partnerShip = None, other = None)
+        )
     }
   }
 }

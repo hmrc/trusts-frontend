@@ -18,7 +18,7 @@ package pages
 
 import models.WhatTypeOfBeneficiary
 import play.api.libs.json.JsPath
-import viewmodels.Beneficiaries
+import sections.Beneficiaries
 
 case object WhatTypeOfBeneficiaryPage extends QuestionPage[WhatTypeOfBeneficiary] {
 

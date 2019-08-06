@@ -17,7 +17,7 @@
 package pages
 
 import models.IndividualOrBusiness.Business
-import models.entities.Trustees
+import mapping.reads.Trustees
 import models.{IndividualOrBusiness, UKAddress, UserAnswers}
 import play.api.libs.json.JsPath
 

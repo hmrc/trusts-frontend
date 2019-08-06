@@ -23,7 +23,7 @@ import models.{Enumerable, Mode}
 import navigation.Navigator
 import pages.AddAssetsPage
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{I18nSupport, Messages, MessagesApi, MessagesProvider}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -49,12 +49,22 @@ class AddAssetsController @Inject()(
   private def routes(draftId: String) =
     identify andThen getData(draftId) andThen requireData
 
+  private def heading(count: Int)(implicit mp : MessagesProvider) = {
+    count match {
+      case 0 => Messages("addAssets.heading")
+      case 1 => Messages("addAssets.singular.heading")
+      case size => Messages("addAssets.count.heading", size)
+    }
+  }
+
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = routes(draftId) {
     implicit request =>
 
       val assets = new AddAssetViewHelper(request.userAnswers).rows
 
-      Ok(view(form, mode, draftId, assets.inProgress, assets.complete))
+      val count = assets.inProgress.size + assets.complete.size
+
+      Ok(view(form, mode, draftId, assets.inProgress, assets.complete, heading(count)))
   }
 
   def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = routes(draftId).async {
@@ -63,9 +73,11 @@ class AddAssetsController @Inject()(
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) => {
           val assets = new AddAssetViewHelper(request.userAnswers).rows
-           Future.successful(BadRequest(view(formWithErrors, mode, draftId, assets.inProgress, assets.complete)))
-        },
 
+          val count = assets.inProgress.size + assets.complete.size
+
+           Future.successful(BadRequest(view(formWithErrors, mode, draftId, assets.inProgress, assets.complete, heading(count))))
+        },
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AddAssetsPage, value))
