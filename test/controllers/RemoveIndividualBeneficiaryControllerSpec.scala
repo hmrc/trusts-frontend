@@ -17,12 +17,12 @@
 package controllers
 
 import base.SpecBase
+import controllers.routes._
 import forms.RemoveIndexFormProvider
 import models.{FullName, NormalMode}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages.IndividualBeneficiaryNamePage
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RemoveIndexView
@@ -34,7 +34,7 @@ class RemoveIndividualBeneficiaryControllerSpec extends SpecBase with PropertyCh
   val formProvider = new RemoveIndexFormProvider()
   val form = formProvider(prefix)
 
-  val formRoute = Call("POST", "/id/beneficiaries/individual/0/remove")
+  lazy val formRoute = RemoveIndividualBeneficiaryController.onSubmit(NormalMode, 0, fakeDraftId)
 
   val index = 0
 
@@ -55,8 +55,7 @@ class RemoveIndividualBeneficiaryControllerSpec extends SpecBase with PropertyCh
 
       status(result) mustEqual OK
 
-      contentAsString(result) mustEqual
-        view(prefix, form, NormalMode, index, fakeDraftId, "First Last", formRoute)(fakeRequest, messages).toString
+      contentAsString(result) mustEqual view(prefix, form, NormalMode, index, fakeDraftId, "First Last", formRoute)(fakeRequest, messages).toString
 
       application.stop()
     }
