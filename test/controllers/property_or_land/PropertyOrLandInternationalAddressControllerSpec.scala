@@ -17,19 +17,21 @@
 package controllers.property_or_land
 
 import base.SpecBase
+import controllers.IndexValidation
 import forms.InternationalAddressFormProvider
 import models.{InternationalAddress, NormalMode}
 import navigation.{FakeNavigator, Navigator}
-import pages.property_or_land.PropertyOrLandInternationalAddressPage
+import org.scalacheck.Arbitrary.arbitrary
+import pages.property_or_land.{PropertyOrLandDescriptionPage, PropertyOrLandInternationalAddressPage}
 import play.api.inject.bind
-import play.api.mvc.Call
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils._
 import utils.countryOptions.CountryOptionsNonUK
 import views.html.property_or_land.PropertyOrLandInternationalAddressView
 
-class PropertyOrLandInternationalAddressControllerSpec extends SpecBase {
+class PropertyOrLandInternationalAddressControllerSpec extends SpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -159,4 +161,38 @@ class PropertyOrLandInternationalAddressControllerSpec extends SpecBase {
       application.stop()
     }
   }
+
+  "for a GET" must {
+
+    def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
+      val route = controllers.property_or_land.routes.PropertyOrLandInternationalAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+      FakeRequest(GET, route)
+    }
+
+    validateIndex(
+      arbitrary[InternationalAddress],
+      PropertyOrLandInternationalAddressPage.apply,
+      getForIndex
+    )
+
+  }
+
+  "for a POST" must {
+    def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+
+      val route =
+        controllers.property_or_land.routes.PropertyOrLandInternationalAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+      FakeRequest(POST, route)
+        .withFormUrlEncodedBody(("value", "true"))
+    }
+
+    validateIndex(
+      arbitrary[InternationalAddress],
+      PropertyOrLandInternationalAddressPage.apply,
+      postForIndex
+    )
+  }
+
 }

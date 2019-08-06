@@ -17,6 +17,7 @@
 package controllers.property_or_land
 
 import controllers.actions._
+import controllers.filters.IndexActionFilterProvider
 import forms.InternationalAddressFormProvider
 import javax.inject.Inject
 import models.Mode
@@ -39,6 +40,7 @@ class PropertyOrLandInternationalAddressController @Inject()(
                                                               identify: IdentifierAction,
                                                               getData: DraftIdRetrievalActionProvider,
                                                               requireData: DataRequiredAction,
+                                                              validateIndex: IndexActionFilterProvider,
                                                               formProvider: InternationalAddressFormProvider,
                                                               val controllerComponents: MessagesControllerComponents,
                                                               view: PropertyOrLandInternationalAddressView,
@@ -50,7 +52,8 @@ class PropertyOrLandInternationalAddressController @Inject()(
   private def actions(index: Int, draftId: String) =
       identify andThen
       getData(draftId) andThen
-      requireData
+      requireData andThen
+      validateIndex(index, sections.Assets)
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
