@@ -352,6 +352,10 @@ POST       /:draftId/beneficiaries/individual/:index/is-address-in-uk           
 GET        /:draftId/beneficiaries/individual/:index/change-is-address-in-uk                  controllers.IndividualBeneficiaryAddressUKYesNoController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
 POST       /:draftId/beneficiaries/individual/:index/change-is-address-in-uk                 controllers.IndividualBeneficiaryAddressUKYesNoController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
+GET        /:draftId/beneficiaries/individual/:index/remove                        controllers.RemoveIndividualBeneficiaryController.onPageLoad(index: Int, draftId: String)
+POST       /:draftId/beneficiaries/individual/:index/remove                        controllers.RemoveIndividualBeneficiaryController.onSubmit(index: Int, draftId: String)
+
+
 GET        /:draftId/agent-address                   controllers.AgentAddressYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/agent-address                    controllers.AgentAddressYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
 GET        /:draftId/change-agent-address                 controllers.AgentAddressYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
@@ -361,6 +365,9 @@ GET        /:draftId/beneficiaries/class/:index/description                     
 POST       /:draftId/beneficiaries/class/:index/description                        controllers.ClassBeneficiaryDescriptionController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
 GET        /:draftId/beneficiaries/class/:index/change-description                   controllers.ClassBeneficiaryDescriptionController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
 POST       /:draftId/beneficiaries/class/:index/change-description                   controllers.ClassBeneficiaryDescriptionController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+
+GET        /:draftId/beneficiaries/class/:index/remove                        controllers.RemoveClassOfBeneficiaryController.onPageLoad(index: Int, draftId: String)
+POST       /:draftId/beneficiaries/class/:index/remove                        controllers.RemoveClassOfBeneficiaryController.onSubmit(index: Int, draftId: String)
 
 GET        /:draftId/agent-uk-address                        controllers.AgentUKAddressController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/agent-uk-address                        controllers.AgentUKAddressController.onSubmit(mode: Mode = NormalMode, draftId: String)
@@ -436,3 +443,4 @@ POST       /:draftId/asset/:index/change-shares-on-stock-exchange               
 
 GET       /:draftId/asset/:index/check-share-answers                           controllers.shares.ShareAnswerController.onPageLoad(index : Int, draftId : String)
 POST      /:draftId/asset/:index/check-share-answers                           controllers.shares.ShareAnswerController.onSubmit(index : Int, draftId : String)
+
