@@ -14,10 +14,15 @@
  * limitations under the License.
  */
 
-package viewmodels
+package pages.property_or_land
 
-case class AddToRows(inProgress : List[AddRow], complete: List[AddRow]) {
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import sections.Assets
 
-  def count : Int = inProgress.size + complete.size
+final case class PropertyOrLandDescriptionPage(index: Int) extends QuestionPage[String] {
 
+  override def path: JsPath = JsPath \ Assets \ index \ toString
+
+  override def toString: String = "propertyOrLandDescription"
 }

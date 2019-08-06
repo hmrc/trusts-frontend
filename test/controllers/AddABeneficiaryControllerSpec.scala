@@ -46,7 +46,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
 
   val form = formProvider()
 
-  val beneficiariesComplete = List(
+  lazy val beneficiariesComplete = List(
     AddRow("First Last", typeLabel = "Individual Beneficiary", "#", removeIndividualRoute(0)),
     AddRow("description", typeLabel = "Class of beneficiaries", "#", removeClassRoute(0))
   )
@@ -72,7 +72,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, Nil, beneficiariesComplete)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, Nil, beneficiariesComplete, "You have added 2 beneficiaries")(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -92,7 +92,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, Nil, beneficiariesComplete)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, Nil, beneficiariesComplete, "You have added 2 beneficiaries")(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -134,7 +134,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, Nil, Nil)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, Nil, Nil, "Add a beneficiary")(fakeRequest, messages).toString
 
       application.stop()
     }

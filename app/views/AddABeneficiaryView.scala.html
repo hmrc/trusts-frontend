@@ -23,10 +23,10 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, inProgressIndividualBeneficiaries: Seq[AddRow], completeIndividualBeneficiaries: Seq[AddRow])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId: String, inProgressIndividualBeneficiaries: Seq[AddRow], completeIndividualBeneficiaries: Seq[AddRow], heading : String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("addABeneficiary.title")}"
+    title = s"${errorPrefix(form)} $heading"
     ) {
 
     @formHelper(action = AddABeneficiaryController.onSubmit(draftId), 'autoComplete -> "off") {
@@ -35,7 +35,7 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("addABeneficiary.heading")
+        @components.heading(heading)
 
         @components.data_list(inProgressIndividualBeneficiaries, "inprogress", "individual beneficiary")
 

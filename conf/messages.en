@@ -758,6 +758,10 @@ addABeneficiary.add-them-later = Yes, I want to add them later
 addABeneficiary.no-complete = No, I have added all beneficiaries
 addABeneficiary.individualBeneficiary = Individual beneficiary
 addABeneficiary.error.required = Select yes if you want to add another beneficiary
+addABeneficiary.singular.heading = You have added 1 beneficiary
+addABeneficiary.singular.title = You have added 1 beneficiary
+addABeneficiary.count.heading = You have added {0} beneficiaries
+addABeneficiary.count.title = You have added {0} beneficiaries
 
 individualBenficiaryAnswers.title = Check beneficiary details
 individualBenficiaryAnswers.heading = Check beneficiary details
@@ -782,7 +786,7 @@ classBeneficiaryDescription.hint = This must be 56 characters or less. For examp
 
 removeClassOfBeneficiary.title = Are you sure you want to remove {0}?
 removeClassOfBeneficiary.heading = Are you sure you want to remove {0}?
-removeClassOfBeneficiary.error.required = Select yes if you want to remove the class of beneficiary
+removeClassOfBeneficiary.error.required = Select yes if you want to remove the class of beneficiaries
 
 whatTypeOfBeneficiary.first.title = What kind of beneficiary do you need to add first?
 whatTypeOfBeneficiary.next.title = What kind of beneficiary do you need to add next?
@@ -947,8 +951,9 @@ shareCompanyName.error.invalid = Share company’s name must only include letter
 shareAnswers.title = Check share details
 shareAnswers.heading = Check share details
 
-removeIndex.title = removeIndex
-removeIndex.heading = removeIndex
-removeIndex.checkYourAnswersLabel = removeIndex
-removeIndex.error.required = Select yes if removeIndex
-
+propertyOrLandDescription.title = What is the description of the property or land?
+propertyOrLandDescription.heading = What is the description of the property or land?
+propertyOrLandDescription.checkYourAnswersLabel = propertyOrLandDescription
+propertyOrLandDescription.hint = This must be 56 characters or less
+propertyOrLandDescription.error.required = Enter a description of the property or land
+propertyOrLandDescription.error.length = The description of the property or land must be 56 characters or less

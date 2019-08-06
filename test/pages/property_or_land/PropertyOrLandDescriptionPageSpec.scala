@@ -14,10 +14,19 @@
  * limitations under the License.
  */
 
-package viewmodels
+package pages.property_or_land
 
-case class AddToRows(inProgress : List[AddRow], complete: List[AddRow]) {
+import pages.behaviours.PageBehaviours
 
-  def count : Int = inProgress.size + complete.size
 
+class PropertyOrLandDescriptionPageSpec extends PageBehaviours {
+
+  "PropertyOrLandDescriptionPage" must {
+
+    beRetrievable[String](PropertyOrLandDescriptionPage(0))
+
+    beSettable[String](PropertyOrLandDescriptionPage(0))
+
+    beRemovable[String](PropertyOrLandDescriptionPage(0))
+  }
 }
