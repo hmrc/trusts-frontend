@@ -21,7 +21,7 @@ import controllers.actions._
 import javax.inject.Inject
 import models.Matched.{AlreadyRegistered, Failed, Success}
 import models.NormalMode
-import models.RegistrationProgress.InProgress
+import models.RegistrationStatus.InProgress
 import navigation.TaskListNavigator
 import pages._
 import play.api.Logger

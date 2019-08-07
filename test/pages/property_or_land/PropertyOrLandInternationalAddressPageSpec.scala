@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package models
+package pages.property_or_land
 
-sealed trait RegistrationProgress
+import models.InternationalAddress
+import pages.behaviours.PageBehaviours
 
-object RegistrationProgress extends Enumerable.Implicits {
+class PropertyOrLandInternationalAddressPageSpec extends PageBehaviours {
 
-  case object NotStarted extends WithName("NotStarted") with RegistrationProgress
-  case object InProgress extends WithName("InProgress") with RegistrationProgress
-  case object Complete extends WithName("Complete") with RegistrationProgress
+  "PropertyOrLandInternationalAddressPage" must {
 
-  val values: List[RegistrationProgress] = List(
-    NotStarted,InProgress,Complete
-  )
+    beRetrievable[InternationalAddress](PropertyOrLandInternationalAddressPage(0))
 
-  implicit val enumerable: Enumerable[RegistrationProgress] =
-    Enumerable(values.map(v => v.toString -> v): _*)
+    beSettable[InternationalAddress](PropertyOrLandInternationalAddressPage(0))
+
+    beRemovable[InternationalAddress](PropertyOrLandInternationalAddressPage(0))
+  }
 }

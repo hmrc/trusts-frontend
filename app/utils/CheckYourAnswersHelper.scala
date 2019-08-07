@@ -237,6 +237,16 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
 
   }
 
+  def propertyOrLandInternationalAddress(index: Int): Option[AnswerRow] = userAnswers.get(PropertyOrLandInternationalAddressPage(index)) map {
+    x =>
+      AnswerRow(
+        "site.address.international.checkYourAnswersLabel",
+        internationalAddress(x, countryOptions),
+        controllers.property_or_land.routes.PropertyOrLandInternationalAddressController.onPageLoad(CheckMode, index, draftId).url,
+        canEdit = canEdit
+      )
+  }
+
   def agentInternationalAddress: Option[AnswerRow] = userAnswers.get(AgentInternationalAddressPage) map {
     x =>
       AnswerRow(
