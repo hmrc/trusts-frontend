@@ -38,7 +38,10 @@
 
         @components.input_text(
             field = form("field1"),
-            label = messages("propertyLandValueTrust.field1")
+            label = messages("propertyLandValueTrust.field1"),
+            labelClass = Some("visually-hidden"),
+            hint = Some(messages("propertyLandValueTrust.hint")),
+            symbol = Some("£")
         )
 
         @components.submit_button()

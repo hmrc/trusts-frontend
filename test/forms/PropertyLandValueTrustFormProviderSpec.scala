@@ -19,6 +19,7 @@ package forms
 import forms.behaviours.StringFieldBehaviours
 import forms.property_or_land.PropertyLandValueTrustFormProvider
 import play.api.data.FormError
+import wolfendale.scalacheck.regexp.RegexpGen
 
 class PropertyLandValueTrustFormProviderSpec extends StringFieldBehaviours {
 
@@ -34,7 +35,7 @@ class PropertyLandValueTrustFormProviderSpec extends StringFieldBehaviours {
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      RegexpGen.from(Validation.onlyNumbersRegex)
     )
 
     behave like fieldWithMaxLength(

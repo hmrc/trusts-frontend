@@ -16,6 +16,7 @@
 
 package forms.property_or_land
 
+import forms.Validation
 import forms.mappings.Mappings
 import javax.inject.Inject
 import models.PropertyLandValueTrust
@@ -26,10 +27,11 @@ class PropertyLandValueTrustFormProvider @Inject() extends Mappings {
 
   def apply(): Form[PropertyLandValueTrust] = Form(
     mapping(
-      "field1" -> text("propertyLandValueTrust.error.field1.required")
+      "field1" -> currency("propertyLandValueTrust.error.field1.required")
         .verifying(
           firstError(
             maxLength(12, "propertyLandValueTrust.error.field1.length"),
+            regexp(Validation.numericRegex, "propertyLandValueTrust.error.field1.invalid"),
             isNotEmpty("field1", "propertyLandValueTrust.error.field1.required")
           )
         ))(PropertyLandValueTrust.apply)(PropertyLandValueTrust.unapply)

@@ -98,7 +98,7 @@ class PropertyLandValueTrustControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, propertyLandValueTrustRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"))
+          .withFormUrlEncodedBody(("field1", "100"))
 
       val result = route(application, request).value
 

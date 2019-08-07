@@ -18,8 +18,11 @@ package forms.mappings
 
 import java.time.LocalDate
 
+import forms.Validation
 import play.api.data.validation.{Constraint, Invalid, Valid}
 import uk.gov.hmrc.domain.Nino
+
+import scala.util.matching.Regex
 
 trait Constraints {
 
@@ -128,4 +131,13 @@ trait Constraints {
         Valid
     }
 
+  protected def wholeNumber(errorKey: String) : Constraint[String] = {
+
+    val regex: Regex = Validation.decimalCheck.r
+
+    Constraint {
+      case regex(_*) => Valid
+      case _ =>  Invalid(errorKey)
+    }
+  }
 }
