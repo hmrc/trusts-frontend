@@ -966,3 +966,13 @@ propertyOrLandDescription.error.length = The description of the property or land
 propertyOrLandInternationalAddress.title = What is the property or land’s address?
 propertyOrLandInternationalAddress.heading = What is the property or land’s address?
 propertyOrLandInternationalAddress.checkYourAnswersLabel = What is the property or land’s address?
+
+propertyOrLandTotalValue.title = What is the current total value of the property or land?
+propertyOrLandTotalValue.heading = What is the current total value of the property or land?
+propertyOrLandTotalValue.checkYourAnswersLabel = What is the current total value of the property or land?
+propertyOrLandTotalValue.hint = This can be an estimate. Rounded down to the nearest pound. For example, 4000
+propertyOrLandTotalValue.error.required = Enter the current total value of the property or land
+propertyOrLandTotalValue.error.length = Current total value of the property or land must be 12 numbers or less
+propertyOrLandTotalValue.error.invalid = Current total value of the property or land must be a number
+propertyOrLandTotalValue.error.zero = Current total value of the property or land must be 1 or more
+propertyOrLandTotalValue.error.wholeNumber = Current total value of the property or land must be a whole number
