@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package viewmodels
+package queries
 
-case class AddToRows(inProgress : List[AddRow], complete: List[AddRow]) {
+import play.api.libs.json.JsPath
+import sections.{Beneficiaries, ClassOfBeneficiaries}
 
-  def count : Int = inProgress.size + complete.size
+final case class RemoveClassOfBeneficiaryQuery(index : Int) extends Settable[Boolean] {
 
+    override def path: JsPath = JsPath \ Beneficiaries \ ClassOfBeneficiaries \ index
 }
