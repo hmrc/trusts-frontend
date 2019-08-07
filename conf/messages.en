@@ -945,3 +945,6 @@ propertyOrLandDescription.checkYourAnswersLabel = propertyOrLandDescription
 propertyOrLandDescription.hint = This must be 56 characters or less
 propertyOrLandDescription.error.required = Enter a description of the property or land
 propertyOrLandDescription.error.length = The description of the property or land must be 56 characters or less
+
+propertyOrLandAnswers.title = Check property or land details
+propertyOrLandAnswers.heading = Check property or land details
