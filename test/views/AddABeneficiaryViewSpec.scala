@@ -46,10 +46,12 @@ class AddABeneficiaryViewSpec extends OptionsViewBehaviours with TabularDataView
   val view = viewFor[AddABeneficiaryView](Some(emptyUserAnswers))
 
   def applyView(form: Form[_]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode, fakeDraftId, Nil, Nil)(fakeRequest, messages)
+    view.apply(form, NormalMode, fakeDraftId, Nil, Nil, "Add a beneficiary")(fakeRequest, messages)
 
-  def applyView(form: Form[_], inProgressBeneficiaries: Seq[AddRow], completeBeneficiaries: Seq[AddRow]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode, fakeDraftId, inProgressBeneficiaries, completeBeneficiaries)(fakeRequest, messages)
+  def applyView(form: Form[_], inProgressBeneficiaries: Seq[AddRow], completeBeneficiaries: Seq[AddRow], count : Int): HtmlFormat.Appendable = {
+    val title = if (count > 1) s"You have added $count beneficiaries" else "You have added 1 beneficiary"
+    view.apply(form, NormalMode, fakeDraftId, inProgressBeneficiaries, completeBeneficiaries, title)(fakeRequest, messages)
+  }
 
 
   "AddABeneficiaryView" when {
@@ -67,11 +69,11 @@ class AddABeneficiaryViewSpec extends OptionsViewBehaviours with TabularDataView
 
     "there is data in progress" must {
 
-      val viewWithData = applyView(form, inProgressBeneficiaries, Nil)
+      val viewWithData = applyView(form, inProgressBeneficiaries, Nil, 4)
 
-      behave like normalPage(applyView(form), messageKeyPrefix)
+      behave like dynamicTitlePage(viewWithData, "addABeneficiary.count", "4")
 
-      behave like pageWithBackLink(applyView(form))
+      behave like pageWithBackLink(viewWithData)
 
       behave like pageWithInProgressTabularData(viewWithData, inProgressBeneficiaries)
 
@@ -80,11 +82,11 @@ class AddABeneficiaryViewSpec extends OptionsViewBehaviours with TabularDataView
 
     "there is complete data" must {
 
-      val viewWithData = applyView(form, Nil, completeBeneficiaries)
+      val viewWithData = applyView(form, Nil, completeBeneficiaries, 4)
 
-      behave like normalPage(applyView(form), messageKeyPrefix)
+      behave like dynamicTitlePage(viewWithData, "addABeneficiary.count", "4")
 
-      behave like pageWithBackLink(applyView(form))
+      behave like pageWithBackLink(viewWithData)
 
       behave like pageWithCompleteTabularData(viewWithData, completeBeneficiaries)
 
@@ -93,11 +95,11 @@ class AddABeneficiaryViewSpec extends OptionsViewBehaviours with TabularDataView
 
     "there is both in progress and complete data" must {
 
-      val viewWithData = applyView(form, inProgressBeneficiaries, completeBeneficiaries)
+      val viewWithData = applyView(form, inProgressBeneficiaries, completeBeneficiaries, 8)
 
-      behave like normalPage(applyView(form), messageKeyPrefix)
+      behave like dynamicTitlePage(viewWithData, "addABeneficiary.count", "8")
 
-      behave like pageWithBackLink(applyView(form))
+      behave like pageWithBackLink(viewWithData)
 
       behave like pageWithTabularData(viewWithData, inProgressBeneficiaries, completeBeneficiaries)
 
