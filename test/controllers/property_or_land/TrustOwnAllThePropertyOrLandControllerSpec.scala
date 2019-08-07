@@ -17,17 +17,19 @@
 package controllers.property_or_land
 
 import base.SpecBase
+import controllers.IndexValidation
 import forms.property_or_land.TrustOwnAllThePropertyOrLandFormProvider
 import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.property_or_land.TrustOwnAllThePropertyOrLandPage
 import play.api.inject.bind
-import play.api.mvc.Call
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.property_or_land.TrustOwnAllThePropertyOrLandView
 
-class TrustOwnAllThePropertyOrLandControllerSpec extends SpecBase {
+class TrustOwnAllThePropertyOrLandControllerSpec extends SpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -151,5 +153,41 @@ class TrustOwnAllThePropertyOrLandControllerSpec extends SpecBase {
 
       application.stop()
     }
+
+    "for a GET" must {
+
+      def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
+        val route = controllers.property_or_land.routes.TrustOwnAllThePropertyOrLandController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+        FakeRequest(GET, route)
+      }
+
+      validateIndex(
+        arbitrary[Boolean],
+        TrustOwnAllThePropertyOrLandPage.apply,
+        getForIndex
+      )
+
+    }
+
+    "for a POST" must {
+
+      def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+
+        val route =
+          controllers.property_or_land.routes.TrustOwnAllThePropertyOrLandController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+        FakeRequest(POST, route)
+          .withFormUrlEncodedBody(("value", "1234"))
+      }
+
+      validateIndex(
+        arbitrary[Boolean],
+        TrustOwnAllThePropertyOrLandPage.apply,
+        postForIndex
+      )
+    }
+
   }
+
 }
