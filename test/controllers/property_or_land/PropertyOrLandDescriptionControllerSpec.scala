@@ -21,6 +21,7 @@ import controllers.IndexValidation
 import forms.property_or_land.PropertyOrLandDescriptionFormProvider
 import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
+import org.jsoup.Jsoup
 import org.scalacheck.Arbitrary.arbitrary
 import pages.property_or_land.PropertyOrLandDescriptionPage
 import play.api.inject.bind
@@ -98,7 +99,7 @@ class PropertyOrLandDescriptionControllerSpec extends SpecBase with IndexValidat
       application.stop()
     }
 
-    "return a Bad Request and errors when invalid data is submitted" in {
+    "return a Bad Request and errors when empty form data is submitted" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
@@ -116,6 +117,26 @@ class PropertyOrLandDescriptionControllerSpec extends SpecBase with IndexValidat
 
       contentAsString(result) mustEqual
         view(boundForm, NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "return a Bad Request and errors when invalid data is submitted" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      val request =
+        FakeRequest(POST, propertyOrLandDescriptionRoute)
+          .withFormUrlEncodedBody(("value", "$$$$$$$$$"))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual BAD_REQUEST
+
+      val document = Jsoup.parse(contentAsString(result))
+      document.getElementById("error-message-value-input").text() mustBe
+        "The description of the property or land must only include letters a to z, numbers, ampersands (&), " +
+          "apostrophes, forward slashes, hyphens and spaces"
 
       application.stop()
     }
