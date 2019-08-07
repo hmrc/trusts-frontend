@@ -15,38 +15,32 @@
  *@
 
 @import controllers.routes._
-@import models.{Mode, AddABeneficiary}
-@import viewmodels.AddRow
+@import models.Mode
+@import play.api.mvc.Call
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, inProgressIndividualBeneficiaries: Seq[AddRow], completeIndividualBeneficiaries: Seq[AddRow], heading : String)(implicit request: Request[_], messages: Messages)
+@(prefix : String, form: Form[_], index: Int, draftId: String, nameOrDescription : String, route : Call)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} $heading"
+    title = s"${errorPrefix(form)} ${messages(s"$prefix.title", nameOrDescription)}"
     ) {
 
-    @formHelper(action = AddABeneficiaryController.onSubmit(draftId), 'autoComplete -> "off") {
+    @formHelper(action = route, 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading(heading)
+        @components.heading(s"$prefix.heading", Some(nameOrDescription))
 
-        @components.data_list(inProgressIndividualBeneficiaries, "inprogress", "individual beneficiary")
-
-        @components.data_list(completeIndividualBeneficiaries, "complete", "individual beneficiary")
-
-        @components.input_radio(
+        @components.input_yes_no(
             field = form("value"),
-            legend = messages("addABeneficiary.additional-content"),
-            legendClass = Some("heading-medium"),
-            inputs = AddABeneficiary.options,
-            legendAsH2Heading = true
+            label = messages(s"$prefix.heading", nameOrDescription),
+            legendClass = Some("visually-hidden")
         )
 
         @components.submit_button()

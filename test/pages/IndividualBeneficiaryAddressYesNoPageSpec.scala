@@ -31,7 +31,6 @@ class IndividualBeneficiaryAddressYesNoPageSpec extends PageBehaviours {
     beRemovable[Boolean](IndividualBeneficiaryAddressYesNoPage(0))
   }
 
-
   "remove relevant Data when IndividualBeneficiaryAddressYesNoPage is set to false" in {
     val index = 0
     forAll(arbitrary[UserAnswers], arbitrary[String]) {

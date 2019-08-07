@@ -18,13 +18,13 @@ package views
 
 import controllers.routes
 import forms.UKAddressFormProvider
-import models.{NormalMode, UKAddress}
+import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.QuestionViewBehaviours
+import views.behaviours.UkAddressViewBehaviours
 import views.html.TrusteesUkAddressView
 
-class TrusteeUKAddressViewSpec extends QuestionViewBehaviours[UKAddress] {
+class TrusteeUKAddressViewSpec extends UkAddressViewBehaviours {
 
   val messageKeyPrefix = "trusteesUkAddress"
   val index = 0
@@ -44,12 +44,10 @@ class TrusteeUKAddressViewSpec extends QuestionViewBehaviours[UKAddress] {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like pageWithTextFields(
-      form,
+    behave like ukAddressPage(
       applyView,
-      messageKeyPrefix,
-      routes.TrusteesUkAddressController.onSubmit(NormalMode, index, fakeDraftId).url,
-      Seq(("line1",None), ("line2",None), ("line3",None), ("townOrCity",None), ("postcode",Some(postcodeHintKey))),
+      Some(messageKeyPrefix),
+      routes.SettlorsUKAddressController.onSubmit(NormalMode, fakeDraftId).url,
       trusteeName
     )
 

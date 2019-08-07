@@ -14,10 +14,17 @@
  * limitations under the License.
  */
 
-package viewmodels
+package forms
 
-case class AddToRows(inProgress : List[AddRow], complete: List[AddRow]) {
+import javax.inject.Inject
 
-  def count : Int = inProgress.size + complete.size
+import forms.mappings.Mappings
+import play.api.data.Form
 
+class RemoveIndexFormProvider @Inject() extends Mappings {
+
+  def apply(prefix : String): Form[Boolean] =
+    Form(
+      "value" -> boolean(s"$prefix.error.required")
+    )
 }

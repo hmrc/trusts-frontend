@@ -756,6 +756,10 @@ addABeneficiary.add-them-later = Yes, I want to add them later
 addABeneficiary.no-complete = No, I have added all beneficiaries
 addABeneficiary.individualBeneficiary = Individual beneficiary
 addABeneficiary.error.required = Select yes if you want to add another beneficiary
+addABeneficiary.singular.heading = You have added 1 beneficiary
+addABeneficiary.singular.title = You have added 1 beneficiary
+addABeneficiary.count.heading = You have added {0} beneficiaries
+addABeneficiary.count.title = You have added {0} beneficiaries
 
 individualBenficiaryAnswers.title = Check beneficiary details
 individualBenficiaryAnswers.heading = Check beneficiary details
@@ -778,6 +782,10 @@ classBeneficiaryDescription.error.length = The description of the class in the t
 classBeneficiaryDescription.error.invalid = The description of the class in the trust deed must only include letters a to z, numbers, ampersands (&), backward slashes or spaces
 classBeneficiaryDescription.hint = This must be 56 characters or less. For example, future grandchildren and future great-grandchildren.
 
+removeClassOfBeneficiary.title = Are you sure you want to remove {0}?
+removeClassOfBeneficiary.heading = Are you sure you want to remove {0}?
+removeClassOfBeneficiary.error.required = Select yes if you want to remove the class of beneficiaries
+
 whatTypeOfBeneficiary.first.title = What kind of beneficiary do you need to add first?
 whatTypeOfBeneficiary.next.title = What kind of beneficiary do you need to add next?
 whatTypeOfBeneficiary.first.heading = What kind of beneficiary do you need to add first?
@@ -791,6 +799,10 @@ whatTypeOfBeneficiary.Other = Other beneficiary
 whatTypeOfBeneficiary.checkYourAnswersLabel = whatTypeOfBeneficiary
 whatTypeOfBeneficiary.error.required = Select the type of beneficiary you need to add
 whatTypeOfBeneficiary.hint = You can enter a maximum of 25 entries for each beneficiary type
+
+removeIndividualBeneficiary.title = Are you sure you want to remove {0}?
+removeIndividualBeneficiary.heading = Are you sure you want to remove {0}?
+removeIndividualBeneficiary.error.required = Select yes if you want to remove the individual beneficiary
 
 confirmationPage.title = Registration received, your reference is: {0}
 confirmationPage.heading = Registration received Your reference is: {0}

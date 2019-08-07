@@ -19,7 +19,7 @@ package queries
 import play.api.libs.json.JsPath
 import sections.Assets
 
-final case class RemoveAssetQuery(index : Int) extends Settable[Nothing] {
+final case class RemoveAssetQuery(index : Int) extends Settable[Boolean] {
 
     override def path: JsPath = JsPath \ Assets \ index
 }
