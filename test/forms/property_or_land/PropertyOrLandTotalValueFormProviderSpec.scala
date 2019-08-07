@@ -28,12 +28,28 @@ class PropertyOrLandTotalValueFormProviderSpec extends StringFieldBehaviours wit
   val lengthKey = "propertyOrLandTotalValue.error.length"
   val maxLength = 12
   val zeroNumberkey = "propertyOrLandTotalValue.error.zero"
+  val invalidOnlyNumbersKey = "propertyOrLandTotalValue.error.invalid"
+  val invalidWholeNumberKey = "propertyOrLandTotalValue.error.wholeNumber"
 
   val form = new PropertyOrLandTotalValueFormProvider()()
 
   ".value" must {
 
     val fieldName = "value"
+
+    behave like nonDecimalField(
+      form,
+      fieldName,
+      wholeNumberError = FormError(fieldName, invalidWholeNumberKey, Seq(Validation.decimalCheck))
+    )
+
+    behave like fieldWithRegexpWithGenerator(
+      form,
+      fieldName,
+      Validation.onlyNumbersRegex,
+      generator = stringsWithMaxLength(maxLength),
+      error = FormError(fieldName, invalidOnlyNumbersKey, Seq(Validation.onlyNumbersRegex))
+    )
 
     behave like fieldThatBindsValidData(
       form,
