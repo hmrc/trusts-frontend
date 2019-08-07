@@ -21,7 +21,7 @@ import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
-import views.html.PropertyOrLandDescriptionView
+import views.html.property_or_land.PropertyOrLandDescriptionView
 
 class PropertyOrLandDescriptionViewSpec extends StringViewBehaviours {
 
