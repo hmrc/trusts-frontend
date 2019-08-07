@@ -25,5 +25,5 @@ final case class PropertyOrLandInternationalAddressPage(index: Int) extends Ques
 
   override def path: JsPath = JsPath \ Assets \ index \ toString
 
-  override def toString: String = "propertyOrLandInternationalAddress"
+  override def toString: String = "address"
 }

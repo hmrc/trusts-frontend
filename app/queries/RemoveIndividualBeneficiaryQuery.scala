@@ -14,20 +14,12 @@
  * limitations under the License.
  */
 
-package models
+package queries
 
-sealed trait RegistrationProgress
+import play.api.libs.json.JsPath
+import sections.{Beneficiaries, IndividualBeneficiaries}
 
-object RegistrationProgress extends Enumerable.Implicits {
+final case class RemoveIndividualBeneficiaryQuery(index : Int) extends Settable[Boolean] {
 
-  case object NotStarted extends WithName("NotStarted") with RegistrationProgress
-  case object InProgress extends WithName("InProgress") with RegistrationProgress
-  case object Complete extends WithName("Complete") with RegistrationProgress
-
-  val values: List[RegistrationProgress] = List(
-    NotStarted,InProgress,Complete
-  )
-
-  implicit val enumerable: Enumerable[RegistrationProgress] =
-    Enumerable(values.map(v => v.toString -> v): _*)
+    override def path: JsPath = JsPath \ Beneficiaries \ IndividualBeneficiaries \ index
 }

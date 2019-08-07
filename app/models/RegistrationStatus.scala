@@ -14,10 +14,20 @@
  * limitations under the License.
  */
 
-package viewmodels
+package models
 
-case class AddToRows(inProgress : List[AddRow], complete: List[AddRow]) {
+sealed trait RegistrationStatus
 
-  def count : Int = inProgress.size + complete.size
+object RegistrationStatus extends Enumerable.Implicits {
 
+  case object NotStarted extends WithName("NotStarted") with RegistrationStatus
+  case object InProgress extends WithName("InProgress") with RegistrationStatus
+  case object Complete extends WithName("Complete") with RegistrationStatus
+
+  val values: List[RegistrationStatus] = List(
+    NotStarted,InProgress,Complete
+  )
+
+  implicit val enumerable: Enumerable[RegistrationStatus] =
+    Enumerable(values.map(v => v.toString -> v): _*)
 }
