@@ -23,7 +23,7 @@ import javax.inject.Inject
 import mapping.reads._
 import models.{CheckMode, InternationalAddress, UKAddress, UserAnswers}
 import pages._
-import pages.property_or_land.PropertyOrLandDescriptionPage
+import pages.property_or_land.{PropertyOrLandDescriptionPage, PropertyOrLandInternationalAddressPage}
 import pages.shares._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
@@ -226,6 +226,16 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
         }
     }
 
+  }
+
+  def propertyOrLandInternationalAddress(index: Int): Option[AnswerRow] = userAnswers.get(PropertyOrLandInternationalAddressPage(index)) map {
+    x =>
+      AnswerRow(
+        "site.address.international.checkYourAnswersLabel",
+        internationalAddress(x, countryOptions),
+        controllers.property_or_land.routes.PropertyOrLandInternationalAddressController.onPageLoad(CheckMode, index, draftId).url,
+        canEdit = canEdit
+      )
   }
 
   def agentInternationalAddress: Option[AnswerRow] = userAnswers.get(AgentInternationalAddressPage) map {
