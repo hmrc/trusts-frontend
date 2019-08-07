@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.property_or_land
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
@@ -22,17 +22,17 @@ import forms.UKAddressFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.WhatIsThePropertyOrLandAddressPage
+import pages.property_or_land.WhatIsThePropertyOrLandUKAddressPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.WhatIsThePropertyOrLandAddressView
-import mapping.reads.Assets
+import views.html.property_or_land.WhatIsThePropertyOrLandUKAddressView
+
 import scala.concurrent.{ExecutionContext, Future}
 
-class WhatIsThePropertyOrLandAddressController @Inject()(
+class WhatIsThePropertyOrLandUKAddressController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
@@ -42,7 +42,7 @@ class WhatIsThePropertyOrLandAddressController @Inject()(
                                         validateIndex: IndexActionFilterProvider,
                                         formProvider: UKAddressFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: WhatIsThePropertyOrLandAddressView
+                                        view: WhatIsThePropertyOrLandUKAddressView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -50,12 +50,12 @@ class WhatIsThePropertyOrLandAddressController @Inject()(
   private def actions(index : Int, draftId: String) =
     identify andThen getData(draftId) andThen
       requireData andThen
-      validateIndex(index, mapping.reads.Assets)
+      validateIndex(index, sections.Assets)
 
   def onPageLoad(mode: Mode, index : Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
   implicit request =>
 
-      val preparedForm = request.userAnswers.get(WhatIsThePropertyOrLandAddressPage(index)) match {
+      val preparedForm = request.userAnswers.get(WhatIsThePropertyOrLandUKAddressPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -72,9 +72,9 @@ class WhatIsThePropertyOrLandAddressController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatIsThePropertyOrLandAddressPage(index), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatIsThePropertyOrLandUKAddressPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(WhatIsThePropertyOrLandAddressPage(index), mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(WhatIsThePropertyOrLandUKAddressPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

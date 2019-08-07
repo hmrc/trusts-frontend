@@ -14,22 +14,24 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.property_or_land
 
 import base.SpecBase
+import controllers.IndexValidation
 import forms.UKAddressFormProvider
 import generators.ModelGenerators
 import models.{NormalMode, UKAddress}
 import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.WhatIsThePropertyOrLandAddressPage
+import pages.property_or_land.WhatIsThePropertyOrLandUKAddressPage
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
-import views.html.WhatIsThePropertyOrLandAddressView
+import views.html.property_or_land.WhatIsThePropertyOrLandUKAddressView
 
-class WhatIsThePropertyOrLandAddressControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
+
+class WhatIsThePropertyOrLandUKAddressControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -37,7 +39,7 @@ class WhatIsThePropertyOrLandAddressControllerSpec extends SpecBase with ModelGe
   val form = formProvider()
   val index = 0
 
-  lazy val whatIsThePropertyOrLandAddressRoute = routes.WhatIsThePropertyOrLandAddressController.onPageLoad(NormalMode,index ,fakeDraftId).url
+  lazy val WhatIsThePropertyOrLandUKAddressRoute: String = routes.WhatIsThePropertyOrLandUKAddressController.onPageLoad(NormalMode,index ,fakeDraftId).url
 
   "WhatIsThePropertyOrLandAddress Controller" must {
 
@@ -45,11 +47,11 @@ class WhatIsThePropertyOrLandAddressControllerSpec extends SpecBase with ModelGe
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, whatIsThePropertyOrLandAddressRoute)
+      val request = FakeRequest(GET, WhatIsThePropertyOrLandUKAddressRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[WhatIsThePropertyOrLandAddressView]
+      val view = application.injector.instanceOf[WhatIsThePropertyOrLandUKAddressView]
 
       status(result) mustEqual OK
 
@@ -62,13 +64,13 @@ class WhatIsThePropertyOrLandAddressControllerSpec extends SpecBase with ModelGe
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers
-        .set(WhatIsThePropertyOrLandAddressPage(index),  UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")).success.value
+        .set(WhatIsThePropertyOrLandUKAddressPage(index),  UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, whatIsThePropertyOrLandAddressRoute)
+      val request = FakeRequest(GET, WhatIsThePropertyOrLandUKAddressRoute)
 
-      val view = application.injector.instanceOf[WhatIsThePropertyOrLandAddressView]
+      val view = application.injector.instanceOf[WhatIsThePropertyOrLandUKAddressView]
 
       val result = route(application, request).value
 
@@ -88,7 +90,7 @@ class WhatIsThePropertyOrLandAddressControllerSpec extends SpecBase with ModelGe
           .build()
 
       val request =
-        FakeRequest(POST, whatIsThePropertyOrLandAddressRoute)
+        FakeRequest(POST, WhatIsThePropertyOrLandUKAddressRoute)
           .withFormUrlEncodedBody(("line1", "value 1"), ("townOrCity", "value 2"),("postcode", "NE1 1ZZ"))
 
       val result = route(application, request).value
@@ -104,12 +106,12 @@ class WhatIsThePropertyOrLandAddressControllerSpec extends SpecBase with ModelGe
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, whatIsThePropertyOrLandAddressRoute)
+        FakeRequest(POST, WhatIsThePropertyOrLandUKAddressRoute)
           .withFormUrlEncodedBody(("value", "invalid value"))
 
       val boundForm = form.bind(Map("value" -> "invalid value"))
 
-      val view = application.injector.instanceOf[WhatIsThePropertyOrLandAddressView]
+      val view = application.injector.instanceOf[WhatIsThePropertyOrLandUKAddressView]
 
       val result = route(application, request).value
 
@@ -125,13 +127,13 @@ class WhatIsThePropertyOrLandAddressControllerSpec extends SpecBase with ModelGe
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, whatIsThePropertyOrLandAddressRoute)
+      val request = FakeRequest(GET, WhatIsThePropertyOrLandUKAddressRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -141,14 +143,14 @@ class WhatIsThePropertyOrLandAddressControllerSpec extends SpecBase with ModelGe
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, whatIsThePropertyOrLandAddressRoute)
+        FakeRequest(POST, WhatIsThePropertyOrLandUKAddressRoute)
           .withFormUrlEncodedBody(("line1", "value 1"), ("townOrCity", "value 2"),("postcode", "NE1 1ZZ"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -157,14 +159,14 @@ class WhatIsThePropertyOrLandAddressControllerSpec extends SpecBase with ModelGe
   "for a GET" must {
 
     def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
-      val route = routes.WhatIsThePropertyOrLandAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
+      val route = routes.WhatIsThePropertyOrLandUKAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       FakeRequest(GET, route)
     }
 
     validateIndex(
       arbitrary[UKAddress],
-      WhatIsThePropertyOrLandAddressPage.apply,
+      WhatIsThePropertyOrLandUKAddressPage.apply,
       getForIndex
     )
 
@@ -174,7 +176,7 @@ class WhatIsThePropertyOrLandAddressControllerSpec extends SpecBase with ModelGe
     def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
       val route =
-       routes.WhatIsThePropertyOrLandAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
+       routes.WhatIsThePropertyOrLandUKAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       FakeRequest(POST, route)
         .withFormUrlEncodedBody(("value", "true"))
@@ -182,7 +184,7 @@ class WhatIsThePropertyOrLandAddressControllerSpec extends SpecBase with ModelGe
 
     validateIndex(
       arbitrary[UKAddress],
-      WhatIsThePropertyOrLandAddressPage.apply,
+      WhatIsThePropertyOrLandUKAddressPage.apply,
       postForIndex
     )
   }

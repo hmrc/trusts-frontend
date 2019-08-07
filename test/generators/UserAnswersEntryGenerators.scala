@@ -20,7 +20,7 @@ import models._
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
 import pages._
-import pages.property_or_land.PropertyOrLandDescriptionPage
+import pages.property_or_land.{PropertyOrLandDescriptionPage, WhatIsThePropertyOrLandUKAddressPage}
 import pages.shares._
 import play.api.libs.json.{JsValue, Json}
 
@@ -42,10 +42,10 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryWhatIsThePropertyOrLandAddressUserAnswersEntry: Arbitrary[(WhatIsThePropertyOrLandAddressPage, JsValue)] =
+  implicit lazy val arbitraryWhatIsThePropertyOrLandAddressUserAnswersEntry: Arbitrary[(WhatIsThePropertyOrLandUKAddressPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[WhatIsThePropertyOrLandAddressPage]
+        page  <- arbitrary[WhatIsThePropertyOrLandUKAddressPage]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }

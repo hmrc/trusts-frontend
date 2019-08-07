@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package pages
+package pages.property_or_land
 
 import models.UKAddress
-import mapping.reads.Assets
+import pages.QuestionPage
 import play.api.libs.json.JsPath
+import sections.Assets
 
-
-final case class WhatIsThePropertyOrLandAddressPage(index: Int) extends QuestionPage[UKAddress] {
+final case class WhatIsThePropertyOrLandUKAddressPage(index: Int) extends QuestionPage[UKAddress] {
 
   override def path: JsPath = JsPath \ Assets \ index \ toString
 
-  override def toString: String = "whatIsThePropertyOrLandAddress"
+  override def toString: String = "address"
 }

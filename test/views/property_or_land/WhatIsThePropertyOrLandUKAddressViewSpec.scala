@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-package views
+package views.property_or_land
 
-import controllers.routes
+import controllers.property_or_land.routes
 import forms.UKAddressFormProvider
 import models.{NormalMode, UKAddress}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
-import views.html.WhatIsThePropertyOrLandAddressView
+import views.html.property_or_land.WhatIsThePropertyOrLandUKAddressView
 
-class WhatIsThePropertyOrLandAddressViewSpec extends QuestionViewBehaviours[UKAddress] {
+class WhatIsThePropertyOrLandUKAddressViewSpec extends QuestionViewBehaviours[UKAddress] {
 
-  val propertyOrLandPrefix = "whatIsThePropertyOrLandAddress"
+  val propertyOrLandPrefix = "whatIsThePropertyOrLandUKAddress"
   val genericAddressPrefix = "site.address.uk"
   val postCodeHintKey = "site.address.uk.postcode.hint"
   val index = 0
 
   override val form = new UKAddressFormProvider()()
 
-  "WhatIsThePropertyOrLandAddressView view" must {
+  "WhatIsThePropertyOrLandUKAddressView view" must {
 
-    val view = viewFor[WhatIsThePropertyOrLandAddressView](Some(emptyUserAnswers))
+    val view = viewFor[WhatIsThePropertyOrLandUKAddressView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
@@ -48,11 +48,12 @@ class WhatIsThePropertyOrLandAddressViewSpec extends QuestionViewBehaviours[UKAd
       form,
       applyView,
       genericAddressPrefix,
-      routes.IndividualBeneficiaryAddressUKController.onSubmit(NormalMode, index, fakeDraftId).url,
+      routes.WhatIsThePropertyOrLandUKAddressController.onSubmit(NormalMode, index, fakeDraftId).url,
       Seq(("line1", None), ("line2", None), ("line3", None), ("townOrCity", None), ("postcode", Some(postCodeHintKey))),
       "the property or land"
     )
 
     behave like pageWithASubmitButton(applyView(form))
+
   }
 }

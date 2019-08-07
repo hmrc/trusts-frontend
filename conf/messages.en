@@ -526,8 +526,8 @@ addAssets.checkYourAnswersLabel = addAssets
 addAssets.error.required = Select yes if you want to add another asset
 addAssets.count.heading = You have added {0} assets
 addAssets.count.title = You have added {0} assets
-addAssets.singular.heading = You have added {0} asset
-addAssets.singular.title = You have added {0} asset
+addAssets.singular.heading = You have added 1 asset
+addAssets.singular.title = You have added 1 asset
 
 settlorDateOfBirthYesNo.title = Do you know {0}’s date of birth?
 settlorDateOfBirthYesNo.heading = Do you know {0}’s date of birth?
@@ -710,7 +710,7 @@ individualBeneficiaryAddressYesNo.heading = Do you know {0}’s address?
 individualBeneficiaryAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
 individualBeneficiaryAddressYesNo.error.required = Select yes if you know the individual beneficiary’s address
 
-individualBeneficiaryAddressUKindividualBeneficiaryAddressUK.title = What is {0}’s address?
+individualBeneficiaryAddressUK.title = What is {0}’s address?
 individualBeneficiaryAddressUK.heading = What is {0}’s address?
 individualBeneficiaryAddressUK.line1 = Address line 1
 individualBeneficiaryAddressUK.line2 = Address line 2 (optional)
@@ -944,8 +944,8 @@ propertyOrLandDescription.hint = This must be 56 characters or less
 propertyOrLandDescription.error.required = Enter a description of the property or land
 propertyOrLandDescription.error.length = The description of the property or land must be 56 characters or less
 
-whatIsThePropertyOrLandAddress.title = What is the property or land’s address?
-whatIsThePropertyOrLandAddress.heading = What is the property or land’s address?
-whatIsThePropertyOrLandAddress.checkYourAnswersLabel = What is the property or land’s address?
+whatIsThePropertyOrLandUKAddress.title = What is the property or land’s address?
+whatIsThePropertyOrLandUKAddress.heading = What is the property or land’s address?
+whatIsThePropertyOrLandUKAddress.checkYourAnswersLabel = What is the property or land’s address?
 
 

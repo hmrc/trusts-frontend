@@ -27,7 +27,7 @@ import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
-import views.html.PropertyOrLandDescriptionView
+import views.html.property_or_land.PropertyOrLandDescriptionView
 
 class PropertyOrLandDescriptionControllerSpec extends SpecBase with IndexValidation {
 

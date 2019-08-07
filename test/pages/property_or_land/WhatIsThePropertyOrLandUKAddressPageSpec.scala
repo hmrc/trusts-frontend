@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package pages
+package pages.property_or_land
 
 import models.UKAddress
 import pages.behaviours.PageBehaviours
 
 
-class WhatIsThePropertyOrLandAddressPageSpec extends PageBehaviours {
+class WhatIsThePropertyOrLandUKAddressPageSpec extends PageBehaviours {
 
   "WhatIsThePropertyOrLandAddressPage" must {
 
-    beRetrievable[UKAddress](WhatIsThePropertyOrLandAddressPage(0))
+    beRetrievable[UKAddress](WhatIsThePropertyOrLandUKAddressPage(0))
 
-    beSettable[UKAddress](WhatIsThePropertyOrLandAddressPage(0))
+    beSettable[UKAddress](WhatIsThePropertyOrLandUKAddressPage(0))
 
-    beRemovable[UKAddress](WhatIsThePropertyOrLandAddressPage(0))
+    beRemovable[UKAddress](WhatIsThePropertyOrLandUKAddressPage(0))
   }
 }
