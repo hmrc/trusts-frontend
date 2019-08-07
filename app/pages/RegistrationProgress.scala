@@ -60,11 +60,14 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
     userAnswers.get(_root_.sections.Trustees) match {
       case Some(l) =>
 
-        val hasLeadTrustee = l.exists(_.isLead)
+        if (l.isEmpty) {
+          None
+        } else {
+          val hasLeadTrustee = l.exists(_.isLead)
+          val isComplete = !l.exists(_.status == InProgress) && noMoreToAdd && hasLeadTrustee
 
-        val isComplete = !l.exists(_.status == InProgress) && noMoreToAdd && hasLeadTrustee
-
-        determineStatus(isComplete)
+          determineStatus(isComplete)
+        }
       case None =>
         None
     }
@@ -86,24 +89,38 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
 
   def isBeneficiariesComplete(userAnswers: UserAnswers) : Option[Status] = {
 
+    def individualBeneficiariesComplete : Boolean = {
+      val individuals = userAnswers.get(IndividualBeneficiaries).getOrElse(List.empty)
+
+      if (individuals.isEmpty) {
+        false
+      } else {
+        !individuals.exists(_.status == InProgress)
+      }
+    }
+
+    def classComplete : Boolean  = {
+      val classes = userAnswers.get(ClassOfBeneficiaries).getOrElse(List.empty)
+      if (classes.isEmpty) {
+        false
+      } else {
+        !classes.exists(_.status == InProgress)
+      }
+    }
+
     val noMoreToAdd = userAnswers.get(AddABeneficiaryPage).contains(AddABeneficiary.NoComplete)
 
-    val individuals = userAnswers.get(IndividualBeneficiaries)
-    val classes = userAnswers.get(ClassOfBeneficiaries)
+    val individuals = userAnswers.get(IndividualBeneficiaries).getOrElse(List.empty)
+    val classes = userAnswers.get(ClassOfBeneficiaries).getOrElse(List.empty)
 
     (individuals, classes) match {
-      case (None, None) => None
-      case (Some(ind), None) =>
-        val indComplete = !ind.exists(_.status == InProgress)
-        determineStatus(indComplete && noMoreToAdd)
-      case (None, Some(c)) =>
-        val classComplete = !c.exists(_.status == InProgress)
+      case (Nil, Nil) => None
+      case (ind, Nil) =>
+        determineStatus(individualBeneficiariesComplete && noMoreToAdd)
+      case (Nil, c) =>
         determineStatus(classComplete && noMoreToAdd)
-      case (Some(ind), Some(c)) =>
-        val indComplete = !ind.exists(_.status == InProgress)
-        val classComplete = !c.exists(_.status == InProgress)
-
-        determineStatus(indComplete && classComplete && noMoreToAdd)
+      case (ind, c) =>
+        determineStatus(individualBeneficiariesComplete && classComplete && noMoreToAdd)
     }
   }
 

@@ -22,7 +22,7 @@ import handlers.ErrorHandler
 import javax.inject.Inject
 import mapping.reads.{LeadTrusteeIndividual, Trustees}
 import models.requests.DataRequest
-import models.{NormalMode, RegistrationProgress, UserAnswers}
+import models.{NormalMode, RegistrationStatus, UserAnswers}
 import pages.{RegistrationTRNPage, TrustHaveAUTRPage}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -69,7 +69,7 @@ class ConfirmationController @Inject()(
       val userAnswers = request.userAnswers
 
        userAnswers.progress match {
-        case RegistrationProgress.Complete =>
+        case RegistrationStatus.Complete =>
           userAnswers.get(RegistrationTRNPage) match {
             case None =>
               Logger.info("[ConfirmationController][onPageLoad] No TRN available for completed trusts. Throwing exception.")
@@ -77,10 +77,10 @@ class ConfirmationController @Inject()(
             case Some(trn) =>
               renderView(trn, userAnswers, draftId)
           }
-        case RegistrationProgress.InProgress =>
+        case RegistrationStatus.InProgress =>
           Logger.info("[ConfirmationController][onPageLoad] Registration inProgress status,redirecting to task list.")
           Future.successful(Redirect(routes.TaskListController.onPageLoad(draftId)))
-        case RegistrationProgress.NotStarted =>
+        case RegistrationStatus.NotStarted =>
           Logger.info("[ConfirmationController][onPageLoad] Registration NotStarted status,redirecting to trust registered page online.")
           Future.successful(Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId)))
       }

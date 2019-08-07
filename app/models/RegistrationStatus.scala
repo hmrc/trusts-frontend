@@ -16,18 +16,18 @@
 
 package models
 
-sealed trait RegistrationProgress
+sealed trait RegistrationStatus
 
-object RegistrationProgress extends Enumerable.Implicits {
+object RegistrationStatus extends Enumerable.Implicits {
 
-  case object NotStarted extends WithName("NotStarted") with RegistrationProgress
-  case object InProgress extends WithName("InProgress") with RegistrationProgress
-  case object Complete extends WithName("Complete") with RegistrationProgress
+  case object NotStarted extends WithName("NotStarted") with RegistrationStatus
+  case object InProgress extends WithName("InProgress") with RegistrationStatus
+  case object Complete extends WithName("Complete") with RegistrationStatus
 
-  val values: List[RegistrationProgress] = List(
+  val values: List[RegistrationStatus] = List(
     NotStarted,InProgress,Complete
   )
 
-  implicit val enumerable: Enumerable[RegistrationProgress] =
+  implicit val enumerable: Enumerable[RegistrationStatus] =
     Enumerable(values.map(v => v.toString -> v): _*)
 }
