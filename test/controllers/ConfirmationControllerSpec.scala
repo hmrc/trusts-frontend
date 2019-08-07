@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import models.{FullName, NormalMode, RegistrationProgress}
+import models.{FullName, NormalMode, RegistrationStatus}
 import pages.{RegistrationTRNPage, TrustHaveAUTRPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -33,7 +33,7 @@ class ConfirmationControllerSpec extends SpecBase {
     "return OK and the correct view for a GET when TRN is available" in {
 
       val userAnswers = TestUserAnswers.withLeadTrustee(
-        emptyUserAnswers.copy(progress = RegistrationProgress.Complete)
+        emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
           .set(RegistrationTRNPage, "xTRN1234678").success.value
           .set(TrustHaveAUTRPage, false).success.value
       )
@@ -56,7 +56,7 @@ class ConfirmationControllerSpec extends SpecBase {
 
     "return to Task List view  when registration is in progress " in {
 
-      val userAnswers = emptyUserAnswers.copy(progress = RegistrationProgress.InProgress)
+      val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.InProgress)
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -72,7 +72,7 @@ class ConfirmationControllerSpec extends SpecBase {
 
     "return to trust registered online page when registration is not started. " in {
 
-      val userAnswers = emptyUserAnswers.copy(progress = RegistrationProgress.NotStarted)
+      val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.NotStarted)
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -88,7 +88,7 @@ class ConfirmationControllerSpec extends SpecBase {
 
     "return InternalServerError when TRN is not available" in {
 
-      val userAnswers = emptyUserAnswers.copy(progress = RegistrationProgress.Complete)
+      val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
