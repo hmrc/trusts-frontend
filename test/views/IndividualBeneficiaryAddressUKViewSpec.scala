@@ -17,17 +17,16 @@
 package views
 
 import controllers.routes
-import forms.{ UKAddressFormProvider}
-import models.{FullName, UKAddress, NormalMode}
+import forms.UKAddressFormProvider
+import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.QuestionViewBehaviours
+import views.behaviours.UkAddressViewBehaviours
 import views.html.IndividualBeneficiaryAddressUKView
 
-class IndividualBeneficiaryAddressUKViewSpec extends QuestionViewBehaviours[UKAddress] {
+class IndividualBeneficiaryAddressUKViewSpec extends UkAddressViewBehaviours {
 
   val messageKeyPrefix = "individualBeneficiaryAddressUK"
-  val postcodeHintKey = "individualBeneficiaryAddressUK.postcode.hint"
   val index = 0
   val name = "First Last"
   val fullName = FullName("First", None, "Last")
@@ -45,12 +44,10 @@ class IndividualBeneficiaryAddressUKViewSpec extends QuestionViewBehaviours[UKAd
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like pageWithTextFields(
-      form,
+    behave like ukAddressPage(
       applyView,
-      messageKeyPrefix,
-      routes.IndividualBeneficiaryAddressUKController.onSubmit(NormalMode, index, fakeDraftId).url,
-      Seq(("line1",None), ("line2",None), ("line3", None), ("townOrCity", None), ("postcode", Some(postcodeHintKey))),
+      Some(messageKeyPrefix),
+      routes.SettlorsUKAddressController.onSubmit(NormalMode, fakeDraftId).url,
       name.toString
     )
 

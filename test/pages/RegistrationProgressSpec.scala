@@ -21,9 +21,10 @@ import java.time.LocalDate
 import base.SpecBase
 import models.AddAssets.NoComplete
 import models.Status.{Completed, InProgress}
-import models.{AddABeneficiary, AddATrustee, FullName, Status, WhatKindOfAsset}
+import models.{AddABeneficiary, AddATrustee, FullName, Status, UserAnswers, WhatKindOfAsset}
 import pages.entitystatus.{AssetStatus, ClassBeneficiaryStatus, DeceasedSettlorStatus, IndividualBeneficiaryStatus, TrustDetailsStatus, TrusteeStatus}
 import pages.shares.{SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, SharesInAPortfolioPage}
+import play.api.libs.json.{JsObject, Json}
 
 class RegistrationProgressSpec extends SpecBase {
 
@@ -70,7 +71,6 @@ class RegistrationProgressSpec extends SpecBase {
 
   }
 
-
   "Trustee section" must {
 
     "render no tag" when {
@@ -80,6 +80,22 @@ class RegistrationProgressSpec extends SpecBase {
         val registrationProgress = injector.instanceOf[RegistrationProgress]
 
         val userAnswers = emptyUserAnswers
+
+        registrationProgress.isTrusteesComplete(userAnswers) mustBe None
+      }
+
+      "trustees list is empty" in {
+        val registrationProgress = injector.instanceOf[RegistrationProgress]
+
+        val json = Json.parse(
+          """
+            |{
+            |        "trustees" : [],
+            |        "addATrustee" : "no-complete"
+            |}
+            |""".stripMargin)
+
+        val userAnswers = UserAnswers(draftId = fakeDraftId, data = json.as[JsObject], internalAuthId = "id")
 
         registrationProgress.isTrusteesComplete(userAnswers) mustBe None
       }
@@ -203,6 +219,44 @@ class RegistrationProgressSpec extends SpecBase {
           registrationProgress.isBeneficiariesComplete(userAnswers) mustBe None
         }
 
+        "individual beneficiaries list is empty" in {
+          val registrationProgress = injector.instanceOf[RegistrationProgress]
+
+          val json = Json.parse(
+            """
+              |{
+              |"beneficiaries" : {
+              |            "whatTypeOfBeneficiary" : "Individual",
+              |            "individualBeneficiaries" : [
+              |            ]
+              |        }
+              |}
+              |""".stripMargin)
+
+          val userAnswers = UserAnswers(draftId = fakeDraftId, data = json.as[JsObject], internalAuthId = "id")
+
+          registrationProgress.isBeneficiariesComplete(userAnswers) mustBe None
+        }
+
+        "class of beneficiaries list is empty" in {
+          val registrationProgress = injector.instanceOf[RegistrationProgress]
+
+          val json = Json.parse(
+            """
+              |{
+              |"beneficiaries" : {
+              |            "whatTypeOfBeneficiary" : "Individual",
+              |            "classOfBeneficiaries" : [
+              |            ]
+              |        }
+              |}
+              |""".stripMargin)
+
+          val userAnswers = UserAnswers(draftId = fakeDraftId, data = json.as[JsObject], internalAuthId = "id")
+
+          registrationProgress.isBeneficiariesComplete(userAnswers) mustBe None
+        }
+
       }
 
     "render in-progress tag" when {
@@ -282,6 +336,21 @@ class RegistrationProgressSpec extends SpecBase {
         val registrationProgress = injector.instanceOf[RegistrationProgress]
 
         val userAnswers = emptyUserAnswers
+
+        registrationProgress.assetsStatus(userAnswers) mustBe None
+      }
+
+      "assets list is empty" in {
+        val registrationProgress = injector.instanceOf[RegistrationProgress]
+
+        val json = Json.parse(
+          """
+            |{
+            |   "assets" : []
+            |}
+            |""".stripMargin)
+
+        val userAnswers = UserAnswers(draftId = fakeDraftId, data = json.as[JsObject], internalAuthId = "id")
 
         registrationProgress.assetsStatus(userAnswers) mustBe None
       }
