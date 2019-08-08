@@ -34,14 +34,13 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("sharePortfolioValueInTrust.heading")
-
         @components.input_text(
           field = form("value"),
           label = messages("sharePortfolioValueInTrust.heading"),
-          labelClass=Some("visually-hidden"),
-          hint = Some(messages("sharePortfolioValueInTrust.hint")),
-          symbol = Some("£")
+          symbol = Some("£"),
+          labelClass = Some("heading-large"),
+          labelAsHeading = true,
+          hint = Some(messages("sharePortfolioValueInTrust.hint"))
         )
 
         @components.submit_button()

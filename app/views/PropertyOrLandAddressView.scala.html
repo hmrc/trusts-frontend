@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.shares.routes._
+@import controllers.property_or_land.routes._
 @import models.Mode
 
 @this(
@@ -22,24 +22,24 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, index : Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId: String, index: Int)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("sharePortfolioName.title")}"
+    title = s"${errorPrefix(form)} ${messages("propertyOrLandAddress.title")}"
     ) {
 
-    @formHelper(action = SharePortfolioNameController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
+    @formHelper(action = PropertyOrLandAddressController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.input_text(
-          field = form("value"),
-          label = messages("sharePortfolioName.heading"),
-          labelClass=Some("heading-large"),
-          labelAsHeading = true,
-          ariaRequired = true
+        @components.heading("propertyOrLandAddress.heading")
+
+        @components.input_yes_no(
+            field = form("value"),
+            label = messages("propertyOrLandAddress.heading"),
+            legendClass = Some("visually-hidden")
         )
 
         @components.submit_button()
