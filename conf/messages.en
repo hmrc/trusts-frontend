@@ -977,3 +977,8 @@ propertyOrLandTotalValue.error.length = Current total value of the property or l
 propertyOrLandTotalValue.error.invalid = Current total value of the property or land must be a number
 propertyOrLandTotalValue.error.zero = Current total value of the property or land must be 1 or more
 propertyOrLandTotalValue.error.wholeNumber = Current total value of the property or land must be a whole number
+
+propertyOrLandAddress.title = Is the property or land’s address in the UK?
+propertyOrLandAddress.heading = Is the property or land’s address in the UK?
+propertyOrLandAddress.checkYourAnswersLabel = Is the property or land’s address in the UK?
+propertyOrLandAddress.error.required = Select yes if the property or land has an address in the UK
