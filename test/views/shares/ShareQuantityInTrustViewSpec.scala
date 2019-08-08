@@ -46,6 +46,6 @@ class ShareQuantityInTrustViewSpec extends StringViewBehaviours {
     behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, companyName, routes.ShareQuantityInTrustController.onSubmit(
       NormalMode, index, fakeDraftId).url, Some(messages(s"$messageKeyPrefix.hint")))
 
-    behave like pageWithASubmitButton(applyView(form))
+    pageWithASubmitButton(applyView(form))
   }
 }

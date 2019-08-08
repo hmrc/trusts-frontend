@@ -23,6 +23,7 @@ import javax.inject.Inject
 import mapping.reads._
 import models.{CheckMode, InternationalAddress, UKAddress, UserAnswers}
 import pages._
+import pages.property_or_land._
 import pages.shares._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
@@ -31,9 +32,25 @@ import utils.CheckYourAnswersHelper._
 import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 
-class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
-                                      (userAnswers: UserAnswers, draftId: String, canEdit: Boolean = true)
-                                      (implicit messages: Messages) {
+class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers, draftId: String, canEdit: Boolean = true)(implicit messages: Messages) {
+
+  def propertyOrLandDescription(index: Int): Option[AnswerRow] = userAnswers.get(PropertyOrLandDescriptionPage(index)) map {
+    x =>
+      AnswerRow(
+        "propertyOrLandDescription.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        controllers.property_or_land.routes.PropertyOrLandDescriptionController.onPageLoad(CheckMode, index, draftId).url
+      )
+  }
+
+  def trustOwnAllThePropertyOrLand(index: Int): Option[AnswerRow] = userAnswers.get(TrustOwnAllThePropertyOrLandPage(index)) map {
+    x =>
+      AnswerRow(
+        "trustOwnAllThePropertyOrLand.checkYourAnswersLabel",
+        yesOrNo(x),
+        controllers.property_or_land.routes.TrustOwnAllThePropertyOrLandController.onPageLoad(CheckMode, index, draftId).url
+      )
+  }
 
   def trustDetails: Option[Seq[AnswerSection]] = {
     val questions = Seq(
@@ -220,6 +237,16 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
 
   }
 
+  def propertyOrLandInternationalAddress(index: Int): Option[AnswerRow] = userAnswers.get(PropertyOrLandInternationalAddressPage(index)) map {
+    x =>
+      AnswerRow(
+        "site.address.international.checkYourAnswersLabel",
+        internationalAddress(x, countryOptions),
+        controllers.property_or_land.routes.PropertyOrLandInternationalAddressController.onPageLoad(CheckMode, index, draftId).url,
+        canEdit = canEdit
+      )
+  }
+
   def agentInternationalAddress: Option[AnswerRow] = userAnswers.get(AgentInternationalAddressPage) map {
     x =>
       AnswerRow(
@@ -276,7 +303,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
     x =>
       AnswerRow(
         "shareValueInTrust.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
+        currency(x),
         controllers.shares.routes.ShareValueInTrustController.onPageLoad(CheckMode, index, draftId).url,
         shareCompName(index, userAnswers),
         canEdit = canEdit
@@ -298,7 +325,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
     x =>
       AnswerRow(
         "sharePortfolioValueInTrust.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
+        currency(x),
         controllers.shares.routes.SharePortfolioValueInTrustController.onPageLoad(CheckMode, index, draftId).url,
         canEdit = canEdit
       )
@@ -640,7 +667,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
     x =>
       AnswerRow(
         "assetMoneyValue.checkYourAnswersLabel",
-        HtmlFormat.escape(s"£$x"),
+        currency(x),
         routes.AssetMoneyValueController.onPageLoad(CheckMode, index, draftId).url,
         canEdit = canEdit
       )
@@ -893,6 +920,8 @@ object CheckYourAnswersHelper {
 
   def country(code: String, countryOptions: CountryOptions): String =
     countryOptions.options.find(_.value.equals(code)).map(_.label).getOrElse("")
+
+  def currency(value : String) : Html = escape(s"£$value")
 
   def trusteeName(index: Int, userAnswers: UserAnswers): String =
     userAnswers.get(TrusteesNamePage(index)).map(_.toString).getOrElse("")

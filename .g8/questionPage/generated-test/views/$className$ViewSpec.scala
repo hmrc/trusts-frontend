@@ -19,7 +19,7 @@ class $className$ViewSpec extends QuestionViewBehaviours[$className$] {
     val view = viewFor[$className$View](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
 
 
     behave like normalPage(applyView(form), messageKeyPrefix)
@@ -30,7 +30,7 @@ class $className$ViewSpec extends QuestionViewBehaviours[$className$] {
       form,
       applyView,
       messageKeyPrefix,
-      routes.$className$Controller.onSubmit(NormalMode).url,
+      routes.$className$Controller.onSubmit(NormalMode, fakeDraftId).url,
       Seq(("field1", None), ("field2", None))
     )
   }
