@@ -21,13 +21,12 @@ import forms.UKAddressFormProvider
 import models.{FullName, NormalMode, UKAddress}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.QuestionViewBehaviours
+import views.behaviours.{QuestionViewBehaviours, UkAddressViewBehaviours}
 import views.html.SettlorsUKAddressView
 
-class SettlorsUKAddressViewSpec extends QuestionViewBehaviours[UKAddress] {
+class SettlorsUKAddressViewSpec extends  UkAddressViewBehaviours {
 
   val messageKeyPrefix = "settlorsUKAddress"
-  val postcodeHintKey = "settlorsUKAddress.postcode.hint"
 
   override val form = new UKAddressFormProvider()()
 
@@ -44,12 +43,10 @@ class SettlorsUKAddressViewSpec extends QuestionViewBehaviours[UKAddress] {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like pageWithTextFields(
-      form,
+    behave like ukAddressPage(
       applyView,
-      messageKeyPrefix,
+      Some(messageKeyPrefix),
       routes.SettlorsUKAddressController.onSubmit(NormalMode, fakeDraftId).url,
-      Seq(("line1",None), ("line2",None), ("line3", None), ("townOrCity", None), ("postcode", Some(postcodeHintKey))),
       name.toString
     )
 

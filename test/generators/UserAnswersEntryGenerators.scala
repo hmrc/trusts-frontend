@@ -21,10 +21,27 @@ import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
 import pages._
 import pages.property_or_land.{PropertyOrLandAddressPage, PropertyOrLandDescriptionPage}
+import pages.property_or_land._
 import pages.shares._
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
+
+  implicit lazy val arbitraryPropertyOrLandInternationalAddressUserAnswersEntry: Arbitrary[(PropertyOrLandInternationalAddressPage, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[PropertyOrLandInternationalAddressPage]
+        value <- arbitrary[InternationalAddress].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryPropertyOrLandTotalValueUserAnswersEntry: Arbitrary[(PropertyOrLandTotalValuePage, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[PropertyOrLandTotalValuePage]
+        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
+      } yield (page, value)
+    }
 
   implicit lazy val arbitraryPropertyOrLandDescriptionUserAnswersEntry: Arbitrary[(PropertyOrLandDescriptionPage, JsValue)] =
     Arbitrary {
@@ -38,6 +55,14 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
     Arbitrary {
       for {
         page  <- arbitrary[PropertyOrLandAddressPage]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryTrustOwnAllThePropertyOrLandUserAnswersEntry: Arbitrary[(TrustOwnAllThePropertyOrLandPage, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[TrustOwnAllThePropertyOrLandPage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }

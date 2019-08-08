@@ -16,55 +16,72 @@
 
 package utils
 
-import models.{FullName, UserAnswers}
+import controllers.routes
+import models.{FullName, NormalMode, UserAnswers}
 import play.api.i18n.Messages
 import sections.{ClassOfBeneficiaries, IndividualBeneficiaries}
 import viewmodels.addAnother.{ClassOfBeneficiaryViewModel, IndividualBeneficiaryViewModel}
 import viewmodels.{AddRow, AddToRows}
 
-class AddABeneficiaryViewHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
+class AddABeneficiaryViewHelper(userAnswers: UserAnswers, draftId : String)(implicit messages: Messages) {
+
+  private case class InProgressComplete(inProgress : List[AddRow], complete: List[AddRow])
 
   private def parseName(name : Option[FullName]) : String = {
     val defaultValue = messages("entities.no.name.added")
     name.map(_.toString).getOrElse(defaultValue)
   }
 
-  private def parseIndividualBeneficiary(individualBeneficiary : IndividualBeneficiaryViewModel) : AddRow = {
+  private def parseIndividualBeneficiary(individualBeneficiary : (IndividualBeneficiaryViewModel, Int)) : AddRow = {
+    val vm = individualBeneficiary._1
+    val index = individualBeneficiary._2
+
     AddRow(
-      parseName(individualBeneficiary.name),
-      messages("entities.beneficiary.individual"),
-      "#",
-      "#"
+      name = parseName(vm.name),
+      typeLabel = messages("entities.beneficiary.individual"),
+      changeUrl = "#",
+      removeUrl = routes.RemoveIndividualBeneficiaryController.onPageLoad(index, draftId).url
     )
   }
 
-  private def parseClassOfBeneficiary(classOfBeneficiary : ClassOfBeneficiaryViewModel) : AddRow = {
+  private def parseClassOfBeneficiary(classOfBeneficiary : (ClassOfBeneficiaryViewModel, Int)) : AddRow = {
+
+    val vm = classOfBeneficiary._1
+    val index = classOfBeneficiary._2
+
     val defaultValue = messages("entities.no.description.added")
     AddRow(
-      classOfBeneficiary.description.getOrElse(defaultValue),
+      vm.description.getOrElse(defaultValue),
       messages("entities.beneficiary.class"),
       "#",
-      "#"
+      removeUrl = routes.RemoveClassOfBeneficiaryController.onPageLoad(index, draftId).url
     )
   }
 
-  def rows : AddToRows = {
-    val individualBeneficiaries = userAnswers.get(IndividualBeneficiaries).toList.flatten
+  private def individualBeneficiaries = {
+    val individualBeneficiaries = userAnswers.get(IndividualBeneficiaries).toList.flatten.zipWithIndex
 
-    val indBeneficiaryComplete = individualBeneficiaries.filter(_.isComplete).map(parseIndividualBeneficiary)
+    val indBeneficiaryComplete = individualBeneficiaries.filter(_._1.isComplete).map(parseIndividualBeneficiary)
 
-    val indBenInProgress = individualBeneficiaries.filterNot(_.isComplete).map(parseIndividualBeneficiary)
+    val indBenInProgress = individualBeneficiaries.filterNot(_._1.isComplete).map(parseIndividualBeneficiary)
 
-    val classOfBeneficiaries = userAnswers.get(ClassOfBeneficiaries).toList.flatten
+    InProgressComplete(inProgress = indBenInProgress, complete = indBeneficiaryComplete)
+  }
 
-    val classOfBeneficiariesComplete = classOfBeneficiaries.filter(_.isComplete).map(parseClassOfBeneficiary)
+  private def classOfBeneficiaries = {
+    val classOfBeneficiaries = userAnswers.get(ClassOfBeneficiaries).toList.flatten.zipWithIndex
 
-    val classOfBeneficiariesInProgress = classOfBeneficiaries.filterNot(_.isComplete).map(parseClassOfBeneficiary)
+    val completed = classOfBeneficiaries.filter(_._1.isComplete).map(parseClassOfBeneficiary)
 
+    val progress = classOfBeneficiaries.filterNot(_._1.isComplete).map(parseClassOfBeneficiary)
+
+    InProgressComplete(inProgress = progress, complete = completed)
+  }
+
+  def rows : AddToRows =
     AddToRows(
-      inProgress = indBenInProgress ::: classOfBeneficiariesInProgress,
-      complete = indBeneficiaryComplete ::: classOfBeneficiariesComplete
+      inProgress = individualBeneficiaries.inProgress ::: classOfBeneficiaries.inProgress,
+      complete = individualBeneficiaries.complete ::: classOfBeneficiaries.complete
     )
-  }
 
 }

@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 import controllers.actions._
 import forms.DeclarationFormProvider
-import models.{AlreadyRegistered, Mode, RegistrationProgress, RegistrationTRNResponse, TrustResponse, UnableToRegister, UserAnswers}
+import models.{AlreadyRegistered, Mode, RegistrationStatus, RegistrationTRNResponse, TrustResponse, UnableToRegister, UserAnswers}
 import navigation.Navigator
 import pages.{DeclarationPage, RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.Logger
@@ -118,7 +118,7 @@ class DeclarationController @Inject()(
             dateSaved =>
               val days = DAYS.between(updatedAnswers.createdAt,submissionDate )
               Logger.info(s"[saveTRNAndCompleteRegistration] Days between creation and submission : ${days}")
-              sessionRepository.set(dateSaved.copy(progress = RegistrationProgress.Complete)).map {
+              sessionRepository.set(dateSaved.copy(progress = RegistrationStatus.Complete)).map {
               _ =>
                 Redirect(routes.ConfirmationController.onPageLoad(updatedAnswers.draftId))
             }

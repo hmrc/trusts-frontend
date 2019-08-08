@@ -27,6 +27,12 @@ class RichJsValueSpec extends FreeSpec with MustMatchers with PropertyChecks wit
 
   val nonEmptyAlphaStr: Gen[String] = Gen.alphaStr.suchThat(_.nonEmpty)
 
+  def buildJsObj[B](keys: Seq[String], values: Seq[B])(implicit writes: Writes[B]): JsObject = {
+    keys.zip(values).foldLeft(JsObject.empty) {
+      case (acc, (key, value)) => acc + (key -> Json.toJson[B](value))
+    }
+  }
+
   "set" - {
 
     "must return an error if the path is empty" in {
@@ -214,5 +220,139 @@ class RichJsValueSpec extends FreeSpec with MustMatchers with PropertyChecks wit
         )
       ))
     }
+  }
+
+  "remove" - {
+    "must return an error if the path is empty" in {
+
+      val value = Json.obj()
+
+      value.set(JsPath, Json.obj()) mustEqual JsError("path cannot be empty")
+    }
+
+
+    "must return an error if the path does not contain a value" in {
+
+      val gen = for {
+        originalKey   <- nonEmptyAlphaStr
+        originalValue <- nonEmptyAlphaStr
+        pathKey       <- nonEmptyAlphaStr suchThat (_ != originalKey)
+      } yield (originalKey, originalValue, pathKey)
+
+      forAll(gen) {
+        case (originalKey, originalValue, pathKey) =>
+
+          val value = Json.obj(originalKey -> originalValue)
+
+          val path = JsPath \ pathKey
+
+          value.remove(path) mustEqual JsError("cannot find value at path")
+
+      }
+
+    }
+
+    "must remove a value given a keyPathNode and return the new object" in {
+
+      val gen = for {
+        keys   <- Gen.listOf(nonEmptyAlphaStr)
+        values <- Gen.listOf(nonEmptyAlphaStr)
+        keyToRemove   <- nonEmptyAlphaStr
+        valueToRemove <- nonEmptyAlphaStr
+      } yield (keys, values, keyToRemove, valueToRemove)
+
+      forAll(gen) {
+        case (keys, values, keyToRemove, valueToRemove) =>
+
+          val initialObj: JsObject = keys.zip(values).foldLeft(JsObject.empty) {
+            case (acc, (key, value)) => acc + (key -> JsString(value))
+          }
+
+          val testObject: JsObject = initialObj + (keyToRemove -> Json.toJson(valueToRemove))
+
+          val pathToRemove = JsPath \ keyToRemove
+
+          testObject mustNot equal(initialObj)
+          testObject.remove(pathToRemove) mustEqual JsSuccess(initialObj)
+      }
+    }
+
+    "must remove a value given an index node and return the new object for one array" in {
+
+      val gen = for {
+        key    <- nonEmptyAlphaStr
+        values <- Gen.nonEmptyListOf(nonEmptyAlphaStr)
+        index  <- Gen.choose(0, values.size - 1)
+      } yield (key, values, index)
+
+      forAll(gen) {
+        case (key: String, values: List[String], indexToRemove: Int) =>
+
+          val valuesInArrays: Seq[JsValue] = values.map(Json.toJson[String])
+          val initialObj: JsObject = buildJsObj(Seq(key), Seq(valuesInArrays))
+
+
+          val pathToRemove = JsPath \ key \ indexToRemove
+
+          val removed: JsResult[JsValue] = initialObj.remove(pathToRemove)
+
+          val expectedOutcome =
+            buildJsObj(
+              Seq(key),
+              Seq(valuesInArrays.slice(0, indexToRemove) ++ valuesInArrays.slice(indexToRemove + 1, values.length)
+              )
+            )
+
+          removed mustBe JsSuccess(expectedOutcome)
+      }
+    }
+
+    "remove a value from one of many arrays" in {
+
+      val input = Json.obj(
+        "key" -> JsArray(Seq(Json.toJson(1), Json.toJson(2))),
+        "key2" -> JsArray(Seq(Json.toJson(1), Json.toJson(2)))
+      )
+
+      val path = JsPath \ "key" \ 0
+
+      input.remove(path) mustBe JsSuccess(
+        Json.obj(
+          "key" -> JsArray(Seq(Json.toJson (2))), "key2" -> JsArray(Seq(Json.toJson(1), Json.toJson(2))))
+      )
+    }
+  }
+
+  "remove a value when there are nested arrays" in {
+
+    val input = Json.obj(
+      "key" -> JsArray(Seq(JsArray(Seq(Json.toJson(1), Json.toJson(2))), Json.toJson(2))),
+      "key2" -> JsArray(Seq(Json.toJson(1), Json.toJson(2)))
+    )
+
+    val path = JsPath \ "key" \ 0 \ 0
+
+    input.remove(path) mustBe JsSuccess(
+      Json.obj(
+        "key" -> JsArray(Seq(JsArray(Seq(Json.toJson(2))), Json.toJson(2))),
+        "key2" -> JsArray(Seq(Json.toJson(1), Json.toJson(2)))
+      )
+    )
+  }
+
+  "remove the value if the last value is deleted from an array" in {
+    val input = Json.obj(
+      "key" -> JsArray(Seq(Json.toJson(1))),
+      "key2" -> JsArray(Seq(Json.toJson(1), Json.toJson(2)))
+    )
+
+    val path = JsPath \ "key" \ 0
+
+    input.remove(path) mustBe JsSuccess(
+      Json.obj(
+        "key" -> JsArray(),
+        "key2" -> JsArray(Seq(Json.toJson(1), Json.toJson(2)))
+      )
+    )
   }
 }
