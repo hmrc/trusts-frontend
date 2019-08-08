@@ -33,7 +33,7 @@ class PropertyLandValueTrustFormProvider @Inject() extends Mappings {
             maxLength(12, "propertyLandValueTrust.error.field1.length"),
             isNotEmpty("value", "propertyLandValueTrust.error.field1.required"),
             regexp(Validation.decimalCheck, "propertyLandValueTrust.error.field1.whole"),
-            regexp(Validation.numericRegex, "propertyLandValueTrust.error.field1.invalid"),
+            regexp(Validation.onlyNumbersRegex, "propertyLandValueTrust.error.field1.invalid"),
             minimumValue("1", "propertyLandValueTrust.error.field1.zero")
           )
         ))(PropertyLandValueTrust.apply)(PropertyLandValueTrust.unapply)

@@ -14,23 +14,42 @@
  * limitations under the License.
  */
 
-package forms
+package forms.property_or_land
 
-import forms.behaviours.StringFieldBehaviours
-import forms.property_or_land.PropertyLandValueTrustFormProvider
+import forms.Validation
+import forms.behaviours.{IntFieldBehaviours, StringFieldBehaviours}
+import org.scalacheck.Gen
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
 
-class PropertyLandValueTrustFormProviderSpec extends StringFieldBehaviours {
+class PropertyLandValueTrustFormProviderSpec extends StringFieldBehaviours with IntFieldBehaviours {
 
   val form = new PropertyLandValueTrustFormProvider()()
 
-  ".field1" must {
+  ".value" must {
 
     val fieldName = "value"
     val requiredKey = "propertyLandValueTrust.error.field1.required"
+    val zeroNumberkey = "propertyLandValueTrust.error.field1.zero"
+    val invalidOnlyNumbersKey = "propertyLandValueTrust.error.field1.invalid"
+    val invalidWholeNumberKey = "propertyLandValueTrust.error.field1.whole"
     val lengthKey = "propertyLandValueTrust.error.field1.length"
     val maxLength = 12
+
+
+    behave like nonDecimalField(
+      form,
+      fieldName,
+      wholeNumberError = FormError(fieldName, invalidWholeNumberKey, Seq(Validation.decimalCheck))
+    )
+
+    behave like fieldWithRegexpWithGenerator(
+      form,
+      fieldName,
+      Validation.onlyNumbersRegex,
+      generator = stringsWithMaxLength(maxLength),
+      error = FormError(fieldName, invalidOnlyNumbersKey, Seq(Validation.onlyNumbersRegex))
+    )
 
     behave like fieldThatBindsValidData(
       form,
@@ -45,16 +64,18 @@ class PropertyLandValueTrustFormProviderSpec extends StringFieldBehaviours {
       lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
     )
 
+    behave like intFieldWithMinimumWithGenerator(
+      form,
+      fieldName,
+      1,
+      Gen.const(0),
+      FormError(fieldName, zeroNumberkey, Array("1"))
+    )
+
     behave like mandatoryField(
       form,
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
-    )
-
-    behave like nonEmptyField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
     )
   }
 
