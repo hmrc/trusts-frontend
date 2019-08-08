@@ -16,7 +16,7 @@
 
 package controllers.actions
 
-import models.{RegistrationProgress, UserAnswers}
+import models.{RegistrationStatus, UserAnswers}
 import repositories.SessionRepository
 import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
@@ -24,7 +24,7 @@ import scala.concurrent.{ExecutionContext, Future}
 import org.mockito.Matchers._
 
 class FakeDraftIdRetrievalActionProvider(draftId: String,
-                                         status :  RegistrationProgress = RegistrationProgress.InProgress,
+                                         status :  RegistrationStatus = RegistrationStatus.InProgress,
                                          dataToReturn : Option[UserAnswers],
                                          sessionRepository : SessionRepository)
   extends DraftIdRetrievalActionProvider with MockitoSugar {

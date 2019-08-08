@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.DeclarationFormProvider
-import models.RegistrationProgress.InProgress
+import models.RegistrationStatus.InProgress
 import models.{AlreadyRegistered, FullName, NormalMode, RegistrationTRNResponse, UnableToRegister, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.DeclarationPage

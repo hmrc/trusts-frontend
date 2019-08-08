@@ -18,39 +18,38 @@ package controllers.property_or_land
 
 import base.SpecBase
 import controllers.IndexValidation
-import forms.property_or_land.PropertyOrLandDescriptionFormProvider
+import forms.property_or_land.PropertyOrLandTotalValueFormProvider
 import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
-import org.jsoup.Jsoup
 import org.scalacheck.Arbitrary.arbitrary
-import pages.property_or_land.PropertyOrLandDescriptionPage
+import pages.property_or_land.PropertyOrLandTotalValuePage
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{route, _}
-import views.html.property_or_land.PropertyOrLandDescriptionView
+import play.api.test.Helpers._
+import views.html.property_or_land.PropertyOrLandTotalValueView
 
-class PropertyOrLandDescriptionControllerSpec extends SpecBase with IndexValidation {
+class PropertyOrLandTotalValueControllerSpec extends SpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new PropertyOrLandDescriptionFormProvider()
+  val formProvider = new PropertyOrLandTotalValueFormProvider()
   val form = formProvider()
   val index = 0
 
-  lazy val propertyOrLandDescriptionRoute = controllers.property_or_land.routes.PropertyOrLandDescriptionController.onPageLoad(NormalMode, index, fakeDraftId).url
+  lazy val propertyOrLandTotalValueRoute = routes.PropertyOrLandTotalValueController.onPageLoad(NormalMode, index, fakeDraftId).url
 
-  "PropertyOrLandDescription Controller" must {
+  "PropertyOrLandTotalValue Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, propertyOrLandDescriptionRoute)
+      val request = FakeRequest(GET, propertyOrLandTotalValueRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[PropertyOrLandDescriptionView]
+      val view = application.injector.instanceOf[PropertyOrLandTotalValueView]
 
       status(result) mustEqual OK
 
@@ -62,13 +61,13 @@ class PropertyOrLandDescriptionControllerSpec extends SpecBase with IndexValidat
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(PropertyOrLandDescriptionPage(index), "answer").success.value
+      val userAnswers = emptyUserAnswers.set(PropertyOrLandTotalValuePage(index), "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, propertyOrLandDescriptionRoute)
+      val request = FakeRequest(GET, propertyOrLandTotalValueRoute)
 
-      val view = application.injector.instanceOf[PropertyOrLandDescriptionView]
+      val view = application.injector.instanceOf[PropertyOrLandTotalValueView]
 
       val result = route(application, request).value
 
@@ -88,8 +87,8 @@ class PropertyOrLandDescriptionControllerSpec extends SpecBase with IndexValidat
           .build()
 
       val request =
-        FakeRequest(POST, propertyOrLandDescriptionRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+        FakeRequest(POST, propertyOrLandTotalValueRoute)
+          .withFormUrlEncodedBody(("value", "12345678"))
 
       val result = route(application, request).value
 
@@ -99,17 +98,17 @@ class PropertyOrLandDescriptionControllerSpec extends SpecBase with IndexValidat
       application.stop()
     }
 
-    "return a Bad Request and errors when empty form data is submitted" in {
+    "return a Bad Request and errors when invalid data is submitted" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, propertyOrLandDescriptionRoute)
+        FakeRequest(POST, propertyOrLandTotalValueRoute)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[PropertyOrLandDescriptionView]
+      val view = application.injector.instanceOf[PropertyOrLandTotalValueView]
 
       val result = route(application, request).value
 
@@ -121,31 +120,11 @@ class PropertyOrLandDescriptionControllerSpec extends SpecBase with IndexValidat
       application.stop()
     }
 
-    "return a Bad Request and errors when invalid data is submitted" in {
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      val request =
-        FakeRequest(POST, propertyOrLandDescriptionRoute)
-          .withFormUrlEncodedBody(("value", "$$$$$$$$$"))
-
-      val result = route(application, request).value
-
-      status(result) mustEqual BAD_REQUEST
-
-      val document = Jsoup.parse(contentAsString(result))
-      document.getElementById("error-message-value-input").text() mustBe
-        "The description of the property or land must only include letters a to z, numbers, ampersands (&), " +
-          "apostrophes, forward slashes, hyphens and spaces"
-
-      application.stop()
-    }
-
     "redirect to Session Expired for a GET if no existing data is found" in {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, propertyOrLandDescriptionRoute)
+      val request = FakeRequest(GET, propertyOrLandTotalValueRoute)
 
       val result = route(application, request).value
 
@@ -161,7 +140,7 @@ class PropertyOrLandDescriptionControllerSpec extends SpecBase with IndexValidat
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, propertyOrLandDescriptionRoute)
+        FakeRequest(POST, propertyOrLandTotalValueRoute)
           .withFormUrlEncodedBody(("value", "answer"))
 
       val result = route(application, request).value
@@ -172,38 +151,40 @@ class PropertyOrLandDescriptionControllerSpec extends SpecBase with IndexValidat
 
       application.stop()
     }
-  }
 
-  "for a GET" must {
+    "for a GET" must {
 
-    def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
-      val route = controllers.property_or_land.routes.PropertyOrLandDescriptionController.onPageLoad(NormalMode, index, fakeDraftId).url
+      def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
+        val route = controllers.property_or_land.routes.PropertyOrLandTotalValueController.onPageLoad(NormalMode, index, fakeDraftId).url
 
-      FakeRequest(GET, route)
+        FakeRequest(GET, route)
+      }
+
+      validateIndex(
+        arbitrary[String],
+        PropertyOrLandTotalValuePage.apply,
+        getForIndex
+      )
+
     }
 
-    validateIndex(
-      arbitrary[String],
-      PropertyOrLandDescriptionPage.apply,
-      getForIndex
-    )
+    "for a POST" must {
+      def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
-  }
+        val route =
+          controllers.property_or_land.routes.PropertyOrLandTotalValueController.onPageLoad(NormalMode, index, fakeDraftId).url
 
-  "for a POST" must {
-    def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+        FakeRequest(POST, route)
+          .withFormUrlEncodedBody(("value", "true"))
+      }
 
-      val route =
-        controllers.property_or_land.routes.PropertyOrLandDescriptionController.onPageLoad(NormalMode, index, fakeDraftId).url
-
-      FakeRequest(POST, route)
-        .withFormUrlEncodedBody(("value", "true"))
+      validateIndex(
+        arbitrary[String],
+        PropertyOrLandTotalValuePage.apply,
+        postForIndex
+      )
     }
 
-    validateIndex(
-      arbitrary[String],
-      PropertyOrLandDescriptionPage.apply,
-      postForIndex
-    )
+
   }
 }
