@@ -33,16 +33,7 @@ class TaxLiabilityMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers = emptyUserAnswers
 
-        taxLiabilityMapper.build(userAnswers).value mustBe YearsReturns(
-          returns = Some(
-            List(
-              YearReturnType(
-                taxReturnYear = "19",
-                taxConsequence = true
-              )
-            )
-          )
-        )
+        taxLiabilityMapper.build(userAnswers) mustBe None
       }
     }
 
