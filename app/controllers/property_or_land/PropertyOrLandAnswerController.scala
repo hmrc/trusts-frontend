@@ -66,14 +66,13 @@ class PropertyOrLandAnswerController @Inject()(
           None,
           Seq(
             answers.whatKindOfAsset(index),
-//            answers.whatIsThePropertyOrLandUKAddress(index),
             answers.propertyOrLandAddress(index),
 //            answers.whatIsThePropertyOrLandUKAddress(index),
             answers.propertyOrLandInternationalAddress(index),
             answers.propertyOrLandDescription(index),
             answers.propertyOrLandTotalValue(index),
             answers.trustOwnAllThePropertyOrLand(index)
-//            answerspropertyLandValueTrust(index)
+//            answers.propertyLandValueTrust(index)
           ).flatten
         )
       )

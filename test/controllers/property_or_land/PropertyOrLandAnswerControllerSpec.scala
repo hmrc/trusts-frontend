@@ -42,52 +42,110 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
 
   "PropertyOrLandAnswer Controller" must {
 
-    "return OK and the correct view for a GET" in {
+    "property or land does not have an address and not all" must {
 
-      val userAnswers =
-        emptyUserAnswers
-        .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
-//        .set(WhatIsThePropertyOrLandUKAddressPage(index), false).success.value
-        .set(PropertyOrLandAddressPage(index), UKAddress("Line1",None, None, "TownOrCity","NE62RT" )).success.value
-//        .set(WhatIsThePropertyOrLandUKAddressPage(index), false).success.value
-        .set(PropertyOrLandInternationalAddressPage(index), InternationalAddress("line1","line2",Some("line3"),Some("line4"),"ES")).success.value
-        .set(PropertyOrLandDescriptionPage(index), "Property Land Description").success.value
-        .set(PropertyOrLandTotalValuePage(index), "10000").success.value
-        .set(TrustOwnAllThePropertyOrLandPage(index), "10").success.value
-        .set(AssetStatus(index), Completed).success.value
+      "return OK and the correct view for a GET" in {
 
-      val countryOptions = injector.instanceOf[CountryOptions]
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId)
+        val userAnswers =
+          emptyUserAnswers
+            .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
+            .set(PropertyOrLandAddressPage(index), false).success.value
+            .set(PropertyOrLandDescriptionPage(index), "Property Land Description").success.value
+            .set(PropertyOrLandTotalValuePage(index), "10000").success.value
+            .set(TrustOwnAllThePropertyOrLandPage(index), "10").success.value
+            .set(PropertyLandValueTrustPage(index), "10").success.value
+            .set(AssetStatus(index), Completed).success.value
 
-      val expectedSections = Seq(
-        AnswerSection(
-          None,
-          Seq(
-            checkYourAnswersHelper.sharesInAPortfolio(index).value,
-            checkYourAnswersHelper.shareCompanyName(index).value,
-            checkYourAnswersHelper.sharesOnStockExchange(index).value,
-            checkYourAnswersHelper.shareClass(index).value,
-            checkYourAnswersHelper.shareQuantityInTrust(index).value,
-            checkYourAnswersHelper.shareValueInTrust(index).value
+        val countryOptions = injector.instanceOf[CountryOptions]
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId)
+
+        val expectedSections = Seq(
+          AnswerSection(
+            None,
+            Seq(
+              checkYourAnswersHelper.whatKindOfAsset(index).value,
+              checkYourAnswersHelper.propertyOrLandAddress(index).value,
+              checkYourAnswersHelper.whatIsThePropertyOrLandUKAddress(index).value,
+              checkYourAnswersHelper.propertyOrLandInternationalAddress(index).value,
+              checkYourAnswersHelper.propertyOrLandDescription(index).value,
+              checkYourAnswersHelper.propertyOrLandTotalValue(index).value,
+              checkYourAnswersHelper.trustOwnAllThePropertyOrLand(index).value,
+              checkYourAnswersHelper.propertyLandValueTrust(index).value
+            )
           )
         )
-      )
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, shareAnswerRoute)
+        val request = FakeRequest(GET, propertyOrLandAnswerRoute)
 
-      val result = route(application, request).value
+        val result = route(application, request).value
 
-      val view = application.injector.instanceOf[PropertyOrLandAnswersView]
+        val view = application.injector.instanceOf[PropertyOrLandAnswersView]
 
-      status(result) mustEqual OK
+        status(result) mustEqual OK
 
-      contentAsString(result) mustEqual
-        view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+        contentAsString(result) mustEqual
+          view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
 
-      application.stop()
+        application.stop()
+      }
+
     }
+
+    "property or land does not have an address" must {
+
+      "return OK and the correct view for a GET" in {
+
+        val userAnswers =
+          emptyUserAnswers
+            .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
+            .set(PropertyOrLandAddressPage(index), true).success.value
+            .set(WhatIsThePropertyOrLandUKAddressPage(index), UKAddress("Line1", None, None, "TownOrCity", "NE62RT")).success.value
+            .set(PropertyOrLandInternationalAddressPage(index), InternationalAddress("line1", "line2", Some("line3"), Some("line4"), "ES")).success.value
+            .set(PropertyOrLandDescriptionPage(index), "Property Land Description").success.value
+            .set(PropertyOrLandTotalValuePage(index), "10000").success.value
+            .set(TrustOwnAllThePropertyOrLandPage(index), "10").success.value
+            .set(PropertyLandValueTrustPage(index), "10").success.value
+            .set(AssetStatus(index), Completed).success.value
+
+        val countryOptions = injector.instanceOf[CountryOptions]
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId)
+
+        val expectedSections = Seq(
+          AnswerSection(
+            None,
+            Seq(
+              checkYourAnswersHelper.whatKindOfAsset(index).value,
+              checkYourAnswersHelper.propertyOrLandAddress(index).value,
+              checkYourAnswersHelper.whatIsThePropertyOrLandUKAddress(index).value,
+              checkYourAnswersHelper.propertyOrLandInternationalAddress(index).value,
+              checkYourAnswersHelper.propertyOrLandDescription(index).value,
+              checkYourAnswersHelper.propertyOrLandTotalValue(index).value,
+              checkYourAnswersHelper.trustOwnAllThePropertyOrLand(index).value,
+              checkYourAnswersHelper.propertyLandValueTrust(index).value
+            )
+          )
+        )
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(GET, propertyOrLandAnswerRoute)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[PropertyOrLandAnswersView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
+    }
+
 
 //    "return OK and the correct view for a GET (share portfolio)" in {
 //
