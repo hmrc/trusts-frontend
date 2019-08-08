@@ -23,25 +23,13 @@ class TaxLiabilityMapper @Inject()() extends Mapping[YearsReturns] {
 
   /**
     * Author: Adam Conder
-    * For MVP we are going to be sending down 1 tax year only which is the current TY '2019'.
-    * Therefore, we are only sending 1 object with a true for taxConsequence.
-    * This is because we agreed for MVP that we will have Trusts who have a new tax consequence.
-    * This will need changed and corrected before October 2019.
+    * YearsReturns A.K.A Years of tax consequence is not part of the MVP.
+    * Therefore at the present time there should be no YearsReturns sent to ETMP/CESA.
+    * For more information on this matter or to see the discussion please refer to TRUS-1193.
     */
 
   override def build(userAnswers: UserAnswers): Option[YearsReturns] = {
-    Some(
-      YearsReturns(
-        returns = Some(
-          List(
-            YearReturnType(
-              taxReturnYear = "19",
-              taxConsequence = true
-            )
-          )
-        )
-      )
-    )
+    None
   }
 
 }
