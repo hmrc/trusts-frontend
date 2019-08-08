@@ -23,7 +23,7 @@ import models.NormalMode
 import models.Status.Completed
 import navigation.Navigator
 import pages.entitystatus.AssetStatus
-import pages.shares.{ShareAnswerPage, SharesInAPortfolioPage}
+import pages.property_or_land.{PropertyOrLandAddressPage, PropertyOrLandAnswerPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -66,14 +66,14 @@ class PropertyOrLandAnswerController @Inject()(
           None,
           Seq(
             answers.whatKindOfAsset(index),
-            answers.whatIsThePropertyOrLandUKAddress(index),
+//            answers.whatIsThePropertyOrLandUKAddress(index),
             answers.propertyOrLandAddress(index),
-            answers.whatIsThePropertyOrLandUKAddress(index),
+//            answers.whatIsThePropertyOrLandUKAddress(index),
             answers.propertyOrLandInternationalAddress(index),
             answers.propertyOrLandDescription(index),
             answers.propertyOrLandTotalValue(index),
-            answers.trustOwnAllThePropertyOrLand(index),
-            answers.propertyLandValueTrust(index)
+            answers.trustOwnAllThePropertyOrLand(index)
+//            answerspropertyLandValueTrust(index)
           ).flatten
         )
       )

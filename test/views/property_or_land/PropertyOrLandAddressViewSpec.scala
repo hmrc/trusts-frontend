@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
-package views.shares
+package views.property_or_land
 
-import controllers.shares.routes
-import forms.shares.SharePortfolioOnStockExchangeFormProvider
+import controllers.property_or_land.routes._
+import forms.PropertyOrLandAddressFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.shares.SharePortfolioOnStockExchangeView
+import views.html.PropertyOrLandAddressView
 
-class SharePortfolioOnStockExchangeViewSpec extends YesNoViewBehaviours {
+class PropertyOrLandAddressViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "sharePortfolioOnStockExchange"
+  val messageKeyPrefix = "propertyOrLandAddress"
 
-  val form = new SharePortfolioOnStockExchangeFormProvider()()
+  val form = new PropertyOrLandAddressFormProvider()()
 
-  val index = 0
+  val index = 1
 
-  "SharePortfolioOnStockExchange view" must {
+  "PropertyOrLandAddress view" must {
 
-    val view = viewFor[SharePortfolioOnStockExchangeView](Some(emptyUserAnswers))
+    val view = viewFor[PropertyOrLandAddressView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
@@ -43,9 +43,6 @@ class SharePortfolioOnStockExchangeViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.SharePortfolioOnStockExchangeController.onSubmit(NormalMode, index, fakeDraftId).url, Some(messageKeyPrefix))
-
-    behave like pageWithASubmitButton(applyView(form))
-
+    behave like yesNoPage(form, applyView, messageKeyPrefix, PropertyOrLandAddressController.onSubmit(NormalMode, index, fakeDraftId).url)
   }
 }

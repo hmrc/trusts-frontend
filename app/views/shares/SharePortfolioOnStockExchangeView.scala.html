@@ -34,13 +34,12 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("sharePortfolioOnStockExchange.heading")
-
         @components.input_yes_no(
             field = form("value"),
             label = messages("sharePortfolioOnStockExchange.heading"),
-            legendClass = Some("visually-hidden"),
-            hint = Some(messages("sharePortfolioOnStockExchange.hint"))
+            legendClass = Some("heading-large"),
+            hint = Some(messages("sharePortfolioOnStockExchange.hint")),
+            legendAsHeading = true
         )
 
         @components.submit_button()
