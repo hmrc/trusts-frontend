@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json._
 
-case class PropertyLandValueTrust (field1: String)
+case class PropertyLandValueTrust(field1: String)
 
 object PropertyLandValueTrust {
   implicit val format = Json.format[PropertyLandValueTrust]

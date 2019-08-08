@@ -22,7 +22,7 @@ import forms.property_or_land.PropertyLandValueTrustFormProvider
 import javax.inject.Inject
 import models.{Mode, PropertyLandValueTrust}
 import navigation.Navigator
-import pages.PropertyLandValueTrustPage
+import pages.property_or_land.PropertyLandValueTrustPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -56,7 +56,7 @@ class PropertyLandValueTrustController @Inject()(
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(PropertyLandValueTrustPage) match {
+      val preparedForm = request.userAnswers.get(PropertyLandValueTrustPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -73,9 +73,9 @@ class PropertyLandValueTrustController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(PropertyLandValueTrustPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(PropertyLandValueTrustPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(PropertyLandValueTrustPage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(PropertyLandValueTrustPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

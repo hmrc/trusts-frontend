@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package pages
+package pages.property_or_land
 
 import models.PropertyLandValueTrust
+import pages.QuestionPage
 import play.api.libs.json.JsPath
+import sections.Assets
 
-case object PropertyLandValueTrustPage extends QuestionPage[PropertyLandValueTrust] {
+case class PropertyLandValueTrustPage(index: Int) extends QuestionPage[PropertyLandValueTrust] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ Assets \ index \ toString
 
   override def toString: String = "propertyLandValueTrust"
 }
