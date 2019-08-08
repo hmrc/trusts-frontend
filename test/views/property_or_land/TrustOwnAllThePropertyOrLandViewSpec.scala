@@ -16,25 +16,25 @@
 
 package views.property_or_land
 
-import forms.property_or_land.PropertyOrLandDescriptionFormProvider
+import controllers.property_or_land.routes
+import forms.property_or_land.TrustOwnAllThePropertyOrLandFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.StringViewBehaviours
-import views.html.property_or_land._
-import controllers.property_or_land.routes
+import views.behaviours.YesNoViewBehaviours
+import views.html.property_or_land.TrustOwnAllThePropertyOrLandView
 
-class PropertyOrLandDescriptionViewSpec extends StringViewBehaviours {
+class TrustOwnAllThePropertyOrLandViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "propertyOrLandDescription"
-  val hintKey = "propertyOrLandDescription.hint"
+  val messageKeyPrefix = "trustOwnAllThePropertyOrLand"
 
-  val form = new PropertyOrLandDescriptionFormProvider()()
+  val form = new TrustOwnAllThePropertyOrLandFormProvider()()
 
-  "PropertyOrLandDescriptionView view" must {
+  val index: Int = 0
 
-    val view = viewFor[PropertyOrLandDescriptionView](Some(emptyUserAnswers))
-    val index = 0
+  "TrustOwnAllThePropertyOrLand view" must {
+
+    val view = viewFor[TrustOwnAllThePropertyOrLandView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, index, fakeDraftId)(fakeRequest, messages)
@@ -43,6 +43,6 @@ class PropertyOrLandDescriptionViewSpec extends StringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.PropertyOrLandDescriptionController.onSubmit(NormalMode, index, fakeDraftId).url, Some(hintKey))
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.TrustOwnAllThePropertyOrLandController.onSubmit(NormalMode, index, fakeDraftId).url)
   }
 }

@@ -18,45 +18,45 @@ package controllers.property_or_land
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.property_or_land.PropertyOrLandDescriptionFormProvider
+import forms.property_or_land.TrustOwnAllThePropertyOrLandFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.property_or_land.PropertyOrLandDescriptionPage
+import pages.property_or_land.TrustOwnAllThePropertyOrLandPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.property_or_land.PropertyOrLandDescriptionView
+import views.html.property_or_land.TrustOwnAllThePropertyOrLandView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class PropertyOrLandDescriptionController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DraftIdRetrievalActionProvider,
-                                        requireData: DataRequiredAction,
-                                        validateIndex: IndexActionFilterProvider,
-                                        formProvider: PropertyOrLandDescriptionFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: PropertyOrLandDescriptionView
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class TrustOwnAllThePropertyOrLandController @Inject()(
+                                         override val messagesApi: MessagesApi,
+                                         sessionRepository: SessionRepository,
+                                         navigator: Navigator,
+                                         identify: IdentifierAction,
+                                         getData: DraftIdRetrievalActionProvider,
+                                         requireData: DataRequiredAction,
+                                         validateIndex: IndexActionFilterProvider,
+                                         formProvider: TrustOwnAllThePropertyOrLandFormProvider,
+                                         val controllerComponents: MessagesControllerComponents,
+                                         view: TrustOwnAllThePropertyOrLandView
+                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[String] = formProvider()
+  val form: Form[Boolean] = formProvider()
 
   private def actions(index: Int, draftId: String) =
     identify andThen
-    getData(draftId) andThen
-    requireData andThen
-    validateIndex(index, sections.Assets)
+      getData(draftId) andThen
+      requireData andThen
+      validateIndex(index, sections.Assets)
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(PropertyOrLandDescriptionPage(index)) match {
+      val preparedForm = request.userAnswers.get(TrustOwnAllThePropertyOrLandPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -64,7 +64,7 @@ class PropertyOrLandDescriptionController @Inject()(
       Ok(view(preparedForm, mode, index, draftId))
   }
 
-  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
+  def onSubmit(mode: Mode, index: Int, draftId : String) = actions(index, draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -73,9 +73,9 @@ class PropertyOrLandDescriptionController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(PropertyOrLandDescriptionPage(index), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustOwnAllThePropertyOrLandPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(PropertyOrLandDescriptionPage(index), mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrustOwnAllThePropertyOrLandPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

@@ -21,6 +21,20 @@ import play.api.data.{Form, FormError}
 
 trait IntFieldBehaviours extends FieldBehaviours {
 
+  def nonDecimalField(form: Form[_],
+               fieldName: String,
+               wholeNumberError: FormError): Unit = {
+
+    "not bind decimals" in {
+      forAll(decimals -> "decimal") {
+        decimal =>
+          val result = form.bind(Map(fieldName -> decimal)).apply(fieldName)
+          result.errors shouldEqual Seq(wholeNumberError)
+      }
+    }
+  }
+
+
   def intField(form: Form[_],
                fieldName: String,
                nonNumericError: FormError,

@@ -16,25 +16,24 @@
 
 package views.property_or_land
 
-import forms.property_or_land.PropertyOrLandDescriptionFormProvider
+import forms.property_or_land.PropertyOrLandTotalValueFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
-import views.html.property_or_land._
-import controllers.property_or_land.routes
+import views.html.property_or_land.PropertyOrLandTotalValueView
 
-class PropertyOrLandDescriptionViewSpec extends StringViewBehaviours {
+class PropertyOrLandTotalValueViewSpec extends StringViewBehaviours {
 
-  val messageKeyPrefix = "propertyOrLandDescription"
-  val hintKey = "propertyOrLandDescription.hint"
+  val messageKeyPrefix = "propertyOrLandTotalValue"
 
-  val form = new PropertyOrLandDescriptionFormProvider()()
+  val form = new PropertyOrLandTotalValueFormProvider()()
 
-  "PropertyOrLandDescriptionView view" must {
+  val index = 0
 
-    val view = viewFor[PropertyOrLandDescriptionView](Some(emptyUserAnswers))
-    val index = 0
+  "PropertyOrLandTotalValueView view" must {
+
+    val view = viewFor[PropertyOrLandTotalValueView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, index, fakeDraftId)(fakeRequest, messages)
@@ -43,6 +42,9 @@ class PropertyOrLandDescriptionViewSpec extends StringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.PropertyOrLandDescriptionController.onSubmit(NormalMode, index, fakeDraftId).url, Some(hintKey))
+    behave like stringPage(form, applyView, messageKeyPrefix, controllers.property_or_land.routes.PropertyOrLandTotalValueController.onSubmit(NormalMode, index, fakeDraftId).url, Some(s"$messageKeyPrefix.hint"))
+
+    behave like pageWithASubmitButton(applyView(form))
+
   }
 }

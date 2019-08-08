@@ -18,21 +18,21 @@ package controllers.property_or_land
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.property_or_land.PropertyOrLandDescriptionFormProvider
+import forms.property_or_land.PropertyOrLandTotalValueFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.property_or_land.PropertyOrLandDescriptionPage
+import pages.property_or_land.PropertyOrLandTotalValuePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.property_or_land.PropertyOrLandDescriptionView
+import views.html.property_or_land.PropertyOrLandTotalValueView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class PropertyOrLandDescriptionController @Inject()(
+class PropertyOrLandTotalValueController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
@@ -40,23 +40,23 @@ class PropertyOrLandDescriptionController @Inject()(
                                         getData: DraftIdRetrievalActionProvider,
                                         requireData: DataRequiredAction,
                                         validateIndex: IndexActionFilterProvider,
-                                        formProvider: PropertyOrLandDescriptionFormProvider,
+                                        formProvider: PropertyOrLandTotalValueFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: PropertyOrLandDescriptionView
+                                        view: PropertyOrLandTotalValueView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[String] = formProvider()
+  val form = formProvider()
 
   private def actions(index: Int, draftId: String) =
     identify andThen
-    getData(draftId) andThen
-    requireData andThen
-    validateIndex(index, sections.Assets)
+      getData(draftId) andThen
+      requireData andThen
+      validateIndex(index, sections.Assets)
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(PropertyOrLandDescriptionPage(index)) match {
+      val preparedForm = request.userAnswers.get(PropertyOrLandTotalValuePage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -73,9 +73,9 @@ class PropertyOrLandDescriptionController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(PropertyOrLandDescriptionPage(index), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(PropertyOrLandTotalValuePage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(PropertyOrLandDescriptionPage(index), mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(PropertyOrLandTotalValuePage(index), mode, draftId)(updatedAnswers))
         }
       )
   }
