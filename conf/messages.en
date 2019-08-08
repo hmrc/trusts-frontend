@@ -976,6 +976,16 @@ propertyOrLandTotalValue.error.invalid = Current total value of the property or 
 propertyOrLandTotalValue.error.zero = Current total value of the property or land must be 1 or more
 propertyOrLandTotalValue.error.wholeNumber = Current total value of the property or land must be a whole number
 
+propertyLandValueTrust.title = What is the value of the property or land owned by the trust?
+propertyLandValueTrust.heading = What is the value of the property or land owned by the trust?
+propertyLandValueTrust.hint = This can be an estimate. Rounded down to the nearest pound. For example, 4000
+propertyLandValueTrust.checkYourAnswersLabel = What is the value of the property or land owned by the trust?
+propertyLandValueTrust.error.field1.required = Enter the current value of the property or land owned by the trust
+propertyLandValueTrust.error.field1.invalid = Current value of the property or land owned by the trust must be a number
+propertyLandValueTrust.error.field1.whole = Current value of the property or land owned by the trust must be a whole number
+propertyLandValueTrust.error.field1.zero = Current value of the property or land owned by the trust must be 1 or more
+propertyLandValueTrust.error.field1.length = Current value of the property or land owned by the trust must be 12 characters or less
+
 propertyOrLandAddress.title = Is the property or land’s address in the UK?
 propertyOrLandAddress.heading = Is the property or land’s address in the UK?
 propertyOrLandAddress.checkYourAnswersLabel = Is the property or land’s address in the UK?

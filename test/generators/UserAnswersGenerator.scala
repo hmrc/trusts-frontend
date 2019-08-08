@@ -33,6 +33,7 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(PropertyOrLandAddressPage, JsValue)] ::
     arbitrary[(TrustOwnAllThePropertyOrLandPage, JsValue)] ::
     arbitrary[(PropertyOrLandInternationalAddressPage, JsValue)] ::
+    arbitrary[(PropertyLandValueTrustPage, JsValue)] ::
     arbitrary[(ShareCompanyNamePage, JsValue)] ::
     arbitrary[(SharesOnStockExchangePage, JsValue)] ::
     arbitrary[(SharesInAPortfolioPage, JsValue)] ::

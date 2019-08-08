@@ -18,11 +18,13 @@ package generators
 
 import org.scalacheck.Arbitrary
 import pages._
-import pages.property_or_land.{PropertyOrLandAddressPage, PropertyOrLandDescriptionPage}
 import pages.property_or_land._
 import pages.shares.{ShareClassPage, ShareCompanyNamePage, SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, ShareQuantityInTrustPage, ShareValueInTrustPage, SharesInAPortfolioPage, SharesOnStockExchangePage}
 
 trait PageGenerators {
+
+  implicit lazy val arbitraryPropertyLandValueTrustPage: Arbitrary[PropertyLandValueTrustPage] =
+    Arbitrary(PropertyLandValueTrustPage(0))
 
   implicit lazy val arbitraryPropertyOrLandAddressPage: Arbitrary[PropertyOrLandAddressPage] =
     Arbitrary(PropertyOrLandAddressPage(0))

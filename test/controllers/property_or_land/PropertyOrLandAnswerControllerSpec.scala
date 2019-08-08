@@ -22,7 +22,7 @@ import models.Status.Completed
 import models.WhatKindOfAsset.PropertyOrLand
 import pages.WhatKindOfAssetPage
 import pages.entitystatus.AssetStatus
-import pages.property_or_land.{PropertyOrLandAddressPage, PropertyOrLandDescriptionPage, PropertyOrLandInternationalAddressPage, PropertyOrLandTotalValuePage, TrustOwnAllThePropertyOrLandPage}
+import pages.property_or_land.{PropertyLandValueTrustPage, PropertyOrLandAddressPage, PropertyOrLandDescriptionPage, PropertyOrLandInternationalAddressPage, PropertyOrLandTotalValuePage, TrustOwnAllThePropertyOrLandPage}
 import pages.shares._
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -42,17 +42,65 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
 
   "PropertyOrLandAnswer Controller" must {
 
-    "property or land does not have an address and not all" must {
+    "property or land does not have an address and total value is owned by the trust" must {
 
       "return OK and the correct view for a GET" in {
 
         val userAnswers =
           emptyUserAnswers
             .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
-            .set(PropertyOrLandAddressPage(index), false).success.value
+            //            .set(PropertyOrLandAddressPage(index), false).success.value  // TODO rename when TRUS-792 merged
             .set(PropertyOrLandDescriptionPage(index), "Property Land Description").success.value
             .set(PropertyOrLandTotalValuePage(index), "10000").success.value
-            .set(TrustOwnAllThePropertyOrLandPage(index), "10").success.value
+            .set(TrustOwnAllThePropertyOrLandPage(index), true).success.value
+            .set(AssetStatus(index), Completed).success.value
+
+        val countryOptions = injector.instanceOf[CountryOptions]
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId)
+
+        val expectedSections = Seq(
+          AnswerSection(
+            None,
+            Seq(
+              checkYourAnswersHelper.whatKindOfAsset(index).value,
+              //              checkYourAnswersHelper.propertyOrLandAddress(index).value, // TODO rename when TRUS-792 merged
+              checkYourAnswersHelper.propertyOrLandDescription(index).value,
+              checkYourAnswersHelper.propertyOrLandTotalValue(index).value,
+              checkYourAnswersHelper.trustOwnAllThePropertyOrLand(index).value
+            )
+          )
+        )
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(GET, propertyOrLandAnswerRoute)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[PropertyOrLandAnswersView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
+    }
+
+
+    "property or land does not have an address and total value is not owned by the trust" must {
+
+      "return OK and the correct view for a GET" in {
+
+        val userAnswers =
+          emptyUserAnswers
+            .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
+            //            .set(PropertyOrLandAddressPage(index), false).success.value  // TODO rename when TRUS-792 merged
+            .set(PropertyOrLandDescriptionPage(index), "Property Land Description").success.value
+            .set(PropertyOrLandTotalValuePage(index), "10000").success.value
+            .set(TrustOwnAllThePropertyOrLandPage(index), false).success.value
             .set(PropertyLandValueTrustPage(index), "10").success.value
             .set(AssetStatus(index), Completed).success.value
 
@@ -64,9 +112,7 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
             None,
             Seq(
               checkYourAnswersHelper.whatKindOfAsset(index).value,
-              checkYourAnswersHelper.propertyOrLandAddress(index).value,
-              checkYourAnswersHelper.whatIsThePropertyOrLandUKAddress(index).value,
-              checkYourAnswersHelper.propertyOrLandInternationalAddress(index).value,
+              //              checkYourAnswersHelper.propertyOrLandAddress(index).value, // TODO rename when TRUS-792 merged
               checkYourAnswersHelper.propertyOrLandDescription(index).value,
               checkYourAnswersHelper.propertyOrLandTotalValue(index).value,
               checkYourAnswersHelper.trustOwnAllThePropertyOrLand(index).value,
@@ -93,19 +139,67 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
 
     }
 
-    "property or land does not have an address" must {
+    "property or land has a UK address and total value is owned by the trust" must {
 
       "return OK and the correct view for a GET" in {
 
         val userAnswers =
           emptyUserAnswers
             .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
+            //            .set(PropertyOrLandAddressPage(index), true).success.value  // TODO rename when TRUS-792 merged
             .set(PropertyOrLandAddressPage(index), true).success.value
             .set(WhatIsThePropertyOrLandUKAddressPage(index), UKAddress("Line1", None, None, "TownOrCity", "NE62RT")).success.value
-            .set(PropertyOrLandInternationalAddressPage(index), InternationalAddress("line1", "line2", Some("line3"), Some("line4"), "ES")).success.value
-            .set(PropertyOrLandDescriptionPage(index), "Property Land Description").success.value
             .set(PropertyOrLandTotalValuePage(index), "10000").success.value
-            .set(TrustOwnAllThePropertyOrLandPage(index), "10").success.value
+            .set(TrustOwnAllThePropertyOrLandPage(index), true).success.value
+            .set(AssetStatus(index), Completed).success.value
+
+        val countryOptions = injector.instanceOf[CountryOptions]
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId)
+
+        val expectedSections = Seq(
+          AnswerSection(
+            None,
+            Seq(
+              checkYourAnswersHelper.whatKindOfAsset(index).value,
+              //              checkYourAnswersHelper.propertyOrLandAddress(index).value, // TODO rename when TRUS-792 merged
+              checkYourAnswersHelper.propertyOrLandAddress(index).value,
+              checkYourAnswersHelper.whatIsThePropertyOrLandUKAddress(index).value,
+              checkYourAnswersHelper.propertyOrLandTotalValue(index).value,
+              checkYourAnswersHelper.trustOwnAllThePropertyOrLand(index).value,
+            )
+          )
+        )
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(GET, propertyOrLandAnswerRoute)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[PropertyOrLandAnswersView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
+    }
+
+    "property or land has a UK address and total value is not owned by the trust" must {
+
+      "return OK and the correct view for a GET" in {
+
+        val userAnswers =
+          emptyUserAnswers
+            .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
+            //            .set(PropertyOrLandAddressPage(index), true).success.value  // TODO rename when TRUS-792 merged
+            .set(PropertyOrLandAddressPage(index), true).success.value
+            .set(WhatIsThePropertyOrLandUKAddressPage(index), UKAddress("Line1", None, None, "TownOrCity", "NE62RT")).success.value
+            .set(PropertyOrLandTotalValuePage(index), "10000").success.value
+            .set(TrustOwnAllThePropertyOrLandPage(index), false).success.value
             .set(PropertyLandValueTrustPage(index), "10").success.value
             .set(AssetStatus(index), Completed).success.value
 
@@ -117,10 +211,9 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
             None,
             Seq(
               checkYourAnswersHelper.whatKindOfAsset(index).value,
+              //              checkYourAnswersHelper.propertyOrLandAddress(index).value, // TODO rename when TRUS-792 merged
               checkYourAnswersHelper.propertyOrLandAddress(index).value,
               checkYourAnswersHelper.whatIsThePropertyOrLandUKAddress(index).value,
-              checkYourAnswersHelper.propertyOrLandInternationalAddress(index).value,
-              checkYourAnswersHelper.propertyOrLandDescription(index).value,
               checkYourAnswersHelper.propertyOrLandTotalValue(index).value,
               checkYourAnswersHelper.trustOwnAllThePropertyOrLand(index).value,
               checkYourAnswersHelper.propertyLandValueTrust(index).value
@@ -147,49 +240,105 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
     }
 
 
-//    "return OK and the correct view for a GET (share portfolio)" in {
-//
-//      val userAnswers =
-//        emptyUserAnswers
-//          .set(WhatKindOfAssetPage(index), Shares).success.value
-//          .set(SharesInAPortfolioPage(index), true).success.value
-//          .set(SharePortfolioNamePage(index), "Share Portfolio Name").success.value
-//          .set(SharePortfolioOnStockExchangePage(index), true).success.value
-//          .set(SharePortfolioQuantityInTrustPage(index), "2000").success.value
-//          .set(SharePortfolioValueInTrustPage(index), "20").success.value
-//
-//      val countryOptions = injector.instanceOf[CountryOptions]
-//      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId)
-//
-//      val expectedSections = Seq(
-//        AnswerSection(
-//          None,
-//          Seq(
-//            checkYourAnswersHelper.whatKindOfAsset(index).value,
-//            checkYourAnswersHelper.sharesInAPortfolio(index).value,
-//            checkYourAnswersHelper.sharePortfolioName(index).value,
-//            checkYourAnswersHelper.sharePortfolioOnStockExchange(index).value,
-//            checkYourAnswersHelper.sharePortfolioQuantityInTrust(index).value,
-//            checkYourAnswersHelper.sharePortfolioValueInTrust(index).value
-//          )
-//        )
-//      )
-//
-//      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-//
-//      val request = FakeRequest(GET, shareAnswerRoute)
-//
-//      val result = route(application, request).value
-//
-//      val view = application.injector.instanceOf[PropertyOrLandAnswersView]
-//
-//      status(result) mustEqual OK
-//
-//      contentAsString(result) mustEqual
-//        view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
-//
-//      application.stop()
-//    }
+    "property or land has a International address and total value is owned by the trust" must {
+
+      "return OK and the correct view for a GET" in {
+
+        val userAnswers =
+          emptyUserAnswers
+            .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
+            //            .set(PropertyOrLandAddressPage(index), true).success.value  // TODO rename when TRUS-792 merged
+            .set(PropertyOrLandAddressPage(index), false).success.value
+            .set(PropertyOrLandInternationalAddressPage(index), InternationalAddress("line1", "line2", Some("line3"), Some("line4"), "ES")).success.value
+            .set(PropertyOrLandTotalValuePage(index), "10000").success.value
+            .set(TrustOwnAllThePropertyOrLandPage(index), true).success.value
+            .set(AssetStatus(index), Completed).success.value
+
+        val countryOptions = injector.instanceOf[CountryOptions]
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId)
+
+        val expectedSections = Seq(
+          AnswerSection(
+            None,
+            Seq(
+              checkYourAnswersHelper.whatKindOfAsset(index).value,
+              //              checkYourAnswersHelper.propertyOrLandAddress(index).value, // TODO rename when TRUS-792 merged
+              checkYourAnswersHelper.propertyOrLandAddress(index).value,
+              checkYourAnswersHelper.whatIsThePropertyOrLandUKAddress(index).value,
+              checkYourAnswersHelper.propertyOrLandTotalValue(index).value,
+              checkYourAnswersHelper.trustOwnAllThePropertyOrLand(index).value,
+            )
+          )
+        )
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(GET, propertyOrLandAnswerRoute)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[PropertyOrLandAnswersView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
+    }
+
+    "property or land has a International address and total value is not owned by the trust" must {
+
+      "return OK and the correct view for a GET" in {
+
+        val userAnswers =
+          emptyUserAnswers
+            .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
+            //            .set(PropertyOrLandAddressPage(index), true).success.value  // TODO rename when TRUS-792 merged
+            .set(PropertyOrLandAddressPage(index), false).success.value
+            .set(PropertyOrLandInternationalAddressPage(index), InternationalAddress("line1", "line2", Some("line3"), Some("line4"), "ES")).success.value
+            .set(PropertyOrLandTotalValuePage(index), "10000").success.value
+            .set(TrustOwnAllThePropertyOrLandPage(index), false).success.value
+            .set(PropertyLandValueTrustPage(index), "10").success.value
+            .set(AssetStatus(index), Completed).success.value
+
+        val countryOptions = injector.instanceOf[CountryOptions]
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId)
+
+        val expectedSections = Seq(
+          AnswerSection(
+            None,
+            Seq(
+              checkYourAnswersHelper.whatKindOfAsset(index).value,
+              //              checkYourAnswersHelper.propertyOrLandAddress(index).value, // TODO rename when TRUS-792 merged
+              checkYourAnswersHelper.propertyOrLandAddress(index).value,
+              checkYourAnswersHelper.whatIsThePropertyOrLandUKAddress(index).value,
+              checkYourAnswersHelper.propertyOrLandTotalValue(index).value,
+              checkYourAnswersHelper.trustOwnAllThePropertyOrLand(index).value,
+              checkYourAnswersHelper.propertyLandValueTrust(index).value
+            )
+          )
+        )
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(GET, propertyOrLandAnswerRoute)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[PropertyOrLandAnswersView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
+    }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
 
