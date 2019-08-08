@@ -52,8 +52,8 @@ class PropertyOrLandAnswerController @Inject()(
   private def actions(index: Int, draftId: String) =
     identify andThen
       getData(draftId) andThen
-      requireData // andThen
-//      requiredAnswer(RequiredAnswer(PropertyOrLandAddressPage(index), routes.PropertyOrLandAddressController.onPageLoad(NormalMode, index, draftId)))
+      requireData andThen
+      requiredAnswer(RequiredAnswer(PropertyOrLandAddressPage(index), routes.PropertyOrLandAddressController.onPageLoad(NormalMode, index, draftId)))
 
 
   def onPageLoad(index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
@@ -64,29 +64,17 @@ class PropertyOrLandAnswerController @Inject()(
       val sections = Seq(
         AnswerSection(
           None,
-          request.userAnswers.get(SharesInAPortfolioPage(index)) match {
-            case Some(false) =>
-              Seq(
-                answers.whatKindOfAsset(index),
-                answers.sharesInAPortfolio(index),
-                answers.shareCompanyName(index),
-                answers.sharesOnStockExchange(index),
-                answers.shareClass(index),
-                answers.shareQuantityInTrust(index),
-                answers.shareValueInTrust(index)
-              ).flatten
-            case Some(true) =>
-              Seq(
-                answers.whatKindOfAsset(index),
-                answers.sharesInAPortfolio(index),
-                answers.sharePortfolioName(index),
-                answers.sharePortfolioOnStockExchange(index),
-                answers.sharePortfolioQuantityInTrust(index),
-                answers.sharePortfolioValueInTrust(index)
-              ).flatten
-            case None =>
-              Nil
-          }
+          Seq(
+            answers.whatKindOfAsset(index),
+            answers.whatIsThePropertyOrLandUKAddress(index),
+            answers.propertyOrLandAddress(index),
+            answers.whatIsThePropertyOrLandUKAddress(index),
+            answers.propertyOrLandInternationalAddress(index),
+            answers.propertyOrLandDescription(index),
+            answers.propertyOrLandTotalValue(index),
+            answers.trustOwnAllThePropertyOrLand(index),
+            answers.propertyLandValueTrust(index)
+          ).flatten
         )
       )
 
@@ -101,7 +89,7 @@ class PropertyOrLandAnswerController @Inject()(
       for {
         updatedAnswers <- Future.fromTry(answers)
         _ <- sessionRepository.set(updatedAnswers)
-      } yield Redirect(navigator.nextPage(ShareAnswerPage, NormalMode, draftId)(request.userAnswers))
+      } yield Redirect(navigator.nextPage(PropertyOrLandAnswerPage, NormalMode, draftId)(request.userAnswers))
 
   }
 }

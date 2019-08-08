@@ -62,7 +62,7 @@ class AddAssetsController @Inject()(
 
       val assets = new AddAssetViewHelper(request.userAnswers).rows
 
-      val count = assets.inProgress.size + assets.complete.size
+      val count = assets.count
 
       Ok(view(form, mode, draftId, assets.inProgress, assets.complete, heading(count)))
   }
@@ -74,7 +74,7 @@ class AddAssetsController @Inject()(
         (formWithErrors: Form[_]) => {
           val assets = new AddAssetViewHelper(request.userAnswers).rows
 
-          val count = assets.inProgress.size + assets.complete.size
+          val count = assets.count
 
            Future.successful(BadRequest(view(formWithErrors, mode, draftId, assets.inProgress, assets.complete, heading(count))))
         },

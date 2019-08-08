@@ -18,7 +18,7 @@ package models
 
 import java.time.LocalDateTime
 
-import models.RegistrationProgress.NotStarted
+import models.RegistrationStatus.NotStarted
 import play.api.Logger
 import play.api.libs.json._
 import queries.{Gettable, Settable}
@@ -28,7 +28,7 @@ import scala.util.{Failure, Success, Try}
 final case class UserAnswers(
                               draftId: String,
                               data: JsObject = Json.obj(),
-                              progress : RegistrationProgress = NotStarted,
+                              progress : RegistrationStatus = NotStarted,
                               createdAt : LocalDateTime = LocalDateTime.now,
                               internalAuthId :String
                             ) {
@@ -60,9 +60,9 @@ final case class UserAnswers(
     }
   }
 
-  def remove[A](page: Settable[A]): Try[UserAnswers] = {
+  def remove[A](query: Settable[A]): Try[UserAnswers] = {
 
-    val updatedData = data.setObject(page.path, JsNull) match {
+    val updatedData = data.removeObject(query.path) match {
       case JsSuccess(jsValue, _) =>
         Success(jsValue)
       case JsError(_) =>
@@ -72,7 +72,7 @@ final case class UserAnswers(
     updatedData.flatMap {
       d =>
         val updatedAnswers = copy (data = d)
-        page.cleanup(None, updatedAnswers)
+        query.cleanup(None, updatedAnswers)
     }
   }
 }
@@ -86,7 +86,7 @@ object UserAnswers {
     (
       (__ \ "_id").read[String] and
       (__ \ "data").read[JsObject] and
-      (__ \ "progress").read[RegistrationProgress] and
+      (__ \ "progress").read[RegistrationStatus] and
       (__ \ "createdAt").read(MongoDateTimeFormats.localDateTimeRead) and
       (__ \ "internalId").read[String]
     ) (UserAnswers.apply _)
@@ -99,7 +99,7 @@ object UserAnswers {
     (
       (__ \ "_id").write[String] and
       (__ \ "data").write[JsObject] and
-      (__ \ "progress").write[RegistrationProgress] and
+      (__ \ "progress").write[RegistrationStatus] and
       (__ \ "createdAt").write(MongoDateTimeFormats.localDateTimeWrite) and
       (__ \ "internalId").write[String]
     ) (unlift(UserAnswers.unapply))
