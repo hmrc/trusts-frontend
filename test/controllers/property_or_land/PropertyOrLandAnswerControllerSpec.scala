@@ -38,7 +38,7 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
 
   val index: Int = 0
 
-  lazy val propertyOrLandAnswerRoute = controllers.shares.routes.PropertyOrLandAnswerController.onPageLoad(index, fakeDraftId).url
+  lazy val propertyOrLandAnswerRoute = controllers.property_or_land.routes.PropertyOrLandAnswerController.onPageLoad(index, fakeDraftId).url
 
   "PropertyOrLandAnswer Controller" must {
 
@@ -165,7 +165,7 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
               checkYourAnswersHelper.propertyOrLandAddress(index).value,
               checkYourAnswersHelper.whatIsThePropertyOrLandUKAddress(index).value,
               checkYourAnswersHelper.propertyOrLandTotalValue(index).value,
-              checkYourAnswersHelper.trustOwnAllThePropertyOrLand(index).value,
+              checkYourAnswersHelper.trustOwnAllThePropertyOrLand(index).value
             )
           )
         )
@@ -266,7 +266,7 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
               checkYourAnswersHelper.propertyOrLandAddress(index).value,
               checkYourAnswersHelper.whatIsThePropertyOrLandUKAddress(index).value,
               checkYourAnswersHelper.propertyOrLandTotalValue(index).value,
-              checkYourAnswersHelper.trustOwnAllThePropertyOrLand(index).value,
+              checkYourAnswersHelper.trustOwnAllThePropertyOrLand(index).value
             )
           )
         )

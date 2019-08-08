@@ -67,12 +67,12 @@ class PropertyOrLandAnswerController @Inject()(
           Seq(
             answers.whatKindOfAsset(index),
             answers.propertyOrLandAddress(index),
-//            answers.whatIsThePropertyOrLandUKAddress(index),
+//            answers.whatIsThePropertyOrLandUKAddress(index),  // TODO rename when TRUS-792 merged
             answers.propertyOrLandInternationalAddress(index),
             answers.propertyOrLandDescription(index),
             answers.propertyOrLandTotalValue(index),
-            answers.trustOwnAllThePropertyOrLand(index)
-//            answers.propertyLandValueTrust(index)
+            answers.trustOwnAllThePropertyOrLand(index),
+            answers.propertyLandValueTrust(index)
           ).flatten
         )
       )
