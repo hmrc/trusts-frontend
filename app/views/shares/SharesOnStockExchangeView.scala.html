@@ -34,13 +34,12 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("sharesOnStockExchange.heading", optionalParam = Some(companyName))
-
         @components.input_yes_no(
             field = form("value"),
             label = messages("sharesOnStockExchange.heading", companyName),
-            legendClass = Some("visually-hidden"),
-            hint = Some(messages("sharesOnStockExchange.hint"))
+            legendClass = Some("heading-large"),
+            hint = Some(messages("sharesOnStockExchange.hint")),
+            legendAsHeading = true
         )
 
         @components.submit_button()

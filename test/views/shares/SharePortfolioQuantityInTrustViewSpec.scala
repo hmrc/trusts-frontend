@@ -43,5 +43,8 @@ class SharePortfolioQuantityInTrustViewSpec extends StringViewBehaviours {
     behave like pageWithBackLink(applyView(form))
 
     behave like stringPage(form, applyView, messageKeyPrefix, controllers.shares.routes.SharePortfolioQuantityInTrustController.onSubmit(NormalMode, index, fakeDraftId).url, Some(s"$messageKeyPrefix.hint"))
+
+    behave like pageWithASubmitButton(applyView(form))
+
   }
 }
