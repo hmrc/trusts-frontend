@@ -27,20 +27,14 @@ class AssetMapper @Inject()(moneyAssetMapper: MoneyAssetMapper, shareAssetMapper
     val money = moneyAssetMapper.build(userAnswers)
     val shares = shareAssetMapper.build(userAnswers)
 
-    if (money.isDefined || shares.isDefined) {
-      Some(
-        Assets(
-          monetary = money,
-          propertyOrLand = None,
-          shares = shares,
-          business = None,
-          partnerShip = None,
-          other = None
+    (money, shares) match {
+      case (None, None) =>
+        Logger.info(s"[AssetMapper][build] unable to map assets")
+        None
+      case (_, _) =>
+        Some(
+          Assets(monetary = money, propertyOrLand = None, shares = shares, business = None, partnerShip = None, other = None)
         )
-      )
-    } else {
-      Logger.info(s"[AssetMapper][build] unable to map assets")
-      None
     }
   }
 }

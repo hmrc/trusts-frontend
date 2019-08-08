@@ -25,7 +25,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.countryOptions.CountryOptions
-import utils.{CheckYourAnswersHelper, DateFormat}
+import utils.{DateFormat, PrintUserAnswersHelper}
 import views.html.ConfirmationAnswerPageView
 
 
@@ -37,7 +37,8 @@ class ConfirmationAnswerPageController @Inject()(
                                               val controllerComponents: MessagesControllerComponents,
                                               view: ConfirmationAnswerPageView,
                                               countryOptions : CountryOptions,
-                                              registrationComplete : TaskListCompleteActionRefiner
+                                              registrationComplete : TaskListCompleteActionRefiner,
+                                              printUserAnswersHelper: PrintUserAnswersHelper
                                             ) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId : String) =
@@ -46,17 +47,10 @@ class ConfirmationAnswerPageController @Inject()(
   def onPageLoad(draftId: String) = actions(draftId) {
     implicit request =>
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId, canEdit = false)
-      val trustDetails = checkYourAnswersHelper.trustDetails.getOrElse(Nil)
-      val trustees = checkYourAnswersHelper.trustees.getOrElse(Nil)
-      val settlors = checkYourAnswersHelper.settlors.getOrElse(Nil)
-      val individualBeneficiaries = checkYourAnswersHelper.individualBeneficiaries.getOrElse(Nil)
-      val individualBeneficiariesExist: Boolean = individualBeneficiaries.nonEmpty
-      val classOfBeneficiaries = checkYourAnswersHelper.classOfBeneficiaries(individualBeneficiariesExist).getOrElse(Nil)
-      val moneyAsset = checkYourAnswersHelper.moneyAsset.getOrElse(Nil)
-      val sections =  trustDetails ++ settlors ++ trustees ++ individualBeneficiaries ++ classOfBeneficiaries ++ moneyAsset
+      val sections = printUserAnswersHelper.summary(draftId, request.userAnswers)
 
       val trn = request.userAnswers.get(RegistrationTRNPage).getOrElse("")
+
       val trnDateTime = request.userAnswers.get(RegistrationSubmissionDatePage).getOrElse(LocalDateTime.now)
 
       val declarationSent : String = DateFormat.formatDate(trnDateTime, "d MMMM yyyy")

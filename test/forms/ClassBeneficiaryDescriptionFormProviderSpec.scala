@@ -60,9 +60,9 @@ class ClassBeneficiaryDescriptionFormProviderSpec extends StringFieldBehaviours 
     behave like fieldWithRegexpWithGenerator(
       form,
       fieldName,
-      Validation.classOfBeneficiaryDescRegex,
+      Validation.descriptionRegex,
       generator = stringsWithMaxLength(maxLength),
-      error = FormError(fieldName, invalidKey, Seq(Validation.classOfBeneficiaryDescRegex))
+      error = FormError(fieldName, invalidKey, Seq(Validation.descriptionRegex))
     )
   }
 }

@@ -44,5 +44,8 @@ class SharePortfolioOnStockExchangeViewSpec extends YesNoViewBehaviours {
     behave like pageWithBackLink(applyView(form))
 
     behave like yesNoPage(form, applyView, messageKeyPrefix, routes.SharePortfolioOnStockExchangeController.onSubmit(NormalMode, index, fakeDraftId).url, Some(messageKeyPrefix))
+
+    behave like pageWithASubmitButton(applyView(form))
+
   }
 }

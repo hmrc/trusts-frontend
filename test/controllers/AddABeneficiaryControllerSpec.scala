@@ -34,15 +34,21 @@ class AddABeneficiaryControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
+  def removeIndividualRoute(index : Int) =
+    routes.RemoveIndividualBeneficiaryController.onPageLoad(index, fakeDraftId).url
+
+  def removeClassRoute(index : Int) =
+    routes.RemoveClassOfBeneficiaryController.onPageLoad(index, fakeDraftId).url
+
   lazy val addABeneficiaryRoute = routes.AddABeneficiaryController.onPageLoad(fakeDraftId).url
 
   val formProvider = new AddABeneficiaryFormProvider()
 
   val form = formProvider()
 
-  val beneficiariesComplete = List(
-    AddRow("First Last", typeLabel = "Individual Beneficiary", "#", "#"),
-    AddRow("description", typeLabel = "Class of beneficiaries", "#", "#")
+  lazy val beneficiariesComplete = List(
+    AddRow("First Last", typeLabel = "Individual Beneficiary", "#", removeIndividualRoute(0)),
+    AddRow("description", typeLabel = "Class of beneficiaries", "#", removeClassRoute(0))
   )
 
   val userAnswersWithBeneficiariesComplete = emptyUserAnswers
@@ -66,7 +72,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, Nil, beneficiariesComplete)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, Nil, beneficiariesComplete, "You have added 2 beneficiaries")(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -86,7 +92,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, Nil, beneficiariesComplete)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, Nil, beneficiariesComplete, "You have added 2 beneficiaries")(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -128,7 +134,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, Nil, Nil)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, Nil, Nil, "Add a beneficiary")(fakeRequest, messages).toString
 
       application.stop()
     }

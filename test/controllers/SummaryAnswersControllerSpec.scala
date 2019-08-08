@@ -39,7 +39,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
 
   val index = 0
 
-  "SummaryAnswersController Controller" must {
+  "SummaryAnswersController" must {
 
     val userAnswers =
       TestUserAnswers.emptyUserAnswers
@@ -107,9 +107,9 @@ class SummaryAnswersControllerSpec extends SpecBase {
         .set(AddAssetsPage, NoComplete).success.value
         .set(AgentInternalReferencePage, "agentClientReference").success.value
 
-
     val countryOptions = injector.instanceOf[CountryOptions]
     val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers,fakeDraftId, canEdit = false)
+
     val leadTrusteeIndividualOrBusinessMessagePrefix = "leadTrusteeIndividualOrBusiness"
     val leadTrusteeFullNameMessagePrefix = "leadTrusteesName"
 
@@ -125,7 +125,7 @@ class SummaryAnswersControllerSpec extends SpecBase {
           checkYourAnswersHelper.establishedUnderScotsLaw.value,
           checkYourAnswersHelper.trustResidentOffshore.value
         ),
-        Some(Messages("answerPage.section.trustsDetails.heading"))
+        Some("Trust details")
       ),
       AnswerSection(
         None,
@@ -141,10 +141,10 @@ class SummaryAnswersControllerSpec extends SpecBase {
           checkYourAnswersHelper.wasSettlorsAddressUKYesNo.value,
           checkYourAnswersHelper.settlorsUKAddress.value
         ),
-        Some(Messages("answerPage.section.settlors.heading"))
+        Some("Settlors")
       ),
       AnswerSection(
-        Some(Messages("answerPage.section.trustee.subheading") + " " + (index + 1)),
+        Some("Trustee 1"),
         Seq(
           checkYourAnswersHelper.isThisLeadTrustee(index).value,
           checkYourAnswersHelper.trusteeIndividualOrBusiness(index, leadTrusteeIndividualOrBusinessMessagePrefix).value,
@@ -156,10 +156,10 @@ class SummaryAnswersControllerSpec extends SpecBase {
           checkYourAnswersHelper.trusteesUkAddress(index).value,
           checkYourAnswersHelper.telephoneNumber(index).value
         ),
-        Some(Messages("answerPage.section.trustees.heading"))
+        Some("Trustees")
       ),
       AnswerSection(
-        Some(Messages("answerPage.section.individualBeneficiary.subheading") + " " + (index + 1)),
+        Some("Individual beneficiary 1"),
         Seq(
           checkYourAnswersHelper.individualBeneficiaryName(index).value,
           checkYourAnswersHelper.individualBeneficiaryDateOfBirthYesNo(index).value,
@@ -173,26 +173,33 @@ class SummaryAnswersControllerSpec extends SpecBase {
           checkYourAnswersHelper.individualBeneficiaryAddressUK(index).value,
           checkYourAnswersHelper.individualBeneficiaryVulnerableYesNo(index).value
         ),
-        Some(Messages("answerPage.section.beneficiaries.heading"))
+        Some("Beneficiaries")
       ),
       AnswerSection(
-        Some(Messages("answerPage.section.classOfBeneficiary.subheading") + " " + (index + 1)),
+        Some("Class of beneficiary 1"),
         Seq(
           checkYourAnswersHelper.classBeneficiaryDescription(index).value
         ),
         None
       ),
+      AnswerSection(None, Nil, Some("Assets")),
       AnswerSection(
-        Some(Messages("answerPage.section.moneyAsset.subheading")),
+        Some("Money"),
         Seq(
-          checkYourAnswersHelper.assetMoneyValue(index).value,
+          checkYourAnswersHelper.assetMoneyValue(index).value
+        ),
+        None
+      ),
+      AnswerSection(
+        Some("Share 1"),
+        Seq(
           checkYourAnswersHelper.sharesInAPortfolio(1).value,
           checkYourAnswersHelper.sharePortfolioName(1).value,
           checkYourAnswersHelper.sharePortfolioOnStockExchange(1).value,
           checkYourAnswersHelper.sharePortfolioQuantityInTrust(1).value,
           checkYourAnswersHelper.sharePortfolioValueInTrust(1).value
         ),
-        Some(Messages("answerPage.section.assets.heading"))
+        None
       )
     )
 
@@ -206,11 +213,10 @@ class SummaryAnswersControllerSpec extends SpecBase {
 
       val view = application.injector.instanceOf[SummaryAnswerPageView]
 
-//      redirectLocation(result) mustEqual true
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(expectedSections, false, "")(fakeRequest, messages).toString
+        view(expectedSections, isAgent = false, agentClientRef = "")(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -225,12 +231,10 @@ class SummaryAnswersControllerSpec extends SpecBase {
 
       val view = application.injector.instanceOf[SummaryAnswerPageView]
 
-//      redirectLocation(result) mustEqual true
-
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(expectedSections, true, "agentClientReference")(fakeRequest, messages).toString
+        view(expectedSections, isAgent = true, agentClientRef = "agentClientReference")(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -261,8 +265,6 @@ class SummaryAnswersControllerSpec extends SpecBase {
       application.stop()
 
     }
-
-
 
   }
 }

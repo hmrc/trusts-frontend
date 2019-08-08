@@ -54,7 +54,6 @@ class AddATrusteeController @Inject()(
 
       val trustees = new AddATrusteeViewHelper(request.userAnswers).rows
 
-
       Ok(view(form, mode, draftId, trustees.inProgress, trustees.complete))
   }
 

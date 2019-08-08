@@ -31,7 +31,7 @@ class ClassBeneficiaryDescriptionFormProvider @Inject() extends Mappings {
         firstError(
           isNotEmpty("value", "classBeneficiaryDescription.error.required"),
           maxLength(maxLengthClassOfBeneficiary, "classBeneficiaryDescription.error.length"),
-          regexp(Validation.classOfBeneficiaryDescRegex, "classBeneficiaryDescription.error.invalid")
+          regexp(Validation.descriptionRegex, "classBeneficiaryDescription.error.invalid")
         ))
   )
 

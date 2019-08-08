@@ -17,29 +17,115 @@
 package controllers.shares
 
 import base.SpecBase
+import models.{ShareClass, WhatKindOfAsset}
+import models.Status.Completed
+import models.WhatKindOfAsset.Shares
+import pages.WhatKindOfAssetPage
+import pages.entitystatus.AssetStatus
+import pages.shares._
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import utils.CheckYourAnswersHelper
+import utils.countryOptions.CountryOptions
+import viewmodels.AnswerSection
+import views.html.shares.ShareAnswersView
 
 class ShareAnswerControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
-  
+
   val index: Int = 0
 
   lazy val shareAnswerRoute = controllers.shares.routes.ShareAnswerController.onPageLoad(index, fakeDraftId).url
 
   "ShareAnswer Controller" must {
 
-    "return OK and the correct view for a GET" in {
+    "return OK and the correct view for a GET (share)" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers =
+        emptyUserAnswers
+        .set(SharesInAPortfolioPage(index), false).success.value
+        .set(ShareCompanyNamePage(index), "Share Company Name").success.value
+        .set(SharesOnStockExchangePage(index), true).success.value
+        .set(ShareClassPage(index), ShareClass.Ordinary).success.value
+        .set(ShareQuantityInTrustPage(index), "1000").success.value
+        .set(ShareValueInTrustPage(index), "10").success.value
+        .set(AssetStatus(index), Completed).success.value
+
+      val countryOptions = injector.instanceOf[CountryOptions]
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId)
+
+      val expectedSections = Seq(
+        AnswerSection(
+          None,
+          Seq(
+            checkYourAnswersHelper.sharesInAPortfolio(index).value,
+            checkYourAnswersHelper.shareCompanyName(index).value,
+            checkYourAnswersHelper.sharesOnStockExchange(index).value,
+            checkYourAnswersHelper.shareClass(index).value,
+            checkYourAnswersHelper.shareQuantityInTrust(index).value,
+            checkYourAnswersHelper.shareValueInTrust(index).value
+          )
+        )
+      )
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, shareAnswerRoute)
 
       val result = route(application, request).value
 
+      val view = application.injector.instanceOf[ShareAnswersView]
+
       status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view for a GET (share portfolio)" in {
+
+      val userAnswers =
+        emptyUserAnswers
+          .set(WhatKindOfAssetPage(index), Shares).success.value
+          .set(SharesInAPortfolioPage(index), true).success.value
+          .set(SharePortfolioNamePage(index), "Share Portfolio Name").success.value
+          .set(SharePortfolioOnStockExchangePage(index), true).success.value
+          .set(SharePortfolioQuantityInTrustPage(index), "2000").success.value
+          .set(SharePortfolioValueInTrustPage(index), "20").success.value
+
+      val countryOptions = injector.instanceOf[CountryOptions]
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId)
+
+      val expectedSections = Seq(
+        AnswerSection(
+          None,
+          Seq(
+            checkYourAnswersHelper.whatKindOfAsset(index).value,
+            checkYourAnswersHelper.sharesInAPortfolio(index).value,
+            checkYourAnswersHelper.sharePortfolioName(index).value,
+            checkYourAnswersHelper.sharePortfolioOnStockExchange(index).value,
+            checkYourAnswersHelper.sharePortfolioQuantityInTrust(index).value,
+            checkYourAnswersHelper.sharePortfolioValueInTrust(index).value
+          )
+        )
+      )
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, shareAnswerRoute)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[ShareAnswersView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
 
       application.stop()
     }

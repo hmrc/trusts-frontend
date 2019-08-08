@@ -23,7 +23,7 @@ import models.{Enumerable, Mode}
 import navigation.Navigator
 import pages.AddABeneficiaryPage
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{I18nSupport, Messages, MessagesApi, MessagesProvider}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -49,12 +49,22 @@ class AddABeneficiaryController @Inject()(
   private def routes(draftId: String) =
     identify andThen getData(draftId) andThen requireData
 
+  private def heading(count: Int)(implicit mp : MessagesProvider) = {
+    count match {
+      case 0 => Messages("addABeneficiary.heading")
+      case 1 => Messages("addABeneficiary.heading")
+      case size => Messages("addABeneficiary.count.heading", size)
+    }
+  }
+
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = routes(draftId) {
     implicit request =>
 
-      val beneficiaries = new AddABeneficiaryViewHelper(request.userAnswers).rows
+      val beneficiaries = new AddABeneficiaryViewHelper(request.userAnswers, draftId).rows
 
-      Ok(view(form, mode, draftId, beneficiaries.inProgress, beneficiaries.complete))
+      val count = beneficiaries.count
+
+      Ok(view(form, mode, draftId, beneficiaries.inProgress, beneficiaries.complete, heading(count)))
   }
 
   def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = routes(draftId).async {
@@ -63,9 +73,11 @@ class AddABeneficiaryController @Inject()(
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) => {
 
-          val beneficiaries = new AddABeneficiaryViewHelper(request.userAnswers).rows
+          val beneficiaries = new AddABeneficiaryViewHelper(request.userAnswers, draftId).rows
 
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId,  beneficiaries.inProgress, beneficiaries.complete)))
+          val count = beneficiaries.count
+
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, beneficiaries.inProgress, beneficiaries.complete, heading(count))))
 
         },
 

@@ -34,10 +34,8 @@ class AddATrusteeViewHelper(userAnswers: UserAnswers)(implicit messages: Message
     val trusteeType = trustee.`type` match {
       case Some(k : IndividualOrBusiness) =>
         val key = messages(s"entities.trustee.$k")
-        trustee.isLead match {
-          case true => renderForLead(key)
-          case false => key
-        }
+
+        if(trustee.isLead) renderForLead(key) else key
       case None =>
         s"${messages("entities.trustee")}"
     }

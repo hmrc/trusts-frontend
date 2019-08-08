@@ -17,13 +17,21 @@
 package controllers.shares
 
 import controllers.actions._
+import controllers.filters.IndexActionFilterProvider
 import javax.inject.Inject
-import models.Mode
+import models.Status.Completed
+import models.{Mode, NormalMode}
 import navigation.Navigator
+import pages.entitystatus.AssetStatus
+import pages.shares.{ShareAnswerPage, ShareCompanyNamePage, SharesInAPortfolioPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import utils.CheckYourAnswersHelper
+import utils.countryOptions.CountryOptions
+import viewmodels.AnswerSection
+import views.html.shares.ShareAnswersView
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -34,21 +42,66 @@ class ShareAnswerController @Inject()(
                                       identify: IdentifierAction,
                                       getData: DraftIdRetrievalActionProvider,
                                       requireData: DataRequiredAction,
+                                      requiredAnswer: RequiredAnswerActionProvider,
+                                      validateIndex: IndexActionFilterProvider,
+                                      view: ShareAnswersView,
+                                      countryOptions: CountryOptions,
                                       val controllerComponents: MessagesControllerComponents
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(draftId: String) =
+  private def actions(index: Int, draftId: String) =
     identify andThen
       getData(draftId) andThen
-      requireData
+      requireData andThen
+      requiredAnswer(RequiredAnswer(SharesInAPortfolioPage(index), routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, draftId)))
 
-  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(draftId) {
+
+  def onPageLoad(index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
-      Ok
+
+      val answers = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId)
+
+      val sections = Seq(
+        AnswerSection(
+          None,
+          request.userAnswers.get(SharesInAPortfolioPage(index)) match {
+            case Some(false) =>
+              Seq(
+                answers.whatKindOfAsset(index),
+                answers.sharesInAPortfolio(index),
+                answers.shareCompanyName(index),
+                answers.sharesOnStockExchange(index),
+                answers.shareClass(index),
+                answers.shareQuantityInTrust(index),
+                answers.shareValueInTrust(index)
+              ).flatten
+            case Some(true) =>
+              Seq(
+                answers.whatKindOfAsset(index),
+                answers.sharesInAPortfolio(index),
+                answers.sharePortfolioName(index),
+                answers.sharePortfolioOnStockExchange(index),
+                answers.sharePortfolioQuantityInTrust(index),
+                answers.sharePortfolioValueInTrust(index)
+              ).flatten
+            case None =>
+              Nil
+          }
+        )
+      )
+
+      Ok(view(index, draftId, sections))
   }
 
-  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(draftId).async {
+  def onSubmit(index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
     implicit request =>
-      Future.successful(Redirect(routes.ShareAnswerController.onPageLoad(index, draftId)))
+
+      val answers = request.userAnswers.set(AssetStatus(index), Completed)
+
+      for {
+        updatedAnswers <- Future.fromTry(answers)
+        _ <- sessionRepository.set(updatedAnswers)
+      } yield Redirect(navigator.nextPage(ShareAnswerPage, NormalMode, draftId)(request.userAnswers))
+
   }
 }

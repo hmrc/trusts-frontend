@@ -18,7 +18,7 @@ package repositories
 
 import akka.stream.Materializer
 import javax.inject.Inject
-import models.{RegistrationProgress, UserAnswers}
+import models.{RegistrationStatus, UserAnswers}
 import pages.AgentInternalReferencePage
 import play.api.Configuration
 import play.api.libs.json._
@@ -80,7 +80,7 @@ class DefaultSessionRepository @Inject()(
 
     val selector = Json.obj(
       "internalId" -> internalId,
-      "progress" -> Json.obj("$ne" -> RegistrationProgress.Complete.toString)
+      "progress" -> Json.obj("$ne" -> RegistrationStatus.Complete.toString)
     )
 
     collection.flatMap(

@@ -34,12 +34,12 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("shareValueInTrust.heading", optionalParam = Some(companyName))
-
         @components.input_text(
           field = form("value"),
           label = messages("shareValueInTrust.heading", companyName),
-          labelClass = Some("visually-hidden"),
+          symbol = Some("£"),
+          labelClass = Some("heading-large"),
+          labelAsHeading = true,
           hint = Some(messages("shareValueInTrust.hint"))
         )
 
