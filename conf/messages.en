@@ -984,5 +984,6 @@ propertyLandValueTrust.hint = This can be an estimate. Rounded down to the neare
 propertyLandValueTrust.checkYourAnswersLabel = What is the value of the property or land owned by the trust?
 propertyLandValueTrust.error.field1.required = Enter the current value of the property or land owned by the trust
 propertyLandValueTrust.error.field1.invalid = Current value of the property or land owned by the trust must be a number
-propertyLandValueTrust.error.field1.number = Current value of the property or land owned by the trust must be a whole number
+propertyLandValueTrust.error.field1.whole = Current value of the property or land owned by the trust must be a whole number
+propertyLandValueTrust.error.field1.zero = Current value of the property or land owned by the trust must be 1 or more
 propertyLandValueTrust.error.field1.length = Total value of the property or land owned by the trust must be 12 characters or less

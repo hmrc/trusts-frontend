@@ -47,7 +47,7 @@ class PropertyLandValueTrustControllerSpec extends SpecBase with IndexValidation
     draftId = userAnswersId,
     data = Json.obj(
       PropertyLandValueTrustPage.toString -> Json.obj(
-        "field1" -> "value 1"
+        "value" -> "value 1"
       )
     ),
     internalAuthId = TestUserAnswers.userInternalId
@@ -102,7 +102,7 @@ class PropertyLandValueTrustControllerSpec extends SpecBase with IndexValidation
 
       val request =
         FakeRequest(POST, propertyLandValueTrustRoute)
-          .withFormUrlEncodedBody(("field1", "100"))
+          .withFormUrlEncodedBody(("value", "100"))
 
       val result = route(application, request).value
 

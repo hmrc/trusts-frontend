@@ -27,7 +27,7 @@ class PropertyLandValueTrustFormProviderSpec extends StringFieldBehaviours {
 
   ".field1" must {
 
-    val fieldName = "field1"
+    val fieldName = "value"
     val requiredKey = "propertyLandValueTrust.error.field1.required"
     val lengthKey = "propertyLandValueTrust.error.field1.length"
     val maxLength = 12
