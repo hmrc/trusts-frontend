@@ -14,29 +14,16 @@
  * limitations under the License.
  */
 
-package mapping
+package pages.property_or_land
 
-import base.SpecBaseHelpers
-import generators.Generators
-import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
+import models.PropertyLandValueTrust
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import sections.Assets
 
-class TaxLiabilityMapperSpec extends FreeSpec with MustMatchers
-  with OptionValues with Generators with SpecBaseHelpers {
+case class PropertyLandValueTrustPage(index: Int) extends QuestionPage[PropertyLandValueTrust] {
 
-  val taxLiabilityMapper: Mapping[YearsReturns] = injector.instanceOf[TaxLiabilityMapper]
+  override def path: JsPath = JsPath \ Assets \ index \ toString
 
-  "TaxLiabilityMapper" - {
-
-    "when user answers is empty" - {
-
-      "must be able to create years returns" in {
-
-        val userAnswers = emptyUserAnswers
-
-        taxLiabilityMapper.build(userAnswers) mustBe None
-      }
-    }
-
-  }
-
+  override def toString: String = "propertyLandValueTrust"
 }

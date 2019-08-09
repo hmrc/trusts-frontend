@@ -14,29 +14,12 @@
  * limitations under the License.
  */
 
-package mapping
+package models
 
-import base.SpecBaseHelpers
-import generators.Generators
-import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
+import play.api.libs.json._
 
-class TaxLiabilityMapperSpec extends FreeSpec with MustMatchers
-  with OptionValues with Generators with SpecBaseHelpers {
+case class PropertyLandValueTrust(field1: String)
 
-  val taxLiabilityMapper: Mapping[YearsReturns] = injector.instanceOf[TaxLiabilityMapper]
-
-  "TaxLiabilityMapper" - {
-
-    "when user answers is empty" - {
-
-      "must be able to create years returns" in {
-
-        val userAnswers = emptyUserAnswers
-
-        taxLiabilityMapper.build(userAnswers) mustBe None
-      }
-    }
-
-  }
-
+object PropertyLandValueTrust {
+  implicit val format = Json.format[PropertyLandValueTrust]
 }
