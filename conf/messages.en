@@ -64,6 +64,19 @@ site.address.uk.postcode = Postcode
 site.address.uk.postcode.hint = For example AB1 1AB
 site.address.uk.checkYourAnswersLabel = What is {0}’s address?
 
+ukAddress.error.line1.required = Enter address line 1
+ukAddress.error.townOrCity.required = Enter a town or city
+ukAddress.error.postcode.required = Enter a postcode
+ukAddress.error.line1.length = Address line 1 must be 35 characters or less
+ukAddress.error.line2.length = Address line 2 must be 35 characters or less
+ukAddress.error.line3.length = Address line 3 must be 35 characters or less
+ukAddress.error.townOrCity.length = Town or city must be 35 characters or less
+ukAddress.error.line1.invalidCharacters = Address line 1 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+ukAddress.error.line2.invalidCharacters = Address line 2 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+ukAddress.error.line3.invalidCharacters = Address line 3 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+ukAddress.error.townOrCity.invalidCharacters = Town or city must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+ukAddress.error.postcode.invalidCharacters = Enter a real postcode
+
 site.address.international.title = What is {0}’s address?
 site.address.international.heading = What is {0}’s address?
 site.address.international.line1 = Address line 1
@@ -72,6 +85,18 @@ site.address.international.line3 = Address line 3 (optional)
 site.address.international.line4 = Address line 4 (optional)
 site.address.international.country = Country
 site.address.international.checkYourAnswersLabel = What is {0}’s address?
+
+internationalAddress.error.line1.required = Enter address line 1
+internationalAddress.error.line2.required = Enter address line 2
+internationalAddress.error.country.required = Select a country
+internationalAddress.error.line1.length = Address line 1 must be 35 characters or less
+internationalAddress.error.line2.length = Address line 2 must be 35 characters or less
+internationalAddress.error.line3.length = Address line 3 must be 35 characters or less
+internationalAddress.error.line4.length = Address line 4 must be 35 characters or less
+internationalAddress.error.line1.invalidCharacters = Address line 1 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+internationalAddress.error.line2.invalidCharacters = Address line 2 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+internationalAddress.error.line3.invalidCharacters = Address line 3 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+internationalAddress.error.line4.invalidCharacters = Address line 4 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
@@ -356,25 +381,7 @@ leadTrusteeLiveInTheUK.error.required = Select yes if the lead trustee lives in 
 
 trusteesUkAddress.title = What is {0}’s address?
 trusteesUkAddress.heading = What is {0}’s address?
-trusteesUkAddress.line1 = Address line 1
-trusteesUkAddress.line2 = Address line 2 (optional)
-trusteesUkAddress.line3 = Address line 3 (optional)
-trusteesUkAddress.townOrCity = Town or city
-trusteesUkAddress.postcode = Postcode
-trusteesUkAddress.postcode.hint = For example AB1 1AB
 trusteesUkAddress.checkYourAnswersLabel = What is {0}’s address?
-ukAddress.error.line1.required = Enter address line 1
-ukAddress.error.townOrCity.required = Enter a town or city
-ukAddress.error.postcode.required = Enter a postcode
-ukAddress.error.line1.length = Address line 1 must be 35 characters or less
-ukAddress.error.line2.length = Address line 2 must be 35 characters or less
-ukAddress.error.line3.length = Address line 3 must be 35 characters or less
-ukAddress.error.townOrCity.length = Town or city must be 35 characters or less
-ukAddress.error.line1.invalidCharacters = Address line 1 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
-ukAddress.error.line2.invalidCharacters = Address line 2 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
-ukAddress.error.line3.invalidCharacters = Address line 3 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
-ukAddress.error.townOrCity.invalidCharacters = Town or city must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
-ukAddress.error.postcode.invalidCharacters = Enter a real postcode
 
 agentInternalReference.title = What is your internal reference for this client?
 agentInternalReference.heading = What is your internal reference for this client?
@@ -518,18 +525,16 @@ whatKindOfAsset.error.required = Select the kind of asset you need to add
 
 addAssets.title = Add assets
 addAssets.heading = Add assets
-addAssets.singular.heading = You have added 1 asset
-addAssets.singular.title = You have added 1 asset
-
-addAssets.count.heading = You have added {0} assets
-addAssets.count.title = You have added {0} assets
-
 addAssets.additional-content = Do you want to add another asset?
 addAssets.add-them-now = Yes, I want to add them now
 addAssets.add-them-later = Yes, I want to add them later
 addAssets.no-complete = No, I have added all assets
 addAssets.checkYourAnswersLabel = addAssets
 addAssets.error.required = Select yes if you want to add another asset
+addAssets.count.heading = You have added {0} assets
+addAssets.count.title = You have added {0} assets
+addAssets.singular.heading = You have added 1 asset
+addAssets.singular.title = You have added 1 asset
 
 settlorDateOfBirthYesNo.title = Do you know {0}’s date of birth?
 settlorDateOfBirthYesNo.heading = Do you know {0}’s date of birth?
@@ -573,24 +578,7 @@ settlorsDateOfBirth.error.past = Date of birth must be after 31 December 1499
 
 settlorsInternationalAddress.title = What is {0}’s last known address?
 settlorsInternationalAddress.heading = What is {0}’s last known address?
-settlorsInternationalAddress.line1 = Address line 1
-settlorsInternationalAddress.line2 = Address line 2
-settlorsInternationalAddress.line3 = Address line 3 (optional)
-settlorsInternationalAddress.line4 = Address line 4 (optional)
-settlorsInternationalAddress.country = Country
 settlorsInternationalAddress.checkYourAnswersLabel = What is {0}’s last known address?
-
-internationalAddress.error.line1.required = Enter address line 1
-internationalAddress.error.line2.required = Enter address line 2
-internationalAddress.error.country.required = Select a country
-internationalAddress.error.line1.length = Address line 1 must be 35 characters or less
-internationalAddress.error.line2.length = Address line 2 must be 35 characters or less
-internationalAddress.error.line3.length = Address line 3 must be 35 characters or less
-internationalAddress.error.line4.length = Address line 4 must be 35 characters or less
-internationalAddress.error.line1.invalidCharacters = Address line 1 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
-internationalAddress.error.line2.invalidCharacters = Address line 2 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
-internationalAddress.error.line3.invalidCharacters = Address line 3 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
-internationalAddress.error.line4.invalidCharacters = Address line 4 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
 
 settlorsLastKnownAddressYesNo.title = Do you know {0}’s last known address?
 settlorsLastKnownAddressYesNo.heading = Do you know {0}’s last known address?
@@ -619,12 +607,6 @@ settlorsNINoYesNo.error.required = Select yes if you know the settlor’s Nation
 
 settlorsUKAddress.title = What is {0}’s last known address?
 settlorsUKAddress.heading = What is {0}’s last known address?
-settlorsUKAddress.line1 = Address line 1
-settlorsUKAddress.line2 = Address line 2 (optional)
-settlorsUKAddress.line3 = Address line 3 (optional)
-settlorsUKAddress.townOrCity = Town or city
-settlorsUKAddress.postcode = Postcode
-settlorsUKAddress.postcode.hint = For example AB1 1AB
 settlorsUKAddress.checkYourAnswersLabel = What is {0}’s last known address?
 
 setupAfterSettlorDied.title = Was the trust set up after the settlor died?
@@ -714,12 +696,6 @@ individualBeneficiaryAddressYesNo.error.required = Select yes if you know the in
 
 individualBeneficiaryAddressUK.title = What is {0}’s address?
 individualBeneficiaryAddressUK.heading = What is {0}’s address?
-individualBeneficiaryAddressUK.line1 = Address line 1
-individualBeneficiaryAddressUK.line2 = Address line 2 (optional)
-individualBeneficiaryAddressUK.line3 = Address line 3 (optional)
-individualBeneficiaryAddressUK.townOrCity = Town or city
-individualBeneficiaryAddressUK.postcode = Postcode
-individualBeneficiaryAddressUK.postcode.hint = For example AB1 1AB
 individualBeneficiaryAddressUK.checkYourAnswersLabel = What is {0}’s address?
 
 individualBeneficiaryVulnerableYesNo.title = Has a vulnerable person election form (VPE1) been submitted to HMRC for {0}?
@@ -990,3 +966,9 @@ propertyOrLandAddress.title = Is the property or land’s address in the UK?
 propertyOrLandAddress.heading = Is the property or land’s address in the UK?
 propertyOrLandAddress.checkYourAnswersLabel = Is the property or land’s address in the UK?
 propertyOrLandAddress.error.required = Select yes if the property or land has an address in the UK
+
+whatIsThePropertyOrLandUKAddress.title = What is the property or land’s address?
+whatIsThePropertyOrLandUKAddress.heading = What is the property or land’s address?
+whatIsThePropertyOrLandUKAddress.checkYourAnswersLabel = What is the property or land’s address?
+
+
