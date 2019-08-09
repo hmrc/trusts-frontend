@@ -14,29 +14,20 @@
  * limitations under the License.
  */
 
-package mapping
+package pages
 
-import base.SpecBaseHelpers
-import generators.Generators
-import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
+import models.PropertyLandValueTrust
+import pages.behaviours.PageBehaviours
+import pages.property_or_land.PropertyLandValueTrustPage
 
-class TaxLiabilityMapperSpec extends FreeSpec with MustMatchers
-  with OptionValues with Generators with SpecBaseHelpers {
+class PropertyLandValueTrustPageSpec extends PageBehaviours {
 
-  val taxLiabilityMapper: Mapping[YearsReturns] = injector.instanceOf[TaxLiabilityMapper]
+  "PropertyLandValueTrustPage" must {
 
-  "TaxLiabilityMapper" - {
+    beRetrievable[PropertyLandValueTrust](PropertyLandValueTrustPage(0))
 
-    "when user answers is empty" - {
+    beSettable[PropertyLandValueTrust](PropertyLandValueTrustPage(0))
 
-      "must be able to create years returns" in {
-
-        val userAnswers = emptyUserAnswers
-
-        taxLiabilityMapper.build(userAnswers) mustBe None
-      }
-    }
-
+    beRemovable[PropertyLandValueTrust](PropertyLandValueTrustPage(0))
   }
-
 }

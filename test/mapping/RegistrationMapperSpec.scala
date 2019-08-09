@@ -61,8 +61,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
           val result = registrationMapper.build(userAnswers).value
 
           result.agentDetails mustNot be(defined)
-          result.yearsReturns mustBe defined
-          result.yearsReturns mustBe defined
+          result.yearsReturns mustNot be(defined)
           result.matchData must be(defined)
           result.declaration mustBe a[Declaration]
           result.trust mustBe a[Trust]
@@ -73,8 +72,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
           val result = registrationMapper.build(newTrustUserAnswers).value
 
           result.agentDetails mustNot be(defined)
-          result.yearsReturns mustBe defined
-          result.yearsReturns mustBe defined
+          result.yearsReturns mustNot be(defined)
           result.matchData mustNot be(defined)
           result.declaration mustBe a[Declaration]
           result.trust mustBe a[Trust]
@@ -91,8 +89,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
           val result = registrationMapper.build(userAnswers).value
 
           result.agentDetails mustBe defined
-          result.yearsReturns mustBe defined
-          result.yearsReturns mustBe defined
+          result.yearsReturns mustNot be(defined)
           result.matchData mustNot be(defined)
           result.declaration mustBe a[Declaration]
           result.trust mustBe a[Trust]
@@ -105,8 +102,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
           val result = registrationMapper.build(userAnswersWithAgent).value
 
           result.agentDetails must be(defined)
-          result.yearsReturns mustBe defined
-          result.yearsReturns mustBe defined
+          result.yearsReturns mustNot be(defined)
           result.matchData must be(defined)
           result.declaration mustBe a[Declaration]
           result.trust mustBe a[Trust]
