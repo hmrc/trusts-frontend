@@ -23,15 +23,15 @@ import generators.ModelGenerators
 import models.{NormalMode, UKAddress}
 import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.property_or_land.WhatIsThePropertyOrLandUKAddressPage
+import pages.property_or_land.PropertyOrLandUKAddressPage
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
-import views.html.property_or_land.WhatIsThePropertyOrLandUKAddressView
+import views.html.property_or_land.PropertyOrLandUKAddressView
 
 
-class WhatIsThePropertyOrLandUKAddressControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
+class PropertyOrLandUKAddressControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -39,7 +39,7 @@ class WhatIsThePropertyOrLandUKAddressControllerSpec extends SpecBase with Model
   val form = formProvider()
   val index = 0
 
-  lazy val WhatIsThePropertyOrLandUKAddressRoute: String = routes.WhatIsThePropertyOrLandUKAddressController.onPageLoad(NormalMode,index ,fakeDraftId).url
+  lazy val PropertyOrLandUKAddressRoute: String = routes.PropertyOrLandUKAddressController.onPageLoad(NormalMode,index ,fakeDraftId).url
 
   "WhatIsThePropertyOrLandAddress Controller" must {
 
@@ -47,11 +47,11 @@ class WhatIsThePropertyOrLandUKAddressControllerSpec extends SpecBase with Model
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, WhatIsThePropertyOrLandUKAddressRoute)
+      val request = FakeRequest(GET, PropertyOrLandUKAddressRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[WhatIsThePropertyOrLandUKAddressView]
+      val view = application.injector.instanceOf[PropertyOrLandUKAddressView]
 
       status(result) mustEqual OK
 
@@ -64,13 +64,13 @@ class WhatIsThePropertyOrLandUKAddressControllerSpec extends SpecBase with Model
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers
-        .set(WhatIsThePropertyOrLandUKAddressPage(index),  UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")).success.value
+        .set(PropertyOrLandUKAddressPage(index),  UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, WhatIsThePropertyOrLandUKAddressRoute)
+      val request = FakeRequest(GET, PropertyOrLandUKAddressRoute)
 
-      val view = application.injector.instanceOf[WhatIsThePropertyOrLandUKAddressView]
+      val view = application.injector.instanceOf[PropertyOrLandUKAddressView]
 
       val result = route(application, request).value
 
@@ -90,7 +90,7 @@ class WhatIsThePropertyOrLandUKAddressControllerSpec extends SpecBase with Model
           .build()
 
       val request =
-        FakeRequest(POST, WhatIsThePropertyOrLandUKAddressRoute)
+        FakeRequest(POST, PropertyOrLandUKAddressRoute)
           .withFormUrlEncodedBody(("line1", "value 1"), ("townOrCity", "value 2"),("postcode", "NE1 1ZZ"))
 
       val result = route(application, request).value
@@ -106,12 +106,12 @@ class WhatIsThePropertyOrLandUKAddressControllerSpec extends SpecBase with Model
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, WhatIsThePropertyOrLandUKAddressRoute)
+        FakeRequest(POST, PropertyOrLandUKAddressRoute)
           .withFormUrlEncodedBody(("value", "invalid value"))
 
       val boundForm = form.bind(Map("value" -> "invalid value"))
 
-      val view = application.injector.instanceOf[WhatIsThePropertyOrLandUKAddressView]
+      val view = application.injector.instanceOf[PropertyOrLandUKAddressView]
 
       val result = route(application, request).value
 
@@ -127,7 +127,7 @@ class WhatIsThePropertyOrLandUKAddressControllerSpec extends SpecBase with Model
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, WhatIsThePropertyOrLandUKAddressRoute)
+      val request = FakeRequest(GET, PropertyOrLandUKAddressRoute)
 
       val result = route(application, request).value
 
@@ -143,7 +143,7 @@ class WhatIsThePropertyOrLandUKAddressControllerSpec extends SpecBase with Model
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, WhatIsThePropertyOrLandUKAddressRoute)
+        FakeRequest(POST, PropertyOrLandUKAddressRoute)
           .withFormUrlEncodedBody(("line1", "value 1"), ("townOrCity", "value 2"),("postcode", "NE1 1ZZ"))
 
       val result = route(application, request).value
@@ -159,14 +159,14 @@ class WhatIsThePropertyOrLandUKAddressControllerSpec extends SpecBase with Model
   "for a GET" must {
 
     def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
-      val route = routes.WhatIsThePropertyOrLandUKAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
+      val route = routes.PropertyOrLandUKAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       FakeRequest(GET, route)
     }
 
     validateIndex(
       arbitrary[UKAddress],
-      WhatIsThePropertyOrLandUKAddressPage.apply,
+      PropertyOrLandUKAddressPage.apply,
       getForIndex
     )
 
@@ -176,7 +176,7 @@ class WhatIsThePropertyOrLandUKAddressControllerSpec extends SpecBase with Model
     def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
       val route =
-       routes.WhatIsThePropertyOrLandUKAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
+       routes.PropertyOrLandUKAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       FakeRequest(POST, route)
         .withFormUrlEncodedBody(("value", "true"))
@@ -184,7 +184,7 @@ class WhatIsThePropertyOrLandUKAddressControllerSpec extends SpecBase with Model
 
     validateIndex(
       arbitrary[UKAddress],
-      WhatIsThePropertyOrLandUKAddressPage.apply,
+      PropertyOrLandUKAddressPage.apply,
       postForIndex
     )
   }

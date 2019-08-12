@@ -20,14 +20,14 @@ import models.UKAddress
 import pages.behaviours.PageBehaviours
 
 
-class WhatIsThePropertyOrLandUKAddressPageSpec extends PageBehaviours {
+class PropertyOrLandUKAddressPageSpec extends PageBehaviours {
 
-  "WhatIsThePropertyOrLandAddressPage" must {
+  "PropertyOrLandAddressPage" must {
 
-    beRetrievable[UKAddress](WhatIsThePropertyOrLandUKAddressPage(0))
+    beRetrievable[UKAddress](PropertyOrLandUKAddressPage(0))
 
-    beSettable[UKAddress](WhatIsThePropertyOrLandUKAddressPage(0))
+    beSettable[UKAddress](PropertyOrLandUKAddressPage(0))
 
-    beRemovable[UKAddress](WhatIsThePropertyOrLandUKAddressPage(0))
+    beRemovable[UKAddress](PropertyOrLandUKAddressPage(0))
   }
 }

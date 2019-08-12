@@ -22,17 +22,17 @@ import forms.UKAddressFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.property_or_land.WhatIsThePropertyOrLandUKAddressPage
+import pages.property_or_land.PropertyOrLandUKAddressPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.property_or_land.WhatIsThePropertyOrLandUKAddressView
+import views.html.property_or_land.PropertyOrLandUKAddressView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class WhatIsThePropertyOrLandUKAddressController @Inject()(
+class PropertyOrLandUKAddressController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
@@ -42,7 +42,7 @@ class WhatIsThePropertyOrLandUKAddressController @Inject()(
                                         validateIndex: IndexActionFilterProvider,
                                         formProvider: UKAddressFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: WhatIsThePropertyOrLandUKAddressView
+                                        view: PropertyOrLandUKAddressView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -55,7 +55,7 @@ class WhatIsThePropertyOrLandUKAddressController @Inject()(
   def onPageLoad(mode: Mode, index : Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
   implicit request =>
 
-      val preparedForm = request.userAnswers.get(WhatIsThePropertyOrLandUKAddressPage(index)) match {
+      val preparedForm = request.userAnswers.get(PropertyOrLandUKAddressPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -72,9 +72,9 @@ class WhatIsThePropertyOrLandUKAddressController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatIsThePropertyOrLandUKAddressPage(index), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(PropertyOrLandUKAddressPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(WhatIsThePropertyOrLandUKAddressPage(index), mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(PropertyOrLandUKAddressPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

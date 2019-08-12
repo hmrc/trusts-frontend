@@ -20,7 +20,7 @@ import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.Assets
 
-final case class PropertyOrLandAddressPage(index: Int) extends QuestionPage[Boolean] {
+final case class PropertyOrLandAddressUkYesNoPage(index: Int) extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ Assets \ index \ toString
 

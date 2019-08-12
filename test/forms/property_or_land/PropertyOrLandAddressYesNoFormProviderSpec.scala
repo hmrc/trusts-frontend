@@ -16,16 +16,15 @@
 
 package forms.property_or_land
 
-import forms.PropertyOrLandAddressFormProvider
 import forms.behaviours.BooleanFieldBehaviours
 import play.api.data.FormError
 
-class PropertyOrLandAddressFormProviderSpec extends BooleanFieldBehaviours {
+class PropertyOrLandAddressYesNoFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "propertyOrLandAddress.error.required"
+  val requiredKey = "propertyOrLandAddressYesNo.error.required"
   val invalidKey = "error.boolean"
 
-  val form = new PropertyOrLandAddressFormProvider()()
+  val form = new PropertyOrLandAddressYesNoFormProvider()()
 
   ".value" must {
 

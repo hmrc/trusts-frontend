@@ -16,39 +16,32 @@
 
 package views.property_or_land
 
-import controllers.property_or_land.routes
-import forms.UKAddressFormProvider
+import forms.property_or_land.PropertyOrLandAddressUkYesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.UkAddressViewBehaviours
-import views.html.property_or_land.WhatIsThePropertyOrLandUKAddressView
+import views.behaviours.YesNoViewBehaviours
+import views.html.property_or_land.PropertyOrLandAddressUkYesNoView
 
-class WhatIsThePropertyOrLandUKAddressViewSpec extends UkAddressViewBehaviours {
+class PropertyOrLandAddressUkYesNoViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "site.address.uk"
-  val index = 0
+  val messageKeyPrefix = "propertyOrLandAddressUkYesNo"
 
-  override val form = new UKAddressFormProvider()()
+  val form = new PropertyOrLandAddressUkYesNoFormProvider()()
 
-  "WhatIsThePropertyOrLandUKAddressView view" must {
+  val index = 1
 
-    val view = viewFor[WhatIsThePropertyOrLandUKAddressView](Some(emptyUserAnswers))
+  "PropertyOrLandAddressUkYesNo view" must {
+
+    val view = viewFor[PropertyOrLandAddressUkYesNoView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, "the property or land")
+    behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like ukAddressPage(
-      applyView,
-      Some(messageKeyPrefix),
-      routes.WhatIsThePropertyOrLandUKAddressController.onSubmit(NormalMode, index, fakeDraftId).url,
-      "the property or land"
-    )
-
-    behave like pageWithASubmitButton(applyView(form))
+    behave like yesNoPage(form, applyView, messageKeyPrefix, controllers.property_or_land.routes.PropertyOrLandAddressUkYesNoController.onSubmit(NormalMode, index, fakeDraftId).url)
   }
 }
