@@ -23,7 +23,7 @@ import javax.inject.Inject
 import mapping.reads._
 import models.{CheckMode, InternationalAddress, UKAddress, UserAnswers}
 import pages._
-import pages.property_or_land.{PropertyOrLandAddressPage, PropertyOrLandDescriptionPage}
+import pages.property_or_land.{PropertyOrLandAddressUkYesNoPage, PropertyOrLandDescriptionPage}
 import pages.property_or_land._
 import pages.shares._
 import play.api.i18n.Messages
@@ -53,12 +53,12 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
-  def propertyOrLandAddress(index: Int): Option[AnswerRow] = userAnswers.get(PropertyOrLandAddressPage(index)) map {
+  def propertyOrLandAddress(index: Int): Option[AnswerRow] = userAnswers.get(PropertyOrLandAddressUkYesNoPage(index)) map {
     x =>
       AnswerRow(
         "propertyOrLandAddress.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.property_or_land.routes.PropertyOrLandAddressController.onPageLoad(CheckMode, index, draftId).url
+        controllers.property_or_land.routes.PropertyOrLandAddressUkYesNoController.onPageLoad(CheckMode, index, draftId).url
       )
   }
 

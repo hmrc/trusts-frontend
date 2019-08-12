@@ -14,30 +14,33 @@
  * limitations under the License.
  *@
 
-@import controllers.routes._
+@import controllers.property_or_land.routes._
 @import models.Mode
-@import models.FullName
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, name: FullName, index: Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId: String, index : Int)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("individualBeneficiaryAddressUK.title", name.toString)}"
+    title = s"${errorPrefix(form)} ${messages("propertyOrLandAddressUkYesNo.title")}"
     ) {
 
-    @formHelper(action = IndividualBeneficiaryAddressUKController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
+    @formHelper(action = PropertyOrLandAddressUkYesNoController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("individualBeneficiaryAddressUK.heading", Some(name.toString))
+        @components.heading("propertyOrLandAddressUkYesNo.heading")
 
-        @components.uk_address(form)
+        @components.input_yes_no(
+            field = form("value"),
+            label = messages("propertyOrLandAddressUkYesNo.heading"),
+            legendClass = Some("visually-hidden")
+        )
 
         @components.submit_button()
     }

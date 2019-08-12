@@ -16,31 +16,14 @@
 
 package forms.property_or_land
 
-import forms.PropertyOrLandAddressFormProvider
-import forms.behaviours.BooleanFieldBehaviours
-import play.api.data.FormError
+import forms.mappings.Mappings
+import javax.inject.Inject
+import play.api.data.Form
 
-class PropertyOrLandAddressFormProviderSpec extends BooleanFieldBehaviours {
+class PropertyOrLandAddressUkYesNoFormProvider @Inject() extends Mappings {
 
-  val requiredKey = "propertyOrLandAddress.error.required"
-  val invalidKey = "error.boolean"
-
-  val form = new PropertyOrLandAddressFormProvider()()
-
-  ".value" must {
-
-    val fieldName = "value"
-
-    behave like booleanField(
-      form,
-      fieldName,
-      invalidError = FormError(fieldName, invalidKey)
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("propertyOrLandAddress.error.required")
     )
-
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
-  }
 }

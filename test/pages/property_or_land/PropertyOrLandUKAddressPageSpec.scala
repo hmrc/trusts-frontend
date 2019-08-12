@@ -16,16 +16,18 @@
 
 package pages.property_or_land
 
+import models.UKAddress
 import pages.behaviours.PageBehaviours
 
-class PropertyOrLandAddressPageSpec extends PageBehaviours {
+
+class PropertyOrLandUKAddressPageSpec extends PageBehaviours {
 
   "PropertyOrLandAddressPage" must {
 
-    beRetrievable[Boolean](PropertyOrLandAddressPage(0))
+    beRetrievable[UKAddress](PropertyOrLandUKAddressPage(0))
 
-    beSettable[Boolean](PropertyOrLandAddressPage(0))
+    beSettable[UKAddress](PropertyOrLandUKAddressPage(0))
 
-    beRemovable[Boolean](PropertyOrLandAddressPage(0))
+    beRemovable[UKAddress](PropertyOrLandUKAddressPage(0))
   }
 }

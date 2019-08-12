@@ -16,25 +16,24 @@
 
 package views.property_or_land
 
-import controllers.property_or_land.routes._
-import forms.PropertyOrLandAddressFormProvider
+import forms.property_or_land.PropertyOrLandAddressUkYesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.property_or_land.PropertyOrLandAddressView
+import views.html.property_or_land.PropertyOrLandAddressUkYesNoView
 
-class PropertyOrLandAddressViewSpec extends YesNoViewBehaviours {
+class PropertyOrLandAddressUkYesNoViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "propertyOrLandAddress"
+  val messageKeyPrefix = "propertyOrLandAddressUkYesNo"
 
-  val form = new PropertyOrLandAddressFormProvider()()
+  val form = new PropertyOrLandAddressUkYesNoFormProvider()()
 
   val index = 1
 
-  "PropertyOrLandAddress view" must {
+  "PropertyOrLandAddressUkYesNo view" must {
 
-    val view = viewFor[PropertyOrLandAddressView](Some(emptyUserAnswers))
+    val view = viewFor[PropertyOrLandAddressUkYesNoView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
@@ -43,6 +42,6 @@ class PropertyOrLandAddressViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, PropertyOrLandAddressController.onSubmit(NormalMode, index, fakeDraftId).url)
+    behave like yesNoPage(form, applyView, messageKeyPrefix, controllers.property_or_land.routes.PropertyOrLandAddressUkYesNoController.onSubmit(NormalMode, index, fakeDraftId).url)
   }
 }

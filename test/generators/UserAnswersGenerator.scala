@@ -21,6 +21,7 @@ import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.TryValues
 import pages._
+import pages.property_or_land.{PropertyOrLandAddressUkYesNoPage, PropertyOrLandDescriptionPage,PropertyOrLandUKAddressPage}
 import pages.property_or_land._
 import pages.shares.{ShareClassPage, ShareCompanyNamePage, SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, ShareQuantityInTrustPage, ShareValueInTrustPage, SharesInAPortfolioPage, SharesOnStockExchangePage}
 import play.api.libs.json.{JsValue, Json}
@@ -29,7 +30,7 @@ trait UserAnswersGenerator extends TryValues {
   self: Generators =>
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
-    arbitrary[(PropertyOrLandAddressPage, JsValue)] ::
+    arbitrary[(PropertyOrLandAddressUkYesNoPage, JsValue)] ::
     arbitrary[(TrustOwnAllThePropertyOrLandPage, JsValue)] ::
     arbitrary[(PropertyOrLandInternationalAddressPage, JsValue)] ::
     arbitrary[(PropertyLandValueTrustPage, JsValue)] ::
@@ -43,6 +44,7 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(SharePortfolioOnStockExchangePage, JsValue)] ::
     arbitrary[(SharePortfolioNamePage, JsValue)] ::
     arbitrary[(ShareClassPage, JsValue)] ::
+    arbitrary[(PropertyOrLandUKAddressPage, JsValue)] ::
     arbitrary[(DeclarationPage.type, JsValue)] ::
     arbitrary[(WhatTypeOfBeneficiaryPage.type, JsValue)] ::
     arbitrary[(AgentInternationalAddressPage.type, JsValue)] ::

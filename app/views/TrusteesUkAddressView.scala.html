@@ -36,36 +36,7 @@
 
         @components.heading("trusteesUkAddress.heading", optionalParam = Some(trusteeName))
 
-        @components.input_text(
-            field = form("line1"),
-            label = messages("trusteesUkAddress.line1"),
-            inputClass = Some("form-control-3-4")
-        )
-
-        @components.input_text(
-            field = form("line2"),
-            label = messages("trusteesUkAddress.line2"),
-            inputClass = Some("form-control-3-4")
-        )
-
-        @components.input_text(
-            field = form("line3"),
-            label = messages("trusteesUkAddress.line3"),
-            inputClass = Some("form-control-3-4")
-        )
-
-        @components.input_text(
-            field = form("townOrCity"),
-            label = messages("trusteesUkAddress.townOrCity"),
-            inputClass = Some("form-control-2-3")
-        )
-
-        @components.input_text(
-            field = form("postcode"),
-            label = messages("trusteesUkAddress.postcode"),
-            hint = Some(messages(s"trusteesUkAddress.postcode.hint")),
-            inputClass = Some("form-control-1-4")
-        )
+        @components.uk_address(form)
 
         @components.submit_button()
     }
