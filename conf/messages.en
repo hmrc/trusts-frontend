@@ -972,3 +972,8 @@ whatIsThePropertyOrLandUKAddress.heading = What is the property or land’s addr
 whatIsThePropertyOrLandUKAddress.checkYourAnswersLabel = What is the property or land’s address?
 
 
+
+addABeneficiaryYesNo.title = addABeneficiaryYesNo
+addABeneficiaryYesNo.heading = addABeneficiaryYesNo
+addABeneficiaryYesNo.checkYourAnswersLabel = addABeneficiaryYesNo
+addABeneficiaryYesNo.error.required = Select yes if addABeneficiaryYesNo
