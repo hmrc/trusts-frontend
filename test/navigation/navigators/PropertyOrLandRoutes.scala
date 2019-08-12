@@ -35,11 +35,37 @@ trait PropertyOrLandRoutes {
 
   def propertyOrLandRoutes(): Unit = {
 
+    "navigate from PropertyOrLandAddressYesNoPage" when {
+
+      val page = PropertyOrLandAddressYesNoPage(index)
+
+      "user answers yes to go to PropertyOrLandAddressUkYesNoPage" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers.set(page, value = true).success.value
+            navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.PropertyOrLandAddressUkYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+
+      "user answers no to go to PropertyOrLandDescriptionPage" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers.set(page, value = false).success.value
+            navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.PropertyOrLandDescriptionController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+    }
+
     "navigate from PropertyOrLandAddressUkYesNoPage" when {
+
+      val page = PropertyOrLandAddressUkYesNoPage(index)
+
       "user answers yes to go to PropertyOrLandUKAddressPage" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
-            val answers = userAnswers.set(PropertyOrLandAddressUkYesNoPage(index), value = true).success.value
+            val answers = userAnswers.set(page, value = true).success.value
             navigator.nextPage(PropertyOrLandAddressUkYesNoPage(index), NormalMode, fakeDraftId)(answers)
               .mustBe(routes.PropertyOrLandUKAddressController.onPageLoad(NormalMode, index, fakeDraftId))
         }
@@ -48,8 +74,8 @@ trait PropertyOrLandRoutes {
       "user answers no to go to PropertyOrLandInternationalAddressPage" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
-            val answers = userAnswers.set(PropertyOrLandAddressUkYesNoPage(index), value = false).success.value
-            navigator.nextPage(PropertyOrLandAddressUkYesNoPage(index), NormalMode, fakeDraftId)(answers)
+            val answers = userAnswers.set(page, value = false).success.value
+            navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
               .mustBe(routes.PropertyOrLandInternationalAddressController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }

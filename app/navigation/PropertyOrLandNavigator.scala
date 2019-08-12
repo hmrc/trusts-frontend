@@ -27,9 +27,15 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 class PropertyOrLandNavigator extends Navigator {
 
   override protected def normalRoutes(draftId: String): Page => AffinityGroup => UserAnswers => Call = {
+    case PropertyOrLandAddressYesNoPage(index) => _ => propertyOrLandAddressYesNoPage(draftId, index)
     case PropertyOrLandAddressUkYesNoPage(index) => _ => propertyOrLandAddressUkYesNoPage(draftId, index)
   }
 
+  private def propertyOrLandAddressYesNoPage(draftId: String, index: Int)(answers: UserAnswers) = answers.get(PropertyOrLandAddressYesNoPage(index)) match {
+    case Some(true)  => routes.PropertyOrLandAddressUkYesNoController.onPageLoad(NormalMode, index, draftId)
+    case Some(false) => routes.PropertyOrLandDescriptionController.onPageLoad(NormalMode, index, draftId)
+    case None        => controllers.routes.SessionExpiredController.onPageLoad()
+  }
   private def propertyOrLandAddressUkYesNoPage(draftId: String, index: Int)(answers: UserAnswers) = answers.get(PropertyOrLandAddressUkYesNoPage(index)) match {
     case Some(true)  => routes.PropertyOrLandUKAddressController.onPageLoad(NormalMode, index, draftId)
     case Some(false) => routes.PropertyOrLandInternationalAddressController.onPageLoad(NormalMode, index, draftId)
