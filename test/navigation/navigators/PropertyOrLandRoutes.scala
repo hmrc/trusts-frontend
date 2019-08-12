@@ -118,6 +118,18 @@ trait PropertyOrLandRoutes {
       }
     }
 
+    "navigate from PropertyOrLandTotalValuePage to TrustOwnAllThePropertyOrLandPage" in {
+
+      val page = PropertyOrLandTotalValuePage(index)
+
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val answers = userAnswers.set(page, "100").success.value
+          navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.TrustOwnAllThePropertyOrLandController.onPageLoad(NormalMode, index, fakeDraftId))
+      }
+    }
+
   }
 
 }
