@@ -23,7 +23,7 @@ import models.{NormalMode, UserAnswers}
 import navigation.{Navigator, PropertyOrLandNavigator}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages.property_or_land.PropertyOrLandAddressPage
+import pages.property_or_land.PropertyOrLandAddressYesNoPage
 
 trait PropertyOrLandRoutes {
 
@@ -39,17 +39,17 @@ trait PropertyOrLandRoutes {
       "user answers yes to go to WhatIsThePropertyOrLandUKAddressPage" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
-            val answers = userAnswers.set(PropertyOrLandAddressPage(index), value = true).success.value
-            navigator.nextPage(PropertyOrLandAddressPage(index), NormalMode, fakeDraftId)(answers)
-              .mustBe(routes.WhatIsThePropertyOrLandUKAddressController.onPageLoad(NormalMode, index, fakeDraftId))
+            val answers = userAnswers.set(PropertyOrLandAddressYesNoPage(index), value = true).success.value
+            navigator.nextPage(PropertyOrLandAddressYesNoPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.PropertyOrLandUKAddressController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 
       "user answers no to go to PropertyOrLandInternationalAddressPage" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
-            val answers = userAnswers.set(PropertyOrLandAddressPage(index), value = false).success.value
-            navigator.nextPage(PropertyOrLandAddressPage(index), NormalMode, fakeDraftId)(answers)
+            val answers = userAnswers.set(PropertyOrLandAddressYesNoPage(index), value = false).success.value
+            navigator.nextPage(PropertyOrLandAddressYesNoPage(index), NormalMode, fakeDraftId)(answers)
               .mustBe(routes.PropertyOrLandInternationalAddressController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
