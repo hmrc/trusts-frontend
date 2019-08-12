@@ -23,7 +23,7 @@ import models.{NormalMode, UserAnswers}
 import navigation.{Navigator, PropertyOrLandNavigator}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages.property_or_land.PropertyOrLandAddressYesNoPage
+import pages.property_or_land._
 
 trait PropertyOrLandRoutes {
 
@@ -35,12 +35,12 @@ trait PropertyOrLandRoutes {
 
   def propertyOrLandRoutes(): Unit = {
 
-    "navigate from PropertyOrLandAddressPage" when {
-      "user answers yes to go to WhatIsThePropertyOrLandUKAddressPage" in {
+    "navigate from PropertyOrLandAddressUkYesNoPage" when {
+      "user answers yes to go to PropertyOrLandUKAddressPage" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
-            val answers = userAnswers.set(PropertyOrLandAddressYesNoPage(index), value = true).success.value
-            navigator.nextPage(PropertyOrLandAddressYesNoPage(index), NormalMode, fakeDraftId)(answers)
+            val answers = userAnswers.set(PropertyOrLandAddressUkYesNoPage(index), value = true).success.value
+            navigator.nextPage(PropertyOrLandAddressUkYesNoPage(index), NormalMode, fakeDraftId)(answers)
               .mustBe(routes.PropertyOrLandUKAddressController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
@@ -48,8 +48,8 @@ trait PropertyOrLandRoutes {
       "user answers no to go to PropertyOrLandInternationalAddressPage" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
-            val answers = userAnswers.set(PropertyOrLandAddressYesNoPage(index), value = false).success.value
-            navigator.nextPage(PropertyOrLandAddressYesNoPage(index), NormalMode, fakeDraftId)(answers)
+            val answers = userAnswers.set(PropertyOrLandAddressUkYesNoPage(index), value = false).success.value
+            navigator.nextPage(PropertyOrLandAddressUkYesNoPage(index), NormalMode, fakeDraftId)(answers)
               .mustBe(routes.PropertyOrLandInternationalAddressController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
