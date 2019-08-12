@@ -18,77 +18,66 @@ package controllers.property_or_land
 
 import base.SpecBase
 import controllers.IndexValidation
-import forms.property_or_land.PropertyLandValueTrustFormProvider
-import models.{NormalMode, PropertyLandValueTrust, UserAnswers}
+import forms.UKAddressFormProvider
+import generators.ModelGenerators
+import models.{NormalMode, UKAddress}
 import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.property_or_land.{PropertyLandValueTrustPage, PropertyOrLandDescriptionPage}
-import play.api.data.Form
+import pages.property_or_land.WhatIsThePropertyOrLandUKAddressPage
 import play.api.inject.bind
-import play.api.libs.json.Json
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
-import utils._
-import views.html.property_or_land.PropertyLandValueTrustView
+import play.api.test.Helpers.{route, _}
+import views.html.property_or_land.WhatIsThePropertyOrLandUKAddressView
 
-class PropertyLandValueTrustControllerSpec extends SpecBase with IndexValidation {
+
+class WhatIsThePropertyOrLandUKAddressControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new PropertyLandValueTrustFormProvider()
+  val formProvider = new UKAddressFormProvider()
   val form = formProvider()
+  val index = 0
 
-  val index: Int = 0
+  lazy val WhatIsThePropertyOrLandUKAddressRoute: String = routes.WhatIsThePropertyOrLandUKAddressController.onPageLoad(NormalMode,index ,fakeDraftId).url
 
-  lazy val propertyLandValueTrustRoute = routes.PropertyLandValueTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
-
-  val userAnswers = UserAnswers(
-    draftId = userAnswersId,
-    data = Json.obj(
-      PropertyLandValueTrustPage.toString -> Json.obj(
-        "value" -> "value 1"
-      )
-    ),
-    internalAuthId = TestUserAnswers.userInternalId
-  )
-
-  "PropertyLandValueTrust Controller" must {
+  "WhatIsThePropertyOrLandAddress Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, propertyLandValueTrustRoute)
-
-      val view = application.injector.instanceOf[PropertyLandValueTrustView]
+      val request = FakeRequest(GET, WhatIsThePropertyOrLandUKAddressRoute)
 
       val result = route(application, request).value
+
+      val view = application.injector.instanceOf[WhatIsThePropertyOrLandUKAddressView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, index, fakeDraftId)(request, messages).toString
+        view(form, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(PropertyLandValueTrustPage(index), "1").success.value
+      val userAnswers = emptyUserAnswers
+        .set(WhatIsThePropertyOrLandUKAddressPage(index),  UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, propertyLandValueTrustRoute)
+      val request = FakeRequest(GET, WhatIsThePropertyOrLandUKAddressRoute)
 
-      val view = application.injector.instanceOf[PropertyLandValueTrustView]
+      val view = application.injector.instanceOf[WhatIsThePropertyOrLandUKAddressView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("1"), NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill(UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -101,13 +90,12 @@ class PropertyLandValueTrustControllerSpec extends SpecBase with IndexValidation
           .build()
 
       val request =
-        FakeRequest(POST, propertyLandValueTrustRoute)
-          .withFormUrlEncodedBody(("value", "100"))
+        FakeRequest(POST, WhatIsThePropertyOrLandUKAddressRoute)
+          .withFormUrlEncodedBody(("line1", "value 1"), ("townOrCity", "value 2"),("postcode", "NE1 1ZZ"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-
       redirectLocation(result).value mustEqual onwardRoute.url
 
       application.stop()
@@ -118,19 +106,19 @@ class PropertyLandValueTrustControllerSpec extends SpecBase with IndexValidation
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, propertyLandValueTrustRoute)
+        FakeRequest(POST, WhatIsThePropertyOrLandUKAddressRoute)
           .withFormUrlEncodedBody(("value", "invalid value"))
 
       val boundForm = form.bind(Map("value" -> "invalid value"))
 
-      val view = application.injector.instanceOf[PropertyLandValueTrustView]
+      val view = application.injector.instanceOf[WhatIsThePropertyOrLandUKAddressView]
 
       val result = route(application, request).value
 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -139,11 +127,12 @@ class PropertyLandValueTrustControllerSpec extends SpecBase with IndexValidation
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, propertyLandValueTrustRoute)
+      val request = FakeRequest(GET, WhatIsThePropertyOrLandUKAddressRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
+
       redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
@@ -154,8 +143,8 @@ class PropertyLandValueTrustControllerSpec extends SpecBase with IndexValidation
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, propertyLandValueTrustRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"))
+        FakeRequest(POST, WhatIsThePropertyOrLandUKAddressRoute)
+          .withFormUrlEncodedBody(("line1", "value 1"), ("townOrCity", "value 2"),("postcode", "NE1 1ZZ"))
 
       val result = route(application, request).value
 
@@ -165,39 +154,38 @@ class PropertyLandValueTrustControllerSpec extends SpecBase with IndexValidation
 
       application.stop()
     }
+  }
 
-    "for a GET" must {
+  "for a GET" must {
 
-      def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
-        val route = controllers.property_or_land.routes.PropertyLandValueTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
+    def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
+      val route = routes.WhatIsThePropertyOrLandUKAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
 
-        FakeRequest(GET, route)
-      }
-
-      validateIndex(
-        arbitrary[String],
-        PropertyLandValueTrustPage.apply,
-        getForIndex
-      )
-
+      FakeRequest(GET, route)
     }
 
-    "for a POST" must {
+    validateIndex(
+      arbitrary[UKAddress],
+      WhatIsThePropertyOrLandUKAddressPage.apply,
+      getForIndex
+    )
 
-      def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+  }
 
-        val route =
-          controllers.property_or_land.routes.PropertyLandValueTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
+  "for a POST" must {
+    def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
-        FakeRequest(POST, route)
-          .withFormUrlEncodedBody(("value", "1234"))
-      }
+      val route =
+       routes.WhatIsThePropertyOrLandUKAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
 
-      validateIndex(
-        arbitrary[String],
-        PropertyLandValueTrustPage.apply,
-        postForIndex
-      )
+      FakeRequest(POST, route)
+        .withFormUrlEncodedBody(("value", "true"))
     }
+
+    validateIndex(
+      arbitrary[UKAddress],
+      WhatIsThePropertyOrLandUKAddressPage.apply,
+      postForIndex
+    )
   }
 }

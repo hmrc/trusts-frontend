@@ -52,8 +52,8 @@ class PropertyOrLandAnswerController @Inject()(
   private def actions(index: Int, draftId: String) =
     identify andThen
       getData(draftId) andThen
-      requireData andThen
-      requiredAnswer(RequiredAnswer(PropertyOrLandAddressPage(index), routes.PropertyOrLandAddressController.onPageLoad(NormalMode, index, draftId)))
+      requireData // andThen
+//      requiredAnswer(RequiredAnswer(PropertyOrLandAddressPage(index), routes.PropertyOrLandAddressController.onPageLoad(NormalMode, index, draftId)))
 
 
   def onPageLoad(index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
@@ -67,7 +67,8 @@ class PropertyOrLandAnswerController @Inject()(
           Seq(
             answers.whatKindOfAsset(index),
             answers.propertyOrLandAddress(index),
-//            answers.whatIsThePropertyOrLandUKAddress(index),  // TODO rename when TRUS-792 merged
+//            answers.propertyOrLandAddress(index),  // TODO rename when TRUS-792 merged
+            answers.whatIsThePropertyOrLandUKAddress(index),
             answers.propertyOrLandInternationalAddress(index),
             answers.propertyOrLandDescription(index),
             answers.propertyOrLandTotalValue(index),

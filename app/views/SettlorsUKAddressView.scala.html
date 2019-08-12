@@ -37,36 +37,7 @@
 
         @components.heading("settlorsUKAddress.heading", Some(name.toString))
 
-        @components.input_text(
-        field = form("line1"),
-        label = messages("settlorsUKAddress.line1"),
-        inputClass = Some("form-control-3-4")
-        )
-
-        @components.input_text(
-        field = form("line2"),
-        label = messages("settlorsUKAddress.line2"),
-        inputClass = Some("form-control-3-4")
-        )
-
-        @components.input_text(
-        field = form("line3"),
-        label = messages("settlorsUKAddress.line3"),
-        inputClass = Some("form-control-3-4")
-        )
-
-        @components.input_text(
-        field = form("townOrCity"),
-        label = messages("settlorsUKAddress.townOrCity"),
-        inputClass = Some("form-control-2-3")
-        )
-
-        @components.input_text(
-        field = form("postcode"),
-        label = messages("settlorsUKAddress.postcode"),
-        hint = Some(messages(s"settlorsUKAddress.postcode.hint")),
-        inputClass = Some("form-control-1-4")
-        )
+        @components.uk_address(form)
 
         @components.submit_button()
     }

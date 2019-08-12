@@ -21,6 +21,7 @@ import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.TryValues
 import pages._
+import pages.property_or_land.{PropertyOrLandDescriptionPage, WhatIsThePropertyOrLandUKAddressPage}
 import pages.property_or_land.{PropertyOrLandAddressPage, PropertyOrLandDescriptionPage}
 import pages.property_or_land._
 import pages.shares.{ShareClassPage, ShareCompanyNamePage, SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, ShareQuantityInTrustPage, ShareValueInTrustPage, SharesInAPortfolioPage, SharesOnStockExchangePage}
@@ -44,6 +45,7 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(SharePortfolioOnStockExchangePage, JsValue)] ::
     arbitrary[(SharePortfolioNamePage, JsValue)] ::
     arbitrary[(ShareClassPage, JsValue)] ::
+    arbitrary[(WhatIsThePropertyOrLandUKAddressPage, JsValue)] ::
     arbitrary[(DeclarationPage.type, JsValue)] ::
     arbitrary[(WhatTypeOfBeneficiaryPage.type, JsValue)] ::
     arbitrary[(AgentInternationalAddressPage.type, JsValue)] ::

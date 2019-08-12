@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package pages
+package pages.property_or_land
 
-import pages.behaviours.PageBehaviours
-import pages.property_or_land.PropertyLandValueTrustPage
+import models.UKAddress
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import sections.Assets
 
-class PropertyLandValueTrustPageSpec extends PageBehaviours {
+final case class WhatIsThePropertyOrLandUKAddressPage(index: Int) extends QuestionPage[UKAddress] {
 
-  "PropertyLandValueTrustPage" must {
+  override def path: JsPath = JsPath \ Assets \ index \ toString
 
-    beRetrievable[String](PropertyLandValueTrustPage(0))
-
-    beSettable[String](PropertyLandValueTrustPage(0))
-
-    beRemovable[String](PropertyLandValueTrustPage(0))
-  }
+  override def toString: String = "address"
 }

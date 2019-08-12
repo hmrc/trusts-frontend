@@ -22,8 +22,7 @@ import models.Status.Completed
 import models.WhatKindOfAsset.PropertyOrLand
 import pages.WhatKindOfAssetPage
 import pages.entitystatus.AssetStatus
-import pages.property_or_land.{PropertyLandValueTrustPage, PropertyOrLandAddressPage, PropertyOrLandDescriptionPage, PropertyOrLandInternationalAddressPage, PropertyOrLandTotalValuePage, TrustOwnAllThePropertyOrLandPage}
-import pages.shares._
+import pages.property_or_land._
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -264,7 +263,7 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
               checkYourAnswersHelper.whatKindOfAsset(index).value,
               //              checkYourAnswersHelper.propertyOrLandAddress(index).value, // TODO rename when TRUS-792 merged
               checkYourAnswersHelper.propertyOrLandAddress(index).value,
-              checkYourAnswersHelper.whatIsThePropertyOrLandUKAddress(index).value,
+              checkYourAnswersHelper.propertyOrLandInternationalAddress(index).value,
               checkYourAnswersHelper.propertyOrLandTotalValue(index).value,
               checkYourAnswersHelper.trustOwnAllThePropertyOrLand(index).value
             )
@@ -314,7 +313,7 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
               checkYourAnswersHelper.whatKindOfAsset(index).value,
               //              checkYourAnswersHelper.propertyOrLandAddress(index).value, // TODO rename when TRUS-792 merged
               checkYourAnswersHelper.propertyOrLandAddress(index).value,
-              checkYourAnswersHelper.whatIsThePropertyOrLandUKAddress(index).value,
+              checkYourAnswersHelper.propertyOrLandInternationalAddress(index).value,
               checkYourAnswersHelper.propertyOrLandTotalValue(index).value,
               checkYourAnswersHelper.trustOwnAllThePropertyOrLand(index).value,
               checkYourAnswersHelper.propertyLandValueTrust(index).value
@@ -344,7 +343,7 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, PropertyOrLandAnswerRoute)
+      val request = FakeRequest(GET, propertyOrLandAnswerRoute)
 
       val result = route(application, request).value
 

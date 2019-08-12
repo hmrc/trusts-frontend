@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-package pages
+package pages.property_or_land
 
+import models.UKAddress
 import pages.behaviours.PageBehaviours
-import pages.property_or_land.PropertyLandValueTrustPage
 
-class PropertyLandValueTrustPageSpec extends PageBehaviours {
 
-  "PropertyLandValueTrustPage" must {
+class WhatIsThePropertyOrLandUKAddressPageSpec extends PageBehaviours {
 
-    beRetrievable[String](PropertyLandValueTrustPage(0))
+  "WhatIsThePropertyOrLandAddressPage" must {
 
-    beSettable[String](PropertyLandValueTrustPage(0))
+    beRetrievable[UKAddress](WhatIsThePropertyOrLandUKAddressPage(0))
 
-    beRemovable[String](PropertyLandValueTrustPage(0))
+    beSettable[UKAddress](WhatIsThePropertyOrLandUKAddressPage(0))
+
+    beRemovable[UKAddress](WhatIsThePropertyOrLandUKAddressPage(0))
   }
 }

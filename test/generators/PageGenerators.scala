@@ -41,6 +41,9 @@ trait PageGenerators {
   implicit lazy val arbitraryPropertyOrLandInternationalAddressPage: Arbitrary[PropertyOrLandInternationalAddressPage] =
     Arbitrary(PropertyOrLandInternationalAddressPage(0))
 
+  implicit lazy val arbitraryWhatIsThePropertyOrLandAddressPage: Arbitrary[WhatIsThePropertyOrLandUKAddressPage] =
+    Arbitrary(WhatIsThePropertyOrLandUKAddressPage(0))
+
   implicit lazy val arbitraryShareCompanyNamePage: Arbitrary[ShareCompanyNamePage] =
     Arbitrary(ShareCompanyNamePage(0))
 
