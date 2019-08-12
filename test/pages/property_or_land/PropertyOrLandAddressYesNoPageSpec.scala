@@ -18,14 +18,14 @@ package pages.property_or_land
 
 import pages.behaviours.PageBehaviours
 
-class PropertyOrLandAddressPageSpec extends PageBehaviours {
+class PropertyOrLandAddressYesNoPageSpec extends PageBehaviours {
 
-  "PropertyOrLandAddressPage" must {
+  "PropertyOrLandAddressYesNoPage" must {
 
-    beRetrievable[Boolean](PropertyOrLandAddressPage(0))
+    beRetrievable[Boolean](PropertyOrLandAddressYesNoPage(0))
 
-    beSettable[Boolean](PropertyOrLandAddressPage(0))
+    beSettable[Boolean](PropertyOrLandAddressYesNoPage(0))
 
-    beRemovable[Boolean](PropertyOrLandAddressPage(0))
+    beRemovable[Boolean](PropertyOrLandAddressYesNoPage(0))
   }
 }

@@ -849,6 +849,7 @@ answerPage.section.moneyAsset.subheading = Money
 answerPage.section.shareAsset.subheading = Share
 answerPage.agentClientRef = Client reference number: {0}
 
+
 sharePortfolioName.title = What is the share portfolio’s name?
 sharePortfolioName.heading = What is the share portfolio’s name?
 sharePortfolioName.checkYourAnswersLabel = What is the share portfolio’s name?
@@ -966,11 +967,16 @@ propertyLandValueTrust.error.field1.whole = Current value of the property or lan
 propertyLandValueTrust.error.field1.zero = Current value of the property or land owned by the trust must be 1 or more
 propertyLandValueTrust.error.field1.length = Current value of the property or land owned by the trust must be 12 characters or less
 
-propertyOrLandAddress.title = Is the property or land’s address in the UK?
-propertyOrLandAddress.heading = Is the property or land’s address in the UK?
-propertyOrLandAddress.checkYourAnswersLabel = Is the property or land’s address in the UK?
-propertyOrLandAddress.error.required = Select yes if the property or land has an address in the UK
+propertyOrLandAddressUkYesNo.title = Is the property or land’s address in the UK?
+propertyOrLandAddressUkYesNo.heading = Is the property or land’s address in the UK?
+propertyOrLandAddressUkYesNo.checkYourAnswersLabel = Is the property or land’s address in the UK?
+propertyOrLandAddressUkYesNo.error.required = Select yes if the property or land has an address in the UK
 
-whatIsThePropertyOrLandUKAddress.title = What is the property or land’s address?
-whatIsThePropertyOrLandUKAddress.heading = What is the property or land’s address?
-whatIsThePropertyOrLandUKAddress.checkYourAnswersLabel = What is the property or land’s address?
+propertyOrLandUKAddress.title = What is the property or land’s address?
+propertyOrLandUKAddress.heading = What is the property or land’s address?
+propertyOrLandUKAddress.checkYourAnswersLabel = What is the property or land’s address?
+
+propertyOrLandAddressYesNo.title = Does the property or land have an address?
+propertyOrLandAddressYesNo.heading = Does the property or land have an address?
+propertyOrLandAddressYesNo.checkYourAnswersLabel = Does the property or land have an address?
+propertyOrLandAddressYesNo.error.required = Select yes if the property or land has an address
