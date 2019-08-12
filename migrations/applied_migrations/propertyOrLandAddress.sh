@@ -1,16 +1,16 @@
 #!/bin/bash
 
 echo ""
-echo "Applying migration propertyOrLandAddress"
+echo "Applying migration PropertyOrLandAddress"
 
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /propertyOrLandAddress                        controllers.propertyOrLandAddressController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /propertyOrLandAddress                        controllers.propertyOrLandAddressController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /:draftId/propertyOrLandAddress                        controllers.property_or_land.PropertyOrLandAddressController.onPageLoad(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
+echo "POST       /:draftId/propertyOrLandAddress                        controllers.property_or_land.PropertyOrLandAddressController.onSubmit(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
 
-echo "GET        /changepropertyOrLandAddress                  controllers.propertyOrLandAddressController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changepropertyOrLandAddress                  controllers.propertyOrLandAddressController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /:draftId/changePropertyOrLandAddress                  controllers.property_or_land.PropertyOrLandAddressController.onPageLoad(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
+echo "POST       /:draftId/changePropertyOrLandAddress                  controllers.property_or_land.PropertyOrLandAddressController.onSubmit(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en
@@ -23,10 +23,10 @@ echo "Adding to UserAnswersEntryGenerators"
 awk '/trait UserAnswersEntryGenerators/ {\
     print;\
     print "";\
-    print "  implicit lazy val arbitrarypropertyOrLandAddressUserAnswersEntry: Arbitrary[(propertyOrLandAddressPage.type, JsValue)] =";\
+    print "  implicit lazy val arbitraryPropertyOrLandAddressUserAnswersEntry: Arbitrary[(PropertyOrLandAddressPage.type, JsValue)] =";\
     print "    Arbitrary {";\
     print "      for {";\
-    print "        page  <- arbitrary[propertyOrLandAddressPage.type]";\
+    print "        page  <- arbitrary[PropertyOrLandAddressPage.type]";\
     print "        value <- arbitrary[Boolean].map(Json.toJson(_))";\
     print "      } yield (page, value)";\
     print "    }";\
@@ -36,28 +36,28 @@ echo "Adding to PageGenerators"
 awk '/trait PageGenerators/ {\
     print;\
     print "";\
-    print "  implicit lazy val arbitrarypropertyOrLandAddressPage: Arbitrary[propertyOrLandAddressPage.type] =";\
-    print "    Arbitrary(propertyOrLandAddressPage)";\
+    print "  implicit lazy val arbitraryPropertyOrLandAddressPage: Arbitrary[PropertyOrLandAddressPage.type] =";\
+    print "    Arbitrary(PropertyOrLandAddressPage)";\
     next }1' ../test/generators/PageGenerators.scala > tmp && mv tmp ../test/generators/PageGenerators.scala
 
 echo "Adding to UserAnswersGenerator"
 awk '/val generators/ {\
     print;\
-    print "    arbitrary[(propertyOrLandAddressPage.type, JsValue)] ::";\
+    print "    arbitrary[(PropertyOrLandAddressPage.type, JsValue)] ::";\
     next }1' ../test/generators/UserAnswersGenerator.scala > tmp && mv tmp ../test/generators/UserAnswersGenerator.scala
 
 echo "Adding helper method to CheckYourAnswersHelper"
-awk '/class/ {\
+awk '/class / {\
      print;\
      print "";\
-     print "  def propertyOrLandAddress: Option[AnswerRow] = userAnswers.get(propertyOrLandAddressPage) map {";\
+     print "  def propertyOrLandAddress: Option[AnswerRow] = userAnswers.get(PropertyOrLandAddressPage) map {";\
      print "    x =>";\
      print "      AnswerRow(";\
      print "        \"propertyOrLandAddress.checkYourAnswersLabel\",";\
      print "        yesOrNo(x),";\
-     print "        routes.propertyOrLandAddressController.onPageLoad(CheckMode).url";\
+     print "        routes.PropertyOrLandAddressController.onPageLoad(CheckMode, draftId).url";\
      print "      )";\
      print "  }";\
      next }1' ../app/utils/CheckYourAnswersHelper.scala > tmp && mv tmp ../app/utils/CheckYourAnswersHelper.scala
 
-echo "Migration propertyOrLandAddress completed"
+echo "Migration PropertyOrLandAddress completed"
