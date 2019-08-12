@@ -18,7 +18,6 @@ package controllers
 
 import base.SpecBase
 import generators.Generators
-import models.UserAnswers
 import org.scalacheck.Gen
 import org.scalatest.mockito.MockitoSugar
 import org.scalatest.prop.PropertyChecks

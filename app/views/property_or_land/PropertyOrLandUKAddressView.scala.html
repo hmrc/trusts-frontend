@@ -25,22 +25,18 @@
 @(form: Form[_], mode: Mode, draftId: String, index: Int)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("propertyOrLandAddress.title")}"
+    title = s"${errorPrefix(form)} ${messages("propertyOrLandUKAddress.title")}"
     ) {
 
-    @formHelper(action = PropertyOrLandAddressController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
+    @formHelper(action = PropertyOrLandUKAddressController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("propertyOrLandAddress.heading")
+        @components.heading("propertyOrLandUKAddress.heading")
 
-        @components.input_yes_no(
-            field = form("value"),
-            label = messages("propertyOrLandAddress.heading"),
-            legendClass = Some("visually-hidden")
-        )
+        @components.uk_address(form)
 
         @components.submit_button()
     }

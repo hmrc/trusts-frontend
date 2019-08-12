@@ -20,12 +20,20 @@ import models._
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
 import pages._
-import pages.property_or_land.{PropertyOrLandAddressPage, PropertyOrLandDescriptionPage}
 import pages.property_or_land._
 import pages.shares._
+import pages.shares.{ShareClassPage, ShareCompanyNamePage, SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, ShareQuantityInTrustPage, ShareValueInTrustPage, SharesInAPortfolioPage, SharesOnStockExchangePage}
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
+
+  implicit lazy val arbitraryPropertyOrLandAddressYesNoUserAnswersEntry: Arbitrary[(PropertyOrLandAddressYesNoPage, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[PropertyOrLandAddressYesNoPage]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
 
   implicit lazy val arbitraryPropertyLandValueTrustUserAnswersEntry: Arbitrary[(PropertyLandValueTrustPage, JsValue)] =
     Arbitrary {
@@ -35,7 +43,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryPropertyOrLandInternationalAddressUserAnswersEntry: Arbitrary[(PropertyOrLandInternationalAddressPage, JsValue)] =
+  implicit lazy val arbitraryPropertyOrLandInternationalAddressUkYesNoUserAnswersEntry: Arbitrary[(PropertyOrLandInternationalAddressPage, JsValue)] =
     Arbitrary {
       for {
         page  <- arbitrary[PropertyOrLandInternationalAddressPage]
@@ -59,10 +67,10 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryPropertyOrLandAddressUserAnswersEntry: Arbitrary[(PropertyOrLandAddressPage, JsValue)] =
+  implicit lazy val arbitraryPropertyOrLandAddressUkYesNoUserAnswersEntry: Arbitrary[(PropertyOrLandAddressUkYesNoPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[PropertyOrLandAddressPage]
+        page  <- arbitrary[PropertyOrLandAddressUkYesNoPage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -83,10 +91,10 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryWhatIsThePropertyOrLandAddressUserAnswersEntry: Arbitrary[(WhatIsThePropertyOrLandUKAddressPage, JsValue)] =
+  implicit lazy val arbitraryPropertyOrLandAddressUserAnswersEntry: Arbitrary[(PropertyOrLandUKAddressPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[WhatIsThePropertyOrLandUKAddressPage]
+        page  <- arbitrary[PropertyOrLandUKAddressPage]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
