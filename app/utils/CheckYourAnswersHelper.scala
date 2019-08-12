@@ -35,15 +35,6 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers, draftId: String, canEdit: Boolean = true)(implicit messages: Messages) {
 
-  def addABeneficiaryYesNo: Option[AnswerRow] = userAnswers.get(AddABeneficiaryYesNoPage) map {
-    x =>
-      AnswerRow(
-        "addABeneficiaryYesNo.checkYourAnswersLabel",
-        yesOrNo(x),
-        routes.AddABeneficiaryYesNoController.onPageLoad(CheckMode, draftId).url
-      )
-  }
-
   def propertyLandValueTrust(index: Int): Option[AnswerRow] = userAnswers.get(PropertyLandValueTrustPage(index)) map {
     x =>
       AnswerRow(

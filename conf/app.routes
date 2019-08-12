@@ -372,7 +372,8 @@ POST       /:draftId/beneficiaries/individual/:index/change-is-elected-vulnerabl
 GET        /:draftId/beneficiaries/information-you-need                       controllers.IndividualBeneficiaryInfoController.onPageLoad(draftId: String)
 
 GET        /:draftId/beneficiaries/add                        controllers.AddABeneficiaryController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/beneficiaries/add                        controllers.AddABeneficiaryController.onSubmit(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/beneficiaries/add                        controllers.AddABeneficiaryController.submitOne(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/beneficiaries/add-another                controllers.AddABeneficiaryController.submitAnother(mode: Mode = NormalMode, draftId: String)
 
 GET        /:draftId/beneficiaries/individual/:index/check-answers                       controllers.IndividualBeneficiaryAnswersController.onPageLoad(index: Int, draftId: String)
 POST       /:draftId/beneficiaries/individual/:index/check-answers                       controllers.IndividualBeneficiaryAnswersController.onSubmit(index: Int, draftId: String)
@@ -473,9 +474,3 @@ POST       /:draftId/asset/:index/change-shares-on-stock-exchange               
 
 GET       /:draftId/asset/:index/check-share-answers                           controllers.shares.ShareAnswerController.onPageLoad(index : Int, draftId : String)
 POST      /:draftId/asset/:index/check-share-answers                           controllers.shares.ShareAnswerController.onSubmit(index : Int, draftId : String)
-
-
-GET        /:draftId/addABeneficiaryYesNo                        controllers.AddABeneficiaryYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/addABeneficiaryYesNo                        controllers.AddABeneficiaryYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/changeAddABeneficiaryYesNo                  controllers.AddABeneficiaryYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/changeAddABeneficiaryYesNo                  controllers.AddABeneficiaryYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)

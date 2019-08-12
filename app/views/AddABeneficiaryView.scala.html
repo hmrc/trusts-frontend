@@ -29,7 +29,7 @@
     title = s"${errorPrefix(form)} $heading"
     ) {
 
-    @formHelper(action = AddABeneficiaryController.onSubmit(draftId), 'autoComplete -> "off") {
+    @formHelper(action = AddABeneficiaryController.submitAnother(draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 

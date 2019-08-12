@@ -41,6 +41,6 @@ class AddABeneficiaryYesNoViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.AddABeneficiaryYesNoController.onSubmit(NormalMode, fakeDraftId).url)
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.AddABeneficiaryController.submitOne(fakeDraftId).url)
   }
 }

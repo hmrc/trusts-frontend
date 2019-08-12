@@ -737,6 +737,10 @@ addABeneficiary.error.required = Select yes if you want to add another beneficia
 addABeneficiary.count.heading = You have added {0} beneficiaries
 addABeneficiary.count.title = You have added {0} beneficiaries
 
+addABeneficiaryYesNo.title = Do you want to add a beneficiary?
+addABeneficiaryYesNo.heading = Do you want to add a beneficiary?
+addABeneficiaryYesNo.error.required = Select yes if you want to add a beneficiary
+
 individualBenficiaryAnswers.title = Check beneficiary details
 individualBenficiaryAnswers.heading = Check beneficiary details
 
@@ -970,10 +974,3 @@ propertyOrLandAddress.error.required = Select yes if the property or land has an
 whatIsThePropertyOrLandUKAddress.title = What is the property or land’s address?
 whatIsThePropertyOrLandUKAddress.heading = What is the property or land’s address?
 whatIsThePropertyOrLandUKAddress.checkYourAnswersLabel = What is the property or land’s address?
-
-
-
-addABeneficiaryYesNo.title = addABeneficiaryYesNo
-addABeneficiaryYesNo.heading = addABeneficiaryYesNo
-addABeneficiaryYesNo.checkYourAnswersLabel = addABeneficiaryYesNo
-addABeneficiaryYesNo.error.required = Select yes if addABeneficiaryYesNo
