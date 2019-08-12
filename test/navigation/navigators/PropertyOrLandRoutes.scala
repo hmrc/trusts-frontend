@@ -67,7 +67,7 @@ trait PropertyOrLandRoutes {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
             val answers = userAnswers.set(page, value = true).success.value
-            navigator.nextPage(PropertyOrLandAddressUkYesNoPage(index), NormalMode, fakeDraftId)(answers)
+            navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
               .mustBe(routes.PropertyOrLandUKAddressController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
@@ -128,6 +128,21 @@ trait PropertyOrLandRoutes {
           navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
             .mustBe(routes.TrustOwnAllThePropertyOrLandController.onPageLoad(NormalMode, index, fakeDraftId))
       }
+    }
+
+    "navigate from TrustOwnAllThePropertyOrLandPage" when {
+
+      val page = TrustOwnAllThePropertyOrLandPage(index)
+
+      "user answers yes to go to PropertyLandValueTrustPage" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers.set(page, value = true).success.value
+            navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.PropertyLandValueTrustController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+
     }
 
   }
