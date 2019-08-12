@@ -32,6 +32,28 @@ trait BeneficiaryRoutes {
 
   def beneficiaryRoutes()(implicit navigator: Navigator) = {
 
+      "go to WhatTypeOfBeneficiaryPage from AddABeneficiaryYesNoPage when selected yes" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(AddABeneficiaryYesNoPage, true).success.value
+
+            navigator.nextPage(AddABeneficiaryYesNoPage, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.WhatTypeOfBeneficiaryController.onPageLoad(fakeDraftId))
+        }
+      }
+
+    "go to RegistrationProgress from AddABeneficiaryYesNoPage when selected no" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(AddABeneficiaryYesNoPage, false).success.value
+
+          navigator.nextPage(AddABeneficiaryYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
+      }
+    }
+
       "go WhatTypeOfBeneficiaryPage from AddABeneficiaryPage when selected add them now" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
