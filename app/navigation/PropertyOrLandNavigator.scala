@@ -29,6 +29,7 @@ class PropertyOrLandNavigator extends Navigator {
   override protected def normalRoutes(draftId: String): Page => AffinityGroup => UserAnswers => Call = {
     case PropertyOrLandAddressYesNoPage(index) => _ => propertyOrLandAddressYesNoPage(draftId, index)
     case PropertyOrLandAddressUkYesNoPage(index) => _ => propertyOrLandAddressUkYesNoPage(draftId, index)
+    case PropertyOrLandDescriptionPage(index) => _ => _ => routes.PropertyOrLandTotalValueController.onPageLoad(NormalMode, index, draftId)
   }
 
   private def propertyOrLandAddressYesNoPage(draftId: String, index: Int)(answers: UserAnswers) = answers.get(PropertyOrLandAddressYesNoPage(index)) match {

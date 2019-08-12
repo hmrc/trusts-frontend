@@ -56,6 +56,7 @@ trait PropertyOrLandRoutes {
               .mustBe(routes.PropertyOrLandDescriptionController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
+
     }
 
     "navigate from PropertyOrLandAddressUkYesNoPage" when {
@@ -78,6 +79,18 @@ trait PropertyOrLandRoutes {
             navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
               .mustBe(routes.PropertyOrLandInternationalAddressController.onPageLoad(NormalMode, index, fakeDraftId))
         }
+      }
+    }
+
+    "navigate from PropertyOrLandDescriptionPage to PropertyOrLandTotalValuePage" in {
+
+      val page = PropertyOrLandDescriptionPage(index)
+
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val answers = userAnswers.set(page, "Test").success.value
+          navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.PropertyOrLandTotalValueController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
 
