@@ -83,7 +83,10 @@ class AddABeneficiaryController @Inject()(
           )
         },
         value => {
-          Future.successful(Redirect(navigator.nextPage(AddABeneficiaryYesNoPage, mode, draftId)(request.userAnswers)))
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(AddABeneficiaryYesNoPage, value))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(AddABeneficiaryYesNoPage, mode, draftId)(updatedAnswers))
         }
       )
   }

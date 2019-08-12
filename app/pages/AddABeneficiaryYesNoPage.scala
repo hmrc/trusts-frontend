@@ -17,10 +17,11 @@
 package pages
 
 import play.api.libs.json.JsPath
+import sections.Beneficiaries
 
 case object AddABeneficiaryYesNoPage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ Beneficiaries \ toString
 
   override def toString: String = "addABeneficiaryYesNo"
 }
