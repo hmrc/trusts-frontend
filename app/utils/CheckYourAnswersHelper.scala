@@ -35,6 +35,15 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers, draftId: String, canEdit: Boolean = true)(implicit messages: Messages) {
 
+  def propertyOrLandAddressYesNo(index: Int): Option[AnswerRow] = userAnswers.get(PropertyOrLandAddressYesNoPage(index)) map {
+    x =>
+      AnswerRow(
+        "propertyOrLandAddressYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        controllers.property_or_land.routes.PropertyOrLandAddressYesNoController.onPageLoad(CheckMode, index, draftId).url
+      )
+  }
+
   def propertyLandValueTrust(index: Int): Option[AnswerRow] = userAnswers.get(PropertyLandValueTrustPage(index)) map {
     x =>
       AnswerRow(
