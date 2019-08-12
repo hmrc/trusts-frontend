@@ -31,7 +31,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 @Singleton
 class Navigator @Inject()() {
 
-  private def normalRoutes(draftId: String): Page => AffinityGroup => UserAnswers => Call = {
+  protected def normalRoutes(draftId: String): Page => AffinityGroup => UserAnswers => Call = {
     //  Matching
     case TrustRegisteredOnlinePage => _ => _ => routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId)
     case TrustHaveAUTRPage => af => userAnswers => trustHaveAUTRRoute(userAnswers, af, draftId)
