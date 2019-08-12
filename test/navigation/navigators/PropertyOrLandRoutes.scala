@@ -19,7 +19,7 @@ package navigation.navigators
 import base.SpecBase
 import controllers.property_or_land.routes
 import generators.Generators
-import models.{NormalMode, UserAnswers}
+import models.{InternationalAddress, NormalMode, UKAddress, UserAnswers}
 import navigation.{Navigator, PropertyOrLandNavigator}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
@@ -82,15 +82,39 @@ trait PropertyOrLandRoutes {
       }
     }
 
-    "navigate from PropertyOrLandDescriptionPage to PropertyOrLandTotalValuePage" in {
+    "navigate to PropertyOrLandTotalValuePage" when {
+      "navigating from PropertyOrLandDescriptionPage" in {
 
-      val page = PropertyOrLandDescriptionPage(index)
+        val page = PropertyOrLandDescriptionPage(index)
 
-      forAll(arbitrary[UserAnswers]) {
-        userAnswers =>
-          val answers = userAnswers.set(page, "Test").success.value
-          navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.PropertyOrLandTotalValueController.onPageLoad(NormalMode, index, fakeDraftId))
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers.set(page, "Test").success.value
+            navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.PropertyOrLandTotalValueController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+      "navigating from PropertyOrLandInternationalAddressPage" in {
+
+        val page = PropertyOrLandInternationalAddressPage(index)
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers.set(page, InternationalAddress("line1", "line2", None, None, "France")).success.value
+            navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.PropertyOrLandTotalValueController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+      "navigating from PropertyOrLandUKAddressPage" in {
+
+        val page = PropertyOrLandUKAddressPage(index)
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers.set(page, UKAddress("line1", None, None, "Newcastle", "NE11NE")).success.value
+            navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.PropertyOrLandTotalValueController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
       }
     }
 
