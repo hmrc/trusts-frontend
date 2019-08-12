@@ -23,7 +23,7 @@ import models.NormalMode
 import models.Status.Completed
 import navigation.Navigator
 import pages.entitystatus.AssetStatus
-import pages.property_or_land.{PropertyOrLandAddressPage, PropertyOrLandAnswerPage}
+import pages.property_or_land.PropertyOrLandAnswerPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -66,9 +66,9 @@ class PropertyOrLandAnswerController @Inject()(
           None,
           Seq(
             answers.whatKindOfAsset(index),
-            answers.propertyOrLandAddress(index),
-//            answers.propertyOrLandAddress(index),  // TODO rename when TRUS-792 merged
-            answers.whatIsThePropertyOrLandUKAddress(index),
+            answers.propertyOrLandAddressYesNo(index),
+            answers.propertyOrLandAddressUkYesNo(index),
+            answers.propertyOrLandUKAddress(index),
             answers.propertyOrLandInternationalAddress(index),
             answers.propertyOrLandDescription(index),
             answers.propertyOrLandTotalValue(index),

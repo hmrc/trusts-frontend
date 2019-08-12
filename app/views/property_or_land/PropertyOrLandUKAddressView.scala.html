@@ -25,16 +25,16 @@
 @(form: Form[_], mode: Mode, draftId: String, index: Int)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("whatIsThePropertyOrLandUKAddress.title")}"
+    title = s"${errorPrefix(form)} ${messages("propertyOrLandUKAddress.title")}"
     ) {
 
-    @formHelper(action = WhatIsThePropertyOrLandUKAddressController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
+    @formHelper(action = PropertyOrLandUKAddressController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("whatIsThePropertyOrLandUKAddress.heading")
+        @components.heading("propertyOrLandUKAddress.heading")
 
         @components.uk_address(form)
 

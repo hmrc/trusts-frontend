@@ -23,7 +23,6 @@ import javax.inject.Inject
 import mapping.reads._
 import models.{CheckMode, InternationalAddress, UKAddress, UserAnswers}
 import pages._
-import pages.property_or_land.{PropertyOrLandAddressPage, PropertyOrLandDescriptionPage}
 import pages.property_or_land._
 import pages.shares._
 import play.api.i18n.Messages
@@ -220,13 +219,21 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
 
   }
 
+  def propertyOrLandAddressYesNo(index: Int): Option[AnswerRow] = userAnswers.get(PropertyOrLandAddressYesNoPage(index)) map {
+    x =>
+      AnswerRow(
+        "propertyOrLandAddressYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        controllers.property_or_land.routes.PropertyOrLandAddressYesNoController.onPageLoad(CheckMode, index, draftId).url
+      )
+  }
+
   def propertyLandValueTrust(index: Int): Option[AnswerRow] = userAnswers.get(PropertyLandValueTrustPage(index)) map {
     x =>
       AnswerRow(
         "propertyLandValueTrust.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        controllers.property_or_land.routes.PropertyLandValueTrustController.onPageLoad(CheckMode, index, draftId).url,
-        canEdit = canEdit
+        controllers.property_or_land.routes.PropertyLandValueTrustController.onPageLoad(CheckMode, index, draftId).url
       )
   }
 
@@ -235,18 +242,16 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "propertyOrLandDescription.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        controllers.property_or_land.routes.PropertyOrLandDescriptionController.onPageLoad(CheckMode, index, draftId).url,
-        canEdit = canEdit
+        controllers.property_or_land.routes.PropertyOrLandDescriptionController.onPageLoad(CheckMode, index, draftId).url
       )
   }
 
-  def propertyOrLandAddress(index: Int): Option[AnswerRow] = userAnswers.get(PropertyOrLandAddressPage(index)) map {
+  def propertyOrLandAddressUkYesNo(index: Int): Option[AnswerRow] = userAnswers.get(PropertyOrLandAddressUkYesNoPage(index)) map {
     x =>
       AnswerRow(
-        "propertyOrLandAddress.checkYourAnswersLabel",
+        "propertyOrLandAddressUkYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.property_or_land.routes.PropertyOrLandAddressController.onPageLoad(CheckMode, index, draftId).url,
-        canEdit = canEdit
+        controllers.property_or_land.routes.PropertyOrLandAddressUkYesNoController.onPageLoad(CheckMode, index, draftId).url
       )
   }
 
@@ -255,17 +260,16 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "trustOwnAllThePropertyOrLand.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.property_or_land.routes.TrustOwnAllThePropertyOrLandController.onPageLoad(CheckMode, index, draftId).url,
-        canEdit = canEdit
+        controllers.property_or_land.routes.TrustOwnAllThePropertyOrLandController.onPageLoad(CheckMode, index, draftId).url
       )
   }
 
-  def whatIsThePropertyOrLandUKAddress(index: Int): Option[AnswerRow] = userAnswers.get(WhatIsThePropertyOrLandUKAddressPage(index)) map {
+  def propertyOrLandUKAddress(index: Int): Option[AnswerRow] = userAnswers.get(PropertyOrLandUKAddressPage(index)) map {
     x =>
       AnswerRow(
-        "whatIsThePropertyOrLandUKAddress.checkYourAnswersLabel",
+        "propertyOrLandUKAddress.checkYourAnswersLabel",
         ukAddress(x),
-        controllers.property_or_land.routes.WhatIsThePropertyOrLandUKAddressController.onPageLoad(CheckMode, index, draftId).url,
+        controllers.property_or_land.routes.PropertyOrLandUKAddressController.onPageLoad(CheckMode, index, draftId).url,
         canEdit = canEdit
       )
   }

@@ -22,24 +22,23 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, index: Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, index: Int, draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("propertyOrLandAddress.title")}"
+    title = s"${errorPrefix(form)} ${messages("propertyOrLandAddressYesNo.title")}"
     ) {
 
-    @formHelper(action = PropertyOrLandAddressController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
+    @formHelper(action = PropertyOrLandAddressYesNoController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("propertyOrLandAddress.heading")
-
         @components.input_yes_no(
             field = form("value"),
-            label = messages("propertyOrLandAddress.heading"),
-            legendClass = Some("visually-hidden")
+            label = messages("propertyOrLandAddressYesNo.heading"),
+            legendClass = Some("heading-large"),
+            legendAsHeading = true
         )
 
         @components.submit_button()

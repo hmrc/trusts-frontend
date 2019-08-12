@@ -48,7 +48,7 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
         val userAnswers =
           emptyUserAnswers
             .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
-            //            .set(PropertyOrLandAddressPage(index), false).success.value  // TODO rename when TRUS-792 merged
+            .set(PropertyOrLandAddressYesNoPage(index), false).success.value
             .set(PropertyOrLandDescriptionPage(index), "Property Land Description").success.value
             .set(PropertyOrLandTotalValuePage(index), "10000").success.value
             .set(TrustOwnAllThePropertyOrLandPage(index), true).success.value
@@ -62,7 +62,7 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
             None,
             Seq(
               checkYourAnswersHelper.whatKindOfAsset(index).value,
-              //              checkYourAnswersHelper.propertyOrLandAddress(index).value, // TODO rename when TRUS-792 merged
+              checkYourAnswersHelper.propertyOrLandAddressYesNo(index).value,
               checkYourAnswersHelper.propertyOrLandDescription(index).value,
               checkYourAnswersHelper.propertyOrLandTotalValue(index).value,
               checkYourAnswersHelper.trustOwnAllThePropertyOrLand(index).value
@@ -96,7 +96,7 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
         val userAnswers =
           emptyUserAnswers
             .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
-            //            .set(PropertyOrLandAddressPage(index), false).success.value  // TODO rename when TRUS-792 merged
+            .set(PropertyOrLandAddressYesNoPage(index), false).success.value
             .set(PropertyOrLandDescriptionPage(index), "Property Land Description").success.value
             .set(PropertyOrLandTotalValuePage(index), "10000").success.value
             .set(TrustOwnAllThePropertyOrLandPage(index), false).success.value
@@ -111,7 +111,7 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
             None,
             Seq(
               checkYourAnswersHelper.whatKindOfAsset(index).value,
-              //              checkYourAnswersHelper.propertyOrLandAddress(index).value, // TODO rename when TRUS-792 merged
+              checkYourAnswersHelper.propertyOrLandAddressYesNo(index).value,
               checkYourAnswersHelper.propertyOrLandDescription(index).value,
               checkYourAnswersHelper.propertyOrLandTotalValue(index).value,
               checkYourAnswersHelper.trustOwnAllThePropertyOrLand(index).value,
@@ -145,9 +145,9 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
         val userAnswers =
           emptyUserAnswers
             .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
-            //            .set(PropertyOrLandAddressPage(index), true).success.value  // TODO rename when TRUS-792 merged
-            .set(PropertyOrLandAddressPage(index), true).success.value
-            .set(WhatIsThePropertyOrLandUKAddressPage(index), UKAddress("Line1", None, None, "TownOrCity", "NE62RT")).success.value
+            .set(PropertyOrLandAddressYesNoPage(index), true).success.value
+            .set(PropertyOrLandAddressUkYesNoPage(index), true).success.value
+            .set(PropertyOrLandUKAddressPage(index), UKAddress("Line1", None, None, "TownOrCity", "NE62RT")).success.value
             .set(PropertyOrLandTotalValuePage(index), "10000").success.value
             .set(TrustOwnAllThePropertyOrLandPage(index), true).success.value
             .set(AssetStatus(index), Completed).success.value
@@ -160,9 +160,9 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
             None,
             Seq(
               checkYourAnswersHelper.whatKindOfAsset(index).value,
-              //              checkYourAnswersHelper.propertyOrLandAddress(index).value, // TODO rename when TRUS-792 merged
-              checkYourAnswersHelper.propertyOrLandAddress(index).value,
-              checkYourAnswersHelper.whatIsThePropertyOrLandUKAddress(index).value,
+              checkYourAnswersHelper.propertyOrLandAddressYesNo(index).value,
+              checkYourAnswersHelper.propertyOrLandAddressUkYesNo(index).value,
+              checkYourAnswersHelper.propertyOrLandUKAddress(index).value,
               checkYourAnswersHelper.propertyOrLandTotalValue(index).value,
               checkYourAnswersHelper.trustOwnAllThePropertyOrLand(index).value
             )
@@ -194,9 +194,9 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
         val userAnswers =
           emptyUserAnswers
             .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
-            //            .set(PropertyOrLandAddressPage(index), true).success.value  // TODO rename when TRUS-792 merged
-            .set(PropertyOrLandAddressPage(index), true).success.value
-            .set(WhatIsThePropertyOrLandUKAddressPage(index), UKAddress("Line1", None, None, "TownOrCity", "NE62RT")).success.value
+            .set(PropertyOrLandAddressYesNoPage(index), true).success.value
+            .set(PropertyOrLandAddressUkYesNoPage(index), true).success.value
+            .set(PropertyOrLandUKAddressPage(index), UKAddress("Line1", None, None, "TownOrCity", "NE62RT")).success.value
             .set(PropertyOrLandTotalValuePage(index), "10000").success.value
             .set(TrustOwnAllThePropertyOrLandPage(index), false).success.value
             .set(PropertyLandValueTrustPage(index), "10").success.value
@@ -210,9 +210,9 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
             None,
             Seq(
               checkYourAnswersHelper.whatKindOfAsset(index).value,
-              //              checkYourAnswersHelper.propertyOrLandAddress(index).value, // TODO rename when TRUS-792 merged
-              checkYourAnswersHelper.propertyOrLandAddress(index).value,
-              checkYourAnswersHelper.whatIsThePropertyOrLandUKAddress(index).value,
+              checkYourAnswersHelper.propertyOrLandAddressYesNo(index).value,
+              checkYourAnswersHelper.propertyOrLandAddressUkYesNo(index).value,
+              checkYourAnswersHelper.propertyOrLandUKAddress(index).value,
               checkYourAnswersHelper.propertyOrLandTotalValue(index).value,
               checkYourAnswersHelper.trustOwnAllThePropertyOrLand(index).value,
               checkYourAnswersHelper.propertyLandValueTrust(index).value
@@ -246,8 +246,8 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
         val userAnswers =
           emptyUserAnswers
             .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
-            //            .set(PropertyOrLandAddressPage(index), true).success.value  // TODO rename when TRUS-792 merged
-            .set(PropertyOrLandAddressPage(index), false).success.value
+            .set(PropertyOrLandAddressYesNoPage(index), true).success.value
+            .set(PropertyOrLandAddressUkYesNoPage(index), false).success.value
             .set(PropertyOrLandInternationalAddressPage(index), InternationalAddress("line1", "line2", Some("line3"), Some("line4"), "ES")).success.value
             .set(PropertyOrLandTotalValuePage(index), "10000").success.value
             .set(TrustOwnAllThePropertyOrLandPage(index), true).success.value
@@ -261,8 +261,8 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
             None,
             Seq(
               checkYourAnswersHelper.whatKindOfAsset(index).value,
-              //              checkYourAnswersHelper.propertyOrLandAddress(index).value, // TODO rename when TRUS-792 merged
-              checkYourAnswersHelper.propertyOrLandAddress(index).value,
+              checkYourAnswersHelper.propertyOrLandAddressYesNo(index).value,
+              checkYourAnswersHelper.propertyOrLandAddressUkYesNo(index).value,
               checkYourAnswersHelper.propertyOrLandInternationalAddress(index).value,
               checkYourAnswersHelper.propertyOrLandTotalValue(index).value,
               checkYourAnswersHelper.trustOwnAllThePropertyOrLand(index).value
@@ -295,8 +295,8 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
         val userAnswers =
           emptyUserAnswers
             .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
-            //            .set(PropertyOrLandAddressPage(index), true).success.value  // TODO rename when TRUS-792 merged
-            .set(PropertyOrLandAddressPage(index), false).success.value
+            .set(PropertyOrLandAddressYesNoPage(index), true).success.value
+            .set(PropertyOrLandAddressUkYesNoPage(index), false).success.value
             .set(PropertyOrLandInternationalAddressPage(index), InternationalAddress("line1", "line2", Some("line3"), Some("line4"), "ES")).success.value
             .set(PropertyOrLandTotalValuePage(index), "10000").success.value
             .set(TrustOwnAllThePropertyOrLandPage(index), false).success.value
@@ -311,8 +311,8 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
             None,
             Seq(
               checkYourAnswersHelper.whatKindOfAsset(index).value,
-              //              checkYourAnswersHelper.propertyOrLandAddress(index).value, // TODO rename when TRUS-792 merged
-              checkYourAnswersHelper.propertyOrLandAddress(index).value,
+              checkYourAnswersHelper.propertyOrLandAddressYesNo(index).value,
+              checkYourAnswersHelper.propertyOrLandAddressUkYesNo(index).value,
               checkYourAnswersHelper.propertyOrLandInternationalAddress(index).value,
               checkYourAnswersHelper.propertyOrLandTotalValue(index).value,
               checkYourAnswersHelper.trustOwnAllThePropertyOrLand(index).value,
