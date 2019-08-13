@@ -15,32 +15,32 @@
  *@
 
 @import controllers.property_or_land.routes._
-@import models.Mode
+@import viewmodels.{AnswerSection, RepeaterAnswerSection, Section}
 
 @this(
-    main_template: MainTemplate,
-    formHelper: FormWithCSRF
+main_template: MainTemplate,
+formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, index: Int, draftId: String)(implicit request: Request[_], messages: Messages)
+@(index : Int, draftId: String, answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("propertyOrLandAddressYesNo.title")}"
-    ) {
+title = messages("propertyOrLandAnswers.title")
+) {
 
-    @formHelper(action = PropertyOrLandAddressYesNoController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
+@components.back_link()
 
-        @components.back_link()
+@components.heading("propertyOrLandAnswers.heading")
 
-        @components.error_summary(form.errors)
+    @for(section <- answerSections){
+        @{section match {
+            case a: AnswerSection => components.answer_section(a)
+            case r: RepeaterAnswerSection => components.repeater_answer_section(r)
+            }
+        }
+    }
 
-        @components.input_yes_no(
-            field = form("value"),
-            label = messages("propertyOrLandAddressYesNo.heading"),
-            legendClass = Some("heading-large"),
-            legendAsHeading = true
-        )
-
+    @formHelper(action = PropertyOrLandAnswerController.onSubmit(index, draftId), 'autoComplete -> "off") {
         @components.submit_button()
     }
 }

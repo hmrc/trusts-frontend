@@ -52,7 +52,7 @@ class AddABeneficiaryController @Inject()(
   private def heading(count: Int)(implicit mp : MessagesProvider) = {
     count match {
       case 0 => Messages("addABeneficiary.heading")
-      case 1 => Messages("addABeneficiary.heading")
+      case 1 => Messages("addABeneficiary.singular.heading")
       case size => Messages("addABeneficiary.count.heading", size)
     }
   }
