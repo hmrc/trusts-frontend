@@ -34,12 +34,11 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("addABeneficiaryYesNo.heading")
-
         @components.input_yes_no(
             field = form("value"),
             label = messages("addABeneficiaryYesNo.heading"),
-            legendClass = Some("visually-hidden")
+            legendClass = Some("heading-large"),
+            legendAsHeading = true
         )
 
         @components.submit_button()
