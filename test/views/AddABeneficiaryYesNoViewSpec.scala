@@ -14,38 +14,35 @@
  * limitations under the License.
  */
 
-package views.property_or_land
+package views
 
 import controllers.routes
-import forms.property_or_land.PropertyOrLandAddressYesNoFormProvider
+import forms.AddABeneficiaryYesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.property_or_land.PropertyOrLandAddressYesNoView
+import views.html.AddABeneficiaryYesNoView
 
-class PropertyOrLandAddressYesNoViewSpec extends YesNoViewBehaviours {
+class AddABeneficiaryYesNoViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "propertyOrLandAddressYesNo"
+  val messageKeyPrefix = "addABeneficiaryYesNo"
 
-  val index = 0
+  val form = new AddABeneficiaryYesNoFormProvider()()
 
-  val form = new PropertyOrLandAddressYesNoFormProvider()()
+  "AddABeneficiaryYesNo view" must {
 
-  "PropertyOrLandAddressYesNo view" must {
-
-    val view = viewFor[PropertyOrLandAddressYesNoView](Some(emptyUserAnswers))
+    val view = viewFor[AddABeneficiaryYesNoView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, index, fakeDraftId)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, controllers.property_or_land.routes.PropertyOrLandAddressYesNoController.onSubmit(NormalMode, index, fakeDraftId).url)
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.AddABeneficiaryController.submitOne(fakeDraftId).url)
 
     behave like pageWithASubmitButton(applyView(form))
-
   }
 }

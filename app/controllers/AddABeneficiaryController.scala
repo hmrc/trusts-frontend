@@ -17,34 +17,38 @@
 package controllers
 
 import controllers.actions._
-import forms.AddABeneficiaryFormProvider
+import forms.{AddABeneficiaryFormProvider, AddABeneficiaryYesNoFormProvider}
 import javax.inject.Inject
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.AddABeneficiaryPage
+import pages.{AddABeneficiaryPage, AddABeneficiaryYesNoPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi, MessagesProvider}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.AddABeneficiaryViewHelper
-import views.html.AddABeneficiaryView
+import views.html.{AddABeneficiaryView, AddABeneficiaryYesNoView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class AddABeneficiaryController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       navigator: Navigator,
-                                       identify: IdentifierAction,
-                                       getData: DraftIdRetrievalActionProvider,
-                                       requireData: DataRequiredAction,
-                                       formProvider: AddABeneficiaryFormProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: AddABeneficiaryView
+                                           override val messagesApi: MessagesApi,
+                                           sessionRepository: SessionRepository,
+                                           navigator: Navigator,
+                                           identify: IdentifierAction,
+                                           getData: DraftIdRetrievalActionProvider,
+                                           requireData: DataRequiredAction,
+                                           addAnotherFormProvider: AddABeneficiaryFormProvider,
+                                           yesNoFormProvider: AddABeneficiaryYesNoFormProvider,
+                                           val controllerComponents: MessagesControllerComponents,
+                                           addAnotherView: AddABeneficiaryView,
+                                           yesNoView: AddABeneficiaryYesNoView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
-  val form = formProvider()
+  val addAnotherForm = addAnotherFormProvider()
+
+  val yesNoForm = yesNoFormProvider()
 
   private def routes(draftId: String) =
     identify andThen getData(draftId) andThen requireData
@@ -61,26 +65,42 @@ class AddABeneficiaryController @Inject()(
     implicit request =>
 
       val beneficiaries = new AddABeneficiaryViewHelper(request.userAnswers, draftId).rows
-
       val count = beneficiaries.count
 
-      Ok(view(form, mode, draftId, beneficiaries.inProgress, beneficiaries.complete, heading(count)))
+      if(beneficiaries.count > 0) {
+        Ok(addAnotherView(addAnotherForm, mode, draftId, beneficiaries.inProgress, beneficiaries.complete, heading(count)))
+      } else {
+        Ok(yesNoView(yesNoForm, mode, draftId))
+      }
   }
 
-  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = routes(draftId).async {
+  def submitOne(mode: Mode, draftId : String) : Action[AnyContent] = routes(draftId).async {
+    implicit request =>
+      yesNoForm.bindFromRequest().fold(
+        (formWithErrors: Form[_]) => {
+          Future.successful(
+            BadRequest(yesNoView(formWithErrors, mode, draftId))
+          )
+        },
+        value => {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(AddABeneficiaryYesNoPage, value))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(AddABeneficiaryYesNoPage, mode, draftId)(updatedAnswers))
+        }
+      )
+  }
+
+  def submitAnother(mode: Mode, draftId: String): Action[AnyContent] = routes(draftId).async {
     implicit request =>
 
-      form.bindFromRequest().fold(
+      addAnotherForm.bindFromRequest().fold(
         (formWithErrors: Form[_]) => {
-
           val beneficiaries = new AddABeneficiaryViewHelper(request.userAnswers, draftId).rows
 
           val count = beneficiaries.count
-
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, beneficiaries.inProgress, beneficiaries.complete, heading(count))))
-
+          Future.successful(BadRequest(addAnotherView(formWithErrors, mode, draftId, beneficiaries.inProgress, beneficiaries.complete, heading(count))))
         },
-
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AddABeneficiaryPage, value))
@@ -89,4 +109,5 @@ class AddABeneficiaryController @Inject()(
         }
       )
   }
+
 }

@@ -29,11 +29,11 @@ class PropertyLandValueTrustFormProviderSpec extends StringFieldBehaviours with 
   ".value" must {
 
     val fieldName = "value"
-    val requiredKey = "propertyLandValueTrust.error.field1.required"
-    val zeroNumberkey = "propertyLandValueTrust.error.field1.zero"
-    val invalidOnlyNumbersKey = "propertyLandValueTrust.error.field1.invalid"
-    val invalidWholeNumberKey = "propertyLandValueTrust.error.field1.whole"
-    val lengthKey = "propertyLandValueTrust.error.field1.length"
+    val requiredKey = "propertyLandValueTrust.error.required"
+    val zeroNumberkey = "propertyLandValueTrust.error.zero"
+    val invalidOnlyNumbersKey = "propertyLandValueTrust.error.invalid"
+    val invalidWholeNumberKey = "propertyLandValueTrust.error.whole"
+    val lengthKey = "propertyLandValueTrust.error.length"
     val maxLength = 12
 
 

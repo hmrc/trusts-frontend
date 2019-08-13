@@ -16,7 +16,6 @@
 
 package pages
 
-import models.PropertyLandValueTrust
 import pages.behaviours.PageBehaviours
 import pages.property_or_land.PropertyLandValueTrustPage
 
@@ -24,10 +23,10 @@ class PropertyLandValueTrustPageSpec extends PageBehaviours {
 
   "PropertyLandValueTrustPage" must {
 
-    beRetrievable[PropertyLandValueTrust](PropertyLandValueTrustPage(0))
+    beRetrievable[String](PropertyLandValueTrustPage(0))
 
-    beSettable[PropertyLandValueTrust](PropertyLandValueTrustPage(0))
+    beSettable[String](PropertyLandValueTrustPage(0))
 
-    beRemovable[PropertyLandValueTrust](PropertyLandValueTrustPage(0))
+    beRemovable[String](PropertyLandValueTrustPage(0))
   }
 }

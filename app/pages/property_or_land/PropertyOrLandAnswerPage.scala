@@ -14,16 +14,8 @@
  * limitations under the License.
  */
 
-package forms.property_or_land
+package pages.property_or_land
 
-import forms.mappings.Mappings
-import javax.inject.Inject
-import play.api.data.Form
+import pages.Page
 
-class PropertyOrLandAddressUkYesNoFormProvider @Inject() extends Mappings {
-
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("propertyOrLandAddressUkYesNo.error.required")
-    )
-}
+case object PropertyOrLandAnswerPage extends Page
