@@ -353,7 +353,7 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
       val request = FakeRequest(GET, propertyOrLandAnswerRoute)
 
       val result = route(application, request).value
-      
+
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual routes.PropertyOrLandAddressYesNoController.onPageLoad(NormalMode, index, fakeDraftId).url
