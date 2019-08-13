@@ -145,6 +145,32 @@ trait PropertyOrLandRoutes {
 
     }
 
+    "navigate to PropertyOrLandAnswerController" when {
+      "navigating from PropertyLandValueTrustPage" in {
+
+        val page = PropertyLandValueTrustPage(index)
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers.set(page, "100").success.value
+            navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.PropertyOrLandAnswerController.onPageLoad(index, fakeDraftId))
+        }
+      }
+
+      "navigating from TrustOwnAllThePropertyOrLandPage when user answers no" in {
+
+        val page = TrustOwnAllThePropertyOrLandPage(index)
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers.set(page, false).success.value
+            navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.PropertyOrLandAnswerController.onPageLoad(index, fakeDraftId))
+        }
+      }
+    }
+
   }
 
 }

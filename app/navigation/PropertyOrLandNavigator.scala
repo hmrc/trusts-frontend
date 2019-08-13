@@ -34,6 +34,7 @@ class PropertyOrLandNavigator extends Navigator {
     case PropertyOrLandInternationalAddressPage(index) => _ => _ => routes.PropertyOrLandTotalValueController.onPageLoad(NormalMode, index, draftId)
     case PropertyOrLandTotalValuePage(index) => _ => _ => routes.TrustOwnAllThePropertyOrLandController.onPageLoad(NormalMode, index, draftId)
     case TrustOwnAllThePropertyOrLandPage(index) => _ => trustOwnAllThePropertyOrLandPage(draftId, index)
+    case PropertyLandValueTrustPage(index) => _ => _ => routes.PropertyOrLandAnswerController.onPageLoad(index, draftId)
   }
 
   private def propertyOrLandAddressYesNoPage(draftId: String, index: Int)(answers: UserAnswers) = answers.get(PropertyOrLandAddressYesNoPage(index)) match {
@@ -50,7 +51,7 @@ class PropertyOrLandNavigator extends Navigator {
 
   private def trustOwnAllThePropertyOrLandPage(draftId: String, index: Int)(answers: UserAnswers) = answers.get(TrustOwnAllThePropertyOrLandPage(index)) match {
     case Some(true)  => routes.PropertyLandValueTrustController.onPageLoad(NormalMode, index, draftId)
-    case Some(false) => ???
+    case Some(false) => routes.PropertyOrLandAnswerController.onPageLoad(index, draftId)
     case None        => controllers.routes.SessionExpiredController.onPageLoad()
   }
 
