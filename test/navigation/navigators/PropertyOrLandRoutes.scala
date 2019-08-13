@@ -137,7 +137,7 @@ trait PropertyOrLandRoutes {
       "user answers yes to go to PropertyLandValueTrustPage" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
-            val answers = userAnswers.set(page, value = true).success.value
+            val answers = userAnswers.set(page, value = false).success.value
             navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
               .mustBe(routes.PropertyLandValueTrustController.onPageLoad(NormalMode, index, fakeDraftId))
         }
@@ -164,7 +164,7 @@ trait PropertyOrLandRoutes {
 
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
-            val answers = userAnswers.set(page, false).success.value
+            val answers = userAnswers.set(page, true).success.value
             navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
               .mustBe(routes.PropertyOrLandAnswerController.onPageLoad(index, fakeDraftId))
         }

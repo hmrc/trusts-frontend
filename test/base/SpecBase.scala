@@ -19,19 +19,20 @@ package base
 import config.FrontendAppConfig
 import controllers.actions._
 import models.{RegistrationStatus, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeNavigator, Navigator, PropertyOrLandNavigator}
 import org.scalatest.{BeforeAndAfter, TestSuite, TryValues}
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice._
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.inject.{Injector, bind}
-import play.api.mvc.{Call, PlayBodyParsers}
+import play.api.mvc.PlayBodyParsers
 import play.api.test.FakeRequest
 import repositories.SessionRepository
 import services.{CreateDraftRegistrationService, SubmissionService}
 import uk.gov.hmrc.auth.core.AffinityGroup
 import utils.TestUserAnswers
+import utils.annotations.PropertyOrLand
 
 trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked with BeforeAndAfter {
   this: TestSuite =>
@@ -57,7 +58,9 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
   val fakeNavigator = new FakeNavigator()
 
   protected def applicationBuilder(userAnswers: Option[UserAnswers] = None,
-                                   affinityGroup: AffinityGroup = AffinityGroup.Organisation): GuiceApplicationBuilder =
+                                   affinityGroup: AffinityGroup = AffinityGroup.Organisation,
+                                   navigator: Navigator = fakeNavigator
+                                  ): GuiceApplicationBuilder =
     new GuiceApplicationBuilder()
       .overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],
@@ -68,7 +71,8 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
         bind[SessionRepository].toInstance(mockedSessionRepository),
         bind[SubmissionService].toInstance(mockSubmissionService),
         bind[CreateDraftRegistrationService].toInstance(mockCreateDraftRegistrationService),
-        bind[Navigator].toInstance(fakeNavigator)
+        bind[Navigator].toInstance(navigator),
+        bind[Navigator].qualifiedWith(classOf[PropertyOrLand]).toInstance(navigator)
       )
 
 }

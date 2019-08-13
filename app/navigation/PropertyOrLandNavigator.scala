@@ -50,8 +50,8 @@ class PropertyOrLandNavigator extends Navigator {
   }
 
   private def trustOwnAllThePropertyOrLandPage(draftId: String, index: Int)(answers: UserAnswers) = answers.get(TrustOwnAllThePropertyOrLandPage(index)) match {
-    case Some(true)  => routes.PropertyLandValueTrustController.onPageLoad(NormalMode, index, draftId)
-    case Some(false) => routes.PropertyOrLandAnswerController.onPageLoad(index, draftId)
+    case Some(true) => routes.PropertyOrLandAnswerController.onPageLoad(index, draftId)
+    case Some(false)  => routes.PropertyLandValueTrustController.onPageLoad(NormalMode, index, draftId)
     case None        => controllers.routes.SessionExpiredController.onPageLoad()
   }
 

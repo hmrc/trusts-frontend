@@ -30,8 +30,6 @@ import views.html.TrustRegisteredOnlineView
 
 class TrustRegisteredOnlineControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new TrustRegisteredOnlineFormProvider()
   val form = formProvider()
 
@@ -80,9 +78,7 @@ class TrustRegisteredOnlineControllerSpec extends SpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, trustRegisteredOnlineRoute)
@@ -92,7 +88,7 @@ class TrustRegisteredOnlineControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }
@@ -136,9 +132,7 @@ class TrustRegisteredOnlineControllerSpec extends SpecBase {
 
     "redirect to the SessionExpired when valid data is submitted if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None)
-        .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-        .build()
+      val application = applicationBuilder(userAnswers = None).build()
 
       val request =
         FakeRequest(POST, trustRegisteredOnlineRoute)

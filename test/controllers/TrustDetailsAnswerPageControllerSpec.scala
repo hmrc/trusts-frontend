@@ -19,11 +19,10 @@ package controllers
 import java.time.LocalDate
 
 import base.SpecBase
-import models.{NonResidentType, UserAnswers}
+import models.NonResidentType
 import navigation.{FakeNavigator, Navigator}
 import pages._
 import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.CheckYourAnswersHelper
@@ -32,8 +31,6 @@ import viewmodels.AnswerSection
 import views.html.TrustDetailsAnswerPageView
 
 class TrustDetailsAnswerPageControllerSpec extends SpecBase {
-
-  def onwardRoute = Call("GET", "/foo")
 
   "TrustDetailsAnswerPageController" when {
 
@@ -254,9 +251,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
         emptyUserAnswers
 
       val application =
-        applicationBuilder(userAnswers = Some(answers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(answers)).build()
 
       val request =
         FakeRequest(POST, routes.TrustDetailsAnswerPageController.onSubmit(fakeDraftId).url)
@@ -265,7 +260,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }
