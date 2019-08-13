@@ -17,7 +17,7 @@
 package mapping.reads
 
 import models.WhatKindOfAsset.Money
-import models.{Address, PropertyLandValueTrust, ShareClass, Status, UKAddress, WhatKindOfAsset}
+import models.{ShareClass, Status, UKAddress, WhatKindOfAsset}
 import org.scalatest.{FreeSpec, MustMatchers}
 import play.api.libs.json.{JsError, JsSuccess, Json}
 
@@ -161,7 +161,7 @@ class AssetReadsSpec extends FreeSpec with MustMatchers {
         val json = Json.parse(
           """
             |{
-            |"whatKindOfAsset" : PropertyOrLand,
+            |"whatKindOfAsset" : "PropertyOrLand",
             |"propertyOrLandDescription" : "Property Or Land",
             |"address" : {
             |     "line1" : "26",
@@ -187,41 +187,42 @@ class AssetReadsSpec extends FreeSpec with MustMatchers {
                 townOrCity = "Newcastle",
                 postcode = "Z99 2YY"
               )),
-            propertyLandValueTrust = Some(PropertyLandValueTrust("75")),
+            propertyLandValueTrust = Some("75"),
             propertyOrLandTotalValue = "1000"
           ))
       }
 
-        "from a PropertyOrLand asset with minimum data" in {
-          val json = Json.parse(
-            """
-              |{
-              |"whatKindOfAsset" : PropertyOrLand,
-              |"address" : {
-              |     "line1" : "26",
-              |     "townOrCity" : "Newcastle",
-              |     "postcode" : "Z99 2YY"
-              |},
-              |"propertyOrLandTotalValue" : "1000"
-              |}
-            """.stripMargin)
+      "from a PropertyOrLand asset with minimum data" in {
+        val json = Json.parse(
+          """
+            |{
+            |"whatKindOfAsset" : "PropertyOrLand",
+            |"address" : {
+            |     "line1" : "26",
+            |     "townOrCity" : "Newcastle",
+            |     "postcode" : "Z99 2YY"
+            |},
+            |"propertyOrLandTotalValue" : "1000"
+            |}
+          """.stripMargin)
 
-          json.validate[Asset] mustEqual JsSuccess(
-            PropertyOrLandAsset(
-              whatKindOfAsset = WhatKindOfAsset.PropertyOrLand,
-              propertyOrLandDescription = None,
-              address = Some(
-                UKAddress(
-                  line1 = "26",
-                  line2 = None,
-                  line3 = None,
-                  townOrCity = "Newcastle",
-                  postcode = "Z99 2YY"
-                )),
-              propertyLandValueTrust = None,
-              propertyOrLandTotalValue = "1000"
-            ))
-        }
+        json.validate[Asset] mustEqual JsSuccess(
+          PropertyOrLandAsset(
+            whatKindOfAsset = WhatKindOfAsset.PropertyOrLand,
+            propertyOrLandDescription = None,
+            address = Some(
+              UKAddress(
+                line1 = "26",
+                line2 = None,
+                line3 = None,
+                townOrCity = "Newcastle",
+                postcode = "Z99 2YY"
+              )),
+            propertyLandValueTrust = None,
+            propertyOrLandTotalValue = "1000"
+          ))
       }
+
     }
+  }
 }

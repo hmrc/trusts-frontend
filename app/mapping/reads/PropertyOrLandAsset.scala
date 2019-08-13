@@ -17,13 +17,13 @@
 package mapping.reads
 
 import models.WhatKindOfAsset.PropertyOrLand
-import models.{Address, PropertyLandValueTrust, WhatKindOfAsset}
+import models.{Address, WhatKindOfAsset}
 import play.api.libs.json.{JsError, JsSuccess, Reads, __}
 
 final case class PropertyOrLandAsset(override val whatKindOfAsset: WhatKindOfAsset,
                                      propertyOrLandDescription: Option[String],
                                      address: Option[Address],
-                                     propertyLandValueTrust: Option[PropertyLandValueTrust],
+                                     propertyLandValueTrust: Option[String],
                                      propertyOrLandTotalValue: String) extends Asset
 
 object PropertyOrLandAsset {
@@ -35,7 +35,7 @@ object PropertyOrLandAsset {
     val landOrPropertyReads: Reads[PropertyOrLandAsset] = (
       (__ \ "propertyOrLandDescription").readNullable[String] and
         (__ \ "address").readNullable[Address] and
-          (__ \ "propertyLandValueTrust").readNullable[PropertyLandValueTrust] and
+          (__ \ "propertyLandValueTrust").readNullable[String] and
             (__ \ "propertyOrLandTotalValue").read[String] and
               (__ \ "whatKindOfAsset").read[WhatKindOfAsset]
       )((description, address, value, totalValue, kind) => PropertyOrLandAsset(kind, description, address, value, totalValue))
