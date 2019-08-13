@@ -43,5 +43,8 @@ class PropertyOrLandAddressUkYesNoViewSpec extends YesNoViewBehaviours {
     behave like pageWithBackLink(applyView(form))
 
     behave like yesNoPage(form, applyView, messageKeyPrefix, controllers.property_or_land.routes.PropertyOrLandAddressUkYesNoController.onSubmit(NormalMode, index, fakeDraftId).url)
+
+    behave like pageWithASubmitButton(applyView(form))
+
   }
 }

@@ -34,12 +34,11 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("propertyOrLandDescription.heading")
-
         @components.input_text(
           field = form("value"),
           label = messages("propertyOrLandDescription.heading"),
-          labelClass = Some("visually-hidden"),
+          labelClass = Some("heading-large"),
+          labelAsHeading = true,
           hint = Some(messages("propertyOrLandDescription.hint"))
         )
 

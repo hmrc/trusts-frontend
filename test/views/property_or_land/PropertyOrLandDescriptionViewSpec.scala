@@ -44,5 +44,8 @@ class PropertyOrLandDescriptionViewSpec extends StringViewBehaviours {
     behave like pageWithBackLink(applyView(form))
 
     behave like stringPage(form, applyView, messageKeyPrefix, controllers.property_or_land.routes.PropertyOrLandDescriptionController.onSubmit(NormalMode, index, fakeDraftId).url, Some(hintKey))
+
+    behave like pageWithASubmitButton(applyView(form))
+
   }
 }
