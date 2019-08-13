@@ -25,17 +25,17 @@ import play.api.data.Forms._
 
 class PropertyLandValueTrustFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[PropertyLandValueTrust] = Form(
-    mapping(
-      "value" -> currency("propertyLandValueTrust.error.field1.required")
+  def apply(): Form[String] =
+    Form(
+      "value" -> currency("propertyLandValueTrust.error.required")
         .verifying(
           firstError(
-            maxLength(12, "propertyLandValueTrust.error.field1.length"),
-            isNotEmpty("value", "propertyLandValueTrust.error.field1.required"),
-            regexp(Validation.decimalCheck, "propertyLandValueTrust.error.field1.whole"),
-            regexp(Validation.onlyNumbersRegex, "propertyLandValueTrust.error.field1.invalid"),
-            minimumValue("1", "propertyLandValueTrust.error.field1.zero")
+            maxLength(12, "propertyLandValueTrust.error.length"),
+            isNotEmpty("value", "propertyLandValueTrust.error.required"),
+            regexp(Validation.decimalCheck, "propertyLandValueTrust.error.whole"),
+            regexp(Validation.onlyNumbersRegex, "propertyLandValueTrust.error.invalid"),
+            minimumValue("1", "propertyLandValueTrust.error.zero")
           )
-        ))(PropertyLandValueTrust.apply)(PropertyLandValueTrust.unapply)
-  )
+        )
+    )
 }

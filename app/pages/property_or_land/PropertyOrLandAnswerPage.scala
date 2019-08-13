@@ -16,14 +16,6 @@
 
 package pages.property_or_land
 
-import models.PropertyLandValueTrust
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.Assets
+import pages.Page
 
-case class PropertyLandValueTrustPage(index: Int) extends QuestionPage[String] {
-
-  override def path: JsPath = JsPath \ Assets \ index \ toString
-
-  override def toString: String = "propertyLandValueTrust"
-}
+case object PropertyOrLandAnswerPage extends Page
