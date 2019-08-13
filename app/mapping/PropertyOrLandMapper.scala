@@ -18,8 +18,7 @@ package mapping
 
 import javax.inject.Inject
 import mapping.reads.PropertyOrLandAsset
-import models.{Address, UKAddress, UserAnswers}
-import models.WhatKindOfAsset.PropertyOrLand
+import models.UserAnswers
 
 import scala.util.Try
 
@@ -29,7 +28,6 @@ class PropertyOrLandMapper @Inject()(addressMapper: AddressMapper) extends Mappi
       val assets : List[PropertyOrLandAsset] =
         userAnswers.get(mapping.reads.Assets)
           .getOrElse(List.empty[mapping.reads.Asset])
-          .filter(_.whatKindOfAsset == PropertyOrLand)
           .collect { case x : PropertyOrLandAsset => x }
 
       assets match {

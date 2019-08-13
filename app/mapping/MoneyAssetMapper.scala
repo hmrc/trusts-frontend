@@ -19,7 +19,6 @@ package mapping
 import javax.inject.Inject
 import mapping.reads.MoneyAsset
 import models.UserAnswers
-import models.WhatKindOfAsset.Money
 
 import scala.util.Try
 
@@ -29,7 +28,6 @@ class MoneyAssetMapper @Inject() extends Mapping[List[AssetMonetaryAmount]]{
     val assets : List[MoneyAsset] =
       userAnswers.get(mapping.reads.Assets)
         .getOrElse(List.empty[mapping.reads.Asset])
-        .filter(_.whatKindOfAsset == Money)
         .collect { case x : MoneyAsset => x }
 
     assets match {
