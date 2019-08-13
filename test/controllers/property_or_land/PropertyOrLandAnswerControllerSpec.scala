@@ -17,7 +17,7 @@
 package controllers.property_or_land
 
 import base.SpecBase
-import models.{InternationalAddress, ShareClass, UKAddress}
+import models.{InternationalAddress, NormalMode, ShareClass, UKAddress}
 import models.Status.Completed
 import models.WhatKindOfAsset.PropertyOrLand
 import pages.WhatKindOfAssetPage
@@ -337,6 +337,28 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
         application.stop()
       }
 
+    }
+
+
+    "redirect to PropertyOrLandAddressYesNoPage on a GET if no answer for 'Does the property or land have an address' at index" in {
+      val answers =
+        emptyUserAnswers
+          .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
+          .set(PropertyOrLandDescriptionPage(index), "Property Land Description").success.value
+          .set(PropertyOrLandTotalValuePage(index), "10000").success.value
+          .set(TrustOwnAllThePropertyOrLandPage(index), true).success.value
+
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+      val request = FakeRequest(GET, propertyOrLandAnswerRoute)
+
+      val result = route(application, request).value
+      
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.PropertyOrLandAddressYesNoController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+      application.stop()
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {

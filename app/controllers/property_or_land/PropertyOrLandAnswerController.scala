@@ -23,7 +23,7 @@ import models.NormalMode
 import models.Status.Completed
 import navigation.Navigator
 import pages.entitystatus.AssetStatus
-import pages.property_or_land.PropertyOrLandAnswerPage
+import pages.property_or_land.{PropertyOrLandAddressYesNoPage, PropertyOrLandAnswerPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -52,8 +52,8 @@ class PropertyOrLandAnswerController @Inject()(
   private def actions(index: Int, draftId: String) =
     identify andThen
       getData(draftId) andThen
-      requireData // andThen
-//      requiredAnswer(RequiredAnswer(PropertyOrLandAddressPage(index), routes.PropertyOrLandAddressController.onPageLoad(NormalMode, index, draftId)))
+      requireData andThen
+      requiredAnswer(RequiredAnswer(PropertyOrLandAddressYesNoPage(index), routes.PropertyOrLandAddressYesNoController.onPageLoad(NormalMode, index, draftId)))
 
 
   def onPageLoad(index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
