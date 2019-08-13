@@ -28,21 +28,22 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import utils.annotations.PropertyOrLand
 import views.html.property_or_land.PropertyLandValueTrustView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class PropertyLandValueTrustController @Inject()(
-                                      override val messagesApi: MessagesApi,
-                                      sessionRepository: SessionRepository,
-                                      navigator: Navigator,
-                                      identify: IdentifierAction,
-                                      getData: DraftIdRetrievalActionProvider,
-                                      requireData: DataRequiredAction,
-                                      validateIndex: IndexActionFilterProvider,
-                                      formProvider: PropertyLandValueTrustFormProvider,
-                                      val controllerComponents: MessagesControllerComponents,
-                                      view: PropertyLandValueTrustView
+                                                  override val messagesApi: MessagesApi,
+                                                  sessionRepository: SessionRepository,
+                                                  @PropertyOrLand navigator: Navigator,
+                                                  identify: IdentifierAction,
+                                                  getData: DraftIdRetrievalActionProvider,
+                                                  requireData: DataRequiredAction,
+                                                  validateIndex: IndexActionFilterProvider,
+                                                  formProvider: PropertyLandValueTrustFormProvider,
+                                                  val controllerComponents: MessagesControllerComponents,
+                                                  view: PropertyLandValueTrustView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()

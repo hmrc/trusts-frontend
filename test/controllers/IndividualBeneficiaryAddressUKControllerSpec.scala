@@ -29,8 +29,6 @@ import views.html.IndividualBeneficiaryAddressUKView
 
 class IndividualBeneficiaryAddressUKControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new UKAddressFormProvider()
   val form = formProvider()
   val index: Int = 0
@@ -90,9 +88,7 @@ class IndividualBeneficiaryAddressUKControllerSpec extends SpecBase {
         name).success.value
 
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, individualBeneficiaryAddressUKRoute)
@@ -102,7 +98,7 @@ class IndividualBeneficiaryAddressUKControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

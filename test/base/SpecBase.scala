@@ -19,13 +19,14 @@ package base
 import config.FrontendAppConfig
 import controllers.actions._
 import models.{RegistrationStatus, UserAnswers}
+import navigation.{FakeNavigator, Navigator}
 import org.scalatest.{BeforeAndAfter, TestSuite, TryValues}
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice._
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.inject.{Injector, bind}
-import play.api.mvc.PlayBodyParsers
+import play.api.mvc.{Call, PlayBodyParsers}
 import play.api.test.FakeRequest
 import repositories.SessionRepository
 import services.{CreateDraftRegistrationService, SubmissionService}
@@ -53,6 +54,8 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
 
   implicit def messages: Messages = messagesApi.preferred(fakeRequest)
 
+  val fakeNavigator = new FakeNavigator()
+
   protected def applicationBuilder(userAnswers: Option[UserAnswers] = None,
                                    affinityGroup: AffinityGroup = AffinityGroup.Organisation): GuiceApplicationBuilder =
     new GuiceApplicationBuilder()
@@ -64,7 +67,8 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
           new FakeDraftIdRetrievalActionProvider("draftId", RegistrationStatus.InProgress,userAnswers, mockedSessionRepository)),
         bind[SessionRepository].toInstance(mockedSessionRepository),
         bind[SubmissionService].toInstance(mockSubmissionService),
-        bind[CreateDraftRegistrationService].toInstance(mockCreateDraftRegistrationService)
+        bind[CreateDraftRegistrationService].toInstance(mockCreateDraftRegistrationService),
+        bind[Navigator].toInstance(fakeNavigator)
       )
 
 }

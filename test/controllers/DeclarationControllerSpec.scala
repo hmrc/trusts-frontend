@@ -21,25 +21,23 @@ import forms.DeclarationFormProvider
 import models.RegistrationStatus.InProgress
 import models.{AlreadyRegistered, FullName, NormalMode, RegistrationTRNResponse, UnableToRegister, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
+import org.mockito.Matchers.any
+import org.mockito.Mockito.{verify, when, _}
 import pages.DeclarationPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
-import views.html.DeclarationView
-import org.mockito.Matchers.any
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.{when, _}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
+import views.html.DeclarationView
 
 import scala.concurrent.Future
 
 
 class DeclarationControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
   def confirmationRoute = Call("GET", "/confirmation")
 
   val formProvider = new DeclarationFormProvider()
@@ -186,9 +184,7 @@ class DeclarationControllerSpec extends SpecBase {
         thenReturn(Future.failed(UnableToRegister()))
 
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent)
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
       val request =
         FakeRequest(POST, declarationRoute)
@@ -216,9 +212,7 @@ class DeclarationControllerSpec extends SpecBase {
 
 
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent)
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
       val request =
         FakeRequest(POST, declarationRoute)

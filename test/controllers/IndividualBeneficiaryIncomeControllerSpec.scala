@@ -30,8 +30,6 @@ import views.html.IndividualBeneficiaryIncomeView
 
 class IndividualBeneficiaryIncomeControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new IndividualBeneficiaryIncomeFormProvider()
   val form = formProvider()
   val index: Int = 0
@@ -90,9 +88,7 @@ class IndividualBeneficiaryIncomeControllerSpec extends SpecBase {
         name).success.value
 
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, individualBeneficiaryIncomeRoute)
@@ -101,7 +97,7 @@ class IndividualBeneficiaryIncomeControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

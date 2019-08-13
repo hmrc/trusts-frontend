@@ -17,13 +17,12 @@
 package controllers.shares
 
 import base.SpecBase
-import models.{ShareClass, WhatKindOfAsset}
+import models.ShareClass
 import models.Status.Completed
 import models.WhatKindOfAsset.Shares
 import pages.WhatKindOfAssetPage
 import pages.entitystatus.AssetStatus
 import pages.shares._
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.CheckYourAnswersHelper
@@ -32,8 +31,6 @@ import viewmodels.AnswerSection
 import views.html.shares.ShareAnswersView
 
 class ShareAnswerControllerSpec extends SpecBase {
-
-  def onwardRoute = Call("GET", "/foo")
 
   val index: Int = 0
 
