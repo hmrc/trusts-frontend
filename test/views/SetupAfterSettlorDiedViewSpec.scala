@@ -43,7 +43,7 @@ class SetupAfterSettlorDiedViewSpec extends YesNoViewBehaviours {
     behave like pageWithBackLink(applyView(form))
 
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.SetupAfterSettlorDiedController.onSubmit(NormalMode, fakeDraftId).url, Some(messageKeyPrefix))
+    behave like yesNoPage(form, applyView, messageKeyPrefix, Some(messageKeyPrefix))
 
     behave like pageWithASubmitButton(applyView(form))
   }

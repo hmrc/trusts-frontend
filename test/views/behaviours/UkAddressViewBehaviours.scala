@@ -32,7 +32,6 @@ trait UkAddressViewBehaviours extends ViewBehaviours {
 
   def ukAddressPage(createView: Form[UKAddress] => HtmlFormat.Appendable,
                     messageKeyPrefix: Option[String],
-                         expectedFormAction: String,
                          args : String*) = {
 
     val prefix = messageKeyPrefix.getOrElse("site.address.uk")

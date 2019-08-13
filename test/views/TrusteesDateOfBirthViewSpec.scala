@@ -49,7 +49,6 @@ class TrusteesDateOfBirthViewSpec extends QuestionViewBehaviours[LocalDate] {
 
     behave like pageWithDateFields(form, applyViewF,
       messageKeyPrefix,
-      routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, fakeDraftId).url,
       trusteeName
     )
 

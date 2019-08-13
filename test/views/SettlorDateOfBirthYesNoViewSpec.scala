@@ -43,6 +43,6 @@ class SettlorDateOfBirthYesNoViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.SettlorDateOfBirthYesNoController.onSubmit(NormalMode, fakeDraftId).url, None, Seq(name.toString))
+    behave like yesNoPage(form, applyView, messageKeyPrefix, None, Seq(name.toString))
   }
 }

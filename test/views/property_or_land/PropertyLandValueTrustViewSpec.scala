@@ -48,7 +48,6 @@ class PropertyLandValueTrustViewSpec extends QuestionViewBehaviours[PropertyLand
       form,
       applyView,
       messageKeyPrefix,
-      routes.PropertyLandValueTrustController.onSubmit(NormalMode, index, fakeDraftId).url,
       Seq(("field1", None))
     )
   }

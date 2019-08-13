@@ -25,8 +25,7 @@ trait IntViewBehaviours extends QuestionViewBehaviours[Int] {
 
   def intPage(form: Form[Int],
               createView: Form[Int] => HtmlFormat.Appendable,
-              messageKeyPrefix: String,
-              expectedFormAction: String): Unit = {
+              messageKeyPrefix: String): Unit = {
 
     "behave like a page with an integer value field" when {
 

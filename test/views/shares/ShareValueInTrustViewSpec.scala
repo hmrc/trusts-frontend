@@ -43,8 +43,7 @@ class ShareValueInTrustViewSpec extends StringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, companyName, routes.ShareValueInTrustController.onSubmit(
-      NormalMode, index, fakeDraftId).url, Some(messages(s"$messageKeyPrefix.hint")))
+    behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, companyName, Some(messages(s"$messageKeyPrefix.hint")))
 
     behave like pageWithASubmitButton(applyView(form))
 

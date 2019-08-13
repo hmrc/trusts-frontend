@@ -43,6 +43,6 @@ class TrustOwnAllThePropertyOrLandViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.TrustOwnAllThePropertyOrLandController.onSubmit(NormalMode, index, fakeDraftId).url)
+    behave like yesNoPage(form, applyView, messageKeyPrefix)
   }
 }

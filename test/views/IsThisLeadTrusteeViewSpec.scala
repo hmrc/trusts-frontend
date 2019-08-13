@@ -46,8 +46,7 @@ class IsThisLeadTrusteeViewSpec extends YesNoViewBehaviours {
     behave like yesNoPage(
       form,
       applyView,
-      messageKeyPrefix,
-      routes.IsThisLeadTrusteeController.onSubmit(NormalMode, index, fakeDraftId).url
+      messageKeyPrefix
     )
   }
 }

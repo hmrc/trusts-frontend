@@ -45,7 +45,6 @@ class PropertyOrLandUKAddressViewSpec extends UkAddressViewBehaviours {
     behave like ukAddressPage(
       applyView,
       Some(messageKeyPrefix),
-      routes.PropertyOrLandUKAddressController.onSubmit(NormalMode, index, fakeDraftId).url,
       "the property or land"
     )
 

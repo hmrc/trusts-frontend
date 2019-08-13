@@ -51,7 +51,6 @@ class PropertyOrLandInternationalAddressViewSpec extends QuestionViewBehaviours[
       form,
       applyView,
       messageKeyPrefix,
-      controllers.property_or_land.routes.PropertyOrLandInternationalAddressController.onSubmit(NormalMode, index, fakeDraftId).url,
       Seq(("line1",None), ("line2",None), ("line3", None), ("line4", None), ("country", None)),
       entityName
     )
