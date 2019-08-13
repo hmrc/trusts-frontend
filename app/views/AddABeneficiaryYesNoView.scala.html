@@ -15,38 +15,30 @@
  *@
 
 @import controllers.routes._
-@import models.{Mode, AddABeneficiary}
-@import viewmodels.AddRow
+@import models.Mode
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, inProgressIndividualBeneficiaries: Seq[AddRow], completeIndividualBeneficiaries: Seq[AddRow], heading : String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} $heading"
+    title = s"${errorPrefix(form)} ${messages("addABeneficiaryYesNo.title")}"
     ) {
 
-    @formHelper(action = AddABeneficiaryController.submitAnother(draftId), 'autoComplete -> "off") {
+    @formHelper(action = AddABeneficiaryController.submitOne(draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading(heading)
-
-        @components.data_list(inProgressIndividualBeneficiaries, "inprogress", "individual beneficiary")
-
-        @components.data_list(completeIndividualBeneficiaries, "complete", "individual beneficiary")
-
-        @components.input_radio(
+        @components.input_yes_no(
             field = form("value"),
-            legend = messages("addABeneficiary.additional-content"),
-            legendClass = Some("heading-medium"),
-            inputs = AddABeneficiary.options,
-            legendAsH2Heading = true
+            label = messages("addABeneficiaryYesNo.heading"),
+            legendClass = Some("heading-large"),
+            legendAsHeading = true
         )
 
         @components.submit_button()

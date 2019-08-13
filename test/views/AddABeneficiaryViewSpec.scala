@@ -53,7 +53,6 @@ class AddABeneficiaryViewSpec extends OptionsViewBehaviours with TabularDataView
     view.apply(form, NormalMode, fakeDraftId, inProgressBeneficiaries, completeBeneficiaries, title)(fakeRequest, messages)
   }
 
-
   "AddABeneficiaryView" when {
 
     "there is no beneficiary data" must {
