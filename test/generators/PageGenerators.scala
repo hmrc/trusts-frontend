@@ -23,6 +23,48 @@ import pages.shares.{ShareClassPage, ShareCompanyNamePage, SharePortfolioNamePag
 
 trait PageGenerators {
 
+  implicit lazy val arbitrarySettlorIndividualPassportYesNoPage: Arbitrary[SettlorIndividualPassportYesNoPage.type] =
+    Arbitrary(SettlorIndividualPassportYesNoPage)
+
+  implicit lazy val arbitrarySettlorIndividualPassportPage: Arbitrary[SettlorIndividualPassportPage.type] =
+    Arbitrary(SettlorIndividualPassportPage)
+
+  implicit lazy val arbitrarySettlorIndividualIDCardYesNoPage: Arbitrary[SettlorIndividualIDCardYesNoPage.type] =
+    Arbitrary(SettlorIndividualIDCardYesNoPage)
+
+  implicit lazy val arbitrarySettlorIndividualIDCardPage: Arbitrary[SettlorIndividualIDCardPage.type] =
+    Arbitrary(SettlorIndividualIDCardPage)
+
+  implicit lazy val arbitrarySettlorIndividualAddressUKYesNoPage: Arbitrary[SettlorIndividualAddressUKYesNoPage.type] =
+    Arbitrary(SettlorIndividualAddressUKYesNoPage)
+
+  implicit lazy val arbitrarySettlorIndividualAddressUKPage: Arbitrary[SettlorIndividualAddressUKPage.type] =
+    Arbitrary(SettlorIndividualAddressUKPage)
+
+  implicit lazy val arbitrarySettlorIndividualAddressInternationalPage: Arbitrary[SettlorIndividualAddressInternationalPage.type] =
+    Arbitrary(SettlorIndividualAddressInternationalPage)
+
+  implicit lazy val arbitrarySettlorIndividualNINOYesNoPage: Arbitrary[SettlorIndividualNINOYesNoPage.type] =
+    Arbitrary(SettlorIndividualNINOYesNoPage)
+
+  implicit lazy val arbitrarySettlorIndividualNINOPage: Arbitrary[SettlorIndividualNINOPage.type] =
+    Arbitrary(SettlorIndividualNINOPage)
+
+  implicit lazy val arbitrarySettlorIndividualAddressYesNoPage: Arbitrary[SettlorIndividualAddressYesNoPage.type] =
+    Arbitrary(SettlorIndividualAddressYesNoPage)
+
+  implicit lazy val arbitrarySettlorIndividualDateOfBirthPage: Arbitrary[SettlorIndividualDateOfBirthPage.type] =
+    Arbitrary(SettlorIndividualDateOfBirthPage)
+
+  implicit lazy val arbitrarySettlorIndividualDateOfBirthYesNoPage: Arbitrary[SettlorIndividualDateOfBirthYesNoPage.type] =
+    Arbitrary(SettlorIndividualDateOfBirthYesNoPage)
+
+  implicit lazy val arbitrarySettlorIndividualNamePage: Arbitrary[SettlorIndividualNamePage.type] =
+    Arbitrary(SettlorIndividualNamePage)
+
+  implicit lazy val arbitrarySettlorIndividualOrBusinessPage: Arbitrary[SettlorIndividualOrBusinessPage.type] =
+    Arbitrary(SettlorIndividualOrBusinessPage)
+
   implicit lazy val arbitraryPropertyOrLandAddressYesNoPage: Arbitrary[PropertyOrLandAddressYesNoPage] =
     Arbitrary(PropertyOrLandAddressYesNoPage(0))
 

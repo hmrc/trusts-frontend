@@ -27,6 +27,118 @@ import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
 
+  implicit lazy val arbitrarySettlorIndividualPassportYesNoUserAnswersEntry: Arbitrary[(SettlorIndividualPassportYesNoPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[SettlorIndividualPassportYesNoPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitrarySettlorIndividualPassportUserAnswersEntry: Arbitrary[(SettlorIndividualPassportPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[SettlorIndividualPassportPage.type]
+        value <- arbitrary[SettlorIndividualPassport].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitrarySettlorIndividualIDCardYesNoUserAnswersEntry: Arbitrary[(SettlorIndividualIDCardYesNoPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[SettlorIndividualIDCardYesNoPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitrarySettlorIndividualIDCardUserAnswersEntry: Arbitrary[(SettlorIndividualIDCardPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[SettlorIndividualIDCardPage.type]
+        value <- arbitrary[SettlorIndividualIDCard].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitrarySettlorIndividualAddressUKYesNoUserAnswersEntry: Arbitrary[(SettlorIndividualAddressUKYesNoPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[SettlorIndividualAddressUKYesNoPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitrarySettlorIndividualAddressUKUserAnswersEntry: Arbitrary[(SettlorIndividualAddressUKPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[SettlorIndividualAddressUKPage.type]
+        value <- arbitrary[SettlorIndividualAddressUK].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitrarySettlorIndividualAddressInternationalUserAnswersEntry: Arbitrary[(SettlorIndividualAddressInternationalPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[SettlorIndividualAddressInternationalPage.type]
+        value <- arbitrary[SettlorIndividualAddressInternational].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitrarySettlorIndividualNINOYesNoUserAnswersEntry: Arbitrary[(SettlorIndividualNINOYesNoPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[SettlorIndividualNINOYesNoPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitrarySettlorIndividualNINOUserAnswersEntry: Arbitrary[(SettlorIndividualNINOPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[SettlorIndividualNINOPage.type]
+        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitrarySettlorIndividualAddressYesNoUserAnswersEntry: Arbitrary[(SettlorIndividualAddressYesNoPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[SettlorIndividualAddressYesNoPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitrarySettlorIndividualDateOfBirthUserAnswersEntry: Arbitrary[(SettlorIndividualDateOfBirthPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[SettlorIndividualDateOfBirthPage.type]
+        value <- arbitrary[Int].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitrarySettlorIndividualDateOfBirthYesNoUserAnswersEntry: Arbitrary[(SettlorIndividualDateOfBirthYesNoPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[SettlorIndividualDateOfBirthYesNoPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitrarySettlorIndividualNameUserAnswersEntry: Arbitrary[(SettlorIndividualNamePage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[SettlorIndividualNamePage.type]
+        value <- arbitrary[SettlorIndividualName].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitrarySettlorIndividualOrBusinessUserAnswersEntry: Arbitrary[(SettlorIndividualOrBusinessPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[SettlorIndividualOrBusinessPage.type]
+        value <- arbitrary[SettlorIndividualOrBusiness].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
   implicit lazy val arbitraryPropertyOrLandAddressYesNoUserAnswersEntry: Arbitrary[(PropertyOrLandAddressYesNoPage, JsValue)] =
     Arbitrary {
       for {

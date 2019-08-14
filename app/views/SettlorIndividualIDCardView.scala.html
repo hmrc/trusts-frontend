@@ -1,0 +1,35 @@
+@import controllers.routes._
+@import models.Mode
+
+@this(
+    main_template: MainTemplate,
+    formHelper: FormWithCSRF
+)
+
+@(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
+
+@main_template(
+    title = s"${errorPrefix(form)} ${messages("settlorIndividualIDCard.title")}"
+    ) {
+
+    @formHelper(action = SettlorIndividualIDCardController.onSubmit(mode, draftId), 'autoComplete -> "off") {
+
+        @components.back_link()
+
+        @components.error_summary(form.errors)
+
+        @components.heading("settlorIndividualIDCard.heading")
+
+        @components.input_text(
+            field = form("field1"),
+            label = messages("settlorIndividualIDCard.field1")
+        )
+
+        @components.input_text(
+            field = form("field2"),
+            label = messages("settlorIndividualIDCard.field2")
+        )
+
+        @components.submit_button()
+    }
+}
