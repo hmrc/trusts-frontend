@@ -20,20 +20,22 @@ import javax.inject.Inject
 import models.UserAnswers
 import play.api.Logger
 
-class AssetMapper @Inject()(moneyAssetMapper: MoneyAssetMapper, shareAssetMapper: ShareAssetMapper) extends Mapping[Assets] {
+class AssetMapper @Inject()(moneyAssetMapper: MoneyAssetMapper, shareAssetMapper: ShareAssetMapper,
+                            propertyOrLandMapper: PropertyOrLandMapper) extends Mapping[Assets] {
 
   override def build(userAnswers: UserAnswers): Option[Assets] = {
 
     val money = moneyAssetMapper.build(userAnswers)
     val shares = shareAssetMapper.build(userAnswers)
+    val propertyOrLand = propertyOrLandMapper.build(userAnswers)
 
-    (money, shares) match {
-      case (None, None) =>
+    (money, shares, propertyOrLand) match {
+      case (None, None, None) =>
         Logger.info(s"[AssetMapper][build] unable to map assets")
         None
-      case (_, _) =>
+      case (_, _, _) =>
         Some(
-          Assets(monetary = money, propertyOrLand = None, shares = shares, business = None, partnerShip = None, other = None)
+          Assets(monetary = money, propertyOrLand = propertyOrLand, shares = shares, business = None, partnerShip = None, other = None)
         )
     }
   }

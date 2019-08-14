@@ -221,46 +221,30 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
 
   def propertyOrLand : Seq[AnswerSection] = {
     val answers : Seq[(PropertyOrLandAsset, Int)] = userAnswers.get(Assets).getOrElse(Nil).zipWithIndex.collect {
-      case (x : PropertyOrLandDescriptionAsset, index) => (x, index)
-      case (x : PropertyOrLandAddressAsset, index) => (x, index)
+      case (x : PropertyOrLandAsset, index) => (x, index)
     }
 
     answers.flatMap {
       case o @ (m, index) =>
-        m match {
-          case _ : PropertyOrLandDescriptionAsset =>
+        Seq(
+          AnswerSection(
+            Some(s"${messages("answerPage.section.propertyOrLandAsset.subheading")} ${answers.indexOf(o)+1}"),
             Seq(
-              AnswerSection(
-                Some(s"${messages("answerPage.section.propertyOrLandAsset.subheading")} ${answers.indexOf(o)+1}"),
-                Seq(
-                  propertyOrLandAddressYesNo(index),
-                  propertyOrLandDescription(index),
-                  propertyOrLandTotalValue(index),
-                  trustOwnAllThePropertyOrLand(index),
-                  propertyLandValueTrust(index)
-                ).flatten,
-                None
-              )
-            )
-          case _ : PropertyOrLandAddressAsset =>
-            Seq(
-              AnswerSection(
-                Some(s"${messages("answerPage.section.propertyOrLandAsset.subheading")} ${answers.indexOf(o)+1}"),
-                Seq(
-                  propertyOrLandAddressYesNo(index),
-                  propertyOrLandAddressUkYesNo(index),
-                  propertyOrLandUKAddress(index),
-                  propertyOrLandInternationalAddress(index),
-                  propertyOrLandTotalValue(index),
-                  trustOwnAllThePropertyOrLand(index),
-                  propertyLandValueTrust(index)
-                ).flatten,
-                None
-              )
-            )
-          case _ => Nil
-        }
+              propertyOrLandAddressYesNo(index),
+              propertyOrLandDescription(index),
+              propertyOrLandAddressUkYesNo(index),
+              propertyOrLandUKAddress(index),
+              propertyOrLandInternationalAddress(index),
+              propertyOrLandTotalValue(index),
+              trustOwnAllThePropertyOrLand(index),
+              propertyLandValueTrust(index)
+            ).flatten,
+            None
+          )
+        )
+      case _ => Nil
     }
+
   }
 
   def propertyOrLandAddressYesNo(index: Int): Option[AnswerRow] = userAnswers.get(PropertyOrLandAddressYesNoPage(index)) map {
@@ -268,7 +252,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "propertyOrLandAddressYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.property_or_land.routes.PropertyOrLandAddressYesNoController.onPageLoad(CheckMode, index, draftId).url
+        controllers.property_or_land.routes.PropertyOrLandAddressYesNoController.onPageLoad(CheckMode, index, draftId).url,
+        canEdit = canEdit
       )
   }
 
@@ -276,8 +261,9 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x =>
       AnswerRow(
         "propertyLandValueTrust.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
-        controllers.property_or_land.routes.PropertyLandValueTrustController.onPageLoad(CheckMode, index, draftId).url
+        currency(x),
+        controllers.property_or_land.routes.PropertyLandValueTrustController.onPageLoad(CheckMode, index, draftId).url,
+        canEdit = canEdit
       )
   }
 
@@ -286,7 +272,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "propertyOrLandDescription.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        controllers.property_or_land.routes.PropertyOrLandDescriptionController.onPageLoad(CheckMode, index, draftId).url
+        controllers.property_or_land.routes.PropertyOrLandDescriptionController.onPageLoad(CheckMode, index, draftId).url,
+        canEdit = canEdit
       )
   }
 
@@ -295,7 +282,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "propertyOrLandAddressUkYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.property_or_land.routes.PropertyOrLandAddressUkYesNoController.onPageLoad(CheckMode, index, draftId).url
+        controllers.property_or_land.routes.PropertyOrLandAddressUkYesNoController.onPageLoad(CheckMode, index, draftId).url,
+        canEdit = canEdit
       )
   }
 
@@ -304,7 +292,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "trustOwnAllThePropertyOrLand.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.property_or_land.routes.TrustOwnAllThePropertyOrLandController.onPageLoad(CheckMode, index, draftId).url
+        controllers.property_or_land.routes.TrustOwnAllThePropertyOrLandController.onPageLoad(CheckMode, index, draftId).url,
+        canEdit = canEdit
       )
   }
 
@@ -332,7 +321,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x =>
       AnswerRow(
         "propertyOrLandTotalValue.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
+        currency(x),
         controllers.property_or_land.routes.PropertyOrLandTotalValueController.onPageLoad(CheckMode, index, draftId).url,
         canEdit = canEdit
       )

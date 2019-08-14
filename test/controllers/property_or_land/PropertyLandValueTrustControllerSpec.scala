@@ -19,11 +19,10 @@ package controllers.property_or_land
 import base.SpecBase
 import controllers.IndexValidation
 import forms.property_or_land.PropertyLandValueTrustFormProvider
-import models.{NormalMode, PropertyLandValueTrust, UserAnswers}
+import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.property_or_land.{PropertyLandValueTrustPage, PropertyOrLandDescriptionPage}
-import play.api.data.Form
+import pages.property_or_land.PropertyLandValueTrustPage
 import play.api.inject.bind
 import play.api.libs.json.Json
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}

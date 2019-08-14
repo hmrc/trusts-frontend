@@ -20,7 +20,7 @@ import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
 import forms.property_or_land.PropertyLandValueTrustFormProvider
 import javax.inject.Inject
-import models.{Mode, PropertyLandValueTrust}
+import models.Mode
 import navigation.Navigator
 import pages.property_or_land.PropertyLandValueTrustPage
 import play.api.data.Form

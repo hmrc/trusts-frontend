@@ -47,8 +47,8 @@ class PrintUserAnswersHelper @Inject()(countryOptions: CountryOptions){
       classOfBeneficiaries ++
       assetSection ++
       money ++
-      shares //++
-//      propertyOrLand
+      shares ++
+      propertyOrLand
 
     sections
   }

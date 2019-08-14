@@ -14,12 +14,23 @@
  * limitations under the License.
  */
 
-package models
+package views.shares
 
-import play.api.libs.json._
+import views.behaviours.ViewBehaviours
+import views.html.shares.ShareAnswersView
 
-case class PropertyLandValueTrust(field1: String)
+class ShareAnswerPageViewSpec extends ViewBehaviours {
 
-object PropertyLandValueTrust {
-  implicit val format = Json.format[PropertyLandValueTrust]
+  val index = 0
+
+  "ShareAnswerPageView view" must {
+
+    val view = viewFor[ShareAnswersView](Some(emptyUserAnswers))
+
+    val applyView = view.apply(index, fakeDraftId, Nil)(fakeRequest, messages)
+
+    behave like normalPage(applyView, "shareAnswers")
+
+    behave like pageWithBackLink(applyView)
+  }
 }

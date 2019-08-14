@@ -14,33 +14,23 @@
  * limitations under the License.
  */
 
-package mapping.reads
+package views.property_or_land
 
-import models.WhatKindOfAsset
-import play.api.libs.json.Reads
+import views.behaviours.ViewBehaviours
+import views.html.property_or_land.PropertyOrLandAnswersView
 
-trait Asset {
+class PropertyOrLandAnswerPageViewSpec extends ViewBehaviours {
 
-  val whatKindOfAsset : WhatKindOfAsset
+  val index = 0
 
-}
+  "PropertyOrLandAnswerPage view" must {
 
-object Asset {
+    val view = viewFor[PropertyOrLandAnswersView](Some(emptyUserAnswers))
 
-  implicit class ReadsWithContravariantOr[A](a: Reads[A]) {
+    val applyView = view.apply(index, fakeDraftId, Nil)(fakeRequest, messages)
 
-    def or[B >: A](b: Reads[B]): Reads[B] =
-      a.map[B](identity).orElse(b)
+    behave like normalPage(applyView, "propertyOrLandAnswers")
+
+    behave like pageWithBackLink(applyView)
   }
-
-  implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
-    a.map(identity)
-
-  implicit lazy val reads : Reads[Asset] = {
-    MoneyAsset.reads or
-    ShareNonPortfolioAsset.reads or
-    SharePortfolioAsset.reads or
-    PropertyOrLandAsset.reads
-  }
-
 }
