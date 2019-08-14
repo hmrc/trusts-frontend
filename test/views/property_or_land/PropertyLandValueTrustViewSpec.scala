@@ -43,11 +43,8 @@ class PropertyLandValueTrustViewSpec extends StringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like pageWithTextFields(
-      form,
-      applyView,
-      messageKeyPrefix,
-      Seq(("field1", None))
-    )
+    behave like stringPage(form, applyView, messageKeyPrefix)
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }
