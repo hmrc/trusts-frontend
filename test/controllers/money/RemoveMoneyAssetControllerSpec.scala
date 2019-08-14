@@ -36,7 +36,7 @@ class RemoveMoneyAssetControllerSpec extends SpecBase with PropertyChecks {
 
   lazy val formRoute = routes.RemoveMoneyAssetController.onSubmit(0, fakeDraftId)
 
-  lazy val content : String = "200"
+  lazy val content : String = "£200"
 
   val index = 0
 

@@ -49,7 +49,7 @@ class RemoveMoneyAssetController @Inject()(
       require(RequiredAnswer(page(index), redirect(draftId)))
 
   override def content(index: Int)(implicit request: DataRequest[AnyContent]) : String =
-    request.userAnswers.get(page(index)).get
+    s"£${request.userAnswers.get(page(index)).get}"
 
   override def formRoute(draftId: String, index: Int): Call =
     controllers.money.routes.RemoveMoneyAssetController.onSubmit(index, draftId)
