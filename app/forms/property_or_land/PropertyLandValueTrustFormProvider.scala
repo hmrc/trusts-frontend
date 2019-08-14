@@ -19,9 +19,7 @@ package forms.property_or_land
 import forms.Validation
 import forms.mappings.Mappings
 import javax.inject.Inject
-import models.PropertyLandValueTrust
 import play.api.data.Form
-import play.api.data.Forms._
 
 class PropertyLandValueTrustFormProvider @Inject() extends Mappings {
 
