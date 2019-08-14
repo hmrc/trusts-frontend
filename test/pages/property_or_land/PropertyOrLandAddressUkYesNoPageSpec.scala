@@ -16,6 +16,8 @@
 
 package pages.property_or_land
 
+import models.{InternationalAddress, UKAddress, UserAnswers}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
 class PropertyOrLandAddressUkYesNoPageSpec extends PageBehaviours {
@@ -27,5 +29,35 @@ class PropertyOrLandAddressUkYesNoPageSpec extends PageBehaviours {
     beSettable[Boolean](PropertyOrLandAddressUkYesNoPage(0))
 
     beRemovable[Boolean](PropertyOrLandAddressUkYesNoPage(0))
+
+    "remove relevant data" when {
+
+      val page = PropertyOrLandAddressUkYesNoPage(0)
+
+      "set to false" in {
+        forAll(arbitrary[UserAnswers]) {
+          initial =>
+            val answers: UserAnswers = initial.set(page, true).success.value
+              .set(PropertyOrLandInternationalAddressPage(0),  InternationalAddress("line 1", "line 2", None, None, "France")).success.value
+
+            val result = answers.set(page, false).success.value
+
+            result.get(PropertyOrLandInternationalAddressPage(0)) must not be defined
+        }
+      }
+
+      "set to true" in {
+        forAll(arbitrary[UserAnswers]) {
+          initial =>
+            val answers: UserAnswers = initial.set(page, false).success.value
+              .set(PropertyOrLandUKAddressPage(0),  UKAddress("line 1", None, None, "Newcastle upon Tyne", "NE1 1NE")).success.value
+
+            val result = answers.set(page, true).success.value
+
+            result.get(PropertyOrLandUKAddressPage(0)) must not be defined
+        }
+      }
+    }
+
   }
 }

@@ -42,7 +42,7 @@ class PropertyOrLandAddressYesNoPageSpec extends PageBehaviours {
 
             val result = answers.set(page, false).success.value
 
-            result.get(PropertyOrLandDescriptionPage(0)) mustNot be(defined)
+            result.get(PropertyOrLandDescriptionPage(0)) must not be defined
         }
       }
 
@@ -56,9 +56,9 @@ class PropertyOrLandAddressYesNoPageSpec extends PageBehaviours {
 
             val result = answers.set(page, true).success.value
 
-            result.get(PropertyOrLandAddressUkYesNoPage(0)) mustNot be(defined)
-            result.get(PropertyOrLandInternationalAddressPage(0)) mustNot be(defined)
-            result.get(PropertyOrLandUKAddressPage(0)) mustNot be(defined)
+            result.get(PropertyOrLandAddressUkYesNoPage(0)) must not be defined
+            result.get(PropertyOrLandInternationalAddressPage(0)) must not be defined
+            result.get(PropertyOrLandUKAddressPage(0)) must not be defined
         }
       }
     }
