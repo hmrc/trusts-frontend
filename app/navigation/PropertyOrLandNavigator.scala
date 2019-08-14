@@ -35,6 +35,7 @@ class PropertyOrLandNavigator extends Navigator {
     case PropertyOrLandTotalValuePage(index) => _ => _ => routes.TrustOwnAllThePropertyOrLandController.onPageLoad(NormalMode, index, draftId)
     case TrustOwnAllThePropertyOrLandPage(index) => _ => trustOwnAllThePropertyOrLandPage(draftId, index)
     case PropertyLandValueTrustPage(index) => _ => _ => routes.PropertyOrLandAnswerController.onPageLoad(index, draftId)
+    case PropertyOrLandAnswerPage => _ => _ => controllers.routes.AddAssetsController.onPageLoad(draftId)
   }
 
   private def propertyOrLandAddressYesNoPage(draftId: String, index: Int)(answers: UserAnswers) = answers.get(PropertyOrLandAddressYesNoPage(index)) match {

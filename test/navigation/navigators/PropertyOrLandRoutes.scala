@@ -145,7 +145,7 @@ trait PropertyOrLandRoutes {
 
     }
 
-    "navigate to PropertyOrLandAnswerController" when {
+    "navigate to PropertyOrLandAnswerPage" when {
       "navigating from PropertyLandValueTrustPage" in {
 
         val page = PropertyLandValueTrustPage(index)
@@ -168,6 +168,17 @@ trait PropertyOrLandRoutes {
             navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
               .mustBe(routes.PropertyOrLandAnswerController.onPageLoad(index, fakeDraftId))
         }
+      }
+    }
+
+    "navigate from PropertyOrLandAnswerPage" in {
+
+      val page = PropertyOrLandAnswerPage
+
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(controllers.routes.AddAssetsController.onPageLoad(fakeDraftId))
       }
     }
 
