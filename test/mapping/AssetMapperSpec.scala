@@ -18,10 +18,12 @@ package mapping
 
 import base.SpecBaseHelpers
 import generators.Generators
+import mapping.reads.PropertyOrLandAsset
 import models.Status.Completed
-import models.WhatKindOfAsset
+import models.{UKAddress, WhatKindOfAsset}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.entitystatus.AssetStatus
+import pages.property_or_land._
 import pages.shares._
 import pages.{AssetMoneyValuePage, WhatKindOfAssetPage}
 
@@ -90,6 +92,35 @@ class AssetMapperSpec extends FreeSpec with MustMatchers
 
 
         val expected = Some(Assets(Some(List(AssetMonetaryAmount(2000))),None,Some(List(SharesType("30","Portfolio","Other","Unquoted",999999999999L))),None,None,None))
+
+        assetMapper.build(userAnswers) mustBe expected
+      }
+
+      "must be able to create Assets for both shares, money and property or land" in {
+
+        val userAnswers = emptyUserAnswers
+          .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Shares).success.value
+          .set(SharesInAPortfolioPage(0), true).success.value
+          .set(SharePortfolioNamePage(0), "Portfolio").success.value
+          .set(SharePortfolioQuantityInTrustPage(0), "30").success.value
+          .set(SharePortfolioValueInTrustPage(0), "999999999999").success.value
+          .set(SharePortfolioOnStockExchangePage(0), false).success.value
+          .set(AssetStatus(0), Completed).success.value
+          .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Money).success.value
+          .set(AssetMoneyValuePage(1), "2000").success.value
+          .set(AssetStatus(1), Completed).success.value
+          .set(WhatKindOfAssetPage(2), WhatKindOfAsset.PropertyOrLand).success.value
+          .set(PropertyOrLandAddressYesNoPage(2), true).success.value
+          .set(PropertyOrLandAddressUkYesNoPage(2), true).success.value
+          .set(PropertyOrLandUKAddressPage(2), UKAddress("26", Some("Grangetown"), Some("Tyne and Wear"), "Newcastle", "Z99 2YY")).success.value
+          .set(PropertyOrLandTotalValuePage(2), "1000").success.value
+          .set(TrustOwnAllThePropertyOrLandPage(2), true).success.value
+          .set(PropertyLandValueTrustPage(2), "750").success.value
+
+
+        val expected = Some(Assets(Some(List(AssetMonetaryAmount(2000))),
+          Some(List(PropertyLandType(None, Some(AddressType("26", "Grangetown", Some("Tyne and Wear"), Some("Newcastle"), Some("Z99 2YY"), "GB")), 1000, 750L))),
+          Some(List(SharesType("30","Portfolio","Other","Unquoted",999999999999L))),None,None,None))
 
         assetMapper.build(userAnswers) mustBe expected
       }

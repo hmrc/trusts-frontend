@@ -14,33 +14,32 @@
  * limitations under the License.
  */
 
-package mapping.reads
+package forms
 
-import models.WhatKindOfAsset
-import play.api.libs.json.Reads
+import forms.behaviours.BooleanFieldBehaviours
+import play.api.data.FormError
 
-trait Asset {
+class AddABeneficiaryYesNoFormProviderSpec extends BooleanFieldBehaviours {
 
-  val whatKindOfAsset : WhatKindOfAsset
+  val requiredKey = "addABeneficiaryYesNo.error.required"
+  val invalidKey = "error.boolean"
 
-}
+  val form = new AddABeneficiaryYesNoFormProvider()()
 
-object Asset {
+  ".value" must {
 
-  implicit class ReadsWithContravariantOr[A](a: Reads[A]) {
+    val fieldName = "value"
 
-    def or[B >: A](b: Reads[B]): Reads[B] =
-      a.map[B](identity).orElse(b)
+    behave like booleanField(
+      form,
+      fieldName,
+      invalidError = FormError(fieldName, invalidKey)
+    )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
   }
-
-  implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
-    a.map(identity)
-
-  implicit lazy val reads : Reads[Asset] = {
-    MoneyAsset.reads or
-    ShareNonPortfolioAsset.reads or
-    SharePortfolioAsset.reads or
-    PropertyOrLandAsset.reads
-  }
-
 }

@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package models
+package pages
 
-import play.api.libs.json._
+import play.api.libs.json.JsPath
+import sections.Beneficiaries
 
-case class PropertyLandValueTrust(field1: String)
+case object AddABeneficiaryYesNoPage extends QuestionPage[Boolean] {
 
-object PropertyLandValueTrust {
-  implicit val format = Json.format[PropertyLandValueTrust]
+  override def path: JsPath = JsPath \ Beneficiaries \ toString
+
+  override def toString: String = "addABeneficiaryYesNo"
 }

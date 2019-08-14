@@ -14,33 +14,17 @@
  * limitations under the License.
  */
 
-package mapping.reads
+package forms
 
-import models.WhatKindOfAsset
-import play.api.libs.json.Reads
+import javax.inject.Inject
 
-trait Asset {
+import forms.mappings.Mappings
+import play.api.data.Form
 
-  val whatKindOfAsset : WhatKindOfAsset
+class AddABeneficiaryYesNoFormProvider @Inject() extends Mappings {
 
-}
-
-object Asset {
-
-  implicit class ReadsWithContravariantOr[A](a: Reads[A]) {
-
-    def or[B >: A](b: Reads[B]): Reads[B] =
-      a.map[B](identity).orElse(b)
-  }
-
-  implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
-    a.map(identity)
-
-  implicit lazy val reads : Reads[Asset] = {
-    MoneyAsset.reads or
-    ShareNonPortfolioAsset.reads or
-    SharePortfolioAsset.reads or
-    PropertyOrLandAsset.reads
-  }
-
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("addABeneficiaryYesNo.error.required")
+    )
 }

@@ -17,20 +17,22 @@
 package controllers
 
 import base.SpecBase
-import forms.AddABeneficiaryFormProvider
+import forms.{AddABeneficiaryFormProvider, AddABeneficiaryYesNoFormProvider}
 import models.Status.Completed
 import models.{AddABeneficiary, FullName, NormalMode}
 import navigation.{FakeNavigator, Navigator}
-import pages.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage, IndividualBeneficiaryNamePage}
 import pages.entitystatus.{ClassBeneficiaryStatus, IndividualBeneficiaryStatus}
+import pages.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage, IndividualBeneficiaryNamePage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.AddRow
-import views.html.AddABeneficiaryView
+import views.html.{AddABeneficiaryView, AddABeneficiaryYesNoView}
 
 class AddABeneficiaryControllerSpec extends SpecBase {
+
+  def onwardRoute = Call("GET", "/foo")
 
   def removeIndividualRoute(index : Int) =
     routes.RemoveIndividualBeneficiaryController.onPageLoad(index, fakeDraftId).url
@@ -40,9 +42,14 @@ class AddABeneficiaryControllerSpec extends SpecBase {
 
   lazy val addABeneficiaryRoute = routes.AddABeneficiaryController.onPageLoad(fakeDraftId).url
 
-  val formProvider = new AddABeneficiaryFormProvider()
+  lazy val addOnePostRoute = routes.AddABeneficiaryController.submitOne(fakeDraftId).url
 
+  lazy val addAnotherPostRoute = routes.AddABeneficiaryController.submitAnother(fakeDraftId).url
+
+  val formProvider = new AddABeneficiaryFormProvider()
   val form = formProvider()
+
+  val yesNoForm = new AddABeneficiaryYesNoFormProvider()()
 
   lazy val beneficiariesComplete = List(
     AddRow("First Last", typeLabel = "Individual Beneficiary", "#", removeIndividualRoute(0)),
@@ -55,114 +62,185 @@ class AddABeneficiaryControllerSpec extends SpecBase {
     .set(ClassBeneficiaryDescriptionPage(0), "description").success.value
     .set(ClassBeneficiaryStatus(0), Completed).success.value
 
-  "AddABeneficiary Controller" must {
+  "AddABeneficiary Controller" when {
 
-    "return OK and the correct view for a GET" in {
+    "no data" must {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswersWithBeneficiariesComplete)).build()
+      "redirect to Session Expired for a GET if no existing data is found" in {
 
-      val request = FakeRequest(GET, addABeneficiaryRoute)
+        val application = applicationBuilder(userAnswers = None).build()
 
-      val result = route(application, request).value
+        val request = FakeRequest(GET, addABeneficiaryRoute)
 
-      val view = application.injector.instanceOf[AddABeneficiaryView]
+        val result = route(application, request).value
 
-      status(result) mustEqual OK
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
-      contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, Nil, beneficiariesComplete, "You have added 2 beneficiaries")(fakeRequest, messages).toString
+        application.stop()
+      }
 
-      application.stop()
+      "redirect to Session Expired for a POST if no existing data is found" in {
+
+        val application = applicationBuilder(userAnswers = None).build()
+
+        val request =
+          FakeRequest(POST, addAnotherPostRoute)
+            .withFormUrlEncodedBody(("value", AddABeneficiary.values.head.toString))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+
+        application.stop()
+      }
     }
 
-    "populate the view without value on a GET when the question has previously been answered" in {
-      val userAnswers = userAnswersWithBeneficiariesComplete.
-        set(AddABeneficiaryPage,AddABeneficiary.YesNow).success.value
+    "there are no beneficiaries" must {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      "return OK and the correct view for a GET" in {
 
-      val request = FakeRequest(GET, addABeneficiaryRoute)
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val result = route(application, request).value
+        val request = FakeRequest(GET, addABeneficiaryRoute)
 
-      val view = application.injector.instanceOf[AddABeneficiaryView]
+        val result = route(application, request).value
 
-      status(result) mustEqual OK
+        val view = application.injector.instanceOf[AddABeneficiaryYesNoView]
 
-      contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, Nil, beneficiariesComplete, "You have added 2 beneficiaries")(fakeRequest, messages).toString
+        status(result) mustEqual OK
 
-      application.stop()
+        contentAsString(result) mustEqual
+          view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
+      "redirect to the next page when valid data is submitted" in {
+
+        val application =
+          applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+        val request =
+          FakeRequest(POST, addOnePostRoute)
+            .withFormUrlEncodedBody(("value", "true"))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual onwardRoute.url
+
+        application.stop()
+      }
+
+      "return a Bad Request and errors when invalid data is submitted" in {
+
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+        val request =
+          FakeRequest(POST, addOnePostRoute)
+            .withFormUrlEncodedBody(("value", ""))
+
+        val boundForm = yesNoForm.bind(Map("value" -> ""))
+
+        val view = application.injector.instanceOf[AddABeneficiaryYesNoView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual BAD_REQUEST
+
+        contentAsString(result) mustEqual
+          view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
     }
 
-    "redirect to the next page when valid data is submitted" in {
+    "there are beneficiaries" must {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswersWithBeneficiariesComplete)).build()
+      "return OK and the correct view for a GET" in {
 
-      val request =
-        FakeRequest(POST, addABeneficiaryRoute)
-          .withFormUrlEncodedBody(("value", AddABeneficiary.options.head.value))
+        val application = applicationBuilder(userAnswers = Some(userAnswersWithBeneficiariesComplete)).build()
 
-      val result = route(application, request).value
+        val request = FakeRequest(GET, addABeneficiaryRoute)
 
-      status(result) mustEqual SEE_OTHER
+        val result = route(application, request).value
 
-      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+        val view = application.injector.instanceOf[AddABeneficiaryView]
 
-      application.stop()
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(form, NormalMode, fakeDraftId, Nil, beneficiariesComplete, "You have added 2 beneficiaries")(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
+      "populate the view without value on a GET when the question has previously been answered" in {
+        val userAnswers = userAnswersWithBeneficiariesComplete.
+          set(AddABeneficiaryPage,AddABeneficiary.YesNow).success.value
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(GET, addABeneficiaryRoute)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[AddABeneficiaryView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(form, NormalMode, fakeDraftId, Nil, beneficiariesComplete, "You have added 2 beneficiaries")(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
+      "redirect to the next page when valid data is submitted" in {
+
+        val application =
+          applicationBuilder(userAnswers = Some(userAnswersWithBeneficiariesComplete)).build()
+
+        val request =
+          FakeRequest(POST, addAnotherPostRoute)
+            .withFormUrlEncodedBody(("value", AddABeneficiary.options.head.value))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+
+        application.stop()
+      }
+
+      "return a Bad Request and errors when invalid data is submitted" in {
+
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+        val request =
+          FakeRequest(POST, addAnotherPostRoute)
+            .withFormUrlEncodedBody(("value", "invalid value"))
+
+        val boundForm = form.bind(Map("value" -> "invalid value"))
+
+        val view = application.injector.instanceOf[AddABeneficiaryView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual BAD_REQUEST
+
+        contentAsString(result) mustEqual
+          view(boundForm, NormalMode, fakeDraftId, Nil, Nil, "Add a beneficiary")(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
     }
 
-    "return a Bad Request and errors when invalid data is submitted" in {
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      val request =
-        FakeRequest(POST, addABeneficiaryRoute)
-          .withFormUrlEncodedBody(("value", "invalid value"))
-
-      val boundForm = form.bind(Map("value" -> "invalid value"))
-
-      val view = application.injector.instanceOf[AddABeneficiaryView]
-
-      val result = route(application, request).value
-
-      status(result) mustEqual BAD_REQUEST
-
-      contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, Nil, Nil, "Add a beneficiary")(fakeRequest, messages).toString
-
-      application.stop()
-    }
-
-    "redirect to Session Expired for a GET if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = None).build()
-
-      val request = FakeRequest(GET, addABeneficiaryRoute)
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
-
-      application.stop()
-    }
-
-    "redirect to Session Expired for a POST if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = None).build()
-
-      val request =
-        FakeRequest(POST, addABeneficiaryRoute)
-          .withFormUrlEncodedBody(("value", AddABeneficiary.values.head.toString))
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
-
-      application.stop()
-    }
   }
 }

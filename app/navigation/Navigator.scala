@@ -125,6 +125,7 @@ class Navigator @Inject()() {
     case IndividualBeneficiaryAnswersPage => _ => _ => routes.AddABeneficiaryController.onPageLoad(draftId)
 
     case AddABeneficiaryPage => _ => addABeneficiaryRoute(draftId)
+    case AddABeneficiaryYesNoPage => _ => addABeneficiaryYesNoRoute(draftId)
     case WhatTypeOfBeneficiaryPage => _ => whatTypeOfBeneficiaryRoute(draftId)
     case ClassBeneficiaryDescriptionPage(index) => _ => _ => routes.AddABeneficiaryController.onPageLoad(draftId)
 
@@ -315,6 +316,18 @@ class Navigator @Inject()() {
       case Some(YesLater) =>
         routes.TaskListController.onPageLoad(draftId)
       case Some(NoComplete) =>
+        routes.TaskListController.onPageLoad(draftId)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  private def addABeneficiaryYesNoRoute(draftId: String)(answers: UserAnswers) = {
+    val add = answers.get(AddABeneficiaryYesNoPage)
+
+    add match {
+      case Some(true) =>
+        routes.WhatTypeOfBeneficiaryController.onPageLoad(draftId)
+      case Some(false) =>
         routes.TaskListController.onPageLoad(draftId)
       case _ => routes.SessionExpiredController.onPageLoad()
     }

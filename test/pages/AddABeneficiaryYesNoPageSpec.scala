@@ -14,33 +14,18 @@
  * limitations under the License.
  */
 
-package mapping.reads
+package pages
 
-import models.WhatKindOfAsset
-import play.api.libs.json.Reads
+import pages.behaviours.PageBehaviours
 
-trait Asset {
+class AddABeneficiaryYesNoPageSpec extends PageBehaviours {
 
-  val whatKindOfAsset : WhatKindOfAsset
+  "AddABeneficiaryYesNoPage" must {
 
-}
+    beRetrievable[Boolean](AddABeneficiaryYesNoPage)
 
-object Asset {
+    beSettable[Boolean](AddABeneficiaryYesNoPage)
 
-  implicit class ReadsWithContravariantOr[A](a: Reads[A]) {
-
-    def or[B >: A](b: Reads[B]): Reads[B] =
-      a.map[B](identity).orElse(b)
+    beRemovable[Boolean](AddABeneficiaryYesNoPage)
   }
-
-  implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
-    a.map(identity)
-
-  implicit lazy val reads : Reads[Asset] = {
-    MoneyAsset.reads or
-    ShareNonPortfolioAsset.reads or
-    SharePortfolioAsset.reads or
-    PropertyOrLandAsset.reads
-  }
-
 }

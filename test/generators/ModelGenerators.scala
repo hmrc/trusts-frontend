@@ -24,11 +24,6 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
-  implicit lazy val arbitraryPropertyLandValueTrust: Arbitrary[PropertyLandValueTrust] =
-    Arbitrary {
-      arbitrary[String].map(PropertyLandValueTrust(_))
-    }
-
   implicit lazy val arbitraryShareClass: Arbitrary[ShareClass] =
     Arbitrary {
       Gen.oneOf(ShareClass.values.toSeq)

@@ -16,7 +16,6 @@
 
 package pages.property_or_land
 
-import models.PropertyLandValueTrust
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.Assets
