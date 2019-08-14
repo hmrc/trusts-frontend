@@ -16,7 +16,9 @@
 
 package pages.property_or_land
 
+import models.UserAnswers
 import pages.behaviours.PageBehaviours
+import org.scalacheck.Arbitrary.arbitrary
 
 class PropertyOrLandAddressYesNoPageSpec extends PageBehaviours {
 
@@ -27,5 +29,33 @@ class PropertyOrLandAddressYesNoPageSpec extends PageBehaviours {
     beSettable[Boolean](PropertyOrLandAddressYesNoPage(0))
 
     beRemovable[Boolean](PropertyOrLandAddressYesNoPage(0))
+
+    "remove relevant data" when {
+
+      val page = PropertyOrLandAddressYesNoPage(0)
+
+      "set to false" in {
+        forAll(arbitrary[UserAnswers]) {
+          initial =>
+            val answers: UserAnswers = initial.set(page, true).success.value
+
+            val result = answers.set(page, false).success.value
+
+            result.get(???) mustNot be(defined)
+        }
+      }
+
+      "set to true" in {
+        forAll(arbitrary[UserAnswers]) {
+          initial =>
+            val answers: UserAnswers = initial.set(page, false).success.value
+
+            val result = answers.set(???, true).success.value
+
+            result.get(???) mustNot be(defined)
+        }
+      }
+    }
+
   }
 }
