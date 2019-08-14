@@ -20,15 +20,15 @@ import forms.property_or_land.PropertyLandValueTrustFormProvider
 import models.{NormalMode, PropertyLandValueTrust}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.QuestionViewBehaviours
+import views.behaviours.{QuestionViewBehaviours, StringViewBehaviours}
 import views.html.property_or_land.PropertyLandValueTrustView
 import controllers.property_or_land.routes
 
-class PropertyLandValueTrustViewSpec extends QuestionViewBehaviours[PropertyLandValueTrust] {
+class PropertyLandValueTrustViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "propertyLandValueTrust"
 
-  override val form = new PropertyLandValueTrustFormProvider()()
+  val form = new PropertyLandValueTrustFormProvider()()
 
   val index: Int = 0
 

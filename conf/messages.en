@@ -734,8 +734,14 @@ addABeneficiary.add-them-later = Yes, I want to add them later
 addABeneficiary.no-complete = No, I have added all beneficiaries
 addABeneficiary.individualBeneficiary = Individual beneficiary
 addABeneficiary.error.required = Select yes if you want to add another beneficiary
+addABeneficiary.singular.heading = You have added 1 beneficiary
+addABeneficiary.singular.title = You have added 1 beneficiary
 addABeneficiary.count.heading = You have added {0} beneficiaries
 addABeneficiary.count.title = You have added {0} beneficiaries
+
+addABeneficiaryYesNo.title = Do you want to add a beneficiary?
+addABeneficiaryYesNo.heading = Do you want to add a beneficiary?
+addABeneficiaryYesNo.error.required = Select yes if you want to add a beneficiary
 
 individualBenficiaryAnswers.title = Check beneficiary details
 individualBenficiaryAnswers.heading = Check beneficiary details
@@ -845,7 +851,6 @@ answerPage.section.moneyAsset.subheading = Money
 answerPage.section.shareAsset.subheading = Share
 answerPage.agentClientRef = Client reference number: {0}
 
-
 sharePortfolioName.title = What is the share portfolio’s name?
 sharePortfolioName.heading = What is the share portfolio’s name?
 sharePortfolioName.checkYourAnswersLabel = What is the share portfolio’s name?
@@ -933,7 +938,7 @@ trustOwnAllThePropertyOrLand.error.required = Select yes if the trust owns all o
 
 propertyOrLandDescription.title = What is the description of the property or land?
 propertyOrLandDescription.heading = What is the description of the property or land?
-propertyOrLandDescription.checkYourAnswersLabel = propertyOrLandDescription
+propertyOrLandDescription.checkYourAnswersLabel = What is the description of the property or land?
 propertyOrLandDescription.hint = This must be 56 characters or less
 propertyOrLandDescription.error.required = Enter a description of the property or land
 propertyOrLandDescription.error.length = The description of the property or land must be 56 characters or less
@@ -957,11 +962,11 @@ propertyLandValueTrust.title = What is the value of the property or land owned b
 propertyLandValueTrust.heading = What is the value of the property or land owned by the trust?
 propertyLandValueTrust.hint = This can be an estimate. Rounded down to the nearest pound. For example, 4000
 propertyLandValueTrust.checkYourAnswersLabel = What is the value of the property or land owned by the trust?
-propertyLandValueTrust.error.field1.required = Enter the current value of the property or land owned by the trust
-propertyLandValueTrust.error.field1.invalid = Current value of the property or land owned by the trust must be a number
-propertyLandValueTrust.error.field1.whole = Current value of the property or land owned by the trust must be a whole number
-propertyLandValueTrust.error.field1.zero = Current value of the property or land owned by the trust must be 1 or more
-propertyLandValueTrust.error.field1.length = Current value of the property or land owned by the trust must be 12 characters or less
+propertyLandValueTrust.error.required = Enter the current value of the property or land owned by the trust
+propertyLandValueTrust.error.invalid = Current value of the property or land owned by the trust must be a number
+propertyLandValueTrust.error.whole = Current value of the property or land owned by the trust must be a whole number
+propertyLandValueTrust.error.zero = Current value of the property or land owned by the trust must be 1 or more
+propertyLandValueTrust.error.length = Current value of the property or land owned by the trust must be 12 characters or less
 
 propertyOrLandAddressUkYesNo.title = Is the property or land’s address in the UK?
 propertyOrLandAddressUkYesNo.heading = Is the property or land’s address in the UK?
@@ -976,3 +981,6 @@ propertyOrLandAddressYesNo.title = Does the property or land have an address?
 propertyOrLandAddressYesNo.heading = Does the property or land have an address?
 propertyOrLandAddressYesNo.checkYourAnswersLabel = Does the property or land have an address?
 propertyOrLandAddressYesNo.error.required = Select yes if the property or land has an address
+
+propertyOrLandAnswers.title = Check property or land details
+propertyOrLandAnswers.heading = Check property or land details

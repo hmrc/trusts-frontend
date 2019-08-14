@@ -37,7 +37,7 @@ class PropertyLandValueTrustControllerSpec extends SpecBase with IndexValidation
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new PropertyLandValueTrustFormProvider()
-  val form: Form[PropertyLandValueTrust] = formProvider()
+  val form = formProvider()
 
   val index: Int = 0
 
@@ -75,7 +75,7 @@ class PropertyLandValueTrustControllerSpec extends SpecBase with IndexValidation
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(PropertyLandValueTrustPage(index), PropertyLandValueTrust("1")).success.value
+      val userAnswers = emptyUserAnswers.set(PropertyLandValueTrustPage(index), "1").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -88,7 +88,7 @@ class PropertyLandValueTrustControllerSpec extends SpecBase with IndexValidation
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(PropertyLandValueTrust("1")), NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill("1"), NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -175,7 +175,7 @@ class PropertyLandValueTrustControllerSpec extends SpecBase with IndexValidation
       }
 
       validateIndex(
-        arbitrary[PropertyLandValueTrust],
+        arbitrary[String],
         PropertyLandValueTrustPage.apply,
         getForIndex
       )
@@ -190,11 +190,11 @@ class PropertyLandValueTrustControllerSpec extends SpecBase with IndexValidation
           controllers.property_or_land.routes.PropertyLandValueTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         FakeRequest(POST, route)
-          .withFormUrlEncodedBody(("field1", "1234"))
+          .withFormUrlEncodedBody(("value", "1234"))
       }
 
       validateIndex(
-        arbitrary[PropertyLandValueTrust],
+        arbitrary[String],
         PropertyLandValueTrustPage.apply,
         postForIndex
       )

@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package forms.property_or_land
+package pages
 
-import forms.mappings.Mappings
-import javax.inject.Inject
-import play.api.data.Form
+import play.api.libs.json.JsPath
+import sections.Beneficiaries
 
-class PropertyOrLandAddressUkYesNoFormProvider @Inject() extends Mappings {
+case object AddABeneficiaryYesNoPage extends QuestionPage[Boolean] {
 
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("propertyOrLandAddressUkYesNo.error.required")
-    )
+  override def path: JsPath = JsPath \ Beneficiaries \ toString
+
+  override def toString: String = "addABeneficiaryYesNo"
 }

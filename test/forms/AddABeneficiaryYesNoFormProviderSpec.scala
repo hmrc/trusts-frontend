@@ -14,16 +14,32 @@
  * limitations under the License.
  */
 
-package forms.property_or_land
+package forms
 
-import forms.mappings.Mappings
-import javax.inject.Inject
-import play.api.data.Form
+import forms.behaviours.BooleanFieldBehaviours
+import play.api.data.FormError
 
-class PropertyOrLandAddressUkYesNoFormProvider @Inject() extends Mappings {
+class AddABeneficiaryYesNoFormProviderSpec extends BooleanFieldBehaviours {
 
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("propertyOrLandAddressUkYesNo.error.required")
+  val requiredKey = "addABeneficiaryYesNo.error.required"
+  val invalidKey = "error.boolean"
+
+  val form = new AddABeneficiaryYesNoFormProvider()()
+
+  ".value" must {
+
+    val fieldName = "value"
+
+    behave like booleanField(
+      form,
+      fieldName,
+      invalidError = FormError(fieldName, invalidKey)
     )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
+  }
 }

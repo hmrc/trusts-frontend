@@ -14,30 +14,28 @@
  * limitations under the License.
  */
 
-package views.property_or_land
+package views
 
-import controllers.property_or_land.routes
-import forms.property_or_land.TrustOwnAllThePropertyOrLandFormProvider
+import controllers.routes
+import forms.AddABeneficiaryYesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.property_or_land.TrustOwnAllThePropertyOrLandView
+import views.html.AddABeneficiaryYesNoView
 
-class TrustOwnAllThePropertyOrLandViewSpec extends YesNoViewBehaviours {
+class AddABeneficiaryYesNoViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "trustOwnAllThePropertyOrLand"
+  val messageKeyPrefix = "addABeneficiaryYesNo"
 
-  val form = new TrustOwnAllThePropertyOrLandFormProvider()()
+  val form = new AddABeneficiaryYesNoFormProvider()()
 
-  val index: Int = 0
+  "AddABeneficiaryYesNo view" must {
 
-  "TrustOwnAllThePropertyOrLand view" must {
-
-    val view = viewFor[TrustOwnAllThePropertyOrLandView](Some(emptyUserAnswers))
+    val view = viewFor[AddABeneficiaryYesNoView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, index, fakeDraftId)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 

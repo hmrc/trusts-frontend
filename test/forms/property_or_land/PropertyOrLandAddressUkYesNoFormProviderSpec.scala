@@ -21,7 +21,7 @@ import play.api.data.FormError
 
 class PropertyOrLandAddressUkYesNoFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "propertyOrLandAddress.error.required"
+  val requiredKey = "propertyOrLandAddressUkYesNo.error.required"
   val invalidKey = "error.boolean"
 
   val form = new PropertyOrLandAddressUkYesNoFormProvider()()

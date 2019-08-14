@@ -44,5 +44,7 @@ class PropertyOrLandDescriptionViewSpec extends StringViewBehaviours {
     behave like pageWithBackLink(applyView(form))
 
     behave like stringPage(form, applyView, messageKeyPrefix, Some(hintKey))
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

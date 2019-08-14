@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.property_or_land.routes._
+@import controllers.routes._
 @import models.Mode
 
 @this(
@@ -22,13 +22,13 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, index: Int, draftId: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("propertyOrLandAddressYesNo.title")}"
+    title = s"${errorPrefix(form)} ${messages("addABeneficiaryYesNo.title")}"
     ) {
 
-    @formHelper(action = PropertyOrLandAddressYesNoController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
+    @formHelper(action = AddABeneficiaryController.submitOne(draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 
@@ -36,7 +36,7 @@
 
         @components.input_yes_no(
             field = form("value"),
-            label = messages("propertyOrLandAddressYesNo.heading"),
+            label = messages("addABeneficiaryYesNo.heading"),
             legendClass = Some("heading-large"),
             legendAsHeading = true
         )

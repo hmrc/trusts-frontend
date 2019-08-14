@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package forms.property_or_land
+package pages
 
-import forms.mappings.Mappings
-import javax.inject.Inject
-import play.api.data.Form
+import pages.behaviours.PageBehaviours
 
-class PropertyOrLandAddressUkYesNoFormProvider @Inject() extends Mappings {
+class AddABeneficiaryYesNoPageSpec extends PageBehaviours {
 
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("propertyOrLandAddressUkYesNo.error.required")
-    )
+  "AddABeneficiaryYesNoPage" must {
+
+    beRetrievable[Boolean](AddABeneficiaryYesNoPage)
+
+    beSettable[Boolean](AddABeneficiaryYesNoPage)
+
+    beRemovable[Boolean](AddABeneficiaryYesNoPage)
+  }
 }

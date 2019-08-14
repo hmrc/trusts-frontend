@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package forms.property_or_land
+package forms
+
+import javax.inject.Inject
 
 import forms.mappings.Mappings
-import javax.inject.Inject
 import play.api.data.Form
 
-class PropertyOrLandAddressUkYesNoFormProvider @Inject() extends Mappings {
+class AddABeneficiaryYesNoFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =
     Form(
-      "value" -> boolean("propertyOrLandAddressUkYesNo.error.required")
+      "value" -> boolean("addABeneficiaryYesNo.error.required")
     )
 }
