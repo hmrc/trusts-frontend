@@ -14,23 +14,16 @@
  * limitations under the License.
  */
 
-package forms
+package controllers
 
-import javax.inject.Inject
+import play.api.mvc.Call
+import queries.{RemoveClassOfBeneficiaryQuery, Settable}
 
-import forms.mappings.Mappings
-import play.api.data.Form
+trait RemoveAssetController extends RemoveIndexController {
 
-trait RemoveForm {
+  override def redirect(draftId : String) : Call =
+    controllers.routes.AddAssetsController.onPageLoad(draftId)
 
-  def apply(prefix : String) : Form[Boolean]
-
+  override def removeQuery(index: Int): Settable[_] = RemoveClassOfBeneficiaryQuery(index)
 }
 
-class RemoveIndexFormProvider @Inject() extends Mappings with RemoveForm {
-
-  override def apply(prefix : String): Form[Boolean] =
-    Form(
-      "value" -> boolean(s"$prefix.error.required")
-    )
-}
