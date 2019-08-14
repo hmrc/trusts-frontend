@@ -174,7 +174,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
         )
     }
   }
-
+                               
   def shares : Seq[AnswerSection] = {
     val answers : Seq[(ShareAsset, Int)] = userAnswers.get(Assets).getOrElse(Nil).zipWithIndex.collect {
       case (x : ShareNonPortfolioAsset, index) => (x, index)
@@ -217,6 +217,50 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
         }
     }
 
+  }
+
+  def propertyOrLand : Seq[AnswerSection] = {
+    val answers : Seq[(PropertyOrLandAsset, Int)] = userAnswers.get(Assets).getOrElse(Nil).zipWithIndex.collect {
+      case (x : PropertyOrLandDescriptionAsset, index) => (x, index)
+      case (x : PropertyOrLandAddressAsset, index) => (x, index)
+    }
+
+    answers.flatMap {
+      case o @ (m, index) =>
+        m match {
+          case _ : PropertyOrLandDescriptionAsset =>
+            Seq(
+              AnswerSection(
+                Some(s"${messages("answerPage.section.propertyOrLandAsset.subheading")} ${answers.indexOf(o)+1}"),
+                Seq(
+                  propertyOrLandAddressYesNo(index),
+                  propertyOrLandDescription(index),
+                  propertyOrLandTotalValue(index),
+                  trustOwnAllThePropertyOrLand(index),
+                  propertyLandValueTrust(index)
+                ).flatten,
+                None
+              )
+            )
+          case _ : PropertyOrLandAddressAsset =>
+            Seq(
+              AnswerSection(
+                Some(s"${messages("answerPage.section.propertyOrLandAsset.subheading")} ${answers.indexOf(o)+1}"),
+                Seq(
+                  propertyOrLandAddressYesNo(index),
+                  propertyOrLandAddressUkYesNo(index),
+                  propertyOrLandUKAddress(index),
+                  propertyOrLandInternationalAddress(index),
+                  propertyOrLandTotalValue(index),
+                  trustOwnAllThePropertyOrLand(index),
+                  propertyLandValueTrust(index)
+                ).flatten,
+                None
+              )
+            )
+          case _ => Nil
+        }
+    }
   }
 
   def propertyOrLandAddressYesNo(index: Int): Option[AnswerRow] = userAnswers.get(PropertyOrLandAddressYesNoPage(index)) map {
