@@ -38,8 +38,6 @@ class IndividualBeneficiaryDateOfBirthControllerSpec extends SpecBase with Mocki
 
   val name = FullName("first name", None, "Last name")
 
-  def onwardRoute = Call("GET", "/foo")
-
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
 
   lazy val individualBeneficiaryDateOfBirthRoute = routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(NormalMode, index, fakeDraftId).url
@@ -93,12 +91,7 @@ class IndividualBeneficiaryDateOfBirthControllerSpec extends SpecBase with Mocki
       val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(index),
         name).success.value
 
-      val application =
-        applicationBuilder(userAnswers = Some(userAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
-          .build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, individualBeneficiaryDateOfBirthRoute)
@@ -112,7 +105,7 @@ class IndividualBeneficiaryDateOfBirthControllerSpec extends SpecBase with Mocki
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

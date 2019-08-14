@@ -18,14 +18,11 @@ package controllers
 
 import base.SpecBase
 import models.NormalMode
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.AssetInterruptPageView
 
 class AssetInterruptPageControllerSpec extends SpecBase {
-
-  def onwardRoute = Call("GET", "/foo")
 
   "AssetInterruptPage Controller" must {
 

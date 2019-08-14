@@ -33,8 +33,6 @@ import views.html.shares.SharePortfolioOnStockExchangeView
 
 class SharePortfolioOnStockExchangeControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new SharePortfolioOnStockExchangeFormProvider()
   val form = formProvider()
   val index: Int = 0
@@ -84,9 +82,7 @@ class SharePortfolioOnStockExchangeControllerSpec extends SpecBase with ModelGen
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, sharePortfolioOnStockExchangeRoute)
@@ -96,7 +92,7 @@ class SharePortfolioOnStockExchangeControllerSpec extends SpecBase with ModelGen
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

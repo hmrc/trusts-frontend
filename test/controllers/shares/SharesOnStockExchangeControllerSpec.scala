@@ -32,8 +32,6 @@ import views.html.shares.SharesOnStockExchangeView
 
 class SharesOnStockExchangeControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new SharesOnStockExchangeFormProvider()
   val form = formProvider()
   val index: Int = 0
@@ -89,9 +87,7 @@ class SharesOnStockExchangeControllerSpec extends SpecBase with ModelGenerators 
       val ua = emptyUserAnswers.set(ShareCompanyNamePage(index), "Share").success.value
 
       val application =
-        applicationBuilder(userAnswers = Some(ua))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(ua)).build()
 
       val request =
         FakeRequest(POST, sharesOnStockExchangeRoute)
@@ -101,7 +97,7 @@ class SharesOnStockExchangeControllerSpec extends SpecBase with ModelGenerators 
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

@@ -40,8 +40,6 @@ class WhenTrustSetupControllerSpec extends SpecBase with MockitoSugar {
   val formProvider = new WhenTrustSetupFormProvider()
   val form = formProvider()
 
-  def onwardRoute = Call("GET", "/foo")
-
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
 
   lazy val whenTrustSetupRoute = routes.WhenTrustSetupController.onPageLoad(NormalMode,fakeDraftId).url
@@ -89,11 +87,7 @@ class WhenTrustSetupControllerSpec extends SpecBase with MockitoSugar {
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, whenTrustSetupRoute)
@@ -107,7 +101,7 @@ class WhenTrustSetupControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

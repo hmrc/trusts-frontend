@@ -21,7 +21,7 @@ import java.time.format.DateTimeFormatter
 
 import base.SpecBase
 import models.{Matched, NormalMode, UserAnswers}
-import navigation.TaskListNavigator
+import navigation.{Navigator, TaskListNavigator}
 import pages._
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -42,8 +42,12 @@ class TaskListControllerSpec extends SpecBase {
   private def isTaskListComplete(answers: UserAnswers) =
     new RegistrationProgress(new TaskListNavigator()).isTaskListComplete(answers)
 
-  override protected def applicationBuilder(userAnswers: Option[UserAnswers], affinityGroup: AffinityGroup): GuiceApplicationBuilder = super.applicationBuilder(userAnswers, affinityGroup)
-    .configure(("microservice.services.features.removeTaxLiabilityOnTaskList", false))
+  override protected def applicationBuilder(
+                                             userAnswers: Option[UserAnswers],
+                                             affinityGroup: AffinityGroup,
+                                             navigator: Navigator = fakeNavigator
+                                           ): GuiceApplicationBuilder =
+    super.applicationBuilder(userAnswers, affinityGroup).configure(("microservice.services.features.removeTaxLiabilityOnTaskList", false))
 
   "TaskList Controller" must {
 
