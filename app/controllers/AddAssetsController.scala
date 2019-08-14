@@ -19,7 +19,7 @@ package controllers
 import controllers.actions._
 import forms.AddAssetsFormProvider
 import javax.inject.Inject
-import models.{Enumerable, Mode}
+import models.{AddAssets, Enumerable, Mode}
 import navigation.Navigator
 import pages.AddAssetsPage
 import play.api.data.Form
@@ -44,7 +44,7 @@ class AddAssetsController @Inject()(
                                        view: AddAssetsView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
-  val form = formProvider()
+  val form: Form[AddAssets] = formProvider()
 
   private def routes(draftId: String) =
     identify andThen getData(draftId) andThen requireData
