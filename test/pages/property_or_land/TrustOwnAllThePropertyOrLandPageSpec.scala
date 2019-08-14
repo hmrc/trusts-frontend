@@ -16,6 +16,8 @@
 
 package pages.property_or_land
 
+import models.UserAnswers
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
 class TrustOwnAllThePropertyOrLandPageSpec extends PageBehaviours {
@@ -27,5 +29,23 @@ class TrustOwnAllThePropertyOrLandPageSpec extends PageBehaviours {
     beSettable[Boolean](TrustOwnAllThePropertyOrLandPage(0))
 
     beRemovable[Boolean](TrustOwnAllThePropertyOrLandPage(0))
+
+    "remove relevant data" when {
+
+      val page = TrustOwnAllThePropertyOrLandPage(0)
+
+      "set to false" in {
+        forAll(arbitrary[UserAnswers]) {
+          initial =>
+            val answers: UserAnswers = initial.set(page, true).success.value
+              .set(PropertyLandValueTrustPage(0), "100").success.value
+
+            val result = answers.set(page, false).success.value
+
+            result.get(PropertyLandValueTrustPage(0)) must not be defined
+        }
+      }
+
+    }
   }
 }
