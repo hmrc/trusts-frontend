@@ -16,13 +16,14 @@
 
 @import controllers.routes._
 @import models.Mode
+@import utils.InputOption
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, index: Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], countryOptions: Seq[InputOption], mode: Mode, index:Int, draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("settlorIndividualAddressInternational.title")}"
@@ -37,15 +38,38 @@
         @components.heading("settlorIndividualAddressInternational.heading")
 
         @components.input_text(
-            field = form("field1"),
-            label = messages("settlorIndividualAddressInternational.field1")
+            field = form("line1"),
+            label = messages("site.address.international.line1"),
+            inputClass = Some("form-control-3-4")
         )
 
         @components.input_text(
-            field = form("field2"),
-            label = messages("settlorIndividualAddressInternational.field2")
+            field = form("line2"),
+            label = messages("site.address.international.line2"),
+            inputClass = Some("form-control-3-4")
         )
 
-        @components.submit_button()
+        @components.input_text(
+            field = form("line3"),
+            label = messages("site.address.international.line3"),
+            inputClass = Some("form-control-3-4")
+        )
+
+        @components.input_text(
+            field = form("line4"),
+            label = messages("site.address.international.line4"),
+            inputClass = Some("form-control-3-4")
+        )
+
+        @components.select(field = form("country"),
+            label = messages("site.address.international.country"),
+            labelClasses = Set("form-control-1-2 bold"),
+            options = countryOptions,
+            placeholder = Some("address.country.select"),
+            formGroupClasses = Set("autocomplete-wrapper"),
+            selectAttribute = Set("data-non-uk-countries")
+        )
+
+        @components.submit_button(submitClass = Some("countryLookupHelper"))
     }
 }

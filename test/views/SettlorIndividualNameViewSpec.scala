@@ -18,7 +18,7 @@ package views
 
 import controllers.routes
 import forms.SettlorIndividualNameFormProvider
-import models.{FullName, NormalMode, SettlorIndividualName}
+import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
@@ -27,6 +27,7 @@ import views.html.SettlorIndividualNameView
 class SettlorIndividualNameViewSpec extends QuestionViewBehaviours[FullName] {
 
   val messageKeyPrefix = "settlorIndividualName"
+  val index = 0
 
   override val form = new SettlorIndividualNameFormProvider()()
 
@@ -35,7 +36,7 @@ class SettlorIndividualNameViewSpec extends QuestionViewBehaviours[FullName] {
     val view = viewFor[SettlorIndividualNameView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
 
 
     behave like normalPage(applyView(form), messageKeyPrefix)
@@ -46,7 +47,7 @@ class SettlorIndividualNameViewSpec extends QuestionViewBehaviours[FullName] {
       form,
       applyView,
       messageKeyPrefix,
-      routes.SettlorIndividualNameController.onSubmit(NormalMode, fakeDraftId).url,
+      routes.SettlorIndividualNameController.onSubmit(NormalMode, index, fakeDraftId).url,
       Seq(("firstName", None), ("middleName", None), ("lastName", None))
     )
   }

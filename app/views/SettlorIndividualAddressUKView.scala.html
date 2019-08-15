@@ -36,15 +36,7 @@
 
         @components.heading("settlorIndividualAddressUK.heading")
 
-        @components.input_text(
-            field = form("field1"),
-            label = messages("settlorIndividualAddressUK.field1")
-        )
-
-        @components.input_text(
-            field = form("field2"),
-            label = messages("settlorIndividualAddressUK.field2")
-        )
+        @components.uk_address(form)
 
         @components.submit_button()
     }

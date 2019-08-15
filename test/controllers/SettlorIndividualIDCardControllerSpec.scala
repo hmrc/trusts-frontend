@@ -62,7 +62,10 @@ class SettlorIndividualIDCardControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = emptyUserAnswers
+        .set(SettlorIndividualIDCardPage(index), SettlorIndividualIDCard("Field 1", "Field 2")).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, settlorIndividualIDCardRoute)
 
@@ -73,7 +76,7 @@ class SettlorIndividualIDCardControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(SettlorIndividualIDCard("value 1", "value 2")), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(form.fill(SettlorIndividualIDCard("Field 1", "Field 2")), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
 
       application.stop()
     }

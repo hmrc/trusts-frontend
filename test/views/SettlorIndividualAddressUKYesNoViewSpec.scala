@@ -27,6 +27,7 @@ import views.html.SettlorIndividualAddressUKYesNoView
 class SettlorIndividualAddressUKYesNoViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "settlorIndividualAddressUKYesNo"
+  val index = 0
 
   val form = new SettlorIndividualAddressUKYesNoFormProvider()()
 
@@ -35,12 +36,12 @@ class SettlorIndividualAddressUKYesNoViewSpec extends YesNoViewBehaviours {
     val view = viewFor[SettlorIndividualAddressUKYesNoView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.SettlorIndividualAddressUKYesNoController.onSubmit(NormalMode, fakeDraftId).url)
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.SettlorIndividualAddressUKYesNoController.onSubmit(NormalMode, index, fakeDraftId).url)
   }
 }

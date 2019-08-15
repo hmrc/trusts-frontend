@@ -20,6 +20,7 @@ import base.SpecBase
 import forms.UKAddressFormProvider
 import models.{NormalMode, UKAddress}
 import navigation.{FakeNavigator, Navigator}
+import pages.SettlorIndividualAddressUKPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -59,7 +60,10 @@ class SettlorIndividualAddressUKControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = emptyUserAnswers
+        .set(SettlorIndividualAddressUKPage(index),UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")).success.value
+
+      val application = applicationBuilder(Some(userAnswers)).build()
 
       val request = FakeRequest(GET, settlorIndividualAddressUKRoute)
 

@@ -27,6 +27,7 @@ import views.html.SettlorIndividualNINOView
 class SettlorIndividualNINOViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "settlorIndividualNINO"
+  val index = 0
 
   val form = new SettlorIndividualNINOFormProvider()()
 
@@ -35,12 +36,12 @@ class SettlorIndividualNINOViewSpec extends StringViewBehaviours {
     val view = viewFor[SettlorIndividualNINOView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.SettlorIndividualNINOController.onSubmit(NormalMode, fakeDraftId).url)
+    behave like stringPage(form, applyView, messageKeyPrefix, routes.SettlorIndividualNINOController.onSubmit(NormalMode, index, fakeDraftId).url)
   }
 }

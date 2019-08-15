@@ -18,9 +18,9 @@ package controllers
 
 import base.SpecBase
 import forms.SettlorIndividualPassportFormProvider
-import models.{NormalMode, SettlorIndividualPassport, UserAnswers}
+import models.{NormalMode, SettlorIndividualIDCard, SettlorIndividualPassport, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.SettlorIndividualPassportPage
+import pages.{SettlorIndividualIDCardPage, SettlorIndividualPassportPage}
 import play.api.inject.bind
 import play.api.libs.json.Json
 import play.api.mvc.Call
@@ -62,6 +62,8 @@ class SettlorIndividualPassportControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
+      val userAnswers = emptyUserAnswers.set(SettlorIndividualPassportPage(index), SettlorIndividualPassport("Field 1", "Field 2")).success.value
+
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request = FakeRequest(GET, settlorIndividualPassportRoute)
@@ -73,7 +75,7 @@ class SettlorIndividualPassportControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(SettlorIndividualPassport("value 1", "value 2")), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(form.fill(SettlorIndividualPassport("Field 1", "Field 2")), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
 
       application.stop()
     }

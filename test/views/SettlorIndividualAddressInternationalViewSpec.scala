@@ -21,10 +21,12 @@ import forms.InternationalAddressFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.UkAddressViewBehaviours
+import utils.InputOption
+import utils.countryOptions.CountryOptionsNonUK
+import views.behaviours.InternationalAddressViewBehaviours
 import views.html.SettlorIndividualAddressInternationalView
 
-class SettlorIndividualAddressInternationalViewSpec extends UkAddressViewBehaviours{
+class SettlorIndividualAddressInternationalViewSpec extends InternationalAddressViewBehaviours {
 
   val messageKeyPrefix = "settlorIndividualAddressInternational"
   val index = 0
@@ -35,20 +37,20 @@ class SettlorIndividualAddressInternationalViewSpec extends UkAddressViewBehavio
 
     val view = viewFor[SettlorIndividualAddressInternationalView](Some(emptyUserAnswers))
 
+    val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
+      view.apply(form, countryOptions, NormalMode, index, fakeDraftId)(fakeRequest, messages)
 
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like pageWithTextFields(
-      form,
+    behave like internationalAddress(
       applyView,
-      messageKeyPrefix,
-      routes.SettlorIndividualAddressInternationalController.onSubmit(NormalMode, index, fakeDraftId).url,
-      Seq(("field1", None), ("field2", None))
+      Some(messageKeyPrefix),
+      routes.SettlorIndividualAddressInternationalController.onSubmit(NormalMode, index, fakeDraftId).url
     )
   }
 }

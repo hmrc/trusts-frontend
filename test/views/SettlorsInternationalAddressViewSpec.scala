@@ -23,10 +23,10 @@ import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import utils.InputOption
 import utils.countryOptions.CountryOptionsNonUK
-import views.behaviours.QuestionViewBehaviours
+import views.behaviours.{InternationalAddressViewBehaviours, QuestionViewBehaviours}
 import views.html.SettlorsInternationalAddressView
 
-class SettlorsInternationalAddressViewSpec extends QuestionViewBehaviours[InternationalAddress] {
+class SettlorsInternationalAddressViewSpec extends InternationalAddressViewBehaviours {
 
   val messageKeyPrefix = "settlorsInternationalAddress"
 
@@ -48,13 +48,10 @@ class SettlorsInternationalAddressViewSpec extends QuestionViewBehaviours[Intern
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like pageWithTextFields(
-      form,
+    behave like internationalAddress(
       applyView,
-      messageKeyPrefix,
-      routes.SettlorsInternationalAddressController.onSubmit(NormalMode, fakeDraftId).url,
-      Seq(("line1",None), ("line2",None), ("line3", None), ("line4", None), ("country", None)),
-      name.toString
+      Some(messageKeyPrefix),
+      routes.SettlorsInternationalAddressController.onSubmit(NormalMode, fakeDraftId).url
     )
   }
 }

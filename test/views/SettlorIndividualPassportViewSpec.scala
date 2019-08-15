@@ -27,6 +27,7 @@ import views.html.SettlorIndividualPassportView
 class SettlorIndividualPassportViewSpec extends QuestionViewBehaviours[SettlorIndividualPassport] {
 
   val messageKeyPrefix = "settlorIndividualPassport"
+  val index = 0
 
   override val form = new SettlorIndividualPassportFormProvider()()
 
@@ -35,7 +36,7 @@ class SettlorIndividualPassportViewSpec extends QuestionViewBehaviours[SettlorIn
     val view = viewFor[SettlorIndividualPassportView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
 
 
     behave like normalPage(applyView(form), messageKeyPrefix)
@@ -46,7 +47,7 @@ class SettlorIndividualPassportViewSpec extends QuestionViewBehaviours[SettlorIn
       form,
       applyView,
       messageKeyPrefix,
-      routes.SettlorIndividualPassportController.onSubmit(NormalMode, fakeDraftId).url,
+      routes.SettlorIndividualPassportController.onSubmit(NormalMode, index, fakeDraftId).url,
       Seq(("field1", None), ("field2", None))
     )
   }

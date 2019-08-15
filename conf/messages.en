@@ -992,18 +992,22 @@ settlorIndividualOrBusiness.business = Business
 settlorIndividualOrBusiness.checkYourAnswersLabel = Is the settlor an individual or a business?
 settlorIndividualOrBusiness.error.required = Select settlorIndividualOrBusiness
 
-settlorIndividualName.title = settlorIndividualName
-settlorIndividualName.heading = settlorIndividualName
-settlorIndividualName.field1 = Field 1
-settlorIndividualName.field2 = Field 2
-settlorIndividualName.field3 = Field 3
-settlorIndividualName.checkYourAnswersLabel = settlorIndividualName
-settlorIndividualName.error.field1.required = Enter field1
-settlorIndividualName.error.field2.required = Enter field2
-settlorIndividualName.error.field3.required = Enter field3
-settlorIndividualName.error.field1.length = field1 must be 100 characters or less
-settlorIndividualName.error.field2.length = field2 must be 100 characters or less
-settlorIndividualName.error.field3.length = field3 must be 100 characters or less
+settlorIndividualName.title = What is the settlor’s name?
+settlorIndividualName.heading = What is the settlor’s name?
+settlorIndividualName.checkYourAnswersLabel = What is the settlor’s name?
+
+settlorIndividualName.firstName = First name
+settlorIndividualName.middleName = Middle names (optional)
+settlorIndividualName.lastName = Last name
+
+settlorIndividualName.error.firstname.required = Enter the settlor’s first name
+settlorIndividualName.error.lastname.required = Enter the settlor’s last name
+settlorIndividualName.error.firstname.length = Settlor’s first name must be 35 characters or less
+settlorIndividualName.error.middlename.length = Settlor’s middle names must be 35 characters or less
+settlorIndividualName.error.lastname.length = Settlor’s last name must be 35 characters or less
+settlorIndividualName.error.firstname.invalid = Settlor’s first name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+settlorIndividualName.error.middlename.invalid = Settlor’s middle names must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+settlorIndividualName.error.lastname.invalid = Settlor’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
 settlorIndividualDateOfBirthYesNo.title = settlorIndividualDateOfBirthYesNo
 settlorIndividualDateOfBirthYesNo.heading = settlorIndividualDateOfBirthYesNo

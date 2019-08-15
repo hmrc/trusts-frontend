@@ -27,6 +27,7 @@ import views.html.SettlorIndividualIDCardView
 class SettlorIndividualIDCardViewSpec extends QuestionViewBehaviours[SettlorIndividualIDCard] {
 
   val messageKeyPrefix = "settlorIndividualIDCard"
+  val index = 0
 
   override val form = new SettlorIndividualIDCardFormProvider()()
 
@@ -35,7 +36,7 @@ class SettlorIndividualIDCardViewSpec extends QuestionViewBehaviours[SettlorIndi
     val view = viewFor[SettlorIndividualIDCardView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
 
 
     behave like normalPage(applyView(form), messageKeyPrefix)
@@ -46,7 +47,7 @@ class SettlorIndividualIDCardViewSpec extends QuestionViewBehaviours[SettlorIndi
       form,
       applyView,
       messageKeyPrefix,
-      routes.SettlorIndividualIDCardController.onSubmit(NormalMode, fakeDraftId).url,
+      routes.SettlorIndividualIDCardController.onSubmit(NormalMode, index, fakeDraftId).url,
       Seq(("field1", None), ("field2", None))
     )
   }

@@ -17,36 +17,36 @@
 package views
 
 import controllers.routes
-import models.{NormalMode, SettlorIndividualAddressUK}
+import forms.UKAddressFormProvider
+import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.QuestionViewBehaviours
+import views.behaviours.UkAddressViewBehaviours
 import views.html.SettlorIndividualAddressUKView
 
-class SettlorIndividualAddressUKViewSpec extends QuestionViewBehaviours[SettlorIndividualAddressUK] {
+class SettlorIndividualAddressUKViewSpec extends UkAddressViewBehaviours {
 
   val messageKeyPrefix = "settlorIndividualAddressUK"
+  val index = 0
 
-  override val form = new SettlorIndividualAddressUKFormProvider()()
+  override val form = new UKAddressFormProvider()()
 
   "SettlorIndividualAddressUKView" must {
 
     val view = viewFor[SettlorIndividualAddressUKView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
 
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like pageWithTextFields(
-      form,
+    behave like ukAddressPage(
       applyView,
-      messageKeyPrefix,
-      routes.SettlorIndividualAddressUKController.onSubmit(NormalMode, fakeDraftId).url,
-      Seq(("field1", None), ("field2", None))
+      Some(messageKeyPrefix),
+      routes.SettlorsUKAddressController.onSubmit(NormalMode, fakeDraftId).url
     )
   }
 }
