@@ -31,7 +31,7 @@ final case class TrustOwnAllThePropertyOrLandPage(index: Int) extends QuestionPa
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
     value match {
-      case Some(false) => userAnswers.remove(PropertyLandValueTrustPage(index))
+      case Some(true) => userAnswers.remove(PropertyLandValueTrustPage(index))
       case _ => super.cleanup(value, userAnswers)
     }
 }
