@@ -36,6 +36,7 @@ class PrintUserAnswersHelper @Inject()(countryOptions: CountryOptions){
 
     val money = checkYourAnswersHelper.money
     val shares = checkYourAnswersHelper.shares
+    val propertyOrLand = checkYourAnswersHelper.propertyOrLand
 
     val assetSection = Seq(AnswerSection(None, Nil, Some(messages("answerPage.section.assets.heading"))))
 
@@ -46,7 +47,8 @@ class PrintUserAnswersHelper @Inject()(countryOptions: CountryOptions){
       classOfBeneficiaries ++
       assetSection ++
       money ++
-      shares
+      shares ++
+      propertyOrLand
 
     sections
   }

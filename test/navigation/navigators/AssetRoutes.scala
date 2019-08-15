@@ -20,13 +20,13 @@ package navigation.navigators
 import base.SpecBase
 import controllers.routes
 import generators.Generators
-import models.WhatKindOfAsset.{Money, Shares}
+import models.WhatKindOfAsset._
 import models.{AddAssets, NormalMode, UserAnswers}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages._
-import pages.shares.{ShareAnswerPage, ShareClassPage, ShareCompanyNamePage, SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, ShareQuantityInTrustPage, ShareValueInTrustPage, SharesInAPortfolioPage, SharesOnStockExchangePage}
+import pages.shares._
 
 trait AssetRoutes {
 
@@ -70,6 +70,18 @@ trait AssetRoutes {
 
             navigator.nextPage(WhatKindOfAssetPage(index), NormalMode, fakeDraftId)(answers)
               .mustBe(routes.AssetMoneyValueController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+      "go to PropertyOrLandAddressYesNoController from WhatKindOfAsset page when the money option is selected" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
+
+            navigator.nextPage(WhatKindOfAssetPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.property_or_land.routes.PropertyOrLandAddressYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 

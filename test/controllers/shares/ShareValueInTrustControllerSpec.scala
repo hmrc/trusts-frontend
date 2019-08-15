@@ -32,8 +32,6 @@ import views.html.shares.ShareValueInTrustView
 
 class ShareValueInTrustControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new ShareValueInTrustFormProvider()
   val form = formProvider()
   val index: Int = 0
@@ -89,9 +87,7 @@ class ShareValueInTrustControllerSpec extends SpecBase with ModelGenerators with
       val ua = emptyUserAnswers.set(ShareCompanyNamePage(0), "Company").success.value
 
       val application =
-        applicationBuilder(userAnswers = Some(ua))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(ua)).build()
 
       val request =
         FakeRequest(POST, shareValueInTrustRoute)
@@ -100,7 +96,7 @@ class ShareValueInTrustControllerSpec extends SpecBase with ModelGenerators with
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

@@ -28,6 +28,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import utils.annotations.PropertyOrLand
 import utils.countryOptions.CountryOptionsNonUK
 import views.html.property_or_land.PropertyOrLandInternationalAddressView
 
@@ -36,7 +37,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class PropertyOrLandInternationalAddressController @Inject()(
                                                               override val messagesApi: MessagesApi,
                                                               sessionRepository: SessionRepository,
-                                                              navigator: Navigator,
+                                                              @PropertyOrLand navigator: Navigator,
                                                               identify: IdentifierAction,
                                                               getData: DraftIdRetrievalActionProvider,
                                                               requireData: DataRequiredAction,

@@ -18,9 +18,11 @@ package controllers
 
 import base.SpecBase
 import forms.PostcodeForTheTrustFormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
+import navigation.Navigator
 import pages.PostcodeForTheTrustPage
 import play.api.data.Form
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.PostcodeForTheTrustView
@@ -76,8 +78,7 @@ class PostcodeForTheTrustControllerSpec extends SpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), navigator = new Navigator).build()
 
       val request =
         FakeRequest(POST, postcodeForTheTrustRoute)
@@ -95,8 +96,7 @@ class PostcodeForTheTrustControllerSpec extends SpecBase {
     "redirect to the next page when no data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), navigator = new Navigator).build()
 
       val request =
         FakeRequest(POST, postcodeForTheTrustRoute)
@@ -112,7 +112,7 @@ class PostcodeForTheTrustControllerSpec extends SpecBase {
 
     "redirect to the next page when an empty string is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), navigator = new Navigator).build()
 
       val request =
         FakeRequest(POST, postcodeForTheTrustRoute)

@@ -32,8 +32,6 @@ import views.html.components.heading
 
 class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValidation {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val index = 0
 
   lazy val trusteeIndividualOrBusinessRoute = routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
@@ -182,9 +180,7 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
         .set(IsThisLeadTrusteePage(index), true).success.value
 
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, trusteeIndividualOrBusinessRoute)
@@ -194,7 +190,7 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }
@@ -205,9 +201,7 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
         .set(IsThisLeadTrusteePage(index), false).success.value
 
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, trusteeIndividualOrBusinessRoute)
@@ -217,7 +211,7 @@ class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

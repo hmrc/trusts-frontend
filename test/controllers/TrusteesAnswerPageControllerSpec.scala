@@ -33,8 +33,6 @@ import utils.countryOptions.CountryOptions
 
 class TrusteesAnswerPageControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val index = 0
 
   "TrusteesAnswerPage Controller" must {
@@ -177,10 +175,7 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
           .set(TrusteesNamePage(index), FullName("First", None, "Trustee")).success.value
           .set(IsThisLeadTrusteePage(index), false).success.value
 
-      val application =
-        applicationBuilder(userAnswers = Some(answers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
 
       val request =
         FakeRequest(POST, routes.TrusteesAnswerPageController.onSubmit(index, fakeDraftId).url)
@@ -189,7 +184,7 @@ class TrusteesAnswerPageControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

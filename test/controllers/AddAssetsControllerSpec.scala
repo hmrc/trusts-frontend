@@ -31,22 +31,24 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.AddRow
-import views.html.{AddAnAssetYesNoView, AddAssetsView, WhatKindOfAssetView}
+import views.html.{AddAnAssetYesNoView, AddAssetsView}
 
 class AddAssetsControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
 
   lazy val addAssetsRoute: String = routes.AddAssetsController.onPageLoad(fakeDraftId).url
   lazy val addOnePostRoute: String = routes.AddAssetsController.submitOne(fakeDraftId).url
   lazy val addAnotherPostRoute: String = routes.AddAssetsController.submitAnother(fakeDraftId).url
 
-  val addAssetsForm: Form[AddAssets] = new AddAssetsFormProvider()()
+  def removeMoneyRoute(index: Int) = controllers.money.routes.RemoveMoneyAssetController.onPageLoad(index, fakeDraftId).url
+  def removeShareRoute(index: Int) = controllers.shares.routes.RemoveShareCompanyNameAssetController.onPageLoad(1, fakeDraftId).url
+
+val addAssetsForm: Form[AddAssets] = new AddAssetsFormProvider()()
   val yesNoForm: Form[Boolean] = new AddAnAssetYesNoFormProvider()()
 
-  val assets = List(
-    AddRow("£4800", typeLabel = "Money", "#", "#"),
-    AddRow("Share Company Name", typeLabel = "Shares", "#", "#")
+  lazy val assets = List(
+    AddRow("£4800", typeLabel = "Money", "#", removeMoneyRoute(0)),
+    AddRow("Share Company Name", typeLabel = "Shares", "#", removeShareRoute(1))
   )
 
   val userAnswersWithAssetsComplete: UserAnswers = emptyUserAnswers
@@ -120,9 +122,7 @@ class AddAssetsControllerSpec extends SpecBase {
       "redirect to the next page when valid data is submitted" in {
 
         val application =
-          applicationBuilder(userAnswers = Some(emptyUserAnswers))
-            .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-            .build()
+          applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
         val request =
           FakeRequest(POST, addOnePostRoute)
@@ -132,7 +132,7 @@ class AddAssetsControllerSpec extends SpecBase {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual onwardRoute.url
+        redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
         application.stop()
       }
@@ -183,9 +183,7 @@ class AddAssetsControllerSpec extends SpecBase {
       "redirect to the next page when valid data is submitted" in {
 
         val application =
-          applicationBuilder(userAnswers = Some(userAnswersWithAssetsComplete))
-            .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-            .build()
+          applicationBuilder(userAnswers = Some(userAnswersWithAssetsComplete)).build()
 
         val request =
           FakeRequest(POST, addAnotherPostRoute)
@@ -195,7 +193,7 @@ class AddAssetsControllerSpec extends SpecBase {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual onwardRoute.url
+        redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
         application.stop()
       }

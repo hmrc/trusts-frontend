@@ -33,8 +33,6 @@ import views.html.property_or_land.PropertyOrLandUKAddressView
 
 class PropertyOrLandUKAddressControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new UKAddressFormProvider()
   val form = formProvider()
   val index = 0
@@ -85,9 +83,7 @@ class PropertyOrLandUKAddressControllerSpec extends SpecBase with ModelGenerator
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, PropertyOrLandUKAddressRoute)
@@ -96,7 +92,7 @@ class PropertyOrLandUKAddressControllerSpec extends SpecBase with ModelGenerator
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

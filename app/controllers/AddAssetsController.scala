@@ -63,7 +63,7 @@ class AddAssetsController @Inject()(
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
-      val assets = new AddAssetViewHelper(request.userAnswers).rows
+      val assets = new AddAssetViewHelper(request.userAnswers, draftId).rows
 
       val count = assets.count
 
@@ -94,7 +94,7 @@ class AddAssetsController @Inject()(
 
       addAnotherForm.bindFromRequest().fold(
         (formWithErrors: Form[_]) => {
-          val assets = new AddAssetViewHelper(request.userAnswers).rows
+          val assets = new AddAssetViewHelper(request.userAnswers, draftId).rows
 
           val count = assets.count
 

@@ -509,6 +509,18 @@ assetMoneyValue.error.wholeNumber = Total assets value must be a whole number
 assetMoneyValue.error.zero = Total amount of money in the trust must be 1 or more
 assetMoneyValue.link = Return to registration progress
 
+removeMoneyAsset.title = Are you sure you want to remove {0}?
+removeMoneyAsset.heading = Are you sure you want to remove {0}?
+removeMoneyAsset.error.required = Select yes if you want to remove the money
+
+removeShareAsset.title = Are you sure you want to remove {0}?
+removeShareAsset.heading = Are you sure you want to remove {0}?
+removeShareAsset.error.required = Select yes if you want to remove the share
+
+removePropertyOrLandAsset.title = Are you sure you want to remove {0}?
+removePropertyOrLandAsset.heading = Are you sure you want to remove {0}?
+removePropertyOrLandAsset.error.required = Select yes if you want to remove the property or land
+
 whatKindOfAsset.first.title = What kind of asset do you need to add first?
 whatKindOfAsset.next.title = What kind of asset do you need to add next?
 whatKindOfAsset.first.heading = What kind of asset do you need to add first?
@@ -849,6 +861,7 @@ answerPage.section.classOfBeneficiary.subheading = Class of beneficiary
 answerPage.section.assets.heading = Assets
 answerPage.section.moneyAsset.subheading = Money
 answerPage.section.shareAsset.subheading = Share
+answerPage.section.propertyOrLandAsset.subheading = Property or land
 answerPage.agentClientRef = Client reference number: {0}
 
 sharePortfolioName.title = What is the share portfolio’s name?

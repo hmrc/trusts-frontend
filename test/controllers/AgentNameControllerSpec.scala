@@ -31,8 +31,6 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 
 class AgentNameControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new AgentNameFormProvider()
   val form = formProvider()
 
@@ -81,9 +79,7 @@ class AgentNameControllerSpec extends SpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
 
       val request =
         FakeRequest(POST, agentNameRoute)
@@ -92,7 +88,7 @@ class AgentNameControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

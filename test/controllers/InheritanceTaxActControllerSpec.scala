@@ -19,17 +19,12 @@ package controllers
 import base.SpecBase
 import forms.InheritanceTaxActFormProvider
 import models.NormalMode
-import navigation.{FakeNavigator, Navigator}
 import pages.InheritanceTaxActPage
-import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.InheritanceTaxActView
 
 class InheritanceTaxActControllerSpec extends SpecBase {
-
-  def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new InheritanceTaxActFormProvider()
   val form = formProvider()
@@ -78,10 +73,7 @@ class InheritanceTaxActControllerSpec extends SpecBase {
 
     "redirect to the next page when valid data is submitted" in {
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, inheritanceTaxActRoute)
@@ -91,7 +83,7 @@ class InheritanceTaxActControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }
