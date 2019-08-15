@@ -16,6 +16,7 @@
 
 package utils
 
+import controllers.routes
 import models.Status.{Completed, InProgress}
 import models.{IndividualOrBusiness, UserAnswers}
 import play.api.i18n.Messages
@@ -23,32 +24,40 @@ import sections.Trustees
 import viewmodels._
 import viewmodels.addAnother.TrusteeViewModel
 
-class AddATrusteeViewHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
+class AddATrusteeViewHelper(userAnswers: UserAnswers, draftId: String)(implicit messages: Messages) {
 
-  private def render(trustee : TrusteeViewModel) : AddRow = {
+  private def render(trustee : (TrusteeViewModel, Int)) : AddRow = {
 
-    val name = trustee.name.map(_.toString).getOrElse(messages("entities.no.name.added"))
+    val viewModel = trustee._1
+    val index = trustee._2
+
+    val nameOfTrustee = viewModel.name.map(_.toString).getOrElse(messages("entities.no.name.added"))
 
     def renderForLead(message : String) = s"${messages("entities.lead")} $message"
 
-    val trusteeType = trustee.`type` match {
+    val trusteeType = viewModel.`type` match {
       case Some(k : IndividualOrBusiness) =>
         val key = messages(s"entities.trustee.$k")
 
-        if(trustee.isLead) renderForLead(key) else key
+        if(viewModel.isLead) renderForLead(key) else key
       case None =>
         s"${messages("entities.trustee")}"
     }
 
-    AddRow(name, trusteeType, "#", "#")
+    AddRow(
+      name = nameOfTrustee,
+      typeLabel = trusteeType,
+      changeUrl = "#",
+      removeUrl = routes.RemoveTrusteeController.onPageLoad(index, draftId).url
+    )
   }
 
   def rows : AddToRows = {
-    val trustees = userAnswers.get(Trustees).toList.flatten
+    val trustees = userAnswers.get(Trustees).toList.flatten.zipWithIndex
 
-    val complete = trustees.filter(_.status == Completed).map(render)
+    val complete = trustees.filter(_._1.status == Completed).map(render)
 
-    val inProgress = trustees.filter(_.status == InProgress).map(render)
+    val inProgress = trustees.filter(_._1.status == InProgress).map(render)
 
     AddToRows(inProgress, complete)
   }

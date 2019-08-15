@@ -482,3 +482,6 @@ POST       /:draftId/asset/:index/change-shares-on-stock-exchange               
 
 GET       /:draftId/asset/:index/check-share-answers                           controllers.shares.ShareAnswerController.onPageLoad(index : Int, draftId : String)
 POST      /:draftId/asset/:index/check-share-answers                           controllers.shares.ShareAnswerController.onSubmit(index : Int, draftId : String)
+
+GET        /:draftId/trustee/:index/remove                        controllers.RemoveTrusteeController.onPageLoad(index : Int, draftId: String)
+POST       /:draftId/trustee/:index/remove                        controllers.RemoveTrusteeController.onSubmit(index : Int, draftId: String)
