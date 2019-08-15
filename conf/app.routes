@@ -488,3 +488,6 @@ POST      /:draftId/asset/:index/check-share-answers                           c
 
 GET        /:draftId/asset/:index/share/company/remove                        controllers.shares.RemoveShareCompanyNameAssetController.onPageLoad(index: Int, draftId: String)
 POST       /:draftId/asset/:index/share/company/remove                        controllers.shares.RemoveShareCompanyNameAssetController.onSubmit(index: Int, draftId: String)
+
+GET        /:draftId/asset/:index/share/portfolio/remove                        controllers.shares.RemoveSharePortfolioAssetController.onPageLoad(index: Int, draftId: String)
+POST       /:draftId/asset/:index/share/portfolio/remove                        controllers.shares.RemoveSharePortfolioAssetController.onSubmit(index: Int, draftId: String)
