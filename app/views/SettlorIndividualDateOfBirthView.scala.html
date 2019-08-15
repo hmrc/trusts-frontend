@@ -1,0 +1,28 @@
+@this(
+        main_template: MainTemplate,
+        formHelper: FormWithCSRF
+)
+
+@(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
+
+@main_template(
+    title = s"${errorPrefix(form)} ${messages("settlorIndividualDateOfBirth.title")}"
+) {
+
+    @formHelper(action = SettlorIndividualDateOfBirthController.onSubmit(mode, draftId), 'autoComplete -> "off") {
+
+        @components.back_link()
+
+        @components.error_summary(form.errors)
+
+        @components.heading("settlorIndividualDateOfBirth.heading")
+
+        @components.input_date(
+            field = form("value"),
+            legend = messages("settlorIndividualDateOfBirth.heading"),
+            legendClass = "visually-hidden"
+        )
+
+        @components.submit_button()
+    }
+}

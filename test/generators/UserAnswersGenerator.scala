@@ -30,6 +30,20 @@ trait UserAnswersGenerator extends TryValues {
   self: Generators =>
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
+    arbitrary[(SettlorIndividualPassportYesNoPage.type, JsValue)] ::
+    arbitrary[(SettlorIndividualPassportPage.type, JsValue)] ::
+    arbitrary[(SettlorIndividualIDCardYesNoPage.type, JsValue)] ::
+    arbitrary[(SettlorIndividualIDCardPage.type, JsValue)] ::
+    arbitrary[(SettlorIndividualAddressUKYesNoPage.type, JsValue)] ::
+    arbitrary[(SettlorIndividualAddressUKPage.type, JsValue)] ::
+    arbitrary[(SettlorIndividualAddressInternationalPage.type, JsValue)] ::
+    arbitrary[(SettlorIndividualNINOYesNoPage.type, JsValue)] ::
+    arbitrary[(SettlorIndividualNINOPage.type, JsValue)] ::
+    arbitrary[(SettlorIndividualAddressYesNoPage.type, JsValue)] ::
+    arbitrary[(SettlorIndividualDateOfBirthPage.type, JsValue)] ::
+    arbitrary[(SettlorIndividualDateOfBirthYesNoPage.type, JsValue)] ::
+    arbitrary[(SettlorIndividualNamePage.type, JsValue)] ::
+    arbitrary[(SettlorIndividualOrBusinessPage.type, JsValue)] ::
     arbitrary[(PropertyOrLandAddressYesNoPage, JsValue)] ::
     arbitrary[(PropertyOrLandAddressUkYesNoPage, JsValue)] ::
     arbitrary[(TrustOwnAllThePropertyOrLandPage, JsValue)] ::

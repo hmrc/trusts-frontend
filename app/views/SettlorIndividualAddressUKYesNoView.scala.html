@@ -1,0 +1,31 @@
+@import controllers.routes._
+@import models.Mode
+
+@this(
+    main_template: MainTemplate,
+    formHelper: FormWithCSRF
+)
+
+@(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
+
+@main_template(
+    title = s"${errorPrefix(form)} ${messages("settlorIndividualAddressUKYesNo.title")}"
+    ) {
+
+    @formHelper(action = SettlorIndividualAddressUKYesNoController.onSubmit(mode, draftId), 'autoComplete -> "off") {
+
+        @components.back_link()
+
+        @components.error_summary(form.errors)
+
+        @components.heading("settlorIndividualAddressUKYesNo.heading")
+
+        @components.input_yes_no(
+            field = form("value"),
+            label = messages("settlorIndividualAddressUKYesNo.heading"),
+            legendClass = Some("visually-hidden")
+        )
+
+        @components.submit_button()
+    }
+}

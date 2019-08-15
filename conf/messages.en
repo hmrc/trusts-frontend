@@ -984,3 +984,107 @@ propertyOrLandAddressYesNo.error.required = Select yes if the property or land h
 
 propertyOrLandAnswers.title = Check property or land details
 propertyOrLandAnswers.heading = Check property or land details
+
+settlorIndividualOrBusiness.title = Is the settlor an individual or a business?
+settlorIndividualOrBusiness.heading = Is the settlor an individual or a business?
+settlorIndividualOrBusiness.individual = Individual
+settlorIndividualOrBusiness.business = Business
+settlorIndividualOrBusiness.checkYourAnswersLabel = Is the settlor an individual or a business?
+settlorIndividualOrBusiness.error.required = Select settlorIndividualOrBusiness
+
+settlorIndividualName.title = settlorIndividualName
+settlorIndividualName.heading = settlorIndividualName
+settlorIndividualName.field1 = Field 1
+settlorIndividualName.field2 = Field 2
+settlorIndividualName.field3 = Field 3
+settlorIndividualName.checkYourAnswersLabel = settlorIndividualName
+settlorIndividualName.error.field1.required = Enter field1
+settlorIndividualName.error.field2.required = Enter field2
+settlorIndividualName.error.field3.required = Enter field3
+settlorIndividualName.error.field1.length = field1 must be 100 characters or less
+settlorIndividualName.error.field2.length = field2 must be 100 characters or less
+settlorIndividualName.error.field3.length = field3 must be 100 characters or less
+
+settlorIndividualDateOfBirthYesNo.title = settlorIndividualDateOfBirthYesNo
+settlorIndividualDateOfBirthYesNo.heading = settlorIndividualDateOfBirthYesNo
+settlorIndividualDateOfBirthYesNo.checkYourAnswersLabel = settlorIndividualDateOfBirthYesNo
+settlorIndividualDateOfBirthYesNo.error.required = Select yes if settlorIndividualDateOfBirthYesNo
+
+settlorIndividualDateOfBirth.title = SettlorIndividualDateOfBirth
+settlorIndividualDateOfBirth.heading = SettlorIndividualDateOfBirth
+settlorIndividualDateOfBirth.checkYourAnswersLabel = SettlorIndividualDateOfBirth
+settlorIndividualDateOfBirth.error.required.all = Enter the settlorIndividualDateOfBirth
+settlorIndividualDateOfBirth.error.required.two = The settlorIndividualDateOfBirth must include {0} and {1}
+settlorIndividualDateOfBirth.error.required = The settlorIndividualDateOfBirth must include {0}
+settlorIndividualDateOfBirth.error.invalid = Enter a real SettlorIndividualDateOfBirth
+
+settlorIndividualAddressYesNo.title = settlorIndividualAddressYesNo
+settlorIndividualAddressYesNo.heading = settlorIndividualAddressYesNo
+settlorIndividualAddressYesNo.checkYourAnswersLabel = settlorIndividualAddressYesNo
+settlorIndividualAddressYesNo.error.required = Select yes if settlorIndividualAddressYesNo
+
+settlorIndividualNINO.title = settlorIndividualNINO
+settlorIndividualNINO.heading = settlorIndividualNINO
+settlorIndividualNINO.checkYourAnswersLabel = settlorIndividualNINO
+settlorIndividualNINO.error.required = Enter settlorIndividualNINO
+settlorIndividualNINO.error.length = SettlorIndividualNINO must be 100 characters or less
+
+settlorIndividualNINOYesNo.title = settlorIndividualNINOYesNo
+settlorIndividualNINOYesNo.heading = settlorIndividualNINOYesNo
+settlorIndividualNINOYesNo.checkYourAnswersLabel = settlorIndividualNINOYesNo
+settlorIndividualNINOYesNo.error.required = Select yes if settlorIndividualNINOYesNo
+
+settlorIndividualAddressInternational.title = settlorIndividualAddressInternational
+settlorIndividualAddressInternational.heading = settlorIndividualAddressInternational
+settlorIndividualAddressInternational.field1 = Field 1
+settlorIndividualAddressInternational.field2 = Field 2
+settlorIndividualAddressInternational.checkYourAnswersLabel = settlorIndividualAddressInternational
+settlorIndividualAddressInternational.error.field1.required = Enter field1
+settlorIndividualAddressInternational.error.field2.required = Enter field2
+settlorIndividualAddressInternational.error.field1.length = field1 must be 100 characters or less
+settlorIndividualAddressInternational.error.field2.length = field2 must be 100 characters or less
+
+settlorIndividualAddressUK.title = settlorIndividualAddressUK
+settlorIndividualAddressUK.heading = settlorIndividualAddressUK
+settlorIndividualAddressUK.field1 = Field 1
+settlorIndividualAddressUK.field2 = Field 2
+settlorIndividualAddressUK.checkYourAnswersLabel = settlorIndividualAddressUK
+settlorIndividualAddressUK.error.field1.required = Enter field1
+settlorIndividualAddressUK.error.field2.required = Enter field2
+settlorIndividualAddressUK.error.field1.length = field1 must be 100 characters or less
+settlorIndividualAddressUK.error.field2.length = field2 must be 100 characters or less
+
+settlorIndividualAddressUKYesNo.title = settlorIndividualAddressUKYesNo
+settlorIndividualAddressUKYesNo.heading = settlorIndividualAddressUKYesNo
+settlorIndividualAddressUKYesNo.checkYourAnswersLabel = settlorIndividualAddressUKYesNo
+settlorIndividualAddressUKYesNo.error.required = Select yes if settlorIndividualAddressUKYesNo
+
+settlorIndividualIDCard.title = settlorIndividualIDCard
+settlorIndividualIDCard.heading = settlorIndividualIDCard
+settlorIndividualIDCard.field1 = Field 1
+settlorIndividualIDCard.field2 = Field 2
+settlorIndividualIDCard.checkYourAnswersLabel = settlorIndividualIDCard
+settlorIndividualIDCard.error.field1.required = Enter field1
+settlorIndividualIDCard.error.field2.required = Enter field2
+settlorIndividualIDCard.error.field1.length = field1 must be 100 characters or less
+settlorIndividualIDCard.error.field2.length = field2 must be 100 characters or less
+
+settlorIndividualIDCardYesNo.title = settlorIndividualIDCardYesNo
+settlorIndividualIDCardYesNo.heading = settlorIndividualIDCardYesNo
+settlorIndividualIDCardYesNo.checkYourAnswersLabel = settlorIndividualIDCardYesNo
+settlorIndividualIDCardYesNo.error.required = Select yes if settlorIndividualIDCardYesNo
+
+settlorIndividualPassport.title = settlorIndividualPassport
+settlorIndividualPassport.heading = settlorIndividualPassport
+settlorIndividualPassport.field1 = Field 1
+settlorIndividualPassport.field2 = Field 2
+settlorIndividualPassport.checkYourAnswersLabel = settlorIndividualPassport
+settlorIndividualPassport.error.field1.required = Enter field1
+settlorIndividualPassport.error.field2.required = Enter field2
+settlorIndividualPassport.error.field1.length = field1 must be 100 characters or less
+settlorIndividualPassport.error.field2.length = field2 must be 100 characters or less
+
+settlorIndividualPassportYesNo.title = settlorIndividualPassportYesNo
+settlorIndividualPassportYesNo.heading = settlorIndividualPassportYesNo
+settlorIndividualPassportYesNo.checkYourAnswersLabel = settlorIndividualPassportYesNo
+settlorIndividualPassportYesNo.error.required = Select yes if settlorIndividualPassportYesNo
