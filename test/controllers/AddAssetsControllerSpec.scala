@@ -17,36 +17,39 @@
 package controllers
 
 import base.SpecBase
-import forms.AddAssetsFormProvider
+import forms.{AddAnAssetYesNoFormProvider, AddAssetsFormProvider}
 import models.Status.Completed
 import models.WhatKindOfAsset.{Money, Shares}
-import models.{AddAssets, NormalMode, ShareClass}
+import models.{AddAssets, NormalMode, ShareClass, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.entitystatus.AssetStatus
 import pages.shares._
 import pages.{AssetMoneyValuePage, WhatKindOfAssetPage}
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.AddRow
-import views.html.AddAssetsView
+import views.html.{AddAnAssetYesNoView, AddAssetsView, WhatKindOfAssetView}
 
 class AddAssetsControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  lazy val addAssetsRoute = routes.AddAssetsController.onPageLoad(fakeDraftId).url
+  lazy val addAssetsRoute: String = routes.AddAssetsController.onPageLoad(fakeDraftId).url
+  lazy val addOnePostRoute: String = routes.AddAssetsController.submitOne(fakeDraftId).url
+  lazy val addAnotherPostRoute: String = routes.AddAssetsController.submitAnother(fakeDraftId).url
 
-  val formProvider = new AddAssetsFormProvider()
-  val form = formProvider()
+  val addAssetsForm: Form[AddAssets] = new AddAssetsFormProvider()()
+  val yesNoForm: Form[Boolean] = new AddAnAssetYesNoFormProvider()()
 
   val assets = List(
     AddRow("£4800", typeLabel = "Money", "#", "#"),
     AddRow("Share Company Name", typeLabel = "Shares", "#", "#")
   )
 
-  val userAnswersWithAssetsComplete = emptyUserAnswers
+  val userAnswersWithAssetsComplete: UserAnswers = emptyUserAnswers
     .set(WhatKindOfAssetPage(0), Money).success.value
     .set(AssetMoneyValuePage(0), "4800").success.value
     .set(AssetStatus(0), Completed).success.value
@@ -59,97 +62,166 @@ class AddAssetsControllerSpec extends SpecBase {
     .set(ShareValueInTrustPage(1), "10").success.value
     .set(AssetStatus(1), Completed).success.value
 
-  "AddAssets Controller" must {
+  "AddAssets Controller" when {
 
-    "return OK and the correct view for a GET" in {
+    "no data" must {
+      "redirect to Session Expired for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswersWithAssetsComplete)).build()
+        val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, addAssetsRoute)
+        val request = FakeRequest(GET, addAssetsRoute)
 
-      val result = route(application, request).value
+        val result = route(application, request).value
 
-      val view = application.injector.instanceOf[AddAssetsView]
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
-      status(result) mustEqual OK
+        application.stop()
+      }
 
-      contentAsString(result) mustEqual
-        view(form, NormalMode,fakeDraftId, Nil, assets, "You have added 2 assets")(fakeRequest, messages).toString
+      "redirect to Session Expired for a POST if no existing data is found" in {
 
-      application.stop()
+        val application = applicationBuilder(userAnswers = None).build()
+
+        val request =
+          FakeRequest(POST, addAssetsRoute)
+            .withFormUrlEncodedBody(("value", AddAssets.values.head.toString))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+
+        application.stop()
+      }
     }
 
-    "redirect to the next page when valid data is submitted" in {
+    "there are no assets" must {
 
-      val application =
-        applicationBuilder(userAnswers = Some(userAnswersWithAssetsComplete))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+      "return OK and the correct view for a GET" in {
 
-      val request =
-        FakeRequest(POST, addAssetsRoute)
-          .withFormUrlEncodedBody(("value", AddAssets.options.head.value))
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val result = route(application, request).value
+        val request = FakeRequest(GET, addAssetsRoute)
 
-      status(result) mustEqual SEE_OTHER
+        val result = route(application, request).value
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+        val view = application.injector.instanceOf[AddAnAssetYesNoView]
 
-      application.stop()
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(addAssetsForm, NormalMode,fakeDraftId)(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
+      "redirect to the next page when valid data is submitted" in {
+
+        val application =
+          applicationBuilder(userAnswers = Some(emptyUserAnswers))
+            .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
+            .build()
+
+        val request =
+          FakeRequest(POST, addOnePostRoute)
+            .withFormUrlEncodedBody(("value", "true"))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual onwardRoute.url
+
+        application.stop()
+      }
+
+      "return a Bad Request and errors when invalid data is submitted" in {
+
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+        val request =
+          FakeRequest(POST, addOnePostRoute)
+            .withFormUrlEncodedBody(("value", ""))
+
+        val boundForm = yesNoForm.bind(Map("value" -> ""))
+
+        val view = application.injector.instanceOf[AddAnAssetYesNoView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual BAD_REQUEST
+
+        contentAsString(result) mustEqual
+          view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+
+        application.stop()
+      }
     }
 
-    "return a Bad Request and errors when invalid data is submitted" in {
+    "there are existing assets" must {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswersWithAssetsComplete)).build()
+      "return OK and the correct view for a GET" in {
 
-      val request =
-        FakeRequest(POST, addAssetsRoute)
-          .withFormUrlEncodedBody(("value", "invalid value"))
+        val application = applicationBuilder(userAnswers = Some(userAnswersWithAssetsComplete)).build()
 
-      val boundForm = form.bind(Map("value" -> "invalid value"))
+        val request = FakeRequest(GET, addAssetsRoute)
 
-      val view = application.injector.instanceOf[AddAssetsView]
+        val result = route(application, request).value
 
-      val result = route(application, request).value
+        val view = application.injector.instanceOf[AddAssetsView]
 
-      status(result) mustEqual BAD_REQUEST
+        status(result) mustEqual OK
 
-      contentAsString(result) mustEqual
-        view(boundForm, NormalMode,fakeDraftId, Nil, assets, "You have added 2 assets")(fakeRequest, messages).toString
+        contentAsString(result) mustEqual
+          view(addAssetsForm, NormalMode,fakeDraftId, Nil, assets, "You have added 2 assets")(fakeRequest, messages).toString
 
-      application.stop()
-    }
+        application.stop()
+      }
 
-    "redirect to Session Expired for a GET if no existing data is found" in {
+      "redirect to the next page when valid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+        val application =
+          applicationBuilder(userAnswers = Some(userAnswersWithAssetsComplete))
+            .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
+            .build()
 
-      val request = FakeRequest(GET, addAssetsRoute)
+        val request =
+          FakeRequest(POST, addAnotherPostRoute)
+            .withFormUrlEncodedBody(("value", AddAssets.options.head.value))
 
-      val result = route(application, request).value
+        val result = route(application, request).value
 
-      status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+        status(result) mustEqual SEE_OTHER
 
-      application.stop()
-    }
+        redirectLocation(result).value mustEqual onwardRoute.url
 
-    "redirect to Session Expired for a POST if no existing data is found" in {
+        application.stop()
+      }
 
-      val application = applicationBuilder(userAnswers = None).build()
+      "return a Bad Request and errors when invalid data is submitted" in {
 
-      val request =
-        FakeRequest(POST, addAssetsRoute)
-          .withFormUrlEncodedBody(("value", AddAssets.values.head.toString))
+        val application = applicationBuilder(userAnswers = Some(userAnswersWithAssetsComplete)).build()
 
-      val result = route(application, request).value
+        val request =
+          FakeRequest(POST, addAnotherPostRoute)
+            .withFormUrlEncodedBody(("value", "invalid value"))
 
-      status(result) mustEqual SEE_OTHER
+        val boundForm = addAssetsForm.bind(Map("value" -> "invalid value"))
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+        val view = application.injector.instanceOf[AddAssetsView]
 
-      application.stop()
+        val result = route(application, request).value
+
+        status(result) mustEqual BAD_REQUEST
+
+        contentAsString(result) mustEqual
+          view(boundForm, NormalMode, fakeDraftId, Nil, assets, "You have added 2 assets")(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
     }
   }
 }

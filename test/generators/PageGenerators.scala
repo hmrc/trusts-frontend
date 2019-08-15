@@ -23,8 +23,8 @@ import pages.shares.{ShareClassPage, ShareCompanyNamePage, SharePortfolioNamePag
 
 trait PageGenerators {
 
-  implicit lazy val arbitraryDoYouWantToAddAnAssetPage: Arbitrary[DoYouWantToAddAnAssetPage.type] =
-    Arbitrary(DoYouWantToAddAnAssetPage)
+  implicit lazy val arbitraryAddAnAssetYesNoPage: Arbitrary[AddAnAssetYesNoPage.type] =
+    Arbitrary(AddAnAssetYesNoPage)
 
   implicit lazy val arbitraryPropertyOrLandAddressYesNoPage: Arbitrary[PropertyOrLandAddressYesNoPage] =
     Arbitrary(PropertyOrLandAddressYesNoPage(0))

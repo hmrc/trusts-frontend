@@ -985,6 +985,6 @@ propertyOrLandAddressYesNo.error.required = Select yes if the property or land h
 propertyOrLandAnswers.title = Check property or land details
 propertyOrLandAnswers.heading = Check property or land details
 
-doYouWantToAddAnAsset.title = Do you want to add an asset?
-doYouWantToAddAnAsset.heading = Do you want to add an asset?
-doYouWantToAddAnAsset.error.required = Select yes if you want to add an asset
+addAnAssetYesNo.title = Do you want to add an asset?
+addAnAssetYesNo.heading = Do you want to add an asset?
+addAnAssetYesNo.error.required = Select yes if you want to add an asset

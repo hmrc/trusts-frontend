@@ -206,6 +206,7 @@ POST       /:draftId/asset/:index/assets-type                         controller
 GET        /:draftId/asset/:index/change-assets-type                  controllers.WhatKindOfAssetController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
 POST       /:draftId/asset/:index/change-assets-type                  controllers.WhatKindOfAssetController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
+
 GET        /:draftId/asset/information-you-need                     controllers.AssetInterruptPageController.onPageLoad(draftId: String)
 POST       /:draftId/asset/information-you-need                     controllers.AssetInterruptPageController.onSubmit(draftId: String)
 
@@ -257,8 +258,10 @@ POST       /:draftId/asset/:index/change-property-or-land/has-address           
 GET       /:draftId/asset/:index/property-or-land/check-property-or-land-answers                controllers.property_or_land.PropertyOrLandAnswerController.onPageLoad(index : Int, draftId : String)
 POST      /:draftId/asset/:index/property-or-land/check-property-or-land-answers                controllers.property_or_land.PropertyOrLandAnswerController.onSubmit(index : Int, draftId : String)
 
+
 GET        /:draftId/asset/add                        controllers.AddAssetsController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/asset/add                        controllers.AddAssetsController.onSubmit(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/asset/add                        controllers.AddAssetsController.submitOne(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/asset/add-another                controllers.AddAssetsController.submitAnother(mode: Mode = NormalMode, draftId: String)
 
 #settlors
 
@@ -482,6 +485,3 @@ POST       /:draftId/asset/:index/change-shares-on-stock-exchange               
 
 GET       /:draftId/asset/:index/check-share-answers                           controllers.shares.ShareAnswerController.onPageLoad(index : Int, draftId : String)
 POST      /:draftId/asset/:index/check-share-answers                           controllers.shares.ShareAnswerController.onSubmit(index : Int, draftId : String)
-
-GET        /:draftId/doYouWantToAddAnAsset                        controllers.DoYouWantToAddAnAssetController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/doYouWantToAddAnAsset                        controllers.DoYouWantToAddAnAssetController.onSubmit(mode: Mode = NormalMode, draftId: String)
