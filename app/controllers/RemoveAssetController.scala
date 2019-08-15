@@ -17,13 +17,13 @@
 package controllers
 
 import play.api.mvc.Call
-import queries.{RemoveClassOfBeneficiaryQuery, Settable}
+import queries.{RemoveAssetQuery, Settable}
 
 trait RemoveAssetController extends RemoveIndexController {
 
   override def redirect(draftId : String) : Call =
     controllers.routes.AddAssetsController.onPageLoad(draftId)
 
-  override def removeQuery(index: Int): Settable[_] = RemoveClassOfBeneficiaryQuery(index)
+  override def removeQuery(index: Int): Settable[_] = RemoveAssetQuery(index)
 }
 
