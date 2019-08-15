@@ -16,10 +16,12 @@
 
 package queries
 
+import models.Status.Completed
 import models.{ShareClass, UserAnswers, WhatKindOfAsset}
 import org.scalacheck.Arbitrary.arbitrary
 import pages._
 import pages.behaviours.PageBehaviours
+import pages.entitystatus.AssetStatus
 import pages.property_or_land.{PropertyOrLandDescriptionPage, PropertyOrLandTotalValuePage, TrustOwnAllThePropertyOrLandPage}
 import pages.shares.{ShareClassPage, ShareCompanyNamePage, ShareQuantityInTrustPage, ShareValueInTrustPage, SharesInAPortfolioPage, SharesOnStockExchangePage}
 
@@ -57,6 +59,7 @@ class RemoveAssetQuerySpec extends PageBehaviours {
               .set(ShareValueInTrustPage(0), "2000").success.value
               .set(SharesOnStockExchangePage(0), false).success.value
               .set(ShareQuantityInTrustPage(0), "20").success.value
+              .set(AssetStatus(0), Completed).success.value
 
             val result = answers.remove(RemoveAssetQuery(0)).success.value
 
@@ -67,6 +70,7 @@ class RemoveAssetQuerySpec extends PageBehaviours {
             result.get(ShareValueInTrustPage(0)) mustNot be(defined)
             result.get(SharesOnStockExchangePage(0)) mustNot be(defined)
             result.get(ShareQuantityInTrustPage(0)) mustNot be(defined)
+            result.get(AssetStatus(0)) mustNot be(defined)
         }
       }
 
