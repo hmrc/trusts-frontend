@@ -32,8 +32,6 @@ import views.html.property_or_land.PropertyOrLandAddressUkYesNoView
 
 class PropertyOrLandAddressUkYesNoControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new PropertyOrLandAddressUkYesNoFormProvider()
   val form: Form[Boolean] = formProvider()
 
@@ -84,9 +82,7 @@ class PropertyOrLandAddressUkYesNoControllerSpec extends SpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, propertyOrLandAddressRoute)
@@ -96,7 +92,7 @@ class PropertyOrLandAddressUkYesNoControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

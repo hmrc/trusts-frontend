@@ -29,8 +29,6 @@ import views.html.SettlorsNameView
 
 class SettlorsNameControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new SettlorsNameFormProvider()
 
   val form = formProvider()
@@ -81,10 +79,7 @@ class SettlorsNameControllerSpec extends SpecBase {
 
     "redirect to the next page when valid data is submitted" in {
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, settlorsNameRoute)
@@ -94,7 +89,7 @@ class SettlorsNameControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

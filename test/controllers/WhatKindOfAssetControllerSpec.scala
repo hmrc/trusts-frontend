@@ -31,8 +31,6 @@ import views.html.WhatKindOfAssetView
 
 class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val index = 0
 
   lazy val whatKindOfAssetRoute = routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, fakeDraftId).url
@@ -114,9 +112,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, whatKindOfAssetRoute)
@@ -126,7 +122,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }
@@ -136,9 +132,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
       val answers = emptyUserAnswers.set(WhatKindOfAssetPage(index), Money).success.value
 
       val application =
-        applicationBuilder(userAnswers = Some(answers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(answers)).build()
 
       val request =
         FakeRequest(POST, whatKindOfAssetRoute)
@@ -148,7 +142,7 @@ class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

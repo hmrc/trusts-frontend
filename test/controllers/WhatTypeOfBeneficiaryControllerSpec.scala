@@ -30,8 +30,6 @@ import views.html.WhatTypeOfBeneficiaryView
 
 class WhatTypeOfBeneficiaryControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
-
   lazy val whatTypeOfBeneficiaryRoute = routes.WhatTypeOfBeneficiaryController.onPageLoad(fakeDraftId).url
 
   val formProvider = new WhatTypeOfBeneficiaryFormProvider()
@@ -99,9 +97,7 @@ class WhatTypeOfBeneficiaryControllerSpec extends SpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, whatTypeOfBeneficiaryRoute)
@@ -111,7 +107,7 @@ class WhatTypeOfBeneficiaryControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

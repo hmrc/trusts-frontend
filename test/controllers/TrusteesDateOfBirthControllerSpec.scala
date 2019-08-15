@@ -20,14 +20,11 @@ import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
 import forms.TrusteesDateOfBirthFormProvider
-import models.{FullName, IndividualOrBusiness, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
-import org.scalacheck.Arbitrary.arbitrary
+import models.{FullName, NormalMode}
 import org.scalacheck.Gen
 import org.scalatest.mockito.MockitoSugar
-import pages.{TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage}
-import play.api.inject.bind
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import pages.{TrusteesDateOfBirthPage, TrusteesNamePage}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.TrusteesDateOfBirthView
@@ -36,8 +33,6 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
 
   val formProvider = new TrusteesDateOfBirthFormProvider()
   val form = formProvider()
-
-  def onwardRoute = Call("GET", "/foo")
 
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
 
@@ -114,12 +109,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
       val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
-      val application =
-        applicationBuilder(userAnswers = Some(userAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
-          .build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, trusteesDateOfBirthRoute)
@@ -133,7 +123,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

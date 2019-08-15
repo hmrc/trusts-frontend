@@ -20,20 +20,15 @@ import base.SpecBase
 import forms.TrustNameFormProvider
 import generators.Generators
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.mockito.MockitoSugar
 import org.scalatest.prop.PropertyChecks
 import pages.{TrustHaveAUTRPage, TrustNamePage}
-import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.TrustNameView
 
 class TrustNameControllerSpec extends SpecBase with MockitoSugar with Generators with PropertyChecks {
-
-  def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new TrustNameFormProvider()
   val form = formProvider()
@@ -211,9 +206,7 @@ class TrustNameControllerSpec extends SpecBase with MockitoSugar with Generators
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, trustNameRoute)
@@ -222,7 +215,7 @@ class TrustNameControllerSpec extends SpecBase with MockitoSugar with Generators
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

@@ -121,9 +121,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
       "redirect to the next page when valid data is submitted" in {
 
         val application =
-          applicationBuilder(userAnswers = Some(emptyUserAnswers))
-            .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-            .build()
+          applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
         val request =
           FakeRequest(POST, addOnePostRoute)
@@ -205,9 +203,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
       "redirect to the next page when valid data is submitted" in {
 
         val application =
-          applicationBuilder(userAnswers = Some(userAnswersWithBeneficiariesComplete))
-            .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-            .build()
+          applicationBuilder(userAnswers = Some(userAnswersWithBeneficiariesComplete)).build()
 
         val request =
           FakeRequest(POST, addAnotherPostRoute)
@@ -217,7 +213,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual onwardRoute.url
+        redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
         application.stop()
       }

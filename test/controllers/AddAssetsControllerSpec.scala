@@ -34,8 +34,6 @@ import views.html.AddAssetsView
 
 class AddAssetsControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
-
   lazy val addAssetsRoute = routes.AddAssetsController.onPageLoad(fakeDraftId).url
 
   val formProvider = new AddAssetsFormProvider()
@@ -81,10 +79,7 @@ class AddAssetsControllerSpec extends SpecBase {
 
     "redirect to the next page when valid data is submitted" in {
 
-      val application =
-        applicationBuilder(userAnswers = Some(userAnswersWithAssetsComplete))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithAssetsComplete)).build()
 
       val request =
         FakeRequest(POST, addAssetsRoute)
@@ -94,7 +89,7 @@ class AddAssetsControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

@@ -31,15 +31,11 @@ import views.html.AgentUKAddressView
 
 class AgentUKAddressControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new UKAddressFormProvider()
   val form = formProvider()
   val agencyName = "Hadrian"
 
-
   lazy val agentUKAddressRoute = routes.AgentUKAddressController.onPageLoad(NormalMode,fakeDraftId).url
-
 
   "AgentUKAddress Controller" must {
 
@@ -92,9 +88,7 @@ class AgentUKAddressControllerSpec extends SpecBase {
         agencyName).success.value
 
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent)
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
       val request =
         FakeRequest(POST, agentUKAddressRoute)
@@ -104,7 +98,7 @@ class AgentUKAddressControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }
