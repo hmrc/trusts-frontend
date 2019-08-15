@@ -517,6 +517,10 @@ removeShareAsset.title = Are you sure you want to remove {0}?
 removeShareAsset.heading = Are you sure you want to remove {0}?
 removeShareAsset.error.required = Select yes if you want to remove the share
 
+removePropertyOrLandAsset.title = Are you sure you want to remove {0}?
+removePropertyOrLandAsset.heading = Are you sure you want to remove {0}?
+removePropertyOrLandAsset.error.required = Select yes if you want to remove the property or land
+
 whatKindOfAsset.first.title = What kind of asset do you need to add first?
 whatKindOfAsset.next.title = What kind of asset do you need to add next?
 whatKindOfAsset.first.heading = What kind of asset do you need to add first?
