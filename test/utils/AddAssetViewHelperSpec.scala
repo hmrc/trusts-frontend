@@ -17,13 +17,13 @@
 package utils
 
 import base.SpecBase
-import mapping.AssetMonetaryAmount
-import models.ShareClass
 import models.Status.Completed
-import models.WhatKindOfAsset.{Money, Shares}
-import pages.{AssetMoneyValuePage, WhatKindOfAssetPage}
+import models.WhatKindOfAsset.{Money, PropertyOrLand, Shares}
+import models.{ShareClass, UKAddress}
 import pages.entitystatus.AssetStatus
+import pages.property_or_land._
 import pages.shares._
+import pages.{AssetMoneyValuePage, WhatKindOfAssetPage}
 import viewmodels.AddRow
 
 class AddAssetViewHelperSpec extends SpecBase {
@@ -44,11 +44,14 @@ class AddAssetViewHelperSpec extends SpecBase {
           .set(WhatKindOfAssetPage(0), Shares).success.value
           .set(SharesInAPortfolioPage(0), true).success.value
           .set(WhatKindOfAssetPage(1), Money).success.value
+          .set(WhatKindOfAssetPage(2), PropertyOrLand).success.value
+          .set(PropertyOrLandAddressYesNoPage(2), true).success.value
 
         val rows = new AddAssetViewHelper(userAnswers).rows
         rows.inProgress mustBe List(
           AddRow("No name added", typeLabel = "Shares", "#", "#"),
-          AddRow("No value added", typeLabel = "Money", "#", "#")
+          AddRow("No value added", typeLabel = "Money", "#", "#"),
+          AddRow("No address added", typeLabel = "Property or Land", "#", "#")
         )
         rows.complete mustBe Nil
       }
@@ -67,11 +70,26 @@ class AddAssetViewHelperSpec extends SpecBase {
           .set(WhatKindOfAssetPage(1), Money).success.value
           .set(AssetMoneyValuePage(1), "200").success.value
           .set(AssetStatus(1), Completed).success.value
+          .set(WhatKindOfAssetPage(2), PropertyOrLand).success.value
+          .set(PropertyOrLandAddressYesNoPage(2), true).success.value
+          .set(PropertyOrLandAddressUkYesNoPage(2), true).success.value
+          .set(PropertyOrLandUKAddressPage(2), UKAddress("line 1", None, None, "Newcastle upon Tyne", "NE1 1NE")).success.value
+          .set(PropertyOrLandTotalValuePage(2), "100").success.value
+          .set(TrustOwnAllThePropertyOrLandPage(2), true).success.value
+
+        def ukAddress(address: UKAddress) = Seq(
+          Some(address.line1),
+          address.line2,
+          address.line3,
+          Some(address.townOrCity),
+          Some(address.postcode)
+        ).flatten.mkString(", ")
 
         val rows = new AddAssetViewHelper(userAnswers).rows
         rows.complete mustBe List(
           AddRow("Share Company Name", typeLabel = "Shares", "#", "#"),
-          AddRow("£200", typeLabel = "Money", "#", "#")
+          AddRow("£200", typeLabel = "Money", "#", "#"),
+          AddRow(ukAddress(UKAddress("line 1", None, None, "Newcastle upon Tyne", "NE1 1NE")), typeLabel = "Property or Land", "#", "#")
         )
         rows.inProgress mustBe Nil
       }
