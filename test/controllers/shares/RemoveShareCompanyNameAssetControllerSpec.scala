@@ -14,43 +14,43 @@
  * limitations under the License.
  */
 
-package controllers.money
+package controllers.shares
 
 import base.SpecBase
 import forms.RemoveIndexFormProvider
 import models.Status.Completed
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages.AssetMoneyValuePage
 import pages.entitystatus.AssetStatus
+import pages.shares.ShareCompanyNamePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RemoveIndexView
 
-class RemoveMoneyAssetControllerSpec extends SpecBase with PropertyChecks {
+class RemoveShareCompanyNameAssetControllerSpec extends SpecBase with PropertyChecks {
 
-  val messagesPrefix = "removeMoneyAsset"
+  val messagesPrefix = "removeShareAsset"
 
   lazy val formProvider = new RemoveIndexFormProvider()
   lazy val form = formProvider(messagesPrefix)
 
-  lazy val formRoute = routes.RemoveMoneyAssetController.onSubmit(0, fakeDraftId)
+  lazy val formRoute = routes.RemoveShareCompanyNameAssetController.onSubmit(0, fakeDraftId)
 
-  lazy val content : String = "£200"
+  lazy val content : String = "AWS"
 
   val index = 0
 
-  "RemoveMoneyAsset Controller" must {
+  "RemoveShareAsset Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val userAnswers = emptyUserAnswers
-        .set(AssetMoneyValuePage(0), "200").success.value
+        .set(ShareCompanyNamePage(0), "AWS").success.value
         .set(AssetStatus(0), Completed).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.RemoveMoneyAssetController.onPageLoad(index, fakeDraftId).url)
+      val request = FakeRequest(GET, routes.RemoveShareCompanyNameAssetController.onPageLoad(index, fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -66,7 +66,7 @@ class RemoveMoneyAssetControllerSpec extends SpecBase with PropertyChecks {
     "redirect to the next page when valid data is submitted" in {
 
       val userAnswers = emptyUserAnswers
-        .set(AssetMoneyValuePage(0), "200").success.value
+        .set(ShareCompanyNamePage(0), "AWS").success.value
         .set(AssetStatus(0), Completed).success.value
 
       forAll(arbitrary[Boolean]) {
@@ -76,7 +76,7 @@ class RemoveMoneyAssetControllerSpec extends SpecBase with PropertyChecks {
             .build()
 
         val request =
-          FakeRequest(POST, routes.RemoveMoneyAssetController.onSubmit(index, fakeDraftId).url)
+          FakeRequest(POST, routes.RemoveShareCompanyNameAssetController.onSubmit(index, fakeDraftId).url)
             .withFormUrlEncodedBody(("value", value.toString))
 
         val result = route(application, request).value
@@ -93,13 +93,13 @@ class RemoveMoneyAssetControllerSpec extends SpecBase with PropertyChecks {
     "return a Bad Request and errors when invalid data is submitted" in {
 
       val userAnswers = emptyUserAnswers
-        .set(AssetMoneyValuePage(0), "200").success.value
+        .set(ShareCompanyNamePage(0), "AWS").success.value
         .set(AssetStatus(0), Completed).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
-        FakeRequest(POST, routes.RemoveMoneyAssetController.onSubmit(index, fakeDraftId).url)
+        FakeRequest(POST, routes.RemoveShareCompanyNameAssetController.onSubmit(index, fakeDraftId).url)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
@@ -120,7 +120,7 @@ class RemoveMoneyAssetControllerSpec extends SpecBase with PropertyChecks {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, routes.RemoveMoneyAssetController.onPageLoad(index, fakeDraftId).url)
+      val request = FakeRequest(GET, routes.RemoveShareCompanyNameAssetController.onPageLoad(index, fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -136,7 +136,7 @@ class RemoveMoneyAssetControllerSpec extends SpecBase with PropertyChecks {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, routes.RemoveMoneyAssetController.onSubmit(index, fakeDraftId).url)
+        FakeRequest(POST, routes.RemoveShareCompanyNameAssetController.onSubmit(index, fakeDraftId).url)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
