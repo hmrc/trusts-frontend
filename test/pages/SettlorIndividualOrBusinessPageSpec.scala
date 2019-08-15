@@ -23,10 +23,10 @@ class SettlorIndividualOrBusinessSpec extends PageBehaviours {
 
   "SettlorIndividualOrBusinessPage" must {
 
-    beRetrievable[IndividualOrBusiness](SettlorIndividualOrBusinessPage)
+    beRetrievable[IndividualOrBusiness](SettlorIndividualOrBusinessPage(0))
 
-    beSettable[IndividualOrBusiness](SettlorIndividualOrBusinessPage)
+    beSettable[IndividualOrBusiness](SettlorIndividualOrBusinessPage(0))
 
-    beRemovable[IndividualOrBusiness](SettlorIndividualOrBusinessPage)
+    beRemovable[IndividualOrBusiness](SettlorIndividualOrBusinessPage(0))
   }
 }

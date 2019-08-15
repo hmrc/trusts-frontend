@@ -19,7 +19,7 @@ package pages
 import models.{IndividualOrBusiness}
 import play.api.libs.json.JsPath
 
-case object SettlorIndividualOrBusinessPage extends QuestionPage[IndividualOrBusiness] {
+final case class SettlorIndividualOrBusinessPage(index : Int) extends QuestionPage[IndividualOrBusiness] {
 
   override def path: JsPath = JsPath \ toString
 

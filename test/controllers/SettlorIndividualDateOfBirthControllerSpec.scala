@@ -1,3 +1,19 @@
+/*
+ * Copyright 2019 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package controllers
 
 import java.time.{LocalDate, ZoneOffset}
@@ -23,12 +39,13 @@ class SettlorIndividualDateOfBirthControllerSpec extends SpecBase with MockitoSu
 
   val formProvider = new SettlorIndividualDateOfBirthFormProvider()
   val form = formProvider()
+  val index = 0
 
   def onwardRoute = Call("GET", "/foo")
 
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
 
-  lazy val settlorIndividualDateOfBirthRoute = routes.SettlorIndividualDateOfBirthController.onPageLoad(NormalMode, fakeDraftId).url
+  lazy val settlorIndividualDateOfBirthRoute = routes.SettlorIndividualDateOfBirthController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "SettlorIndividualDateOfBirth Controller" must {
 
@@ -45,14 +62,14 @@ class SettlorIndividualDateOfBirthControllerSpec extends SpecBase with MockitoSu
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(SettlorIndividualDateOfBirthPage, validAnswer).success.value
+      val userAnswers = emptyUserAnswers.set(SettlorIndividualDateOfBirthPage(index), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -65,7 +82,7 @@ class SettlorIndividualDateOfBirthControllerSpec extends SpecBase with MockitoSu
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill(validAnswer), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -113,7 +130,7 @@ class SettlorIndividualDateOfBirthControllerSpec extends SpecBase with MockitoSu
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
 
       application.stop()
     }

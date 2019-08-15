@@ -32,10 +32,11 @@ class SettlorIndividualOrBusinessControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  lazy val settlorIndividualOrBusinessRoute = routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, fakeDraftId).url
+  lazy val settlorIndividualOrBusinessRoute = routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   val formProvider = new SettlorIndividualOrBusinessFormProvider()
   val form = formProvider()
+  val index = 0
 
   "SettlorIndividualOrBusiness Controller" must {
 
@@ -52,14 +53,14 @@ class SettlorIndividualOrBusinessControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(SettlorIndividualOrBusinessPage, IndividualOrBusiness.values.head).success.value
+      val userAnswers = emptyUserAnswers.set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -72,7 +73,7 @@ class SettlorIndividualOrBusinessControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(IndividualOrBusiness.values.head), NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill(IndividualOrBusiness.values.head), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -114,7 +115,7 @@ class SettlorIndividualOrBusinessControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
 
       application.stop()
     }
