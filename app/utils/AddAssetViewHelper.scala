@@ -20,7 +20,7 @@ import models.Status.Completed
 import models.UserAnswers
 import play.api.i18n.Messages
 import sections.Assets
-import viewmodels.addAnother.{AssetViewModel, MoneyAssetViewModel, ShareAssetViewModel}
+import viewmodels.addAnother._
 import viewmodels.{AddRow, AddToRows}
 
 class AddAssetViewHelper(userAnswers: UserAnswers)(implicit  messages: Messages) {
@@ -32,6 +32,9 @@ class AddAssetViewHelper(userAnswers: UserAnswers)(implicit  messages: Messages)
     case mvm : ShareAssetViewModel =>
       val defaultName = messages("entities.no.name.added")
       Some(AddRow(mvm.name.getOrElse(defaultName), mvm.`type`.toString, "#", "#"))
+    case mvm : PropertyOrLandAddressAssetViewModel =>
+      val defaultName = messages("entities.no.address.added")
+      Some(AddRow(mvm.address.getOrElse(defaultName), mvm.`type`.toString, "#", "#"))
     case _ =>
       None
   }

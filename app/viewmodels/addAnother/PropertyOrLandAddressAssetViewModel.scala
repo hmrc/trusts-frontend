@@ -18,25 +18,26 @@ package viewmodels.addAnother
 
 import models.Status.InProgress
 import models.WhatKindOfAsset.PropertyOrLand
-import models.{Status, WhatKindOfAsset}
+import models.{InternationalAddress, Status, UKAddress, WhatKindOfAsset}
 
-final case class PropertyOrLandAssetViewModel(`type` : WhatKindOfAsset,
-                                              value : Option[String],
-                                              override val status : Status) extends AssetViewModel
+final case class PropertyOrLandAddressAssetViewModel(`type` : WhatKindOfAsset,
+                                                     address : Option[String],
+                                                     override val status : Status) extends AssetViewModel
 
-object PropertyOrLandAssetViewModel {
+object PropertyOrLandAddressAssetViewModel {
 
   import play.api.libs.functional.syntax._
   import play.api.libs.json._
 
-  implicit lazy val reads: Reads[PropertyOrLandAssetViewModel] = {
+  implicit lazy val reads: Reads[PropertyOrLandAddressAssetViewModel] = {
 
-    def formatValue(v : String) = s"£$v"
+    val readsAddress: Reads[Option[String]] =
+      (__ \ "address").readNullable[UKAddress].flatMap(_ => (__ \ "line1").readNullable[String]) orElse
+      (__ \ "address").readNullable[InternationalAddress].flatMap(_ => (__ \ "line1").readNullable[String])
 
-    val reads: Reads[PropertyOrLandAssetViewModel] =
-      ((__ \ "").readNullable[String] and
-        (__ \ "status").readWithDefault[Status](InProgress)
-        )((value, status) => PropertyOrLandAssetViewModel(PropertyOrLand, value.map(formatValue), status))
+    val reads: Reads[PropertyOrLandAddressAssetViewModel] =
+      (readsAddress and (__ \ "status").readWithDefault[Status](InProgress))((value, status) =>
+        PropertyOrLandAddressAssetViewModel(PropertyOrLand, value, status))
 
     (__ \ "whatKindOfAsset").read[WhatKindOfAsset].flatMap[WhatKindOfAsset] {
       whatKindOfAsset: WhatKindOfAsset =>

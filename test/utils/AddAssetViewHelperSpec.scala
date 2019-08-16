@@ -51,7 +51,7 @@ class AddAssetViewHelperSpec extends SpecBase {
         rows.inProgress mustBe List(
           AddRow("No name added", typeLabel = "Shares", "#", "#"),
           AddRow("No value added", typeLabel = "Money", "#", "#"),
-          AddRow("No address added", typeLabel = "Property or Land", "#", "#")
+          AddRow("No address added", typeLabel = "PropertyOrLand", "#", "#")
         )
         rows.complete mustBe Nil
       }

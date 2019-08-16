@@ -18,7 +18,7 @@ package viewmodels
 
 import generators.{Generators, ModelGenerators}
 import models.Status.{Completed, InProgress}
-import models.WhatKindOfAsset.{Money, PropertyOrLand, Shares}
+import models.WhatKindOfAsset.{Money, Partnership, PropertyOrLand, Shares}
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.{FreeSpec, MustMatchers}
 import play.api.libs.json.{JsSuccess, Json}
@@ -140,11 +140,11 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks 
 
       "to a default from any other type" in {
         val json = Json.obj(
-          "whatKindOfAsset" -> PropertyOrLand.toString
+          "whatKindOfAsset" -> Partnership.toString
         )
 
         json.validate[AssetViewModel] mustEqual JsSuccess(
-          DefaultAssetsViewModel(PropertyOrLand, InProgress)
+          DefaultAssetsViewModel(Partnership, InProgress)
         )
       }
     }
