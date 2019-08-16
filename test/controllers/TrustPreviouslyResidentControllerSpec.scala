@@ -32,8 +32,6 @@ import views.html.TrustPreviouslyResidentView
 
 class TrustPreviouslyResidentControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new TrustPreviouslyResidentFormProvider()
   val form = formProvider()
 
@@ -86,9 +84,7 @@ class TrustPreviouslyResidentControllerSpec extends SpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, trustPreviouslyResidentRoute)
@@ -97,7 +93,7 @@ class TrustPreviouslyResidentControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

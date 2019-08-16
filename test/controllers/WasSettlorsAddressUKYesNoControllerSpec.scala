@@ -29,8 +29,6 @@ import views.html.WasSettlorsAddressUKYesNoView
 
 class WasSettlorsAddressUKYesNoControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new WasSettlorsAddressUKYesNoFormProvider()
   val form = formProvider()
 
@@ -88,9 +86,7 @@ class WasSettlorsAddressUKYesNoControllerSpec extends SpecBase {
         name).success.value
 
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, wasSettlorsAddressUKYesNoRoute)
@@ -100,7 +96,7 @@ class WasSettlorsAddressUKYesNoControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

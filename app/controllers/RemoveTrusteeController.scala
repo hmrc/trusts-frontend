@@ -19,8 +19,9 @@ package controllers
 import controllers.actions._
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
+import models.FullName
 import models.requests.DataRequest
-import pages.TrusteesNamePage
+import pages.{QuestionPage, TrusteesNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
@@ -37,20 +38,20 @@ class RemoveTrusteeController @Inject()(
                                               identify: IdentifierAction,
                                               getData: DraftIdRetrievalActionProvider,
                                               requireData: DataRequiredAction,
-                                              formProvider: RemoveIndexFormProvider,
+                                              val formProvider: RemoveIndexFormProvider,
                                               val controllerComponents: MessagesControllerComponents,
-                                              removeView: RemoveIndexView,
+                                              val removeView: RemoveIndexView,
                                               require: RequiredAnswerActionProvider
                                  )(implicit ec: ExecutionContext) extends RemoveIndexController with I18nSupport {
 
   override val messagesPrefix : String = "removeATrustee"
 
-  override val form: Form[Boolean] = formProvider.apply(messagesPrefix)
+  override def page(index: Int) : QuestionPage[FullName] = TrusteesNamePage(index)
 
   def actions(draftId : String, index: Int) =
     identify andThen getData(draftId) andThen
       requireData andThen
-      require(RequiredAnswer(TrusteesNamePage(index), redirect(draftId)))
+      require(RequiredAnswer(page(index), redirect(draftId)))
 
   override def redirect(draftId : String) : Call =
     routes.AddATrusteeController.onPageLoad(draftId)
@@ -61,20 +62,10 @@ class RemoveTrusteeController @Inject()(
   override def removeQuery(index: Int): Settable[_] = RemoveTrusteeQuery(index)
 
   override def content(index: Int)(implicit request: DataRequest[AnyContent]) : String =
-    request.userAnswers.get(TrusteesNamePage(index)).get.toString
+    request.userAnswers.get(page(index)).get.toString
 
   override def view(form: Form[_], index: Int, draftId: String)
                    (implicit request: DataRequest[AnyContent], messagesApi: MessagesApi): HtmlFormat.Appendable = {
     removeView(messagesPrefix, form, index, draftId, content(index), formRoute(draftId, index))
-  }
-
-  def onPageLoad(index: Int, draftId: String): Action[AnyContent] = actions(draftId, index) {
-    implicit request =>
-      get(index, draftId)
-  }
-
-  def onSubmit(index: Int, draftId : String) = actions(draftId, index).async {
-    implicit request =>
-      remove(index, draftId)
   }
 }

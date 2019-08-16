@@ -19,17 +19,12 @@ package controllers
 import base.SpecBase
 import forms.ClassBeneficiaryDescriptionFormProvider
 import models.NormalMode
-import navigation.{FakeNavigator, Navigator}
 import pages.ClassBeneficiaryDescriptionPage
-import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.ClassBeneficiaryDescriptionView
 
 class ClassBeneficiaryDescriptionControllerSpec extends SpecBase {
-
-  def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new ClassBeneficiaryDescriptionFormProvider()
   val form = formProvider()
@@ -80,9 +75,7 @@ class ClassBeneficiaryDescriptionControllerSpec extends SpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, classBeneficiaryDescriptionRoute)
@@ -91,7 +84,7 @@ class ClassBeneficiaryDescriptionControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

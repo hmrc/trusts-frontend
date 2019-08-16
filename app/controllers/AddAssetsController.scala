@@ -17,36 +17,39 @@
 package controllers
 
 import controllers.actions._
-import forms.AddAssetsFormProvider
+import forms.{AddAnAssetYesNoFormProvider, AddAssetsFormProvider}
 import javax.inject.Inject
-import models.{Enumerable, Mode}
+import models.{AddAssets, Enumerable, Mode}
 import navigation.Navigator
-import pages.AddAssetsPage
+import pages.{AddAnAssetYesNoPage, AddAssetsPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi, MessagesProvider}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.AddAssetViewHelper
-import views.html.AddAssetsView
+import views.html.{AddAnAssetYesNoView, AddAssetsView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class AddAssetsController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       navigator: Navigator,
-                                       identify: IdentifierAction,
-                                       getData: DraftIdRetrievalActionProvider,
-                                       requireData: DataRequiredAction,
-                                       formProvider: AddAssetsFormProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: AddAssetsView
+                                     override val messagesApi: MessagesApi,
+                                     sessionRepository: SessionRepository,
+                                     navigator: Navigator,
+                                     identify: IdentifierAction,
+                                     getData: DraftIdRetrievalActionProvider,
+                                     requireData: DataRequiredAction,
+                                     addAnotherFormProvider: AddAssetsFormProvider,
+                                     yesNoFormProvider: AddAnAssetYesNoFormProvider,
+                                     val controllerComponents: MessagesControllerComponents,
+                                     addAssetsView: AddAssetsView,
+                                     yesNoView: AddAnAssetYesNoView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
-  val form = formProvider()
+  val addAnotherForm: Form[AddAssets] = addAnotherFormProvider()
+  val yesNoForm: Form[Boolean] = yesNoFormProvider()
 
-  private def routes(draftId: String) =
+  private def actions(draftId: String) =
     identify andThen getData(draftId) andThen requireData
 
   private def heading(count: Int)(implicit mp : MessagesProvider) = {
@@ -57,26 +60,45 @@ class AddAssetsController @Inject()(
     }
   }
 
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = routes(draftId) {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
-      val assets = new AddAssetViewHelper(request.userAnswers).rows
+      val assets = new AddAssetViewHelper(request.userAnswers, draftId).rows
 
       val count = assets.count
 
-      Ok(view(form, mode, draftId, assets.inProgress, assets.complete, heading(count)))
+      count match {
+        case 0 => Ok(yesNoView(addAnotherForm, mode, draftId))
+        case _ => Ok(addAssetsView(addAnotherForm, mode, draftId, assets.inProgress, assets.complete, heading(count)))
+      }
   }
 
-  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = routes(draftId).async {
+  def submitOne(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
-      form.bindFromRequest().fold(
+      yesNoForm.bindFromRequest().fold(
         (formWithErrors: Form[_]) => {
-          val assets = new AddAssetViewHelper(request.userAnswers).rows
+          Future.successful(BadRequest(yesNoView(formWithErrors, mode, draftId)))
+        },
+        value => {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(AddAnAssetYesNoPage, value))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(AddAnAssetYesNoPage, mode, draftId)(updatedAnswers))
+        }
+      )
+  }
+
+  def submitAnother(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
+    implicit request =>
+
+      addAnotherForm.bindFromRequest().fold(
+        (formWithErrors: Form[_]) => {
+          val assets = new AddAssetViewHelper(request.userAnswers, draftId).rows
 
           val count = assets.count
 
-           Future.successful(BadRequest(view(formWithErrors, mode, draftId, assets.inProgress, assets.complete, heading(count))))
+           Future.successful(BadRequest(addAssetsView(formWithErrors, mode, draftId, assets.inProgress, assets.complete, heading(count))))
         },
         value => {
           for {

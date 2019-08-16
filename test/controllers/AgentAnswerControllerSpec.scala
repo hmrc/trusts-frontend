@@ -18,6 +18,7 @@ package controllers
 
 import base.SpecBase
 import models.{InternationalAddress, UKAddress, UserAnswers}
+import navigation.Navigator
 import pages.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentNamePage, AgentTelephoneNumberPage, AgentUKAddressPage}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -126,8 +127,7 @@ class AgentAnswerControllerSpec extends SpecBase {
     "redirect to the next page on a post" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), agentID)
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), agentID, navigator = new Navigator).build()
 
       val request =
         FakeRequest(POST, routes.AgentAnswerController.onSubmit(fakeDraftId).url)

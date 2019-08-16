@@ -33,8 +33,6 @@ import views.html.property_or_land.PropertyLandValueTrustView
 
 class PropertyLandValueTrustControllerSpec extends SpecBase with IndexValidation {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new PropertyLandValueTrustFormProvider()
   val form = formProvider()
 
@@ -95,9 +93,7 @@ class PropertyLandValueTrustControllerSpec extends SpecBase with IndexValidation
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, propertyLandValueTrustRoute)
@@ -107,7 +103,7 @@ class PropertyLandValueTrustControllerSpec extends SpecBase with IndexValidation
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }
