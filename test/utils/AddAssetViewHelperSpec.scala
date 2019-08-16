@@ -17,23 +17,31 @@
 package utils
 
 import base.SpecBase
-import mapping.AssetMonetaryAmount
 import models.ShareClass
 import models.Status.Completed
 import models.WhatKindOfAsset.{Money, Shares}
-import pages.{AssetMoneyValuePage, WhatKindOfAssetPage}
 import pages.entitystatus.AssetStatus
 import pages.shares._
+import pages.{AssetMoneyValuePage, WhatKindOfAssetPage}
 import viewmodels.AddRow
 
 class AddAssetViewHelperSpec extends SpecBase {
+
+  def removeMoneyRoute(index : Int) =
+    controllers.money.routes.RemoveMoneyAssetController.onPageLoad(index, fakeDraftId).url
+
+  def removeSharePortfolioRoute(index : Int) =
+    controllers.shares.routes.RemoveSharePortfolioAssetController.onPageLoad(index, fakeDraftId).url
+
+  def removeShareCompanyRoute(index : Int) =
+    controllers.shares.routes.RemoveShareCompanyNameAssetController.onPageLoad(index, fakeDraftId).url
 
   "AddAssetViewHelper" when {
 
     ".row" must {
 
       "generate Nil for no user answers" in {
-        val rows = new AddAssetViewHelper(emptyUserAnswers).rows
+        val rows = new AddAssetViewHelper(emptyUserAnswers, fakeDraftId).rows
         rows.inProgress mustBe Nil
         rows.complete mustBe Nil
       }
@@ -45,10 +53,10 @@ class AddAssetViewHelperSpec extends SpecBase {
           .set(SharesInAPortfolioPage(0), true).success.value
           .set(WhatKindOfAssetPage(1), Money).success.value
 
-        val rows = new AddAssetViewHelper(userAnswers).rows
+        val rows = new AddAssetViewHelper(userAnswers, fakeDraftId).rows
         rows.inProgress mustBe List(
-          AddRow("No name added", typeLabel = "Shares", "#", "#"),
-          AddRow("No value added", typeLabel = "Money", "#", "#")
+          AddRow("No name added", typeLabel = "Shares", "#", removeSharePortfolioRoute(0)),
+          AddRow("No value added", typeLabel = "Money", "#", removeMoneyRoute(1))
         )
         rows.complete mustBe Nil
       }
@@ -68,10 +76,10 @@ class AddAssetViewHelperSpec extends SpecBase {
           .set(AssetMoneyValuePage(1), "200").success.value
           .set(AssetStatus(1), Completed).success.value
 
-        val rows = new AddAssetViewHelper(userAnswers).rows
+        val rows = new AddAssetViewHelper(userAnswers, fakeDraftId).rows
         rows.complete mustBe List(
-          AddRow("Share Company Name", typeLabel = "Shares", "#", "#"),
-          AddRow("£200", typeLabel = "Money", "#", "#")
+          AddRow("Share Company Name", typeLabel = "Shares", "#", removeShareCompanyRoute(0)),
+          AddRow("£200", typeLabel = "Money", "#", removeMoneyRoute(1))
         )
         rows.inProgress mustBe Nil
       }

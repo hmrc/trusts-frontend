@@ -36,12 +36,15 @@ class AddAssetsControllerSpec extends SpecBase {
 
   lazy val addAssetsRoute = routes.AddAssetsController.onPageLoad(fakeDraftId).url
 
+  def removeMoneyRoute(index: Int) = controllers.money.routes.RemoveMoneyAssetController.onPageLoad(index, fakeDraftId).url
+  def removeShareRoute(index: Int) = controllers.shares.routes.RemoveShareCompanyNameAssetController.onPageLoad(1, fakeDraftId).url
+
   val formProvider = new AddAssetsFormProvider()
   val form = formProvider()
 
-  val assets = List(
-    AddRow("£4800", typeLabel = "Money", "#", "#"),
-    AddRow("Share Company Name", typeLabel = "Shares", "#", "#")
+  lazy val assets = List(
+    AddRow("£4800", typeLabel = "Money", "#", removeMoneyRoute(0)),
+    AddRow("Share Company Name", typeLabel = "Shares", "#", removeShareRoute(1))
   )
 
   val userAnswersWithAssetsComplete = emptyUserAnswers

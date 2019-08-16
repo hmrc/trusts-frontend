@@ -16,24 +16,35 @@
 
 package controllers
 
+import forms.RemoveForm
 import models.requests.DataRequest
+import pages.QuestionPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{AnyContent, Call, Result}
+import play.api.mvc.{Action, ActionBuilder, AnyContent, Call}
 import play.twirl.api.HtmlFormat
 import queries.Settable
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import views.html.RemoveIndexView
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
 trait RemoveIndexController extends FrontendBaseController with I18nSupport {
 
   val messagesPrefix : String
 
-  val form: Form[Boolean]
+  val formProvider : RemoveForm
+
+  val removeView: RemoveIndexView
+
+  lazy val form: Form[Boolean] = formProvider.apply(messagesPrefix)
+
+  def page(index: Int) : QuestionPage[_]
 
   def sessionRepository : SessionRepository
+
+  def actions(draftId: String, index: Int) : ActionBuilder[DataRequest, AnyContent]
 
   def redirect(draftId : String) : Call
 
@@ -43,18 +54,24 @@ trait RemoveIndexController extends FrontendBaseController with I18nSupport {
 
   def content(index: Int)(implicit request: DataRequest[AnyContent]) : String
 
-  def view(form: Form[_], index : Int, draftId : String)
-          (implicit request: DataRequest[AnyContent], messagesApi: MessagesApi) : HtmlFormat.Appendable
+  def view(form: Form[_], index: Int, draftId: String)
+                   (implicit request: DataRequest[AnyContent], messagesApi: MessagesApi): HtmlFormat.Appendable = {
+    removeView(messagesPrefix, form, index, draftId, content(index), formRoute(draftId, index))
+  }
 
-  def get(index : Int, draftId: String)(implicit request: DataRequest[AnyContent]) : Result =
-    Ok(view(form, index, draftId))
+  def onPageLoad(index: Int, draftId: String): Action[AnyContent] = actions(draftId, index) {
+    implicit request =>
+      Ok(view(form, index, draftId))
+  }
 
-  def remove(index : Int, draftId : String)
-            (implicit request : DataRequest[AnyContent], ec: ExecutionContext) = {
+  def onSubmit(index: Int, draftId : String) = actions(draftId, index).async {
+    implicit request =>
+
+      import scala.concurrent.ExecutionContext.Implicits._
+
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(view(formWithErrors, index, draftId))),
-
         value => {
           if (value) {
             for {
