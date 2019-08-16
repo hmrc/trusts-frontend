@@ -41,11 +41,10 @@ class WhatKindOfAssetPageSpec extends PageBehaviours {
     forAll(arbitrary[UserAnswers], kindOfAsset) {
       (initial, kind) =>
         val answers: UserAnswers = initial
-          .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
           .set(AssetMoneyValuePage(0), "200").success.value
           .set(AssetStatus(0), Status.Completed).success.value
 
-        val result = answers.set(WhatKindOfAssetPage(0), kind).success.value
+        val result = answers.set(WhatKindOfAssetPage(0), kind, cleanup = false).success.value
 
         result.get(WhatKindOfAssetPage(0)).value mustEqual kind
         result.get(AssetMoneyValuePage(0)) mustNot be(defined)
@@ -60,7 +59,6 @@ class WhatKindOfAssetPageSpec extends PageBehaviours {
     forAll(arbitrary[UserAnswers], kindOfAsset) {
       (initial, kind) =>
         val answers: UserAnswers = initial
-          .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Shares).success.value
           .set(SharesInAPortfolioPage(0), true).success.value
           .set(SharePortfolioNamePage(0), "Shares").success.value
           .set(SharePortfolioOnStockExchangePage(0), true).success.value
@@ -68,7 +66,7 @@ class WhatKindOfAssetPageSpec extends PageBehaviours {
           .set(SharePortfolioValueInTrustPage(0), "2000").success.value
           .set(AssetStatus(0), Status.Completed).success.value
 
-        val result = answers.set(WhatKindOfAssetPage(0), kind).success.value
+        val result = answers.set(WhatKindOfAssetPage(0), kind, cleanup = false).success.value
 
         result.get(WhatKindOfAssetPage(0)).value mustEqual kind
 
@@ -96,7 +94,7 @@ class WhatKindOfAssetPageSpec extends PageBehaviours {
           .set(ShareValueInTrustPage(0), "2000").success.value
           .set(AssetStatus(0), Status.Completed).success.value
 
-        val result = answers.set(WhatKindOfAssetPage(0), kind).success.value
+        val result = answers.set(WhatKindOfAssetPage(0), kind, cleanup = false).success.value
 
         result.get(WhatKindOfAssetPage(0)).value mustEqual kind
 
@@ -117,7 +115,6 @@ class WhatKindOfAssetPageSpec extends PageBehaviours {
       (initial, kind) =>
 
         val answers: UserAnswers = initial
-          .set(WhatKindOfAssetPage(0), WhatKindOfAsset.PropertyOrLand).success.value
           .set(PropertyOrLandAddressYesNoPage(0), true).success.value
           .set(PropertyOrLandAddressUkYesNoPage(0), true).success.value
           .set(PropertyOrLandUKAddressPage(0), UKAddress(
@@ -131,7 +128,7 @@ class WhatKindOfAssetPageSpec extends PageBehaviours {
           .set(TrustOwnAllThePropertyOrLandPage(0), true).success.value
           .set(AssetStatus(0), Status.Completed).success.value
 
-        val result = answers.set(WhatKindOfAssetPage(0), kind).success.value
+        val result = answers.set(WhatKindOfAssetPage(0), kind, cleanup = false).success.value
 
         result.get(WhatKindOfAssetPage(0)).value mustEqual kind
 

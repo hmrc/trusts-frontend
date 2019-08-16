@@ -33,8 +33,8 @@ final case class WhatKindOfAssetPage(index: Int) extends QuestionPage[WhatKindOf
   override def cleanup(value: Option[WhatKindOfAsset], userAnswers: UserAnswers): Try[UserAnswers] = {
     userAnswers.get(WhatKindOfAssetPage(index)) match {
       case Some(newKind) =>
-        userAnswers.remove(RemoveAssetQuery(index))
-          .flatMap(_.set(WhatKindOfAssetPage(index), newKind))
+        userAnswers.remove(RemoveAssetQuery(index), cleanup = false)
+          .flatMap(_.set(WhatKindOfAssetPage(index), newKind, cleanup = false))
       case None =>
         super.cleanup(value, userAnswers)
     }
