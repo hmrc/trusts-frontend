@@ -50,7 +50,7 @@ class AddAssetViewHelper(userAnswers: UserAnswers, draftId : String)(implicit  m
         Some(AddRow(mvm.name.getOrElse(defaultName), mvm.`type`.toString, "#", removeRoute.url))
       case mvm : PropertyOrLandAddressAssetViewModel =>
         val defaultName = messages("entities.no.address.added")
-        Some(AddRow(mvm.address.getOrElse(defaultName), mvm.`type`.toString, "#", "#"))
+        Some(AddRow(mvm.address.getOrElse(defaultName), mvm.`type`.toString, "#", controllers.property_or_land.routes.RemovePropertyOrLandWithAddressUKController.onPageLoad(asset._2, draftId).url))
       case _ =>
         None
     }

@@ -38,6 +38,9 @@ class AddAssetViewHelperSpec extends SpecBase {
   def removeShareCompanyRoute(index : Int) =
     controllers.shares.routes.RemoveShareCompanyNameAssetController.onPageLoad(index, fakeDraftId).url
 
+  def removePropertyOrLandRoute(index : Int) =
+    controllers.property_or_land.routes.RemovePropertyOrLandWithAddressUKController.onPageLoad(index, fakeDraftId).url
+
   "AddAssetViewHelper" when {
 
     ".row" must {
@@ -61,7 +64,7 @@ class AddAssetViewHelperSpec extends SpecBase {
         rows.inProgress mustBe List(
           AddRow("No name added", typeLabel = "Shares", "#", removeSharePortfolioRoute(0)),
           AddRow("No value added", typeLabel = "Money", "#", removeMoneyRoute(1)),
-          AddRow("No address added", typeLabel = "PropertyOrLand", "#", "#")
+          AddRow("No address added", typeLabel = "PropertyOrLand", "#", removePropertyOrLandRoute(2))
         )
         rows.complete mustBe Nil
       }
@@ -91,7 +94,7 @@ class AddAssetViewHelperSpec extends SpecBase {
         rows.complete mustBe List(
           AddRow("Share Company Name", typeLabel = "Shares", "#", removeShareCompanyRoute(0)),
           AddRow("£200", typeLabel = "Money", "#", removeMoneyRoute(1)),
-          AddRow("line 1", typeLabel = "Property or Land", "#", "#")
+          AddRow("line 1", typeLabel = "Property or Land", "#", removePropertyOrLandRoute(2))
         )
         rows.inProgress mustBe Nil
       }
