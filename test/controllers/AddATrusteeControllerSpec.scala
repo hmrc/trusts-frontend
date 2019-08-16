@@ -19,10 +19,10 @@ package controllers
 import base.SpecBase
 import forms.AddATrusteeFormProvider
 import models.Status.Completed
-import models.{AddATrustee, FullName, IndividualOrBusiness, NormalMode, UserAnswers}
+import models.{AddATrustee, FullName, IndividualOrBusiness, NormalMode}
 import navigation.{FakeNavigator, Navigator}
 import pages.entitystatus.TrusteeStatus
-import pages.{TrusteeIndividualOrBusinessPage, TrusteesNamePage}
+import pages.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage, TrusteesNamePage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -67,7 +67,7 @@ class AddATrusteeControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId,Nil, trustee, true)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId,Nil, trustee, false)(fakeRequest, messages).toString
 
       application.stop()
     }

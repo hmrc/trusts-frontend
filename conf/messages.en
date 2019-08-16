@@ -989,8 +989,3 @@ propertyOrLandAddressYesNo.error.required = Select yes if the property or land h
 
 propertyOrLandAnswers.title = Check property or land details
 propertyOrLandAnswers.heading = Check property or land details
-
-trusteeRemoveYesNo.title = trusteeRemoveYesNo
-trusteeRemoveYesNo.heading = trusteeRemoveYesNo
-trusteeRemoveYesNo.checkYourAnswersLabel = trusteeRemoveYesNo
-trusteeRemoveYesNo.error.required = Select yes if trusteeRemoveYesNo
