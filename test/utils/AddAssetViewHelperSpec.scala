@@ -17,6 +17,7 @@
 package utils
 
 import base.SpecBase
+import models.ShareClass
 import models.Status.Completed
 import models.WhatKindOfAsset.{Money, PropertyOrLand, Shares}
 import models.{ShareClass, UKAddress}
@@ -28,12 +29,21 @@ import viewmodels.AddRow
 
 class AddAssetViewHelperSpec extends SpecBase {
 
+  def removeMoneyRoute(index : Int) =
+    controllers.money.routes.RemoveMoneyAssetController.onPageLoad(index, fakeDraftId).url
+
+  def removeSharePortfolioRoute(index : Int) =
+    controllers.shares.routes.RemoveSharePortfolioAssetController.onPageLoad(index, fakeDraftId).url
+
+  def removeShareCompanyRoute(index : Int) =
+    controllers.shares.routes.RemoveShareCompanyNameAssetController.onPageLoad(index, fakeDraftId).url
+
   "AddAssetViewHelper" when {
 
     ".row" must {
 
       "generate Nil for no user answers" in {
-        val rows = new AddAssetViewHelper(emptyUserAnswers).rows
+        val rows = new AddAssetViewHelper(emptyUserAnswers, fakeDraftId).rows
         rows.inProgress mustBe Nil
         rows.complete mustBe Nil
       }
@@ -47,10 +57,10 @@ class AddAssetViewHelperSpec extends SpecBase {
           .set(WhatKindOfAssetPage(2), PropertyOrLand).success.value
           .set(PropertyOrLandAddressYesNoPage(2), true).success.value
 
-        val rows = new AddAssetViewHelper(userAnswers).rows
+        val rows = new AddAssetViewHelper(userAnswers, fakeDraftId).rows
         rows.inProgress mustBe List(
-          AddRow("No name added", typeLabel = "Shares", "#", "#"),
-          AddRow("No value added", typeLabel = "Money", "#", "#"),
+          AddRow("No name added", typeLabel = "Shares", "#", removeSharePortfolioRoute(0)),
+          AddRow("No value added", typeLabel = "Money", "#", removeMoneyRoute(1)),
           AddRow("No address added", typeLabel = "PropertyOrLand", "#", "#")
         )
         rows.complete mustBe Nil
@@ -77,10 +87,10 @@ class AddAssetViewHelperSpec extends SpecBase {
           .set(PropertyOrLandTotalValuePage(2), "100").success.value
           .set(TrustOwnAllThePropertyOrLandPage(2), true).success.value
 
-        val rows = new AddAssetViewHelper(userAnswers).rows
+        val rows = new AddAssetViewHelper(userAnswers, fakeDraftId).rows
         rows.complete mustBe List(
-          AddRow("Share Company Name", typeLabel = "Shares", "#", "#"),
-          AddRow("£200", typeLabel = "Money", "#", "#"),
+          AddRow("Share Company Name", typeLabel = "Shares", "#", removeShareCompanyRoute(0)),
+          AddRow("£200", typeLabel = "Money", "#", removeMoneyRoute(1)),
           AddRow("line 1", typeLabel = "Property or Land", "#", "#")
         )
         rows.inProgress mustBe Nil

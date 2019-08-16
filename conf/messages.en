@@ -510,6 +510,18 @@ assetMoneyValue.error.wholeNumber = Total assets value must be a whole number
 assetMoneyValue.error.zero = Total amount of money in the trust must be 1 or more
 assetMoneyValue.link = Return to registration progress
 
+removeMoneyAsset.title = Are you sure you want to remove {0}?
+removeMoneyAsset.heading = Are you sure you want to remove {0}?
+removeMoneyAsset.error.required = Select yes if you want to remove the money
+
+removeShareAsset.title = Are you sure you want to remove {0}?
+removeShareAsset.heading = Are you sure you want to remove {0}?
+removeShareAsset.error.required = Select yes if you want to remove the share
+
+removePropertyOrLandAsset.title = Are you sure you want to remove {0}?
+removePropertyOrLandAsset.heading = Are you sure you want to remove {0}?
+removePropertyOrLandAsset.error.required = Select yes if you want to remove the property or land
+
 whatKindOfAsset.first.title = What kind of asset do you need to add first?
 whatKindOfAsset.next.title = What kind of asset do you need to add next?
 whatKindOfAsset.first.heading = What kind of asset do you need to add first?
@@ -986,3 +998,7 @@ propertyOrLandAddressYesNo.error.required = Select yes if the property or land h
 
 propertyOrLandAnswers.title = Check property or land details
 propertyOrLandAnswers.heading = Check property or land details
+
+addAnAssetYesNo.title = Do you want to add an asset?
+addAnAssetYesNo.heading = Do you want to add an asset?
+addAnAssetYesNo.error.required = Select yes if you want to add an asset

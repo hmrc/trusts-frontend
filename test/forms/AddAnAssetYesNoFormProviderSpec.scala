@@ -16,21 +16,30 @@
 
 package forms
 
-import javax.inject.Inject
+import forms.behaviours.BooleanFieldBehaviours
+import play.api.data.FormError
 
-import forms.mappings.Mappings
-import play.api.data.Form
+class AddAnAssetYesNoFormProviderSpec extends BooleanFieldBehaviours {
 
-trait RemoveForm {
+  val requiredKey = "addAnAssetYesNo.error.required"
+  val invalidKey = "error.boolean"
 
-  def apply(prefix : String) : Form[Boolean]
+  val form = new AddAnAssetYesNoFormProvider()()
 
-}
+  ".value" must {
 
-class RemoveIndexFormProvider @Inject() extends Mappings with RemoveForm {
+    val fieldName = "value"
 
-  override def apply(prefix : String): Form[Boolean] =
-    Form(
-      "value" -> boolean(s"$prefix.error.required")
+    behave like booleanField(
+      form,
+      fieldName,
+      invalidError = FormError(fieldName, invalidKey)
     )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
+  }
 }

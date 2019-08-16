@@ -19,7 +19,7 @@ package utils
 import base.SpecBase
 import controllers.routes
 import models.Status.Completed
-import models.{FullName, NormalMode, WhatTypeOfBeneficiary}
+import models.{FullName, WhatTypeOfBeneficiary}
 import pages.entitystatus.{ClassBeneficiaryStatus, IndividualBeneficiaryStatus}
 import pages.{ClassBeneficiaryDescriptionPage, IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage, WhatTypeOfBeneficiaryPage}
 import viewmodels.AddRow

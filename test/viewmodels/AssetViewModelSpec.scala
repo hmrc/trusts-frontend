@@ -71,7 +71,7 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks 
             """.stripMargin)
 
           json.validate[AssetViewModel] mustEqual JsSuccess(
-            ShareAssetViewModel(Shares, None, InProgress)
+            ShareAssetViewModel(Shares, false, None, InProgress)
           )
 
         }
@@ -92,7 +92,7 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks 
             """.stripMargin)
 
           json.validate[AssetViewModel] mustEqual JsSuccess(
-            ShareAssetViewModel(Shares, Some("adam"), Completed)
+            ShareAssetViewModel(Shares, false, Some("adam"), Completed)
           )
         }
 
@@ -112,7 +112,7 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks 
             """.stripMargin)
 
           json.validate[AssetViewModel] mustEqual JsSuccess(
-            ShareAssetViewModel(Shares, None, InProgress)
+            ShareAssetViewModel(Shares, true, None, InProgress)
           )
 
         }
@@ -132,7 +132,7 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks 
             """.stripMargin)
 
           json.validate[AssetViewModel] mustEqual JsSuccess(
-            ShareAssetViewModel(Shares, Some("adam"), Completed)
+            ShareAssetViewModel(Shares, true, Some("adam"), Completed)
           )
         }
 

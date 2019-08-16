@@ -22,8 +22,8 @@ import scala.language.implicitConversions
 
 final case class UKAddress(
                             line1: String,
-                            line2: Option[String],
-                            line3: Option[String],
+                            line2: Option[String] = None,
+                            line3: Option[String] = None,
                             townOrCity: String,
                             postcode: String
                           ) extends Address
@@ -36,8 +36,8 @@ object UKAddress {
 final case class InternationalAddress(
                                        line1: String,
                                        line2: String,
-                                       line3: Option[String],
-                                       line4: Option[String],
+                                       line3: Option[String] = None,
+                                       line4: Option[String] = None,
                                        country: String
                                      ) extends Address
 

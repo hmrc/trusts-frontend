@@ -23,28 +23,45 @@ import sections.Assets
 import viewmodels.addAnother._
 import viewmodels.{AddRow, AddToRows}
 
-class AddAssetViewHelper(userAnswers: UserAnswers)(implicit  messages: Messages) {
+class AddAssetViewHelper(userAnswers: UserAnswers, draftId : String)(implicit  messages: Messages) {
 
-  private def parseAsset(asset: AssetViewModel) : Option[AddRow] = asset match {
-    case mvm : MoneyAssetViewModel =>
-      val defaultValue = messages("entities.no.value.added")
-      Some(AddRow(mvm.value.getOrElse(defaultValue), mvm.`type`.toString, "#", "#"))
-    case mvm : ShareAssetViewModel =>
-      val defaultName = messages("entities.no.name.added")
-      Some(AddRow(mvm.name.getOrElse(defaultName), mvm.`type`.toString, "#", "#"))
-    case mvm : PropertyOrLandAddressAssetViewModel =>
-      val defaultName = messages("entities.no.address.added")
-      Some(AddRow(mvm.address.getOrElse(defaultName), mvm.`type`.toString, "#", "#"))
-    case _ =>
-      None
+  private def parseAsset(asset: (AssetViewModel, Int)) : Option[AddRow] = {
+    val vm = asset._1
+
+    vm match {
+      case mvm : MoneyAssetViewModel =>
+        val defaultValue = messages("entities.no.value.added")
+        Some(
+          AddRow(
+            mvm.value.getOrElse(defaultValue),
+            mvm.`type`.toString,
+            "#",
+            controllers.money.routes.RemoveMoneyAssetController.onPageLoad(asset._2, draftId).url
+          ))
+      case mvm : ShareAssetViewModel =>
+        val defaultName = messages("entities.no.name.added")
+
+        val removeRoute = if(mvm.inPortfolio) {
+          controllers.shares.routes.RemoveSharePortfolioAssetController.onPageLoad(asset._2, draftId)
+        } else {
+          controllers.shares.routes.RemoveShareCompanyNameAssetController.onPageLoad(asset._2, draftId)
+        }
+
+        Some(AddRow(mvm.name.getOrElse(defaultName), mvm.`type`.toString, "#", removeRoute.url))
+      case mvm : PropertyOrLandAddressAssetViewModel =>
+        val defaultName = messages("entities.no.address.added")
+        Some(AddRow(mvm.address.getOrElse(defaultName), mvm.`type`.toString, "#", "#"))
+      case _ =>
+        None
+    }
   }
 
   def rows : AddToRows = {
-    val assets = userAnswers.get(Assets).toList.flatten
+    val assets = userAnswers.get(Assets).toList.flatten.zipWithIndex
 
-    val completed : List[AddRow] = assets.filter(_.status == Completed).flatMap(parseAsset)
+    val completed : List[AddRow] = assets.filter(_._1.status == Completed).flatMap(parseAsset)
 
-    val inProgress : List[AddRow] = assets.filterNot(_.status == Completed).flatMap(parseAsset)
+    val inProgress : List[AddRow] = assets.filterNot(_._1.status == Completed).flatMap(parseAsset)
 
     AddToRows(inProgress, completed)
   }
