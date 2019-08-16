@@ -21,18 +21,14 @@ import controllers.IndexValidation
 import forms.shares.SharesInAPortfolioFormProvider
 import generators.ModelGenerators
 import models.NormalMode
-import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.shares.SharesInAPortfolioPage
-import play.api.inject.bind
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.shares.SharesInAPortfolioView
 
 class SharesInAPortfolioControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
-
-  def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new SharesInAPortfolioFormProvider()
   val form = formProvider()
@@ -82,10 +78,7 @@ class SharesInAPortfolioControllerSpec extends SpecBase with ModelGenerators wit
 
     "redirect to the next page when valid data is submitted" in {
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, sharesInAPortfolioRoute)
@@ -95,7 +88,7 @@ class SharesInAPortfolioControllerSpec extends SpecBase with ModelGenerators wit
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

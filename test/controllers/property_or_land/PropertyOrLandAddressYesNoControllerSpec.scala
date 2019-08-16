@@ -31,8 +31,6 @@ import views.html.property_or_land.PropertyOrLandAddressYesNoView
 
 class PropertyOrLandAddressYesNoControllerSpec extends SpecBase with IndexValidation {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new PropertyOrLandAddressYesNoFormProvider()
   val form = formProvider()
 
@@ -83,9 +81,7 @@ class PropertyOrLandAddressYesNoControllerSpec extends SpecBase with IndexValida
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, propertyOrLandAddressYesNoRoute)
@@ -95,7 +91,7 @@ class PropertyOrLandAddressYesNoControllerSpec extends SpecBase with IndexValida
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

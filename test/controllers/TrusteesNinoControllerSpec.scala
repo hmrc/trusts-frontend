@@ -30,8 +30,6 @@ import views.html.TrusteesNinoView
 
 class TrusteesNinoControllerSpec extends SpecBase with IndexValidation {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val messageKeyPrefix = "trusteesNino"
   val formProvider = new TrusteesNinoFormProvider()
   val form = formProvider(messageKeyPrefix)
@@ -137,9 +135,7 @@ class TrusteesNinoControllerSpec extends SpecBase with IndexValidation {
         .set(IsThisLeadTrusteePage(index), false).success.value
 
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, trusteesNinoRoute)
@@ -148,7 +144,7 @@ class TrusteesNinoControllerSpec extends SpecBase with IndexValidation {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

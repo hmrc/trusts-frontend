@@ -214,6 +214,18 @@ POST       /:draftId/asset/:index/money                          controllers.Ass
 GET        /:draftId/asset/:index/change-money                   controllers.AssetMoneyValueController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
 POST       /:draftId/asset/:index/change-money                   controllers.AssetMoneyValueController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
+GET        /:draftId/asset/:index/money/remove                        controllers.money.RemoveMoneyAssetController.onPageLoad(index: Int, draftId: String)
+POST       /:draftId/asset/:index/money/remove                        controllers.money.RemoveMoneyAssetController.onSubmit(index: Int, draftId: String)
+
+GET        /:draftId/asset/:index/property-or-land/description/remove                        controllers.property_or_land.RemovePropertyOrLandWithDescriptionController.onPageLoad(index: Int, draftId: String)
+POST       /:draftId/asset/:index/property-or-land/description/remove                        controllers.property_or_land.RemovePropertyOrLandWithDescriptionController.onSubmit(index: Int, draftId: String)
+
+GET        /:draftId/asset/:index/property-or-land/address/uk/remove                        controllers.property_or_land.RemovePropertyOrLandWithAddressUKController.onPageLoad(index: Int, draftId: String)
+POST       /:draftId/asset/:index/property-or-land/address/uk/remove                        controllers.property_or_land.RemovePropertyOrLandWithAddressUKController.onSubmit(index: Int, draftId: String)
+
+GET        /:draftId/asset/:index/property-or-land/address/international/remove                        controllers.property_or_land.RemovePropertyOrLandWithAddressInternationalController.onPageLoad(index: Int, draftId: String)
+POST       /:draftId/asset/:index/property-or-land/address/international/remove                        controllers.property_or_land.RemovePropertyOrLandWithAddressInternationalController.onSubmit(index: Int, draftId: String)
+
 GET        /:draftId/asset/:index/property-or-land/description                         controllers.property_or_land.PropertyOrLandDescriptionController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
 POST       /:draftId/asset/:index/property-or-land/description                         controllers.property_or_land.PropertyOrLandDescriptionController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
 GET        /:draftId/asset/:index/change-property-or-land/description                  controllers.property_or_land.PropertyOrLandDescriptionController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
@@ -483,8 +495,6 @@ POST       /:draftId/asset/:index/change-shares-on-stock-exchange               
 GET       /:draftId/asset/:index/check-share-answers                           controllers.shares.ShareAnswerController.onPageLoad(index : Int, draftId : String)
 POST      /:draftId/asset/:index/check-share-answers                           controllers.shares.ShareAnswerController.onSubmit(index : Int, draftId : String)
 
-
-
 GET        /:draftId/settlorIndividualOrBusiness                        controllers.SettlorIndividualOrBusinessController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
 POST       /:draftId/settlorIndividualOrBusiness                        controllers.SettlorIndividualOrBusinessController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
 GET        /:draftId/changeSettlorIndividualOrBusiness                  controllers.SettlorIndividualOrBusinessController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
@@ -554,3 +564,10 @@ GET        /:draftId/settlorIndividualPassportYesNo                        contr
 POST       /:draftId/settlorIndividualPassportYesNo                        controllers.SettlorIndividualPassportYesNoController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
 GET        /:draftId/changeSettlorIndividualPassportYesNo                  controllers.SettlorIndividualPassportYesNoController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
 POST       /:draftId/changeSettlorIndividualPassportYesNo                  controllers.SettlorIndividualPassportYesNoController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+
+GET        /:draftId/asset/:index/share/company/remove                        controllers.shares.RemoveShareCompanyNameAssetController.onPageLoad(index: Int, draftId: String)
+POST       /:draftId/asset/:index/share/company/remove                        controllers.shares.RemoveShareCompanyNameAssetController.onSubmit(index: Int, draftId: String)
+
+GET        /:draftId/asset/:index/share/portfolio/remove                        controllers.shares.RemoveSharePortfolioAssetController.onPageLoad(index: Int, draftId: String)
+POST       /:draftId/asset/:index/share/portfolio/remove                        controllers.shares.RemoveSharePortfolioAssetController.onSubmit(index: Int, draftId: String)
+

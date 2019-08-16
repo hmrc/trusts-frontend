@@ -32,8 +32,6 @@ import views.html.components.heading
 
 class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new TrusteesNameFormProvider()
 
   val index = 0
@@ -227,9 +225,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
             .set(IsThisLeadTrusteePage(index), false).success.value
 
           val application =
-            applicationBuilder(userAnswers = Some(userAnswers))
-              .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-              .build()
+            applicationBuilder(userAnswers = Some(userAnswers)).build()
 
           val request =
             FakeRequest(POST, trusteesNameRoute)
@@ -238,7 +234,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual onwardRoute.url
+          redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
           application.stop()
         }
@@ -248,9 +244,7 @@ class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
           val userAnswers = emptyUserAnswers
 
           val application =
-            applicationBuilder(userAnswers = Some(userAnswers))
-              .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-              .build()
+            applicationBuilder(userAnswers = Some(userAnswers)).build()
 
           val request =
             FakeRequest(POST, trusteesNameRoute)

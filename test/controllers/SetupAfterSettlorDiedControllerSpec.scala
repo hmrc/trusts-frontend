@@ -30,8 +30,6 @@ import views.html.SetupAfterSettlorDiedView
 
 class SetupAfterSettlorDiedControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new SetupAfterSettlorDiedFormProvider()
   val form = formProvider()
 
@@ -80,9 +78,7 @@ class SetupAfterSettlorDiedControllerSpec extends SpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, setupAfterSettlorDiedRoute)
@@ -92,7 +88,7 @@ class SetupAfterSettlorDiedControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

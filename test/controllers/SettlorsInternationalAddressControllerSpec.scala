@@ -18,11 +18,8 @@ package controllers
 
 import base.SpecBase
 import forms.InternationalAddressFormProvider
-import models.{FullName, InternationalAddress, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.{FullName, InternationalAddress, NormalMode}
 import pages.{SettlorsInternationalAddressPage, SettlorsNamePage}
-import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.InputOption
@@ -30,8 +27,6 @@ import utils.countryOptions.CountryOptionsNonUK
 import views.html.SettlorsInternationalAddressView
 
 class SettlorsInternationalAddressControllerSpec extends SpecBase {
-
-  def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new InternationalAddressFormProvider()
   val form = formProvider()
@@ -95,9 +90,7 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
         name).success.value
 
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, settlorsInternationalAddressRoute)
@@ -107,7 +100,7 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

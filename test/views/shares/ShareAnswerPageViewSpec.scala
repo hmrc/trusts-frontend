@@ -14,19 +14,23 @@
  * limitations under the License.
  */
 
-package pages
+package views.shares
 
-import models.IndividualOrBusiness
-import pages.behaviours.PageBehaviours
+import views.behaviours.ViewBehaviours
+import views.html.shares.ShareAnswersView
 
-class SettlorIndividualOrBusinessSpec extends PageBehaviours {
+class ShareAnswerPageViewSpec extends ViewBehaviours {
 
-  "SettlorIndividualOrBusinessPage" must {
+  val index = 0
 
-    beRetrievable[IndividualOrBusiness](SettlorIndividualOrBusinessPage(0))
+  "ShareAnswerPageView view" must {
 
-    beSettable[IndividualOrBusiness](SettlorIndividualOrBusinessPage(0))
+    val view = viewFor[ShareAnswersView](Some(emptyUserAnswers))
 
-    beRemovable[IndividualOrBusiness](SettlorIndividualOrBusinessPage(0))
+    val applyView = view.apply(index, fakeDraftId, Nil)(fakeRequest, messages)
+
+    behave like normalPage(applyView, "shareAnswers")
+
+    behave like pageWithBackLink(applyView)
   }
 }

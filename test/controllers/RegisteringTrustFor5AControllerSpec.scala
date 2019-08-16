@@ -29,8 +29,6 @@ import views.html.RegisteringTrustFor5AView
 
 class RegisteringTrustFor5AControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new RegisteringTrustFor5AFormProvider()
   val form = formProvider()
 
@@ -79,9 +77,7 @@ class RegisteringTrustFor5AControllerSpec extends SpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, registeringTrustFor5ARoute)
@@ -91,7 +87,7 @@ class RegisteringTrustFor5AControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

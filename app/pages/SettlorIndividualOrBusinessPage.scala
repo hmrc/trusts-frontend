@@ -16,7 +16,7 @@
 
 package pages
 
-import models.{IndividualOrBusiness}
+import models.IndividualOrBusiness
 import play.api.libs.json.JsPath
 
 final case class SettlorIndividualOrBusinessPage(index : Int) extends QuestionPage[IndividualOrBusiness] {

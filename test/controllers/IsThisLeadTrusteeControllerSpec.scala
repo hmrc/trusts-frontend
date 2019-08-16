@@ -30,8 +30,6 @@ import views.html.IsThisLeadTrusteeView
 
 class IsThisLeadTrusteeControllerSpec extends SpecBase with IndexValidation {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new IsThisLeadTrusteeFormProvider()
   val form = formProvider()
 
@@ -72,7 +70,7 @@ class IsThisLeadTrusteeControllerSpec extends SpecBase with IndexValidation {
           .set(IsThisLeadTrusteePage(1), false).success.value
 
         val application =
-          applicationBuilder(userAnswers = Some(answers))
+          applicationBuilder(userAnswers = Some(answers), navigator = new Navigator)
             .build()
 
         val request = FakeRequest(GET, routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 1, fakeDraftId).url)
@@ -109,9 +107,7 @@ class IsThisLeadTrusteeControllerSpec extends SpecBase with IndexValidation {
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, isThisLeadTrusteeRoute)
@@ -121,7 +117,7 @@ class IsThisLeadTrusteeControllerSpec extends SpecBase with IndexValidation {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

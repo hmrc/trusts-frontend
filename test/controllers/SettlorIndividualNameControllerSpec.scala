@@ -18,16 +18,14 @@ package controllers
 
 import base.SpecBase
 import forms.SettlorIndividualNameFormProvider
-import models.{FullName, NormalMode, UserAnswers}
+import models.{FullName, NormalMode}
 import navigation.{FakeNavigator, Navigator}
-import pages.{IndividualBeneficiaryNamePage, SettlorIndividualNamePage}
+import pages.SettlorIndividualNamePage
 import play.api.inject.bind
-import play.api.libs.json.Json
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.SettlorIndividualNameView
-import utils._
 
 class SettlorIndividualNameControllerSpec extends SpecBase {
 
@@ -84,9 +82,7 @@ class SettlorIndividualNameControllerSpec extends SpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, settlorIndividualNameRoute)
