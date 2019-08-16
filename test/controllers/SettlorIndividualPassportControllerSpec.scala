@@ -64,7 +64,7 @@ class SettlorIndividualPassportControllerSpec extends SpecBase {
 
       val userAnswers = emptyUserAnswers.set(SettlorIndividualPassportPage(index), SettlorIndividualPassport("Field 1", "Field 2")).success.value
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, settlorIndividualPassportRoute)
 

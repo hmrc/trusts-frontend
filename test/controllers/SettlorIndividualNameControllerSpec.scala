@@ -18,9 +18,9 @@ package controllers
 
 import base.SpecBase
 import forms.SettlorIndividualNameFormProvider
-import models.{NormalMode, FullName, UserAnswers}
+import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.SettlorIndividualNamePage
+import pages.{IndividualBeneficiaryNamePage, SettlorIndividualNamePage}
 import play.api.inject.bind
 import play.api.libs.json.Json
 import play.api.mvc.Call
@@ -62,7 +62,10 @@ class SettlorIndividualNameControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = emptyUserAnswers
+        .set(SettlorIndividualNamePage(index), FullName("first name", Some("middle name"), "last name")).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, settlorIndividualNameRoute)
 
@@ -73,7 +76,7 @@ class SettlorIndividualNameControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(FullName("value 1", None, "value 2")), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(form.fill(FullName("first name", Some("middle name"), "last name")), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -87,7 +90,7 @@ class SettlorIndividualNameControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, settlorIndividualNameRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+          .withFormUrlEncodedBody(("firstName", "first"), ("middleName", "middle"), ("lastName", "last"))
 
       val result = route(application, request).value
 

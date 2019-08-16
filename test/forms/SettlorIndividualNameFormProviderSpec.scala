@@ -27,8 +27,8 @@ class SettlorIndividualNameFormProviderSpec extends StringFieldBehaviours {
     ".firstName" must {
 
       val fieldName = "firstName"
-      val requiredKey = "settlorIndividualName.error.firstnamerequired"
-      val lengthKey = "settlorIndividualName.error.lengthfirstname"
+      val requiredKey = "settlorIndividualName.error.firstname.required"
+      val lengthKey = "settlorIndividualName.error.firstname.length"
       val maxLength = 35
 
       behave like fieldThatBindsValidData(
@@ -60,7 +60,7 @@ class SettlorIndividualNameFormProviderSpec extends StringFieldBehaviours {
     ".middleName" must {
 
       val fieldName = "middleName"
-      val lengthKey = "settlorIndividualName.error.lengthmiddlename"
+      val lengthKey = "settlorIndividualName.error.middlename.length"
       val maxLength = 35
 
       behave like fieldWithMaxLength(
@@ -80,8 +80,8 @@ class SettlorIndividualNameFormProviderSpec extends StringFieldBehaviours {
     ".lastName" must {
 
       val fieldName = "lastName"
-      val requiredKey = "settlorIndividualName.error.lastnamerequired"
-      val lengthKey = "settlorIndividualName.error.lengthlastname"
+      val requiredKey = "settlorIndividualName.error.lastname.required"
+      val lengthKey = "settlorIndividualName.error.lastname.length"
       val maxLength = 35
 
       behave like fieldThatBindsValidData(

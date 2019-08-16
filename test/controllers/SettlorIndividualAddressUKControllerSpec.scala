@@ -88,7 +88,7 @@ class SettlorIndividualAddressUKControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, settlorIndividualAddressUKRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+          .withFormUrlEncodedBody(("line1", "value 1"), ("townOrCity", "value 2"),("postcode", "NE1 1ZZ"))
 
       val result = route(application, request).value
 

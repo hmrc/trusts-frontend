@@ -9,6 +9,9 @@ date.year = Year
 address.country = Country
 address.country.select = Select a country
 
+unauthorised.title = You can’t access this service with this account
+unauthorised.heading = You can’t access this service with this account
+
 error.browser.title.prefix = Error:
 error.boolean = Please give an answer
 error.date.day_blank = Enter a day
@@ -77,29 +80,22 @@ ukAddress.error.line3.invalidCharacters = Address line 3 must only include lette
 ukAddress.error.townOrCity.invalidCharacters = Town or city must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
 ukAddress.error.postcode.invalidCharacters = Enter a real postcode
 
-site.address.international.title = What is {0}’s address?
-site.address.international.heading = What is {0}’s address?
 site.address.international.line1 = Address line 1
 site.address.international.line2 = Address line 2
 site.address.international.line3 = Address line 3 (optional)
 site.address.international.line4 = Address line 4 (optional)
 site.address.international.country = Country
-site.address.international.checkYourAnswersLabel = What is {0}’s address?
-
-internationalAddress.error.line1.required = Enter address line 1
-internationalAddress.error.line2.required = Enter address line 2
-internationalAddress.error.country.required = Select a country
-internationalAddress.error.line1.length = Address line 1 must be 35 characters or less
-internationalAddress.error.line2.length = Address line 2 must be 35 characters or less
-internationalAddress.error.line3.length = Address line 3 must be 35 characters or less
-internationalAddress.error.line4.length = Address line 4 must be 35 characters or less
-internationalAddress.error.line1.invalidCharacters = Address line 1 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
-internationalAddress.error.line2.invalidCharacters = Address line 2 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
-internationalAddress.error.line3.invalidCharacters = Address line 3 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
-internationalAddress.error.line4.invalidCharacters = Address line 4 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
-
-unauthorised.title = You can’t access this service with this account
-unauthorised.heading = You can’t access this service with this account
+site.address.international.line1.required = Enter address line 1
+site.address.international.line2.required = Enter address line 2
+site.address.international.country.required = Select a country
+site.address.international.line1.length = Address line 1 must be 35 characters or less
+site.address.international.line2.length = Address line 2 must be 35 characters or less
+site.address.international.line3.length = Address line 3 must be 35 characters or less
+site.address.international.line4.length = Address line 4 must be 35 characters or less
+site.address.international.line1.invalidCharacters = Address line 1 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+site.address.international.line2.invalidCharacters = Address line 2 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+site.address.international.line3.invalidCharacters = Address line 3 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+site.address.international.line4.invalidCharacters = Address line 4 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
 
 individualOrBusiness.individual = Individual
 individualOrBusiness.business = Business

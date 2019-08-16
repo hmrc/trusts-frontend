@@ -14,38 +14,42 @@
  * limitations under the License.
  *@
 
+@import utils.InputOption
+
 @(
-form:Form[_]
+form:Form[_], countryOptions: Seq[InputOption]
 )(implicit messages: Messages)
 
 
 @components.input_text(
   field = form("line1"),
-  label = messages("site.address.uk.line1"),
+  label = messages("site.address.international.line1"),
   inputClass = Some("form-control-3-4")
 )
 
 @components.input_text(
   field = form("line2"),
-  label = messages("site.address.uk.line2"),
+  label = messages("site.address.international.line2"),
   inputClass = Some("form-control-3-4")
 )
 
 @components.input_text(
   field = form("line3"),
-  label = messages("site.address.uk.line3"),
+  label = messages("site.address.international.line3"),
   inputClass = Some("form-control-3-4")
 )
 
 @components.input_text(
-  field = form("townOrCity"),
-  label = messages("site.address.uk.townOrCity"),
-  inputClass = Some("form-control-2-3")
+  field = form("line4"),
+  label = messages("site.address.international.line4"),
+  inputClass = Some("form-control-3-4")
 )
 
-@components.input_text(
-  field = form("postcode"),
-  label = messages("site.address.uk.postcode"),
-  hint = Some(messages(s"site.address.uk.postcode.hint")),
-  inputClass = Some("form-control-1-4")
+@components.select(field = form("country"),
+  label = messages("site.address.international.country"),
+  labelClasses = Set("form-control-1-2 bold"),
+  options = countryOptions,
+  placeholder = Some("address.country.select"),
+  formGroupClasses = Set("autocomplete-wrapper"),
+  selectAttribute = Set("data-non-uk-countries")
 )
