@@ -34,6 +34,30 @@ trait AssetRoutes {
 
   def assetRoutes()(implicit navigator: Navigator) = {
 
+    "go to WhatKindOfAssetPage from from AddAnAssetYesNoPage when selected Yes" in {
+      val index = 0
+
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+        val answers = userAnswers.set(AddAnAssetYesNoPage, true).success.value
+
+        navigator.nextPage(AddAnAssetYesNoPage, NormalMode, fakeDraftId)(answers)
+          .mustBe(routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, fakeDraftId))
+      }
+    }
+
+    "go to RegistrationProgress from from AddAnAssetYesNoPage when selected No" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(AddAnAssetYesNoPage, false).success.value
+
+          navigator.nextPage(AddAnAssetYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
+      }
+    }
+
     "money assets" must {
 
       "go to AssetMoneyValuePage from WhatKindOfAsset page when the money option is selected" in {
