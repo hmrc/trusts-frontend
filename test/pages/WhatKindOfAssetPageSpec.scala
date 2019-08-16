@@ -16,10 +16,11 @@
 
 package pages
 
-import models.{ShareClass, Status, UserAnswers, WhatKindOfAsset}
+import models.{ShareClass, Status, UKAddress, UserAnswers, WhatKindOfAsset}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 import pages.entitystatus.AssetStatus
+import pages.property_or_land._
 import pages.shares._
 
 class WhatKindOfAssetPageSpec extends PageBehaviours {
@@ -34,24 +35,30 @@ class WhatKindOfAssetPageSpec extends PageBehaviours {
   }
 
   "remove money when changing type of asset" in {
-    forAll(arbitrary[UserAnswers]) {
-      initial =>
+
+    val kindOfAsset = arbitrary[WhatKindOfAsset] suchThat (x => x != WhatKindOfAsset.Money)
+
+    forAll(arbitrary[UserAnswers], kindOfAsset) {
+      (initial, kind) =>
         val answers: UserAnswers = initial
           .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
           .set(AssetMoneyValuePage(0), "200").success.value
           .set(AssetStatus(0), Status.Completed).success.value
 
-        val result = answers.set(WhatKindOfAssetPage(0), WhatKindOfAsset.Shares).success.value
+        val result = answers.set(WhatKindOfAssetPage(0), kind).success.value
 
-        result.get(WhatKindOfAssetPage(0)).value mustEqual WhatKindOfAsset.Shares
+        result.get(WhatKindOfAssetPage(0)).value mustEqual kind
         result.get(AssetMoneyValuePage(0)) mustNot be(defined)
         result.get(AssetStatus(0)) mustNot be(defined)
     }
   }
 
   "remove share portfolio data when changing type of asset" in {
-    forAll(arbitrary[UserAnswers]) {
-      initial =>
+
+    val kindOfAsset = arbitrary[WhatKindOfAsset] suchThat (x => x != WhatKindOfAsset.Shares)
+
+    forAll(arbitrary[UserAnswers], kindOfAsset) {
+      (initial, kind) =>
         val answers: UserAnswers = initial
           .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Shares).success.value
           .set(SharesInAPortfolioPage(0), true).success.value
@@ -61,9 +68,9 @@ class WhatKindOfAssetPageSpec extends PageBehaviours {
           .set(SharePortfolioValueInTrustPage(0), "2000").success.value
           .set(AssetStatus(0), Status.Completed).success.value
 
-        val result = answers.set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
+        val result = answers.set(WhatKindOfAssetPage(0), kind).success.value
 
-        result.get(WhatKindOfAssetPage(0)).value mustEqual WhatKindOfAsset.Money
+        result.get(WhatKindOfAssetPage(0)).value mustEqual kind
 
         result.get(SharesInAPortfolioPage(0)) mustNot be(defined)
         result.get(SharePortfolioNamePage(0)) mustNot be(defined)
@@ -75,8 +82,10 @@ class WhatKindOfAssetPageSpec extends PageBehaviours {
   }
 
   "remove share data when changing type of asset" in {
-    forAll(arbitrary[UserAnswers]) {
-      initial =>
+    val kindOfAsset = arbitrary[WhatKindOfAsset] suchThat (x => x != WhatKindOfAsset.Shares)
+
+    forAll(arbitrary[UserAnswers], kindOfAsset) {
+      (initial, kind) =>
 
         val answers: UserAnswers = initial
           .set(SharesInAPortfolioPage(0), false).success.value
@@ -87,9 +96,9 @@ class WhatKindOfAssetPageSpec extends PageBehaviours {
           .set(ShareValueInTrustPage(0), "2000").success.value
           .set(AssetStatus(0), Status.Completed).success.value
 
-        val result = answers.set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
+        val result = answers.set(WhatKindOfAssetPage(0), kind).success.value
 
-        result.get(WhatKindOfAssetPage(0)).value mustEqual WhatKindOfAsset.Money
+        result.get(WhatKindOfAssetPage(0)).value mustEqual kind
 
         result.get(SharesInAPortfolioPage(0)) mustNot be(defined)
         result.get(ShareCompanyNamePage(0)) mustNot be(defined)
@@ -97,6 +106,40 @@ class WhatKindOfAssetPageSpec extends PageBehaviours {
         result.get(ShareClassPage(0)) mustNot be(defined)
         result.get(ShareQuantityInTrustPage(0)) mustNot be(defined)
         result.get(ShareValueInTrustPage(0)) mustNot be(defined)
+        result.get(AssetStatus(0)) mustNot be(defined)
+    }
+  }
+
+  "remove property or land when changing type of asset" in {
+    val kindOfAsset = arbitrary[WhatKindOfAsset] suchThat (x => x != WhatKindOfAsset.PropertyOrLand)
+
+    forAll(arbitrary[UserAnswers], kindOfAsset) {
+      (initial, kind) =>
+
+        val answers: UserAnswers = initial
+          .set(WhatKindOfAssetPage(0), WhatKindOfAsset.PropertyOrLand).success.value
+          .set(PropertyOrLandAddressYesNoPage(0), true).success.value
+          .set(PropertyOrLandAddressUkYesNoPage(0), true).success.value
+          .set(PropertyOrLandUKAddressPage(0), UKAddress(
+            "line 1",
+            None,
+            None,
+            "Newcastle",
+            "NE1 1NN"
+          )).success.value
+          .set(PropertyOrLandTotalValuePage(0), "10,000").success.value
+          .set(TrustOwnAllThePropertyOrLandPage(0), true).success.value
+          .set(AssetStatus(0), Status.Completed).success.value
+
+        val result = answers.set(WhatKindOfAssetPage(0), kind).success.value
+
+        result.get(WhatKindOfAssetPage(0)).value mustEqual kind
+
+        result.get(PropertyOrLandAddressYesNoPage(0)) mustNot be(defined)
+        result.get(PropertyOrLandAddressUkYesNoPage(0)) mustNot be(defined)
+        result.get(PropertyOrLandUKAddressPage(0)) mustNot be(defined)
+        result.get(PropertyOrLandTotalValuePage(0)) mustNot be(defined)
+        result.get(TrustOwnAllThePropertyOrLandPage(0)) mustNot be(defined)
         result.get(AssetStatus(0)) mustNot be(defined)
     }
   }
