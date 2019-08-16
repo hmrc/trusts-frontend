@@ -65,6 +65,9 @@ trait PageGenerators {
   implicit lazy val arbitrarySettlorIndividualOrBusinessPage: Arbitrary[SettlorIndividualOrBusinessPage] =
     Arbitrary(SettlorIndividualOrBusinessPage(0))
 
+  implicit lazy val arbitraryAddAnAssetYesNoPage: Arbitrary[AddAnAssetYesNoPage.type] =
+    Arbitrary(AddAnAssetYesNoPage)
+
   implicit lazy val arbitraryPropertyOrLandAddressYesNoPage: Arbitrary[PropertyOrLandAddressYesNoPage] =
     Arbitrary(PropertyOrLandAddressYesNoPage(0))
 

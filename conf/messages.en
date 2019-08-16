@@ -1102,3 +1102,6 @@ settlorIndividualPassportYesNo.heading = settlorIndividualPassportYesNo
 settlorIndividualPassportYesNo.checkYourAnswersLabel = settlorIndividualPassportYesNo
 settlorIndividualPassportYesNo.error.required = Select yes if settlorIndividualPassportYesNo
 
+addAnAssetYesNo.title = Do you want to add an asset?
+addAnAssetYesNo.heading = Do you want to add an asset?
+addAnAssetYesNo.error.required = Select yes if you want to add an asset

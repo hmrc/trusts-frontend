@@ -30,7 +30,7 @@
     title = s"${errorPrefix(form)} $heading"
     ) {
 
-    @formHelper(action = AddAssetsController.onSubmit(draftId), 'autoComplete -> "off") {
+    @formHelper(action = AddAssetsController.submitAnother(draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 

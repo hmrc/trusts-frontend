@@ -43,6 +43,7 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(SettlorIndividualDateOfBirthYesNoPage, JsValue)] ::
     arbitrary[(SettlorIndividualNamePage, JsValue)] ::
     arbitrary[(SettlorIndividualOrBusinessPage, JsValue)] ::
+    arbitrary[(AddAnAssetYesNoPage.type, JsValue)] ::
     arbitrary[(PropertyOrLandAddressYesNoPage, JsValue)] ::
     arbitrary[(PropertyOrLandAddressUkYesNoPage, JsValue)] ::
     arbitrary[(TrustOwnAllThePropertyOrLandPage, JsValue)] ::
