@@ -30,8 +30,6 @@ import views.html.IndividualBeneficiaryVulnerableYesNoView
 
 class IndividualBeneficiaryVulnerableYesNoControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new IndividualBeneficiaryVulnerableYesNoFormProvider()
   val form = formProvider()
   val index: Int = 0
@@ -90,9 +88,7 @@ class IndividualBeneficiaryVulnerableYesNoControllerSpec extends SpecBase {
         name).success.value
 
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, individualBeneficiaryVulnerableYesNoRoute)
@@ -102,7 +98,7 @@ class IndividualBeneficiaryVulnerableYesNoControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

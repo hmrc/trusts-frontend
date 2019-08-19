@@ -35,8 +35,6 @@ class SettlorsDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
   val formProvider = new SettlorsDateOfBirthFormProvider()
   val form = formProvider()
 
-  def onwardRoute = Call("GET", "/foo")
-
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
 
   lazy val settlorsDateOfBirthRoute = routes.SettlorsDateOfBirthController.onPageLoad(NormalMode,fakeDraftId).url
@@ -93,11 +91,7 @@ class SettlorsDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
         name).success.value
 
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
-          .build()
+        applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, settlorsDateOfBirthRoute)
@@ -111,7 +105,7 @@ class SettlorsDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

@@ -88,7 +88,6 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
 
     }
 
-
     "property or land does not have an address and total value is not owned by the trust" must {
 
       "return OK and the correct view for a GET" in {
@@ -238,7 +237,6 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
 
     }
 
-
     "property or land has a International address and total value is owned by the trust" must {
 
       "return OK and the correct view for a GET" in {
@@ -338,7 +336,6 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
       }
 
     }
-
 
     "redirect to PropertyOrLandAddressYesNoPage on a GET if no answer for 'Does the property or land have an address' at index" in {
       val answers =

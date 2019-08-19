@@ -31,7 +31,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 @Singleton
 class Navigator @Inject()() {
 
-  private def normalRoutes(draftId: String): Page => AffinityGroup => UserAnswers => Call = {
+  protected def normalRoutes(draftId: String): Page => AffinityGroup => UserAnswers => Call = {
     //  Matching
     case TrustRegisteredOnlinePage => _ => _ => routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId)
     case TrustHaveAUTRPage => af => userAnswers => trustHaveAUTRRoute(userAnswers, af, draftId)
@@ -89,6 +89,7 @@ class Navigator @Inject()() {
     case SharesOnStockExchangePage(index) => _ => _ => controllers.shares.routes.ShareClassController.onPageLoad(NormalMode, index, draftId)
     case ShareClassPage(index) => _ => _ => controllers.shares.routes.ShareQuantityInTrustController.onPageLoad(NormalMode, index, draftId)
     case AddAssetsPage => _ => addAssetsRoute(draftId)
+    case AddAnAssetYesNoPage => _ => addAnAssetYesNoRoute(draftId)
     case ShareQuantityInTrustPage(index) => _ => _ => controllers.shares.routes.ShareValueInTrustController.onPageLoad(NormalMode, index, draftId)
     case ShareValueInTrustPage(index) => _ => _ => controllers.shares.routes.ShareAnswerController.onPageLoad(index, draftId)
     case ShareAnswerPage => _ => _ => routes.AddAssetsController.onPageLoad(draftId)
@@ -255,6 +256,11 @@ class Navigator @Inject()() {
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 
+  private def addAnAssetYesNoRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(AddAnAssetYesNoPage) match {
+    case Some(false) => routes.TaskListController.onPageLoad(draftId)
+    case Some(true) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, 0, draftId)
+  }
+
   private def addAssetsRoute(draftId: String)(answers: UserAnswers) = {
     val addAnother = answers.get(AddAssetsPage)
 
@@ -289,7 +295,7 @@ class Navigator @Inject()() {
 
   private def whatKindOfAssetRoute(answers: UserAnswers, index: Int, draftId: String) = answers.get(WhatKindOfAssetPage(index)) match {
       case Some(Money) => routes.AssetMoneyValueController.onPageLoad(NormalMode, index, draftId)
-      case Some(PropertyOrLand) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
+      case Some(PropertyOrLand) => controllers.property_or_land.routes.PropertyOrLandAddressYesNoController.onPageLoad(NormalMode, index, draftId)
       case Some(Shares) => controllers.shares.routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, draftId)
       case Some(Business) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
       case Some(Partnership) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)

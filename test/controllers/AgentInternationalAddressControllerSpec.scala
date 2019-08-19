@@ -33,8 +33,6 @@ import views.html.AgentInternationalAddressView
 
 class AgentInternationalAddressControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new InternationalAddressFormProvider()
   val form = formProvider()
   val agencyName = "Hadrian"
@@ -97,7 +95,6 @@ class AgentInternationalAddressControllerSpec extends SpecBase {
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent)
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
@@ -108,7 +105,7 @@ class AgentInternationalAddressControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

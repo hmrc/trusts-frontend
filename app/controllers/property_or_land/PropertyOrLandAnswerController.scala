@@ -29,6 +29,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
+import utils.annotations.PropertyOrLand
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.property_or_land.PropertyOrLandAnswersView
@@ -38,7 +39,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class PropertyOrLandAnswerController @Inject()(
                                       override val messagesApi: MessagesApi,
                                       sessionRepository: SessionRepository,
-                                      navigator: Navigator,
+                                      @PropertyOrLand navigator: Navigator,
                                       identify: IdentifierAction,
                                       getData: DraftIdRetrievalActionProvider,
                                       requireData: DataRequiredAction,

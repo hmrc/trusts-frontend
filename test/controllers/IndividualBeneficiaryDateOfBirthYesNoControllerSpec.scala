@@ -30,8 +30,6 @@ import views.html.IndividualBeneficiaryDateOfBirthYesNoView
 
 class IndividualBeneficiaryDateOfBirthYesNoControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new IndividualBeneficiaryDateOfBirthYesNoFormProvider()
   val form = formProvider()
   val index: Int = 0
@@ -89,10 +87,7 @@ class IndividualBeneficiaryDateOfBirthYesNoControllerSpec extends SpecBase {
       val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(index),
         name).success.value
 
-      val application =
-        applicationBuilder(userAnswers = Some(userAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, individualBeneficiaryDateOfBirthYesNoRoute)
@@ -102,7 +97,7 @@ class IndividualBeneficiaryDateOfBirthYesNoControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

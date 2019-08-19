@@ -19,17 +19,12 @@ package controllers
 import base.SpecBase
 import forms.GovernedInsideTheUKFormProvider
 import models.NormalMode
-import navigation.{FakeNavigator, Navigator}
 import pages.GovernedInsideTheUKPage
-import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.GovernedInsideTheUKView
 
 class GovernedInsideTheUKControllerSpec extends SpecBase {
-
-  def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new GovernedInsideTheUKFormProvider()
   val form = formProvider()
@@ -79,9 +74,7 @@ class GovernedInsideTheUKControllerSpec extends SpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, governedInsideTheUKRoute)
@@ -91,7 +84,7 @@ class GovernedInsideTheUKControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

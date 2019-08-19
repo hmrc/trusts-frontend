@@ -31,8 +31,6 @@ import views.html.AgentTelephoneNumberView
 
 class AgentTelephoneNumberControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new AgentTelephoneNumber()
   val form = formProvider()
 
@@ -82,7 +80,6 @@ class AgentTelephoneNumberControllerSpec extends SpecBase {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
@@ -92,7 +89,7 @@ class AgentTelephoneNumberControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

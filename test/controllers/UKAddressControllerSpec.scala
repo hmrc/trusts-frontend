@@ -31,8 +31,6 @@ import views.html.TrusteesUkAddressView
 
 class UKAddressControllerSpec extends SpecBase with IndexValidation {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val leadTrusteeMessagePrefix = "leadTrusteeUkAddress"
   val trusteeMessagePrefix = "trusteeUkAddress"
   val formProvider = new UKAddressFormProvider()
@@ -115,9 +113,7 @@ class UKAddressControllerSpec extends SpecBase with IndexValidation {
         .set(IsThisLeadTrusteePage(index), false).success.value
 
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, trusteesUkAddressRoute)
@@ -127,7 +123,7 @@ class UKAddressControllerSpec extends SpecBase with IndexValidation {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

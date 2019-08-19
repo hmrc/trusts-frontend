@@ -20,9 +20,7 @@ import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
 import forms.TrusteesDateOfBirthFormProvider
-import models.{FullName, IndividualOrBusiness, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
-import org.scalacheck.Arbitrary.arbitrary
+import models.{FullName, NormalMode}
 import org.scalacheck.Gen
 import org.scalatest.mockito.MockitoSugar
 import pages.{IsThisLeadTrusteePage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage}
@@ -38,8 +36,6 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
   val trusteeMessagePrefix = "trusteesDateOfBirth"
   val formProvider = new TrusteesDateOfBirthFormProvider()
   val form = formProvider()
-
-  def onwardRoute = Call("GET", "/foo")
 
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
 
@@ -120,12 +116,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
         .set(IsThisLeadTrusteePage(index), false).success.value
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
-      val application =
-        applicationBuilder(userAnswers = Some(userAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
-          .build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, trusteesDateOfBirthRoute)
@@ -139,7 +130,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

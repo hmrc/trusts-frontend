@@ -30,8 +30,6 @@ import views.html.TrusteeLiveInTheUKView
 
 class TrusteeLiveInTheUKControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val leadTrusteeMessagePrefix = "leadTrusteeLiveInTheUK"
   val trusteeMessagePrefix = "trusteeLiveInTheUK"
   val formProvider = new TrusteeLiveInTheUKFormProvider()
@@ -140,9 +138,7 @@ class TrusteeLiveInTheUKControllerSpec extends SpecBase {
 
 
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, trusteeLiveInTheUKRoute)
@@ -152,7 +148,7 @@ class TrusteeLiveInTheUKControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }
