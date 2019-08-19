@@ -52,5 +52,7 @@ class SettlorIndividualAddressInternationalViewSpec extends InternationalAddress
       Some(messageKeyPrefix),
       routes.SettlorIndividualAddressInternationalController.onSubmit(NormalMode, index, fakeDraftId).url
     )
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

@@ -47,5 +47,6 @@ class SettlorIndividualDateOfBirthYesNoViewSpec extends YesNoViewBehaviours {
       routes.SettlorIndividualDateOfBirthYesNoController.onSubmit(
         NormalMode, index, fakeDraftId).url, None, Seq(name.toString))
 
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

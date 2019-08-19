@@ -48,5 +48,7 @@ class SettlorIndividualAddressUKViewSpec extends UkAddressViewBehaviours {
       Some(messageKeyPrefix),
       routes.SettlorsUKAddressController.onSubmit(NormalMode, fakeDraftId).url
     )
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

@@ -42,5 +42,7 @@ class SettlorIndividualOrBusinessViewSpec extends OptionsViewBehaviours {
     behave like pageWithBackLink(applyView(form))
 
     behave like pageWithOptions(form, applyView, IndividualOrBusiness.options)
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

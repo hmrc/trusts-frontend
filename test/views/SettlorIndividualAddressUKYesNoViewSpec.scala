@@ -43,5 +43,7 @@ class SettlorIndividualAddressUKYesNoViewSpec extends YesNoViewBehaviours {
     behave like pageWithBackLink(applyView(form))
 
     behave like yesNoPage(form, applyView, messageKeyPrefix, routes.SettlorIndividualAddressUKYesNoController.onSubmit(NormalMode, index, fakeDraftId).url)
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

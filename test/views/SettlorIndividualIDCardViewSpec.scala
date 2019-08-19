@@ -50,5 +50,7 @@ class SettlorIndividualIDCardViewSpec extends QuestionViewBehaviours[SettlorIndi
       routes.SettlorIndividualIDCardController.onSubmit(NormalMode, index, fakeDraftId).url,
       Seq(("field1", None), ("field2", None))
     )
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

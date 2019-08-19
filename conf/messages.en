@@ -1045,10 +1045,10 @@ settlorIndividualNINO.checkYourAnswersLabel = settlorIndividualNINO
 settlorIndividualNINO.error.required = Enter settlorIndividualNINO
 settlorIndividualNINO.error.length = SettlorIndividualNINO must be 100 characters or less
 
-settlorIndividualNINOYesNo.title = settlorIndividualNINOYesNo
-settlorIndividualNINOYesNo.heading = settlorIndividualNINOYesNo
-settlorIndividualNINOYesNo.checkYourAnswersLabel = settlorIndividualNINOYesNo
-settlorIndividualNINOYesNo.error.required = Select yes if settlorIndividualNINOYesNo
+settlorIndividualNINOYesNo.title = Do you know {0}’s National Insurance number?
+settlorIndividualNINOYesNo.heading = Do you know {0}’s National Insurance number?
+settlorIndividualNINOYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
+settlorIndividualNINOYesNo.error.required = Select yes if you know the settlor’s National Insurance number
 
 settlorIndividualAddressInternational.title = settlorIndividualAddressInternational
 settlorIndividualAddressInternational.heading = settlorIndividualAddressInternational

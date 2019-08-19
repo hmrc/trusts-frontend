@@ -50,5 +50,7 @@ class SettlorIndividualNameViewSpec extends QuestionViewBehaviours[FullName] {
       routes.SettlorIndividualNameController.onSubmit(NormalMode, index, fakeDraftId).url,
       Seq(("firstName", None), ("middleName", None), ("lastName", None))
     )
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

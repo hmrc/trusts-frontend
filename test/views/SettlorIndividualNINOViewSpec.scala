@@ -43,5 +43,7 @@ class SettlorIndividualNINOViewSpec extends StringViewBehaviours {
     behave like pageWithBackLink(applyView(form))
 
     behave like stringPage(form, applyView, messageKeyPrefix, routes.SettlorIndividualNINOController.onSubmit(NormalMode, index, fakeDraftId).url)
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }
