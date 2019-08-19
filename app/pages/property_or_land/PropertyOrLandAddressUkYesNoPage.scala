@@ -27,12 +27,14 @@ final case class PropertyOrLandAddressUkYesNoPage(index: Int) extends QuestionPa
 
   override def path: JsPath = JsPath \ Assets \ index \ toString
 
-  override def toString: String = "propertyOrLandAddress"
+  override def toString: String = "propertyOrLandAddressUKYesNo"
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
     value match {
-      case Some(true) => userAnswers.remove(PropertyOrLandUKAddressPage(index))
-      case Some(false) => userAnswers.remove(PropertyOrLandInternationalAddressPage(index))
+      case Some(true) =>
+        userAnswers.remove(PropertyOrLandInternationalAddressPage(index))
+      case Some(false) =>
+        userAnswers.remove(PropertyOrLandUKAddressPage(index))
       case _ => super.cleanup(value, userAnswers)
     }
 }
