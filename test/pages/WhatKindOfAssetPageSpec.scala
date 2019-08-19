@@ -44,7 +44,7 @@ class WhatKindOfAssetPageSpec extends PageBehaviours {
           .set(AssetMoneyValuePage(0), "200").success.value
           .set(AssetStatus(0), Status.Completed).success.value
 
-        val result = answers.set(WhatKindOfAssetPage(0), kind, cleanup = false).success.value
+        val result = answers.set(WhatKindOfAssetPage(0), kind).success.value
 
         result.get(WhatKindOfAssetPage(0)).value mustEqual kind
         result.get(AssetMoneyValuePage(0)) mustNot be(defined)
@@ -66,7 +66,7 @@ class WhatKindOfAssetPageSpec extends PageBehaviours {
           .set(SharePortfolioValueInTrustPage(0), "2000").success.value
           .set(AssetStatus(0), Status.Completed).success.value
 
-        val result = answers.set(WhatKindOfAssetPage(0), kind, cleanup = false).success.value
+        val result = answers.set(WhatKindOfAssetPage(0), kind).success.value
 
         result.get(WhatKindOfAssetPage(0)).value mustEqual kind
 
@@ -94,7 +94,7 @@ class WhatKindOfAssetPageSpec extends PageBehaviours {
           .set(ShareValueInTrustPage(0), "2000").success.value
           .set(AssetStatus(0), Status.Completed).success.value
 
-        val result = answers.set(WhatKindOfAssetPage(0), kind, cleanup = false).success.value
+        val result = answers.set(WhatKindOfAssetPage(0), kind).success.value
 
         result.get(WhatKindOfAssetPage(0)).value mustEqual kind
 
@@ -128,7 +128,7 @@ class WhatKindOfAssetPageSpec extends PageBehaviours {
           .set(TrustOwnAllThePropertyOrLandPage(0), true).success.value
           .set(AssetStatus(0), Status.Completed).success.value
 
-        val result = answers.set(WhatKindOfAssetPage(0), kind, cleanup = false).success.value
+        val result = answers.set(WhatKindOfAssetPage(0), kind).success.value
 
         result.get(WhatKindOfAssetPage(0)).value mustEqual kind
 

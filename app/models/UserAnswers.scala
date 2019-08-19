@@ -42,7 +42,7 @@ final case class UserAnswers(
     }
   }
 
-  def set[A](page: Settable[A], value: A,  cleanup : Boolean = true)(implicit writes: Writes[A]): Try[UserAnswers] = {
+  def set[A](page: Settable[A], value: A)(implicit writes: Writes[A]): Try[UserAnswers] = {
 
     val updatedData = data.setObject(page.path, Json.toJson(value)) match {
       case JsSuccess(jsValue, _) =>
@@ -56,15 +56,11 @@ final case class UserAnswers(
     updatedData.flatMap {
       d =>
         val updatedAnswers = copy (data = d)
-        if(cleanup) {
-          page.cleanup(Some(value), updatedAnswers)
-        } else {
-          Success(updatedAnswers)
-        }
+        page.cleanup(Some(value), updatedAnswers)
     }
   }
 
-  def remove[A](query: Settable[A], cleanup : Boolean = true): Try[UserAnswers] = {
+  def remove[A](query: Settable[A]): Try[UserAnswers] = {
 
     val updatedData = data.removeObject(query.path) match {
       case JsSuccess(jsValue, _) =>
@@ -76,12 +72,7 @@ final case class UserAnswers(
     updatedData.flatMap {
       d =>
         val updatedAnswers = copy (data = d)
-
-        if(cleanup) {
-          query.cleanup(None, updatedAnswers)
-        } else {
-          Success(updatedAnswers)
-        }
+        query.cleanup(None, updatedAnswers)
     }
   }
 }
