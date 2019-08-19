@@ -979,7 +979,7 @@ propertyLandValueTrust.error.length = Current value of the property or land owne
 
 propertyOrLandAddressUkYesNo.title = Is the property or land’s address in the UK?
 propertyOrLandAddressUkYesNo.heading = Is the property or land’s address in the UK?
-propertyOrLandAddressUkYesNo.checkYourAnswersLabel = Is the property or land’s address in the UK?
+propertyOrLandAddressUkYesNo.cheadingheckYourAnswersLabel = Is the property or land’s address in the UK?
 propertyOrLandAddressUkYesNo.error.required = Select yes if the property or land has an address in the UK
 
 propertyOrLandUKAddress.title = What is the property or land’s address?
@@ -999,7 +999,7 @@ settlorIndividualOrBusiness.heading = Is the settlor an individual or a business
 settlorIndividualOrBusiness.individual = Individual
 settlorIndividualOrBusiness.business = Business
 settlorIndividualOrBusiness.checkYourAnswersLabel = Is the settlor an individual or a business?
-settlorIndividualOrBusiness.error.required = Select settlorIndividualOrBusiness
+settlorIndividualOrBusiness.error.required = Select if the settlor is an individual or a business
 
 settlorIndividualName.title = What is the settlor’s name?
 settlorIndividualName.heading = What is the settlor’s name?
