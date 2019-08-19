@@ -31,12 +31,8 @@ object PropertyOrLandAddressAssetViewModel {
 
   implicit lazy val reads: Reads[PropertyOrLandAddressAssetViewModel] = {
 
-    val readsAddress: Reads[Option[String]] =
-      (__ \ "address").readNullable[UKAddress].flatMap(_ => (__ \ "line1").readNullable[String]) orElse
-      (__ \ "address").readNullable[InternationalAddress].flatMap(_ => (__ \ "line1").readNullable[String])
-
     val reads: Reads[PropertyOrLandAddressAssetViewModel] =
-      (readsAddress and (__ \ "status").readWithDefault[Status](InProgress))((value, status) =>
+      ((__ \ "address" \ "line1").readNullable[String] ~ (__ \ "status").readWithDefault[Status](InProgress))((value, status) =>
         PropertyOrLandAddressAssetViewModel(PropertyOrLand, value, status))
 
     (__ \ "whatKindOfAsset").read[WhatKindOfAsset].flatMap[WhatKindOfAsset] {
@@ -46,6 +42,9 @@ object PropertyOrLandAddressAssetViewModel {
         } else {
           Reads(_ => JsError("Property or Land asset must be of type `PropertyOrLand`"))
         }
+    } andKeep (__ \ "propertyOrLandAddressYesNo").read[Boolean].filter {
+      case true => true
+      case false => false
     } andKeep reads
 
   }

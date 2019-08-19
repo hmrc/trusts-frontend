@@ -89,12 +89,13 @@ class AddAssetViewHelperSpec extends SpecBase {
           .set(PropertyOrLandUKAddressPage(2), UKAddress("line 1", None, None, "Newcastle upon Tyne", "NE1 1NE")).success.value
           .set(PropertyOrLandTotalValuePage(2), "100").success.value
           .set(TrustOwnAllThePropertyOrLandPage(2), true).success.value
+          .set(AssetStatus(2), Completed).success.value
 
         val rows = new AddAssetViewHelper(userAnswers, fakeDraftId).rows
         rows.complete mustBe List(
           AddRow("Share Company Name", typeLabel = "Shares", "#", removeShareCompanyRoute(0)),
           AddRow("£200", typeLabel = "Money", "#", removeMoneyRoute(1)),
-          AddRow("line 1", typeLabel = "Property or Land", "#", removePropertyOrLandRoute(2))
+          AddRow("line 1", typeLabel = "PropertyOrLand", "#", removePropertyOrLandRoute(2))
         )
         rows.inProgress mustBe Nil
       }

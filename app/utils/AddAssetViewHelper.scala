@@ -59,6 +59,9 @@ class AddAssetViewHelper(userAnswers: UserAnswers, draftId : String)(implicit  m
   def rows : AddToRows = {
     val assets = userAnswers.get(Assets).toList.flatten.zipWithIndex
 
+    println(">>>" + userAnswers)
+    println(">>>" + assets)
+
     val completed : List[AddRow] = assets.filter(_._1.status == Completed).flatMap(parseAsset)
 
     val inProgress : List[AddRow] = assets.filterNot(_._1.status == Completed).flatMap(parseAsset)
