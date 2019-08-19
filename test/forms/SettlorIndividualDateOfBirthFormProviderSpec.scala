@@ -25,15 +25,29 @@ class SettlorIndividualDateOfBirthFormProviderSpec extends DateBehaviours {
 
   val form = new SettlorIndividualDateOfBirthFormProvider()()
 
+  private val min = LocalDate.of(1500, 1, 1)
+  private val max = LocalDate.now(ZoneOffset.UTC)
+
   ".value" should {
 
     val validData = datesBetween(
-      min = LocalDate.of(2000, 1, 1),
-      max = LocalDate.now(ZoneOffset.UTC)
+      min = min,
+      max = max
     )
 
     behave like dateField(form, "value", validData)
 
     behave like mandatoryDateField(form, "value", "settlorIndividualDateOfBirth.error.required.all")
+
+    behave like dateFieldWithMax(form, "value",
+      max = max,
+      FormError("value", s"settlorIndividualDateOfBirth.error.future", List("day", "month", "year"))
+    )
+
+    behave like dateFieldWithMin(form, "value",
+      min = min,
+      FormError("value", s"settlorIndividualDateOfBirth.error.past", List("day", "month", "year"))
+    )
+
   }
 }

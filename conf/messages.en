@@ -1023,13 +1023,16 @@ settlorIndividualDateOfBirthYesNo.heading = Do you know {0}’s date of birth?
 settlorIndividualDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
 settlorIndividualDateOfBirthYesNo.error.required = Select yes if you know date of birth
 
-settlorIndividualDateOfBirth.title = SettlorIndividualDateOfBirth
-settlorIndividualDateOfBirth.heading = SettlorIndividualDateOfBirth
-settlorIndividualDateOfBirth.checkYourAnswersLabel = SettlorIndividualDateOfBirth
-settlorIndividualDateOfBirth.error.required.all = Enter the settlorIndividualDateOfBirth
-settlorIndividualDateOfBirth.error.required.two = The settlorIndividualDateOfBirth must include {0} and {1}
-settlorIndividualDateOfBirth.error.required = The settlorIndividualDateOfBirth must include {0}
-settlorIndividualDateOfBirth.error.invalid = Enter a real SettlorIndividualDateOfBirth
+settlorIndividualDateOfBirth.title = What is {0}’s date of birth?
+settlorIndividualDateOfBirth.heading = What is {0}’s date of birth?
+settlorIndividualDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
+settlorIndividualDateOfBirth.hint = For example, 31 3 1980
+settlorIndividualDateOfBirth.error.required.all = Enter a date of birth
+settlorIndividualDateOfBirth.error.required.two = The date of birth must include {0} and {1}
+settlorIndividualDateOfBirth.error.required = The date of birth must include {0}
+settlorIndividualDateOfBirth.error.invalid = Enter a real date of birth
+settlorIndividualDateOfBirth.error.future = Date of birth must be today or in the past
+settlorIndividualDateOfBirth.error.past = Date of birth must be after 31 December 1499
 
 settlorIndividualAddressYesNo.title = settlorIndividualAddressYesNo
 settlorIndividualAddressYesNo.heading = settlorIndividualAddressYesNo
