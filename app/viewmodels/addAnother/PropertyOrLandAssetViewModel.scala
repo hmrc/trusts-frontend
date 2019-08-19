@@ -20,20 +20,32 @@ import models.Status.InProgress
 import models.WhatKindOfAsset.PropertyOrLand
 import models.{InternationalAddress, Status, UKAddress, WhatKindOfAsset}
 
-final case class PropertyOrLandAddressAssetViewModel(`type` : WhatKindOfAsset,
-                                                     address : Option[String],
-                                                     override val status : Status) extends AssetViewModel
+final case class PropertyOrLandAssetViewModel(`type` : WhatKindOfAsset,
+                                              hasAddress : Option[Boolean],
+                                              description : Option[String],
+                                              address : Option[String],
+                                              override val status : Status) extends AssetViewModel
 
-object PropertyOrLandAddressAssetViewModel {
+object PropertyOrLandAssetViewModel {
 
   import play.api.libs.functional.syntax._
   import play.api.libs.json._
 
-  implicit lazy val reads: Reads[PropertyOrLandAddressAssetViewModel] = {
+  implicit lazy val reads: Reads[PropertyOrLandAssetViewModel] = {
 
-    val reads: Reads[PropertyOrLandAddressAssetViewModel] =
-      ((__ \ "address" \ "line1").readNullable[String] ~ (__ \ "status").readWithDefault[Status](InProgress))((value, status) =>
-        PropertyOrLandAddressAssetViewModel(PropertyOrLand, value, status))
+    val reads: Reads[PropertyOrLandAssetViewModel] =
+      ((__ \ "address" \ "line1").readNullable[String] orElse (__ \ "propertyOrLandDescription").readNullable[String] and
+        (__ \ "propertyOrLandAddressYesNo").readNullable[Boolean] and
+        (__ \ "propertyOrLandDescription").readNullable[String] and
+        (__ \ "status").readWithDefault[Status](InProgress)
+        )((address, hasAddress, description, status) => {
+          PropertyOrLandAssetViewModel(
+            PropertyOrLand,
+            hasAddress,
+            description,
+            address,
+            status)
+        })
 
     (__ \ "whatKindOfAsset").read[WhatKindOfAsset].flatMap[WhatKindOfAsset] {
       whatKindOfAsset: WhatKindOfAsset =>
@@ -42,9 +54,6 @@ object PropertyOrLandAddressAssetViewModel {
         } else {
           Reads(_ => JsError("Property or Land asset must be of type `PropertyOrLand`"))
         }
-    } andKeep (__ \ "propertyOrLandAddressYesNo").read[Boolean].filter {
-      case true => true
-      case false => false
     } andKeep reads
 
   }
