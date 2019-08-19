@@ -19,10 +19,10 @@ package controllers
 import base.SpecBase
 import forms.AddATrusteeFormProvider
 import models.Status.Completed
-import models.{AddATrustee, FullName, IndividualOrBusiness, NormalMode, UserAnswers}
+import models.{AddATrustee, FullName, IndividualOrBusiness, NormalMode}
 import navigation.{FakeNavigator, Navigator}
 import pages.entitystatus.TrusteeStatus
-import pages.{TrusteeIndividualOrBusinessPage, TrusteesNamePage}
+import pages.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage, TrusteesNamePage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -38,8 +38,8 @@ class AddATrusteeControllerSpec extends SpecBase {
   val form = formProvider()
 
   val trustee = List(
-    AddRow("First 0 Last 0", typeLabel = "Trustee Individual", "#", "#"),
-    AddRow("First 1 Last 1", typeLabel = "Trustee Individual", "#", "#")
+    AddRow("First 0 Last 0", typeLabel = "Trustee Individual", "#", "/trusts-registration/id/trustee/0/remove"),
+    AddRow("First 1 Last 1", typeLabel = "Trustee Individual", "#", "/trusts-registration/id/trustee/1/remove")
   )
 
   val userAnswersWithTrusteesComplete = emptyUserAnswers
@@ -65,7 +65,7 @@ class AddATrusteeControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId,Nil, trustee)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId,Nil, trustee, false)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -105,7 +105,7 @@ class AddATrusteeControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId,Nil, trustee)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId,Nil, trustee, false)(fakeRequest, messages).toString
 
       application.stop()
     }

@@ -58,37 +58,37 @@ class AddATrusteeViewHelperSpec extends SpecBase {
     ".row" must {
 
       "generate Nil for no user answers" in {
-        val rows = new AddATrusteeViewHelper(userAnswersWithNoTrustees).rows
+        val rows = new AddATrusteeViewHelper(userAnswersWithNoTrustees, fakeDraftId).rows
         rows.inProgress mustBe Nil
         rows.complete mustBe Nil
       }
 
       "generate rows from user answers for trustees in progress" in {
-        val rows = new AddATrusteeViewHelper(userAnswersWithTrusteesInProgress).rows
+        val rows = new AddATrusteeViewHelper(userAnswersWithTrusteesInProgress, fakeDraftId).rows
         rows.inProgress mustBe List(
-          AddRow("First 0 Last 0", typeLabel = "Trustee", "#", "#"),
-          AddRow("First 1 Last 1", typeLabel = "Trustee", "#", "#"),
-          AddRow("No name added", typeLabel = "Trustee", "#", "#")
+          AddRow("First 0 Last 0", typeLabel = "Trustee", "#", "/trusts-registration/fakeDraftId/trustee/0/remove"),
+          AddRow("First 1 Last 1", typeLabel = "Trustee", "#", "/trusts-registration/fakeDraftId/trustee/1/remove"),
+          AddRow("No name added", typeLabel = "Trustee", "#", "/trusts-registration/fakeDraftId/trustee/2/remove")
         )
         rows.complete mustBe Nil
       }
 
       "generate rows from user answers for complete trustees" in {
-        val rows = new AddATrusteeViewHelper(userAnswersWithTrusteesComplete).rows
+        val rows = new AddATrusteeViewHelper(userAnswersWithTrusteesComplete, fakeDraftId).rows
         rows.complete mustBe List(
-          AddRow("First 0 Last 0", typeLabel = "Lead Trustee Individual", "#", "#"),
-          AddRow("First 1 Last 1", typeLabel = "Trustee Individual", "#", "#")
+          AddRow("First 0 Last 0", typeLabel = "Lead Trustee Individual", "#", "/trusts-registration/fakeDraftId/trustee/0/remove"),
+          AddRow("First 1 Last 1", typeLabel = "Trustee Individual", "#", "/trusts-registration/fakeDraftId/trustee/1/remove")
         )
         rows.inProgress mustBe Nil
       }
 
       "generate rows from user answers for complete and in progress trustees" in {
-        val rows = new AddATrusteeViewHelper(userAnswersWithCompleteAndInProgress).rows
+        val rows = new AddATrusteeViewHelper(userAnswersWithCompleteAndInProgress, fakeDraftId).rows
         rows.complete mustBe List(
-          AddRow("First 1 Last 1", typeLabel = "Lead Trustee Individual", "#", "#")
+          AddRow("First 1 Last 1", typeLabel = "Lead Trustee Individual", "#", "/trusts-registration/fakeDraftId/trustee/1/remove")
         )
         rows.inProgress mustBe List(
-          AddRow("First 0 Last 0", typeLabel = "Trustee", "#", "#")
+          AddRow("First 0 Last 0", typeLabel = "Trustee", "#", "/trusts-registration/fakeDraftId/trustee/0/remove")
         )
       }
 

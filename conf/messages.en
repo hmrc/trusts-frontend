@@ -334,6 +334,11 @@ addATrustee.checkYourAnswersLabel = Add A Trustee
 addATrustee.individual = Trustee Individual
 addATrustee.business = Trustee Business
 addATrustee.error.required = Select yes if you want to add another trustee
+addATrustee.lead-trustee.required = You need to add or nominate a lead trustee.
+
+removeATrustee.title = Are you sure you want to remove {0}?
+removeATrustee.heading = Are you sure you want to remove {0}?
+removeATrustee.error.required = Select yes if you want to remove the trustee
 
 telephoneNumber.title = What is {0}’s telephone number?
 telephoneNumber.heading = What is {0}’s telephone number?

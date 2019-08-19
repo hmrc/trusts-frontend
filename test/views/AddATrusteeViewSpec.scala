@@ -45,10 +45,10 @@ class AddATrusteeViewSpec extends OptionsViewBehaviours with TabularDataViewBeha
   val view = viewFor[AddATrusteeView](Some(emptyUserAnswers))
 
   def applyView(form: Form[_]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode, fakeDraftId, Nil, Nil)(fakeRequest, messages)
+    view.apply(form, NormalMode, fakeDraftId, Nil, Nil, false)(fakeRequest, messages)
 
   def applyView(form: Form[_], inProgressTrustees: Seq[AddRow], completeTrustees: Seq[AddRow]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode, fakeDraftId, inProgressTrustees, completeTrustees)(fakeRequest, messages)
+    view.apply(form, NormalMode, fakeDraftId, inProgressTrustees, completeTrustees, true)(fakeRequest, messages)
 
   "AddATrusteeView" when {
 
