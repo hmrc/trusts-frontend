@@ -23,7 +23,7 @@ import javax.inject.Inject
 import models.requests.DataRequest
 import pages.QuestionPage
 import pages.shares.SharePortfolioNamePage
-import play.api.i18n.MessagesApi
+import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.{AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import views.html.RemoveIndexView
@@ -43,12 +43,10 @@ class RemoveSharePortfolioAssetController @Inject()(
   override val messagesPrefix: String = "removeShareAsset"
 
   override def actions(draftId: String, index: Int) =
-    identify andThen getData(draftId) andThen
-      requireData andThen
-      require(RequiredAnswer(page(index), redirect(draftId)))
+    identify andThen getData(draftId) andThen requireData
 
   override def content(index: Int)(implicit request: DataRequest[AnyContent]): String =
-    request.userAnswers.get(page(index)).get
+    request.userAnswers.get(page(index)).getOrElse(Messages(s"$messagesPrefix.default"))
 
   override def page(index: Int): QuestionPage[String] = SharePortfolioNamePage(index)
 

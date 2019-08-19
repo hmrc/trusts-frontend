@@ -23,7 +23,7 @@ import models.FullName
 import models.requests.DataRequest
 import pages.{QuestionPage, TrusteesNamePage}
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import play.twirl.api.HtmlFormat
 import queries.{RemoveTrusteeQuery, Settable}
@@ -48,10 +48,8 @@ class RemoveTrusteeController @Inject()(
 
   override def page(index: Int) : QuestionPage[FullName] = TrusteesNamePage(index)
 
-  def actions(draftId : String, index: Int) =
-    identify andThen getData(draftId) andThen
-      requireData andThen
-      require(RequiredAnswer(page(index), redirect(draftId)))
+  override def actions(draftId : String, index: Int) =
+    identify andThen getData(draftId) andThen requireData
 
   override def redirect(draftId : String) : Call =
     routes.AddATrusteeController.onPageLoad(draftId)
@@ -62,10 +60,6 @@ class RemoveTrusteeController @Inject()(
   override def removeQuery(index: Int): Settable[_] = RemoveTrusteeQuery(index)
 
   override def content(index: Int)(implicit request: DataRequest[AnyContent]) : String =
-    request.userAnswers.get(page(index)).get.toString
+    request.userAnswers.get(page(index)).map(_.toString).getOrElse(Messages(s"$messagesPrefix.default"))
 
-  override def view(form: Form[_], index: Int, draftId: String)
-                   (implicit request: DataRequest[AnyContent], messagesApi: MessagesApi): HtmlFormat.Appendable = {
-    removeView(messagesPrefix, form, index, draftId, content(index), formRoute(draftId, index))
-  }
 }
