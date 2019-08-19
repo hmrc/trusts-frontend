@@ -14,23 +14,13 @@
  * limitations under the License.
  */
 
-package forms
+package pages
 
-import javax.inject.Inject
+import play.api.libs.json.JsPath
 
-import forms.mappings.Mappings
-import play.api.data.Form
+case object AddAnAssetYesNoPage extends QuestionPage[Boolean] {
 
-trait RemoveForm {
+  override def path: JsPath = JsPath \ toString
 
-  def apply(prefix : String) : Form[Boolean]
-
-}
-
-class RemoveIndexFormProvider @Inject() extends Mappings with RemoveForm {
-
-  override def apply(prefix : String): Form[Boolean] =
-    Form(
-      "value" -> boolean(s"$prefix.error.required")
-    )
+  override def toString: String = "addAnAssetYesNo"
 }

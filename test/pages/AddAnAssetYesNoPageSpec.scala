@@ -14,23 +14,18 @@
  * limitations under the License.
  */
 
-package forms
+package pages
 
-import javax.inject.Inject
+import pages.behaviours.PageBehaviours
 
-import forms.mappings.Mappings
-import play.api.data.Form
+class AddAnAssetYesNoPageSpec extends PageBehaviours {
 
-trait RemoveForm {
+  "AddAnAssetYesNoPage" must {
 
-  def apply(prefix : String) : Form[Boolean]
+    beRetrievable[Boolean](AddAnAssetYesNoPage)
 
-}
+    beSettable[Boolean](AddAnAssetYesNoPage)
 
-class RemoveIndexFormProvider @Inject() extends Mappings with RemoveForm {
-
-  override def apply(prefix : String): Form[Boolean] =
-    Form(
-      "value" -> boolean(s"$prefix.error.required")
-    )
+    beRemovable[Boolean](AddAnAssetYesNoPage)
+  }
 }

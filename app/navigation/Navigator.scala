@@ -89,6 +89,7 @@ class Navigator @Inject()() {
     case SharesOnStockExchangePage(index) => _ => _ => controllers.shares.routes.ShareClassController.onPageLoad(NormalMode, index, draftId)
     case ShareClassPage(index) => _ => _ => controllers.shares.routes.ShareQuantityInTrustController.onPageLoad(NormalMode, index, draftId)
     case AddAssetsPage => _ => addAssetsRoute(draftId)
+    case AddAnAssetYesNoPage => _ => addAnAssetYesNoRoute(draftId)
     case ShareQuantityInTrustPage(index) => _ => _ => controllers.shares.routes.ShareValueInTrustController.onPageLoad(NormalMode, index, draftId)
     case ShareValueInTrustPage(index) => _ => _ => controllers.shares.routes.ShareAnswerController.onPageLoad(index, draftId)
     case ShareAnswerPage => _ => _ => routes.AddAssetsController.onPageLoad(draftId)
@@ -253,6 +254,11 @@ class Navigator @Inject()() {
     case Some(false) => routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode, draftId)
     case Some(true) => routes.SettlorDateOfDeathController.onPageLoad(NormalMode, draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def addAnAssetYesNoRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(AddAnAssetYesNoPage) match {
+    case Some(false) => routes.TaskListController.onPageLoad(draftId)
+    case Some(true) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, 0, draftId)
   }
 
   private def addAssetsRoute(draftId: String)(answers: UserAnswers) = {
