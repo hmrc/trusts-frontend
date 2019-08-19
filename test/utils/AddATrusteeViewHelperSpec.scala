@@ -66,9 +66,9 @@ class AddATrusteeViewHelperSpec extends SpecBase {
       "generate rows from user answers for trustees in progress" in {
         val rows = new AddATrusteeViewHelper(userAnswersWithTrusteesInProgress, fakeDraftId).rows
         rows.inProgress mustBe List(
-          AddRow("First 0 Last 0", typeLabel = "Trustee", "#", "/trusts-registration/fakeDraftId/trustee/0/remove"),
-          AddRow("First 1 Last 1", typeLabel = "Trustee", "#", "/trusts-registration/fakeDraftId/trustee/1/remove"),
-          AddRow("No name added", typeLabel = "Trustee", "#", "/trusts-registration/fakeDraftId/trustee/2/remove")
+          AddRow("First 0 Last 0", typeLabel = "Trustee", "#", "/trusts-registration/id/trustee/0/remove"),
+          AddRow("First 1 Last 1", typeLabel = "Trustee", "#", "/trusts-registration/id/trustee/1/remove"),
+          AddRow("No name added", typeLabel = "Trustee", "#", "/trusts-registration/id/trustee/2/remove")
         )
         rows.complete mustBe Nil
       }
@@ -76,8 +76,8 @@ class AddATrusteeViewHelperSpec extends SpecBase {
       "generate rows from user answers for complete trustees" in {
         val rows = new AddATrusteeViewHelper(userAnswersWithTrusteesComplete, fakeDraftId).rows
         rows.complete mustBe List(
-          AddRow("First 0 Last 0", typeLabel = "Lead Trustee Individual", "#", "/trusts-registration/fakeDraftId/trustee/0/remove"),
-          AddRow("First 1 Last 1", typeLabel = "Trustee Individual", "#", "/trusts-registration/fakeDraftId/trustee/1/remove")
+          AddRow("First 0 Last 0", typeLabel = "Lead Trustee Individual", "#", "/trusts-registration/id/trustee/0/remove"),
+          AddRow("First 1 Last 1", typeLabel = "Trustee Individual", "#", "/trusts-registration/id/trustee/1/remove")
         )
         rows.inProgress mustBe Nil
       }
@@ -85,10 +85,10 @@ class AddATrusteeViewHelperSpec extends SpecBase {
       "generate rows from user answers for complete and in progress trustees" in {
         val rows = new AddATrusteeViewHelper(userAnswersWithCompleteAndInProgress, fakeDraftId).rows
         rows.complete mustBe List(
-          AddRow("First 1 Last 1", typeLabel = "Lead Trustee Individual", "#", "/trusts-registration/fakeDraftId/trustee/1/remove")
+          AddRow("First 1 Last 1", typeLabel = "Lead Trustee Individual", "#", "/trusts-registration/id/trustee/1/remove")
         )
         rows.inProgress mustBe List(
-          AddRow("First 0 Last 0", typeLabel = "Trustee", "#", "/trusts-registration/fakeDraftId/trustee/0/remove")
+          AddRow("First 0 Last 0", typeLabel = "Trustee", "#", "/trusts-registration/id/trustee/0/remove")
         )
       }
 
