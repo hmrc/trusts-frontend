@@ -22,7 +22,7 @@ import models.WhatKindOfAsset.{Money, Partnership, PropertyOrLand, Shares}
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.{FreeSpec, MustMatchers}
 import play.api.libs.json.{JsSuccess, Json}
-import viewmodels.addAnother.{AssetViewModel, DefaultAssetsViewModel, MoneyAssetViewModel, ShareAssetViewModel}
+import viewmodels.addAnother._
 
 class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks with Generators with ModelGenerators {
 
@@ -134,6 +134,85 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks 
           json.validate[AssetViewModel] mustEqual JsSuccess(
             ShareAssetViewModel(Shares, true, Some("adam"), Completed)
           )
+        }
+
+      }
+
+      "property or land with description" - {
+
+        "to a view model that is not complete" in {
+          val json = Json.parse(
+            """
+              |{
+              |"propertyOrLandAddressYesNo": false,
+              |"whatKindOfAsset" : "PropertyOrLand",
+              |"status": "progress"
+              |}
+            """.stripMargin)
+
+          json.validate[AssetViewModel] mustEqual JsSuccess(
+            PropertyOrLandAssetDescriptionViewModel(PropertyOrLand, None, InProgress)
+          )
+        }
+
+        "to a view model that is complete" in {
+          val json = Json.parse(
+            """
+              |{
+              |"propertyOrLandAddressYesNo": false,
+              |"propertyOrLandDescription": "1 hectare",
+              |"whatKindOfAsset" : "PropertyOrLand",
+              |"status": "completed"
+              |}
+            """.stripMargin)
+
+          json.validate[AssetViewModel] mustEqual JsSuccess(
+            PropertyOrLandAssetDescriptionViewModel(PropertyOrLand, Some("1 hectare"), Completed)
+          )
+        }
+
+      }
+
+      "property or land with address" - {
+
+        "uk address" - {
+
+          "to a view model that is not complete" in {
+            val json = Json.parse(
+              """
+                |{
+                |"propertyOrLandAddressYesNo": true,
+                |"whatKindOfAsset" : "PropertyOrLand",
+                |"status": "progress"
+                |}
+            """.stripMargin)
+
+            json.validate[AssetViewModel] mustEqual JsSuccess(
+              PropertyOrLandAssetUKAddressViewModel(`type` = PropertyOrLand, address = None, status = InProgress)
+            )
+          }
+
+          "to a view model that is complete" in {
+            val json = Json.parse(
+              """
+                |{
+                |"propertyOrLandAddressYesNo": true,
+                |"propertyOrLandUKAddressYesNo": true,
+                |"address": {
+                | "line1": "line 1",
+                | "townOrCity": "Newcastle",
+                | "postcode": "NE11TU"
+                |},
+                |"whatKindOfAsset" : "PropertyOrLand",
+                |"status": "completed"
+                |}
+            """.stripMargin)
+
+            json.validate[AssetViewModel] mustEqual JsSuccess(
+              PropertyOrLandAssetUKAddressViewModel(PropertyOrLand, Some("line 1"), Completed)
+            )
+          }
+
         }
 
       }

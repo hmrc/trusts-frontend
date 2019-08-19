@@ -18,7 +18,6 @@ package viewmodels.addAnother
 
 import models.Status.InProgress
 import models.{FullName, IndividualOrBusiness, Status}
-import viewmodels.addAnother
 
 final case class TrusteeViewModel(isLead : Boolean,
                                     name : Option[FullName],
@@ -37,7 +36,7 @@ object TrusteeViewModel {
       (__ \ "status").readWithDefault[Status](InProgress)
     )(
       (isLead, individualOrBusiness, name, status) => {
-        addAnother.TrusteeViewModel(isLead, name, individualOrBusiness, status)
+        TrusteeViewModel(isLead, name, individualOrBusiness, status)
       }
     )
 
