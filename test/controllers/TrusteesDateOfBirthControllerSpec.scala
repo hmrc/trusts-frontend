@@ -25,7 +25,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import org.scalatest.mockito.MockitoSugar
-import pages.{TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage}
+import pages.{IsThisLeadTrusteePage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage}
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
@@ -34,6 +34,8 @@ import views.html.TrusteesDateOfBirthView
 
 class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with IndexValidation {
 
+  val leadTrusteeMessagePrefix = "leadTrusteesDateOfBirth"
+  val trusteeMessagePrefix = "trusteesDateOfBirth"
   val formProvider = new TrusteesDateOfBirthFormProvider()
   val form = formProvider()
 
@@ -53,6 +55,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
 
       val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
+        .set(IsThisLeadTrusteePage(index), false).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -65,7 +68,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index, trusteeMessagePrefix, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -73,6 +76,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers
+        .set(IsThisLeadTrusteePage(index), false).success.value
         .set(TrusteesDateOfBirthPage(index), validAnswer).success.value
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
@@ -87,13 +91,14 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages).toString
+        view(form.fill(validAnswer), NormalMode, fakeDraftId, index, trusteeMessagePrefix, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to Trustee Name page when TrusteesName is not answered" in {
       val userAnswers = emptyUserAnswers
+        .set(IsThisLeadTrusteePage(index), false).success.value
         .set(TrusteesDateOfBirthPage(index), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -112,6 +117,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
     "redirect to the next page when valid data is submitted" in {
 
       val userAnswers = emptyUserAnswers
+        .set(IsThisLeadTrusteePage(index), false).success.value
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
       val application =
@@ -141,6 +147,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
     "return a Bad Request and errors when invalid data is submitted" in {
 
       val userAnswers = emptyUserAnswers
+        .set(IsThisLeadTrusteePage(index), false).success.value
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -158,7 +165,7 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index, trusteeMessagePrefix, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }

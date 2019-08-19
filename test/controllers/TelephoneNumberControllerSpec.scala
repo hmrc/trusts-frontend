@@ -32,9 +32,10 @@ class TelephoneNumberControllerSpec extends SpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val messageKeyPrefix = "telephoneNumber"
+  val leadTrusteeMessagePrefix = "leadTrusteesTelephoneNumber"
+  val trusteeMessagePrefix = "telephoneNumber"
   val formProvider = new TelephoneNumberFormProvider()
-  val form = formProvider(messageKeyPrefix)
+  val form = formProvider(trusteeMessagePrefix)
 
   val index = 0
   val emptyTrusteeName = ""
@@ -61,7 +62,7 @@ class TelephoneNumberControllerSpec extends SpecBase with IndexValidation {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index, leadTrusteeMessagePrefix, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -83,7 +84,7 @@ class TelephoneNumberControllerSpec extends SpecBase with IndexValidation {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index, trusteeMessagePrefix, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -106,7 +107,7 @@ class TelephoneNumberControllerSpec extends SpecBase with IndexValidation {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("0191 1111111"), NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages).toString
+        view(form.fill("0191 1111111"), NormalMode, fakeDraftId, index, leadTrusteeMessagePrefix, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -196,7 +197,7 @@ class TelephoneNumberControllerSpec extends SpecBase with IndexValidation {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index, trusteeMessagePrefix, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }

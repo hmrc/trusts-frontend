@@ -40,6 +40,7 @@ class PropertyOrLandTotalValueFormProviderSpec extends StringFieldBehaviours wit
     behave like nonDecimalField(
       form,
       fieldName,
+      maxLength,
       wholeNumberError = FormError(fieldName, invalidWholeNumberKey, Seq(Validation.decimalCheck))
     )
 
