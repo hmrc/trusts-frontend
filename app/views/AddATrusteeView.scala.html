@@ -23,7 +23,7 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode,draftId: String, inProgressTrustees: Seq[AddRow] ,completeTrustees: Seq[AddRow])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode,draftId: String, inProgressTrustees: Seq[AddRow] ,completeTrustees: Seq[AddRow], isLeadTrusteeDefined: Boolean)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("addATrustee.title")}"
@@ -40,6 +40,10 @@
         @components.data_list(inProgressTrustees, "inprogress", "trustee")
 
         @components.data_list(completeTrustees, "complete", "trustee")
+
+        @if(!isLeadTrusteeDefined) {
+            @components.inset_text("addATrustee.lead-trustee.required", "addATrustee")
+        }
 
         @components.input_radio(
             field = form("value"),

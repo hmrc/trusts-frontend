@@ -26,6 +26,7 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.AddATrusteeViewHelper
 import views.html.AddATrusteeView
@@ -52,9 +53,11 @@ class AddATrusteeController @Inject()(
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = routes(draftId) {
     implicit request =>
 
-      val trustees = new AddATrusteeViewHelper(request.userAnswers).rows
+      val trustees = new AddATrusteeViewHelper(request.userAnswers, draftId).rows
 
-      Ok(view(form, mode, draftId, trustees.inProgress, trustees.complete))
+      val isLeadTrusteeDefined = request.userAnswers.get(Trustees).toList.flatten.exists(trustee => trustee.isLead)
+
+      Ok(view(form, mode, draftId, trustees.inProgress, trustees.complete, isLeadTrusteeDefined))
   }
 
   def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = routes(draftId).async {
@@ -63,9 +66,12 @@ class AddATrusteeController @Inject()(
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) => {
 
-          val trustees = new AddATrusteeViewHelper(request.userAnswers).rows
+          val trustees = new AddATrusteeViewHelper(request.userAnswers, draftId).rows
 
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, trustees.inProgress, trustees.complete)))
+          val isLeadTrusteeDefined = request.userAnswers.get(Trustees).toList.flatten.exists(trustee => trustee.isLead)
+
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, trustees.inProgress, trustees.complete,
+                                            isLeadTrusteeDefined)))
         },
         value => {
           for {
