@@ -76,21 +76,27 @@ class AddAssetViewHelper(userAnswers: UserAnswers, draftId: String)(implicit mes
 
     val typeLabel : String = messages("addAssets.propertyOrLand")
 
-    if (mvm.hasAddress.contains(true)) {
-      AddRow(
-        mvm.address.getOrElse(defaultAddressName),
+    mvm match {
+      case PropertyOrLandAssetUKAddressViewModel(_, address, status) => AddRow(
+        address.getOrElse(defaultAddressName),
         typeLabel,
         "#",
         controllers.property_or_land.routes.RemovePropertyOrLandWithAddressUKController.onPageLoad(index, draftId).url
       )
-    } else {
-      AddRow(
-        mvm.description.getOrElse(defaultDescriptionName),
+      case PropertyOrLandAssetInternationalAddressViewModel(_, address, status) => AddRow(
+        address.getOrElse(defaultAddressName),
+        typeLabel,
+        "#",
+        controllers.property_or_land.routes.RemovePropertyOrLandWithAddressInternationalController.onPageLoad(index, draftId).url
+      )
+      case PropertyOrLandAssetDescriptionViewModel(_, description, status) => AddRow(
+        description.getOrElse(defaultDescriptionName),
         typeLabel,
         "#",
         controllers.property_or_land.routes.RemovePropertyOrLandWithDescriptionController.onPageLoad(index, draftId).url
       )
     }
+
   }
 
 }
