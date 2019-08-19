@@ -21,6 +21,8 @@ import models.WhatKindOfAsset.PropertyOrLand
 import models.{InternationalAddress, Status, UKAddress, WhatKindOfAsset}
 
 final case class PropertyOrLandAddressAssetViewModel(`type` : WhatKindOfAsset,
+                                                     hasAddress : Option[Boolean],
+                                                     description : Option[String],
                                                      address : Option[String],
                                                      override val status : Status) extends AssetViewModel
 
@@ -36,8 +38,18 @@ object PropertyOrLandAddressAssetViewModel {
       (__ \ "address").readNullable[InternationalAddress].flatMap(_ => (__ \ "line1").readNullable[String])
 
     val reads: Reads[PropertyOrLandAddressAssetViewModel] =
-      (readsAddress and (__ \ "status").readWithDefault[Status](InProgress))((value, status) =>
-        PropertyOrLandAddressAssetViewModel(PropertyOrLand, value, status))
+      (readsAddress and
+        (__ \ "propertyOrLandAddressYesNo").readNullable[Boolean] and
+        (__ \ "propertyOrLandDescription").readNullable[String] and
+        (__ \ "status").readWithDefault[Status](InProgress)
+        )((address, hasAddress, description, status) => {
+          PropertyOrLandAddressAssetViewModel(
+            PropertyOrLand,
+            hasAddress,
+            description,
+            address,
+            status)
+        })
 
     (__ \ "whatKindOfAsset").read[WhatKindOfAsset].flatMap[WhatKindOfAsset] {
       whatKindOfAsset: WhatKindOfAsset =>

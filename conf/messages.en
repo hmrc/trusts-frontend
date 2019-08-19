@@ -554,6 +554,8 @@ addAssets.count.title = You have added {0} assets
 addAssets.singular.heading = You have added 1 asset
 addAssets.singular.title = You have added 1 asset
 
+addAssets.propertyOrLand = Property or Land
+
 settlorDateOfBirthYesNo.title = Do you know {0}’s date of birth?
 settlorDateOfBirthYesNo.heading = Do you know {0}’s date of birth?
 settlorDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?

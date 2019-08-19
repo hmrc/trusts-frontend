@@ -23,47 +23,73 @@ import sections.Assets
 import viewmodels.addAnother._
 import viewmodels.{AddRow, AddToRows}
 
-class AddAssetViewHelper(userAnswers: UserAnswers, draftId : String)(implicit  messages: Messages) {
+class AddAssetViewHelper(userAnswers: UserAnswers, draftId: String)(implicit messages: Messages) {
 
-  private def parseAsset(asset: (AssetViewModel, Int)) : Option[AddRow] = {
+  def rows: AddToRows = {
+    val assets = userAnswers.get(Assets).toList.flatten.zipWithIndex
+
+    val completed: List[AddRow] = assets.filter(_._1.status == Completed).flatMap(parseAsset)
+
+    val inProgress: List[AddRow] = assets.filterNot(_._1.status == Completed).flatMap(parseAsset)
+
+    AddToRows(inProgress, completed)
+  }
+
+  private def parseAsset(asset: (AssetViewModel, Int)): Option[AddRow] = {
     val vm = asset._1
+    val index = asset._2
 
     vm match {
-      case mvm : MoneyAssetViewModel =>
-        val defaultValue = messages("entities.no.value.added")
-        Some(
-          AddRow(
-            mvm.value.getOrElse(defaultValue),
-            mvm.`type`.toString,
-            "#",
-            controllers.money.routes.RemoveMoneyAssetController.onPageLoad(asset._2, draftId).url
-          ))
-      case mvm : ShareAssetViewModel =>
-        val defaultName = messages("entities.no.name.added")
-
-        val removeRoute = if(mvm.inPortfolio) {
-          controllers.shares.routes.RemoveSharePortfolioAssetController.onPageLoad(asset._2, draftId)
-        } else {
-          controllers.shares.routes.RemoveShareCompanyNameAssetController.onPageLoad(asset._2, draftId)
-        }
-
-        Some(AddRow(mvm.name.getOrElse(defaultName), mvm.`type`.toString, "#", removeRoute.url))
-      case mvm : PropertyOrLandAddressAssetViewModel =>
-        val defaultName = messages("entities.no.address.added")
-        Some(AddRow(mvm.address.getOrElse(defaultName), mvm.`type`.toString, "#", controllers.property_or_land.routes.RemovePropertyOrLandWithAddressUKController.onPageLoad(asset._2, draftId).url))
-      case _ =>
-        None
+      case mvm: MoneyAssetViewModel => Some(parseMoney(mvm, index))
+      case mvm: ShareAssetViewModel => Some(parseShare(mvm, index))
+      case mvm: PropertyOrLandAddressAssetViewModel => Some(parsePropertyOrLand(mvm, index))
+      case _ => None
     }
   }
 
-  def rows : AddToRows = {
-    val assets = userAnswers.get(Assets).toList.flatten.zipWithIndex
+  private def parseMoney(mvm: MoneyAssetViewModel, index: Int) : AddRow = {
+    val defaultValue = messages("entities.no.value.added")
+    AddRow(
+      mvm.value.getOrElse(defaultValue),
+      mvm.`type`.toString,
+      "#",
+      controllers.money.routes.RemoveMoneyAssetController.onPageLoad(index, draftId).url
+    )
+  }
 
-    val completed : List[AddRow] = assets.filter(_._1.status == Completed).flatMap(parseAsset)
+  private def parseShare(mvm: ShareAssetViewModel, index : Int) : AddRow = {
+    val defaultName = messages("entities.no.name.added")
 
-    val inProgress : List[AddRow] = assets.filterNot(_._1.status == Completed).flatMap(parseAsset)
+    val removeRoute = if (mvm.inPortfolio) {
+      controllers.shares.routes.RemoveSharePortfolioAssetController.onPageLoad(index, draftId)
+    } else {
+      controllers.shares.routes.RemoveShareCompanyNameAssetController.onPageLoad(index, draftId)
+    }
 
-    AddToRows(inProgress, completed)
+    AddRow(mvm.name.getOrElse(defaultName), mvm.`type`.toString, "#", removeRoute.url)
+  }
+
+  private def parsePropertyOrLand(mvm : PropertyOrLandAddressAssetViewModel, index: Int) : AddRow = {
+    val defaultAddressName = messages("entities.no.address.added")
+    val defaultDescriptionName = messages("entities.no.description.added")
+
+    val typeLabel : String = messages("addAssets.propertyOrLand")
+
+    if (mvm.hasAddress.contains(true)) {
+      AddRow(
+        mvm.address.getOrElse(defaultAddressName),
+        typeLabel,
+        "#",
+        controllers.property_or_land.routes.RemovePropertyOrLandWithAddressUKController.onPageLoad(index, draftId).url
+      )
+    } else {
+      AddRow(
+        mvm.description.getOrElse(defaultDescriptionName),
+        typeLabel,
+        "#",
+        controllers.property_or_land.routes.RemovePropertyOrLandWithDescriptionController.onPageLoad(index, draftId).url
+      )
+    }
   }
 
 }
