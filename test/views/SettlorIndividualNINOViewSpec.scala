@@ -44,7 +44,7 @@ class SettlorIndividualNINOViewSpec extends StringViewBehaviours {
     behave like pageWithBackLink(applyView(form))
 
     behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, name.toString,
-      routes.IndividualBeneficiaryNationalInsuranceNumberController.onSubmit(NormalMode, index, fakeDraftId).url)
+      routes.SettlorIndividualNINOController.onSubmit(NormalMode, index, fakeDraftId).url)
 
     behave like pageWithASubmitButton(applyView(form))
   }

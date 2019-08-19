@@ -1043,8 +1043,8 @@ settlorIndividualNINO.title = What is {0}’s National Insurance number?
 settlorIndividualNINO.heading = What is {0}’s National Insurance number?
 settlorIndividualNINO.checkYourAnswersLabel = What is {0}’s National Insurance number?
 settlorIndividualNINO.hint = It is on their National Insurance card, benefit letter, payslip or P60. For example, ‘QQ 12 34 56 C’.
-settlorIndividualNINO.error.required = Enter the trustee’s National Insurance number
-settlorIndividualNINO.error.invalidFormat = Enter the trustee’s National Insurance number in the correct format
+settlorIndividualNINO.error.required = Enter the settlor’s National Insurance number
+settlorIndividualNINO.error.invalidFormat = Enter the settlor’s National Insurance number in the correct format
 
 settlorIndividualNINOYesNo.title = Do you know {0}’s National Insurance number?
 settlorIndividualNINOYesNo.heading = Do you know {0}’s National Insurance number?
