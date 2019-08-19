@@ -40,8 +40,7 @@ object AssetViewModel {
   implicit lazy val reads : Reads[AssetViewModel] = {
     MoneyAssetViewModel.reads or
     ShareAssetViewModel.reads or
-    PropertyOrLandDescriptionViewModel.reads or
-    PropertyOrLandAddressViewModel.reads or
+    PropertyOrLandAssetViewModel.reads or
     DefaultAssetsViewModel.reads
   }
 
