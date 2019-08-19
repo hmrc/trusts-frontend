@@ -23,7 +23,7 @@ import models.requests.DataRequest
 import models.{Mode, NormalMode}
 import pages.{ClassBeneficiaryDescriptionPage, IndividualBeneficiaryNamePage, QuestionPage}
 import play.api.data.Form
-import play.api.i18n.MessagesApi
+import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import play.twirl.api.HtmlFormat
 import queries.{RemoveClassOfBeneficiaryQuery, RemoveIndividualBeneficiaryQuery, Settable}
@@ -49,9 +49,7 @@ class RemoveClassOfBeneficiaryController @Inject()(
   override def page(index: Int): QuestionPage[String] = ClassBeneficiaryDescriptionPage(index)
 
   override def actions(draftId : String, index: Int) =
-    identify andThen getData(draftId) andThen
-      requireData andThen
-      require(RequiredAnswer(page(index), redirect(draftId)))
+    identify andThen getData(draftId) andThen requireData
 
   override def redirect(draftId : String) : Call =
     routes.AddABeneficiaryController.onPageLoad(draftId)
@@ -62,11 +60,6 @@ class RemoveClassOfBeneficiaryController @Inject()(
   override def removeQuery(index: Int): Settable[_] = RemoveClassOfBeneficiaryQuery(index)
 
   override def content(index: Int)(implicit request: DataRequest[AnyContent]) : String =
-    request.userAnswers.get(page(index)).get
-
-  override def view(form: Form[_], index: Int, draftId: String)
-                   (implicit request: DataRequest[AnyContent], messagesApi: MessagesApi): HtmlFormat.Appendable = {
-    removeView(messagesPrefix, form, index, draftId, content(index), formRoute(draftId, index))
-  }
+    request.userAnswers.get(page(index)).map(_.toString).getOrElse(Messages(s"$messagesPrefix.default"))
 
 }
