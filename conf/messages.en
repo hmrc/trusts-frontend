@@ -1018,10 +1018,10 @@ settlorIndividualName.error.firstname.invalid = Settlor’s first name must only
 settlorIndividualName.error.middlename.invalid = Settlor’s middle names must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 settlorIndividualName.error.lastname.invalid = Settlor’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
-settlorIndividualDateOfBirthYesNo.title = settlorIndividualDateOfBirthYesNo
-settlorIndividualDateOfBirthYesNo.heading = settlorIndividualDateOfBirthYesNo
-settlorIndividualDateOfBirthYesNo.checkYourAnswersLabel = settlorIndividualDateOfBirthYesNo
-settlorIndividualDateOfBirthYesNo.error.required = Select yes if settlorIndividualDateOfBirthYesNo
+settlorIndividualDateOfBirthYesNo.title = Do you know {0}’s date of birth?
+settlorIndividualDateOfBirthYesNo.heading = Do you know {0}’s date of birth?
+settlorIndividualDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
+settlorIndividualDateOfBirthYesNo.error.required = Select yes if you know date of birth
 
 settlorIndividualDateOfBirth.title = SettlorIndividualDateOfBirth
 settlorIndividualDateOfBirth.heading = SettlorIndividualDateOfBirth
