@@ -62,7 +62,7 @@ object Address {
     implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
       a.map(identity)
 
-    UKAddress.formats or
+      UKAddress.formats or
       InternationalAddress.formats
   }
 
