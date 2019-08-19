@@ -30,6 +30,10 @@ final case class PropertyOrLandAssetInternationalAddressViewModel(`type` : WhatK
                                                        address : Option[String],
                                                        override val status : Status) extends PropertyOrLandAssetViewModel
 
+final case class PropertyOrLandAssetAddressViewModel(`type` : WhatKindOfAsset,
+                                                       address : Option[String],
+                                                       override val status : Status) extends PropertyOrLandAssetViewModel
+
 final case class PropertyOrLandAssetDescriptionViewModel(`type` : WhatKindOfAsset,
                                                        description : Option[String],
                                                        override val status : Status) extends PropertyOrLandAssetViewModel
@@ -43,25 +47,43 @@ object PropertyOrLandAssetViewModel {
 
     val ukReads: Reads[PropertyOrLandAssetViewModel] =
     {
-      (__ \ "address").read[UKAddress].flatMap{ _ =>
-        ((__ \ "address" \ "line1").readNullable[String] and
-          (__ \ "status").readWithDefault[Status](InProgress)
-          )((address, status) => {
-          PropertyOrLandAssetUKAddressViewModel(
-            PropertyOrLand,
-            address,
-            status)
-        })
+      (__ \ "propertyOrLandAddressYesNo").read[Boolean].filter{ x => x }.flatMap { _ =>
+        (__ \ "propertyOrLandAddressUkYesNo").read[Boolean].filter{ x => x }.flatMap { _ =>
+            ((__ \ "address" \ "line1").readNullable[String] and
+              (__ \ "status").readWithDefault[Status](InProgress)
+              ) ((address, status) => {
+              PropertyOrLandAssetUKAddressViewModel(
+                PropertyOrLand,
+                address,
+                status)
+            })
+        }
       }
     }
 
     val internationalReads: Reads[PropertyOrLandAssetViewModel] =
     {
-      (__ \ "address").read[InternationalAddress].flatMap{ _ =>
+      (__ \ "propertyOrLandAddressYesNo").read[Boolean].filter{ x => x }.flatMap { _ =>
+        (__ \ "propertyOrLandAddressUkYesNo").read[Boolean].filter { x => !x }.flatMap { _ =>
+          ((__ \ "address" \ "line1").readNullable[String] and
+            (__ \ "status").readWithDefault[Status](InProgress)
+            ) ((address, status) => {
+            PropertyOrLandAssetInternationalAddressViewModel(
+              PropertyOrLand,
+              address,
+              status)
+          })
+        }
+      }
+    }
+
+    val addressReads: Reads[PropertyOrLandAssetViewModel] =
+    {
+      (__ \ "propertyOrLandAddressYesNo").read[Boolean].filter{ x => x }.flatMap { _ =>
         ((__ \ "address" \ "line1").readNullable[String] and
           (__ \ "status").readWithDefault[Status](InProgress)
-          )((address, status) => {
-          PropertyOrLandAssetInternationalAddressViewModel(
+          ) ((address, status) => {
+          PropertyOrLandAssetAddressViewModel(
             PropertyOrLand,
             address,
             status)
@@ -69,16 +91,17 @@ object PropertyOrLandAssetViewModel {
       }
     }
 
-    val descriptionReads: Reads[PropertyOrLandAssetViewModel] =
-    {
+    val descriptionReads: Reads[PropertyOrLandAssetViewModel] = {
+      (__ \ "propertyOrLandAddressYesNo").read[Boolean].filter { x => !x }.flatMap { _ =>
         ((__ \ "propertyOrLandDescription").readNullable[String] and
           (__ \ "status").readWithDefault[Status](InProgress)
-          )((description, status) => {
+          ) ((description, status) => {
           PropertyOrLandAssetDescriptionViewModel(
             PropertyOrLand,
             description,
             status)
         })
+      }
     }
 
     (__ \ "whatKindOfAsset").read[WhatKindOfAsset].flatMap[WhatKindOfAsset] {
@@ -88,7 +111,7 @@ object PropertyOrLandAssetViewModel {
         } else {
           Reads(_ => JsError("Property or Land asset must be of type `PropertyOrLand`"))
         }
-    } andKeep ukReads orElse internationalReads orElse descriptionReads
+    } andKeep descriptionReads orElse ukReads orElse internationalReads orElse addressReads
 
 
   }
