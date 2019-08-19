@@ -76,11 +76,17 @@ class AddAssetViewHelper(userAnswers: UserAnswers, draftId: String)(implicit mes
     val typeLabel : String = messages("addAssets.propertyOrLand")
 
     if (mvm.hasAddress.contains(true)) {
+      val removeUrl = if(mvm.addressIsUK.contains(true)) {
+        controllers.property_or_land.routes.RemovePropertyOrLandWithAddressUKController.onPageLoad(index, draftId).url
+      } else {
+        controllers.property_or_land.routes.RemovePropertyOrLandWithAddressInternationalController.onPageLoad(index, draftId).url
+      }
+
       AddRow(
         mvm.address.getOrElse(defaultAddressName),
         typeLabel,
         "#",
-        controllers.property_or_land.routes.RemovePropertyOrLandWithAddressUKController.onPageLoad(index, draftId).url
+        removeUrl
       )
     } else {
       AddRow(

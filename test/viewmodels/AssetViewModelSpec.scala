@@ -22,7 +22,7 @@ import models.WhatKindOfAsset.{Money, Partnership, PropertyOrLand, Shares}
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.{FreeSpec, MustMatchers}
 import play.api.libs.json.{JsSuccess, Json}
-import viewmodels.addAnother.{AssetViewModel, DefaultAssetsViewModel, MoneyAssetViewModel, ShareAssetViewModel}
+import viewmodels.addAnother.{AssetViewModel, DefaultAssetsViewModel, MoneyAssetViewModel, PropertyOrLandAddressAssetViewModel, PropertyOrLandAddressViewModel, PropertyOrLandDescriptionViewModel, ShareAssetViewModel}
 
 class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks with Generators with ModelGenerators {
 
@@ -137,6 +137,85 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks 
         }
 
       }
+
+      "property or land with description" - {
+
+        "to a view model that is not complete" in {
+          val json = Json.parse(
+            """
+              |{
+              |"propertyOrLandAddressYesNo": false,
+              |"whatKindOfAsset" : "PropertyOrLand",
+              |"status": "progress"
+              |}
+            """.stripMargin)
+
+          json.validate[AssetViewModel] mustEqual JsSuccess(
+            PropertyOrLandDescriptionViewModel(PropertyOrLand, None, InProgress)
+          )
+        }
+
+        "to a view model that is complete" in {
+          val json = Json.parse(
+            """
+              |{
+              |"propertyOrLandAddressYesNo": false,
+              |"propertyOrLandDescription": "1 hectare",
+              |"whatKindOfAsset" : "PropertyOrLand",
+              |"status": "completed"
+              |}
+            """.stripMargin)
+
+          json.validate[AssetViewModel] mustEqual JsSuccess(
+            PropertyOrLandDescriptionViewModel(PropertyOrLand, Some("1 hectare"), Completed)
+          )
+        }
+
+      }
+
+//      "property or land with address" - {
+//
+//        "uk address" - {
+//
+//          "to a view model that is not complete" in {
+//            val json = Json.parse(
+//              """
+//                |{
+//                |"propertyOrLandAddressYesNo": true,
+//                |"whatKindOfAsset" : "PropertyOrLand",
+//                |"status": "progress"
+//                |}
+//            """.stripMargin)
+//
+//            json.validate[AssetViewModel] mustEqual JsSuccess(
+//              PropertyOrLandAddressViewModel(`type` = PropertyOrLand, addressIsUK = None, address = None, status = InProgress)
+//            )
+//          }
+
+//          "to a view model that is complete" in {
+//            val json = Json.parse(
+//              """
+//                |{
+//                |"propertyOrLandAddressYesNo": true,
+//                |"propertyOrLandUKAddressYesNo": true,
+//                |"address": {
+//                | "line1: "line 1",
+//                | "townOrCity": "Newcastle",
+//                | "postcode": "NE11TU"
+//                |},
+//                |"whatKindOfAsset" : "PropertyOrLand",
+//                |"status": "completed"
+//                |}
+//            """.stripMargin)
+//
+//            json.validate[AssetViewModel] mustEqual JsSuccess(
+//              PropertyOrLandAddressViewModel(PropertyOrLand, "line 1", true, Completed)
+//            )
+//          }
+
+//        }
+//
+//      }
 
       "to a default from any other type" in {
         val json = Json.obj(
