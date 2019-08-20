@@ -23,6 +23,7 @@ import models.Status.Completed
 import models.{AddABeneficiary, AddATrustee, FullName, IndividualOrBusiness, Status, UKAddress, WhatKindOfAsset}
 import pages._
 import pages.entitystatus._
+import pages.property_or_land._
 import pages.shares._
 import utils.countryOptions.CountryOptions
 import utils.{DateFormat, PrintUserAnswersHelper, TestUserAnswers}
@@ -97,6 +98,13 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
         .set(SharePortfolioQuantityInTrustPage(1), "1234").success.value
         .set(SharePortfolioValueInTrustPage(1), "4000").success.value
         .set(AssetStatus(1), Completed).success.value
+        .set(WhatKindOfAssetPage(2), WhatKindOfAsset.PropertyOrLand).success.value
+        .set(PropertyOrLandAddressYesNoPage(2), false).success.value
+        .set(PropertyOrLandDescriptionPage(2), "Town House").success.value
+        .set(PropertyOrLandTotalValuePage(2), "10000").success.value
+        .set(TrustOwnAllThePropertyOrLandPage(2), false).success.value
+        .set(PropertyLandValueTrustPage(2), "10").success.value
+        .set(AssetStatus(2), Completed).success.value
         .set(AddAssetsPage, NoComplete).success.value
 
         .set(RegistrationTRNPage, "XNTRN000000001").success.value
@@ -133,7 +141,7 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
       val subHeaders = wrapper.getElementsByTag("h3")
 
       headers.size mustBe 6
-      subHeaders.size mustBe 5
+      subHeaders.size mustBe 6
     }
 
     "assert correct number of headers and subheaders for Organisation user" in {
@@ -142,7 +150,7 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
       val subHeaders = wrapper.getElementsByTag("h3")
 
       headers.size mustBe 5
-      subHeaders.size mustBe 5
+      subHeaders.size mustBe 6
     }
 
     "assert question labels for Trusts" in {
@@ -210,6 +218,14 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
       assertContainsQuestionAnswerPair(doc, messages("sharePortfolioValueInTrust.checkYourAnswersLabel"), "£4000")
       assertContainsQuestionAnswerPair(doc, messages("sharesInAPortfolio.checkYourAnswersLabel"), yes)
       assertContainsQuestionAnswerPair(doc, messages("sharesInAPortfolio.checkYourAnswersLabel"), yes)
+    }
+
+    "assert question labels for property or land assets" in {
+      assertContainsQuestionAnswerPair(doc, messages("propertyOrLandAddressYesNo.checkYourAnswersLabel"), no)
+      assertContainsQuestionAnswerPair(doc, messages("propertyOrLandDescription.checkYourAnswersLabel"), "Town House")
+      assertContainsQuestionAnswerPair(doc, messages("propertyOrLandTotalValue.checkYourAnswersLabel"), "£10000")
+      assertContainsQuestionAnswerPair(doc, messages("trustOwnAllThePropertyOrLand.checkYourAnswersLabel"), no)
+      assertContainsQuestionAnswerPair(doc, messages("propertyLandValueTrust.checkYourAnswersLabel"), "£10")
     }
 
   }

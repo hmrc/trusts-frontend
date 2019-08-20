@@ -19,11 +19,11 @@ package controllers
 import controllers.actions._
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
-import models.{Mode, NormalMode}
+import models.{FullName, Mode, NormalMode}
 import models.requests.DataRequest
-import pages.IndividualBeneficiaryNamePage
+import pages.{IndividualBeneficiaryNamePage, QuestionPage}
 import play.api.data.Form
-import play.api.i18n.MessagesApi
+import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import play.twirl.api.HtmlFormat
 import queries.{RemoveIndividualBeneficiaryQuery, Settable}
@@ -38,20 +38,18 @@ class RemoveIndividualBeneficiaryController @Inject()(
                                          identify: IdentifierAction,
                                          getData: DraftIdRetrievalActionProvider,
                                          requireData: DataRequiredAction,
-                                         formProvider: RemoveIndexFormProvider,
+                                         val formProvider: RemoveIndexFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
-                                         removeView: RemoveIndexView,
+                                         val removeView: RemoveIndexView,
                                          require: RequiredAnswerActionProvider
                                  )(implicit ec: ExecutionContext) extends RemoveIndexController {
 
   override val messagesPrefix : String = "removeIndividualBeneficiary"
 
-  override val form: Form[Boolean] = formProvider.apply(messagesPrefix)
+  override def page(index: Int): QuestionPage[FullName] = IndividualBeneficiaryNamePage(index)
 
-  def actions(draftId : String, index: Int) =
-    identify andThen getData(draftId) andThen
-      requireData andThen
-      require(RequiredAnswer(IndividualBeneficiaryNamePage(index), redirect(draftId)))
+  override def actions(draftId : String, index: Int) =
+    identify andThen getData(draftId) andThen requireData
 
   override def redirect(draftId : String) : Call =
     routes.AddABeneficiaryController.onPageLoad(draftId)
@@ -62,20 +60,6 @@ class RemoveIndividualBeneficiaryController @Inject()(
   override def removeQuery(index: Int): Settable[_] = RemoveIndividualBeneficiaryQuery(index)
 
   override def content(index: Int)(implicit request: DataRequest[AnyContent]) : String =
-    request.userAnswers.get(IndividualBeneficiaryNamePage(index)).get.toString
+    request.userAnswers.get(page(index)).map(_.toString).getOrElse(Messages(s"$messagesPrefix.default"))
 
-  override def view(form: Form[_], index: Int, draftId: String)
-                   (implicit request: DataRequest[AnyContent], messagesApi: MessagesApi): HtmlFormat.Appendable = {
-    removeView(messagesPrefix, form, index, draftId, content(index), formRoute(draftId, index))
-  }
-
-  def onPageLoad(index: Int, draftId: String): Action[AnyContent] = actions(draftId, index) {
-    implicit request =>
-      get(index, draftId)
-  }
-
-  def onSubmit(index: Int, draftId : String) = actions(draftId, index).async {
-    implicit request =>
-      remove(index, draftId)
-  }
 }

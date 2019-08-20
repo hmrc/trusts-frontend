@@ -30,8 +30,6 @@ import views.html.AdministrationInsideUKView
 
 class AdministrationInsideUKControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new AdministrationInsideUKFormProvider()
   val form = formProvider()
 
@@ -80,9 +78,7 @@ class AdministrationInsideUKControllerSpec extends SpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, administrationInsideUKRoute)
@@ -92,7 +88,7 @@ class AdministrationInsideUKControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

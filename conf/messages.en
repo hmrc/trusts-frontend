@@ -334,6 +334,12 @@ addATrustee.checkYourAnswersLabel = Add A Trustee
 addATrustee.individual = Trustee Individual
 addATrustee.business = Trustee Business
 addATrustee.error.required = Select yes if you want to add another trustee
+addATrustee.lead-trustee.required = You need to add or nominate a lead trustee.
+
+removeATrustee.title = Are you sure you want to remove {0}?
+removeATrustee.heading = Are you sure you want to remove {0}?
+removeATrustee.default = the trustee
+removeATrustee.error.required = Select yes if you want to remove the trustee
 
 telephoneNumber.title = What is {0}’s telephone number?
 telephoneNumber.heading = What is {0}’s telephone number?
@@ -508,6 +514,21 @@ assetMoneyValue.error.invalidFormat = Total assets value must be a number
 assetMoneyValue.error.wholeNumber = Total assets value must be a whole number
 assetMoneyValue.error.zero = Total amount of money in the trust must be 1 or more
 assetMoneyValue.link = Return to registration progress
+
+removeMoneyAsset.title = Are you sure you want to remove {0}?
+removeMoneyAsset.heading = Are you sure you want to remove {0}?
+removeMoneyAsset.default = the money
+removeMoneyAsset.error.required = Select yes if you want to remove the money
+
+removeShareAsset.title = Are you sure you want to remove {0}?
+removeShareAsset.heading = Are you sure you want to remove {0}?
+removeShareAsset.default = the share
+removeShareAsset.error.required = Select yes if you want to remove the share
+
+removePropertyOrLandAsset.title = Are you sure you want to remove {0}?
+removePropertyOrLandAsset.heading = Are you sure you want to remove {0}?
+removePropertyOrLandAsset.default = the property or land
+removePropertyOrLandAsset.error.required = Select yes if you want to remove the property or land
 
 whatKindOfAsset.first.title = What kind of asset do you need to add first?
 whatKindOfAsset.next.title = What kind of asset do you need to add next?
@@ -766,6 +787,7 @@ classBeneficiaryDescription.hint = This must be 56 characters or less. For examp
 
 removeClassOfBeneficiary.title = Are you sure you want to remove {0}?
 removeClassOfBeneficiary.heading = Are you sure you want to remove {0}?
+removeClassOfBeneficiary.default = the class of beneficiaries
 removeClassOfBeneficiary.error.required = Select yes if you want to remove the class of beneficiaries
 
 whatTypeOfBeneficiary.first.title = What kind of beneficiary do you need to add first?
@@ -784,6 +806,7 @@ whatTypeOfBeneficiary.hint = You can enter a maximum of 25 entries for each bene
 
 removeIndividualBeneficiary.title = Are you sure you want to remove {0}?
 removeIndividualBeneficiary.heading = Are you sure you want to remove {0}?
+removeIndividualBeneficiary.default = the individual beneficiary
 removeIndividualBeneficiary.error.required = Select yes if you want to remove the individual beneficiary
 
 confirmationPage.title = Registration received, your reference is: {0}
@@ -849,6 +872,7 @@ answerPage.section.classOfBeneficiary.subheading = Class of beneficiary
 answerPage.section.assets.heading = Assets
 answerPage.section.moneyAsset.subheading = Money
 answerPage.section.shareAsset.subheading = Share
+answerPage.section.propertyOrLandAsset.subheading = Property or land
 answerPage.agentClientRef = Client reference number: {0}
 
 sharePortfolioName.title = What is the share portfolio’s name?
@@ -984,3 +1008,7 @@ propertyOrLandAddressYesNo.error.required = Select yes if the property or land h
 
 propertyOrLandAnswers.title = Check property or land details
 propertyOrLandAnswers.heading = Check property or land details
+
+addAnAssetYesNo.title = Do you want to add an asset?
+addAnAssetYesNo.heading = Do you want to add an asset?
+addAnAssetYesNo.error.required = Select yes if you want to add an asset

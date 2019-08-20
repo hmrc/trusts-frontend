@@ -30,8 +30,6 @@ import views.html.SettlorDateOfDeathYesNoView
 
 class SettlorDateOfDeathYesNoControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new SettlorDateOfDeathYesNoFormProvider()
   val form = formProvider()
 
@@ -88,9 +86,7 @@ class SettlorDateOfDeathYesNoControllerSpec extends SpecBase {
         name).success.value
 
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, settlorDateOfDeathYesNoRoute)
@@ -100,7 +96,7 @@ class SettlorDateOfDeathYesNoControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

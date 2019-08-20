@@ -32,8 +32,6 @@ import views.html.shares.ShareClassView
 
 class ShareClassControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new ShareClassFormProvider()
   val form = formProvider()
   val index: Int = 0
@@ -89,9 +87,7 @@ class ShareClassControllerSpec extends SpecBase with ModelGenerators with IndexV
       val ua = emptyUserAnswers.set(ShareCompanyNamePage(0), "Company").success.value
 
       val application =
-        applicationBuilder(userAnswers = Some(ua))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(ua)).build()
 
       val request =
         FakeRequest(POST, shareClassRoute)
@@ -101,7 +97,7 @@ class ShareClassControllerSpec extends SpecBase with ModelGenerators with IndexV
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }

@@ -19,6 +19,7 @@ package base
 import config.FrontendAppConfig
 import controllers.actions._
 import models.{RegistrationStatus, UserAnswers}
+import navigation.{FakeNavigator, Navigator, PropertyOrLandNavigator}
 import org.scalatest.{BeforeAndAfter, TestSuite, TryValues}
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice._
@@ -31,6 +32,7 @@ import repositories.SessionRepository
 import services.{CreateDraftRegistrationService, SubmissionService}
 import uk.gov.hmrc.auth.core.AffinityGroup
 import utils.TestUserAnswers
+import utils.annotations.PropertyOrLand
 
 trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked with BeforeAndAfter {
   this: TestSuite =>
@@ -53,8 +55,12 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
 
   implicit def messages: Messages = messagesApi.preferred(fakeRequest)
 
+  val fakeNavigator = new FakeNavigator()
+
   protected def applicationBuilder(userAnswers: Option[UserAnswers] = None,
-                                   affinityGroup: AffinityGroup = AffinityGroup.Organisation): GuiceApplicationBuilder =
+                                   affinityGroup: AffinityGroup = AffinityGroup.Organisation,
+                                   navigator: Navigator = fakeNavigator
+                                  ): GuiceApplicationBuilder =
     new GuiceApplicationBuilder()
       .overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],
@@ -64,7 +70,9 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
           new FakeDraftIdRetrievalActionProvider("draftId", RegistrationStatus.InProgress,userAnswers, mockedSessionRepository)),
         bind[SessionRepository].toInstance(mockedSessionRepository),
         bind[SubmissionService].toInstance(mockSubmissionService),
-        bind[CreateDraftRegistrationService].toInstance(mockCreateDraftRegistrationService)
+        bind[CreateDraftRegistrationService].toInstance(mockCreateDraftRegistrationService),
+        bind[Navigator].toInstance(navigator),
+        bind[Navigator].qualifiedWith(classOf[PropertyOrLand]).toInstance(navigator)
       )
 
 }

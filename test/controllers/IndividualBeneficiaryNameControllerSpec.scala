@@ -18,19 +18,15 @@ package controllers
 
 import base.SpecBase
 import forms.IndividualBeneficiaryNameFormProvider
-import models.{FullName,  NormalMode, UserAnswers}
+import models.{FullName, NormalMode}
 import navigation.{FakeNavigator, Navigator}
-import pages.{IndividualBeneficiaryNamePage, TrusteesNamePage}
+import pages.IndividualBeneficiaryNamePage
 import play.api.inject.bind
-import play.api.libs.json.Json
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.IndividualBeneficiaryNameView
 
 class IndividualBeneficiaryNameControllerSpec extends SpecBase {
-
-  def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new IndividualBeneficiaryNameFormProvider()
   val form = formProvider()
@@ -83,10 +79,7 @@ class IndividualBeneficiaryNameControllerSpec extends SpecBase {
 
     "redirect to the next page when valid data is submitted" in {
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, individualBeneficiaryNameRoute)
@@ -96,7 +89,7 @@ class IndividualBeneficiaryNameControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }
