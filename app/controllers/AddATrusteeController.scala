@@ -60,7 +60,12 @@ class AddATrusteeController @Inject()(
 
       val isLeadTrusteeDefined = request.userAnswers.get(Trustees).toList.flatten.exists(trustee => trustee.isLead)
 
-      Ok(addAnotherView(addAnotherForm, mode, draftId, trustees.inProgress, trustees.complete, isLeadTrusteeDefined))
+      trustees.count match {
+        case 0 =>
+          Ok(yesNoView(yesNoForm, mode, draftId))
+        case _ =>
+          Ok(addAnotherView(addAnotherForm, mode, draftId, trustees.inProgress, trustees.complete, isLeadTrusteeDefined))
+      }
   }
 
   def submitOne(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {

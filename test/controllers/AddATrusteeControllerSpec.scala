@@ -25,7 +25,7 @@ import pages.{TrusteeIndividualOrBusinessPage, TrusteesNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.AddRow
-import views.html.AddATrusteeView
+import views.html.{AddATrusteeView, AddATrusteeYesNoView}
 
 class AddATrusteeControllerSpec extends SpecBase {
 
@@ -57,7 +57,7 @@ class AddATrusteeControllerSpec extends SpecBase {
 
         val application = applicationBuilder(userAnswers = None).build()
 
-        val request = FakeRequest(GET, submitAnotherRoute)
+        val request = FakeRequest(GET, getRoute)
 
         val result = route(application, request).value
 
@@ -89,18 +89,18 @@ class AddATrusteeControllerSpec extends SpecBase {
 
       "return OK and the correct view for a GET" in {
 
-        val application = applicationBuilder(userAnswers = Some(userAnswersWithTrusteesComplete)).build()
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
         val request = FakeRequest(GET, getRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[AddATrusteeView]
+        val view = application.injector.instanceOf[AddATrusteeYesNoView]
 
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(yesNoForm, NormalMode, fakeDraftId,Nil, trustee, false)(fakeRequest, messages).toString
+          view(yesNoForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -108,7 +108,7 @@ class AddATrusteeControllerSpec extends SpecBase {
       "redirect to the next page when valid data is submitted" in {
 
         val application =
-          applicationBuilder(userAnswers = Some(userAnswersWithTrusteesComplete)).build()
+          applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
         val request =
           FakeRequest(POST, submitYesNoRoute)
@@ -125,7 +125,7 @@ class AddATrusteeControllerSpec extends SpecBase {
 
       "return a Bad Request and errors when invalid data is submitted" in {
 
-        val application = applicationBuilder(userAnswers = Some(userAnswersWithTrusteesComplete)).build()
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
         val request =
           FakeRequest(POST, submitYesNoRoute)
@@ -133,14 +133,14 @@ class AddATrusteeControllerSpec extends SpecBase {
 
         val boundForm = yesNoForm.bind(Map("value" -> "invalid value"))
 
-        val view = application.injector.instanceOf[AddATrusteeView]
+        val view = application.injector.instanceOf[AddATrusteeYesNoView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
 
         contentAsString(result) mustEqual
-          view(boundForm, NormalMode, fakeDraftId,Nil, trustee, false)(fakeRequest, messages).toString
+          view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -152,7 +152,7 @@ class AddATrusteeControllerSpec extends SpecBase {
 
         val application = applicationBuilder(userAnswers = Some(userAnswersWithTrusteesComplete)).build()
 
-        val request = FakeRequest(GET, submitAnotherRoute)
+        val request = FakeRequest(GET, getRoute)
 
         val result = route(application, request).value
 
