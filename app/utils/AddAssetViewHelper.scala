@@ -44,7 +44,6 @@ class AddAssetViewHelper(userAnswers: UserAnswers, draftId: String)(implicit mes
       case mvm: MoneyAssetViewModel => Some(parseMoney(mvm, index))
       case mvm: ShareAssetViewModel => Some(parseShare(mvm, index))
       case mvm: PropertyOrLandAssetViewModel => Some(parsePropertyOrLand(mvm, index))
-      case mvm: DefaultAssetsViewModel => Some(parseDefault(mvm, index))
       case _ => None
     }
   }
@@ -104,15 +103,6 @@ class AddAssetViewHelper(userAnswers: UserAnswers, draftId: String)(implicit mes
       )
     }
 
-  }
-
-  private def parseDefault(mvm: DefaultAssetsViewModel, index: Int): AddRow = {
-    AddRow(
-      messages("entities.no.asset.added"),
-      mvm.`type`.toString,
-      "#",
-      "#"
-    )
   }
 
 }

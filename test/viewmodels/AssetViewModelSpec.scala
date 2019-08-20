@@ -182,7 +182,7 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks 
               """
                 |{
                 |"propertyOrLandAddressYesNo": true,
-                |"propertyOrLandAddressUkYesNo": true,
+                |"propertyOrLandAddressUKYesNo": true,
                 |"whatKindOfAsset" : "PropertyOrLand",
                 |"status": "progress"
                 |}
@@ -198,7 +198,7 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks 
               """
                 |{
                 |"propertyOrLandAddressYesNo": true,
-                |"propertyOrLandAddressUkYesNo": true,
+                |"propertyOrLandAddressUKYesNo": true,
                 |"address": {
                 | "line1": "line 1",
                 | "townOrCity": "Newcastle",
@@ -222,7 +222,7 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks 
               """
                 |{
                 |"propertyOrLandAddressYesNo": true,
-                |"propertyOrLandAddressUkYesNo": false,
+                |"propertyOrLandAddressUKYesNo": false,
                 |"whatKindOfAsset" : "PropertyOrLand",
                 |"status": "progress"
                 |}
@@ -238,7 +238,7 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks 
               """
                 |{
                 |"propertyOrLandAddressYesNo": true,
-                |"propertyOrLandAddressUkYesNo": false,
+                |"propertyOrLandAddressUKYesNo": false,
                 |"address": {
                 | "line1": "line 1",
                 | "line2": "line 2",
