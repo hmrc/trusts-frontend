@@ -1059,11 +1059,11 @@ settlorIndividualAddressInternational.error.field2.required = Enter field2
 settlorIndividualAddressInternational.error.field1.length = field1 must be 100 characters or less
 settlorIndividualAddressInternational.error.field2.length = field2 must be 100 characters or less
 
-settlorIndividualAddressUK.title = settlorIndividualAddressUK
-settlorIndividualAddressUK.heading = settlorIndividualAddressUK
+settlorIndividualAddressUK.title = What is {0}’s address?
+settlorIndividualAddressUK.heading = What is {0}’s address?
 settlorIndividualAddressUK.field1 = Field 1
 settlorIndividualAddressUK.field2 = Field 2
-settlorIndividualAddressUK.checkYourAnswersLabel = settlorIndividualAddressUK
+settlorIndividualAddressUK.checkYourAnswersLabel = What is {0}’s address?
 settlorIndividualAddressUK.error.field1.required = Enter field1
 settlorIndividualAddressUK.error.field2.required = Enter field2
 settlorIndividualAddressUK.error.field1.length = field1 must be 100 characters or less
