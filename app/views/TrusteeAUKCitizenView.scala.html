@@ -22,10 +22,10 @@ main_template: MainTemplate,
 formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, index : Int, trusteeName: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId: String, index : Int, messagePrefix: String, trusteeName: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-title = s"${errorPrefix(form)} ${messages("trusteeAUKCitizen.heading", trusteeName)}"
+title = s"${errorPrefix(form)} ${messages(messagePrefix+".title")}"
 ) {
 
   @formHelper(action = TrusteeAUKCitizenController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {

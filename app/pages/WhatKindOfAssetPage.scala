@@ -17,9 +17,10 @@
 package pages
 
 import mapping.reads.Assets
-import models.WhatKindOfAsset.{Money, Shares}
+import models.WhatKindOfAsset.{Business, Money, Other, Partnership, PropertyOrLand, Shares}
 import models.{UserAnswers, WhatKindOfAsset}
 import pages.entitystatus.AssetStatus
+import pages.property_or_land._
 import pages.shares._
 import play.api.libs.json.JsPath
 
@@ -35,9 +36,38 @@ final case class WhatKindOfAssetPage(index: Int) extends QuestionPage[WhatKindOf
   override def cleanup(value: Option[WhatKindOfAsset], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
       case Some(Money) =>
+
         removeShare(userAnswers)
+          .flatMap(removePropertyOrLand)
+
       case Some(Shares) =>
+
         removeMoney(userAnswers)
+          .flatMap(removePropertyOrLand)
+
+      case Some(PropertyOrLand) =>
+
+        removeMoney(userAnswers)
+          .flatMap(removeShare)
+
+      case Some(Business) =>
+
+        removeMoney(userAnswers)
+          .flatMap(removePropertyOrLand)
+          .flatMap(removeShare)
+
+      case Some(Partnership) =>
+
+        removeMoney(userAnswers)
+          .flatMap(removePropertyOrLand)
+          .flatMap(removeShare)
+
+      case Some(Other) =>
+
+        removeMoney(userAnswers)
+          .flatMap(removePropertyOrLand)
+          .flatMap(removeShare)
+
       case _ => super.cleanup(value, userAnswers)
     }
   }
@@ -59,6 +89,17 @@ final case class WhatKindOfAssetPage(index: Int) extends QuestionPage[WhatKindOf
       .flatMap(_.remove(SharePortfolioQuantityInTrustPage(index)))
       .flatMap(_.remove(SharePortfolioValueInTrustPage(index)))
       .flatMap(_.remove(AssetStatus(index)))
-      .flatMap(_.remove(ShareCompanyNamePage(index)))
+  }
+
+  private def removePropertyOrLand(userAnswers: UserAnswers) : Try[UserAnswers] = {
+    userAnswers.remove(PropertyOrLandAddressYesNoPage(index))
+      .flatMap(_.remove(PropertyOrLandAddressUkYesNoPage(index)))
+      .flatMap(_.remove(PropertyOrLandUKAddressPage(index)))
+      .flatMap(_.remove(PropertyOrLandInternationalAddressPage(index)))
+      .flatMap(_.remove(PropertyOrLandTotalValuePage(index)))
+      .flatMap(_.remove(TrustOwnAllThePropertyOrLandPage(index)))
+      .flatMap(_.remove(PropertyOrLandDescriptionPage(index)))
+      .flatMap(_.remove(PropertyLandValueTrustPage(index)))
+      .flatMap(_.remove(AssetStatus(index)))
   }
 }

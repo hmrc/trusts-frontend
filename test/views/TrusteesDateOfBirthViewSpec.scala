@@ -39,7 +39,7 @@ class TrusteesDateOfBirthViewSpec extends QuestionViewBehaviours[LocalDate] {
     val view = viewFor[TrusteesDateOfBirthView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index, messageKeyPrefix, trusteeName)(fakeRequest, messages)
 
     val applyViewF = (form : Form[_]) => applyView(form)
 

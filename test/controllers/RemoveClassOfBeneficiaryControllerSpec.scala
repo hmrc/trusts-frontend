@@ -40,27 +40,50 @@ class RemoveClassOfBeneficiaryControllerSpec extends SpecBase with PropertyCheck
 
   val index = 0
 
-  "RemoveClassOfBeneficiary Controller" must {
+  "RemoveClassOfBeneficiary Controller" when {
 
-    "return OK and the correct view for a GET" in {
+    "no description added" must {
+      "return OK and the correct view for a GET" in {
 
-      val userAnswers = emptyUserAnswers
-        .set(ClassBeneficiaryDescriptionPage(0), "Future issues of grandchildren").success.value
-        .set(AssetStatus(0), Completed).success.value
+        val userAnswers = emptyUserAnswers
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.RemoveClassOfBeneficiaryController.onPageLoad(index, fakeDraftId).url)
+        val request = FakeRequest(GET, routes.RemoveClassOfBeneficiaryController.onPageLoad(index, fakeDraftId).url)
 
-      val result = route(application, request).value
+        val result = route(application, request).value
 
-      val view = application.injector.instanceOf[RemoveIndexView]
+        val view = application.injector.instanceOf[RemoveIndexView]
 
-      status(result) mustEqual OK
+        status(result) mustEqual OK
 
-      contentAsString(result) mustEqual view(messagesPrefix, form, index, fakeDraftId, content, formRoute)(fakeRequest, messages).toString
+        contentAsString(result) mustEqual view(messagesPrefix, form, index, fakeDraftId, "the class of beneficiaries", formRoute)(fakeRequest, messages).toString
 
-      application.stop()
+        application.stop()
+      }
+    }
+
+    "description is provided" must {
+      "return OK and the correct view for a GET" in {
+
+        val userAnswers = emptyUserAnswers
+          .set(ClassBeneficiaryDescriptionPage(0), "Future issues of grandchildren").success.value
+          .set(AssetStatus(0), Completed).success.value
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(GET, routes.RemoveClassOfBeneficiaryController.onPageLoad(index, fakeDraftId).url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[RemoveIndexView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual view(messagesPrefix, form, index, fakeDraftId, content, formRoute)(fakeRequest, messages).toString
+
+        application.stop()
+      }
     }
 
     "redirect to the next page when valid data is submitted" in {

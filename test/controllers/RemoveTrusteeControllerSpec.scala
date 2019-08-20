@@ -36,29 +36,53 @@ class RemoveTrusteeControllerSpec extends SpecBase with PropertyChecks {
   lazy val formRoute = routes.RemoveTrusteeController.onSubmit(0, fakeDraftId)
 
   lazy val content : String = "John Smith"
+  lazy val defaultContent : String = "the trustee"
 
   val index = 0
 
-  "TrusteeRemove Controller" must {
+  "TrusteeRemove Controller" when {
 
-    "return OK and the correct view for a GET" in {
+    "no name provided" must {
+      "return OK and the correct view for a GET" in {
 
-      val userAnswers = emptyUserAnswers
-        .set(TrusteesNamePage(0), FullName("John", None, "Smith")).success.value
+        val userAnswers = emptyUserAnswers
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.RemoveTrusteeController.onPageLoad(index, fakeDraftId).url)
+        val request = FakeRequest(GET, routes.RemoveTrusteeController.onPageLoad(index, fakeDraftId).url)
 
-      val result = route(application, request).value
+        val result = route(application, request).value
 
-      val view = application.injector.instanceOf[RemoveIndexView]
+        val view = application.injector.instanceOf[RemoveIndexView]
 
-      status(result) mustEqual OK
+        status(result) mustEqual OK
 
-      contentAsString(result) mustEqual view(messagesPrefix, form, index, fakeDraftId, content, formRoute)(fakeRequest, messages).toString
+        contentAsString(result) mustEqual view(messagesPrefix, form, index, fakeDraftId, defaultContent, formRoute)(fakeRequest, messages).toString
 
-      application.stop()
+        application.stop()
+      }
+    }
+
+    "name has been provided" must {
+      "return OK and the correct view for a GET" in {
+
+        val userAnswers = emptyUserAnswers
+          .set(TrusteesNamePage(0), FullName("John", None, "Smith")).success.value
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(GET, routes.RemoveTrusteeController.onPageLoad(index, fakeDraftId).url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[RemoveIndexView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual view(messagesPrefix, form, index, fakeDraftId, content, formRoute)(fakeRequest, messages).toString
+
+        application.stop()
+      }
     }
 
     "redirect to the next page when valid data is submitted" in {
