@@ -21,7 +21,7 @@ import models.Status.{Completed, InProgress}
 import models.WhatKindOfAsset.{Money, Partnership, PropertyOrLand, Shares}
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.{FreeSpec, MustMatchers}
-import play.api.libs.json.{JsSuccess, Json}
+import play.api.libs.json.{JsPath, JsSuccess, Json, KeyPathNode}
 import viewmodels.addAnother._
 
 class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks with Generators with ModelGenerators {
@@ -268,7 +268,8 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks 
             """.stripMargin)
 
             json.validate[AssetViewModel] mustEqual JsSuccess(
-              PropertyOrLandAssetAddressViewModel(`type` = PropertyOrLand, address = None, status = InProgress)
+              PropertyOrLandAssetAddressViewModel(`type` = PropertyOrLand, address = None, status = InProgress),
+              JsPath(List(KeyPathNode("propertyOrLandAddressYesNo")))
             )
           }
 
