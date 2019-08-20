@@ -98,6 +98,14 @@ trait ModelGenerators {
       } yield UKAddress(line1, Some(line2), Some(line3), townOrCity, postcode)
     }
 
+  implicit lazy val arbitraryPassportIDCardDetails: Arbitrary[PassportIdCardDetails] =
+    Arbitrary {
+      for {
+        country <- arbitrary[String]
+        number <- arbitrary[String]
+      } yield PassportIdCardDetails(country, number, LocalDate.now)
+    }
+
   implicit lazy val arbitraryAddATrustee: Arbitrary[AddATrustee] =
     Arbitrary {
       Gen.oneOf(AddATrustee.values)

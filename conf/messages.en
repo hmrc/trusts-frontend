@@ -67,6 +67,27 @@ site.address.uk.postcode = Postcode
 site.address.uk.postcode.hint = For example AB1 1AB
 site.address.uk.checkYourAnswersLabel = What is {0}’s address?
 
+site.passportOrIdCard.cardNumber = ID card number
+site.passportOrIdCard.expiryDate = Expiry date
+site.passportOrIdCard.checkYourAnswersLabel = What are {0}'s ID card details?
+
+site.passportOrIdCard.error.countryOfIssue.required = Enter the individual beneficiary's ID card country of issue
+site.passportOrIdCard.error.countryOfIssue.length = The Country of issue must be 30 characters or less
+site.passportOrIdCard.countryOfIssue.hint = Country of issue is the same as their country of citizenship. For example, if they're a citizen of the United Kingdom but are getting their passport from the UK Consulate in Hong Kong, the UK is their country of issue.
+
+site.passportOrIdCard.error.cardNumber.required = Enter the individual beneficiary's ID card number
+site.passportOrIdCard.error.cardNumber.invalid = ID card number can only include letters and numbers
+site.passportOrIdCard.error.cardNumber.length = The ID card must be 30 characters or less
+
+site.passportOrIdCard.cardNumber.hint = For example, 502135326
+site.passportOrIdCard.expiryDate.hint = For example, 31 3 1980
+site.passportOrIdCard.error.expiryDate.required = Enter the individual beneficiary's ID card expiry date
+
+site.passportOrIdCard.error.required.all = Enter a date when the individual beneficiary's passport expires
+site.passportOrIdCard.error.required.two = The ID card expiry date must include a {0} and {1}
+site.passportOrIdCard.error.required = The ID card expiry date must include a {0}
+site.passportOrIdCard.error.invalid = Enter a real date when the individual beneficiary’s ID card expires
+
 ukAddress.error.line1.required = Enter address line 1
 ukAddress.error.townOrCity.required = Enter a town or city
 ukAddress.error.postcode.required = Enter a postcode
