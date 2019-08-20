@@ -30,6 +30,10 @@ final case class PropertyOrLandAssetInternationalAddressViewModel(`type` : WhatK
                                                        address : Option[String],
                                                        override val status : Status) extends PropertyOrLandAssetViewModel
 
+final case class PropertyOrLandAssetAddressViewModel(`type` : WhatKindOfAsset,
+                                                       address : Option[String],
+                                                       override val status : Status) extends PropertyOrLandAssetViewModel
+
 final case class PropertyOrLandAssetDescriptionViewModel(`type` : WhatKindOfAsset,
                                                        description : Option[String],
                                                        override val status : Status) extends PropertyOrLandAssetViewModel
@@ -43,53 +47,62 @@ object PropertyOrLandAssetViewModel {
 
     val ukReads: Reads[PropertyOrLandAssetViewModel] =
     {
-      (__ \ "address").read[UKAddress].flatMap{ _ =>
-        ((__ \ "address" \ "line1").readNullable[String] and
-          (__ \ "status").readWithDefault[Status](InProgress)
-          )((address, status) => {
-          PropertyOrLandAssetUKAddressViewModel(
-            PropertyOrLand,
-            address,
-            status)
-        })
+      (__ \ "propertyOrLandAddressYesNo").read[Boolean].filter(x => x).flatMap { _ =>
+        (__ \ "propertyOrLandAddressUkYesNo").read[Boolean].filter(x => x).flatMap { _ =>
+            ((__ \ "address").readNullable[UKAddress].map(_.map(_.line1)) and
+              (__ \ "status").readWithDefault[Status](InProgress)
+              ) ((address, status) => {
+              PropertyOrLandAssetUKAddressViewModel(
+                PropertyOrLand,
+                address,
+                status)
+            })
+        }
       }
     }
 
     val internationalReads: Reads[PropertyOrLandAssetViewModel] =
     {
-      (__ \ "address").read[InternationalAddress].flatMap{ _ =>
-        ((__ \ "address" \ "line1").readNullable[String] and
-          (__ \ "status").readWithDefault[Status](InProgress)
-          )((address, status) => {
-          PropertyOrLandAssetInternationalAddressViewModel(
-            PropertyOrLand,
-            address,
-            status)
-        })
+      (__ \ "propertyOrLandAddressYesNo").read[Boolean].filter(x => x).flatMap { _ =>
+        (__ \ "propertyOrLandAddressUkYesNo").read[Boolean].filter(x => !x).flatMap { _ =>
+          ((__ \ "address").readNullable[InternationalAddress].map(_.map(_.line1)) and
+            (__ \ "status").readWithDefault[Status](InProgress)
+            ) ((address, status) => {
+            PropertyOrLandAssetInternationalAddressViewModel(
+              PropertyOrLand,
+              address,
+              status)
+          })
+        }
       }
     }
 
-    val descriptionReads: Reads[PropertyOrLandAssetViewModel] =
+    val addressReads: Reads[PropertyOrLandAssetViewModel] =
     {
+      (__ \ "propertyOrLandAddressYesNo").read[Boolean].filter{ x => x }.map { _ =>
+         {
+          PropertyOrLandAssetAddressViewModel(
+            PropertyOrLand,
+            None,
+            InProgress)
+        }
+      }
+    }
+
+    val descriptionReads: Reads[PropertyOrLandAssetViewModel] = {
+      (__ \ "propertyOrLandAddressYesNo").read[Boolean].filter(x => !x).flatMap { _ =>
         ((__ \ "propertyOrLandDescription").readNullable[String] and
           (__ \ "status").readWithDefault[Status](InProgress)
-          )((description, status) => {
+          ) ((description, status) => {
           PropertyOrLandAssetDescriptionViewModel(
             PropertyOrLand,
             description,
             status)
         })
+      }
     }
 
-    (__ \ "whatKindOfAsset").read[WhatKindOfAsset].flatMap[WhatKindOfAsset] {
-      whatKindOfAsset: WhatKindOfAsset =>
-        if (whatKindOfAsset == PropertyOrLand) {
-          Reads(_ => JsSuccess(whatKindOfAsset))
-        } else {
-          Reads(_ => JsError("Property or Land asset must be of type `PropertyOrLand`"))
-        }
-    } andKeep ukReads orElse internationalReads orElse descriptionReads
-
+    ukReads orElse internationalReads orElse addressReads orElse descriptionReads
 
   }
 

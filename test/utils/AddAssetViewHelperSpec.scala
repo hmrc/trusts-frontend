@@ -61,6 +61,7 @@ class AddAssetViewHelperSpec extends SpecBase {
           .set(WhatKindOfAssetPage(1), Money).success.value
           .set(WhatKindOfAssetPage(2), PropertyOrLand).success.value
           .set(PropertyOrLandAddressYesNoPage(2), true).success.value
+          .set(PropertyOrLandAddressUkYesNoPage(2), true).success.value
           .set(WhatKindOfAssetPage(3), PropertyOrLand).success.value
           .set(PropertyOrLandAddressYesNoPage(3), false).success.value
           .set(WhatKindOfAssetPage(4), PropertyOrLand).success.value
@@ -103,13 +104,6 @@ class AddAssetViewHelperSpec extends SpecBase {
           .set(PropertyOrLandTotalValuePage(3), "100").success.value
           .set(TrustOwnAllThePropertyOrLandPage(3), true).success.value
           .set(AssetStatus(3), Completed).success.value
-
-        // List(AddRow(No name added,Shares,#,/trusts-registration/id/asset/0/share/portfolio/remove), AddRow(No value added,Money,#,/trusts-registration/id/asset/1/money/remove)) was not equal to
-        // List(AddRow(No name added,Shares,#,/trusts-registration/id/asset/0/share/portfolio/remove), AddRow(No value added,Money,#,/trusts-registration/id/asset/1/money/remove), AddRow(No address added,Property or Land,#,/trusts-registration/id/asset/2/property-or-land/address/uk/remove), AddRow(No description added,Property or Land,#,/trusts-registration/id/asset/3/property-or-land/description/remove), AddRow(No description added,Property or Land,#,/trusts-registration/id/asset/4/property-or-land/description/remove))
-
-
-        // List(AddRow(Share Company Name,Shares,#,/trusts-registration/id/asset/0/share/company/remove), AddRow(£200,Money,#,/trusts-registration/id/asset/1/money/remove), AddRow(line 1,Property or Land,#,/trusts-registration/id/asset/2/property-or-land/address/uk/remove)) was not equal to
-        // List(AddRow(Share Company Name,Shares,#,/trusts-registration/id/asset/0/share/company/remove), AddRow(£200,Money,#,/trusts-registration/id/asset/1/money/remove), AddRow(line 1,Property or Land,#,/trusts-registration/id/asset/2/property-or-land/address/uk/remove), AddRow(1 hectare of land,Property or Land,#,/trusts-registration/id/asset/3/property-or-land/description/remove))
 
         val rows = new AddAssetViewHelper(userAnswers, fakeDraftId).rows
         rows.complete mustBe List(

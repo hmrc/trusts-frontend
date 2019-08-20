@@ -35,7 +35,6 @@ import views.html.{AddAnAssetYesNoView, AddAssetsView}
 
 class AddAssetsControllerSpec extends SpecBase {
 
-
   lazy val addAssetsRoute: String = routes.AddAssetsController.onPageLoad(fakeDraftId).url
   lazy val addOnePostRoute: String = routes.AddAssetsController.submitOne(fakeDraftId).url
   lazy val addAnotherPostRoute: String = routes.AddAssetsController.submitAnother(fakeDraftId).url
@@ -43,7 +42,7 @@ class AddAssetsControllerSpec extends SpecBase {
   def removeMoneyRoute(index: Int) = controllers.money.routes.RemoveMoneyAssetController.onPageLoad(index, fakeDraftId).url
   def removeShareRoute(index: Int) = controllers.shares.routes.RemoveShareCompanyNameAssetController.onPageLoad(1, fakeDraftId).url
 
-val addAssetsForm: Form[AddAssets] = new AddAssetsFormProvider()()
+  val addAssetsForm: Form[AddAssets] = new AddAssetsFormProvider()()
   val yesNoForm: Form[Boolean] = new AddAnAssetYesNoFormProvider()()
 
   lazy val assets = List(

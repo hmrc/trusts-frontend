@@ -29,7 +29,7 @@
     title = s"${errorPrefix(form)} ${messages("addATrustee.title")}"
     ) {
 
-    @formHelper(action = AddATrusteeController.onSubmit(draftId), 'autoComplete -> "off") {
+    @formHelper(action = AddATrusteeController.submitAnother(draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 
