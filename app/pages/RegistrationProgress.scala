@@ -135,7 +135,7 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
         val status = !list.exists(_.status == InProgress) && noMoreToAdd
         determineStatus(status)
     }
-  }
+  
 
   def isTaskListComplete(userAnswers: UserAnswers) : Boolean = {
     isTrustDetailsComplete(userAnswers).contains(Completed) &&

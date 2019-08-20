@@ -44,6 +44,7 @@ class AddAssetViewHelper(userAnswers: UserAnswers, draftId: String)(implicit mes
       case mvm: MoneyAssetViewModel => Some(parseMoney(mvm, index))
       case mvm: ShareAssetViewModel => Some(parseShare(mvm, index))
       case mvm: PropertyOrLandAssetViewModel => Some(parsePropertyOrLand(mvm, index))
+
       case _ => None
     }
   }

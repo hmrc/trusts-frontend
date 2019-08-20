@@ -90,6 +90,7 @@ object PropertyOrLandAssetViewModel {
     }
 
     val descriptionReads: Reads[PropertyOrLandAssetViewModel] = {
+      (__ \ "propertyOrLandAddressYesNo").read[Boolean].filter(x => !x).flatMap { _ =>
         ((__ \ "propertyOrLandDescription").readNullable[String] and
           (__ \ "status").readWithDefault[Status](InProgress)
           ) ((description, status) => {
@@ -98,17 +99,10 @@ object PropertyOrLandAssetViewModel {
             description,
             status)
         })
+      }
     }
 
-    (__ \ "whatKindOfAsset").read[WhatKindOfAsset].flatMap[WhatKindOfAsset] {
-      whatKindOfAsset: WhatKindOfAsset =>
-        if (whatKindOfAsset == PropertyOrLand) {
-          Reads(_ => JsSuccess(whatKindOfAsset))
-        } else {
-          Reads(_ => JsError("Property or Land asset must be of type `PropertyOrLand`"))
-        }
-    } andKeep ukReads orElse internationalReads orElse addressReads orElse descriptionReads
-
+    ukReads orElse internationalReads orElse addressReads orElse descriptionReads
 
   }
 
