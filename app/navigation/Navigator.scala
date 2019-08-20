@@ -68,6 +68,7 @@ class Navigator @Inject()() {
     case TelephoneNumberPage(index) => _ => _ => routes.TrusteesAnswerPageController.onPageLoad(index, draftId)
     case TrusteesAnswerPage => _ => _ => routes.AddATrusteeController.onPageLoad(draftId)
     case AddATrusteePage => _ => addATrusteeRoute(draftId)
+    case AddATrusteeYesNoPage => _ => addATrusteeYesNoRoute(draftId)
 
     //Agents
     case AgentInternalReferencePage => _ => _ => routes.AgentNameController.onPageLoad(NormalMode, draftId)
@@ -259,6 +260,7 @@ class Navigator @Inject()() {
   private def addAnAssetYesNoRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(AddAnAssetYesNoPage) match {
     case Some(false) => routes.TaskListController.onPageLoad(draftId)
     case Some(true) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, 0, draftId)
+    case _ => routes.SessionExpiredController.onPageLoad()
   }
 
   private def addAssetsRoute(draftId: String)(answers: UserAnswers) = {
@@ -302,6 +304,16 @@ class Navigator @Inject()() {
       case Some(Other) => routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
+
+  private def addATrusteeYesNoRoute(draftId: String)(answers: UserAnswers) : Call = {
+    answers.get(AddATrusteeYesNoPage) match {
+      case Some(true) =>
+        routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 0, draftId)
+      case Some(false) =>
+        routes.TaskListController.onPageLoad(draftId)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
 
   private def addATrusteeRoute(draftId: String)(answers: UserAnswers) = {
     val addAnother = answers.get(AddATrusteePage)
