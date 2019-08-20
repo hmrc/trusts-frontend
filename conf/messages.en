@@ -1049,11 +1049,11 @@ settlorIndividualNINOYesNo.heading = Do you know {0}’s National Insurance numb
 settlorIndividualNINOYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
 settlorIndividualNINOYesNo.error.required = Select yes if you know the settlor’s National Insurance number
 
-settlorIndividualAddressInternational.title = settlorIndividualAddressInternational
-settlorIndividualAddressInternational.heading = settlorIndividualAddressInternational
+settlorIndividualAddressInternational.title = What is {0}’s address?
+settlorIndividualAddressInternational.heading = What is {0}’s address?
 settlorIndividualAddressInternational.field1 = Field 1
 settlorIndividualAddressInternational.field2 = Field 2
-settlorIndividualAddressInternational.checkYourAnswersLabel = settlorIndividualAddressInternational
+settlorIndividualAddressInternational.checkYourAnswersLabel = What is {0}’s address?
 settlorIndividualAddressInternational.error.field1.required = Enter field1
 settlorIndividualAddressInternational.error.field2.required = Enter field2
 settlorIndividualAddressInternational.error.field1.length = field1 must be 100 characters or less
