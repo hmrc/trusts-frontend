@@ -35,12 +35,10 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("settlorIndividualNINO.heading", Some(name.toString))
-
         @components.input_text(
           field = form("value"),
           label = messages("settlorIndividualNINO.heading", name.toString),
-          labelClass = Some("visually-hidden"),
+          labelClass = Some("heading-large"),
           labelAsHeading = true,
           hint = Some(messages("settlorIndividualNINO.hint"))
         )

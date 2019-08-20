@@ -17,15 +17,17 @@
 package controllers
 
 import controllers.actions._
+import controllers.filters.IndexActionFilterProvider
 import forms.SettlorIndividualAddressUKYesNoFormProvider
 import javax.inject.Inject
-import models.{Mode, UserAnswers}
+import models.{Mode, NormalMode, UserAnswers}
 import navigation.Navigator
-import pages.SettlorIndividualAddressUKYesNoPage
+import pages.{SettlorIndividualAddressUKYesNoPage, SettlorIndividualNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import sections.Settlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.SettlorIndividualAddressUKYesNoView
 
@@ -37,7 +39,9 @@ class SettlorIndividualAddressUKYesNoController @Inject()(
                                          navigator: Navigator,
                                          identify: IdentifierAction,
                                          getData: DraftIdRetrievalActionProvider,
+                                         validateIndex: IndexActionFilterProvider,
                                          requireData: DataRequiredAction,
+                                         requiredAnswer: RequiredAnswerActionProvider,
                                          formProvider: SettlorIndividualAddressUKYesNoFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: SettlorIndividualAddressUKYesNoView
@@ -48,25 +52,32 @@ class SettlorIndividualAddressUKYesNoController @Inject()(
   private def actions(index: Int, draftId: String) =
     identify andThen
       getData(draftId) andThen
-      requireData
+      requireData andThen
+      validateIndex(index, Settlors) andThen
+      requiredAnswer(RequiredAnswer(SettlorIndividualNamePage(index), routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, draftId)))
+
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
+
+      val name = request.userAnswers.get(SettlorIndividualNamePage(index)).get
 
       val preparedForm = request.userAnswers.get(SettlorIndividualAddressUKYesNoPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId, index))
+      Ok(view(preparedForm, mode, draftId, index, name))
   }
 
   def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
     implicit request =>
 
+      val name = request.userAnswers.get(SettlorIndividualNamePage(index)).get
+
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, name))),
 
         value => {
           for {

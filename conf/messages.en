@@ -1069,10 +1069,10 @@ settlorIndividualAddressUK.error.field2.required = Enter field2
 settlorIndividualAddressUK.error.field1.length = field1 must be 100 characters or less
 settlorIndividualAddressUK.error.field2.length = field2 must be 100 characters or less
 
-settlorIndividualAddressUKYesNo.title = settlorIndividualAddressUKYesNo
-settlorIndividualAddressUKYesNo.heading = settlorIndividualAddressUKYesNo
-settlorIndividualAddressUKYesNo.checkYourAnswersLabel = settlorIndividualAddressUKYesNo
-settlorIndividualAddressUKYesNo.error.required = Select yes if settlorIndividualAddressUKYesNo
+settlorIndividualAddressUKYesNo.title = Is {0}’s address in the UK?
+settlorIndividualAddressUKYesNo.heading = Is {0}’s address in the UK?
+settlorIndividualAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+settlorIndividualAddressUKYesNo.error.required = Select yes if the business’s address is in the UK
 
 settlorIndividualIDCard.title = settlorIndividualIDCard
 settlorIndividualIDCard.heading = settlorIndividualIDCard
