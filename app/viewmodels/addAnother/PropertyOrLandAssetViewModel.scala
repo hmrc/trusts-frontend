@@ -47,9 +47,9 @@ object PropertyOrLandAssetViewModel {
 
     val ukReads: Reads[PropertyOrLandAssetViewModel] =
     {
-      (__ \ "propertyOrLandAddressYesNo").read[Boolean].filter{ x => x }.flatMap { _ =>
-        (__ \ "propertyOrLandAddressUkYesNo").read[Boolean].filter{ x => x }.flatMap { _ =>
-            ((__ \ "address" \ "line1").readNullable[String] and
+      (__ \ "propertyOrLandAddressYesNo").read[Boolean].filter(x => x).flatMap { _ =>
+        (__ \ "propertyOrLandAddressUkYesNo").read[Boolean].filter(x => x).flatMap { _ =>
+            ((__ \ "address").readNullable[UKAddress].map(_.map(_.line1)) and
               (__ \ "status").readWithDefault[Status](InProgress)
               ) ((address, status) => {
               PropertyOrLandAssetUKAddressViewModel(
@@ -63,9 +63,9 @@ object PropertyOrLandAssetViewModel {
 
     val internationalReads: Reads[PropertyOrLandAssetViewModel] =
     {
-      (__ \ "propertyOrLandAddressYesNo").read[Boolean].filter{ x => x }.flatMap { _ =>
-        (__ \ "propertyOrLandAddressUkYesNo").read[Boolean].filter { x => !x }.flatMap { _ =>
-          ((__ \ "address" \ "line1").readNullable[String] and
+      (__ \ "propertyOrLandAddressYesNo").read[Boolean].filter(x => x).flatMap { _ =>
+        (__ \ "propertyOrLandAddressUkYesNo").read[Boolean].filter(x => !x).flatMap { _ =>
+          ((__ \ "address").readNullable[InternationalAddress].map(_.map(_.line1)) and
             (__ \ "status").readWithDefault[Status](InProgress)
             ) ((address, status) => {
             PropertyOrLandAssetInternationalAddressViewModel(
@@ -79,15 +79,13 @@ object PropertyOrLandAssetViewModel {
 
     val addressReads: Reads[PropertyOrLandAssetViewModel] =
     {
-      (__ \ "propertyOrLandAddressYesNo").read[Boolean].filter{ x => x }.flatMap { _ =>
-        ((__ \ "address" \ "line1").readNullable[String] and
-          (__ \ "status").readWithDefault[Status](InProgress)
-          ) ((address, status) => {
+      (__ \ "propertyOrLandAddressYesNo").read[Boolean].filter{ x => x }.map { _ =>
+         {
           PropertyOrLandAssetAddressViewModel(
             PropertyOrLand,
-            address,
-            status)
-        })
+            None,
+            InProgress)
+        }
       }
     }
 
@@ -103,7 +101,7 @@ object PropertyOrLandAssetViewModel {
         })
       }
     }
-
+    
     (__ \ "whatKindOfAsset").read[WhatKindOfAsset].flatMap[WhatKindOfAsset] {
       whatKindOfAsset: WhatKindOfAsset =>
         if (whatKindOfAsset == PropertyOrLand) {

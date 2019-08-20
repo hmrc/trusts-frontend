@@ -182,6 +182,7 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks 
               """
                 |{
                 |"propertyOrLandAddressYesNo": true,
+                |"propertyOrLandAddressUkYesNo": true,
                 |"whatKindOfAsset" : "PropertyOrLand",
                 |"status": "progress"
                 |}
@@ -197,7 +198,7 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks 
               """
                 |{
                 |"propertyOrLandAddressYesNo": true,
-                |"propertyOrLandUKAddressYesNo": true,
+                |"propertyOrLandAddressUkYesNo": true,
                 |"address": {
                 | "line1": "line 1",
                 | "townOrCity": "Newcastle",
@@ -210,6 +211,64 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks 
 
             json.validate[AssetViewModel] mustEqual JsSuccess(
               PropertyOrLandAssetUKAddressViewModel(PropertyOrLand, Some("line 1"), Completed)
+            )
+          }
+
+        }
+        "international address" - {
+
+          "to a view model that is not complete" in {
+            val json = Json.parse(
+              """
+                |{
+                |"propertyOrLandAddressYesNo": true,
+                |"propertyOrLandAddressUkYesNo": false,
+                |"whatKindOfAsset" : "PropertyOrLand",
+                |"status": "progress"
+                |}
+            """.stripMargin)
+
+            json.validate[AssetViewModel] mustEqual JsSuccess(
+              PropertyOrLandAssetInternationalAddressViewModel(`type` = PropertyOrLand, address = None, status = InProgress)
+            )
+          }
+
+          "to a view model that is complete" in {
+            val json = Json.parse(
+              """
+                |{
+                |"propertyOrLandAddressYesNo": true,
+                |"propertyOrLandAddressUkYesNo": false,
+                |"address": {
+                | "line1": "line 1",
+                | "line2": "line 2",
+                | "country": "France"
+                |},
+                |"whatKindOfAsset" : "PropertyOrLand",
+                |"status": "completed"
+                |}
+            """.stripMargin)
+
+            json.validate[AssetViewModel] mustEqual JsSuccess(
+              PropertyOrLandAssetInternationalAddressViewModel(PropertyOrLand, Some("line 1"), Completed)
+            )
+          }
+
+        }
+        "address" - {
+
+          "to a view model that is not complete" in {
+            val json = Json.parse(
+              """
+                |{
+                |"propertyOrLandAddressYesNo": true,
+                |"whatKindOfAsset" : "PropertyOrLand",
+                |"status": "progress"
+                |}
+            """.stripMargin)
+
+            json.validate[AssetViewModel] mustEqual JsSuccess(
+              PropertyOrLandAssetAddressViewModel(`type` = PropertyOrLand, address = None, status = InProgress)
             )
           }
 
