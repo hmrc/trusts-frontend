@@ -23,7 +23,7 @@ import models.{Enumerable, Mode}
 import navigation.Navigator
 import pages.{AddATrusteePage, AddATrusteeYesNoPage}
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{I18nSupport, Messages, MessagesApi, MessagesProvider}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import sections.Trustees
@@ -53,6 +53,14 @@ class AddATrusteeController @Inject()(
   private def actions(draftId: String) =
     identify andThen getData(draftId) andThen requireData
 
+  private def heading(count: Int)(implicit mp : MessagesProvider) = {
+    count match {
+      case 0 => Messages("addATrustee.heading")
+      case 1 => Messages("addATrustee.singular.heading")
+      case size => Messages("addATrustee.count.heading", size)
+    }
+  }
+
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
@@ -63,8 +71,8 @@ class AddATrusteeController @Inject()(
       trustees.count match {
         case 0 =>
           Ok(yesNoView(yesNoForm, mode, draftId))
-        case _ =>
-          Ok(addAnotherView(addAnotherForm, mode, draftId, trustees.inProgress, trustees.complete, isLeadTrusteeDefined))
+        case count =>
+          Ok(addAnotherView(addAnotherForm, mode, draftId, trustees.inProgress, trustees.complete, isLeadTrusteeDefined, heading(count)))
       }
   }
 
@@ -94,8 +102,17 @@ class AddATrusteeController @Inject()(
 
           val isLeadTrusteeDefined = request.userAnswers.get(Trustees).toList.flatten.exists(trustee => trustee.isLead)
 
-          Future.successful(BadRequest(addAnotherView(formWithErrors, mode, draftId, trustees.inProgress, trustees.complete,
-                                            isLeadTrusteeDefined)))
+          Future.successful(BadRequest(
+            addAnotherView(
+              formWithErrors,
+              mode,
+              draftId,
+              trustees.inProgress,
+              trustees.complete,
+              isLeadTrusteeDefined,
+              heading(trustees.count)
+            )
+          ))
         },
         value => {
           for {

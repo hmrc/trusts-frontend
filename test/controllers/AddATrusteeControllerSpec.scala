@@ -161,7 +161,7 @@ class AddATrusteeControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(addTrusteeForm, NormalMode, fakeDraftId,Nil, trustee, false)(fakeRequest, messages).toString
+          view(addTrusteeForm, NormalMode, fakeDraftId,Nil, trustee, isLeadTrusteeDefined = false, heading = "You have added 2 trustees")(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -201,7 +201,15 @@ class AddATrusteeControllerSpec extends SpecBase {
         status(result) mustEqual BAD_REQUEST
 
         contentAsString(result) mustEqual
-          view(boundForm, NormalMode, fakeDraftId,Nil, trustee, false)(fakeRequest, messages).toString
+          view(
+            boundForm,
+            NormalMode,
+            fakeDraftId,
+            Nil,
+            trustee,
+            isLeadTrusteeDefined = false,
+            heading = "You have added 2 trustees"
+          )(fakeRequest, messages).toString
 
         application.stop()
       }

@@ -327,7 +327,11 @@ trusteesAnswerPage.title = Check trustee’s details
 trusteesAnswerPage.heading = Check trustee’s details
 
 addATrustee.title = Add a trustee
+
 addATrustee.heading = Add a trustee
+addATrustee.singular.heading = You have added 1 trustee
+addATrustee.count.heading = You have added {0} trustees
+
 addATrustee.additional-content = Do you need to add another trustee?
 addATrustee.add-them-now = Yes, I want to add them now
 addATrustee.add-them-later = Yes, I want to add them later
