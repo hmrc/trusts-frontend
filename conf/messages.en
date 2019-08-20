@@ -109,6 +109,7 @@ entities.no.name.added = No name added
 entities.no.value.added = No value added
 entities.no.address.added = No address added
 entities.no.description.added = No description added
+entities.no.asset.added = No asset added
 entities.lead = Lead
 entities.trustee = Trustee
 entities.trustee.individual = Trustee Individual
