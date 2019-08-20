@@ -36,12 +36,11 @@ class PropertyLandValueTrustFormProviderSpec extends StringFieldBehaviours with 
     val lengthKey = "propertyLandValueTrust.error.length"
     val maxLength = 12
 
-
     behave like nonDecimalField(
       form,
       fieldName,
-      maxLength,
-      wholeNumberError = FormError(fieldName, invalidWholeNumberKey, Seq(Validation.decimalCheck))
+      wholeNumberError = FormError(fieldName, invalidWholeNumberKey, Seq(Validation.decimalCheck)),
+      maxLength = Some(maxLength)
     )
 
     behave like fieldWithRegexpWithGenerator(
