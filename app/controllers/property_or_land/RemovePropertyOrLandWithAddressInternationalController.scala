@@ -24,7 +24,7 @@ import models.InternationalAddress
 import models.requests.DataRequest
 import pages.QuestionPage
 import pages.property_or_land.PropertyOrLandInternationalAddressPage
-import play.api.i18n.MessagesApi
+import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.{AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import views.html.RemoveIndexView
@@ -44,14 +44,12 @@ class RemovePropertyOrLandWithAddressInternationalController @Inject()(
   override val messagesPrefix: String = "removePropertyOrLandAsset"
 
   override def actions(draftId: String, index: Int) =
-    identify andThen getData(draftId) andThen
-      requireData andThen
-      require(RequiredAnswer(page(index), redirect(draftId)))
+    identify andThen getData(draftId) andThen requireData
 
   override def page(index: Int): QuestionPage[InternationalAddress] = PropertyOrLandInternationalAddressPage(index)
 
   override def content(index: Int)(implicit request: DataRequest[AnyContent]): String =
-    request.userAnswers.get(page(index)).get.line1
+    request.userAnswers.get(page(index)).map(_.line1).getOrElse(Messages(s"$messagesPrefix.default"))
 
   override def formRoute(draftId: String, index: Int): Call =
     controllers.property_or_land.routes.RemovePropertyOrLandWithAddressInternationalController.onSubmit(index, draftId)

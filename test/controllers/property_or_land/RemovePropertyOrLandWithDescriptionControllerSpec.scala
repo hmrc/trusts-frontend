@@ -41,27 +41,50 @@ class RemovePropertyOrLandWithDescriptionControllerSpec extends SpecBase with Pr
 
   val index = 0
 
-  "RemovePropertyOrLandWithDescription Controller" must {
+  "RemovePropertyOrLandWithDescription Controller" when {
 
-    "return OK and the correct view for a GET" in {
+    "no description added" must {
+      "return OK and the correct view for a GET" in {
 
-      val userAnswers = emptyUserAnswers
-        .set(PropertyOrLandDescriptionPage(0), "2 hectares").success.value
-        .set(AssetStatus(0), Completed).success.value
+        val userAnswers = emptyUserAnswers
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.RemovePropertyOrLandWithDescriptionController.onPageLoad(index, fakeDraftId).url)
+        val request = FakeRequest(GET, routes.RemovePropertyOrLandWithDescriptionController.onPageLoad(index, fakeDraftId).url)
 
-      val result = route(application, request).value
+        val result = route(application, request).value
 
-      val view = application.injector.instanceOf[RemoveIndexView]
+        val view = application.injector.instanceOf[RemoveIndexView]
 
-      status(result) mustEqual OK
+        status(result) mustEqual OK
 
-      contentAsString(result) mustEqual view(messagesPrefix, form, index, fakeDraftId, content, formRoute)(fakeRequest, messages).toString
+        contentAsString(result) mustEqual view(messagesPrefix, form, index, fakeDraftId, "the property or land", formRoute)(fakeRequest, messages).toString
 
-      application.stop()
+        application.stop()
+      }
+    }
+
+    "description has been provided" must {
+      "return OK and the correct view for a GET" in {
+
+        val userAnswers = emptyUserAnswers
+          .set(PropertyOrLandDescriptionPage(0), "2 hectares").success.value
+          .set(AssetStatus(0), Completed).success.value
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(GET, routes.RemovePropertyOrLandWithDescriptionController.onPageLoad(index, fakeDraftId).url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[RemoveIndexView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual view(messagesPrefix, form, index, fakeDraftId, content, formRoute)(fakeRequest, messages).toString
+
+        application.stop()
+      }
     }
 
     "redirect to the next page when valid data is submitted" in {
