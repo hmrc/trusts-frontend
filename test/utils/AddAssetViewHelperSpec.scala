@@ -26,7 +26,7 @@ import pages.shares._
 import pages.{AssetMoneyValuePage, WhatKindOfAssetPage}
 import viewmodels.AddRow
 
-class AddAssetViewHelperSpec extends SpecBase {
+class AddAssetViewHelperSpec extends SpecBase   {
 
   def removeMoneyRoute(index : Int) =
     controllers.money.routes.RemoveMoneyAssetController.onPageLoad(index, fakeDraftId).url
@@ -71,8 +71,7 @@ class AddAssetViewHelperSpec extends SpecBase {
           AddRow("No name added", typeLabel = "Shares", "#", removeSharePortfolioRoute(0)),
           AddRow("No value added", typeLabel = "Money", "#", removeMoneyRoute(1)),
           AddRow("No address added", typeLabel = "Property or Land", "#", removePropertyOrLandRoute(2)),
-          AddRow("No description added", typeLabel = "Property or Land", "#", removePropertyOrLandDescriptionRoute(3)),
-          AddRow("No description added", typeLabel = "Property or Land", "#", removePropertyOrLandDescriptionRoute(4))
+          AddRow("No description added", typeLabel = "Property or Land", "#", removePropertyOrLandDescriptionRoute(3))
         )
         rows.complete mustBe Nil
       }

@@ -91,8 +91,7 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
     def individualBeneficiariesComplete : Boolean = {
       val individuals = userAnswers.get(IndividualBeneficiaries).getOrElse(List.empty)
 
-      if (individuals.isEmpty) {
-        false
+      if (individuals.isEmpty) {false
       } else {
         !individuals.exists(_.status == InProgress)
       }

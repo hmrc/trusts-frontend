@@ -48,7 +48,7 @@ object PropertyOrLandAssetViewModel {
     val ukReads: Reads[PropertyOrLandAssetViewModel] =
     {
       (__ \ "propertyOrLandAddressYesNo").read[Boolean].filter(x => x).flatMap { _ =>
-        (__ \ "propertyOrLandAddressUkYesNo").read[Boolean].filter(x => x).flatMap { _ =>
+        (__ \ "propertyOrLandAddressUKYesNo").read[Boolean].filter(x => x).flatMap { _ =>
             ((__ \ "address").readNullable[UKAddress].map(_.map(_.line1)) and
               (__ \ "status").readWithDefault[Status](InProgress)
               ) ((address, status) => {
@@ -64,7 +64,7 @@ object PropertyOrLandAssetViewModel {
     val internationalReads: Reads[PropertyOrLandAssetViewModel] =
     {
       (__ \ "propertyOrLandAddressYesNo").read[Boolean].filter(x => x).flatMap { _ =>
-        (__ \ "propertyOrLandAddressUkYesNo").read[Boolean].filter(x => !x).flatMap { _ =>
+        (__ \ "propertyOrLandAddressUKYesNo").read[Boolean].filter(x => !x).flatMap { _ =>
           ((__ \ "address").readNullable[InternationalAddress].map(_.map(_.line1)) and
             (__ \ "status").readWithDefault[Status](InProgress)
             ) ((address, status) => {
