@@ -82,7 +82,7 @@ class AssetReadsSpec extends FreeSpec with MustMatchers {
             |     "townOrCity" : "Newcastle",
             |     "postcode" : "Z99 2YY"
             |},
-            |"propertyLandValueTrust" : "75"
+            |"propertyOrLandValueTrust" : "75"
             |}
           """.stripMargin)
 
@@ -170,7 +170,7 @@ class AssetReadsSpec extends FreeSpec with MustMatchers {
             |     "townOrCity" : "Newcastle",
             |     "postcode" : "Z99 2YY"
             |},
-            |"propertyLandValueTrust" : "75",
+            |"propertyOrLandValueTrust" : "75",
             |"propertyOrLandTotalValue" : "1000"
             |}
           """.stripMargin)
