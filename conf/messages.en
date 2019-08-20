@@ -1004,11 +1004,9 @@ settlorIndividualOrBusiness.error.required = Select if the settlor is an individ
 settlorIndividualName.title = What is the settlor’s name?
 settlorIndividualName.heading = What is the settlor’s name?
 settlorIndividualName.checkYourAnswersLabel = What is the settlor’s name?
-
 settlorIndividualName.firstName = First name
 settlorIndividualName.middleName = Middle names (optional)
 settlorIndividualName.lastName = Last name
-
 settlorIndividualName.error.firstname.required = Enter the settlor’s first name
 settlorIndividualName.error.lastname.required = Enter the settlor’s last name
 settlorIndividualName.error.firstname.length = Settlor’s first name must be 35 characters or less
@@ -1034,10 +1032,10 @@ settlorIndividualDateOfBirth.error.invalid = Enter a real date of birth
 settlorIndividualDateOfBirth.error.future = Date of birth must be today or in the past
 settlorIndividualDateOfBirth.error.past = Date of birth must be after 31 December 1499
 
-settlorIndividualAddressYesNo.title = settlorIndividualAddressYesNo
-settlorIndividualAddressYesNo.heading = settlorIndividualAddressYesNo
-settlorIndividualAddressYesNo.checkYourAnswersLabel = settlorIndividualAddressYesNo
-settlorIndividualAddressYesNo.error.required = Select yes if settlorIndividualAddressYesNo
+settlorIndividualAddressYesNo.title = Do you know {0}’s address?
+settlorIndividualAddressYesNo.heading = Do you know {0}’s address?
+settlorIndividualAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+settlorIndividualAddressYesNo.error.required = Select yes if you know the settlor’s address
 
 settlorIndividualNINO.title = What is {0}’s National Insurance number?
 settlorIndividualNINO.heading = What is {0}’s National Insurance number?

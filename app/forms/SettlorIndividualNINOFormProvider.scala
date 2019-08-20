@@ -29,7 +29,6 @@ class SettlorIndividualNINOFormProvider @Inject() extends Mappings {
         firstError(
           isNotEmpty("value", "settlorIndividualNINO.error.required"),
           isNinoValid("value", "settlorIndividualNINO.error.invalid")
-
         )))
 }
 

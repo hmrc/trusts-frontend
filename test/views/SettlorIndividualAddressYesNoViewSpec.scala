@@ -18,7 +18,7 @@ package views
 
 import controllers.routes
 import forms.SettlorIndividualAddressYesNoFormProvider
-import models.NormalMode
+import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
@@ -28,6 +28,7 @@ class SettlorIndividualAddressYesNoViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "settlorIndividualAddressYesNo"
   val index = 0
+  val name = FullName("First", Some("Middle"), "Last")
 
   val form = new SettlorIndividualAddressYesNoFormProvider()()
 
@@ -36,13 +37,15 @@ class SettlorIndividualAddressYesNoViewSpec extends YesNoViewBehaviours {
     val view = viewFor[SettlorIndividualAddressYesNoView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index, name)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.SettlorIndividualAddressYesNoController.onSubmit(NormalMode, index, fakeDraftId).url)
+    behave like yesNoPage(form, applyView, messageKeyPrefix,
+      routes.SettlorIndividualDateOfBirthYesNoController.onSubmit(
+        NormalMode, index, fakeDraftId).url, None, Seq(name.toString))
 
     behave like pageWithASubmitButton(applyView(form))
   }
