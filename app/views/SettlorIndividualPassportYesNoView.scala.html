@@ -16,16 +16,17 @@
 
 @import controllers.routes._
 @import models.Mode
+@import models.FullName
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, index: Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId: String, index: Int, name: FullName)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("settlorIndividualPassportYesNo.title")}"
+    title = s"${errorPrefix(form)} ${messages("settlorIndividualPassportYesNo.title", name)}"
     ) {
 
     @formHelper(action = SettlorIndividualPassportYesNoController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
@@ -34,11 +35,11 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("settlorIndividualPassportYesNo.heading")
+        @components.heading("settlorIndividualPassportYesNo.heading", Some(name.toString))
 
         @components.input_yes_no(
             field = form("value"),
-            label = messages("settlorIndividualPassportYesNo.heading"),
+            label = messages("settlorIndividualPassportYesNo.heading", name),
             legendClass = Some("visually-hidden")
         )
 
