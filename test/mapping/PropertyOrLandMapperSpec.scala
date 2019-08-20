@@ -48,7 +48,7 @@ class PropertyOrLandMapperSpec extends FreeSpec with MustMatchers
         .set(PropertyOrLandAddressUkYesNoPage(0), true).success.value
         .set(PropertyOrLandUKAddressPage(0), UKAddress("26", Some("Grangetown"), Some("Tyne and Wear"), "Newcastle", "Z99 2YY")).success.value
         .set(PropertyOrLandTotalValuePage(0), "1000").success.value
-        .set(TrustOwnAllThePropertyOrLandPage(0), true).success.value
+        .set(TrustOwnAllThePropertyOrLandPage(0), false).success.value
         .set(PropertyLandValueTrustPage(0), "750").success.value
 
 
