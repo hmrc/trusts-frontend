@@ -66,6 +66,9 @@ class AddAssetViewHelperSpec extends SpecBase   {
           .set(PropertyOrLandAddressYesNoPage(3), false).success.value
           .set(WhatKindOfAssetPage(4), PropertyOrLand).success.value
 
+        // List(AddRow(No name added,Shares,#,/trusts-registration/id/asset/0/share/portfolio/remove), AddRow(No value added,Money,#,/trusts-registration/id/asset/1/money/remove), AddRow(No address added,Property or Land,#,#), AddRow(No description added,Property or Land,#,/trusts-registration/id/asset/3/property-or-land/description/remove), AddRow(No asset added,PropertyOrLand,#,#)) was not equal to
+        // List(AddRow(No name added,Shares,#,/trusts-registration/id/asset/0/share/portfolio/remove), AddRow(No value added,Money,#,/trusts-registration/id/asset/1/money/remove), AddRow(No address added,Property or Land,#,/trusts-registration/id/asset/2/property-or-land/address/uk/remove), AddRow(No description added,Property or Land,#,/trusts-registration/id/asset/3/property-or-land/description/remove), AddRow(No asset added,PropertyOrLand,#,#)
+
         val rows = new AddAssetViewHelper(userAnswers, fakeDraftId).rows
         rows.inProgress mustBe List(
           AddRow("No name added", typeLabel = "Shares", "#", removeSharePortfolioRoute(0)),

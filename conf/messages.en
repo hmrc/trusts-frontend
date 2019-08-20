@@ -54,7 +54,7 @@ site.date.hint = For example, 31 3 1980
 site.warning = Warning
 site.confirm-send = Confirm and send
 
-site.address.uk.title = What is {0}’s address?
+site.address.uk.title = What is the address?
 site.address.uk.heading = What is {0}’s address?
 site.address.uk.line1 = Address line 1
 site.address.uk.line2 = Address line 2 (optional)
@@ -77,7 +77,7 @@ ukAddress.error.line3.invalidCharacters = Address line 3 must only include lette
 ukAddress.error.townOrCity.invalidCharacters = Town or city must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
 ukAddress.error.postcode.invalidCharacters = Enter a real postcode
 
-site.address.international.title = What is {0}’s address?
+site.address.international.title = What is the address?
 site.address.international.heading = What is {0}’s address?
 site.address.international.line1 = Address line 1
 site.address.international.line2 = Address line 2
@@ -343,23 +343,25 @@ removeATrustee.heading = Are you sure you want to remove {0}?
 removeATrustee.default = the trustee
 removeATrustee.error.required = Select yes if you want to remove the trustee
 
-telephoneNumber.title = What is {0}’s telephone number?
+telephoneNumber.title = What is the trustee’s telephone number?
 telephoneNumber.heading = What is {0}’s telephone number?
 telephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
 telephoneNumber.error.required = Enter trustee’s telephone number
 telephoneNumber.error.invalid.characters = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192
 telephoneNumber.hint = For international numbers include the country code
 
+leadTrusteesTelephoneNumber.title = What is the lead trustee’s telephone number?
 leadTrusteesTelephoneNumber.error.required = Enter lead trustee’s telephone number
 
-trusteeAUKCitizen.title = Is {0} a UK citizen?
+trusteeAUKCitizen.title = Is the trustee a UK citizen?
 trusteeAUKCitizen.heading = Is {0} a UK citizen?
 trusteeAUKCitizen.checkYourAnswersLabel = Is {0} a UK citizen?
 trusteeAUKCitizen.error.required = Select yes if the trustee is a UK citizen
 
+leadTrusteeAUKCitizen.title = Is the lead trustee a UK citizen?
 leadTrusteeAUKCitizen.error.required = Select yes if the lead trustee is a UK citizen
 
-trusteesDateOfBirth.title = What is {0}’s date of birth?
+trusteesDateOfBirth.title = What is the trustee’s date of birth?
 trusteesDateOfBirth.heading = What is {0}’s date of birth?
 trusteesDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
 trusteesDateOfBirth.hint = For example, 31 3 1980
@@ -370,26 +372,32 @@ trusteesDateOfBirth.error.invalid = Enter a real date of birth
 trusteesDateOfBirth.error.future = Date of birth must be today or in the past
 trusteesDateOfBirth.error.past = Date of birth must be after 31 December 1499
 
-trusteesNino.title = What is {0}’s National Insurance number?
+leadTrusteesDateOfBirth.title = What is the lead trustee’s date of birth?
+
+trusteesNino.title = What is the trustee’s National Insurance number?
 trusteesNino.heading = What is {0}’s National Insurance number?
 trusteesNino.checkYourAnswersLabel = What is {0}’s National Insurance number?
 trusteesNino.hint = It is on their National Insurance card, benefit letter, payslip or P60. For example, ‘QQ 12 34 56 C’.
 trusteesNino.error.required = Enter the trustee’s National Insurance number
 trusteesNino.error.invalidFormat = Enter the trustee’s National Insurance number in the correct format
 
+leadTrusteesNino.title = What is the lead trustee’s National Insurance number?
 leadTrusteesNino.error.required = Enter the lead trustee’s National Insurance number
 leadTrusteesNino.error.invalidFormat = Enter the lead trustee’s National Insurance number in the correct format
 
-trusteeLiveInTheUK.title = Does {0} live in the UK?
+trusteeLiveInTheUK.title = Does the trustee live in the UK?
 trusteeLiveInTheUK.heading = Does {0} live in the UK?
 trusteeLiveInTheUK.checkYourAnswersLabel = Does {0} live in the UK?
 trusteeLiveInTheUK.error.required = Select yes if the trustee lives in the UK
 
+leadTrusteeLiveInTheUK.title = Does the lead trustee live in the UK?
 leadTrusteeLiveInTheUK.error.required = Select yes if the lead trustee lives in the UK
 
-trusteesUkAddress.title = What is {0}’s address?
+trusteesUkAddress.title = What is the trustee’s address?
 trusteesUkAddress.heading = What is {0}’s address?
 trusteesUkAddress.checkYourAnswersLabel = What is {0}’s address?
+
+leadTrusteeUkAddress.title = What is the lead trustee’s address?
 
 agentInternalReference.title = What is your internal reference for this client?
 agentInternalReference.heading = What is your internal reference for this client?
@@ -562,11 +570,12 @@ addAssets.singular.title = You have added 1 asset
 addAssets.propertyOrLand = Property or Land
 
 settlorDateOfBirthYesNo.title = Do you know {0}’s date of birth?
+settlorDateOfBirthYesNo.title = Do you know the settlor’s date of birth?
 settlorDateOfBirthYesNo.heading = Do you know {0}’s date of birth?
 settlorDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
 settlorDateOfBirthYesNo.error.required = Select yes if you know the settlor’s date of birth
 
-settlorDateOfDeath.title = What is {0}’s date of death?
+settlorDateOfDeath.title = What is the settlor’s date of death?
 settlorDateOfDeath.heading = What is {0}’s date of death?
 settlorDateOfDeath.checkYourAnswersLabel = What is {0}’s date of death?
 settlorDateOfDeath.hint = For example, 31 3 1980
@@ -577,12 +586,12 @@ settlorDateOfDeath.error.invalid = Enter a real date of death
 settlorDateOfDeath.error.future = Date of death must be today or in the past
 settlorDateOfDeath.error.past = Date of death must be after 31 December 1499
 
-settlorDateOfDeathYesNo.title = Do you know {0}’s date of death?
+settlorDateOfDeathYesNo.title = Do you know the settlor’s date of death?
 settlorDateOfDeathYesNo.heading = Do you know {0}’s date of death?
 settlorDateOfDeathYesNo.checkYourAnswersLabel = Do you know {0}’s date of death?
 settlorDateOfDeathYesNo.error.required = Select yes if you know the settlor’s date of death
 
-settlorNationalInsuranceNumber.title = What is {0}’s National Insurance number?
+settlorNationalInsuranceNumber.title = What is the settlor’s National Insurance number?
 settlorNationalInsuranceNumber.heading = What is {0}’s National Insurance number?
 settlorNationalInsuranceNumber.hint = It is on their National Insurance card, benefit letter, payslip or P60. For example, ‘QQ 12 34 56 C’.
 settlorNationalInsuranceNumber.checkYourAnswersLabel = What is {0}’s National Insurance number?
@@ -590,7 +599,7 @@ settlorNationalInsuranceNumber.error.required = Enter the settlor’s National I
 settlorNationalInsuranceNumber.error.length = Settlor’s National Insurance number must be 9 characters or less
 settlorNationalInsuranceNumber.error.invalid = Enter the settlor’s National Insurance number in the correct format
 
-settlorsDateOfBirth.title = What is {0}’s date of birth?
+settlorsDateOfBirth.title = What is the settlor’s date of birth?
 settlorsDateOfBirth.heading = What is {0}’s date of birth?
 settlorsDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
 settlorsDateOfBirth.hint = For example, 31 3 1980
@@ -601,11 +610,11 @@ settlorsDateOfBirth.error.invalid = Enter a real date of birth
 settlorsDateOfBirth.error.future = Date of birth must be today or in the past
 settlorsDateOfBirth.error.past = Date of birth must be after 31 December 1499
 
-settlorsInternationalAddress.title = What is {0}’s last known address?
+settlorsInternationalAddress.title = What is the settlor’s last known address?
 settlorsInternationalAddress.heading = What is {0}’s last known address?
 settlorsInternationalAddress.checkYourAnswersLabel = What is {0}’s last known address?
 
-settlorsLastKnownAddressYesNo.title = Do you know {0}’s last known address?
+settlorsLastKnownAddressYesNo.title = Do you know the settlor’s last known address?
 settlorsLastKnownAddressYesNo.heading = Do you know {0}’s last known address?
 settlorsLastKnownAddressYesNo.checkYourAnswersLabel = Do you know {0}’s last known address?
 settlorsLastKnownAddressYesNo.error.required = Select yes if you know the settlor’s last known address
@@ -625,12 +634,12 @@ settlorsName.error.middleName.length = Settlor’s middle names must be 35 chara
 settlorsName.error.middleName.invalid = Settlor’s middle names must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 settlorsName.error.lastName.length = Settlor’s last name must be 35 characters or less
 
-settlorsNINoYesNo.title = Do you know {0}’s National Insurance number?
+settlorsNINoYesNo.title = Do you know the settlor’s National Insurance number?
 settlorsNINoYesNo.heading = Do you know {0}’s National Insurance number?
 settlorsNINoYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
 settlorsNINoYesNo.error.required = Select yes if you know the settlor’s National Insurance number
 
-settlorsUKAddress.title = What is {0}’s last known address?
+settlorsUKAddress.title = What is the settlor’s last known address?
 settlorsUKAddress.heading = What is {0}’s last known address?
 settlorsUKAddress.checkYourAnswersLabel = What is {0}’s last known address?
 
@@ -640,7 +649,7 @@ setupAfterSettlorDied.checkYourAnswersLabel = Was the trust set up after the set
 setupAfterSettlorDied.error.required = Select yes if the trust was set up after the settlor died
 setupAfterSettlorDied.hint = This is also known as a will trust
 
-wasSettlorsAddressUKYesNo.title = Was {0}’s last known address in the UK?
+wasSettlorsAddressUKYesNo.title = Was the settlor’s last known address in the UK?
 wasSettlorsAddressUKYesNo.heading = Was {0}’s last known address in the UK?
 wasSettlorsAddressUKYesNo.checkYourAnswersLabel = Was {0}’s last known address in the UK?
 wasSettlorsAddressUKYesNo.error.required = Select yes if the settlor’s last known address was in the UK
@@ -671,12 +680,12 @@ individualBeneficiaryName.error.middlename.invalid = The individual beneficiary�
 individualBeneficiaryName.error.lastname.invalid = The individual beneficiary’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
 
-individualBeneficiaryDateOfBirthYesNo.title = Do you know {0}’s date of birth?
+individualBeneficiaryDateOfBirthYesNo.title = Do you know the individual beneficiary’s date of birth?
 individualBeneficiaryDateOfBirthYesNo.heading = Do you know {0}’s date of birth?
 individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
 individualBeneficiaryDateOfBirthYesNo.error.required = Select yes if you know the individual beneficiary’s date of birth
 
-individualBeneficiaryDateOfBirth.title = What is {0}’s date of birth?
+individualBeneficiaryDateOfBirth.title = What is the individual beneficiary’s date of birth?
 individualBeneficiaryDateOfBirth.heading = What is {0}’s date of birth?
 individualBeneficiaryDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
 individualBeneficiaryDateOfBirth.hint = For example, 31 3 1980
@@ -687,13 +696,13 @@ individualBeneficiaryDateOfBirth.error.invalid = Enter a real date of birth
 individualBeneficiaryDateOfBirth.error.future = Date of birth must be today or in the past
 individualBeneficiaryDateOfBirth.error.past = Date of birth must be after 31 December 1499
 
-individualBeneficiaryIncomeYesNo.title = Do the trustees have discretion over how much income {0} may get?
+individualBeneficiaryIncomeYesNo.title = Do the trustees have discretion over how much income the individual beneficiary may get?
 individualBeneficiaryIncomeYesNo.heading = Do the trustees have discretion over how much income {0} may get?
 individualBeneficiaryIncomeYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
 individualBeneficiaryIncomeYesNo.hint = See the trust deed for details
 individualBeneficiaryIncomeYesNo.error.required = Select yes if the trustees have discretion over how much income the individual beneficiary may get
 
-individualBeneficiaryIncome.title = What percentage of the trust’s assets is {0} entitled to?
+individualBeneficiaryIncome.title = What percentage of the trust’s assets is the individual beneficiary entitled to?
 individualBeneficiaryIncome.heading = What percentage of the trust’s assets is {0} entitled to?
 individualBeneficiaryIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
 individualBeneficiaryIncome.hint = Round this down to a whole number.
@@ -701,12 +710,12 @@ individualBeneficiaryIncome.error.required = Enter what percentage of the trust�
 individualBeneficiaryIncome.error.length = The percentage of the trust’s assets the beneficiary is entitled to must be 100 or less
 individualBeneficiaryIncome.error.invalid = The percentage of the trust’s assets the beneficiary is entitled to must be a whole number
 
-individualBeneficiaryNationalInsuranceYesNo.title = Do you know {0}’s National Insurance number?
+individualBeneficiaryNationalInsuranceYesNo.title = Do you know the individual beneficiary’s National Insurance number?
 individualBeneficiaryNationalInsuranceYesNo.heading = Do you know {0}’s National Insurance number?
 individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
 individualBeneficiaryNationalInsuranceYesNo.error.required = Select yes if you know the individual beneficiary’s National Insurance number
 
-individualBeneficiaryNationalInsuranceNumber.title = What is {0}’s National Insurance number?
+individualBeneficiaryNationalInsuranceNumber.title = What is the individual beneficiary’s National Insurance number?
 individualBeneficiaryNationalInsuranceNumber.heading = What is {0}’s National Insurance number?
 individualBeneficiaryNationalInsuranceNumber.hint = It is on their National Insurance card, benefit letter, payslip or P60. For example, ‘QQ 12 34 56 C’.
 individualBeneficiaryNationalInsuranceNumber.checkYourAnswersLabel = What is {0}’s National Insurance number?
@@ -714,16 +723,16 @@ individualBeneficiaryNationalInsuranceNumber.error.required = Enter the individu
 individualBeneficiaryNationalInsuranceNumber.error.length = Individual beneficiary’s National Insurance number must be 9 characters or less
 individualBeneficiaryNationalInsuranceNumber.error.invalid = Enter the individual beneficiary’s National Insurance number in the correct format
 
-individualBeneficiaryAddressYesNo.title = Do you know {0}’s address?
+individualBeneficiaryAddressYesNo.title = Do you know the individual beneficiary’s address?
 individualBeneficiaryAddressYesNo.heading = Do you know {0}’s address?
 individualBeneficiaryAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
 individualBeneficiaryAddressYesNo.error.required = Select yes if you know the individual beneficiary’s address
 
-individualBeneficiaryAddressUK.title = What is {0}’s address?
+individualBeneficiaryAddressUK.title = What is the individual beneficiary’s address?
 individualBeneficiaryAddressUK.heading = What is {0}’s address?
 individualBeneficiaryAddressUK.checkYourAnswersLabel = What is {0}’s address?
 
-individualBeneficiaryVulnerableYesNo.title = Has a vulnerable person election form (VPE1) been submitted to HMRC for {0}?
+individualBeneficiaryVulnerableYesNo.title = Has a vulnerable person election form (VPE1) been submitted to HMRC for the individual beneficiary?
 individualBeneficiaryVulnerableYesNo.heading = Has a vulnerable person election form (VPE1) been submitted to HMRC for {0}?
 individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel = Has a vulnerable person election form (VPE1) been submitted to HMRC for {0}?
 individualBeneficiaryVulnerableYesNo.error.required = Select yes if a vulnerable person election form (VPE1) has been submitted to HMRC for the individual beneficiary
@@ -771,12 +780,12 @@ addABeneficiaryYesNo.error.required = Select yes if you want to add a beneficiar
 individualBenficiaryAnswers.title = Check beneficiary details
 individualBenficiaryAnswers.heading = Check beneficiary details
 
-individualBeneficiaryAddressUKYesNo.title = Does {0} live in the UK?
+individualBeneficiaryAddressUKYesNo.title = Does the individual beneficiary live in the UK?
 individualBeneficiaryAddressUKYesNo.heading = Does {0} live in the UK?
 individualBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Does {0} live in the UK?
 individualBeneficiaryAddressUKYesNo.error.required = Select yes if the individual beneficiary lives in the UK
 
-agentAddressYesNo.title = Is {0}’s address in the UK?
+agentAddressYesNo.title = Is the agency’s address in the UK?
 agentAddressYesNo.heading = Is {0}’s address in the UK?
 agentAddressYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 agentAddressYesNo.error.required = Select yes if the agency’s address is in the UK
@@ -789,7 +798,7 @@ classBeneficiaryDescription.error.length = The description of the class in the t
 classBeneficiaryDescription.error.invalid = The description of the class in the trust deed must only include letters a to z, numbers, ampersands (&), backward slashes or spaces
 classBeneficiaryDescription.hint = This must be 56 characters or less. For example, future grandchildren and future great-grandchildren.
 
-removeClassOfBeneficiary.title = Are you sure you want to remove {0}?
+removeClassOfBeneficiary.title = Are you sure you want to remove the class of beneficiaries?
 removeClassOfBeneficiary.heading = Are you sure you want to remove {0}?
 removeClassOfBeneficiary.default = the class of beneficiaries
 removeClassOfBeneficiary.error.required = Select yes if you want to remove the class of beneficiaries
@@ -808,7 +817,7 @@ whatTypeOfBeneficiary.checkYourAnswersLabel = whatTypeOfBeneficiary
 whatTypeOfBeneficiary.error.required = Select the type of beneficiary you need to add
 whatTypeOfBeneficiary.hint = You can enter a maximum of 25 entries for each beneficiary type
 
-removeIndividualBeneficiary.title = Are you sure you want to remove {0}?
+removeIndividualBeneficiary.title = Are you sure you want to remove the individual beneficiary?
 removeIndividualBeneficiary.heading = Are you sure you want to remove {0}?
 removeIndividualBeneficiary.default = the individual beneficiary
 removeIndividualBeneficiary.error.required = Select yes if you want to remove the individual beneficiary
@@ -910,13 +919,13 @@ sharePortfolioValueInTrust.error.invalid = Total current value of the portfolio 
 sharePortfolioValueInTrust.hint = Rounded down to the nearest pound. For example, 4000
 sharePortfolioValueInTrust.error.zero = Total current value of the portfolio must be 1 or more
 
-sharesOnStockExchange.title = Are {0}’s shares listed on a stock exchange?
+sharesOnStockExchange.title = Are the shares listed on a stock exchange?
 sharesOnStockExchange.heading = Are {0}’s shares listed on a stock exchange?
 sharesOnStockExchange.checkYourAnswersLabel = Are {0}’s shares listed on a stock exchange?
 sharesOnStockExchange.error.required = Select yes if the shares are listed on a stock exchange
 sharesOnStockExchange.hint = A quoted share is listed on a stock exchange
 
-shareClass.title = What class are the {0} shares?
+shareClass.title = What class are the shares?
 shareClass.heading = What class are the {0} shares?
 shareClass.ordinary = Ordinary
 shareClass.preference = Preference
@@ -926,7 +935,7 @@ shareClass.other = Other
 shareClass.checkYourAnswersLabel = What class are the {0} shares?
 shareClass.error.required = Select the class of shares
 
-shareQuantityInTrust.title = How many {0} shares are in the trust?
+shareQuantityInTrust.title = How many shares are in the trust?
 shareQuantityInTrust.heading = How many {0} shares are in the trust?
 shareQuantityInTrust.checkYourAnswersLabel = How many {0} shares are in the trust?
 shareQuantityInTrust.hint = Add together the total number of shares across all share holdings. This can be an estimate.
@@ -935,7 +944,7 @@ shareQuantityInTrust.error.length = Total shares in the trust must be 12 numbers
 shareQuantityInTrust.error.required = Enter the current number of shares in the trust
 shareQuantityInTrust.error.zero = Total shares in the trust must be 1 or more
 
-shareValueInTrust.title = What is the current value of {0} shares in the trust?
+shareValueInTrust.title = What is the current value of shares in the trust?
 shareValueInTrust.heading = What is the current value of {0} shares in the trust?
 shareValueInTrust.checkYourAnswersLabel = What is the current value of {0} shares in the trust?
 shareValueInTrust.hint = Rounded down to the nearest pound. For example, 4000

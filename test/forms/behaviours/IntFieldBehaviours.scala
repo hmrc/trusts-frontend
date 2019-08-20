@@ -23,10 +23,11 @@ trait IntFieldBehaviours extends FieldBehaviours {
 
   def nonDecimalField(form: Form[_],
                fieldName: String,
-               wholeNumberError: FormError): Unit = {
+               wholeNumberError: FormError,
+               maxLength: Option[Int] = None): Unit = {
 
     "not bind decimals" in {
-      forAll(decimals -> "decimal") {
+      forAll(decimals(maxLength) -> "decimal") {
         decimal =>
           val result = form.bind(Map(fieldName -> decimal)).apply(fieldName)
           result.errors shouldEqual Seq(wholeNumberError)
@@ -51,7 +52,7 @@ trait IntFieldBehaviours extends FieldBehaviours {
 
     "not bind decimals" in {
 
-      forAll(decimals -> "decimal") {
+      forAll(decimals(None) -> "decimal") {
         decimal =>
           val result = form.bind(Map(fieldName -> decimal)).apply(fieldName)
           result.errors shouldEqual Seq(wholeNumberError)

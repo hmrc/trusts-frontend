@@ -20,9 +20,10 @@ import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
 import forms.TrusteesDateOfBirthFormProvider
 import javax.inject.Inject
+import models.requests.DataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.{TrusteesDateOfBirthPage, TrusteesNamePage}
+import pages.{IsThisLeadTrusteePage, TrusteesDateOfBirthPage, TrusteesNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -62,14 +63,16 @@ class TrusteesDateOfBirthController @Inject()(
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
+      val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
+
+      val messagePrefix: String = getMessagePrefix(index, request)
+
       val preparedForm = request.userAnswers.get(TrusteesDateOfBirthPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
-
-      Ok(view(preparedForm, mode, draftId, index, trusteeName))
+      Ok(view(preparedForm, mode, draftId, index, messagePrefix, trusteeName))
   }
 
   def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
@@ -77,9 +80,11 @@ class TrusteesDateOfBirthController @Inject()(
 
       val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
 
+      val messagePrefix: String = getMessagePrefix(index, request)
+
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, trusteeName))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, messagePrefix, trusteeName))),
 
         value => {
           for {
@@ -89,4 +94,16 @@ class TrusteesDateOfBirthController @Inject()(
         }
       )
   }
+
+  private def getMessagePrefix(index: Int, request: DataRequest[AnyContent]) = {
+    val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
+
+    val messagePrefix = if (isLead) {
+      "leadTrusteesDateOfBirth"
+    } else {
+      "trusteesDateOfBirth"
+    }
+    messagePrefix
+  }
+
 }

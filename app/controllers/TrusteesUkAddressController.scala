@@ -20,9 +20,10 @@ import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
 import forms.UKAddressFormProvider
 import javax.inject.Inject
+import models.requests.DataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.{TrusteesNamePage, TrusteesUkAddressPage}
+import pages.{IsThisLeadTrusteePage, TrusteesNamePage, TrusteesUkAddressPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -59,24 +60,39 @@ class TrusteesUkAddressController @Inject()(
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
+      val messagePrefix: String = getMessagePrefix(index, request)
+
+      val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
+
       val preparedForm = request.userAnswers.get(TrusteesUkAddressPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
+      Ok(view(preparedForm, mode, draftId, index, messagePrefix, trusteeName))
+  }
 
-      Ok(view(preparedForm, mode, draftId, index, trusteeName))
+  private def getMessagePrefix(index: Int, request: DataRequest[AnyContent]) = {
+    val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
+
+    val messagePrefix = if (isLead) {
+      "leadTrusteeUkAddress"
+    } else {
+      "trusteeUkAddress"
+    }
+    messagePrefix
   }
 
   def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
     implicit request =>
 
+      val messagePrefix: String = getMessagePrefix(index, request)
+
       val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, trusteeName))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, messagePrefix, trusteeName))),
 
         value => {
           for {
