@@ -1016,12 +1016,12 @@ settlorIndividualName.error.firstname.invalid = Settlor’s first name must only
 settlorIndividualName.error.middlename.invalid = Settlor’s middle names must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 settlorIndividualName.error.lastname.invalid = Settlor’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
-settlorIndividualDateOfBirthYesNo.title = Do you know {0}’s date of birth?
+settlorIndividualDateOfBirthYesNo.title = Do you know the settlor’s date of birth?
 settlorIndividualDateOfBirthYesNo.heading = Do you know {0}’s date of birth?
 settlorIndividualDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
 settlorIndividualDateOfBirthYesNo.error.required = Select yes if you know date of birth
 
-settlorIndividualDateOfBirth.title = What is {0}’s date of birth?
+settlorIndividualDateOfBirth.title = What is the settlor’s date of birth?
 settlorIndividualDateOfBirth.heading = What is {0}’s date of birth?
 settlorIndividualDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
 settlorIndividualDateOfBirth.hint = For example, 31 3 1980
@@ -1032,24 +1032,24 @@ settlorIndividualDateOfBirth.error.invalid = Enter a real date of birth
 settlorIndividualDateOfBirth.error.future = Date of birth must be today or in the past
 settlorIndividualDateOfBirth.error.past = Date of birth must be after 31 December 1499
 
-settlorIndividualAddressYesNo.title = Do you know {0}’s address?
+settlorIndividualAddressYesNo.title = Do you know the settlor’s address?
 settlorIndividualAddressYesNo.heading = Do you know {0}’s address?
 settlorIndividualAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
 settlorIndividualAddressYesNo.error.required = Select yes if you know the settlor’s address
 
-settlorIndividualNINO.title = What is {0}’s National Insurance number?
+settlorIndividualNINO.title = What is the settlor’s National Insurance number?
 settlorIndividualNINO.heading = What is {0}’s National Insurance number?
 settlorIndividualNINO.checkYourAnswersLabel = What is {0}’s National Insurance number?
 settlorIndividualNINO.hint = It is on their National Insurance card, benefit letter, payslip or P60. For example, ‘QQ 12 34 56 C’.
 settlorIndividualNINO.error.required = Enter the settlor’s National Insurance number
 settlorIndividualNINO.error.invalidFormat = Enter the settlor’s National Insurance number in the correct format
 
-settlorIndividualNINOYesNo.title = Do you know {0}’s National Insurance number?
+settlorIndividualNINOYesNo.title = Do you know the settlor’s National Insurance number?
 settlorIndividualNINOYesNo.heading = Do you know {0}’s National Insurance number?
 settlorIndividualNINOYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
 settlorIndividualNINOYesNo.error.required = Select yes if you know the settlor’s National Insurance number
 
-settlorIndividualAddressInternational.title = What is {0}’s address?
+settlorIndividualAddressInternational.title = What is the settlor’s address?
 settlorIndividualAddressInternational.heading = What is {0}’s address?
 settlorIndividualAddressInternational.field1 = Field 1
 settlorIndividualAddressInternational.field2 = Field 2
@@ -1059,7 +1059,7 @@ settlorIndividualAddressInternational.error.field2.required = Enter field2
 settlorIndividualAddressInternational.error.field1.length = field1 must be 100 characters or less
 settlorIndividualAddressInternational.error.field2.length = field2 must be 100 characters or less
 
-settlorIndividualAddressUK.title = What is {0}’s address?
+settlorIndividualAddressUK.title = What is the settlor’s address?
 settlorIndividualAddressUK.heading = What is {0}’s address?
 settlorIndividualAddressUK.field1 = Field 1
 settlorIndividualAddressUK.field2 = Field 2
@@ -1069,12 +1069,12 @@ settlorIndividualAddressUK.error.field2.required = Enter field2
 settlorIndividualAddressUK.error.field1.length = field1 must be 100 characters or less
 settlorIndividualAddressUK.error.field2.length = field2 must be 100 characters or less
 
-settlorIndividualAddressUKYesNo.title = Is {0}’s address in the UK?
+settlorIndividualAddressUKYesNo.title = Is the settlor’s address in the UK?
 settlorIndividualAddressUKYesNo.heading = Is {0}’s address in the UK?
 settlorIndividualAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
-settlorIndividualAddressUKYesNo.error.required = Select yes if the business’s address is in the UK
+settlorIndividualAddressUKYesNo.error.required = Select yes if the settlor’s address is in the UK
 
-settlorIndividualIDCard.title = What are {0}’s ID card details?
+settlorIndividualIDCard.title = What are the settlor’s ID card details?
 settlorIndividualIDCard.heading = What are {0}’s ID card details?
 settlorIndividualIDCard.checkYourAnswersLabel = What are {0}’s ID card details?
 settlorIndividualIDCard.country.label = ID card country of issue
@@ -1092,12 +1092,12 @@ settlorIndividualIDCard.error.invalid = Enter a real date when the settlor’s I
 settlorIndividualIDCard.error.future = ID card expiry date must must be after 31 December 1499 and before 01 January 2100
 settlorIndividualIDCard.error.past = ID card expiry date must must be after 31 December 1499 and before 01 January 2100
 
-settlorIndividualIDCardYesNo.title = Do you know {0}’s ID card details?
+settlorIndividualIDCardYesNo.title = Do you know the settlor’s ID card details?
 settlorIndividualIDCardYesNo.heading = Do you know {0}’s ID card details?
 settlorIndividualIDCardYesNo.checkYourAnswersLabel = Do you know {0}’s ID card details?
 settlorIndividualIDCardYesNo.error.required = Select yes if Select yes if you know the settlor’s ID card details
 
-settlorIndividualPassport.title = What are {0}’s passport details?
+settlorIndividualPassport.title = What are the settlor’s passport details?
 settlorIndividualPassport.heading = What are {0}’s passport details?
 settlorIndividualPassport.checkYourAnswersLabel = What are {0}’s passport details?
 settlorIndividualPassport.country.label = Passport country of issue
@@ -1116,7 +1116,7 @@ settlorIndividualPassport.error.invalid = Enter a real date when {0}’s passpor
 settlorIndividualPassport.error.future = Passport expiry date must must be after 31 December 1499 and before 01 January 2100
 settlorIndividualPassport.error.past = Passport expiry date must must be after 31 December 1499 and before 01 January 2100
 
-settlorIndividualPassportYesNo.title = Do you know {0}’s passport details?
+settlorIndividualPassportYesNo.title = Do you know the settlor’s passport details?
 settlorIndividualPassportYesNo.heading = Do you know {0}’s passport details?
 settlorIndividualPassportYesNo.checkYourAnswersLabel = Do you know {0}’s passport details?
 settlorIndividualPassportYesNo.error.required = Select yes if you know the settlor’s passport details

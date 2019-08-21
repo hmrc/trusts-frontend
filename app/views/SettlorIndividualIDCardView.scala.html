@@ -27,7 +27,7 @@
 @(form: Form[_], countryOptions:Seq[InputOption], mode: Mode, draftId: String, index: Int, name: FullName)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("settlorIndividualIDCard.title", name.toString)}"
+    title = s"${errorPrefix(form)} ${messages("settlorIndividualIDCard.title")}"
     ) {
 
     @formHelper(action = SettlorIndividualIDCardController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {

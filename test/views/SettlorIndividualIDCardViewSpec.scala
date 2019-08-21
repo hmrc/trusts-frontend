@@ -44,7 +44,7 @@ class SettlorIndividualIDCardViewSpec extends QuestionViewBehaviours[PassportIdC
       view.apply(form, countryOptions, NormalMode, fakeDraftId, index, name)(fakeRequest, messages)
 
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString)
 
     behave like pageWithBackLink(applyView(form))
 
