@@ -46,7 +46,7 @@ class TrustHaveAUTRViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithLink(applyView(form), "link", url)
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.TrustHaveAUTRController.onSubmit(NormalMode, fakeDraftId).url, Some(messageKeyPrefix))
+    behave like yesNoPage(form, applyView, messageKeyPrefix, Some(messageKeyPrefix))
 
     behave like pageWithASubmitButton(applyView(form))
   }

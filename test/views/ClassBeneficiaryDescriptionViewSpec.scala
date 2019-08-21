@@ -45,7 +45,6 @@ class ClassBeneficiaryDescriptionViewSpec extends StringViewBehaviours {
     behave like pageWithBackLink(applyView(form))
 
     behave like stringPage(form, applyView, messageKeyPrefix,
-      routes.ClassBeneficiaryDescriptionController.onSubmit(NormalMode,index, fakeDraftId).url,
       Some(hintKey))
 
     behave like pageWithASubmitButton(applyView(form))

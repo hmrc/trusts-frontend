@@ -41,7 +41,7 @@ class EstablishedUnderScotsLawViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.EstablishedUnderScotsLawController.onSubmit(NormalMode, fakeDraftId).url)
+    behave like yesNoPage(form, applyView, messageKeyPrefix)
 
     behave like pageWithASubmitButton(applyView(form))
   }

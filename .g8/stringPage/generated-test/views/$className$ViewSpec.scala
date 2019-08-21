@@ -25,6 +25,6 @@ class $className$ViewSpec extends StringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.$className$Controller.onSubmit(NormalMode, fakeDraftId).url)
+    behave like stringPage(form, applyView, messageKeyPrefix)
   }
 }

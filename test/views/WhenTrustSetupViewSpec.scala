@@ -44,10 +44,7 @@ class WhenTrustSetupViewSpec extends QuestionViewBehaviours[LocalDate] {
 
     behave like normalPage(applyView(form), messageKeyPrefix,s"hint")
 
-    behave like pageWithDateFields(form, applyViewF,
-      messageKeyPrefix,
-      routes.WhenTrustSetupController.onPageLoad(NormalMode, fakeDraftId).url
-    )
+    behave like pageWithDateFields(form, applyViewF, messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 

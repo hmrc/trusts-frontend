@@ -30,7 +30,6 @@ trait QuestionViewBehaviours[A] extends ViewBehaviours {
     def pageWithTextFields(form: Form[A],
                          createView: Form[A] => HtmlFormat.Appendable,
                          messageKeyPrefix: String,
-                         expectedFormAction: String,
                          fields: Seq[(String, Option[String])],
                          args : String*) = {
 
@@ -98,7 +97,6 @@ trait QuestionViewBehaviours[A] extends ViewBehaviours {
   def pageWithDateFields(form: Form[A],
                          createView: Form[A] => HtmlFormat.Appendable,
                          messageKeyPrefix: String,
-                         expectedFormAction: String,
                          args : String*) = {
 
     val fields = Seq("value_day", "value_month", "value_year")

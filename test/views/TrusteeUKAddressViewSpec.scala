@@ -47,7 +47,6 @@ class TrusteeUKAddressViewSpec extends UkAddressViewBehaviours {
     behave like ukAddressPage(
       applyView,
       Some(messageKeyPrefix),
-      routes.SettlorsUKAddressController.onSubmit(NormalMode, fakeDraftId).url,
       trusteeName
     )
 

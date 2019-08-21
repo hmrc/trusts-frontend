@@ -43,7 +43,7 @@ class ShareCompanyNameViewSpec extends StringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.ShareCompanyNameController.onSubmit(NormalMode, index, fakeDraftId).url)
+    behave like stringPage(form, applyView, messageKeyPrefix)
 
     behave like pageWithASubmitButton(applyView(form))
 

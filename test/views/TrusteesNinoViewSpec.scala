@@ -47,7 +47,6 @@ class TrusteesNinoViewSpec extends StringViewBehaviours {
     behave like stringPageWithDynamicTitle(form, applyView,
       messageKeyPrefix,
       trusteeName,
-      routes.TrusteesNinoController.onSubmit(NormalMode, index, fakeDraftId).url,
       Some(hintKey)
     )
 

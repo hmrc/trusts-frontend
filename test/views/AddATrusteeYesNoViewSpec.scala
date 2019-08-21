@@ -41,7 +41,7 @@ class AddATrusteeYesNoViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.AddATrusteeController.submitOne(fakeDraftId).url)
+    behave like yesNoPage(form, applyView, messageKeyPrefix)
 
     behave like pageWithASubmitButton(applyView((form)))
   }

@@ -43,6 +43,6 @@ class TrusteeLiveInTheUKViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.TrusteeLiveInTheUKController.onSubmit(NormalMode, index, fakeDraftId).url, None, Seq(trusteeName))
+    behave like yesNoPage(form, applyView, messageKeyPrefix, None, Seq(trusteeName))
   }
 }
