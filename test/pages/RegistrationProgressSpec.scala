@@ -373,24 +373,48 @@ class RegistrationProgressSpec extends SpecBase {
 
     "render complete tag" when {
 
-      "there are assets in user answers that are complete" in {
+      "there are assets in user answers that are complete" when {
+        "list includes answer set with nothing more than WhatKindOfAssetPage" in {
 
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
+          val registrationProgress = injector.instanceOf[RegistrationProgress]
 
-        val userAnswers = emptyUserAnswers
-          .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
-          .set(AssetMoneyValuePage(0), "2000").success.value
-          .set(AssetStatus(0), Completed).success.value
-          .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
-          .set(SharesInAPortfolioPage(1), true).success.value
-          .set(SharePortfolioNamePage(1), "Portfolio").success.value
-          .set(SharePortfolioQuantityInTrustPage(1), "30").success.value
-          .set(SharePortfolioValueInTrustPage(1), "999999999999").success.value
-          .set(SharePortfolioOnStockExchangePage(1), false).success.value
-          .set(AssetStatus(1), Completed).success.value
-          .set(AddAssetsPage, NoComplete).success.value
+          val userAnswers = emptyUserAnswers
+            .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
+            .set(AssetMoneyValuePage(0), "2000").success.value
+            .set(AssetStatus(0), Completed).success.value
+            .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
+            .set(SharesInAPortfolioPage(1), true).success.value
+            .set(SharePortfolioNamePage(1), "Portfolio").success.value
+            .set(SharePortfolioQuantityInTrustPage(1), "30").success.value
+            .set(SharePortfolioValueInTrustPage(1), "999999999999").success.value
+            .set(SharePortfolioOnStockExchangePage(1), false).success.value
+            .set(AssetStatus(1), Completed).success.value
+            .set(AddAssetsPage, NoComplete).success.value
+            .set(WhatKindOfAssetPage(2), WhatKindOfAsset.Shares).success.value
 
-        registrationProgress.assetsStatus(userAnswers).value mustBe Completed
+          registrationProgress.assetsStatus(userAnswers).value mustBe Completed
+        }
+
+        "only full answer sets" in {
+
+          val registrationProgress = injector.instanceOf[RegistrationProgress]
+
+          val userAnswers = emptyUserAnswers
+            .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
+            .set(AssetMoneyValuePage(0), "2000").success.value
+            .set(AssetStatus(0), Completed).success.value
+            .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
+            .set(SharesInAPortfolioPage(1), true).success.value
+            .set(SharePortfolioNamePage(1), "Portfolio").success.value
+            .set(SharePortfolioQuantityInTrustPage(1), "30").success.value
+            .set(SharePortfolioValueInTrustPage(1), "999999999999").success.value
+            .set(SharePortfolioOnStockExchangePage(1), false).success.value
+            .set(AssetStatus(1), Completed).success.value
+            .set(AddAssetsPage, NoComplete).success.value
+
+          registrationProgress.assetsStatus(userAnswers).value mustBe Completed
+        }
+
       }
 
     }

@@ -24,6 +24,7 @@ import navigation.TaskListNavigator
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
 import sections._
 import viewmodels._
+import viewmodels.addAnother.DefaultAssetsViewModel
 
 class RegistrationProgress @Inject()(navigator : TaskListNavigator){
 
@@ -124,7 +125,16 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
 
   def assetsStatus(userAnswers: UserAnswers) : Option[Status] = {
     val noMoreToAdd = userAnswers.get(AddAssetsPage).contains(AddAssets.NoComplete)
-    val assets = userAnswers.get(sections.Assets).getOrElse(List.empty)
+
+    val assets = userAnswers
+      .get(sections.Assets)
+      .map{
+        _.filterNot{
+          case _:DefaultAssetsViewModel => true
+          case _ => false
+        }
+      }
+      .getOrElse(List.empty)
 
     assets match {
       case Nil => None
