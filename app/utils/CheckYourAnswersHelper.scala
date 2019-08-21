@@ -47,7 +47,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x =>
       AnswerRow(
         "individualBeneficiariesIDCardDetails.checkYourAnswersLabel",
-        HtmlFormat.escape(s"${x.countryOfIssue} ${x.cardNumber}, ${x.expiryDate}"),
+        HtmlFormat.escape(s"${x.country} ${x.cardNumber}, ${x.expiryDate}"),
         routes.SettlorIndividualPassportController.onPageLoad(CheckMode, index, draftId).url
       )
   }
@@ -65,7 +65,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x =>
       AnswerRow(
         "individualBeneficiariesIDCardDetails.checkYourAnswersLabel",
-        HtmlFormat.escape(s"${x.countryOfIssue} ${x.cardNumber}, ${x.expiryDate}"),
+        HtmlFormat.escape(s"${x.country} ${x.cardNumber}, ${x.expiryDate}"),
         routes.SettlorIndividualIDCardController.onPageLoad(CheckMode, index, draftId).url
       )
   }

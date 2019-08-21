@@ -43,19 +43,35 @@ class SettlorIndividualIDCardViewSpec extends QuestionViewBehaviours[PassportIdC
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, countryOptions, NormalMode, fakeDraftId, index, name)(fakeRequest, messages)
 
+    val applyViewF = (form : Form[_]) => applyView(form)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like pageWithTextFields(
-      form,
-      applyView,
-      messageKeyPrefix,
-      routes.SettlorIndividualIDCardController.onSubmit(NormalMode, index, fakeDraftId).url,
-      Seq(("field1", None), ("field2", None))
-    )
+    "date fields" must {
+
+      behave like pageWithDateFields(form, applyViewF,
+        messageKeyPrefix,
+        routes.SettlorIndividualIDCardController.onPageLoad(NormalMode, index, fakeDraftId).url,
+        "expiryDate",
+        name.toString
+      )
+    }
+
+    "text fields" must {
+
+      behave like pageWithTextFields(
+        form,
+        applyView,
+        messageKeyPrefix,
+        routes.SettlorIndividualIDCardController.onSubmit(NormalMode, index, fakeDraftId).url,
+        Seq(("countryOfIssue", None), ("number", None)),
+        name.toString
+      )
+    }
 
     behave like pageWithASubmitButton(applyView(form))
+
   }
 }

@@ -98,9 +98,10 @@ trait QuestionViewBehaviours[A] extends ViewBehaviours {
                          createView: Form[A] => HtmlFormat.Appendable,
                          messageKeyPrefix: String,
                          expectedFormAction: String,
+                         key: String,
                          args: String*) = {
 
-    val fields = Seq("value_day", "value_month", "value_year")
+    val fields = Seq(s"${key}_day", s"${key}_month", s"${key}_year")
 
     "behave like a question page" when {
 
@@ -134,14 +135,14 @@ trait QuestionViewBehaviours[A] extends ViewBehaviours {
 
         "show an error summary" in {
 
-          val doc = asDocument(createView(form.withError(FormError("value", "error"))))
+          val doc = asDocument(createView(form.withError(FormError(key, "error"))))
           assertRenderedById(doc, "error-summary-heading")
         }
 
         s"show an error in the legend" in {
 
-          val doc = asDocument(createView(form.withError(FormError("value", "error"))))
-          assertRenderedById(doc, "error-message-value-input")
+          val doc = asDocument(createView(form.withError(FormError(key, "error"))))
+          assertRenderedById(doc, s"error-message-$key-input")
         }
       }
     }
