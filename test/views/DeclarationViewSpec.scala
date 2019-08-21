@@ -46,7 +46,6 @@ class DeclarationViewSpec extends QuestionViewBehaviours[FullName] {
       form,
       applyView,
       messageKeyPrefix,
-
       Seq(("firstName", None), ("middleName", None), ("lastName", None))
     )
   }

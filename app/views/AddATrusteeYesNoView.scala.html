@@ -18,26 +18,30 @@
 @import models.Mode
 
 @this(
-    main_template: MainTemplate,
-    formHelper: FormWithCSRF
+  main_template: MainTemplate,
+  formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, agencyName: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("site.address.uk.title")}"
-    ) {
+  title = s"${errorPrefix(form)} ${messages("addATrusteeYesNo.title")}"
+) {
 
-    @formHelper(action = AgentUKAddressController.onSubmit(mode, draftId), 'autoComplete -> "off") {
+@formHelper(action = AddATrusteeController.submitOne(draftId), 'autoComplete -> "off") {
 
-        @components.back_link()
+    @components.back_link()
 
-        @components.error_summary(form.errors)
+    @components.error_summary(form.errors)
 
-        @components.heading("site.address.uk.heading", Some(agencyName))
+    @components.heading("addATrusteeYesNo.heading")
 
-        @components.uk_address(form)
+    @components.input_yes_no(
+      field = form("value"),
+      label = messages("addATrusteeYesNo.heading"),
+      legendClass = Some("visually-hidden")
+    )
 
-        @components.submit_button()
-    }
+    @components.submit_button()
+  }
 }

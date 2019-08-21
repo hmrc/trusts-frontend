@@ -14,34 +14,13 @@
  * limitations under the License.
  */
 
-package viewmodels.addAnother
+package pages
 
-import models.Status
+import play.api.libs.json.JsPath
 
-trait AssetViewModel {
+case object AddATrusteeYesNoPage extends QuestionPage[Boolean] {
 
-  val status : Status
+  override def path: JsPath = JsPath \ toString
 
-}
-
-object AssetViewModel {
-
-  import play.api.libs.json._
-
-  implicit class ReadsWithContravariantOr[A](a: Reads[A]) {
-
-    def or[B >: A](b: Reads[B]): Reads[B] =
-      a.map[B](identity).orElse(b)
-  }
-
-  implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
-    a.map(identity)
-
-  implicit lazy val reads : Reads[AssetViewModel] = {
-    MoneyAssetViewModel.reads or
-    ShareAssetViewModel.reads or
-    PropertyOrLandAssetViewModel.reads or
-    DefaultAssetsViewModel.reads
-  }
-
+  override def toString: String = "addATrusteeYesNo"
 }

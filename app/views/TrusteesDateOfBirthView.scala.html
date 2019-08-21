@@ -19,10 +19,10 @@
         formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, index: Int, trusteeName: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId: String, index: Int, messagePrefix: String, trusteeName: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("trusteesDateOfBirth.title", trusteeName)}"
+    title = s"${errorPrefix(form)} ${messages(messagePrefix+".title")}"
 ) {
 
     @formHelper(action = TrusteesDateOfBirthController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {

@@ -25,7 +25,7 @@ class PropertyOrLandTotalValueFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
     Form(
-      "value" -> text("propertyOrLandTotalValue.error.required")
+      "value" -> currency("propertyOrLandTotalValue.error.required")
         .verifying(
             firstError(
             maxLength(12, "propertyOrLandTotalValue.error.length"),

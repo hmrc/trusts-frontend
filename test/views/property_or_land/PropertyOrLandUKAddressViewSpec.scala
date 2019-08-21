@@ -27,6 +27,7 @@ import views.html.property_or_land.PropertyOrLandUKAddressView
 class PropertyOrLandUKAddressViewSpec extends UkAddressViewBehaviours {
 
   val messageKeyPrefix = "site.address.uk"
+  val entityName = "the property or land"
   val index = 0
 
   override val form = new UKAddressFormProvider()()
@@ -38,14 +39,15 @@ class PropertyOrLandUKAddressViewSpec extends UkAddressViewBehaviours {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, "the property or land")
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, entityName)
 
     behave like pageWithBackLink(applyView(form))
 
     behave like ukAddressPage(
       applyView,
       Some(messageKeyPrefix),
-      "the property or land"
+      routes.PropertyOrLandUKAddressController.onSubmit(NormalMode, index, fakeDraftId).url,
+      entityName
     )
 
     behave like pageWithASubmitButton(applyView(form))
