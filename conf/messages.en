@@ -107,7 +107,9 @@ individualOrBusiness.business = Business
 entity.trustee = Trustee
 entities.no.name.added = No name added
 entities.no.value.added = No value added
+entities.no.address.added = No address added
 entities.no.description.added = No description added
+entities.no.asset.added = No asset added
 entities.lead = Lead
 entities.trustee = Trustee
 entities.trustee.individual = Trustee Individual
@@ -325,7 +327,11 @@ trusteesAnswerPage.title = Check trustee’s details
 trusteesAnswerPage.heading = Check trustee’s details
 
 addATrustee.title = Add a trustee
+
 addATrustee.heading = Add a trustee
+addATrustee.singular.heading = You have added 1 trustee
+addATrustee.count.heading = You have added {0} trustees
+
 addATrustee.additional-content = Do you need to add another trustee?
 addATrustee.add-them-now = Yes, I want to add them now
 addATrustee.add-them-later = Yes, I want to add them later
@@ -564,6 +570,8 @@ addAssets.count.heading = You have added {0} assets
 addAssets.count.title = You have added {0} assets
 addAssets.singular.heading = You have added 1 asset
 addAssets.singular.title = You have added 1 asset
+
+addAssets.propertyOrLand = Property or Land
 
 settlorDateOfBirthYesNo.title = Do you know the settlor’s date of birth?
 settlorDateOfBirthYesNo.heading = Do you know {0}’s date of birth?
@@ -1020,3 +1028,7 @@ propertyOrLandAnswers.heading = Check property or land details
 addAnAssetYesNo.title = Do you want to add an asset?
 addAnAssetYesNo.heading = Do you want to add an asset?
 addAnAssetYesNo.error.required = Select yes if you want to add an asset
+
+addATrusteeYesNo.title = Do you want to add a trustee?
+addATrusteeYesNo.heading = Do you want to add a trustee?
+addATrusteeYesNo.error.required = Select yes if you want to add a trustee

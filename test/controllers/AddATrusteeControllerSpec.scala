@@ -17,25 +17,24 @@
 package controllers
 
 import base.SpecBase
-import forms.AddATrusteeFormProvider
+import forms.{AddATrusteeFormProvider, AddATrusteeYesNoFormProvider}
 import models.Status.Completed
 import models.{AddATrustee, FullName, IndividualOrBusiness, NormalMode}
-import navigation.{FakeNavigator, Navigator}
 import pages.entitystatus.TrusteeStatus
-import pages.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage, TrusteesNamePage}
-import play.api.inject.bind
-import play.api.mvc.Call
+import pages.{TrusteeIndividualOrBusinessPage, TrusteesNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.AddRow
-import views.html.AddATrusteeView
+import views.html.{AddATrusteeView, AddATrusteeYesNoView}
 
 class AddATrusteeControllerSpec extends SpecBase {
 
-  lazy val addATrusteeRoute : String = routes.AddATrusteeController.onPageLoad(fakeDraftId).url
+  lazy val getRoute : String = routes.AddATrusteeController.onPageLoad(fakeDraftId).url
+  lazy val submitAnotherRoute : String = routes.AddATrusteeController.submitAnother(fakeDraftId).url
+  lazy val submitYesNoRoute : String = routes.AddATrusteeController.submitOne(fakeDraftId).url
 
-  val formProvider = new AddATrusteeFormProvider()
-  val form = formProvider()
+  val addTrusteeForm = new AddATrusteeFormProvider()()
+  val yesNoForm = new AddATrusteeYesNoFormProvider()()
 
   val trustee = List(
     AddRow("First 0 Last 0", typeLabel = "Trustee Individual", "#", "/trusts-registration/id/trustee/0/remove"),
@@ -50,95 +49,172 @@ class AddATrusteeControllerSpec extends SpecBase {
     .set(TrusteeIndividualOrBusinessPage(1), IndividualOrBusiness.Individual).success.value
     .set(TrusteeStatus(1), Completed).success.value
 
-  "AddATrustee Controller" must {
+  "AddATrustee Controller" when {
 
-    "return OK and the correct view for a GET" in {
+    "no data" must {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswersWithTrusteesComplete)).build()
+      "redirect to Session Expired for a GET if no existing data is found" in {
 
-      val request = FakeRequest(GET, addATrusteeRoute)
+        val application = applicationBuilder(userAnswers = None).build()
 
-      val result = route(application, request).value
+        val request = FakeRequest(GET, getRoute)
 
-      val view = application.injector.instanceOf[AddATrusteeView]
+        val result = route(application, request).value
 
-      status(result) mustEqual OK
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
-      contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId,Nil, trustee, false)(fakeRequest, messages).toString
+        application.stop()
+      }
 
-      application.stop()
+      "redirect to Session Expired for a POST if no existing data is found" in {
+
+        val application = applicationBuilder(userAnswers = None).build()
+
+        val request =
+          FakeRequest(POST, submitAnotherRoute)
+            .withFormUrlEncodedBody(("value", AddATrustee.values.head.toString))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+
+        application.stop()
+      }
     }
 
-    "redirect to the next page when valid data is submitted" in {
+    "no trustees" must {
 
-      val application =
-        applicationBuilder(userAnswers = Some(userAnswersWithTrusteesComplete)).build()
+      "return OK and the correct view for a GET" in {
 
-      val request =
-        FakeRequest(POST, addATrusteeRoute)
-          .withFormUrlEncodedBody(("value", AddATrustee.options.head.value))
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val result = route(application, request).value
+        val request = FakeRequest(GET, getRoute)
 
-      status(result) mustEqual SEE_OTHER
+        val result = route(application, request).value
 
-      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+        val view = application.injector.instanceOf[AddATrusteeYesNoView]
 
-      application.stop()
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(yesNoForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
+      "redirect to the next page when valid data is submitted" in {
+
+        val application =
+          applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+        val request =
+          FakeRequest(POST, submitYesNoRoute)
+            .withFormUrlEncodedBody(("value", "true"))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+
+        application.stop()
+      }
+
+      "return a Bad Request and errors when invalid data is submitted" in {
+
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+        val request =
+          FakeRequest(POST, submitYesNoRoute)
+            .withFormUrlEncodedBody(("value", "invalid value"))
+
+        val boundForm = yesNoForm.bind(Map("value" -> "invalid value"))
+
+        val view = application.injector.instanceOf[AddATrusteeYesNoView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual BAD_REQUEST
+
+        contentAsString(result) mustEqual
+          view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+
+        application.stop()
+      }
     }
 
-    "return a Bad Request and errors when invalid data is submitted" in {
+    "there are trustees" must {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswersWithTrusteesComplete)).build()
+      "return OK and the correct view for a GET" in {
 
-      val request =
-        FakeRequest(POST, addATrusteeRoute)
-          .withFormUrlEncodedBody(("value", "invalid value"))
+        val application = applicationBuilder(userAnswers = Some(userAnswersWithTrusteesComplete)).build()
 
-      val boundForm = form.bind(Map("value" -> "invalid value"))
+        val request = FakeRequest(GET, getRoute)
 
-      val view = application.injector.instanceOf[AddATrusteeView]
+        val result = route(application, request).value
 
-      val result = route(application, request).value
+        val view = application.injector.instanceOf[AddATrusteeView]
 
-      status(result) mustEqual BAD_REQUEST
+        status(result) mustEqual OK
 
-      contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId,Nil, trustee, false)(fakeRequest, messages).toString
+        contentAsString(result) mustEqual
+          view(addTrusteeForm, NormalMode, fakeDraftId,Nil, trustee, isLeadTrusteeDefined = false, heading = "You have added 2 trustees")(fakeRequest, messages).toString
 
-      application.stop()
+        application.stop()
+      }
+
+      "redirect to the next page when valid data is submitted" in {
+
+        val application =
+          applicationBuilder(userAnswers = Some(userAnswersWithTrusteesComplete)).build()
+
+        val request =
+          FakeRequest(POST, submitAnotherRoute)
+            .withFormUrlEncodedBody(("value", AddATrustee.options.head.value))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+
+        application.stop()
+      }
+
+      "return a Bad Request and errors when invalid data is submitted" in {
+
+        val application = applicationBuilder(userAnswers = Some(userAnswersWithTrusteesComplete)).build()
+
+        val request =
+          FakeRequest(POST, submitAnotherRoute)
+            .withFormUrlEncodedBody(("value", "invalid value"))
+
+        val boundForm = addTrusteeForm.bind(Map("value" -> "invalid value"))
+
+        val view = application.injector.instanceOf[AddATrusteeView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual BAD_REQUEST
+
+        contentAsString(result) mustEqual
+          view(
+            boundForm,
+            NormalMode,
+            fakeDraftId,
+            Nil,
+            trustee,
+            isLeadTrusteeDefined = false,
+            heading = "You have added 2 trustees"
+          )(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
     }
 
-    "redirect to Session Expired for a GET if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = None).build()
-
-      val request = FakeRequest(GET, addATrusteeRoute)
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
-
-      application.stop()
-    }
-
-    "redirect to Session Expired for a POST if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = None).build()
-
-      val request =
-        FakeRequest(POST, addATrusteeRoute)
-          .withFormUrlEncodedBody(("value", AddATrustee.values.head.toString))
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
-
-      application.stop()
-    }
   }
 }
