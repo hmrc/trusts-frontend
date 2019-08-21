@@ -16,7 +16,7 @@
 
 package pages
 
-import models.{PassportIdCardDetails, SettlorIndividualIDCard}
+import models.PassportIdCardDetails
 import play.api.libs.json.JsPath
 import sections.Settlors
 

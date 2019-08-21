@@ -17,25 +17,31 @@
 package views
 
 import controllers.routes
-import models.{NormalMode, SettlorIndividualPassport}
+import forms.PassportIdCardFormProvider
+import models.{FullName, NormalMode, PassportIdCardDetails}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
+import utils.InputOption
+import utils.countryOptions.CountryOptionsNonUK
 import views.behaviours.QuestionViewBehaviours
 import views.html.SettlorIndividualPassportView
 
-class SettlorIndividualPassportViewSpec extends QuestionViewBehaviours[SettlorIndividualPassport] {
+class SettlorIndividualPassportViewSpec extends QuestionViewBehaviours[PassportIdCardDetails] {
 
   val messageKeyPrefix = "settlorIndividualPassport"
   val index = 0
+  val name = FullName("First", Some("Middle"), "Last")
 
-  override val form = new SettlorIndividualPassportFormProvider()()
+  override val form = new PassportIdCardFormProvider()()
 
   "SettlorIndividualPassportView" must {
 
     val view = viewFor[SettlorIndividualPassportView](Some(emptyUserAnswers))
 
+    val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
+      view.apply(form, countryOptions, NormalMode, fakeDraftId, index, name)(fakeRequest, messages)
 
 
     behave like normalPage(applyView(form), messageKeyPrefix)

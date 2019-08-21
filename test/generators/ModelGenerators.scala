@@ -24,20 +24,13 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
-  implicit lazy val arbitrarySettlorIndividualPassport: Arbitrary[SettlorIndividualPassport] =
+  implicit lazy val arbitrarySettlorIndividualPassport: Arbitrary[PassportIdCardDetails] =
     Arbitrary {
       for {
         field1 <- arbitrary[String]
         field2 <- arbitrary[String]
-      } yield SettlorIndividualPassport(field1, field2)
-    }
-
-  implicit lazy val arbitrarySettlorIndividualIDCard: Arbitrary[SettlorIndividualIDCard] =
-    Arbitrary {
-      for {
-        field1 <- arbitrary[String]
-        field2 <- arbitrary[String]
-      } yield SettlorIndividualIDCard(field1, field2)
+        field3 <- arbitrary[LocalDate]
+      } yield PassportIdCardDetails(field1, field2, field3)
     }
 
   implicit lazy val arbitrarySettlorIndividualOrBusiness: Arbitrary[SettlorIndividualOrBusiness] =
@@ -96,14 +89,6 @@ trait ModelGenerators {
         townOrCity <- arbitrary[String]
         postcode <- arbitrary[String]
       } yield UKAddress(line1, Some(line2), Some(line3), townOrCity, postcode)
-    }
-
-  implicit lazy val arbitraryPassportIDCardDetails: Arbitrary[PassportIdCardDetails] =
-    Arbitrary {
-      for {
-        country <- arbitrary[String]
-        number <- arbitrary[String]
-      } yield PassportIdCardDetails(country, number, LocalDate.now)
     }
 
   implicit lazy val arbitraryAddATrustee: Arbitrary[AddATrustee] =
