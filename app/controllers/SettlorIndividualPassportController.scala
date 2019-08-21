@@ -17,16 +17,19 @@
 package controllers
 
 import controllers.actions._
-import forms.SettlorIndividualPassportFormProvider
+import controllers.filters.IndexActionFilterProvider
+import forms.PassportIdCardFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.SettlorIndividualPassportPage
+import pages.{SettlorIndividualNamePage, SettlorIndividualPassportPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import sections.Settlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import utils.countryOptions.CountryOptionsNonUK
 import views.html.SettlorIndividualPassportView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -37,10 +40,13 @@ class SettlorIndividualPassportController @Inject()(
                                       navigator: Navigator,
                                       identify: IdentifierAction,
                                       getData: DraftIdRetrievalActionProvider,
+                                      validateIndex: IndexActionFilterProvider,
                                       requireData: DataRequiredAction,
-                                      formProvider: SettlorIndividualPassportFormProvider,
+                                      requiredAnswer: RequiredAnswerActionProvider,
+                                      formProvider: PassportIdCardFormProvider,
                                       val controllerComponents: MessagesControllerComponents,
-                                      view: SettlorIndividualPassportView
+                                      view: SettlorIndividualPassportView,
+                                      val countryOptions: CountryOptionsNonUK
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -48,25 +54,32 @@ class SettlorIndividualPassportController @Inject()(
   private def actions(index: Int, draftId: String) =
     identify andThen
       getData(draftId) andThen
-      requireData
+      requireData andThen
+      validateIndex(index, Settlors) andThen
+      requiredAnswer(RequiredAnswer(SettlorIndividualNamePage(index), routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, draftId)))
+
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
+
+      val name = request.userAnswers.get(SettlorIndividualNamePage(index)).get
 
       val preparedForm = request.userAnswers.get(SettlorIndividualPassportPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId, index))
+      Ok(view(preparedForm, countryOptions.options, mode, draftId, index, name))
   }
 
   def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
     implicit request =>
 
+      val name = request.userAnswers.get(SettlorIndividualNamePage(index)).get
+
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index))),
+          Future.successful(BadRequest(view(formWithErrors, countryOptions.options, mode, draftId, index, name))),
 
         value => {
           for {

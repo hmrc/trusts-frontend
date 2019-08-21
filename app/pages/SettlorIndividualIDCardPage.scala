@@ -16,11 +16,11 @@
 
 package pages
 
-import models.SettlorIndividualIDCard
+import models.{PassportIdCardDetails, SettlorIndividualIDCard}
 import play.api.libs.json.JsPath
 import sections.Settlors
 
-final case class SettlorIndividualIDCardPage(index : Int) extends QuestionPage[SettlorIndividualIDCard] {
+final case class SettlorIndividualIDCardPage(index : Int) extends QuestionPage[PassportIdCardDetails] {
 
   override def path: JsPath = JsPath \ Settlors \ "living" \ toString
 

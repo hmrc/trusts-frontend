@@ -31,7 +31,7 @@ class PassportOrIdCardFormProviderSpec extends
 
     val fieldName = "countryOfIssue"
     val requiredKey = "site.passportOrIdCard.error.countryOfIssue.required"
-    val lengthKey = "site.passportOrIdCard.error.countryOfIssue"
+    val lengthKey = "site.passportOrIdCard.error.countryOfIssue.length"
     val maxLength = 100
 
     behave like fieldThatBindsValidData(

@@ -32,6 +32,8 @@
 
 package forms
 
+import java.time.LocalDate
+
 import javax.inject.Inject
 import forms.mappings.Mappings
 import play.api.data.Form
@@ -44,27 +46,30 @@ class PassportIdCardFormProvider @Inject() extends Mappings {
 
   def apply(): Form[PassportIdCardDetails] = Form(
     mapping(
-      "countryOfIssue" -> text("site.passportOrIdCard.error.countryOfIssue.required")
+      "countryOfIssue" -> text("settlorIndividualPassport.error.country.required")
         .verifying(
           firstError(
-            maxLength(100, "site.passportOrIdCard.cardNumber.error.countryOfIssue.length"),
-            isNotEmpty("countryOfIssue", "site.passportOrIdCard.cardNumber.error.countryOfIssue.required")
+            isNotEmpty("countryOfIssue", "settlorIndividualPassport.error.country.required")
           )
         ),
-      "number" -> text("site.passportOrIdCard.error.cardNumber.required")
+      "number" -> text("settlorIndividualPassport.number.error.required")
         .verifying(
           firstError(
-            maxLength(30, "site.passportOrIdCard.error.cardNumber.length"),
+            maxLength(30, "settlorIndividualPassport.number.error.length"),
             regexp(Validation.passportOrIdCardNumberRegEx, " = ID card number can only include letters and numbers"),
-            isNotEmpty("cardNumber", "site.passportOrIdCard.error.cardNumber.required")
+            isNotEmpty("cardNumber", "settlorIndividualPassport.number.error.required")
           )
         ),
       "expiryDate" -> localDate(
-        invalidKey = "site.passportOrIdCard.error.invalid",
-        allRequiredKey = "site.passportOrIdCard.error.required.al",
-        twoRequiredKey = "site.passportOrIdCard.error.required.two",
-        requiredKey = "site.passportOrIdCard.error.required"
-      )
+        invalidKey     = "settlorIndividualPassport.error.invalid",
+        allRequiredKey = "settlorIndividualPassport.error.required.all",
+        twoRequiredKey = "settlorIndividualPassport.error.required.two",
+        requiredKey    = "settlorIndividualPassport.error.required"
+      ).verifying(firstError(
+        maxDate(LocalDate.now, s"settlorIndividualPassport.error.future", "day", "month", "year"),
+        minDate(LocalDate.of(1500,1,1), s"settlorIndividualPassport.error.past", "day", "month", "year")
+      ))
+
     )(PassportIdCardDetails.apply)(PassportIdCardDetails.unapply)
   )
 }

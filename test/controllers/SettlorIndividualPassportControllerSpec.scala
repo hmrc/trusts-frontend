@@ -17,7 +17,6 @@
 package controllers
 
 import base.SpecBase
-import forms.SettlorIndividualPassportFormProvider
 import models.{NormalMode, SettlorIndividualIDCard, SettlorIndividualPassport, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.{SettlorIndividualIDCardPage, SettlorIndividualPassportPage}

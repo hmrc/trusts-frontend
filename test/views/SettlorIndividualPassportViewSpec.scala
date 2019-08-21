@@ -17,7 +17,6 @@
 package views
 
 import controllers.routes
-import forms.SettlorIndividualPassportFormProvider
 import models.{NormalMode, SettlorIndividualPassport}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat

@@ -67,27 +67,6 @@ site.address.uk.postcode = Postcode
 site.address.uk.postcode.hint = For example AB1 1AB
 site.address.uk.checkYourAnswersLabel = What is {0}’s address?
 
-site.passportOrIdCard.cardNumber = ID card number
-site.passportOrIdCard.expiryDate = Expiry date
-site.passportOrIdCard.checkYourAnswersLabel = What are {0}'s ID card details?
-
-site.passportOrIdCard.error.countryOfIssue.required = Enter the individual beneficiary's ID card country of issue
-site.passportOrIdCard.error.countryOfIssue.length = The Country of issue must be 30 characters or less
-site.passportOrIdCard.countryOfIssue.hint = Country of issue is the same as their country of citizenship. For example, if they're a citizen of the United Kingdom but are getting their passport from the UK Consulate in Hong Kong, the UK is their country of issue.
-
-site.passportOrIdCard.error.cardNumber.required = Enter the individual beneficiary's ID card number
-site.passportOrIdCard.error.cardNumber.invalid = ID card number can only include letters and numbers
-site.passportOrIdCard.error.cardNumber.length = The ID card must be 30 characters or less
-
-site.passportOrIdCard.cardNumber.hint = For example, 502135326
-site.passportOrIdCard.expiryDate.hint = For example, 31 3 1980
-site.passportOrIdCard.error.expiryDate.required = Enter the individual beneficiary's ID card expiry date
-
-site.passportOrIdCard.error.required.all = Enter a date when the individual beneficiary's passport expires
-site.passportOrIdCard.error.required.two = The ID card expiry date must include a {0} and {1}
-site.passportOrIdCard.error.required = The ID card expiry date must include a {0}
-site.passportOrIdCard.error.invalid = Enter a real date when the individual beneficiary’s ID card expires
-
 ukAddress.error.line1.required = Enter address line 1
 ukAddress.error.townOrCity.required = Enter a town or city
 ukAddress.error.postcode.required = Enter a postcode
@@ -1095,30 +1074,47 @@ settlorIndividualAddressUKYesNo.heading = Is {0}’s address in the UK?
 settlorIndividualAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 settlorIndividualAddressUKYesNo.error.required = Select yes if the business’s address is in the UK
 
-settlorIndividualIDCard.title = settlorIndividualIDCard
-settlorIndividualIDCard.heading = settlorIndividualIDCard
-settlorIndividualIDCard.field1 = Field 1
-settlorIndividualIDCard.field2 = Field 2
-settlorIndividualIDCard.checkYourAnswersLabel = settlorIndividualIDCard
-settlorIndividualIDCard.error.field1.required = Enter field1
-settlorIndividualIDCard.error.field2.required = Enter field2
-settlorIndividualIDCard.error.field1.length = field1 must be 100 characters or less
-settlorIndividualIDCard.error.field2.length = field2 must be 100 characters or less
+settlorIndividualIDCard.title = What are {0}’s ID card details?
+settlorIndividualIDCard.heading = What are {0}’s ID card details?
+settlorIndividualIDCard.checkYourAnswersLabel = What are {0}’s ID card details?
+settlorIndividualIDCard.country.label = ID card country of issue
+settlorIndividualIDCard.error.country.required = Enter the settlor’s ID card country of issue
+settlorIndividualIDCard.number = ID card number
+settlorIndividualIDCard.number.error.required = Enter the settlor’s ID card number
+settlorIndividualIDCard.number.error.length = Passport or ID card number must be 30 characters or less
+settlorIndividualIDCard.number.error.invalid = Passport or ID card number can only include letters and numbers
+settlorIndividualIDCard.expiryDate.title = Expiry date
+settlorIndividualIDCard.expiryDate.hint = Expiry date can be in the past. For example, 31 3 1980
+settlorIndividualIDCard.error.required.all = Enter an expiry date
+settlorIndividualIDCard.error.required.two = ID card expiry date must include a {0} and {1}
+settlorIndividualIDCard.error.required = ID card expiry date must include a {0}
+settlorIndividualIDCard.error.invalid = Enter a real date when the settlor’s ID card expires
+settlorIndividualIDCard.error.future = ID card expiry date must must be after 31 December 1499 and before 01 January 2100
+settlorIndividualIDCard.error.past = ID card expiry date must must be after 31 December 1499 and before 01 January 2100
 
 settlorIndividualIDCardYesNo.title = Do you know {0}’s ID card details?
 settlorIndividualIDCardYesNo.heading = Do you know {0}’s ID card details?
 settlorIndividualIDCardYesNo.checkYourAnswersLabel = Do you know {0}’s ID card details?
 settlorIndividualIDCardYesNo.error.required = Select yes if Select yes if you know the settlor’s ID card details
 
-settlorIndividualPassport.title = settlorIndividualPassport
-settlorIndividualPassport.heading = settlorIndividualPassport
-settlorIndividualPassport.field1 = Field 1
-settlorIndividualPassport.field2 = Field 2
-settlorIndividualPassport.checkYourAnswersLabel = settlorIndividualPassport
-settlorIndividualPassport.error.field1.required = Enter field1
-settlorIndividualPassport.error.field2.required = Enter field2
-settlorIndividualPassport.error.field1.length = field1 must be 100 characters or less
-settlorIndividualPassport.error.field2.length = field2 must be 100 characters or less
+settlorIndividualPassport.title = What are {0}’s passport details?
+settlorIndividualPassport.heading = What are {0}’s passport details?
+settlorIndividualPassport.checkYourAnswersLabel = What are {0}’s passport details?
+settlorIndividualPassport.country.label = Passport country of issue
+settlorIndividualPassport.error.country.required = Enter the settlor’s passport country of issue
+settlorIndividualPassport.number = Passport number
+settlorIndividualPassport.number.hint = For example, 502135326
+settlorIndividualPassport.number.error.required = Enter the settlor’s passport number
+settlorIndividualPassport.number.error.length = Passport or ID card number must be 30 characters or less
+settlorIndividualPassport.number.error.invalid = Passport or ID card number can only include letters and numbers
+settlorIndividualPassport.expiryDate.title = Expiry date
+settlorIndividualPassport.expiryDate.hint = Expiry date can be in the past. For example, 31 3 1980
+settlorIndividualPassport.error.required.all = Enter an expiry date
+settlorIndividualPassport.error.required.two = The expiry date must include a {0} and {1}
+settlorIndividualPassport.error.required = The expiry date must include {0}
+settlorIndividualPassport.error.invalid = Enter a real date when {0}’s passport expires
+settlorIndividualPassport.error.future = Passport expiry date must must be after 31 December 1499 and before 01 January 2100
+settlorIndividualPassport.error.past = Passport expiry date must must be after 31 December 1499 and before 01 January 2100
 
 settlorIndividualPassportYesNo.title = Do you know {0}’s passport details?
 settlorIndividualPassportYesNo.heading = Do you know {0}’s passport details?
