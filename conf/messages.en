@@ -329,7 +329,7 @@ trusteesAnswerPage.heading = Check trustee’s details
 addATrustee.title = Add a trustee
 
 addATrustee.heading = Add a trustee
-addATrustee.singular.heading = You have added 1 trustee
+addATrustee.singular.heading = Add a trustee
 addATrustee.count.heading = You have added {0} trustees
 
 addATrustee.additional-content = Do you need to add another trustee?
@@ -568,8 +568,8 @@ addAssets.checkYourAnswersLabel = addAssets
 addAssets.error.required = Select yes if you want to add another asset
 addAssets.count.heading = You have added {0} assets
 addAssets.count.title = You have added {0} assets
-addAssets.singular.heading = You have added 1 asset
-addAssets.singular.title = You have added 1 asset
+addAssets.singular.heading = Add assets
+addAssets.singular.title = Add assets
 
 addAssets.propertyOrLand = Property or Land
 
@@ -771,8 +771,8 @@ addABeneficiary.add-them-later = Yes, I want to add them later
 addABeneficiary.no-complete = No, I have added all beneficiaries
 addABeneficiary.individualBeneficiary = Individual beneficiary
 addABeneficiary.error.required = Select yes if you want to add another beneficiary
-addABeneficiary.singular.heading = You have added 1 beneficiary
-addABeneficiary.singular.title = You have added 1 beneficiary
+addABeneficiary.singular.heading = Add a beneficiary
+addABeneficiary.singular.title = Add a beneficiary
 addABeneficiary.count.heading = You have added {0} beneficiaries
 addABeneficiary.count.title = You have added {0} beneficiaries
 
