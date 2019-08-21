@@ -148,7 +148,8 @@ GET        /:draftId/trustees/:index/check-answers                      controll
 POST       /:draftId/trustees/:index/check-answers                     controllers.TrusteesAnswerPageController.onSubmit(index : Int, draftId: String)
 
 GET        /:draftId/trustees/add                                controllers.AddATrusteeController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trustees/add                                controllers.AddATrusteeController.onSubmit(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/trustees/add                                controllers.AddATrusteeController.submitOne(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/trustees/add-another                        controllers.AddATrusteeController.submitAnother(mode: Mode = NormalMode, draftId: String)
 
 GET        /:draftId/trustees/:index/telephone-number                        controllers.TelephoneNumberController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
 POST       /:draftId/trustees/:index/telephone-number                        controllers.TelephoneNumberController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)

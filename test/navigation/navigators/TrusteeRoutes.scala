@@ -49,6 +49,30 @@ trait TrusteeRoutes {
         }
       }
 
+      "go to the next trustee from AddATrusteeYesNoPage when selecting yes" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(AddATrusteeYesNoPage, true).success.value
+                .remove(Trustees).success.value
+
+            navigator.nextPage(AddATrusteeYesNoPage, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 0, fakeDraftId))
+        }
+      }
+
+      "go to the registration progress page from AddATrusteeYesNoPage when selecting no" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(AddATrusteeYesNoPage, false).success.value
+              .remove(Trustees).success.value
+
+            navigator.nextPage(AddATrusteeYesNoPage, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
+        }
+      }
+
     }
 
     "there is atleast one trustee" must {

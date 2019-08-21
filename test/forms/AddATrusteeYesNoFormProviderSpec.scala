@@ -14,34 +14,32 @@
  * limitations under the License.
  */
 
-package viewmodels.addAnother
+package forms
 
-import models.Status
+import forms.behaviours.BooleanFieldBehaviours
+import play.api.data.FormError
 
-trait AssetViewModel {
+class AddATrusteeYesNoFormProviderSpec extends BooleanFieldBehaviours {
 
-  val status : Status
+  val requiredKey = "addATrusteeYesNo.error.required"
+  val invalidKey = "error.boolean"
 
-}
+  val form = new AddATrusteeYesNoFormProvider()()
 
-object AssetViewModel {
+  ".value" must {
 
-  import play.api.libs.json._
+    val fieldName = "value"
 
-  implicit class ReadsWithContravariantOr[A](a: Reads[A]) {
+    behave like booleanField(
+      form,
+      fieldName,
+      invalidError = FormError(fieldName, invalidKey)
+    )
 
-    def or[B >: A](b: Reads[B]): Reads[B] =
-      a.map[B](identity).orElse(b)
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
   }
-
-  implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
-    a.map(identity)
-
-  implicit lazy val reads : Reads[AssetViewModel] = {
-    MoneyAssetViewModel.reads or
-    ShareAssetViewModel.reads or
-    PropertyOrLandAssetViewModel.reads or
-    DefaultAssetsViewModel.reads
-  }
-
 }
