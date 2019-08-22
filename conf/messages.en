@@ -107,13 +107,15 @@ entities.no.name.added = No name added
 entities.no.value.added = No value added
 entities.no.address.added = No address added
 entities.no.description.added = No description added
-entities.no.asset.added = No asset added
+
 entities.lead = Lead
 entities.trustee = Trustee
 entities.trustee.individual = Trustee Individual
 entities.trustee.business = Trustee Business
 entities.beneficiary.individual = Individual Beneficiary
 entities.beneficiary.class = Class of beneficiaries
+
+entities.propertyOrLand.default = No address or description added
 
 createAgentServicesAccount.title = Create an agent services account
 createAgentServicesAccount.heading = Create an agent services account
@@ -344,6 +346,10 @@ removeATrustee.title = Are you sure you want to remove {0}?
 removeATrustee.heading = Are you sure you want to remove {0}?
 removeATrustee.default = the trustee
 removeATrustee.error.required = Select yes if you want to remove the trustee
+
+removeAsset.title = Are you sure you want to remove this asset?
+removeAsset.heading = Are you sure you want to remove this asset?
+removeAsset.error.required = Select yes if you want to remove this asset
 
 telephoneNumber.title = What is the trustee’s telephone number?
 telephoneNumber.heading = What is {0}’s telephone number?
