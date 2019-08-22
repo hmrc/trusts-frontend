@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package forms
+package forms.settlor
 
+import forms.Validation
 import forms.behaviours.StringFieldBehaviours
-import forms.settlor.SettlorIndividualNameFormProvider
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
 

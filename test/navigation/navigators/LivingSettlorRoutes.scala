@@ -69,6 +69,17 @@ trait LivingSettlorRoutes {
 
     }
 
+    "navigate fromm SettlorIndividualDateOfBirthYesNoPage" in {
+
+      val page = SettlorIndividualDateOfBirthPage(index)
+
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.SettlorIndividualNINOYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
+      }
+    }
+
   }
 
 }

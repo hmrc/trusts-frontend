@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.settlor
 
 import base.SpecBase
-import forms.SettlorIndividualNINOFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
-import pages.SettlorIndividualNINOPage
-import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
+import forms.settlor.SettlorIndividualNINOFormProvider
+import models.NormalMode
+import pages.settlor.SettlorIndividualNINOPage
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.SettlorIndividualNINOView
+import views.html.settlor.SettlorIndividualNINOView
 
 class SettlorIndividualNINOControllerSpec extends SpecBase {
 
@@ -127,7 +124,7 @@ class SettlorIndividualNINOControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -144,7 +141,7 @@ class SettlorIndividualNINOControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }

@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package views
+package views.settlor
 
-import controllers.routes
-import forms.SettlorIndividualNINOFormProvider
+import forms.settlor.SettlorIndividualNINOFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
-import views.html.SettlorIndividualNINOView
+import views.html.settlor.SettlorIndividualNINOView
 
 class SettlorIndividualNINOViewSpec extends StringViewBehaviours {
 

@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.settlor
 
 import controllers.actions._
-import forms.SettlorIndividualNINOFormProvider
+import forms.settlor.SettlorIndividualNINOFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.SettlorIndividualNINOPage
+import pages.settlor.SettlorIndividualNINOPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.SettlorIndividualNINOView
+import views.html.settlor.SettlorIndividualNINOView
 
 import scala.concurrent.{ExecutionContext, Future}
 
