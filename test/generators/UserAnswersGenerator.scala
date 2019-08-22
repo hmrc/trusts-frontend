@@ -22,7 +22,7 @@ import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.TryValues
 import pages._
 import pages.property_or_land.{PropertyOrLandAddressUkYesNoPage, PropertyOrLandDescriptionPage, PropertyOrLandUKAddressPage, _}
-import pages.settlor.SettlorIndividualNamePage
+import pages.settlor.{SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNamePage}
 import pages.shares._
 import play.api.libs.json.{JsValue, Json}
 

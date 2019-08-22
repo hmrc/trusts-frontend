@@ -17,6 +17,7 @@
 package pages
 
 import pages.behaviours.PageBehaviours
+import pages.settlor.SettlorIndividualDateOfBirthYesNoPage
 
 class SettlorIndividualDateOfBirthYesNoPageSpec extends PageBehaviours {
 

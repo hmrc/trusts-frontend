@@ -24,7 +24,7 @@ import mapping.reads._
 import models.{CheckMode, InternationalAddress, UKAddress, UserAnswers}
 import pages._
 import pages.property_or_land._
-import pages.settlor.SettlorIndividualNamePage
+import pages.settlor.{SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNamePage}
 import pages.shares._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
@@ -139,7 +139,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualDateOfBirthYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SettlorIndividualDateOfBirthYesNoController.onPageLoad(CheckMode, index,  draftId).url
+        controllers.settlor.routes.SettlorIndividualDateOfBirthYesNoController.onPageLoad(CheckMode, index,  draftId).url
       )
   }
 

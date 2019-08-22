@@ -17,16 +17,13 @@
 package controllers
 
 import base.SpecBase
-import forms.SettlorIndividualDateOfBirthYesNoFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
-import pages.SettlorIndividualDateOfBirthYesNoPage
-import play.api.inject.bind
-import play.api.libs.json.{JsBoolean, Json}
+import forms.settlor.SettlorIndividualDateOfBirthYesNoFormProvider
+import models.NormalMode
+import pages.settlor.SettlorIndividualDateOfBirthYesNoPage
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.SettlorIndividualDateOfBirthYesNoView
+import views.html.settlor.SettlorIndividualDateOfBirthYesNoView
 
 class SettlorIndividualDateOfBirthYesNoControllerSpec extends SpecBase {
 
@@ -36,7 +33,7 @@ class SettlorIndividualDateOfBirthYesNoControllerSpec extends SpecBase {
   val form = formProvider()
   val index = 0
 
-  lazy val settlorIndividualDateOfBirthYesNoRoute = routes.SettlorIndividualDateOfBirthYesNoController.onPageLoad(NormalMode, index, fakeDraftId).url
+  lazy val settlorIndividualDateOfBirthYesNoRoute = controllers.settlor.routes.SettlorIndividualDateOfBirthYesNoController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "SettlorIndividualDateOfBirthYesNo Controller" must {
 

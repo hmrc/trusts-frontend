@@ -16,13 +16,12 @@
 
 package views
 
-import controllers.routes
-import forms.SettlorIndividualDateOfBirthYesNoFormProvider
+import forms.settlor.SettlorIndividualDateOfBirthYesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.SettlorIndividualDateOfBirthYesNoView
+import views.html.settlor.SettlorIndividualDateOfBirthYesNoView
 
 class SettlorIndividualDateOfBirthYesNoViewSpec extends YesNoViewBehaviours {
 

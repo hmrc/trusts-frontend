@@ -17,6 +17,7 @@
 package forms
 
 import forms.behaviours.BooleanFieldBehaviours
+import forms.settlor.SettlorIndividualDateOfBirthYesNoFormProvider
 import play.api.data.FormError
 
 class SettlorIndividualDateOfBirthYesNoFormProviderSpec extends BooleanFieldBehaviours {

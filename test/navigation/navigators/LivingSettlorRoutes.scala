@@ -22,8 +22,8 @@ import models.{NormalMode, UserAnswers}
 import navigation.{LivingSettlorNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages.property_or_land._
 import pages.settlor._
+import controllers.settlor.routes
 
 trait LivingSettlorRoutes {
 
@@ -42,7 +42,7 @@ trait LivingSettlorRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(controllers.routes.AddAssetsController.onPageLoad(fakeDraftId))
+            .mustBe(routes.SettlorIndividualDateOfBirthYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
 

@@ -507,10 +507,10 @@ POST       /:draftId/settlorIndividualName                        controllers.se
 GET        /:draftId/changeSettlorIndividualName                  controllers.settlor.SettlorIndividualNameController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
 POST       /:draftId/changeSettlorIndividualName                  controllers.settlor.SettlorIndividualNameController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
-GET        /:draftId/settlorIndividualDateOfBirthYesNo                        controllers.SettlorIndividualDateOfBirthYesNoController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
-POST       /:draftId/settlorIndividualDateOfBirthYesNo                        controllers.SettlorIndividualDateOfBirthYesNoController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
-GET        /:draftId/changeSettlorIndividualDateOfBirthYesNo                  controllers.SettlorIndividualDateOfBirthYesNoController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
-POST       /:draftId/changeSettlorIndividualDateOfBirthYesNo                  controllers.SettlorIndividualDateOfBirthYesNoController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+GET        /:draftId/settlorIndividualDateOfBirthYesNo                        controllers.settlor.SettlorIndividualDateOfBirthYesNoController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId/settlorIndividualDateOfBirthYesNo                        controllers.settlor.SettlorIndividualDateOfBirthYesNoController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/changeSettlorIndividualDateOfBirthYesNo                  controllers.settlor.SettlorIndividualDateOfBirthYesNoController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/changeSettlorIndividualDateOfBirthYesNo                  controllers.settlor.SettlorIndividualDateOfBirthYesNoController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
 GET        /:draftId/settlorIndividualDateOfBirth                  controllers.SettlorIndividualDateOfBirthController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
 POST       /:draftId/settlorIndividualDateOfBirth                  controllers.SettlorIndividualDateOfBirthController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
