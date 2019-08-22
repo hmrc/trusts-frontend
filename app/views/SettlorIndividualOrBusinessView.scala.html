@@ -24,6 +24,7 @@
 
 @(form: Form[_], mode: Mode, draftId: String, index: Int)(implicit request: Request[_], messages: Messages)
 
+
 @main_template(
     title = s"${errorPrefix(form)} ${messages("settlorIndividualOrBusiness.title")}"
     ) {
@@ -34,13 +35,13 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("settlorIndividualOrBusiness.heading")
-
         @components.input_radio(
             field = form("value"),
             legend = messages("settlorIndividualOrBusiness.heading"),
-            legendClass = Some("visually-hidden"),
-            inputs = IndividualOrBusiness.options.toSeq
+            legendClass = Some("heading-large"),
+            fieldSetClass = Some("inline"),
+            inputs = IndividualOrBusiness.options.toSeq,
+            legendAsHeading = true
         )
 
         @components.submit_button()

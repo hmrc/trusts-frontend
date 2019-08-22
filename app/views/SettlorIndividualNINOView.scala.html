@@ -16,13 +16,14 @@
 
 @import controllers.routes._
 @import models.Mode
+@import models.FullName
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, index: Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId: String, index: Int, name: FullName)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("settlorIndividualNINO.title")}"
@@ -34,12 +35,12 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("settlorIndividualNINO.heading")
-
         @components.input_text(
           field = form("value"),
-          label = messages("settlorIndividualNINO.heading"),
-          labelClass = Some("visually-hidden")
+          label = messages("settlorIndividualNINO.heading", name.toString),
+          labelClass = Some("heading-large"),
+          labelAsHeading = true,
+          hint = Some(messages("settlorIndividualNINO.hint"))
         )
 
         @components.submit_button()

@@ -49,5 +49,7 @@ class SettlorIndividualNameViewSpec extends QuestionViewBehaviours[FullName] {
       messageKeyPrefix,
       Seq(("firstName", None), ("middleName", None), ("lastName", None))
     )
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

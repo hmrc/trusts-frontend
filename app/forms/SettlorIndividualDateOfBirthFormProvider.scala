@@ -31,6 +31,9 @@ class SettlorIndividualDateOfBirthFormProvider @Inject() extends Mappings {
         allRequiredKey = "settlorIndividualDateOfBirth.error.required.all",
         twoRequiredKey = "settlorIndividualDateOfBirth.error.required.two",
         requiredKey    = "settlorIndividualDateOfBirth.error.required"
-      )
+      ).verifying(firstError(
+        maxDate(LocalDate.now, s"settlorIndividualDateOfBirth.error.future", "day", "month", "year"),
+        minDate(LocalDate.of(1500,1,1), s"settlorIndividualDateOfBirth.error.past", "day", "month", "year")
+      ))
     )
 }

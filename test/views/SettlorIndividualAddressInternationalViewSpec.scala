@@ -18,7 +18,7 @@ package views
 
 import controllers.routes
 import forms.InternationalAddressFormProvider
-import models.NormalMode
+import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import utils.InputOption
@@ -30,6 +30,7 @@ class SettlorIndividualAddressInternationalViewSpec extends InternationalAddress
 
   val messageKeyPrefix = "settlorIndividualAddressInternational"
   val index = 0
+  val name = FullName("First", None, "Last")
 
   override val form = new InternationalAddressFormProvider()()
 
@@ -40,17 +41,20 @@ class SettlorIndividualAddressInternationalViewSpec extends InternationalAddress
     val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, countryOptions, NormalMode, index, fakeDraftId)(fakeRequest, messages)
+      view.apply(form, countryOptions, NormalMode, index, fakeDraftId, name)(fakeRequest, messages)
 
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString)
 
     behave like pageWithBackLink(applyView(form))
 
     behave like internationalAddress(
       applyView,
       Some(messageKeyPrefix),
-      routes.SettlorIndividualAddressInternationalController.onSubmit(NormalMode, index, fakeDraftId).url
+      routes.SettlorIndividualAddressInternationalController.onSubmit(NormalMode, index, fakeDraftId).url,
+      name.toString
     )
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

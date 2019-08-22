@@ -16,10 +16,12 @@
 
 package models
 
-import play.api.libs.json._
+import java.time.LocalDate
 
-case class SettlorIndividualIDCard (field1: String, field2: String)
+import play.api.libs.json.Json
 
-object SettlorIndividualIDCard {
-  implicit val format = Json.format[SettlorIndividualIDCard]
+case class PassportIdCardDetails(countryOfIssue: String, cardNumber: String, expiryDate:LocalDate)
+
+object PassportIdCardDetails {
+  implicit val format = Json.format[PassportIdCardDetails]
 }

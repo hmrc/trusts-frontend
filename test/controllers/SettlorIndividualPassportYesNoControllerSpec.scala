@@ -18,23 +18,25 @@ package controllers
 
 import base.SpecBase
 import forms.SettlorIndividualPassportYesNoFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.SettlorIndividualPassportYesNoPage
+import org.scalacheck.Arbitrary.arbitrary
+import pages.{SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage, SettlorIndividualPassportYesNoPage}
 import play.api.inject.bind
 import play.api.libs.json.{JsBoolean, Json}
-import play.api.mvc.Call
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.SettlorIndividualPassportYesNoView
 
-class SettlorIndividualPassportYesNoControllerSpec extends SpecBase {
+class SettlorIndividualPassportYesNoControllerSpec extends SpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new SettlorIndividualPassportYesNoFormProvider()
   val form = formProvider()
   val index = 0
+  val name = FullName("First", Some("Middle"), "Last")
 
   lazy val settlorIndividualPassportYesNoRoute = routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, fakeDraftId).url
 
@@ -42,7 +44,9 @@ class SettlorIndividualPassportYesNoControllerSpec extends SpecBase {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = emptyUserAnswers.set(SettlorIndividualNamePage(index), name).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, settlorIndividualPassportYesNoRoute)
 
@@ -53,14 +57,15 @@ class SettlorIndividualPassportYesNoControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index, name)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(SettlorIndividualPassportYesNoPage(index), true).success.value
+      val userAnswers = emptyUserAnswers.set(SettlorIndividualNamePage(index), name).success.value
+        .set(SettlorIndividualPassportYesNoPage(index), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -73,15 +78,16 @@ class SettlorIndividualPassportYesNoControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, fakeDraftId, index, name)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = emptyUserAnswers.set(SettlorIndividualNamePage(index), name).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, settlorIndividualPassportYesNoRoute)
@@ -98,7 +104,10 @@ class SettlorIndividualPassportYesNoControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = emptyUserAnswers.set(SettlorIndividualNamePage(index), name).success.value
+        .set(SettlorIndividualPassportYesNoPage(index), true).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, settlorIndividualPassportYesNoRoute)
@@ -113,7 +122,25 @@ class SettlorIndividualPassportYesNoControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index, name)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "redirect to Settlors Name page when Settlors name is not answered" in {
+
+      val userAnswers = emptyUserAnswers
+        .set(SettlorIndividualPassportYesNoPage(index), true).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, settlorIndividualPassportYesNoRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       application.stop()
     }
@@ -148,6 +175,39 @@ class SettlorIndividualPassportYesNoControllerSpec extends SpecBase {
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
+    }
+
+    "for a GET" must {
+
+      def getForIndex(index: Int): FakeRequest[AnyContentAsEmpty.type] = {
+        val route = routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+        FakeRequest(GET, route)
+      }
+
+      validateIndex(
+        arbitrary[Boolean],
+        SettlorIndividualPassportYesNoPage.apply,
+        getForIndex
+      )
+
+    }
+
+    "for a POST" must {
+      def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+
+        val route =
+          routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+        FakeRequest(POST, route)
+          .withFormUrlEncodedBody("Value" -> "true")
+      }
+
+      validateIndex(
+        arbitrary[Boolean],
+        SettlorIndividualPassportYesNoPage.apply,
+        postForIndex
+      )
     }
   }
 }

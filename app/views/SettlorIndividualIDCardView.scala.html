@@ -16,13 +16,15 @@
 
 @import controllers.routes._
 @import models.Mode
+@import utils.InputOption
+@import models.FullName
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, index: Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], countryOptions:Seq[InputOption], mode: Mode, draftId: String, index: Int, name: FullName)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("settlorIndividualIDCard.title")}"
@@ -34,16 +36,28 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("settlorIndividualIDCard.heading")
+        @components.heading("settlorIndividualIDCard.heading", Some(name.toString))
 
-        @components.input_text(
-            field = form("field1"),
-            label = messages("settlorIndividualIDCard.field1")
+        @components.select(field = form("countryOfIssue"),
+            label = messages("settlorIndividualIDCard.country.label"),
+            labelClasses = Set("form-control-1-2 bold"),
+            options = countryOptions,
+            placeholder = Some("address.country.select"),
+            formGroupClasses = Set("autocomplete-wrapper"),
+            selectAttribute = Set("data-non-uk-countries")
         )
 
         @components.input_text(
-            field = form("field2"),
-            label = messages("settlorIndividualIDCard.field2")
+            field = form("number"),
+            label = messages("settlorIndividualIDCard.number")
+        )
+
+        @components.input_date(
+            field = form("expiryDate"),
+            legend = messages("settlorIndividualIDCard.expiryDate.title"),
+            legendClass = "bold",
+            legendAsHeading = false,
+            hint = Some(messages(s"settlorIndividualIDCard.expiryDate.hint"))
         )
 
         @components.submit_button()

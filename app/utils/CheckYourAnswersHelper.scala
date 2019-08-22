@@ -46,9 +46,9 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
   def settlorIndividualPassport(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualPassportPage(index)) map {
     x =>
       AnswerRow(
-        "settlorIndividualPassport.checkYourAnswersLabel",
-        HtmlFormat.escape(s"${x.field1} ${x.field2}"),
-        routes.SettlorIndividualPassportController.onPageLoad(CheckMode, index,  draftId).url
+        "individualBeneficiariesIDCardDetails.checkYourAnswersLabel",
+        HtmlFormat.escape(s"${x.countryOfIssue} ${x.cardNumber}, ${x.expiryDate}"),
+        routes.SettlorIndividualPassportController.onPageLoad(CheckMode, index, draftId).url
       )
   }
 
@@ -64,9 +64,9 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
   def settlorIndividualIDCard(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualIDCardPage(index)) map {
     x =>
       AnswerRow(
-        "settlorIndividualIDCard.checkYourAnswersLabel",
-        HtmlFormat.escape(s"${x.field1} ${x.field2}"),
-        routes.SettlorIndividualIDCardController.onPageLoad(CheckMode, index,  draftId).url
+        "individualBeneficiariesIDCardDetails.checkYourAnswersLabel",
+        HtmlFormat.escape(s"${x.countryOfIssue} ${x.cardNumber}, ${x.expiryDate}"),
+        routes.SettlorIndividualIDCardController.onPageLoad(CheckMode, index, draftId).url
       )
   }
 

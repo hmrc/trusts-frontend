@@ -14,12 +14,16 @@
  * limitations under the License.
  *@
 
+@import controllers.routes._
+@import models.Mode
+@import models.FullName
+
 @this(
         main_template: MainTemplate,
         formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, index: Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId: String, index: Int, name: FullName)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("settlorIndividualDateOfBirth.title")}"
@@ -31,12 +35,12 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("settlorIndividualDateOfBirth.heading")
-
         @components.input_date(
             field = form("value"),
-            legend = messages("settlorIndividualDateOfBirth.heading"),
-            legendClass = "visually-hidden"
+            legend = messages("settlorIndividualDateOfBirth.heading", name),
+            legendClass = "heading-large",
+            legendAsHeading = true,
+            hint = Some(messages(s"site.date.hint"))
         )
 
         @components.submit_button()
