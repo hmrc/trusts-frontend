@@ -164,6 +164,31 @@ trait LivingSettlorRoutes {
       }
     }
 
+    "navigate from SettlorIndividualPassportYesNoPage" when {
+
+      val page = SettlorIndividualPassportYesNoPage(index)
+
+      "answer is yes" in {
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers.set(page, value = true).success.value
+            navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
+              .mustBe(routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+
+      "answer is no" in {
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers.set(page, value = false).success.value
+            navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
+              .mustBe(routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+    }
+
   }
 
 }

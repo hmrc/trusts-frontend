@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package pages
+package pages.settlor
 
 import models.SettlorIndividualPassport
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 final case class SettlorIndividualPassportPage(index : Int) extends QuestionPage[SettlorIndividualPassport] {

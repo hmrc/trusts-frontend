@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package pages
+package pages.settlor
 
 import models.SettlorIndividualPassport
 import pages.behaviours.PageBehaviours
