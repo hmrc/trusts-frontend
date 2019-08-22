@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.settlor
 
 import base.SpecBase
-import forms.SettlorIndividualIDCardYesNoFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
-import pages.SettlorIndividualIDCardYesNoPage
-import play.api.inject.bind
-import play.api.libs.json.{JsBoolean, Json}
+import forms.settlor.SettlorIndividualIDCardYesNoFormProvider
+import models.NormalMode
+import pages.settlor.SettlorIndividualIDCardYesNoPage
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.SettlorIndividualIDCardYesNoView
+import views.html.settlor.SettlorIndividualIDCardYesNoView
 
 class SettlorIndividualIDCardYesNoControllerSpec extends SpecBase {
 
@@ -128,7 +125,7 @@ class SettlorIndividualIDCardYesNoControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -145,7 +142,7 @@ class SettlorIndividualIDCardYesNoControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }

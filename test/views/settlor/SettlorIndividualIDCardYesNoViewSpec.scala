@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package views
+package views.settlor
 
-import controllers.routes
-import forms.SettlorIndividualIDCardYesNoFormProvider
+import forms.settlor.SettlorIndividualIDCardYesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.SettlorIndividualIDCardYesNoView
+import views.html.settlor.SettlorIndividualIDCardYesNoView
 
 class SettlorIndividualIDCardYesNoViewSpec extends YesNoViewBehaviours {
 

@@ -174,7 +174,7 @@ trait LivingSettlorRoutes {
           userAnswers =>
             val answers = userAnswers.set(page, value = true).success.value
             navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
-              .mustBe(routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
+              .mustBe(routes.SettlorIndividualPassportController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 

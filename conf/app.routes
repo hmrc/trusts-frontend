@@ -552,10 +552,10 @@ POST       /:draftId/settlorIndividualIDCard                        controllers.
 GET        /:draftId/changeSettlorIndividualIDCard                  controllers.SettlorIndividualIDCardController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
 POST       /:draftId/changeSettlorIndividualIDCard                  controllers.SettlorIndividualIDCardController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
-GET        /:draftId/settlorIndividualIDCardYesNo                        controllers.SettlorIndividualIDCardYesNoController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
-POST       /:draftId/settlorIndividualIDCardYesNo                        controllers.SettlorIndividualIDCardYesNoController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
-GET        /:draftId/changeSettlorIndividualIDCardYesNo                  controllers.SettlorIndividualIDCardYesNoController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
-POST       /:draftId/changeSettlorIndividualIDCardYesNo                  controllers.SettlorIndividualIDCardYesNoController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+GET        /:draftId/settlorIndividualIDCardYesNo                        controllers.settlor.SettlorIndividualIDCardYesNoController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId/settlorIndividualIDCardYesNo                        controllers.settlor.SettlorIndividualIDCardYesNoController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/changeSettlorIndividualIDCardYesNo                  controllers.settlor.SettlorIndividualIDCardYesNoController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/changeSettlorIndividualIDCardYesNo                  controllers.settlor.SettlorIndividualIDCardYesNoController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
 GET        /:draftId/settlorIndividualPassport                        controllers.settlor.SettlorIndividualPassportController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
 POST       /:draftId/settlorIndividualPassport                        controllers.settlor.SettlorIndividualPassportController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
