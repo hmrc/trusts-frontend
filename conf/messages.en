@@ -347,6 +347,10 @@ removeATrustee.heading = Are you sure you want to remove {0}?
 removeATrustee.default = the trustee
 removeATrustee.error.required = Select yes if you want to remove the trustee
 
+removeAsset.title = Are you sure you want to remove this asset?
+removeAsset.heading = Are you sure you want to remove this asset?
+removeAsset.error.required = Select yes if you want to remove this asset
+
 telephoneNumber.title = What is the trustee’s telephone number?
 telephoneNumber.heading = What is {0}’s telephone number?
 telephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
