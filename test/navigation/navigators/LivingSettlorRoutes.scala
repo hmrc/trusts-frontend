@@ -80,6 +80,31 @@ trait LivingSettlorRoutes {
       }
     }
 
+    "navigate fromm SettlorIndividualDateOfBirthYesNoPage" when {
+      "answer is yes" in {
+
+        val page = SettlorIndividualNINOYesNoPage(index)
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers.set(page, value = true).success.value
+            navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.SettlorIndividualNINOController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+      "answer is no" in {
+
+        val page = SettlorIndividualNINOYesNoPage(index)
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers.set(page, value = true).success.value
+            navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.SettlorIndividualNINOController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+    }
+
   }
 
 }

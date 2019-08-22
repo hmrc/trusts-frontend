@@ -16,13 +16,12 @@
 
 package views
 
-import controllers.routes
 import forms.SettlorIndividualAddressUKYesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.SettlorIndividualAddressUKYesNoView
+import views.html.settlor.SettlorIndividualAddressUKYesNoView
 
 class SettlorIndividualAddressUKYesNoViewSpec extends YesNoViewBehaviours {
 

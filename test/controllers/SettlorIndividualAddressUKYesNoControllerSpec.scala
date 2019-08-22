@@ -26,7 +26,7 @@ import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.SettlorIndividualAddressUKYesNoView
+import views.html.settlor.SettlorIndividualAddressUKYesNoView
 
 class SettlorIndividualAddressUKYesNoControllerSpec extends SpecBase {
 

@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package views
+package views.settlor
 
-import controllers.routes
-import forms.SettlorIndividualAddressYesNoFormProvider
+import forms.settlor.SettlorIndividualAddressYesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat

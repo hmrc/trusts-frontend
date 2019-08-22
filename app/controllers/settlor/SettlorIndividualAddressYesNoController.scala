@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.settlor
 
 import controllers.actions._
-import forms.SettlorIndividualAddressYesNoFormProvider
+import forms.settlor.SettlorIndividualAddressYesNoFormProvider
 import javax.inject.Inject
-import models.{Mode, UserAnswers}
+import models.Mode
 import navigation.Navigator
-import pages.SettlorIndividualAddressYesNoPage
+import pages.settlor.SettlorIndividualAddressYesNoPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

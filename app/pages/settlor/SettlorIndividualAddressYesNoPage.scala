@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-package pages
+package pages.settlor
 
-import pages.behaviours.PageBehaviours
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-class SettlorIndividualAddressYesNoPageSpec extends PageBehaviours {
+final case class SettlorIndividualAddressYesNoPage(index : Int) extends QuestionPage[Boolean] {
 
-  "SettlorIndividualAddressYesNoPage" must {
+  override def path: JsPath = JsPath \ toString
 
-    beRetrievable[Boolean](SettlorIndividualAddressYesNoPage(0))
-
-    beSettable[Boolean](SettlorIndividualAddressYesNoPage(0))
-
-    beRemovable[Boolean](SettlorIndividualAddressYesNoPage(0))
-  }
+  override def toString: String = "settlorIndividualAddressYesNo"
 }

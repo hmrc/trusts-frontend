@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package pages
+package forms.settlor
 
-import play.api.libs.json.JsPath
+import forms.mappings.Mappings
+import javax.inject.Inject
+import play.api.data.Form
 
-final case class SettlorIndividualAddressYesNoPage(index : Int) extends QuestionPage[Boolean] {
+class SettlorIndividualAddressYesNoFormProvider @Inject() extends Mappings {
 
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = "settlorIndividualAddressYesNo"
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("settlorIndividualAddressYesNo.error.required")
+    )
 }

@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.settlor
 
 import base.SpecBase
-import forms.SettlorIndividualAddressYesNoFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
-import pages.SettlorIndividualAddressYesNoPage
-import play.api.inject.bind
-import play.api.libs.json.{JsBoolean, Json}
+import forms.settlor.SettlorIndividualAddressYesNoFormProvider
+import models.NormalMode
+import pages.settlor.SettlorIndividualAddressYesNoPage
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -128,7 +125,7 @@ class SettlorIndividualAddressYesNoControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -145,7 +142,7 @@ class SettlorIndividualAddressYesNoControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }

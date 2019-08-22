@@ -517,10 +517,10 @@ POST       /:draftId/settlorIndividualDateOfBirth                  controllers.s
 GET        /:draftId/changeSettlorIndividualDateOfBirth                        controllers.settlor.SettlorIndividualDateOfBirthController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
 POST       /:draftId/changeSettlorIndividualDateOfBirth                        controllers.settlor.SettlorIndividualDateOfBirthController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
-GET        /:draftId/settlorIndividualAddressYesNo                        controllers.SettlorIndividualAddressYesNoController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
-POST       /:draftId/settlorIndividualAddressYesNo                        controllers.SettlorIndividualAddressYesNoController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
-GET        /:draftId/changeSettlorIndividualAddressYesNo                  controllers.SettlorIndividualAddressYesNoController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
-POST       /:draftId/changeSettlorIndividualAddressYesNo                  controllers.SettlorIndividualAddressYesNoController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+GET        /:draftId/settlorIndividualAddressYesNo                        controllers.settlor.SettlorIndividualAddressYesNoController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId/settlorIndividualAddressYesNo                        controllers.settlor.SettlorIndividualAddressYesNoController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/changeSettlorIndividualAddressYesNo                  controllers.settlor.SettlorIndividualAddressYesNoController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/changeSettlorIndividualAddressYesNo                  controllers.settlor.SettlorIndividualAddressYesNoController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
 GET        /:draftId/settlorIndividualNINO                        controllers.settlor.SettlorIndividualNINOController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
 POST       /:draftId/settlorIndividualNINO                        controllers.settlor.SettlorIndividualNINOController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
