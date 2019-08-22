@@ -21,7 +21,7 @@ import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.SettlorIndividualAddressYesNoView
+import views.html.settlor.SettlorIndividualAddressYesNoView
 
 class SettlorIndividualAddressYesNoViewSpec extends YesNoViewBehaviours {
 
