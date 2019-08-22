@@ -16,13 +16,12 @@
 
 package views
 
-import controllers.routes
-import forms.SettlorIndividualNameFormProvider
+import forms.settlor.SettlorIndividualNameFormProvider
 import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
-import views.html.SettlorIndividualNameView
+import views.html.settlor.SettlorIndividualNameView
 
 class SettlorIndividualNameViewSpec extends QuestionViewBehaviours[FullName] {
 

@@ -18,6 +18,7 @@ package pages
 
 import models.FullName
 import pages.behaviours.PageBehaviours
+import pages.settlor.SettlorIndividualNamePage
 
 class SettlorIndividualNamePageSpec extends PageBehaviours {
 

@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package navigation
 
-import models.FullName
-import play.api.libs.json.JsPath
+import javax.inject.Singleton
+import models.UserAnswers
+import pages.Page
+import play.api.mvc.Call
+import uk.gov.hmrc.auth.core.AffinityGroup
 
-final case class SettlorIndividualNamePage(index : Int) extends QuestionPage[FullName] {
+@Singleton
+class LivingSettlorNavigator extends Navigator {
 
-  override def path: JsPath = JsPath \ toString
+  override protected def normalRoutes(draftId: String): Page => AffinityGroup => UserAnswers => Call =
+    ???
 
-  override def toString: String = "settlorIndividualName"
 }

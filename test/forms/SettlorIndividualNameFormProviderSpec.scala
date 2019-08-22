@@ -17,6 +17,7 @@
 package forms
 
 import forms.behaviours.StringFieldBehaviours
+import forms.settlor.SettlorIndividualNameFormProvider
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
 
