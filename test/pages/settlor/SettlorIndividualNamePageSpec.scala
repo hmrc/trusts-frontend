@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package pages
+package pages.settlor
 
+import models.FullName
 import pages.behaviours.PageBehaviours
 
-class SettlorIndividualNINOYesNoPageSpec extends PageBehaviours {
+class SettlorIndividualNamePageSpec extends PageBehaviours {
 
-  "SettlorIndividualNINOYesNoPage" must {
+  "SettlorIndividualNamePage" must {
 
-    beRetrievable[Boolean](SettlorIndividualNINOYesNoPage(0))
+    beRetrievable[FullName](SettlorIndividualNamePage(0))
 
-    beSettable[Boolean](SettlorIndividualNINOYesNoPage(0))
+    beSettable[FullName](SettlorIndividualNamePage(0))
 
-    beRemovable[Boolean](SettlorIndividualNINOYesNoPage(0))
+    beRemovable[FullName](SettlorIndividualNamePage(0))
   }
 }

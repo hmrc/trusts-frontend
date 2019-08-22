@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package pages.settlor
 
 import pages.behaviours.PageBehaviours
-import pages.settlor.SettlorIndividualDateOfBirthYesNoPage
 
-class SettlorIndividualDateOfBirthYesNoPageSpec extends PageBehaviours {
+class SettlorIndividualNINOYesNoPageSpec extends PageBehaviours {
 
-  "SettlorIndividualDateOfBirthYesNoPage" must {
+  "SettlorIndividualNINOYesNoPage" must {
 
-    beRetrievable[Boolean](SettlorIndividualDateOfBirthYesNoPage(0))
+    beRetrievable[Boolean](SettlorIndividualNINOYesNoPage(0))
 
-    beSettable[Boolean](SettlorIndividualDateOfBirthYesNoPage(0))
+    beSettable[Boolean](SettlorIndividualNINOYesNoPage(0))
 
-    beRemovable[Boolean](SettlorIndividualDateOfBirthYesNoPage(0))
+    beRemovable[Boolean](SettlorIndividualNINOYesNoPage(0))
   }
 }

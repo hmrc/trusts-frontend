@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package views
+package views.settlor
 
-import controllers.routes
-import forms.SettlorIndividualNINOYesNoFormProvider
+import forms.settlor.SettlorIndividualNINOYesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.SettlorIndividualNINOYesNoView
+import views.html.settlor.SettlorIndividualNINOYesNoView
 
 class SettlorIndividualNINOYesNoViewSpec extends YesNoViewBehaviours {
 

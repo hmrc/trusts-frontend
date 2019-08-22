@@ -35,7 +35,7 @@ trait LivingSettlorRoutes {
 
   def livingSettlorRoutes(): Unit = {
 
-    "navigate from settlorIndividualName" in {
+    "navigate from SettlorIndividualNamePage" in {
 
       val page = SettlorIndividualNamePage(index)
 
@@ -44,6 +44,29 @@ trait LivingSettlorRoutes {
           navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
             .mustBe(routes.SettlorIndividualDateOfBirthYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
       }
+    }
+
+    "navigate fromm SettlorIndividualDateOfBirthYesNoPage" when {
+
+      val page = SettlorIndividualDateOfBirthYesNoPage(index)
+
+      "answer is yes" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers.set(page, value = true).success.value
+            navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.SettlorIndividualDateOfBirthController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+      "answer is no" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers.set(page, value = true).success.value
+            navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.SettlorIndividualNINOYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+
     }
 
   }

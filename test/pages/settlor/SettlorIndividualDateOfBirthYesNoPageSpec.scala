@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package pages.settlor
 
-import play.api.libs.json.JsPath
+import pages.behaviours.PageBehaviours
 
-final case class SettlorIndividualNINOYesNoPage(index : Int) extends QuestionPage[Boolean] {
+class SettlorIndividualDateOfBirthYesNoPageSpec extends PageBehaviours {
 
-  override def path: JsPath = JsPath \ toString
+  "SettlorIndividualDateOfBirthYesNoPage" must {
 
-  override def toString: String = "settlorIndividualNINOYesNo"
+    beRetrievable[Boolean](SettlorIndividualDateOfBirthYesNoPage(0))
+
+    beSettable[Boolean](SettlorIndividualDateOfBirthYesNoPage(0))
+
+    beRemovable[Boolean](SettlorIndividualDateOfBirthYesNoPage(0))
+  }
 }
