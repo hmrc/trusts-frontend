@@ -38,13 +38,13 @@ import javax.inject.Inject
 import forms.mappings.Mappings
 import play.api.data.Form
 import play.api.data.Forms._
-import models.PassportIdCardDetails
+import models.PassportOrIdCardDetails
 
 
 class PassportOrIdCardFormProvider @Inject() extends Mappings {
 
 
-  def apply(): Form[PassportIdCardDetails] = Form(
+  def apply(): Form[PassportOrIdCardDetails] = Form(
     mapping(
       "country" -> text("settlorIndividualPassport.country.error.required")
         .verifying(
@@ -71,6 +71,6 @@ class PassportOrIdCardFormProvider @Inject() extends Mappings {
         minDate(LocalDate.of(1500,1,1), s"settlorIndividualPassport.expiryDate.error.past", "day", "month", "year")
       ))
 
-    )(PassportIdCardDetails.apply)(PassportIdCardDetails.unapply)
+    )(PassportOrIdCardDetails.apply)(PassportOrIdCardDetails.unapply)
   )
 }

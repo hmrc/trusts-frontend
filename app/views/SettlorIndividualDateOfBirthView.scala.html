@@ -26,7 +26,7 @@
 @(form: Form[_], mode: Mode, draftId: String, index: Int, name: FullName)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("settlorIndividualDateOfBirth.title", name)}"
+    title = s"${errorPrefix(form)} ${messages("settlorIndividualDateOfBirth.title")}"
 ) {
 
     @formHelper(action = SettlorIndividualDateOfBirthController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
@@ -35,12 +35,12 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("settlorIndividualDateOfBirth.heading", Some(name.toString))
-
         @components.input_date(
             field = form("value"),
             legend = messages("settlorIndividualDateOfBirth.heading", name),
-            legendClass = "visually-hidden"
+            legendClass = "heading-large",
+            legendAsHeading = true,
+            hint = Some(messages(s"site.date.hint"))
         )
 
         @components.submit_button()

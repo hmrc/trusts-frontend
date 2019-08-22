@@ -19,7 +19,7 @@ package forms.behaviours
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-import models.PassportIdCardDetails
+import models.PassportOrIdCardDetails
 import org.scalacheck.Gen
 import play.api.data.{Form, FormError}
 
@@ -45,7 +45,9 @@ trait DateBehaviours extends FieldBehaviours {
     }
   }
 
-  def dateFieldForPassportOrIdForm(form: Form[PassportIdCardDetails], key: String, validData: Gen[LocalDate], requiredBindings: Map[String,String] = Map.empty): Unit = {
+  def dateFieldForPassportOrIdForm(form: Form[PassportOrIdCardDetails],
+                                   key: String, validData: Gen[LocalDate],
+                                   requiredBindings: Map[String,String] = Map.empty): Unit = {
 
     "bind valid data" in {
 
@@ -59,8 +61,6 @@ trait DateBehaviours extends FieldBehaviours {
           )
 
           val result = form.bind(data)
-
-          println(result)
 
           result.value.value.expiryDate shouldEqual date
       }

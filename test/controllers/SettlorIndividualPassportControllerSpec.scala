@@ -20,7 +20,7 @@ import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
 import forms.PassportOrIdCardFormProvider
-import models.{FullName, IndividualOrBusiness, NormalMode, PassportIdCardDetails}
+import models.{FullName, IndividualOrBusiness, NormalMode, PassportOrIdCardDetails}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.{SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNamePage, SettlorIndividualPassportPage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
@@ -73,7 +73,7 @@ class SettlorIndividualPassportControllerSpec extends SpecBase with IndexValidat
       val userAnswers = emptyUserAnswers
         .set(SettlorIndividualNamePage(index),name).success.value
         .set(SettlorIndividualPassportPage(index),
-          PassportIdCardDetails("Field 1", "Field 2", validAnswer )).success.value
+          PassportOrIdCardDetails("Field 1", "Field 2", validAnswer )).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -88,7 +88,7 @@ class SettlorIndividualPassportControllerSpec extends SpecBase with IndexValidat
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(PassportIdCardDetails("Field 1", "Field 2", validAnswer)),
+        view(form.fill(PassportOrIdCardDetails("Field 1", "Field 2", validAnswer)),
           countryOptions, NormalMode, fakeDraftId, index, name)(fakeRequest, messages).toString
 
       application.stop()
@@ -205,7 +205,7 @@ class SettlorIndividualPassportControllerSpec extends SpecBase with IndexValidat
       }
 
       validateIndex(
-        arbitrary[PassportIdCardDetails],
+        arbitrary[PassportOrIdCardDetails],
         SettlorIndividualPassportPage.apply,
         getForIndex
       )
@@ -223,7 +223,7 @@ class SettlorIndividualPassportControllerSpec extends SpecBase with IndexValidat
       }
 
       validateIndex(
-        arbitrary[PassportIdCardDetails],
+        arbitrary[PassportOrIdCardDetails],
         SettlorIndividualPassportPage.apply,
         postForIndex
       )

@@ -18,7 +18,7 @@ package views
 
 import controllers.routes
 import forms.PassportOrIdCardFormProvider
-import models.{FullName, NormalMode, PassportIdCardDetails}
+import models.{FullName, NormalMode, PassportOrIdCardDetails}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import utils.InputOption
@@ -26,7 +26,7 @@ import utils.countryOptions.CountryOptionsNonUK
 import views.behaviours.QuestionViewBehaviours
 import views.html.SettlorIndividualIDCardView
 
-class SettlorIndividualIDCardViewSpec extends QuestionViewBehaviours[PassportIdCardDetails] {
+class SettlorIndividualIDCardViewSpec extends QuestionViewBehaviours[PassportOrIdCardDetails] {
 
   val messageKeyPrefix = "settlorIndividualIDCard"
   val index = 0

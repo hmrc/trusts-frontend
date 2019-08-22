@@ -24,13 +24,13 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
-  implicit lazy val arbitrarySettlorIndividualPassport: Arbitrary[PassportIdCardDetails] =
+  implicit lazy val arbitrarySettlorIndividualPassport: Arbitrary[PassportOrIdCardDetails] =
     Arbitrary {
       for {
         field1 <- arbitrary[String]
         field2 <- arbitrary[String]
         field3 <- arbitrary[LocalDate]
-      } yield PassportIdCardDetails(field1, field2, field3)
+      } yield PassportOrIdCardDetails(field1, field2, field3)
     }
 
   implicit lazy val arbitrarySettlorIndividualOrBusiness: Arbitrary[SettlorIndividualOrBusiness] =

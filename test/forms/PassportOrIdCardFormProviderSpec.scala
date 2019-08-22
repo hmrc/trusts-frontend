@@ -19,7 +19,7 @@ package forms
 import java.time.{LocalDate, ZoneOffset}
 
 import forms.behaviours.{DateBehaviours, PassportOrIDCardBehaviours, StringFieldBehaviours}
-import models.PassportIdCardDetails
+import models.PassportOrIdCardDetails
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
 
