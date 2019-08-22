@@ -43,6 +43,9 @@ class AddAssetViewHelperSpec extends SpecBase   {
   def removePropertyOrLandDescriptionRoute(index: Int) =
     controllers.property_or_land.routes.RemovePropertyOrLandWithDescriptionController.onPageLoad(index, fakeDraftId).url
 
+  def removeAssetRoute(index: Int) =
+    controllers.routes.DefaultRemoveAssetController.onPageLoad(index, fakeDraftId).url
+
   "AddAssetViewHelper" when {
 
     ".row" must {
@@ -71,7 +74,8 @@ class AddAssetViewHelperSpec extends SpecBase   {
           AddRow("No name added", typeLabel = "Shares", "#", removeSharePortfolioRoute(0)),
           AddRow("No value added", typeLabel = "Money", "#", removeMoneyRoute(1)),
           AddRow("No address added", typeLabel = "Property or Land", "#", removePropertyOrLandRoute(2)),
-          AddRow("No description added", typeLabel = "Property or Land", "#", removePropertyOrLandDescriptionRoute(3))
+          AddRow("No description added", typeLabel = "Property or Land", "#", removePropertyOrLandDescriptionRoute(3)),
+          AddRow("No address or description added", typeLabel = "Property or Land", "#", removeAssetRoute(4))
         )
         rows.complete mustBe Nil
       }

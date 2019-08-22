@@ -16,8 +16,16 @@
 
 package controllers
 
-import play.api.mvc.Call
+import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider, IdentifierAction, RequiredAnswerActionProvider}
+import forms.RemoveIndexFormProvider
+import javax.inject.Inject
+import models.requests.DataRequest
+import pages.{DefaultRemoveAssetPage, QuestionPage}
+import play.api.i18n.{Messages, MessagesApi}
+import play.api.mvc.{AnyContent, Call, MessagesControllerComponents}
 import queries.{RemoveAssetQuery, Settable}
+import repositories.SessionRepository
+import views.html.RemoveIndexView
 
 
 trait RemoveAssetController extends RemoveIndexController {
@@ -28,3 +36,28 @@ trait RemoveAssetController extends RemoveIndexController {
   override def removeQuery(index: Int): Settable[_] = RemoveAssetQuery(index)
 }
 
+class DefaultRemoveAssetController @Inject()(
+                                              override val messagesApi: MessagesApi,
+                                              override val sessionRepository: SessionRepository,
+                                              override val formProvider: RemoveIndexFormProvider,
+                                              identify: IdentifierAction,
+                                              getData: DraftIdRetrievalActionProvider,
+                                              requireData: DataRequiredAction,
+                                              val controllerComponents: MessagesControllerComponents,
+                                              require: RequiredAnswerActionProvider,
+                                              val removeView: RemoveIndexView
+                                            ) extends RemoveAssetController {
+
+  override def page(index: Int): QuestionPage[_] = DefaultRemoveAssetPage
+
+  override val messagesPrefix : String = "removeAsset"
+
+  override def actions(draftId : String, index: Int) =
+    identify andThen getData(draftId) andThen requireData
+
+  override def content(index: Int)(implicit request: DataRequest[AnyContent]) : String = Messages(s"$messagesPrefix.default")
+
+  override def formRoute(draftId: String, index: Int): Call =
+    controllers.routes.DefaultRemoveAssetController.onSubmit(index, draftId)
+
+}
