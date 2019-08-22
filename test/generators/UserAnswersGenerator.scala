@@ -21,15 +21,28 @@ import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.TryValues
 import pages._
-import pages.property_or_land.{PropertyOrLandAddressUkYesNoPage, PropertyOrLandDescriptionPage,PropertyOrLandUKAddressPage}
-import pages.property_or_land._
-import pages.shares.{ShareClassPage, ShareCompanyNamePage, SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, ShareQuantityInTrustPage, ShareValueInTrustPage, SharesInAPortfolioPage, SharesOnStockExchangePage}
+import pages.property_or_land.{PropertyOrLandAddressUkYesNoPage, PropertyOrLandDescriptionPage, PropertyOrLandUKAddressPage, _}
+import pages.shares._
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersGenerator extends TryValues {
   self: Generators =>
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
+    arbitrary[(SettlorIndividualPassportYesNoPage, JsValue)] ::
+    arbitrary[(SettlorIndividualPassportPage, JsValue)] ::
+    arbitrary[(SettlorIndividualIDCardYesNoPage, JsValue)] ::
+    arbitrary[(SettlorIndividualIDCardPage, JsValue)] ::
+    arbitrary[(SettlorIndividualAddressUKYesNoPage, JsValue)] ::
+    arbitrary[(SettlorIndividualAddressUKPage, JsValue)] ::
+    arbitrary[(SettlorIndividualAddressInternationalPage, JsValue)] ::
+    arbitrary[(SettlorIndividualNINOYesNoPage, JsValue)] ::
+    arbitrary[(SettlorIndividualNINOPage, JsValue)] ::
+    arbitrary[(SettlorIndividualAddressYesNoPage, JsValue)] ::
+    arbitrary[(SettlorIndividualDateOfBirthPage, JsValue)] ::
+    arbitrary[(SettlorIndividualDateOfBirthYesNoPage, JsValue)] ::
+    arbitrary[(SettlorIndividualNamePage, JsValue)] ::
+    arbitrary[(SettlorIndividualOrBusinessPage, JsValue)] ::
     arbitrary[(AddAnAssetYesNoPage.type, JsValue)] ::
     arbitrary[(PropertyOrLandAddressYesNoPage, JsValue)] ::
     arbitrary[(PropertyOrLandAddressUkYesNoPage, JsValue)] ::

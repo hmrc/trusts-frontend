@@ -9,6 +9,9 @@ date.year = Year
 address.country = Country
 address.country.select = Select a country
 
+unauthorised.title = You can’t access this service with this account
+unauthorised.heading = You can’t access this service with this account
+
 error.browser.title.prefix = Error:
 error.boolean = Please give an answer
 error.date.day_blank = Enter a day
@@ -84,22 +87,17 @@ site.address.international.line2 = Address line 2
 site.address.international.line3 = Address line 3 (optional)
 site.address.international.line4 = Address line 4 (optional)
 site.address.international.country = Country
-site.address.international.checkYourAnswersLabel = What is {0}’s address?
-
-internationalAddress.error.line1.required = Enter address line 1
-internationalAddress.error.line2.required = Enter address line 2
-internationalAddress.error.country.required = Select a country
-internationalAddress.error.line1.length = Address line 1 must be 35 characters or less
-internationalAddress.error.line2.length = Address line 2 must be 35 characters or less
-internationalAddress.error.line3.length = Address line 3 must be 35 characters or less
-internationalAddress.error.line4.length = Address line 4 must be 35 characters or less
-internationalAddress.error.line1.invalidCharacters = Address line 1 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
-internationalAddress.error.line2.invalidCharacters = Address line 2 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
-internationalAddress.error.line3.invalidCharacters = Address line 3 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
-internationalAddress.error.line4.invalidCharacters = Address line 4 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
-
-unauthorised.title = You can’t access this service with this account
-unauthorised.heading = You can’t access this service with this account
+site.address.international.line1.required = Enter address line 1
+site.address.international.line2.required = Enter address line 2
+site.address.international.country.required = Select a country
+site.address.international.line1.length = Address line 1 must be 35 characters or less
+site.address.international.line2.length = Address line 2 must be 35 characters or less
+site.address.international.line3.length = Address line 3 must be 35 characters or less
+site.address.international.line4.length = Address line 4 must be 35 characters or less
+site.address.international.line1.invalidCharacters = Address line 1 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+site.address.international.line2.invalidCharacters = Address line 2 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+site.address.international.line3.invalidCharacters = Address line 3 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+site.address.international.line4.invalidCharacters = Address line 4 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
 
 individualOrBusiness.individual = Individual
 individualOrBusiness.business = Business
@@ -1024,6 +1022,114 @@ propertyOrLandAddressYesNo.error.required = Select yes if the property or land h
 
 propertyOrLandAnswers.title = Check property or land details
 propertyOrLandAnswers.heading = Check property or land details
+
+settlorIndividualOrBusiness.title = Is the settlor an individual or a business?
+settlorIndividualOrBusiness.heading = Is the settlor an individual or a business?
+settlorIndividualOrBusiness.individual = Individual
+settlorIndividualOrBusiness.business = Business
+settlorIndividualOrBusiness.checkYourAnswersLabel = Is the settlor an individual or a business?
+settlorIndividualOrBusiness.error.required = Select settlorIndividualOrBusiness
+
+settlorIndividualName.title = What is the settlor’s name?
+settlorIndividualName.heading = What is the settlor’s name?
+settlorIndividualName.checkYourAnswersLabel = What is the settlor’s name?
+
+settlorIndividualName.firstName = First name
+settlorIndividualName.middleName = Middle names (optional)
+settlorIndividualName.lastName = Last name
+
+settlorIndividualName.error.firstname.required = Enter the settlor’s first name
+settlorIndividualName.error.lastname.required = Enter the settlor’s last name
+settlorIndividualName.error.firstname.length = Settlor’s first name must be 35 characters or less
+settlorIndividualName.error.middlename.length = Settlor’s middle names must be 35 characters or less
+settlorIndividualName.error.lastname.length = Settlor’s last name must be 35 characters or less
+settlorIndividualName.error.firstname.invalid = Settlor’s first name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+settlorIndividualName.error.middlename.invalid = Settlor’s middle names must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+settlorIndividualName.error.lastname.invalid = Settlor’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+
+settlorIndividualDateOfBirthYesNo.title = settlorIndividualDateOfBirthYesNo
+settlorIndividualDateOfBirthYesNo.heading = settlorIndividualDateOfBirthYesNo
+settlorIndividualDateOfBirthYesNo.checkYourAnswersLabel = settlorIndividualDateOfBirthYesNo
+settlorIndividualDateOfBirthYesNo.error.required = Select yes if settlorIndividualDateOfBirthYesNo
+
+settlorIndividualDateOfBirth.title = SettlorIndividualDateOfBirth
+settlorIndividualDateOfBirth.heading = SettlorIndividualDateOfBirth
+settlorIndividualDateOfBirth.checkYourAnswersLabel = SettlorIndividualDateOfBirth
+settlorIndividualDateOfBirth.error.required.all = Enter the settlorIndividualDateOfBirth
+settlorIndividualDateOfBirth.error.required.two = The settlorIndividualDateOfBirth must include {0} and {1}
+settlorIndividualDateOfBirth.error.required = The settlorIndividualDateOfBirth must include {0}
+settlorIndividualDateOfBirth.error.invalid = Enter a real SettlorIndividualDateOfBirth
+
+settlorIndividualAddressYesNo.title = settlorIndividualAddressYesNo
+settlorIndividualAddressYesNo.heading = settlorIndividualAddressYesNo
+settlorIndividualAddressYesNo.checkYourAnswersLabel = settlorIndividualAddressYesNo
+settlorIndividualAddressYesNo.error.required = Select yes if settlorIndividualAddressYesNo
+
+settlorIndividualNINO.title = settlorIndividualNINO
+settlorIndividualNINO.heading = settlorIndividualNINO
+settlorIndividualNINO.checkYourAnswersLabel = settlorIndividualNINO
+settlorIndividualNINO.error.required = Enter settlorIndividualNINO
+settlorIndividualNINO.error.length = SettlorIndividualNINO must be 100 characters or less
+
+settlorIndividualNINOYesNo.title = settlorIndividualNINOYesNo
+settlorIndividualNINOYesNo.heading = settlorIndividualNINOYesNo
+settlorIndividualNINOYesNo.checkYourAnswersLabel = settlorIndividualNINOYesNo
+settlorIndividualNINOYesNo.error.required = Select yes if settlorIndividualNINOYesNo
+
+settlorIndividualAddressInternational.title = settlorIndividualAddressInternational
+settlorIndividualAddressInternational.heading = settlorIndividualAddressInternational
+settlorIndividualAddressInternational.field1 = Field 1
+settlorIndividualAddressInternational.field2 = Field 2
+settlorIndividualAddressInternational.checkYourAnswersLabel = settlorIndividualAddressInternational
+settlorIndividualAddressInternational.error.field1.required = Enter field1
+settlorIndividualAddressInternational.error.field2.required = Enter field2
+settlorIndividualAddressInternational.error.field1.length = field1 must be 100 characters or less
+settlorIndividualAddressInternational.error.field2.length = field2 must be 100 characters or less
+
+settlorIndividualAddressUK.title = settlorIndividualAddressUK
+settlorIndividualAddressUK.heading = settlorIndividualAddressUK
+settlorIndividualAddressUK.field1 = Field 1
+settlorIndividualAddressUK.field2 = Field 2
+settlorIndividualAddressUK.checkYourAnswersLabel = settlorIndividualAddressUK
+settlorIndividualAddressUK.error.field1.required = Enter field1
+settlorIndividualAddressUK.error.field2.required = Enter field2
+settlorIndividualAddressUK.error.field1.length = field1 must be 100 characters or less
+settlorIndividualAddressUK.error.field2.length = field2 must be 100 characters or less
+
+settlorIndividualAddressUKYesNo.title = settlorIndividualAddressUKYesNo
+settlorIndividualAddressUKYesNo.heading = settlorIndividualAddressUKYesNo
+settlorIndividualAddressUKYesNo.checkYourAnswersLabel = settlorIndividualAddressUKYesNo
+settlorIndividualAddressUKYesNo.error.required = Select yes if settlorIndividualAddressUKYesNo
+
+settlorIndividualIDCard.title = settlorIndividualIDCard
+settlorIndividualIDCard.heading = settlorIndividualIDCard
+settlorIndividualIDCard.field1 = Field 1
+settlorIndividualIDCard.field2 = Field 2
+settlorIndividualIDCard.checkYourAnswersLabel = settlorIndividualIDCard
+settlorIndividualIDCard.error.field1.required = Enter field1
+settlorIndividualIDCard.error.field2.required = Enter field2
+settlorIndividualIDCard.error.field1.length = field1 must be 100 characters or less
+settlorIndividualIDCard.error.field2.length = field2 must be 100 characters or less
+
+settlorIndividualIDCardYesNo.title = settlorIndividualIDCardYesNo
+settlorIndividualIDCardYesNo.heading = settlorIndividualIDCardYesNo
+settlorIndividualIDCardYesNo.checkYourAnswersLabel = settlorIndividualIDCardYesNo
+settlorIndividualIDCardYesNo.error.required = Select yes if settlorIndividualIDCardYesNo
+
+settlorIndividualPassport.title = settlorIndividualPassport
+settlorIndividualPassport.heading = settlorIndividualPassport
+settlorIndividualPassport.field1 = Field 1
+settlorIndividualPassport.field2 = Field 2
+settlorIndividualPassport.checkYourAnswersLabel = settlorIndividualPassport
+settlorIndividualPassport.error.field1.required = Enter field1
+settlorIndividualPassport.error.field2.required = Enter field2
+settlorIndividualPassport.error.field1.length = field1 must be 100 characters or less
+settlorIndividualPassport.error.field2.length = field2 must be 100 characters or less
+
+settlorIndividualPassportYesNo.title = settlorIndividualPassportYesNo
+settlorIndividualPassportYesNo.heading = settlorIndividualPassportYesNo
+settlorIndividualPassportYesNo.checkYourAnswersLabel = settlorIndividualPassportYesNo
+settlorIndividualPassportYesNo.error.required = Select yes if settlorIndividualPassportYesNo
 
 addAnAssetYesNo.title = Do you want to add an asset?
 addAnAssetYesNo.heading = Do you want to add an asset?

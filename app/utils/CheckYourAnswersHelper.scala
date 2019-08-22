@@ -34,6 +34,132 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers, draftId: String, canEdit: Boolean = true)(implicit messages: Messages) {
 
+  def settlorIndividualPassportYesNo(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualPassportYesNoPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorIndividualPassportYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.SettlorIndividualPassportYesNoController.onPageLoad(CheckMode, index, draftId).url
+      )
+  }
+
+  def settlorIndividualPassport(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualPassportPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorIndividualPassport.checkYourAnswersLabel",
+        HtmlFormat.escape(s"${x.field1} ${x.field2}"),
+        routes.SettlorIndividualPassportController.onPageLoad(CheckMode, index,  draftId).url
+      )
+  }
+
+  def settlorIndividualIDCardYesNo(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualIDCardYesNoPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorIndividualIDCardYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.SettlorIndividualIDCardYesNoController.onPageLoad(CheckMode, index,  draftId).url
+      )
+  }
+
+  def settlorIndividualIDCard(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualIDCardPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorIndividualIDCard.checkYourAnswersLabel",
+        HtmlFormat.escape(s"${x.field1} ${x.field2}"),
+        routes.SettlorIndividualIDCardController.onPageLoad(CheckMode, index,  draftId).url
+      )
+  }
+
+  def settlorIndividualAddressUKYesNo(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressUKYesNoPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorIndividualAddressUKYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.SettlorIndividualAddressUKYesNoController.onPageLoad(CheckMode, index,  draftId).url
+      )
+  }
+
+  def settlorIndividualAddressUK(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressUKPage(index)) map {
+    x =>
+      AnswerRow(
+        "propertyOrLandUKAddress.checkYourAnswersLabel",
+        ukAddress(x),
+        routes.SettlorIndividualAddressUKController.onPageLoad(CheckMode, index,  draftId).url
+      )
+  }
+
+  def settlorIndividualAddressInternational(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressInternationalPage(index)) map {
+    x =>
+      AnswerRow(
+        "propertyOrLandInternationalAddress.checkYourAnswersLabel",
+        internationalAddress(x, countryOptions),
+        routes.SettlorIndividualAddressInternationalController.onPageLoad(CheckMode, index,  draftId).url
+      )
+  }
+
+  def settlorIndividualNINOYesNo(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualNINOYesNoPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorIndividualNINOYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.SettlorIndividualNINOYesNoController.onPageLoad(CheckMode, index,  draftId).url
+      )
+  }
+
+  def settlorIndividualNINO(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualNINOPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorIndividualNINO.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.SettlorIndividualNINOController.onPageLoad(CheckMode, index,  draftId).url
+      )
+  }
+
+  def settlorIndividualAddressYesNo(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressYesNoPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorIndividualAddressYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.SettlorIndividualAddressYesNoController.onPageLoad(CheckMode, index,  draftId).url
+      )
+  }
+
+  def settlorIndividualDateOfBirth(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualDateOfBirthPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorIndividualDateOfBirth.checkYourAnswersLabel",
+        HtmlFormat.escape(x.format(dateFormatter)),
+        routes.SettlorIndividualDateOfBirthController.onPageLoad(CheckMode, index,  draftId).url
+      )
+  }
+
+  def settlorIndividualDateOfBirthYesNo(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualDateOfBirthYesNoPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorIndividualDateOfBirthYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.SettlorIndividualDateOfBirthYesNoController.onPageLoad(CheckMode, index,  draftId).url
+      )
+  }
+
+  def settlorIndividualName(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualNamePage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorIndividualName.checkYourAnswersLabel",
+        HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"),
+        routes.SettlorIndividualNameController.onPageLoad(CheckMode, index,  draftId).url
+      )
+  }
+
+  def settlorIndividualOrBusiness(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualOrBusinessPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorIndividualOrBusiness.checkYourAnswersLabel",
+        HtmlFormat.escape(messages(s"settlorIndividualOrBusiness.$x")),
+        routes.SettlorIndividualOrBusinessController.onPageLoad(CheckMode, index,  draftId).url
+      )
+  }
+
   def trustDetails: Option[Seq[AnswerSection]] = {
     val questions = Seq(
       trustName,

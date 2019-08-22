@@ -19,6 +19,7 @@ package controllers
 import play.api.mvc.Call
 import queries.{RemoveAssetQuery, Settable}
 
+
 trait RemoveAssetController extends RemoveIndexController {
 
   override def redirect(draftId : String) : Call =

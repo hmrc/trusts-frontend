@@ -20,7 +20,6 @@ import views.behaviours.ViewBehaviours
 import views.html.property_or_land.PropertyOrLandAnswersView
 
 class PropertyOrLandAnswerPageViewSpec extends ViewBehaviours {
-
   val index = 0
 
   "PropertyOrLandAnswerPage view" must {

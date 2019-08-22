@@ -18,20 +18,19 @@ package views
 
 import controllers.routes
 import forms.InternationalAddressFormProvider
-import models.{FullName, InternationalAddress, NormalMode}
+import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import utils.InputOption
 import utils.countryOptions.CountryOptionsNonUK
-import views.behaviours.QuestionViewBehaviours
+import views.behaviours.InternationalAddressViewBehaviours
 import views.html.SettlorsInternationalAddressView
 
-class SettlorsInternationalAddressViewSpec extends QuestionViewBehaviours[InternationalAddress] {
+class SettlorsInternationalAddressViewSpec extends InternationalAddressViewBehaviours {
 
   val messageKeyPrefix = "settlorsInternationalAddress"
 
   override val form = new InternationalAddressFormProvider()()
-
 
   "SettlorsInternationalAddressView" must {
 
@@ -44,16 +43,12 @@ class SettlorsInternationalAddressViewSpec extends QuestionViewBehaviours[Intern
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, countryOptions, NormalMode, fakeDraftId, name)(fakeRequest, messages)
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString)
-
     behave like pageWithBackLink(applyView(form))
 
-    behave like pageWithTextFields(
-      form,
+    behave like internationalAddress(
       applyView,
-      messageKeyPrefix,
-      Seq(("line1",None), ("line2",None), ("line3", None), ("line4", None), ("country", None)),
-      name.toString
+      Some(messageKeyPrefix),
+      routes.SettlorsInternationalAddressController.onSubmit(NormalMode, fakeDraftId).url
     )
   }
 }
