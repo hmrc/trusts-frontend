@@ -19,7 +19,7 @@ package controllers
 import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
-import forms.PassportIdCardFormProvider
+import forms.PassportOrIdCardFormProvider
 import models.{FullName, IndividualOrBusiness, NormalMode, PassportIdCardDetails}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.{SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNamePage, SettlorIndividualPassportPage}
@@ -34,7 +34,7 @@ class SettlorIndividualPassportControllerSpec extends SpecBase with IndexValidat
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new PassportIdCardFormProvider()
+  val formProvider = new PassportOrIdCardFormProvider()
   val form = formProvider()
   val index = 0
   val name = FullName("First", Some("Middle"), "Last")
@@ -105,7 +105,7 @@ class SettlorIndividualPassportControllerSpec extends SpecBase with IndexValidat
       val request =
         FakeRequest(POST, settlorIndividualPassportRoute)
           .withFormUrlEncodedBody(
-            "countryOfIssue" -> "country",
+            "country" -> "country",
             "number" -> "123456",
             "expiryDate.day"   -> validAnswer.getDayOfMonth.toString,
             "expiryDate.month" -> validAnswer.getMonthValue.toString,

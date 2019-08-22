@@ -17,7 +17,7 @@
 package views
 
 import controllers.routes
-import forms.PassportIdCardFormProvider
+import forms.PassportOrIdCardFormProvider
 import models.{FullName, NormalMode, PassportIdCardDetails}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -32,7 +32,7 @@ class SettlorIndividualPassportViewSpec extends QuestionViewBehaviours[PassportI
   val index = 0
   val name = FullName("First", Some("Middle"), "Last")
 
-  override val form = new PassportIdCardFormProvider()()
+  override val form = new PassportOrIdCardFormProvider()()
 
   "SettlorIndividualPassportView" must {
 
@@ -66,7 +66,7 @@ class SettlorIndividualPassportViewSpec extends QuestionViewBehaviours[PassportI
         applyView,
         messageKeyPrefix,
         routes.SettlorIndividualIDCardController.onSubmit(NormalMode, index, fakeDraftId).url,
-        Seq(("countryOfIssue", None), ("number", None)),
+        Seq(("country", None), ("number", None)),
         name.toString
       )
     }
