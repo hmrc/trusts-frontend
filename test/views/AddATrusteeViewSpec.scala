@@ -17,7 +17,7 @@
 package views
 
 import forms.AddATrusteeFormProvider
-import models.{AddATrustee, NormalMode, IndividualOrBusiness}
+import models.{AddATrustee, IndividualOrBusiness, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import viewmodels.AddRow
@@ -45,10 +45,13 @@ class AddATrusteeViewSpec extends OptionsViewBehaviours with TabularDataViewBeha
   val view = viewFor[AddATrusteeView](Some(emptyUserAnswers))
 
   def applyView(form: Form[_]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode, fakeDraftId, Nil, Nil)(fakeRequest, messages)
+    view.apply(form, NormalMode, fakeDraftId, Nil, Nil, isLeadTrusteeDefined = false, heading = "Add a trustee")(fakeRequest, messages)
 
-  def applyView(form: Form[_], inProgressTrustees: Seq[AddRow], completeTrustees: Seq[AddRow]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode, fakeDraftId, inProgressTrustees, completeTrustees)(fakeRequest, messages)
+  def applyView(form: Form[_], inProgressTrustees: Seq[AddRow], completeTrustees: Seq[AddRow]): HtmlFormat.Appendable = {
+    val count = inProgressTrustees.size + completeTrustees.size
+    val title = if (count > 1) s"You have added $count trustees" else "You have added 1 trustee"
+    view.apply(form, NormalMode, fakeDraftId, inProgressTrustees, completeTrustees, isLeadTrusteeDefined = true, heading = title)(fakeRequest, messages)
+  }
 
   "AddATrusteeView" when {
 

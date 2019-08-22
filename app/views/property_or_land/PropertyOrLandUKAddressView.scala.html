@@ -25,7 +25,7 @@
 @(form: Form[_], mode: Mode, draftId: String, index: Int)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("propertyOrLandUKAddress.title")}"
+    title = s"${errorPrefix(form)} ${messages("site.address.uk.title")}"
     ) {
 
     @formHelper(action = PropertyOrLandUKAddressController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {

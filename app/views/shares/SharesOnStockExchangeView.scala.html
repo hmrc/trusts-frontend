@@ -25,7 +25,7 @@
 @(form: Form[_], mode: Mode, draftId: String, index : Int, companyName: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("sharesOnStockExchange.title", companyName)}"
+    title = s"${errorPrefix(form)} ${messages("sharesOnStockExchange.title")}"
     ) {
 
     @formHelper(action = SharesOnStockExchangeController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {

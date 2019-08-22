@@ -28,6 +28,7 @@ override def path: JsPath = JsPath \ Trustees \ index \ toString
 
   override def toString: String = "liveInUK"
 
+  // TODO this is incomplete
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
       case Some(false) =>

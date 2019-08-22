@@ -48,7 +48,7 @@ class IndividualBeneficiaryDateOfBirthYesNoViewSpec extends YesNoViewBehaviours 
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.IndividualBeneficiaryDateOfBirthYesNoController.onSubmit(NormalMode, index, fakeDraftId).url, None, Seq(fullName.toString))
+    behave like yesNoPage(form, applyView, messageKeyPrefix, None, Seq(fullName.toString))
 
     behave like pageWithASubmitButton(applyView(form))
 

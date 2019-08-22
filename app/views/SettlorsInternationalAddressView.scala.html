@@ -27,7 +27,7 @@
 @(form: Form[_], countryOptions: Seq[InputOption], mode: Mode, draftId: String,  name : FullName)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("settlorsInternationalAddress.title", name.toString)}"
+    title = s"${errorPrefix(form)} ${messages("settlorsInternationalAddress.title")}"
     ) {
 
     @formHelper(action = SettlorsInternationalAddressController.onSubmit(mode,draftId), 'autoComplete -> "off") {

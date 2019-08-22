@@ -53,7 +53,6 @@ class SettlorIndividualPassportViewSpec extends QuestionViewBehaviours[PassportO
 
       behave like pageWithDateFields(form, applyViewF,
         messageKeyPrefix,
-        routes.SettlorIndividualIDCardController.onPageLoad(NormalMode, index, fakeDraftId).url,
         "expiryDate",
         name.toString
       )
@@ -65,7 +64,6 @@ class SettlorIndividualPassportViewSpec extends QuestionViewBehaviours[PassportO
         form,
         applyView,
         messageKeyPrefix,
-        routes.SettlorIndividualIDCardController.onSubmit(NormalMode, index, fakeDraftId).url,
         Seq(("country", None), ("number", None)),
         name.toString
       )

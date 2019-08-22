@@ -48,7 +48,7 @@ class IndividualBeneficiaryIncomeViewSpec extends StringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, name.toString, routes.IndividualBeneficiaryIncomeController.onSubmit(NormalMode, index, fakeDraftId).url)
+    behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, name.toString)
 
     behave like pageWithASubmitButton(applyView(form))
   }

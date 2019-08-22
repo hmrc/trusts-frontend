@@ -41,6 +41,6 @@ class WhatIsTheUTRViewSpec extends StringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.WhatIsTheUTRController.onSubmit(NormalMode, fakeDraftId).url)
+    behave like stringPage(form, applyView, messageKeyPrefix)
   }
 }

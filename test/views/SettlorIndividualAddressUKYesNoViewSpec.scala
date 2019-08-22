@@ -28,8 +28,7 @@ class SettlorIndividualAddressUKYesNoViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "settlorIndividualAddressUKYesNo"
   val index = 0
-  val name = FullName("First", Some("middle"), "Last")
-
+  val name = FullName("First", Some("Middle"), "Last")
   val form = new SettlorIndividualAddressUKYesNoFormProvider()()
 
   "SettlorIndividualAddressUKYesNo view" must {
@@ -43,9 +42,7 @@ class SettlorIndividualAddressUKYesNoViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix,
-      routes.SettlorIndividualDateOfBirthYesNoController.onSubmit(
-        NormalMode, index, fakeDraftId).url, None, Seq(name.toString))
+    behave like yesNoPage(form, applyView, messageKeyPrefix, None, Seq(name.toString))
 
     behave like pageWithASubmitButton(applyView(form))
   }

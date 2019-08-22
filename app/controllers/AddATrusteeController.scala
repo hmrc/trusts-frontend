@@ -17,18 +17,19 @@
 package controllers
 
 import controllers.actions._
-import forms.AddATrusteeFormProvider
+import forms.{AddATrusteeFormProvider, AddATrusteeYesNoFormProvider}
 import javax.inject.Inject
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.{AddATrusteePage, IsThisLeadTrusteePage}
+import pages.{AddATrusteePage, AddATrusteeYesNoPage}
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{I18nSupport, Messages, MessagesApi, MessagesProvider}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.AddATrusteeViewHelper
-import views.html.AddATrusteeView
+import views.html.{AddATrusteeView, AddATrusteeYesNoView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -39,33 +40,79 @@ class AddATrusteeController @Inject()(
                                        identify: IdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
-                                       formProvider: AddATrusteeFormProvider,
+                                       addAnotherFormProvider: AddATrusteeFormProvider,
+                                       yesNoFormProvider: AddATrusteeYesNoFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
-                                       view: AddATrusteeView
+                                       addAnotherView: AddATrusteeView,
+                                       yesNoView: AddATrusteeYesNoView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
-  val form = formProvider()
+  val addAnotherForm = addAnotherFormProvider()
+  val yesNoForm: Form[Boolean] = yesNoFormProvider()
 
-  private def routes(draftId: String) =
+  private def actions(draftId: String) =
     identify andThen getData(draftId) andThen requireData
 
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = routes(draftId) {
-    implicit request =>
-
-      val trustees = new AddATrusteeViewHelper(request.userAnswers).rows
-
-      Ok(view(form, mode, draftId, trustees.inProgress, trustees.complete))
+  private def heading(count: Int)(implicit mp : MessagesProvider) = {
+    count match {
+      case 0 => Messages("addATrustee.heading")
+      case 1 => Messages("addATrustee.singular.heading")
+      case size => Messages("addATrustee.count.heading", size)
+    }
   }
 
-  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = routes(draftId).async {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
-      form.bindFromRequest().fold(
+      val trustees = new AddATrusteeViewHelper(request.userAnswers, draftId).rows
+
+      val isLeadTrusteeDefined = request.userAnswers.get(Trustees).toList.flatten.exists(trustee => trustee.isLead)
+
+      trustees.count match {
+        case 0 =>
+          Ok(yesNoView(yesNoForm, mode, draftId))
+        case count =>
+          Ok(addAnotherView(addAnotherForm, mode, draftId, trustees.inProgress, trustees.complete, isLeadTrusteeDefined, heading(count)))
+      }
+  }
+
+  def submitOne(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
+    implicit request =>
+
+      yesNoForm.bindFromRequest().fold(
+        (formWithErrors: Form[_]) => {
+          Future.successful(BadRequest(yesNoView(formWithErrors, mode, draftId)))
+        },
+        value => {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(AddATrusteeYesNoPage, value))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(AddATrusteeYesNoPage, mode, draftId)(updatedAnswers))
+        }
+      )
+  }
+
+  def submitAnother(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
+    implicit request =>
+
+      addAnotherForm.bindFromRequest().fold(
         (formWithErrors: Form[_]) => {
 
-          val trustees = new AddATrusteeViewHelper(request.userAnswers).rows
+          val trustees = new AddATrusteeViewHelper(request.userAnswers, draftId).rows
 
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, trustees.inProgress, trustees.complete)))
+          val isLeadTrusteeDefined = request.userAnswers.get(Trustees).toList.flatten.exists(trustee => trustee.isLead)
+
+          Future.successful(BadRequest(
+            addAnotherView(
+              formWithErrors,
+              mode,
+              draftId,
+              trustees.inProgress,
+              trustees.complete,
+              isLeadTrusteeDefined,
+              heading(trustees.count)
+            )
+          ))
         },
         value => {
           for {

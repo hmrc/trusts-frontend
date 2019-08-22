@@ -17,14 +17,13 @@
 package pages
 
 import javax.inject.Inject
-import models.Status.{Completed, InProgress}
 import mapping.reads.{Assets, Trustees}
+import models.Status.{Completed, InProgress}
 import models.{AddABeneficiary, AddATrustee, AddAssets, Status, UserAnswers}
 import navigation.TaskListNavigator
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
-import sections.{Beneficiaries, ClassOfBeneficiaries, IndividualBeneficiaries, Settlors, TaxLiability, TrustDetails}
+import sections._
 import viewmodels._
-import viewmodels.addAnother.MoneyAssetViewModel
 
 class RegistrationProgress @Inject()(navigator : TaskListNavigator){
 
@@ -37,7 +36,7 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
     Task(Link(TaxLiability, navigator.nextPage(TaxLiability, userAnswers, draftId).url), None)
   )
 
-  private def determineStatus(complete : Boolean) = {
+  private def determineStatus(complete : Boolean) : Option[Status] = {
     if (complete) {
       Some(Completed)
     } else{
@@ -92,8 +91,7 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
     def individualBeneficiariesComplete : Boolean = {
       val individuals = userAnswers.get(IndividualBeneficiaries).getOrElse(List.empty)
 
-      if (individuals.isEmpty) {
-        false
+      if (individuals.isEmpty) {false
       } else {
         !individuals.exists(_.status == InProgress)
       }
@@ -144,7 +142,5 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
     isBeneficiariesComplete(userAnswers).contains(Completed) &&
     assetsStatus(userAnswers).contains(Completed)
   }
-
-
 
 }

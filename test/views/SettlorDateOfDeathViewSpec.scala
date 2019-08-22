@@ -49,7 +49,6 @@ class SettlorDateOfDeathViewSpec extends QuestionViewBehaviours[LocalDate] {
 
     behave like pageWithDateFields(form, applyViewF,
       messageKeyPrefix,
-      routes.SettlorDateOfDeathController.onPageLoad(NormalMode, fakeDraftId).url,
       "value",
       name.toString
     )

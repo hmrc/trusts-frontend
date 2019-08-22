@@ -114,7 +114,7 @@ class AssetMapperSpec extends FreeSpec with MustMatchers
           .set(PropertyOrLandAddressUkYesNoPage(2), true).success.value
           .set(PropertyOrLandUKAddressPage(2), UKAddress("26", Some("Grangetown"), Some("Tyne and Wear"), "Newcastle", "Z99 2YY")).success.value
           .set(PropertyOrLandTotalValuePage(2), "1000").success.value
-          .set(TrustOwnAllThePropertyOrLandPage(2), true).success.value
+          .set(TrustOwnAllThePropertyOrLandPage(2), false).success.value
           .set(PropertyLandValueTrustPage(2), "750").success.value
 
 

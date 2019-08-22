@@ -38,13 +38,17 @@ class TrusteesNinoViewSpec extends StringViewBehaviours {
     val view = viewFor[TrusteesNinoView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index, messageKeyPrefix, trusteeName)(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, trusteeName, "hint")
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, trusteeName, routes.TrusteesNinoController.onSubmit(NormalMode, index, fakeDraftId).url, Some(hintKey))
+    behave like stringPageWithDynamicTitle(form, applyView,
+      messageKeyPrefix,
+      trusteeName,
+      Some(hintKey)
+    )
 
     behave like pageWithASubmitButton(applyView(form))
 
