@@ -45,7 +45,7 @@ class CountryGoverningTrustViewSpec extends SelectCountryViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like selectCountryPage(form, applyView, messageKeyPrefix, routes.CountryGoverningTrustController.onSubmit(NormalMode, fakeDraftId).url)
+    behave like selectCountryPage(form, applyView, messageKeyPrefix)
 
     behave like pageWithASubmitButton(applyView(form))
   }

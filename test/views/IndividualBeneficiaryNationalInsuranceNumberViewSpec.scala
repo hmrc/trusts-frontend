@@ -44,8 +44,7 @@ class IndividualBeneficiaryNationalInsuranceNumberViewSpec extends StringViewBeh
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, name.toString,
-      routes.IndividualBeneficiaryNationalInsuranceNumberController.onSubmit(NormalMode, index, fakeDraftId).url)
+    behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, name.toString)
 
     behave like pageWithASubmitButton(applyView(form))
 

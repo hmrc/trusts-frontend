@@ -49,7 +49,6 @@ class SettlorsDateOfBirthViewSpec extends QuestionViewBehaviours[LocalDate] {
 
     behave like pageWithDateFields(form, applyViewF,
       messageKeyPrefix,
-      routes.SettlorsDateOfBirthController.onPageLoad(NormalMode, fakeDraftId).url,
       name.toString
     )
 

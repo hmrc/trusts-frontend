@@ -42,6 +42,6 @@ class SettlorIndividualPassportYesNoViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.SettlorIndividualPassportYesNoController.onSubmit(NormalMode, index, fakeDraftId).url)
+    behave like yesNoPage(form, applyView, messageKeyPrefix, None)
   }
 }

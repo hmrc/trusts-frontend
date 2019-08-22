@@ -45,7 +45,7 @@ class AddAssetsViewSpec extends OptionsViewBehaviours with TabularDataViewBehavi
     view.apply(form, NormalMode, fakeDraftId, Nil, Nil, "Add assets")(fakeRequest, messages)
 
   def applyView(form: Form[_], inProgressAssets: Seq[AddRow], completeAssets: Seq[AddRow], count : Int): HtmlFormat.Appendable = {
-    val title = if (count > 1) s"You have added $count assets" else "You have added 1 asset"
+    val title = if (count > 1) s"You have added $count assets" else "Add assets"
     view.apply(form, NormalMode, fakeDraftId, inProgressAssets, completeAssets, title)(fakeRequest, messages)
   }
 

@@ -52,7 +52,6 @@ class IndividualBeneficiaryIncomeYesNoViewSpec extends YesNoViewBehaviours {
       form,
       applyView,
       messageKeyPrefix,
-      routes.IndividualBeneficiaryIncomeYesNoController.onSubmit(NormalMode, index, fakeDraftId).url,
       None,
       Seq(fullName.toString)
     )

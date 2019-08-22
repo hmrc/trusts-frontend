@@ -49,6 +49,6 @@ class RemoveIndexViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.RemoveIndividualBeneficiaryController.onSubmit(index, fakeDraftId).url, None, Seq("First Last"))
+    behave like yesNoPage(form, applyView, messageKeyPrefix, None, Seq("First Last"))
   }
 }

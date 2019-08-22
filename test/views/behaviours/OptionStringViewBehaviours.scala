@@ -27,7 +27,6 @@ trait OptionStringViewBehaviours extends QuestionViewBehaviours[Option[String]] 
   def optionalStringPage(form: Form[Option[String]],
                         createView: Form[Option[String]] => HtmlFormat.Appendable,
                         messageKeyPrefix: String,
-                        expectedFormAction: String,
                         expectedHintKey: Option[String] = None) = {
 
     "behave like a page with an optional string value field" when {

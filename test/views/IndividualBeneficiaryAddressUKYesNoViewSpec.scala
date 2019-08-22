@@ -50,7 +50,7 @@ class IndividualBeneficiaryAddressUKYesNoViewSpec extends YesNoViewBehaviours {
     behave like pageWithBackLink(applyView(form))
 
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.IndividualBeneficiaryAddressUKYesNoController.onSubmit(NormalMode, index, fakeDraftId).url, None, Seq(fullName.toString))
+    behave like yesNoPage(form, applyView, messageKeyPrefix, None, Seq(fullName.toString))
     behave like pageWithASubmitButton(applyView(form))
 
   }

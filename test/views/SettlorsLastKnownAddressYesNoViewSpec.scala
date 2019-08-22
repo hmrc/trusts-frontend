@@ -43,7 +43,7 @@ class SettlorsLastKnownAddressYesNoViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.SettlorsLastKnownAddressYesNoController.onSubmit(NormalMode, fakeDraftId).url, None, Seq(name.toString))
+    behave like yesNoPage(form, applyView, messageKeyPrefix, None, Seq(name.toString))
 
     behave like pageWithASubmitButton(applyView(form))
   }

@@ -47,7 +47,6 @@ class SettlorIndividualIDCardViewSpec extends QuestionViewBehaviours[SettlorIndi
       form,
       applyView,
       messageKeyPrefix,
-      routes.SettlorIndividualIDCardController.onSubmit(NormalMode, index, fakeDraftId).url,
       Seq(("field1", None), ("field2", None))
     )
   }

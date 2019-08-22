@@ -46,7 +46,6 @@ class DeclarationViewSpec extends QuestionViewBehaviours[FullName] {
       form,
       applyView,
       messageKeyPrefix,
-      routes.DeclarationController.onSubmit(fakeDraftId).url,
       Seq(("firstName", None), ("middleName", None), ("lastName", None))
     )
   }

@@ -41,6 +41,6 @@ class PostcodeForTheTrustViewSpec extends OptionStringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like optionalStringPage(form, applyView, messageKeyPrefix, routes.PostcodeForTheTrustController.onSubmit(NormalMode, fakeDraftId).url)
+    behave like optionalStringPage(form, applyView, messageKeyPrefix)
   }
 }

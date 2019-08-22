@@ -27,9 +27,8 @@ import views.html.property_or_land.PropertyOrLandInternationalAddressView
 
 class PropertyOrLandInternationalAddressViewSpec extends InternationalAddressViewBehaviours {
 
-  val titleMessagePrefix = "propertyOrLandInternationalAddress"
+  val messageKeyPrefix = "propertyOrLandInternationalAddress"
 
-  val entityName = "the property or land"
   val index: Int = 0
 
   override val form = new InternationalAddressFormProvider()()
@@ -44,15 +43,12 @@ class PropertyOrLandInternationalAddressViewSpec extends InternationalAddressVie
       view.apply(form, countryOptions, NormalMode, fakeDraftId, index)(fakeRequest, messages)
 
 
-    behave like dynamicTitlePage(applyView(form), titleMessagePrefix, entityName)
-
     behave like pageWithBackLink(applyView(form))
 
     behave like internationalAddress(
       applyView,
-      Some(titleMessagePrefix),
-      controllers.property_or_land.routes.PropertyOrLandInternationalAddressController.onSubmit(NormalMode, index, fakeDraftId).url,
-      entityName
+      None,
+      controllers.property_or_land.routes.PropertyOrLandInternationalAddressController.onSubmit(NormalMode, index, fakeDraftId).url
     )
 
     behave like pageWithASubmitButton(applyView(form))

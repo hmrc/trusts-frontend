@@ -47,7 +47,6 @@ class SettlorIndividualPassportViewSpec extends QuestionViewBehaviours[SettlorIn
       form,
       applyView,
       messageKeyPrefix,
-      routes.SettlorIndividualPassportController.onSubmit(NormalMode, index, fakeDraftId).url,
       Seq(("field1", None), ("field2", None))
     )
   }

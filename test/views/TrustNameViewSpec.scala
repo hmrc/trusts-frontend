@@ -47,7 +47,6 @@ class TrustNameViewSpec extends StringViewBehaviours {
       behave like stringPage(form,
         applyView,
         messageKeyPrefix,
-        routes.TrustNameController.onSubmit(NormalMode, fakeDraftId).url,
         Some(hintKey)
       )
 
@@ -68,8 +67,7 @@ class TrustNameViewSpec extends StringViewBehaviours {
       behave like stringPage(
         form,
         applyView,
-        messageKeyPrefix,
-        routes.TrustNameController.onSubmit(NormalMode, fakeDraftId).url
+        messageKeyPrefix
       )
 
       behave like pageWithASubmitButton(applyView(form))

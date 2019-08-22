@@ -70,7 +70,7 @@ class TrusteeLiveInTheUKController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId, index, trusteeName))
+      Ok(view(preparedForm, mode, draftId, index, messagePrefix, trusteeName))
   }
 
   private def getMessagePrefix(index: Int, request: DataRequest[AnyContent]) = {
@@ -95,7 +95,7 @@ class TrusteeLiveInTheUKController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, trusteeName))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, messagePrefix, trusteeName))),
 
         value => {
           for {

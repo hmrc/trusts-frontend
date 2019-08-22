@@ -49,7 +49,6 @@ class IndividualBeneficiaryNameViewSpec extends QuestionViewBehaviours[FullName]
       form,
       applyView,
       messageKeyPrefix,
-      routes.IndividualBeneficiaryNameController.onSubmit(NormalMode, index, fakeDraftId).url,
       Seq(("firstName",None), ("middleName",None), ("lastName",None))
     )
   }
