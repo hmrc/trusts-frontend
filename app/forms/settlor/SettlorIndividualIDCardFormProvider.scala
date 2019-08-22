@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package forms
-
-import javax.inject.Inject
+package forms.settlor
 
 import forms.mappings.Mappings
+import javax.inject.Inject
+import models.SettlorIndividualIDCard
 import play.api.data.Form
 import play.api.data.Forms._
-import models.SettlorIndividualIDCard
 
 class SettlorIndividualIDCardFormProvider @Inject() extends Mappings {
 

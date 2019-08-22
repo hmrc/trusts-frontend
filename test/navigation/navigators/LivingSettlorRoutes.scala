@@ -173,7 +173,7 @@ trait LivingSettlorRoutes {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
             val answers = userAnswers.set(page, value = true).success.value
-            navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
+            navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
               .mustBe(routes.SettlorIndividualPassportController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
@@ -183,9 +183,21 @@ trait LivingSettlorRoutes {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
             val answers = userAnswers.set(page, value = false).success.value
-            navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
-              .mustBe(routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
+            navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.SettlorIndividualIDCardYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
         }
+      }
+    }
+
+    "navigate fromm SettlorIndividualIDCardYesNoPage" in {
+
+      val page = SettlorIndividualIDCardYesNoPage(index)
+
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val answers = userAnswers.set(page, value = true).success.value
+          navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.SettlorIndividualNINOYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
 

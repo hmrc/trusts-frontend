@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-package pages
+package pages.settlor
 
 import models.SettlorIndividualIDCard
-import pages.behaviours.PageBehaviours
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-class SettlorIndividualIDCardPageSpec extends PageBehaviours {
+final case class SettlorIndividualIDCardPage(index : Int) extends QuestionPage[SettlorIndividualIDCard] {
 
-  "SettlorIndividualIDCardPage" must {
+  override def path: JsPath = JsPath \ toString
 
-    beRetrievable[SettlorIndividualIDCard](SettlorIndividualIDCardPage(0))
-
-    beSettable[SettlorIndividualIDCard](SettlorIndividualIDCardPage(0))
-
-    beRemovable[SettlorIndividualIDCard](SettlorIndividualIDCardPage(0))
-  }
+  override def toString: String = "settlorIndividualIDCard"
 }
