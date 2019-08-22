@@ -14,26 +14,19 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.settlor
 
 import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
-import forms.SettlorIndividualDateOfBirthFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
+import forms.settlor.SettlorIndividualDateOfBirthFormProvider
+import models.NormalMode
 import org.scalatest.mockito.MockitoSugar
-import pages.SettlorIndividualDateOfBirthPage
-import play.api.inject.bind
+import pages.settlor.SettlorIndividualDateOfBirthPage
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import repositories.SessionRepository
-import views.html.SettlorIndividualDateOfBirthView
-
-import scala.concurrent.Future
+import views.html.settlor.SettlorIndividualDateOfBirthView
 
 class SettlorIndividualDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
 
@@ -140,7 +133,7 @@ class SettlorIndividualDateOfBirthControllerSpec extends SpecBase with MockitoSu
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -161,7 +154,7 @@ class SettlorIndividualDateOfBirthControllerSpec extends SpecBase with MockitoSu
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }

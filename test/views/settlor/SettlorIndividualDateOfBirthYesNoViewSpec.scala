@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package views
+package views.settlor
 
 import forms.settlor.SettlorIndividualDateOfBirthYesNoFormProvider
 import models.NormalMode

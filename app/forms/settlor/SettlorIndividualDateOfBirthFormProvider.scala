@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package forms
+package forms.settlor
 
 import java.time.LocalDate
 

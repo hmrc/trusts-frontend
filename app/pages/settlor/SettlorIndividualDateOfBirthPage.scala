@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package pages
+package pages.settlor
 
 import java.time.LocalDate
 
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 final case class SettlorIndividualDateOfBirthPage(index : Int) extends QuestionPage[LocalDate] {

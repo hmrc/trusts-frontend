@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package forms
+package forms.settlor
 
 import forms.behaviours.BooleanFieldBehaviours
-import forms.settlor.SettlorIndividualDateOfBirthYesNoFormProvider
 import play.api.data.FormError
 
 class SettlorIndividualDateOfBirthYesNoFormProviderSpec extends BooleanFieldBehaviours {

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package views
+package views.settlor
 
 import java.time.LocalDate
 
-import forms.SettlorIndividualDateOfBirthFormProvider
-import models.{NormalMode, UserAnswers}
+import forms.settlor.SettlorIndividualDateOfBirthFormProvider
+import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
-import views.html.SettlorIndividualDateOfBirthView
+import views.html.settlor.SettlorIndividualDateOfBirthView
 
 class SettlorIndividualDateOfBirthViewSpec extends QuestionViewBehaviours[LocalDate] {
 
