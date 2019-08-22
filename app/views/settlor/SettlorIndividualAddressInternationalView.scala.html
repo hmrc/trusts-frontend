@@ -14,30 +14,31 @@
  * limitations under the License.
  *@
 
-@import controllers.routes._
+@import controllers.settlor.routes._
 @import models.Mode
+@import utils.InputOption
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, index: Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], countryOptions:Seq[InputOption], mode: Mode, index:Int, draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("settlorIndividualAddressUK.title")}"
+    title = s"${errorPrefix(form)} ${messages("settlorIndividualAddressInternational.title")}"
     ) {
 
-    @formHelper(action = SettlorIndividualAddressUKController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
+    @formHelper(action = SettlorIndividualAddressInternationalController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("settlorIndividualAddressUK.heading")
+        @components.heading("settlorIndividualAddressInternational.heading")
 
-        @components.uk_address(form)
+        @components.international_address(form, countryOptions)
 
-        @components.submit_button()
+        @components.submit_button(submitClass = Some("countryLookupHelper"))
     }
 }

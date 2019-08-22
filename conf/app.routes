@@ -532,15 +532,15 @@ POST       /:draftId/settlorIndividualNINOYesNo                        controlle
 GET        /:draftId/changeSettlorIndividualNINOYesNo                  controllers.settlor.SettlorIndividualNINOYesNoController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
 POST       /:draftId/changeSettlorIndividualNINOYesNo                  controllers.settlor.SettlorIndividualNINOYesNoController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
-GET        /:draftId/settlorIndividualAddressInternational                        controllers.SettlorIndividualAddressInternationalController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
-POST       /:draftId/settlorIndividualAddressInternational                        controllers.SettlorIndividualAddressInternationalController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
-GET        /:draftId/changeSettlorIndividualAddressInternational                  controllers.SettlorIndividualAddressInternationalController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
-POST       /:draftId/changeSettlorIndividualAddressInternational                  controllers.SettlorIndividualAddressInternationalController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+GET        /:draftId/settlorIndividualAddressInternational                        controllers.settlor.SettlorIndividualAddressInternationalController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId/settlorIndividualAddressInternational                        controllers.settlor.SettlorIndividualAddressInternationalController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/changeSettlorIndividualAddressInternational                  controllers.settlor.SettlorIndividualAddressInternationalController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/changeSettlorIndividualAddressInternational                  controllers.settlor.SettlorIndividualAddressInternationalController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
-GET        /:draftId/settlorIndividualAddressUK                        controllers.SettlorIndividualAddressUKController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
-POST       /:draftId/settlorIndividualAddressUK                        controllers.SettlorIndividualAddressUKController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
-GET        /:draftId/changeSettlorIndividualAddressUK                  controllers.SettlorIndividualAddressUKController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
-POST       /:draftId/changeSettlorIndividualAddressUK                  controllers.SettlorIndividualAddressUKController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+GET        /:draftId/settlorIndividualAddressUK                        controllers.settlor.SettlorIndividualAddressUKController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId/settlorIndividualAddressUK                        controllers.settlor.SettlorIndividualAddressUKController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/changeSettlorIndividualAddressUK                  controllers.settlor.SettlorIndividualAddressUKController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/changeSettlorIndividualAddressUK                  controllers.settlor.SettlorIndividualAddressUKController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
 GET        /:draftId/settlorIndividualAddressUKYesNo                        controllers.settlor.SettlorIndividualAddressUKYesNoController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
 POST       /:draftId/settlorIndividualAddressUKYesNo                        controllers.settlor.SettlorIndividualAddressUKYesNoController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)

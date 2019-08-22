@@ -24,7 +24,7 @@ import mapping.reads._
 import models.{CheckMode, InternationalAddress, UKAddress, UserAnswers}
 import pages._
 import pages.property_or_land._
-import pages.settlor.{SettlorIndividualAddressUKYesNoPage, SettlorIndividualAddressYesNoPage, SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNINOPage, SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage}
+import pages.settlor.{SettlorIndividualAddressInternationalPage, SettlorIndividualAddressUKPage, SettlorIndividualAddressUKYesNoPage, SettlorIndividualAddressYesNoPage, SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNINOPage, SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage}
 import pages.shares._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
@@ -85,7 +85,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "propertyOrLandUKAddress.checkYourAnswersLabel",
         ukAddress(x),
-        routes.SettlorIndividualAddressUKController.onPageLoad(CheckMode, index,  draftId).url
+        controllers.settlor.routes.SettlorIndividualAddressUKController.onPageLoad(CheckMode, index,  draftId).url
       )
   }
 
@@ -94,7 +94,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "propertyOrLandInternationalAddress.checkYourAnswersLabel",
         internationalAddress(x, countryOptions),
-        routes.SettlorIndividualAddressInternationalController.onPageLoad(CheckMode, index,  draftId).url
+        controllers.settlor.routes.SettlorIndividualAddressInternationalController.onPageLoad(CheckMode, index,  draftId).url
       )
   }
 

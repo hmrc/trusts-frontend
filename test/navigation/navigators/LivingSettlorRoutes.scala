@@ -116,6 +116,31 @@ trait LivingSettlorRoutes {
       }
     }
 
+    "navigate fromm SettlorIndividualAddressUKYesNoPage" when {
+
+      val page = SettlorIndividualAddressUKYesNoPage(index)
+
+      "answer is yes" in {
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers.set(page, value = true).success.value
+            navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.SettlorIndividualAddressUKController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+      "answer is no" in {
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers.set(page, value = false).success.value
+            navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.SettlorIndividualAddressInternationalController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+    }
+
+
   }
 
 }

@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-package pages
+package pages.settlor
 
-import models.InternationalAddress
-import pages.behaviours.PageBehaviours
+import models.UKAddress
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-class SettlorIndividualAddressInternationalPageSpec extends PageBehaviours {
+final case class SettlorIndividualAddressUKPage(index : Int) extends QuestionPage[UKAddress] {
 
-  "SettlorIndividualAddressInternationalPage" must {
+  override def path: JsPath = JsPath \ toString
 
-    beRetrievable[InternationalAddress](SettlorIndividualAddressInternationalPage(0))
-
-    beSettable[InternationalAddress](SettlorIndividualAddressInternationalPage(0))
-
-    beRemovable[InternationalAddress](SettlorIndividualAddressInternationalPage(0))
-  }
+  override def toString: String = "settlorIndividualAddressUK"
 }

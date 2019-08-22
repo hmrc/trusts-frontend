@@ -14,26 +14,25 @@
  * limitations under the License.
  */
 
-package views
+package views.settlor
 
-import controllers.routes
-import forms.UKAddressFormProvider
-import models.NormalMode
+import forms.settlor.SettlorIndividualNameFormProvider
+import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.UkAddressViewBehaviours
-import views.html.SettlorIndividualAddressUKView
+import views.behaviours.QuestionViewBehaviours
+import views.html.settlor.SettlorIndividualNameView
 
-class SettlorIndividualAddressUKViewSpec extends UkAddressViewBehaviours {
+class SettlorIndividualNameViewSpec extends QuestionViewBehaviours[FullName] {
 
-  val messageKeyPrefix = "settlorIndividualAddressUK"
+  val messageKeyPrefix = "settlorIndividualName"
   val index = 0
 
-  override val form = new UKAddressFormProvider()()
+  override val form = new SettlorIndividualNameFormProvider()()
 
-  "SettlorIndividualAddressUKView" must {
+  "SettlorIndividualNameView" must {
 
-    val view = viewFor[SettlorIndividualAddressUKView](Some(emptyUserAnswers))
+    val view = viewFor[SettlorIndividualNameView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
@@ -43,10 +42,11 @@ class SettlorIndividualAddressUKViewSpec extends UkAddressViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like ukAddressPage(
+    behave like pageWithTextFields(
+      form,
       applyView,
-      Some(messageKeyPrefix),
-      routes.SettlorsUKAddressController.onSubmit(NormalMode, fakeDraftId).url
+      messageKeyPrefix,
+      Seq(("firstName", None), ("middleName", None), ("lastName", None))
     )
   }
 }

@@ -14,43 +14,39 @@
  * limitations under the License.
  */
 
-package views
+package views.settlor
 
 import controllers.routes
-import forms.InternationalAddressFormProvider
+import forms.UKAddressFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import utils.InputOption
-import utils.countryOptions.CountryOptionsNonUK
-import views.behaviours.InternationalAddressViewBehaviours
-import views.html.SettlorIndividualAddressInternationalView
+import views.behaviours.UkAddressViewBehaviours
+import views.html.settlor.SettlorIndividualAddressUKView
 
-class SettlorIndividualAddressInternationalViewSpec extends InternationalAddressViewBehaviours {
+class SettlorIndividualAddressUKViewSpec extends UkAddressViewBehaviours {
 
-  val messageKeyPrefix = "settlorIndividualAddressInternational"
+  val messageKeyPrefix = "settlorIndividualAddressUK"
   val index = 0
 
-  override val form = new InternationalAddressFormProvider()()
+  override val form = new UKAddressFormProvider()()
 
-  "SettlorIndividualAddressInternationalView" must {
+  "SettlorIndividualAddressUKView" must {
 
-    val view = viewFor[SettlorIndividualAddressInternationalView](Some(emptyUserAnswers))
-
-    val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+    val view = viewFor[SettlorIndividualAddressUKView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, countryOptions, NormalMode, index, fakeDraftId)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
 
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like internationalAddress(
+    behave like ukAddressPage(
       applyView,
       Some(messageKeyPrefix),
-      routes.SettlorIndividualAddressInternationalController.onSubmit(NormalMode, index, fakeDraftId).url
+      routes.SettlorsUKAddressController.onSubmit(NormalMode, fakeDraftId).url
     )
   }
 }

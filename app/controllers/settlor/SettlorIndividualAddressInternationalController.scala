@@ -14,33 +14,35 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.settlor
 
 import controllers.actions._
-import forms.UKAddressFormProvider
+import forms.InternationalAddressFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.SettlorIndividualAddressUKPage
+import pages.settlor.SettlorIndividualAddressInternationalPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.SettlorIndividualAddressUKView
+import utils.countryOptions.CountryOptionsNonUK
+import views.html.settlor.SettlorIndividualAddressInternationalView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class SettlorIndividualAddressUKController @Inject()(
-                                                      override val messagesApi: MessagesApi,
-                                                      sessionRepository: SessionRepository,
-                                                      navigator: Navigator,
-                                                      identify: IdentifierAction,
-                                                      getData: DraftIdRetrievalActionProvider,
-                                                      requireData: DataRequiredAction,
-                                                      formProvider: UKAddressFormProvider,
-                                                      val controllerComponents: MessagesControllerComponents,
-                                                      view: SettlorIndividualAddressUKView
+class SettlorIndividualAddressInternationalController @Inject()(
+                                      override val messagesApi: MessagesApi,
+                                      sessionRepository: SessionRepository,
+                                      navigator: Navigator,
+                                      identify: IdentifierAction,
+                                      getData: DraftIdRetrievalActionProvider,
+                                      requireData: DataRequiredAction,
+                                      formProvider: InternationalAddressFormProvider,
+                                      val controllerComponents: MessagesControllerComponents,
+                                      view: SettlorIndividualAddressInternationalView,
+                                      val countryOptions: CountryOptionsNonUK
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -53,12 +55,12 @@ class SettlorIndividualAddressUKController @Inject()(
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(SettlorIndividualAddressUKPage(index)) match {
+      val preparedForm = request.userAnswers.get(SettlorIndividualAddressInternationalPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId, index))
+      Ok(view(preparedForm, countryOptions.options, mode, index, draftId))
   }
 
   def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
@@ -66,13 +68,13 @@ class SettlorIndividualAddressUKController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index))),
+          Future.successful(BadRequest(view(formWithErrors, countryOptions.options, mode, index, draftId))),
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorIndividualAddressUKPage(index), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorIndividualAddressInternationalPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SettlorIndividualAddressUKPage(index), mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(SettlorIndividualAddressInternationalPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

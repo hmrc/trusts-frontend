@@ -14,67 +14,71 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.settlor
 
 import base.SpecBase
-import forms.UKAddressFormProvider
-import models.{NormalMode, UKAddress}
-import navigation.{FakeNavigator, Navigator}
-import pages.SettlorIndividualAddressUKPage
-import play.api.inject.bind
+import forms.InternationalAddressFormProvider
+import models.{InternationalAddress, NormalMode}
+import pages.settlor.SettlorIndividualAddressInternationalPage
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.SettlorIndividualAddressUKView
+import utils._
+import utils.countryOptions.CountryOptionsNonUK
+import views.html.settlor.SettlorIndividualAddressInternationalView
 
-class SettlorIndividualAddressUKControllerSpec extends SpecBase {
+class SettlorIndividualAddressInternationalControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new UKAddressFormProvider()
+  val formProvider = new InternationalAddressFormProvider()
   val form = formProvider()
   val index = 0
 
-  lazy val settlorIndividualAddressUKRoute: String = routes.SettlorIndividualAddressUKController.onPageLoad(NormalMode, index, fakeDraftId).url
+  lazy val settlorIndividualAddressInternationalRoute = routes.SettlorIndividualAddressInternationalController.onPageLoad(NormalMode, index, fakeDraftId).url
 
 
-  "SettlorIndividualAddressUK Controller" must {
+  "SettlorIndividualAddressInternational Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, settlorIndividualAddressUKRoute)
+      val request = FakeRequest(GET, settlorIndividualAddressInternationalRoute)
 
-      val view = application.injector.instanceOf[SettlorIndividualAddressUKView]
+      val view = application.injector.instanceOf[SettlorIndividualAddressInternationalView]
 
       val result = route(application, request).value
+
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, index)(request, messages).toString
+        view(form, countryOptions, NormalMode, index, fakeDraftId)(request, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers
-        .set(SettlorIndividualAddressUKPage(index),UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")).success.value
+      val userAnswers = emptyUserAnswers.
+        set(SettlorIndividualAddressInternationalPage(index), InternationalAddress("line 1", "line 2", Some("line 3"), Some("line 4"), "country")).success.value
 
-      val application = applicationBuilder(Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, settlorIndividualAddressUKRoute)
+      val request = FakeRequest(GET, settlorIndividualAddressInternationalRoute)
 
-      val view = application.injector.instanceOf[SettlorIndividualAddressUKView]
+      val view = application.injector.instanceOf[SettlorIndividualAddressInternationalView]
 
       val result = route(application, request).value
+
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(form.fill(InternationalAddress("line 1", "line 2", Some("line 3"), Some("line 4"), "country")), countryOptions, NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -85,8 +89,8 @@ class SettlorIndividualAddressUKControllerSpec extends SpecBase {
         applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, settlorIndividualAddressUKRoute)
-          .withFormUrlEncodedBody(("line1", "value 1"), ("townOrCity", "value 2"),("postcode", "NE1 1ZZ"))
+        FakeRequest(POST, settlorIndividualAddressInternationalRoute)
+          .withFormUrlEncodedBody(("line1", "value 1"), ("line2", "value 2"), ("country", "IN"))
 
       val result = route(application, request).value
 
@@ -102,19 +106,21 @@ class SettlorIndividualAddressUKControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, settlorIndividualAddressUKRoute)
+        FakeRequest(POST, settlorIndividualAddressInternationalRoute)
           .withFormUrlEncodedBody(("value", "invalid value"))
 
       val boundForm = form.bind(Map("value" -> "invalid value"))
 
-      val view = application.injector.instanceOf[SettlorIndividualAddressUKView]
+      val view = application.injector.instanceOf[SettlorIndividualAddressInternationalView]
 
       val result = route(application, request).value
+
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(boundForm,countryOptions, NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -123,12 +129,12 @@ class SettlorIndividualAddressUKControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, settlorIndividualAddressUKRoute)
+      val request = FakeRequest(GET, settlorIndividualAddressInternationalRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -138,14 +144,14 @@ class SettlorIndividualAddressUKControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, settlorIndividualAddressUKRoute)
+        FakeRequest(POST, settlorIndividualAddressInternationalRoute)
           .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
