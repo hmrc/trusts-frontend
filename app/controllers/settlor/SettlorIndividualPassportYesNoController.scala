@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.settlor
 
 import controllers.actions._
-import forms.SettlorIndividualPassportYesNoFormProvider
+import forms.settlor.SettlorIndividualPassportYesNoFormProvider
 import javax.inject.Inject
-import models.{Mode, UserAnswers}
+import models.Mode
 import navigation.Navigator
-import pages.SettlorIndividualPassportYesNoPage
+import pages.settlor.SettlorIndividualPassportYesNoPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.SettlorIndividualPassportYesNoView
+import views.html.settlor.SettlorIndividualPassportYesNoView
 
 import scala.concurrent.{ExecutionContext, Future}
 

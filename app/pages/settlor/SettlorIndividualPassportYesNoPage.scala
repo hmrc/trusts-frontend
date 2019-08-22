@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package pages
+package pages.settlor
 
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 final case class SettlorIndividualPassportYesNoPage(index : Int) extends QuestionPage[Boolean] {

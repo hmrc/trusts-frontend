@@ -116,7 +116,7 @@ trait LivingSettlorRoutes {
       }
     }
 
-    "navigate fromm SettlorIndividualAddressUKYesNoPage" when {
+    "navigate from SettlorIndividualAddressUKYesNoPage" when {
 
       val page = SettlorIndividualAddressUKYesNoPage(index)
 
@@ -140,6 +140,29 @@ trait LivingSettlorRoutes {
       }
     }
 
+    "navigate to SettlorIndividualPassportYesNoPage" when {
+
+      "from SettlorIndividualAddressUKPage" in {
+
+        val page = SettlorIndividualAddressUKPage(index)
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
+              .mustBe(routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+      "from SettlorIndividualAddressInternationalPage" in {
+
+        val page = SettlorIndividualAddressInternationalPage(index)
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
+              .mustBe(routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+    }
 
   }
 

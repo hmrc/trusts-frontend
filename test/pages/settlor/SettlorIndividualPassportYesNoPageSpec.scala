@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package forms
+package pages.settlor
 
-import javax.inject.Inject
+import pages.behaviours.PageBehaviours
 
-import forms.mappings.Mappings
-import play.api.data.Form
+class SettlorIndividualPassportYesNoPageSpec extends PageBehaviours {
 
-class SettlorIndividualPassportYesNoFormProvider @Inject() extends Mappings {
+  "SettlorIndividualPassportYesNoPage" must {
 
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("settlorIndividualPassportYesNo.error.required")
-    )
+    beRetrievable[Boolean](SettlorIndividualPassportYesNoPage(0))
+
+    beSettable[Boolean](SettlorIndividualPassportYesNoPage(0))
+
+    beRemovable[Boolean](SettlorIndividualPassportYesNoPage(0))
+  }
 }

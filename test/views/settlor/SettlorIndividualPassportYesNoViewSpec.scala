@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package views
+package views.settlor
 
-import controllers.routes
-import forms.SettlorIndividualPassportYesNoFormProvider
+import forms.settlor.SettlorIndividualPassportYesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.SettlorIndividualPassportYesNoView
+import views.html.settlor.SettlorIndividualPassportYesNoView
 
 class SettlorIndividualPassportYesNoViewSpec extends YesNoViewBehaviours {
 
