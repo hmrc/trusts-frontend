@@ -16,10 +16,9 @@
 
 package forms
 
-import java.time.{LocalDate, ZoneOffset}
+import java.time.LocalDate
 
 import forms.behaviours.{DateBehaviours, PassportOrIDCardBehaviours, StringFieldBehaviours}
-import models.PassportOrIdCardDetails
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
 
@@ -108,28 +107,27 @@ class PassportOrIdCardFormProviderSpec extends
     val key = "expiryDate"
 
     val min = LocalDate.of(1500, 1, 1)
-    val max = LocalDate.now(ZoneOffset.UTC)
+    val max = LocalDate.of(2100, 1, 1)
 
     val requiredBindings = Map("country" -> "country", "number" -> "1234567")
 
-
     val validData = datesBetween(
-        min = min,
-        max = max
-      )
+      min = min,
+      max = max
+    )
 
-      behave like dateFieldForPassportOrIdForm(form, key, validData, requiredBindings)
+    behave like dateFieldForPassportOrIdForm(form, key, validData, requiredBindings)
 
-      behave like mandatoryDateField(form, key, s"$prefix.expiryDate.error.required.all")
+    behave like mandatoryDateField(form, key, s"$prefix.expiryDate.error.required.all")
 
-      behave like dateFieldWithMax(form, key,
-        max = max,
-        FormError(key, s"$prefix.expiryDate.error.future", List("day", "month", "year"))
-      )
+    behave like dateFieldWithMax(form, key,
+      max = max,
+      FormError(key, s"$prefix.expiryDate.error.future", List("day", "month", "year"))
+    )
 
-      behave like dateFieldWithMin(form, key,
-        min = min,
-        FormError(key, s"$prefix.expiryDate.error.past", List("day", "month", "year"))
-      )
+    behave like dateFieldWithMin(form, key,
+      min = min,
+      FormError(key, s"$prefix.expiryDate.error.past", List("day", "month", "year"))
+    )
   }
 }

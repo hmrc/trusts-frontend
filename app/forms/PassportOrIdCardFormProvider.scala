@@ -43,19 +43,22 @@ import models.PassportOrIdCardDetails
 
 class PassportOrIdCardFormProvider @Inject() extends Mappings {
 
+  val maxLengthCountyField = 100
+  val maxLengthNumberField = 30
+
   def apply(prefix: String): Form[PassportOrIdCardDetails] = Form(
     mapping(
       "country" -> text(s"$prefix.country.error.required")
         .verifying(
           firstError(
-            maxLength(100, s"$prefix.country.error.length"),
+            maxLength(maxLengthCountyField, s"$prefix.country.error.length"),
             isNotEmpty("country", s"$prefix.country.error.required")
           )
         ),
       "number" -> text(s"$prefix.number.error.required")
         .verifying(
           firstError(
-            maxLength(30, s"$prefix.number.error.length"),
+            maxLength(maxLengthNumberField, s"$prefix.number.error.length"),
             regexp(Validation.passportOrIdCardNumberRegEx, s"$prefix.number.error.invalid"),
             isNotEmpty("number", s"$prefix.number.error.required")
           )
@@ -66,8 +69,14 @@ class PassportOrIdCardFormProvider @Inject() extends Mappings {
         twoRequiredKey = s"$prefix.expiryDate.error.required.two",
         requiredKey    = s"$prefix.expiryDate.error.required"
       ).verifying(firstError(
-        maxDate(LocalDate.now, s"$prefix.expiryDate.error.future", "day", "month", "year"),
-        minDate(LocalDate.of(1500,1,1), s"$prefix.expiryDate.error.past", "day", "month", "year")
+        maxDate(
+          LocalDate.of(2100, 1, 1),
+          s"$prefix.expiryDate.error.future", "day", "month", "year"
+        ),
+        minDate(
+          LocalDate.of(1500,1,1),
+          s"$prefix.expiryDate.error.past", "day", "month", "year"
+        )
       ))
 
     )(PassportOrIdCardDetails.apply)(PassportOrIdCardDetails.unapply)
