@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import forms.SettlorIndividualNINOFormProvider
+import forms.NinoFormProvider
 import models.{FullName, NormalMode}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.{SettlorIndividualNINOPage, SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage}
@@ -30,8 +30,8 @@ class SettlorIndividualNINOControllerSpec extends SpecBase with IndexValidation 
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new SettlorIndividualNINOFormProvider()
-  val form = formProvider()
+  val formProvider = new NinoFormProvider()
+  val form = formProvider("settlorIndividualNINO")
   val index = 0
   val name = FullName("First", Some("Middle"), "Last")
 

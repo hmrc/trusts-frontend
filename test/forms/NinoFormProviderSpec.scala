@@ -17,15 +17,17 @@
 package forms
 
 import forms.behaviours.StringFieldBehaviours
+import org.scalacheck.Arbitrary.arbitrary
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
 
-class SettlorIndividualNINOFormProviderSpec extends StringFieldBehaviours {
+class NinoFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "settlorIndividualNINO.error.required"
-  val invalidFormatKey = "settlorIndividualNINO.error.invalid"
+  val messageKeyPrefix = "trusteesNino"
+  val requiredKey = "trusteesNino.error.required"
+  val invalidFormatKey = "trusteesNino.error.invalidFormat"
 
-  val form = new SettlorIndividualNINOFormProvider()()
+  val form = new NinoFormProvider()(messageKeyPrefix)
 
   ".value" must {
 

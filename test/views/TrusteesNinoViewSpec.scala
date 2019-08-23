@@ -17,7 +17,7 @@
 package views
 
 import controllers.routes
-import forms.TrusteesNinoFormProvider
+import forms.NinoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -31,7 +31,7 @@ class TrusteesNinoViewSpec extends StringViewBehaviours {
   val trusteeName = "FirstName LastName"
   val hintKey = "trusteesNino.hint"
 
-  val form = new TrusteesNinoFormProvider()(messageKeyPrefix)
+  val form = new NinoFormProvider()(messageKeyPrefix)
 
   "TrusteesNinoView view" must {
 

@@ -18,7 +18,7 @@ package controllers
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.SettlorIndividualNINOFormProvider
+import forms.NinoFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
@@ -42,12 +42,12 @@ class SettlorIndividualNINOController @Inject()(
                                         validateIndex: IndexActionFilterProvider,
                                         requireData: DataRequiredAction,
                                         requiredAnswer: RequiredAnswerActionProvider,
-                                        formProvider: SettlorIndividualNINOFormProvider,
+                                        formProvider: NinoFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: SettlorIndividualNINOView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  val form = formProvider("settlorIndividualNINO")
 
   private def actions(index: Int, draftId: String) =
     identify andThen

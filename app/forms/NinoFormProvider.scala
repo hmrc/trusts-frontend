@@ -21,7 +21,7 @@ import javax.inject.Inject
 import forms.mappings.Mappings
 import play.api.data.Form
 
-class TrusteesNinoFormProvider @Inject() extends Mappings {
+class NinoFormProvider @Inject() extends Mappings {
 
   def apply(messagePrefix: String): Form[String] =
     Form(

@@ -18,7 +18,7 @@ package controllers
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.TrusteesNinoFormProvider
+import forms.NinoFormProvider
 import javax.inject.Inject
 import models.requests.DataRequest
 import models.{Mode, NormalMode}
@@ -43,7 +43,7 @@ class TrusteesNinoController @Inject()(
                                         requireData: DataRequiredAction,
                                         validateIndex : IndexActionFilterProvider,
                                         requiredAnswer: RequiredAnswerActionProvider,
-                                        formProvider: TrusteesNinoFormProvider,
+                                        formProvider: NinoFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: TrusteesNinoView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
