@@ -35,7 +35,7 @@ class SettlorIndividualIDCardControllerSpec extends SpecBase with IndexValidatio
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new PassportOrIdCardFormProvider()
-  val form = formProvider()
+  val form = formProvider("settlorIndividualPassport")
   val index = 0
   val name = FullName("First", Some("Middle"), "Last")
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
