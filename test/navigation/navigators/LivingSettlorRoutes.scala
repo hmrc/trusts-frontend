@@ -22,8 +22,8 @@ import models.{NormalMode, UserAnswers}
 import navigation.{LivingSettlorNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages.settlor._
-import controllers.settlor.routes
+import pages.living_settlor._
+import controllers.living_settlor.routes
 
 trait LivingSettlorRoutes {
 
