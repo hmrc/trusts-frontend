@@ -61,7 +61,7 @@ trait LivingSettlorRoutes {
       "answer is no" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
-            val answers = userAnswers.set(page, value = true).success.value
+            val answers = userAnswers.set(page, value = false).success.value
             navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
               .mustBe(routes.SettlorIndividualNINOYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
         }

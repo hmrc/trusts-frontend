@@ -17,15 +17,25 @@
 package navigation
 
 import javax.inject.Singleton
-import models.UserAnswers
+import models.{NormalMode, UserAnswers}
 import pages.Page
+import pages.living_settlor._
 import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
+import controllers.living_settlor.routes
 
 @Singleton
 class LivingSettlorNavigator extends Navigator {
 
-  override protected def normalRoutes(draftId: String): Page => AffinityGroup => UserAnswers => Call =
-    ???
+  override protected def normalRoutes(draftId: String): Page => AffinityGroup => UserAnswers => Call = {
+    case SettlorIndividualNamePage(index) => _ => _ => routes.SettlorIndividualDateOfBirthYesNoController.onPageLoad(NormalMode, index, draftId)
+    case SettlorIndividualDateOfBirthYesNoPage(index) => _ => settlorIndividualDateOfBirthYesNoPage(draftId, index)
+  }
 
+  private def settlorIndividualDateOfBirthYesNoPage(draftId: String, index: Int)(answers: UserAnswers) =
+    answers.get(SettlorIndividualDateOfBirthYesNoPage(index)) match {
+      case Some(true) => routes.SettlorIndividualDateOfBirthController.onPageLoad(NormalMode, index, draftId)
+      case Some(false) => routes.SettlorIndividualNINOYesNoController.onPageLoad(NormalMode, index, draftId)
+      case None => controllers.routes.SessionExpiredController.onPageLoad()
+    }
 }
