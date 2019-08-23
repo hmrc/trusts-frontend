@@ -178,10 +178,11 @@ trait LivingSettlorRoutes {
 
       val page = SettlorIndividualAddressInternationalPage(index)
 
-      forAll(arbitrary[UserAnswers]) {
-        userAnswers =>
-          navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
+              .mustBe(routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
       }
     }
 
@@ -259,5 +260,3 @@ trait LivingSettlorRoutes {
     }
 
   }
-
-}
