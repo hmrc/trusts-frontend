@@ -18,7 +18,7 @@ package controllers
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.PassportIdCardFormProvider
+import forms.PassportOrIdCardFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
@@ -35,18 +35,18 @@ import views.html.SettlorIndividualIDCardView
 import scala.concurrent.{ExecutionContext, Future}
 
 class SettlorIndividualIDCardController @Inject()(
-                                      override val messagesApi: MessagesApi,
-                                      sessionRepository: SessionRepository,
-                                      navigator: Navigator,
-                                      identify: IdentifierAction,
-                                      getData: DraftIdRetrievalActionProvider,
-                                      validateIndex: IndexActionFilterProvider,
-                                      requireData: DataRequiredAction,
-                                      requiredAnswer: RequiredAnswerActionProvider,
-                                      formProvider: PassportIdCardFormProvider,
-                                      val controllerComponents: MessagesControllerComponents,
-                                      view: SettlorIndividualIDCardView,
-                                      val countryOptions: CountryOptionsNonUK
+                                                   override val messagesApi: MessagesApi,
+                                                   sessionRepository: SessionRepository,
+                                                   navigator: Navigator,
+                                                   identify: IdentifierAction,
+                                                   getData: DraftIdRetrievalActionProvider,
+                                                   validateIndex: IndexActionFilterProvider,
+                                                   requireData: DataRequiredAction,
+                                                   requiredAnswer: RequiredAnswerActionProvider,
+                                                   formProvider: PassportOrIdCardFormProvider,
+                                                   val controllerComponents: MessagesControllerComponents,
+                                                   view: SettlorIndividualIDCardView,
+                                                   val countryOptions: CountryOptionsNonUK
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()

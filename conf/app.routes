@@ -218,6 +218,9 @@ POST       /:draftId/asset/:index/change-money                   controllers.Ass
 GET        /:draftId/asset/:index/money/remove                        controllers.money.RemoveMoneyAssetController.onPageLoad(index: Int, draftId: String)
 POST       /:draftId/asset/:index/money/remove                        controllers.money.RemoveMoneyAssetController.onSubmit(index: Int, draftId: String)
 
+GET        /:draftId/asset/:index/asset/remove                        controllers.DefaultRemoveAssetController.onPageLoad(index: Int, draftId: String)
+POST       /:draftId/asset/:index/asset/remove                        controllers.DefaultRemoveAssetController.onSubmit(index: Int, draftId: String)
+
 GET        /:draftId/asset/:index/property-or-land/description/remove                        controllers.property_or_land.RemovePropertyOrLandWithDescriptionController.onPageLoad(index: Int, draftId: String)
 POST       /:draftId/asset/:index/property-or-land/description/remove                        controllers.property_or_land.RemovePropertyOrLandWithDescriptionController.onSubmit(index: Int, draftId: String)
 
@@ -569,8 +572,8 @@ POST       /:draftId/settlor/living/:index/individual/passport-yes-no           
 GET        /:draftId/settlor/living/:index/individual/change-passport-yes-no                 controllers.SettlorIndividualPassportYesNoController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
 POST       /:draftId/settlor/living/:index/individual/change-passport-yes-no                  controllers.SettlorIndividualPassportYesNoController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
-GET       /:draftId/asset/:index/individual/check-settlor-individual-answers                controllers.SettlorIndividualAnswerController.onPageLoad(index : Int, draftId : String)
-POST      /:draftId/asset/:index/individual/check-settlor-individual-answers                 controllers.SettlorIndividualAnswerController.onSubmit(index : Int, draftId : String)
+GET       /:draftId/settlor/living/:index/individual/check-settlor-individual-answers                controllers.SettlorIndividualAnswerController.onPageLoad(index : Int, draftId : String)
+POST      /:draftId/settlor/living/:index/individual/check-settlor-individual-answers                 controllers.SettlorIndividualAnswerController.onSubmit(index : Int, draftId : String)
 
 
 GET        /:draftId/asset/:index/share/company/remove                        controllers.shares.RemoveShareCompanyNameAssetController.onPageLoad(index: Int, draftId: String)

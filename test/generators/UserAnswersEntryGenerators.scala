@@ -38,7 +38,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
     Arbitrary {
       for {
         page  <- arbitrary[SettlorIndividualPassportPage]
-        value <- arbitrary[PassportIdCardDetails].map(Json.toJson(_))
+        value <- arbitrary[PassportOrIdCardDetails].map(Json.toJson(_))
       } yield (page, value)
     }
 
@@ -54,7 +54,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
     Arbitrary {
       for {
         page  <- arbitrary[SettlorIndividualIDCardPage]
-        value <- arbitrary[PassportIdCardDetails].map(Json.toJson(_))
+        value <- arbitrary[PassportOrIdCardDetails].map(Json.toJson(_))
       } yield (page, value)
     }
 

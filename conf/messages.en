@@ -107,13 +107,15 @@ entities.no.name.added = No name added
 entities.no.value.added = No value added
 entities.no.address.added = No address added
 entities.no.description.added = No description added
-entities.no.asset.added = No asset added
+
 entities.lead = Lead
 entities.trustee = Trustee
 entities.trustee.individual = Trustee Individual
 entities.trustee.business = Trustee Business
 entities.beneficiary.individual = Individual Beneficiary
 entities.beneficiary.class = Class of beneficiaries
+
+entities.propertyOrLand.default = No address or description added
 
 createAgentServicesAccount.title = Create an agent services account
 createAgentServicesAccount.heading = Create an agent services account
@@ -344,6 +346,10 @@ removeATrustee.title = Are you sure you want to remove {0}?
 removeATrustee.heading = Are you sure you want to remove {0}?
 removeATrustee.default = the trustee
 removeATrustee.error.required = Select yes if you want to remove the trustee
+
+removeAsset.title = Are you sure you want to remove this asset?
+removeAsset.heading = Are you sure you want to remove this asset?
+removeAsset.error.required = Select yes if you want to remove this asset
 
 telephoneNumber.title = What is the trustee’s telephone number?
 telephoneNumber.heading = What is {0}’s telephone number?
@@ -1106,7 +1112,7 @@ settlorIndividualAddressUKYesNo.error.required = Select yes if the settlor’s a
 settlorIndividualIDCard.title = What are the settlor’s ID card details?
 settlorIndividualIDCard.heading = What are {0}’s ID card details?
 settlorIndividualIDCard.checkYourAnswersLabel = What are {0}’s ID card details?
-settlorIndividualIDCard.country.label = ID card country of issue
+settlorIndividualIDCard.country = ID card country of issue
 settlorIndividualIDCard.error.country.required = Enter the settlor’s ID card country of issue
 settlorIndividualIDCard.number = ID card number
 settlorIndividualIDCard.number.error.required = Enter the settlor’s ID card number
@@ -1129,8 +1135,9 @@ settlorIndividualIDCardYesNo.error.required = Select yes if Select yes if you kn
 settlorIndividualPassport.title = What are the settlor’s passport details?
 settlorIndividualPassport.heading = What are {0}’s passport details?
 settlorIndividualPassport.checkYourAnswersLabel = What are {0}’s passport details?
-settlorIndividualPassport.country.label = Passport country of issue
-settlorIndividualPassport.error.country.required = Enter the settlor’s passport country of issue
+settlorIndividualPassport.country = Passport country of issue
+settlorIndividualPassport.country.error.required = Enter the settlor’s passport country of issue
+settlorIndividualPassport.country.error.length = The country that governs the trust must be 100 characters or less
 settlorIndividualPassport.number = Passport number
 settlorIndividualPassport.number.hint = For example, 502135326
 settlorIndividualPassport.number.error.required = Enter the settlor’s passport number
@@ -1138,17 +1145,20 @@ settlorIndividualPassport.number.error.length = Passport or ID card number must 
 settlorIndividualPassport.number.error.invalid = Passport or ID card number can only include letters and numbers
 settlorIndividualPassport.expiryDate.title = Expiry date
 settlorIndividualPassport.expiryDate.hint = Expiry date can be in the past. For example, 31 3 1980
-settlorIndividualPassport.error.required.all = Enter an expiry date
-settlorIndividualPassport.error.required.two = The expiry date must include a {0} and {1}
-settlorIndividualPassport.error.required = The expiry date must include {0}
-settlorIndividualPassport.error.invalid = Enter a real date when {0}’s passport expires
-settlorIndividualPassport.error.future = Passport expiry date must must be after 31 December 1499 and before 01 January 2100
-settlorIndividualPassport.error.past = Passport expiry date must must be after 31 December 1499 and before 01 January 2100
+settlorIndividualPassport.expiryDate.error.required.all = Enter an expiry date
+settlorIndividualPassport.expiryDate.error.required.two = The expiry date must include a {0} and {1}
+settlorIndividualPassport.expiryDate.error.required = The expiry date must include {0}
+settlorIndividualPassport.expiryDate.error.invalid = Enter a real date when {0}’s passport expires
+settlorIndividualPassport.expiryDate.error.future = Passport expiry date must must be after 31 December 1499 and before 01 January 2100
+settlorIndividualPassport.expiryDate.error.past = Passport expiry date must must be after 31 December 1499 and before 01 January 2100
 
 settlorIndividualPassportYesNo.title = Do you know the settlor’s passport details?
 settlorIndividualPassportYesNo.heading = Do you know {0}’s passport details?
 settlorIndividualPassportYesNo.checkYourAnswersLabel = Do you know {0}’s passport details?
 settlorIndividualPassportYesNo.error.required = Select yes if you know the settlor’s passport details
+
+settlorIndividualAnswers.title = Check settlor details
+settlorIndividualAnswers.heading = Check settlor details
 
 addAnAssetYesNo.title = Do you want to add an asset?
 addAnAssetYesNo.heading = Do you want to add an asset?

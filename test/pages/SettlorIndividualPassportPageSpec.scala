@@ -16,17 +16,17 @@
 
 package pages
 
-import models.PassportIdCardDetails
+import models.PassportOrIdCardDetails
 import pages.behaviours.PageBehaviours
 
 class SettlorIndividualPassportPageSpec extends PageBehaviours {
 
   "SettlorIndividualPassportPage" must {
 
-    beRetrievable[PassportIdCardDetails](SettlorIndividualPassportPage(0))
+    beRetrievable[PassportOrIdCardDetails](SettlorIndividualPassportPage(0))
 
-    beSettable[PassportIdCardDetails](SettlorIndividualPassportPage(0))
+    beSettable[PassportOrIdCardDetails](SettlorIndividualPassportPage(0))
 
-    beRemovable[PassportIdCardDetails](SettlorIndividualPassportPage(0))
+    beRemovable[PassportOrIdCardDetails](SettlorIndividualPassportPage(0))
   }
 }

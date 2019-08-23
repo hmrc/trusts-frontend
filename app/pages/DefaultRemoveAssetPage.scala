@@ -16,13 +16,11 @@
 
 package pages
 
-import models.PassportOrIdCardDetails
 import play.api.libs.json.JsPath
-import sections.Settlors
 
-final case class SettlorIndividualIDCardPage(index : Int) extends QuestionPage[PassportOrIdCardDetails] {
+case object DefaultRemoveAssetPage extends QuestionPage[Nothing] {
 
-  override def path: JsPath = JsPath \ Settlors \ "living" \ toString
+  override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "idCard"
+  override def toString: String = "defaultRemoveAsset"
 }

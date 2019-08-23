@@ -101,6 +101,13 @@ class AddAssetViewHelper(userAnswers: UserAnswers, draftId: String)(implicit mes
         "#",
         controllers.property_or_land.routes.RemovePropertyOrLandWithDescriptionController.onPageLoad(index, draftId).url
       )
+      case PropertyOrLandDefaultViewModel(_, _) =>
+        AddRow(
+          messages("entities.propertyOrLand.default"),
+          typeLabel,
+          "#",
+          controllers.routes.DefaultRemoveAssetController.onPageLoad(index, draftId).url
+        )
     }
 
   }

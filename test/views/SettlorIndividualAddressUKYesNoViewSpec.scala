@@ -28,8 +28,7 @@ class SettlorIndividualAddressUKYesNoViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "settlorIndividualAddressUKYesNo"
   val index = 0
-  val name = FullName("First", Some("middle"), "Last")
-
+  val name = FullName("First", Some("Middle"), "Last")
   val form = new SettlorIndividualAddressUKYesNoFormProvider()()
 
   "SettlorIndividualAddressUKYesNo view" must {

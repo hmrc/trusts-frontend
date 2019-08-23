@@ -19,19 +19,20 @@ package forms
 import java.time.{LocalDate, ZoneOffset}
 
 import forms.behaviours.{DateBehaviours, PassportOrIDCardBehaviours, StringFieldBehaviours}
+import models.PassportOrIdCardDetails
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
 
 class PassportOrIdCardFormProviderSpec extends
   StringFieldBehaviours with PassportOrIDCardBehaviours with DateBehaviours {
 
-  val form = new PassportIdCardFormProvider()()
+  val form = new PassportOrIdCardFormProvider()()
 
-  ".countryOfIssue" must {
+  ".country" must {
 
-    val fieldName = "countryOfIssue"
-    val requiredKey = "site.passportOrIdCard.error.countryOfIssue.required"
-    val lengthKey = "site.passportOrIdCard.error.countryOfIssue.length"
+    val fieldName = "country"
+    val requiredKey = "settlorIndividualPassport.country.error.required"
+    val lengthKey = "settlorIndividualPassport.country.error.length"
     val maxLength = 100
 
     behave like fieldThatBindsValidData(
@@ -63,9 +64,9 @@ class PassportOrIdCardFormProviderSpec extends
   ".number" must {
 
     val fieldName = "number"
-    val requiredKey = "site.passportOrIdCard.error.cardNumber.required"
-    val invalidLengthKey = "site.passportOrIdCard.error.cardNumber.length"
-    val invalidKey = "site.passportOrIdCard.error.cardNumber.invalid"
+    val requiredKey = "settlorIndividualPassport.number.error.required"
+    val invalidLengthKey = "settlorIndividualPassport.number.error.length"
+    val invalidKey = "settlorIndividualPassport.number.error.invalid"
     val maxLength = 30
 
     behave like fieldWithMaxLength(
@@ -102,28 +103,31 @@ class PassportOrIdCardFormProviderSpec extends
 
   ".expiryDate" must {
 
-    val fieldName = "expiryDate"
+    val key = "expiryDate"
 
     val min = LocalDate.of(1500, 1, 1)
     val max = LocalDate.now(ZoneOffset.UTC)
 
-      val validData = datesBetween(
+    val requiredBindings = Map("country" -> "country", "number" -> "1234567")
+
+
+    val validData = datesBetween(
         min = min,
         max = max
       )
 
-      behave like dateField(form, "value", validData)
+      behave like dateFieldForPassportOrIdForm(form, key, validData, requiredBindings)
 
-      behave like mandatoryDateField(form, "value", "site.passportOrIdCard.error.required.all")
+      behave like mandatoryDateField(form, key, "settlorIndividualPassport.expiryDate.error.required.all")
 
-      behave like dateFieldWithMax(form, "value",
+      behave like dateFieldWithMax(form, key,
         max = max,
-        FormError("value", s"individualBeneficiaryDateOfBirth.error.future", List("day", "month", "year"))
+        FormError(key, s"settlorIndividualPassport.expiryDate.error.future", List("day", "month", "year"))
       )
 
-      behave like dateFieldWithMin(form, "value",
+      behave like dateFieldWithMin(form, key,
         min = min,
-        FormError("value", s"individualBeneficiaryDateOfBirth.error.past", List("day", "month", "year"))
+        FormError(key, s"settlorIndividualPassport.expiryDate.error.past", List("day", "month", "year"))
       )
   }
 }

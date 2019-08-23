@@ -25,12 +25,12 @@ formHelper: FormWithCSRF
 @(index : Int, draftId: String, answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @main_template(
-title = messages("propertyOrLandAnswers.title")
+title = messages("settlorIndividualAnswers.title")
 ) {
 
 @components.back_link()
 
-@components.heading("propertyOrLandAnswers.heading")
+@components.heading("settlorIndividualAnswers.heading")
 
     @for(section <- answerSections){
         @{section match {
@@ -40,7 +40,7 @@ title = messages("propertyOrLandAnswers.title")
         }
     }
 
-    @formHelper(action = PropertyOrLandAnswerController.onSubmit(index, draftId), 'autoComplete -> "off") {
+    @formHelper(action = SettlorIndividualAnswerController.onSubmit(index, draftId), 'autoComplete -> "off") {
         @components.submit_button()
     }
 }
