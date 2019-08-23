@@ -218,6 +218,9 @@ POST       /:draftId/asset/:index/change-money                   controllers.Ass
 GET        /:draftId/asset/:index/money/remove                        controllers.money.RemoveMoneyAssetController.onPageLoad(index: Int, draftId: String)
 POST       /:draftId/asset/:index/money/remove                        controllers.money.RemoveMoneyAssetController.onSubmit(index: Int, draftId: String)
 
+GET        /:draftId/asset/:index/asset/remove                        controllers.DefaultRemoveAssetController.onPageLoad(index: Int, draftId: String)
+POST       /:draftId/asset/:index/asset/remove                        controllers.DefaultRemoveAssetController.onSubmit(index: Int, draftId: String)
+
 GET        /:draftId/asset/:index/property-or-land/description/remove                        controllers.property_or_land.RemovePropertyOrLandWithDescriptionController.onPageLoad(index: Int, draftId: String)
 POST       /:draftId/asset/:index/property-or-land/description/remove                        controllers.property_or_land.RemovePropertyOrLandWithDescriptionController.onSubmit(index: Int, draftId: String)
 

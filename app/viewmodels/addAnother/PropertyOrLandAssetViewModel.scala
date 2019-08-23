@@ -38,6 +38,9 @@ final case class PropertyOrLandAssetDescriptionViewModel(`type` : WhatKindOfAsse
                                                        description : Option[String],
                                                        override val status : Status) extends PropertyOrLandAssetViewModel
 
+final case class PropertyOrLandDefaultViewModel(`type`: WhatKindOfAsset,
+                                                override val status: Status) extends PropertyOrLandAssetViewModel
+
 object PropertyOrLandAssetViewModel {
 
   import play.api.libs.functional.syntax._
@@ -102,7 +105,17 @@ object PropertyOrLandAssetViewModel {
       }
     }
 
-    ukReads orElse internationalReads orElse addressReads orElse descriptionReads
+    val defaultReads : Reads[PropertyOrLandAssetViewModel] = {
+      (__ \ "whatKindOfAsset").read[WhatKindOfAsset].filter(x => x == PropertyOrLand).flatMap {
+        kind =>
+        (__ \ "status").readWithDefault[Status](InProgress).map {
+          status =>
+            PropertyOrLandDefaultViewModel(kind, status)
+        }
+      }
+    }
+
+    ukReads orElse internationalReads orElse addressReads orElse descriptionReads orElse defaultReads
 
   }
 
