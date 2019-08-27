@@ -16,14 +16,15 @@
 
 package forms.living_settlor
 
+import forms.Validation
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
+import wolfendale.scalacheck.regexp.RegexpGen
 
 class SettlorIndividualNINOFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "settlorIndividualNINO.error.required"
-  val lengthKey = "settlorIndividualNINO.error.length"
-  val maxLength = 100
+  val invalidFormatKey = "settlorIndividualNINO.error.invalid"
 
   val form = new SettlorIndividualNINOFormProvider()()
 
@@ -34,20 +35,25 @@ class SettlorIndividualNINOFormProviderSpec extends StringFieldBehaviours {
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
-    )
-
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+      RegexpGen.from(Validation.ninoRegex)
     )
 
     behave like mandatoryField(
       form,
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
+    )
+
+    behave like nonEmptyField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
+    )
+
+    behave like ninoField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, invalidFormatKey, Seq(fieldName))
     )
   }
 }

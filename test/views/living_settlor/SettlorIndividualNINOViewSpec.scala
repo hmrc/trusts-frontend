@@ -16,8 +16,8 @@
 
 package views.living_settlor
 
+import models.{FullName, NormalMode}
 import forms.living_settlor.SettlorIndividualNINOFormProvider
-import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
@@ -27,6 +27,7 @@ class SettlorIndividualNINOViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "settlorIndividualNINO"
   val index = 0
+  val name = FullName("First", None, "Last")
 
   val form = new SettlorIndividualNINOFormProvider()()
 
@@ -35,12 +36,14 @@ class SettlorIndividualNINOViewSpec extends StringViewBehaviours {
     val view = viewFor[SettlorIndividualNINOView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index, name)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, None)
+    behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, name.toString, Some(s"$messageKeyPrefix.hint"))
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

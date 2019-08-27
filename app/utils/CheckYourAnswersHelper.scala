@@ -21,7 +21,7 @@ import java.time.format.DateTimeFormatter
 import controllers.routes
 import javax.inject.Inject
 import mapping.reads._
-import models.{CheckMode, InternationalAddress, UKAddress, UserAnswers}
+import models.{CheckMode, InternationalAddress, PassportOrIdCardDetails, UKAddress, UserAnswers}
 import pages._
 import pages.property_or_land._
 import pages.living_settlor.{SettlorIndividualAddressInternationalPage, SettlorIndividualAddressUKPage, SettlorIndividualAddressUKYesNoPage, SettlorIndividualAddressYesNoPage, SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualIDCardPage, SettlorIndividualIDCardYesNoPage, SettlorIndividualNINOPage, SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage, SettlorIndividualPassportPage, SettlorIndividualPassportYesNoPage}
@@ -40,7 +40,9 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualPassportYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.living_settlor.routes.SettlorIndividualPassportYesNoController.onPageLoad(CheckMode, index, draftId).url
+        controllers.living_settlor.routes.SettlorIndividualPassportYesNoController.onPageLoad(CheckMode, index, draftId).url,
+        livingSettlorName(index, userAnswers),
+        canEdit = canEdit
       )
   }
 
@@ -48,8 +50,10 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x =>
       AnswerRow(
         "settlorIndividualPassport.checkYourAnswersLabel",
-        HtmlFormat.escape(s"${x.field1} ${x.field2}"),
-        controllers.living_settlor.routes.SettlorIndividualPassportController.onPageLoad(CheckMode, index,  draftId).url
+        passportOrIDCard(x, countryOptions),
+        controllers.living_settlor.routes.SettlorIndividualPassportController.onPageLoad(CheckMode, index,  draftId).url,
+        livingSettlorName(index, userAnswers),
+        canEdit = canEdit
       )
   }
 
@@ -58,7 +62,9 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualIDCardYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.living_settlor.routes.SettlorIndividualIDCardYesNoController.onPageLoad(CheckMode, index,  draftId).url
+        controllers.living_settlor.routes.SettlorIndividualIDCardYesNoController.onPageLoad(CheckMode, index,  draftId).url,
+        livingSettlorName(index, userAnswers),
+        canEdit = canEdit
       )
   }
 
@@ -66,8 +72,10 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x =>
       AnswerRow(
         "settlorIndividualIDCard.checkYourAnswersLabel",
-        HtmlFormat.escape(s"${x.field1} ${x.field2}"),
-        controllers.living_settlor.routes.SettlorIndividualIDCardController.onPageLoad(CheckMode, index,  draftId).url
+        passportOrIDCard(x, countryOptions),
+        controllers.living_settlor.routes.SettlorIndividualIDCardController.onPageLoad(CheckMode, index,  draftId).url,
+        livingSettlorName(index, userAnswers),
+        canEdit = canEdit
       )
   }
 
@@ -76,25 +84,31 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualAddressUKYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.living_settlor.routes.SettlorIndividualAddressUKYesNoController.onPageLoad(CheckMode, index,  draftId).url
+        controllers.living_settlor.routes.SettlorIndividualAddressUKYesNoController.onPageLoad(CheckMode, index,  draftId).url,
+        livingSettlorName(index, userAnswers),
+        canEdit = canEdit
       )
   }
 
   def settlorIndividualAddressUK(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressUKPage(index)) map {
     x =>
       AnswerRow(
-        "propertyOrLandUKAddress.checkYourAnswersLabel",
+        "settlorIndividualAddressUK.checkYourAnswersLabel",
         ukAddress(x),
-        controllers.living_settlor.routes.SettlorIndividualAddressUKController.onPageLoad(CheckMode, index,  draftId).url
+        controllers.living_settlor.routes.SettlorIndividualAddressUKController.onPageLoad(CheckMode, index,  draftId).url,
+        livingSettlorName(index, userAnswers),
+        canEdit = canEdit
       )
   }
 
   def settlorIndividualAddressInternational(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressInternationalPage(index)) map {
     x =>
       AnswerRow(
-        "propertyOrLandInternationalAddress.checkYourAnswersLabel",
+        "settlorIndividualAddressInternational.checkYourAnswersLabel",
         internationalAddress(x, countryOptions),
-        controllers.living_settlor.routes.SettlorIndividualAddressInternationalController.onPageLoad(CheckMode, index,  draftId).url
+        controllers.living_settlor.routes.SettlorIndividualAddressInternationalController.onPageLoad(CheckMode, index,  draftId).url,
+        livingSettlorName(index, userAnswers),
+        canEdit = canEdit
       )
   }
 
@@ -103,7 +117,9 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualNINOYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.living_settlor.routes.SettlorIndividualNINOYesNoController.onPageLoad(CheckMode, index,  draftId).url
+        controllers.living_settlor.routes.SettlorIndividualNINOYesNoController.onPageLoad(CheckMode, index,  draftId).url,
+        livingSettlorName(index, userAnswers),
+        canEdit = canEdit
       )
   }
 
@@ -112,7 +128,9 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualNINO.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        controllers.living_settlor.routes.SettlorIndividualNINOController.onPageLoad(CheckMode, index,  draftId).url
+        controllers.living_settlor.routes.SettlorIndividualNINOController.onPageLoad(CheckMode, index,  draftId).url,
+        livingSettlorName(index, userAnswers),
+        canEdit = canEdit
       )
   }
 
@@ -121,7 +139,9 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualAddressYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.living_settlor.routes.SettlorIndividualAddressYesNoController.onPageLoad(CheckMode, index,  draftId).url
+        controllers.living_settlor.routes.SettlorIndividualAddressYesNoController.onPageLoad(CheckMode, index,  draftId).url,
+        livingSettlorName(index, userAnswers),
+        canEdit = canEdit
       )
   }
 
@@ -130,7 +150,9 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualDateOfBirth.checkYourAnswersLabel",
         HtmlFormat.escape(x.format(dateFormatter)),
-        controllers.living_settlor.routes.SettlorIndividualDateOfBirthController.onPageLoad(CheckMode, index,  draftId).url
+        controllers.living_settlor.routes.SettlorIndividualDateOfBirthController.onPageLoad(CheckMode, index,  draftId).url,
+        livingSettlorName(index, userAnswers),
+        canEdit = canEdit
       )
   }
 
@@ -139,7 +161,9 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualDateOfBirthYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.living_settlor.routes.SettlorIndividualDateOfBirthYesNoController.onPageLoad(CheckMode, index,  draftId).url
+        controllers.living_settlor.routes.SettlorIndividualDateOfBirthYesNoController.onPageLoad(CheckMode, index,  draftId).url,
+        livingSettlorName(index, userAnswers),
+        canEdit = canEdit
       )
   }
 
@@ -148,7 +172,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualName.checkYourAnswersLabel",
         HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"),
-        controllers.living_settlor.routes.SettlorIndividualNameController.onPageLoad(CheckMode, index,  draftId).url
+        controllers.living_settlor.routes.SettlorIndividualNameController.onPageLoad(CheckMode, index,  draftId).url,
+        canEdit = canEdit
       )
   }
 
@@ -157,7 +182,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualOrBusiness.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"settlorIndividualOrBusiness.$x")),
-        routes.SettlorIndividualOrBusinessController.onPageLoad(CheckMode, index,  draftId).url
+        routes.SettlorIndividualOrBusinessController.onPageLoad(CheckMode, index,  draftId).url,
+        canEdit = canEdit
       )
   }
 
@@ -1149,6 +1175,10 @@ object CheckYourAnswersHelper {
     userAnswers.get(ShareCompanyNamePage(index)).map(_.toString).getOrElse("")
   }
 
+  def livingSettlorName(index: Int, userAnswers: UserAnswers): String = {
+    userAnswers.get(SettlorIndividualNamePage(index)).map(_.toString).getOrElse("")
+  }
+
   def agencyName(userAnswers: UserAnswers): String = {
     userAnswers.get(AgentNamePage).map(_.toString).getOrElse("")
   }
@@ -1178,4 +1208,18 @@ object CheckYourAnswersHelper {
 
     Html(lines.mkString("<br />"))
   }
+
+  def passportOrIDCard(passportOrIdCard: PassportOrIdCardDetails, countryOptions: CountryOptions): Html = {
+    val lines =
+      Seq(
+        Some(country(passportOrIdCard.country, countryOptions)),
+        Some(HtmlFormat.escape(passportOrIdCard.cardNumber)),
+        Some(HtmlFormat.escape(passportOrIdCard.expiryDate.format(dateFormatter)))
+      ).flatten
+
+    Html(lines.mkString("<br />"))
+  }
+
+
+
 }

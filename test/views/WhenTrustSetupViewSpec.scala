@@ -44,7 +44,10 @@ class WhenTrustSetupViewSpec extends QuestionViewBehaviours[LocalDate] {
 
     behave like normalPage(applyView(form), messageKeyPrefix,s"hint")
 
-    behave like pageWithDateFields(form, applyViewF, messageKeyPrefix)
+    behave like pageWithDateFields(form, applyViewF,
+      messageKeyPrefix,
+      "value"
+    )
 
     behave like pageWithBackLink(applyView(form))
 

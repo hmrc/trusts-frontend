@@ -16,37 +16,59 @@
 
 package views.living_settlor
 
-import forms.living_settlor.SettlorIndividualIDCardFormProvider
-import models.{NormalMode, SettlorIndividualIDCard}
+import forms.PassportOrIdCardFormProvider
+import models.{FullName, NormalMode, PassportOrIdCardDetails}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
+import utils.InputOption
+import utils.countryOptions.CountryOptionsNonUK
 import views.behaviours.QuestionViewBehaviours
 import views.html.living_settlor.SettlorIndividualIDCardView
 
-class SettlorIndividualIDCardViewSpec extends QuestionViewBehaviours[SettlorIndividualIDCard] {
+class SettlorIndividualIDCardViewSpec extends QuestionViewBehaviours[PassportOrIdCardDetails] {
 
   val messageKeyPrefix = "settlorIndividualIDCard"
   val index = 0
+  val name = FullName("First", Some("Middle"), "Last")
 
-  override val form = new SettlorIndividualIDCardFormProvider()()
+  override val form = new PassportOrIdCardFormProvider()()
 
   "SettlorIndividualIDCardView" must {
 
     val view = viewFor[SettlorIndividualIDCardView](Some(emptyUserAnswers))
 
+    val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
+      view.apply(form, countryOptions, NormalMode, fakeDraftId, index, name)(fakeRequest, messages)
 
+    val applyViewF = (form : Form[_]) => applyView(form)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like pageWithTextFields(
-      form,
-      applyView,
-      messageKeyPrefix,
-      Seq(("field1", None), ("field2", None))
-    )
+    "date fields" must {
+
+      behave like pageWithDateFields(form, applyViewF,
+        messageKeyPrefix,
+        "expiryDate",
+        name.toString
+      )
+    }
+
+    "text fields" must {
+
+      behave like pageWithTextFields(
+        form,
+        applyView,
+        messageKeyPrefix,
+        Seq(("country", None), ("number", None)),
+        name.toString
+      )
+    }
+
+    behave like pageWithASubmitButton(applyView(form))
+
   }
 }

@@ -18,8 +18,8 @@ package views.living_settlor
 
 import java.time.LocalDate
 
+import models.{FullName, NormalMode}
 import forms.living_settlor.SettlorIndividualDateOfBirthFormProvider
-import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
@@ -29,6 +29,7 @@ class SettlorIndividualDateOfBirthViewSpec extends QuestionViewBehaviours[LocalD
 
   val messageKeyPrefix = "settlorIndividualDateOfBirth"
   val index = 0
+  val name = FullName("First", Some("middle"), "Last")
 
   val form = new SettlorIndividualDateOfBirthFormProvider()()
 
@@ -37,10 +38,20 @@ class SettlorIndividualDateOfBirthViewSpec extends QuestionViewBehaviours[LocalD
     val view = viewFor[SettlorIndividualDateOfBirthView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index, name)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    val applyViewF = (form : Form[_]) => applyView(form)
+
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString)
 
     behave like pageWithBackLink(applyView(form))
+
+    behave like pageWithDateFields(form, applyViewF,
+      messageKeyPrefix,
+      "value",
+      name.toString
+    )
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

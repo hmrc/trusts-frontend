@@ -49,6 +49,7 @@ class TrusteesDateOfBirthViewSpec extends QuestionViewBehaviours[LocalDate] {
 
     behave like pageWithDateFields(form, applyViewF,
       messageKeyPrefix,
+      "value",
       trusteeName
     )
 

@@ -17,13 +17,14 @@
 @import controllers.living_settlor.routes._
 @import models.Mode
 @import utils.InputOption
+@import models.FullName
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], countryOptions:Seq[InputOption], mode: Mode, index:Int, draftId: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], countryOptions:Seq[InputOption], mode: Mode, index:Int, draftId: String, name: FullName)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("settlorIndividualAddressInternational.title")}"
@@ -35,7 +36,7 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("settlorIndividualAddressInternational.heading")
+        @components.heading("settlorIndividualAddressInternational.heading", Some(name.toString))
 
         @components.international_address(form, countryOptions)
 

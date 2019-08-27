@@ -19,10 +19,11 @@ package controllers.living_settlor
 import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
+import models.{FullName, NormalMode}
 import forms.living_settlor.SettlorIndividualDateOfBirthFormProvider
 import models.NormalMode
 import org.scalatest.mockito.MockitoSugar
-import pages.living_settlor.SettlorIndividualDateOfBirthPage
+import pages.living_settlor.{SettlorIndividualAddressYesNoPage, SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNamePage}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -34,6 +35,8 @@ class SettlorIndividualDateOfBirthControllerSpec extends SpecBase with MockitoSu
   val form = formProvider()
   val index = 0
 
+  val name = FullName("First", Some("Middle"), "Last")
+
   def onwardRoute = Call("GET", "/foo")
 
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
@@ -44,7 +47,9 @@ class SettlorIndividualDateOfBirthControllerSpec extends SpecBase with MockitoSu
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = emptyUserAnswers.set(SettlorIndividualNamePage(index), name).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, settlorIndividualDateOfBirthRoute)
 
@@ -55,14 +60,16 @@ class SettlorIndividualDateOfBirthControllerSpec extends SpecBase with MockitoSu
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index, name)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(SettlorIndividualDateOfBirthPage(index), validAnswer).success.value
+      val userAnswers = emptyUserAnswers.set(SettlorIndividualNamePage(index), name).success.value
+        .set(SettlorIndividualDateOfBirthYesNoPage(index), true).success.value
+        .set(SettlorIndividualDateOfBirthPage(index), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -75,15 +82,17 @@ class SettlorIndividualDateOfBirthControllerSpec extends SpecBase with MockitoSu
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(form.fill(validAnswer), NormalMode, fakeDraftId, index, name)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = emptyUserAnswers.set(SettlorIndividualNamePage(index), name).success.value
+        .set(SettlorIndividualDateOfBirthYesNoPage(index), true).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, settlorIndividualDateOfBirthRoute)
@@ -102,9 +111,29 @@ class SettlorIndividualDateOfBirthControllerSpec extends SpecBase with MockitoSu
       application.stop()
     }
 
+    "redirect to Settlors Name page when Settlors name is not answered" in {
+
+      val userAnswers = emptyUserAnswers.set(SettlorIndividualDateOfBirthYesNoPage(index), true).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, settlorIndividualDateOfBirthRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+      application.stop()
+    }
+
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = emptyUserAnswers.set(SettlorIndividualNamePage(index), name).success.value
+        .set(SettlorIndividualDateOfBirthYesNoPage(index), true).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, settlorIndividualDateOfBirthRoute)
@@ -119,7 +148,7 @@ class SettlorIndividualDateOfBirthControllerSpec extends SpecBase with MockitoSu
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index, name)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -158,5 +187,6 @@ class SettlorIndividualDateOfBirthControllerSpec extends SpecBase with MockitoSu
 
       application.stop()
     }
+
   }
 }
