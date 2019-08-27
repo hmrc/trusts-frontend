@@ -541,7 +541,7 @@ removeMoneyAsset.error.required = Select yes if you want to remove the money
 removeShareAsset.title = Are you sure you want to remove {0}?
 removeShareAsset.heading = Are you sure you want to remove {0}?
 removeShareAsset.default = the share
-removeShareAsset.error.required = Select yes if you want to remove the share
+removeShareAsset.error.required = Select yes if you want to remove the shares
 
 removePropertyOrLandAsset.title = Are you sure you want to remove {0}?
 removePropertyOrLandAsset.heading = Are you sure you want to remove {0}?
