@@ -49,7 +49,7 @@ class SettlorIndividualIDCardController @Inject()(
                                                    val countryOptions: CountryOptionsNonUK
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider("settlorIndividualPassport")
+  val form = formProvider("settlorIndividualIDCard")
 
   private def actions(index: Int, draftId: String) =
     identify andThen

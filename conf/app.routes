@@ -500,28 +500,26 @@ POST       /:draftId/asset/:index/change-shares-on-stock-exchange               
 GET       /:draftId/asset/:index/check-share-answers                           controllers.shares.ShareAnswerController.onPageLoad(index : Int, draftId : String)
 POST      /:draftId/asset/:index/check-share-answers                           controllers.shares.ShareAnswerController.onSubmit(index : Int, draftId : String)
 
-#settlor
-
+#living settlor
 GET        /:draftId/settlor/living/:index/individual-or-business                        controllers.living_settlor.SettlorIndividualOrBusinessController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
 POST       /:draftId/settlor/living/:index/individual-or-business                        controllers.living_settlor.SettlorIndividualOrBusinessController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
-GET        /:draftId/settlor/living/:index/change-individual-or-business                   controllers.living_settlor.SettlorIndividualOrBusinessController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
-POST       /:draftId/settlor/living/:index/change-individual-or-business                   controllers.living_settlor.SettlorIndividualOrBusinessController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
-#living settlor
+GET        /:draftId/settlor/living/:index/change-individual-or-business                  controllers.living_settlor.SettlorIndividualOrBusinessController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/settlor/living/:index/change-individual-or-business                  controllers.living_settlor.SettlorIndividualOrBusinessController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
-GET        /:draftId/settlor/living/:index/individual/name                        controllers.living_settlor.SettlorIndividualNameController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/settlor/living/:index/individual/name                         controllers.living_settlor.SettlorIndividualNameController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
 POST       /:draftId/settlor/living/:index/individual/name                         controllers.living_settlor.SettlorIndividualNameController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
-GET        /:draftId/settlor/living/:index/individual/change-name                   controllers.living_settlor.SettlorIndividualNameController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+GET        /:draftId/settlor/living/:index/individual/change-name                  controllers.living_settlor.SettlorIndividualNameController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
 POST       /:draftId/settlor/living/:index/individual/change-name                  controllers.living_settlor.SettlorIndividualNameController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
 GET        /:draftId/settlor/living/:index/individual/date-of-birth-yes-no                        controllers.living_settlor.SettlorIndividualDateOfBirthYesNoController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
 POST       /:draftId/settlor/living/:index/individual/date-of-birth-yes-no                        controllers.living_settlor.SettlorIndividualDateOfBirthYesNoController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
-GET        /:draftId/settlor/living/:index/individual/change-date-of-birth-yes-no                   controllers.living_settlor.SettlorIndividualDateOfBirthYesNoController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
-POST       /:draftId/settlor/living/:index/individual/change-date-of-birth-yes-no                   controllers.living_settlor.SettlorIndividualDateOfBirthYesNoController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+GET        /:draftId/settlor/living/:index/individual/change-date-of-birth-yes-no                  controllers.living_settlor.SettlorIndividualDateOfBirthYesNoController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/settlor/living/:index/individual/change-date-of-birth-yes-no                  controllers.living_settlor.SettlorIndividualDateOfBirthYesNoController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
 GET        /:draftId/settlor/living/:index/individual/date-of-birth                  controllers.living_settlor.SettlorIndividualDateOfBirthController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
-POST       /:draftId/settlor/living/:index/individual/date-of-birth                   controllers.living_settlor.SettlorIndividualDateOfBirthController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
-GET        /:draftId/settlor/living/:index/individual/change-date-of-birth                         controllers.living_settlor.SettlorIndividualDateOfBirthController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
-POST       /:draftId/settlor/living/:index/individual/change-date-of-birth                         controllers.living_settlor.SettlorIndividualDateOfBirthController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/settlor/living/:index/individual/date-of-birth                  controllers.living_settlor.SettlorIndividualDateOfBirthController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/settlor/living/:index/individual/change-date-of-birth                        controllers.living_settlor.SettlorIndividualDateOfBirthController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/settlor/living/:index/individual/change-date-of-birth                        controllers.living_settlor.SettlorIndividualDateOfBirthController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
 GET        /:draftId/settlor/living/:index/individual/address-yes-no                        controllers.living_settlor.SettlorIndividualAddressYesNoController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
 POST       /:draftId/settlor/living/:index/individual/address-yes-no                        controllers.living_settlor.SettlorIndividualAddressYesNoController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
@@ -535,33 +533,33 @@ POST       /:draftId/settlor/living/:index/individual/change-nino               
 
 GET        /:draftId/settlor/living/:index/individual/nino-yes-no                        controllers.living_settlor.SettlorIndividualNINOYesNoController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
 POST       /:draftId/settlor/living/:index/individual/nino-yes-no                        controllers.living_settlor.SettlorIndividualNINOYesNoController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
-GET        /:draftId/settlor/living/:index/individual/change-nino-yes-noo                controllers.living_settlor.SettlorIndividualNINOYesNoController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
-POST       /:draftId/settlor/living/:index/individual/change-nino-yes-noo                controllers.living_settlor.SettlorIndividualNINOYesNoController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+GET        /:draftId/settlor/living/:index/individual/change-nino-yes-noo                  controllers.living_settlor.SettlorIndividualNINOYesNoController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/settlor/living/:index/individual/change-nino-yes-noo                  controllers.living_settlor.SettlorIndividualNINOYesNoController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
 GET        /:draftId/settlor/living/:index/individual/international-address                        controllers.living_settlor.SettlorIndividualAddressInternationalController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
 POST       /:draftId/settlor/living/:index/individual/international-address                        controllers.living_settlor.SettlorIndividualAddressInternationalController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
 GET        /:draftId/settlor/living/:index/individual/change-international-address                  controllers.living_settlor.SettlorIndividualAddressInternationalController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
-POST       /:draftId/settlor/living/:index/individual/change-international-address                 controllers.living_settlor.SettlorIndividualAddressInternationalController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/settlor/living/:index/individual/change-international-address                  controllers.living_settlor.SettlorIndividualAddressInternationalController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
 GET        /:draftId/settlor/living/:index/individual/uk-address                        controllers.living_settlor.SettlorIndividualAddressUKController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
 POST       /:draftId/settlor/living/:index/individual/uk-address                        controllers.living_settlor.SettlorIndividualAddressUKController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
-GET        /:draftId/settlor/living/:index/individual/change-uk-address                 controllers.living_settlor.SettlorIndividualAddressUKController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
-POST       /:draftId/settlor/living/:index/individual/change-uk-address                   controllers.living_settlor.SettlorIndividualAddressUKController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+GET        /:draftId/settlor/living/:index/individual/change-uk-address                  controllers.living_settlor.SettlorIndividualAddressUKController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/settlor/living/:index/individual/change-uk-address                  controllers.living_settlor.SettlorIndividualAddressUKController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
 GET        /:draftId/settlor/living/:index/individual/address-uk-yes-no                        controllers.living_settlor.SettlorIndividualAddressUKYesNoController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
 POST       /:draftId/settlor/living/:index/individual/address-uk-yes-no                        controllers.living_settlor.SettlorIndividualAddressUKYesNoController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
 GET        /:draftId/settlor/living/:index/individual/change-address-uk-yes-no                  controllers.living_settlor.SettlorIndividualAddressUKYesNoController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
-POST       /:draftId/settlor/living/:index/individual/change-address-uk-yes-no                 controllers.living_settlor.SettlorIndividualAddressUKYesNoController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/settlor/living/:index/individual/change-address-uk-yes-no                  controllers.living_settlor.SettlorIndividualAddressUKYesNoController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
 GET        /:draftId/settlor/living/:index/individual/id-card                        controllers.living_settlor.SettlorIndividualIDCardController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
 POST       /:draftId/settlor/living/:index/individual/id-card                        controllers.living_settlor.SettlorIndividualIDCardController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
 GET        /:draftId/settlor/living/:index/individual/change-id-card                  controllers.living_settlor.SettlorIndividualIDCardController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
-POST       /:draftId/settlor/living/:index/individual/change-id-card                 controllers.living_settlor.SettlorIndividualIDCardController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/settlor/living/:index/individual/change-id-card                  controllers.living_settlor.SettlorIndividualIDCardController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
-GET        /:draftId/settlor/living/:index/individual/id-card-yes-no                       controllers.living_settlor.SettlorIndividualIDCardYesNoController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/settlor/living/:index/individual/id-card-yes-no                        controllers.living_settlor.SettlorIndividualIDCardYesNoController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
 POST       /:draftId/settlor/living/:index/individual/id-card-yes-no                        controllers.living_settlor.SettlorIndividualIDCardYesNoController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
 GET        /:draftId/settlor/living/:index/individual/change-id-card-yes-no                  controllers.living_settlor.SettlorIndividualIDCardYesNoController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
-POST       /:draftId/settlor/living/:index/individual/change-id-card-yes-no                   controllers.living_settlor.SettlorIndividualIDCardYesNoController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/settlor/living/:index/individual/change-id-card-yes-no                  controllers.living_settlor.SettlorIndividualIDCardYesNoController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
 GET        /:draftId/settlor/living/:index/individual/passport                        controllers.living_settlor.SettlorIndividualPassportController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
 POST       /:draftId/settlor/living/:index/individual/passport                        controllers.living_settlor.SettlorIndividualPassportController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
@@ -570,8 +568,11 @@ POST       /:draftId/settlor/living/:index/individual/change-passport           
 
 GET        /:draftId/settlor/living/:index/individual/passport-yes-no                        controllers.living_settlor.SettlorIndividualPassportYesNoController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
 POST       /:draftId/settlor/living/:index/individual/passport-yes-no                        controllers.living_settlor.SettlorIndividualPassportYesNoController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
-GET        /:draftId/settlor/living/:index/individual/change-passport-yes-no                 controllers.living_settlor.SettlorIndividualPassportYesNoController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+GET        /:draftId/settlor/living/:index/individual/change-passport-yes-no                  controllers.living_settlor.SettlorIndividualPassportYesNoController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
 POST       /:draftId/settlor/living/:index/individual/change-passport-yes-no                  controllers.living_settlor.SettlorIndividualPassportYesNoController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+
+GET       /:draftId/settlor/living/:index/individual/check-settlor-individual-answers                controllers.living_settlor.SettlorIndividualAnswerController.onPageLoad(index : Int, draftId : String)
+POST      /:draftId/settlor/living/:index/individual/check-settlor-individual-answers                 controllers.living_settlor.SettlorIndividualAnswerController.onSubmit(index : Int, draftId : String)
 
 GET        /:draftId/asset/:index/share/company/remove                        controllers.shares.RemoveShareCompanyNameAssetController.onPageLoad(index: Int, draftId: String)
 POST       /:draftId/asset/:index/share/company/remove                        controllers.shares.RemoveShareCompanyNameAssetController.onSubmit(index: Int, draftId: String)

@@ -20,8 +20,9 @@ import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
 import forms.living_settlor.SettlorIndividualDateOfBirthFormProvider
-import models.{FullName, NormalMode}
+import models.FullName
 import pages.living_settlor.{SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNamePage}
+import models.NormalMode
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

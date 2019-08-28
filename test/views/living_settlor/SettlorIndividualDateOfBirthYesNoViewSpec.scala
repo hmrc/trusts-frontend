@@ -16,8 +16,8 @@
 
 package views.living_settlor
 
-import forms.living_settlor.SettlorIndividualDateOfBirthYesNoFormProvider
 import models.{FullName, NormalMode}
+import forms.living_settlor.SettlorIndividualDateOfBirthYesNoFormProvider
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours

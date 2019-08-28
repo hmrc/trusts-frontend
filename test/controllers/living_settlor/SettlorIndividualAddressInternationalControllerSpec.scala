@@ -19,9 +19,12 @@ package controllers.living_settlor
 import base.SpecBase
 import controllers.IndexValidation
 import forms.InternationalAddressFormProvider
-import models.{FullName, InternationalAddress, NormalMode}
+import models.{FullName, InternationalAddress, NormalMode, UserAnswers}
+import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.living_settlor.{SettlorIndividualAddressInternationalPage, SettlorIndividualNINOPage, SettlorIndividualNamePage}
+import play.api.inject.bind
+import play.api.libs.json.Json
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

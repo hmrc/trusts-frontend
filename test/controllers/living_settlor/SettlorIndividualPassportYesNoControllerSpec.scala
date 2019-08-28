@@ -21,7 +21,9 @@ import controllers.IndexValidation
 import forms.living_settlor.SettlorIndividualPassportYesNoFormProvider
 import models.{FullName, NormalMode}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.living_settlor.{SettlorIndividualNamePage, SettlorIndividualPassportYesNoPage}
+import pages.living_settlor.{SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage, SettlorIndividualPassportYesNoPage}
+import play.api.inject.bind
+import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

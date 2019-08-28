@@ -23,6 +23,7 @@ import models.{FullName, NormalMode}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.living_settlor.{SettlorIndividualAddressUKYesNoPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNamePage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.living_settlor.SettlorIndividualAddressUKYesNoView

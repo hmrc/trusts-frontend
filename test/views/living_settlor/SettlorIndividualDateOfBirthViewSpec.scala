@@ -18,8 +18,8 @@ package views.living_settlor
 
 import java.time.LocalDate
 
-import forms.living_settlor.SettlorIndividualDateOfBirthFormProvider
 import models.{FullName, NormalMode}
+import forms.living_settlor.SettlorIndividualDateOfBirthFormProvider
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
