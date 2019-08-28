@@ -20,8 +20,7 @@ import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
 import models.{FullName, IndividualOrBusiness, InternationalAddress, NormalMode, PassportOrIdCardDetails, UKAddress}
-import pages.SettlorIndividualOrBusinessPage
-import pages.living_settlor._
+import pages.living_settlor.{SettlorIndividualOrBusinessPage, _}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

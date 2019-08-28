@@ -29,24 +29,25 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import sections.Settlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import utils.annotations.LivingSettlor
 import utils.countryOptions.CountryOptionsNonUK
 import views.html.living_settlor.SettlorIndividualAddressInternationalView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class SettlorIndividualAddressInternationalController @Inject()(
-                                      override val messagesApi: MessagesApi,
-                                      sessionRepository: SessionRepository,
-                                      navigator: Navigator,
-                                      identify: IdentifierAction,
-                                      getData: DraftIdRetrievalActionProvider,
-                                      validateIndex: IndexActionFilterProvider,
-                                      requireData: DataRequiredAction,
-                                      requiredAnswer: RequiredAnswerActionProvider,
-                                      formProvider: InternationalAddressFormProvider,
-                                      val controllerComponents: MessagesControllerComponents,
-                                      view: SettlorIndividualAddressInternationalView,
-                                      val countryOptions: CountryOptionsNonUK
+                                                                 override val messagesApi: MessagesApi,
+                                                                 sessionRepository: SessionRepository,
+                                                                 @LivingSettlor navigator: Navigator,
+                                                                 identify: IdentifierAction,
+                                                                 getData: DraftIdRetrievalActionProvider,
+                                                                 validateIndex: IndexActionFilterProvider,
+                                                                 requireData: DataRequiredAction,
+                                                                 requiredAnswer: RequiredAnswerActionProvider,
+                                                                 formProvider: InternationalAddressFormProvider,
+                                                                 val controllerComponents: MessagesControllerComponents,
+                                                                 view: SettlorIndividualAddressInternationalView,
+                                                                 val countryOptions: CountryOptionsNonUK
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()

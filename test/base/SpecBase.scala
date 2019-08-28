@@ -32,7 +32,7 @@ import repositories.SessionRepository
 import services.{CreateDraftRegistrationService, SubmissionService}
 import uk.gov.hmrc.auth.core.AffinityGroup
 import utils.TestUserAnswers
-import utils.annotations.PropertyOrLand
+import utils.annotations.{LivingSettlor, PropertyOrLand}
 
 trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked with BeforeAndAfter {
   this: TestSuite =>
@@ -72,7 +72,8 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
         bind[SubmissionService].toInstance(mockSubmissionService),
         bind[CreateDraftRegistrationService].toInstance(mockCreateDraftRegistrationService),
         bind[Navigator].toInstance(navigator),
-        bind[Navigator].qualifiedWith(classOf[PropertyOrLand]).toInstance(navigator)
+        bind[Navigator].qualifiedWith(classOf[PropertyOrLand]).toInstance(navigator),
+        bind[Navigator].qualifiedWith(classOf[LivingSettlor]).toInstance(navigator)
       )
 
 }

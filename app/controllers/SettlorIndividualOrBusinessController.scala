@@ -22,14 +22,14 @@ import forms.SettlorIndividualOrBusinessFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.SettlorIndividualOrBusinessPage
+import pages.living_settlor.SettlorIndividualOrBusinessPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import sections.Settlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.SettlorIndividualOrBusinessView
+import views.html.living_settlor.SettlorIndividualOrBusinessView
 
 import scala.concurrent.{ExecutionContext, Future}
 

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package views
+package views.living_settlor
 
 import forms.SettlorIndividualOrBusinessFormProvider
 import models.{IndividualOrBusiness, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.{OptionsViewBehaviours, ViewBehaviours}
-import views.html.SettlorIndividualOrBusinessView
+import views.behaviours.OptionsViewBehaviours
+import views.html.living_settlor.SettlorIndividualOrBusinessView
 
 class SettlorIndividualOrBusinessViewSpec extends OptionsViewBehaviours {
 

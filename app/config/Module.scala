@@ -19,10 +19,10 @@ package config
 import com.google.inject.AbstractModule
 import connector.OtacAuthConnectorImpl
 import controllers.actions._
-import navigation.{Navigator, PropertyOrLandNavigator}
+import navigation.{LivingSettlorNavigator, Navigator, PropertyOrLandNavigator}
 import repositories.{DefaultSessionRepository, SessionRepository}
 import uk.gov.hmrc.auth.otac.OtacAuthConnector
-import utils.annotations.PropertyOrLand
+import utils.annotations.{LivingSettlor, PropertyOrLand}
 
 class Module extends AbstractModule {
 
@@ -45,5 +45,6 @@ class Module extends AbstractModule {
     bind(classOf[OtacAuthConnector]).to(classOf[OtacAuthConnectorImpl]).asEagerSingleton()
 
     bind(classOf[Navigator]).annotatedWith(classOf[PropertyOrLand]).to(classOf[PropertyOrLandNavigator])
+    bind(classOf[Navigator]).annotatedWith(classOf[LivingSettlor]).to(classOf[LivingSettlorNavigator])
   }
 }
