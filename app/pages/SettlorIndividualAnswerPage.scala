@@ -14,12 +14,6 @@
  * limitations under the License.
  */
 
-package models
+package pages
 
-import play.api.libs.json._
-
-case class SettlorIndividualIDCard (field1: String, field2: String)
-
-object SettlorIndividualIDCard {
-  implicit val format = Json.format[SettlorIndividualIDCard]
-}
+case object SettlorIndividualAnswerPage extends Page

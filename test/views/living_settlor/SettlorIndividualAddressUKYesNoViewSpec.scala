@@ -16,6 +16,7 @@
 
 package views.living_settlor
 
+import models.{FullName, NormalMode}
 import forms.living_settlor.SettlorIndividualAddressUKYesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
@@ -27,7 +28,7 @@ class SettlorIndividualAddressUKYesNoViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "settlorIndividualAddressUKYesNo"
   val index = 0
-
+  val name = FullName("First", Some("Middle"), "Last")
   val form = new SettlorIndividualAddressUKYesNoFormProvider()()
 
   "SettlorIndividualAddressUKYesNo view" must {
@@ -35,12 +36,14 @@ class SettlorIndividualAddressUKYesNoViewSpec extends YesNoViewBehaviours {
     val view = viewFor[SettlorIndividualAddressUKYesNoView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index, name)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, None)
+    behave like yesNoPage(form, applyView, messageKeyPrefix, None, Seq(name.toString))
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

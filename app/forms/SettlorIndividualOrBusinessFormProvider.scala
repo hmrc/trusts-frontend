@@ -25,6 +25,6 @@ class SettlorIndividualOrBusinessFormProvider @Inject() extends Mappings {
 
   def apply(): Form[IndividualOrBusiness] =
     Form(
-      "value" -> enumerable[IndividualOrBusiness]("individualOrBusiness.error.required")
+      "value" -> enumerable[IndividualOrBusiness]("settlorIndividualOrBusiness.error.required")
     )
 }

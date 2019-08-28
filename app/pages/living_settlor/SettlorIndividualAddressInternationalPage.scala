@@ -19,10 +19,11 @@ package pages.living_settlor
 import models.InternationalAddress
 import pages.QuestionPage
 import play.api.libs.json.JsPath
+import sections.Settlors
 
 final case class SettlorIndividualAddressInternationalPage(index : Int) extends QuestionPage[InternationalAddress] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ Settlors \ "living" \ toString
 
-  override def toString: String = "settlorIndividualAddressInternational"
+  override def toString: String = "internationalAddress"
 }

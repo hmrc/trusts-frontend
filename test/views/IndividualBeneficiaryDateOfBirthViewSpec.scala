@@ -50,6 +50,7 @@ class IndividualBeneficiaryDateOfBirthViewSpec extends QuestionViewBehaviours[Lo
 
     behave like pageWithDateFields(form, applyViewF,
       messageKeyPrefix,
+      "value",
       name.toString
     )
 

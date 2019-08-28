@@ -23,8 +23,12 @@ import play.api.data.Form
 class SettlorIndividualNINOFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
-    Form(
-      "value" -> text("settlorIndividualNINO.error.required")
-        .verifying(maxLength(100, "settlorIndividualNINO.error.length"))
-    )
+    Form("value" -> nino("settlorIndividualNINO.error.required")
+      .verifying(
+        firstError(
+          isNotEmpty("value", "settlorIndividualNINO.error.required"),
+          isNinoValid("value", "settlorIndividualNINO.error.invalid")
+        )))
 }
+
+

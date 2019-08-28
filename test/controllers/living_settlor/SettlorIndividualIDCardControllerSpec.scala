@@ -16,22 +16,33 @@
 
 package controllers.living_settlor
 
+import java.time.{LocalDate, ZoneOffset}
+
 import base.SpecBase
-import forms.living_settlor.SettlorIndividualIDCardFormProvider
-import models.{NormalMode, SettlorIndividualIDCard}
-import pages.living_settlor.SettlorIndividualIDCardPage
+import controllers.IndexValidation
+import forms.PassportOrIdCardFormProvider
+import models.{FullName, IndividualOrBusiness, NormalMode, PassportOrIdCardDetails}
+import org.scalacheck.Arbitrary.arbitrary
+import pages.living_settlor.{SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualIDCardPage, SettlorIndividualNamePage}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+//import forms.living_settlor.SettlorIndividualIDCardFormProvider
+//import models.SettlorIndividualIDCard
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import utils._
+import utils.countryOptions.CountryOptionsNonUK
 import views.html.living_settlor.SettlorIndividualIDCardView
 
-class SettlorIndividualIDCardControllerSpec extends SpecBase {
+class SettlorIndividualIDCardControllerSpec extends SpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new SettlorIndividualIDCardFormProvider()
+  val formProvider = new PassportOrIdCardFormProvider()
   val form = formProvider()
   val index = 0
+  val name = FullName("First", Some("Middle"), "Last")
+  val validAnswer = LocalDate.now(ZoneOffset.UTC)
 
   lazy val settlorIndividualIDCardRoute = routes.SettlorIndividualIDCardController.onPageLoad(NormalMode, index, fakeDraftId).url
 
@@ -40,26 +51,8 @@ class SettlorIndividualIDCardControllerSpec extends SpecBase {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      val request = FakeRequest(GET, settlorIndividualIDCardRoute)
-
-      val view = application.injector.instanceOf[SettlorIndividualIDCardView]
-
-      val result = route(application, request).value
-
-      status(result) mustEqual OK
-
-      contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, index)(request, messages).toString
-
-      application.stop()
-    }
-
-    "populate the view correctly on a GET when the question has previously been answered" in {
-
       val userAnswers = emptyUserAnswers
-        .set(SettlorIndividualIDCardPage(index), SettlorIndividualIDCard("Field 1", "Field 2")).success.value
+        .set(SettlorIndividualNamePage(index),name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -69,24 +62,61 @@ class SettlorIndividualIDCardControllerSpec extends SpecBase {
 
       val result = route(application, request).value
 
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(SettlorIndividualIDCard("Field 1", "Field 2")), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(form, countryOptions, NormalMode, fakeDraftId, index, name)(request, messages).toString
+
+      application.stop()
+    }
+
+    "populate the view correctly on a GET when the question has previously been answered" in {
+
+      val userAnswers = emptyUserAnswers
+        .set(SettlorIndividualNamePage(index),name).success.value
+        .set(SettlorIndividualIDCardPage(index),
+          PassportOrIdCardDetails("Field 1", "Field 2", validAnswer )).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, settlorIndividualIDCardRoute)
+
+      val view = application.injector.instanceOf[SettlorIndividualIDCardView]
+
+      val result = route(application, request).value
+
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(form.fill(PassportOrIdCardDetails("Field 1", "Field 2", validAnswer)),
+          countryOptions, NormalMode, fakeDraftId, index, name)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
+      val userAnswers = emptyUserAnswers
+        .set(SettlorIndividualNamePage(index),name).success.value
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, settlorIndividualIDCardRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
 
+          .withFormUrlEncodedBody(
+            "country" -> "country",
+            "number" -> "123456",
+            "expiryDate.day"   -> validAnswer.getDayOfMonth.toString,
+            "expiryDate.month" -> validAnswer.getMonthValue.toString,
+            "expiryDate.year"  -> validAnswer.getYear.toString)
       val result = route(application, request).value
+
 
       status(result) mustEqual SEE_OTHER
 
@@ -95,9 +125,29 @@ class SettlorIndividualIDCardControllerSpec extends SpecBase {
       application.stop()
     }
 
+    "redirect to Settlors Name page when Settlors name is not answered" in {
+
+      val userAnswers = emptyUserAnswers.set(SettlorIndividualDateOfBirthYesNoPage(index), true).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, settlorIndividualIDCardRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+      application.stop()
+    }
+
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = emptyUserAnswers
+        .set(SettlorIndividualNamePage(index),name).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, settlorIndividualIDCardRoute)
@@ -109,10 +159,12 @@ class SettlorIndividualIDCardControllerSpec extends SpecBase {
 
       val result = route(application, request).value
 
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(boundForm, countryOptions , NormalMode, fakeDraftId, index, name)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -146,6 +198,39 @@ class SettlorIndividualIDCardControllerSpec extends SpecBase {
       redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
+    }
+
+    "for a GET" must {
+
+      def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
+        val route = routes.SettlorIndividualIDCardController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+        FakeRequest(GET, route)
+      }
+
+      validateIndex(
+        arbitrary[PassportOrIdCardDetails],
+        SettlorIndividualIDCardPage.apply,
+        getForIndex
+      )
+
+    }
+
+    "for a POST" must {
+      def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+
+        val route =
+          routes.SettlorIndividualIDCardController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+        FakeRequest(POST, route)
+          .withFormUrlEncodedBody(("value", IndividualOrBusiness.values.head.toString))
+      }
+
+      validateIndex(
+        arbitrary[PassportOrIdCardDetails],
+        SettlorIndividualIDCardPage.apply,
+        postForIndex
+      )
     }
   }
 }

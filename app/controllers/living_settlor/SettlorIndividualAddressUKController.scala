@@ -17,15 +17,17 @@
 package controllers.living_settlor
 
 import controllers.actions._
+import controllers.filters.IndexActionFilterProvider
 import forms.UKAddressFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.living_settlor.SettlorIndividualAddressUKPage
+import pages.living_settlor.{SettlorIndividualAddressUKPage, SettlorIndividualNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import sections.Settlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.living_settlor.SettlorIndividualAddressUKView
 
@@ -37,7 +39,9 @@ class SettlorIndividualAddressUKController @Inject()(
                                                       navigator: Navigator,
                                                       identify: IdentifierAction,
                                                       getData: DraftIdRetrievalActionProvider,
+                                                      validateIndex: IndexActionFilterProvider,
                                                       requireData: DataRequiredAction,
+                                                      requiredAnswer: RequiredAnswerActionProvider,
                                                       formProvider: UKAddressFormProvider,
                                                       val controllerComponents: MessagesControllerComponents,
                                                       view: SettlorIndividualAddressUKView
@@ -48,25 +52,32 @@ class SettlorIndividualAddressUKController @Inject()(
   private def actions(index: Int, draftId: String) =
     identify andThen
       getData(draftId) andThen
-      requireData
+      requireData andThen
+      validateIndex(index, Settlors) andThen
+      requiredAnswer(RequiredAnswer(SettlorIndividualNamePage(index), routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, draftId)))
+
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
+
+      val name = request.userAnswers.get(SettlorIndividualNamePage(index)).get
 
       val preparedForm = request.userAnswers.get(SettlorIndividualAddressUKPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId, index))
+      Ok(view(preparedForm, mode, draftId, index, name))
   }
 
   def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
     implicit request =>
 
+      val name = request.userAnswers.get(SettlorIndividualNamePage(index)).get
+
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, name))),
 
         value => {
           for {

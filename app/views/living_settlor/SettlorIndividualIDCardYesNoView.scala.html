@@ -16,13 +16,14 @@
 
 @import controllers.living_settlor.routes._
 @import models.Mode
+@import models.FullName
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, index: Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId: String, index: Int, name: FullName)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("settlorIndividualIDCardYesNo.title")}"
@@ -34,12 +35,11 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("settlorIndividualIDCardYesNo.heading")
-
         @components.input_yes_no(
             field = form("value"),
-            label = messages("settlorIndividualIDCardYesNo.heading"),
-            legendClass = Some("visually-hidden")
+            label = messages("settlorIndividualIDCardYesNo.heading", name),
+            legendClass = Some("heading-large"),
+            legendAsHeading = true
         )
 
         @components.submit_button()

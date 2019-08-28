@@ -15,29 +15,32 @@
  *@
 
 @import controllers.living_settlor.routes._
-@import models.Mode
+@import viewmodels.{AnswerSection, RepeaterAnswerSection, Section}
 
 @this(
-    main_template: MainTemplate,
-    formHelper: FormWithCSRF
+main_template: MainTemplate,
+formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, index: Int, name: FullName)(implicit request: Request[_], messages: Messages)
+@(index : Int, draftId: String, answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("settlorIndividualAddressUK.title")}"
-    ) {
+title = messages("settlorIndividualAnswers.title")
+) {
 
-    @formHelper(action = SettlorIndividualAddressUKController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
+@components.back_link()
 
-        @components.back_link()
+@components.heading("settlorIndividualAnswers.heading")
 
-        @components.error_summary(form.errors)
+    @for(section <- answerSections){
+        @{section match {
+            case a: AnswerSection => components.answer_section(a)
+            case r: RepeaterAnswerSection => components.repeater_answer_section(r)
+            }
+        }
+    }
 
-        @components.heading("settlorIndividualAddressUK.heading", Some(name.toString))
-
-        @components.uk_address(form)
-
+    @formHelper(action = SettlorIndividualAnswerController.onSubmit(index, draftId), 'autoComplete -> "off") {
         @components.submit_button()
     }
 }

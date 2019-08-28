@@ -17,15 +17,20 @@
 package controllers.living_settlor
 
 import base.SpecBase
-import forms.living_settlor.SettlorIndividualNameFormProvider
-import models.{FullName, NormalMode}
+import controllers.IndexValidation
+import models.{FullName, IndividualOrBusiness, NormalMode}
+import navigation.{FakeNavigator, Navigator}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.living_settlor.SettlorIndividualNamePage
+import play.api.inject.bind
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import forms.living_settlor.SettlorIndividualNameFormProvider
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.living_settlor.SettlorIndividualNameView
 
-class SettlorIndividualNameControllerSpec extends SpecBase {
+class SettlorIndividualNameControllerSpec extends SpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -146,6 +151,39 @@ class SettlorIndividualNameControllerSpec extends SpecBase {
       redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
+    }
+
+    "for a GET" must {
+
+      def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
+        val route = routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+        FakeRequest(GET, route)
+      }
+
+      validateIndex(
+        arbitrary[FullName],
+        SettlorIndividualNamePage.apply,
+        getForIndex
+      )
+
+    }
+
+    "for a POST" must {
+      def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+
+        val route =
+          routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+        FakeRequest(POST, route)
+          .withFormUrlEncodedBody(("value", IndividualOrBusiness.values.head.toString))
+      }
+
+      validateIndex(
+        arbitrary[FullName],
+        SettlorIndividualNamePage.apply,
+        postForIndex
+      )
     }
   }
 }

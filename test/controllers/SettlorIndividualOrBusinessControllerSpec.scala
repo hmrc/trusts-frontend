@@ -18,19 +18,18 @@ package controllers
 
 import base.SpecBase
 import forms.SettlorIndividualOrBusinessFormProvider
-import models.{NormalMode, IndividualOrBusiness, UserAnswers}
+import models.{IndividualOrBusiness, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.SettlorIndividualOrBusinessPage
+import org.scalacheck.Arbitrary.arbitrary
+import pages.{SettlorIndividualOrBusinessPage, TrusteeIndividualOrBusinessPage}
 import play.api.inject.bind
 import play.api.libs.json.{JsString, Json}
-import play.api.mvc.Call
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.SettlorIndividualOrBusinessView
 
-class SettlorIndividualOrBusinessControllerSpec extends SpecBase {
-
-  def onwardRoute = Call("GET", "/foo")
+class SettlorIndividualOrBusinessControllerSpec extends SpecBase with IndexValidation {
 
   lazy val settlorIndividualOrBusinessRoute = routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
 
@@ -91,7 +90,7 @@ class SettlorIndividualOrBusinessControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
     }
@@ -147,6 +146,39 @@ class SettlorIndividualOrBusinessControllerSpec extends SpecBase {
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
+    }
+
+    "for a GET" must {
+
+      def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
+        val route = routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+        FakeRequest(GET, route)
+      }
+
+      validateIndex(
+        arbitrary[IndividualOrBusiness],
+        SettlorIndividualOrBusinessPage.apply,
+        getForIndex
+      )
+
+    }
+
+    "for a POST" must {
+      def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+
+        val route =
+          routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+        FakeRequest(POST, route)
+          .withFormUrlEncodedBody(("value", IndividualOrBusiness.values.head.toString))
+      }
+
+      validateIndex(
+        arbitrary[IndividualOrBusiness],
+        SettlorIndividualOrBusinessPage.apply,
+        postForIndex
+      )
     }
   }
 }

@@ -18,10 +18,11 @@ package pages
 
 import models.IndividualOrBusiness
 import play.api.libs.json.JsPath
+import sections.Settlors
 
 final case class SettlorIndividualOrBusinessPage(index : Int) extends QuestionPage[IndividualOrBusiness] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ Settlors \ "living" \ toString
 
   override def toString: String = "individualOrBusiness"
 }

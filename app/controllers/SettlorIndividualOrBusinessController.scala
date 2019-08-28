@@ -17,6 +17,7 @@
 package controllers
 
 import controllers.actions._
+import controllers.filters.IndexActionFilterProvider
 import forms.SettlorIndividualOrBusinessFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode}
@@ -26,6 +27,7 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import sections.Settlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.SettlorIndividualOrBusinessView
 
@@ -37,6 +39,7 @@ class SettlorIndividualOrBusinessController @Inject()(
                                        navigator: Navigator,
                                        identify: IdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
+                                       validateIndex: IndexActionFilterProvider,
                                        requireData: DataRequiredAction,
                                        formProvider: SettlorIndividualOrBusinessFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
@@ -46,9 +49,10 @@ class SettlorIndividualOrBusinessController @Inject()(
   val form = formProvider()
 
   private def actions(index: Int, draftId: String) =
-    identify andThen
-      getData(draftId) andThen
-      requireData
+    identify andThen getData(draftId) andThen
+      requireData andThen
+      validateIndex(index, Settlors)
+
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
