@@ -32,8 +32,8 @@ class LivingSettlorNavigator extends Navigator {
     case SettlorIndividualDateOfBirthYesNoPage(index) => _ => settlorIndividualDateOfBirthYesNoPage(draftId, index)
     case SettlorIndividualDateOfBirthPage(index) => _ => _ => routes.SettlorIndividualNINOYesNoController.onPageLoad(NormalMode, index, draftId)
     case SettlorIndividualNINOYesNoPage(index) => _ => settlorIndividualNINOYesNoPage(draftId, index)
-    case SettlorIndividualNINOPage(index) => _ => _ => ???
-    case SettlorIndividualAddressYesNoPage(index) => _ => _ => routes.SettlorIndividualAddressUKYesNoController.onPageLoad(NormalMode, index, draftId)
+    case SettlorIndividualNINOPage(index) => _ => _ => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
+    case SettlorIndividualAddressYesNoPage(index) => _ => settlorIndividualAddressYesNoPage(draftId, index)
     case SettlorIndividualAddressUKYesNoPage(index) => _ => settlorIndividualAddressUKYesNoPage(draftId, index)
     case SettlorIndividualAddressUKPage(index) => _ => _ => routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, draftId)
     case SettlorIndividualAddressInternationalPage(index) => _ => _ => routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, draftId)
@@ -55,6 +55,13 @@ class LivingSettlorNavigator extends Navigator {
       case None => controllers.routes.SessionExpiredController.onPageLoad()
     }
 
+  private def settlorIndividualAddressYesNoPage(draftId: String, index: Int)(answers: UserAnswers) =
+    answers.get(SettlorIndividualAddressYesNoPage(index)) match {
+      case Some(true) => routes.SettlorIndividualAddressUKYesNoController.onPageLoad(NormalMode, index, draftId)
+      case Some(false) => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
+      case None => controllers.routes.SessionExpiredController.onPageLoad()
+    }
+
   private def settlorIndividualAddressUKYesNoPage(draftId: String, index: Int)(answers: UserAnswers) =
     answers.get(SettlorIndividualAddressUKYesNoPage(index)) match {
       case Some(true) => routes.SettlorIndividualAddressUKController.onPageLoad(NormalMode, index, draftId)
@@ -71,8 +78,9 @@ class LivingSettlorNavigator extends Navigator {
 
   private def settlorIndividualIDCardYesNoPage(draftId: String, index: Int)(answers: UserAnswers) =
     answers.get(SettlorIndividualIDCardYesNoPage(index)) match {
+      case Some(true) => routes.SettlorIndividualIDCardController.onPageLoad(NormalMode, index, draftId)
+      case Some(false) => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
       case None => controllers.routes.SessionExpiredController.onPageLoad()
-      case _ => routes.SettlorIndividualNINOYesNoController.onPageLoad(NormalMode, index, draftId)
     }
 
 }

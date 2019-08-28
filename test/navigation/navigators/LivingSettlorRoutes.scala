@@ -111,7 +111,7 @@ trait LivingSettlorRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(???)
+            .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
       }
     }
 
@@ -134,7 +134,7 @@ trait LivingSettlorRoutes {
           userAnswers =>
             val answers = userAnswers.set(page, value = false).success.value
             navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
-              .mustBe(???)
+              .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
         }
       }
     }
@@ -218,7 +218,7 @@ trait LivingSettlorRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(???)
+            .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
       }
     }
 
@@ -242,7 +242,7 @@ trait LivingSettlorRoutes {
           userAnswers =>
             val answers = userAnswers.set(page, value = true).success.value
             navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
-              .mustBe(???)
+              .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
         }
       }
     }
@@ -254,7 +254,7 @@ trait LivingSettlorRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(???)
+            .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
       }
 
     }
