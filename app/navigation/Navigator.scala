@@ -111,7 +111,7 @@ class Navigator @Inject()() {
     case SettlorsInternationalAddressPage => _ => _ => routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
     case SettlorsUKAddressPage => _ => _ => routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
     case DeceasedSettlorAnswerPage => _ => _ => routes.TaskListController.onPageLoad(draftId)
-    case SettlorIndividualOrBusinessPage(index) => _ => _ => ???
+    case SettlorIndividualOrBusinessPage(index) => _ => settlorIndividualOrBusinessPage(index, draftId)
 
      //Beneficiary
     case IndividualBeneficiaryNamePage(index) => _ => _ => routes.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(NormalMode, index, draftId)
