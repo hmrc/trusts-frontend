@@ -16,6 +16,8 @@
 
 package pages.living_settlor
 
+import models.UserAnswers
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
 class SettlorIndividualNINOYesNoPageSpec extends PageBehaviours {
@@ -27,5 +29,23 @@ class SettlorIndividualNINOYesNoPageSpec extends PageBehaviours {
     beSettable[Boolean](SettlorIndividualNINOYesNoPage(0))
 
     beRemovable[Boolean](SettlorIndividualNINOYesNoPage(0))
+
+    "remove relevant data" when {
+
+      val page = SettlorIndividualNINOYesNoPage(0)
+
+      "set to false" in {
+        forAll(arbitrary[UserAnswers]) {
+          initial =>
+            val answers: UserAnswers = initial.set(page, true).success.value
+              .set(SettlorIndividualNINOPage(0), "QQ123456C").success.value
+
+            val result = answers.set(page, false).success.value
+
+            result.get(SettlorIndividualNINOPage(0)) must not be defined
+        }
+      }
+
+    }
   }
 }

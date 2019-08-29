@@ -34,5 +34,5 @@ final case class SettlorIndividualDateOfBirthYesNoPage(index : Int) extends Ques
       case Some(false) => userAnswers.remove(SettlorIndividualDateOfBirthPage(index))
       case _ => super.cleanup(value, userAnswers)
     }
-  
+
 }
