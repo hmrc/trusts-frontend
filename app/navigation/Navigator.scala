@@ -19,12 +19,10 @@ package navigation
 import controllers.routes
 import javax.inject.{Inject, Singleton}
 import models.AddATrustee.{NoComplete, YesLater, YesNow}
-import models.IndividualOrBusiness.{Individual, Business => BusinessNotIndividual}
 import models.WhatKindOfAsset.{Business, Money, Other, Partnership, PropertyOrLand, Shares}
 import models._
 import pages._
-import pages.living_settlor.SettlorIndividualOrBusinessPage
-import pages.shares.{ShareAnswerPage, ShareClassPage, ShareCompanyNamePage, SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, ShareQuantityInTrustPage, ShareValueInTrustPage, SharesInAPortfolioPage, SharesOnStockExchangePage}
+import pages.shares._
 import play.api.mvc.Call
 import sections.{ClassOfBeneficiaries, IndividualBeneficiaries, Trustees}
 import uk.gov.hmrc.auth.core.AffinityGroup
@@ -111,7 +109,6 @@ class Navigator @Inject()() {
     case SettlorsInternationalAddressPage => _ => _ => routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
     case SettlorsUKAddressPage => _ => _ => routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
     case DeceasedSettlorAnswerPage => _ => _ => routes.TaskListController.onPageLoad(draftId)
-    case SettlorIndividualOrBusinessPage(index) => _ => settlorIndividualOrBusinessPage(index, draftId)
 
      //Beneficiary
     case IndividualBeneficiaryNamePage(index) => _ => _ => routes.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(NormalMode, index, draftId)
@@ -258,13 +255,6 @@ class Navigator @Inject()() {
     case Some(true) => routes.SettlorDateOfDeathController.onPageLoad(NormalMode, draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
-
-  private def settlorIndividualOrBusinessPage(index: Int, draftId: String)(answers: UserAnswers) =
-    answers.get(SettlorIndividualOrBusinessPage(index)) match {
-      case Some(Individual) => controllers.living_settlor.routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, draftId)
-      case Some(BusinessNotIndividual) => ???
-      case None => routes.SessionExpiredController.onPageLoad()
-    }
 
   private def addAnAssetYesNoRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(AddAnAssetYesNoPage) match {
     case Some(false) => routes.TaskListController.onPageLoad(draftId)

@@ -16,13 +16,14 @@
 
 package navigation
 
+import controllers.living_settlor.routes
 import javax.inject.Singleton
+import models.IndividualOrBusiness._
 import models.{NormalMode, UserAnswers}
 import pages.Page
 import pages.living_settlor._
 import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
-import controllers.living_settlor.routes
 
 @Singleton
 class LivingSettlorNavigator extends Navigator {
@@ -41,6 +42,7 @@ class LivingSettlorNavigator extends Navigator {
     case SettlorIndividualPassportPage(index) => _ => _ => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
     case SettlorIndividualIDCardYesNoPage(index) => _ =>  settlorIndividualIDCardYesNoPage(draftId, index)
     case SettlorIndividualIDCardPage(index) => _ => _ => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
+    case SettlorIndividualOrBusinessPage(index) => _ => settlorIndividualOrBusinessPage(index, draftId)
   }
 
   private def settlorIndividualDateOfBirthYesNoPage(draftId: String, index: Int)(answers: UserAnswers) =
@@ -82,6 +84,13 @@ class LivingSettlorNavigator extends Navigator {
     answers.get(SettlorIndividualIDCardYesNoPage(index)) match {
       case Some(true) => routes.SettlorIndividualIDCardController.onPageLoad(NormalMode, index, draftId)
       case Some(false) => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
+      case None => controllers.routes.SessionExpiredController.onPageLoad()
+    }
+
+  private def settlorIndividualOrBusinessPage(index: Int, draftId: String)(answers: UserAnswers) =
+    answers.get(SettlorIndividualOrBusinessPage(index)) match {
+      case Some(Individual) => controllers.living_settlor.routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, draftId)
+      case Some(Business) => ???
       case None => controllers.routes.SessionExpiredController.onPageLoad()
     }
 

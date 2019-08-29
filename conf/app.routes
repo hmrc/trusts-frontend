@@ -501,10 +501,10 @@ GET       /:draftId/asset/:index/check-share-answers                           c
 POST      /:draftId/asset/:index/check-share-answers                           controllers.shares.ShareAnswerController.onSubmit(index : Int, draftId : String)
 
 #living settlor
-GET        /:draftId/settlor/living/:index/individual-or-business                        controllers.SettlorIndividualOrBusinessController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
-POST       /:draftId/settlor/living/:index/individual-or-business                        controllers.SettlorIndividualOrBusinessController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
-GET        /:draftId/settlor/living/:index/change-individual-or-business                  controllers.SettlorIndividualOrBusinessController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
-POST       /:draftId/settlor/living/:index/change-individual-or-business                  controllers.SettlorIndividualOrBusinessController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+GET        /:draftId/settlor/living/:index/individual-or-business                        controllers.living_settlor.SettlorIndividualOrBusinessController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId/settlor/living/:index/individual-or-business                        controllers.living_settlor.SettlorIndividualOrBusinessController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/settlor/living/:index/change-individual-or-business                  controllers.living_settlor.SettlorIndividualOrBusinessController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/settlor/living/:index/change-individual-or-business                  controllers.living_settlor.SettlorIndividualOrBusinessController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
 GET        /:draftId/settlor/living/:index/individual/name                         controllers.living_settlor.SettlorIndividualNameController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
 POST       /:draftId/settlor/living/:index/individual/name                         controllers.living_settlor.SettlorIndividualNameController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
