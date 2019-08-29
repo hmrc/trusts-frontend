@@ -182,7 +182,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualOrBusiness.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"settlorIndividualOrBusiness.$x")),
-        controllers.routes.SettlorIndividualOrBusinessController.onPageLoad(CheckMode, index,  draftId).url,
+        controllers.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(CheckMode, index,  draftId).url,
         canEdit = canEdit
       )
   }

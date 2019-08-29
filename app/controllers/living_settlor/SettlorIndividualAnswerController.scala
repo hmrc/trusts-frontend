@@ -55,7 +55,7 @@ class SettlorIndividualAnswerController @Inject()(
     identify andThen
       getData(draftId) andThen
       requireData andThen
-      requiredAnswer(RequiredAnswer(SettlorIndividualOrBusinessPage(index), controllers.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId)))
+      requiredAnswer(RequiredAnswer(SettlorIndividualOrBusinessPage(index), routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId)))
 
 
   def onPageLoad(index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {

@@ -324,7 +324,7 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual controllers.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
+      redirectLocation(result).value mustEqual routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       application.stop()
     }

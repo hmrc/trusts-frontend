@@ -19,6 +19,7 @@ package navigation
 import controllers.routes
 import javax.inject.{Inject, Singleton}
 import models.AddATrustee.{NoComplete, YesLater, YesNow}
+import models.IndividualOrBusiness.Individual
 import models.WhatKindOfAsset.{Business, Money, Other, Partnership, PropertyOrLand, Shares}
 import models._
 import pages._
