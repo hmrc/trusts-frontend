@@ -16,6 +16,10 @@
 
 package pages.living_settlor
 
+import java.time.LocalDate
+
+import models.{InternationalAddress, PassportOrIdCardDetails, UKAddress, UserAnswers}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
 class SettlorIndividualAddressUKYesNoPageSpec extends PageBehaviours {
@@ -27,5 +31,35 @@ class SettlorIndividualAddressUKYesNoPageSpec extends PageBehaviours {
     beSettable[Boolean](SettlorIndividualAddressUKYesNoPage(0))
 
     beRemovable[Boolean](SettlorIndividualAddressUKYesNoPage(0))
+
+    "remove relevant data" when {
+
+      val page = SettlorIndividualAddressUKYesNoPage(0)
+
+      "set to true" in {
+        forAll(arbitrary[UserAnswers]) {
+          initial =>
+            val answers: UserAnswers = initial.set(page, false).success.value
+              .set(SettlorIndividualAddressInternationalPage(0), InternationalAddress("line1", "line2", None, None, "France")).success.value
+
+            val result = answers.set(page, true).success.value
+
+            result.get(SettlorIndividualAddressInternationalPage(0)) must not be defined
+        }
+      }
+
+      "set to false" in {
+        forAll(arbitrary[UserAnswers]) {
+          initial =>
+            val answers: UserAnswers = initial.set(page, true).success.value
+              .set(SettlorIndividualAddressUKPage(0), UKAddress("line1", None, None, "Town", "NE11NE")).success.value
+
+            val result = answers.set(page, false).success.value
+
+            result.get(SettlorIndividualAddressUKPage(0)) must not be defined
+        }
+      }
+
+    }
   }
 }
