@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package pages
+package pages.living_settlor
 
 import models.IndividualOrBusiness
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.Settlors
 

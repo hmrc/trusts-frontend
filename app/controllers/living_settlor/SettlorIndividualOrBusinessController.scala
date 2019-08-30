@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.living_settlor
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
@@ -22,21 +22,22 @@ import forms.SettlorIndividualOrBusinessFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.SettlorIndividualOrBusinessPage
+import pages.living_settlor.SettlorIndividualOrBusinessPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import sections.Settlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.SettlorIndividualOrBusinessView
+import utils.annotations.LivingSettlor
+import views.html.living_settlor.SettlorIndividualOrBusinessView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class SettlorIndividualOrBusinessController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        sessionRepository: SessionRepository,
-                                       navigator: Navigator,
+                                       @LivingSettlor navigator: Navigator,
                                        identify: IdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
                                        validateIndex: IndexActionFilterProvider,

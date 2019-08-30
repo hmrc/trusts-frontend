@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package forms
+package forms.living_settlor
 
+import forms.SettlorIndividualOrBusinessFormProvider
 import forms.behaviours.OptionFieldBehaviours
 import models.IndividualOrBusiness
 import play.api.data.FormError

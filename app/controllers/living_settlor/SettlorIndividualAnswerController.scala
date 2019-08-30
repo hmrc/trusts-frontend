@@ -22,9 +22,9 @@ import javax.inject.Inject
 import models.NormalMode
 import models.Status.Completed
 import navigation.Navigator
+import pages.SettlorIndividualAnswerPage
 import pages.entitystatus.AssetStatus
-import pages.living_settlor.SettlorIndividualNamePage
-import pages.{SettlorIndividualAnswerPage, SettlorIndividualOrBusinessPage}
+import pages.living_settlor.SettlorIndividualOrBusinessPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -55,7 +55,7 @@ class SettlorIndividualAnswerController @Inject()(
     identify andThen
       getData(draftId) andThen
       requireData andThen
-      requiredAnswer(RequiredAnswer(SettlorIndividualOrBusinessPage(index), controllers.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId)))
+      requiredAnswer(RequiredAnswer(SettlorIndividualOrBusinessPage(index), routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId)))
 
 
   def onPageLoad(index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {

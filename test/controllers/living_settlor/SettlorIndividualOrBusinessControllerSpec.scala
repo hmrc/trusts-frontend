@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.living_settlor
 
 import base.SpecBase
+import controllers.IndexValidation
 import forms.SettlorIndividualOrBusinessFormProvider
-import models.{IndividualOrBusiness, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.{IndividualOrBusiness, NormalMode}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.{SettlorIndividualOrBusinessPage, TrusteeIndividualOrBusinessPage}
-import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import pages.living_settlor.SettlorIndividualOrBusinessPage
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
-import views.html.SettlorIndividualOrBusinessView
+import play.api.test.Helpers.{route, _}
+import views.html.living_settlor.SettlorIndividualOrBusinessView
 
 class SettlorIndividualOrBusinessControllerSpec extends SpecBase with IndexValidation {
 
@@ -126,7 +124,7 @@ class SettlorIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -143,7 +141,7 @@ class SettlorIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
