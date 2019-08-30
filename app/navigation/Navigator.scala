@@ -23,7 +23,7 @@ import models.IndividualOrBusiness.Individual
 import models.WhatKindOfAsset.{Business, Money, Other, Partnership, PropertyOrLand, Shares}
 import models._
 import pages._
-import pages.shares.{ShareAnswerPage, ShareClassPage, ShareCompanyNamePage, SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, ShareQuantityInTrustPage, ShareValueInTrustPage, SharesInAPortfolioPage, SharesOnStockExchangePage}
+import pages.shares._
 import play.api.mvc.Call
 import sections.{ClassOfBeneficiaries, IndividualBeneficiaries, Trustees}
 import uk.gov.hmrc.auth.core.AffinityGroup

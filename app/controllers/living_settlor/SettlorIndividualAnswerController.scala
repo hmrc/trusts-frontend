@@ -23,13 +23,13 @@ import models.NormalMode
 import models.Status.Completed
 import navigation.Navigator
 import pages.entitystatus.LivingSettlorStatus
-import pages.living_settlor.{SettlorIndividualAnswerPage, SettlorIndividualNamePage}
-import pages.SettlorIndividualOrBusinessPage
+import pages.living_settlor.{SettlorIndividualAnswerPage, SettlorIndividualOrBusinessPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
+import utils.annotations.LivingSettlor
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.living_settlor.SettlorIndividualAnswersView
@@ -39,7 +39,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class SettlorIndividualAnswerController @Inject()(
                                       override val messagesApi: MessagesApi,
                                       sessionRepository: SessionRepository,
-                                      navigator: Navigator,
+                                      @LivingSettlor navigator: Navigator,
                                       identify: IdentifierAction,
                                       getData: DraftIdRetrievalActionProvider,
                                       requireData: DataRequiredAction,

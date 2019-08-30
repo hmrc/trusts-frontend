@@ -29,7 +29,8 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import sections.Settlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.countryOptions.CountryOptionsNonUK
+import utils.annotations.LivingSettlor
+import utils.countryOptions.CountryOptions
 import views.html.living_settlor.SettlorIndividualPassportView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -37,7 +38,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class SettlorIndividualPassportController @Inject()(
                                                      override val messagesApi: MessagesApi,
                                                      sessionRepository: SessionRepository,
-                                                     navigator: Navigator,
+                                                     @LivingSettlor navigator: Navigator,
                                                      identify: IdentifierAction,
                                                      getData: DraftIdRetrievalActionProvider,
                                                      validateIndex: IndexActionFilterProvider,
@@ -46,7 +47,7 @@ class SettlorIndividualPassportController @Inject()(
                                                      formProvider: PassportOrIdCardFormProvider,
                                                      val controllerComponents: MessagesControllerComponents,
                                                      view: SettlorIndividualPassportView,
-                                                     val countryOptions: CountryOptionsNonUK
+                                                     val countryOptions: CountryOptions
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider("settlorIndividualPassport")

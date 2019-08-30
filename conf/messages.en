@@ -1115,8 +1115,8 @@ settlorIndividualIDCard.expiryDate.error.required.all = Enter the ID card expiry
 settlorIndividualIDCard.expiryDate.error.required.two = ID card expiry date must include a {0} and {1}
 settlorIndividualIDCard.expiryDate.error.required = ID card expiry date must include a {0}
 settlorIndividualIDCard.expiryDate.error.invalid = Enter a real date when the settlor’s ID card expires
-settlorIndividualIDCard.expiryDate.error.future = ID card expiry date must must be after 31 December 1499 and before 01 January 2100
-settlorIndividualIDCard.expiryDate.error.past = ID card expiry date must must be after 31 December 1499 and before 01 January 2100
+settlorIndividualIDCard.expiryDate.error.future = ID card expiry date must be after 31 December 1499 and before 01 January 2100
+settlorIndividualIDCard.expiryDate.error.past = ID card expiry date must be after 31 December 1499 and before 01 January 2100
 
 settlorIndividualIDCardYesNo.title = Do you know the settlor’s ID card details?
 settlorIndividualIDCardYesNo.heading = Do you know {0}’s ID card details?
@@ -1140,8 +1140,8 @@ settlorIndividualPassport.expiryDate.error.required.all = Enter the passport exp
 settlorIndividualPassport.expiryDate.error.required.two = Passport expiry date must include a {0} and {1}
 settlorIndividualPassport.expiryDate.error.required = Passport expiry date must include {0}
 settlorIndividualPassport.expiryDate.error.invalid = Enter a real date when the settlor’s passport expires
-settlorIndividualPassport.expiryDate.error.future = Passport expiry date must must be after 31 December 1499 and before 01 January 2100
-settlorIndividualPassport.expiryDate.error.past = Passport expiry date must must be after 31 December 1499 and before 01 January 2100
+settlorIndividualPassport.expiryDate.error.future = Passport expiry date must be after 31 December 1499 and before 01 January 2100
+settlorIndividualPassport.expiryDate.error.past = Passport expiry date must be after 31 December 1499 and before 01 January 2100
 
 settlorIndividualPassportYesNo.title = Do you know the settlor’s passport details?
 settlorIndividualPassportYesNo.heading = Do you know {0}’s passport details?

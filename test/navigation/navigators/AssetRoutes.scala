@@ -72,7 +72,8 @@ trait AssetRoutes {
               .mustBe(routes.AssetMoneyValueController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
-      "go to PropertyOrLandAddressYesNoController from WhatKindOfAsset page when the money option is selected" in {
+
+      "go to PropertyOrLandAddressYesNoController from WhatKindOfAsset page when the PropertyOrLand option is selected" in {
         val index = 0
 
         forAll(arbitrary[UserAnswers]) {
@@ -84,6 +85,8 @@ trait AssetRoutes {
               .mustBe(controllers.property_or_land.routes.PropertyOrLandAddressYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
+
+
 
       "go to AddAssetsPage from AssetMoneyValue page when the amount submitted" in {
 

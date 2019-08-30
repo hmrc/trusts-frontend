@@ -46,7 +46,7 @@ trait LivingSettlorRoutes {
       }
     }
 
-    "navigate fromm SettlorIndividualDateOfBirthYesNoPage" when {
+    "navigate from SettlorIndividualDateOfBirthYesNoPage" when {
 
       val page = SettlorIndividualDateOfBirthYesNoPage(index)
 
@@ -61,7 +61,7 @@ trait LivingSettlorRoutes {
       "answer is no" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
-            val answers = userAnswers.set(page, value = true).success.value
+            val answers = userAnswers.set(page, value = false).success.value
             navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
               .mustBe(routes.SettlorIndividualNINOYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
         }
@@ -69,7 +69,7 @@ trait LivingSettlorRoutes {
 
     }
 
-    "navigate fromm SettlorIndividualDateOfBirthPage" in {
+    "navigate from SettlorIndividualDateOfBirthPage" in {
 
       val page = SettlorIndividualDateOfBirthPage(index)
 
@@ -80,7 +80,7 @@ trait LivingSettlorRoutes {
       }
     }
 
-    "navigate fromm SettlorIndividualNINOYesNoPage" when {
+    "navigate from SettlorIndividualNINOYesNoPage" when {
 
       val page = SettlorIndividualNINOYesNoPage(index)
 
@@ -104,15 +104,38 @@ trait LivingSettlorRoutes {
       }
     }
 
-    "navigate to SettlorIndividualAddressUKYesNoPage" in {
+    "navigate from SettlorIndividualNINOPage" in {
 
-      val page = SettlorIndividualAddressYesNoPage(index)
+      val page = SettlorIndividualNINOPage(index)
 
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          val answers = userAnswers.set(page, value = true).success.value
-          navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.SettlorIndividualAddressUKYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
+          navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
+      }
+    }
+
+    "navigate from SettlorIndividualAddressYesNoPage" when {
+
+      val page = SettlorIndividualAddressYesNoPage(index)
+
+      "answer is yes" in {
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers.set(page, value = true).success.value
+            navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.SettlorIndividualAddressUKYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+      "answer is no" in {
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers.set(page, value = false).success.value
+            navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
+        }
       }
     }
 
@@ -140,21 +163,20 @@ trait LivingSettlorRoutes {
       }
     }
 
-    "navigate to SettlorIndividualPassportYesNoPage" when {
+    "navigate from SettlorIndividualAddressUKPage" in {
 
-      "from SettlorIndividualAddressUKPage" in {
+      val page = SettlorIndividualAddressUKPage(index)
 
-        val page = SettlorIndividualAddressUKPage(index)
-
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
-            navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
-              .mustBe(routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
-        }
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
       }
-      "from SettlorIndividualAddressInternationalPage" in {
+    }
 
-        val page = SettlorIndividualAddressInternationalPage(index)
+    "navigate from SettlorIndividualAddressInternationalPage" in {
+
+      val page = SettlorIndividualAddressInternationalPage(index)
 
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
@@ -189,18 +211,52 @@ trait LivingSettlorRoutes {
       }
     }
 
-    "navigate fromm SettlorIndividualIDCardYesNoPage" in {
+    "navigate from SettlorIndividualPassportPage" in {
 
-      val page = SettlorIndividualIDCardYesNoPage(index)
+      val page = SettlorIndividualPassportPage(index)
 
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          val answers = userAnswers.set(page, value = true).success.value
-          navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.SettlorIndividualNINOYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
+          navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
       }
     }
 
-  }
+    "navigate from SettlorIndividualIDCardYesNoPage" when {
+      "answer is yes" in {
 
-}
+        val page = SettlorIndividualIDCardYesNoPage(index)
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers.set(page, value = true).success.value
+            navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.SettlorIndividualIDCardController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+      "answer is no" in {
+
+        val page = SettlorIndividualIDCardYesNoPage(index)
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers.set(page, value = false).success.value
+            navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
+        }
+      }
+    }
+
+    "navigate from SettlorIndividualIDCardPage" in {
+
+      val page = SettlorIndividualIDCardPage(index)
+
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
+      }
+
+    }
+
+  }

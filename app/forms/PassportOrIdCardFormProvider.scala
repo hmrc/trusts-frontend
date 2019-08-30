@@ -70,7 +70,7 @@ class PassportOrIdCardFormProvider @Inject() extends Mappings {
         requiredKey    = s"$prefix.expiryDate.error.required"
       ).verifying(firstError(
         maxDate(
-          LocalDate.of(2100, 1, 1),
+          LocalDate.of(2099, 12, 31),
           s"$prefix.expiryDate.error.future", "day", "month", "year"
         ),
         minDate(

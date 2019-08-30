@@ -35,7 +35,8 @@ import pages._
   with AssetRoutes
   with DeceasedSettlorRoutes
   with BeneficiaryRoutes
-  with PropertyOrLandRoutes {
+  with PropertyOrLandRoutes
+  with LivingSettlorRoutes {
 
   implicit val navigator : Navigator = new Navigator
 
@@ -63,6 +64,8 @@ import pages._
       behave like beneficiaryRoutes
 
       behave like propertyOrLandRoutes
+
+      behave like livingSettlorRoutes
 
     }
 

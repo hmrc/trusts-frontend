@@ -21,7 +21,7 @@ import controllers.IndexValidation
 import forms.SettlorIndividualOrBusinessFormProvider
 import models.{IndividualOrBusiness, NormalMode}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.SettlorIndividualOrBusinessPage
+import pages.living_settlor.SettlorIndividualOrBusinessPage
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
@@ -29,7 +29,7 @@ import views.html.living_settlor.SettlorIndividualOrBusinessView
 
 class SettlorIndividualOrBusinessControllerSpec extends SpecBase with IndexValidation {
 
-  lazy val settlorIndividualOrBusinessRoute = controllers.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
+  lazy val settlorIndividualOrBusinessRoute = routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   val formProvider = new SettlorIndividualOrBusinessFormProvider()
   val form = formProvider()
@@ -149,7 +149,7 @@ class SettlorIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
     "for a GET" must {
 
       def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
-        val route = controllers.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
+        val route = routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         FakeRequest(GET, route)
       }
@@ -166,7 +166,7 @@ class SettlorIndividualOrBusinessControllerSpec extends SpecBase with IndexValid
       def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
         val route =
-          controllers.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
+          routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         FakeRequest(POST, route)
           .withFormUrlEncodedBody(("value", IndividualOrBusiness.values.head.toString))

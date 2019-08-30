@@ -20,8 +20,7 @@ import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
 import models.{FullName, IndividualOrBusiness, InternationalAddress, NormalMode, PassportOrIdCardDetails, UKAddress}
-import pages.SettlorIndividualOrBusinessPage
-import pages.living_settlor._
+import pages.living_settlor.{SettlorIndividualOrBusinessPage, _}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -325,7 +324,7 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual controllers.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
+      redirectLocation(result).value mustEqual routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       application.stop()
     }
