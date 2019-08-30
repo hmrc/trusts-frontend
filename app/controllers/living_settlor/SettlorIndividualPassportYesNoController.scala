@@ -18,7 +18,7 @@ package controllers.living_settlor
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.living_settlor.SettlorIndividualPassportYesNoFormProvider
+import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
@@ -42,12 +42,12 @@ class SettlorIndividualPassportYesNoController @Inject()(
                                          validateIndex: IndexActionFilterProvider,
                                          requireData: DataRequiredAction,
                                          requiredAnswer: RequiredAnswerActionProvider,
-                                         formProvider: SettlorIndividualPassportYesNoFormProvider,
+                                         formProvider: YesNoFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: SettlorIndividualPassportYesNoView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = formProvider()
+  val form: Form[Boolean] = formProvider("settlorIndividualPassportYesNo")
 
   private def actions(index: Int, draftId: String) =
     identify andThen

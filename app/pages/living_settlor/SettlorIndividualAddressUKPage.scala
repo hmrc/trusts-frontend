@@ -25,5 +25,5 @@ final case class SettlorIndividualAddressUKPage(index : Int) extends QuestionPag
 
   override def path: JsPath = JsPath \ Settlors \ "living" \ index \ toString
 
-  override def toString: String = "ukAddress"
+  override def toString: String = "address"
 }

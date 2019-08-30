@@ -19,18 +19,21 @@ package controllers.living_settlor
 import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
-import forms.living_settlor.SettlorIndividualDateOfBirthFormProvider
+import controllers.IndexValidation
+import forms.DateOfBirthFormProvider
 import models.FullName
 import pages.living_settlor.{SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNamePage}
 import models.NormalMode
-import play.api.mvc.Call
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalacheck.Gen
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.living_settlor.SettlorIndividualDateOfBirthView
 
-class SettlorIndividualDateOfBirthControllerSpec extends SpecBase {
+class SettlorIndividualDateOfBirthControllerSpec extends SpecBase with IndexValidation {
 
-  val formProvider = new SettlorIndividualDateOfBirthFormProvider()
+  val formProvider = new DateOfBirthFormProvider()
   val form = formProvider()
   val index = 0
 
@@ -186,6 +189,44 @@ class SettlorIndividualDateOfBirthControllerSpec extends SpecBase {
 
       application.stop()
     }
+
+    "for a GET" must {
+
+      def getForIndex(index: Int): FakeRequest[AnyContentAsEmpty.type] = {
+        val route = routes.SettlorIndividualDateOfBirthController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+        FakeRequest(GET, route)
+      }
+
+      validateIndex(
+        Gen.const(LocalDate.of(2010,10,10)),
+        SettlorIndividualDateOfBirthPage.apply,
+        getForIndex
+      )
+
+    }
+
+    "for a POST" must {
+      def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+
+        val route =
+          routes.SettlorIndividualDateOfBirthController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+        FakeRequest(POST, route)
+          .withFormUrlEncodedBody(
+            "value.day"   -> validAnswer.getDayOfMonth.toString,
+            "value.month" -> validAnswer.getMonthValue.toString,
+            "value.year"  -> validAnswer.getYear.toString
+          )
+      }
+
+      validateIndex(
+        Gen.const(LocalDate.of(2010,10,10)),
+        SettlorIndividualDateOfBirthPage.apply,
+        postForIndex
+      )
+    }
+
 
   }
 }

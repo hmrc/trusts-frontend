@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package forms.living_settlor
+package forms
 
 import forms.mappings.Mappings
 import javax.inject.Inject
 import play.api.data.Form
 
-class SettlorIndividualAddressYesNoFormProvider @Inject() extends Mappings {
+class YesNoFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Boolean] =
+  def apply(prefix: String): Form[Boolean] =
     Form(
-      "value" -> boolean("settlorIndividualAddressYesNo.error.required")
+      "value" -> boolean(s"$prefix.error.required")
     )
 }

@@ -25,5 +25,5 @@ final case class SettlorIndividualAddressInternationalPage(index : Int) extends 
 
   override def path: JsPath = JsPath \ Settlors \ "living" \ index \ toString
 
-  override def toString: String = "internationalAddress"
+  override def toString: String = "address"
 }

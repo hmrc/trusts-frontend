@@ -29,7 +29,7 @@ class SettlorIndividualNINOViewSpec extends StringViewBehaviours {
   val index = 0
   val name = FullName("First", None, "Last")
 
-  val form = new NinoFormProvider()("settlorIndividualNINO")
+  val form = new NinoFormProvider()(messageKeyPrefix)
 
   "SettlorIndividualNINOView view" must {
 

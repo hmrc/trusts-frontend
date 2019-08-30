@@ -18,7 +18,8 @@ package controllers.living_settlor
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.living_settlor.SettlorIndividualDateOfBirthFormProvider
+import forms.DateOfBirthFormProvider
+//import forms.living_settlor.SettlorIndividualDateOfBirthFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
@@ -42,7 +43,7 @@ class SettlorIndividualDateOfBirthController @Inject()(
                                                   validateIndex: IndexActionFilterProvider,
                                                   requireData: DataRequiredAction,
                                                   requiredAnswer: RequiredAnswerActionProvider,
-                                                  formProvider: SettlorIndividualDateOfBirthFormProvider,
+                                                  formProvider: DateOfBirthFormProvider,
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: SettlorIndividualDateOfBirthView
                                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {

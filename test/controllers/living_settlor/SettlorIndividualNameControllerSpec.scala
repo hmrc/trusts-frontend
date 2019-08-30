@@ -139,7 +139,7 @@ class SettlorIndividualNameControllerSpec extends SpecBase with IndexValidation 
 
       val request =
         FakeRequest(POST, settlorIndividualNameRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+          .withFormUrlEncodedBody(("firstName", "first"), ("middleName", "middle"), ("lastName", "last"))
 
       val result = route(application, request).value
 

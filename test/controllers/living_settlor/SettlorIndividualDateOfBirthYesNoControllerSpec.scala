@@ -18,7 +18,7 @@ package controllers.living_settlor
 
 import base.SpecBase
 import controllers.IndexValidation
-import forms.living_settlor.SettlorIndividualDateOfBirthYesNoFormProvider
+import forms.YesNoFormProvider
 import models.{FullName, NormalMode}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.living_settlor.{SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNamePage}
@@ -32,8 +32,8 @@ class SettlorIndividualDateOfBirthYesNoControllerSpec extends SpecBase with Inde
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new SettlorIndividualDateOfBirthYesNoFormProvider()
-  val form = formProvider()
+  val formProvider = new YesNoFormProvider()
+  val form = formProvider("settlorIndividualDateOfBirthYesNo")
   val index = 0
   val name = FullName("First", Some("Middle"), "Last")
 
