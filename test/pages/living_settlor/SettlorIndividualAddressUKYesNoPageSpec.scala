@@ -16,9 +16,7 @@
 
 package pages.living_settlor
 
-import java.time.LocalDate
-
-import models.{InternationalAddress, PassportOrIdCardDetails, UKAddress, UserAnswers}
+import models.{InternationalAddress, UKAddress, UserAnswers}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
