@@ -35,12 +35,12 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers, draftId: String, canEdit: Boolean = true)(implicit messages: Messages) {
 
-  def settlorKindOfTrust: Option[AnswerRow] = userAnswers.get(SettlorKindOfTrustPage) map {
+  def settlorKindOfTrust(index: Int): Option[AnswerRow] = userAnswers.get(SettlorKindOfTrustPage(index)) map {
     x =>
       AnswerRow(
         "settlorKindOfTrust.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"settlorKindOfTrust.$x")),
-        routes.SettlorKindOfTrustController.onPageLoad(CheckMode, draftId).url
+        routes.SettlorKindOfTrustController.onPageLoad(CheckMode, index, draftId).url
       )
   }
 

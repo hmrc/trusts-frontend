@@ -18,19 +18,17 @@ package controllers
 
 import base.SpecBase
 import forms.SettlorKindOfTrustFormProvider
-import models.{NormalMode, SettlorKindOfTrust, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.{NormalMode, SettlorKindOfTrust}
 import pages.SettlorKindOfTrustPage
-import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.SettlorKindOfTrustView
 
 class SettlorKindOfTrustControllerSpec extends SpecBase {
 
-  lazy val settlorKindOfTrustRoute = routes.SettlorKindOfTrustController.onPageLoad(NormalMode, fakeDraftId).url
+  val index = 0
+
+  lazy val settlorKindOfTrustRoute = routes.SettlorKindOfTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   val formProvider = new SettlorKindOfTrustFormProvider()
   val form = formProvider()
@@ -50,14 +48,14 @@ class SettlorKindOfTrustControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form, NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(SettlorKindOfTrustPage, SettlorKindOfTrust.values.head).success.value
+      val userAnswers = emptyUserAnswers.set(SettlorKindOfTrustPage(0), SettlorKindOfTrust.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -70,7 +68,7 @@ class SettlorKindOfTrustControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(SettlorKindOfTrust.values.head), NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill(SettlorKindOfTrust.values.head), NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -110,7 +108,7 @@ class SettlorKindOfTrustControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }

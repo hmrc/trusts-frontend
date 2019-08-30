@@ -23,10 +23,10 @@ class SettlorKindOfTrustSpec extends PageBehaviours {
 
   "SettlorKindOfTrustPage" must {
 
-    beRetrievable[SettlorKindOfTrust](SettlorKindOfTrustPage)
+    beRetrievable[SettlorKindOfTrust](SettlorKindOfTrustPage(0))
 
-    beSettable[SettlorKindOfTrust](SettlorKindOfTrustPage)
+    beSettable[SettlorKindOfTrust](SettlorKindOfTrustPage(0))
 
-    beRemovable[SettlorKindOfTrust](SettlorKindOfTrustPage)
+    beRemovable[SettlorKindOfTrust](SettlorKindOfTrustPage(0))
   }
 }
