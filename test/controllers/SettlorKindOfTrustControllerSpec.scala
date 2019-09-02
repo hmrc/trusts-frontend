@@ -17,14 +17,18 @@
 package controllers
 
 import base.SpecBase
+import controllers.living_settlor.routes
 import forms.SettlorKindOfTrustFormProvider
 import models.{NormalMode, SettlorKindOfTrust}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.SettlorKindOfTrustPage
+import pages.living_settlor.SettlorIndividualAddressYesNoPage
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.SettlorKindOfTrustView
 
-class SettlorKindOfTrustControllerSpec extends SpecBase {
+class SettlorKindOfTrustControllerSpec extends SpecBase with IndexValidation {
 
   val index = 0
 
@@ -142,6 +146,39 @@ class SettlorKindOfTrustControllerSpec extends SpecBase {
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
+    }
+
+    "for a GET" must {
+
+      def getForIndex(index: Int): FakeRequest[AnyContentAsEmpty.type] = {
+        val route = routes.SettlorKindOfTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+        FakeRequest(GET, route)
+      }
+
+      validateIndex(
+        arbitrary[SettlorKindOfTrust],
+        SettlorKindOfTrustPage.apply,
+        getForIndex
+      )
+
+    }
+
+    "for a POST" must {
+      def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+
+        val route =
+          routes.SettlorKindOfTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+        FakeRequest(POST, route)
+          .withFormUrlEncodedBody("Value" -> "true")
+      }
+
+      validateIndex(
+        arbitrary[SettlorKindOfTrust],
+        SettlorKindOfTrustPage.apply,
+        postForIndex
+      )
     }
   }
 }
