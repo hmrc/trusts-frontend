@@ -27,7 +27,7 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import sections.Settlors
+import sections.LivingSettlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.annotations.LivingSettlor
 import views.html.living_settlor.SettlorIndividualPassportYesNoView
@@ -54,7 +54,7 @@ class SettlorIndividualPassportYesNoController @Inject()(
     identify andThen
       getData(draftId) andThen
       requireData andThen
-      validateIndex(index, Settlors) andThen
+      validateIndex(index, LivingSettlors) andThen
       requiredAnswer(RequiredAnswer(SettlorIndividualNamePage(index), routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, draftId)))
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {

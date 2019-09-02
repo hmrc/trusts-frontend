@@ -19,10 +19,10 @@ package sections
 import pages.QuestionPage
 import play.api.libs.json.{JsPath, JsValue}
 
-case object Settlors extends QuestionPage[List[JsValue]]{
+case object LivingSettlors extends QuestionPage[List[JsValue]]{
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "settlors"
+  override def toString: String = "livingSettlors"
 
 }
