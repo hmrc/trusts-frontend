@@ -14,16 +14,26 @@
  * limitations under the License.
  */
 
-package forms.living_settlor
+package forms
+
+import java.time.LocalDate
 
 import forms.mappings.Mappings
 import javax.inject.Inject
 import play.api.data.Form
 
-class SettlorIndividualDateOfBirthYesNoFormProvider @Inject() extends Mappings {
+class DateOfBirthFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Boolean] =
+  def apply(): Form[LocalDate] =
     Form(
-      "value" -> boolean("settlorIndividualDateOfBirthYesNo.error.required")
+      "value" -> localDate(
+        invalidKey     = "dateOfBirth.error.invalid",
+        allRequiredKey = "dateOfBirth.error.required.all",
+        twoRequiredKey = "dateOfBirth.error.required.two",
+        requiredKey    = "dateOfBirth.error.required"
+      ).verifying(firstError(
+        maxDate(LocalDate.now, "dateOfBirth.error.future", "day", "month", "year"),
+        minDate(LocalDate.of(1500,1,1), "dateOfBirth.error.past", "day", "month", "year")
+      ))
     )
 }

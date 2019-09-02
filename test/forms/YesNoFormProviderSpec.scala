@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package forms.living_settlor
+package forms
 
 import forms.behaviours.BooleanFieldBehaviours
 import play.api.data.FormError
 
-class SettlorIndividualDateOfBirthYesNoFormProviderSpec extends BooleanFieldBehaviours {
+class YesNoFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "settlorIndividualDateOfBirthYesNo.error.required"
+  val messagePrefix = "settlorIndividualDateOfBirthYesNo"
+  val requiredKey = s"$messagePrefix.error.required"
   val invalidKey = "error.boolean"
 
-  val form = new SettlorIndividualDateOfBirthYesNoFormProvider()()
+  val form = new YesNoFormProvider()(messagePrefix)
 
   ".value" must {
 
@@ -42,4 +43,6 @@ class SettlorIndividualDateOfBirthYesNoFormProviderSpec extends BooleanFieldBeha
       requiredError = FormError(fieldName, requiredKey)
     )
   }
+
 }
+

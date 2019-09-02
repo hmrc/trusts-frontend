@@ -16,8 +16,8 @@
 
 package views.living_settlor
 
+import forms.YesNoFormProvider
 import models.{FullName, NormalMode}
-import forms.living_settlor.SettlorIndividualIDCardYesNoFormProvider
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
@@ -29,7 +29,7 @@ class SettlorIndividualIDCardYesNoViewSpec extends YesNoViewBehaviours {
   val index = 0
   val name = FullName("First", Some("middle"), "Last")
 
-  val form = new SettlorIndividualIDCardYesNoFormProvider()()
+  val form = new YesNoFormProvider()(messageKeyPrefix)
 
   "SettlorIndividualIDCardYesNo view" must {
 

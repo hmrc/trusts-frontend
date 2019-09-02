@@ -23,7 +23,7 @@ import sections.Settlors
 
 final case class SettlorIndividualAddressInternationalPage(index : Int) extends QuestionPage[InternationalAddress] {
 
-  override def path: JsPath = JsPath \ Settlors \ "living" \ toString
+  override def path: JsPath = JsPath \ Settlors \ "living" \ index \ toString
 
-  override def toString: String = "internationalAddress"
+  override def toString: String = "address"
 }

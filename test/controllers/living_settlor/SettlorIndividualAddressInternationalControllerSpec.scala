@@ -41,7 +41,7 @@ class SettlorIndividualAddressInternationalControllerSpec extends SpecBase with 
   val index = 0
   val name = FullName("First", Some("Middle"), "Last")
 
-  lazy val settlorIndividualAddressInternationalRoute = routes.SettlorIndividualAddressInternationalController.onPageLoad(NormalMode, index, fakeDraftId).url
+  lazy val settlorIndividualAddressInternationalRoute = controllers.living_settlor.routes.SettlorIndividualAddressInternationalController.onPageLoad(NormalMode, index, fakeDraftId).url
 
 
   "SettlorIndividualAddressInternational Controller" must {

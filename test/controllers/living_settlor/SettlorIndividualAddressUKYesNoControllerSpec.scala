@@ -18,11 +18,11 @@ package controllers.living_settlor
 
 import base.SpecBase
 import controllers.IndexValidation
+import forms.YesNoFormProvider
 import models.{FullName, NormalMode}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.living_settlor.{SettlorIndividualAddressUKYesNoPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNamePage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
-import forms.living_settlor.SettlorIndividualAddressUKYesNoFormProvider
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -32,8 +32,8 @@ class SettlorIndividualAddressUKYesNoControllerSpec extends SpecBase with IndexV
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new SettlorIndividualAddressUKYesNoFormProvider()
-  val form = formProvider()
+  val formProvider = new YesNoFormProvider()
+  val form = formProvider("settlorIndividualAddressUKYesNo")
   val index = 0
   val name = FullName("First", Some("Middle"), "Last")
 

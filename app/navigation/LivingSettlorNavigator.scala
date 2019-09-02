@@ -43,6 +43,7 @@ class LivingSettlorNavigator extends Navigator {
     case SettlorIndividualIDCardYesNoPage(index) => _ =>  settlorIndividualIDCardYesNoPage(draftId, index)
     case SettlorIndividualIDCardPage(index) => _ => _ => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
     case SettlorIndividualOrBusinessPage(index) => _ => settlorIndividualOrBusinessPage(index, draftId)
+    case SettlorIndividualAnswerPage => _ => _ => controllers.routes.AddAssetsController.onPageLoad(draftId) // TDOD Change route
   }
 
   private def settlorIndividualDateOfBirthYesNoPage(draftId: String, index: Int)(answers: UserAnswers) =

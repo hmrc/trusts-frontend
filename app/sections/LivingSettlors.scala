@@ -14,22 +14,15 @@
  * limitations under the License.
  */
 
-package forms
+package sections
 
-import javax.inject.Inject
+import pages.QuestionPage
+import play.api.libs.json.{JsPath, JsValue}
 
-import forms.mappings.Mappings
-import play.api.data.Form
+case object LivingSettlors extends QuestionPage[List[JsValue]]{
 
-class TrusteesNinoFormProvider @Inject() extends Mappings {
+  override def path: JsPath = JsPath \ toString
 
-  def apply(messagePrefix: String): Form[String] =
-    Form(
-      "value" -> nino(s"$messagePrefix.error.required")
-        .verifying(
-          firstError(
-            isNotEmpty("value", s"$messagePrefix.error.required"),
-            isNinoValid("value", s"$messagePrefix.error.invalidFormat")
-          ))
-    )
+  override def toString: String = "livingSettlors"
+
 }

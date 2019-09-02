@@ -25,13 +25,11 @@ import models.{FullName, IndividualOrBusiness, NormalMode, PassportOrIdCardDetai
 import org.scalacheck.Arbitrary.arbitrary
 import pages.living_settlor.{SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualIDCardPage, SettlorIndividualNamePage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
-//import forms.living_settlor.SettlorIndividualIDCardFormProvider
-//import models.SettlorIndividualIDCard
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils._
-import utils.countryOptions.CountryOptionsNonUK
+import utils.countryOptions.CountryOptions
 import views.html.living_settlor.SettlorIndividualIDCardView
 
 class SettlorIndividualIDCardControllerSpec extends SpecBase with IndexValidation {
@@ -39,7 +37,7 @@ class SettlorIndividualIDCardControllerSpec extends SpecBase with IndexValidatio
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new PassportOrIdCardFormProvider()
-  val form = formProvider()
+  val form = formProvider("settlorIndividualIDCard")
   val index = 0
   val name = FullName("First", Some("Middle"), "Last")
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
@@ -62,7 +60,7 @@ class SettlorIndividualIDCardControllerSpec extends SpecBase with IndexValidatio
 
       val result = route(application, request).value
 
-      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptions].options
 
       status(result) mustEqual OK
 
@@ -87,7 +85,7 @@ class SettlorIndividualIDCardControllerSpec extends SpecBase with IndexValidatio
 
       val result = route(application, request).value
 
-      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptions].options
 
       status(result) mustEqual OK
 
@@ -159,7 +157,7 @@ class SettlorIndividualIDCardControllerSpec extends SpecBase with IndexValidatio
 
       val result = route(application, request).value
 
-      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+      val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptions].options
 
       status(result) mustEqual BAD_REQUEST
 

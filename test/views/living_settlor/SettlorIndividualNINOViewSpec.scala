@@ -16,8 +16,8 @@
 
 package views.living_settlor
 
+import forms.NinoFormProvider
 import models.{FullName, NormalMode}
-import forms.living_settlor.SettlorIndividualNINOFormProvider
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
@@ -29,7 +29,7 @@ class SettlorIndividualNINOViewSpec extends StringViewBehaviours {
   val index = 0
   val name = FullName("First", None, "Last")
 
-  val form = new SettlorIndividualNINOFormProvider()()
+  val form = new NinoFormProvider()(messageKeyPrefix)
 
   "SettlorIndividualNINOView view" must {
 

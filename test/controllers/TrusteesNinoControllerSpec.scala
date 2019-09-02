@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import forms.TrusteesNinoFormProvider
+import forms.NinoFormProvider
 import models.{FullName, IndividualOrBusiness, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
@@ -32,7 +32,7 @@ class TrusteesNinoControllerSpec extends SpecBase with IndexValidation {
 
   val leadTrusteeMessagePrefix = "leadTrusteesNino"
   val trusteeMessagePrefix = "trusteesNino"
-  val formProvider = new TrusteesNinoFormProvider()
+  val formProvider = new NinoFormProvider()
   val form = formProvider(trusteeMessagePrefix)
 
   val index = 0

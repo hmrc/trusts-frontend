@@ -18,7 +18,7 @@ package controllers.living_settlor
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.living_settlor.SettlorIndividualIDCardYesNoFormProvider
+import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
@@ -27,7 +27,7 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import sections.Settlors
+import sections.LivingSettlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.annotations.LivingSettlor
 import views.html.living_settlor.SettlorIndividualIDCardYesNoView
@@ -43,18 +43,18 @@ class SettlorIndividualIDCardYesNoController @Inject()(
                                          validateIndex: IndexActionFilterProvider,
                                          requireData: DataRequiredAction,
                                          requiredAnswer: RequiredAnswerActionProvider,
-                                         formProvider: SettlorIndividualIDCardYesNoFormProvider,
+                                         formProvider: YesNoFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: SettlorIndividualIDCardYesNoView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = formProvider()
+  val form: Form[Boolean] = formProvider("settlorIndividualIDCardYesNo")
 
   private def actions(index: Int, draftId: String) =
     identify andThen
       getData(draftId) andThen
       requireData andThen
-      validateIndex(index, Settlors) andThen
+      validateIndex(index, LivingSettlors) andThen
       requiredAnswer(RequiredAnswer(SettlorIndividualNamePage(index), routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, draftId)))
 
 

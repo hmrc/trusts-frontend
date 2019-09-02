@@ -43,32 +43,40 @@ import models.PassportOrIdCardDetails
 
 class PassportOrIdCardFormProvider @Inject() extends Mappings {
 
+  val maxLengthCountyField = 100
+  val maxLengthNumberField = 30
 
-  def apply(): Form[PassportOrIdCardDetails] = Form(
+  def apply(prefix: String): Form[PassportOrIdCardDetails] = Form(
     mapping(
-      "country" -> text("settlorIndividualPassport.country.error.required")
+      "country" -> text(s"$prefix.country.error.required")
         .verifying(
           firstError(
-            maxLength(100, "settlorIndividualPassport.country.error.length"),
-            isNotEmpty("country", "settlorIndividualPassport.country.error.required")
+            maxLength(maxLengthCountyField, s"$prefix.country.error.length"),
+            isNotEmpty("country", s"$prefix.country.error.required")
           )
         ),
-      "number" -> text("settlorIndividualPassport.number.error.required")
+      "number" -> text(s"$prefix.number.error.required")
         .verifying(
           firstError(
-            maxLength(30, "settlorIndividualPassport.number.error.length"),
-            regexp(Validation.passportOrIdCardNumberRegEx, "settlorIndividualPassport.number.error.invalid"),
-            isNotEmpty("number", "settlorIndividualPassport.number.error.required")
+            maxLength(maxLengthNumberField, s"$prefix.number.error.length"),
+            regexp(Validation.passportOrIdCardNumberRegEx, s"$prefix.number.error.invalid"),
+            isNotEmpty("number", s"$prefix.number.error.required")
           )
         ),
       "expiryDate" -> localDate(
-        invalidKey     = "settlorIndividualPassport.expiryDate.error.invalid",
-        allRequiredKey = "settlorIndividualPassport.expiryDate.error.required.all",
-        twoRequiredKey = "settlorIndividualPassport.expiryDate.error.required.two",
-        requiredKey    = "settlorIndividualPassport.expiryDate.error.required"
+        invalidKey     = s"$prefix.expiryDate.error.invalid",
+        allRequiredKey = s"$prefix.expiryDate.error.required.all",
+        twoRequiredKey = s"$prefix.expiryDate.error.required.two",
+        requiredKey    = s"$prefix.expiryDate.error.required"
       ).verifying(firstError(
-        maxDate(LocalDate.now, s"settlorIndividualPassport.expiryDate.error.future", "day", "month", "year"),
-        minDate(LocalDate.of(1500,1,1), s"settlorIndividualPassport.expiryDate.error.past", "day", "month", "year")
+        maxDate(
+          LocalDate.of(2099, 12, 31),
+          s"$prefix.expiryDate.error.future", "day", "month", "year"
+        ),
+        minDate(
+          LocalDate.of(1500,1,1),
+          s"$prefix.expiryDate.error.past", "day", "month", "year"
+        )
       ))
 
     )(PassportOrIdCardDetails.apply)(PassportOrIdCardDetails.unapply)

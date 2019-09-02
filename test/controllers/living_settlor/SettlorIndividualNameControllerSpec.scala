@@ -18,14 +18,11 @@ package controllers.living_settlor
 
 import base.SpecBase
 import controllers.IndexValidation
+import forms.living_settlor.SettlorIndividualNameFormProvider
 import models.{FullName, IndividualOrBusiness, NormalMode}
-import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.living_settlor.SettlorIndividualNamePage
-import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
-import forms.living_settlor.SettlorIndividualNameFormProvider
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.living_settlor.SettlorIndividualNameView
@@ -142,7 +139,7 @@ class SettlorIndividualNameControllerSpec extends SpecBase with IndexValidation 
 
       val request =
         FakeRequest(POST, settlorIndividualNameRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+          .withFormUrlEncodedBody(("firstName", "first"), ("middleName", "middle"), ("lastName", "last"))
 
       val result = route(application, request).value
 
