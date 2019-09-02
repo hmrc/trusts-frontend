@@ -1159,3 +1159,9 @@ addAnAssetYesNo.error.required = Select yes if you want to add an asset
 addATrusteeYesNo.title = Do you want to add a trustee?
 addATrusteeYesNo.heading = Do you want to add a trustee?
 addATrusteeYesNo.error.required = Select yes if you want to add a trustee
+
+settlorBusinessDetails.title = settlorBusinessDetails
+settlorBusinessDetails.heading = settlorBusinessDetails
+settlorBusinessDetails.checkYourAnswersLabel = settlorBusinessDetails
+settlorBusinessDetails.error.required = Enter settlorBusinessDetails
+settlorBusinessDetails.error.length = SettlorBusinessDetails must be 105 characters or less
