@@ -87,17 +87,18 @@ site.address.international.line2 = Address line 2
 site.address.international.line3 = Address line 3 (optional)
 site.address.international.line4 = Address line 4 (optional)
 site.address.international.country = Country
-site.address.international.line1.required = Enter address line 1
-site.address.international.line2.required = Enter address line 2
-site.address.international.country.required = Select a country
-site.address.international.line1.length = Address line 1 must be 35 characters or less
-site.address.international.line2.length = Address line 2 must be 35 characters or less
-site.address.international.line3.length = Address line 3 must be 35 characters or less
-site.address.international.line4.length = Address line 4 must be 35 characters or less
-site.address.international.line1.invalidCharacters = Address line 1 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
-site.address.international.line2.invalidCharacters = Address line 2 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
-site.address.international.line3.invalidCharacters = Address line 3 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
-site.address.international.line4.invalidCharacters = Address line 4 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+
+internationalAddress.error.line1.required = Enter address line 1
+internationalAddress.error.line2.required = Enter address line 2
+internationalAddress.error.country.required = Select a country
+internationalAddress.error.line1.length = Address line 1 must be 35 characters or less
+internationalAddress.error.line2.length = Address line 2 must be 35 characters or less
+internationalAddress.error.line3.length = Address line 3 must be 35 characters or less
+internationalAddress.error.line4.length = Address line 4 must be 35 characters or less
+internationalAddress.error.line1.invalidCharacters = Address line 1 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+internationalAddress.error.line2.invalidCharacters = Address line 2 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+internationalAddress.error.line3.invalidCharacters = Address line 3 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+internationalAddress.error.line4.invalidCharacters = Address line 4 must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
 
 individualOrBusiness.individual = Individual
 individualOrBusiness.business = Business
@@ -1093,10 +1094,10 @@ settlorIndividualAddressUK.title = What is the settlor’s address?
 settlorIndividualAddressUK.heading = What is {0}’s address?
 settlorIndividualAddressUK.checkYourAnswersLabel = What is {0}’s address?
 
-settlorIndividualAddressUKYesNo.title = Is the settlor’s address in the UK?
-settlorIndividualAddressUKYesNo.heading = Is {0}’s address in the UK?
-settlorIndividualAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
-settlorIndividualAddressUKYesNo.error.required = Select yes if the settlor’s address is in the UK
+settlorIndividualAddressUKYesNo.title = Does the settlor live in the UK?
+settlorIndividualAddressUKYesNo.heading = Does {0}’s live in the UK?
+settlorIndividualAddressUKYesNo.checkYourAnswersLabel = Does {0}’s live in the UK?
+settlorIndividualAddressUKYesNo.error.required = Select yes if the settlor lives in the UK
 
 settlorIndividualIDCard.title = What are the settlor’s ID card details?
 settlorIndividualIDCard.heading = What are {0}’s ID card details?
