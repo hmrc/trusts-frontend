@@ -1159,3 +1159,11 @@ addAnAssetYesNo.error.required = Select yes if you want to add an asset
 addATrusteeYesNo.title = Do you want to add a trustee?
 addATrusteeYesNo.heading = Do you want to add a trustee?
 addATrusteeYesNo.error.required = Select yes if you want to add a trustee
+
+settlorDetails.title = settlorDetails
+settlorDetails.heading = Which of {0}’s details do you know?
+settlorDetails.option1 = Unique Taxpayer Reference
+settlorDetails.option2 = Address
+settlorDetails.checkYourAnswersLabel = Which of {0}’s details do you know?
+settlorDetails.error.required = Select Select which of the business’s details you know
+

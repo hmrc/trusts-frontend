@@ -24,6 +24,11 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
+  implicit lazy val arbitrarySettlorDetails: Arbitrary[SettlorDetails] =
+    Arbitrary {
+      Gen.oneOf(SettlorDetails.values.toSeq)
+    }
+
   implicit lazy val arbitrarySettlorIndividualPassport: Arbitrary[PassportOrIdCardDetails] =
     Arbitrary {
       for {
