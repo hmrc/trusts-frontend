@@ -1159,3 +1159,8 @@ addAnAssetYesNo.error.required = Select yes if you want to add an asset
 addATrusteeYesNo.title = Do you want to add a trustee?
 addATrusteeYesNo.heading = Do you want to add a trustee?
 addATrusteeYesNo.error.required = Select yes if you want to add a trustee
+
+settlorHandoverReliefYesNo.title = settlorHandoverReliefYesNo
+settlorHandoverReliefYesNo.heading = settlorHandoverReliefYesNo
+settlorHandoverReliefYesNo.checkYourAnswersLabel = settlorHandoverReliefYesNo
+settlorHandoverReliefYesNo.error.required = Select yes if settlorHandoverReliefYesNo
