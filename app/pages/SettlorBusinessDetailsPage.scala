@@ -17,10 +17,11 @@
 package pages
 
 import play.api.libs.json.JsPath
+import sections.Settlors
 
-case object SettlorBusinessDetailsPage extends QuestionPage[String] {
+case class SettlorBusinessDetailsPage(index : Int) extends QuestionPage[String] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \Settlors \ "living" \ index \ toString
 
   override def toString: String = "settlorBusinessDetails"
 }

@@ -23,10 +23,10 @@ class SettlorBusinessDetailsPageSpec extends PageBehaviours {
 
   "SettlorBusinessDetailsPage" must {
 
-    beRetrievable[String](SettlorBusinessDetailsPage)
+    beRetrievable[String](SettlorBusinessDetailsPage(0))
 
-    beSettable[String](SettlorBusinessDetailsPage)
+    beSettable[String](SettlorBusinessDetailsPage(0))
 
-    beRemovable[String](SettlorBusinessDetailsPage)
+    beRemovable[String](SettlorBusinessDetailsPage(0))
   }
 }

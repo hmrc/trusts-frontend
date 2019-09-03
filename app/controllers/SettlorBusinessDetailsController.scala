@@ -17,6 +17,7 @@
 package controllers
 
 import controllers.actions._
+import controllers.filters.IndexActionFilterProvider
 import forms.SettlorBusinessDetailsFormProvider
 import javax.inject.Inject
 import models.Mode
@@ -26,6 +27,7 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import sections.LivingSettlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.SettlorBusinessDetailsView
 
@@ -37,6 +39,7 @@ class SettlorBusinessDetailsController @Inject()(
                                         navigator: Navigator,
                                         identify: IdentifierAction,
                                         getData: DraftIdRetrievalActionProvider,
+                                        validateIndex : IndexActionFilterProvider,
                                         requireData: DataRequiredAction,
                                         formProvider: SettlorBusinessDetailsFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
@@ -45,10 +48,10 @@ class SettlorBusinessDetailsController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData andThen validateIndex(index, LivingSettlors)) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(SettlorBusinessDetailsPage) match {
+      val preparedForm = request.userAnswers.get(SettlorBusinessDetailsPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -56,7 +59,7 @@ class SettlorBusinessDetailsController @Inject()(
       Ok(view(preparedForm, mode, index, draftId))
   }
 
-  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData andThen validateIndex(index, LivingSettlors)).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -65,9 +68,9 @@ class SettlorBusinessDetailsController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorBusinessDetailsPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorBusinessDetailsPage(index),  value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SettlorBusinessDetailsPage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(SettlorBusinessDetailsPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

@@ -17,18 +17,21 @@
 package controllers
 
 import base.SpecBase
+import controllers.living_settlor.routes
 import forms.SettlorBusinessDetailsFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{InternationalAddress, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.SettlorBusinessDetailsPage
+import pages.living_settlor.SettlorIndividualAddressInternationalPage
 import play.api.inject.bind
 import play.api.libs.json.{JsString, Json}
-import play.api.mvc.Call
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.SettlorBusinessDetailsView
 
-class SettlorBusinessDetailsControllerSpec extends SpecBase {
+class SettlorBusinessDetailsControllerSpec extends SpecBase with IndexValidation {
 
   val formProvider = new SettlorBusinessDetailsFormProvider()
   val form = formProvider()
@@ -58,7 +61,7 @@ class SettlorBusinessDetailsControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(SettlorBusinessDetailsPage, "answer").success.value
+      val userAnswers = emptyUserAnswers.set(SettlorBusinessDetailsPage(index), "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -146,5 +149,39 @@ class SettlorBusinessDetailsControllerSpec extends SpecBase {
 
       application.stop()
     }
+  }
+
+
+  "for a GET" must {
+
+    def getForIndex(index: Int): FakeRequest[AnyContentAsEmpty.type] = {
+      val route = routes.SettlorBusinessDetailsController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+      FakeRequest(GET, route)
+    }
+
+    validateIndex(
+      arbitrary[String],
+      SettlorBusinessDetailsPage.apply,
+      getForIndex
+    )
+
+  }
+
+  "for a POST" must {
+    def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+
+      val route =
+        routes.SettlorBusinessDetailsController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+      FakeRequest(POST, route)
+        .withFormUrlEncodedBody("Value" -> "true")
+    }
+
+    validateIndex(
+      arbitrary[String],
+      SettlorBusinessDetailsPage.apply,
+      postForIndex
+    )
   }
 }
