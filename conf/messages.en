@@ -1160,7 +1160,7 @@ addATrusteeYesNo.title = Do you want to add a trustee?
 addATrusteeYesNo.heading = Do you want to add a trustee?
 addATrusteeYesNo.error.required = Select yes if you want to add a trustee
 
-settlorHandoverReliefYesNo.title = settlorHandoverReliefYesNo
-settlorHandoverReliefYesNo.heading = settlorHandoverReliefYesNo
-settlorHandoverReliefYesNo.checkYourAnswersLabel = settlorHandoverReliefYesNo
-settlorHandoverReliefYesNo.error.required = Select yes if settlorHandoverReliefYesNo
+settlorHandoverReliefYesNo.title = Was holdover relief claimed on any assets put into the trust?
+settlorHandoverReliefYesNo.heading = Was holdover relief claimed on any assets put into the trust?
+settlorHandoverReliefYesNo.checkYourAnswersLabel = Was holdover relief claimed on any assets put into the trust?
+settlorHandoverReliefYesNo.error.required = Select yes if holdover relief was claimed on any assets put into the trust?
