@@ -16,6 +16,7 @@
 
 package views.living_settlor
 
+import controllers.routes
 import forms.PassportOrIdCardFormProvider
 import models.{FullName, NormalMode, PassportOrIdCardDetails}
 import play.api.data.Form
@@ -31,7 +32,7 @@ class SettlorIndividualIDCardViewSpec extends QuestionViewBehaviours[PassportOrI
   val index = 0
   val name = FullName("First", Some("Middle"), "Last")
 
-  override val form = new PassportOrIdCardFormProvider()()
+  override val form = new PassportOrIdCardFormProvider()("settlorIndividualPassport")
 
   "SettlorIndividualIDCardView" must {
 

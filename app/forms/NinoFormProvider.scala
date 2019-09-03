@@ -14,6 +14,22 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-case object SettlorIndividualAnswerPage extends Page
+import javax.inject.Inject
+
+import forms.mappings.Mappings
+import play.api.data.Form
+
+class NinoFormProvider @Inject() extends Mappings {
+
+  def apply(messagePrefix: String): Form[String] =
+    Form(
+      "value" -> nino(s"$messagePrefix.error.required")
+        .verifying(
+          firstError(
+            isNotEmpty("value", s"$messagePrefix.error.required"),
+            isNinoValid("value", s"$messagePrefix.error.invalidFormat")
+          ))
+    )
+}

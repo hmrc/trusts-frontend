@@ -20,10 +20,8 @@ import base.SpecBase
 import controllers.IndexValidation
 import forms.UKAddressFormProvider
 import models.{FullName, NormalMode, UKAddress}
-import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.living_settlor.{SettlorIndividualAddressUKPage, SettlorIndividualNINOPage, SettlorIndividualNamePage}
-import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -39,7 +37,6 @@ class SettlorIndividualAddressUKControllerSpec extends SpecBase with IndexValida
   val name = FullName("First", Some("Middle"), "Last")
 
   lazy val settlorIndividualAddressUKRoute: String = routes.SettlorIndividualAddressUKController.onPageLoad(NormalMode, index, fakeDraftId).url
-
 
   "SettlorIndividualAddressUK Controller" must {
 

@@ -14,21 +14,17 @@
  * limitations under the License.
  */
 
-package forms.living_settlor
+package pages.entitystatus
 
-import forms.mappings.Mappings
-import javax.inject.Inject
-import play.api.data.Form
+import models.Status
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import sections.Settlors
 
-class SettlorIndividualNINOFormProvider @Inject() extends Mappings {
+final case class LivingSettlorStatus(index : Int) extends QuestionPage[Status] {
 
-  def apply(): Form[String] =
-    Form("value" -> nino("settlorIndividualNINO.error.required")
-      .verifying(
-        firstError(
-          isNotEmpty("value", "settlorIndividualNINO.error.required"),
-          isNinoValid("value", "settlorIndividualNINO.error.invalid")
-        )))
+  override def path: JsPath = JsPath \ Settlors \ "living" \ index \ toString
+
+  override def toString: String = "status"
+
 }
-
-

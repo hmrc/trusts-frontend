@@ -22,15 +22,14 @@ import javax.inject.Inject
 import models.NormalMode
 import models.Status.Completed
 import navigation.Navigator
-import pages.SettlorIndividualAnswerPage
-import pages.entitystatus.AssetStatus
-import pages.living_settlor.SettlorIndividualOrBusinessPage
+import pages.entitystatus.LivingSettlorStatus
+import pages.living_settlor.{SettlorIndividualAnswerPage, SettlorIndividualOrBusinessPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
-import utils.annotations.PropertyOrLand
+import utils.annotations.LivingSettlor
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.living_settlor.SettlorIndividualAnswersView
@@ -40,7 +39,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class SettlorIndividualAnswerController @Inject()(
                                       override val messagesApi: MessagesApi,
                                       sessionRepository: SessionRepository,
-                                      @PropertyOrLand navigator: Navigator,
+                                      @LivingSettlor navigator: Navigator,
                                       identify: IdentifierAction,
                                       getData: DraftIdRetrievalActionProvider,
                                       requireData: DataRequiredAction,
@@ -91,7 +90,7 @@ class SettlorIndividualAnswerController @Inject()(
   def onSubmit(index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
     implicit request =>
 
-      val answers = request.userAnswers.set(AssetStatus(index), Completed)
+      val answers = request.userAnswers.set(LivingSettlorStatus(index), Completed)
 
       for {
         updatedAnswers <- Future.fromTry(answers)

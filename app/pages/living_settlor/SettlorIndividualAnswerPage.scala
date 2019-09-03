@@ -14,16 +14,8 @@
  * limitations under the License.
  */
 
-package forms.living_settlor
+package pages.living_settlor
 
-import forms.mappings.Mappings
-import javax.inject.Inject
-import play.api.data.Form
+import pages.Page
 
-class SettlorIndividualIDCardYesNoFormProvider @Inject() extends Mappings {
-
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("settlorIndividualIDCardYesNo.error.required")
-    )
-}
+case object SettlorIndividualAnswerPage extends Page

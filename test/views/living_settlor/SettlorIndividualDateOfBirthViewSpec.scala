@@ -18,8 +18,8 @@ package views.living_settlor
 
 import java.time.LocalDate
 
+import forms.DateOfBirthFormProvider
 import models.{FullName, NormalMode}
-import forms.living_settlor.SettlorIndividualDateOfBirthFormProvider
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
@@ -31,7 +31,7 @@ class SettlorIndividualDateOfBirthViewSpec extends QuestionViewBehaviours[LocalD
   val index = 0
   val name = FullName("First", Some("middle"), "Last")
 
-  val form = new SettlorIndividualDateOfBirthFormProvider()()
+  val form = new DateOfBirthFormProvider()()
 
   "SettlorIndividualDateOfBirthView view" must {
 

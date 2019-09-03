@@ -27,7 +27,7 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import sections.Settlors
+import sections.LivingSettlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.annotations.LivingSettlor
 import views.html.living_settlor.SettlorIndividualOrBusinessView
@@ -52,7 +52,7 @@ class SettlorIndividualOrBusinessController @Inject()(
   private def actions(index: Int, draftId: String) =
     identify andThen getData(draftId) andThen
       requireData andThen
-      validateIndex(index, Settlors)
+      validateIndex(index, LivingSettlors)
 
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
