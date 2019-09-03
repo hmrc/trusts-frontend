@@ -27,6 +27,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import utils.annotations.LivingSettlor
 import views.html.SettlorHandoverReliefYesNoView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -34,7 +35,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class SettlorHandoverReliefYesNoController @Inject()(
                                          override val messagesApi: MessagesApi,
                                          sessionRepository: SessionRepository,
-                                         navigator: Navigator,
+                                         @LivingSettlor navigator: Navigator,
                                          identify: IdentifierAction,
                                          getData: DraftIdRetrievalActionProvider,
                                          requiredAnswer: RequiredAnswerActionProvider,
@@ -44,7 +45,7 @@ class SettlorHandoverReliefYesNoController @Inject()(
                                          view: SettlorHandoverReliefYesNoView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = formProvider("SettlorHandoverReliefYesNo")
+  val form: Form[Boolean] = formProvider("settlorHandoverReliefYesNo")
 
   private def actions(draftId: String) =
     identify andThen

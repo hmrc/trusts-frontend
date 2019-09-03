@@ -27,7 +27,7 @@ import views.html.SettlorHandoverReliefYesNoView
 class SettlorHandoverReliefYesNoControllerSpec extends SpecBase {
 
   val formProvider = new YesNoFormProvider()
-  val form = formProvider("SettlorHandoverReliefYesNo")
+  val form = formProvider("settlorHandoverReliefYesNo")
 
   lazy val settlorHandoverReliefYesNoRoute = routes.SettlorHandoverReliefYesNoController.onPageLoad(NormalMode, fakeDraftId).url
 
