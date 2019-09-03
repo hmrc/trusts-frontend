@@ -17,15 +17,17 @@
 package controllers
 
 import controllers.actions._
+import controllers.filters.IndexActionFilterProvider
 import forms.SettlorDetailsFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode, SettlorDetails}
 import navigation.Navigator
-import pages.SettlorDetailsPage
+import pages.{SettlorBusinessDetailsPage, SettlorDetailsPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import sections.LivingSettlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.SettlorDetailsView
 
@@ -37,6 +39,7 @@ class SettlorDetailsController @Inject()(
                                        navigator: Navigator,
                                        identify: IdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
+                                       validateIndex : IndexActionFilterProvider,
                                        requireData: DataRequiredAction,
                                        formProvider: SettlorDetailsFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
@@ -45,34 +48,36 @@ class SettlorDetailsController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData andThen validateIndex(index, LivingSettlors)) {
     implicit request =>
 
 
-      val preparedForm = request.userAnswers.get(SettlorDetailsPage) match {
+      val preparedForm = request.userAnswers.get(SettlorDetailsPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      val name: Option[String] = request.userAnswers.get(SettlorNamePage).map{ name =>
-        Ok(view(preparedForm, mode, draftId, name))
-      }
+      request.userAnswers.get(SettlorBusinessDetailsPage(index)).map{ name =>
+        Ok(view(preparedForm, mode, index, draftId, name))
+      } getOrElse Redirect(routes.SessionExpiredController.onPageLoad())
 
 
   }
 
-  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+  def onSubmit(mode: Mode, index : Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData andThen validateIndex(index, LivingSettlors)).async {
     implicit request =>
-
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, ???))),
-
+          Future.successful {
+            request.userAnswers.get(SettlorBusinessDetailsPage(index)).map { name =>
+              BadRequest(view(formWithErrors, mode, index, draftId, name))
+            } getOrElse Redirect(routes.SessionExpiredController.onPageLoad())
+          },
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorDetailsPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorDetailsPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SettlorDetailsPage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(SettlorDetailsPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

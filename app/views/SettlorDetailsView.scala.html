@@ -22,19 +22,19 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, name: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, index : Int, draftId: String, name : String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("settlorDetails.title")}"
     ) {
 
-    @formHelper(action = SettlorDetailsController.onSubmit(mode, draftId), 'autoComplete -> "off") {
+    @formHelper(action = SettlorDetailsController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("settlorDetails.heading", name)
+        @components.heading("settlorDetails.heading", Some(name))
 
         @components.input_radio(
             field = form("value"),

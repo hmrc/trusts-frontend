@@ -24,8 +24,8 @@ import pages.shares._
 
 trait PageGenerators {
 
-  implicit lazy val arbitrarySettlorDetailsPage: Arbitrary[SettlorDetailsPage.type] =
-    Arbitrary(SettlorDetailsPage)
+  implicit lazy val arbitrarySettlorDetailsPage: Arbitrary[SettlorDetailsPage] =
+    Arbitrary(SettlorDetailsPage(0))
 
   implicit lazy val arbitrarySettlorIndividualPassportYesNoPage: Arbitrary[SettlorIndividualPassportYesNoPage] =
     Arbitrary(SettlorIndividualPassportYesNoPage(0))

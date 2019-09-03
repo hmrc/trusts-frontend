@@ -23,10 +23,10 @@ class SettlorDetailsSpec extends PageBehaviours {
 
   "SettlorDetailsPage" must {
 
-    beRetrievable[SettlorDetails](SettlorDetailsPage)
+    beRetrievable[SettlorDetails](SettlorDetailsPage(0))
 
-    beSettable[SettlorDetails](SettlorDetailsPage)
+    beSettable[SettlorDetails](SettlorDetailsPage(0))
 
-    beRemovable[SettlorDetails](SettlorDetailsPage)
+    beRemovable[SettlorDetails](SettlorDetailsPage(0))
   }
 }

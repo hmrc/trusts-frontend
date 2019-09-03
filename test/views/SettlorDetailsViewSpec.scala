@@ -29,10 +29,14 @@ class SettlorDetailsViewSpec extends ViewBehaviours {
 
   val form = new SettlorDetailsFormProvider()()
 
+  val index = 0
+
+  val fakeName = "Test User"
+
   val view = viewFor[SettlorDetailsView](Some(emptyUserAnswers))
 
   def applyView(form: Form[_]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
+    view.apply(form, NormalMode,index, fakeDraftId, fakeName)(fakeRequest, messages)
 
   "SettlorDetailsView" must {
 
