@@ -1160,8 +1160,9 @@ addATrusteeYesNo.title = Do you want to add a trustee?
 addATrusteeYesNo.heading = Do you want to add a trustee?
 addATrusteeYesNo.error.required = Select yes if you want to add a trustee
 
-settlorBusinessDetails.title = settlorBusinessDetails
-settlorBusinessDetails.heading = settlorBusinessDetails
-settlorBusinessDetails.checkYourAnswersLabel = settlorBusinessDetails
-settlorBusinessDetails.error.required = Enter settlorBusinessDetails
-settlorBusinessDetails.error.length = SettlorBusinessDetails must be 105 characters or less
+settlorBusinessDetails.title = What is the business name?
+settlorBusinessDetails.heading = What is the business name?
+settlorBusinessDetails.checkYourAnswersLabel = What is the business name?
+settlorBusinessDetails.error.required = Enter the business’s name
+settlorBusinessDetails.error.length = Business’s name must be 105 characters or less
+settlorBusinessDetails.error.invalid = Business's name must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
