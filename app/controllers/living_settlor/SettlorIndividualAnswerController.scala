@@ -66,6 +66,7 @@ class SettlorIndividualAnswerController @Inject()(
         AnswerSection(
           None,
           Seq(
+            answers.settlorHandoverReliefYesNo,
             answers.settlorIndividualOrBusiness(index),
             answers.settlorIndividualName(index),
             answers.settlorIndividualDateOfBirthYesNo(index),

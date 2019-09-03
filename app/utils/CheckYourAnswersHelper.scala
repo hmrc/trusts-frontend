@@ -40,7 +40,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorHandoverReliefYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SettlorHandoverReliefYesNoController.onPageLoad(CheckMode, draftId).url
+        routes.SettlorHandoverReliefYesNoController.onPageLoad(CheckMode, draftId).url,
+        canEdit = canEdit
       )
   }
 
