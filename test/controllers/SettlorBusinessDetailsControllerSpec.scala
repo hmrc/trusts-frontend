@@ -32,8 +32,9 @@ class SettlorBusinessDetailsControllerSpec extends SpecBase {
 
   val formProvider = new SettlorBusinessDetailsFormProvider()
   val form = formProvider()
+  val index = 0
 
-  lazy val settlorBusinessDetailsRoute = routes.SettlorBusinessDetailsController.onPageLoad(NormalMode, fakeDraftId).url
+  lazy val settlorBusinessDetailsRoute = routes.SettlorBusinessDetailsController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "SettlorBusinessDetails Controller" must {
 
@@ -50,7 +51,7 @@ class SettlorBusinessDetailsControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form, NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -70,7 +71,7 @@ class SettlorBusinessDetailsControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill("answer"), NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -109,7 +110,7 @@ class SettlorBusinessDetailsControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
