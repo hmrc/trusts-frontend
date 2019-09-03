@@ -16,8 +16,7 @@
 
 package views
 
-import controllers.routes
-import forms.SettlorHandoverReliefYesNoFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -28,7 +27,7 @@ class SettlorHandoverReliefYesNoViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "settlorHandoverReliefYesNo"
 
-  val form = new SettlorHandoverReliefYesNoFormProvider()()
+  val form = new YesNoFormProvider()(messageKeyPrefix)
 
   "SettlorHandoverReliefYesNo view" must {
 
