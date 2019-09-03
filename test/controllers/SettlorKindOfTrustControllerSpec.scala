@@ -17,12 +17,10 @@
 package controllers
 
 import base.SpecBase
-import controllers.living_settlor.routes
 import forms.SettlorKindOfTrustFormProvider
 import models.{NormalMode, SettlorKindOfTrust}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.SettlorKindOfTrustPage
-import pages.living_settlor.SettlorIndividualAddressYesNoPage
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

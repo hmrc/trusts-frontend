@@ -17,6 +17,7 @@
 package controllers
 
 import controllers.actions._
+import controllers.filters.IndexActionFilterProvider
 import forms.SettlorKindOfTrustFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode}
@@ -26,6 +27,7 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import sections.LivingSettlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.SettlorKindOfTrustView
 
@@ -38,14 +40,21 @@ class SettlorKindOfTrustController @Inject()(
                                        identify: IdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
+                                       validateIndex: IndexActionFilterProvider,
                                        formProvider: SettlorKindOfTrustFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: SettlorKindOfTrustView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
+  def actions(draftId: String, index: Int) =
+    identify andThen
+      getData(draftId) andThen
+      requireData andThen
+      validateIndex(index, LivingSettlors)
+
   val form = formProvider()
 
-  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (actions(draftId, index)) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(SettlorKindOfTrustPage(index)) match {
@@ -56,7 +65,7 @@ class SettlorKindOfTrustController @Inject()(
       Ok(view(preparedForm, mode, index, draftId))
   }
 
-  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (actions(draftId, index)).async {
     implicit request =>
 
       form.bindFromRequest().fold(
