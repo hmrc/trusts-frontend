@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import forms.YesNoFormProvider
 import models.NormalMode
-import pages.SettlorHandoverReliefYesNoPage
+import pages.{SettlorHandoverReliefYesNoPage, SetupAfterSettlorDiedPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.SettlorHandoverReliefYesNoView
@@ -35,7 +35,9 @@ class SettlorHandoverReliefYesNoControllerSpec extends SpecBase {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, false).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, settlorHandoverReliefYesNoRoute)
 
@@ -53,7 +55,7 @@ class SettlorHandoverReliefYesNoControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(SettlorHandoverReliefYesNoPage, true).success.value
+      val userAnswers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, false).success.value.set(SettlorHandoverReliefYesNoPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -73,8 +75,10 @@ class SettlorHandoverReliefYesNoControllerSpec extends SpecBase {
 
     "redirect to the next page when valid data is submitted" in {
 
+      val userAnswers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, false).success.value
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, settlorHandoverReliefYesNoRoute)
@@ -91,7 +95,9 @@ class SettlorHandoverReliefYesNoControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, false).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, settlorHandoverReliefYesNoRoute)
