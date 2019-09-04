@@ -21,6 +21,7 @@ import java.time.LocalDate
 import base.SpecBase
 import controllers.routes
 import generators.Generators
+import models.TrusteesBasedInTheUK.{NonUkBasedTrustees, UKBasedTrustees}
 import models.{CheckMode, NonResidentType, NormalMode, UserAnswers}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
@@ -125,9 +126,9 @@ trait TrustDetailsRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          val answers = userAnswers.set(TrustResidentInUKPage, value = false).success.value
+          val answers = userAnswers.set(TrusteesBasedInTheUKPage, value = NonUkBasedTrustees).success.value
 
-          navigator.nextPage(TrustResidentInUKPage, NormalMode, fakeDraftId)(answers)
+          navigator.nextPage(TrusteesBasedInTheUKPage, NormalMode, fakeDraftId)(answers)
             .mustBe(routes.RegisteringTrustFor5AController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
@@ -202,9 +203,9 @@ trait TrustDetailsRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          val answers = userAnswers.set(TrustResidentInUKPage, value = true).success.value
+          val answers = userAnswers.set(TrusteesBasedInTheUKPage, value = UKBasedTrustees).success.value
 
-          navigator.nextPage(TrustResidentInUKPage, NormalMode, fakeDraftId)(answers)
+          navigator.nextPage(TrusteesBasedInTheUKPage, NormalMode, fakeDraftId)(answers)
             .mustBe(routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode, fakeDraftId))
       }
     }

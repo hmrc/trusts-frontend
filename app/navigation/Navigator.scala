@@ -20,6 +20,7 @@ import controllers.routes
 import javax.inject.{Inject, Singleton}
 import models.AddATrustee.{NoComplete, YesLater, YesNow}
 import models.IndividualOrBusiness.Individual
+import models.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
 import models.WhatKindOfAsset.{Business, Money, Other, Partnership, PropertyOrLand, Shares}
 import models._
 import pages._
@@ -46,6 +47,7 @@ class Navigator @Inject()() {
     case AdministrationInsideUKPage => _ => isTrustGeneralAdministrationRoute(draftId)
     case CountryAdministeringTrustPage => _ => _ => routes.TrustResidentInUKController.onPageLoad(NormalMode, draftId)
     case TrustResidentInUKPage => _ => isTrustResidentInUKRoute(draftId)
+    case TrusteesBasedInTheUKPage => _ => isTrusteesBasedInTheUKPage(draftId)
     case EstablishedUnderScotsLawPage => _ => _ => routes.TrustResidentOffshoreController.onPageLoad(NormalMode, draftId)
     case TrustResidentOffshorePage => _ => wasTrustPreviouslyResidentOffshoreRoute(draftId)
     case TrustPreviouslyResidentPage => _ => _ => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
@@ -409,6 +411,13 @@ class Navigator @Inject()() {
   private def isTrustResidentInUKRoute(draftId: String)(answers: UserAnswers) = answers.get(TrustResidentInUKPage) match {
     case Some(true)   => routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode, draftId)
     case Some(false)  => routes.RegisteringTrustFor5AController.onPageLoad(NormalMode, draftId)
+    case None         => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def isTrusteesBasedInTheUKPage(draftId: String)(answers: UserAnswers) = answers.get(TrusteesBasedInTheUKPage) match {
+    case Some(UKBasedTrustees)   => routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode, draftId)
+    case Some(NonUkBasedTrustees)  => routes.RegisteringTrustFor5AController.onPageLoad(NormalMode, draftId)
+    case Some(InternationalAndUKTrustees)  => ???
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
