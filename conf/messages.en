@@ -333,6 +333,10 @@ addATrustee.heading = Add a trustee
 addATrustee.singular.heading = Add a trustee
 addATrustee.count.heading = You have added {0} trustees
 
+addASettlor.heading = Add a settlor
+addASettlor.singular.heading = Add a settlors
+addASettlor.count.heading = You have added {0} settlors
+
 addATrustee.additional-content = Do you need to add another trustee?
 addATrustee.add-them-now = Yes, I want to add them now
 addATrustee.add-them-later = Yes, I want to add them later
@@ -1159,3 +1163,7 @@ addAnAssetYesNo.error.required = Select yes if you want to add an asset
 addATrusteeYesNo.title = Do you want to add a trustee?
 addATrusteeYesNo.heading = Do you want to add a trustee?
 addATrusteeYesNo.error.required = Select yes if you want to add a trustee
+
+addASettlorYesNo.title = Do you want to add a settlor?
+addASettlorYesNo.heading = Do you want to add a settlor?
+addASettlorYesNo.error.required = Select yes if you want to add a settlor
