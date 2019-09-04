@@ -582,3 +582,8 @@ POST       /:draftId/asset/:index/share/portfolio/remove                        
 
 GET        /:draftId/trustee/:index/remove                        controllers.RemoveTrusteeController.onPageLoad(index : Int, draftId: String)
 POST       /:draftId/trustee/:index/remove                        controllers.RemoveTrusteeController.onSubmit(index : Int, draftId: String)
+
+GET        /:draftId/settlors/holdover-relief                         controllers.SettlorHandoverReliefYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/settlors/holdover-relief                         controllers.SettlorHandoverReliefYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/settlors/change-holdover-relief                  controllers.SettlorHandoverReliefYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/settlors/change-holdover-relief                  controllers.SettlorHandoverReliefYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
