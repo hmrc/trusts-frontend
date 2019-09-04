@@ -1164,3 +1164,11 @@ settlorHandoverReliefYesNo.title = Was holdover relief claimed on any assets put
 settlorHandoverReliefYesNo.heading = Was holdover relief claimed on any assets put into the trust?
 settlorHandoverReliefYesNo.checkYourAnswersLabel = Was holdover relief claimed on any assets put into the trust?
 settlorHandoverReliefYesNo.error.required = Select yes if holdover relief was claimed on any assets put into the trust?
+
+trusteesBasedInTheUK.title = Are the trustees based in the UK?
+trusteesBasedInTheUK.heading =  Are the trustees based in the UK?
+trusteesBasedInTheUK.UKBasedTrustees = All the trustees based in the UK
+trusteesBasedInTheUK.NonUkBasedTrustees = None of the trustees are based in the UK
+trusteesBasedInTheUK.InternationalAndUKTrustees = The trust contains international and UK-based trustees
+trusteesBasedInTheUK.checkYourAnswersLabel = Are the trustees based in the UK?
+trusteesBasedInTheUK.error.required = Select how many of the trustees are based in the UK

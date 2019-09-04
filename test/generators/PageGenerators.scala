@@ -24,6 +24,9 @@ import pages.shares._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryTrusteesBasedInTheUKPage: Arbitrary[TrusteesBasedInTheUKPage.type] =
+    Arbitrary(TrusteesBasedInTheUKPage)
+
   implicit lazy val arbitrarySettlorHandoverReliefYesNoPage: Arbitrary[SettlorHandoverReliefYesNoPage.type] =
     Arbitrary(SettlorHandoverReliefYesNoPage)
 

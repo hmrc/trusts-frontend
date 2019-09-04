@@ -35,6 +35,15 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers, draftId: String, canEdit: Boolean = true)(implicit messages: Messages) {
 
+  def trusteesBasedInTheUK: Option[AnswerRow] = userAnswers.get(TrusteesBasedInTheUKPage) map {
+    x =>
+      AnswerRow(
+        "trusteesBasedInTheUK.checkYourAnswersLabel",
+        HtmlFormat.escape(messages(s"trusteesBasedInTheUK.$x")),
+        routes.TrusteesBasedInTheUKController.onPageLoad(CheckMode, draftId).url
+      )
+  }
+
   def settlorHandoverReliefYesNo: Option[AnswerRow] = userAnswers.get(SettlorHandoverReliefYesNoPage) map {
     x =>
       AnswerRow(
