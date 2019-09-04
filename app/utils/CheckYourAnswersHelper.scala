@@ -35,6 +35,15 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers, draftId: String, canEdit: Boolean = true)(implicit messages: Messages) {
 
+  def removeSettlor(index :Int) : Option[AnswerRow] = userAnswers.get(RemoveSettlorPage(index)) map {
+    x =>
+      AnswerRow(
+        "removeSettlor.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.RemoveSettlorController.onPageLoad(CheckMode,index, draftId).url
+      )
+  }
+
   def settlorIndividualPassportYesNo(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualPassportYesNoPage(index)) map {
     x =>
       AnswerRow(
