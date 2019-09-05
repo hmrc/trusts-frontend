@@ -27,7 +27,9 @@
     draftId: String,
     inProgress: Seq[AddRow],
     complete: Seq[AddRow],
-    heading: String)(implicit request: Request[_], messages: Messages)
+    heading: String,
+    hint: Option[String]
+)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} $heading"
@@ -40,6 +42,10 @@
         @components.error_summary(form.errors)
 
         @components.heading(heading)
+
+        @hint.map{ text =>
+            <p>text</p>
+        }
 
         @components.data_list(inProgress, "inprogress", "settlor")
 

@@ -18,7 +18,9 @@ package controllers
 
 import base.SpecBase
 import forms.{AddATrusteeFormProvider, AddATrusteeYesNoFormProvider}
+import models.SettlorKindOfTrust.Lifetime
 import models.{AddASettlor, AddATrustee, NormalMode}
+import pages.SettlorKindOfTrustPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.{AddASettlorView, AddASettlorYesNoView}
@@ -34,7 +36,13 @@ class AddASettlorControllerSpec extends SpecBase {
 
   val settlors = List()
 
+  val hint = "addASettlor.lifetime"
+
   val userAnswersWithSettlorsComplete = emptyUserAnswers
+    .set(SettlorKindOfTrustPage(0), Lifetime)
+    .success
+    .value
+
 
   "AddASettlor Controller" when {
 
@@ -76,7 +84,12 @@ class AddASettlorControllerSpec extends SpecBase {
 
       "return OK and the correct view for a GET" in {
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        val answers = emptyUserAnswers
+          .set(SettlorKindOfTrustPage(0), Lifetime)
+          .success
+          .value
+
+        val application = applicationBuilder(userAnswers = Some(answers)).build()
 
         val request = FakeRequest(GET, getRoute)
 
@@ -87,15 +100,20 @@ class AddASettlorControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(yesNoForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+          view(yesNoForm, NormalMode, fakeDraftId, Some(hint))(fakeRequest, messages).toString
 
         application.stop()
       }
 
       "redirect to the next page when valid data is submitted" in {
 
+        val answers = emptyUserAnswers
+          .set(SettlorKindOfTrustPage(0), Lifetime)
+          .success
+          .value
+
         val application =
-          applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+          applicationBuilder(userAnswers = Some(answers)).build()
 
         val request =
           FakeRequest(POST, submitYesNoRoute)
@@ -112,7 +130,12 @@ class AddASettlorControllerSpec extends SpecBase {
 
       "return a Bad Request and errors when invalid data is submitted" in {
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        val answers = emptyUserAnswers
+          .set(SettlorKindOfTrustPage(0), Lifetime)
+          .success
+          .value
+
+        val application = applicationBuilder(userAnswers = Some(answers)).build()
 
         val request =
           FakeRequest(POST, submitYesNoRoute)
@@ -127,7 +150,7 @@ class AddASettlorControllerSpec extends SpecBase {
         status(result) mustEqual BAD_REQUEST
 
         contentAsString(result) mustEqual
-          view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+          view(boundForm, NormalMode, fakeDraftId, Some(hint))(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -148,7 +171,7 @@ class AddASettlorControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(addTrusteeForm, NormalMode, fakeDraftId,Nil, settlors, heading = "Do you want to add a settlor?")(fakeRequest, messages).toString
+          view(addTrusteeForm, NormalMode, fakeDraftId,Nil, settlors, heading = "Do you want to add a settlor?", Some(hint))(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -194,7 +217,8 @@ class AddASettlorControllerSpec extends SpecBase {
             fakeDraftId,
             Nil,
             settlors,
-            heading = "Add a settlor"
+            heading = "Add a settlor",
+            Some(hint)
           )(fakeRequest, messages).toString
 
         application.stop()

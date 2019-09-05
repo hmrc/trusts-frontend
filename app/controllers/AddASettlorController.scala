@@ -19,9 +19,10 @@ package controllers
 import controllers.actions._
 import forms.{AddATrusteeFormProvider, AddATrusteeYesNoFormProvider}
 import javax.inject.Inject
+import models.requests.DataRequest
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.{AddATrusteePage, AddATrusteeYesNoPage}
+import pages.{AddATrusteePage, AddATrusteeYesNoPage, SettlorKindOfTrustPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi, MessagesProvider}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -43,14 +44,15 @@ class AddASettlorController @Inject()(
                                        yesNoFormProvider: AddATrusteeYesNoFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
                                        addAnotherView: AddASettlorView,
-                                       yesNoView: AddASettlorYesNoView
+                                       yesNoView: AddASettlorYesNoView,
+                                       requiredAnswer: RequiredAnswerActionProvider
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
   val addAnotherForm = addAnotherFormProvider()
   val yesNoForm: Form[Boolean] = yesNoFormProvider()
 
   private def actions(draftId: String) =
-    identify andThen getData(draftId) andThen requireData
+    identify andThen getData(draftId) andThen requireData andThen requiredAnswer(RequiredAnswer(SettlorKindOfTrustPage(0)))
 
   private def heading(count: Int)(implicit mp : MessagesProvider) = {
     count match {
@@ -60,6 +62,10 @@ class AddASettlorController @Inject()(
     }
   }
 
+  private def trustHintText(implicit request: DataRequest[AnyContent]): Option[String] = request.userAnswers.get(SettlorKindOfTrustPage(0)) map { trust =>
+    s"addASettlor.$trust"
+  }
+
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
@@ -67,9 +73,9 @@ class AddASettlorController @Inject()(
 
       settlors.count match {
         case 0 =>
-          Ok(yesNoView(yesNoForm, mode, draftId))
+          Ok(yesNoView(yesNoForm, mode, draftId, trustHintText))
         case count =>
-          Ok(addAnotherView(addAnotherForm, mode, draftId, settlors.inProgress, settlors.complete, heading(count)))
+          Ok(addAnotherView(addAnotherForm, mode, draftId, settlors.inProgress, settlors.complete, heading(count), trustHintText))
       }
   }
 
@@ -78,7 +84,7 @@ class AddASettlorController @Inject()(
 
       yesNoForm.bindFromRequest().fold(
         (formWithErrors: Form[_]) => {
-          Future.successful(BadRequest(yesNoView(formWithErrors, mode, draftId)))
+          Future.successful(BadRequest(yesNoView(formWithErrors, mode, draftId, trustHintText)))
         },
         value => {
           for {
@@ -104,7 +110,8 @@ class AddASettlorController @Inject()(
               draftId,
               settlors.inProgress,
               settlors.complete,
-              heading(settlors.count)
+              heading(settlors.count),
+              trustHintText
             )
           ))
         },

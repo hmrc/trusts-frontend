@@ -22,7 +22,7 @@
   formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId: String, hint: Option[String])(implicit request: Request[_], messages: Messages)
 
 @main_template(
   title = s"${errorPrefix(form)} ${messages("addASettlorYesNo.title")}"
@@ -35,6 +35,10 @@
     @components.error_summary(form.errors)
 
     @components.heading("addASettlorYesNo.heading")
+
+    @hint.map{ text =>
+       <p>text</p>
+    }
 
     @components.input_yes_no(
       field = form("value"),
