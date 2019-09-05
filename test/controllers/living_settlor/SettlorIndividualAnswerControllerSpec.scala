@@ -20,6 +20,7 @@ import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
 import models.{FullName, IndividualOrBusiness, InternationalAddress, NormalMode, PassportOrIdCardDetails, UKAddress}
+import pages.SettlorHandoverReliefYesNoPage
 import pages.living_settlor.{SettlorIndividualOrBusinessPage, _}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -51,6 +52,7 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
 
         val userAnswers =
           emptyUserAnswers
+            .set(SettlorHandoverReliefYesNoPage, false).success.value
             .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
             .set(SettlorIndividualNamePage(index), settlorName).success.value
             .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
@@ -64,6 +66,7 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
           AnswerSection(
             None,
             Seq(
+              checkYourAnswersHelper.settlorHandoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
               checkYourAnswersHelper.settlorIndividualName(index).value,
               checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
@@ -97,6 +100,7 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
 
         val userAnswers =
           emptyUserAnswers
+            .set(SettlorHandoverReliefYesNoPage, false).success.value
             .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
             .set(SettlorIndividualNamePage(index), settlorName).success.value
             .set(SettlorIndividualDateOfBirthYesNoPage(index), true).success.value
@@ -112,6 +116,7 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
           AnswerSection(
             None,
             Seq(
+              checkYourAnswersHelper.settlorHandoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
               checkYourAnswersHelper.settlorIndividualName(index).value,
               checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
@@ -147,6 +152,7 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
 
         val userAnswers =
           emptyUserAnswers
+            .set(SettlorHandoverReliefYesNoPage, false).success.value
             .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
             .set(SettlorIndividualNamePage(index), settlorName).success.value
             .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
@@ -164,6 +170,7 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
           AnswerSection(
             None,
             Seq(
+              checkYourAnswersHelper.settlorHandoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
               checkYourAnswersHelper.settlorIndividualName(index).value,
               checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
@@ -201,6 +208,7 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
 
         val userAnswers =
           emptyUserAnswers
+            .set(SettlorHandoverReliefYesNoPage, false).success.value
             .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
             .set(SettlorIndividualNamePage(index), settlorName).success.value
             .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
@@ -218,6 +226,7 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
           AnswerSection(
             None,
             Seq(
+              checkYourAnswersHelper.settlorHandoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
               checkYourAnswersHelper.settlorIndividualName(index).value,
               checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
@@ -255,6 +264,7 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
 
         val userAnswers =
           emptyUserAnswers
+            .set(SettlorHandoverReliefYesNoPage, false).success.value
             .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
             .set(SettlorIndividualNamePage(index), settlorName).success.value
             .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
@@ -274,6 +284,7 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
           AnswerSection(
             None,
             Seq(
+              checkYourAnswersHelper.settlorHandoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
               checkYourAnswersHelper.settlorIndividualName(index).value,
               checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
@@ -311,6 +322,7 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
     "redirect to SettlorIndividualOrBusinessPage on a GET if no answer for 'Is the settlor an individual or business?' at index" in {
       val answers =
         emptyUserAnswers
+          .set(SettlorHandoverReliefYesNoPage, false).success.value
           .set(SettlorIndividualNamePage(index), settlorName).success.value
           .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
           .set(SettlorIndividualNINOYesNoPage(index), false).success.value

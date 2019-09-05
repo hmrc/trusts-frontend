@@ -35,6 +35,16 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers, draftId: String, canEdit: Boolean = true)(implicit messages: Messages) {
 
+  def settlorHandoverReliefYesNo: Option[AnswerRow] = userAnswers.get(SettlorHandoverReliefYesNoPage) map {
+    x =>
+      AnswerRow(
+        "settlorHandoverReliefYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.SettlorHandoverReliefYesNoController.onPageLoad(CheckMode, draftId).url,
+        canEdit = canEdit
+      )
+  }
+
   def settlorIndividualPassportYesNo(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualPassportYesNoPage(index)) map {
     x =>
       AnswerRow(
