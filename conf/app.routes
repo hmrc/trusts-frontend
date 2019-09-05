@@ -42,11 +42,6 @@ POST       /:draftId/trust-administration-country                 controllers.Co
 GET        /:draftId/change-trust-administration-country          controllers.CountryAdministeringTrustController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/change-trust-administration-country          controllers.CountryAdministeringTrustController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
-GET        /:draftId/trust-resident                               controllers.TrustResidentInUKController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-resident                               controllers.TrustResidentInUKController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-resident                       controllers.TrustResidentInUKController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-resident                        controllers.TrustResidentInUKController.onSubmit(mode: Mode = CheckMode, draftId: String)
-
 GET        /:draftId/trust-scots-law                              controllers.EstablishedUnderScotsLawController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/trust-scots-law                              controllers.EstablishedUnderScotsLawController.onSubmit(mode: Mode = NormalMode, draftId: String)
 GET        /:draftId/change-trust-scots-law                       controllers.EstablishedUnderScotsLawController.onPageLoad(mode: Mode = CheckMode, draftId: String)

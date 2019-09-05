@@ -20,6 +20,7 @@ import java.time.LocalDate
 
 import base.SpecBase
 import models.NonResidentType
+import models.TrusteesBasedInTheUK.{NonUkBasedTrustees, UKBasedTrustees}
 import navigation.{FakeNavigator, Navigator}
 import pages._
 import play.api.inject.bind
@@ -44,7 +45,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
             .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
             .set(GovernedInsideTheUKPage, true).success.value
             .set(AdministrationInsideUKPage, true).success.value
-            .set(TrustResidentInUKPage, true).success.value
+            .set(TrusteesBasedInTheUKPage, UKBasedTrustees).success.value
             .set(EstablishedUnderScotsLawPage, true).success.value
             .set(TrustResidentOffshorePage, false).success.value
 
@@ -62,7 +63,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
               checkYourAnswersHelper.whenTrustSetup.value,
               checkYourAnswersHelper.governedInsideTheUK.value,
               checkYourAnswersHelper.administrationInsideUK.value,
-              checkYourAnswersHelper.trustResidentInUK.value,
+              checkYourAnswersHelper.trusteesBasedInUK.value,
               checkYourAnswersHelper.establishedUnderScotsLaw.value,
               checkYourAnswersHelper.trustResidentOffshore.value
             )
@@ -94,7 +95,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
             .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
             .set(GovernedInsideTheUKPage, true).success.value
             .set(AdministrationInsideUKPage, true).success.value
-            .set(TrustResidentInUKPage, false).success.value
+            .set(TrusteesBasedInTheUKPage, NonUkBasedTrustees).success.value
             .set(RegisteringTrustFor5APage, true).success.value
             .set(NonResidentTypePage, NonResidentType.NonDomiciled).success.value
 
@@ -112,7 +113,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
               checkYourAnswersHelper.whenTrustSetup.value,
               checkYourAnswersHelper.governedInsideTheUK.value,
               checkYourAnswersHelper.administrationInsideUK.value,
-              checkYourAnswersHelper.trustResidentInUK.value,
+              checkYourAnswersHelper.trusteesBasedInUK.value,
               checkYourAnswersHelper.registeringTrustFor5A.value,
               checkYourAnswersHelper.nonresidentType.value
             )
@@ -145,7 +146,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
             .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
             .set(GovernedInsideTheUKPage, true).success.value
             .set(AdministrationInsideUKPage, true).success.value
-            .set(TrustResidentInUKPage, false).success.value
+            .set(TrusteesBasedInTheUKPage, NonUkBasedTrustees).success.value
             .set(RegisteringTrustFor5APage, false).success.value
             .set(InheritanceTaxActPage, true).success.value
             .set(AgentOtherThanBarristerPage, true).success.value
@@ -164,7 +165,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
               checkYourAnswersHelper.whenTrustSetup.value,
               checkYourAnswersHelper.governedInsideTheUK.value,
               checkYourAnswersHelper.administrationInsideUK.value,
-              checkYourAnswersHelper.trustResidentInUK.value,
+              checkYourAnswersHelper.trusteesBasedInUK.value,
               checkYourAnswersHelper.registeringTrustFor5A.value,
               checkYourAnswersHelper.inheritanceTaxAct.value,
               checkYourAnswersHelper.agentOtherThanBarrister.value
@@ -200,7 +201,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
             .set(CountryGoverningTrustPage, "France").success.value
             .set(AdministrationInsideUKPage, false).success.value
             .set(CountryAdministeringTrustPage, "Spain").success.value
-            .set(TrustResidentInUKPage, true).success.value
+            .set(TrusteesBasedInTheUKPage, UKBasedTrustees).success.value
             .set(EstablishedUnderScotsLawPage, false).success.value
             .set(TrustResidentOffshorePage, true).success.value
             .set(TrustPreviouslyResidentPage, "France").success.value
@@ -221,7 +222,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
               checkYourAnswersHelper.countryGoverningTrust.value,
               checkYourAnswersHelper.administrationInsideUK.value,
               checkYourAnswersHelper.countryAdministeringTrust.value,
-              checkYourAnswersHelper.trustResidentInUK.value,
+              checkYourAnswersHelper.trusteesBasedInUK.value,
               checkYourAnswersHelper.establishedUnderScotsLaw.value,
               checkYourAnswersHelper.trustResidentOffshore.value,
               checkYourAnswersHelper.trustPreviouslyResident.value

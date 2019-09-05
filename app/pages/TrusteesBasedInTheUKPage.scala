@@ -16,13 +16,37 @@
 
 package pages
 
-import models.TrusteesBasedInTheUK
+import models.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
+import models.{TrusteesBasedInTheUK, UserAnswers}
+import pages.entitystatus.TrustDetailsStatus
 import play.api.libs.json.JsPath
 import sections.TrustDetails
+
+import scala.util.Try
 
 case object TrusteesBasedInTheUKPage extends QuestionPage[TrusteesBasedInTheUK] {
 
   override def path: JsPath = JsPath \ TrustDetails \ toString
 
   override def toString: String = "trusteesBasedInTheUK"
+
+  //TODO: Add the SettlorBasedintheUK page once it is created
+
+  override def cleanup(value: Option[TrusteesBasedInTheUK], userAnswers: UserAnswers): Try[UserAnswers] = {
+    value match {
+      case Some(UKBasedTrustees) | Some(InternationalAndUKTrustees) =>
+        userAnswers.remove(EstablishedUnderScotsLawPage)
+          .flatMap(_.remove(TrustResidentOffshorePage))
+          .flatMap(_.remove(TrustPreviouslyResidentPage))
+          .flatMap(_.remove(TrustDetailsStatus))
+      case Some(NonUkBasedTrustees) | Some(InternationalAndUKTrustees) =>
+        userAnswers.remove(RegisteringTrustFor5APage)
+          .flatMap(_.remove(InheritanceTaxActPage))
+          .flatMap(_.remove(NonResidentTypePage))
+          .flatMap(_.remove(AgentOtherThanBarristerPage))
+          .flatMap(_.remove(TrustDetailsStatus))
+      case _ =>
+        super.cleanup(value, userAnswers)
+    }
+  }
 }

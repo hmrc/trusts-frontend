@@ -303,9 +303,6 @@ trait PageGenerators {
   implicit lazy val arbitraryEstablishedUnderScotsLawPage: Arbitrary[EstablishedUnderScotsLawPage.type] =
     Arbitrary(EstablishedUnderScotsLawPage)
 
-  implicit lazy val arbitraryTrustResidentInUKPage: Arbitrary[TrustResidentInUKPage.type] =
-    Arbitrary(TrustResidentInUKPage)
-
   implicit lazy val arbitraryCountryAdministeringTrustPage: Arbitrary[CountryAdministeringTrustPage.type] =
     Arbitrary(CountryAdministeringTrustPage)
 

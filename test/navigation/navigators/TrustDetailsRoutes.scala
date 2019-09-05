@@ -107,7 +107,7 @@ trait TrustDetailsRoutes {
           val answers = userAnswers.set(AdministrationInsideUKPage, value = true).success.value
 
           navigator.nextPage(AdministrationInsideUKPage, NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.TrustResidentInUKController.onPageLoad(NormalMode, fakeDraftId))
+            .mustBe(routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -118,7 +118,7 @@ trait TrustDetailsRoutes {
           val answers = userAnswers.set(CountryAdministeringTrustPage, value = "France").success.value
 
           navigator.nextPage(CountryAdministeringTrustPage, NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.TrustResidentInUKController.onPageLoad(NormalMode, fakeDraftId))
+            .mustBe(routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
