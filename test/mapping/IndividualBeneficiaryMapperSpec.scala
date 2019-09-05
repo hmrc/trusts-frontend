@@ -99,7 +99,8 @@ class IndividualBeneficiaryMapperSpec extends FreeSpec with MustMatchers
             None,
             address = Some(
               AddressType("Line1", "line2", None, Some("Newcastle"), Some("NE62RT"), "GB")
-            ))
+            ),
+            idCard = None)
           )
         )
       }
@@ -169,7 +170,8 @@ class IndividualBeneficiaryMapperSpec extends FreeSpec with MustMatchers
                 IdentificationType(
                   nino = Some("AB123456C"),
                   passport = None,
-                  address = None)
+                  address = None,
+                  idCard = None)
               )),
             IndividualDetailsType(
               name = NameType("first name", None, "last name"),
@@ -184,7 +186,8 @@ class IndividualBeneficiaryMapperSpec extends FreeSpec with MustMatchers
                   passport = None,
                   address = Some(
                     AddressType("line1", "Newcastle", None, None, Some("NE62RT"), "GB")
-                  )))
+                  ),
+                  idCard = None))
             )
 
           )
