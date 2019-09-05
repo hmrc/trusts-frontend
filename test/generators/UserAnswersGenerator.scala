@@ -31,6 +31,7 @@ trait UserAnswersGenerator extends TryValues {
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
     arbitrary[(SettlorKindOfTrustPage, JsValue)] ::
+    arbitrary[(SettlorHandoverReliefYesNoPage.type, JsValue)] ::
     arbitrary[(SettlorIndividualPassportYesNoPage, JsValue)] ::
     arbitrary[(SettlorIndividualPassportPage, JsValue)] ::
     arbitrary[(SettlorIndividualIDCardYesNoPage, JsValue)] ::

@@ -1169,3 +1169,8 @@ settlorKindOfTrust.building = A trust for a building or building with tenants
 settlorKindOfTrust.repair = A trust for the repair of historic buildings
 settlorKindOfTrust.checkYourAnswersLabel = What kind of trust did the settlor create?
 settlorKindOfTrust.error.required = Select what kind of trust the settlor created
+
+settlorHandoverReliefYesNo.title = Was holdover relief claimed on any assets put into the trust?
+settlorHandoverReliefYesNo.heading = Was holdover relief claimed on any assets put into the trust?
+settlorHandoverReliefYesNo.checkYourAnswersLabel = Was holdover relief claimed on any assets put into the trust?
+settlorHandoverReliefYesNo.error.required = Select yes if holdover relief was claimed on any assets put into the trust?

@@ -44,6 +44,16 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
+  def settlorHandoverReliefYesNo: Option[AnswerRow] = userAnswers.get(SettlorHandoverReliefYesNoPage) map {
+    x =>
+      AnswerRow(
+        "settlorHandoverReliefYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.SettlorHandoverReliefYesNoController.onPageLoad(CheckMode, draftId).url,
+        canEdit = canEdit
+      )
+  }
+
   def settlorIndividualPassportYesNo(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualPassportYesNoPage(index)) map {
     x =>
       AnswerRow(
