@@ -17,40 +17,38 @@
 package controllers
 
 import controllers.actions._
-import forms.TrustResidentInUKFormProvider
+import forms.SettlorsBasedInTheUKFormProvider
 import javax.inject.Inject
 import models.{Mode, UserAnswers}
 import navigation.Navigator
-import pages.TrustResidentInUKPage
+import pages.SettlorsBasedInTheUKPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.TrustResidentInUKView
+import views.html.SettlorsBasedInTheUKView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrustResidentInUKController @Inject()(
+class SettlorsBasedInTheUKController @Inject()(
                                          override val messagesApi: MessagesApi,
                                          sessionRepository: SessionRepository,
                                          navigator: Navigator,
                                          identify: IdentifierAction,
                                          getData: DraftIdRetrievalActionProvider,
                                          requireData: DataRequiredAction,
-                                         formProvider: TrustResidentInUKFormProvider,
+                                         formProvider: SettlorsBasedInTheUKFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
-                                         view: TrustResidentInUKView
+                                         view: SettlorsBasedInTheUKView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
-  private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
 
   val form: Form[Boolean] = formProvider()
 
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(TrustResidentInUKPage) match {
+      val preparedForm = request.userAnswers.get(SettlorsBasedInTheUKPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -58,7 +56,7 @@ class TrustResidentInUKController @Inject()(
       Ok(view(preparedForm, mode, draftId))
   }
 
-  def onSubmit(mode: Mode, draftId: String) = actions(draftId).async {
+  def onSubmit(mode: Mode, draftId : String) = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -67,9 +65,9 @@ class TrustResidentInUKController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustResidentInUKPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorsBasedInTheUKPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrustResidentInUKPage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(SettlorsBasedInTheUKPage, mode, draftId)(updatedAnswers))
         }
       )
   }

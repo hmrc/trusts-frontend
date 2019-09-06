@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.routes._
+@import controllers.routes
 @import models.Mode
 
 @this(
@@ -25,20 +25,21 @@
 @(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("trustResidentInUK.title")}"
+    title = s"${errorPrefix(form)} ${messages("settlorsBasedInTheUK.title")}"
     ) {
 
-    @formHelper(action = TrustResidentInUKController.onSubmit(mode, draftId), 'autoComplete -> "off") {
+    @formHelper(action = routes.SettlorsBasedInTheUKController.onSubmit(mode, draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
+        @components.heading("settlorsBasedInTheUK.heading")
+
         @components.input_yes_no(
             field = form("value"),
-            label = messages("trustResidentInUK.heading"),
-            legendClass = Some("heading-large"),
-            legendAsHeading = true
+            label = messages("settlorsBasedInTheUK.heading"),
+            legendClass = Some("visually-hidden")
         )
 
         @components.submit_button()

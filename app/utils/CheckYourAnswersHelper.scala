@@ -35,6 +35,15 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers, draftId: String, canEdit: Boolean = true)(implicit messages: Messages) {
 
+  def settlorsBasedInTheUK: Option[AnswerRow] = userAnswers.get(SettlorsBasedInTheUKPage) map {
+    x =>
+      AnswerRow(
+        "settlorsBasedInTheUK.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.SettlorsBasedInTheUKController.onPageLoad(CheckMode, draftId).url
+      )
+  }
+
   def settlorHandoverReliefYesNo: Option[AnswerRow] = userAnswers.get(SettlorHandoverReliefYesNoPage) map {
     x =>
       AnswerRow(
@@ -205,7 +214,6 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       countryGoverningTrust,
       administrationInsideUK,
       countryAdministeringTrust,
-      trustResidentInUK,
       establishedUnderScotsLaw,
       trustResidentOffshore,
       trustPreviouslyResident,
@@ -1115,10 +1123,6 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
 
   def establishedUnderScotsLaw: Option[AnswerRow] = userAnswers.get(EstablishedUnderScotsLawPage) map {
     x => AnswerRow("establishedUnderScotsLaw.checkYourAnswersLabel", yesOrNo(x), routes.EstablishedUnderScotsLawController.onPageLoad(CheckMode, draftId).url, canEdit = canEdit)
-  }
-
-  def trustResidentInUK: Option[AnswerRow] = userAnswers.get(TrustResidentInUKPage) map {
-    x => AnswerRow("trustResidentInUK.checkYourAnswersLabel", yesOrNo(x), routes.TrustResidentInUKController.onPageLoad(CheckMode, draftId).url, canEdit = canEdit)
   }
 
   def countryAdministeringTrust: Option[AnswerRow] = userAnswers.get(CountryAdministeringTrustPage) map {

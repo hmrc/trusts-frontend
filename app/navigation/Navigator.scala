@@ -43,8 +43,6 @@ class Navigator @Inject()() {
     case WhenTrustSetupPage => _ => _ => routes.GovernedInsideTheUKController.onPageLoad(NormalMode, draftId)
     case GovernedInsideTheUKPage => _ => isTrustGovernedInsideUKRoute(draftId)
     case CountryGoverningTrustPage => _ => _ => routes.AdministrationInsideUKController.onPageLoad(NormalMode, draftId)
-    case AdministrationInsideUKPage => _ => isTrustGeneralAdministrationRoute(draftId)
-    case CountryAdministeringTrustPage => _ => _ => routes.TrustResidentInUKController.onPageLoad(NormalMode, draftId)
     case TrustResidentInUKPage => _ => isTrustResidentInUKRoute(draftId)
     case EstablishedUnderScotsLawPage => _ => _ => routes.TrustResidentOffshoreController.onPageLoad(NormalMode, draftId)
     case TrustResidentOffshorePage => _ => wasTrustPreviouslyResidentOffshoreRoute(draftId)
@@ -401,7 +399,6 @@ class Navigator @Inject()() {
   }
 
   private def isTrustGeneralAdministrationRoute(draftId: String)(answers: UserAnswers) = answers.get(AdministrationInsideUKPage) match {
-    case Some(true)  => routes.TrustResidentInUKController.onPageLoad(NormalMode, draftId)
     case Some(false) => routes.CountryAdministeringTrustController.onPageLoad(NormalMode, draftId)
     case None        => routes.SessionExpiredController.onPageLoad()
   }

@@ -1164,3 +1164,8 @@ settlorHandoverReliefYesNo.title = Was holdover relief claimed on any assets put
 settlorHandoverReliefYesNo.heading = Was holdover relief claimed on any assets put into the trust?
 settlorHandoverReliefYesNo.checkYourAnswersLabel = Was holdover relief claimed on any assets put into the trust?
 settlorHandoverReliefYesNo.error.required = Select yes if holdover relief was claimed on any assets put into the trust?
+
+settlorsBasedInTheUK.title = settlorsBasedInTheUK
+settlorsBasedInTheUK.heading = settlorsBasedInTheUK
+settlorsBasedInTheUK.checkYourAnswersLabel = settlorsBasedInTheUK
+settlorsBasedInTheUK.error.required = Select yes if settlorsBasedInTheUK

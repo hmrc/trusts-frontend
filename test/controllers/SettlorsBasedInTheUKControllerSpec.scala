@@ -1,69 +1,53 @@
-/*
- * Copyright 2019 HM Revenue & Customs
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package controllers
 
 import base.SpecBase
-import forms.TrustResidentInUKFormProvider
+import forms.SettlorsBasedInTheUKFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.TrustResidentInUKPage
+import pages.SettlorsBasedInTheUKPage
 import play.api.inject.bind
 import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.TrustResidentInUKView
+import views.html.SettlorsBasedInTheUKView
 
-class TrustResidentInUKControllerSpec extends SpecBase {
+class SettlorsBasedInTheUKControllerSpec extends SpecBase {
 
-  val formProvider = new TrustResidentInUKFormProvider()
+  val formProvider = new SettlorsBasedInTheUKFormProvider()
   val form = formProvider()
 
-  lazy val trustResidentInUKRoute = routes.TrustResidentInUKController.onPageLoad(NormalMode,fakeDraftId).url
+  lazy val settlorsBasedInTheUKRoute = routes.SettlorsBasedInTheUKController.onPageLoad(NormalMode, fakeDraftId).url
 
-  "TrustResidentInUK Controller" must {
+  "SettlorsBasedInTheUK Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, trustResidentInUKRoute)
+      val request = FakeRequest(GET, settlorsBasedInTheUKRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[TrustResidentInUKView]
+      val view = application.injector.instanceOf[SettlorsBasedInTheUKView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,fakeDraftId)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(TrustResidentInUKPage, true).success.value
+      val userAnswers = emptyUserAnswers.set(SettlorsBasedInTheUKPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, trustResidentInUKRoute)
+      val request = FakeRequest(GET, settlorsBasedInTheUKRoute)
 
-      val view = application.injector.instanceOf[TrustResidentInUKView]
+      val view = application.injector.instanceOf[SettlorsBasedInTheUKView]
 
       val result = route(application, request).value
 
@@ -81,7 +65,7 @@ class TrustResidentInUKControllerSpec extends SpecBase {
         applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, trustResidentInUKRoute)
+        FakeRequest(POST, settlorsBasedInTheUKRoute)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
@@ -98,12 +82,12 @@ class TrustResidentInUKControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, trustResidentInUKRoute)
+        FakeRequest(POST, settlorsBasedInTheUKRoute)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[TrustResidentInUKView]
+      val view = application.injector.instanceOf[SettlorsBasedInTheUKView]
 
       val result = route(application, request).value
 
@@ -119,7 +103,7 @@ class TrustResidentInUKControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, trustResidentInUKRoute)
+      val request = FakeRequest(GET, settlorsBasedInTheUKRoute)
 
       val result = route(application, request).value
 
@@ -135,7 +119,7 @@ class TrustResidentInUKControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, trustResidentInUKRoute)
+        FakeRequest(POST, settlorsBasedInTheUKRoute)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
