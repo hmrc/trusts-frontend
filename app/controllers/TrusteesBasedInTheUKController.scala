@@ -17,30 +17,30 @@
 package controllers
 
 import controllers.actions._
-import forms.{SettlorsBasedInTheUKFormProvider, TrusteesBasedInTheUKFormProvider}
+import forms.TrusteesBasedInTheUKFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.{SettlorsBasedInTheUKPage, TrusteesBasedInTheUKPage}
+import pages.TrusteesBasedInTheUKPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.{SettlorsBasedInTheUKView, TrusteesBasedInTheUKView}
+import views.html.TrusteesBasedInTheUKView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class SettlorsBasedInTheUKController @Inject()(
+class TrusteesBasedInTheUKController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        sessionRepository: SessionRepository,
                                        navigator: Navigator,
                                        identify: IdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
-                                       formProvider: SettlorsBasedInTheUKFormProvider,
+                                       formProvider: TrusteesBasedInTheUKFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
-                                       view: SettlorsBasedInTheUKView
+                                       view: TrusteesBasedInTheUKView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
   val form = formProvider()
@@ -48,7 +48,7 @@ class SettlorsBasedInTheUKController @Inject()(
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(SettlorsBasedInTheUKPage) match {
+      val preparedForm = request.userAnswers.get(TrusteesBasedInTheUKPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -65,9 +65,9 @@ class SettlorsBasedInTheUKController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorsBasedInTheUKPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteesBasedInTheUKPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SettlorsBasedInTheUKPage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrusteesBasedInTheUKPage, mode, draftId)(updatedAnswers))
         }
       )
   }

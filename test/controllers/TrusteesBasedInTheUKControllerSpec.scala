@@ -17,35 +17,35 @@
 package controllers
 
 import base.SpecBase
-import forms.SettlorsBasedInTheUKFormProvider
-import models.{NormalMode, UserAnswers}
+import forms.TrusteesBasedInTheUKFormProvider
+import models.{NormalMode, TrusteesBasedInTheUK, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.SettlorsBasedInTheUKPage
+import pages.TrusteesBasedInTheUKPage
 import play.api.inject.bind
-import play.api.libs.json.{JsBoolean, Json}
+import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.SettlorsBasedInTheUKView
+import views.html.TrusteesBasedInTheUKView
 
-class SettlorsBasedInTheUKControllerSpec extends SpecBase {
+class TrusteesBasedInTheUKControllerSpec extends SpecBase {
 
-  val formProvider = new SettlorsBasedInTheUKFormProvider()
+  lazy val trusteesBasedInTheUKRoute = routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, fakeDraftId).url
+
+  val formProvider = new TrusteesBasedInTheUKFormProvider()
   val form = formProvider()
 
-  lazy val settlorsBasedInTheUKRoute = routes.SettlorsBasedInTheUKController.onPageLoad(NormalMode, fakeDraftId).url
-
-  "SettlorsBasedInTheUK Controller" must {
+  "TrusteesBasedInTheUK Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, settlorsBasedInTheUKRoute)
+      val request = FakeRequest(GET, trusteesBasedInTheUKRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[SettlorsBasedInTheUKView]
+      val view = application.injector.instanceOf[TrusteesBasedInTheUKView]
 
       status(result) mustEqual OK
 
@@ -57,20 +57,20 @@ class SettlorsBasedInTheUKControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(SettlorsBasedInTheUKPage, true).success.value
+      val userAnswers = emptyUserAnswers.set(TrusteesBasedInTheUKPage, TrusteesBasedInTheUK.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, settlorsBasedInTheUKRoute)
+      val request = FakeRequest(GET, trusteesBasedInTheUKRoute)
 
-      val view = application.injector.instanceOf[SettlorsBasedInTheUKView]
+      val view = application.injector.instanceOf[TrusteesBasedInTheUKView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill(TrusteesBasedInTheUK.values.head), NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -81,8 +81,8 @@ class SettlorsBasedInTheUKControllerSpec extends SpecBase {
         applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, settlorsBasedInTheUKRoute)
-          .withFormUrlEncodedBody(("value", "true"))
+        FakeRequest(POST, trusteesBasedInTheUKRoute)
+          .withFormUrlEncodedBody(("value", TrusteesBasedInTheUK.options.head.value))
 
       val result = route(application, request).value
 
@@ -98,12 +98,12 @@ class SettlorsBasedInTheUKControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, settlorsBasedInTheUKRoute)
-          .withFormUrlEncodedBody(("value", ""))
+        FakeRequest(POST, trusteesBasedInTheUKRoute)
+          .withFormUrlEncodedBody(("value", "invalid value"))
 
-      val boundForm = form.bind(Map("value" -> ""))
+      val boundForm = form.bind(Map("value" -> "invalid value"))
 
-      val view = application.injector.instanceOf[SettlorsBasedInTheUKView]
+      val view = application.injector.instanceOf[TrusteesBasedInTheUKView]
 
       val result = route(application, request).value
 
@@ -119,12 +119,11 @@ class SettlorsBasedInTheUKControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, settlorsBasedInTheUKRoute)
+      val request = FakeRequest(GET, trusteesBasedInTheUKRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
@@ -135,8 +134,8 @@ class SettlorsBasedInTheUKControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, settlorsBasedInTheUKRoute)
-          .withFormUrlEncodedBody(("value", "true"))
+        FakeRequest(POST, trusteesBasedInTheUKRoute)
+          .withFormUrlEncodedBody(("value", TrusteesBasedInTheUK.values.head.toString))
 
       val result = route(application, request).value
 

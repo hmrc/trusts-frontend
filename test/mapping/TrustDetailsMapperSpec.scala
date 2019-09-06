@@ -22,6 +22,7 @@ import base.SpecBaseHelpers
 import generators.Generators
 import mapping.TypeOfTrust.WillTrustOrIntestacyTrust
 import models.NonResidentType.{Domiciled, NonDomiciled}
+import models.TrusteesBasedInTheUK.{NonUkBasedTrustees, UKBasedTrustees}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
 
@@ -53,7 +54,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
             .set(WhenTrustSetupPage, date).success.value
             .set(GovernedInsideTheUKPage, true).success.value
             .set(AdministrationInsideUKPage, true).success.value
-            .set(TrustResidentInUKPage, true).success.value
+            .set(TrusteesBasedInTheUKPage, UKBasedTrustees).success.value
             .set(EstablishedUnderScotsLawPage, true).success.value
             .set(TrustResidentOffshorePage, false).success.value
 
@@ -87,7 +88,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
             .set(WhenTrustSetupPage, date).success.value
             .set(GovernedInsideTheUKPage, true).success.value
             .set(AdministrationInsideUKPage, true).success.value
-            .set(TrustResidentInUKPage, true).success.value
+            .set(TrusteesBasedInTheUKPage, UKBasedTrustees).success.value
             .set(EstablishedUnderScotsLawPage, true).success.value
             .set(TrustResidentOffshorePage, true).success.value
             .set(TrustPreviouslyResidentPage, "FR").success.value
@@ -124,7 +125,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
             .set(CountryGoverningTrustPage, "FR").success.value
             .set(AdministrationInsideUKPage, false).success.value
             .set(CountryAdministeringTrustPage, "FR").success.value
-            .set(TrustResidentInUKPage, false).success.value
+            .set(TrusteesBasedInTheUKPage, NonUkBasedTrustees).success.value
             .set(RegisteringTrustFor5APage, true).success.value
             .set(NonResidentTypePage, Domiciled).success.value
 
@@ -156,7 +157,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
             .set(GovernedInsideTheUKPage, false).success.value
             .set(CountryGoverningTrustPage, "FR").success.value
             .set(AdministrationInsideUKPage, true).success.value
-            .set(TrustResidentInUKPage, false).success.value
+            .set(TrusteesBasedInTheUKPage, NonUkBasedTrustees).success.value
             .set(RegisteringTrustFor5APage, false).success.value
             .set(InheritanceTaxActPage, true).success.value
             .set(AgentOtherThanBarristerPage, true).success.value
@@ -188,7 +189,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
             .set(GovernedInsideTheUKPage, false).success.value
             .set(CountryGoverningTrustPage, "FR").success.value
             .set(AdministrationInsideUKPage, true).success.value
-            .set(TrustResidentInUKPage, false).success.value
+            .set(TrusteesBasedInTheUKPage, NonUkBasedTrustees).success.value
             .set(RegisteringTrustFor5APage, false).success.value
             .set(InheritanceTaxActPage, false).success.value
 
@@ -220,7 +221,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
             .set(GovernedInsideTheUKPage, false).success.value
             .set(CountryGoverningTrustPage, "FR").success.value
             .set(AdministrationInsideUKPage, true).success.value
-            .set(TrustResidentInUKPage, false).success.value
+            .set(TrusteesBasedInTheUKPage, NonUkBasedTrustees).success.value
             .set(RegisteringTrustFor5APage, false).success.value
 
 

@@ -22,6 +22,7 @@ import java.time.{LocalDate, LocalDateTime, ZoneOffset}
 import base.SpecBase
 import models.AddAssets.NoComplete
 import models.Status.Completed
+import models.TrusteesBasedInTheUK.UKBasedTrustees
 import models.{AddABeneficiary, AddATrustee, FullName, IndividualOrBusiness, Status, UKAddress, UserAnswers, WhatKindOfAsset}
 import pages._
 import pages.entitystatus._
@@ -48,7 +49,7 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
           .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
           .set(GovernedInsideTheUKPage, true).success.value
           .set(AdministrationInsideUKPage, true).success.value
-          .set(TrustResidentInUKPage, true).success.value
+          .set(TrusteesBasedInTheUKPage, UKBasedTrustees).success.value
           .set(EstablishedUnderScotsLawPage, true).success.value
           .set(TrustResidentOffshorePage, false).success.value
           .set(TrustDetailsStatus, Completed).success.value
@@ -124,7 +125,7 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
             checkYourAnswersHelper.whenTrustSetup.value,
             checkYourAnswersHelper.governedInsideTheUK.value,
             checkYourAnswersHelper.administrationInsideUK.value,
-            checkYourAnswersHelper.trustResidentInUK.value,
+            checkYourAnswersHelper.trusteesBasedInUK.value,
             checkYourAnswersHelper.establishedUnderScotsLaw.value,
             checkYourAnswersHelper.trustResidentOffshore.value
           ),
@@ -233,7 +234,7 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
           .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
           .set(GovernedInsideTheUKPage, true).success.value
           .set(AdministrationInsideUKPage, true).success.value
-          .set(TrustResidentInUKPage, true).success.value
+          .set(TrusteesBasedInTheUKPage, UKBasedTrustees).success.value
           .set(EstablishedUnderScotsLawPage, true).success.value
           .set(TrustResidentOffshorePage, false).success.value
           .set(TrustDetailsStatus, Completed).success.value

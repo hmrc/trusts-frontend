@@ -20,6 +20,7 @@ import java.time.LocalDate
 
 import models.Matched.{Failed, Success}
 import models.Status.Completed
+import models.TrusteesBasedInTheUK.UKBasedTrustees
 import models.{AddABeneficiary, AddATrustee, AddAssets, FullName, IndividualOrBusiness, UKAddress, UserAnswers, WhatKindOfAsset}
 import org.scalatest.TryValues
 import pages._
@@ -89,7 +90,7 @@ object TestUserAnswers extends TryValues {
       .set(WhenTrustSetupPage, LocalDate.of(1500,10,10)).success.value
       .set(GovernedInsideTheUKPage, true).success.value
       .set(AdministrationInsideUKPage, true).success.value
-      .set(TrustResidentInUKPage, true).success.value
+      .set(TrusteesBasedInTheUKPage, UKBasedTrustees).success.value
       .set(EstablishedUnderScotsLawPage, true).success.value
       .set(TrustResidentOffshorePage, false).success.value
       .set(TrustDetailsStatus, Completed).success.value

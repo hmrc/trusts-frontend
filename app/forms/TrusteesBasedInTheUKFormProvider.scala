@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import pages.behaviours.PageBehaviours
+import javax.inject.Inject
 
-class SettlorsBasedInTheUKPageSpec extends PageBehaviours {
+import forms.mappings.Mappings
+import play.api.data.Form
+import models.TrusteesBasedInTheUK
 
-  "SettlorsBasedInTheUKPage" must {
+class TrusteesBasedInTheUKFormProvider @Inject() extends Mappings {
 
-    beRetrievable[Boolean](SettlorsBasedInTheUKPage)
-
-    beSettable[Boolean](SettlorsBasedInTheUKPage)
-
-    beRemovable[Boolean](SettlorsBasedInTheUKPage)
-  }
+  def apply(): Form[TrusteesBasedInTheUK] =
+    Form(
+      "value" -> enumerable[TrusteesBasedInTheUK]("trusteesBasedInTheUK.error.required")
+    )
 }

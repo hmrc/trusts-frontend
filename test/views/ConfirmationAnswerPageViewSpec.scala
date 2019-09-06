@@ -20,6 +20,7 @@ import java.time.{LocalDate, LocalDateTime}
 
 import models.AddAssets.NoComplete
 import models.Status.Completed
+import models.TrusteesBasedInTheUK.UKBasedTrustees
 import models.{AddABeneficiary, AddATrustee, FullName, IndividualOrBusiness, Status, UKAddress, WhatKindOfAsset}
 import pages._
 import pages.entitystatus._
@@ -42,7 +43,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
         .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
         .set(GovernedInsideTheUKPage, true).success.value
         .set(AdministrationInsideUKPage, true).success.value
-        .set(TrustResidentInUKPage, true).success.value
+        .set(TrusteesBasedInTheUKPage, UKBasedTrustees).success.value
         .set(EstablishedUnderScotsLawPage, true).success.value
         .set(TrustResidentOffshorePage, false).success.value
         .set(TrustDetailsStatus, Completed).success.value
@@ -149,7 +150,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
       assertContainsQuestionAnswerPair(doc, messages("whenTrustSetup.checkYourAnswersLabel"), "10 October 2010")
       assertContainsQuestionAnswerPair(doc, messages("governedInsideTheUK.checkYourAnswersLabel"), yes)
       assertContainsQuestionAnswerPair(doc, messages("administrationInsideUK.checkYourAnswersLabel"), yes)
-      assertContainsQuestionAnswerPair(doc, messages("trustResidentInUK.checkYourAnswersLabel"), yes)
+      assertContainsQuestionAnswerPair(doc, messages("trusteesBasedInTheUK.checkYourAnswersLabel"), "All the trustees based in the UK")
       assertContainsQuestionAnswerPair(doc, messages("establishedUnderScotsLaw.checkYourAnswersLabel"), yes)
       assertContainsQuestionAnswerPair(doc, messages("trustResidentOffshore.checkYourAnswersLabel"), no)
     }

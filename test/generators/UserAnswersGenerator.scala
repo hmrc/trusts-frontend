@@ -31,6 +31,7 @@ trait UserAnswersGenerator extends TryValues {
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
     arbitrary[(SettlorsBasedInTheUKPage.type, JsValue)] ::
+    arbitrary[(TrusteesBasedInTheUKPage.type, JsValue)] ::
     arbitrary[(SettlorHandoverReliefYesNoPage.type, JsValue)] ::
     arbitrary[(SettlorIndividualPassportYesNoPage, JsValue)] ::
     arbitrary[(SettlorIndividualPassportPage, JsValue)] ::
@@ -125,7 +126,6 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(TrustResidentOffshorePage.type, JsValue)] ::
     arbitrary[(RegisteringTrustFor5APage.type, JsValue)] ::
     arbitrary[(EstablishedUnderScotsLawPage.type, JsValue)] ::
-    arbitrary[(TrustResidentInUKPage.type, JsValue)] ::
     arbitrary[(CountryAdministeringTrustPage.type, JsValue)] ::
     arbitrary[(AdministrationInsideUKPage.type, JsValue)] ::
     arbitrary[(CountryGoverningTrustPage.type, JsValue)] ::

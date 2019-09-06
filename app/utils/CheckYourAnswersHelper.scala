@@ -44,6 +44,15 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
+  def trusteesBasedInTheUK: Option[AnswerRow] = userAnswers.get(TrusteesBasedInTheUKPage) map {
+    x =>
+      AnswerRow(
+        "trusteesBasedInTheUK.checkYourAnswersLabel",
+        HtmlFormat.escape(messages(s"trusteesBasedInTheUK.$x")),
+        routes.TrusteesBasedInTheUKController.onPageLoad(CheckMode, draftId).url
+      )
+  }
+
   def settlorHandoverReliefYesNo: Option[AnswerRow] = userAnswers.get(SettlorHandoverReliefYesNoPage) map {
     x =>
       AnswerRow(
@@ -214,6 +223,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       countryGoverningTrust,
       administrationInsideUK,
       countryAdministeringTrust,
+      trusteesBasedInUK,
       establishedUnderScotsLaw,
       trustResidentOffshore,
       trustPreviouslyResident,
@@ -1123,6 +1133,10 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
 
   def establishedUnderScotsLaw: Option[AnswerRow] = userAnswers.get(EstablishedUnderScotsLawPage) map {
     x => AnswerRow("establishedUnderScotsLaw.checkYourAnswersLabel", yesOrNo(x), routes.EstablishedUnderScotsLawController.onPageLoad(CheckMode, draftId).url, canEdit = canEdit)
+  }
+
+  def trusteesBasedInUK: Option[AnswerRow] = userAnswers.get(TrusteesBasedInTheUKPage) map {
+    x => AnswerRow("trusteesBasedInTheUK.checkYourAnswersLabel", answer("trusteesBasedInTheUK", x), routes.TrusteesBasedInTheUKController.onPageLoad(CheckMode, draftId).url, canEdit = canEdit)
   }
 
   def countryAdministeringTrust: Option[AnswerRow] = userAnswers.get(CountryAdministeringTrustPage) map {

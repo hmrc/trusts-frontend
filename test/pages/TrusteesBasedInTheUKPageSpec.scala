@@ -16,16 +16,17 @@
 
 package pages
 
+import models.TrusteesBasedInTheUK
 import pages.behaviours.PageBehaviours
 
-class SettlorsBasedInTheUKPageSpec extends PageBehaviours {
+class TrusteesBasedInTheUKSpec extends PageBehaviours {
 
-  "SettlorsBasedInTheUKPage" must {
+  "TrusteesBasedInTheUKPage" must {
 
-    beRetrievable[Boolean](SettlorsBasedInTheUKPage)
+    beRetrievable[TrusteesBasedInTheUK](TrusteesBasedInTheUKPage)
 
-    beSettable[Boolean](SettlorsBasedInTheUKPage)
+    beSettable[TrusteesBasedInTheUK](TrusteesBasedInTheUKPage)
 
-    beRemovable[Boolean](SettlorsBasedInTheUKPage)
+    beRemovable[TrusteesBasedInTheUK](TrusteesBasedInTheUKPage)
   }
 }
