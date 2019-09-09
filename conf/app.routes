@@ -588,7 +588,7 @@ POST       /:draftId/trusteesBasedInTheUK                        controllers.Tru
 GET        /:draftId/changeTrusteesBasedInTheUK                  controllers.TrusteesBasedInTheUKController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/changeTrusteesBasedInTheUK                  controllers.TrusteesBasedInTheUKController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
-GET        /:draftId/settlorsBasedInTheUK                        controllers.SettlorsBasedInTheUKController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/settlorsBasedInTheUK                        controllers.SettlorsBasedInTheUKController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/changeSettlorsBasedInTheUK                  controllers.SettlorsBasedInTheUKController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/changeSettlorsBasedInTheUK                  controllers.SettlorsBasedInTheUKController.onSubmit(mode: Mode = CheckMode, draftId: String)
+GET        /:draftId/settlors-based-in-the-uk                     controllers.SettlorsBasedInTheUKController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/settlors-based-in-the-uk                     controllers.SettlorsBasedInTheUKController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/change-settlors-based-in-the-uk              controllers.SettlorsBasedInTheUKController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/change-settlors-based-in-the-uk              controllers.SettlorsBasedInTheUKController.onSubmit(mode: Mode = CheckMode, draftId: String)

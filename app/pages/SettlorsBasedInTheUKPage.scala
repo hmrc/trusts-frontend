@@ -17,10 +17,11 @@
 package pages
 
 import play.api.libs.json.JsPath
+import sections.TrustDetails
 
 case object SettlorsBasedInTheUKPage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ TrustDetails \ toString
 
   override def toString: String = "settlorsBasedInTheUK"
 }
