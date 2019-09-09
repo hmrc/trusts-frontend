@@ -583,7 +583,7 @@ POST       /:draftId/asset/:index/share/portfolio/remove                        
 GET        /:draftId/trustee/:index/remove                        controllers.RemoveTrusteeController.onPageLoad(index : Int, draftId: String)
 POST       /:draftId/trustee/:index/remove                        controllers.RemoveTrusteeController.onSubmit(index : Int, draftId: String)
 
-GET        /:draftId/settlorDetails                        controllers.SettlorDetailsController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
-POST       /:draftId/settlorDetails                        controllers.SettlorDetailsController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
-GET        /:draftId/changeSettlorDetails                  controllers.SettlorDetailsController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
-POST       /:draftId/changeSettlorDetails                  controllers.SettlorDetailsController.onSubmit(mode: Mode = CheckMode, index : Int,draftId: String)
+GET        /:draftId//settlor/living/:index/business/details                      controllers.SettlorDetailsController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId//settlor/living/:index/business/details                     controllers.SettlorDetailsController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
+GET        /:draftId//settlor/living/:index/business/change-details                  controllers.SettlorDetailsController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId//settlor/living/:index/business/change-details                  controllers.SettlorDetailsController.onSubmit(mode: Mode = CheckMode, index : Int,draftId: String)
