@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,23 +12,15 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import viewmodels.AnswerRow
+package pages
 
-@(row: AnswerRow)(implicit messages: Messages)
+import play.api.libs.json.JsPath
 
-<li>
-    <div class="cya-question">@messages(row.label, row.labelArg)</div>
-    <div class="cya-answer">
-        @row.answer
-    </div>
-    <div class="cya-change">
-        @if(row.canEdit) {
-        <a href='@row.changeUrl'>
-            <span aria-hidden="true">@messages("site.edit")</span>
-            <span class="visually-hidden">@messages("site.hidden-edit", messages(row.label, row.labelArg))</span>
-        </a>
-        }
-    </div>
-</li>
+case object SettlorHandoverReliefYesNoPage extends QuestionPage[Boolean] {
+
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "settlorHandoverReliefYesNo"
+}

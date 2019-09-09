@@ -587,3 +587,8 @@ GET        /:draftId/settlor/living/:index/business/name                        
 POST       /:draftId/settlor/living/:index/business/name                        controllers.SettlorBusinessDetailsController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
 GET        /:draftId/settlor/living/:index/business/change-name                  controllers.SettlorBusinessDetailsController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
 POST       /:draftId/settlor/living/:index/business/change-name                  controllers.SettlorBusinessDetailsController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+
+GET        /:draftId/settlors/holdover-relief                         controllers.SettlorHandoverReliefYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/settlors/holdover-relief                         controllers.SettlorHandoverReliefYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/settlors/change-holdover-relief                  controllers.SettlorHandoverReliefYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/settlors/change-holdover-relief                  controllers.SettlorHandoverReliefYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
