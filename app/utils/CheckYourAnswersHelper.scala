@@ -40,7 +40,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "removeSettlor.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.RemoveSettlorController.onPageLoad(CheckMode,index, draftId).url
+        routes.RemoveSettlorController.onPageLoad(index, draftId).url
       )
   }
 

@@ -28,7 +28,7 @@
     title = s"${errorPrefix(form)} ${messages("removeSettlor.title")}"
     ) {
 
-    @formHelper(action = RemoveSettlorController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
+    @formHelper(action = RemoveSettlorController.onSubmit(index, draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 

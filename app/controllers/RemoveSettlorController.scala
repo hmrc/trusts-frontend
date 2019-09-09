@@ -55,9 +55,9 @@ class RemoveSettlorController @Inject()(
         case None => form
         case Some(value) => form.fill(value)
       }
-      request.userAnswers.get(SettlorBusinessDetailsPage(index)).map { name =>
-        Ok(view(preparedForm, mode, index, draftId, name))
-      } getOrElse Redirect(routes.SessionExpiredController.onPageLoad())
+//      request.userAnswers.get(SettlorBusinessDetailsPage(index)).map { name =>
+        Ok(view(preparedForm, mode, index, draftId, "Amazon"))
+//      } getOrElse Redirect(routes.SessionExpiredController.onPageLoad())
 
   }
 
