@@ -47,6 +47,9 @@ class Navigator @Inject()() {
     case AdministrationInsideUKPage => _ => isTrustGeneralAdministrationRoute(draftId)
     case CountryAdministeringTrustPage => _ => _ => routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, draftId)
     case TrusteesBasedInTheUKPage => _ => isTrusteesBasedInTheUKPage(draftId)
+
+
+    case SettlorsBasedInTheUKPage => _ => isSettlorsBasedInTheUKPage(draftId)
     case EstablishedUnderScotsLawPage => _ => _ => routes.TrustResidentOffshoreController.onPageLoad(NormalMode, draftId)
     case TrustResidentOffshorePage => _ => wasTrustPreviouslyResidentOffshoreRoute(draftId)
     case TrustPreviouslyResidentPage => _ => _ => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
@@ -411,6 +414,12 @@ class Navigator @Inject()() {
     case Some(UKBasedTrustees)   => routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode, draftId)
     case Some(NonUkBasedTrustees)  => routes.RegisteringTrustFor5AController.onPageLoad(NormalMode, draftId)
     case Some(InternationalAndUKTrustees)  => routes.SettlorsBasedInTheUKController.onPageLoad(NormalMode, draftId)
+    case None         => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def isSettlorsBasedInTheUKPage(draftId: String)(answers: UserAnswers) = answers.get(SettlorsBasedInTheUKPage) match {
+    case Some(true)   => routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode, draftId)
+    case Some(false)  => routes.RegisteringTrustFor5AController.onPageLoad(NormalMode, draftId)
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
