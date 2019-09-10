@@ -1160,7 +1160,8 @@ addATrusteeYesNo.title = Do you want to add a trustee?
 addATrusteeYesNo.heading = Do you want to add a trustee?
 addATrusteeYesNo.error.required = Select yes if you want to add a trustee
 
-removeSettlor.title = Are you sure you want to remove a settlor?
+removeSettlor.title = Are you sure you want to remove the settlor?
+removeSettlor.default = the settlor
 removeSettlor.heading = Are you sure you want to remove {0}?
 removeSettlor.checkYourAnswersLabel = Are you sure you want to remove {0}?
-removeSettlor.error.required = Select yes if you want to remove this settlor
+removeSettlor.error.required = Select yes if you want to remove the settlor

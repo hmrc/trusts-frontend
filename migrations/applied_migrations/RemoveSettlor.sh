@@ -6,11 +6,11 @@ echo "Applying migration RemoveSettlor"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /:draftId/removeSettlor                        controllers.RemoveSettlorController.onPageLoad(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
-echo "POST       /:draftId/removeSettlor                        controllers.RemoveSettlorController.onSubmit(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
+echo "GET        /:draftId/removeSettlor                        controllers.living_settlor.RemoveSettlorController.onPageLoad(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
+echo "POST       /:draftId/removeSettlor                        controllers.living_settlor.RemoveSettlorController.onSubmit(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
 
-echo "GET        /:draftId/changeRemoveSettlor                  controllers.RemoveSettlorController.onPageLoad(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
-echo "POST       /:draftId/changeRemoveSettlor                  controllers.RemoveSettlorController.onSubmit(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
+echo "GET        /:draftId/changeRemoveSettlor                  controllers.living_settlor.RemoveSettlorController.onPageLoad(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
+echo "POST       /:draftId/changeRemoveSettlor                  controllers.living_settlor.RemoveSettlorController.onSubmit(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

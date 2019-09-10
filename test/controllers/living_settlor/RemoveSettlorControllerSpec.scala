@@ -14,76 +14,76 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.living_settlor
 
 import base.SpecBase
-import forms.RemoveSettlorFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
-import pages.{RemoveSettlorPage, SettlorBusinessDetailsPage}
-import play.api.inject.bind
+import controllers.IndexValidation
+import controllers.property_or_land.routes
+import forms.RemoveIndexFormProvider
+import models.FullName
 import org.scalacheck.Arbitrary.arbitrary
-import play.api.libs.json.{JsBoolean, Json}
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import pages.SettlorBusinessDetailsPage
+import pages.living_settlor.{RemoveSettlorPage, SettlorIndividualNamePage}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
-import views.html.RemoveSettlorView
+import play.api.test.Helpers.{route, _}
+import views.html.RemoveIndexView
+
 
 class RemoveSettlorControllerSpec extends SpecBase with IndexValidation {
 
-  val formProvider = new RemoveSettlorFormProvider()
-  val form = formProvider()
+  val prefix : String = "removeSettlor"
+
+  val formProvider = new RemoveIndexFormProvider()
+  val form = formProvider(prefix)
   val index = 0
   val fakeName = "Test User"
 
-  lazy val removeSettlorRoute = routes.RemoveSettlorController.onPageLoad(NormalMode, index, fakeDraftId).url
+  lazy val removeSettlorRoute = routes.RemoveSettlorController.onPageLoad(index, fakeDraftId)
+  lazy val removeSettlorRoutePOST = routes.RemoveSettlorController.onSubmit(index, fakeDraftId)
 
-  "RemoveSettlor Controller" must {
+  "RemoveSettlor Controller" when {
+    "no name provided" must {
+      "return OK and the correct view for a GET" in {
+
+        val userAnswers = emptyUserAnswers
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(GET, removeSettlorRoute.url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[RemoveIndexView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual view(prefix, form, index, fakeDraftId, "the settlor", removeSettlorRoutePOST)(fakeRequest, messages).toString
+
+        application.stop()
+      }
+    }
+
 
     "return OK and the correct view for a GET" in {
 
       val answers = emptyUserAnswers
-        .set(SettlorBusinessDetailsPage(index), fakeName)
+        .set(SettlorIndividualNamePage(index), FullName("Test", None, "User"))
         .success
         .value
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-      val request = FakeRequest(GET, removeSettlorRoute)
+      val request = FakeRequest(GET, removeSettlorRoute.url)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[RemoveSettlorView]
+      val view = application.injector.instanceOf[RemoveIndexView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, index, fakeDraftId, fakeName)(fakeRequest, messages).toString
-
-      application.stop()
-    }
-
-    "populate the view correctly on a GET when the question has previously been answered" in {
-
-
-      val userAnswers = emptyUserAnswers
-        .set(RemoveSettlorPage(index), true).success.value
-        .set(SettlorBusinessDetailsPage(index), fakeName)
-        .success
-        .value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-      val request = FakeRequest(GET, removeSettlorRoute)
-
-      val view = application.injector.instanceOf[RemoveSettlorView]
-
-      val result = route(application, request).value
-
-      status(result) mustEqual OK
-
-      contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, index, fakeDraftId, fakeName)(fakeRequest, messages).toString
+        view(prefix, form, index, fakeDraftId, fakeName, removeSettlorRoutePOST)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -94,14 +94,14 @@ class RemoveSettlorControllerSpec extends SpecBase with IndexValidation {
         applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, removeSettlorRoute)
+        FakeRequest(POST, removeSettlorRoutePOST.url)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -109,7 +109,7 @@ class RemoveSettlorControllerSpec extends SpecBase with IndexValidation {
     "return a Bad Request and errors when invalid data is submitted" in {
 
       val answers = emptyUserAnswers
-        .set(SettlorBusinessDetailsPage(index), fakeName)
+        .set(SettlorIndividualNamePage(index), FullName("Test", None, "User"))
         .success
         .value
 
@@ -117,19 +117,19 @@ class RemoveSettlorControllerSpec extends SpecBase with IndexValidation {
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
       val request =
-        FakeRequest(POST, removeSettlorRoute)
+        FakeRequest(POST, removeSettlorRoutePOST.url)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[RemoveSettlorView]
+      val view = application.injector.instanceOf[RemoveIndexView]
 
       val result = route(application, request).value
 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, index, fakeDraftId, fakeName)(fakeRequest, messages).toString
+        view(prefix, boundForm, index, fakeDraftId, fakeName, removeSettlorRoutePOST)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -138,13 +138,13 @@ class RemoveSettlorControllerSpec extends SpecBase with IndexValidation {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, removeSettlorRoute)
+      val request = FakeRequest(GET, removeSettlorRoute.url)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -154,14 +154,14 @@ class RemoveSettlorControllerSpec extends SpecBase with IndexValidation {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, removeSettlorRoute)
+        FakeRequest(POST, removeSettlorRoutePOST.url)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -170,7 +170,7 @@ class RemoveSettlorControllerSpec extends SpecBase with IndexValidation {
   "for a GET" must {
 
     def getForIndex(index: Int): FakeRequest[AnyContentAsEmpty.type] = {
-      val route = routes.RemoveSettlorController.onPageLoad(NormalMode, index, fakeDraftId).url
+      val route = routes.RemoveSettlorController.onPageLoad(index, fakeDraftId).url
 
       FakeRequest(GET, route)
     }
@@ -187,7 +187,7 @@ class RemoveSettlorControllerSpec extends SpecBase with IndexValidation {
     def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
       val route =
-        routes.RemoveSettlorController.onPageLoad(NormalMode, index, fakeDraftId).url
+        routes.RemoveSettlorController.onSubmit(index, fakeDraftId).url
 
       FakeRequest(POST, route)
         .withFormUrlEncodedBody("Value" -> "true")

@@ -14,18 +14,15 @@
  * limitations under the License.
  */
 
-package pages
+package pages.living_settlor
 
-import pages.behaviours.PageBehaviours
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import sections.Settlors
 
-class RemoveSettlorPageSpec extends PageBehaviours {
+case class RemoveSettlorPage(index : Int) extends QuestionPage[Boolean] {
 
-  "RemoveSettlorPage" must {
+  override def path: JsPath = JsPath \Settlors \ "living" \ index \ toString
 
-    beRetrievable[Boolean](RemoveSettlorPage(0))
-
-    beSettable[Boolean](RemoveSettlorPage(0))
-
-    beRemovable[Boolean](RemoveSettlorPage(0))
-  }
+  override def toString: String = "removeSettlor"
 }

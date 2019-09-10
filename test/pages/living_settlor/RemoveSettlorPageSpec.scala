@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package forms
+package pages.living_settlor
 
-import javax.inject.Inject
+import pages.behaviours.PageBehaviours
 
-import forms.mappings.Mappings
-import play.api.data.Form
+class RemoveSettlorPageSpec extends PageBehaviours {
 
-class RemoveSettlorFormProvider @Inject() extends Mappings {
+  "RemoveSettlorPage" must {
 
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("removeSettlor.error.required")
-    )
+    beRetrievable[Boolean](RemoveSettlorPage(0))
+
+    beSettable[Boolean](RemoveSettlorPage(0))
+
+    beRemovable[Boolean](RemoveSettlorPage(0))
+  }
 }

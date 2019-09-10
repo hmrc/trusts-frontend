@@ -583,5 +583,5 @@ POST       /:draftId/asset/:index/share/portfolio/remove                        
 GET        /:draftId/trustee/:index/remove                        controllers.RemoveTrusteeController.onPageLoad(index : Int, draftId: String)
 POST       /:draftId/trustee/:index/remove                        controllers.RemoveTrusteeController.onSubmit(index : Int, draftId: String)
 
-GET        /:draftId/settlor/living/:index/company/remove                       controllers.RemoveSettlorController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
-POST       /:draftId/settlor/living/:index/company/remove                        controllers.RemoveSettlorController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
+GET        /:draftId/settlor/living/:index/individual/remove                       controllers.living_settlor.RemoveSettlorController.onPageLoad(index : Int, draftId: String)
+POST       /:draftId/settlor/living/:index/individual/remove                        controllers.living_settlor.RemoveSettlorController.onSubmit(index : Int, draftId: String)
