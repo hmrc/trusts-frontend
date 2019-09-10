@@ -28,7 +28,7 @@ import pages.QuestionPage
 import pages.living_settlor.SettlorIndividualNamePage
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.{AnyContent, Call, MessagesControllerComponents}
-import queries.{RemoveAssetQuery, Settable}
+import queries.{RemoveAssetQuery, RemoveSettlorQuery, Settable}
 import repositories.SessionRepository
 import sections.LivingSettlors
 import views.html.RemoveIndexView
@@ -51,7 +51,7 @@ class RemoveSettlorController @Inject()(
 
   override def page(index: Int): QuestionPage[FullName] = SettlorIndividualNamePage(index)
 
-  override def removeQuery(index: Int): Settable[_] = RemoveAssetQuery(index)
+  override def removeQuery(index: Int): Settable[_] = RemoveSettlorQuery(index)
 
   override val messagesPrefix : String = "removeSettlor"
 
