@@ -333,6 +333,17 @@ addATrustee.heading = Add a trustee
 addATrustee.singular.heading = Add a trustee
 addATrustee.count.heading = You have added {0} trustees
 
+addASettlor.heading = Add a settlor
+addASettlor.singular.heading = Add a settlors
+addASettlor.count.heading = You have added {0} settlors
+
+addASettlor.lifetime = This is a trust created during the settlor's lifetime to gift or transfer assets (also known as an inter vivos trust)
+addASettlor.deed.a = This trust was set up by a family agreement
+addASettlor.deed.a = This trust was set up by a family agreement, in addition to a will
+addASettlor.employees = This trust was set up for the employees of a company
+addASettlor.building = This trust was set up for a building or building with lots of tenants
+addASettlor.repair = This trust was set up to pay for the repair of historic buildings
+
 addATrustee.additional-content = Do you need to add another trustee?
 addATrustee.add-them-now = Yes, I want to add them now
 addATrustee.add-them-later = Yes, I want to add them later
@@ -1160,12 +1171,18 @@ addATrusteeYesNo.title = Do you want to add a trustee?
 addATrusteeYesNo.heading = Do you want to add a trustee?
 addATrusteeYesNo.error.required = Select yes if you want to add a trustee
 
+
 settlorBusinessDetails.title = What is the business’s name?
 settlorBusinessDetails.heading = What is the business’s name?
 settlorBusinessDetails.checkYourAnswersLabel = What is the business’s name?
 settlorBusinessDetails.error.required = Enter the business’s name
 settlorBusinessDetails.error.length = Business’s name must be 105 characters or less
 settlorBusinessDetails.error.invalid = Business name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+
+addASettlorYesNo.title = Do you want to add a settlor?
+addASettlorYesNo.heading = Do you want to add a settlor?
+addASettlorYesNo.error.required = Select yes if you want to add a settlor
+
 
 settlorHandoverReliefYesNo.title = Was holdover relief claimed on any assets put into the trust?
 settlorHandoverReliefYesNo.heading = Was holdover relief claimed on any assets put into the trust?
