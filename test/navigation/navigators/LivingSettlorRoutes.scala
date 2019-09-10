@@ -24,6 +24,7 @@ import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages.living_settlor._
 import controllers.living_settlor.routes
+import pages.SettlorHandoverReliefYesNoPage
 
 trait LivingSettlorRoutes {
 
@@ -34,6 +35,17 @@ trait LivingSettlorRoutes {
   private val navigator : Navigator = new LivingSettlorNavigator
 
   def livingSettlorRoutes(): Unit = {
+
+    "navigate from SettlorHandoverReliefYesNoPage" in {
+
+      val page = SettlorHandoverReliefYesNoPage
+
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId))
+      }
+    }
 
     "navigate from SettlorIndividualNamePage" in {
 

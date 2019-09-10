@@ -24,6 +24,9 @@ import pages.shares._
 
 trait PageGenerators {
 
+  implicit lazy val arbitrarySettlorHandoverReliefYesNoPage: Arbitrary[SettlorHandoverReliefYesNoPage.type] =
+    Arbitrary(SettlorHandoverReliefYesNoPage)
+
   implicit lazy val arbitraryRemoveSettlorPage: Arbitrary[RemoveSettlorPage] =
     Arbitrary(RemoveSettlorPage(0))
 
