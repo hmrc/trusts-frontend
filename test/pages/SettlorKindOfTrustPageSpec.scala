@@ -19,14 +19,14 @@ package pages
 import models.SettlorKindOfTrust
 import pages.behaviours.PageBehaviours
 
-class SettlorKindOfTrustSpec extends PageBehaviours {
+class SettlorKindOfTrustPageSpec extends PageBehaviours {
 
   "SettlorKindOfTrustPage" must {
 
-    beRetrievable[SettlorKindOfTrust](SettlorKindOfTrustPage(0))
+    beRetrievable[SettlorKindOfTrust](SettlorKindOfTrustPage)
 
-    beSettable[SettlorKindOfTrust](SettlorKindOfTrustPage(0))
+    beSettable[SettlorKindOfTrust](SettlorKindOfTrustPage)
 
-    beRemovable[SettlorKindOfTrust](SettlorKindOfTrustPage(0))
+    beRemovable[SettlorKindOfTrust](SettlorKindOfTrustPage)
   }
 }

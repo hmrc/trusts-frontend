@@ -24,8 +24,8 @@ import pages.shares._
 
 trait PageGenerators {
 
-  implicit lazy val arbitrarySettlorKindOfTrustPage: Arbitrary[SettlorKindOfTrustPage] =
-    Arbitrary(SettlorKindOfTrustPage(0))
+  implicit lazy val arbitrarySettlorKindOfTrustPage: Arbitrary[SettlorKindOfTrustPage.type] =
+    Arbitrary(SettlorKindOfTrustPage)
 
   implicit lazy val arbitrarySettlorHandoverReliefYesNoPage: Arbitrary[SettlorHandoverReliefYesNoPage.type] =
     Arbitrary(SettlorHandoverReliefYesNoPage)

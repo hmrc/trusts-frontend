@@ -20,7 +20,7 @@ import base.SpecBase
 import forms.SettlorKindOfTrustFormProvider
 import models.{NormalMode, SettlorKindOfTrust}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.SettlorKindOfTrustPage
+import pages.{SettlorKindOfTrustPage, SetupAfterSettlorDiedPage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -30,7 +30,7 @@ class SettlorKindOfTrustControllerSpec extends SpecBase with IndexValidation {
 
   val index = 0
 
-  lazy val settlorKindOfTrustRoute = routes.SettlorKindOfTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
+  lazy val settlorKindOfTrustRoute = routes.SettlorKindOfTrustController.onPageLoad(NormalMode, fakeDraftId).url
 
   val formProvider = new SettlorKindOfTrustFormProvider()
   val form = formProvider()
@@ -39,7 +39,9 @@ class SettlorKindOfTrustControllerSpec extends SpecBase with IndexValidation {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, false).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, settlorKindOfTrustRoute)
 
@@ -50,14 +52,15 @@ class SettlorKindOfTrustControllerSpec extends SpecBase with IndexValidation {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(SettlorKindOfTrustPage(0), SettlorKindOfTrust.values.head).success.value
+      val userAnswers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, false).success.value
+        .set(SettlorKindOfTrustPage, SettlorKindOfTrust.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -70,15 +73,17 @@ class SettlorKindOfTrustControllerSpec extends SpecBase with IndexValidation {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(SettlorKindOfTrust.values.head), NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill(SettlorKindOfTrust.values.head), NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
+      val userAnswers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, false).success.value
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, settlorKindOfTrustRoute)
@@ -95,7 +100,9 @@ class SettlorKindOfTrustControllerSpec extends SpecBase with IndexValidation {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, false).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, settlorKindOfTrustRoute)
@@ -110,7 +117,7 @@ class SettlorKindOfTrustControllerSpec extends SpecBase with IndexValidation {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -144,39 +151,6 @@ class SettlorKindOfTrustControllerSpec extends SpecBase with IndexValidation {
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
-    }
-
-    "for a GET" must {
-
-      def getForIndex(index: Int): FakeRequest[AnyContentAsEmpty.type] = {
-        val route = routes.SettlorKindOfTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
-
-        FakeRequest(GET, route)
-      }
-
-      validateIndex(
-        arbitrary[SettlorKindOfTrust],
-        SettlorKindOfTrustPage.apply,
-        getForIndex
-      )
-
-    }
-
-    "for a POST" must {
-      def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
-
-        val route =
-          routes.SettlorKindOfTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
-
-        FakeRequest(POST, route)
-          .withFormUrlEncodedBody("Value" -> "true")
-      }
-
-      validateIndex(
-        arbitrary[SettlorKindOfTrust],
-        SettlorKindOfTrustPage.apply,
-        postForIndex
-      )
     }
   }
 }

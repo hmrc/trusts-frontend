@@ -222,7 +222,7 @@ class Navigator @Inject()() {
 
 
   private def setupAfterSettlorDiedRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(SetupAfterSettlorDiedPage) match {
-    case Some(false) => routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode, draftId)
+    case Some(false) => routes.SettlorKindOfTrustController.onPageLoad(NormalMode, draftId)
     case Some(true) => routes.SettlorsNameController.onPageLoad(NormalMode, draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
