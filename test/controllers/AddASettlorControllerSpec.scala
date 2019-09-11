@@ -39,7 +39,7 @@ class AddASettlorControllerSpec extends SpecBase {
   val hint = "addASettlor.lifetime"
 
   val userAnswersWithSettlorsComplete = emptyUserAnswers
-    .set(SettlorKindOfTrustPage(0), Lifetime)
+    .set(SettlorKindOfTrustPage, Lifetime)
     .success
     .value
 
@@ -85,7 +85,7 @@ class AddASettlorControllerSpec extends SpecBase {
       "return OK and the correct view for a GET" in {
 
         val answers = emptyUserAnswers
-          .set(SettlorKindOfTrustPage(0), Lifetime)
+          .set(SettlorKindOfTrustPage, Lifetime)
           .success
           .value
 
@@ -108,7 +108,7 @@ class AddASettlorControllerSpec extends SpecBase {
       "redirect to the next page when valid data is submitted" in {
 
         val answers = emptyUserAnswers
-          .set(SettlorKindOfTrustPage(0), Lifetime)
+          .set(SettlorKindOfTrustPage, Lifetime)
           .success
           .value
 
@@ -131,7 +131,7 @@ class AddASettlorControllerSpec extends SpecBase {
       "return a Bad Request and errors when invalid data is submitted" in {
 
         val answers = emptyUserAnswers
-          .set(SettlorKindOfTrustPage(0), Lifetime)
+          .set(SettlorKindOfTrustPage, Lifetime)
           .success
           .value
 

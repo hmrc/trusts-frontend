@@ -26,6 +26,10 @@ trait PageGenerators {
 
   implicit lazy val arbitrarySettlorBusinessDetailsPage: Arbitrary[SettlorBusinessNamePage] =
     Arbitrary(SettlorBusinessNamePage(0))
+  
+  implicit lazy val arbitrarySettlorKindOfTrustPage: Arbitrary[SettlorKindOfTrustPage.type] =
+    Arbitrary(SettlorKindOfTrustPage)
+
 
   implicit lazy val arbitrarySettlorHandoverReliefYesNoPage: Arbitrary[SettlorHandoverReliefYesNoPage.type] =
     Arbitrary(SettlorHandoverReliefYesNoPage)

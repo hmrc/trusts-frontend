@@ -32,14 +32,14 @@ trait DeceasedSettlorRoutes {
 
   def deceasedSettlorRoutes()(implicit navigator: Navigator) = {
 
-    "go to SetupAfterSettlorDiedPage from SetupAfterSettlorDiedPage when user answers no" in {
+    "go to WhatKindOfTrustPage from SetupAfterSettlorDiedPage when user answers no" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
           val answers = userAnswers.set(SetupAfterSettlorDiedPage, value = false).success.value
 
           navigator.nextPage(SetupAfterSettlorDiedPage, NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode, fakeDraftId))
+            .mustBe(routes.SettlorKindOfTrustController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 

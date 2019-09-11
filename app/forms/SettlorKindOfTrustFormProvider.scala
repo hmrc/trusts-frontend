@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import play.api.libs.json.JsPath
-import sections.Settlors
+import javax.inject.Inject
 
-case object SettlorHandoverReliefYesNoPage extends QuestionPage[Boolean] {
+import forms.mappings.Mappings
+import play.api.data.Form
+import models.SettlorKindOfTrust
 
-  override def path: JsPath = JsPath \ Settlors \ toString
+class SettlorKindOfTrustFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "settlorHandoverReliefYesNo"
+  def apply(): Form[SettlorKindOfTrust] =
+    Form(
+      "value" -> enumerable[SettlorKindOfTrust]("settlorKindOfTrust.error.required")
+    )
 }
