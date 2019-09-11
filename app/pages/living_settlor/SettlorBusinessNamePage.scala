@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package pages.shares
+package pages.living_settlor
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.Assets
+import sections.LivingSettlors
 
-final case class SharePortfolioValueInTrustPage(index : Int) extends QuestionPage[String] {
+case class SettlorBusinessNamePage(index : Int) extends QuestionPage[String] {
 
-  override def path: JsPath = Assets.path \ index \ toString
+  override def path: JsPath = LivingSettlors.path \ "business" \ index \ toString
 
-  override def toString: String = "value"
+  override def toString: String = "name"
 }

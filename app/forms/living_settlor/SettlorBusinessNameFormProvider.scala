@@ -14,15 +14,22 @@
  * limitations under the License.
  */
 
-package pages.shares
+package forms.living_settlor
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.Assets
+import forms.Validation
+import forms.mappings.Mappings
+import javax.inject.Inject
+import play.api.data.Form
 
-final case class SharePortfolioValueInTrustPage(index : Int) extends QuestionPage[String] {
+class SettlorBusinessNameFormProvider @Inject() extends Mappings {
 
-  override def path: JsPath = Assets.path \ index \ toString
+  def apply(): Form[String] =
+    Form(
 
-  override def toString: String = "value"
+      "value" -> text("settlorBusinessName.error.required")
+      .verifying(
+                firstError(
+                maxLength(105, "settlorBusinessName.error.length"),
+                regexp(Validation.nameRegex, s"settlorBusinessName.error.invalid")
+    )))
 }

@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package pages.shares
+package pages.living_settlor
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.Assets
+import pages.behaviours.PageBehaviours
 
-final case class SharePortfolioValueInTrustPage(index : Int) extends QuestionPage[String] {
 
-  override def path: JsPath = Assets.path \ index \ toString
+class SettlorBusinessNamePageSpec extends PageBehaviours {
 
-  override def toString: String = "value"
+  "SettlorBusinessDetailsPage" must {
+
+    beRetrievable[String](SettlorBusinessNamePage(0))
+
+    beSettable[String](SettlorBusinessNamePage(0))
+
+    beRemovable[String](SettlorBusinessNamePage(0))
+  }
 }
