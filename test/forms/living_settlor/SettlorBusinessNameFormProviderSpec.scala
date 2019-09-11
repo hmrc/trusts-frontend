@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-package forms
+package forms.living_settlor
 
+import forms.Validation
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
 
-class SettlorBusinessDetailsFormProviderSpec extends StringFieldBehaviours {
+class SettlorBusinessNameFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "settlorBusinessDetails.error.required"
-  val lengthKey = "settlorBusinessDetails.error.length"
+  val requiredKey = "settlorBusinessName.error.required"
+  val lengthKey = "settlorBusinessName.error.length"
   val maxLength = 105
 
-  val form = new SettlorBusinessDetailsFormProvider()()
+  val form = new SettlorBusinessNameFormProvider()()
 
   ".value" must {
 

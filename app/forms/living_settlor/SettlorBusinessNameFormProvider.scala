@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package forms
+package forms.living_settlor
 
-import javax.inject.Inject
-
+import forms.Validation
 import forms.mappings.Mappings
+import javax.inject.Inject
 import play.api.data.Form
 
-class SettlorBusinessDetailsFormProvider @Inject() extends Mappings {
+class SettlorBusinessNameFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
     Form(
 
-      "value" -> text("settlorBusinessDetails.error.required")
+      "value" -> text("settlorBusinessName.error.required")
       .verifying(
                 firstError(
-                maxLength(105, "settlorBusinessDetails.error.length"),
-                regexp(Validation.nameRegex, s"settlorBusinessDetails.error.invalid")
+                maxLength(105, "settlorBusinessName.error.length"),
+                regexp(Validation.nameRegex, s"settlorBusinessName.error.invalid")
     )))
 }

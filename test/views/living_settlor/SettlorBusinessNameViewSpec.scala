@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
-package views
+package views.living_settlor
 
-import controllers.routes
-import forms.SettlorBusinessDetailsFormProvider
+import forms.living_settlor.SettlorBusinessNameFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
-import views.html.SettlorBusinessDetailsView
+import views.html.living_settlor.SettlorBusinessNameView
 
-class SettlorBusinessDetailsViewSpec extends StringViewBehaviours {
+class SettlorBusinessNameViewSpec extends StringViewBehaviours {
 
-  val messageKeyPrefix = "settlorBusinessDetails"
+  val messageKeyPrefix = "settlorBusinessName"
 
-  val form = new SettlorBusinessDetailsFormProvider()()
+  val form = new SettlorBusinessNameFormProvider()()
 
-  "SettlorBusinessDetailsView view" must {
+  "SettlorBusinessNameView view" must {
 
-    val view = viewFor[SettlorBusinessDetailsView](Some(emptyUserAnswers))
+    val view = viewFor[SettlorBusinessNameView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, 0, fakeDraftId)(fakeRequest, messages)

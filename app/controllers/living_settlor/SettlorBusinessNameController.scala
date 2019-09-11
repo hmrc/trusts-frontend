@@ -14,36 +14,36 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.living_settlor
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.SettlorBusinessDetailsFormProvider
+import forms.living_settlor.SettlorBusinessNameFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.SettlorBusinessDetailsPage
+import pages.living_settlor.SettlorBusinessNamePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import sections.LivingSettlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.SettlorBusinessDetailsView
+import views.html.living_settlor.SettlorBusinessNameView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class SettlorBusinessDetailsController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DraftIdRetrievalActionProvider,
-                                        validateIndex : IndexActionFilterProvider,
-                                        requireData: DataRequiredAction,
-                                        formProvider: SettlorBusinessDetailsFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: SettlorBusinessDetailsView
+class SettlorBusinessNameController @Inject()(
+                                                  override val messagesApi: MessagesApi,
+                                                  sessionRepository: SessionRepository,
+                                                  navigator: Navigator,
+                                                  identify: IdentifierAction,
+                                                  getData: DraftIdRetrievalActionProvider,
+                                                  validateIndex : IndexActionFilterProvider,
+                                                  requireData: DataRequiredAction,
+                                                  formProvider: SettlorBusinessNameFormProvider,
+                                                  val controllerComponents: MessagesControllerComponents,
+                                                  view: SettlorBusinessNameView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -51,7 +51,7 @@ class SettlorBusinessDetailsController @Inject()(
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData andThen validateIndex(index, LivingSettlors)) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(SettlorBusinessDetailsPage(index)) match {
+      val preparedForm = request.userAnswers.get(SettlorBusinessNamePage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -68,9 +68,9 @@ class SettlorBusinessDetailsController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorBusinessDetailsPage(index),  value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorBusinessNamePage(index),  value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SettlorBusinessDetailsPage(index), mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(SettlorBusinessNamePage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

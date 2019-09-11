@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package pages
+package pages.living_settlor
 
 import pages.behaviours.PageBehaviours
 
 
-class SettlorBusinessDetailsPageSpec extends PageBehaviours {
+class SettlorBusinessNamePageSpec extends PageBehaviours {
 
   "SettlorBusinessDetailsPage" must {
 
-    beRetrievable[String](SettlorBusinessDetailsPage(0))
+    beRetrievable[String](SettlorBusinessNamePage(0))
 
-    beSettable[String](SettlorBusinessDetailsPage(0))
+    beSettable[String](SettlorBusinessNamePage(0))
 
-    beRemovable[String](SettlorBusinessDetailsPage(0))
+    beRemovable[String](SettlorBusinessNamePage(0))
   }
 }

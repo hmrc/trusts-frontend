@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package pages
+package pages.living_settlor
 
+import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.Settlors
 
-case class SettlorBusinessDetailsPage(index : Int) extends QuestionPage[String] {
+case class SettlorBusinessNamePage(index : Int) extends QuestionPage[String] {
 
-  override def path: JsPath = JsPath \Settlors \ "living" \ index \ toString
+  override def path: JsPath = JsPath \ "settlors" \ "living" \ index \ toString
 
-  override def toString: String = "settlorBusinessDetails"
+  override def toString: String = "businessName"
 }

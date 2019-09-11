@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.routes._
+@import controllers.living_settlor.routes._
 @import models.Mode
 
 @this(
@@ -25,20 +25,20 @@
 @(form: Form[_], mode: Mode, index: Int, draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("settlorBusinessDetails.title")}"
+    title = s"${errorPrefix(form)} ${messages("settlorBusinessName.title")}"
     ) {
 
-    @formHelper(action = SettlorBusinessDetailsController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
+    @formHelper(action = SettlorBusinessNameController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("settlorBusinessDetails.heading")
+        @components.heading("settlorBusinessName.heading")
 
         @components.input_text(
           field = form("value"),
-          label = messages("settlorBusinessDetails.heading"),
+          label = messages("settlorBusinessName.heading"),
           labelClass = Some("visually-hidden")
         )
 
