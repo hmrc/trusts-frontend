@@ -1188,4 +1188,4 @@ settlorKindOfTrust.error.required = Select what kind of trust the settlor create
 settlorHandoverReliefYesNo.title = Was holdover relief claimed on any assets put into the trust?
 settlorHandoverReliefYesNo.heading = Was holdover relief claimed on any assets put into the trust?
 settlorHandoverReliefYesNo.checkYourAnswersLabel = Was holdover relief claimed on any assets put into the trust?
-settlorHandoverReliefYesNo.error.required = Select yes if holdover relief was claimed on any assets put into the trust?
+settlorHandoverReliefYesNo.error.required = Select yes if holdover relief was claimed by any settlor on transfer into the trust
