@@ -48,7 +48,6 @@ class Navigator @Inject()() {
     case CountryAdministeringTrustPage => _ => _ => routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, draftId)
     case TrusteesBasedInTheUKPage => _ => isTrusteesBasedInTheUKPage(draftId)
 
-
     case SettlorsBasedInTheUKPage => _ => isSettlorsBasedInTheUKPage(draftId)
     case EstablishedUnderScotsLawPage => _ => _ => routes.TrustResidentOffshoreController.onPageLoad(NormalMode, draftId)
     case TrustResidentOffshorePage => _ => wasTrustPreviouslyResidentOffshoreRoute(draftId)

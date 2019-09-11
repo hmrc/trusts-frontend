@@ -30,7 +30,6 @@ case object TrusteesBasedInTheUKPage extends QuestionPage[TrusteesBasedInTheUK] 
 
   override def toString: String = "trusteesBasedInTheUK"
 
-  //TODO: Add the SettlorBasedintheUK page once it is created
 
   override def cleanup(value: Option[TrusteesBasedInTheUK], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
@@ -39,6 +38,7 @@ case object TrusteesBasedInTheUKPage extends QuestionPage[TrusteesBasedInTheUK] 
           .flatMap(_.remove(TrustResidentOffshorePage))
           .flatMap(_.remove(TrustPreviouslyResidentPage))
           .flatMap(_.remove(TrustDetailsStatus))
+          .flatMap(_.remove(SettlorsBasedInTheUKPage))
       case Some(NonUkBasedTrustees) | Some(InternationalAndUKTrustees) =>
         userAnswers.remove(RegisteringTrustFor5APage)
           .flatMap(_.remove(InheritanceTaxActPage))

@@ -40,7 +40,9 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorsBasedInTheUK.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SettlorsBasedInTheUKController.onPageLoad(CheckMode, draftId).url
+        routes.SettlorsBasedInTheUKController.onPageLoad(CheckMode, draftId).url,
+        canEdit = canEdit
+
       )
   }
 
@@ -49,7 +51,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "trusteesBasedInTheUK.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"trusteesBasedInTheUK.$x")),
-        routes.TrusteesBasedInTheUKController.onPageLoad(CheckMode, draftId).url
+        routes.TrusteesBasedInTheUKController.onPageLoad(CheckMode, draftId).url,
+        canEdit = canEdit
       )
   }
 
@@ -224,6 +227,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       administrationInsideUK,
       countryAdministeringTrust,
       trusteesBasedInUK,
+      settlorsBasedInTheUK,
       establishedUnderScotsLaw,
       trustResidentOffshore,
       trustPreviouslyResident,
