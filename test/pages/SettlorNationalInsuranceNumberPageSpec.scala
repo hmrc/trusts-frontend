@@ -17,6 +17,7 @@
 package pages
 
 import pages.behaviours.PageBehaviours
+import pages.deceased_settlor.SettlorNationalInsuranceNumberPage
 
 
 class SettlorNationalInsuranceNumberPageSpec extends PageBehaviours {

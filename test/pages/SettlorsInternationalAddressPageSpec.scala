@@ -18,6 +18,7 @@ package pages
 
 import models.InternationalAddress
 import pages.behaviours.PageBehaviours
+import pages.deceased_settlor.SettlorsInternationalAddressPage
 
 class SettlorsInternationalAddressPageSpec extends PageBehaviours {
 

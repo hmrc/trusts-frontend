@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.SettlorDateOfBirthYesNoFormProvider
 import javax.inject.Inject
-import models.{Mode, NormalMode, UserAnswers}
+import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.{SettlorDateOfBirthYesNoPage, SettlorsNamePage}
+import pages.deceased_settlor.{SettlorDateOfBirthYesNoPage, SettlorsNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

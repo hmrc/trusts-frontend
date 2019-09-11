@@ -21,7 +21,7 @@ import forms.SettlorsDateOfBirthFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.{SettlorsDateOfBirthPage, SettlorsNamePage}
+import pages.deceased_settlor.{SettlorsDateOfBirthPage, SettlorsNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

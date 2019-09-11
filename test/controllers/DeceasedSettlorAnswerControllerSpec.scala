@@ -19,8 +19,9 @@ package controllers
 import java.time.LocalDate
 
 import base.SpecBase
-import models.{FullName, InternationalAddress, NormalMode, UKAddress, UserAnswers}
-import pages.{SettlorDateOfBirthYesNoPage, SettlorDateOfDeathPage, SettlorDateOfDeathYesNoPage, SettlorNationalInsuranceNumberPage, SettlorsDateOfBirthPage, SettlorsInternationalAddressPage, SettlorsLastKnownAddressYesNoPage, SettlorsNINoYesNoPage, SettlorsNamePage, SettlorsUKAddressPage, SetupAfterSettlorDiedPage, WasSettlorsAddressUKYesNoPage}
+import models.{FullName, InternationalAddress, NormalMode, UKAddress}
+import pages.deceased_settlor._
+import pages.{SetupAfterSettlorDiedPage, WasSettlorsAddressUKYesNoPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.CheckYourAnswersHelper

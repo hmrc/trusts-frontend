@@ -18,6 +18,7 @@ package pages
 
 import models.UKAddress
 import pages.behaviours.PageBehaviours
+import pages.deceased_settlor.SettlorsUKAddressPage
 
 class SettlorsUKAddressPageSpec extends PageBehaviours {
 

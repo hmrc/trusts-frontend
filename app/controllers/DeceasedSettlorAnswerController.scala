@@ -22,7 +22,8 @@ import models.NormalMode
 import models.Status.Completed
 import navigation.Navigator
 import pages.entitystatus.DeceasedSettlorStatus
-import pages.{DeceasedSettlorAnswerPage, SettlorsNamePage}
+import pages.DeceasedSettlorAnswerPage
+import pages.deceased_settlor.SettlorsNamePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository

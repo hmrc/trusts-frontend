@@ -23,6 +23,7 @@ import models.Status.Completed
 import models.{AddABeneficiary, AddATrustee, AddAssets, FullName, IndividualOrBusiness, UKAddress, UserAnswers, WhatKindOfAsset}
 import org.scalatest.TryValues
 import pages._
+import pages.deceased_settlor.{SettlorDateOfBirthYesNoPage, SettlorDateOfDeathYesNoPage, SettlorsLastKnownAddressYesNoPage, SettlorsNINoYesNoPage, SettlorsNamePage}
 import pages.entitystatus._
 import play.api.libs.json.Json
 

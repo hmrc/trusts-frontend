@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package pages
+package pages.deceased_settlor
 
-import models.FullName
+import java.time.LocalDate
+
+import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.{DeceasedSettlor, Settlors}
+import sections.DeceasedSettlor
 
-case object SettlorsNamePage extends QuestionPage[FullName] {
+case object SettlorDateOfDeathPage extends QuestionPage[LocalDate] {
 
-  override def path: JsPath = JsPath \ Settlors \ DeceasedSettlor \toString
+  override def path: JsPath = DeceasedSettlor.path \ toString
 
-  override def toString: String = "name"
+  override def toString: String = "dateOfDeath"
 }

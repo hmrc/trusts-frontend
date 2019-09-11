@@ -18,12 +18,8 @@ package controllers
 
 import base.SpecBase
 import forms.SettlorDateOfDeathYesNoFormProvider
-import models.{FullName, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
-import pages.{SettlorDateOfDeathYesNoPage, SettlorsNamePage}
-import play.api.inject.bind
-import play.api.libs.json.{JsBoolean, Json}
-import play.api.mvc.Call
+import models.{FullName, NormalMode}
+import pages.deceased_settlor.{SettlorDateOfDeathYesNoPage, SettlorsNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.SettlorDateOfDeathYesNoView

@@ -21,6 +21,7 @@ import java.time.LocalDate
 import models.UserAnswers
 import pages.behaviours.PageBehaviours
 import org.scalacheck.Arbitrary.arbitrary
+import pages.deceased_settlor.{SettlorDateOfBirthYesNoPage, SettlorsDateOfBirthPage}
 
 class SettlorDateOfBirthYesNoPageSpec extends PageBehaviours {
 

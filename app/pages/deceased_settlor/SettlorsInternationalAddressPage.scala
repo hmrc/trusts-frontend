@@ -14,25 +14,16 @@
  * limitations under the License.
  */
 
-package pages
+package pages.deceased_settlor
 
-import models.UserAnswers
+import models.InternationalAddress
+import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.{DeceasedSettlor, Settlors}
+import sections.DeceasedSettlor
 
-import scala.util.Try
+case object SettlorsInternationalAddressPage extends QuestionPage[InternationalAddress] {
 
-case object SettlorDateOfDeathYesNoPage extends QuestionPage[Boolean] {
+  override def path: JsPath = DeceasedSettlor.path \ toString
 
-  override def path: JsPath = JsPath \ Settlors \ DeceasedSettlor \toString
-
-  override def toString: String = "dateOfDeathYesNo"
-
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
-    value match {
-      case Some(false) =>
-        userAnswers.remove(SettlorDateOfDeathPage)
-      case _ => super.cleanup(value, userAnswers)
-    }
-  }
+  override def toString: String = "address"
 }
