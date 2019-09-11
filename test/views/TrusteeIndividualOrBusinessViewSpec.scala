@@ -16,7 +16,7 @@
 
 package views
 
-import forms.TrusteeIndividualOrBusinessFormProvider
+import forms.trustees.TrusteeIndividualOrBusinessFormProvider
 import models.{IndividualOrBusiness, NormalMode, UserAnswers}
 import pages.IsThisLeadTrusteePage
 import play.api.data.Form

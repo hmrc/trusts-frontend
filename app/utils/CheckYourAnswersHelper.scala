@@ -23,8 +23,9 @@ import javax.inject.Inject
 import mapping.reads._
 import models.{CheckMode, InternationalAddress, PassportOrIdCardDetails, UKAddress, UserAnswers}
 import pages._
+import pages.deceased_settlor._
+import pages.living_settlor._
 import pages.property_or_land._
-import pages.living_settlor.{SettlorBusinessNamePage, SettlorIndividualAddressInternationalPage, SettlorIndividualAddressUKPage, SettlorIndividualAddressUKYesNoPage, SettlorIndividualAddressYesNoPage, SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualIDCardPage, SettlorIndividualIDCardYesNoPage, SettlorIndividualNINOPage, SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage, SettlorIndividualOrBusinessPage, SettlorIndividualPassportPage, SettlorIndividualPassportYesNoPage}
 import pages.shares._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
@@ -241,17 +242,17 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
 
     val questions = Seq(
       setupAfterSettlorDied,
-      settlorsName,
-      settlorDateOfDeathYesNo,
-      settlorDateOfDeath,
-      settlorDateOfBirthYesNo,
-      settlorsDateOfBirth,
-      settlorsNINoYesNo,
-      settlorNationalInsuranceNumber,
-      settlorsLastKnownAddressYesNo,
+      deceasedSettlorsName,
+      deceasedSettlorDateOfDeathYesNo,
+      deceasedSettlorDateOfDeath,
+      deceasedSettlorDateOfBirthYesNo,
+      deceasedSettlorsDateOfBirth,
+      deceasedSettlorsNINoYesNo,
+      deceasedSettlorNationalInsuranceNumber,
+      deceasedSettlorsLastKnownAddressYesNo,
       wasSettlorsAddressUKYesNo,
-      settlorsUKAddress,
-      settlorsInternationalAddress
+      deceasedSettlorsUKAddress,
+      deceasedSettlorsInternationalAddress
     ).flatten
 
     if (questions.nonEmpty) Some(Seq(AnswerSection(None, questions, Some(Messages("answerPage.section.settlors.heading"))))) else None
@@ -356,7 +357,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
         )
     }
   }
-                               
+
   def shares : Seq[AnswerSection] = {
     val answers : Seq[(ShareAsset, Int)] = userAnswers.get(Assets).getOrElse(Nil).zipWithIndex.collect {
       case (x : ShareNonPortfolioAsset, index) => (x, index)
@@ -800,7 +801,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "wasSettlorsAddressUKYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.WasSettlorsAddressUKYesNoController.onPageLoad(CheckMode, draftId).url,
+        controllers.deceased_settlor.routes.WasSettlorsAddressUKYesNoController.onPageLoad(CheckMode, draftId).url,
         deceasedSettlorName(userAnswers),
         canEdit = canEdit
       )
@@ -816,110 +817,110 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
-  def settlorsUKAddress: Option[AnswerRow] = userAnswers.get(SettlorsUKAddressPage) map {
+  def deceasedSettlorsUKAddress: Option[AnswerRow] = userAnswers.get(SettlorsUKAddressPage) map {
     x =>
       AnswerRow(
         "settlorsUKAddress.checkYourAnswersLabel",
         ukAddress(x),
-        routes.SettlorsUKAddressController.onPageLoad(CheckMode, draftId).url,
+        controllers.deceased_settlor.routes.SettlorsUKAddressController.onPageLoad(CheckMode, draftId).url,
         deceasedSettlorName(userAnswers),
         canEdit = canEdit
       )
   }
 
-  def settlorsNINoYesNo: Option[AnswerRow] = userAnswers.get(SettlorsNINoYesNoPage) map {
+  def deceasedSettlorsNINoYesNo: Option[AnswerRow] = userAnswers.get(SettlorsNINoYesNoPage) map {
     x =>
       AnswerRow(
         "settlorsNINoYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SettlorsNINoYesNoController.onPageLoad(CheckMode, draftId).url,
+        controllers.deceased_settlor.routes.SettlorsNINoYesNoController.onPageLoad(CheckMode, draftId).url,
         deceasedSettlorName(userAnswers),
         canEdit = canEdit
       )
   }
 
-  def settlorsName: Option[AnswerRow] = userAnswers.get(SettlorsNamePage) map {
+  def deceasedSettlorsName: Option[AnswerRow] = userAnswers.get(SettlorsNamePage) map {
     x =>
       AnswerRow(
         "settlorsName.checkYourAnswersLabel",
         HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"),
-        routes.SettlorsNameController.onPageLoad(CheckMode, draftId).url,
+        controllers.deceased_settlor.routes.SettlorsNameController.onPageLoad(CheckMode, draftId).url,
         canEdit = canEdit
       )
   }
 
-  def settlorsLastKnownAddressYesNo: Option[AnswerRow] = userAnswers.get(SettlorsLastKnownAddressYesNoPage) map {
+  def deceasedSettlorsLastKnownAddressYesNo: Option[AnswerRow] = userAnswers.get(SettlorsLastKnownAddressYesNoPage) map {
     x =>
       AnswerRow(
         "settlorsLastKnownAddressYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SettlorsLastKnownAddressYesNoController.onPageLoad(CheckMode, draftId).url,
+        controllers.deceased_settlor.routes.SettlorsLastKnownAddressYesNoController.onPageLoad(CheckMode, draftId).url,
         deceasedSettlorName(userAnswers),
         canEdit = canEdit
       )
   }
 
-  def settlorsInternationalAddress: Option[AnswerRow] = userAnswers.get(SettlorsInternationalAddressPage) map {
+  def deceasedSettlorsInternationalAddress: Option[AnswerRow] = userAnswers.get(SettlorsInternationalAddressPage) map {
     x =>
       AnswerRow(
         "settlorsInternationalAddress.checkYourAnswersLabel",
         internationalAddress(x, countryOptions),
-        routes.SettlorsInternationalAddressController.onPageLoad(CheckMode, draftId).url,
+        controllers.deceased_settlor.routes.SettlorsInternationalAddressController.onPageLoad(CheckMode, draftId).url,
         deceasedSettlorName(userAnswers),
         canEdit = canEdit
       )
   }
 
-  def settlorsDateOfBirth: Option[AnswerRow] = userAnswers.get(SettlorsDateOfBirthPage) map {
+  def deceasedSettlorsDateOfBirth: Option[AnswerRow] = userAnswers.get(SettlorsDateOfBirthPage) map {
     x =>
       AnswerRow(
         "settlorsDateOfBirth.checkYourAnswersLabel",
         HtmlFormat.escape(x.format(dateFormatter)),
-        routes.SettlorsDateOfBirthController.onPageLoad(CheckMode, draftId).url,
+        controllers.deceased_settlor.routes.SettlorsDateOfBirthController.onPageLoad(CheckMode, draftId).url,
         deceasedSettlorName(userAnswers),
         canEdit = canEdit
       )
   }
 
-  def settlorNationalInsuranceNumber: Option[AnswerRow] = userAnswers.get(SettlorNationalInsuranceNumberPage) map {
+  def deceasedSettlorNationalInsuranceNumber: Option[AnswerRow] = userAnswers.get(SettlorNationalInsuranceNumberPage) map {
     x =>
       AnswerRow(
         "settlorNationalInsuranceNumber.checkYourAnswersLabel",
         HtmlFormat.escape(formatNino(x)),
-        routes.SettlorNationalInsuranceNumberController.onPageLoad(CheckMode, draftId).url,
+        controllers.deceased_settlor.routes.SettlorNationalInsuranceNumberController.onPageLoad(CheckMode, draftId).url,
         deceasedSettlorName(userAnswers),
         canEdit = canEdit
       )
   }
 
-  def settlorDateOfDeathYesNo: Option[AnswerRow] = userAnswers.get(SettlorDateOfDeathYesNoPage) map {
+  def deceasedSettlorDateOfDeathYesNo: Option[AnswerRow] = userAnswers.get(SettlorDateOfDeathYesNoPage) map {
     x =>
       AnswerRow(
         "settlorDateOfDeathYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SettlorDateOfDeathYesNoController.onPageLoad(CheckMode, draftId).url,
+        controllers.deceased_settlor.routes.SettlorDateOfDeathYesNoController.onPageLoad(CheckMode, draftId).url,
         deceasedSettlorName(userAnswers),
         canEdit = canEdit
       )
   }
 
-  def settlorDateOfDeath: Option[AnswerRow] = userAnswers.get(SettlorDateOfDeathPage) map {
+  def deceasedSettlorDateOfDeath: Option[AnswerRow] = userAnswers.get(SettlorDateOfDeathPage) map {
     x =>
       AnswerRow(
         "settlorDateOfDeath.checkYourAnswersLabel",
         HtmlFormat.escape(x.format(dateFormatter)),
-        routes.SettlorDateOfDeathController.onPageLoad(CheckMode, draftId).url,
+        controllers.deceased_settlor.routes.SettlorDateOfDeathController.onPageLoad(CheckMode, draftId).url,
         deceasedSettlorName(userAnswers),
         canEdit = canEdit
       )
   }
 
-  def settlorDateOfBirthYesNo: Option[AnswerRow] = userAnswers.get(SettlorDateOfBirthYesNoPage) map {
+  def deceasedSettlorDateOfBirthYesNo: Option[AnswerRow] = userAnswers.get(SettlorDateOfBirthYesNoPage) map {
     x =>
       AnswerRow(
         "settlorDateOfBirthYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SettlorDateOfBirthYesNoController.onPageLoad(CheckMode, draftId).url,
+        controllers.deceased_settlor.routes.SettlorDateOfBirthYesNoController.onPageLoad(CheckMode, draftId).url,
         deceasedSettlorName(userAnswers),
         canEdit = canEdit
       )

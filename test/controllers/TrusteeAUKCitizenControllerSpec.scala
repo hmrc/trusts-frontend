@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import forms.TrusteeAUKCitizenFormProvider
+import forms.trustees.TrusteeAUKCitizenFormProvider
 import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary

@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import forms.TrusteeLiveInTheUKFormProvider
+import forms.trustees.TrusteeLiveInTheUKFormProvider
 import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.{IsThisLeadTrusteePage, TrusteeLiveInTheUKPage, TrusteesNamePage}

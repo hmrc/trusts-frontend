@@ -6,11 +6,11 @@ echo "Applying migration SettlorsUKAddress"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /settlorsUKAddress                        controllers.SettlorsUKAddressController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /settlorsUKAddress                        controllers.SettlorsUKAddressController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /settlorsUKAddress                        controllers.deceased_settlor.SettlorsUKAddressController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /settlorsUKAddress                        controllers.deceased_settlor.SettlorsUKAddressController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeSettlorsUKAddress                  controllers.SettlorsUKAddressController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeSettlorsUKAddress                  controllers.SettlorsUKAddressController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeSettlorsUKAddress                  controllers.deceased_settlor.SettlorsUKAddressController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeSettlorsUKAddress                  controllers.deceased_settlor.SettlorsUKAddressController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

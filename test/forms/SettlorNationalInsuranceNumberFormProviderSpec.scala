@@ -17,6 +17,7 @@
 package forms
 
 import forms.behaviours.StringFieldBehaviours
+import forms.deceased_settlor.SettlorNationalInsuranceNumberFormProvider
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
 

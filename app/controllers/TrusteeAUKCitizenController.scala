@@ -18,7 +18,7 @@ package controllers
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.TrusteeAUKCitizenFormProvider
+import forms.trustees.TrusteeAUKCitizenFormProvider
 import javax.inject.Inject
 import models.requests.DataRequest
 import models.{Mode, NormalMode}
