@@ -33,7 +33,6 @@ class TaskListNavigatorSpec extends SpecBase {
 
   val navigator : TaskListNavigator = new TaskListNavigator
 
-
   "TaskList Navigator" must {
 
     "for trust details task" when {
@@ -77,7 +76,8 @@ class TaskListNavigatorSpec extends SpecBase {
           val answers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, true).success.value
               .set(SettlorsNamePage, FullName("deceased",None, "settlor")).success.value
               .set(DeceasedSettlorStatus, Completed).success.value
-          navigator.nextPage(Settlors, answers, fakeDraftId) mustBe routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId)
+
+          navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId)
         }
 
       }

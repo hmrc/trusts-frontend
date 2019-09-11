@@ -19,6 +19,7 @@ package forms
 import java.time.{LocalDate, ZoneOffset}
 
 import forms.behaviours.DateBehaviours
+import forms.deceased_settlor.SettlorsDateOfBirthFormProvider
 import play.api.data.FormError
 
 class SettlorsDateOfBirthFormProviderSpec extends DateBehaviours {
