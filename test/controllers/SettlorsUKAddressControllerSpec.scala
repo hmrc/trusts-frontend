@@ -19,10 +19,7 @@ package controllers
 import base.SpecBase
 import forms.UKAddressFormProvider
 import models.{FullName, NormalMode, UKAddress}
-import navigation.{FakeNavigator, Navigator}
-import pages.{SettlorsNamePage, SettlorsUKAddressPage}
-import play.api.inject.bind
-import play.api.mvc.Call
+import pages.deceased_settlor.{SettlorsNamePage, SettlorsUKAddressPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.SettlorsUKAddressView

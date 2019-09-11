@@ -25,6 +25,7 @@ import models.WhatKindOfAsset.Money
 import mapping.reads.{Assets, Trustees}
 import models.{FullName, NormalMode, UserAnswers}
 import pages._
+import pages.deceased_settlor.SettlorsNamePage
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
 import sections.{Beneficiaries, Settlors, TaxLiability, TrustDetails}
 

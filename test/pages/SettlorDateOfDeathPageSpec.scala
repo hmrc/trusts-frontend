@@ -20,6 +20,7 @@ import java.time.LocalDate
 
 import org.scalacheck.Arbitrary
 import pages.behaviours.PageBehaviours
+import pages.deceased_settlor.SettlorDateOfDeathPage
 
 class SettlorDateOfDeathPageSpec extends PageBehaviours {
 

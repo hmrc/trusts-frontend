@@ -18,11 +18,8 @@ package controllers
 
 import base.SpecBase
 import forms.SettlorNationalInsuranceNumberFormProvider
-import models.{FullName, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
-import pages.{SettlorNationalInsuranceNumberPage, SettlorsNamePage}
-import play.api.inject.bind
-import play.api.mvc.Call
+import models.{FullName, NormalMode}
+import pages.deceased_settlor.{SettlorNationalInsuranceNumberPage, SettlorsNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.SettlorNationalInsuranceNumberView

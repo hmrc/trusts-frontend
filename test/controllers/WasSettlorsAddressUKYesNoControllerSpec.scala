@@ -20,7 +20,8 @@ import base.SpecBase
 import forms.WasSettlorsAddressUKYesNoFormProvider
 import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.{SettlorsNamePage, WasSettlorsAddressUKYesNoPage}
+import pages.WasSettlorsAddressUKYesNoPage
+import pages.deceased_settlor.SettlorsNamePage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest

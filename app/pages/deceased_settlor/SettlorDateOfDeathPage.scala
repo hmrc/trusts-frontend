@@ -14,6 +14,17 @@
  * limitations under the License.
  */
 
-package pages
+package pages.deceased_settlor
 
-case object DeceasedSettlorAnswerPage extends Page
+import java.time.LocalDate
+
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import sections.DeceasedSettlor
+
+case object SettlorDateOfDeathPage extends QuestionPage[LocalDate] {
+
+  override def path: JsPath = DeceasedSettlor.path \ toString
+
+  override def toString: String = "dateOfDeath"
+}
