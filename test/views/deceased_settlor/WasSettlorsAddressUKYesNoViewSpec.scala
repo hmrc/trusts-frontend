@@ -21,7 +21,7 @@ import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.WasSettlorsAddressUKYesNoView
+import views.html.deceased_settlor.WasSettlorsAddressUKYesNoView
 
 class WasSettlorsAddressUKYesNoViewSpec extends YesNoViewBehaviours {
 

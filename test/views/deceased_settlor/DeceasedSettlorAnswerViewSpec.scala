@@ -14,26 +14,21 @@
  * limitations under the License.
  */
 
-package pages
+package views.deceased_settlor
 
-import java.time.LocalDate
+import views.behaviours.ViewBehaviours
+import views.html.deceased_settlor.DeceasedSettlorAnswerView
 
-import org.scalacheck.Arbitrary
-import pages.behaviours.PageBehaviours
-import pages.deceased_settlor.SettlorsDateOfBirthPage
+class DeceasedSettlorAnswerViewSpec extends ViewBehaviours {
 
-class SettlorsDateOfBirthPageSpec extends PageBehaviours {
+  "DeceasedSettlorAnswer view" must {
 
-  "SettlorsDateOfBirthPage" must {
+    val view = viewFor[DeceasedSettlorAnswerView](Some(emptyUserAnswers))
 
-    implicit lazy val arbitraryLocalDate: Arbitrary[LocalDate] = Arbitrary {
-      datesBetween(LocalDate.of(1900, 1, 1), LocalDate.of(2100, 1, 1))
-    }
+    val applyView = view.apply(fakeDraftId, Nil)(fakeRequest, messages)
 
-    beRetrievable[LocalDate](SettlorsDateOfBirthPage)
+    behave like normalPage(applyView, "deceasedSettlorAnswer")
 
-    beSettable[LocalDate](SettlorsDateOfBirthPage)
-
-    beRemovable[LocalDate](SettlorsDateOfBirthPage)
+    behave like pageWithBackLink(applyView)
   }
 }

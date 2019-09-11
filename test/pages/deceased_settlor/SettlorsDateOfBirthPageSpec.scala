@@ -14,20 +14,25 @@
  * limitations under the License.
  */
 
-package pages
+package pages.deceased_settlor
 
-import models.FullName
+import java.time.LocalDate
+
+import org.scalacheck.Arbitrary
 import pages.behaviours.PageBehaviours
-import pages.deceased_settlor.SettlorsNamePage
 
-class SettlorsNamePageSpec extends PageBehaviours   {
+class SettlorsDateOfBirthPageSpec extends PageBehaviours {
 
-  "SettlorsNamePage" must {
+  "SettlorsDateOfBirthPage" must {
 
-    beRetrievable[FullName](SettlorsNamePage)
+    implicit lazy val arbitraryLocalDate: Arbitrary[LocalDate] = Arbitrary {
+      datesBetween(LocalDate.of(1900, 1, 1), LocalDate.of(2100, 1, 1))
+    }
 
-    beSettable[FullName](SettlorsNamePage)
+    beRetrievable[LocalDate](SettlorsDateOfBirthPage)
 
-    beRemovable[FullName](SettlorsNamePage)
+    beSettable[LocalDate](SettlorsDateOfBirthPage)
+
+    beRemovable[LocalDate](SettlorsDateOfBirthPage)
   }
 }

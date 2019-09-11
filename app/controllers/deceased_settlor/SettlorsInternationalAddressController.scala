@@ -28,7 +28,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.countryOptions.CountryOptionsNonUK
-import views.html.SettlorsInternationalAddressView
+import views.html.deceased_settlor.SettlorsInternationalAddressView
 
 import scala.concurrent.{ExecutionContext, Future}
 

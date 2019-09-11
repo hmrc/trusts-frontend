@@ -27,7 +27,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.SettlorDateOfBirthYesNoView
+import views.html.deceased_settlor.SettlorDateOfBirthYesNoView
 
 import scala.concurrent.{ExecutionContext, Future}
 

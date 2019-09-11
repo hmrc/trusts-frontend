@@ -24,7 +24,7 @@ import play.twirl.api.HtmlFormat
 import utils.InputOption
 import utils.countryOptions.CountryOptionsNonUK
 import views.behaviours.InternationalAddressViewBehaviours
-import views.html.SettlorsInternationalAddressView
+import views.html.deceased_settlor.SettlorsInternationalAddressView
 
 class SettlorsInternationalAddressViewSpec extends InternationalAddressViewBehaviours {
 

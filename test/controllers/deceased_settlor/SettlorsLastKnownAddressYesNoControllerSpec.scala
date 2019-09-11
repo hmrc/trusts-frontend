@@ -22,7 +22,7 @@ import models.{FullName, NormalMode}
 import pages.deceased_settlor.{SettlorsLastKnownAddressYesNoPage, SettlorsNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.SettlorsLastKnownAddressYesNoView
+import views.html.deceased_settlor.SettlorsLastKnownAddressYesNoView
 
 class SettlorsLastKnownAddressYesNoControllerSpec extends SpecBase {
 

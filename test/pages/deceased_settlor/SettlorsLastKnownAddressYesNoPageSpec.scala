@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package pages
+package pages.deceased_settlor
 
 import models.{UKAddress, UserAnswers}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
-import pages.deceased_settlor.{SettlorsInternationalAddressPage, SettlorsLastKnownAddressYesNoPage, SettlorsUKAddressPage, WasSettlorsAddressUKYesNoPage}
 
 class SettlorsLastKnownAddressYesNoPageSpec extends PageBehaviours {
 

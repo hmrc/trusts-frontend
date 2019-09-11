@@ -22,7 +22,7 @@ import models.{FullName, NormalMode}
 import pages.deceased_settlor.{SettlorsNINoYesNoPage, SettlorsNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.SettlorsNINoYesNoView
+import views.html.deceased_settlor.SettlorsNINoYesNoView
 
 class SettlorsNINoYesNoControllerSpec extends SpecBase {
 

@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package viewsx
+package pages.deceased_settlor
 
-import views.behaviours.ViewBehaviours
-import views.html.DeceasedSettlorAnswerView
+import pages.behaviours.PageBehaviours
 
-class DeceasedSettlorAnswerViewSpec extends ViewBehaviours {
 
-  "DeceasedSettlorAnswer view" must {
+class SettlorNationalInsuranceNumberPageSpec extends PageBehaviours {
 
-    val view = viewFor[DeceasedSettlorAnswerView](Some(emptyUserAnswers))
+  "SettlorNationalInsuranceNumberPage" must {
 
-    val applyView = view.apply(fakeDraftId, Nil)(fakeRequest, messages)
+    beRetrievable[String](SettlorNationalInsuranceNumberPage)
 
-    behave like normalPage(applyView, "deceasedSettlorAnswer")
+    beSettable[String](SettlorNationalInsuranceNumberPage)
 
-    behave like pageWithBackLink(applyView)
+    beRemovable[String](SettlorNationalInsuranceNumberPage)
   }
 }
