@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
-package pages
+package pages.deceased_settlor
+
+import pages.Page
 
 case object DeceasedSettlorAnswerPage extends Page
