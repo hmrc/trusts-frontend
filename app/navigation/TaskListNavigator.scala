@@ -32,11 +32,10 @@ class TaskListNavigator @Inject()() {
 
   private def trustDetailsRoute(draftId: String)(answers: UserAnswers) = {
     val completed = answers.get(TrustDetailsStatus).contains(Completed)
-    completed match {
-      case true =>
-        routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
-      case _ =>
-        routes.TrustNameController.onPageLoad(NormalMode, draftId)
+    if (completed) {
+      routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
+    } else {
+      routes.TrustNameController.onPageLoad(NormalMode, draftId)
     }
   }
 
@@ -51,20 +50,18 @@ class TaskListNavigator @Inject()() {
 
   private def settlorRoute(draftId: String)(answers: UserAnswers) = {
     val deceasedCompleted = answers.get(DeceasedSettlorStatus).contains(Completed)
-    deceasedCompleted match {
-      case true =>
-        routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
-      case _ =>
-        routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode,draftId)
+    if(deceasedCompleted) {
+      controllers.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
+    } else {
+      routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode,draftId)
     }
   }
 
   private def beneficiaryRoute(draftId: String)(answers: UserAnswers) = {
-    isAnyBeneficiaryAdded(answers) match {
-      case true =>
-        routes.AddABeneficiaryController.onPageLoad(draftId)
-      case false =>
-        routes.IndividualBeneficiaryInfoController.onPageLoad(draftId)
+    if(isAnyBeneficiaryAdded(answers)) {
+      routes.AddABeneficiaryController.onPageLoad(draftId)
+    } else {
+      routes.IndividualBeneficiaryInfoController.onPageLoad(draftId)
     }
   }
 

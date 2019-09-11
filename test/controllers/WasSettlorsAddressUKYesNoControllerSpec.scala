@@ -17,13 +17,9 @@
 package controllers
 
 import base.SpecBase
-import forms.WasSettlorsAddressUKYesNoFormProvider
-import models.{FullName, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
-import pages.WasSettlorsAddressUKYesNoPage
-import pages.deceased_settlor.SettlorsNamePage
-import play.api.inject.bind
-import play.api.mvc.Call
+import forms.deceased_settlor.WasSettlorsAddressUKYesNoFormProvider
+import models.{FullName, NormalMode}
+import pages.deceased_settlor.{SettlorsNamePage, WasSettlorsAddressUKYesNoPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.WasSettlorsAddressUKYesNoView
@@ -33,7 +29,7 @@ class WasSettlorsAddressUKYesNoControllerSpec extends SpecBase {
   val formProvider = new WasSettlorsAddressUKYesNoFormProvider()
   val form = formProvider()
 
-  lazy val wasSettlorsAddressUKYesNoRoute = routes.WasSettlorsAddressUKYesNoController.onPageLoad(NormalMode,fakeDraftId).url
+  lazy val wasSettlorsAddressUKYesNoRoute = controllers.deceased_settlor.routes.WasSettlorsAddressUKYesNoController.onPageLoad(NormalMode,fakeDraftId).url
 
   val name = FullName("first name", None, "Last name")
 
@@ -169,7 +165,7 @@ class WasSettlorsAddressUKYesNoControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SettlorsNameController.onPageLoad(NormalMode,fakeDraftId).url
+      redirectLocation(result).value mustEqual controllers.deceased_settlor.routes.SettlorsNameController.onPageLoad(NormalMode,fakeDraftId).url
 
       application.stop()
     }

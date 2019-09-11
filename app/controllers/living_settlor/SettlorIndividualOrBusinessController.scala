@@ -18,7 +18,7 @@ package controllers.living_settlor
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.SettlorIndividualOrBusinessFormProvider
+import forms.deceased_settlor.SettlorIndividualOrBusinessFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode}
 import navigation.Navigator

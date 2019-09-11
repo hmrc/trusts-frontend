@@ -24,7 +24,7 @@ import models.Status.Completed
 import models.WhatKindOfAsset.Shares
 import models.{AddABeneficiary, AddATrustee, FullName, IndividualOrBusiness, Status, UKAddress, WhatKindOfAsset}
 import pages._
-import pages.deceased_settlor.{SettlorDateOfBirthYesNoPage, SettlorDateOfDeathPage, SettlorDateOfDeathYesNoPage, SettlorNationalInsuranceNumberPage, SettlorsDateOfBirthPage, SettlorsLastKnownAddressYesNoPage, SettlorsNINoYesNoPage, SettlorsNamePage, SettlorsUKAddressPage}
+import pages.deceased_settlor.{SettlorDateOfBirthYesNoPage, SettlorDateOfDeathPage, SettlorDateOfDeathYesNoPage, SettlorNationalInsuranceNumberPage, SettlorsDateOfBirthPage, SettlorsLastKnownAddressYesNoPage, SettlorsNINoYesNoPage, SettlorsNamePage, SettlorsUKAddressPage, WasSettlorsAddressUKYesNoPage}
 import pages.entitystatus._
 import pages.shares._
 import play.api.i18n.Messages
@@ -131,16 +131,16 @@ class SummaryAnswersControllerSpec extends SpecBase {
       AnswerSection(
         None,
         Seq(checkYourAnswersHelper.setupAfterSettlorDied.value,
-          checkYourAnswersHelper.settlorsName.value,
-          checkYourAnswersHelper.settlorDateOfDeathYesNo.value,
-          checkYourAnswersHelper.settlorDateOfDeath.value,
-          checkYourAnswersHelper.settlorDateOfBirthYesNo.value,
-          checkYourAnswersHelper.settlorsDateOfBirth.value,
-          checkYourAnswersHelper.settlorsNINoYesNo.value,
-          checkYourAnswersHelper.settlorNationalInsuranceNumber.value,
-          checkYourAnswersHelper.settlorsLastKnownAddressYesNo.value,
+          checkYourAnswersHelper.deceasedSettlorsName.value,
+          checkYourAnswersHelper.deceasedSettlorDateOfDeathYesNo.value,
+          checkYourAnswersHelper.deceasedSettlorDateOfDeath.value,
+          checkYourAnswersHelper.deceasedSettlorDateOfBirthYesNo.value,
+          checkYourAnswersHelper.deceasedSettlorsDateOfBirth.value,
+          checkYourAnswersHelper.deceasedSettlorsNINoYesNo.value,
+          checkYourAnswersHelper.deceasedSettlorNationalInsuranceNumber.value,
+          checkYourAnswersHelper.deceasedSettlorsLastKnownAddressYesNo.value,
           checkYourAnswersHelper.wasSettlorsAddressUKYesNo.value,
-          checkYourAnswersHelper.settlorsUKAddress.value
+          checkYourAnswersHelper.deceasedSettlorsUKAddress.value
         ),
         Some("Settlors")
       ),

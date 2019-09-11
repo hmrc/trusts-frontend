@@ -19,7 +19,7 @@ package pages
 import models.{InternationalAddress, UKAddress, UserAnswers}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
-import pages.deceased_settlor.{SettlorsInternationalAddressPage, SettlorsUKAddressPage}
+import pages.deceased_settlor.{SettlorsInternationalAddressPage, SettlorsUKAddressPage, WasSettlorsAddressUKYesNoPage}
 
 class WasSettlorsAddressUKYesNoPageSpec extends PageBehaviours {
 

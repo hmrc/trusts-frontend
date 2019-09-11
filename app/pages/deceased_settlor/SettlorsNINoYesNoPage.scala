@@ -17,7 +17,7 @@
 package pages.deceased_settlor
 
 import models.UserAnswers
-import pages.{QuestionPage, WasSettlorsAddressUKYesNoPage}
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.DeceasedSettlor
 
