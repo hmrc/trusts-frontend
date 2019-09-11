@@ -25,7 +25,7 @@ import org.scalatest.mockito.MockitoSugar
 import pages.deceased_settlor.{SettlorDateOfDeathPage, SettlorsNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.SettlorDateOfDeathView
+import views.html.deceased_settlor.SettlorDateOfDeathView
 
 class SettlorDateOfDeathControllerSpec extends SpecBase with MockitoSugar {
 

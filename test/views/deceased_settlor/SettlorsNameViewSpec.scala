@@ -21,7 +21,7 @@ import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
-import views.html.SettlorsNameView
+import views.html.deceased_settlor.SettlorsNameView
 
 class SettlorsNameViewSpec extends QuestionViewBehaviours[FullName] {
 

@@ -27,7 +27,7 @@ import play.api.test.Helpers._
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
-import views.html.DeceasedSettlorAnswerView
+import views.html.deceased_settlor.DeceasedSettlorAnswerView
 
 class DeceasedSettlorAnswerControllerSpec extends SpecBase {
 

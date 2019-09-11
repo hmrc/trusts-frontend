@@ -22,7 +22,7 @@ import models.{FullName, NormalMode}
 import pages.deceased_settlor.{SettlorNationalInsuranceNumberPage, SettlorsNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.SettlorNationalInsuranceNumberView
+import views.html.deceased_settlor.SettlorNationalInsuranceNumberView
 
 class SettlorNationalInsuranceNumberControllerSpec extends SpecBase {
 

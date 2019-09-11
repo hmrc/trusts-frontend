@@ -22,7 +22,7 @@ import models.{FullName, NormalMode, UKAddress}
 import pages.deceased_settlor.{SettlorsNamePage, SettlorsUKAddressPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.SettlorsUKAddressView
+import views.html.deceased_settlor.SettlorsUKAddressView
 
 class SettlorsUKAddressControllerSpec extends SpecBase {
 

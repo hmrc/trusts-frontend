@@ -21,7 +21,7 @@ import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.UkAddressViewBehaviours
-import views.html.SettlorsUKAddressView
+import views.html.deceased_settlor.SettlorsUKAddressView
 
 class SettlorsUKAddressViewSpec extends  UkAddressViewBehaviours {
 

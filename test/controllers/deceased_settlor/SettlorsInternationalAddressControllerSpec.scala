@@ -24,7 +24,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.InputOption
 import utils.countryOptions.CountryOptionsNonUK
-import views.html.SettlorsInternationalAddressView
+import views.html.deceased_settlor.SettlorsInternationalAddressView
 
 class SettlorsInternationalAddressControllerSpec extends SpecBase {
 

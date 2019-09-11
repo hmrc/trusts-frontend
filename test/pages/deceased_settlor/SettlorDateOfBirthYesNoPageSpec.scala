@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package pages
+package pages.deceased_settlor
 
 import java.time.LocalDate
 
 import models.UserAnswers
-import pages.behaviours.PageBehaviours
 import org.scalacheck.Arbitrary.arbitrary
-import pages.deceased_settlor.{SettlorDateOfBirthYesNoPage, SettlorsDateOfBirthPage}
+import pages.behaviours.PageBehaviours
 
 class SettlorDateOfBirthYesNoPageSpec extends PageBehaviours {
 

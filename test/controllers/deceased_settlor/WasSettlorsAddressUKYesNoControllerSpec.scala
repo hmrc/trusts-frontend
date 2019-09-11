@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.deceased_settlor
 
 import base.SpecBase
 import forms.deceased_settlor.WasSettlorsAddressUKYesNoFormProvider
@@ -22,7 +22,7 @@ import models.{FullName, NormalMode}
 import pages.deceased_settlor.{SettlorsNamePage, WasSettlorsAddressUKYesNoPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.WasSettlorsAddressUKYesNoView
+import views.html.deceased_settlor.WasSettlorsAddressUKYesNoView
 
 class WasSettlorsAddressUKYesNoControllerSpec extends SpecBase {
 
@@ -133,7 +133,7 @@ class WasSettlorsAddressUKYesNoControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -150,7 +150,7 @@ class WasSettlorsAddressUKYesNoControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }

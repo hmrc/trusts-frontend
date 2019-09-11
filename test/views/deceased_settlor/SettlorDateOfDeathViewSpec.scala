@@ -23,7 +23,7 @@ import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
-import views.html.SettlorDateOfDeathView
+import views.html.deceased_settlor.SettlorDateOfDeathView
 
 class SettlorDateOfDeathViewSpec extends QuestionViewBehaviours[LocalDate] {
 

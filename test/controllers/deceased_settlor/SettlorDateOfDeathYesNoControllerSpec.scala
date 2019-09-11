@@ -22,7 +22,7 @@ import models.{FullName, NormalMode}
 import pages.deceased_settlor.{SettlorDateOfDeathYesNoPage, SettlorsNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.SettlorDateOfDeathYesNoView
+import views.html.deceased_settlor.SettlorDateOfDeathYesNoView
 
 class SettlorDateOfDeathYesNoControllerSpec extends SpecBase {
 

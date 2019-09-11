@@ -21,7 +21,7 @@ import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
-import views.html.SettlorNationalInsuranceNumberView
+import views.html.deceased_settlor.SettlorNationalInsuranceNumberView
 
 class SettlorNationalInsuranceNumberViewSpec extends StringViewBehaviours {
 

@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package pages
+package pages.deceased_settlor
 
-import models.UKAddress
+import models.FullName
 import pages.behaviours.PageBehaviours
-import pages.deceased_settlor.SettlorsUKAddressPage
 
-class SettlorsUKAddressPageSpec extends PageBehaviours {
+class SettlorsNamePageSpec extends PageBehaviours   {
 
-  "SettlorsUKAddressPage" must {
+  "SettlorsNamePage" must {
 
-    beRetrievable[UKAddress](SettlorsUKAddressPage)
+    beRetrievable[FullName](SettlorsNamePage)
 
-    beSettable[UKAddress](SettlorsUKAddressPage)
+    beSettable[FullName](SettlorsNamePage)
 
-    beRemovable[UKAddress](SettlorsUKAddressPage)
+    beRemovable[FullName](SettlorsNamePage)
   }
 }
