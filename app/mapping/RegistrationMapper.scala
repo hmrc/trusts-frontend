@@ -21,17 +21,18 @@ import play.api.Logger
 import play.api.libs.json.Json
 
 class RegistrationMapper @Inject()(
-                                  declarationMapper: DeclarationMapper,
-                                  correspondenceMapper: CorrespondenceMapper,
-                                  trustDetailsMapper: TrustDetailsMapper,
-                                  beneficiariesMapper: BeneficiariesMapper,
-                                  assetMapper: AssetMapper,
-                                  leadTrusteeMapper: LeadTrusteeMapper,
-                                  agentMapper: AgentMapper,
-                                  deceasedSettlorMapper: DeceasedSettlorMapper,
-                                  taxLiabilityMapper: TaxLiabilityMapper,
-                                  trusteeMapper: TrusteeMapper,
-                                  matchingMapper: MatchingMapper
+                                    declarationMapper: DeclarationMapper,
+                                    correspondenceMapper: CorrespondenceMapper,
+                                    trustDetailsMapper: TrustDetailsMapper,
+                                    beneficiariesMapper: BeneficiariesMapper,
+                                    assetMapper: AssetMapper,
+                                    leadTrusteeMapper: LeadTrusteeMapper,
+                                    agentMapper: AgentMapper,
+                                    deceasedSettlorMapper: DeceasedSettlorMapper,
+                                    taxLiabilityMapper: TaxLiabilityMapper,
+                                    trusteeMapper: TrusteeMapper,
+                                    settlorMapper: SettlorsMapper,
+                                    matchingMapper: MatchingMapper
                                   ) extends Mapping[Registration] {
 
   override def build(userAnswers: UserAnswers): Option[Registration] = {
@@ -48,16 +49,17 @@ class RegistrationMapper @Inject()(
       val agent = agentMapper.build(userAnswers)
       val deceasedSettlor = deceasedSettlorMapper.build(userAnswers)
       val taxLiability = taxLiabilityMapper.build(userAnswers)
-      val trustee = trusteeMapper.build(userAnswers)
+      val trustees = trusteeMapper.build(userAnswers)
+      val settlors = settlorMapper.build(userAnswers)
 
       val entities = TrustEntitiesType(
         naturalPerson = None,
         beneficiary = beneficiaries,
         deceased = deceasedSettlor,
         leadTrustees = leadTrustees,
-        trustees = trustee,
+        trustees = trustees,
         protectors = None,
-        settlors = None
+        settlors = settlors
       )
 
       Registration(

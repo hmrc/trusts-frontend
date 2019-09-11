@@ -14,16 +14,24 @@
  * limitations under the License.
  */
 
-package mapping.reads
+package mapping
 
-import mapping.Settlors
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import javax.inject.Inject
+import models.UserAnswers
 
-case object Settlors extends QuestionPage[Settlors] {
+class SettlorsMapper @Inject()(settlorIndividualsMapper: IndividualSettlorsMapper) extends Mapping[Settlors] {
 
-  override def path: JsPath = JsPath \ toString
+   def build(userAnswers: UserAnswers): Option[Settlors] = {
+     val settlorIndividuals = settlorIndividualsMapper.build(userAnswers)
 
-  override def toString: String = "settlors"
+     val settlors = Settlors(
+       settlor = settlorIndividuals,
+       settlorCompany = None
+     )
 
+     settlors match {
+       case Settlors(None, None) => None
+       case _ => Some(settlors)
+     }
+  }
 }

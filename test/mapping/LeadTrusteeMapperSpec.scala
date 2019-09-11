@@ -60,7 +60,7 @@ class LeadTrusteeMapperSpec extends FreeSpec with MustMatchers
             dateOfBirth = LocalDate.of(1500,10,10),
             phoneNumber = "0191 1111111",
             email = None,
-            identification = IdentificationType(nino = Some("AB123456C"),None,None)))
+            identification = IdentificationType(nino = Some("AB123456C"),None, None)))
         )
       }
 

@@ -55,8 +55,7 @@ class IndividualBeneficiaryMapper @Inject()(nameMapper: NameMapper,
          Some(IdentificationType(
            nino = indBen.nationalInsuranceNumber,
            None,
-           addressMapper.build(indBen.address),
-           None)
+           addressMapper.build(indBen.address))
        )
      }
 

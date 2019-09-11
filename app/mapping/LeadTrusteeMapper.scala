@@ -49,8 +49,7 @@ class LeadTrusteeMapper @Inject()(
           identification = IdentificationType
           (nino = leadTrustee.nino,
             passport = None,
-            address = None,
-            idCard = None)
+            address = None)
         )
       ),
       None

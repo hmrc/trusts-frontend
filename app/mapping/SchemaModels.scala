@@ -339,8 +339,7 @@ object NaturalPersonType {
 
 case class IdentificationType(nino: Option[String],
                               passport: Option[PassportType],
-                              address: Option[AddressType],
-                              idCard: Option[IdCardType])
+                              address: Option[AddressType])
 
 object IdentificationType {
   implicit val identificationTypeFormat: Format[IdentificationType] = Json.format[IdentificationType]
@@ -442,14 +441,6 @@ object PassportType {
   implicit val passportTypeFormat: Format[PassportType] = Json.format[PassportType]
 }
 
-case class IdCardType(number: String,
-                        expirationDate: LocalDate,
-                        countryOfIssue: String)
-
-object IdCardType {
-
-  implicit val idCardTypeFormat: Format[IdCardType] = Json.format[IdCardType]
-}
 
 case class NameType(firstName: String,
                     middleName: Option[String],

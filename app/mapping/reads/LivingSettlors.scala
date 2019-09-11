@@ -20,10 +20,10 @@ import mapping.Settlors
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object Settlors extends QuestionPage[Settlors] {
+case object LivingSettlors extends QuestionPage[List[IndividualSettlor]] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = Settlors.path \ toString
 
-  override def toString: String = "settlors"
+  override def toString: String = "living"
 
 }
