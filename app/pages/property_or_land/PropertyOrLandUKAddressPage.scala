@@ -23,7 +23,7 @@ import sections.Assets
 
 final case class PropertyOrLandUKAddressPage(index: Int) extends QuestionPage[UKAddress] {
 
-  override def path: JsPath = JsPath \ Assets \ index \ toString
+  override def path: JsPath = Assets.path \ index \ toString
 
   override def toString: String = "address"
 }

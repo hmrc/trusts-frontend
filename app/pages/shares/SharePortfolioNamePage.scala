@@ -22,7 +22,7 @@ import sections.Assets
 
 final case class  SharePortfolioNamePage(index : Int) extends QuestionPage[String] {
 
-  override def path: JsPath = JsPath \ Assets \ index \ toString
+  override def path: JsPath = Assets.path \ index \ toString
 
   override def toString: String = "name"
 }
