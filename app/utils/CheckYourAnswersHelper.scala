@@ -41,6 +41,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
         "settlorBusinessName.checkYourAnswersLabel",
         HtmlFormat.escape(x),
         controllers.living_settlor.routes.SettlorBusinessNameController.onPageLoad(CheckMode, index, draftId).url
+      )
+  }
 
   def settlorKindOfTrust(index: Int): Option[AnswerRow] = userAnswers.get(SettlorKindOfTrustPage) map {
     x =>
