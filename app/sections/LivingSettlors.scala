@@ -15,7 +15,6 @@
  */
 
 package sections
-
 import pages.QuestionPage
 import play.api.libs.json.{JsPath, JsValue}
 

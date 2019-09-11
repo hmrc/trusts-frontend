@@ -27,7 +27,7 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import sections.LivingSettlors
+import sections.IndividualSettlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.living_settlor.SettlorBusinessNameView
 
@@ -48,7 +48,7 @@ class SettlorBusinessNameController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData andThen validateIndex(index, LivingSettlors)) {
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData andThen validateIndex(index, IndividualSettlors)) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(SettlorBusinessNamePage(index)) match {
@@ -59,7 +59,7 @@ class SettlorBusinessNameController @Inject()(
       Ok(view(preparedForm, mode, index, draftId))
   }
 
-  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData andThen validateIndex(index, LivingSettlors)).async {
+  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData andThen validateIndex(index, IndividualSettlors)).async {
     implicit request =>
 
       form.bindFromRequest().fold(

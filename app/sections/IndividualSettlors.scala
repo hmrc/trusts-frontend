@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package pages.living_settlor
+package sections
 
+import mapping.reads.IndividualSettlor
 import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.IndividualSettlors
+import play.api.libs.json.{JsPath, JsValue}
 
-final case class SettlorIndividualDateOfBirthYesNoPage(index : Int) extends QuestionPage[Boolean] {
+case object IndividualSettlors extends QuestionPage[List[IndividualSettlor]]{
 
-  override def path: JsPath = IndividualSettlors.path \ "individual" \ index \ toString
+  override def path: JsPath = IndividualSettlors.path \ toString
 
-  override def toString: String = "dateOfBirthYesNo"
+  override def toString: String = "individual"
+
 }

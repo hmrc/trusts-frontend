@@ -18,11 +18,11 @@ package pages.living_settlor
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.LivingSettlors
+import sections.IndividualSettlors
 
 final case class SettlorIndividualAddressUKYesNoPage(index : Int) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = LivingSettlors.path \ "individual" \ index \ toString
+  override def path: JsPath = IndividualSettlors.path \ "individual" \ index \ toString
 
   override def toString: String = "ukAddressYesNo"
 }
