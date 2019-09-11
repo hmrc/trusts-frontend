@@ -20,7 +20,7 @@ import java.time.LocalDate
 
 import base.SpecBase
 import models.NonResidentType
-import models.TrusteesBasedInTheUK.{NonUkBasedTrustees, UKBasedTrustees}
+import models.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
 import navigation.{FakeNavigator, Navigator}
 import pages._
 import play.api.inject.bind
@@ -85,6 +85,60 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
       }
     }
 
+
+    "trust contains International and UK based and registered under Scots law" must {
+
+      "return OK and the correct view for a GET" in {
+
+        val answers =
+          emptyUserAnswers
+            .set(TrustNamePage, "New Trust").success.value
+            .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
+            .set(GovernedInsideTheUKPage, true).success.value
+            .set(AdministrationInsideUKPage, true).success.value
+            .set(TrusteesBasedInTheUKPage, UKBasedTrustees).success.value
+            .set(SettlorsBasedInTheUKPage, true).success.value
+            .set(EstablishedUnderScotsLawPage, true).success.value
+            .set(TrustResidentOffshorePage, false).success.value
+
+        val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+        val countryOptions = application.injector.instanceOf[CountryOptions]
+
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId)
+
+        val expectedSections = Seq(
+          AnswerSection(
+            None,
+            Seq(
+              checkYourAnswersHelper.trustName.value,
+              checkYourAnswersHelper.whenTrustSetup.value,
+              checkYourAnswersHelper.governedInsideTheUK.value,
+              checkYourAnswersHelper.administrationInsideUK.value,
+              checkYourAnswersHelper.trusteesBasedInUK.value,
+              checkYourAnswersHelper.settlorsBasedInTheUK.value,
+              checkYourAnswersHelper.establishedUnderScotsLaw.value,
+              checkYourAnswersHelper.trustResidentOffshore.value
+            )
+          )
+        )
+
+        val request = FakeRequest(GET, routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId).url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[TrustDetailsAnswerPageView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(fakeDraftId, expectedSections)(fakeRequest, messages).toString
+
+        application.stop()
+      }
+    }
+
+
     "trust not administered in the UK and registering for Schedule 5A" must {
 
       "return OK and the correct view for a GET" in {
@@ -135,6 +189,59 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
       }
 
     }
+
+    "trust contains international and UK  settlors and registering for Schedule 5A" must {
+
+      "return OK and the correct view for a GET" in {
+
+        val answers =
+          emptyUserAnswers
+            .set(TrustNamePage, "New Trust").success.value
+            .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
+            .set(GovernedInsideTheUKPage, true).success.value
+            .set(AdministrationInsideUKPage, true).success.value
+            .set(TrusteesBasedInTheUKPage, InternationalAndUKTrustees).success.value
+            .set(SettlorsBasedInTheUKPage, false).success.value
+            .set(RegisteringTrustFor5APage, true).success.value
+            .set(NonResidentTypePage, NonResidentType.NonDomiciled).success.value
+
+        val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+        val countryOptions = application.injector.instanceOf[CountryOptions]
+
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId)
+
+        val expectedSections = Seq(
+          AnswerSection(
+            None,
+            Seq(
+              checkYourAnswersHelper.trustName.value,
+              checkYourAnswersHelper.whenTrustSetup.value,
+              checkYourAnswersHelper.governedInsideTheUK.value,
+              checkYourAnswersHelper.administrationInsideUK.value,
+              checkYourAnswersHelper.trusteesBasedInUK.value,
+              checkYourAnswersHelper.settlorsBasedInTheUK.value,
+              checkYourAnswersHelper.registeringTrustFor5A.value,
+              checkYourAnswersHelper.nonresidentType.value
+            )
+          )
+        )
+
+        val request = FakeRequest(GET, routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId).url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[TrustDetailsAnswerPageView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(fakeDraftId, expectedSections)(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
+  }
 
     "trust not administered in the UK and registering for inheritance tax" must {
 

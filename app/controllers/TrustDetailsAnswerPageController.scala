@@ -68,6 +68,7 @@ class TrustDetailsAnswerPageController @Inject()(
             checkYourAnswersHelper.administrationInsideUK,
             checkYourAnswersHelper.countryAdministeringTrust,
             checkYourAnswersHelper.trusteesBasedInUK,
+            checkYourAnswersHelper.settlorsBasedInTheUK,
             checkYourAnswersHelper.establishedUnderScotsLaw,
             checkYourAnswersHelper.trustResidentOffshore,
             checkYourAnswersHelper.trustPreviouslyResident,
