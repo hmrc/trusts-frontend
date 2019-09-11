@@ -16,12 +16,17 @@
 
 package pages
 
-import play.api.libs.json.JsPath
-import sections.Settlors
+import models.SettlorKindOfTrust
+import pages.behaviours.PageBehaviours
 
-case object SettlorHandoverReliefYesNoPage extends QuestionPage[Boolean] {
+class SettlorKindOfTrustPageSpec extends PageBehaviours {
 
-  override def path: JsPath = JsPath \ Settlors \ toString
+  "SettlorKindOfTrustPage" must {
 
-  override def toString: String = "settlorHandoverReliefYesNo"
+    beRetrievable[SettlorKindOfTrust](SettlorKindOfTrustPage)
+
+    beSettable[SettlorKindOfTrust](SettlorKindOfTrustPage)
+
+    beRemovable[SettlorKindOfTrust](SettlorKindOfTrustPage)
+  }
 }

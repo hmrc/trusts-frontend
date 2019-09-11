@@ -1175,6 +1175,16 @@ addASettlorYesNo.title = Do you want to add a settlor?
 addASettlorYesNo.heading = Do you want to add a settlor?
 addASettlorYesNo.error.required = Select yes if you want to add a settlor
 
+settlorKindOfTrust.title = What kind of trust did the settlor create?
+settlorKindOfTrust.heading = What kind of trust did the settlor create?
+settlorKindOfTrust.lifetime = A trust created during their lifetime to gift or transfer assets
+settlorKindOfTrust.deed = A trust through a Deed of Variation or family agreement
+settlorKindOfTrust.employees = A trust for the employees of a company
+settlorKindOfTrust.building = A trust for a building or building with tenants
+settlorKindOfTrust.repair = A trust for the repair of historic buildings
+settlorKindOfTrust.checkYourAnswersLabel = What kind of trust did the settlor create?
+settlorKindOfTrust.error.required = Select what kind of trust the settlor created
+
 settlorHandoverReliefYesNo.title = Was holdover relief claimed on any assets put into the trust?
 settlorHandoverReliefYesNo.heading = Was holdover relief claimed on any assets put into the trust?
 settlorHandoverReliefYesNo.checkYourAnswersLabel = Was holdover relief claimed on any assets put into the trust?
