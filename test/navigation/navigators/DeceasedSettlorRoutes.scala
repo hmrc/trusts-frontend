@@ -28,7 +28,6 @@ import pages.deceased_settlor._
 
 
 trait DeceasedSettlorRoutes {
-
   self: PropertyChecks with Generators with SpecBase =>
 
   def deceasedSettlorRoutes()(implicit navigator: Navigator) = {
