@@ -23,6 +23,7 @@ import models.IndividualOrBusiness.Individual
 import models.WhatKindOfAsset.{Business, Money, Other, Partnership, PropertyOrLand, Shares}
 import models._
 import pages._
+import pages.deceased_settlor.{DeceasedSettlorAnswerPage, SettlorDateOfBirthYesNoPage, SettlorDateOfDeathPage, SettlorDateOfDeathYesNoPage, SettlorNationalInsuranceNumberPage, SettlorsDateOfBirthPage, SettlorsInternationalAddressPage, SettlorsLastKnownAddressYesNoPage, SettlorsNINoYesNoPage, SettlorsNamePage, SettlorsUKAddressPage, WasSettlorsAddressUKYesNoPage}
 import pages.shares._
 import play.api.mvc.Call
 import sections.{ClassOfBeneficiaries, IndividualBeneficiaries, Trustees}
@@ -96,19 +97,19 @@ class Navigator @Inject()() {
     case ShareAnswerPage => _ => _ => routes.AddAssetsController.onPageLoad(draftId)
     case ShareCompanyNamePage(index) => _ => _ => controllers.shares.routes.SharesOnStockExchangeController.onPageLoad(NormalMode, index, draftId)
 
-    //Settlors
+    // Deceased Settlor
     case SetupAfterSettlorDiedPage => _ => setupAfterSettlorDiedRoute(draftId)
-    case SettlorsNamePage => _ => _ => routes.SettlorDateOfDeathYesNoController.onPageLoad(NormalMode, draftId)
+    case SettlorsNamePage => _ => _ => controllers.deceased_settlor.routes.SettlorDateOfDeathYesNoController.onPageLoad(NormalMode, draftId)
     case SettlorDateOfDeathYesNoPage => _ => deceasedSettlorDateOfDeathRoute(draftId)
     case SettlorDateOfBirthYesNoPage => _ => deceasedSettlorDateOfBirthRoute(draftId)
-    case SettlorsDateOfBirthPage => _ => _ => routes.SettlorsNINoYesNoController.onPageLoad(NormalMode, draftId)
+    case SettlorsDateOfBirthPage => _ => _ => controllers.deceased_settlor.routes.SettlorsNINoYesNoController.onPageLoad(NormalMode, draftId)
     case SettlorsNINoYesNoPage => _ => deceasedSettlorNinoRoute(draftId)
     case SettlorsLastKnownAddressYesNoPage => _ => deceasedSettlorLastKnownAddressRoute(draftId)
-    case SettlorDateOfDeathPage => _ => _ => routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode, draftId)
-    case SettlorNationalInsuranceNumberPage => _ => _ => routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
+    case SettlorDateOfDeathPage => _ => _ => controllers.deceased_settlor.routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode, draftId)
+    case SettlorNationalInsuranceNumberPage => _ => _ => controllers.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
     case WasSettlorsAddressUKYesNoPage => _ => deceasedSettlorAddressRoute(draftId)
-    case SettlorsInternationalAddressPage => _ => _ => routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
-    case SettlorsUKAddressPage => _ => _ => routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
+    case SettlorsInternationalAddressPage => _ => _ => controllers.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
+    case SettlorsUKAddressPage => _ => _ => controllers.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
     case DeceasedSettlorAnswerPage => _ => _ => routes.TaskListController.onPageLoad(draftId)
 
      //Beneficiary
@@ -220,40 +221,39 @@ class Navigator @Inject()() {
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 
-
   private def setupAfterSettlorDiedRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(SetupAfterSettlorDiedPage) match {
-    case Some(false) => routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode, draftId)
-    case Some(true) => routes.SettlorsNameController.onPageLoad(NormalMode, draftId)
+    case Some(false) => routes.SettlorKindOfTrustController.onPageLoad(NormalMode, draftId)
+    case Some(true) => controllers.deceased_settlor.routes.SettlorsNameController.onPageLoad(NormalMode, draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 
   private def deceasedSettlorAddressRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(WasSettlorsAddressUKYesNoPage) match {
-    case Some(false) => routes.SettlorsInternationalAddressController.onPageLoad(NormalMode, draftId)
-    case Some(true) => routes.SettlorsUKAddressController.onPageLoad(NormalMode, draftId)
+    case Some(false) => controllers.deceased_settlor.routes.SettlorsInternationalAddressController.onPageLoad(NormalMode, draftId)
+    case Some(true) => controllers.deceased_settlor.routes.SettlorsUKAddressController.onPageLoad(NormalMode, draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 
   private def deceasedSettlorLastKnownAddressRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(SettlorsLastKnownAddressYesNoPage) match {
-    case Some(false) => routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
-    case Some(true) => routes.WasSettlorsAddressUKYesNoController.onPageLoad(NormalMode, draftId)
+    case Some(false) => controllers.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
+    case Some(true) => controllers.deceased_settlor.routes.WasSettlorsAddressUKYesNoController.onPageLoad(NormalMode, draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 
   private def deceasedSettlorNinoRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(SettlorsNINoYesNoPage) match {
-    case Some(false) => routes.SettlorsLastKnownAddressYesNoController.onPageLoad(NormalMode, draftId)
-    case Some(true) => routes.SettlorNationalInsuranceNumberController.onPageLoad(NormalMode, draftId)
+    case Some(false) => controllers.deceased_settlor.routes.SettlorsLastKnownAddressYesNoController.onPageLoad(NormalMode, draftId)
+    case Some(true) => controllers.deceased_settlor.routes.SettlorNationalInsuranceNumberController.onPageLoad(NormalMode, draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 
   private def deceasedSettlorDateOfBirthRoute(draftId: String)(userAnswers: UserAnswers): Call = userAnswers.get(SettlorDateOfBirthYesNoPage) match {
-    case Some(false) => routes.SettlorsNINoYesNoController.onPageLoad(NormalMode, draftId)
-    case Some(true) => routes.SettlorsDateOfBirthController.onPageLoad(NormalMode, draftId)
+    case Some(false) => controllers.deceased_settlor.routes.SettlorsNINoYesNoController.onPageLoad(NormalMode, draftId)
+    case Some(true) => controllers.deceased_settlor.routes.SettlorsDateOfBirthController.onPageLoad(NormalMode, draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 
   private def deceasedSettlorDateOfDeathRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(SettlorDateOfDeathYesNoPage) match {
-    case Some(false) => routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode, draftId)
-    case Some(true) => routes.SettlorDateOfDeathController.onPageLoad(NormalMode, draftId)
+    case Some(false) => controllers.deceased_settlor.routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode, draftId)
+    case Some(true) => controllers.deceased_settlor.routes.SettlorDateOfDeathController.onPageLoad(NormalMode, draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 

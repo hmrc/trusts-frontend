@@ -20,7 +20,7 @@ import controllers.living_settlor.routes
 import javax.inject.Singleton
 import models.IndividualOrBusiness._
 import models.{NormalMode, UserAnswers}
-import pages.{Page, SettlorHandoverReliefYesNoPage}
+import pages.{Page, SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage}
 import pages.living_settlor._
 import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
@@ -29,6 +29,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 class LivingSettlorNavigator extends Navigator {
 
   override protected def normalRoutes(draftId: String): Page => AffinityGroup => UserAnswers => Call = {
+    case SettlorKindOfTrustPage => _ => _ => controllers.routes.SettlorHandoverReliefYesNoController.onPageLoad(NormalMode, draftId)
     case SettlorHandoverReliefYesNoPage => _ => _ => routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
     case SettlorIndividualNamePage(index) => _ => _ => routes.SettlorIndividualDateOfBirthYesNoController.onPageLoad(NormalMode, index, draftId)
     case SettlorIndividualDateOfBirthYesNoPage(index) => _ => settlorIndividualDateOfBirthYesNoPage(draftId, index)

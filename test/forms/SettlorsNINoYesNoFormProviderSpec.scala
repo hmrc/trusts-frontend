@@ -17,6 +17,7 @@
 package forms
 
 import forms.behaviours.BooleanFieldBehaviours
+import forms.deceased_settlor.SettlorsNINoYesNoFormProvider
 import play.api.data.FormError
 
 class SettlorsNINoYesNoFormProviderSpec extends BooleanFieldBehaviours {

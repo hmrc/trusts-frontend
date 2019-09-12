@@ -17,7 +17,7 @@
 package views
 
 import controllers.routes
-import forms.TelephoneNumberFormProvider
+import forms.trustees.TelephoneNumberFormProvider
 import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat

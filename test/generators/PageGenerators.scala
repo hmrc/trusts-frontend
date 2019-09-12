@@ -18,11 +18,19 @@ package generators
 
 import org.scalacheck.Arbitrary
 import pages._
+import pages.deceased_settlor._
+import pages.living_settlor._
 import pages.property_or_land._
-import pages.living_settlor.{SettlorIndividualAddressInternationalPage, SettlorIndividualAddressUKPage, SettlorIndividualAddressUKYesNoPage, SettlorIndividualAddressYesNoPage, SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualIDCardPage, SettlorIndividualIDCardYesNoPage, SettlorIndividualNINOPage, SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage, SettlorIndividualOrBusinessPage, SettlorIndividualPassportPage, SettlorIndividualPassportYesNoPage}
 import pages.shares._
 
 trait PageGenerators {
+
+  implicit lazy val arbitrarySettlorBusinessDetailsPage: Arbitrary[SettlorBusinessNamePage] =
+    Arbitrary(SettlorBusinessNamePage(0))
+  
+  implicit lazy val arbitrarySettlorKindOfTrustPage: Arbitrary[SettlorKindOfTrustPage.type] =
+    Arbitrary(SettlorKindOfTrustPage)
+
 
   implicit lazy val arbitrarySettlorHandoverReliefYesNoPage: Arbitrary[SettlorHandoverReliefYesNoPage.type] =
     Arbitrary(SettlorHandoverReliefYesNoPage)

@@ -52,7 +52,7 @@ class AddASettlorController @Inject()(
   val yesNoForm: Form[Boolean] = yesNoFormProvider()
 
   private def actions(draftId: String) =
-    identify andThen getData(draftId) andThen requireData andThen requiredAnswer(RequiredAnswer(SettlorKindOfTrustPage(0)))
+    identify andThen getData(draftId) andThen requireData andThen requiredAnswer(RequiredAnswer(SettlorKindOfTrustPage))
 
   private def heading(count: Int)(implicit mp : MessagesProvider) = {
     count match {
@@ -62,7 +62,7 @@ class AddASettlorController @Inject()(
     }
   }
 
-  private def trustHintText(implicit request: DataRequest[AnyContent]): Option[String] = request.userAnswers.get(SettlorKindOfTrustPage(0)) map { trust =>
+  private def trustHintText(implicit request: DataRequest[AnyContent]): Option[String] = request.userAnswers.get(SettlorKindOfTrustPage) map { trust =>
     s"addASettlor.$trust"
   }
 

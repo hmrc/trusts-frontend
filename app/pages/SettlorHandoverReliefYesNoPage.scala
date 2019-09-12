@@ -17,10 +17,11 @@
 package pages
 
 import play.api.libs.json.JsPath
+import sections.Settlors
 
 case object SettlorHandoverReliefYesNoPage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = Settlors.path \ toString
 
   override def toString: String = "settlorHandoverReliefYesNo"
 }

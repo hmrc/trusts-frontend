@@ -19,7 +19,7 @@ package controllers
 import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
-import forms.TrusteesDateOfBirthFormProvider
+import forms.trustees.TrusteesDateOfBirthFormProvider
 import models.{FullName, NormalMode}
 import org.scalacheck.Gen
 import org.scalatest.mockito.MockitoSugar
