@@ -25,6 +25,7 @@ import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
 import views.html.trustees.TrusteesNameView
+import views.html.components.heading
 
 class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generators {
 

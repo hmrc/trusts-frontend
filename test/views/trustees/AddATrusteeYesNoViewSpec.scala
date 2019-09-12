@@ -16,7 +16,7 @@
 
 package views.trustees
 
-import forms.trustees.AddATrusteeYesNoFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -27,9 +27,9 @@ class AddATrusteeYesNoViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "addATrusteeYesNo"
 
-  val form = new AddATrusteeYesNoFormProvider()()
+  val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
-  "AddAnAssetYesNo view" must {
+  "addATrusteeYesNo view" must {
 
     val view = viewFor[AddATrusteeYesNoView](Some(emptyUserAnswers))
 

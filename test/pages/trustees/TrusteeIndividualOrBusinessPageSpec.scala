@@ -22,6 +22,7 @@ import models.IndividualOrBusiness.Business
 import models.{FullName, IndividualOrBusiness, UKAddress, UserAnswers}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
+import pages.trustees.{TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteeIndividualOrBusinessPage, TrusteeLiveInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
 
 
 class TrusteeIndividualOrBusinessPageSpec extends PageBehaviours {

@@ -17,6 +17,7 @@
 package pages.trustees
 
 import pages.behaviours.PageBehaviours
+import pages.trustees.TelephoneNumberPage
 
 
 class TelephoneNumberPageSpec extends PageBehaviours {

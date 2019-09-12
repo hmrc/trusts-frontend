@@ -16,7 +16,7 @@
 
 package views
 
-import forms.AdministrationInsideUKFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -27,7 +27,7 @@ class AdministrationInsideUKViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "administrationInsideUK"
 
-  val form = new AdministrationInsideUKFormProvider()()
+  val form = new YesNoFormProvider().withPrefix("administrationInsideUK")
 
   "AdministrationInsideUK view" must {
 

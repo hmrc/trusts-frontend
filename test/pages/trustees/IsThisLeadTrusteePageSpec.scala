@@ -19,6 +19,7 @@ package pages.trustees
 import models.{UKAddress, UserAnswers}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
+import pages.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteeLiveInTheUKPage, TrusteesNinoPage, TrusteesUkAddressPage}
 
 class IsThisLeadTrusteePageSpec extends PageBehaviours {
 

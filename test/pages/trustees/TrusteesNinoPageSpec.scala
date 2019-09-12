@@ -17,6 +17,7 @@
 package pages.trustees
 
 import pages.behaviours.PageBehaviours
+import pages.trustees.TrusteesNinoPage
 
 
 class TrusteesNinoPageSpec extends PageBehaviours {

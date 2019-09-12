@@ -21,7 +21,7 @@ import controllers.IndexValidation
 import forms.trustees.TrusteesNameFormProvider
 import models.{FullName, NormalMode}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.trustees.{IsThisLeadTrusteePage, TrusteesNamePage}
+import pages.trustees._
 import play.api.i18n.Messages
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
