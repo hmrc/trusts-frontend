@@ -16,14 +16,30 @@
 
 package forms.shares
 
-import forms.mappings.Mappings
-import javax.inject.Inject
-import play.api.data.Form
+import forms.behaviours.OptionFieldBehaviours
+import models.ShareClass
+import play.api.data.FormError
 
-class SharesOnStockExchangeFormProvider @Inject() extends Mappings {
+class ShareClassFormProviderSpec extends OptionFieldBehaviours {
 
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("sharesOnStockExchange.error.required")
+  val form = new ShareClassFormProvider()()
+
+  ".value" must {
+
+    val fieldName = "value"
+    val requiredKey = "shareClass.error.required"
+
+    behave like optionsField[ShareClass](
+      form,
+      fieldName,
+      validValues  = ShareClass.values.toSet,
+      invalidError = FormError(fieldName, "error.invalid")
     )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
+  }
 }
