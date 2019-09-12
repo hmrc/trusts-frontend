@@ -29,7 +29,7 @@ import repositories.SessionRepository
 import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.AddATrusteeViewHelper
-import views.html.{AddATrusteeView, AddATrusteeYesNoView}
+import views.html.trustees.{AddATrusteeView, AddATrusteeYesNoView}
 
 import scala.concurrent.{ExecutionContext, Future}
 

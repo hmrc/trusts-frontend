@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package views
+package views.trustees
 
-import controllers.routes
 import forms.trustees.AddATrusteeYesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.AddATrusteeYesNoView
+import views.html.trustees.AddATrusteeYesNoView
 
 class AddATrusteeYesNoViewSpec extends YesNoViewBehaviours {
 

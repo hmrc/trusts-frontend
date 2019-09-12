@@ -22,7 +22,7 @@ import models.{FullName, NormalMode}
 import pages.trustees.{IsThisLeadTrusteePage, TrusteeLiveInTheUKPage, TrusteesNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.TrusteeLiveInTheUKView
+import views.html.trustees.TrusteeLiveInTheUKView
 
 class TrusteeLiveInTheUKControllerSpec extends SpecBase {
 

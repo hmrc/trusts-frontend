@@ -25,7 +25,7 @@ import pages.trustees.{TrusteeIndividualOrBusinessPage, TrusteesNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.AddRow
-import views.html.{AddATrusteeView, AddATrusteeYesNoView}
+import views.html.trustees.{AddATrusteeView, AddATrusteeYesNoView}
 
 class AddATrusteeControllerSpec extends SpecBase {
 

@@ -14,28 +14,29 @@
  * limitations under the License.
  */
 
-package views
+package views.trustees
 
-import controllers.routes
-import forms.NinoFormProvider
-import models.NormalMode
+import forms.trustees.TelephoneNumberFormProvider
+import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
-import views.html.TrusteesNinoView
+import views.html.trustees.TelephoneNumberView
 
-class TrusteesNinoViewSpec extends StringViewBehaviours {
+class TelephoneNumberViewSpec extends StringViewBehaviours {
 
-  val messageKeyPrefix = "trusteesNino"
+  val messageKeyPrefix = "telephoneNumber"
+
+  val form = new TelephoneNumberFormProvider()(messageKeyPrefix)
+
   val index = 0
   val trusteeName = "FirstName LastName"
-  val hintKey = "trusteesNino.hint"
+  val fullName = FullName("FirstName", None, "LastName")
+  val hintKey = "telephoneNumber.hint"
 
-  val form = new NinoFormProvider()(messageKeyPrefix)
+  "TelephoneNumberView view" must {
 
-  "TrusteesNinoView view" must {
-
-    val view = viewFor[TrusteesNinoView](Some(emptyUserAnswers))
+    val view = viewFor[TelephoneNumberView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId, index, messageKeyPrefix, trusteeName)(fakeRequest, messages)
@@ -44,13 +45,8 @@ class TrusteesNinoViewSpec extends StringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPageWithDynamicTitle(form, applyView,
-      messageKeyPrefix,
-      trusteeName,
-      Some(hintKey)
-    )
+    behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, trusteeName, Some(hintKey))
 
     behave like pageWithASubmitButton(applyView(form))
-
   }
 }

@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package views
+package views.trustees
 
-import controllers.routes
 import forms.UKAddressFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.UkAddressViewBehaviours
-import views.html.TrusteesUkAddressView
+import views.html.trustees.TrusteesUkAddressView
 
 class TrusteeUKAddressViewSpec extends UkAddressViewBehaviours {
 

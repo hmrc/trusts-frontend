@@ -25,7 +25,7 @@ import play.api.i18n.Messages
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.TrusteesNameView
+import views.html.trustees.TrusteesNameView
 
 class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
 

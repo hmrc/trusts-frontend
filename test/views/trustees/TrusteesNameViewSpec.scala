@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package views
+package views.trustees
 
 import forms.trustees.TrusteesNameFormProvider
 import generators.Generators
@@ -24,7 +24,7 @@ import play.api.data.Form
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
-import views.html.TrusteesNameView
+import views.html.trustees.TrusteesNameView
 
 class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generators {
 

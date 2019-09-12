@@ -27,7 +27,7 @@ import pages.trustees.{IsThisLeadTrusteePage, TrusteesDateOfBirthPage, TrusteesN
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.TrusteesDateOfBirthView
+import views.html.trustees.TrusteesDateOfBirthView
 
 class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with IndexValidation {
 

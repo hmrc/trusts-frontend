@@ -14,39 +14,43 @@
  * limitations under the License.
  */
 
-package views
+package views.trustees
 
-import controllers.routes
-import forms.trustees.TelephoneNumberFormProvider
-import models.{FullName, NormalMode}
+import java.time.LocalDate
+
+import forms.trustees.TrusteesDateOfBirthFormProvider
+import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.StringViewBehaviours
-import views.html.TelephoneNumberView
+import views.behaviours.QuestionViewBehaviours
+import views.html.trustees.TrusteesDateOfBirthView
 
-class TelephoneNumberViewSpec extends StringViewBehaviours {
+class TrusteesDateOfBirthViewSpec extends QuestionViewBehaviours[LocalDate] {
 
-  val messageKeyPrefix = "telephoneNumber"
-
-  val form = new TelephoneNumberFormProvider()(messageKeyPrefix)
-
+  val messageKeyPrefix = "trusteesDateOfBirth"
   val index = 0
   val trusteeName = "FirstName LastName"
-  val fullName = FullName("FirstName", None, "LastName")
-  val hintKey = "telephoneNumber.hint"
 
-  "TelephoneNumberView view" must {
+  val form = new TrusteesDateOfBirthFormProvider()()
 
-    val view = viewFor[TelephoneNumberView](Some(emptyUserAnswers))
+  "TrusteesDateOfBirthView view" must {
+
+    val view = viewFor[TrusteesDateOfBirthView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId, index, messageKeyPrefix, trusteeName)(fakeRequest, messages)
+
+    val applyViewF = (form : Form[_]) => applyView(form)
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, trusteeName, "hint")
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, trusteeName, Some(hintKey))
+    behave like pageWithDateFields(form, applyViewF,
+      messageKeyPrefix,
+      "value",
+      trusteeName
+    )
 
     behave like pageWithASubmitButton(applyView(form))
   }

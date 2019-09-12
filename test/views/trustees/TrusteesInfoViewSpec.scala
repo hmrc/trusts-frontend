@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package views
+package views.trustees
 
+import controllers._
 import models.NormalMode
 import views.behaviours.ViewBehaviours
-import views.html.TrusteesInfoView
-import controllers._
+import views.html.trustees.TrusteesInfoView
 
 
 class TrusteesInfoViewSpec extends ViewBehaviours {

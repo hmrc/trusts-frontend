@@ -24,7 +24,7 @@ import pages.trustees.{IsThisLeadTrusteePage, TrusteesNamePage, TrusteesUkAddres
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.TrusteesUkAddressView
+import views.html.trustees.TrusteesUkAddressView
 
 class UKAddressControllerSpec extends SpecBase with IndexValidation {
 

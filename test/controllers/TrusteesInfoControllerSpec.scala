@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.TrusteesInfoView
+import views.html.trustees.TrusteesInfoView
 
 class TrusteesInfoControllerSpec extends SpecBase {
 

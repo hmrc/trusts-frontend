@@ -32,7 +32,7 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
-import views.html.TrusteesAnswerPageView
+import views.html.trustees.TrusteesAnswerPageView
 
 import scala.concurrent.{ExecutionContext, Future}
 

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package views
+package views.trustees
 
 import views.behaviours.ViewBehaviours
-import views.html.TrusteesAnswerPageView
+import views.html.trustees.TrusteesAnswerPageView
 
 class TrusteesAnswerPageViewSpec extends ViewBehaviours {
 

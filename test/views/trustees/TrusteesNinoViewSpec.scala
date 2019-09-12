@@ -14,41 +14,42 @@
  * limitations under the License.
  */
 
-package views
+package views.trustees
 
-import forms.trustees.TrusteeAUKCitizenFormProvider
-import models.{FullName, NormalMode}
-import pages.trustees.TrusteesNamePage
+import forms.NinoFormProvider
+import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.YesNoViewBehaviours
-import views.html.TrusteeAUKCitizenView
+import views.behaviours.StringViewBehaviours
+import views.html.trustees.TrusteesNinoView
 
-class TrusteeAUKCitizenViewSpec extends YesNoViewBehaviours {
+class TrusteesNinoViewSpec extends StringViewBehaviours {
 
-  val messageKeyPrefix = "trusteeAUKCitizen"
-
-  val form = new TrusteeAUKCitizenFormProvider()(messageKeyPrefix)
-
+  val messageKeyPrefix = "trusteesNino"
   val index = 0
   val trusteeName = "FirstName LastName"
-  val fullName = FullName("FirstName", None, "LastName")
+  val hintKey = "trusteesNino.hint"
 
+  val form = new NinoFormProvider()(messageKeyPrefix)
 
-  "trusteeAUKCitizen view" must {
+  "TrusteesNinoView view" must {
 
-    val userAnswers = emptyUserAnswers
-      .set(TrusteesNamePage(index), fullName).success.value
-
-    val view = viewFor[TrusteeAUKCitizenView](Some(userAnswers))
+    val view = viewFor[TrusteesNinoView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId, index, messageKeyPrefix, trusteeName)(fakeRequest, messages)
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, trusteeName)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, trusteeName, "hint")
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, None, Seq(fullName.toString))
+    behave like stringPageWithDynamicTitle(form, applyView,
+      messageKeyPrefix,
+      trusteeName,
+      Some(hintKey)
+    )
+
+    behave like pageWithASubmitButton(applyView(form))
+
   }
 }

@@ -30,7 +30,7 @@ import repositories.SessionRepository
 import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import viewmodels.addAnother.TrusteeViewModel
-import views.html.IsThisLeadTrusteeView
+import views.html.trustees.IsThisLeadTrusteeView
 
 import scala.concurrent.{ExecutionContext, Future}
 

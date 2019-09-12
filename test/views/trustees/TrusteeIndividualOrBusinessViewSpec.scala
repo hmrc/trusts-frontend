@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package views
+package views.trustees
 
 import forms.trustees.TrusteeIndividualOrBusinessFormProvider
 import models.{IndividualOrBusiness, NormalMode}
@@ -23,7 +23,7 @@ import play.api.data.Form
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import views.behaviours.OptionsViewBehaviours
-import views.html.TrusteeIndividualOrBusinessView
+import views.html.trustees.TrusteeIndividualOrBusinessView
 
 class TrusteeIndividualOrBusinessViewSpec extends OptionsViewBehaviours {
 

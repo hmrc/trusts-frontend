@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package views
+package views.trustees
 
 import forms.trustees.AddATrusteeFormProvider
 import models.{AddATrustee, IndividualOrBusiness, NormalMode}
@@ -22,7 +22,7 @@ import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import viewmodels.AddRow
 import views.behaviours.{OptionsViewBehaviours, TabularDataViewBehaviours}
-import views.html.AddATrusteeView
+import views.html.trustees.AddATrusteeView
 
 class AddATrusteeViewSpec extends OptionsViewBehaviours with TabularDataViewBehaviours {
 

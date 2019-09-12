@@ -26,7 +26,7 @@ import play.api.test.Helpers._
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
-import views.html.TrusteesAnswerPageView
+import views.html.trustees.TrusteesAnswerPageView
 
 class TrusteesAnswerPageControllerSpec extends SpecBase {
 

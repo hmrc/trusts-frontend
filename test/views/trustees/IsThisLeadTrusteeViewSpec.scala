@@ -14,35 +14,38 @@
  * limitations under the License.
  */
 
-package views
+package views.trustees
 
-import controllers.routes
-import forms.trustees.TrusteeLiveInTheUKFormProvider
+import forms.trustees.IsThisLeadTrusteeFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.TrusteeLiveInTheUKView
+import views.html.trustees.IsThisLeadTrusteeView
 
-class TrusteeLiveInTheUKViewSpec extends YesNoViewBehaviours {
+class IsThisLeadTrusteeViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "trusteeLiveInTheUK"
+  val messageKeyPrefix = "isThisLeadTrustee"
+
+  val form = new IsThisLeadTrusteeFormProvider()()
+
   val index = 0
-  val trusteeName = "FirstName LastName"
 
-  val form = new TrusteeLiveInTheUKFormProvider()(messageKeyPrefix)
+  "IsThisLeadTrustee view" must {
 
-  "TrusteeLiveInTheUK view" must {
-
-    val view = viewFor[TrusteeLiveInTheUKView](Some(emptyUserAnswers))
+    val view = viewFor[IsThisLeadTrusteeView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId, index, messageKeyPrefix, trusteeName)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, trusteeName)
+    behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, None, Seq(trusteeName))
+    behave like yesNoPage(
+      form,
+      applyView,
+      messageKeyPrefix
+    )
   }
 }

@@ -30,7 +30,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.TrusteesNinoView
+import views.html.trustees.TrusteesNinoView
 
 import scala.concurrent.{ExecutionContext, Future}
 

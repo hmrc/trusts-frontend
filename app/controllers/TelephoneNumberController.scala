@@ -30,7 +30,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.TelephoneNumberView
+import views.html.trustees.TelephoneNumberView
 
 import scala.concurrent.{ExecutionContext, Future}
 
