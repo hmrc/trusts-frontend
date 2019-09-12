@@ -24,7 +24,7 @@ import sections.LivingSettlors
 
 final case class SettlorIndividualDateOfBirthPage(index : Int) extends QuestionPage[LocalDate] {
 
-  override def path: JsPath = LivingSettlors.path \ "individual" \ index \ toString
+  override def path: JsPath = LivingSettlors.path \ index \ toString
 
   override def toString: String = "dateOfBirth"
 }

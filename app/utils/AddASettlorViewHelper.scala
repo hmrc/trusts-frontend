@@ -29,6 +29,10 @@ class AddASettlorViewHelper(userAnswers: UserAnswers, draftId: String)(implicit 
 
     val settlors = userAnswers.get(Settlors).toList.flatten.zipWithIndex
 
+    println("**********************************************")
+    println(userAnswers.get(Settlors))
+    println(settlors)
+
     val completed: List[AddRow] = settlors.filter(_._1.status == Completed).flatMap(parseSettlor)
 
     val inProgress: List[AddRow] = settlors.filterNot(_._1.status == Completed).flatMap(parseSettlor)

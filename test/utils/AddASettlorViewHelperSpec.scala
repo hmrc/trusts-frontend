@@ -24,7 +24,7 @@ import pages.living_settlor.{SettlorIndividualAddressYesNoPage, SettlorIndividua
 import pages.{SettlorHandoverReliefYesNoPage, SetupAfterSettlorDiedPage}
 import viewmodels.AddRow
 
-class AddSettlorViewHelperSpec extends SpecBase   {
+class AddASettlorViewHelperSpec extends SpecBase   {
 
   val settlorName = FullName("first name", Some("middle name"), "last name")
 
