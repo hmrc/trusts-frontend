@@ -16,8 +16,7 @@
 
 package views
 
-import controllers.routes
-import forms.AddABeneficiaryYesNoFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -28,7 +27,7 @@ class AddABeneficiaryYesNoViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "addABeneficiaryYesNo"
 
-  val form = new AddABeneficiaryYesNoFormProvider()()
+  val form = new YesNoFormProvider()(messageKeyPrefix)
 
   "AddABeneficiaryYesNo view" must {
 
