@@ -42,9 +42,9 @@ class TaskListNavigator @Inject()() {
   private def trusteeRoute(draftId: String)(answers: UserAnswers) = {
     answers.get(sections.Trustees).getOrElse(Nil) match {
       case Nil =>
-        routes.TrusteesInfoController.onPageLoad(draftId)
+        controllers.trustees.routes.TrusteesInfoController.onPageLoad(draftId)
       case _ :: _ =>
-        routes.AddATrusteeController.onPageLoad(draftId)
+        controllers.trustees.routes.AddATrusteeController.onPageLoad(draftId)
     }
   }
 

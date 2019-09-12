@@ -48,7 +48,7 @@ class AddATrusteeViewHelper(userAnswers: UserAnswers, draftId: String)(implicit 
       name = nameOfTrustee,
       typeLabel = trusteeType,
       changeUrl = "#",
-      removeUrl = routes.RemoveTrusteeController.onPageLoad(index, draftId).url
+      removeUrl = controllers.trustees.routes.RemoveTrusteeController.onPageLoad(index, draftId).url
     )
   }
 

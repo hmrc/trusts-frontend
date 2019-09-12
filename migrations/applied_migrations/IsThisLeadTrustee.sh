@@ -6,11 +6,11 @@ echo "Applying migration IsThisLeadTrustee"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /isThisLeadTrustee                        controllers.IsThisLeadTrusteeController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /isThisLeadTrustee                        controllers.IsThisLeadTrusteeController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /isThisLeadTrustee                        controllers.trustees.IsThisLeadTrusteeController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /isThisLeadTrustee                        controllers.trustees.IsThisLeadTrusteeController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeIsThisLeadTrustee                  controllers.IsThisLeadTrusteeController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeIsThisLeadTrustee                  controllers.IsThisLeadTrusteeController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeIsThisLeadTrustee                  controllers.trustees.IsThisLeadTrusteeController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeIsThisLeadTrustee                  controllers.trustees.IsThisLeadTrusteeController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

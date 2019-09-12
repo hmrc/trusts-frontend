@@ -5,7 +5,7 @@ echo "Applying migration TrusteesInfo"
 
 echo "Adding routes to conf/app.routes"
 echo "" >> ../conf/app.routes
-echo "GET        /trusteesInfo                       controllers.TrusteesInfoController.onPageLoad()" >> ../conf/app.routes
+echo "GET        /trusteesInfo                       controllers.trustees.TrusteesInfoController.onPageLoad()" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

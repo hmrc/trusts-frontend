@@ -28,10 +28,16 @@ trait PageGenerators {
 
   implicit lazy val arbitrarySettlorBusinessDetailsPage: Arbitrary[SettlorBusinessNamePage] =
     Arbitrary(SettlorBusinessNamePage(0))
-  
+
   implicit lazy val arbitrarySettlorKindOfTrustPage: Arbitrary[SettlorKindOfTrustPage.type] =
     Arbitrary(SettlorKindOfTrustPage)
 
+
+  implicit lazy val arbitrarySettlorsBasedInTheUKPage: Arbitrary[SettlorsBasedInTheUKPage.type] =
+    Arbitrary(SettlorsBasedInTheUKPage)
+
+  implicit lazy val arbitraryTrusteesBasedInTheUKPage: Arbitrary[TrusteesBasedInTheUKPage.type] =
+    Arbitrary(TrusteesBasedInTheUKPage)
 
   implicit lazy val arbitrarySettlorHandoverReliefYesNoPage: Arbitrary[SettlorHandoverReliefYesNoPage.type] =
     Arbitrary(SettlorHandoverReliefYesNoPage)
@@ -308,9 +314,6 @@ trait PageGenerators {
 
   implicit lazy val arbitraryEstablishedUnderScotsLawPage: Arbitrary[EstablishedUnderScotsLawPage.type] =
     Arbitrary(EstablishedUnderScotsLawPage)
-
-  implicit lazy val arbitraryTrustResidentInUKPage: Arbitrary[TrustResidentInUKPage.type] =
-    Arbitrary(TrustResidentInUKPage)
 
   implicit lazy val arbitraryCountryAdministeringTrustPage: Arbitrary[CountryAdministeringTrustPage.type] =
     Arbitrary(CountryAdministeringTrustPage)
