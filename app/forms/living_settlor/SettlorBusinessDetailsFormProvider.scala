@@ -14,27 +14,18 @@
  * limitations under the License.
  */
 
-package models
+package forms.living_settlor
 
-import play.api.libs.json._
-import viewmodels.RadioOption
+import forms.mappings.Mappings
+import javax.inject.Inject
+import models.SettlorBusinessDetails
+import play.api.data.Form
 
-sealed trait SettlorDetails
+class SettlorBusinessDetailsFormProvider @Inject() extends Mappings {
 
-object SettlorDetails extends Enumerable.Implicits {
-
-  case object Option1 extends WithName("option1") with SettlorDetails
-  case object Option2 extends WithName("option2") with SettlorDetails
-
-  val values: List[SettlorDetails] = List(
-    Option1, Option2
-  )
-
-  val options: List[RadioOption] = values.map {
-    value =>
-      RadioOption("settlorDetails", value.toString)
-  }
-
-  implicit val enumerable: Enumerable[SettlorDetails] =
-    Enumerable(values.map(v => v.toString -> v): _*)
+  def apply(): Form[SettlorBusinessDetails] =
+    Form(
+      "value" -> enumerable[SettlorBusinessDetails]("settlorBusinessDetails.error.required")
+    )
 }
+

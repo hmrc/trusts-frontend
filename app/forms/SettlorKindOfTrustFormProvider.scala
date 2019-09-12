@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import models.SettlorDetails
-import pages.behaviours.PageBehaviours
+import javax.inject.Inject
 
-class SettlorDetailsSpec extends PageBehaviours {
+import forms.mappings.Mappings
+import play.api.data.Form
+import models.SettlorKindOfTrust
 
-  "SettlorDetailsPage" must {
+class SettlorKindOfTrustFormProvider @Inject() extends Mappings {
 
-    beRetrievable[SettlorDetails](SettlorDetailsPage(0))
-
-    beSettable[SettlorDetails](SettlorDetailsPage(0))
-
-    beRemovable[SettlorDetails](SettlorDetailsPage(0))
-  }
+  def apply(): Form[SettlorKindOfTrust] =
+    Form(
+      "value" -> enumerable[SettlorKindOfTrust]("settlorKindOfTrust.error.required")
+    )
 }

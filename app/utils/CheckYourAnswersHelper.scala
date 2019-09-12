@@ -24,7 +24,7 @@ import mapping.reads._
 import models.{CheckMode, InternationalAddress, PassportOrIdCardDetails, UKAddress, UserAnswers}
 import pages._
 import pages.property_or_land._
-import pages.living_settlor.{SettlorIndividualAddressInternationalPage, SettlorIndividualAddressUKPage, SettlorIndividualAddressUKYesNoPage, SettlorIndividualAddressYesNoPage, SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualIDCardPage, SettlorIndividualIDCardYesNoPage, SettlorIndividualNINOPage, SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage, SettlorIndividualOrBusinessPage, SettlorIndividualPassportPage, SettlorIndividualPassportYesNoPage}
+import pages.living_settlor.{SettlorBusinessDetailsPage, SettlorBusinessNamePage, SettlorIndividualAddressInternationalPage, SettlorIndividualAddressUKPage, SettlorIndividualAddressUKYesNoPage, SettlorIndividualAddressYesNoPage, SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualIDCardPage, SettlorIndividualIDCardYesNoPage, SettlorIndividualNINOPage, SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage, SettlorIndividualOrBusinessPage, SettlorIndividualPassportPage, SettlorIndividualPassportYesNoPage}
 import pages.shares._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
@@ -35,12 +35,41 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers, draftId: String, canEdit: Boolean = true)(implicit messages: Messages) {
 
-  def settlorDetails(index : Int): Option[AnswerRow] = userAnswers.get(SettlorDetailsPage(index)) map {
+  def settlorBusinessName(index: Int): Option[AnswerRow] = userAnswers.get(SettlorBusinessNamePage(index)) map {
     x =>
       AnswerRow(
-        "settlorDetails.checkYourAnswersLabel",
+        "settlorBusinessName.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        controllers.living_settlor.routes.SettlorBusinessNameController.onPageLoad(CheckMode, index, draftId).url
+      )
+  }
+
+  def settlorKindOfTrust(index: Int): Option[AnswerRow] = userAnswers.get(SettlorKindOfTrustPage) map {
+    x =>
+      AnswerRow(
+        "settlorKindOfTrust.checkYourAnswersLabel",
+        HtmlFormat.escape(messages(s"settlorKindOfTrust.$x")),
+        routes.SettlorKindOfTrustController.onPageLoad(CheckMode, draftId).url
+
+      )
+  }
+
+  def settlorHandoverReliefYesNo: Option[AnswerRow] = userAnswers.get(SettlorHandoverReliefYesNoPage) map {
+    x =>
+      AnswerRow(
+        "settlorHandoverReliefYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        routes.SettlorHandoverReliefYesNoController.onPageLoad(CheckMode, draftId).url,
+        canEdit = canEdit
+      )
+  }
+
+  def settlorBusinessDetails(index : Int): Option[AnswerRow] = userAnswers.get(SettlorBusinessDetailsPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorBusinessDetails.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"settlorDetails.$x")),
-        routes.SettlorDetailsController.onPageLoad(CheckMode,index, draftId).url
+        controllers.living_settlor.routes.SettlorBusinessDetailsController.onPageLoad(CheckMode,index, draftId).url
       )
   }
 

@@ -17,22 +17,22 @@
 package forms
 
 import forms.behaviours.OptionFieldBehaviours
-import models.SettlorDetails
+import models.SettlorKindOfTrust
 import play.api.data.FormError
 
-class SettlorDetailsFormProviderSpec extends OptionFieldBehaviours {
+class SettlorKindOfTrustFormProviderSpec extends OptionFieldBehaviours {
 
-  val form = new SettlorDetailsFormProvider()()
+  val form = new SettlorKindOfTrustFormProvider()()
 
   ".value" must {
 
     val fieldName = "value"
-    val requiredKey = "settlorDetails.error.required"
+    val requiredKey = "settlorKindOfTrust.error.required"
 
-    behave like optionsField[SettlorDetails](
+    behave like optionsField[SettlorKindOfTrust](
       form,
       fieldName,
-      validValues  = SettlorDetails.values.toSet,
+      validValues  = SettlorKindOfTrust.values.toSet,
       invalidError = FormError(fieldName, "error.invalid")
     )
 

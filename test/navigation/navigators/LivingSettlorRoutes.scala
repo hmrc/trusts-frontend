@@ -18,12 +18,13 @@ package navigation.navigators
 
 import base.SpecBase
 import generators.Generators
-import models.{NormalMode, UserAnswers}
+import models.{IndividualOrBusiness, NormalMode, UserAnswers}
 import navigation.{LivingSettlorNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages.living_settlor._
 import controllers.living_settlor.routes
+import pages.SettlorHandoverReliefYesNoPage
 
 trait LivingSettlorRoutes {
 
@@ -33,7 +34,34 @@ trait LivingSettlorRoutes {
 
   private val navigator : Navigator = new LivingSettlorNavigator
 
+  def livingBusinessSettlorRoutes : Unit = {
+
+    "navigate from SettlorIndividualOrBusinessPage to SettlorBusinessName when user answers business" in {
+
+      val page = SettlorIndividualOrBusinessPage(index)
+
+      val ua = emptyUserAnswers
+        .set(page, IndividualOrBusiness.Business).success.value
+
+      navigator.nextPage(page, NormalMode, fakeDraftId)(ua)
+          .mustBe(routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, fakeDraftId))
+
+    }
+
+  }
+
   def livingSettlorRoutes(): Unit = {
+
+    "navigate from SettlorHandoverReliefYesNoPage" in {
+
+      val page = SettlorHandoverReliefYesNoPage
+
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId))
+      }
+    }
 
     "navigate from SettlorIndividualNamePage" in {
 
@@ -178,11 +206,10 @@ trait LivingSettlorRoutes {
 
       val page = SettlorIndividualAddressInternationalPage(index)
 
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
-            navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
-              .mustBe(routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
-        }
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
 
@@ -258,5 +285,7 @@ trait LivingSettlorRoutes {
       }
 
     }
+
+  }
 
   }

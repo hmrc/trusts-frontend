@@ -15,32 +15,48 @@
  *@
 
 @import controllers.routes._
-@import models.{Mode, SettlorDetails}
+@import models.{Mode, AddASettlor}
+@import viewmodels.AddRow
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, index : Int, draftId: String, name : String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode,
+    draftId: String,
+    inProgress: Seq[AddRow],
+    complete: Seq[AddRow],
+    heading: String,
+    hint: Option[String]
+)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("settlorDetails.title")}"
+    title = s"${errorPrefix(form)} $heading"
     ) {
 
-    @formHelper(action = SettlorDetailsController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
+    @formHelper(action = AddASettlorController.submitAnother(draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("settlorDetails.heading", Some(name))
+        @components.heading(heading)
+
+        @hint.map{ text =>
+            <p>@messages(text)</p>
+        }
+
+        @components.data_list(inProgress, "inprogress", "settlor")
+
+        @components.data_list(complete, "complete", "settlor")
 
         @components.input_radio(
             field = form("value"),
-            legend = messages("settlorDetails.heading"),
-            legendClass = Some("visually-hidden"),
-            inputs = SettlorDetails.options
+            legend = messages("addASettlor.additional-content"),
+            legendClass = Some("heading-medium"),
+            inputs = AddASettlor.options,
+            legendAsH2Heading = true
         )
 
         @components.submit_button()

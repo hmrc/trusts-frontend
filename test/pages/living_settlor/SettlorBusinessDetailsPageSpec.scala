@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package forms
+package pages.living_settlor
 
-import javax.inject.Inject
+import models.SettlorBusinessDetails
+import pages.behaviours.PageBehaviours
 
-import forms.mappings.Mappings
-import play.api.data.Form
-import models.SettlorDetails
+class SettlorDetailsSpec extends PageBehaviours {
 
-class SettlorDetailsFormProvider @Inject() extends Mappings {
+  "SettlorDetailsPage" must {
 
-  def apply(): Form[SettlorDetails] =
-    Form(
-      "value" -> enumerable[SettlorDetails]("settlorDetails.error.required")
-    )
+    beRetrievable[SettlorBusinessDetails](SettlorBusinessDetailsPage(0))
+
+    beSettable[SettlorBusinessDetails](SettlorBusinessDetailsPage(0))
+
+    beRemovable[SettlorBusinessDetails](SettlorBusinessDetailsPage(0))
+  }
 }

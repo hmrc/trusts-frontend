@@ -14,14 +14,22 @@
  * limitations under the License.
  */
 
-package pages
+package forms.living_settlor
 
-import play.api.libs.json.JsPath
-import sections.Settlors
+import forms.Validation
+import forms.mappings.Mappings
+import javax.inject.Inject
+import play.api.data.Form
 
-case class SettlorBusinessDetailsPage(index : Int) extends QuestionPage[String] {
+class SettlorBusinessNameFormProvider @Inject() extends Mappings {
 
-  override def path: JsPath = JsPath \Settlors \ "living" \ index \ toString
+  def apply(): Form[String] =
+    Form(
 
-  override def toString: String = "settlorBusinessDetails"
+      "value" -> text("settlorBusinessName.error.required")
+      .verifying(
+                firstError(
+                maxLength(105, "settlorBusinessName.error.length"),
+                regexp(Validation.nameRegex, s"settlorBusinessName.error.invalid")
+    )))
 }

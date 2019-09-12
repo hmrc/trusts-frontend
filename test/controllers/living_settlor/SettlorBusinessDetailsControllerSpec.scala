@@ -14,47 +14,49 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.living_settlor
 
 import base.SpecBase
-import forms.SettlorDetailsFormProvider
-import models.{NormalMode, SettlorDetails, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
-import pages.{SettlorBusinessDetailsPage, SettlorDetailsPage}
-import play.api.inject.bind
+import controllers.IndexValidation
+import forms.living_settlor.SettlorBusinessDetailsFormProvider
+import models.{NormalMode, SettlorBusinessDetails}
 import org.scalacheck.Arbitrary.arbitrary
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import pages.living_settlor.{SettlorBusinessDetailsPage, SettlorBusinessNamePage}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
-import views.html.SettlorDetailsView
+import play.api.test.Helpers.{route, _}
+import views.html.living_settlor.SettlorBusinessDetailsView
 
-class SettlorDetailsControllerSpec extends SpecBase with IndexValidation {
+class SettlorBusinessDetailsControllerSpec extends SpecBase with IndexValidation {
 
   val index = 0
 
   val fakeName = "Test User"
 
-  lazy val settlorDetailsRoute = routes.SettlorDetailsController.onPageLoad(NormalMode,index, fakeDraftId).url
+  val UTR = SettlorBusinessDetails.UTR
 
-  val formProvider = new SettlorDetailsFormProvider()
+  lazy val settlorBusinessDetailsRoute =  controllers.living_settlor.routes.SettlorBusinessDetailsController.onPageLoad(NormalMode,index, fakeDraftId).url
+
+  val formProvider = new SettlorBusinessDetailsFormProvider()
   val form = formProvider()
 
-  "SettlorDetails Controller" must {
+  "SettlorBusinessDetailsController" must {
 
     "return OK and the correct view for a GET" in {
 
       val answers = emptyUserAnswers
-        .set(SettlorBusinessDetailsPage(index), fakeName)
+        .set(SettlorBusinessNamePage(index), fakeName)
         .success
         .value
 
+
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-      val request = FakeRequest(GET, settlorDetailsRoute)
+      val request = FakeRequest(GET, settlorBusinessDetailsRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[SettlorDetailsView]
+      val view = application.injector.instanceOf[SettlorBusinessDetailsView]
 
       status(result) mustEqual OK
 
@@ -67,37 +69,42 @@ class SettlorDetailsControllerSpec extends SpecBase with IndexValidation {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers
-        .set(SettlorDetailsPage(index), SettlorDetails.values.head)
+        .set(SettlorBusinessDetailsPage(index), SettlorBusinessDetails.values.head)
         .success
         .value
-        .set(SettlorBusinessDetailsPage(index), fakeName)
+        .set(SettlorBusinessNamePage(index), fakeName)
         .success
         .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, settlorDetailsRoute)
+      val request = FakeRequest(GET, settlorBusinessDetailsRoute)
 
-      val view = application.injector.instanceOf[SettlorDetailsView]
+      val view = application.injector.instanceOf[SettlorBusinessDetailsView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(SettlorDetails.values.head), NormalMode,index, fakeDraftId, fakeName)(fakeRequest, messages).toString
+        view(form.fill(SettlorBusinessDetails.values.head), NormalMode,index, fakeDraftId, fakeName)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
+      val ua = emptyUserAnswers
+        .set(SettlorBusinessNamePage(index), fakeName)
+        .success
+        .value
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        applicationBuilder(userAnswers = Some(ua)).build()
 
       val request =
-        FakeRequest(POST, settlorDetailsRoute)
-          .withFormUrlEncodedBody(("value", SettlorDetails.options.head.value))
+        FakeRequest(POST, settlorBusinessDetailsRoute)
+          .withFormUrlEncodedBody(("value", SettlorBusinessDetails.options.head.value))
 
       val result = route(application, request).value
 
@@ -112,19 +119,19 @@ class SettlorDetailsControllerSpec extends SpecBase with IndexValidation {
 
 
       val answers = emptyUserAnswers
-        .set(SettlorBusinessDetailsPage(index), fakeName)
+        .set(SettlorBusinessNamePage(index), fakeName)
         .success
         .value
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
       val request =
-        FakeRequest(POST, settlorDetailsRoute)
+        FakeRequest(POST, settlorBusinessDetailsRoute)
           .withFormUrlEncodedBody(("value", "invalid value"))
 
       val boundForm = form.bind(Map("value" -> "invalid value"))
 
-      val view = application.injector.instanceOf[SettlorDetailsView]
+      val view = application.injector.instanceOf[SettlorBusinessDetailsView]
 
       val result = route(application, request).value
 
@@ -140,12 +147,12 @@ class SettlorDetailsControllerSpec extends SpecBase with IndexValidation {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, settlorDetailsRoute)
+      val request = FakeRequest(GET, settlorBusinessDetailsRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -155,14 +162,14 @@ class SettlorDetailsControllerSpec extends SpecBase with IndexValidation {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, settlorDetailsRoute)
-          .withFormUrlEncodedBody(("value", SettlorDetails.values.head.toString))
+        FakeRequest(POST, settlorBusinessDetailsRoute)
+          .withFormUrlEncodedBody(("value", SettlorBusinessDetails.values.head.toString))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -171,14 +178,14 @@ class SettlorDetailsControllerSpec extends SpecBase with IndexValidation {
     "for a GET" must {
 
       def getForIndex(index: Int): FakeRequest[AnyContentAsEmpty.type] = {
-        val route = routes.SettlorDetailsController.onPageLoad(NormalMode, index, fakeDraftId).url
+        val route = controllers.living_settlor.routes.SettlorBusinessDetailsController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         FakeRequest(GET, route)
       }
 
       validateIndex(
-        arbitrary[SettlorDetails],
-        SettlorDetailsPage.apply,
+        arbitrary[SettlorBusinessDetails],
+        SettlorBusinessDetailsPage.apply,
         getForIndex
       )
 
@@ -188,15 +195,14 @@ class SettlorDetailsControllerSpec extends SpecBase with IndexValidation {
       def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
         val route =
-          routes.SettlorDetailsController.onPageLoad(NormalMode, index, fakeDraftId).url
+          controllers.living_settlor.routes.SettlorBusinessDetailsController.onPageLoad(NormalMode, index, fakeDraftId).url
 
-        FakeRequest(POST, route)
-          .withFormUrlEncodedBody("Value" -> "true")
+        FakeRequest(POST, route).withFormUrlEncodedBody(("value", SettlorBusinessDetails.values.head.toString)).withFormUrlEncodedBody("Value" -> "UTR")
       }
 
       validateIndex(
-        arbitrary[SettlorDetails],
-        SettlorDetailsPage.apply,
+        arbitrary[SettlorBusinessDetails],
+        SettlorBusinessDetailsPage.apply,
         postForIndex
       )
     }

@@ -67,6 +67,8 @@ import pages._
 
       behave like livingSettlorRoutes
 
+      behave like livingBusinessSettlorRoutes
+
     }
 
     "in Check mode" must {

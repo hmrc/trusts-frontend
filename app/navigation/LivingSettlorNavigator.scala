@@ -20,7 +20,7 @@ import controllers.living_settlor.routes
 import javax.inject.Singleton
 import models.IndividualOrBusiness._
 import models.{NormalMode, UserAnswers}
-import pages.Page
+import pages.{Page, SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage}
 import pages.living_settlor._
 import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
@@ -29,6 +29,8 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 class LivingSettlorNavigator extends Navigator {
 
   override protected def normalRoutes(draftId: String): Page => AffinityGroup => UserAnswers => Call = {
+    case SettlorKindOfTrustPage => _ => _ => controllers.routes.SettlorHandoverReliefYesNoController.onPageLoad(NormalMode, draftId)
+    case SettlorHandoverReliefYesNoPage => _ => _ => routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
     case SettlorIndividualNamePage(index) => _ => _ => routes.SettlorIndividualDateOfBirthYesNoController.onPageLoad(NormalMode, index, draftId)
     case SettlorIndividualDateOfBirthYesNoPage(index) => _ => settlorIndividualDateOfBirthYesNoPage(draftId, index)
     case SettlorIndividualDateOfBirthPage(index) => _ => _ => routes.SettlorIndividualNINOYesNoController.onPageLoad(NormalMode, index, draftId)
@@ -43,7 +45,9 @@ class LivingSettlorNavigator extends Navigator {
     case SettlorIndividualIDCardYesNoPage(index) => _ =>  settlorIndividualIDCardYesNoPage(draftId, index)
     case SettlorIndividualIDCardPage(index) => _ => _ => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
     case SettlorIndividualOrBusinessPage(index) => _ => settlorIndividualOrBusinessPage(index, draftId)
-    case SettlorIndividualAnswerPage => _ => _ => controllers.routes.AddAssetsController.onPageLoad(draftId) // TDOD Change route
+    case SettlorIndividualAnswerPage => _ => _ => controllers.routes.AddASettlorController.onPageLoad(draftId)
+    case SettlorBusinessNamePage(index)  =>_ => _ => controllers.living_settlor.routes.SettlorBusinessDetailsController.onPageLoad(NormalMode, index, draftId)
+    case SettlorBusinessDetailsPage(index) =>_ => _ => controllers.living_settlor.routes.SettlorBusinessDetailsController.onPageLoad(NormalMode, index, draftId)
   }
 
   private def settlorIndividualDateOfBirthYesNoPage(draftId: String, index: Int)(answers: UserAnswers) =
@@ -91,7 +95,7 @@ class LivingSettlorNavigator extends Navigator {
   private def settlorIndividualOrBusinessPage(index: Int, draftId: String)(answers: UserAnswers) =
     answers.get(SettlorIndividualOrBusinessPage(index)) match {
       case Some(Individual) => controllers.living_settlor.routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, draftId)
-      case Some(Business) => ???
+      case Some(Business) => controllers.living_settlor.routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId)
       case None => controllers.routes.SessionExpiredController.onPageLoad()
     }
 

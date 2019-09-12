@@ -28,29 +28,29 @@ class SettlorDetailsSpec extends WordSpec with MustMatchers with PropertyChecks 
 
     "deserialise valid values" in {
 
-      val gen = Gen.oneOf(SettlorDetails.values.toSeq)
+      val gen = Gen.oneOf(SettlorBusinessDetails.values.toSeq)
 
       forAll(gen) {
         settlorDetails =>
 
-          JsString(settlorDetails.toString).validate[SettlorDetails].asOpt.value mustEqual settlorDetails
+          JsString(settlorDetails.toString).validate[SettlorBusinessDetails].asOpt.value mustEqual settlorDetails
       }
     }
 
     "fail to deserialise invalid values" in {
 
-      val gen = arbitrary[String] suchThat (!SettlorDetails.values.map(_.toString).contains(_))
+      val gen = arbitrary[String] suchThat (!SettlorBusinessDetails.values.map(_.toString).contains(_))
 
       forAll(gen) {
         invalidValue =>
 
-          JsString(invalidValue).validate[SettlorDetails] mustEqual JsError("error.invalid")
+          JsString(invalidValue).validate[SettlorBusinessDetails] mustEqual JsError("error.invalid")
       }
     }
 
     "serialise" in {
 
-      val gen = Gen.oneOf(SettlorDetails.values.toSeq)
+      val gen = Gen.oneOf(SettlorBusinessDetails.values.toSeq)
 
       forAll(gen) {
         settlorDetails =>
