@@ -583,10 +583,10 @@ POST       /:draftId/settlors/holdover-relief                         controller
 GET        /:draftId/settlors/change-holdover-relief                  controllers.SettlorHandoverReliefYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/settlors/change-holdover-relief                  controllers.SettlorHandoverReliefYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
-GET        /:draftId/trusteesBasedInTheUK                        controllers.TrusteesBasedInTheUKController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trusteesBasedInTheUK                        controllers.TrusteesBasedInTheUKController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/changeTrusteesBasedInTheUK                  controllers.TrusteesBasedInTheUKController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/changeTrusteesBasedInTheUK                  controllers.TrusteesBasedInTheUKController.onSubmit(mode: Mode = CheckMode, draftId: String)
+GET        /:draftId/trustees-based-in-the-uk                    controllers.TrusteesBasedInTheUKController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/trustees-based-in-the-uk                        controllers.TrusteesBasedInTheUKController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/change-trustees-based-in-the-uk                  controllers.TrusteesBasedInTheUKController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/change-trustees-based-in-the-uk                  controllers.TrusteesBasedInTheUKController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
 GET        /:draftId/settlors-based-in-the-uk                     controllers.SettlorsBasedInTheUKController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/settlors-based-in-the-uk                     controllers.SettlorsBasedInTheUKController.onSubmit(mode: Mode = NormalMode, draftId: String)

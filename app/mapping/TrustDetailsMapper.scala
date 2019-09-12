@@ -55,14 +55,21 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
         None
     }
   }
-
-  //TODO: Add the settlorBasedinUK page once its created
+  
   private def residentialStatus(userAnswers: UserAnswers): Option[ResidentialStatusType] = {
     userAnswers.get(TrusteesBasedInTheUKPage) match {
-      case Some(UKBasedTrustees) | Some(InternationalAndUKTrustees) =>
+      case Some(UKBasedTrustees) =>
         ukResidentMap(userAnswers)
-      case Some(NonUkBasedTrustees) | Some(InternationalAndUKTrustees) =>
+      case Some(NonUkBasedTrustees) =>
         nonUkResidentMap(userAnswers)
+      case Some(InternationalAndUKTrustees) =>
+        userAnswers.get(SettlorsBasedInTheUKPage) match {
+          case Some(true) => ukResidentMap(userAnswers)
+          case Some(false) => nonUkResidentMap(userAnswers)
+          case  _ =>
+            Logger.info("[TrustDetailsMapper][build] unable to determine if all settlors are based in the UK")
+            None
+        }
       case _ =>
         Logger.info(s"[TrustDetailsMapper][build] unable to determine where trust is resident")
         None
