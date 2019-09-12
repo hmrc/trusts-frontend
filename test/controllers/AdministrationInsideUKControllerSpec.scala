@@ -17,21 +17,17 @@
 package controllers
 
 import base.SpecBase
-import forms.AdministrationInsideUKFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import forms.YesNoFormProvider
+import models.NormalMode
 import pages.AdministrationInsideUKPage
-import play.api.inject.bind
-import play.api.libs.json.{JsBoolean, Json}
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.AdministrationInsideUKView
 
 class AdministrationInsideUKControllerSpec extends SpecBase {
 
-  val formProvider = new AdministrationInsideUKFormProvider()
-  val form = formProvider()
+  val formProvider = new YesNoFormProvider()
+  val form = formProvider.withPrefix("administrationInsideUK")
 
   lazy val administrationInsideUKRoute = routes.AdministrationInsideUKController.onPageLoad(NormalMode,fakeDraftId).url
 
