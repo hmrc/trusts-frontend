@@ -32,7 +32,7 @@ class SettlorIndividualNINOYesNoControllerSpec extends SpecBase with IndexValida
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new YesNoFormProvider()
-  val form = formProvider("settlorIndividualNINOYesNo")
+  val form = formProvider.withPrefix("settlorIndividualNINOYesNo")
   val index = 0
   val name = FullName("First", Some("Middle"), "Last")
 

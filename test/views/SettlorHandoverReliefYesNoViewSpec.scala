@@ -27,7 +27,7 @@ class SettlorHandoverReliefYesNoViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "settlorHandoverReliefYesNo"
 
-  val form = new YesNoFormProvider()(messageKeyPrefix)
+  val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
   "SettlorHandoverReliefYesNo view" must {
 

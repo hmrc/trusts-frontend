@@ -47,7 +47,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
   val formProvider = new AddABeneficiaryFormProvider()
   val form = formProvider()
 
-  val yesNoForm = new YesNoFormProvider()("addABeneficiaryYesNo")
+  val yesNoForm = new YesNoFormProvider().withPrefix("addABeneficiaryYesNo")
 
   lazy val beneficiariesComplete = List(
     AddRow("First Last", typeLabel = "Individual Beneficiary", "#", removeIndividualRoute(0)),

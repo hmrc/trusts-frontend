@@ -48,7 +48,7 @@ class AddABeneficiaryController @Inject()(
 
   val addAnotherForm = addAnotherFormProvider()
 
-  val yesNoForm = yesNoFormProvider("addABeneficiaryYesNo")
+  val yesNoForm = yesNoFormProvider.withPrefix("addABeneficiaryYesNo")
 
   private def routes(draftId: String) =
     identify andThen getData(draftId) andThen requireData
