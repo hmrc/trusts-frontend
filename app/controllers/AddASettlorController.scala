@@ -17,7 +17,8 @@
 package controllers
 
 import controllers.actions._
-import forms.trustees.{AddATrusteeFormProvider, AddATrusteeYesNoFormProvider}
+import forms.YesNoFormProvider
+import forms.trustees.{AddATrusteeFormProvider}
 import javax.inject.Inject
 import models.requests.DataRequest
 import models.{Enumerable, Mode}
@@ -42,7 +43,7 @@ class AddASettlorController @Inject()(
                                        getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
                                        addAnotherFormProvider: AddATrusteeFormProvider,
-                                       yesNoFormProvider: AddATrusteeYesNoFormProvider,
+                                       yesNoFormProvider: YesNoFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
                                        addAnotherView: AddASettlorView,
                                        yesNoView: AddASettlorYesNoView,
@@ -50,7 +51,7 @@ class AddASettlorController @Inject()(
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
   val addAnotherForm = addAnotherFormProvider()
-  val yesNoForm: Form[Boolean] = yesNoFormProvider()
+  val yesNoForm: Form[Boolean] = yesNoFormProvider.withPrefix("addAnSettlorYesNo")
 
   private def actions(draftId: String) =
     identify andThen getData(draftId) andThen requireData andThen requiredAnswer(RequiredAnswer(SettlorKindOfTrustPage))
