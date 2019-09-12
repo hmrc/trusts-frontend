@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package pages
+package pages.trustees
 
 import models.{UKAddress, UserAnswers}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
-import pages.trustees.{TrusteeLiveInTheUKPage, TrusteesUkAddressPage}
 
 class TrusteeLiveInTheUKPageSpec extends PageBehaviours {
 

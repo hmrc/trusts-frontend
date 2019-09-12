@@ -14,20 +14,25 @@
  * limitations under the License.
  */
 
-package pages
+package pages.trustees
 
+import java.time.LocalDate
+
+import org.scalacheck.Arbitrary
 import pages.behaviours.PageBehaviours
-import pages.trustees.TelephoneNumberPage
 
+class TrusteesDateOfBirthPageSpec extends PageBehaviours {
 
-class TelephoneNumberPageSpec extends PageBehaviours {
+  "TrusteesDateOfBirthPage" must {
 
-  "TelephoneNumberPage" must {
+    implicit lazy val arbitraryLocalDate: Arbitrary[LocalDate] = Arbitrary {
+      datesBetween(LocalDate.of(1900, 1, 1), LocalDate.of(2100, 1, 1))
+    }
 
-    beRetrievable[String](TelephoneNumberPage(0))
+    beRetrievable[LocalDate](TrusteesDateOfBirthPage(0))
 
-    beSettable[String](TelephoneNumberPage(0))
+    beSettable[LocalDate](TrusteesDateOfBirthPage(0))
 
-    beRemovable[String](TelephoneNumberPage(0))
+    beRemovable[LocalDate](TrusteesDateOfBirthPage(0))
   }
 }

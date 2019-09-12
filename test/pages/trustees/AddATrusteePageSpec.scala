@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package pages
+package pages.trustees
 
+import models.AddATrustee
 import pages.behaviours.PageBehaviours
-import pages.trustees.TrusteesNinoPage
 
+class AddATrusteePageSpec extends PageBehaviours {
 
-class TrusteesNinoPageSpec extends PageBehaviours {
+  "AddATrusteePage" must {
 
-  "TrusteesNinoPage" must {
+    beRetrievable[AddATrustee](AddATrusteePage)
 
-    beRetrievable[String](TrusteesNinoPage(0))
+    beSettable[AddATrustee](AddATrusteePage)
 
-    beSettable[String](TrusteesNinoPage(0))
-
-    beRemovable[String](TrusteesNinoPage(0))
+    beRemovable[AddATrustee](AddATrusteePage)
   }
 }

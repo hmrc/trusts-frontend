@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package pages.trustees
 
 import pages.behaviours.PageBehaviours
-import models.FullName
-import pages.trustees.TrusteesNamePage
 
-class TrusteesNamePageSpec extends PageBehaviours  {
+class TrusteeAUKCitizenPageSpec extends PageBehaviours {
 
-  "TrusteesNamePage" must {
+  "trusteeAUKCitizenPage" must {
 
-      beRetrievable[FullName](TrusteesNamePage(0))
+    beRetrievable[Boolean](TrusteeAUKCitizenPage(0))
 
-      beSettable[FullName](TrusteesNamePage(0))
+    beSettable[Boolean](TrusteeAUKCitizenPage(0))
 
-      beRemovable[FullName](TrusteesNamePage(0))
-    }
+    beRemovable[Boolean](TrusteeAUKCitizenPage(0))
+  }
 }

@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package pages
+package pages.trustees
 
-import models.UKAddress
 import pages.behaviours.PageBehaviours
-import pages.trustees.TrusteesUkAddressPage
 
-class TrusteesUKAddressPageSpec extends PageBehaviours {
 
-  "TrusteesUkAddressPage" must {
+class TelephoneNumberPageSpec extends PageBehaviours {
 
-    beRetrievable[UKAddress](TrusteesUkAddressPage(0))
+  "TelephoneNumberPage" must {
 
-    beSettable[UKAddress](TrusteesUkAddressPage(0))
+    beRetrievable[String](TelephoneNumberPage(0))
 
-    beRemovable[UKAddress](TrusteesUkAddressPage(0))
+    beSettable[String](TelephoneNumberPage(0))
+
+    beRemovable[String](TelephoneNumberPage(0))
   }
 }
