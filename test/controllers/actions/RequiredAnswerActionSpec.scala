@@ -23,7 +23,7 @@ import models.requests.DataRequest
 import org.scalatest.EitherValues
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
-import pages.TrusteesNamePage
+import pages.trustees.TrusteesNamePage
 import play.api.http.HeaderNames
 import play.api.libs.json.Reads
 import play.api.mvc.Result

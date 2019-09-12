@@ -18,15 +18,13 @@ package controllers
 
 import base.SpecBase
 import forms.trustees.TelephoneNumberFormProvider
-import models.{FullName, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
-import pages.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteesNamePage}
-import play.api.inject.bind
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import models.{FullName, NormalMode}
+import org.scalacheck.Arbitrary.arbitrary
+import pages.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteesNamePage}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.TelephoneNumberView
-import org.scalacheck.Arbitrary.arbitrary
 
 class TelephoneNumberControllerSpec extends SpecBase with IndexValidation {
 

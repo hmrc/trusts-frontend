@@ -19,17 +19,14 @@ package controllers
 import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
-import models.{FullName, IndividualOrBusiness, NormalMode, UKAddress, UserAnswers}
-import pages._
+import models.{FullName, IndividualOrBusiness, NormalMode, UKAddress}
+import pages.trustees._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import play.api.inject.bind
 import utils.CheckYourAnswersHelper
+import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.TrusteesAnswerPageView
-import navigation.{FakeNavigator, Navigator}
-import play.api.mvc.Call
-import utils.countryOptions.CountryOptions
 
 class TrusteesAnswerPageControllerSpec extends SpecBase {
 

@@ -21,13 +21,12 @@ import java.time.{LocalDate, ZoneOffset}
 import base.SpecBase
 import models.AddAssets.NoComplete
 import models.Status.Completed
-import models.WhatKindOfAsset.Shares
 import models.{AddABeneficiary, AddATrustee, FullName, IndividualOrBusiness, Status, UKAddress, WhatKindOfAsset}
 import pages._
-import pages.deceased_settlor.{SettlorDateOfBirthYesNoPage, SettlorDateOfDeathPage, SettlorDateOfDeathYesNoPage, SettlorNationalInsuranceNumberPage, SettlorsDateOfBirthPage, SettlorsLastKnownAddressYesNoPage, SettlorsNINoYesNoPage, SettlorsNamePage, SettlorsUKAddressPage, WasSettlorsAddressUKYesNoPage}
+import pages.deceased_settlor._
 import pages.entitystatus._
 import pages.shares._
-import play.api.i18n.Messages
+import pages.trustees._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup

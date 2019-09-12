@@ -22,7 +22,8 @@ import javax.inject.Inject
 import models.requests.DataRequest
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.{AddATrusteePage, AddATrusteeYesNoPage, SettlorKindOfTrustPage}
+import pages.trustees.{AddATrusteePage, AddATrusteeYesNoPage}
+import pages.SettlorKindOfTrustPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi, MessagesProvider}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

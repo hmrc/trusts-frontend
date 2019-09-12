@@ -14,26 +14,33 @@
  * limitations under the License.
  */
 
-package pages
+package pages.trustees
 
 import models.UserAnswers
-import mapping.reads.Trustees
+import pages.QuestionPage
 import play.api.libs.json.JsPath
+import sections.Trustees
 
 import scala.util.Try
 
-final case class TrusteeLiveInTheUKPage(index : Int) extends QuestionPage[Boolean] {
+final case class IsThisLeadTrusteePage(index : Int) extends QuestionPage[Boolean] {
 
-override def path: JsPath = JsPath \ Trustees \ index \ toString
+  override def path: JsPath = Trustees.path \ index \ toString
 
-  override def toString: String = "liveInUK"
+  override def toString: String = "isThisLeadTrustee"
 
-  // TODO this is incomplete
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
       case Some(false) =>
-        userAnswers.remove(TrusteesUkAddressPage(index))
+        userAnswers.remove(TrusteeAUKCitizenPage(index))
+          .flatMap(_.remove(TrusteesNinoPage(index)))
+          .flatMap(_.remove(TrusteesUkAddressPage(index)))
+          .flatMap(_.remove(TelephoneNumberPage(index)))
+          .flatMap(_.remove(TrusteeLiveInTheUKPage(index)))
+
       case _ => super.cleanup(value, userAnswers)
     }
   }
+
+
 }
