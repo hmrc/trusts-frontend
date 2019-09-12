@@ -972,7 +972,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "trusteesNino.checkYourAnswersLabel",
         HtmlFormat.escape(formatNino(x)),
-        routes.TrusteesNinoController.onPageLoad(CheckMode, index, draftId).url,
+        controllers.trustees.routes.TrusteesNinoController.onPageLoad(CheckMode, index, draftId).url,
         trusteeName(index, userAnswers),
         canEdit = canEdit
       )
@@ -983,7 +983,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "trusteeLiveInTheUK.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.TrusteeLiveInTheUKController.onPageLoad(CheckMode, index, draftId).url,
+        controllers.trustees.routes.TrusteeLiveInTheUKController.onPageLoad(CheckMode, index, draftId).url,
         trusteeName(index, userAnswers),
         canEdit = canEdit
       )
@@ -994,7 +994,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "trusteesUkAddress.checkYourAnswersLabel",
         ukAddress(x),
-        routes.TrusteesUkAddressController.onPageLoad(CheckMode, index, draftId).url,
+        controllers.trustees.routes.TrusteesUkAddressController.onPageLoad(CheckMode, index, draftId).url,
         trusteeName(index, userAnswers),
         canEdit = canEdit
       )
@@ -1005,7 +1005,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "trusteesDateOfBirth.checkYourAnswersLabel",
         HtmlFormat.escape(x.format(dateFormatter)),
-        routes.TrusteesDateOfBirthController.onPageLoad(CheckMode, index, draftId).url,
+        controllers.trustees.routes.TrusteesDateOfBirthController.onPageLoad(CheckMode, index, draftId).url,
         trusteeName(index, userAnswers),
         canEdit = canEdit
       )
@@ -1027,7 +1027,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "trusteeAUKCitizen.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.TrusteeAUKCitizenController.onPageLoad(CheckMode, index, draftId).url,
+        controllers.trustees.routes.TrusteeAUKCitizenController.onPageLoad(CheckMode, index, draftId).url,
         trusteeName(index, userAnswers),
         canEdit = canEdit
       )
@@ -1039,7 +1039,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         s"$messagePrefix.checkYourAnswersLabel",
         HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"),
-        routes.TrusteesNameController.onPageLoad(CheckMode, index, draftId).url,
+        controllers.trustees.routes.TrusteesNameController.onPageLoad(CheckMode, index, draftId).url,
         canEdit = canEdit
       )
   }
@@ -1049,7 +1049,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         s"$messagePrefix.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"individualOrBusiness.$x")),
-        routes.TrusteeIndividualOrBusinessController.onPageLoad(CheckMode, index, draftId).url,
+        controllers.trustees.routes.TrusteeIndividualOrBusinessController.onPageLoad(CheckMode, index, draftId).url,
         canEdit = canEdit
       )
   }
@@ -1059,7 +1059,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "isThisLeadTrustee.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.IsThisLeadTrusteeController.onPageLoad(CheckMode, index, draftId).url,
+        controllers.trustees.routes.IsThisLeadTrusteeController.onPageLoad(CheckMode, index, draftId).url,
         canEdit = canEdit
       )
   }

@@ -14,39 +14,58 @@
  * limitations under the License.
  */
 
-package controllers
-
-import java.time.{LocalDate, ZoneOffset}
+package controllers.trustees
 
 import base.SpecBase
-import forms.trustees.TrusteesDateOfBirthFormProvider
-import models.{FullName, NormalMode}
-import org.scalacheck.Gen
-import org.scalatest.mockito.MockitoSugar
-import pages.trustees.{IsThisLeadTrusteePage, TrusteesDateOfBirthPage, TrusteesNamePage}
+import controllers.IndexValidation
+import forms.NinoFormProvider
+import models.{FullName, IndividualOrBusiness, NormalMode}
+import org.scalacheck.Arbitrary.arbitrary
+import pages.trustees.{IsThisLeadTrusteePage, TrusteesNamePage, TrusteesNinoPage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
-import views.html.trustees.TrusteesDateOfBirthView
+import play.api.test.Helpers.{route, _}
+import views.html.trustees.TrusteesNinoView
 
-class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with IndexValidation {
+class TrusteesNinoControllerSpec extends SpecBase with IndexValidation {
 
-  val leadTrusteeMessagePrefix = "leadTrusteesDateOfBirth"
-  val trusteeMessagePrefix = "trusteesDateOfBirth"
-  val formProvider = new TrusteesDateOfBirthFormProvider()
-  val form = formProvider()
-
-  val validAnswer = LocalDate.now(ZoneOffset.UTC)
+  val leadTrusteeMessagePrefix = "leadTrusteesNino"
+  val trusteeMessagePrefix = "trusteesNino"
+  val formProvider = new NinoFormProvider()
+  val form = formProvider(trusteeMessagePrefix)
 
   val index = 0
   val emptyTrusteeName = ""
   val trusteeName = "FirstName LastName"
+  val validAnswer = "NH111111A"
 
-  lazy val trusteesDateOfBirthRoute = routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, fakeDraftId).url
+  lazy val trusteesNinoRoute = routes.TrusteesNinoController.onPageLoad(NormalMode, index, fakeDraftId).url
 
-  "TrusteesDateOfBirth Controller" must {
+  "TrusteesNino Controller" must {
 
-    "return OK and the correct view for a GET" in {
+    "return OK and the correct view (lead trustee) for a GET" in {
+
+      val userAnswers = emptyUserAnswers
+        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
+        .set(IsThisLeadTrusteePage(index), true).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, trusteesNinoRoute)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[TrusteesNinoView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(form, NormalMode, fakeDraftId, index, leadTrusteeMessagePrefix, trusteeName)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view (trustee) for a GET" in {
 
       val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
@@ -54,11 +73,11 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, trusteesDateOfBirthRoute)
+      val request = FakeRequest(GET, trusteesNinoRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[TrusteesDateOfBirthView]
+      val view = application.injector.instanceOf[TrusteesNinoView]
 
       status(result) mustEqual OK
 
@@ -71,34 +90,34 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers
-        .set(IsThisLeadTrusteePage(index), false).success.value
-        .set(TrusteesDateOfBirthPage(index), validAnswer).success.value
+        .set(TrusteesNinoPage(index), validAnswer).success.value
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
+        .set(IsThisLeadTrusteePage(index), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, trusteesDateOfBirthRoute)
+      val request = FakeRequest(GET, trusteesNinoRoute)
 
-      val view = application.injector.instanceOf[TrusteesDateOfBirthView]
+      val view = application.injector.instanceOf[TrusteesNinoView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), NormalMode, fakeDraftId, index, trusteeMessagePrefix, trusteeName)(fakeRequest, messages).toString
+        view(form.fill(validAnswer), NormalMode, fakeDraftId, index, leadTrusteeMessagePrefix, trusteeName)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to Trustee Name page when TrusteesName is not answered" in {
       val userAnswers = emptyUserAnswers
+        .set(TrusteesNinoPage(index), validAnswer).success.value
         .set(IsThisLeadTrusteePage(index), false).success.value
-        .set(TrusteesDateOfBirthPage(index), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, trusteesDateOfBirthRoute)
+      val request = FakeRequest(GET, trusteesNinoRoute)
 
       val result = route(application, request).value
 
@@ -112,23 +131,19 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
     "redirect to the next page when valid data is submitted" in {
 
       val userAnswers = emptyUserAnswers
-        .set(IsThisLeadTrusteePage(index), false).success.value
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
+        .set(IsThisLeadTrusteePage(index), false).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
-        FakeRequest(POST, trusteesDateOfBirthRoute)
-          .withFormUrlEncodedBody(
-            "value.day"   -> validAnswer.getDayOfMonth.toString,
-            "value.month" -> validAnswer.getMonthValue.toString,
-            "value.year"  -> validAnswer.getYear.toString
-          )
+        FakeRequest(POST, trusteesNinoRoute)
+          .withFormUrlEncodedBody(("value", validAnswer))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-
       redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
@@ -137,18 +152,18 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
     "return a Bad Request and errors when invalid data is submitted" in {
 
       val userAnswers = emptyUserAnswers
-        .set(IsThisLeadTrusteePage(index), false).success.value
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
+        .set(IsThisLeadTrusteePage(index), false).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
-        FakeRequest(POST, trusteesDateOfBirthRoute)
+        FakeRequest(POST, trusteesNinoRoute)
           .withFormUrlEncodedBody(("value", "invalid value"))
 
       val boundForm = form.bind(Map("value" -> "invalid value"))
 
-      val view = application.injector.instanceOf[TrusteesDateOfBirthView]
+      val view = application.injector.instanceOf[TrusteesNinoView]
 
       val result = route(application, request).value
 
@@ -164,11 +179,12 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, trusteesDateOfBirthRoute)
+      val request = FakeRequest(GET, trusteesNinoRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
+
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
@@ -179,12 +195,8 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, trusteesDateOfBirthRoute)
-          .withFormUrlEncodedBody(
-            "value.day"   -> validAnswer.getDayOfMonth.toString,
-            "value.month" -> validAnswer.getMonthValue.toString,
-            "value.year"  -> validAnswer.getYear.toString
-          )
+        FakeRequest(POST, trusteesNinoRoute)
+          .withFormUrlEncodedBody(("value", "answer"))
 
       val result = route(application, request).value
 
@@ -195,18 +207,17 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
       application.stop()
     }
 
-
     "for a GET" must {
 
       def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
-        val route = routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, fakeDraftId).url
+        val route = routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         FakeRequest(GET, route)
       }
 
       validateIndex(
-        Gen.const(LocalDate.of(2010,10,10)),
-        TrusteesDateOfBirthPage.apply,
+        arbitrary[String],
+        TrusteesNinoPage.apply,
         getForIndex
       )
 
@@ -216,19 +227,15 @@ class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with 
       def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
         val route =
-          routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, fakeDraftId).url
+          routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         FakeRequest(POST, route)
-          .withFormUrlEncodedBody(
-            "value.day"   -> validAnswer.getDayOfMonth.toString,
-            "value.month" -> validAnswer.getMonthValue.toString,
-            "value.year"  -> validAnswer.getYear.toString
-          )
+          .withFormUrlEncodedBody(("value", IndividualOrBusiness.Individual.toString))
       }
 
       validateIndex(
-        Gen.const(LocalDate.of(2010,10,10)),
-        TrusteesDateOfBirthPage.apply,
+        arbitrary[String],
+        TrusteesNinoPage.apply,
         postForIndex
       )
     }

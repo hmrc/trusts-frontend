@@ -14,6 +14,8 @@
  * limitations under the License.
  *@
 
+@import controllers.trustees.routes._
+
 @this(
         main_template: MainTemplate,
         formHelper: FormWithCSRF
@@ -22,7 +24,7 @@
 @(form: Form[_], mode: Mode, draftId: String, index: Int, messagePrefix: String, trusteeName: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages(messagePrefix+".title")}"
+    title = s"${errorPrefix(form)} ${messages("messagePrefix", trusteeName)}"
 ) {
 
     @formHelper(action = TrusteesDateOfBirthController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {

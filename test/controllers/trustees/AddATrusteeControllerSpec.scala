@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.trustees
 
 import base.SpecBase
 import forms.trustees.{AddATrusteeFormProvider, AddATrusteeYesNoFormProvider}
@@ -29,9 +29,9 @@ import views.html.trustees.{AddATrusteeView, AddATrusteeYesNoView}
 
 class AddATrusteeControllerSpec extends SpecBase {
 
-  lazy val getRoute : String = routes.AddATrusteeController.onPageLoad(fakeDraftId).url
-  lazy val submitAnotherRoute : String = routes.AddATrusteeController.submitAnother(fakeDraftId).url
-  lazy val submitYesNoRoute : String = routes.AddATrusteeController.submitOne(fakeDraftId).url
+  lazy val getRoute : String = controllers.trustees.routes.AddATrusteeController.onPageLoad(fakeDraftId).url
+  lazy val submitAnotherRoute : String = controllers.trustees.routes.AddATrusteeController.submitAnother(fakeDraftId).url
+  lazy val submitYesNoRoute : String = controllers.trustees.routes.AddATrusteeController.submitOne(fakeDraftId).url
 
   val addTrusteeForm = new AddATrusteeFormProvider()()
   val yesNoForm = new AddATrusteeYesNoFormProvider()()

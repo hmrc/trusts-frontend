@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.trustees
 
 import base.SpecBase
+import controllers.IndexValidation
 import forms.UKAddressFormProvider
 import models.{FullName, NormalMode, UKAddress}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.trustees.{IsThisLeadTrusteePage, TrusteesNamePage, TrusteesUkAddressPage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.{route, _}
 import views.html.trustees.TrusteesUkAddressView
 
 class UKAddressControllerSpec extends SpecBase with IndexValidation {
@@ -36,7 +37,7 @@ class UKAddressControllerSpec extends SpecBase with IndexValidation {
   val trusteeName = "FirstName LastName"
   val validAnswer = UKAddress("value 1", Some("value 2"), Some("value 3"), "value 4", "AB1 1AB")
 
-  lazy val trusteesUkAddressRoute = routes.TrusteesUkAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
+  lazy val trusteesUkAddressRoute = controllers.trustees.routes.TrusteesUkAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "TrusteesUkAddress Controller" must {
 
@@ -98,7 +99,7 @@ class UKAddressControllerSpec extends SpecBase with IndexValidation {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index, fakeDraftId).url
+      redirectLocation(result).value mustEqual controllers.trustees.routes.TrusteesNameController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       application.stop()
     }
@@ -185,7 +186,7 @@ class UKAddressControllerSpec extends SpecBase with IndexValidation {
     "for a GET" must {
 
       def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
-        val route = routes.TrusteesUkAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
+        val route = controllers.trustees.routes.TrusteesUkAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         FakeRequest(GET, route)
       }
@@ -202,7 +203,7 @@ class UKAddressControllerSpec extends SpecBase with IndexValidation {
       def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
         val route =
-          routes.TrusteesUkAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
+          controllers.trustees.routes.TrusteesUkAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         FakeRequest(POST, route)
           .withFormUrlEncodedBody(("line1", "line1"), ("line2", "line2"), ("line3", "line3"), ("townOrCity", "town or city"), ("postcode", "AB1 1AB"))

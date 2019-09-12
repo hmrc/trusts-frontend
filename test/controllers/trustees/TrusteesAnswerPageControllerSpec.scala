@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.trustees
 
 import java.time.{LocalDate, ZoneOffset}
 

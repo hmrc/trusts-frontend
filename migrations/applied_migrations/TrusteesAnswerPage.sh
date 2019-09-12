@@ -5,7 +5,7 @@ echo "Applying migration TrusteesAnswerPage"
 
 echo "Adding routes to conf/app.routes"
 echo "" >> ../conf/app.routes
-echo "GET        /trusteesAnswerPage                       controllers.TrusteesAnswerPageController.onPageLoad()" >> ../conf/app.routes
+echo "GET        /trusteesAnswerPage                       controllers.trustees.TrusteesAnswerPageController.onPageLoad()" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

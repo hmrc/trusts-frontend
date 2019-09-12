@@ -14,42 +14,42 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.trustees
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.NinoFormProvider
+import forms.trustees.TrusteeAUKCitizenFormProvider
 import javax.inject.Inject
 import models.requests.DataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.trustees.{IsThisLeadTrusteePage, TrusteesNamePage, TrusteesNinoPage}
+import pages.trustees.{IsThisLeadTrusteePage, TrusteeAUKCitizenPage, TrusteesNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.trustees.TrusteesNinoView
+import views.html.trustees.TrusteeAUKCitizenView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrusteesNinoController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DraftIdRetrievalActionProvider,
-                                        requireData: DataRequiredAction,
-                                        validateIndex : IndexActionFilterProvider,
-                                        requiredAnswer: RequiredAnswerActionProvider,
-                                        formProvider: NinoFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: TrusteesNinoView
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class TrusteeAUKCitizenController @Inject()(
+                                             override val messagesApi: MessagesApi,
+                                             sessionRepository: SessionRepository,
+                                             navigator: Navigator,
+                                             validateIndex: IndexActionFilterProvider,
+                                             identify: IdentifierAction,
+                                             getData: DraftIdRetrievalActionProvider,
+                                             requireData: DataRequiredAction,
+                                             requiredAnswer: RequiredAnswerActionProvider,
+                                             formProvider: TrusteeAUKCitizenFormProvider,
+                                             val controllerComponents: MessagesControllerComponents,
+                                             view: TrusteeAUKCitizenView
+                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(index : Int, draftId: String) =
-      identify andThen
+  private def actions(index: Int, draftId: String) =
+    identify andThen
       getData(draftId) andThen
       requireData andThen
       validateIndex(index, Trustees) andThen
@@ -65,7 +65,7 @@ class TrusteesNinoController @Inject()(
 
       val form = formProvider(messagePrefix)
 
-      val preparedForm = request.userAnswers.get(TrusteesNinoPage(index)) match {
+      val preparedForm = request.userAnswers.get(TrusteeAUKCitizenPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -73,18 +73,7 @@ class TrusteesNinoController @Inject()(
       Ok(view(preparedForm, mode, draftId, index, messagePrefix, trusteeName))
   }
 
-  private def getMessagePrefix(index: Int, request: DataRequest[AnyContent]) = {
-    val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
-
-    val messagePrefix = if (isLead) {
-      "leadTrusteesNino"
-    } else {
-      "trusteesNino"
-    }
-    messagePrefix
-  }
-
-  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index,draftId).async {
+  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
     implicit request =>
 
       val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
@@ -99,10 +88,22 @@ class TrusteesNinoController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteesNinoPage(index), value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrusteesNinoPage(index), mode, draftId)(updatedAnswers))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeAUKCitizenPage(index), value))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(TrusteeAUKCitizenPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }
+
+  private def getMessagePrefix(index: Int, request: DataRequest[AnyContent]) = {
+    val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
+
+    val messagePrefix = if (isLead) {
+      "leadTrusteeAUKCitizen"
+    } else {
+      "trusteeAUKCitizen"
+    }
+    messagePrefix
+  }
+
 }

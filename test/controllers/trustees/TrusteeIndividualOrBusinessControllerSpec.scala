@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.trustees
 
 import base.SpecBase
+import controllers.IndexValidation
 import forms.trustees.TrusteeIndividualOrBusinessFormProvider
 import models.{IndividualOrBusiness, NormalMode}
 import org.scalacheck.Arbitrary.arbitrary
@@ -24,7 +25,7 @@ import pages.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage}
 import play.api.i18n.Messages
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.{route, _}
 import views.html.trustees.TrusteeIndividualOrBusinessView
 
 class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValidation {

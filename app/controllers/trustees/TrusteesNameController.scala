@@ -14,40 +14,38 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.trustees
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.trustees.TrusteeIndividualOrBusinessFormProvider
+import forms.trustees.TrusteesNameFormProvider
 import javax.inject.Inject
-import models.{Enumerable, Mode, NormalMode}
+import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage}
+import pages.trustees.{IsThisLeadTrusteePage, TrusteesNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.trustees.TrusteeIndividualOrBusinessView
+import views.html.trustees.TrusteesNameView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrusteeIndividualOrBusinessController @Inject()(
-                                                override val messagesApi: MessagesApi,
-                                                sessionRepository: SessionRepository,
-                                                navigator: Navigator,
-                                                identify: IdentifierAction,
-                                                getData: DraftIdRetrievalActionProvider,
-                                                requireData: DataRequiredAction,
-                                                validateIndex: IndexActionFilterProvider,
-                                                formProvider: TrusteeIndividualOrBusinessFormProvider,
-                                                requiredAnswer: RequiredAnswerActionProvider,
-                                                val controllerComponents: MessagesControllerComponents,
-                                                view: TrusteeIndividualOrBusinessView
-                                             )(implicit ec: ExecutionContext) extends FrontendBaseController
-  with I18nSupport
-  with Enumerable.Implicits {
+class TrusteesNameController @Inject()(
+                                        override val messagesApi: MessagesApi,
+                                        sessionRepository: SessionRepository,
+                                        navigator: Navigator,
+                                        identify: IdentifierAction,
+                                        getData: DraftIdRetrievalActionProvider,
+                                        requireData: DataRequiredAction,
+                                        validateIndex: IndexActionFilterProvider,
+                                        formProvider: TrusteesNameFormProvider,
+                                        requiredAnswer: RequiredAnswerActionProvider,
+                                        val controllerComponents: MessagesControllerComponents,
+                                        view: TrusteesNameView
+                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(index: Int, draftId: String) =
     identify andThen getData(draftId) andThen
@@ -60,18 +58,19 @@ class TrusteeIndividualOrBusinessController @Inject()(
 
       val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
 
-      val messagePrefix = if (isLead) "leadTrusteeIndividualOrBusiness" else "trusteeIndividualOrBusiness"
+      val messagePrefix = if (isLead) "leadTrusteesName" else "trusteesName"
 
       val heading = Messages(s"$messagePrefix.heading")
 
       val form = formProvider(messagePrefix)
 
-      val preparedForm = request.userAnswers.get(TrusteeIndividualOrBusinessPage(index)) match {
+      val preparedForm = request.userAnswers.get(TrusteesNamePage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
       Ok(view(preparedForm, mode, draftId, index, heading))
+
   }
 
   def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
@@ -79,7 +78,7 @@ class TrusteeIndividualOrBusinessController @Inject()(
 
       val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
 
-      val messagePrefix = if (isLead) "leadTrusteeIndividualOrBusiness" else "trusteeIndividualOrBusiness"
+      val messagePrefix = if (isLead) "leadTrusteesName" else "trusteesName"
 
       val heading = Messages(s"$messagePrefix.heading")
 
@@ -91,9 +90,9 @@ class TrusteeIndividualOrBusinessController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeIndividualOrBusinessPage(index), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteesNamePage(index), value))
             _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrusteeIndividualOrBusinessPage(index), mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrusteesNamePage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

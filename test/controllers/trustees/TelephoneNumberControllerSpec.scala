@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.trustees
 
 import base.SpecBase
+import controllers.IndexValidation
 import forms.trustees.TelephoneNumberFormProvider
 import models.{FullName, NormalMode}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteesNamePage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.{route, _}
 import views.html.trustees.TelephoneNumberView
 
 class TelephoneNumberControllerSpec extends SpecBase with IndexValidation {

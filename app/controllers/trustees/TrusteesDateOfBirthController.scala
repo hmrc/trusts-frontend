@@ -14,47 +14,51 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.trustees
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.trustees.TrusteeAUKCitizenFormProvider
+import forms.trustees.TrusteesDateOfBirthFormProvider
 import javax.inject.Inject
 import models.requests.DataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.trustees.{IsThisLeadTrusteePage, TrusteeAUKCitizenPage, TrusteesNamePage}
+import pages.trustees.{IsThisLeadTrusteePage, TrusteesDateOfBirthPage, TrusteesNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.trustees.TrusteeAUKCitizenView
+import views.html.trustees.TrusteesDateOfBirthView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrusteeAUKCitizenController @Inject()(
-                                             override val messagesApi: MessagesApi,
-                                             sessionRepository: SessionRepository,
-                                             navigator: Navigator,
-                                             validateIndex: IndexActionFilterProvider,
-                                             identify: IdentifierAction,
-                                             getData: DraftIdRetrievalActionProvider,
-                                             requireData: DataRequiredAction,
-                                             requiredAnswer: RequiredAnswerActionProvider,
-                                             formProvider: TrusteeAUKCitizenFormProvider,
-                                             val controllerComponents: MessagesControllerComponents,
-                                             view: TrusteeAUKCitizenView
-                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class TrusteesDateOfBirthController @Inject()(
+                                                  override val messagesApi: MessagesApi,
+                                                  sessionRepository: SessionRepository,
+                                                  navigator: Navigator,
+                                                  identify: IdentifierAction,
+                                                  getData: DraftIdRetrievalActionProvider,
+                                                  requireData: DataRequiredAction,
+                                                  validateIndex : IndexActionFilterProvider,
+                                                  requiredAnswer: RequiredAnswerActionProvider,
+                                                  formProvider: TrusteesDateOfBirthFormProvider,
+                                                  val controllerComponents: MessagesControllerComponents,
+                                                  view: TrusteesDateOfBirthView
+                                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(index: Int, draftId: String) =
-    identify andThen
+  val form = formProvider()
+
+  private def actions(index : Int, draftId: String) =
+      identify andThen
       getData(draftId) andThen
       requireData andThen
       validateIndex(index, Trustees) andThen
-      requiredAnswer(RequiredAnswer(TrusteesNamePage(index), routes.TrusteesNameController.onPageLoad(NormalMode, index, draftId))) andThen
-      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, draftId)))
+      requiredAnswer(RequiredAnswer(
+        TrusteesNamePage(index),
+        routes.TrusteesNameController.onPageLoad(NormalMode, index, draftId)
+      ))
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
@@ -63,9 +67,7 @@ class TrusteeAUKCitizenController @Inject()(
 
       val messagePrefix: String = getMessagePrefix(index, request)
 
-      val form = formProvider(messagePrefix)
-
-      val preparedForm = request.userAnswers.get(TrusteeAUKCitizenPage(index)) match {
+      val preparedForm = request.userAnswers.get(TrusteesDateOfBirthPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -80,17 +82,15 @@ class TrusteeAUKCitizenController @Inject()(
 
       val messagePrefix: String = getMessagePrefix(index, request)
 
-      val form = formProvider(messagePrefix)
-
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, messagePrefix, trusteeName))),
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeAUKCitizenPage(index), value))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrusteeAUKCitizenPage(index), mode, draftId)(updatedAnswers))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteesDateOfBirthPage(index), value))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(TrusteesDateOfBirthPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }
@@ -99,9 +99,9 @@ class TrusteeAUKCitizenController @Inject()(
     val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
 
     val messagePrefix = if (isLead) {
-      "leadTrusteeAUKCitizen"
+      "leadTrusteesDateOfBirth"
     } else {
-      "trusteeAUKCitizen"
+      "trusteesDateOfBirth"
     }
     messagePrefix
   }

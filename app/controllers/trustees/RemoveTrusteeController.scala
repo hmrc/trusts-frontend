@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.trustees
 
+import controllers.RemoveIndexController
 import controllers.actions._
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
