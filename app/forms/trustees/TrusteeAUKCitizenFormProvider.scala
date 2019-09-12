@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package forms
-
-import javax.inject.Inject
+package forms.trustees
 
 import forms.mappings.Mappings
+import javax.inject.Inject
 import play.api.data.Form
 
-class IsThisLeadTrusteeFormProvider @Inject() extends Mappings {
+class TrusteeAUKCitizenFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Boolean] =
+  def apply(messagePrefix: String): Form[Boolean] =
     Form(
-      "value" -> boolean("isThisLeadTrustee.error.required")
+      "value" -> boolean(s"$messagePrefix.error.required")
     )
 }

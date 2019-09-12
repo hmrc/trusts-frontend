@@ -14,27 +14,26 @@
  * limitations under the License.
  */
 
-package forms
+package forms.trustees
 
-import forms.behaviours.BooleanFieldBehaviours
+import forms.behaviours.OptionFieldBehaviours
+import models.AddATrustee
 import play.api.data.FormError
 
-class TrusteeAUKCitizenFormProviderSpec extends BooleanFieldBehaviours {
+class AddATrusteeFormProviderSpec extends OptionFieldBehaviours {
 
-  val requiredKey = "trusteeAUKCitizen.error.required"
-  val invalidKey = "error.boolean"
-  val messageKeyPrefix = "trusteeAUKCitizen"
-
-  val form = new TrusteeAUKCitizenFormProvider()(messageKeyPrefix)
+  val form = new AddATrusteeFormProvider()()
 
   ".value" must {
 
     val fieldName = "value"
+    val requiredKey = "addATrustee.error.required"
 
-    behave like booleanField(
+    behave like optionsField[AddATrustee](
       form,
       fieldName,
-      invalidError = FormError(fieldName, invalidKey)
+      validValues  = AddATrustee.values.toSet,
+      invalidError = FormError(fieldName, "error.invalid")
     )
 
     behave like mandatoryField(

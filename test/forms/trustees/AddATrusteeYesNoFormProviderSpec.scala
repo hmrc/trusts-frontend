@@ -14,18 +14,32 @@
  * limitations under the License.
  */
 
-package forms
+package forms.trustees
 
-import javax.inject.Inject
+import forms.behaviours.BooleanFieldBehaviours
+import play.api.data.FormError
 
-import forms.mappings.Mappings
-import play.api.data.Form
-import models.AddATrustee
+class AddATrusteeYesNoFormProviderSpec extends BooleanFieldBehaviours {
 
-class AddATrusteeFormProvider @Inject() extends Mappings {
+  val requiredKey = "addATrusteeYesNo.error.required"
+  val invalidKey = "error.boolean"
 
-  def apply(): Form[AddATrustee] =
-    Form(
-      "value" -> enumerable[AddATrustee]("addATrustee.error.required")
+  val form = new AddATrusteeYesNoFormProvider()()
+
+  ".value" must {
+
+    val fieldName = "value"
+
+    behave like booleanField(
+      form,
+      fieldName,
+      invalidError = FormError(fieldName, invalidKey)
     )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
+  }
 }

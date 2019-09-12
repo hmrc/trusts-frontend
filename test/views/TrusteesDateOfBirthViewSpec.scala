@@ -19,7 +19,7 @@ package views
 import java.time.LocalDate
 
 import controllers.routes
-import forms.TrusteesDateOfBirthFormProvider
+import forms.trustees.TrusteesDateOfBirthFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat

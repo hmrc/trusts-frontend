@@ -17,7 +17,7 @@
 package views
 
 import controllers.routes
-import forms.TrusteesNameFormProvider
+import forms.trustees.TrusteesNameFormProvider
 import generators.Generators
 import models.{FullName, NormalMode, UserAnswers}
 import pages.{IsThisLeadTrusteePage, TrusteesNamePage}

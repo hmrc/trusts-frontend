@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package forms
+package forms.trustees
 
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError

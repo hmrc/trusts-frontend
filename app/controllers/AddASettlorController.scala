@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions._
-import forms.{AddATrusteeFormProvider, AddATrusteeYesNoFormProvider}
+import forms.trustees.{AddATrusteeFormProvider, AddATrusteeYesNoFormProvider}
 import javax.inject.Inject
 import models.requests.DataRequest
 import models.{Enumerable, Mode}

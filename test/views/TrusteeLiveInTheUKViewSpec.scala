@@ -17,7 +17,7 @@
 package views
 
 import controllers.routes
-import forms.TrusteeLiveInTheUKFormProvider
+import forms.trustees.TrusteeLiveInTheUKFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat

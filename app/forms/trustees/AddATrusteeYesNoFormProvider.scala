@@ -14,22 +14,16 @@
  * limitations under the License.
  */
 
-package forms
-
-import javax.inject.Inject
+package forms.trustees
 
 import forms.mappings.Mappings
+import javax.inject.Inject
 import play.api.data.Form
 
-class TelephoneNumberFormProvider @Inject() extends Mappings {
+class AddATrusteeYesNoFormProvider @Inject() extends Mappings {
 
-  def apply(messagePrefix: String): Form[String] =
+  def apply(): Form[Boolean] =
     Form(
-      "value" -> text(s"$messagePrefix.error.required")
-        .verifying(
-          firstError(
-            isNotEmpty("value", s"$messagePrefix.error.required"),
-            regexp(Validation.telephoneRegex, "telephoneNumber.error.invalid.characters")
-          ))
+      "value" -> boolean("addATrusteeYesNo.error.required")
     )
 }
