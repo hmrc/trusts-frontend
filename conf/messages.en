@@ -334,8 +334,11 @@ addATrustee.singular.heading = Add a trustee
 addATrustee.count.heading = You have added {0} trustees
 
 addASettlor.heading = Add a settlor
-addASettlor.singular.heading = Add a settlors
+addASettlor.title = Add a settlor
+addASettlor.singular.heading = Add a settlor
+addASettlor.singular.title = Add a settlor
 addASettlor.count.heading = You have added {0} settlors
+addASettlor.count.title = You have added {0} settlors
 
 addASettlor.lifetime = This is a trust created during the settlor's lifetime to gift or transfer assets (also known as an inter vivos trust)
 addASettlor.deed.a = This trust was set up by a family agreement

@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import forms.{AddATrusteeFormProvider, AddATrusteeYesNoFormProvider}
+import forms.{AddASettlorFormProvider, AddASettlorYesNoFormProvider}
 import models.SettlorKindOfTrust.Lifetime
 import models.{AddASettlor, AddATrustee, NormalMode}
 import pages.SettlorKindOfTrustPage
@@ -31,8 +31,8 @@ class AddASettlorControllerSpec extends SpecBase {
   lazy val submitAnotherRoute : String = routes.AddASettlorController.submitAnother(fakeDraftId).url
   lazy val submitYesNoRoute : String = routes.AddASettlorController.submitOne(fakeDraftId).url
 
-  val addTrusteeForm = new AddATrusteeFormProvider()()
-  val yesNoForm = new AddATrusteeYesNoFormProvider()()
+  val addSettlorForm = new AddASettlorFormProvider()()
+  val yesNoForm = new AddASettlorYesNoFormProvider()()
 
   val settlors = List()
 
@@ -171,7 +171,7 @@ class AddASettlorControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(addTrusteeForm, NormalMode, fakeDraftId,Nil, settlors, heading = "Do you want to add a settlor?", Some(hint))(fakeRequest, messages).toString
+          view(addSettlorForm, NormalMode, fakeDraftId,Nil, settlors, heading = "Do you want to add a settlor?", Some(hint))(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -202,7 +202,7 @@ class AddASettlorControllerSpec extends SpecBase {
           FakeRequest(POST, submitAnotherRoute)
             .withFormUrlEncodedBody(("value", "invalid value"))
 
-        val boundForm = addTrusteeForm.bind(Map("value" -> "invalid value"))
+        val boundForm = addSettlorForm.bind(Map("value" -> "invalid value"))
 
         val view = application.injector.instanceOf[AddASettlorView]
 

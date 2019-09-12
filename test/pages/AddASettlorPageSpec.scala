@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-package sections
+package pages
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import viewmodels.addAnother.SettlorViewModel
+import models.AddASettlor
+import pages.behaviours.PageBehaviours
 
-case object Settlors extends QuestionPage[List[SettlorViewModel]]{
+class AddASettlorPageSpec extends PageBehaviours {
 
-  override def path: JsPath = JsPath \ toString
+  "AddASettlorPage" must {
 
-  override def toString: String = "settlors"
+    beRetrievable[AddASettlor](AddASettlorPage)
 
+    beSettable[AddASettlor](AddASettlorPage)
+
+    beRemovable[AddASettlor](AddASettlorPage)
+  }
 }

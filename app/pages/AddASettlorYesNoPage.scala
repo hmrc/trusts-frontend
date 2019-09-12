@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package sections
+package pages
 
-import pages.QuestionPage
 import play.api.libs.json.JsPath
-import viewmodels.addAnother.SettlorViewModel
 
-case object Settlors extends QuestionPage[List[SettlorViewModel]]{
+case object AddASettlorYesNoPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "settlors"
-
+  override def toString: String = "addASettlorYesNo"
 }

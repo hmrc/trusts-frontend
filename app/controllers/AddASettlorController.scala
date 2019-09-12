@@ -17,18 +17,18 @@
 package controllers
 
 import controllers.actions._
-import forms.{AddATrusteeFormProvider, AddATrusteeYesNoFormProvider}
+import forms.{AddASettlorFormProvider, AddASettlorYesNoFormProvider}
 import javax.inject.Inject
 import models.requests.DataRequest
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.{AddATrusteePage, AddATrusteeYesNoPage, SettlorKindOfTrustPage}
+import pages.{AddASettlorPage, AddATrusteePage, AddATrusteeYesNoPage, SettlorKindOfTrustPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi, MessagesProvider}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.AddATrusteeViewHelper
+import utils.{AddASettlorViewHelper, AddATrusteeViewHelper}
 import views.html.{AddASettlorView, AddASettlorYesNoView}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -40,8 +40,8 @@ class AddASettlorController @Inject()(
                                        identify: IdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
-                                       addAnotherFormProvider: AddATrusteeFormProvider,
-                                       yesNoFormProvider: AddATrusteeYesNoFormProvider,
+                                       addAnotherFormProvider: AddASettlorFormProvider,
+                                       yesNoFormProvider: AddASettlorYesNoFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
                                        addAnotherView: AddASettlorView,
                                        yesNoView: AddASettlorYesNoView,
@@ -69,7 +69,7 @@ class AddASettlorController @Inject()(
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
-      val settlors = new AddATrusteeViewHelper(request.userAnswers, draftId).rows
+      val settlors = new AddASettlorViewHelper(request.userAnswers, draftId).rows
 
       settlors.count match {
         case 0 =>
@@ -117,9 +117,9 @@ class AddASettlorController @Inject()(
         },
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(AddATrusteePage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(AddASettlorPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(AddATrusteePage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(AddASettlorPage, mode, draftId)(updatedAnswers))
         }
       )
   }

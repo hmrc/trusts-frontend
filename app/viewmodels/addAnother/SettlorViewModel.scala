@@ -14,16 +14,32 @@
  * limitations under the License.
  */
 
-package sections
+package viewmodels.addAnother
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import viewmodels.addAnother.SettlorViewModel
+import models.Status
 
-case object Settlors extends QuestionPage[List[SettlorViewModel]]{
+trait SettlorViewModel {
 
-  override def path: JsPath = JsPath \ toString
+  val status : Status
 
-  override def toString: String = "settlors"
+}
+
+object SettlorViewModel {
+
+  import play.api.libs.json._
+
+  implicit class ReadsWithContravariantOr[A](a: Reads[A]) {
+
+    def or[B >: A](b: Reads[B]): Reads[B] =
+      a.map[B](identity).orElse(b)
+  }
+
+  implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
+    a.map(identity)
+
+  implicit lazy val reads : Reads[SettlorViewModel] = {
+    SettlorLivingViewModel.reads or
+      DefaultSettlorsViewModel.reads
+  }
 
 }

@@ -94,6 +94,7 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(SettlorDateOfDeathYesNoPage.type, JsValue)] ::
     arbitrary[(SettlorDateOfDeathPage.type, JsValue)] ::
     arbitrary[(SettlorDateOfBirthYesNoPage.type, JsValue)] ::
+    arbitrary[(AddASettlorPage.type, JsValue)] ::
     arbitrary[(AddAssetsPage.type, JsValue)] ::
     arbitrary[(AssetMoneyValuePage, JsValue)] ::
     arbitrary[(AgentInternalReferencePage.type, JsValue)] ::

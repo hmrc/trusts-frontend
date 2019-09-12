@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package sections
+package forms
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import viewmodels.addAnother.SettlorViewModel
+import forms.mappings.Mappings
+import javax.inject.Inject
+import play.api.data.Form
 
-case object Settlors extends QuestionPage[List[SettlorViewModel]]{
+class AddASettlorYesNoFormProvider @Inject() extends Mappings {
 
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = "settlors"
-
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("addASettlorYesNo.error.required")
+    )
 }
