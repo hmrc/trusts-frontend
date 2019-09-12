@@ -238,7 +238,7 @@ trait TrusteeRoutes {
           userAnswers =>
 
             navigator.nextPage(TrusteesUkAddressPage(index), NormalMode, fakeDraftId)(userAnswers)
-              .mustBe(controllers.routes.TelephoneNumberController.onPageLoad(NormalMode, index, fakeDraftId))
+              .mustBe(routes.TelephoneNumberController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 

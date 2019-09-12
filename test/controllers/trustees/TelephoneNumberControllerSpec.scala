@@ -38,7 +38,7 @@ class TelephoneNumberControllerSpec extends SpecBase with IndexValidation {
   val emptyTrusteeName = ""
   val trusteeName = "FirstName LastName"
 
-  lazy val telephoneNumberRoute = routes.TelephoneNumberController.onPageLoad(NormalMode, index, fakeDraftId).url
+  lazy val telephoneNumberRoute = controllers.trustees.routes.TelephoneNumberController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "TelephoneNumber Controller" must {
 
@@ -204,7 +204,7 @@ class TelephoneNumberControllerSpec extends SpecBase with IndexValidation {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -220,7 +220,7 @@ class TelephoneNumberControllerSpec extends SpecBase with IndexValidation {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -228,7 +228,7 @@ class TelephoneNumberControllerSpec extends SpecBase with IndexValidation {
   "for a GET" must {
 
     def getForIndex(index: Int): FakeRequest[AnyContentAsEmpty.type] = {
-      val route = routes.TelephoneNumberController.onPageLoad(NormalMode, index, fakeDraftId).url
+      val route = controllers.trustees.routes.TelephoneNumberController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       FakeRequest(GET, route)
     }
@@ -245,7 +245,7 @@ class TelephoneNumberControllerSpec extends SpecBase with IndexValidation {
     def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
       val route =
-        routes.TelephoneNumberController.onPageLoad(NormalMode, index, fakeDraftId).url
+        controllers.trustees.routes.TelephoneNumberController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       FakeRequest(POST, route)
         .withFormUrlEncodedBody(("value", "0191 1111111"))

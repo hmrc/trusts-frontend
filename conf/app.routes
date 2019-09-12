@@ -155,10 +155,10 @@ GET        /:draftId/settlors/add                                controllers.Add
 POST       /:draftId/settlors/add                                controllers.AddASettlorController.submitOne(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/settlors/add-another                        controllers.AddASettlorController.submitAnother(mode: Mode = NormalMode, draftId: String)
 
-GET        /:draftId/trustees/:index/telephone-number                        controllers.TelephoneNumberController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/telephone-number                        controllers.TelephoneNumberController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
-GET        /:draftId/trustees/:index/change-telephone-number                  controllers.TelephoneNumberController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/change-telephone-number                  controllers.TelephoneNumberController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/telephone-number                        controllers.trustees.TelephoneNumberController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/telephone-number                        controllers.trustees.TelephoneNumberController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/change-telephone-number                  controllers.trustees.TelephoneNumberController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/change-telephone-number                  controllers.trustees.TelephoneNumberController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
 
 GET        /:draftId/trustees/:index/is-a-uk-citizen                        controllers.trustees.TrusteeAUKCitizenController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
 POST       /:draftId/trustees/:index/is-a-uk-citizen                      controllers.trustees.TrusteeAUKCitizenController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)

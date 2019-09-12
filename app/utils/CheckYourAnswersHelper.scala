@@ -27,7 +27,7 @@ import pages.deceased_settlor._
 import pages.living_settlor._
 import pages.property_or_land._
 import pages.shares._
-import pages.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteeIndividualOrBusinessPage, TrusteeLiveInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
+import pages.trustees._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
 import uk.gov.hmrc.domain.Nino
@@ -1016,7 +1016,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "telephoneNumber.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        routes.TelephoneNumberController.onPageLoad(CheckMode, index, draftId).url,
+        controllers.trustees.routes.TelephoneNumberController.onPageLoad(CheckMode, index, draftId).url,
         trusteeName(index, userAnswers),
         canEdit = canEdit
       )
