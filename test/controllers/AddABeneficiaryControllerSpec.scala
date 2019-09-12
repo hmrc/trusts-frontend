@@ -17,13 +17,11 @@
 package controllers
 
 import base.SpecBase
-import forms.{AddABeneficiaryFormProvider, AddABeneficiaryYesNoFormProvider}
+import forms.{AddABeneficiaryFormProvider, YesNoFormProvider}
 import models.Status.Completed
 import models.{AddABeneficiary, FullName, NormalMode}
-import navigation.{FakeNavigator, Navigator}
 import pages.entitystatus.{ClassBeneficiaryStatus, IndividualBeneficiaryStatus}
 import pages.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage, IndividualBeneficiaryNamePage}
-import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -49,7 +47,7 @@ class AddABeneficiaryControllerSpec extends SpecBase {
   val formProvider = new AddABeneficiaryFormProvider()
   val form = formProvider()
 
-  val yesNoForm = new AddABeneficiaryYesNoFormProvider()()
+  val yesNoForm = new YesNoFormProvider()("addABeneficiaryYesNo")
 
   lazy val beneficiariesComplete = List(
     AddRow("First Last", typeLabel = "Individual Beneficiary", "#", removeIndividualRoute(0)),
