@@ -14,20 +14,8 @@
  * limitations under the License.
  */
 
-package pages
+package pages.trustees
 
-import pages.behaviours.PageBehaviours
-import pages.trustees.TelephoneNumberPage
+import pages.Page
 
-
-class TelephoneNumberPageSpec extends PageBehaviours {
-
-  "TelephoneNumberPage" must {
-
-    beRetrievable[String](TelephoneNumberPage(0))
-
-    beSettable[String](TelephoneNumberPage(0))
-
-    beRemovable[String](TelephoneNumberPage(0))
-  }
-}
+case object TrusteesAnswerPage extends Page

@@ -26,6 +26,7 @@ import pages.deceased_settlor.{SettlorDateOfBirthYesNoPage, SettlorDateOfDeathPa
 import pages.entitystatus._
 import pages.property_or_land._
 import pages.shares._
+import pages.trustees.{AddATrusteePage, IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteeIndividualOrBusinessPage, TrusteeLiveInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
 import utils.countryOptions.CountryOptions
 import utils.{DateFormat, PrintUserAnswersHelper, TestUserAnswers}
 import views.behaviours.ViewBehaviours

@@ -21,7 +21,7 @@ import forms.trustees.{AddATrusteeFormProvider, AddATrusteeYesNoFormProvider}
 import models.Status.Completed
 import models.{AddATrustee, FullName, IndividualOrBusiness, NormalMode}
 import pages.entitystatus.TrusteeStatus
-import pages.{TrusteeIndividualOrBusinessPage, TrusteesNamePage}
+import pages.trustees.{TrusteeIndividualOrBusinessPage, TrusteesNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.AddRow

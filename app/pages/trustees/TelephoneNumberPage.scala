@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package pages
+package pages.trustees
 
-import mapping.reads.Trustees
+import pages.QuestionPage
 import play.api.libs.json.JsPath
+import sections.Trustees
 
-final case class TrusteesNinoPage(index : Int) extends QuestionPage[String] {
+final case class TelephoneNumberPage(index : Int) extends QuestionPage[String] {
 
-  override def path: JsPath = JsPath \ Trustees \ index \ toString
+  override def path: JsPath = Trustees.path \ index \ toString
 
-  override def toString: String = "nino"
+  override def toString: String = "telephoneNumber"
 }

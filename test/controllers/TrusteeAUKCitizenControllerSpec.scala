@@ -18,11 +18,9 @@ package controllers
 
 import base.SpecBase
 import forms.trustees.TrusteeAUKCitizenFormProvider
-import models.{FullName, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.{FullName, NormalMode}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.{IsThisLeadTrusteePage, TrusteeAUKCitizenPage, TrusteesNamePage}
-import play.api.inject.bind
+import pages.trustees.{IsThisLeadTrusteePage, TrusteeAUKCitizenPage, TrusteesNamePage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

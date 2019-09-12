@@ -18,17 +18,14 @@ package controllers
 
 import base.SpecBase
 import forms.trustees.TrusteesNameFormProvider
-import models.{FullName, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.{FullName, NormalMode}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.{IsThisLeadTrusteePage, TrusteesNamePage}
+import pages.trustees.{IsThisLeadTrusteePage, TrusteesNamePage}
 import play.api.i18n.Messages
-import play.api.inject.bind
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.TrusteesNameView
-import views.html.components.heading
 
 class TrusteesNameControllerSpec extends SpecBase with IndexValidation {
 

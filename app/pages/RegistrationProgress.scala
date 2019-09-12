@@ -22,6 +22,7 @@ import models.Status.{Completed, InProgress}
 import models.{AddABeneficiary, AddATrustee, AddAssets, Status, UserAnswers}
 import navigation.TaskListNavigator
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
+import pages.trustees.AddATrusteePage
 import sections._
 import viewmodels._
 
