@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package forms
+package forms.trustees
 
-import javax.inject.Inject
+import forms.Validation
 import forms.mappings.Mappings
+import javax.inject.Inject
 import models.FullName
 import play.api.data.Form
 import play.api.data.Forms._

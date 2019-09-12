@@ -14,26 +14,22 @@
  * limitations under the License.
  */
 
-package forms
+package forms.trustees
 
-import java.time.LocalDate
-
+import forms.Validation
 import forms.mappings.Mappings
 import javax.inject.Inject
 import play.api.data.Form
 
-class TrusteesDateOfBirthFormProvider @Inject() extends Mappings {
+class TelephoneNumberFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[LocalDate] =
+  def apply(messagePrefix: String): Form[String] =
     Form(
-      "value" -> localDate(
-        invalidKey     = "trusteesDateOfBirth.error.invalid",
-        allRequiredKey = "trusteesDateOfBirth.error.required.all",
-        twoRequiredKey = "trusteesDateOfBirth.error.required.two",
-        requiredKey    = "trusteesDateOfBirth.error.required"
-      ).verifying(firstError(
-        maxDate(LocalDate.now, s"trusteesDateOfBirth.error.future", "day", "month", "year"),
-        minDate(LocalDate.of(1500,1,1), s"trusteesDateOfBirth.error.past", "day", "month", "year")
-      ))
+      "value" -> text(s"$messagePrefix.error.required")
+        .verifying(
+          firstError(
+            isNotEmpty("value", s"$messagePrefix.error.required"),
+            regexp(Validation.telephoneRegex, "telephoneNumber.error.invalid.characters")
+          ))
     )
 }

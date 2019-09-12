@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import forms.{AddATrusteeFormProvider, AddATrusteeYesNoFormProvider}
+import forms.trustees.{AddATrusteeFormProvider, AddATrusteeYesNoFormProvider}
 import models.Status.Completed
 import models.{AddATrustee, FullName, IndividualOrBusiness, NormalMode}
 import pages.entitystatus.TrusteeStatus

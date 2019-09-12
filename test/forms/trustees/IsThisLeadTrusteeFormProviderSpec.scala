@@ -14,16 +14,32 @@
  * limitations under the License.
  */
 
-package forms
+package forms.trustees
 
-import forms.mappings.Mappings
-import javax.inject.Inject
-import play.api.data.Form
+import forms.behaviours.BooleanFieldBehaviours
+import play.api.data.FormError
 
-class TrusteeAUKCitizenFormProvider @Inject() extends Mappings {
+class IsThisLeadTrusteeFormProviderSpec extends BooleanFieldBehaviours {
 
-  def apply(messagePrefix: String): Form[Boolean] =
-    Form(
-      "value" -> boolean(s"$messagePrefix.error.required")
+  val requiredKey = "isThisLeadTrustee.error.required"
+  val invalidKey = "error.boolean"
+
+  val form = new IsThisLeadTrusteeFormProvider()()
+
+  ".value" must {
+
+    val fieldName = "value"
+
+    behave like booleanField(
+      form,
+      fieldName,
+      invalidError = FormError(fieldName, invalidKey)
     )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
+  }
 }

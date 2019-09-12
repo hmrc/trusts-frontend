@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package forms
+package forms.trustees
 
 import forms.behaviours.BooleanFieldBehaviours
 import play.api.data.FormError
 
-class IsThisLeadTrusteeFormProviderSpec extends BooleanFieldBehaviours {
+class TrusteeAUKCitizenFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "isThisLeadTrustee.error.required"
+  val requiredKey = "trusteeAUKCitizen.error.required"
   val invalidKey = "error.boolean"
+  val messageKeyPrefix = "trusteeAUKCitizen"
 
-  val form = new IsThisLeadTrusteeFormProvider()()
+  val form = new TrusteeAUKCitizenFormProvider()(messageKeyPrefix)
 
   ".value" must {
 

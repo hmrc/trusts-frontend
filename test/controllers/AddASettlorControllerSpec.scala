@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import forms.{AddATrusteeFormProvider, AddATrusteeYesNoFormProvider}
+import forms.trustees.{AddATrusteeFormProvider, AddATrusteeYesNoFormProvider}
 import models.SettlorKindOfTrust.Lifetime
 import models.{AddASettlor, AddATrustee, NormalMode}
 import pages.SettlorKindOfTrustPage

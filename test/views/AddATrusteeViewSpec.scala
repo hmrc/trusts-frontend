@@ -16,7 +16,7 @@
 
 package views
 
-import forms.AddATrusteeFormProvider
+import forms.trustees.AddATrusteeFormProvider
 import models.{AddATrustee, IndividualOrBusiness, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat

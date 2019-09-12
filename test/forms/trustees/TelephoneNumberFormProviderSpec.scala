@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package forms
+package forms.trustees
 
+import forms.Validation
 import forms.behaviours.StringFieldBehaviours
 import org.scalacheck.Arbitrary.arbitrary
 import play.api.data.FormError

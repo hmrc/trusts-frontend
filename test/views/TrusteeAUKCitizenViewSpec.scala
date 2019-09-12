@@ -17,7 +17,7 @@
 package views
 
 import controllers.routes
-import forms.TrusteeAUKCitizenFormProvider
+import forms.trustees.TrusteeAUKCitizenFormProvider
 import models.{FullName, NormalMode, UserAnswers}
 import pages.TrusteesNamePage
 import play.api.data.Form

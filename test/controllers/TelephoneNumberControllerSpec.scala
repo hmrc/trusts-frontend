@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import forms.TelephoneNumberFormProvider
+import forms.trustees.TelephoneNumberFormProvider
 import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteesNamePage}

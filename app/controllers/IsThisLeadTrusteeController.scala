@@ -18,7 +18,7 @@ package controllers
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.IsThisLeadTrusteeFormProvider
+import forms.trustees.IsThisLeadTrusteeFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
