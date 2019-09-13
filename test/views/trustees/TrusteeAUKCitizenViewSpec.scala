@@ -16,7 +16,7 @@
 
 package views.trustees
 
-import forms.trustees.TrusteeAUKCitizenFormProvider
+import forms.YesNoFormProvider
 import models.{FullName, NormalMode}
 import pages.trustees.TrusteesNamePage
 import play.api.data.Form
@@ -28,7 +28,7 @@ class TrusteeAUKCitizenViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "trusteeAUKCitizen"
 
-  val form = new TrusteeAUKCitizenFormProvider()(messageKeyPrefix)
+  val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
   val index = 0
   val trusteeName = "FirstName LastName"

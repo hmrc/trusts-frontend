@@ -18,7 +18,7 @@ package controllers.trustees
 
 import base.SpecBase
 import controllers.IndexValidation
-import forms.trustees.TrusteeAUKCitizenFormProvider
+import forms.YesNoFormProvider
 import models.{FullName, NormalMode}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.trustees.{IsThisLeadTrusteePage, TrusteeAUKCitizenPage, TrusteesNamePage}
@@ -34,8 +34,8 @@ class TrusteeAUKCitizenControllerSpec extends SpecBase with IndexValidation {
 
   val leadTrusteeMessagePrefix = "leadTrusteeAUKCitizen"
   val trusteeMessagePrefix = "trusteeAUKCitizen"
-  val formProvider = new TrusteeAUKCitizenFormProvider()
-  val form = formProvider(trusteeMessagePrefix)
+  val formProvider = new YesNoFormProvider()
+  val form = formProvider.withPrefix(trusteeMessagePrefix)
 
   val index = 0
   val emptyTrusteeName = ""
