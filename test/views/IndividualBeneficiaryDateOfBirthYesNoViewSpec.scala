@@ -19,7 +19,7 @@ package views
 import controllers.routes
 import forms.IndividualBeneficiaryDateOfBirthYesNoFormProvider
 import models.{FullName, NormalMode, UserAnswers}
-import pages.{IndividualBeneficiaryNamePage, TrusteesNamePage}
+import pages.IndividualBeneficiaryNamePage
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours

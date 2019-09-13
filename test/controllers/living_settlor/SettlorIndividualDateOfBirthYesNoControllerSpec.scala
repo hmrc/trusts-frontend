@@ -33,7 +33,7 @@ class SettlorIndividualDateOfBirthYesNoControllerSpec extends SpecBase with Inde
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new YesNoFormProvider()
-  val form = formProvider("settlorIndividualDateOfBirthYesNo")
+  val form = formProvider.withPrefix("settlorIndividualDateOfBirthYesNo")
   val index = 0
   val name = FullName("First", Some("Middle"), "Last")
 

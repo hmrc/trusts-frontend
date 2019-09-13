@@ -17,7 +17,8 @@
 package controllers
 
 import base.SpecBase
-import forms.trustees.{AddATrusteeFormProvider, AddATrusteeYesNoFormProvider}
+import forms.YesNoFormProvider
+import forms.trustees.{AddATrusteeFormProvider}
 import models.SettlorKindOfTrust.Lifetime
 import models.{AddASettlor, AddATrustee, NormalMode}
 import pages.SettlorKindOfTrustPage
@@ -32,7 +33,7 @@ class AddASettlorControllerSpec extends SpecBase {
   lazy val submitYesNoRoute : String = routes.AddASettlorController.submitOne(fakeDraftId).url
 
   val addTrusteeForm = new AddATrusteeFormProvider()()
-  val yesNoForm = new AddATrusteeYesNoFormProvider()()
+  val yesNoForm = new YesNoFormProvider().withPrefix("addASettlorYesNo")
 
   val settlors = List()
 

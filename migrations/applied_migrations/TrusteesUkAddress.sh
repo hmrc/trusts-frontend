@@ -6,11 +6,11 @@ echo "Applying migration TrusteesUkAddress"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /trusteesUkAddress                        controllers.TrusteesUkAddressController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /trusteesUkAddress                        controllers.TrusteesUkAddressController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /trusteesUkAddress                        controllers.trustees.TrusteesUkAddressController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /trusteesUkAddress                        controllers.trustees.TrusteesUkAddressController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeTrusteesUkAddress                  controllers.TrusteesUkAddressController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeTrusteesUkAddress                  controllers.TrusteesUkAddressController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeTrusteesUkAddress                  controllers.trustees.TrusteesUkAddressController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeTrusteesUkAddress                  controllers.trustees.TrusteesUkAddressController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

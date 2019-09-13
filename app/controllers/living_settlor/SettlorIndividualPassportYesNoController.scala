@@ -43,12 +43,12 @@ class SettlorIndividualPassportYesNoController @Inject()(
                                          validateIndex: IndexActionFilterProvider,
                                          requireData: DataRequiredAction,
                                          requiredAnswer: RequiredAnswerActionProvider,
-                                         formProvider: YesNoFormProvider,
+                                         yesNoFormProvider: YesNoFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: SettlorIndividualPassportYesNoView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = formProvider("settlorIndividualPassportYesNo")
+  val form: Form[Boolean] = yesNoFormProvider.withPrefix("settlorIndividualPassportYesNo")
 
   private def actions(index: Int, draftId: String) =
     identify andThen

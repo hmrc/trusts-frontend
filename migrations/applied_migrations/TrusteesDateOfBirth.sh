@@ -6,11 +6,11 @@ echo "Applying migration TrusteesDateOfBirth"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /trusteesDateOfBirth                  controllers.TrusteesDateOfBirthController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /trusteesDateOfBirth                  controllers.TrusteesDateOfBirthController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /trusteesDateOfBirth                  controllers.trustees.TrusteesDateOfBirthController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /trusteesDateOfBirth                  controllers.trustees.TrusteesDateOfBirthController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeTrusteesDateOfBirth                        controllers.TrusteesDateOfBirthController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeTrusteesDateOfBirth                        controllers.TrusteesDateOfBirthController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeTrusteesDateOfBirth                        controllers.trustees.TrusteesDateOfBirthController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeTrusteesDateOfBirth                        controllers.trustees.TrusteesDateOfBirthController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

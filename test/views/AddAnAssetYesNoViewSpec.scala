@@ -16,8 +16,7 @@
 
 package views
 
-import controllers.routes
-import forms.AddAnAssetYesNoFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -28,7 +27,7 @@ class AddAnAssetYesNoViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "addAnAssetYesNo"
 
-  val form = new AddAnAssetYesNoFormProvider()()
+  val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
   "AddAnAssetYesNo view" must {
 
