@@ -17,7 +17,7 @@
 package views
 
 import controllers.routes
-import forms.InheritanceTaxActFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -28,7 +28,7 @@ class InheritanceTaxActViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "inheritanceTaxAct"
 
-  val form = new InheritanceTaxActFormProvider()()
+  val form = new YesNoFormProvider().withPrefix("inheritanceTaxAct")
 
   "InheritanceTaxAct view" must {
 
