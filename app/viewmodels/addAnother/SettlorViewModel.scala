@@ -38,8 +38,8 @@ object SettlorViewModel {
     a.map(identity)
 
   implicit lazy val reads : Reads[SettlorViewModel] = {
-    SettlorLivingViewModel.reads or
-      DefaultSettlorsViewModel.reads
+      SettlorLivingViewModel.reads or
+      DefaultSettlorViewModel.reads
   }
 
 }

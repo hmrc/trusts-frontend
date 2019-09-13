@@ -52,8 +52,8 @@ class AddASettlorViewHelperSpec extends SpecBase   {
 
         val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
         rows.inProgress mustBe List(
-          AddRow("No name added", typeLabel = "Inividual", "#", "#"),
-          AddRow("first name last name", typeLabel = "Inividual", "#", "#")
+          AddRow("No name added", typeLabel = "Individual", "#", "#"),
+          AddRow("first name last name", typeLabel = "Individual", "#", "#")
         )
         rows.complete mustBe Nil
       }

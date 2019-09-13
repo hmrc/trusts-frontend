@@ -19,7 +19,7 @@ package utils
 import models.Status.Completed
 import models.UserAnswers
 import play.api.i18n.Messages
-import sections.Settlors
+import sections.{LivingSettlors, Settlors}
 import viewmodels.addAnother._
 import viewmodels.{AddRow, AddToRows}
 
@@ -27,11 +27,7 @@ class AddASettlorViewHelper(userAnswers: UserAnswers, draftId: String)(implicit 
 
   def rows: AddToRows = {
 
-    val settlors = userAnswers.get(Settlors).toList.flatten.zipWithIndex
-
-    println("**********************************************")
-    println(userAnswers.get(Settlors))
-    println(settlors)
+    val settlors = userAnswers.get(LivingSettlors).toList.flatten.zipWithIndex
 
     val completed: List[AddRow] = settlors.filter(_._1.status == Completed).flatMap(parseSettlor)
 
@@ -44,38 +40,23 @@ class AddASettlorViewHelper(userAnswers: UserAnswers, draftId: String)(implicit 
     val vm = settlor._1
     val index = settlor._2
 
-    vm match {
-      case mvm: SettlorLivingViewModel => Some(parseSettlorLiving(mvm, index))
-      case _ => None
-    }
+    Some(parseSettlorLiving(vm, index))
   }
 
-  private def parseSettlorLiving(mvm : SettlorLivingViewModel, index: Int) : AddRow = {
+  private def parseSettlorLiving(mvm : SettlorViewModel, index: Int) : AddRow = {
     val defaultName = messages("entities.no.name.added")
 
-    val typeLabel : String = messages("addSettlor.individual")
+    val typeLabel : String = messages("individualOrBusiness.individual")
 
     mvm match {
       case SettlorLivingIndividualViewModel(_, name, _) => AddRow(
-        name.getOrElse(defaultName),
+        name,
         typeLabel,
         "#",
         "#"
       )
-      case SettlorLivingBusinessViewModel(_, name, _) => AddRow(
-        name.getOrElse(defaultName),
-        typeLabel,
-        "#",
-        "#"
-      )
-      case SettlorLivingNoNameViewModel(_, name, _) => AddRow(
-        name.getOrElse(defaultName),
-        typeLabel,
-        "#",
-        "#"
-      )
-      case SettlorLivingDefaultViewModel(_, _) => AddRow(
-        messages("entities.settlorLiving.default"),
+      case DefaultSettlorViewModel(individualOrBusiness, _)  => AddRow(
+        defaultName,
         typeLabel,
         "#",
         "#"

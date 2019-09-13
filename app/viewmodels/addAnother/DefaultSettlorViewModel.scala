@@ -19,20 +19,20 @@ package viewmodels.addAnother
 import models.Status.InProgress
 import models.{IndividualOrBusiness, Status}
 
-final case class DefaultSettlorsViewModel(`type` : IndividualOrBusiness,
+final case class DefaultSettlorViewModel(`type` : IndividualOrBusiness,
                                           override val status : Status
                                          ) extends SettlorViewModel
 
 
-object DefaultSettlorsViewModel {
+object DefaultSettlorViewModel {
 
   import play.api.libs.functional.syntax._
   import play.api.libs.json._
 
-  implicit lazy val reads: Reads[DefaultSettlorsViewModel] =
+  implicit lazy val reads: Reads[DefaultSettlorViewModel] =
     ((__ \ "individualOrBusiness").read[IndividualOrBusiness] and
       (__ \ "status").readWithDefault[Status](InProgress)
       )((kind, status) =>
-      DefaultSettlorsViewModel(kind, status)
+      DefaultSettlorViewModel(kind, status)
     )
 }

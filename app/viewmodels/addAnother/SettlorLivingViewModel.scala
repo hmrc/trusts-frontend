@@ -16,27 +16,15 @@
 
 package viewmodels.addAnother
 
-import models.IndividualOrBusiness.{Business, Individual}
+import models.IndividualOrBusiness.Individual
 import models.Status.InProgress
 import models.{FullName, IndividualOrBusiness, Status}
 
 sealed trait SettlorLivingViewModel extends SettlorViewModel
 
 final case class SettlorLivingIndividualViewModel(`type` : IndividualOrBusiness,
-                                                  name : Option[String],
+                                                  name : String,
                                                   override val status : Status) extends SettlorLivingViewModel
-
-final case class SettlorLivingBusinessViewModel(`type` : IndividualOrBusiness,
-                                                name : Option[String],
-                                                override val status : Status) extends SettlorLivingViewModel
-
-final case class SettlorLivingNoNameViewModel(`type` : IndividualOrBusiness,
-                                              name : Option[String],
-                                              override val status : Status) extends SettlorLivingViewModel
-
-final case class SettlorLivingDefaultViewModel(`type`: IndividualOrBusiness,
-                                               override val status: Status) extends SettlorLivingViewModel
-
 object SettlorLivingViewModel {
 
   import play.api.libs.functional.syntax._
@@ -46,9 +34,8 @@ object SettlorLivingViewModel {
 
     val individualNameReads: Reads[SettlorLivingViewModel] =
     {
-      (__ \ "setupAfterSettlorDied").read[Boolean].filter(x => !x).flatMap { _ =>
         (__ \ "individualOrBusiness").read[IndividualOrBusiness].filter(x => x == Individual).flatMap { _ =>
-          ((__ \ "name").readNullable[FullName].map(_.map(_.firstName)).filter(x => x.isDefined) and
+          ((__ \ "name").read[FullName].map(_.toString) and
             (__ \ "status").readWithDefault[Status](InProgress)
             ) ((name, status) => {
             SettlorLivingIndividualViewModel(
@@ -57,49 +44,9 @@ object SettlorLivingViewModel {
               status)
           })
         }
-      }
     }
 
-    val businessNameReads: Reads[SettlorLivingViewModel] =
-    {
-      (__ \ "setupAfterSettlorDied").read[Boolean].filter(x => !x).flatMap { _ =>
-        (__ \ "individualOrBusiness").read[IndividualOrBusiness].filter(x => x == Business).flatMap { _ =>
-          ((__ \ "name").readNullable[FullName].map(_.map(_.firstName)).filter(x => x.isDefined) and
-            (__ \ "status").readWithDefault[Status](InProgress)
-            ) ((name, status) => {
-            SettlorLivingBusinessViewModel(
-              Business,
-              name,
-              status)
-          })
-        }
-      }
-    }
-
-    val noNameReads : Reads[SettlorLivingViewModel] = {
-      (__ \ "setupAfterSettlorDied").read[Boolean].filter(x => !x).flatMap { _ =>
-        (__ \ "individualOrBusiness").read[IndividualOrBusiness].flatMap { kind =>
-          ((__ \ "name").readNullable[String].filter(x => x.isEmpty) and
-            (__ \ "status").readWithDefault[Status](InProgress)
-            ) ((name, status) => {
-              SettlorLivingNoNameViewModel(kind, name, status)
-          })
-        }
-      }
-    }
-
-    val defaultReads : Reads[SettlorLivingViewModel] = {
-      (__ \ "setupAfterSettlorDied").read[Boolean].filter(x => !x).flatMap { _ =>
-        (__ \ "individualOrBusiness").read[IndividualOrBusiness].flatMap { kind =>
-          (__ \ "status").readWithDefault[Status](InProgress).map {
-            status =>
-              SettlorLivingDefaultViewModel(kind, status)
-          }
-        }
-      }
-    }
-
-    individualNameReads orElse businessNameReads orElse noNameReads orElse defaultReads
+    individualNameReads
 
   }
 
