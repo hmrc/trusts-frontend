@@ -18,7 +18,7 @@ package controllers.trustees
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.trustees.TrusteeLiveInTheUKFormProvider
+import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.requests.DataRequest
 import models.{Mode, NormalMode}
@@ -35,17 +35,17 @@ import views.html.trustees.TrusteeLiveInTheUKView
 import scala.concurrent.{ExecutionContext, Future}
 
 class TrusteeLiveInTheUKController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         validateIndex: IndexActionFilterProvider,
-                                         identify: IdentifierAction,
-                                         getData: DraftIdRetrievalActionProvider,
-                                         requireData: DataRequiredAction,
-                                         requiredAnswer: RequiredAnswerActionProvider,
-                                         formProvider: TrusteeLiveInTheUKFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: TrusteeLiveInTheUKView
+                                              override val messagesApi: MessagesApi,
+                                              sessionRepository: SessionRepository,
+                                              navigator: Navigator,
+                                              validateIndex: IndexActionFilterProvider,
+                                              identify: IdentifierAction,
+                                              getData: DraftIdRetrievalActionProvider,
+                                              requireData: DataRequiredAction,
+                                              requiredAnswer: RequiredAnswerActionProvider,
+                                              formProvider: YesNoFormProvider,
+                                              val controllerComponents: MessagesControllerComponents,
+                                              view: TrusteeLiveInTheUKView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(index: Int, draftId: String) =
@@ -63,7 +63,7 @@ class TrusteeLiveInTheUKController @Inject()(
 
       val messagePrefix: String = getMessagePrefix(index, request)
 
-      val form: Form[Boolean] = formProvider(messagePrefix)
+      val form: Form[Boolean] = formProvider.withPrefix(messagePrefix)
 
       val preparedForm = request.userAnswers.get(TrusteeLiveInTheUKPage(index)) match {
         case None => form
@@ -91,7 +91,7 @@ class TrusteeLiveInTheUKController @Inject()(
 
       val messagePrefix: String = getMessagePrefix(index, request)
 
-      val form: Form[Boolean] = formProvider(messagePrefix)
+      val form: Form[Boolean] = formProvider.withPrefix(messagePrefix)
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>

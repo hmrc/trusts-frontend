@@ -16,7 +16,7 @@
 
 package views.trustees
 
-import forms.trustees.TrusteeLiveInTheUKFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -29,7 +29,7 @@ class TrusteeLiveInTheUKViewSpec extends YesNoViewBehaviours {
   val index = 0
   val trusteeName = "FirstName LastName"
 
-  val form = new TrusteeLiveInTheUKFormProvider()(messageKeyPrefix)
+  val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
   "TrusteeLiveInTheUK view" must {
 
