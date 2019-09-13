@@ -15,10 +15,11 @@
  */
 
 package sections
+import mapping.reads.IndividualSettlor
 import pages.QuestionPage
 import play.api.libs.json.{JsPath, JsValue}
 
-case object LivingSettlors extends QuestionPage[List[JsValue]]{
+case object LivingSettlors extends QuestionPage[List[IndividualSettlor]]{
 
   override def path: JsPath = Settlors.path \ toString
 

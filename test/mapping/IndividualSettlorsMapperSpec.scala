@@ -28,11 +28,11 @@ import pages.living_settlor.{SettlorIndividualAddressInternationalPage, SettlorI
 class IndividualSettlorsMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers  {
 
-  val livingSettlorMapper: Mapping[List[Settlor]] = injector.instanceOf[IndividualSettlorsMapper]
+  val individualSettlorsMapper: Mapping[List[Settlor]] = injector.instanceOf[IndividualSettlorsMapper]
 
   val dateOfBirth: LocalDate = LocalDate.of(1944, 10, 10)
 
-  "LivingSettlorMapper" - {
+  "IndividualSettlorsMapper" - {
 
     "when user answers is empty" - {
 
@@ -40,7 +40,7 @@ class IndividualSettlorsMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers = emptyUserAnswers
 
-        livingSettlorMapper.build(userAnswers) mustNot be(defined)
+        individualSettlorsMapper.build(userAnswers) mustNot be(defined)
       }
     }
 
@@ -56,7 +56,7 @@ class IndividualSettlorsMapperSpec extends FreeSpec with MustMatchers
             .set(SettlorIndividualNINOYesNoPage(0), false).success.value
             .set(SettlorIndividualAddressYesNoPage(0), false).success.value
 
-          livingSettlorMapper.build(userAnswers).value mustBe List(Settlor(
+          individualSettlorsMapper.build(userAnswers).value mustBe List(Settlor(
             name = NameType("First", None, "Last"),
             dateOfBirth = None,
             identification = None
@@ -76,7 +76,7 @@ class IndividualSettlorsMapperSpec extends FreeSpec with MustMatchers
             .set(SettlorIndividualNINOYesNoPage(0), false).success.value
             .set(SettlorIndividualAddressYesNoPage(0), false).success.value
 
-          livingSettlorMapper.build(userAnswers).value mustBe List(Settlor(
+          individualSettlorsMapper.build(userAnswers).value mustBe List(Settlor(
             name = NameType("First", None, "Last"),
             dateOfBirth = Some(dateOfBirth),
             identification = None
@@ -96,7 +96,7 @@ class IndividualSettlorsMapperSpec extends FreeSpec with MustMatchers
             .set(SettlorIndividualNINOPage(0), "NH111111A").success.value
             .set(SettlorIndividualAddressYesNoPage(0), false).success.value
 
-          livingSettlorMapper.build(userAnswers).value mustBe List(Settlor(
+          individualSettlorsMapper.build(userAnswers).value mustBe List(Settlor(
             name = NameType("First", None, "Last"),
             dateOfBirth = Some(dateOfBirth),
             identification = Some(IdentificationType(Some("NH111111A"), None, None))
@@ -117,7 +117,7 @@ class IndividualSettlorsMapperSpec extends FreeSpec with MustMatchers
             .set(SettlorIndividualAddressUKYesNoPage(0), true).success.value
             .set(SettlorIndividualAddressUKPage(0), UKAddress("line1", Some("line2"), Some("line3"), "Newcastle", "ab1 1ab")).success.value
 
-          livingSettlorMapper.build(userAnswers).value mustBe List(Settlor(
+          individualSettlorsMapper.build(userAnswers).value mustBe List(Settlor(
             name = NameType("First", None, "Last"),
             dateOfBirth = Some(dateOfBirth),
             identification = Some(IdentificationType(None, None, Some(AddressType("line1", "line2", Some("line3"), Some("Newcastle"), Some("ab1 1ab"), "GB"))))
@@ -139,7 +139,7 @@ class IndividualSettlorsMapperSpec extends FreeSpec with MustMatchers
             .set(SettlorIndividualAddressUKYesNoPage(0), false).success.value
             .set(SettlorIndividualAddressInternationalPage(0), InternationalAddress("line1", "line2", Some("line3"), Some("line4"), "FR")).success.value
 
-          livingSettlorMapper.build(userAnswers).value mustBe List(Settlor(
+          individualSettlorsMapper.build(userAnswers).value mustBe List(Settlor(
             name = NameType("First", None, "Last"),
             dateOfBirth = Some(dateOfBirth),
             identification = Some(IdentificationType(None, None,  Some(AddressType("line1", "line2", Some("line3"), Some("line4"), None, "FR"))))
@@ -162,7 +162,7 @@ class IndividualSettlorsMapperSpec extends FreeSpec with MustMatchers
           .set(SettlorIndividualPassportYesNoPage(0), true).success.value
           .set(SettlorIndividualPassportPage(0), PassportOrIdCardDetails("UK", "1234567", expiryDate)).success.value
 
-        livingSettlorMapper.build(userAnswers).value mustBe List(Settlor(
+        individualSettlorsMapper.build(userAnswers).value mustBe List(Settlor(
           name = NameType("First", None, "Last"),
           dateOfBirth = Some(dateOfBirth),
           identification = Some(IdentificationType(None, Some(PassportType("1234567", expiryDate,"UK")), None))
@@ -192,7 +192,7 @@ class IndividualSettlorsMapperSpec extends FreeSpec with MustMatchers
           .set(SettlorIndividualPassportYesNoPage(1), true).success.value
           .set(SettlorIndividualPassportPage(1), PassportOrIdCardDetails("UK", "1234567", expiryDate)).success.value
 
-      livingSettlorMapper.build(userAnswers).value mustBe List(
+      individualSettlorsMapper.build(userAnswers).value mustBe List(
         Settlor(
           NameType("First", None, "Last"),
           Some(dateOfBirth),

@@ -23,7 +23,10 @@ import models.{PassportOrIdCardDetails, UserAnswers}
 class IndividualSettlorsMapper @Inject()(nameMapper: NameMapper, addressMapper: AddressMapper) extends Mapping[List[Settlor]] {
 
    def build(userAnswers: UserAnswers): Option[List[Settlor]] = {
-     val settlors = userAnswers.get(sections.IndividualSettlors).getOrElse(List.empty[IndividualSettlor])
+     val settlors = userAnswers.get(sections.LivingSettlors).getOrElse(List.empty[IndividualSettlor])
+
+     println(settlors)
+     println("***********************")
 
      val mappedSettlors = settlors.map { ls =>
        Settlor(nameMapper.build(ls.name), ls.dateOfBirth, identificationMap(ls))
@@ -39,7 +42,7 @@ class IndividualSettlorsMapper @Inject()(nameMapper: NameMapper, addressMapper: 
 
     val identificationType = IdentificationType(
       settlor.nino,
-      passportMap(settlor.passport),
+      passportOrIdMap(settlor.passportOrId),
       addressMapper.build(settlor.address)
     )
 
@@ -49,7 +52,7 @@ class IndividualSettlorsMapper @Inject()(nameMapper: NameMapper, addressMapper: 
     }
   }
 
-  private def passportMap(passportOrIdCardDetails: Option[PassportOrIdCardDetails]): Option[PassportType] = {
+  private def passportOrIdMap(passportOrIdCardDetails: Option[PassportOrIdCardDetails]): Option[PassportType] = {
     passportOrIdCardDetails map { passportOrIdCardDetails =>
       PassportType(passportOrIdCardDetails.cardNumber, passportOrIdCardDetails.expiryDate, passportOrIdCardDetails.country)
     }

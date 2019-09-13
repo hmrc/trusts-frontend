@@ -26,6 +26,7 @@ final case class IndividualSettlor(name: FullName,
                                    address : Option[Address],
                                    passport: Option[PassportOrIdCardDetails],
                                    idCard: Option[PassportOrIdCardDetails]) {
+  def passportOrId: Option[PassportOrIdCardDetails] = if (passport.isDefined) passport else idCard
 }
 
 object IndividualSettlor {

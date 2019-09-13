@@ -19,11 +19,11 @@ package pages.living_settlor
 import models.UKAddress
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.IndividualSettlors
+import sections.LivingSettlors
 
 final case class SettlorIndividualAddressUKPage(index : Int) extends QuestionPage[UKAddress] {
 
-  override def path: JsPath = IndividualSettlors.path \ "individual" \ index \ toString
+  override def path: JsPath = LivingSettlors.path \ "individual" \ index \ toString
 
   override def toString: String = "address"
 }
