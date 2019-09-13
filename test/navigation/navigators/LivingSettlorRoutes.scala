@@ -18,13 +18,14 @@ package navigation.navigators
 
 import base.SpecBase
 import generators.Generators
-import models.{NormalMode, UserAnswers}
+import models.{AddASettlor, NormalMode, UserAnswers}
 import navigation.{LivingSettlorNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages.living_settlor._
 import controllers.living_settlor.routes
-import pages.SettlorHandoverReliefYesNoPage
+import models.IndividualOrBusiness.Individual
+import pages.{AddASettlorPage, AddASettlorYesNoPage, AddAssetsPage, SettlorHandoverReliefYesNoPage}
 
 trait LivingSettlorRoutes {
 
@@ -270,5 +271,71 @@ trait LivingSettlorRoutes {
       }
 
     }
+
+  "add another settlor" must {
+
+    "go to the IndividualOrBusiness from AddASettlorPage when selected add them now" in {
+
+      val answers = emptyUserAnswers
+        .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
+        .set(AddASettlorPage, AddASettlor.YesNow).success.value
+
+      navigator.nextPage(AddASettlorPage, NormalMode, fakeDraftId)(answers)
+        .mustBe(controllers.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 1, fakeDraftId))
+    }
+  }
+
+  "go to RegistrationProgress from AddASettlorPage when selecting add them later" in {
+    forAll(arbitrary[UserAnswers]) {
+      userAnswers =>
+
+        val answers = emptyUserAnswers
+          .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
+          .set(AddASettlorPage, AddASettlor.YesLater).success.value
+
+        navigator.nextPage(AddASettlorPage, NormalMode, fakeDraftId)(answers)
+          .mustBe(controllers.routes.TaskListController.onPageLoad(fakeDraftId))
+    }
+  }
+
+  "go to RegistrationProgress from AddASettlorPage when selecting no complete" in {
+    forAll(arbitrary[UserAnswers]) {
+      userAnswers =>
+
+        val answers = emptyUserAnswers
+          .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
+          .set(AddASettlorPage, AddASettlor.NoComplete).success.value
+
+        navigator.nextPage(AddASettlorPage, NormalMode, fakeDraftId)(answers)
+          .mustBe(controllers.routes.TaskListController.onPageLoad(fakeDraftId))
+    }
+  }
+
+  "go to SettlorIndividualOrBusinessPage from from AddAASettlorYesNoPage when selected Yes" in {
+    val index = 0
+
+    forAll(arbitrary[UserAnswers]) {
+      userAnswers =>
+
+        val answers = userAnswers.set(AddASettlorYesNoPage, true).success.value
+
+        navigator.nextPage(AddASettlorYesNoPage, NormalMode, fakeDraftId)(answers)
+          .mustBe(controllers.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode,
+            index, fakeDraftId))
+    }
+  }
+
+  "go to RegistrationProgress from from AddASettlorYesNoPage when selected No" in {
+    forAll(arbitrary[UserAnswers]) {
+      userAnswers =>
+
+        val answers = userAnswers.set(AddASettlorYesNoPage, false).success.value
+
+        navigator.nextPage(AddASettlorYesNoPage, NormalMode, fakeDraftId)(answers)
+          .mustBe(controllers.routes.TaskListController.onPageLoad(fakeDraftId))
+    }
+  }
+
+
 
   }
