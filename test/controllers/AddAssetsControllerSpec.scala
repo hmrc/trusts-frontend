@@ -17,17 +17,14 @@
 package controllers
 
 import base.SpecBase
-import forms.{AddAnAssetYesNoFormProvider, AddAssetsFormProvider}
+import forms.{AddAssetsFormProvider, YesNoFormProvider}
 import models.Status.Completed
 import models.WhatKindOfAsset.{Money, Shares}
 import models.{AddAssets, NormalMode, ShareClass, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
 import pages.entitystatus.AssetStatus
 import pages.shares._
 import pages.{AssetMoneyValuePage, WhatKindOfAssetPage}
 import play.api.data.Form
-import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.AddRow
@@ -43,7 +40,7 @@ class AddAssetsControllerSpec extends SpecBase {
   def removeShareRoute(index: Int) = controllers.shares.routes.RemoveShareCompanyNameAssetController.onPageLoad(1, fakeDraftId).url
 
   val addAssetsForm: Form[AddAssets] = new AddAssetsFormProvider()()
-  val yesNoForm: Form[Boolean] = new AddAnAssetYesNoFormProvider()()
+  val yesNoForm: Form[Boolean] = new YesNoFormProvider().withPrefix("addAnAssetYesNo")
 
   lazy val assets = List(
     AddRow("£4800", typeLabel = "Money", "#", removeMoneyRoute(0)),

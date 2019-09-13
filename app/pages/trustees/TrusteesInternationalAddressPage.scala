@@ -14,32 +14,16 @@
  * limitations under the License.
  */
 
-package forms.trustees
+package pages.trustees
 
-import forms.behaviours.BooleanFieldBehaviours
-import play.api.data.FormError
+import models.InternationalAddress
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import sections.Trustees
 
-class AddATrusteeYesNoFormProviderSpec extends BooleanFieldBehaviours {
+final case class TrusteesInternationalAddressPage(index: Int) extends QuestionPage[InternationalAddress] {
 
-  val requiredKey = "addATrusteeYesNo.error.required"
-  val invalidKey = "error.boolean"
+  override def path: JsPath = Trustees.path \ index \ toString
 
-  val form = new AddATrusteeYesNoFormProvider()()
-
-  ".value" must {
-
-    val fieldName = "value"
-
-    behave like booleanField(
-      form,
-      fieldName,
-      invalidError = FormError(fieldName, invalidKey)
-    )
-
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
-  }
+  override def toString: String = "address"
 }

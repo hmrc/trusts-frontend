@@ -18,9 +18,9 @@ package utils
 
 import base.SpecBase
 import models.Status.Completed
-import models.{FullName, IndividualOrBusiness, UserAnswers}
+import models.{FullName, IndividualOrBusiness}
 import pages.entitystatus.TrusteeStatus
-import pages.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage, TrusteesNamePage}
+import pages.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage, TrusteesNamePage}
 import viewmodels.AddRow
 
 class AddATrusteeViewHelperSpec extends SpecBase {

@@ -17,11 +17,12 @@
 package controllers
 
 import base.SpecBase
-import forms.trustees.{AddATrusteeFormProvider, AddATrusteeYesNoFormProvider}
+import forms.YesNoFormProvider
+import forms.trustees.{AddATrusteeFormProvider}
 import models.Status.Completed
 import models.{AddATrustee, FullName, IndividualOrBusiness, NormalMode}
 import pages.entitystatus.TrusteeStatus
-import pages.{TrusteeIndividualOrBusinessPage, TrusteesNamePage}
+import pages.trustees.{TrusteeIndividualOrBusinessPage, TrusteesNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.AddRow
@@ -34,7 +35,7 @@ class AddATrusteeControllerSpec extends SpecBase {
   lazy val submitYesNoRoute : String = routes.AddATrusteeController.submitOne(fakeDraftId).url
 
   val addTrusteeForm = new AddATrusteeFormProvider()()
-  val yesNoForm = new AddATrusteeYesNoFormProvider()()
+  val yesNoForm = new YesNoFormProvider().withPrefix("addATrusteeYesNo")
 
   val trustee = List(
     AddRow("First 0 Last 0", typeLabel = "Trustee Individual", "#", "/trusts-registration/id/trustee/0/remove"),

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package forms.trustees
+package pages.trustees
 
-import forms.mappings.Mappings
-import javax.inject.Inject
-import play.api.data.Form
+import models.FullName
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import sections.Trustees
 
-class AddATrusteeYesNoFormProvider @Inject() extends Mappings {
+final case class TrusteesNamePage(index : Int) extends QuestionPage[FullName] {
 
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("addATrusteeYesNo.error.required")
-    )
+  override def path: JsPath = Trustees.path \ index \ toString
+
+  override def toString: String = "name"
 }

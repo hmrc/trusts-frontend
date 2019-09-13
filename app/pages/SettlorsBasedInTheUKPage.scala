@@ -17,29 +17,33 @@
 package pages
 
 import models.UserAnswers
-import mapping.reads.Trustees
+import pages.entitystatus.TrustDetailsStatus
 import play.api.libs.json.JsPath
+import sections.TrustDetails
 
 import scala.util.Try
 
-final case class IsThisLeadTrusteePage(index : Int) extends QuestionPage[Boolean] {
+case object SettlorsBasedInTheUKPage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ Trustees \ index \ toString
+  override def path: JsPath = JsPath \ TrustDetails \ toString
 
-  override def toString: String = "isThisLeadTrustee"
+  override def toString: String = "settlorsBasedInTheUK"
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
       case Some(false) =>
-        userAnswers.remove(TrusteeAUKCitizenPage(index))
-          .flatMap(_.remove(TrusteesNinoPage(index)))
-          .flatMap(_.remove(TrusteesUkAddressPage(index)))
-          .flatMap(_.remove(TelephoneNumberPage(index)))
-          .flatMap(_.remove(TrusteeLiveInTheUKPage(index)))
-
+        userAnswers.remove(EstablishedUnderScotsLawPage)
+          .flatMap(_.remove(TrustResidentOffshorePage))
+          .flatMap(_.remove(TrustPreviouslyResidentPage))
+          .flatMap(_.remove(TrustDetailsStatus))
+      case Some(true) =>
+        userAnswers.remove(RegisteringTrustFor5APage)
+          .flatMap(_.remove(InheritanceTaxActPage))
+          .flatMap(_.remove(NonResidentTypePage))
+          .flatMap(_.remove(AgentOtherThanBarristerPage))
+          .flatMap(_.remove(TrustDetailsStatus))
       case _ => super.cleanup(value, userAnswers)
+
     }
   }
-
-
 }

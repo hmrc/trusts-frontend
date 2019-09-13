@@ -20,7 +20,7 @@ import pages.QuestionPage
 import play.api.libs.json.JsPath
 import viewmodels.addAnother.SettlorViewModel
 
-case object Settlors extends QuestionPage[List[Nothing]]{
+case object Settlors extends QuestionPage[List[SettlorViewModel]]{
 
   override def path: JsPath = JsPath \ toString
 

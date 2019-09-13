@@ -14,32 +14,18 @@
  * limitations under the License.
  */
 
-package forms
+package pages
 
-import forms.behaviours.BooleanFieldBehaviours
-import play.api.data.FormError
+import pages.behaviours.PageBehaviours
 
-class AdministrationInsideUKFormProviderSpec extends BooleanFieldBehaviours {
+class SettlorsBasedInTheUKPageSpec extends PageBehaviours {
 
-  val requiredKey = "administrationInsideUK.error.required"
-  val invalidKey = "error.boolean"
+  "SettlorsBasedInTheUKPage" must {
 
-  val form = new AdministrationInsideUKFormProvider()()
+    beRetrievable[Boolean](SettlorsBasedInTheUKPage)
 
-  ".value" must {
+    beSettable[Boolean](SettlorsBasedInTheUKPage)
 
-    val fieldName = "value"
-
-    behave like booleanField(
-      form,
-      fieldName,
-      invalidError = FormError(fieldName, invalidKey)
-    )
-
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
+    beRemovable[Boolean](SettlorsBasedInTheUKPage)
   }
 }

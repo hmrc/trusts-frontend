@@ -17,6 +17,7 @@
 package mapping
 
 import mapping.TypeOfTrust.WillTrustOrIntestacyTrust
+import models.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
 import models.{NonResidentType, UserAnswers}
 import pages.{NonResidentTypePage, RegisteringTrustFor5APage, _}
 import play.api.Logger
@@ -54,13 +55,21 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
         None
     }
   }
-
+  
   private def residentialStatus(userAnswers: UserAnswers): Option[ResidentialStatusType] = {
-    userAnswers.get(TrustResidentInUKPage) match {
-      case Some(true) =>
+    userAnswers.get(TrusteesBasedInTheUKPage) match {
+      case Some(UKBasedTrustees) =>
         ukResidentMap(userAnswers)
-      case Some(false) =>
+      case Some(NonUkBasedTrustees) =>
         nonUkResidentMap(userAnswers)
+      case Some(InternationalAndUKTrustees) =>
+        userAnswers.get(SettlorsBasedInTheUKPage) match {
+          case Some(true) => ukResidentMap(userAnswers)
+          case Some(false) => nonUkResidentMap(userAnswers)
+          case  _ =>
+            Logger.info("[TrustDetailsMapper][build] unable to determine if all settlors are based in the UK")
+            None
+        }
       case _ =>
         Logger.info(s"[TrustDetailsMapper][build] unable to determine where trust is resident")
         None

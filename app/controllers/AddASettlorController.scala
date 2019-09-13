@@ -17,12 +17,13 @@
 package controllers
 
 import controllers.actions._
-import forms.{AddASettlorFormProvider, AddASettlorYesNoFormProvider}
+import forms.YesNoFormProvider
+import forms.AddASettlorFormProvider
 import javax.inject.Inject
 import models.requests.DataRequest
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.{AddASettlorPage, AddATrusteePage, AddATrusteeYesNoPage, SettlorKindOfTrustPage}
+import pages.{AddASettlorPage, AddASettlorYesNoPage, SettlorKindOfTrustPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi, MessagesProvider}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -40,8 +41,8 @@ class AddASettlorController @Inject()(
                                        identify: IdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
+                                       yesNoFormProvider: YesNoFormProvider,
                                        addAnotherFormProvider: AddASettlorFormProvider,
-                                       yesNoFormProvider: AddASettlorYesNoFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
                                        addAnotherView: AddASettlorView,
                                        yesNoView: AddASettlorYesNoView,
@@ -49,7 +50,7 @@ class AddASettlorController @Inject()(
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
   val addAnotherForm = addAnotherFormProvider()
-  val yesNoForm: Form[Boolean] = yesNoFormProvider()
+  val yesNoForm: Form[Boolean] = yesNoFormProvider.withPrefix("addAnSettlorYesNo")
 
   private def actions(draftId: String) =
     identify andThen getData(draftId) andThen requireData andThen requiredAnswer(RequiredAnswer(SettlorKindOfTrustPage))
@@ -88,9 +89,9 @@ class AddASettlorController @Inject()(
         },
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(AddATrusteeYesNoPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(AddASettlorYesNoPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(AddATrusteeYesNoPage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(AddASettlorYesNoPage, mode, draftId)(updatedAnswers))
         }
       )
   }

@@ -27,6 +27,7 @@ import models.{FullName, NormalMode, UserAnswers}
 import pages._
 import pages.deceased_settlor.SettlorsNamePage
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
+import pages.trustees.IsThisLeadTrusteePage
 import sections.{Beneficiaries, Settlors, TaxLiability, TrustDetails}
 
 class TaskListNavigatorSpec extends SpecBase {

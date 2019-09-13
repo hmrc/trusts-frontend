@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package pages
+package pages.trustees
 
-import mapping.reads.Trustees
+import models.UKAddress
+import pages.QuestionPage
 import play.api.libs.json.JsPath
+import sections.Trustees
 
-final case class  TrusteeAUKCitizenPage(index : Int) extends QuestionPage[Boolean] {
+final case class TrusteesUkAddressPage(index: Int) extends QuestionPage[UKAddress] {
 
-  override def path: JsPath = JsPath \ Trustees \ index \ toString
+  override def path: JsPath = Trustees.path \ index \ toString
 
-  override def toString: String = "isUKCitizen"
+  override def toString: String = "address"
 }

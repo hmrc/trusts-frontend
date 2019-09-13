@@ -19,13 +19,13 @@ package navigation.navigators
 import base.SpecBase
 import controllers.routes
 import generators.Generators
+import sections.Trustees
 import models.IndividualOrBusiness.{Business, Individual}
-import mapping.reads.Trustees
 import models.{AddATrustee, NormalMode, UserAnswers}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages._
+import pages.trustees._
 
 trait TrusteeRoutes {
 
@@ -41,8 +41,9 @@ trait TrusteeRoutes {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
-            val answers = userAnswers.set(AddATrusteePage, AddATrustee.YesNow).success.value
-                .remove(Trustees).success.value
+            val answers = userAnswers
+              .set(AddATrusteePage, AddATrustee.YesNow).success.value
+              .remove(Trustees).success.value
 
             navigator.nextPage(AddATrusteePage, NormalMode, fakeDraftId)(answers)
               .mustBe(routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 0, fakeDraftId))

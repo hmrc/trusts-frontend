@@ -21,11 +21,10 @@ import forms.RemoveIndexFormProvider
 import javax.inject.Inject
 import models.FullName
 import models.requests.DataRequest
-import pages.{QuestionPage, TrusteesNamePage}
-import play.api.data.Form
+import pages.QuestionPage
+import pages.trustees.TrusteesNamePage
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
-import play.twirl.api.HtmlFormat
+import play.api.mvc.{AnyContent, Call, MessagesControllerComponents}
 import queries.{RemoveTrusteeQuery, Settable}
 import repositories.SessionRepository
 import views.html.RemoveIndexView

@@ -14,17 +14,8 @@
  * limitations under the License.
  */
 
-package forms
+package pages.trustees
 
-import javax.inject.Inject
+import pages.Page
 
-import forms.mappings.Mappings
-import play.api.data.Form
-
-class AddABeneficiaryYesNoFormProvider @Inject() extends Mappings {
-
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("addABeneficiaryYesNo.error.required")
-    )
-}
+case object TrusteesAnswerPage extends Page

@@ -14,15 +14,27 @@
  * limitations under the License.
  */
 
-package pages
+package pages.trustees
 
-import models.FullName
-import mapping.reads.Trustees
+import models.UserAnswers
+import pages.QuestionPage
 import play.api.libs.json.JsPath
+import sections.Trustees
 
-final case class TrusteesNamePage(index : Int) extends QuestionPage[FullName] {
+import scala.util.Try
 
-  override def path: JsPath = JsPath \ Trustees \ index \ toString
+final case class TrusteeLiveInTheUKPage(index : Int) extends QuestionPage[Boolean] {
 
-  override def toString: String = "name"
+  override def path: JsPath = Trustees.path \ index \ toString
+
+  override def toString: String = "liveInUK"
+
+  // TODO this is incomplete
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
+    value match {
+      case Some(false) =>
+        userAnswers.remove(TrusteesUkAddressPage(index))
+      case _ => super.cleanup(value, userAnswers)
+    }
+  }
 }

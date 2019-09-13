@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package pages
+package pages.trustees
 
 import models.IndividualOrBusiness.Business
-import mapping.reads.Trustees
-import models.{IndividualOrBusiness, UKAddress, UserAnswers}
+import models.{IndividualOrBusiness, UserAnswers}
+import pages.QuestionPage
 import play.api.libs.json.JsPath
+import sections.Trustees
 
 import scala.util.Try
 
 final case class TrusteeIndividualOrBusinessPage(index : Int) extends QuestionPage[IndividualOrBusiness] {
 
-  override def path: JsPath = JsPath \ Trustees \ index \ toString
+  override def path: JsPath = Trustees.path \ index \ toString
 
   override def toString: String = "individualOrBusiness"
 

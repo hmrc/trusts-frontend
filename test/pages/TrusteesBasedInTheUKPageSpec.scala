@@ -16,12 +16,17 @@
 
 package pages
 
-import mapping.reads.Trustees
-import play.api.libs.json.JsPath
+import models.TrusteesBasedInTheUK
+import pages.behaviours.PageBehaviours
 
-final case class TrusteesNinoPage(index : Int) extends QuestionPage[String] {
+class TrusteesBasedInTheUKSpec extends PageBehaviours {
 
-  override def path: JsPath = JsPath \ Trustees \ index \ toString
+  "TrusteesBasedInTheUKPage" must {
 
-  override def toString: String = "nino"
+    beRetrievable[TrusteesBasedInTheUK](TrusteesBasedInTheUKPage)
+
+    beSettable[TrusteesBasedInTheUK](TrusteesBasedInTheUKPage)
+
+    beRemovable[TrusteesBasedInTheUK](TrusteesBasedInTheUKPage)
+  }
 }

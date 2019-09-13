@@ -16,10 +16,9 @@
 
 package views
 
-import controllers.routes
 import forms.trustees.TrusteeAUKCitizenFormProvider
-import models.{FullName, NormalMode, UserAnswers}
-import pages.TrusteesNamePage
+import models.{FullName, NormalMode}
+import pages.trustees.TrusteesNamePage
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours

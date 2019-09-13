@@ -14,32 +14,17 @@
  * limitations under the License.
  */
 
-package forms
+package pages.trustees
 
-import forms.behaviours.BooleanFieldBehaviours
-import play.api.data.FormError
+import java.time.LocalDate
 
-class AddAnAssetYesNoFormProviderSpec extends BooleanFieldBehaviours {
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import sections.Trustees
 
-  val requiredKey = "addAnAssetYesNo.error.required"
-  val invalidKey = "error.boolean"
+final case class TrusteesDateOfBirthPage(index: Int) extends QuestionPage[LocalDate] {
 
-  val form = new AddAnAssetYesNoFormProvider()()
+  override def path: JsPath = Trustees.path \ index \ toString
 
-  ".value" must {
-
-    val fieldName = "value"
-
-    behave like booleanField(
-      form,
-      fieldName,
-      invalidError = FormError(fieldName, invalidKey)
-    )
-
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
-  }
+  override def toString: String = "dateOfBirth"
 }

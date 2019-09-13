@@ -18,6 +18,7 @@ package pages
 
 import models.AddATrustee
 import pages.behaviours.PageBehaviours
+import pages.trustees.AddATrusteePage
 
 class AddATrusteePageSpec extends PageBehaviours {
 

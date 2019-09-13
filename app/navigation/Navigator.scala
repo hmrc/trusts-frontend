@@ -20,11 +20,13 @@ import controllers.routes
 import javax.inject.{Inject, Singleton}
 import models.AddATrustee.{NoComplete, YesLater, YesNow}
 import models.IndividualOrBusiness.Individual
+import models.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
 import models.WhatKindOfAsset.{Business, Money, Other, Partnership, PropertyOrLand, Shares}
 import models._
 import pages._
 import pages.deceased_settlor.{DeceasedSettlorAnswerPage, SettlorDateOfBirthYesNoPage, SettlorDateOfDeathPage, SettlorDateOfDeathYesNoPage, SettlorNationalInsuranceNumberPage, SettlorsDateOfBirthPage, SettlorsInternationalAddressPage, SettlorsLastKnownAddressYesNoPage, SettlorsNINoYesNoPage, SettlorsNamePage, SettlorsUKAddressPage, WasSettlorsAddressUKYesNoPage}
 import pages.shares._
+import pages.trustees.{AddATrusteePage, AddATrusteeYesNoPage, IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteeIndividualOrBusinessPage, TrusteeLiveInTheUKPage, TrusteesAnswerPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
 import play.api.mvc.Call
 import sections.{ClassOfBeneficiaries, IndividualBeneficiaries, Trustees}
 import uk.gov.hmrc.auth.core.AffinityGroup
@@ -45,8 +47,10 @@ class Navigator @Inject()() {
     case GovernedInsideTheUKPage => _ => isTrustGovernedInsideUKRoute(draftId)
     case CountryGoverningTrustPage => _ => _ => routes.AdministrationInsideUKController.onPageLoad(NormalMode, draftId)
     case AdministrationInsideUKPage => _ => isTrustGeneralAdministrationRoute(draftId)
-    case CountryAdministeringTrustPage => _ => _ => routes.TrustResidentInUKController.onPageLoad(NormalMode, draftId)
-    case TrustResidentInUKPage => _ => isTrustResidentInUKRoute(draftId)
+    case CountryAdministeringTrustPage => _ => _ => routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, draftId)
+    case TrusteesBasedInTheUKPage => _ => isTrusteesBasedInTheUKPage(draftId)
+
+    case SettlorsBasedInTheUKPage => _ => isSettlorsBasedInTheUKPage(draftId)
     case EstablishedUnderScotsLawPage => _ => _ => routes.TrustResidentOffshoreController.onPageLoad(NormalMode, draftId)
     case TrustResidentOffshorePage => _ => wasTrustPreviouslyResidentOffshoreRoute(draftId)
     case TrustPreviouslyResidentPage => _ => _ => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
@@ -401,12 +405,19 @@ class Navigator @Inject()() {
   }
 
   private def isTrustGeneralAdministrationRoute(draftId: String)(answers: UserAnswers) = answers.get(AdministrationInsideUKPage) match {
-    case Some(true)  => routes.TrustResidentInUKController.onPageLoad(NormalMode, draftId)
+    case Some(true)  => routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, draftId)
     case Some(false) => routes.CountryAdministeringTrustController.onPageLoad(NormalMode, draftId)
     case None        => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def isTrustResidentInUKRoute(draftId: String)(answers: UserAnswers) = answers.get(TrustResidentInUKPage) match {
+  private def isTrusteesBasedInTheUKPage(draftId: String)(answers: UserAnswers) = answers.get(TrusteesBasedInTheUKPage) match {
+    case Some(UKBasedTrustees)   => routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode, draftId)
+    case Some(NonUkBasedTrustees)  => routes.RegisteringTrustFor5AController.onPageLoad(NormalMode, draftId)
+    case Some(InternationalAndUKTrustees)  => routes.SettlorsBasedInTheUKController.onPageLoad(NormalMode, draftId)
+    case None         => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def isSettlorsBasedInTheUKPage(draftId: String)(answers: UserAnswers) = answers.get(SettlorsBasedInTheUKPage) match {
     case Some(true)   => routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode, draftId)
     case Some(false)  => routes.RegisteringTrustFor5AController.onPageLoad(NormalMode, draftId)
     case None         => routes.SessionExpiredController.onPageLoad()

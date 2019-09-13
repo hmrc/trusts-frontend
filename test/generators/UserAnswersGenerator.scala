@@ -25,6 +25,7 @@ import pages.deceased_settlor.{SettlorDateOfBirthYesNoPage, SettlorDateOfDeathPa
 import pages.property_or_land.{PropertyOrLandAddressUkYesNoPage, PropertyOrLandDescriptionPage, PropertyOrLandUKAddressPage, _}
 import pages.living_settlor.{SettlorBusinessNamePage, SettlorIndividualAddressInternationalPage, SettlorIndividualAddressUKPage, SettlorIndividualAddressUKYesNoPage, SettlorIndividualAddressYesNoPage, SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualIDCardPage, SettlorIndividualIDCardYesNoPage, SettlorIndividualNINOPage, SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage, SettlorIndividualOrBusinessPage, SettlorIndividualPassportPage, SettlorIndividualPassportYesNoPage}
 import pages.shares._
+import pages.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteeIndividualOrBusinessPage, TrusteeLiveInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersGenerator extends TryValues {
@@ -32,6 +33,8 @@ trait UserAnswersGenerator extends TryValues {
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
     arbitrary[(SettlorKindOfTrustPage.type, JsValue)] ::
+    arbitrary[(SettlorsBasedInTheUKPage.type, JsValue)] ::
+    arbitrary[(TrusteesBasedInTheUKPage.type, JsValue)] ::
     arbitrary[(SettlorHandoverReliefYesNoPage.type, JsValue)] ::
     arbitrary[(SettlorBusinessNamePage, JsValue)] ::
     arbitrary[(SettlorIndividualPassportYesNoPage, JsValue)] ::
@@ -128,7 +131,6 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(TrustResidentOffshorePage.type, JsValue)] ::
     arbitrary[(RegisteringTrustFor5APage.type, JsValue)] ::
     arbitrary[(EstablishedUnderScotsLawPage.type, JsValue)] ::
-    arbitrary[(TrustResidentInUKPage.type, JsValue)] ::
     arbitrary[(CountryAdministeringTrustPage.type, JsValue)] ::
     arbitrary[(AdministrationInsideUKPage.type, JsValue)] ::
     arbitrary[(CountryGoverningTrustPage.type, JsValue)] ::

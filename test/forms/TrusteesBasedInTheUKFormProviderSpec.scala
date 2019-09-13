@@ -16,24 +16,24 @@
 
 package forms
 
-import forms.behaviours.BooleanFieldBehaviours
+import forms.behaviours.OptionFieldBehaviours
+import models.TrusteesBasedInTheUK
 import play.api.data.FormError
 
-class AddABeneficiaryYesNoFormProviderSpec extends BooleanFieldBehaviours {
+class TrusteesBasedInTheUKFormProviderSpec extends OptionFieldBehaviours {
 
-  val requiredKey = "addABeneficiaryYesNo.error.required"
-  val invalidKey = "error.boolean"
-
-  val form = new AddABeneficiaryYesNoFormProvider()()
+  val form = new TrusteesBasedInTheUKFormProvider()()
 
   ".value" must {
 
     val fieldName = "value"
+    val requiredKey = "trusteesBasedInTheUK.error.required"
 
-    behave like booleanField(
+    behave like optionsField[TrusteesBasedInTheUK](
       form,
       fieldName,
-      invalidError = FormError(fieldName, invalidKey)
+      validValues  = TrusteesBasedInTheUK.values.toSet,
+      invalidError = FormError(fieldName, "error.invalid")
     )
 
     behave like mandatoryField(
