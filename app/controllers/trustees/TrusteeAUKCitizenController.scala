@@ -18,7 +18,7 @@ package controllers.trustees
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.trustees.TrusteeAUKCitizenFormProvider
+import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.requests.DataRequest
 import models.{Mode, NormalMode}
@@ -43,7 +43,7 @@ class TrusteeAUKCitizenController @Inject()(
                                              getData: DraftIdRetrievalActionProvider,
                                              requireData: DataRequiredAction,
                                              requiredAnswer: RequiredAnswerActionProvider,
-                                             formProvider: TrusteeAUKCitizenFormProvider,
+                                             formProvider: YesNoFormProvider,
                                              val controllerComponents: MessagesControllerComponents,
                                              view: TrusteeAUKCitizenView
                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
@@ -63,7 +63,7 @@ class TrusteeAUKCitizenController @Inject()(
 
       val messagePrefix: String = getMessagePrefix(index, request)
 
-      val form = formProvider(messagePrefix)
+      val form = formProvider.withPrefix(messagePrefix)
 
       val preparedForm = request.userAnswers.get(TrusteeAUKCitizenPage(index)) match {
         case None => form
@@ -80,7 +80,7 @@ class TrusteeAUKCitizenController @Inject()(
 
       val messagePrefix: String = getMessagePrefix(index, request)
 
-      val form = formProvider(messagePrefix)
+      val form = formProvider.withPrefix(messagePrefix)
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
