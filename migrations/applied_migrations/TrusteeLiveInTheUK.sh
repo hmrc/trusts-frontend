@@ -6,11 +6,11 @@ echo "Applying migration TrusteeLiveInTheUK"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /trusteeLiveInTheUK                        controllers.TrusteeLiveInTheUKController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /trusteeLiveInTheUK                        controllers.TrusteeLiveInTheUKController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /trusteeLiveInTheUK                        controllers.trustees.TrusteeLiveInTheUKController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /trusteeLiveInTheUK                        controllers.trustees.TrusteeLiveInTheUKController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeTrusteeLiveInTheUK                  controllers.TrusteeLiveInTheUKController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeTrusteeLiveInTheUK                  controllers.TrusteeLiveInTheUKController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeTrusteeLiveInTheUK                  controllers.trustees.TrusteeLiveInTheUKController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeTrusteeLiveInTheUK                  controllers.trustees.TrusteeLiveInTheUKController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

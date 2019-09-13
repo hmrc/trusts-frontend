@@ -17,7 +17,7 @@
 package navigation.navigators
 
 import base.SpecBase
-import controllers.routes
+import controllers.trustees.routes
 import generators.Generators
 import sections.Trustees
 import models.IndividualOrBusiness.{Business, Individual}
@@ -70,7 +70,7 @@ trait TrusteeRoutes {
               .remove(Trustees).success.value
 
             navigator.nextPage(AddATrusteeYesNoPage, NormalMode, fakeDraftId)(answers)
-              .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
+              .mustBe(controllers.routes.TaskListController.onPageLoad(fakeDraftId))
         }
       }
 
@@ -98,7 +98,7 @@ trait TrusteeRoutes {
             .set(AddATrusteePage, AddATrustee.YesLater).success.value
 
           navigator.nextPage(AddATrusteePage, NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.routes.TaskListController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -110,7 +110,7 @@ trait TrusteeRoutes {
             .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
           navigator.nextPage(AddATrusteePage, NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.routes.TaskListController.onPageLoad(fakeDraftId))
       }
     }
 
