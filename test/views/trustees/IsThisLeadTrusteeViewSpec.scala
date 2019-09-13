@@ -27,7 +27,7 @@ class IsThisLeadTrusteeViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "isThisLeadTrustee"
 
-  val form = new YesNoFormProvider().withPrefix("isThisLeadTrustee")
+  val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
   val index = 0
 
