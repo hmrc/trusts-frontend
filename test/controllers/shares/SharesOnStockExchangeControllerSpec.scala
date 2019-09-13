@@ -18,22 +18,19 @@ package controllers.shares
 
 import base.SpecBase
 import controllers.IndexValidation
-import forms.shares.SharesOnStockExchangeFormProvider
+import forms.YesNoFormProvider
 import generators.ModelGenerators
 import models.NormalMode
-import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.shares.{ShareCompanyNamePage, SharesOnStockExchangePage}
-import play.api.inject.bind
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.shares.SharesOnStockExchangeView
 
 class SharesOnStockExchangeControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
 
-  val formProvider = new SharesOnStockExchangeFormProvider()
-  val form = formProvider()
+  val form = new YesNoFormProvider().withPrefix("sharesOnStockExchange")
   val index: Int = 0
   val companyName = "Company"
 
