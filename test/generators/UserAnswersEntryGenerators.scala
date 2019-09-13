@@ -37,6 +37,22 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
+  implicit lazy val arbitrarySettlorsBasedInTheUKUserAnswersEntry: Arbitrary[(SettlorsBasedInTheUKPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[SettlorsBasedInTheUKPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryTrusteesBasedInTheUKUserAnswersEntry: Arbitrary[(TrusteesBasedInTheUKPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[TrusteesBasedInTheUKPage.type]
+        value <- arbitrary[TrusteesBasedInTheUK].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
   implicit lazy val arbitrarySettlorHandoverReliefYesNoUserAnswersEntry: Arbitrary[(SettlorHandoverReliefYesNoPage.type, JsValue)] =
     Arbitrary {
       for {
@@ -764,14 +780,6 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
     Arbitrary {
       for {
         page  <- arbitrary[EstablishedUnderScotsLawPage.type]
-        value <- arbitrary[Boolean].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryTrustResidentInUKUserAnswersEntry: Arbitrary[(TrustResidentInUKPage.type, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[TrustResidentInUKPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }

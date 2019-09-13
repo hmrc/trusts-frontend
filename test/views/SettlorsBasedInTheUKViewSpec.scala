@@ -17,22 +17,22 @@
 package views
 
 import controllers.routes
-import forms.TrustResidentInUKFormProvider
+import forms.SettlorsBasedInTheUKFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.TrustResidentInUKView
+import views.html.SettlorsBasedInTheUKView
 
-class TrustResidentInUKViewSpec extends YesNoViewBehaviours {
+class SettlorsBasedInTheUKViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "trustResidentInUK"
+  val messageKeyPrefix = "settlorsBasedInTheUK"
 
-  val form = new TrustResidentInUKFormProvider()()
+  val form = new SettlorsBasedInTheUKFormProvider()()
 
-  "TrustResidentInUK view" must {
+  "SettlorsBasedInTheUK view" must {
 
-    val view = viewFor[TrustResidentInUKView](Some(emptyUserAnswers))
+    val view = viewFor[SettlorsBasedInTheUKView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
@@ -42,7 +42,5 @@ class TrustResidentInUKViewSpec extends YesNoViewBehaviours {
     behave like pageWithBackLink(applyView(form))
 
     behave like yesNoPage(form, applyView, messageKeyPrefix)
-
-    behave like pageWithASubmitButton(applyView(form))
   }
 }
