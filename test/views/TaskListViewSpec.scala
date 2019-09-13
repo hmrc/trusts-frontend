@@ -26,6 +26,7 @@ import models.{AddABeneficiary, AddATrustee, FullName, NormalMode, Status, UserA
 import navigation.TaskListNavigator
 import pages.entitystatus._
 import pages._
+import pages.trustees.{AddATrusteePage, IsThisLeadTrusteePage}
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import views.behaviours.{TaskListViewBehaviours, ViewBehaviours}
 import views.html.TaskListView

@@ -21,7 +21,7 @@ import forms.IndividualBeneficiaryDateOfBirthYesNoFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode, UserAnswers}
 import navigation.Navigator
-import pages.{IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryNamePage, SettlorsNamePage}
+import pages.{IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

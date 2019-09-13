@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions._
-import forms.{AddABeneficiaryFormProvider, AddABeneficiaryYesNoFormProvider}
+import forms.{AddABeneficiaryFormProvider, YesNoFormProvider}
 import javax.inject.Inject
 import models.{Enumerable, Mode}
 import navigation.Navigator
@@ -40,7 +40,7 @@ class AddABeneficiaryController @Inject()(
                                            getData: DraftIdRetrievalActionProvider,
                                            requireData: DataRequiredAction,
                                            addAnotherFormProvider: AddABeneficiaryFormProvider,
-                                           yesNoFormProvider: AddABeneficiaryYesNoFormProvider,
+                                           yesNoFormProvider: YesNoFormProvider,
                                            val controllerComponents: MessagesControllerComponents,
                                            addAnotherView: AddABeneficiaryView,
                                            yesNoView: AddABeneficiaryYesNoView
@@ -48,7 +48,7 @@ class AddABeneficiaryController @Inject()(
 
   val addAnotherForm = addAnotherFormProvider()
 
-  val yesNoForm = yesNoFormProvider()
+  val yesNoForm = yesNoFormProvider.withPrefix("addABeneficiaryYesNo")
 
   private def routes(draftId: String) =
     identify andThen getData(draftId) andThen requireData

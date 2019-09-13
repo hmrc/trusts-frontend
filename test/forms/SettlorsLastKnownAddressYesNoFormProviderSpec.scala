@@ -17,6 +17,7 @@
 package forms
 
 import forms.behaviours.BooleanFieldBehaviours
+import forms.deceased_settlor.SettlorsLastKnownAddressYesNoFormProvider
 import play.api.data.FormError
 
 class SettlorsLastKnownAddressYesNoFormProviderSpec extends BooleanFieldBehaviours {

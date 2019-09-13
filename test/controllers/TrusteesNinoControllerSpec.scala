@@ -18,12 +18,10 @@ package controllers
 
 import base.SpecBase
 import forms.NinoFormProvider
-import models.{FullName, IndividualOrBusiness, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.{FullName, IndividualOrBusiness, NormalMode}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.{IsThisLeadTrusteePage, TrusteesNamePage, TrusteesNinoPage}
-import play.api.inject.bind
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import pages.trustees.{IsThisLeadTrusteePage, TrusteesNamePage, TrusteesNinoPage}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.TrusteesNinoView

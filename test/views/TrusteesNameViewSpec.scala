@@ -16,17 +16,15 @@
 
 package views
 
-import controllers.routes
-import forms.TrusteesNameFormProvider
+import forms.trustees.TrusteesNameFormProvider
 import generators.Generators
-import models.{FullName, NormalMode, UserAnswers}
-import pages.{IsThisLeadTrusteePage, TrusteesNamePage}
+import models.{FullName, NormalMode}
+import pages.trustees.IsThisLeadTrusteePage
 import play.api.data.Form
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
 import views.html.TrusteesNameView
-import views.html.components.heading
 
 class TrusteesNameViewSpec extends QuestionViewBehaviours[FullName] with Generators {
 

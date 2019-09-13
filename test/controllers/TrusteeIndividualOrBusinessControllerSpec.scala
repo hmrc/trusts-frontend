@@ -17,18 +17,15 @@
 package controllers
 
 import base.SpecBase
-import forms.TrusteeIndividualOrBusinessFormProvider
-import models.{IndividualOrBusiness, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import forms.trustees.TrusteeIndividualOrBusinessFormProvider
+import models.{IndividualOrBusiness, NormalMode}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage}
+import pages.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage}
 import play.api.i18n.Messages
-import play.api.inject.bind
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.TrusteeIndividualOrBusinessView
-import views.html.components.heading
 
 class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValidation {
 

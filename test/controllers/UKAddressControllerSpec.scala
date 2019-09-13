@@ -18,13 +18,10 @@ package controllers
 
 import base.SpecBase
 import forms.UKAddressFormProvider
-import models.{FullName, NormalMode, UKAddress, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.{FullName, NormalMode, UKAddress}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.{IsThisLeadTrusteePage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
-import play.api.inject.bind
-import play.api.libs.json.Json
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import pages.trustees.{IsThisLeadTrusteePage, TrusteesNamePage, TrusteesUkAddressPage}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.TrusteesUkAddressView

@@ -18,11 +18,11 @@ package controllers
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.TrusteesNameFormProvider
+import forms.trustees.TrusteesNameFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.{IsThisLeadTrusteePage, TrusteesNamePage}
+import pages.trustees.{IsThisLeadTrusteePage, TrusteesNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

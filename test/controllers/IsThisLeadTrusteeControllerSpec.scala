@@ -17,13 +17,12 @@
 package controllers
 
 import base.SpecBase
-import forms.IsThisLeadTrusteeFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import forms.trustees.IsThisLeadTrusteeFormProvider
+import models.NormalMode
+import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
-import pages.IsThisLeadTrusteePage
-import play.api.inject.bind
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import pages.trustees.IsThisLeadTrusteePage
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.IsThisLeadTrusteeView

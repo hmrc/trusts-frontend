@@ -17,11 +17,12 @@
 package controllers
 
 import controllers.actions._
-import forms.{AddATrusteeFormProvider, AddATrusteeYesNoFormProvider}
+import forms.YesNoFormProvider
+import forms.trustees.{AddATrusteeFormProvider}
 import javax.inject.Inject
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.{AddATrusteePage, AddATrusteeYesNoPage}
+import pages.trustees.{AddATrusteePage, AddATrusteeYesNoPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi, MessagesProvider}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -41,14 +42,14 @@ class AddATrusteeController @Inject()(
                                        getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
                                        addAnotherFormProvider: AddATrusteeFormProvider,
-                                       yesNoFormProvider: AddATrusteeYesNoFormProvider,
+                                       yesNoFormProvider: YesNoFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
                                        addAnotherView: AddATrusteeView,
                                        yesNoView: AddATrusteeYesNoView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
   val addAnotherForm = addAnotherFormProvider()
-  val yesNoForm: Form[Boolean] = yesNoFormProvider()
+  val yesNoForm: Form[Boolean] = yesNoFormProvider.withPrefix("addATrusteeYesNo")
 
   private def actions(draftId: String) =
     identify andThen getData(draftId) andThen requireData

@@ -21,7 +21,7 @@ import forms.RemoveIndexFormProvider
 import models.FullName
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages.TrusteesNamePage
+import pages.trustees.TrusteesNamePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RemoveIndexView

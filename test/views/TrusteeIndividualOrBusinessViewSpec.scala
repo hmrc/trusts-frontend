@@ -16,15 +16,14 @@
 
 package views
 
-import forms.TrusteeIndividualOrBusinessFormProvider
-import models.{IndividualOrBusiness, NormalMode, UserAnswers}
-import pages.IsThisLeadTrusteePage
+import forms.trustees.TrusteeIndividualOrBusinessFormProvider
+import models.{IndividualOrBusiness, NormalMode}
+import pages.trustees.IsThisLeadTrusteePage
 import play.api.data.Form
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import views.behaviours.OptionsViewBehaviours
 import views.html.TrusteeIndividualOrBusinessView
-import views.html.helper.form
 
 class TrusteeIndividualOrBusinessViewSpec extends OptionsViewBehaviours {
 
