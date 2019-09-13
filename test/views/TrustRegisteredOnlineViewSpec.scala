@@ -16,8 +16,7 @@
 
 package views
 
-import controllers.routes
-import forms.TrustRegisteredOnlineFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -28,7 +27,7 @@ class TrustRegisteredOnlineViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "trustRegisteredOnline"
 
-  val form = new TrustRegisteredOnlineFormProvider()()
+  val form = new YesNoFormProvider().withPrefix("trustRegisteredOnline")
 
   "TrustRegisteredOnline view" must {
 
