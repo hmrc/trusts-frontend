@@ -20,7 +20,7 @@ import base.SpecBase
 import forms.YesNoFormProvider
 import forms.AddASettlorFormProvider
 import models.SettlorKindOfTrust.Lifetime
-import models.{AddASettlor, AddATrustee, NormalMode}
+import models.{AddASettlor, NormalMode}
 import pages.SettlorKindOfTrustPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -184,7 +184,7 @@ class AddASettlorControllerSpec extends SpecBase {
 
         val request =
           FakeRequest(POST, submitAnotherRoute)
-            .withFormUrlEncodedBody(("value", AddATrustee.options.head.value))
+            .withFormUrlEncodedBody(("value", AddASettlor.options.head.value))
 
         val result = route(application, request).value
 

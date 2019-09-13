@@ -29,7 +29,7 @@ import play.api.i18n.{I18nSupport, Messages, MessagesApi, MessagesProvider}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.{AddASettlorViewHelper, AddATrusteeViewHelper}
+import utils.AddASettlorViewHelper
 import views.html.{AddASettlorView, AddASettlorYesNoView}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -102,7 +102,7 @@ class AddASettlorController @Inject()(
       addAnotherForm.bindFromRequest().fold(
         (formWithErrors: Form[_]) => {
 
-          val settlors = new AddATrusteeViewHelper(request.userAnswers, draftId).rows
+          val settlors = new AddASettlorViewHelper(request.userAnswers, draftId).rows
 
           Future.successful(BadRequest(
             addAnotherView(

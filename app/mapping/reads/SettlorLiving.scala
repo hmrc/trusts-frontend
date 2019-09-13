@@ -35,7 +35,7 @@ object SettlorLiving {
 
       )((individualOrBusiness, name) => SettlorLiving(individualOrBusiness, name))
 
-    (__ \ "whatKindOfAsset").read[IndividualOrBusiness].flatMap[IndividualOrBusiness] {
+    (__ \ "individualOrBusiness").read[IndividualOrBusiness].flatMap[IndividualOrBusiness] {
       individualOrBusiness: IndividualOrBusiness =>
         if (individualOrBusiness == Individual) {
           Reads(_ => JsSuccess(individualOrBusiness))

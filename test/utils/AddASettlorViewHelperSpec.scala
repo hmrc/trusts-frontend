@@ -20,8 +20,8 @@ import base.SpecBase
 import models.Status.{Completed, InProgress}
 import models.{FullName, IndividualOrBusiness}
 import pages.entitystatus.LivingSettlorStatus
-import pages.living_settlor.{SettlorIndividualAddressYesNoPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage, SettlorIndividualOrBusinessPage}
-import pages.{SettlorHandoverReliefYesNoPage, SetupAfterSettlorDiedPage}
+import pages.living_settlor._
+import pages.SetupAfterSettlorDiedPage
 import viewmodels.AddRow
 
 class AddASettlorViewHelperSpec extends SpecBase   {

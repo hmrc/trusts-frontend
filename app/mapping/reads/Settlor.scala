@@ -36,8 +36,8 @@ object Settlor {
   implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
     a.map(identity)
 
-  implicit lazy val reads : Reads[Asset] = {
-    MoneyAsset.reads
+  implicit lazy val reads : Reads[Settlor] = {
+    SettlorLiving.reads
   }
 
 }
