@@ -16,6 +16,7 @@
 
 package utils
 
+import controllers.routes
 import models.Status.Completed
 import models.UserAnswers
 import play.api.i18n.Messages
@@ -53,13 +54,13 @@ class AddASettlorViewHelper(userAnswers: UserAnswers, draftId: String)(implicit 
         name,
         typeLabel,
         "#",
-        "#"
+        removeUrl = controllers.living_settlor.routes.RemoveSettlorController.onPageLoad(index, draftId).url
       )
       case DefaultSettlorViewModel(individualOrBusiness, _)  => AddRow(
         defaultName,
         typeLabel,
         "#",
-        "#"
+        removeUrl = controllers.living_settlor.routes.RemoveSettlorController.onPageLoad(index, draftId).url
       )
     }
 

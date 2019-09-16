@@ -1219,3 +1219,9 @@ settlorsBasedInTheUK.title = Are any of the settlors based in the UK?
 settlorsBasedInTheUK.heading = Are any of the settlors based in the UK?
 settlorsBasedInTheUK.checkYourAnswersLabel = Are any of the settlors based in the UK?
 settlorsBasedInTheUK.error.required = Select yes if the any of the settlors are based in the UK
+
+removeSettlor.title = Are you sure you want to remove the settlor?
+removeSettlor.default = the settlor
+removeSettlor.heading = Are you sure you want to remove {0}?
+removeSettlor.checkYourAnswersLabel = Are you sure you want to remove {0}?
+removeSettlor.error.required = Select yes if you want to remove the settlor
