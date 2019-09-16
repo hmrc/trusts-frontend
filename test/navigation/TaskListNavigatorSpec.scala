@@ -23,10 +23,12 @@ import controllers.routes
 import models.Status.Completed
 import models.WhatKindOfAsset.Money
 import mapping.reads.{Assets, Trustees}
-import models.{FullName, NormalMode, UserAnswers}
+import models.IndividualOrBusiness.Individual
+import models.{AddASettlor, FullName, IndividualOrBusiness, NormalMode, UserAnswers}
 import pages._
 import pages.deceased_settlor.SettlorsNamePage
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
+import pages.living_settlor.SettlorIndividualOrBusinessPage
 import pages.trustees.IsThisLeadTrusteePage
 import sections.{Beneficiaries, Settlors, TaxLiability, TrustDetails}
 
