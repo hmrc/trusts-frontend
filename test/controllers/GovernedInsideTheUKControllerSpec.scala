@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import forms.GovernedInsideTheUKFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import pages.GovernedInsideTheUKPage
 import play.api.test.FakeRequest
@@ -26,8 +26,7 @@ import views.html.GovernedInsideTheUKView
 
 class GovernedInsideTheUKControllerSpec extends SpecBase {
 
-  val formProvider = new GovernedInsideTheUKFormProvider()
-  val form = formProvider()
+  val form = new YesNoFormProvider().withPrefix("governedInsideTheUK")
 
   lazy val governedInsideTheUKRoute = routes.GovernedInsideTheUKController.onPageLoad(NormalMode,fakeDraftId).url
 
