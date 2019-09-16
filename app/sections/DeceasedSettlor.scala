@@ -17,9 +17,9 @@
 package sections
 
 import pages.QuestionPage
-import play.api.libs.json.JsPath
+import play.api.libs.json.{JsPath, JsValue}
 
-case object DeceasedSettlor extends QuestionPage[Nothing]{
+case object DeceasedSettlor extends QuestionPage[JsValue]{
 
   override def path: JsPath = Settlors.path \ toString
 
