@@ -30,6 +30,7 @@ class PrintUserAnswersHelper @Inject()(countryOptions: CountryOptions){
     val trustDetails = checkYourAnswersHelper.trustDetails.getOrElse(Nil)
     val trustees = checkYourAnswersHelper.trustees.getOrElse(Nil)
     val settlors = checkYourAnswersHelper.settlors.getOrElse(Nil)
+    val livingSettlors = checkYourAnswersHelper.livingSettlors.getOrElse(Nil)
     val individualBeneficiaries = checkYourAnswersHelper.individualBeneficiaries.getOrElse(Nil)
     val individualBeneficiariesExist: Boolean = individualBeneficiaries.nonEmpty
     val classOfBeneficiaries = checkYourAnswersHelper.classOfBeneficiaries(individualBeneficiariesExist).getOrElse(Nil)
@@ -42,6 +43,7 @@ class PrintUserAnswersHelper @Inject()(countryOptions: CountryOptions){
 
     val sections = trustDetails ++
       settlors ++
+      livingSettlors ++
       trustees ++
       individualBeneficiaries ++
       classOfBeneficiaries ++

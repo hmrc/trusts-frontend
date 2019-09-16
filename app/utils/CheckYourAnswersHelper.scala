@@ -30,6 +30,7 @@ import pages.shares._
 import pages.trustees._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
+import sections.LivingSettlors
 import uk.gov.hmrc.domain.Nino
 import utils.CheckYourAnswersHelper._
 import utils.countryOptions.CountryOptions
@@ -279,6 +280,40 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     ).flatten
 
     if (questions.nonEmpty) Some(Seq(AnswerSection(None, questions, Some(Messages("answerPage.section.settlors.heading"))))) else None
+  }
+
+  def livingSettlors: Option[Seq[AnswerSection]] = {
+
+    for {
+      livingSettlors <- userAnswers.get(LivingSettlors)
+      indexed = livingSettlors.zipWithIndex
+    } yield indexed.map {
+      case (livingSettlor, index) =>
+
+
+        val questions = Seq(
+          setupAfterSettlorDied,
+          settlorKindOfTrust(index),
+          settlorHandoverReliefYesNo,
+          settlorIndividualOrBusiness(index),
+          settlorIndividualName(index),
+          settlorIndividualDateOfBirthYesNo(index),
+          settlorIndividualDateOfBirth(index),
+          settlorIndividualNINOYesNo(index),
+          settlorIndividualNINO(index),
+          settlorIndividualAddressYesNo(index),
+          settlorIndividualAddressUKYesNo(index),
+          settlorIndividualAddressUK(index),
+          settlorIndividualAddressInternational(index),
+          settlorIndividualPassportYesNo(index),
+          settlorIndividualPassport(index),
+          settlorIndividualIDCardYesNo(index),
+          settlorIndividualIDCard(index)
+        ).flatten
+
+        if (questions.nonEmpty) Some(Seq(AnswerSection(None, questions, Some(Messages("answerPage.section.settlors.heading"))))) else None
+      )
+    }
   }
 
   def trustees: Option[Seq[AnswerSection]] = {
