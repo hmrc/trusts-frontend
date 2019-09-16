@@ -28,7 +28,7 @@ import models.{AddASettlor, FullName, IndividualOrBusiness, NormalMode, UserAnsw
 import pages._
 import pages.deceased_settlor.SettlorsNamePage
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
-import pages.living_settlor.SettlorIndividualOrBusinessPage
+import pages.living_settlor.{SettlorIndividualNamePage, SettlorIndividualOrBusinessPage}
 import pages.trustees.IsThisLeadTrusteePage
 import sections.{Beneficiaries, Settlors, TaxLiability, TrustDetails}
 
@@ -72,9 +72,7 @@ class TaskListNavigatorSpec extends SpecBase {
 
       }
 
-
-      "there are settlors" must {
-
+      "there is a deceased settlor" must {
         "go to DeceasedSettlorAnswerPage" in {
           val answers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, true).success.value
               .set(SettlorsNamePage, FullName("deceased",None, "settlor")).success.value
@@ -83,9 +81,44 @@ class TaskListNavigatorSpec extends SpecBase {
           navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId)
         }
 
+        "go to SetupAfterSettlorDied when deceased settlor is not complete" in {
+          val answers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, true).success.value
+            .set(SettlorsNamePage, FullName("deceased",None, "settlor")).success.value
+         navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode,fakeDraftId)
+        }
+
       }
 
     }
+
+    "there is a deceased settlor" must {
+      "go to DeceasedSettlorAnswerPage" in {
+        val answers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, true).success.value
+          .set(SettlorsNamePage, FullName("deceased",None, "settlor")).success.value
+          .set(DeceasedSettlorStatus, Completed).success.value
+
+        navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId)
+      }
+
+      "go to SetupAfterSettlorDied when deceased settlor is not complete" in {
+        val answers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, true).success.value
+          .set(SettlorsNamePage, FullName("deceased",None, "settlor")).success.value
+        navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode,fakeDraftId)
+      }
+
+    }
+    "there are living settlors" must {
+      "go to AddASettlor" in {
+        val answers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, false).success.value
+          .set(SettlorIndividualOrBusinessPage(0),Individual).success.value
+          .set(SettlorIndividualNamePage(0), FullName("living settlor",None, "settlor")).success.value
+
+        navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.routes.AddASettlorController.onPageLoad(fakeDraftId)
+      }
+    }
+
+  }
+
 
     "for beneficiaries task" when {
 
@@ -173,7 +206,5 @@ class TaskListNavigatorSpec extends SpecBase {
         }
 
       }
-
-    }
 
 }
