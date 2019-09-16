@@ -88,15 +88,6 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
-  def removeSettlor(index :Int) : Option[AnswerRow] = userAnswers.get(RemoveSettlorPage(index)) map {
-    x =>
-      AnswerRow(
-        "removeSettlor.checkYourAnswersLabel",
-        yesOrNo(x),
-        controllers.living_settlor.routes.RemoveSettlorController.onPageLoad(index, draftId).url
-      )
-  }
-
   def settlorIndividualPassportYesNo(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualPassportYesNoPage(index)) map {
     x =>
       AnswerRow(

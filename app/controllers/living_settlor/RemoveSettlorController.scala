@@ -65,6 +65,6 @@ class RemoveSettlorController @Inject()(
     controllers.living_settlor.routes.RemoveSettlorController.onSubmit(index, draftId)
 
   override def redirect(draftId : String) : Call =
-    controllers.routes.SessionExpiredController.onPageLoad()
+    controllers.routes.AddASettlorController.onPageLoad(draftId)
 
 }

@@ -18,11 +18,11 @@ package pages.living_settlor
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.Settlors
+import sections.{LivingSettlors, Settlors}
 
 case class RemoveSettlorPage(index : Int) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \Settlors \ "living" \ index \ toString
+  override def path: JsPath = LivingSettlors.path \ index \ toString
 
   override def toString: String = "removeSettlor"
 }
