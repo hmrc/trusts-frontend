@@ -22,7 +22,7 @@ import sections.LivingSettlors
 
 case class SettlorBusinessNamePage(index : Int) extends QuestionPage[String] {
 
-  override def path: JsPath = LivingSettlors.path \ "business" \ index \ toString
+  override def path: JsPath = LivingSettlors.path \ index \ toString
 
   override def toString: String = "name"
 }
