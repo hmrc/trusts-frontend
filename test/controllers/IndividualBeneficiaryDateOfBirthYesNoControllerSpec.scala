@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import forms.IndividualBeneficiaryDateOfBirthYesNoFormProvider
+import forms.YesNoFormProvider
 import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.{IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryNamePage}
@@ -30,8 +30,8 @@ import views.html.IndividualBeneficiaryDateOfBirthYesNoView
 
 class IndividualBeneficiaryDateOfBirthYesNoControllerSpec extends SpecBase {
 
-  val formProvider = new IndividualBeneficiaryDateOfBirthYesNoFormProvider()
-  val form = formProvider()
+  val formProvider = new YesNoFormProvider()
+  val form = formProvider.withPrefix("individualBeneficiaryDateOfBirthYesNo")
   val index: Int = 0
 
   val name = FullName("first name", None, "Last name")

@@ -17,7 +17,7 @@
 package views.shares
 
 import controllers.shares.routes
-import forms.shares.SharesInAPortfolioFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -28,7 +28,7 @@ class SharesInAPortfolioViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "sharesInAPortfolio"
 
-  val form = new SharesInAPortfolioFormProvider()()
+  val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
   val index = 0
 

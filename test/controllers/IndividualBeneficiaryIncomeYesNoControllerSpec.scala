@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import forms.IndividualBeneficiaryIncomeYesNoFormProvider
+import forms.YesNoFormProvider
 import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.{IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage}
@@ -30,8 +30,8 @@ import views.html.IndividualBeneficiaryIncomeYesNoView
 
 class IndividualBeneficiaryIncomeYesNoControllerSpec extends SpecBase {
 
-  val formProvider = new IndividualBeneficiaryIncomeYesNoFormProvider()
-  val form = formProvider()
+  val formProvider = new YesNoFormProvider()
+  val form = formProvider.withPrefix("individualBeneficiaryIncomeYesNo")
   val index: Int = 0
 
   val name = FullName("first name", None, "Last name")

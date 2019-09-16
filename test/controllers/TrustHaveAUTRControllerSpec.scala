@@ -17,13 +17,9 @@
 package controllers
 
 import base.SpecBase
-import forms.TrustHaveAUTRFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import forms.YesNoFormProvider
+import models.NormalMode
 import pages.TrustHaveAUTRPage
-import play.api.inject.bind
-import play.api.libs.json.{JsBoolean, Json}
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.Link
@@ -31,8 +27,8 @@ import views.html.TrustHaveAUTRView
 
 class TrustHaveAUTRControllerSpec extends SpecBase {
 
-  val formProvider = new TrustHaveAUTRFormProvider()
-  val form = formProvider()
+  val formProvider = new YesNoFormProvider()
+  val form = formProvider.withPrefix("trustHaveAUTR")
 
   val url = "https://www.gov.uk/find-lost-utr-number"
   val link = Link(messages("trustHaveAUTR.link"), url)

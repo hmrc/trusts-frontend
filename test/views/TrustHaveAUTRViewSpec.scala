@@ -16,8 +16,7 @@
 
 package views
 
-import controllers.routes
-import forms.TrustHaveAUTRFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -29,7 +28,7 @@ class TrustHaveAUTRViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "trustHaveAUTR"
 
-  val form = new TrustHaveAUTRFormProvider()()
+  val form = new YesNoFormProvider().withPrefix("trustHaveAUTR")
 
   "TrustHaveAUTR view" must {
 
