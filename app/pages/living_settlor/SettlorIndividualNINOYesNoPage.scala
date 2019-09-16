@@ -16,13 +16,22 @@
 
 package pages.living_settlor
 
+import models.UserAnswers
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.LivingSettlors
+
+import scala.util.Try
 
 final case class SettlorIndividualNINOYesNoPage(index : Int) extends QuestionPage[Boolean] {
 
   override def path: JsPath = LivingSettlors.path \ "individual" \ index \ toString
 
   override def toString: String = "ninoYesNo"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
+    value match {
+      case Some(false) => userAnswers.remove(SettlorIndividualNINOPage(index))
+      case _ => super.cleanup(value, userAnswers)
+    }
 }
