@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions._
-import forms.IndividualBeneficiaryNationalInsuranceYesNoFormProvider
+import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode, UserAnswers}
 import navigation.Navigator
@@ -39,12 +39,12 @@ class IndividualBeneficiaryNationalInsuranceYesNoController @Inject()(
                                          getData: DraftIdRetrievalActionProvider,
                                          requireData: DataRequiredAction,
                                          requiredAnswer: RequiredAnswerActionProvider,
-                                         formProvider: IndividualBeneficiaryNationalInsuranceYesNoFormProvider,
+                                         formProvider: YesNoFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: IndividualBeneficiaryNationalInsuranceYesNoView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = formProvider()
+  val form: Form[Boolean] = formProvider.withPrefix("individualBeneficiaryNationalInsuranceYesNo")
 
   private def actions(index: Int, draftId: String) =
     identify andThen

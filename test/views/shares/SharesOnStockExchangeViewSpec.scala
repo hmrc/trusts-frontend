@@ -16,7 +16,7 @@
 
 package views.shares
 
-import forms.shares.SharesOnStockExchangeFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -27,7 +27,7 @@ class SharesOnStockExchangeViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "sharesOnStockExchange"
 
-  val form = new SharesOnStockExchangeFormProvider()()
+  val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
   val index = 0
 

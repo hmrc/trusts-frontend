@@ -23,7 +23,7 @@ import sections.Assets
 
 final case class ShareClassPage(index : Int) extends QuestionPage[ShareClass] {
 
-  override def path: JsPath = JsPath \ Assets \ index \ toString
+  override def path: JsPath = Assets.path \ index \ toString
 
   override def toString: String = "class"
 }

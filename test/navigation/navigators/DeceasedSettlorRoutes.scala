@@ -17,29 +17,29 @@
 package navigation.navigators
 
 import base.SpecBase
-import controllers.routes
+import controllers.deceased_settlor.routes
 import generators.Generators
 import models.{NormalMode, UserAnswers}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages._
+import pages.deceased_settlor._
 
 
 trait DeceasedSettlorRoutes {
-
   self: PropertyChecks with Generators with SpecBase =>
 
   def deceasedSettlorRoutes()(implicit navigator: Navigator) = {
 
-    "go to SetupAfterSettlorDiedPage from SetupAfterSettlorDiedPage when user answers no" in {
+    "go to WhatKindOfTrustPage from SetupAfterSettlorDiedPage when user answers no" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
           val answers = userAnswers.set(SetupAfterSettlorDiedPage, value = false).success.value
 
           navigator.nextPage(SetupAfterSettlorDiedPage, NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode, fakeDraftId))
+            .mustBe(controllers.routes.SettlorKindOfTrustController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -190,7 +190,7 @@ trait DeceasedSettlorRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(DeceasedSettlorAnswerPage, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.routes.TaskListController.onPageLoad(fakeDraftId))
       }
     }
   }

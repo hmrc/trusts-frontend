@@ -19,9 +19,10 @@ package navigation
 import controllers.living_settlor.routes
 import javax.inject.Singleton
 import models.IndividualOrBusiness._
+import models.SettlorKindOfTrust._
 import models.{NormalMode, UserAnswers}
-import pages.{Page, SettlorHandoverReliefYesNoPage}
 import pages.living_settlor._
+import pages.{Page, SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage}
 import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
 
@@ -29,6 +30,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 class LivingSettlorNavigator extends Navigator {
 
   override protected def normalRoutes(draftId: String): Page => AffinityGroup => UserAnswers => Call = {
+    case SettlorKindOfTrustPage => _ => settlorKindOfTrustPage(draftId)
     case SettlorHandoverReliefYesNoPage => _ => _ => routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
     case SettlorIndividualNamePage(index) => _ => _ => routes.SettlorIndividualDateOfBirthYesNoController.onPageLoad(NormalMode, index, draftId)
     case SettlorIndividualDateOfBirthYesNoPage(index) => _ => settlorIndividualDateOfBirthYesNoPage(draftId, index)
@@ -44,7 +46,23 @@ class LivingSettlorNavigator extends Navigator {
     case SettlorIndividualIDCardYesNoPage(index) => _ =>  settlorIndividualIDCardYesNoPage(draftId, index)
     case SettlorIndividualIDCardPage(index) => _ => _ => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
     case SettlorIndividualOrBusinessPage(index) => _ => settlorIndividualOrBusinessPage(index, draftId)
-    case SettlorIndividualAnswerPage => _ => _ => controllers.routes.AddAssetsController.onPageLoad(draftId) // TDOD Change route
+    case SettlorIndividualAnswerPage => _ => _ => controllers.routes.AddASettlorController.onPageLoad(draftId)
+  }
+
+  private def settlorKindOfTrustPage(draftId: String)(answers: UserAnswers) = {
+    answers.get(SettlorKindOfTrustPage) match {
+      case Some(Deed) =>
+        controllers.routes.SettlorKindOfTrustController.onPageLoad(NormalMode, draftId)
+      case Some(Lifetime) =>
+        controllers.routes.SettlorHandoverReliefYesNoController.onPageLoad(NormalMode, draftId)
+      case Some(Building) =>
+        controllers.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
+      case Some(Repair) =>
+        controllers.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
+      case Some(Employees) =>
+        controllers.routes.SettlorKindOfTrustController.onPageLoad(NormalMode, draftId)
+      case _ => controllers.routes.SessionExpiredController.onPageLoad()
+    }
   }
 
   private def settlorIndividualDateOfBirthYesNoPage(draftId: String, index: Int)(answers: UserAnswers) =

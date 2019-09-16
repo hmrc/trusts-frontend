@@ -17,9 +17,9 @@
 package controllers
 
 import controllers.actions._
-import forms.AdministrationInsideUKFormProvider
+import forms.YesNoFormProvider
 import javax.inject.Inject
-import models.{Mode, UserAnswers}
+import models.Mode
 import navigation.Navigator
 import pages.AdministrationInsideUKPage
 import play.api.data.Form
@@ -38,12 +38,12 @@ class AdministrationInsideUKController @Inject()(
                                                   identify: IdentifierAction,
                                                   getData: DraftIdRetrievalActionProvider,
                                                   requireData: DataRequiredAction,
-                                                  formProvider: AdministrationInsideUKFormProvider,
+                                                  formProvider: YesNoFormProvider,
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: AdministrationInsideUKView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = formProvider()
+  val form: Form[Boolean] = formProvider.withPrefix("administrationInsideUK")
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
     implicit request =>

@@ -23,7 +23,7 @@ import models.requests.DataRequest
 import org.scalatest.EitherValues
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
-import pages.TrusteesNamePage
+import pages.trustees.TrusteesNamePage
 import play.api.http.HeaderNames
 import play.api.libs.json.Reads
 import play.api.mvc.Result
@@ -39,7 +39,6 @@ class RequiredAnswerActionSpec extends SpecBase with MockitoSugar with ScalaFutu
 
     def callRefine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] = refine(request)
   }
-
 
   "Required Answer Action" when {
 
@@ -59,11 +58,16 @@ class RequiredAnswerActionSpec extends SpecBase with MockitoSugar with ScalaFutu
         "redirect to page specified" in {
           val answers = emptyUserAnswers
 
-          val action = new Harness(RequiredAnswer(TrusteesNamePage(0), routes.TrusteesNameController.onPageLoad(NormalMode, 0, fakeDraftId)))
+          val action = new Harness(RequiredAnswer(
+            TrusteesNamePage(0),
+            controllers.trustees.routes.TrusteesNameController.onPageLoad(NormalMode, 0, fakeDraftId))
+          )
+
           val futureResult = action.callRefine(new DataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation))
 
           whenReady(futureResult) { result =>
-            result.left.value.header.headers(HeaderNames.LOCATION) mustBe routes.TrusteesNameController.onPageLoad(NormalMode, 0, fakeDraftId).url
+            result.left.value.header.headers(HeaderNames.LOCATION) mustBe
+              controllers.trustees.routes.TrusteesNameController.onPageLoad(NormalMode, 0, fakeDraftId).url
           }
         }
 

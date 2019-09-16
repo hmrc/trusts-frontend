@@ -25,7 +25,7 @@ import scala.util.Try
 
 final case class TrustOwnAllThePropertyOrLandPage(index: Int) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ Assets \ index \ toString
+  override def path: JsPath = Assets.path \ index \ toString
 
   override def toString: String = "trustOwnAllThePropertyOrLand"
 

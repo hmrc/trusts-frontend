@@ -16,8 +16,8 @@
 
 package forms.living_settlor
 
-import forms.SettlorIndividualOrBusinessFormProvider
 import forms.behaviours.OptionFieldBehaviours
+import forms.deceased_settlor.SettlorIndividualOrBusinessFormProvider
 import models.IndividualOrBusiness
 import play.api.data.FormError
 

@@ -20,6 +20,7 @@ import base.SpecBaseHelpers
 import models.{FullName, UserAnswers}
 import pages._
 import pages.behaviours.PageBehaviours
+import pages.trustees.TrusteesNamePage
 
 class RemoveTrusteeQuerySpec extends PageBehaviours with SpecBaseHelpers{
 

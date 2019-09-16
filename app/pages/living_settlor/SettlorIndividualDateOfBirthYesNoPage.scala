@@ -16,13 +16,23 @@
 
 package pages.living_settlor
 
+import models.UserAnswers
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.Settlors
+import sections.LivingSettlors
+
+import scala.util.Try
 
 final case class SettlorIndividualDateOfBirthYesNoPage(index : Int) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ Settlors \ "living" \ index \ toString
+  override def path: JsPath = LivingSettlors.path \ index \ toString
 
   override def toString: String = "dateOfBirthYesNo"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
+    value match {
+      case Some(false) => userAnswers.remove(SettlorIndividualDateOfBirthPage(index))
+      case _ => super.cleanup(value, userAnswers)
+    }
+
 }

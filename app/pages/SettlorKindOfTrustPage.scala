@@ -20,9 +20,9 @@ import models.SettlorKindOfTrust
 import play.api.libs.json.JsPath
 import sections.Settlors
 
-case class SettlorKindOfTrustPage(index: Int) extends QuestionPage[SettlorKindOfTrust] {
+case object SettlorKindOfTrustPage extends QuestionPage[SettlorKindOfTrust] {
 
-  override def path: JsPath = JsPath \ Settlors \toString
+  override def path: JsPath = Settlors.path \ toString
 
   override def toString: String = "settlorKindOfTrust"
 }

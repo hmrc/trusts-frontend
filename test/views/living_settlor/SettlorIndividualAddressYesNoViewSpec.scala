@@ -29,7 +29,7 @@ class SettlorIndividualAddressYesNoViewSpec extends YesNoViewBehaviours {
   val index = 0
   val name = FullName("First", Some("Middle"), "Last")
 
-  val form = new YesNoFormProvider()(messageKeyPrefix)
+  val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
   "SettlorIndividualAddressYesNo view" must {
 

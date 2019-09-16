@@ -17,7 +17,8 @@
 package controllers
 
 import base.SpecBase
-import forms.{AddATrusteeFormProvider, AddATrusteeYesNoFormProvider}
+import forms.YesNoFormProvider
+import forms.trustees.{AddATrusteeFormProvider}
 import models.SettlorKindOfTrust.Lifetime
 import models.{AddASettlor, AddATrustee, NormalMode}
 import pages.SettlorKindOfTrustPage
@@ -32,14 +33,14 @@ class AddASettlorControllerSpec extends SpecBase {
   lazy val submitYesNoRoute : String = routes.AddASettlorController.submitOne(fakeDraftId).url
 
   val addTrusteeForm = new AddATrusteeFormProvider()()
-  val yesNoForm = new AddATrusteeYesNoFormProvider()()
+  val yesNoForm = new YesNoFormProvider().withPrefix("addASettlorYesNo")
 
   val settlors = List()
 
   val hint = "addASettlor.lifetime"
 
   val userAnswersWithSettlorsComplete = emptyUserAnswers
-    .set(SettlorKindOfTrustPage(0), Lifetime)
+    .set(SettlorKindOfTrustPage, Lifetime)
     .success
     .value
 
@@ -85,7 +86,7 @@ class AddASettlorControllerSpec extends SpecBase {
       "return OK and the correct view for a GET" in {
 
         val answers = emptyUserAnswers
-          .set(SettlorKindOfTrustPage(0), Lifetime)
+          .set(SettlorKindOfTrustPage, Lifetime)
           .success
           .value
 
@@ -108,7 +109,7 @@ class AddASettlorControllerSpec extends SpecBase {
       "redirect to the next page when valid data is submitted" in {
 
         val answers = emptyUserAnswers
-          .set(SettlorKindOfTrustPage(0), Lifetime)
+          .set(SettlorKindOfTrustPage, Lifetime)
           .success
           .value
 
@@ -131,7 +132,7 @@ class AddASettlorControllerSpec extends SpecBase {
       "return a Bad Request and errors when invalid data is submitted" in {
 
         val answers = emptyUserAnswers
-          .set(SettlorKindOfTrustPage(0), Lifetime)
+          .set(SettlorKindOfTrustPage, Lifetime)
           .success
           .value
 

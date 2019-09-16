@@ -17,9 +17,9 @@
 package controllers
 
 import controllers.actions._
-import forms.TrustResidentOffshoreFormProvider
+import forms.YesNoFormProvider
 import javax.inject.Inject
-import models.{Mode, UserAnswers}
+import models.Mode
 import navigation.Navigator
 import pages.TrustResidentOffshorePage
 import play.api.data.Form
@@ -32,20 +32,20 @@ import views.html.TrustResidentOffshoreView
 import scala.concurrent.{ExecutionContext, Future}
 
 class TrustResidentOffshoreController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DraftIdRetrievalActionProvider,
-                                         requireData: DataRequiredAction,
-                                         formProvider: TrustResidentOffshoreFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: TrustResidentOffshoreView
+                                                 override val messagesApi: MessagesApi,
+                                                 sessionRepository: SessionRepository,
+                                                 navigator: Navigator,
+                                                 identify: IdentifierAction,
+                                                 getData: DraftIdRetrievalActionProvider,
+                                                 requireData: DataRequiredAction,
+                                                 formProvider: YesNoFormProvider,
+                                                 val controllerComponents: MessagesControllerComponents,
+                                                 view: TrustResidentOffshoreView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
 
-  val form: Form[Boolean] = formProvider()
+  val form: Form[Boolean] = formProvider.withPrefix("trustResidentOffshore")
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>

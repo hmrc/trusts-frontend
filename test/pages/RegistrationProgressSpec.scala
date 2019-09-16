@@ -24,6 +24,7 @@ import models.Status.{Completed, InProgress}
 import models.{AddABeneficiary, AddATrustee, FullName, Status, UserAnswers, WhatKindOfAsset}
 import pages.entitystatus.{AssetStatus, ClassBeneficiaryStatus, DeceasedSettlorStatus, IndividualBeneficiaryStatus, TrustDetailsStatus, TrusteeStatus}
 import pages.shares.{SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, SharesInAPortfolioPage}
+import pages.trustees.{AddATrusteePage, IsThisLeadTrusteePage}
 import play.api.libs.json.{JsObject, Json}
 
 class RegistrationProgressSpec extends SpecBase {

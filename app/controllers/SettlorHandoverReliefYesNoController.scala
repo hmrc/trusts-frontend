@@ -40,12 +40,12 @@ class SettlorHandoverReliefYesNoController @Inject()(
                                          getData: DraftIdRetrievalActionProvider,
                                          requiredAnswer: RequiredAnswerActionProvider,
                                          requireData: DataRequiredAction,
-                                         formProvider: YesNoFormProvider,
+                                         yesNoFormProvider: YesNoFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: SettlorHandoverReliefYesNoView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = formProvider("settlorHandoverReliefYesNo")
+  val form: Form[Boolean] = yesNoFormProvider.withPrefix("settlorHandoverReliefYesNo")
 
   private def actions(draftId: String) =
     identify andThen

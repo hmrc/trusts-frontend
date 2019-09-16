@@ -17,6 +17,7 @@
 package pages
 
 import models.UserAnswers
+import pages.deceased_settlor.{SettlorDateOfBirthYesNoPage, SettlorDateOfDeathPage, SettlorDateOfDeathYesNoPage, SettlorNationalInsuranceNumberPage, SettlorsDateOfBirthPage, SettlorsInternationalAddressPage, SettlorsLastKnownAddressYesNoPage, SettlorsNINoYesNoPage, SettlorsNamePage, SettlorsUKAddressPage, WasSettlorsAddressUKYesNoPage}
 import play.api.libs.json.JsPath
 import sections.Settlors
 
@@ -24,7 +25,7 @@ import scala.util.Try
 
 case object SetupAfterSettlorDiedPage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ Settlors \toString
+  override def path: JsPath = Settlors.path \toString
 
   override def toString: String = "setupAfterSettlorDied"
 

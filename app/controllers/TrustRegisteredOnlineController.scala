@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions._
-import forms.TrustRegisteredOnlineFormProvider
+import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
@@ -32,20 +32,20 @@ import views.html.TrustRegisteredOnlineView
 import scala.concurrent.{ExecutionContext, Future}
 
 class TrustRegisteredOnlineController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DraftIdRetrievalActionProvider,
-                                         requireData: DataRequiredAction,
-                                         formProvider: TrustRegisteredOnlineFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: TrustRegisteredOnlineView
+                                                 override val messagesApi: MessagesApi,
+                                                 sessionRepository: SessionRepository,
+                                                 navigator: Navigator,
+                                                 identify: IdentifierAction,
+                                                 getData: DraftIdRetrievalActionProvider,
+                                                 requireData: DataRequiredAction,
+                                                 formProvider: YesNoFormProvider,
+                                                 val controllerComponents: MessagesControllerComponents,
+                                                 view: TrustRegisteredOnlineView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
 
-  val form: Form[Boolean] = formProvider()
+  val form: Form[Boolean] = formProvider.withPrefix("trustRegisteredOnline")
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>

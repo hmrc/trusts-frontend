@@ -21,7 +21,7 @@ import play.api.libs.json.JsPath
 
 case object DeceasedSettlor extends QuestionPage[Nothing]{
 
-  override def path: JsPath = JsPath \ Settlors \ toString
+  override def path: JsPath = Settlors.path \ toString
 
   override def toString: String = "deceased"
 

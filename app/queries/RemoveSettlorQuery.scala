@@ -17,11 +17,11 @@
 package queries
 
 import play.api.libs.json.JsPath
-import sections.Settlors
+import sections.{LivingSettlors, Settlors}
 
 final case class  RemoveSettlorQuery(index : Int) extends Settable[Boolean] {
 
-  override def path: JsPath = JsPath \ Settlors \ "living" \ index
+  override def path: JsPath = LivingSettlors.path \ index
 }
 
 
