@@ -23,10 +23,7 @@ import models.{PassportOrIdCardDetails, UserAnswers}
 class IndividualSettlorsMapper @Inject()(nameMapper: NameMapper, addressMapper: AddressMapper) extends Mapping[List[Settlor]] {
 
    def build(userAnswers: UserAnswers): Option[List[Settlor]] = {
-     val settlors = userAnswers.get(sections.LivingSettlors).getOrElse(List.empty[IndividualSettlor])
-
-     println(settlors)
-     println("***********************")
+     val settlors = userAnswers.get(mapping.reads.LivingSettlors).getOrElse(List.empty[IndividualSettlor])
 
      val mappedSettlors = settlors.map { ls =>
        Settlor(nameMapper.build(ls.name), ls.dateOfBirth, identificationMap(ls))

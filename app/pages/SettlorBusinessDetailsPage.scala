@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-package pages.entitystatus
+package pages
 
-import models.Status
-import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.LivingSettlors
+import sections.{LivingSettlors, Settlors}
 
-final case class LivingSettlorStatus(index : Int) extends QuestionPage[Status] {
+case class SettlorBusinessDetailsPage(index : Int) extends QuestionPage[String] {
 
   override def path: JsPath = LivingSettlors.path \ index \ toString
 
-  override def toString: String = "status"
-
+  override def toString: String = "settlorBusinessDetails"
 }

@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package pages.entitystatus
+package pages
 
-import models.Status
-import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.LivingSettlors
 
-final case class LivingSettlorStatus(index : Int) extends QuestionPage[Status] {
+case object AddASettlorYesNoPage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = LivingSettlors.path \ index \ toString
+  override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "status"
-
+  override def toString: String = "addASettlorYesNo"
 }

@@ -85,6 +85,11 @@ trait ModelGenerators {
       Gen.oneOf(AddAssets.values)
     }
 
+  implicit lazy val arbitraryAddASettlor: Arbitrary[AddASettlor] =
+    Arbitrary {
+      Gen.oneOf(AddASettlor.values)
+    }
+
   implicit lazy val arbitraryWhatKindOfAsset: Arbitrary[WhatKindOfAsset] =
     Arbitrary {
       Gen.oneOf(WhatKindOfAsset.values)
