@@ -17,11 +17,8 @@
 package pages
 
 import models.UserAnswers
-import pages.deceased_settlor.{SettlorDateOfBirthYesNoPage, SettlorDateOfDeathPage, SettlorDateOfDeathYesNoPage, SettlorNationalInsuranceNumberPage, SettlorsDateOfBirthPage, SettlorsInternationalAddressPage, SettlorsLastKnownAddressYesNoPage, SettlorsNINoYesNoPage, SettlorsNamePage, SettlorsUKAddressPage, WasSettlorsAddressUKYesNoPage}
-import pages.entitystatus.DeceasedSettlorStatus
-import pages.living_settlor.SettlorIndividualOrBusinessPage
 import play.api.libs.json.JsPath
-import sections.{LivingSettlors, Settlors}
+import sections.{DeceasedSettlor, LivingSettlors, Settlors}
 
 import scala.util.Try
 
@@ -35,18 +32,7 @@ case object SetupAfterSettlorDiedPage extends QuestionPage[Boolean] {
     value match {
       case Some(false) =>
         // becoming a living settlor
-        userAnswers.remove(SettlorsNamePage)
-        .flatMap(_.remove(SettlorDateOfDeathYesNoPage))
-        .flatMap(_.remove(SettlorDateOfDeathPage))
-        .flatMap(_.remove(SettlorDateOfBirthYesNoPage))
-        .flatMap(_.remove(SettlorsDateOfBirthPage))
-        .flatMap(_.remove(SettlorsNINoYesNoPage))
-        .flatMap(_.remove(SettlorNationalInsuranceNumberPage))
-        .flatMap(_.remove(SettlorsLastKnownAddressYesNoPage))
-        .flatMap(_.remove(WasSettlorsAddressUKYesNoPage))
-        .flatMap(_.remove(SettlorsUKAddressPage))
-        .flatMap(_.remove(SettlorsInternationalAddressPage))
-        .flatMap(_.remove(DeceasedSettlorStatus))
+        userAnswers.remove(DeceasedSettlor)
       case Some(true) =>
         // becoming a will type trust
         userAnswers.remove(SettlorKindOfTrustPage)
