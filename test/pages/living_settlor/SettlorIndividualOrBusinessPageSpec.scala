@@ -16,7 +16,7 @@
 
 package pages.living_settlor
 
-import models.{IndividualOrBusiness, SettlorKindOfTrust, UserAnswers}
+import models.{FullName, IndividualOrBusiness, SettlorKindOfTrust, UserAnswers}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.{SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage, SetupAfterSettlorDiedPage}
 import pages.behaviours.PageBehaviours
@@ -49,7 +49,19 @@ class SettlorIndividualOrBusinessPageSpec extends PageBehaviours {
   }
 
   "remove individual related data when changing to business" in {
+    forAll(arbitrary[UserAnswers], arbitrary[String]) {
+      (initial, str) =>
+        val answers: UserAnswers = initial
+          .set(SetupAfterSettlorDiedPage, false).success.value
+          .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Lifetime).success.value
+          .set(SettlorHandoverReliefYesNoPage, true).success.value
+          .set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
+          .set(SettlorIndividualNamePage(0), FullName("First", None, "Last")).success.value
 
+        val result = answers.set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Business).success.value
+
+        result.get(SettlorIndividualNamePage(0)) mustNot be(defined)
+    }
   }
 
 }
