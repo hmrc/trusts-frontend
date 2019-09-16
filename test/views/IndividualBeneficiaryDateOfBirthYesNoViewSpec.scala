@@ -17,7 +17,7 @@
 package views
 
 import controllers.routes
-import forms.IndividualBeneficiaryDateOfBirthYesNoFormProvider
+import forms.YesNoFormProvider
 import models.{FullName, NormalMode, UserAnswers}
 import pages.IndividualBeneficiaryNamePage
 import play.api.data.Form
@@ -32,7 +32,7 @@ class IndividualBeneficiaryDateOfBirthYesNoViewSpec extends YesNoViewBehaviours 
   val name = "First Last"
   val fullName = FullName("First", None, "Last")
 
-  val form = new IndividualBeneficiaryDateOfBirthYesNoFormProvider()()
+  val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
   "IndividualBeneficiaryDateOfBirthYesNo view" must {
 

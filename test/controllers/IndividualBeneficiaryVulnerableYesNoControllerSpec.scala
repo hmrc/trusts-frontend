@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import forms.IndividualBeneficiaryVulnerableYesNoFormProvider
+import forms.YesNoFormProvider
 import models.{FullName, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.{IndividualBeneficiaryNamePage, IndividualBeneficiaryVulnerableYesNoPage}
@@ -30,8 +30,8 @@ import views.html.IndividualBeneficiaryVulnerableYesNoView
 
 class IndividualBeneficiaryVulnerableYesNoControllerSpec extends SpecBase {
 
-  val formProvider = new IndividualBeneficiaryVulnerableYesNoFormProvider()
-  val form = formProvider()
+  val formProvider = new YesNoFormProvider()
+  val form = formProvider.withPrefix("individualBeneficiaryVulnerableYesNo")
   val index: Int = 0
 
   val name = FullName("first name", None, "Last name")

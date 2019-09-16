@@ -22,7 +22,7 @@ import sections.LivingSettlors
 
 final case class SettlorIndividualNINOPage(index : Int) extends QuestionPage[String] {
 
-  override def path: JsPath = LivingSettlors.path \ "individual" \ index \ toString
+  override def path: JsPath = LivingSettlors.path \ index \ toString
 
   override def toString: String = "nino"
 }
