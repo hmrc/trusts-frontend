@@ -46,7 +46,7 @@ class AddASettlorViewHelper(userAnswers: UserAnswers, draftId: String)(implicit 
   private def parseSettlorLiving(mvm : SettlorViewModel, index: Int) : AddRow = {
     val defaultName = messages("entities.no.name.added")
 
-    val typeLabel : String = messages("individualOrBusiness.individual")
+    val typeLabel : String = messages("entity.settlor.individual")
 
     mvm match {
       case SettlorLivingIndividualViewModel(_, name, _) => AddRow(
