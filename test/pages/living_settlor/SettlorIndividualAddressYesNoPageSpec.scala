@@ -16,6 +16,10 @@
 
 package pages.living_settlor
 
+import java.time.LocalDate
+
+import models.{InternationalAddress, PassportOrIdCardDetails, UKAddress, UserAnswers}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
 class SettlorIndividualAddressYesNoPageSpec extends PageBehaviours {
@@ -27,5 +31,35 @@ class SettlorIndividualAddressYesNoPageSpec extends PageBehaviours {
     beSettable[Boolean](SettlorIndividualAddressYesNoPage(0))
 
     beRemovable[Boolean](SettlorIndividualAddressYesNoPage(0))
+
+    "remove relevant data" when {
+
+      val page = SettlorIndividualAddressYesNoPage(0)
+
+      "set to false" in {
+        forAll(arbitrary[UserAnswers]) {
+          initial =>
+            val answers: UserAnswers = initial.set(page, true).success.value
+              .set(SettlorIndividualAddressUKYesNoPage(0), true).success.value
+              .set(SettlorIndividualAddressInternationalPage(0), InternationalAddress("line1", "line2", None, None, "France")).success.value
+              .set(SettlorIndividualAddressUKPage(0), UKAddress("line1", None, None, "Town", "NE11NE")).success.value
+              .set(SettlorIndividualPassportYesNoPage(0), true).success.value
+              .set(SettlorIndividualPassportPage(0), PassportOrIdCardDetails("UK", "234567887", LocalDate.now())).success.value
+              .set(SettlorIndividualIDCardYesNoPage(0), true).success.value
+              .set(SettlorIndividualIDCardPage(0), PassportOrIdCardDetails("UK", "8765567", LocalDate.now())).success.value
+
+            val result = answers.set(page, false).success.value
+
+            result.get(SettlorIndividualAddressUKYesNoPage(0)) must not be defined
+            result.get(SettlorIndividualAddressInternationalPage(0)) must not be defined
+            result.get(SettlorIndividualAddressUKPage(0)) must not be defined
+            result.get(SettlorIndividualPassportYesNoPage(0)) must not be defined
+            result.get(SettlorIndividualPassportPage(0)) must not be defined
+            result.get(SettlorIndividualIDCardYesNoPage(0)) must not be defined
+            result.get(SettlorIndividualIDCardPage(0)) must not be defined
+        }
+      }
+
+    }
   }
 }

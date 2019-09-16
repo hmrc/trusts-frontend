@@ -16,6 +16,10 @@
 
 package pages.living_settlor
 
+import java.time.LocalDate
+
+import models.UserAnswers
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
 class SettlorIndividualDateOfBirthYesNoPageSpec extends PageBehaviours {
@@ -27,5 +31,23 @@ class SettlorIndividualDateOfBirthYesNoPageSpec extends PageBehaviours {
     beSettable[Boolean](SettlorIndividualDateOfBirthYesNoPage(0))
 
     beRemovable[Boolean](SettlorIndividualDateOfBirthYesNoPage(0))
+
+    "remove relevant data" when {
+
+      val page = SettlorIndividualDateOfBirthYesNoPage(0)
+
+      "set to false" in {
+        forAll(arbitrary[UserAnswers]) {
+          initial =>
+            val answers: UserAnswers = initial.set(page, true).success.value
+              .set(SettlorIndividualDateOfBirthPage(0), LocalDate.now()).success.value
+
+            val result = answers.set(page, false).success.value
+
+            result.get(SettlorIndividualDateOfBirthPage(0)) must not be defined
+        }
+      }
+
+    }
   }
 }
