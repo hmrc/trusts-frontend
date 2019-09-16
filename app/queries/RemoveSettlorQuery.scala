@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-package pages.entitystatus
+package queries
 
-import models.Status
-import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.LivingSettlors
+import sections.{LivingSettlors, Settlors}
 
-final case class LivingSettlorStatus(index : Int) extends QuestionPage[Status] {
+final case class  RemoveSettlorQuery(index : Int) extends Settable[Boolean] {
 
-  override def path: JsPath = LivingSettlors.path \ index \ toString
-
-  override def toString: String = "status"
-
+  override def path: JsPath = LivingSettlors.path \ index
 }
+
+

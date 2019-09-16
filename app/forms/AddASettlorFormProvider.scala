@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package pages.entitystatus
+package forms
 
-import models.Status
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.LivingSettlors
+import forms.mappings.Mappings
+import javax.inject.Inject
+import models.AddASettlor
+import play.api.data.Form
 
-final case class LivingSettlorStatus(index : Int) extends QuestionPage[Status] {
+class AddASettlorFormProvider @Inject() extends Mappings {
 
-  override def path: JsPath = LivingSettlors.path \ index \ toString
-
-  override def toString: String = "status"
-
+  def apply(): Form[AddASettlor] =
+    Form(
+      "value" -> enumerable[AddASettlor]("addASettlor.error.required")
+    )
 }

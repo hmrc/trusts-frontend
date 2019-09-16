@@ -17,9 +17,10 @@
 package sections
 
 import pages.QuestionPage
-import play.api.libs.json.{JsPath, JsValue}
+import play.api.libs.json.JsPath
+import viewmodels.addAnother.SettlorViewModel
 
-case object Settlors extends QuestionPage[List[JsValue]]{
+case object Settlors extends QuestionPage[Nothing]{
 
   override def path: JsPath = JsPath \ toString
 
