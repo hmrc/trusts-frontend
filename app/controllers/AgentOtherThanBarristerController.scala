@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions._
-import forms.AgentOtherThanBarristerFormProvider
+import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.{Mode, UserAnswers}
 import navigation.Navigator
@@ -32,20 +32,20 @@ import views.html.AgentOtherThanBarristerView
 import scala.concurrent.{ExecutionContext, Future}
 
 class AgentOtherThanBarristerController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DraftIdRetrievalActionProvider,
-                                         requireData: DataRequiredAction,
-                                         formProvider: AgentOtherThanBarristerFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: AgentOtherThanBarristerView
+                                                   override val messagesApi: MessagesApi,
+                                                   sessionRepository: SessionRepository,
+                                                   navigator: Navigator,
+                                                   identify: IdentifierAction,
+                                                   getData: DraftIdRetrievalActionProvider,
+                                                   requireData: DataRequiredAction,
+                                                   yesNoFormProvider: YesNoFormProvider,
+                                                   val controllerComponents: MessagesControllerComponents,
+                                                   view: AgentOtherThanBarristerView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
 
-  val form: Form[Boolean] = formProvider()
+  val form: Form[Boolean] = yesNoFormProvider.withPrefix("agentOtherThanBarrister")
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
