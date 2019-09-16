@@ -83,4 +83,8 @@ class SetupAfterSettlorDiedPageSpec extends PageBehaviours {
 
     }
   }
+
+  "relevant data for nino individual is removed when SetupAfterSettlorDiedPage is set to true" in {
+
+  }
 }
