@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions._
-import forms.IndividualBeneficiaryVulnerableYesNoFormProvider
+import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode, UserAnswers}
 import navigation.Navigator
@@ -32,19 +32,19 @@ import views.html.IndividualBeneficiaryVulnerableYesNoView
 import scala.concurrent.{ExecutionContext, Future}
 
 class IndividualBeneficiaryVulnerableYesNoController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DraftIdRetrievalActionProvider,
-                                         requireData: DataRequiredAction,
-                                         requiredAnswer: RequiredAnswerActionProvider,
-                                         formProvider: IndividualBeneficiaryVulnerableYesNoFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: IndividualBeneficiaryVulnerableYesNoView
+                                                                override val messagesApi: MessagesApi,
+                                                                sessionRepository: SessionRepository,
+                                                                navigator: Navigator,
+                                                                identify: IdentifierAction,
+                                                                getData: DraftIdRetrievalActionProvider,
+                                                                requireData: DataRequiredAction,
+                                                                requiredAnswer: RequiredAnswerActionProvider,
+                                                                yesNoFormProvider: YesNoFormProvider,
+                                                                val controllerComponents: MessagesControllerComponents,
+                                                                view: IndividualBeneficiaryVulnerableYesNoView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = formProvider()
+  val form: Form[Boolean] = yesNoFormProvider.withPrefix("individualBeneficiaryVulnerableYesNo")
 
   private def actions(index: Int, draftId: String) =
     identify andThen

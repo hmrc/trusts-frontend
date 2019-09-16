@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions._
-import forms.IndividualBeneficiaryDateOfBirthYesNoFormProvider
+import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode, UserAnswers}
 import navigation.Navigator
@@ -32,19 +32,19 @@ import views.html.IndividualBeneficiaryDateOfBirthYesNoView
 import scala.concurrent.{ExecutionContext, Future}
 
 class IndividualBeneficiaryDateOfBirthYesNoController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DraftIdRetrievalActionProvider,
-                                         requireData: DataRequiredAction,
-                                         requiredAnswer: RequiredAnswerActionProvider,
-                                         formProvider: IndividualBeneficiaryDateOfBirthYesNoFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: IndividualBeneficiaryDateOfBirthYesNoView
+                                                                 override val messagesApi: MessagesApi,
+                                                                 sessionRepository: SessionRepository,
+                                                                 navigator: Navigator,
+                                                                 identify: IdentifierAction,
+                                                                 getData: DraftIdRetrievalActionProvider,
+                                                                 requireData: DataRequiredAction,
+                                                                 requiredAnswer: RequiredAnswerActionProvider,
+                                                                 yesNoFormProvider: YesNoFormProvider,
+                                                                 val controllerComponents: MessagesControllerComponents,
+                                                                 view: IndividualBeneficiaryDateOfBirthYesNoView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = formProvider()
+  val form: Form[Boolean] = yesNoFormProvider.withPrefix("individualBeneficiaryDateOfBirthYesNo")
 
   private def actions(index: Int, draftId: String) =
     identify andThen

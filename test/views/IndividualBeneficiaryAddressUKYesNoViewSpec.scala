@@ -16,9 +16,8 @@
 
 package views
 
-import controllers.routes
-import forms.IndividualBeneficiaryAddressUKYesNoFormProvider
-import models.{FullName, NormalMode, UserAnswers}
+import forms.YesNoFormProvider
+import models.{FullName, NormalMode}
 import pages.IndividualBeneficiaryNamePage
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -33,7 +32,7 @@ class IndividualBeneficiaryAddressUKYesNoViewSpec extends YesNoViewBehaviours {
 
   val fullName = FullName("First", None, "Last")
 
-  val form = new IndividualBeneficiaryAddressUKYesNoFormProvider()()
+  val form = new YesNoFormProvider().withPrefix("individualBeneficiaryAddressUKYesNo")
 
   "IndividualBeneficiaryAddressUKYesNo view" must {
 
