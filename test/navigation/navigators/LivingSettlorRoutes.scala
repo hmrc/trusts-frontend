@@ -320,4 +320,16 @@ trait LivingSettlorRoutes {
 
     }
 
+  "navigate from SettlorIndividualAnswerPage" in {
+
+    val page = SettlorIndividualAnswerPage
+
+    forAll(arbitrary[UserAnswers]) {
+      userAnswers =>
+        navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
+          .mustBe(controllers.routes.AddASettlorController.onPageLoad(fakeDraftId))
+    }
+
+  }
+
   }
