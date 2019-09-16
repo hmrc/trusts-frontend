@@ -17,6 +17,7 @@
 package utils
 
 import base.SpecBase
+import controllers.routes
 import models.Status.{Completed, InProgress}
 import models.{FullName, IndividualOrBusiness}
 import pages.entitystatus.LivingSettlorStatus
@@ -27,6 +28,9 @@ import viewmodels.AddRow
 class AddASettlorViewHelperSpec extends SpecBase   {
 
   val settlorName = FullName("first name", Some("middle name"), "last name")
+
+  def removeSettlorRoute(index : Int) =
+    controllers.living_settlor.routes.RemoveSettlorController.onPageLoad(index, fakeDraftId).url
 
   "AddSettlorViewHelper" when {
 
@@ -52,8 +56,8 @@ class AddASettlorViewHelperSpec extends SpecBase   {
 
         val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
         rows.inProgress mustBe List(
-          AddRow("No name added", typeLabel = "Individual Settlor", "#", "#"),
-          AddRow("first name last name", typeLabel = "Individual Settlor", "#", "#")
+          AddRow("No name added", typeLabel = "Individual Settlor", "#", removeSettlorRoute(0)),
+          AddRow("first name last name", typeLabel = "Individual Settlor", "#", removeSettlorRoute(1))
         )
         rows.complete mustBe Nil
       }
@@ -71,7 +75,7 @@ class AddASettlorViewHelperSpec extends SpecBase   {
 
         val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
         rows.complete mustBe List(
-          AddRow("first name last name", typeLabel = "Individual Settlor", "#", "#")
+          AddRow("first name last name", typeLabel = "Individual Settlor", "#", removeSettlorRoute(0))
         )
         rows.inProgress mustBe Nil
       }
