@@ -17,7 +17,7 @@
 package views
 
 import controllers.routes
-import forms.RegisteringTrustFor5AFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -28,7 +28,7 @@ class RegisteringTrustFor5AViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "registeringTrustFor5A"
 
-  val form = new RegisteringTrustFor5AFormProvider()()
+  val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
   "RegisteringTrustFor5A view" must {
 

@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions._
-import forms.EstablishedUnderScotsLawFormProvider
+import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.{Mode, UserAnswers}
 import navigation.Navigator
@@ -38,14 +38,14 @@ class EstablishedUnderScotsLawController @Inject()(
                                          identify: IdentifierAction,
                                          getData: DraftIdRetrievalActionProvider,
                                          requireData: DataRequiredAction,
-                                         formProvider: EstablishedUnderScotsLawFormProvider,
+                                         yesNoFormProvider: YesNoFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: EstablishedUnderScotsLawView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
 
-  val form: Form[Boolean] = formProvider()
+  val form: Form[Boolean] = yesNoFormProvider.withPrefix("establishedUnderScotsLaw")
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>

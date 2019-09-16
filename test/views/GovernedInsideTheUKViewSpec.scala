@@ -17,7 +17,7 @@
 package views
 
 import controllers.routes
-import forms.GovernedInsideTheUKFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -28,7 +28,7 @@ class GovernedInsideTheUKViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "governedInsideTheUK"
 
-  val form = new GovernedInsideTheUKFormProvider()()
+  val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
   "GovernedInsideTheUK view" must {
 

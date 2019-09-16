@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import forms.AgentOtherThanBarristerFormProvider
+import forms.YesNoFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.AgentOtherThanBarristerPage
@@ -30,8 +30,7 @@ import views.html.AgentOtherThanBarristerView
 
 class AgentOtherThanBarristerControllerSpec extends SpecBase {
 
-  val formProvider = new AgentOtherThanBarristerFormProvider()
-  val form = formProvider()
+  val form = new YesNoFormProvider().withPrefix("agentOtherThanBarrister")
 
   lazy val agentOtherThanBarristerRoute = routes.AgentOtherThanBarristerController.onPageLoad(NormalMode,fakeDraftId).url
 

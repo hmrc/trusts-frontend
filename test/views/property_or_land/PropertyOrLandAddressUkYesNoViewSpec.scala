@@ -16,7 +16,7 @@
 
 package views.property_or_land
 
-import forms.property_or_land.PropertyOrLandAddressUkYesNoFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -27,7 +27,7 @@ class PropertyOrLandAddressUkYesNoViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "propertyOrLandAddressUkYesNo"
 
-  val form = new PropertyOrLandAddressUkYesNoFormProvider()()
+  val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
   val index = 1
 

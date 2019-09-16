@@ -16,9 +16,8 @@
 
 package views
 
-import controllers.routes
-import forms.AgentAddressYesNoFormProvider
-import models.{FullName, NormalMode, UserAnswers}
+import forms.YesNoFormProvider
+import models.NormalMode
 import pages.AgentNamePage
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -31,7 +30,7 @@ class AgentAddressYesNoViewSpec extends YesNoViewBehaviours {
 
   val name = "First Last"
 
-  val form = new AgentAddressYesNoFormProvider()()
+  val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
   "AgentAddressYesNo view" must {
 
