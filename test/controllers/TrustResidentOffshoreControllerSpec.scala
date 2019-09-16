@@ -17,27 +17,18 @@
 package controllers
 
 import base.SpecBase
-import forms.TrustResidentOffshoreFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
+import forms.YesNoFormProvider
+import models.NormalMode
 import org.scalatest.mockito.MockitoSugar
 import pages.TrustResidentOffshorePage
-import play.api.inject.bind
-import play.api.libs.json.{JsBoolean, Json}
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import repositories.SessionRepository
 import views.html.TrustResidentOffshoreView
-
-import scala.concurrent.Future
 
 class TrustResidentOffshoreControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new TrustResidentOffshoreFormProvider()
-  val form = formProvider()
+  val formProvider = new YesNoFormProvider()
+  val form = formProvider.withPrefix("trustResidentOffshore")
 
   lazy val trustResidentOffshoreRoute = routes.TrustResidentOffshoreController.onPageLoad(NormalMode,fakeDraftId).url
 

@@ -18,7 +18,7 @@ package controllers
 
 import config.FrontendAppConfig
 import controllers.actions._
-import forms.TrustHaveAUTRFormProvider
+import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
@@ -33,23 +33,23 @@ import views.html.TrustHaveAUTRView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrustHaveAUTRController @Inject()( override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DraftIdRetrievalActionProvider,
-                                         requireData: DataRequiredAction,
-                                         formProvider: TrustHaveAUTRFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: TrustHaveAUTRView,
-                                         config : FrontendAppConfig
+class TrustHaveAUTRController @Inject()(override val messagesApi: MessagesApi,
+                                        sessionRepository: SessionRepository,
+                                        navigator: Navigator,
+                                        identify: IdentifierAction,
+                                        getData: DraftIdRetrievalActionProvider,
+                                        requireData: DataRequiredAction,
+                                        formProvider: YesNoFormProvider,
+                                        val controllerComponents: MessagesControllerComponents,
+                                        view: TrustHaveAUTRView,
+                                        config : FrontendAppConfig
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
 
   private val lostUtrKey : String = "trustHaveAUTR.link"
 
-  val form: Form[Boolean] = formProvider()
+  val form: Form[Boolean] = formProvider.withPrefix("trustHaveAUTR")
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>

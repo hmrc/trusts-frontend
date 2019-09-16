@@ -18,7 +18,7 @@ package controllers.shares
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.shares.SharesOnStockExchangeFormProvider
+import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
@@ -39,14 +39,14 @@ class SharesOnStockExchangeController @Inject()(
                                          identify: IdentifierAction,
                                          getData: DraftIdRetrievalActionProvider,
                                          requireData: DataRequiredAction,
-                                         formProvider: SharesOnStockExchangeFormProvider,
+                                         formProvider: YesNoFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: SharesOnStockExchangeView,
                                          requiredAnswer: RequiredAnswerActionProvider,
                                          validateIndex: IndexActionFilterProvider
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = formProvider()
+  val form: Form[Boolean] = formProvider.withPrefix("sharesOnStockExchange")
 
   private def actions(mode: Mode, index : Int, draftId: String) =
     identify andThen getData(draftId) andThen

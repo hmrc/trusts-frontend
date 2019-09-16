@@ -17,21 +17,17 @@
 package controllers
 
 import base.SpecBase
-import forms.TrustRegisteredOnlineFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import forms.YesNoFormProvider
+import models.NormalMode
 import pages.TrustRegisteredOnlinePage
-import play.api.inject.bind
-import play.api.libs.json.{JsBoolean, Json}
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.TrustRegisteredOnlineView
 
 class TrustRegisteredOnlineControllerSpec extends SpecBase {
 
-  val formProvider = new TrustRegisteredOnlineFormProvider()
-  val form = formProvider()
+  val formProvider = new YesNoFormProvider()
+  val form = formProvider.withPrefix("trustRegisteredOnline")
 
   lazy val trustRegisteredOnlineRoute = routes.TrustRegisteredOnlineController.onPageLoad(NormalMode,fakeDraftId).url
 

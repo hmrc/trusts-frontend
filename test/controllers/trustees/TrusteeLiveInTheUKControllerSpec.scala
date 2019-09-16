@@ -17,7 +17,7 @@
 package controllers.trustees
 
 import base.SpecBase
-import forms.trustees.TrusteeLiveInTheUKFormProvider
+import forms.YesNoFormProvider
 import models.{FullName, NormalMode}
 import pages.trustees.{IsThisLeadTrusteePage, TrusteeLiveInTheUKPage, TrusteesNamePage}
 import play.api.test.FakeRequest
@@ -28,8 +28,8 @@ class TrusteeLiveInTheUKControllerSpec extends SpecBase {
 
   val leadTrusteeMessagePrefix = "leadTrusteeLiveInTheUK"
   val trusteeMessagePrefix = "trusteeLiveInTheUK"
-  val formProvider = new TrusteeLiveInTheUKFormProvider()
-  val form = formProvider(trusteeMessagePrefix)
+  val formProvider = new YesNoFormProvider()
+  val form = formProvider.withPrefix(trusteeMessagePrefix)
 
   val index = 0
   val emptyTrusteeName = ""
