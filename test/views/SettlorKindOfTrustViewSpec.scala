@@ -39,6 +39,9 @@ class SettlorKindOfTrustViewSpec extends ViewBehaviours {
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
+
+    behave like pageWithASubmitButton(applyView(form))
+
   }
 
   "SettlorKindOfTrustView" when {
