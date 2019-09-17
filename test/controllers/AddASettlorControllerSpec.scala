@@ -37,7 +37,7 @@ class AddASettlorControllerSpec extends SpecBase {
 
   val settlors = List()
 
-  val hint = "addASettlor.lifetime"
+  val hint = "addASettlor.Lifetime"
 
   val userAnswersWithSettlorsComplete = emptyUserAnswers
     .set(SettlorKindOfTrustPage, Lifetime)
