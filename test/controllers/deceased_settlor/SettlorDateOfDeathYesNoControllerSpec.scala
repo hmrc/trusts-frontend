@@ -26,7 +26,7 @@ import views.html.deceased_settlor.SettlorDateOfDeathYesNoView
 
 class SettlorDateOfDeathYesNoControllerSpec extends SpecBase {
 
-  val form = new YesNoFormProvider().withPrefix("settlorDateOfDeath")
+  val form = new YesNoFormProvider().withPrefix("settlorDateOfDeathYesNo")
 
   lazy val settlorDateOfDeathYesNoRoute = routes.SettlorDateOfDeathYesNoController.onPageLoad(NormalMode, fakeDraftId).url
 

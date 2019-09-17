@@ -44,7 +44,7 @@ class SettlorDateOfDeathYesNoController @Inject()(
                                          view: SettlorDateOfDeathYesNoView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = yesNoFormProvider.withPrefix("settlorDateOfDeath")
+  val form: Form[Boolean] = yesNoFormProvider.withPrefix("settlorDateOfDeathYesNo")
 
   private def actions(draftId: String) =
     identify andThen

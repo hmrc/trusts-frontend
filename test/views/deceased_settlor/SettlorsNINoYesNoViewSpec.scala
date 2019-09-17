@@ -27,7 +27,7 @@ class SettlorsNINoYesNoViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "settlorsNINoYesNo"
 
-  val form = new YesNoFormProvider().withPrefix("settlorsNINoYesNo")
+  val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
   "SettlorsNINoYesNo view" must {
 
