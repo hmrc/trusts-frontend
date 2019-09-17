@@ -29,7 +29,7 @@ import pages._
 class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {
 
-  val trustDetailsMapper : Mapping[TrustDetailsType] = injector.instanceOf[TrustDetailsMapper]
+  lazy val trustDetailsMapper : Mapping[TrustDetailsType] = injector.instanceOf[TrustDetailsMapper]
 
   "TrustDetailsMapper" - {
 
@@ -193,7 +193,6 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
             .set(RegisteringTrustFor5APage, false).success.value
             .set(InheritanceTaxActPage, false).success.value
 
-
         trustDetailsMapper.build(userAnswers).value mustBe TrustDetailsType(
           startDate = date,
           lawCountry = Some("FR"),
@@ -229,7 +228,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
 
       }
 
-      "must beable to create UK resident TrustDetails with mixed trustees when a settlor is based in the UK" in {
+      "must be able to create UK resident TrustDetails with mixed trustees when a settlor is based in the UK" in {
         val date = LocalDate.of(2010, 10, 10)
 
         val userAnswers =
@@ -266,7 +265,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
 
       }
 
-      "must beable to create non-UK resident TrustDetails with mixed trustees when all settlors are international" in {
+      "must be able to create non-UK resident TrustDetails with mixed trustees when all settlors are international" in {
         val date = LocalDate.of(2010, 10, 10)
 
         val userAnswers =
@@ -299,15 +298,13 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
 
       }
 
-      "must not able  to create TrustDetails when only trust name and setup details available" in {
+      "must not able to create TrustDetails when only trust name and setup details available" in {
         val date = LocalDate.of(2010, 10, 10)
 
         val userAnswers =
           emptyUserAnswers
             .set(TrustNamePage, "New Trust").success.value
             .set(WhenTrustSetupPage, date).success.value
-
-
 
         trustDetailsMapper.build(userAnswers) mustBe None
 

@@ -18,25 +18,62 @@ package mapping
 
 import base.SpecBaseHelpers
 import generators.Generators
+import mapping.TypeOfTrust.{FlatManagementTrust, HeritageTrust, IntervivosSettlementTrust, WillTrustOrIntestacyTrust}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import utils.TestUserAnswers
 
 class RegistrationMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {
 
-  private val newTrustUserAnswers = {
+  private lazy val intervivosUserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
     val uaWithLead = TestUserAnswers.withLeadTrustee(emptyUserAnswers)
-    val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(uaWithLead)
-    val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithDeceased)
+    val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithLead)
     val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
     val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
-    val userAnswers = TestUserAnswers.withDeclaration(asset)
+    val livingSettlor = TestUserAnswers.withIndividualLivingSettlor(0, asset)
+    val intervivosSettlementTrust = TestUserAnswers.withInterVivosTrust(livingSettlor)
+    val userAnswers = TestUserAnswers.withDeclaration(intervivosSettlementTrust)
+    userAnswers
+  }
+
+  private lazy val heritageUserAnswers = {
+    val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
+    val uaWithLead = TestUserAnswers.withLeadTrustee(emptyUserAnswers)
+    val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithLead)
+    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
+    val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
+    val livingSettlor = TestUserAnswers.withIndividualLivingSettlor(0, asset)
+    val heritageSettlementTrust = TestUserAnswers.withHeritageTrust(livingSettlor)
+    val userAnswers = TestUserAnswers.withDeclaration(heritageSettlementTrust)
 
     userAnswers
   }
 
-  val registrationMapper: Mapping[Registration] = injector.instanceOf[RegistrationMapper]
+  private lazy val flatManagementUserAnswers = {
+    val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
+    val uaWithLead = TestUserAnswers.withLeadTrustee(emptyUserAnswers)
+    val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithLead)
+    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
+    val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
+    val livingSettlor = TestUserAnswers.withIndividualLivingSettlor(0, asset)
+    val flatManagementTrust = TestUserAnswers.withFlatManagementTrust(livingSettlor)
+    val userAnswers = TestUserAnswers.withDeclaration(flatManagementTrust)
+
+    userAnswers
+  }
+
+  def assertWillTrust(result: Registration) : Unit = {
+    result.trust.details.typeOfTrust mustBe WillTrustOrIntestacyTrust
+    result.trust.details.deedOfVariation mustNot be(defined)
+    result.trust.details.interVivos mustNot be(defined)
+    result.trust.details.efrbsStartDate mustNot be(defined)
+
+    result.trust.entities.deceased must be(defined)
+    result.trust.entities.settlors mustNot be(defined)
+  }
+
+  lazy val registrationMapper: Mapping[Registration] = injector.instanceOf[RegistrationMapper]
 
   "RegistrationMapper" - {
 
@@ -53,61 +90,141 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
 
     "when user answers is not empty" - {
 
-      "registration is made by an Organisation" - {
+      "must generate a WillType Registration" - {
 
-        "registering an existing trust" in {
-          val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
+        val willTypeUserAnswers = {
+          val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
+          val uaWithLead = TestUserAnswers.withLeadTrustee(emptyUserAnswers)
+          val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(uaWithLead)
+          val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithDeceased)
+          val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
+          val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
+          val userAnswers = TestUserAnswers.withDeclaration(asset)
 
-          val result = registrationMapper.build(userAnswers).value
-
-          result.agentDetails mustNot be(defined)
-          result.yearsReturns mustNot be(defined)
-          result.matchData must be(defined)
-          result.declaration mustBe a[Declaration]
-          result.trust mustBe a[Trust]
+          userAnswers
         }
 
-        "registering a new trust" in {
+        "registration is made by an Organisation" - {
 
-          val result = registrationMapper.build(newTrustUserAnswers).value
+          "registering an existing trust" in {
+            val userAnswers = TestUserAnswers.withMatchingSuccess(willTypeUserAnswers)
 
-          result.agentDetails mustNot be(defined)
-          result.yearsReturns mustNot be(defined)
-          result.matchData mustNot be(defined)
-          result.declaration mustBe a[Declaration]
-          result.trust mustBe a[Trust]
+            val result = registrationMapper.build(userAnswers).value
+
+            result.agentDetails mustNot be(defined)
+            result.yearsReturns mustNot be(defined)
+            result.matchData must be(defined)
+            result.declaration mustBe a[Declaration]
+
+            assertWillTrust(result)
+          }
+
+          "registering a new trust" in {
+
+            val result = registrationMapper.build(willTypeUserAnswers).value
+
+            result.agentDetails mustNot be(defined)
+            result.yearsReturns mustNot be(defined)
+            result.matchData mustNot be(defined)
+            result.declaration mustBe a[Declaration]
+
+            assertWillTrust(result)
+          }
+
         }
 
+        "registration is made by an Agent" - {
+
+          "registering an existing trust" in {
+            val userAnswers = TestUserAnswers.withMatchingSuccess(willTypeUserAnswers)
+            val userAnswersWithAgent = TestUserAnswers.withAgent(userAnswers)
+
+            val result = registrationMapper.build(userAnswersWithAgent).value
+
+            result.agentDetails must be(defined)
+            result.yearsReturns mustNot be(defined)
+            result.matchData must be(defined)
+            result.declaration mustBe a[Declaration]
+
+            assertWillTrust(result)
+          }
+
+          "registering a new trust" in {
+
+            val userAnswers = TestUserAnswers.withAgent(willTypeUserAnswers)
+
+            val result = registrationMapper.build(userAnswers).value
+
+            result.agentDetails mustBe defined
+            result.yearsReturns mustNot be(defined)
+            result.matchData mustNot be(defined)
+            result.declaration mustBe a[Declaration]
+
+            assertWillTrust(result)
+          }
+
+        }
       }
 
-      "registration is made by an Agent" - {
+      "must generate an Intervivos trust" in {
+        val userAnswers = intervivosUserAnswers
 
-        "registering a new trust" in {
+        val result = registrationMapper.build(userAnswers).value
 
-          val userAnswers = TestUserAnswers.withAgent(newTrustUserAnswers)
+        result.agentDetails mustNot be(defined)
+        result.yearsReturns mustNot be(defined)
+        result.matchData mustNot be(defined)
+        result.declaration mustBe a[Declaration]
 
-          val result = registrationMapper.build(userAnswers).value
+        result.trust.details.typeOfTrust mustBe IntervivosSettlementTrust
+        result.trust.details.deedOfVariation mustNot be(defined)
+        result.trust.details.interVivos mustBe Some(true)
+        result.trust.details.efrbsStartDate mustNot be(defined)
 
-          result.agentDetails mustBe defined
-          result.yearsReturns mustNot be(defined)
-          result.matchData mustNot be(defined)
-          result.declaration mustBe a[Declaration]
-          result.trust mustBe a[Trust]
-        }
+        result.trust.entities.deceased mustNot be(defined)
+        result.trust.entities.settlors.value.settlor.value mustNot be(empty)
+        result.trust.entities.settlors.value.settlorCompany mustNot be(defined)
+      }
 
-        "registering an existing trust" in {
-          val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
-          val userAnswersWithAgent = TestUserAnswers.withAgent(userAnswers)
+      "must generate a Heritage trust for repair of historic buildings " in {
+        val userAnswers = heritageUserAnswers
 
-          val result = registrationMapper.build(userAnswersWithAgent).value
+        val result = registrationMapper.build(userAnswers).value
 
-          result.agentDetails must be(defined)
-          result.yearsReturns mustNot be(defined)
-          result.matchData must be(defined)
-          result.declaration mustBe a[Declaration]
-          result.trust mustBe a[Trust]
-        }
+        result.agentDetails mustNot be(defined)
+        result.yearsReturns mustNot be(defined)
+        result.matchData mustNot be(defined)
+        result.declaration mustBe a[Declaration]
 
+        result.trust.details.typeOfTrust mustBe HeritageTrust
+        result.trust.details.deedOfVariation mustNot be(defined)
+        result.trust.details.interVivos mustNot be(defined)
+        result.trust.details.efrbsStartDate mustNot be(defined)
+
+        result.trust.entities.deceased mustNot be(defined)
+        result.trust.entities.settlors.value.settlor.value mustNot be(empty)
+        result.trust.entities.settlors.value.settlorCompany mustNot be(defined)
+      }
+
+
+      "must generate a Flat management trust for a building or building with tenants " in {
+        val userAnswers = flatManagementUserAnswers
+
+        val result = registrationMapper.build(userAnswers).value
+
+        result.agentDetails mustNot be(defined)
+        result.yearsReturns mustNot be(defined)
+        result.matchData mustNot be(defined)
+        result.declaration mustBe a[Declaration]
+
+        result.trust.details.typeOfTrust mustBe FlatManagementTrust
+        result.trust.details.deedOfVariation mustNot be(defined)
+        result.trust.details.interVivos mustNot be(defined)
+        result.trust.details.efrbsStartDate mustNot be(defined)
+
+        result.trust.entities.deceased mustNot be(defined)
+        result.trust.entities.settlors.value.settlor.value mustNot be(empty)
+        result.trust.entities.settlors.value.settlorCompany mustNot be(defined)
       }
 
     }

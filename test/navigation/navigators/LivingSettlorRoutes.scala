@@ -52,7 +52,7 @@ trait LivingSettlorRoutes {
 
       "user answers Lifetime" in {
         val page = SettlorKindOfTrustPage
-        val answer = SettlorKindOfTrust.Lifetime
+        val answer = SettlorKindOfTrust.Intervivos
 
         val answers = emptyUserAnswers.set(page, answer).success.value
 
@@ -61,7 +61,7 @@ trait LivingSettlorRoutes {
 
       "user answers Building" in {
         val page = SettlorKindOfTrustPage
-        val answer = SettlorKindOfTrust.Building
+        val answer = SettlorKindOfTrust.FlatManagement
 
         val answers = emptyUserAnswers.set(page, answer).success.value
 
@@ -70,7 +70,7 @@ trait LivingSettlorRoutes {
 
       "user answers Repair Historic" in {
         val page = SettlorKindOfTrustPage
-        val answer = SettlorKindOfTrust.Repair
+        val answer = SettlorKindOfTrust.HeritageMaintenanceFund
 
         val answers = emptyUserAnswers.set(page, answer).success.value
 

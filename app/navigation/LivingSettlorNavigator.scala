@@ -90,11 +90,11 @@ class LivingSettlorNavigator extends Navigator {
     answers.get(SettlorKindOfTrustPage) match {
       case Some(Deed) =>
         controllers.routes.SettlorKindOfTrustController.onPageLoad(NormalMode, draftId)
-      case Some(Lifetime) =>
+      case Some(Intervivos) =>
         controllers.routes.SettlorHandoverReliefYesNoController.onPageLoad(NormalMode, draftId)
-      case Some(Building) =>
+      case Some(FlatManagement) =>
         controllers.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
-      case Some(Repair) =>
+      case Some(HeritageMaintenanceFund) =>
         controllers.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
       case Some(Employees) =>
         controllers.routes.SettlorKindOfTrustController.onPageLoad(NormalMode, draftId)

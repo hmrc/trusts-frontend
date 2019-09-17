@@ -16,7 +16,7 @@
 
 package pages
 
-import models.SettlorKindOfTrust.Lifetime
+import models.SettlorKindOfTrust.Intervivos
 import models.{SettlorKindOfTrust, UserAnswers}
 import play.api.libs.json.JsPath
 import sections.Settlors
@@ -31,7 +31,7 @@ case object SettlorKindOfTrustPage extends QuestionPage[SettlorKindOfTrust] {
 
   override def cleanup(value: Option[SettlorKindOfTrust], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
-      case Some(Lifetime) =>
+      case Some(Intervivos) =>
         super.cleanup(value, userAnswers)
       case _ =>
         userAnswers.remove(SettlorHandoverReliefYesNoPage)
