@@ -17,7 +17,7 @@
 package controllers.deceased_settlor
 
 import base.SpecBase
-import forms.deceased_settlor.SettlorsNINoYesNoFormProvider
+import forms.YesNoFormProvider
 import models.{FullName, NormalMode}
 import pages.deceased_settlor.{SettlorsNINoYesNoPage, SettlorsNamePage}
 import play.api.test.FakeRequest
@@ -26,8 +26,7 @@ import views.html.deceased_settlor.SettlorsNINoYesNoView
 
 class SettlorsNINoYesNoControllerSpec extends SpecBase {
 
-  val formProvider = new SettlorsNINoYesNoFormProvider()
-  val form = formProvider()
+  val form = new YesNoFormProvider().withPrefix("settlorsNINoYesNo")
 
   lazy val settlorsNINoYesNoRoute = routes.SettlorsNINoYesNoController.onPageLoad(NormalMode,fakeDraftId).url
 

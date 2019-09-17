@@ -18,7 +18,7 @@ package controllers.trustees
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.trustees.IsThisLeadTrusteeFormProvider
+import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
@@ -42,12 +42,12 @@ class IsThisLeadTrusteeController @Inject()(
                                              getData: DraftIdRetrievalActionProvider,
                                              requireData: DataRequiredAction,
                                              validateIndex : IndexActionFilterProvider,
-                                             formProvider: IsThisLeadTrusteeFormProvider,
+                                             YesNoFormProvider: YesNoFormProvider,
                                              val controllerComponents: MessagesControllerComponents,
                                              view: IsThisLeadTrusteeView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = formProvider()
+  val form: Form[Boolean] = YesNoFormProvider.withPrefix("isThisLeadTrustee")
 
   def actions(index : Int, draftId: String) = identify andThen getData(draftId) andThen requireData andThen validateIndex(index, Trustees)
 

@@ -17,20 +17,17 @@
 package controllers
 
 import base.SpecBase
-import forms.RegisteringTrustFor5AFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
-import navigation.{FakeNavigator, Navigator}
 import pages.RegisteringTrustFor5APage
-import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RegisteringTrustFor5AView
 
 class RegisteringTrustFor5AControllerSpec extends SpecBase {
 
-  val formProvider = new RegisteringTrustFor5AFormProvider()
-  val form = formProvider()
+  val form = new YesNoFormProvider().withPrefix("registeringTrustFor5A")
+
 
   lazy val registeringTrustFor5ARoute = routes.RegisteringTrustFor5AController.onPageLoad(NormalMode,fakeDraftId).url
 

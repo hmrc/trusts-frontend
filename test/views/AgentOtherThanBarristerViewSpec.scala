@@ -16,7 +16,7 @@
 
 package views
 
-import forms.AgentOtherThanBarristerFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -27,7 +27,7 @@ class AgentOtherThanBarristerViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "agentOtherThanBarrister"
 
-  val form = new AgentOtherThanBarristerFormProvider()()
+  val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
   "AgentOtherThanBarrister view" must {
 
