@@ -14,16 +14,24 @@
  * limitations under the License.
  */
 
-package sections
+package mapping
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import viewmodels.addAnother.SettlorViewModel
+import javax.inject.Inject
+import models.UserAnswers
 
-case object LivingSettlors extends QuestionPage[List[SettlorViewModel]]{
+class SettlorsMapper @Inject()(individualSettlorsMapper: IndividualSettlorsMapper) extends Mapping[Settlors] {
 
-  override def path: JsPath = Settlors.path \ toString
+   def build(userAnswers: UserAnswers): Option[Settlors] = {
+     val individualSettlors = individualSettlorsMapper.build(userAnswers)
 
-  override def toString: String = "living"
+     val settlors = Settlors(
+       settlor = individualSettlors,
+       settlorCompany = None
+     )
 
+     settlors match {
+       case Settlors(None, None) => None
+       case _ => Some(settlors)
+     }
+  }
 }

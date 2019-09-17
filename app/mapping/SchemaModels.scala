@@ -207,7 +207,6 @@ case class LeadTrusteeOrgType(
                                phoneNumber: String,
                                email: Option[String] = None,
                                identification: IdentificationOrgType
-
                              )
 
 object LeadTrusteeOrgType {
@@ -442,6 +441,7 @@ object PassportType {
   implicit val passportTypeFormat: Format[PassportType] = Json.format[PassportType]
 }
 
+
 case class NameType(firstName: String,
                     middleName: Option[String],
                     lastName: String)
@@ -460,6 +460,7 @@ case class AddressType(line1: String,
 object AddressType {
   implicit val addressTypeFormat: Format[AddressType] = Json.format[AddressType]
 }
+
 
 case class WillType(name: NameType,
                     dateOfBirth: Option[LocalDate],
