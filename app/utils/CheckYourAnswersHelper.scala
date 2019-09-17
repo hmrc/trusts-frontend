@@ -53,8 +53,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorKindOfTrust.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"settlorKindOfTrust.$x")),
-        routes.SettlorKindOfTrustController.onPageLoad(CheckMode, draftId).url
-
+        routes.SettlorKindOfTrustController.onPageLoad(CheckMode, draftId).url,
+        canEdit = canEdit
       )
   }
 
@@ -299,7 +299,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
 
         val questions = Seq(
           setupAfterSettlorDied,
-          settlorKindOfTrust(index),
+          settlorKindOfTrust,
           settlorHandoverReliefYesNo,
           settlorIndividualOrBusiness(index),
           settlorIndividualName(index),
