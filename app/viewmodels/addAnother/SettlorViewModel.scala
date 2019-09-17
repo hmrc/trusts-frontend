@@ -14,17 +14,32 @@
  * limitations under the License.
  */
 
-package pages.entitystatus
+package viewmodels.addAnother
 
 import models.Status
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.LivingSettlors
 
-final case class LivingSettlorStatus(index : Int) extends QuestionPage[Status] {
+trait SettlorViewModel {
 
-  override def path: JsPath = LivingSettlors.path \ index \ toString
+  val status : Status
 
-  override def toString: String = "status"
+}
+
+object SettlorViewModel {
+
+  import play.api.libs.json._
+
+  implicit class ReadsWithContravariantOr[A](a: Reads[A]) {
+
+    def or[B >: A](b: Reads[B]): Reads[B] =
+      a.map[B](identity).orElse(b)
+  }
+
+  implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
+    a.map(identity)
+
+  implicit lazy val reads : Reads[SettlorViewModel] = {
+      SettlorLivingViewModel.reads or
+      DefaultSettlorViewModel.reads
+  }
 
 }

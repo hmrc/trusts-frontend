@@ -21,6 +21,7 @@ import javax.inject.Singleton
 import models.IndividualOrBusiness._
 import models.SettlorKindOfTrust._
 import models.{NormalMode, UserAnswers}
+import pages.{AddASettlorPage, AddASettlorYesNoPage, Page, SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage}
 import pages.living_settlor._
 import pages.{Page, SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage}
 import play.api.mvc.Call
@@ -47,6 +48,42 @@ class LivingSettlorNavigator extends Navigator {
     case SettlorIndividualIDCardPage(index) => _ => _ => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
     case SettlorIndividualOrBusinessPage(index) => _ => settlorIndividualOrBusinessPage(index, draftId)
     case SettlorIndividualAnswerPage => _ => _ => controllers.routes.AddASettlorController.onPageLoad(draftId)
+    case AddASettlorPage => _ => addSettlorRoute(draftId)
+    case AddASettlorYesNoPage => _ => addASettlorYesNoRoute(draftId)
+  }
+
+  private def addASettlorYesNoRoute(draftId: String)(answers: UserAnswers) : Call = {
+    answers.get(AddASettlorYesNoPage) match {
+      case Some(true) =>
+        controllers.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
+      case Some(false) =>
+        controllers.routes.TaskListController.onPageLoad(draftId)
+      case _ => controllers.routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  private def addSettlorRoute(draftId: String)(answers: UserAnswers) = {
+    val addAnother = answers.get(AddASettlorPage)
+
+    def routeToSettlorIndex = {
+      val settlors = answers.get(sections.LivingSettlors).getOrElse(List.empty)
+      settlors match {
+        case Nil =>
+          routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
+        case t if t.nonEmpty =>
+          routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, t.size, draftId)
+      }
+    }
+
+    addAnother match {
+      case Some(models.AddASettlor.YesNow) =>
+        routeToSettlorIndex
+      case Some(models.AddASettlor.YesLater) =>
+        controllers.routes.TaskListController.onPageLoad(draftId)
+      case Some(models.AddASettlor.NoComplete) =>
+        controllers.routes.TaskListController.onPageLoad(draftId)
+      case _ => controllers.routes.SessionExpiredController.onPageLoad()
+    }
   }
 
   private def settlorKindOfTrustPage(draftId: String)(answers: UserAnswers) = {
@@ -110,7 +147,7 @@ class LivingSettlorNavigator extends Navigator {
   private def settlorIndividualOrBusinessPage(index: Int, draftId: String)(answers: UserAnswers) =
     answers.get(SettlorIndividualOrBusinessPage(index)) match {
       case Some(Individual) => controllers.living_settlor.routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, draftId)
-      case Some(Business) => ???
+      case Some(Business) => controllers.living_settlor.routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId)
       case None => controllers.routes.SessionExpiredController.onPageLoad()
     }
 

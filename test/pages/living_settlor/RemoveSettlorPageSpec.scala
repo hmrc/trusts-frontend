@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package pages.entitystatus
+package pages.living_settlor
 
-import models.Status
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.LivingSettlors
+import pages.behaviours.PageBehaviours
 
-final case class LivingSettlorStatus(index : Int) extends QuestionPage[Status] {
+class RemoveSettlorPageSpec extends PageBehaviours {
 
-  override def path: JsPath = LivingSettlors.path \ index \ toString
+  "RemoveSettlorPage" must {
 
-  override def toString: String = "status"
+    beRetrievable[Boolean](RemoveSettlorPage(0))
 
+    beSettable[Boolean](RemoveSettlorPage(0))
+
+    beRemovable[Boolean](RemoveSettlorPage(0))
+  }
 }
