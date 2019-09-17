@@ -18,7 +18,7 @@ package controllers.trustees
 
 import base.SpecBase
 import controllers.IndexValidation
-import forms.trustees.IsThisLeadTrusteeFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
@@ -30,8 +30,7 @@ import views.html.trustees.IsThisLeadTrusteeView
 
 class IsThisLeadTrusteeControllerSpec extends SpecBase with IndexValidation {
 
-  val formProvider = new IsThisLeadTrusteeFormProvider()
-  val form = formProvider()
+  val form = new YesNoFormProvider().withPrefix("isThisLeadTrustee")
 
   val index = 0
 

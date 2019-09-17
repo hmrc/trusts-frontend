@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import forms.EstablishedUnderScotsLawFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
 import pages.EstablishedUnderScotsLawPage
@@ -29,8 +29,7 @@ import views.html.EstablishedUnderScotsLawView
 
 class EstablishedUnderScotsLawControllerSpec extends SpecBase {
 
-  val formProvider = new EstablishedUnderScotsLawFormProvider()
-  val form = formProvider()
+  val form = new YesNoFormProvider().withPrefix("establishedUnderScotsLaw")
 
   lazy val establishedUnderScotsLawRoute = routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode,fakeDraftId).url
 

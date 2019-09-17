@@ -16,7 +16,7 @@
 
 package views.deceased_settlor
 
-import forms.deceased_settlor.SettlorDateOfBirthYesNoFormProvider
+import forms.YesNoFormProvider
 import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -27,7 +27,7 @@ class SettlorDateOfBirthYesNoViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "settlorDateOfBirthYesNo"
 
-  val form = new SettlorDateOfBirthYesNoFormProvider()()
+  val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
   "SettlorDateOfBirthYesNo view" must {
 

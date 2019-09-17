@@ -17,9 +17,8 @@
 package pages
 
 import models.UserAnswers
-import pages.deceased_settlor.{SettlorDateOfBirthYesNoPage, SettlorDateOfDeathPage, SettlorDateOfDeathYesNoPage, SettlorNationalInsuranceNumberPage, SettlorsDateOfBirthPage, SettlorsInternationalAddressPage, SettlorsLastKnownAddressYesNoPage, SettlorsNINoYesNoPage, SettlorsNamePage, SettlorsUKAddressPage, WasSettlorsAddressUKYesNoPage}
 import play.api.libs.json.JsPath
-import sections.Settlors
+import sections.{DeceasedSettlor, LivingSettlors, Settlors}
 
 import scala.util.Try
 
@@ -32,17 +31,11 @@ case object SetupAfterSettlorDiedPage extends QuestionPage[Boolean] {
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
       case Some(false) =>
-        userAnswers.remove(SettlorsNamePage)
-        .flatMap(_.remove(SettlorDateOfDeathYesNoPage))
-        .flatMap(_.remove(SettlorDateOfDeathPage))
-        .flatMap(_.remove(SettlorDateOfBirthYesNoPage))
-        .flatMap(_.remove(SettlorsDateOfBirthPage))
-        .flatMap(_.remove(SettlorsNINoYesNoPage))
-        .flatMap(_.remove(SettlorNationalInsuranceNumberPage))
-        .flatMap(_.remove(SettlorsLastKnownAddressYesNoPage))
-        .flatMap(_.remove(WasSettlorsAddressUKYesNoPage))
-        .flatMap(_.remove(SettlorsUKAddressPage))
-        .flatMap(_.remove(SettlorsInternationalAddressPage))
+        userAnswers.remove(DeceasedSettlor)
+      case Some(true) =>
+        userAnswers.remove(SettlorKindOfTrustPage)
+          .flatMap(_.remove(SettlorHandoverReliefYesNoPage))
+          .flatMap(_.remove(LivingSettlors))
       case _ => super.cleanup(value, userAnswers)
     }
   }

@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions._
-import forms.GovernedInsideTheUKFormProvider
+import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.{Mode, UserAnswers}
 import navigation.Navigator
@@ -38,14 +38,14 @@ class GovernedInsideTheUKController @Inject()(
                                                identify: IdentifierAction,
                                                getData: DraftIdRetrievalActionProvider,
                                                requireData: DataRequiredAction,
-                                               formProvider: GovernedInsideTheUKFormProvider,
+                                               yesNoFormProvider: YesNoFormProvider,
                                                val controllerComponents: MessagesControllerComponents,
                                                view: GovernedInsideTheUKView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
 
-  val form: Form[Boolean] = formProvider()
+  val form: Form[Boolean] = yesNoFormProvider.withPrefix("governedInsideTheUK")
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>

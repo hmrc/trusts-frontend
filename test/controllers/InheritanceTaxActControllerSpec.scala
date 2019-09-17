@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import forms.InheritanceTaxActFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import pages.InheritanceTaxActPage
 import play.api.test.FakeRequest
@@ -26,8 +26,8 @@ import views.html.InheritanceTaxActView
 
 class InheritanceTaxActControllerSpec extends SpecBase {
 
-  val formProvider = new InheritanceTaxActFormProvider()
-  val form = formProvider()
+  val form = new YesNoFormProvider().withPrefix("inheritanceTaxAct")
+
 
   lazy val inheritanceTaxActRoute = routes.InheritanceTaxActController.onPageLoad(NormalMode,fakeDraftId).url
 

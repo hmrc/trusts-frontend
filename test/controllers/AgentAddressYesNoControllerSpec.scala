@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import forms.AgentAddressYesNoFormProvider
+import forms.YesNoFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.{AgentAddressYesNoPage, AgentNamePage}
@@ -31,8 +31,7 @@ import views.html.AgentAddressYesNoView
 
 class AgentAddressYesNoControllerSpec extends SpecBase {
 
-  val formProvider = new AgentAddressYesNoFormProvider()
-  val form = formProvider()
+  val form = new YesNoFormProvider().withPrefix("agentAddressYesNo")
   val name = "name"
 
   lazy val agentAddressYesNoRoute = routes.AgentAddressYesNoController.onPageLoad(NormalMode, fakeDraftId).url

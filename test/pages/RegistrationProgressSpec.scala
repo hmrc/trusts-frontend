@@ -20,9 +20,11 @@ import java.time.LocalDate
 
 import base.SpecBase
 import models.AddAssets.NoComplete
+import models.IndividualOrBusiness.Individual
 import models.Status.{Completed, InProgress}
 import models.{AddABeneficiary, AddATrustee, FullName, Status, UserAnswers, WhatKindOfAsset}
-import pages.entitystatus.{AssetStatus, ClassBeneficiaryStatus, DeceasedSettlorStatus, IndividualBeneficiaryStatus, TrustDetailsStatus, TrusteeStatus}
+import pages.entitystatus.{AssetStatus, ClassBeneficiaryStatus, DeceasedSettlorStatus, IndividualBeneficiaryStatus, LivingSettlorStatus, TrustDetailsStatus, TrusteeStatus}
+import pages.living_settlor.SettlorIndividualOrBusinessPage
 import pages.shares.{SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, SharesInAPortfolioPage}
 import pages.trustees.{AddATrusteePage, IsThisLeadTrusteePage}
 import play.api.libs.json.{JsObject, Json}
@@ -168,12 +170,12 @@ class RegistrationProgressSpec extends SpecBase {
 
     "render no tag" when {
 
-      "no deceased settlor in user answers" in {
+      "no settlors in user answers" in {
         val registrationProgress = injector.instanceOf[RegistrationProgress]
 
         val userAnswers = emptyUserAnswers
 
-        registrationProgress.isDeceasedSettlorComplete(userAnswers) mustBe None
+        registrationProgress.isSettlorsComplete(userAnswers) mustBe None
       }
 
     }
@@ -187,7 +189,20 @@ class RegistrationProgressSpec extends SpecBase {
             .set(SetupAfterSettlorDiedPage, true).success.value
             .set(DeceasedSettlorStatus, Status.InProgress).success.value
 
-        registrationProgress.isDeceasedSettlorComplete(userAnswers).value mustBe InProgress
+        registrationProgress.isSettlorsComplete(userAnswers).value mustBe InProgress
+      }
+
+
+      "there are living settlors that are not completed" in {
+        val registrationProgress = injector.instanceOf[RegistrationProgress]
+
+        val userAnswers = emptyUserAnswers
+          .set(SetupAfterSettlorDiedPage, false).success.value
+          .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
+          .set(SettlorIndividualOrBusinessPage(1), Individual).success.value
+          .set(LivingSettlorStatus(1), Status.Completed).success.value
+
+        registrationProgress.isSettlorsComplete(userAnswers).value mustBe InProgress
       }
 
     }
@@ -201,8 +216,20 @@ class RegistrationProgressSpec extends SpecBase {
           .set(SetupAfterSettlorDiedPage, true).success.value
           .set(DeceasedSettlorStatus, Status.Completed).success.value
 
-        registrationProgress.isDeceasedSettlorComplete(userAnswers).value mustBe Completed
+        registrationProgress.isSettlorsComplete(userAnswers).value mustBe Completed
       }
+
+      "there are living settlors marked as complete" in {
+        val registrationProgress = injector.instanceOf[RegistrationProgress]
+
+        val userAnswers = emptyUserAnswers
+          .set(SetupAfterSettlorDiedPage, false).success.value
+          .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
+          .set(LivingSettlorStatus(0), Status.Completed).success.value
+
+        registrationProgress.isSettlorsComplete(userAnswers).value mustBe Completed
+      }
+
 
     }
 

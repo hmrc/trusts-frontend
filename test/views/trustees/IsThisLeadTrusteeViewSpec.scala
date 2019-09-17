@@ -16,7 +16,7 @@
 
 package views.trustees
 
-import forms.trustees.IsThisLeadTrusteeFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -27,7 +27,7 @@ class IsThisLeadTrusteeViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "isThisLeadTrustee"
 
-  val form = new IsThisLeadTrusteeFormProvider()()
+  val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
   val index = 0
 

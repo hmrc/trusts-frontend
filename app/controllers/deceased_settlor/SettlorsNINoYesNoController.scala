@@ -17,7 +17,7 @@
 package controllers.deceased_settlor
 
 import controllers.actions._
-import forms.deceased_settlor.SettlorsNINoYesNoFormProvider
+import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
@@ -38,13 +38,13 @@ class SettlorsNINoYesNoController @Inject()(
                                          identify: IdentifierAction,
                                          getData: DraftIdRetrievalActionProvider,
                                          requireData: DataRequiredAction,
-                                         formProvider: SettlorsNINoYesNoFormProvider,
+                                         yesNoFormProvider: YesNoFormProvider,
                                          requiredAnswer: RequiredAnswerActionProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: SettlorsNINoYesNoView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = formProvider()
+  val form: Form[Boolean] = yesNoFormProvider.withPrefix("settlorsNINoYesNo")
 
   private def actions(draftId: String) =
     identify andThen
