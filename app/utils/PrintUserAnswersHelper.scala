@@ -40,8 +40,11 @@ class PrintUserAnswersHelper @Inject()(countryOptions: CountryOptions){
     val propertyOrLand = checkYourAnswersHelper.propertyOrLand
 
     val assetSection = Seq(AnswerSection(None, Nil, Some(messages("answerPage.section.assets.heading"))))
+    val settlorHeading = Seq(AnswerSection(None, Nil, Some(messages("answerPage.section.settlors.heading"))))
 
-    val sections = trustDetails ++
+    val sections =
+      trustDetails ++
+      settlorHeading ++
       settlors ++
       livingSettlors ++
       trustees ++

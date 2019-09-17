@@ -896,6 +896,7 @@ confirmationAnswerPage.warning = You need to declare every year through this ser
 
 answerPage.section.trustsDetails.heading = Trust details
 answerPage.section.settlors.heading = Settlors
+answerPage.section.settlors.subheading = Settlor {0}
 answerPage.section.trustees.heading = Trustees
 answerPage.section.trustee.subheading = Trustee
 answerPage.section.beneficiaries.heading = Beneficiaries

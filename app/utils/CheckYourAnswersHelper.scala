@@ -30,7 +30,7 @@ import pages.shares._
 import pages.trustees._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
-import sections.LivingSettlors
+import sections.{DeceasedSettlor, LivingSettlors}
 import uk.gov.hmrc.domain.Nino
 import utils.CheckYourAnswersHelper._
 import utils.countryOptions.CountryOptions
@@ -279,7 +279,13 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       deceasedSettlorsInternationalAddress
     ).flatten
 
-    if (questions.nonEmpty) Some(Seq(AnswerSection(None, questions, Some(Messages("answerPage.section.settlors.heading"))))) else None
+    if (questions.nonEmpty)
+      Some(Seq(AnswerSection(
+        headingKey = Some(Messages("answerPage.section.settlor.subheading", 1)),
+        questions,
+        None
+      )))
+    else None
   }
 
   def livingSettlors: Option[Seq[AnswerSection]] = {
@@ -289,7 +295,6 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       indexed = livingSettlors.zipWithIndex
     } yield indexed.map {
       case (livingSettlor, index) =>
-
 
         val questions = Seq(
           setupAfterSettlorDied,
@@ -311,8 +316,11 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
           settlorIndividualIDCard(index)
         ).flatten
 
-        if (questions.nonEmpty) Some(Seq(AnswerSection(None, questions, Some(Messages("answerPage.section.settlors.heading"))))) else None
-      )
+        AnswerSection(
+          headingKey = Some(Messages("answerPage.section.settlor.subheading", index + 1)),
+          questions,
+          None
+        )
     }
   }
 

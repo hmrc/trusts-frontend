@@ -23,7 +23,7 @@ import sections.LivingSettlors
 
 final case class LivingSettlorStatus(index : Int) extends QuestionPage[Status] {
 
-  override def path: JsPath = LivingSettlors.path \ "individual" \ index \ toString
+  override def path: JsPath = LivingSettlors.path \ index \ toString
 
   override def toString: String = "status"
 
