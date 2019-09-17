@@ -16,30 +16,15 @@
 
 package forms
 
-import forms.behaviours.BooleanFieldBehaviours
-import play.api.data.FormError
+import forms.mappings.Mappings
+import javax.inject.Inject
+import models.AddASettlor
+import play.api.data.Form
 
-class AgentOtherThanBarristerFormProviderSpec extends BooleanFieldBehaviours {
+class AddASettlorFormProvider @Inject() extends Mappings {
 
-  val requiredKey = "agentOtherThanBarrister.error.required"
-  val invalidKey = "error.boolean"
-
-  val form = new AgentOtherThanBarristerFormProvider()()
-
-  ".value" must {
-
-    val fieldName = "value"
-
-    behave like booleanField(
-      form,
-      fieldName,
-      invalidError = FormError(fieldName, invalidKey)
+  def apply(): Form[AddASettlor] =
+    Form(
+      "value" -> enumerable[AddASettlor]("addASettlor.error.required")
     )
-
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
-  }
 }

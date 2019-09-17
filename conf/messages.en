@@ -103,7 +103,8 @@ internationalAddress.error.line4.invalidCharacters = Address line 4 must only in
 individualOrBusiness.individual = Individual
 individualOrBusiness.business = Business
 
-entity.trustee = Trustee
+entity.settlor.individual = Individual Settlor
+
 entities.no.name.added = No name added
 entities.no.value.added = No value added
 entities.no.address.added = No address added
@@ -334,8 +335,11 @@ addATrustee.singular.heading = Add a trustee
 addATrustee.count.heading = You have added {0} trustees
 
 addASettlor.heading = Add a settlor
-addASettlor.singular.heading = Add a settlors
+addASettlor.title = Add a settlor
+addASettlor.singular.heading = Add a settlor
+addASettlor.singular.title = Add a settlor
 addASettlor.count.heading = You have added {0} settlors
+addASettlor.count.title = You have added {0} settlors
 
 addASettlor.lifetime = This is a trust created during the settlor's lifetime to gift or transfer assets (also known as an inter vivos trust)
 addASettlor.deed.a = This trust was set up by a family agreement
@@ -343,6 +347,11 @@ addASettlor.deed.a = This trust was set up by a family agreement, in addition to
 addASettlor.employees = This trust was set up for the employees of a company
 addASettlor.building = This trust was set up for a building or building with lots of tenants
 addASettlor.repair = This trust was set up to pay for the repair of historic buildings
+addASettlor.additional-content = Do you need to add another settlor?
+addASettlor.add-them-now = Yes, I want to add them now
+addASettlor.add-them-later = Yes, I want to add them later
+addASettlor.no-complete = No, I have added all of the settlors
+addASettlor.error.required = Select yes if you want to add another settlor
 
 addATrustee.additional-content = Do you need to add another trustee?
 addATrustee.add-them-now = Yes, I want to add them now
@@ -1211,3 +1220,9 @@ settlorsBasedInTheUK.title = Are any of the settlors based in the UK?
 settlorsBasedInTheUK.heading = Are any of the settlors based in the UK?
 settlorsBasedInTheUK.checkYourAnswersLabel = Are any of the settlors based in the UK?
 settlorsBasedInTheUK.error.required = Select yes if the any of the settlors are based in the UK
+
+removeSettlor.title = Are you sure you want to remove the settlor?
+removeSettlor.default = the settlor
+removeSettlor.heading = Are you sure you want to remove {0}?
+removeSettlor.checkYourAnswersLabel = Are you sure you want to remove {0}?
+removeSettlor.error.required = Select yes if you want to remove the settlor

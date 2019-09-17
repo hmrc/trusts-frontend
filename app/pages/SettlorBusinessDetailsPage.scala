@@ -14,32 +14,14 @@
  * limitations under the License.
  */
 
-package forms
+package pages
 
-import forms.behaviours.BooleanFieldBehaviours
-import play.api.data.FormError
+import play.api.libs.json.JsPath
+import sections.{LivingSettlors, Settlors}
 
-class InheritanceTaxActFormProviderSpec extends BooleanFieldBehaviours {
+case class SettlorBusinessDetailsPage(index : Int) extends QuestionPage[String] {
 
-  val requiredKey = "inheritanceTaxAct.error.required"
-  val invalidKey = "error.boolean"
+  override def path: JsPath = LivingSettlors.path \ index \ toString
 
-  val form = new InheritanceTaxActFormProvider()()
-
-  ".value" must {
-
-    val fieldName = "value"
-
-    behave like booleanField(
-      form,
-      fieldName,
-      invalidError = FormError(fieldName, invalidKey)
-    )
-
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
-  }
+  override def toString: String = "settlorBusinessDetails"
 }

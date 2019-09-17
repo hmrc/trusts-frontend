@@ -17,7 +17,7 @@
 package views
 
 import controllers.routes
-import forms.EstablishedUnderScotsLawFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -28,7 +28,7 @@ class EstablishedUnderScotsLawViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "establishedUnderScotsLaw"
 
-  val form = new EstablishedUnderScotsLawFormProvider()()
+  val form = new YesNoFormProvider().withPrefix("establishedUnderScotsLaw")
 
   "EstablishedUnderScotsLaw view" must {
 

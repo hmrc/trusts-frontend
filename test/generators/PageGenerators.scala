@@ -21,6 +21,7 @@ import pages._
 import pages.deceased_settlor._
 import pages.living_settlor._
 import pages.property_or_land._
+import pages.living_settlor.{RemoveSettlorPage, SettlorIndividualAddressInternationalPage, SettlorIndividualAddressUKPage, SettlorIndividualAddressUKYesNoPage, SettlorIndividualAddressYesNoPage, SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualIDCardPage, SettlorIndividualIDCardYesNoPage, SettlorIndividualNINOPage, SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage, SettlorIndividualOrBusinessPage, SettlorIndividualPassportPage, SettlorIndividualPassportYesNoPage}
 import pages.shares._
 import pages.trustees.{AddATrusteePage, IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteeIndividualOrBusinessPage, TrusteeLiveInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
 
@@ -41,6 +42,9 @@ trait PageGenerators {
 
   implicit lazy val arbitrarySettlorHandoverReliefYesNoPage: Arbitrary[SettlorHandoverReliefYesNoPage.type] =
     Arbitrary(SettlorHandoverReliefYesNoPage)
+
+  implicit lazy val arbitraryRemoveSettlorPage: Arbitrary[RemoveSettlorPage] =
+    Arbitrary(RemoveSettlorPage(0))
 
   implicit lazy val arbitrarySettlorIndividualPassportYesNoPage: Arbitrary[SettlorIndividualPassportYesNoPage] =
     Arbitrary(SettlorIndividualPassportYesNoPage(0))
@@ -236,6 +240,9 @@ trait PageGenerators {
 
   implicit lazy val arbitraryAddAssetsPage: Arbitrary[AddAssetsPage.type] =
     Arbitrary(AddAssetsPage)
+
+  implicit lazy val arbitraryAddASettlorPage: Arbitrary[AddASettlorPage.type] =
+    Arbitrary(AddASettlorPage)
 
   implicit lazy val arbitraryAssetMoneyValuePage: Arbitrary[AssetMoneyValuePage] =
     Arbitrary(AssetMoneyValuePage(0))

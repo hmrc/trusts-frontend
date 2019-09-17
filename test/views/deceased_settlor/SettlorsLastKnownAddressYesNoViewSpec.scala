@@ -16,7 +16,7 @@
 
 package views.deceased_settlor
 
-import forms.deceased_settlor.SettlorsLastKnownAddressYesNoFormProvider
+import forms.YesNoFormProvider
 import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -27,7 +27,7 @@ class SettlorsLastKnownAddressYesNoViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "settlorsLastKnownAddressYesNo"
 
-  val form = new SettlorsLastKnownAddressYesNoFormProvider()()
+  val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
   "SettlorsLastKnownAddressYesNo view" must {
 

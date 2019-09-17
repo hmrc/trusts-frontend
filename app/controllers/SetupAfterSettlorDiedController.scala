@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions._
-import forms.SetupAfterSettlorDiedFormProvider
+import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.{Mode, UserAnswers}
 import navigation.Navigator
@@ -38,14 +38,14 @@ class SetupAfterSettlorDiedController @Inject()(
                                          identify: IdentifierAction,
                                          getData: DraftIdRetrievalActionProvider,
                                          requireData: DataRequiredAction,
-                                         formProvider: SetupAfterSettlorDiedFormProvider,
+                                         yesNoFormProvider: YesNoFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: SetupAfterSettlorDiedView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
 
-  val form: Form[Boolean] = formProvider()
+  val form: Form[Boolean] = yesNoFormProvider.withPrefix("setupAfterSettlorDied")
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>

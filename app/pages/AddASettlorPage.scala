@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package forms.deceased_settlor
+package pages
 
-import forms.mappings.Mappings
-import javax.inject.Inject
-import play.api.data.Form
+import models.AddASettlor
+import play.api.libs.json.JsPath
 
-class SettlorDateOfDeathYesNoFormProvider @Inject() extends Mappings {
+case object AddASettlorPage extends QuestionPage[AddASettlor] {
 
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("settlorDateOfDeathYesNo.error.required")
-    )
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "addASettlor"
 }

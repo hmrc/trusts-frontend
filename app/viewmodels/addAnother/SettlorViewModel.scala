@@ -14,32 +14,32 @@
  * limitations under the License.
  */
 
-package forms
+package viewmodels.addAnother
 
-import forms.behaviours.BooleanFieldBehaviours
-import play.api.data.FormError
+import models.Status
 
-class RegisteringTrustFor5AFormProviderSpec extends BooleanFieldBehaviours {
+trait SettlorViewModel {
 
-  val requiredKey = "registeringTrustFor5A.error.required"
-  val invalidKey = "error.boolean"
+  val status : Status
 
-  val form = new RegisteringTrustFor5AFormProvider()()
+}
 
-  ".value" must {
+object SettlorViewModel {
 
-    val fieldName = "value"
+  import play.api.libs.json._
 
-    behave like booleanField(
-      form,
-      fieldName,
-      invalidError = FormError(fieldName, invalidKey)
-    )
+  implicit class ReadsWithContravariantOr[A](a: Reads[A]) {
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
+    def or[B >: A](b: Reads[B]): Reads[B] =
+      a.map[B](identity).orElse(b)
   }
+
+  implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
+    a.map(identity)
+
+  implicit lazy val reads : Reads[SettlorViewModel] = {
+      SettlorLivingViewModel.reads or
+      DefaultSettlorViewModel.reads
+  }
+
 }

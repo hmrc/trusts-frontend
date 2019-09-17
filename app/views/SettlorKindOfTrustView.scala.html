@@ -34,13 +34,12 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("settlorKindOfTrust.heading")
-
         @components.input_radio(
             field = form("value"),
             legend = messages("settlorKindOfTrust.heading"),
-            legendClass = Some("visually-hidden"),
-            inputs = SettlorKindOfTrust.options
+            legendClass = Some("heading-large"),
+            inputs = SettlorKindOfTrust.options,
+            legendAsHeading = true
         )
 
         @components.submit_button()

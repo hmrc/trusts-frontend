@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package forms.property_or_land
+package queries
 
-import forms.mappings.Mappings
-import javax.inject.Inject
-import play.api.data.Form
+import play.api.libs.json.JsPath
+import sections.{LivingSettlors, Settlors}
 
-class PropertyOrLandAddressUkYesNoFormProvider @Inject() extends Mappings {
+final case class  RemoveSettlorQuery(index : Int) extends Settable[Boolean] {
 
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("propertyOrLandAddressUkYesNo.error.required")
-    )
+  override def path: JsPath = LivingSettlors.path \ index
 }
+
+

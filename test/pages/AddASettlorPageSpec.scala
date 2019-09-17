@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package forms
+package pages
 
-import javax.inject.Inject
+import models.AddASettlor
+import pages.behaviours.PageBehaviours
 
-import forms.mappings.Mappings
-import play.api.data.Form
+class AddASettlorPageSpec extends PageBehaviours {
 
-class RegisteringTrustFor5AFormProvider @Inject() extends Mappings {
+  "AddASettlorPage" must {
 
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("registeringTrustFor5A.error.required")
-    )
+    beRetrievable[AddASettlor](AddASettlorPage)
+
+    beSettable[AddASettlor](AddASettlorPage)
+
+    beRemovable[AddASettlor](AddASettlorPage)
+  }
 }

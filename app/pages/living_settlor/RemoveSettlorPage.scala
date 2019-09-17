@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-package forms
+package pages.living_settlor
 
-import javax.inject.Inject
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import sections.{LivingSettlors, Settlors}
 
-import forms.mappings.Mappings
-import play.api.data.Form
+case class RemoveSettlorPage(index : Int) extends QuestionPage[Boolean] {
 
-class SetupAfterSettlorDiedFormProvider @Inject() extends Mappings {
+  override def path: JsPath = LivingSettlors.path \ index \ toString
 
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("setupAfterSettlorDied.error.required")
-    )
+  override def toString: String = "removeSettlor"
 }
