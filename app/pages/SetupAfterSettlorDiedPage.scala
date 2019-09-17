@@ -31,10 +31,8 @@ case object SetupAfterSettlorDiedPage extends QuestionPage[Boolean] {
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
       case Some(false) =>
-        // becoming a living settlor
         userAnswers.remove(DeceasedSettlor)
       case Some(true) =>
-        // becoming a will type trust
         userAnswers.remove(SettlorKindOfTrustPage)
           .flatMap(_.remove(SettlorHandoverReliefYesNoPage))
           .flatMap(_.remove(LivingSettlors))
