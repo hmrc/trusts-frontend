@@ -18,7 +18,7 @@ package controllers.shares
 
 import base.SpecBase
 import controllers.IndexValidation
-import forms.shares.SharePortfolioOnStockExchangeFormProvider
+import forms.YesNoFormProvider
 import generators.ModelGenerators
 import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
@@ -33,8 +33,7 @@ import views.html.shares.SharePortfolioOnStockExchangeView
 
 class SharePortfolioOnStockExchangeControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
 
-  val formProvider = new SharePortfolioOnStockExchangeFormProvider()
-  val form = formProvider()
+  val form = new YesNoFormProvider().withPrefix("sharePortfolioOnStockExchange")
   val index: Int = 0
 
   lazy val sharePortfolioOnStockExchangeRoute = controllers.shares.routes.SharePortfolioOnStockExchangeController.onPageLoad(NormalMode, index, fakeDraftId).url
