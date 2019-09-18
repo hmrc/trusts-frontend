@@ -19,7 +19,7 @@ package pages
 import javax.inject.Inject
 import mapping.reads.{Assets, Trustees}
 import models.Status.{Completed, InProgress}
-import models.{AddABeneficiary, AddATrustee, AddAssets, NormalMode, Status, UserAnswers}
+import models.{AddABeneficiary, AddASettlor, AddATrustee, AddAssets, NormalMode, Status, UserAnswers}
 import navigation.TaskListNavigator
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
 import pages.trustees.AddATrusteePage
@@ -88,8 +88,9 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
           else { userAnswers.get(LivingSettlors).getOrElse(Nil) match {
             case Nil => None
             case living =>
+              val noMoreToAdd = userAnswers.get(AddASettlorPage).contains(AddASettlor.NoComplete)
               val isComplete = !living.exists(_.status == InProgress)
-              determineStatus(isComplete)
+              determineStatus(isComplete  && noMoreToAdd)
           }
           }
       }
