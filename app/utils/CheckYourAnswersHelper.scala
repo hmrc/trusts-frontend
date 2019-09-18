@@ -179,7 +179,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
     x =>
       AnswerRow(
         "settlorIndividualNINO.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(formatNino(x)),
         controllers.living_settlor.routes.SettlorIndividualNINOController.onPageLoad(NormalMode, index,  draftId).url,
         livingSettlorName(index, userAnswers),
         canEdit = canEdit
