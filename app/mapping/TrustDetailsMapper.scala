@@ -19,25 +19,28 @@ package mapping
 import mapping.TypeOfTrust.WillTrustOrIntestacyTrust
 import models.SettlorKindOfTrust.{Deed, Employees, FlatManagement, HeritageMaintenanceFund, Intervivos}
 import models.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
-import models.{NonResidentType, SettlorKindOfTrust, Status, UserAnswers}
+import models.{NonResidentType, SettlorKindOfTrust, UserAnswers}
 import pages.entitystatus.DeceasedSettlorStatus
 import pages.{NonResidentTypePage, RegisteringTrustFor5APage, _}
 import play.api.Logger
 import sections.LivingSettlors
-import viewmodels.addAnother.SettlorViewModel
 
 class TrustDetailsMapper extends Mapping[TrustDetailsType] {
 
   private def trustType(userAnswers: UserAnswers): Option[TypeOfTrust] = {
-    val settlors: (Option[List[SettlorViewModel]], Option[Status]) =
-      (userAnswers.get(LivingSettlors), userAnswers.get(DeceasedSettlorStatus))
+    val settlors = (
+      userAnswers.get(LivingSettlors),
+      userAnswers.get(DeceasedSettlorStatus)
+    )
 
     settlors match {
       case (Some(_), Some(_)) =>
         Logger.info("[TrustDetailsMapper] - Cannot build trust type for Deed of variation yet")
         None
-      case (Some(_), None) => userAnswers.get(SettlorKindOfTrustPage).map(mapTrustTypeToDes)
-      case (None, Some(_)) => Some(WillTrustOrIntestacyTrust)
+      case (Some(_), None) =>
+        userAnswers.get(SettlorKindOfTrustPage).map(mapTrustTypeToDes)
+      case (None, Some(_)) =>
+        Some(WillTrustOrIntestacyTrust)
       case (None, None) =>
         Logger.info("[TrustDetailsMapper] - Cannot build trust type due to no settlors")
         None
@@ -96,8 +99,10 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
         nonUkResidentMap(userAnswers)
       case Some(InternationalAndUKTrustees) =>
         userAnswers.get(SettlorsBasedInTheUKPage) match {
-          case Some(true) => ukResidentMap(userAnswers)
-          case Some(false) => nonUkResidentMap(userAnswers)
+          case Some(true) =>
+            ukResidentMap(userAnswers)
+          case Some(false) =>
+            nonUkResidentMap(userAnswers)
           case  _ =>
             Logger.info("[TrustDetailsMapper][build] unable to determine if all settlors are based in the UK")
             None
