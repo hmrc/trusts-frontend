@@ -18,7 +18,7 @@ package controllers.shares
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.shares.SharePortfolioOnStockExchangeFormProvider
+import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
@@ -33,19 +33,19 @@ import views.html.shares.SharePortfolioOnStockExchangeView
 import scala.concurrent.{ExecutionContext, Future}
 
 class SharePortfolioOnStockExchangeController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DraftIdRetrievalActionProvider,
-                                         requireData: DataRequiredAction,
-                                         validateIndex: IndexActionFilterProvider,
-                                         formProvider: SharePortfolioOnStockExchangeFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: SharePortfolioOnStockExchangeView
+                                                         override val messagesApi: MessagesApi,
+                                                         sessionRepository: SessionRepository,
+                                                         navigator: Navigator,
+                                                         identify: IdentifierAction,
+                                                         getData: DraftIdRetrievalActionProvider,
+                                                         requireData: DataRequiredAction,
+                                                         validateIndex: IndexActionFilterProvider,
+                                                         yesNoFormProvider: YesNoFormProvider,
+                                                         val controllerComponents: MessagesControllerComponents,
+                                                         view: SharePortfolioOnStockExchangeView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = formProvider()
+  val form: Form[Boolean] = yesNoFormProvider.withPrefix("sharePortfolioOnStockExchange")
 
   private def actions(mode: Mode, index : Int, draftId: String) =
     identify andThen getData(draftId) andThen

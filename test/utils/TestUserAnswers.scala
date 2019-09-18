@@ -18,14 +18,16 @@ package utils
 
 import java.time.LocalDate
 
+import mapping.TypeOfTrust
 import models.Matched.{Failed, Success}
 import models.Status.Completed
 import models.TrusteesBasedInTheUK.UKBasedTrustees
-import models.{AddABeneficiary, AddATrustee, AddAssets, FullName, IndividualOrBusiness, UKAddress, UserAnswers, WhatKindOfAsset}
+import models.{AddABeneficiary, AddATrustee, AddAssets, FullName, IndividualOrBusiness, SettlorKindOfTrust, UKAddress, UserAnswers, WhatKindOfAsset}
 import org.scalatest.TryValues
 import pages._
 import pages.deceased_settlor.{SettlorDateOfBirthYesNoPage, SettlorDateOfDeathYesNoPage, SettlorsLastKnownAddressYesNoPage, SettlorsNINoYesNoPage, SettlorsNamePage}
 import pages.entitystatus._
+import pages.living_settlor.{SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNINOPage, SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage, SettlorIndividualOrBusinessPage}
 import pages.trustees.{AddATrusteePage, IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteeIndividualOrBusinessPage, TrusteeLiveInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
 import play.api.libs.json.Json
 
@@ -86,6 +88,18 @@ object TestUserAnswers extends TryValues {
       .set(DeceasedSettlorStatus, Completed).success.value
   }
 
+  def withIndividualLivingSettlor(index: Int, userAnswers: UserAnswers) : UserAnswers = {
+      userAnswers
+      .set(SetupAfterSettlorDiedPage, false).success.value
+      .set(SettlorIndividualOrBusinessPage(index),IndividualOrBusiness.Individual).success.value
+      .set(SettlorIndividualNamePage(index), FullName("First", None, "Last")).success.value
+      .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
+      .set(SettlorIndividualNINOYesNoPage(index), true).success.value
+      .set(SettlorIndividualNINOPage(index), "AB123456A").success.value
+      .set(LivingSettlorStatus(index), Completed).success.value
+  }
+
+
   def withTrustDetails(userAnswers: UserAnswers) : UserAnswers = {
       userAnswers
       .set(TrustNamePage, "New Trust").success.value
@@ -141,6 +155,22 @@ object TestUserAnswers extends TryValues {
     val userAnswers = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
 
     userAnswers
+  }
+
+  def withInterVivosTrust(userAnswers: UserAnswers) : UserAnswers = {
+    userAnswers
+        .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
+      .set(SettlorHandoverReliefYesNoPage, true).success.value
+  }
+
+  def withHeritageTrust(userAnswers: UserAnswers) : UserAnswers = {
+    userAnswers
+      .set(SettlorKindOfTrustPage, SettlorKindOfTrust.HeritageMaintenanceFund).success.value
+  }
+
+  def withFlatManagementTrust(userAnswers: UserAnswers) : UserAnswers = {
+    userAnswers
+      .set(SettlorKindOfTrustPage, SettlorKindOfTrust.FlatManagement).success.value
   }
 
 }

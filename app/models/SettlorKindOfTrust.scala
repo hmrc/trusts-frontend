@@ -22,14 +22,14 @@ sealed trait SettlorKindOfTrust
 
 object SettlorKindOfTrust extends Enumerable.Implicits {
 
-  case object Lifetime extends WithName("lifetime") with SettlorKindOfTrust
-  case object Deed extends WithName("deed") with SettlorKindOfTrust
-  case object Employees extends WithName("employees") with SettlorKindOfTrust
-  case object Building extends WithName("building") with SettlorKindOfTrust
-  case object Repair extends WithName("repair") with SettlorKindOfTrust
+  case object Intervivos extends WithName("Lifetime") with SettlorKindOfTrust
+  case object Deed extends WithName("Deed") with SettlorKindOfTrust
+  case object Employees extends WithName("Employees") with SettlorKindOfTrust
+  case object FlatManagement extends WithName("Building") with SettlorKindOfTrust
+  case object HeritageMaintenanceFund extends WithName("Repair") with SettlorKindOfTrust
 
   val values: List[SettlorKindOfTrust] = List(
-    Lifetime, Deed, Employees, Building, Repair
+    Intervivos, Deed, Employees, FlatManagement, HeritageMaintenanceFund
   )
 
   val options: List[RadioOption] = values.map {

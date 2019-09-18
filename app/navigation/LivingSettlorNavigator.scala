@@ -16,19 +16,19 @@
 
 package navigation
 
+import config.FrontendAppConfig
 import controllers.living_settlor.routes
-import javax.inject.Singleton
+import javax.inject.{Inject, Singleton}
 import models.IndividualOrBusiness._
 import models.SettlorKindOfTrust._
 import models.{NormalMode, UserAnswers}
-import pages.{AddASettlorPage, AddASettlorYesNoPage, Page, SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage}
 import pages.living_settlor._
-import pages.{Page, SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage}
+import pages._
 import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
 
 @Singleton
-class LivingSettlorNavigator extends Navigator {
+class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Navigator {
 
   override protected def normalRoutes(draftId: String): Page => AffinityGroup => UserAnswers => Call = {
     case SettlorKindOfTrustPage => _ => settlorKindOfTrustPage(draftId)
@@ -90,11 +90,11 @@ class LivingSettlorNavigator extends Navigator {
     answers.get(SettlorKindOfTrustPage) match {
       case Some(Deed) =>
         controllers.routes.SettlorKindOfTrustController.onPageLoad(NormalMode, draftId)
-      case Some(Lifetime) =>
+      case Some(Intervivos) =>
         controllers.routes.SettlorHandoverReliefYesNoController.onPageLoad(NormalMode, draftId)
-      case Some(Building) =>
+      case Some(FlatManagement) =>
         controllers.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
-      case Some(Repair) =>
+      case Some(HeritageMaintenanceFund) =>
         controllers.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
       case Some(Employees) =>
         controllers.routes.SettlorKindOfTrustController.onPageLoad(NormalMode, draftId)
@@ -147,7 +147,12 @@ class LivingSettlorNavigator extends Navigator {
   private def settlorIndividualOrBusinessPage(index: Int, draftId: String)(answers: UserAnswers) =
     answers.get(SettlorIndividualOrBusinessPage(index)) match {
       case Some(Individual) => controllers.living_settlor.routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, draftId)
-      case Some(Business) => controllers.living_settlor.routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId)
+      case Some(Business) =>
+        if(config.livingSettlorBusinessEnabled) {
+          controllers.living_settlor.routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId)
+        } else {
+          controllers.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId)
+        }
       case None => controllers.routes.SessionExpiredController.onPageLoad()
     }
 

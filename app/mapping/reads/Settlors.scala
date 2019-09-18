@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package forms.property_or_land
+package mapping.reads
 
-import forms.mappings.Mappings
-import javax.inject.Inject
-import play.api.data.Form
+import mapping.Settlors
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-class TrustOwnAllThePropertyOrLandFormProvider @Inject() extends Mappings {
+case object Settlors extends QuestionPage[Settlors] {
 
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("trustOwnAllThePropertyOrLand.error.required")
-    )
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "settlors"
+
 }

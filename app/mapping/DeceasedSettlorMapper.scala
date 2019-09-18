@@ -57,7 +57,8 @@ class DeceasedSettlorMapper @Inject()(nameMapper: NameMapper, addressMapper: Add
       nino =>
         Identification(
           nino = settlorNino,
-          address = None)
+          address = None
+        )
     }
   }
 

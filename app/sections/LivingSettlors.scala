@@ -17,7 +17,7 @@
 package sections
 
 import pages.QuestionPage
-import play.api.libs.json.{JsPath, JsValue}
+import play.api.libs.json.JsPath
 import viewmodels.addAnother.SettlorViewModel
 
 case object LivingSettlors extends QuestionPage[List[SettlorViewModel]]{

@@ -81,7 +81,7 @@ class ConfirmationAnswerPageLivingSettlorViewSpec extends ViewBehaviours {
         .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
         .set(SetupAfterSettlorDiedPage, false).success.value
-        .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Lifetime).success.value
+        .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
         .set(SettlorHandoverReliefYesNoPage, true).success.value
         .set(SettlorIndividualOrBusinessPage(index),IndividualOrBusiness.Individual).success.value
         .set(SettlorIndividualNamePage(index), FullName("First", None, "Last")).success.value

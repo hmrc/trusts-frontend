@@ -14,16 +14,24 @@
  * limitations under the License.
  */
 
-package forms.shares
+package mapping
 
-import forms.mappings.Mappings
 import javax.inject.Inject
-import play.api.data.Form
+import models.UserAnswers
 
-class SharePortfolioOnStockExchangeFormProvider @Inject() extends Mappings {
+class SettlorsMapper @Inject()(individualSettlorsMapper: IndividualSettlorsMapper) extends Mapping[Settlors] {
 
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("sharePortfolioOnStockExchange.error.required")
-    )
+   def build(userAnswers: UserAnswers): Option[Settlors] = {
+     val individualSettlors = individualSettlorsMapper.build(userAnswers)
+
+     val settlors = Settlors(
+       settlor = individualSettlors,
+       settlorCompany = None
+     )
+
+     settlors match {
+       case Settlors(None, None) => None
+       case _ => Some(settlors)
+     }
+  }
 }
