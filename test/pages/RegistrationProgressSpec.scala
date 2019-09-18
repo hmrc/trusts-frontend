@@ -22,7 +22,7 @@ import base.SpecBase
 import models.AddAssets.NoComplete
 import models.IndividualOrBusiness.Individual
 import models.Status.{Completed, InProgress}
-import models.{AddABeneficiary, AddATrustee, FullName, Status, UserAnswers, WhatKindOfAsset}
+import models.{AddABeneficiary, AddASettlor, AddATrustee, FullName, Status, UserAnswers, WhatKindOfAsset}
 import pages.entitystatus.{AssetStatus, ClassBeneficiaryStatus, DeceasedSettlorStatus, IndividualBeneficiaryStatus, LivingSettlorStatus, TrustDetailsStatus, TrusteeStatus}
 import pages.living_settlor.SettlorIndividualOrBusinessPage
 import pages.shares.{SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, SharesInAPortfolioPage}
@@ -205,6 +205,20 @@ class RegistrationProgressSpec extends SpecBase {
         registrationProgress.isSettlorsComplete(userAnswers).value mustBe InProgress
       }
 
+
+      "there are living settlors that are all complete, but user answered AddMore" in {
+
+        val registrationProgress = injector.instanceOf[RegistrationProgress]
+
+        val userAnswers = emptyUserAnswers
+          .set(SetupAfterSettlorDiedPage, false).success.value
+          .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
+          .set(LivingSettlorStatus(0), Status.Completed).success.value
+          .set(AddASettlorPage, AddASettlor.YesLater).success.value
+
+        registrationProgress.isSettlorsComplete(userAnswers).value mustBe InProgress
+      }
+
     }
 
     "render complete tag" when {
@@ -226,6 +240,7 @@ class RegistrationProgressSpec extends SpecBase {
           .set(SetupAfterSettlorDiedPage, false).success.value
           .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
           .set(LivingSettlorStatus(0), Status.Completed).success.value
+          .set(AddASettlorPage, AddASettlor.NoComplete).success.value
 
         registrationProgress.isSettlorsComplete(userAnswers).value mustBe Completed
       }
