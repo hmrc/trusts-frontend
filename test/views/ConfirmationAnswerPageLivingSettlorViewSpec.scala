@@ -84,9 +84,9 @@ class ConfirmationAnswerPageLivingSettlorViewSpec extends ViewBehaviours {
         .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Lifetime).success.value
         .set(SettlorHandoverReliefYesNoPage, true).success.value
         .set(SettlorIndividualOrBusinessPage(index),IndividualOrBusiness.Individual).success.value
-        .set(SettlorIndividualNamePage(index), FullName("First", None, "Settlor")).success.value
+        .set(SettlorIndividualNamePage(index), FullName("First", None, "Last")).success.value
         .set(SettlorIndividualDateOfBirthYesNoPage(index), true).success.value
-        .set(SettlorIndividualDateOfBirthPage(index), LocalDate.now).success.value
+        .set(SettlorIndividualDateOfBirthPage(index), LocalDate.of(2010, 10, 10)).success.value
         .set(SettlorIndividualNINOYesNoPage(index), true).success.value
         .set(SettlorIndividualNINOPage(index), "AB123456C").success.value
         .set(LivingSettlorStatus(index), Status.Completed).success.value
@@ -143,7 +143,7 @@ class ConfirmationAnswerPageLivingSettlorViewSpec extends ViewBehaviours {
       val subHeaders = wrapper.getElementsByTag("h3")
 
       headers.size mustBe 5
-      subHeaders.size mustBe 6
+      subHeaders.size mustBe 7
     }
 
     "assert question labels for Trusts" in {
@@ -189,7 +189,7 @@ class ConfirmationAnswerPageLivingSettlorViewSpec extends ViewBehaviours {
 
     "assert question labels for Settlors" in {
       assertContainsQuestionAnswerPair(doc, messages("setupAfterSettlorDied.checkYourAnswersLabel"), no)
-      assertContainsQuestionAnswerPair(doc, messages("settlorKindOfTrust.checkYourAnswersLabel"), "lifetime")
+      assertContainsQuestionAnswerPair(doc, messages("settlorKindOfTrust.checkYourAnswersLabel"), "A trust created during their lifetime to gift or transfer assets")
       assertContainsQuestionAnswerPair(doc, messages("settlorHandoverReliefYesNo.checkYourAnswersLabel"),  yes)
       assertContainsQuestionAnswerPair(doc, messages("settlorIndividualOrBusiness.checkYourAnswersLabel"), "Individual")
       assertContainsQuestionAnswerPair(doc, messages("settlorIndividualName.checkYourAnswersLabel"), name)
@@ -197,11 +197,6 @@ class ConfirmationAnswerPageLivingSettlorViewSpec extends ViewBehaviours {
       assertContainsQuestionAnswerPair(doc, messages("settlorIndividualDateOfBirth.checkYourAnswersLabel", name), "10 October 2010")
       assertContainsQuestionAnswerPair(doc, messages("settlorIndividualNINOYesNo.checkYourAnswersLabel", name), yes)
       assertContainsQuestionAnswerPair(doc, messages("settlorIndividualNINO.checkYourAnswersLabel", name), "AB 12 34 56 C")
-      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualAddressYesNo.checkYourAnswersLabel", name), yes)
-      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualAddressUKYesNo.checkYourAnswersLabel", name), yes)
-      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualAddressUK.checkYourAnswersLabel", name), "Line1 Town NE1 1ZZ")
-      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualPassportYesNo.checkYourAnswersLabel", name), yes)
-      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualPassport.checkYourAnswersLabel", name), "545363636363")
     }
 
 

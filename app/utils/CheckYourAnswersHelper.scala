@@ -260,10 +260,10 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       agentOtherThanBarrister
     ).flatten
 
-    if (questions.nonEmpty) Some(Seq(AnswerSection(None, questions, Some(Messages("answerPage.section.trustsDetails.heading"))))) else None
+    if (questions.nonEmpty) Some(Seq(AnswerSection(None, questions, Some(messages("answerPage.section.trustsDetails.heading"))))) else None
   }
 
-  def settlors: Option[Seq[AnswerSection]] = {
+  def deceasedSettlor: Option[Seq[AnswerSection]] = {
 
     val questions = Seq(
       setupAfterSettlorDied,
@@ -280,11 +280,11 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       deceasedSettlorsInternationalAddress
     ).flatten
 
-    if (questions.nonEmpty)
+    if (deceasedSettlorsName.nonEmpty)
       Some(Seq(AnswerSection(
-        headingKey = Some(Messages("answerPage.section.settlor.subheading", 1)),
+        headingKey = None,
         questions,
-        None
+        sectionKey = Some(messages("answerPage.section.deceasedSettlor.heading"))
       )))
     else None
   }
@@ -318,9 +318,9 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
         ).flatten
 
         AnswerSection(
-          headingKey = Some(Messages("answerPage.section.settlor.subheading", index + 1)),
+          headingKey = Some(messages("answerPage.section.settlor.subheading", index + 1)),
           questions,
-          None
+          sectionKey = Some(messages("answerPage.section.settlors.heading"))
         )
     }
   }

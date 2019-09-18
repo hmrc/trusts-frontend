@@ -148,7 +148,7 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
             checkYourAnswersHelper.wasSettlorsAddressUKYesNo.value,
             checkYourAnswersHelper.deceasedSettlorsUKAddress.value
           ),
-          Some("Settlors")
+          Some("Settlor")
         ),
         AnswerSection(
           Some("Trustee 1"),
@@ -345,7 +345,7 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
           Some("Trust details")
         ),
         AnswerSection(
-          None,
+          headingKey = Some("Settlor 1"),
           Seq(checkYourAnswersHelper.setupAfterSettlorDied.value,
             checkYourAnswersHelper.settlorKindOfTrust.value,
             checkYourAnswersHelper.settlorHandoverReliefYesNo.value,
@@ -354,17 +354,12 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
             checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
             checkYourAnswersHelper.settlorIndividualDateOfBirth(index).value,
             checkYourAnswersHelper.settlorIndividualNINOYesNo(index).value,
-            checkYourAnswersHelper.settlorIndividualNINO(index).value,
-            checkYourAnswersHelper.settlorIndividualAddressYesNo(index).value,
-            checkYourAnswersHelper.settlorIndividualAddressUKYesNo(index).value,
-            checkYourAnswersHelper.settlorIndividualAddressUK(index).value,
-            checkYourAnswersHelper.settlorIndividualPassportYesNo(index).value,
-            checkYourAnswersHelper.settlorIndividualPassport(index).value
+            checkYourAnswersHelper.settlorIndividualNINO(index).value
           ),
-          Some("Living Settlors")
+          Some("Settlors")
         ),
         AnswerSection(
-          Some("Trustee 1"),
+          headingKey = Some("Trustee 1"),
           Seq(
             checkYourAnswersHelper.isThisLeadTrustee(index).value,
             checkYourAnswersHelper.trusteeIndividualOrBusiness(index, leadTrusteeIndividualOrBusinessMessagePrefix).value,
