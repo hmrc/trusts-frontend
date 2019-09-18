@@ -22,7 +22,7 @@ import base.SpecBase
 import controllers.routes
 import generators.Generators
 import models.TrusteesBasedInTheUK.{NonUkBasedTrustees, UKBasedTrustees}
-import models.{CheckMode, NonResidentType, NormalMode, UserAnswers}
+import models.{NonResidentType, NormalMode, UserAnswers}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
@@ -264,58 +264,6 @@ trait TrustDetailsRoutes {
 
           navigator.nextPage(TrustDetailsAnswerPage, NormalMode, fakeDraftId)(answers)
             .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
-      }
-
-    }
-
-  }
-
-  def trustDetailsCheckRoutes()(implicit navigator : Navigator) = {
-
-    "go to Check Trust Details Answers" when {
-
-      "user answers trust name" in {
-
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
-
-            val answers = userAnswers.set(TrustNamePage, value = "New Trust").success.value
-
-            navigator.nextPage(TrustNamePage, CheckMode, fakeDraftId)(answers)
-              .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId))
-        }
-
-      }
-
-      "user answers trust set up date" in {
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
-
-            val answers = userAnswers.set(WhenTrustSetupPage, value = LocalDate.of(2010,10,10)).success.value
-
-            navigator.nextPage(WhenTrustSetupPage, CheckMode, fakeDraftId)(answers)
-              .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId))
-        }
-      }
-
-      "user answers where Was The Trust Previously Resident" in {
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
-            val answers = userAnswers.set(TrustPreviouslyResidentPage, value = "France").success.value
-            navigator.nextPage(TrustPreviouslyResidentPage, CheckMode, fakeDraftId)(answers)
-              .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId))
-        }
-      }
-
-      "user answers Trust Resident from What Is Country Administering" in {
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
-
-            val answers = userAnswers.set(CountryAdministeringTrustPage, value = "France").success.value
-
-            navigator.nextPage(CountryAdministeringTrustPage, CheckMode, fakeDraftId)(answers)
-              .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId))
-        }
       }
 
     }
