@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package sections
+package mapping.reads
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import viewmodels.addAnother.SettlorViewModel
 
-case object LivingSettlors extends QuestionPage[List[SettlorViewModel]]{
+case object LivingSettlors extends QuestionPage[List[IndividualSettlor]] {
 
   override def path: JsPath = Settlors.path \ toString
 

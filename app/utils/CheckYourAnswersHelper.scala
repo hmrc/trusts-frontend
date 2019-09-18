@@ -47,7 +47,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
-  def settlorKindOfTrust(index: Int): Option[AnswerRow] = userAnswers.get(SettlorKindOfTrustPage) map {
+  def settlorKindOfTrust: Option[AnswerRow] = userAnswers.get(SettlorKindOfTrustPage) map {
     x =>
       AnswerRow(
         "settlorKindOfTrust.checkYourAnswersLabel",

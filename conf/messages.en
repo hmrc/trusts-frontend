@@ -341,12 +341,12 @@ addASettlor.singular.title = Add a settlor
 addASettlor.count.heading = You have added {0} settlors
 addASettlor.count.title = You have added {0} settlors
 
-addASettlor.lifetime = This is a trust created during the settlor's lifetime to gift or transfer assets (also known as an inter vivos trust)
-addASettlor.deed.a = This trust was set up by a family agreement
-addASettlor.deed.a = This trust was set up by a family agreement, in addition to a will
-addASettlor.employees = This trust was set up for the employees of a company
-addASettlor.building = This trust was set up for a building or building with lots of tenants
-addASettlor.repair = This trust was set up to pay for the repair of historic buildings
+addASettlor.Lifetime = This is a trust created during the settlor's lifetime to gift or transfer assets (also known as an inter vivos trust)
+addASettlor.Deed.a = This trust was set up by a family agreement
+addASettlor.Deed.a = This trust was set up by a family agreement, in addition to a will
+addASettlor.Employees = This trust was set up for the employees of a company
+addASettlor.Building = This trust was set up for a building or building with lots of tenants
+addASettlor.Repair = This trust was set up to pay for the repair of historic buildings
 addASettlor.additional-content = Do you need to add another settlor?
 addASettlor.add-them-now = Yes, I want to add them now
 addASettlor.add-them-later = Yes, I want to add them later
@@ -1194,11 +1194,11 @@ addASettlorYesNo.error.required = Select yes if you want to add a settlor
 
 settlorKindOfTrust.title = What kind of trust did the settlor create?
 settlorKindOfTrust.heading = What kind of trust did the settlor create?
-settlorKindOfTrust.lifetime = A trust created during their lifetime to gift or transfer assets
-settlorKindOfTrust.deed = A trust through a Deed of Variation or family agreement
-settlorKindOfTrust.employees = A trust for the employees of a company
-settlorKindOfTrust.building = A trust for a building or building with tenants
-settlorKindOfTrust.repair = A trust for the repair of historic buildings
+settlorKindOfTrust.Lifetime = A trust created during their lifetime to gift or transfer assets
+settlorKindOfTrust.Deed = A trust through a Deed of Variation or family agreement
+settlorKindOfTrust.Employees = A trust for the employees of a company
+settlorKindOfTrust.Building = A trust for a building or building with tenants
+settlorKindOfTrust.Repair = A trust for the repair of historic buildings
 settlorKindOfTrust.checkYourAnswersLabel = What kind of trust did the settlor create?
 settlorKindOfTrust.error.required = Select what kind of trust the settlor created
 
