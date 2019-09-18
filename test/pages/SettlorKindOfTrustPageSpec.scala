@@ -36,10 +36,10 @@ class SettlorKindOfTrustPageSpec extends PageBehaviours {
       (initial, str) =>
         val answers: UserAnswers = initial
           .set(SetupAfterSettlorDiedPage, false).success.value
-          .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Lifetime).success.value
+          .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
           .set(SettlorHandoverReliefYesNoPage, true).success.value
 
-        val result = answers.set(SettlorKindOfTrustPage, SettlorKindOfTrust.Building).success.value
+        val result = answers.set(SettlorKindOfTrustPage, SettlorKindOfTrust.FlatManagement).success.value
 
         result.get(SettlorHandoverReliefYesNoPage) mustNot be(defined)
     }

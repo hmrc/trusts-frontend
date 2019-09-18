@@ -52,7 +52,7 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
 
         val userAnswers =
           emptyUserAnswers
-            .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Lifetime).success.value
+            .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
             .set(SettlorHandoverReliefYesNoPage, false).success.value
             .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
             .set(SettlorIndividualNamePage(index), settlorName).success.value
@@ -102,7 +102,7 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
 
         val userAnswers =
           emptyUserAnswers
-            .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Lifetime).success.value
+            .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
             .set(SettlorHandoverReliefYesNoPage, false).success.value
             .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
             .set(SettlorIndividualNamePage(index), settlorName).success.value
@@ -156,7 +156,7 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
 
         val userAnswers =
           emptyUserAnswers
-            .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Lifetime).success.value
+            .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
             .set(SettlorHandoverReliefYesNoPage, false).success.value
             .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
             .set(SettlorIndividualNamePage(index), settlorName).success.value
@@ -214,7 +214,7 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
 
         val userAnswers =
           emptyUserAnswers
-            .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Lifetime).success.value
+            .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
             .set(SettlorHandoverReliefYesNoPage, false).success.value
             .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
             .set(SettlorIndividualNamePage(index), settlorName).success.value
@@ -272,7 +272,7 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
 
         val userAnswers =
           emptyUserAnswers
-            .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Lifetime).success.value
+            .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
             .set(SettlorHandoverReliefYesNoPage, false).success.value
             .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
             .set(SettlorIndividualNamePage(index), settlorName).success.value
@@ -332,7 +332,7 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
     "redirect to SettlorIndividualOrBusinessPage on a GET if no answer for 'Is the settlor an individual or business?' at index" in {
       val answers =
         emptyUserAnswers
-          .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Lifetime).success.value
+          .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
           .set(SettlorHandoverReliefYesNoPage, false).success.value
           .set(SettlorIndividualNamePage(index), settlorName).success.value
           .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value

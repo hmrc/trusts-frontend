@@ -37,7 +37,7 @@ class SettlorIndividualOrBusinessPageSpec extends PageBehaviours {
       (initial, str) =>
         val answers: UserAnswers = initial
           .set(SetupAfterSettlorDiedPage, false).success.value
-          .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Lifetime).success.value
+          .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
           .set(SettlorHandoverReliefYesNoPage, true).success.value
           .set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Business).success.value
           .set(SettlorBusinessNamePage(0), "AWS").success.value
@@ -53,7 +53,7 @@ class SettlorIndividualOrBusinessPageSpec extends PageBehaviours {
       (initial, str) =>
         val answers: UserAnswers = initial
           .set(SetupAfterSettlorDiedPage, false).success.value
-          .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Lifetime).success.value
+          .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
           .set(SettlorHandoverReliefYesNoPage, true).success.value
           .set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
           .set(SettlorIndividualNamePage(0), FullName("First", None, "Last")).success.value

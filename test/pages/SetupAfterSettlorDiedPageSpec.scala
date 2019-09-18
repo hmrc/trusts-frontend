@@ -104,7 +104,7 @@ class SetupAfterSettlorDiedPageSpec extends PageBehaviours {
         (initial, str) =>
           val answers: UserAnswers = initial
             // settlor with nino
-            .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Lifetime).success.value
+            .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
             .set(SettlorHandoverReliefYesNoPage, true).success.value
             .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
             .set(SettlorIndividualNamePage(0), FullName("First", None,"Last")).success.value
