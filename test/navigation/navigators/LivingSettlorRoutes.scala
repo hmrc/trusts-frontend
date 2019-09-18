@@ -35,7 +35,7 @@ trait LivingSettlorRoutes {
 
   private val index = 0
 
-  private val navigator : Navigator = new LivingSettlorNavigator
+  private val navigator : Navigator = injector.instanceOf[LivingSettlorNavigator]
 
   def livingSettlorRoutes(): Unit = {
 
