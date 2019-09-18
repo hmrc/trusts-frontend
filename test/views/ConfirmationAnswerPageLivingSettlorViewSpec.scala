@@ -21,20 +21,21 @@ import java.time.{LocalDate, LocalDateTime}
 import models.AddAssets.NoComplete
 import models.Status.Completed
 import models.TrusteesBasedInTheUK.UKBasedTrustees
-import models.{AddABeneficiary, AddATrustee, FullName, IndividualOrBusiness, Status, UKAddress, WhatKindOfAsset}
+import models.{AddABeneficiary, AddATrustee, FullName, IndividualOrBusiness, SettlorKindOfTrust, Status, UKAddress, WhatKindOfAsset}
 import pages._
-import pages.deceased_settlor.{SettlorDateOfBirthYesNoPage, SettlorDateOfDeathPage, SettlorDateOfDeathYesNoPage, SettlorNationalInsuranceNumberPage, SettlorsDateOfBirthPage, SettlorsLastKnownAddressYesNoPage, SettlorsNINoYesNoPage, SettlorsNamePage, SettlorsUKAddressPage, WasSettlorsAddressUKYesNoPage}
+import pages.deceased_settlor._
 import pages.entitystatus._
+import pages.living_settlor.{SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNINOPage, SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage, SettlorIndividualOrBusinessPage}
 import pages.property_or_land._
 import pages.shares._
-import pages.trustees.{AddATrusteePage, IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteeIndividualOrBusinessPage, TrusteeLiveInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
+import pages.trustees._
+import utils.AccessibilityHelper._
 import utils.countryOptions.CountryOptions
-import utils.{CheckYourAnswersHelper, DateFormat, PrintUserAnswersHelper, TestUserAnswers}
+import utils.{DateFormat, PrintUserAnswersHelper, TestUserAnswers}
 import views.behaviours.ViewBehaviours
 import views.html.ConfirmationAnswerPageView
-import utils.AccessibilityHelper._
 
-class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
+class ConfirmationAnswerPageLivingSettlorViewSpec extends ViewBehaviours {
   val index = 0
 
   "ConfirmationAnswerPage view" must {
@@ -79,18 +80,16 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
         .set(TrusteeStatus(index), Status.Completed).success.value
         .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
-        .set(SetupAfterSettlorDiedPage, true).success.value
-        .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
-        .set(SettlorDateOfDeathYesNoPage, true).success.value
-        .set(SettlorDateOfDeathPage, LocalDate.of(2010, 10, 10)).success.value
-        .set(SettlorDateOfBirthYesNoPage, true).success.value
-        .set(SettlorsDateOfBirthPage, LocalDate.of(2010, 10, 10)).success.value
-        .set(SettlorsNINoYesNoPage, true).success.value
-        .set(SettlorNationalInsuranceNumberPage, "AB123456C").success.value
-        .set(SettlorsLastKnownAddressYesNoPage, true).success.value
-        .set(WasSettlorsAddressUKYesNoPage, true).success.value
-        .set(SettlorsUKAddressPage, UKAddress("Line1", None, None, "Town", "NE1 1ZZ")).success.value
-        .set(DeceasedSettlorStatus, Status.Completed).success.value
+        .set(SetupAfterSettlorDiedPage, false).success.value
+        .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Lifetime).success.value
+        .set(SettlorHandoverReliefYesNoPage, true).success.value
+        .set(SettlorIndividualOrBusinessPage(index),IndividualOrBusiness.Individual).success.value
+        .set(SettlorIndividualNamePage(index), FullName("First", None, "Settlor")).success.value
+        .set(SettlorIndividualDateOfBirthYesNoPage(index), true).success.value
+        .set(SettlorIndividualDateOfBirthPage(index), LocalDate.now).success.value
+        .set(SettlorIndividualNINOYesNoPage(index), true).success.value
+        .set(SettlorIndividualNINOPage(index), "AB123456C").success.value
+        .set(LivingSettlorStatus(index), Status.Completed).success.value
 
         .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
         .set(AssetMoneyValuePage(index), "100").success.value
@@ -187,19 +186,24 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
       assertContainsQuestionAnswerPair(doc, messages("trusteesUkAddress.checkYourAnswersLabel", trusteeName), "line1 line2 line3 town or city AB1 1AB")
     }
 
+
     "assert question labels for Settlors" in {
-      assertContainsQuestionAnswerPair(doc, messages("setupAfterSettlorDied.checkYourAnswersLabel"), yes)
-      assertContainsQuestionAnswerPair(doc, messages("settlorsName.checkYourAnswersLabel"), name)
-      assertContainsQuestionAnswerPair(doc, messages("settlorDateOfBirthYesNo.checkYourAnswersLabel", name), yes)
-      assertContainsQuestionAnswerPair(doc, messages("settlorsDateOfBirth.checkYourAnswersLabel", name), "10 October 2010")
-      assertContainsQuestionAnswerPair(doc, messages("settlorDateOfDeathYesNo.checkYourAnswersLabel", name), yes)
-      assertContainsQuestionAnswerPair(doc, messages("settlorDateOfDeath.checkYourAnswersLabel", name), "10 October 2010")
-      assertContainsQuestionAnswerPair(doc, messages("settlorsNINoYesNo.checkYourAnswersLabel", name), yes)
-      assertContainsQuestionAnswerPair(doc, messages("settlorNationalInsuranceNumber.checkYourAnswersLabel", name), "AB 12 34 56 C")
-      assertContainsQuestionAnswerPair(doc, messages("settlorsLastKnownAddressYesNo.checkYourAnswersLabel", name), yes)
-      assertContainsQuestionAnswerPair(doc, messages("wasSettlorsAddressUKYesNo.checkYourAnswersLabel", name), yes)
-      assertContainsQuestionAnswerPair(doc, messages("settlorsUKAddress.checkYourAnswersLabel", name), "Line1 Town NE1 1ZZ")
+      assertContainsQuestionAnswerPair(doc, messages("setupAfterSettlorDied.checkYourAnswersLabel"), no)
+      assertContainsQuestionAnswerPair(doc, messages("settlorKindOfTrust.checkYourAnswersLabel"), "lifetime")
+      assertContainsQuestionAnswerPair(doc, messages("settlorHandoverReliefYesNo.checkYourAnswersLabel"),  yes)
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualOrBusiness.checkYourAnswersLabel"), "Individual")
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualName.checkYourAnswersLabel"), name)
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualDateOfBirthYesNo.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualDateOfBirth.checkYourAnswersLabel", name), "10 October 2010")
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualNINOYesNo.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualNINO.checkYourAnswersLabel", name), "AB 12 34 56 C")
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualAddressYesNo.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualAddressUKYesNo.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualAddressUK.checkYourAnswersLabel", name), "Line1 Town NE1 1ZZ")
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualPassportYesNo.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualPassport.checkYourAnswersLabel", name), "545363636363")
     }
+
 
     "assert question labels for Money Assets" in {
       assertContainsQuestionAnswerPair(doc, messages("assetMoneyValue.checkYourAnswersLabel"), "£100")
