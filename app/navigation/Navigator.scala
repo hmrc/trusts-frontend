@@ -479,7 +479,7 @@ class Navigator @Inject()() {
     case NormalMode =>
       normalRoutes(draftId)(page)(af)
     case CheckMode =>
-      checkRouteMap(draftId)(page)
+      normalRoutes(draftId)(page)(af)
   }
 
 }
