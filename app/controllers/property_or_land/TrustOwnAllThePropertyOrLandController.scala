@@ -18,7 +18,7 @@ package controllers.property_or_land
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.property_or_land.TrustOwnAllThePropertyOrLandFormProvider
+import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
@@ -34,19 +34,19 @@ import views.html.property_or_land.TrustOwnAllThePropertyOrLandView
 import scala.concurrent.{ExecutionContext, Future}
 
 class TrustOwnAllThePropertyOrLandController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         @PropertyOrLand navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DraftIdRetrievalActionProvider,
-                                         requireData: DataRequiredAction,
-                                         validateIndex: IndexActionFilterProvider,
-                                         formProvider: TrustOwnAllThePropertyOrLandFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: TrustOwnAllThePropertyOrLandView
+                                                        override val messagesApi: MessagesApi,
+                                                        sessionRepository: SessionRepository,
+                                                        @PropertyOrLand navigator: Navigator,
+                                                        identify: IdentifierAction,
+                                                        getData: DraftIdRetrievalActionProvider,
+                                                        requireData: DataRequiredAction,
+                                                        validateIndex: IndexActionFilterProvider,
+                                                        yesNoFormProvider: YesNoFormProvider,
+                                                        val controllerComponents: MessagesControllerComponents,
+                                                        view: TrustOwnAllThePropertyOrLandView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = formProvider()
+  val form: Form[Boolean] = yesNoFormProvider.withPrefix("trustOwnAllThePropertyOrLand")
 
   private def actions(index: Int, draftId: String) =
     identify andThen
