@@ -201,6 +201,24 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
       assertContainsQuestionAnswerPair(doc, messages("settlorsUKAddress.checkYourAnswersLabel", name), "Line1 Town NE1 1ZZ")
     }
 
+    "assert question labels for Living Settlors" in {
+      assertContainsQuestionAnswerPair(doc, messages("setupAfterSettlorDied.checkYourAnswersLabel"), no)
+      assertContainsQuestionAnswerPair(doc, messages("settlorKindOfTrust.checkYourAnswersLabel"), "lifetime")
+      assertContainsQuestionAnswerPair(doc, messages("settlorHandoverReliefYesNo.checkYourAnswersLabel"),  yes)
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualOrBusiness.checkYourAnswersLabel"), "Individual")
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualName.checkYourAnswersLabel"), name)
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualDateOfBirthYesNo.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualDateOfBirth.checkYourAnswersLabel", name), "10 October 2010")
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualNINOYesNo.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualNINO.checkYourAnswersLabel", name), "AB 12 34 56 C")
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualAddressYesNo.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualAddressUKYesNo.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualAddressUK.checkYourAnswersLabel", name), "Line1 Town NE1 1ZZ")
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualPassportYesNo.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualPassport.checkYourAnswersLabel", name), "545363636363")
+    }
+
+
     "assert question labels for Money Assets" in {
       assertContainsQuestionAnswerPair(doc, messages("assetMoneyValue.checkYourAnswersLabel"), "£100")
     }
