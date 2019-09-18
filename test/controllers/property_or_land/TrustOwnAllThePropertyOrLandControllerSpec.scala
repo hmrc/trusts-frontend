@@ -18,7 +18,7 @@ package controllers.property_or_land
 
 import base.SpecBase
 import controllers.IndexValidation
-import forms.property_or_land.TrustOwnAllThePropertyOrLandFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
@@ -31,8 +31,7 @@ import views.html.property_or_land.TrustOwnAllThePropertyOrLandView
 
 class TrustOwnAllThePropertyOrLandControllerSpec extends SpecBase with IndexValidation {
 
-  val formProvider = new TrustOwnAllThePropertyOrLandFormProvider()
-  val form = formProvider()
+  val form = new YesNoFormProvider().withPrefix("trustOwnAllThePropertyOrLand")
 
   val index: Int = 0
 
