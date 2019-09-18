@@ -325,8 +325,8 @@ leadTrusteesName.error.invalidFirstNameCharacters = Lead trustee’s first name 
 leadTrusteesName.error.invalidMiddleNameCharacters = Lead trustee’s middle names must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 leadTrusteesName.error.invalidLastNameCharacters = Lead trustee’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
-trusteesAnswerPage.title = Check trustee’s details
-trusteesAnswerPage.heading = Check trustee’s details
+trusteesAnswerPage.title = Check trustee details
+trusteesAnswerPage.heading = Check trustee details
 
 addATrustee.title = Add a trustee
 
@@ -589,7 +589,7 @@ addAssets.additional-content = Do you want to add another asset?
 addAssets.add-them-now = Yes, I want to add them now
 addAssets.add-them-later = Yes, I want to add them later
 addAssets.no-complete = No, I have added all assets
-addAssets.checkYourAnswersLabel = addAssets
+addAssets.checkYourAnswersLabel = Do you want to add another asset?
 addAssets.error.required = Select yes if you want to add another asset
 addAssets.count.heading = You have added {0} assets
 addAssets.count.title = You have added {0} assets
@@ -682,8 +682,8 @@ wasSettlorsAddressUKYesNo.heading = Was {0}’s last known address in the UK?
 wasSettlorsAddressUKYesNo.checkYourAnswersLabel = Was {0}’s last known address in the UK?
 wasSettlorsAddressUKYesNo.error.required = Select yes if the settlor’s last known address was in the UK
 
-deceasedSettlorAnswer.title = Check settlor’s details
-deceasedSettlorAnswer.heading = Check settlor’s details
+deceasedSettlorAnswer.title = Check settlor details
+deceasedSettlorAnswer.heading = Check settlor details
 
 agentName.title = What is the name of the agency registering this trust?
 agentName.heading = What is the name of the agency registering this trust?
@@ -841,7 +841,6 @@ whatTypeOfBeneficiary.ClassOfBeneficiary = Class of beneficiaries
 whatTypeOfBeneficiary.CharityOrTrust = Charity or trust
 whatTypeOfBeneficiary.CompanyOrEmployment = Company or employment related
 whatTypeOfBeneficiary.Other = Other beneficiary
-whatTypeOfBeneficiary.checkYourAnswersLabel = whatTypeOfBeneficiary
 whatTypeOfBeneficiary.error.required = Select the type of beneficiary you need to add
 whatTypeOfBeneficiary.hint = You can enter a maximum of 25 entries for each beneficiary type
 
@@ -1115,8 +1114,8 @@ settlorIndividualAddressUK.heading = What is {0}’s address?
 settlorIndividualAddressUK.checkYourAnswersLabel = What is {0}’s address?
 
 settlorIndividualAddressUKYesNo.title = Does the settlor live in the UK?
-settlorIndividualAddressUKYesNo.heading = Does {0}’s live in the UK?
-settlorIndividualAddressUKYesNo.checkYourAnswersLabel = Does {0}’s live in the UK?
+settlorIndividualAddressUKYesNo.heading = Does {0} live in the UK?
+settlorIndividualAddressUKYesNo.checkYourAnswersLabel = Does {0} live in the UK?
 settlorIndividualAddressUKYesNo.error.required = Select yes if the settlor lives in the UK
 
 settlorIndividualIDCard.title = What are the settlor’s ID card details?
