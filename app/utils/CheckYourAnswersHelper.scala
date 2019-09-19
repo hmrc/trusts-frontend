@@ -294,7 +294,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       livingSettlors <- userAnswers.get(LivingSettlors)
       indexed = livingSettlors.zipWithIndex
     } yield indexed.map {
-      case (livingSettlor, index) =>
+      case (_, index) =>
 
         val questions = Seq(
           setupAfterSettlorDied,
@@ -316,10 +316,12 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
           settlorIndividualIDCard(index)
         ).flatten
 
+        val sectionKey = if (index == 0) Some(messages("answerPage.section.settlors.heading")) else None
+
         AnswerSection(
           headingKey = Some(messages("answerPage.section.settlor.subheading", index + 1)),
           questions,
-          sectionKey = Some(messages("answerPage.section.settlors.heading"))
+          sectionKey = sectionKey
         )
     }
   }
@@ -346,7 +348,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
         ).flatten
 
 
-        val sectionKey = if (index == 0) Some(Messages("answerPage.section.trustees.heading")) else None
+        val sectionKey = if (index == 0) Some(messages("answerPage.section.trustees.heading")) else None
 
         AnswerSection(
           headingKey = Some(Messages("answerPage.section.trustee.subheading") + " " + (index + 1)),
