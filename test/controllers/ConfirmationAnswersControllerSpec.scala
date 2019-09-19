@@ -23,7 +23,7 @@ import base.SpecBase
 import models.AddAssets.NoComplete
 import models.Status.Completed
 import models.TrusteesBasedInTheUK.UKBasedTrustees
-import models.{AddABeneficiary, AddATrustee, FullName, IndividualOrBusiness, PassportOrIdCardDetails, SettlorKindOfTrust, Status, UKAddress, UserAnswers, WhatKindOfAsset}
+import models.{AddABeneficiary, AddASettlor, AddATrustee, FullName, IndividualOrBusiness, PassportOrIdCardDetails, SettlorKindOfTrust, Status, UKAddress, UserAnswers, WhatKindOfAsset}
 import pages._
 import pages.deceased_settlor.{SettlorDateOfBirthYesNoPage, SettlorDateOfDeathPage, SettlorDateOfDeathYesNoPage, SettlorNationalInsuranceNumberPage, SettlorsDateOfBirthPage, SettlorsLastKnownAddressYesNoPage, SettlorsNINoYesNoPage, SettlorsNamePage, SettlorsUKAddressPage, WasSettlorsAddressUKYesNoPage}
 import pages.entitystatus._
@@ -299,7 +299,7 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
           .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
           .set(SetupAfterSettlorDiedPage, false).success.value
-          .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Lifetime).success.value
+          .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
           .set(SettlorHandoverReliefYesNoPage, true).success.value
           .set(SettlorIndividualOrBusinessPage(index),IndividualOrBusiness.Individual).success.value
           .set(SettlorIndividualNamePage(index), FullName("First", None, "Settlor")).success.value
@@ -308,6 +308,7 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
           .set(SettlorIndividualNINOYesNoPage(index), true).success.value
           .set(SettlorIndividualNINOPage(index), "AB123456C").success.value
           .set(LivingSettlorStatus(index), Status.Completed).success.value
+          .set(AddASettlorPage, AddASettlor.NoComplete).success.value
 
           .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
           .set(AssetMoneyValuePage(index), "100").success.value
