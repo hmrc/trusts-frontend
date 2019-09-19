@@ -105,6 +105,11 @@ individualOrBusiness.business = Business
 
 entity.settlor.individual = Individual Settlor
 
+entity.trustee = Trustees
+entity.asset = Assets
+entity.beneficiary = Beneficiaries
+entity.settlor = Settlors
+
 entities.no.name.added = No name added
 entities.no.value.added = No value added
 entities.no.address.added = No address added
