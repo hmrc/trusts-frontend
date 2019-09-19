@@ -20,9 +20,9 @@ import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
 import forms.living_settlor.SettlorBusinessDetailsFormProvider
 import javax.inject.Inject
-import models.{Enumerable, Mode}
+import models.{Enumerable, Mode, NormalMode}
 import navigation.Navigator
-import pages.living_settlor.{SettlorBusinessDetailsPage, SettlorBusinessNamePage}
+import pages.living_settlor.{SettlorBusinessDetailsPage, SettlorBusinessNamePage, SettlorIndividualNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -42,6 +42,7 @@ class SettlorBusinessDetailsController @Inject()(
                                        getData: DraftIdRetrievalActionProvider,
                                        validateIndex : IndexActionFilterProvider,
                                        requireData: DataRequiredAction,
+                                       requiredAnswer: RequiredAnswerActionProvider,
                                        formProvider: SettlorBusinessDetailsFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: SettlorBusinessDetailsView
@@ -49,7 +50,11 @@ class SettlorBusinessDetailsController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData andThen validateIndex(index, LivingSettlors)) {
+  def actions(draftId: String, index: Int) =
+    identify andThen getData(draftId) andThen requireData andThen validateIndex(index, LivingSettlors) andThen
+    requiredAnswer(RequiredAnswer(SettlorBusinessNamePage(index), routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId)))
+
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(draftId, index)  {
     implicit request =>
 
 
@@ -58,19 +63,18 @@ class SettlorBusinessDetailsController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      request.userAnswers.get(SettlorBusinessNamePage(index)).map { name =>
-        Ok(view(preparedForm, mode, index, draftId, name))
-      } getOrElse Redirect(controllers.routes.SessionExpiredController.onPageLoad())
+      val name = request.userAnswers.get(SettlorBusinessNamePage(index)).get
+
+      Ok(view(preparedForm, mode, index, draftId, name))
   }
 
-  def onSubmit(mode: Mode, index : Int, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData andThen validateIndex(index, LivingSettlors)).async {
+  def onSubmit(mode: Mode, index : Int, draftId: String): Action[AnyContent] = actions(draftId, index).async {
     implicit request =>
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
           Future.successful {
-            request.userAnswers.get(SettlorBusinessNamePage(index)).map { name =>
-              BadRequest(view(formWithErrors, mode, index, draftId, name))
-            } getOrElse Redirect(controllers.routes.SessionExpiredController.onPageLoad())
+            val name = request.userAnswers.get(SettlorBusinessNamePage(index)).get
+            BadRequest(view(formWithErrors, mode, index, draftId, name))
           },
         value => {
           for {

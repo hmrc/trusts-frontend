@@ -21,7 +21,7 @@ import controllers.IndexValidation
 import forms.living_settlor.SettlorBusinessDetailsFormProvider
 import models.{NormalMode, SettlorBusinessDetails}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.living_settlor.{SettlorBusinessDetailsPage, SettlorBusinessNamePage}
+import pages.living_settlor.{SettlorBusinessDetailsPage, SettlorBusinessNamePage, SettlorIndividualNINOPage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
@@ -170,6 +170,23 @@ class SettlorBusinessDetailsControllerSpec extends SpecBase with IndexValidation
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
+
+      application.stop()
+    }
+
+    "redirect to SettlorBusinessName page when SettlorsBusinessName is not answered" in {
+
+      val userAnswers = emptyUserAnswers
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, settlorBusinessDetailsRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       application.stop()
     }
