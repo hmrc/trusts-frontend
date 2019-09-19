@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions._
-import forms.{AddAnAssetYesNoFormProvider, AddAssetsFormProvider}
+import forms.{AddAssetsFormProvider, YesNoFormProvider}
 import javax.inject.Inject
 import models.{AddAssets, Enumerable, Mode}
 import navigation.Navigator
@@ -40,14 +40,14 @@ class AddAssetsController @Inject()(
                                      getData: DraftIdRetrievalActionProvider,
                                      requireData: DataRequiredAction,
                                      addAnotherFormProvider: AddAssetsFormProvider,
-                                     yesNoFormProvider: AddAnAssetYesNoFormProvider,
+                                     yesNoFormProvider: YesNoFormProvider,
                                      val controllerComponents: MessagesControllerComponents,
                                      addAssetsView: AddAssetsView,
                                      yesNoView: AddAnAssetYesNoView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
   val addAnotherForm: Form[AddAssets] = addAnotherFormProvider()
-  val yesNoForm: Form[Boolean] = yesNoFormProvider()
+  val yesNoForm: Form[Boolean] = yesNoFormProvider.withPrefix("addAnAssetYesNo")
 
   private def actions(draftId: String) =
     identify andThen getData(draftId) andThen requireData

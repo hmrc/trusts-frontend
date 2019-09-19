@@ -20,11 +20,14 @@ import java.time.{LocalDate, LocalDateTime}
 
 import models.AddAssets.NoComplete
 import models.Status.Completed
+import models.TrusteesBasedInTheUK.UKBasedTrustees
 import models.{AddABeneficiary, AddATrustee, FullName, IndividualOrBusiness, Status, UKAddress, WhatKindOfAsset}
 import pages._
+import pages.deceased_settlor.{SettlorDateOfBirthYesNoPage, SettlorDateOfDeathPage, SettlorDateOfDeathYesNoPage, SettlorNationalInsuranceNumberPage, SettlorsDateOfBirthPage, SettlorsLastKnownAddressYesNoPage, SettlorsNINoYesNoPage, SettlorsNamePage, SettlorsUKAddressPage, WasSettlorsAddressUKYesNoPage}
 import pages.entitystatus._
 import pages.property_or_land._
 import pages.shares._
+import pages.trustees.{AddATrusteePage, IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteeIndividualOrBusinessPage, TrusteeLiveInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
 import utils.countryOptions.CountryOptions
 import utils.{DateFormat, PrintUserAnswersHelper, TestUserAnswers}
 import views.behaviours.ViewBehaviours
@@ -41,7 +44,7 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
         .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
         .set(GovernedInsideTheUKPage, true).success.value
         .set(AdministrationInsideUKPage, true).success.value
-        .set(TrustResidentInUKPage, true).success.value
+        .set(TrusteesBasedInTheUKPage, UKBasedTrustees).success.value
         .set(EstablishedUnderScotsLawPage, true).success.value
         .set(TrustResidentOffshorePage, false).success.value
         .set(TrustDetailsStatus, Completed).success.value
@@ -158,7 +161,7 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
       assertContainsQuestionAnswerPair(doc, messages("whenTrustSetup.checkYourAnswersLabel"), "10 October 2010")
       assertContainsQuestionAnswerPair(doc, messages("governedInsideTheUK.checkYourAnswersLabel"), yes)
       assertContainsQuestionAnswerPair(doc, messages("administrationInsideUK.checkYourAnswersLabel"), yes)
-      assertContainsQuestionAnswerPair(doc, messages("trustResidentInUK.checkYourAnswersLabel"), yes)
+      assertContainsQuestionAnswerPair(doc, messages("trusteesBasedInTheUK.checkYourAnswersLabel"), "All the trustees based in the UK")
       assertContainsQuestionAnswerPair(doc, messages("establishedUnderScotsLaw.checkYourAnswersLabel"), yes)
       assertContainsQuestionAnswerPair(doc, messages("trustResidentOffshore.checkYourAnswersLabel"), no)
     }

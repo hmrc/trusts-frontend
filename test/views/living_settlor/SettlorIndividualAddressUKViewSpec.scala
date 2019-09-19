@@ -16,7 +16,6 @@
 
 package views.living_settlor
 
-import controllers.routes
 import forms.UKAddressFormProvider
 import models.{FullName, NormalMode}
 import play.api.data.Form
@@ -47,7 +46,6 @@ class SettlorIndividualAddressUKViewSpec extends UkAddressViewBehaviours {
     behave like ukAddressPage(
       applyView,
       Some(messageKeyPrefix),
-      routes.SettlorsUKAddressController.onSubmit(NormalMode, fakeDraftId).url,
       name.toString
     )
 

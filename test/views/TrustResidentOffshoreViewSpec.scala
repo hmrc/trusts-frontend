@@ -16,8 +16,7 @@
 
 package views
 
-import controllers.routes
-import forms.TrustResidentOffshoreFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -28,7 +27,7 @@ class TrustResidentOffshoreViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "trustResidentOffshore"
 
-  val form = new TrustResidentOffshoreFormProvider()()
+  val form = new YesNoFormProvider().withPrefix("trustResidentOffshore")
 
   "TrustResidentOffshore view" must {
 

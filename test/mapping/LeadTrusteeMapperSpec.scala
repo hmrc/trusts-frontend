@@ -23,6 +23,7 @@ import generators.Generators
 import models.{FullName, IndividualOrBusiness, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
+import pages.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteeIndividualOrBusinessPage, TrusteeLiveInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
 
 
 class LeadTrusteeMapperSpec extends FreeSpec with MustMatchers
@@ -60,7 +61,7 @@ class LeadTrusteeMapperSpec extends FreeSpec with MustMatchers
             dateOfBirth = LocalDate.of(1500,10,10),
             phoneNumber = "0191 1111111",
             email = None,
-            identification = IdentificationType(nino = Some("AB123456C"),None,None)))
+            identification = IdentificationType(nino = Some("AB123456C"),None, None)))
         )
       }
 

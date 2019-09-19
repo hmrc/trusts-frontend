@@ -20,9 +20,11 @@ import models._
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
 import pages._
+import pages.deceased_settlor._
+import pages.living_settlor._
 import pages.property_or_land._
-import pages.living_settlor.{SettlorBusinessDetailsPage, SettlorBusinessNamePage, SettlorIndividualAddressInternationalPage, SettlorIndividualAddressUKPage, SettlorIndividualAddressUKYesNoPage, SettlorIndividualAddressYesNoPage, SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualIDCardPage, SettlorIndividualIDCardYesNoPage, SettlorIndividualNINOPage, SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage, SettlorIndividualOrBusinessPage, SettlorIndividualPassportPage, SettlorIndividualPassportYesNoPage}
 import pages.shares._
+import pages.trustees._
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
@@ -43,10 +45,34 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
+  implicit lazy val arbitrarySettlorsBasedInTheUKUserAnswersEntry: Arbitrary[(SettlorsBasedInTheUKPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[SettlorsBasedInTheUKPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryTrusteesBasedInTheUKUserAnswersEntry: Arbitrary[(TrusteesBasedInTheUKPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[TrusteesBasedInTheUKPage.type]
+        value <- arbitrary[TrusteesBasedInTheUK].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
   implicit lazy val arbitrarySettlorHandoverReliefYesNoUserAnswersEntry: Arbitrary[(SettlorHandoverReliefYesNoPage.type, JsValue)] =
     Arbitrary {
       for {
         page  <- arbitrary[SettlorHandoverReliefYesNoPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryRemoveSettlorUserAnswersEntry: Arbitrary[(RemoveSettlorPage, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[RemoveSettlorPage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -572,6 +598,14 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
+  implicit lazy val arbitraryAddASettlorUserAnswersEntry: Arbitrary[(AddASettlorPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[AddASettlorPage.type]
+        value <- arbitrary[AddASettlor].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
   implicit lazy val arbitraryAssetMoneyValueUserAnswersEntry: Arbitrary[(AssetMoneyValuePage, JsValue)] =
     Arbitrary {
       for {
@@ -770,14 +804,6 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
     Arbitrary {
       for {
         page  <- arbitrary[EstablishedUnderScotsLawPage.type]
-        value <- arbitrary[Boolean].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryTrustResidentInUKUserAnswersEntry: Arbitrary[(TrustResidentInUKPage.type, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[TrustResidentInUKPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }

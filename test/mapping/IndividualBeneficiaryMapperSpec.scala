@@ -46,6 +46,7 @@ class IndividualBeneficiaryMapperSpec extends FreeSpec with MustMatchers
       "must be able to create IndividualDetailsType with Nino information." in {
         val index = 0
         val dateOfBirth = LocalDate.of(2010, 10, 10)
+
         val userAnswers =
           emptyUserAnswers
             .set(IndividualBeneficiaryNamePage(index), FullName("first name", None, "last name")).success.value
@@ -72,6 +73,7 @@ class IndividualBeneficiaryMapperSpec extends FreeSpec with MustMatchers
       "must be able to create IndividualDetailsType with UK Address" in {
         val index = 0
         val dateOfBirth = LocalDate.of(2010, 10, 10)
+
         val userAnswers =
           emptyUserAnswers
             .set(IndividualBeneficiaryNamePage(index), FullName("first name", None, "last name")).success.value
@@ -99,14 +101,13 @@ class IndividualBeneficiaryMapperSpec extends FreeSpec with MustMatchers
             None,
             address = Some(
               AddressType("Line1", "line2", None, Some("Newcastle"), Some("NE62RT"), "GB")
-            ))
-          )
+            )
+          ))
         )
       }
 
       "must be able to create IndividualDetailsType without Nino And Address" in {
         val index = 0
-        val dateOfBirth = LocalDate.of(2010, 10, 10)
         val userAnswers =
           emptyUserAnswers
             .set(IndividualBeneficiaryNamePage(index), FullName("first name", None, "last name")).success.value
@@ -132,6 +133,7 @@ class IndividualBeneficiaryMapperSpec extends FreeSpec with MustMatchers
         val index0 = 0
         val index1 = 1
         val dateOfBirth = LocalDate.of(2010, 10, 10)
+
         val userAnswers =
           emptyUserAnswers
             .set(IndividualBeneficiaryNamePage(index0), FullName("first name", None, "last name")).success.value
@@ -171,6 +173,7 @@ class IndividualBeneficiaryMapperSpec extends FreeSpec with MustMatchers
                   passport = None,
                   address = None)
               )),
+
             IndividualDetailsType(
               name = NameType("first name", None, "last name"),
               dateOfBirth = Some(dateOfBirth),
@@ -184,9 +187,8 @@ class IndividualBeneficiaryMapperSpec extends FreeSpec with MustMatchers
                   passport = None,
                   address = Some(
                     AddressType("line1", "Newcastle", None, None, Some("NE62RT"), "GB")
-                  )))
-            )
-
+                  ))
+            ))
           )
       }
 

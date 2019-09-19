@@ -18,9 +18,11 @@ package generators
 
 import org.scalacheck.Arbitrary
 import pages._
+import pages.deceased_settlor._
+import pages.living_settlor._
 import pages.property_or_land._
-import pages.living_settlor.{SettlorBusinessDetailsPage, SettlorBusinessNamePage, SettlorIndividualAddressInternationalPage, SettlorIndividualAddressUKPage, SettlorIndividualAddressUKYesNoPage, SettlorIndividualAddressYesNoPage, SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualIDCardPage, SettlorIndividualIDCardYesNoPage, SettlorIndividualNINOPage, SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage, SettlorIndividualOrBusinessPage, SettlorIndividualPassportPage, SettlorIndividualPassportYesNoPage}
 import pages.shares._
+import pages.trustees._
 
 trait PageGenerators {
 
@@ -34,8 +36,17 @@ trait PageGenerators {
     Arbitrary(SettlorKindOfTrustPage)
 
 
+  implicit lazy val arbitrarySettlorsBasedInTheUKPage: Arbitrary[SettlorsBasedInTheUKPage.type] =
+    Arbitrary(SettlorsBasedInTheUKPage)
+
+  implicit lazy val arbitraryTrusteesBasedInTheUKPage: Arbitrary[TrusteesBasedInTheUKPage.type] =
+    Arbitrary(TrusteesBasedInTheUKPage)
+
   implicit lazy val arbitrarySettlorHandoverReliefYesNoPage: Arbitrary[SettlorHandoverReliefYesNoPage.type] =
     Arbitrary(SettlorHandoverReliefYesNoPage)
+
+  implicit lazy val arbitraryRemoveSettlorPage: Arbitrary[RemoveSettlorPage] =
+    Arbitrary(RemoveSettlorPage(0))
 
   implicit lazy val arbitrarySettlorIndividualPassportYesNoPage: Arbitrary[SettlorIndividualPassportYesNoPage] =
     Arbitrary(SettlorIndividualPassportYesNoPage(0))
@@ -232,6 +243,9 @@ trait PageGenerators {
   implicit lazy val arbitraryAddAssetsPage: Arbitrary[AddAssetsPage.type] =
     Arbitrary(AddAssetsPage)
 
+  implicit lazy val arbitraryAddASettlorPage: Arbitrary[AddASettlorPage.type] =
+    Arbitrary(AddASettlorPage)
+
   implicit lazy val arbitraryAssetMoneyValuePage: Arbitrary[AssetMoneyValuePage] =
     Arbitrary(AssetMoneyValuePage(0))
 
@@ -309,9 +323,6 @@ trait PageGenerators {
 
   implicit lazy val arbitraryEstablishedUnderScotsLawPage: Arbitrary[EstablishedUnderScotsLawPage.type] =
     Arbitrary(EstablishedUnderScotsLawPage)
-
-  implicit lazy val arbitraryTrustResidentInUKPage: Arbitrary[TrustResidentInUKPage.type] =
-    Arbitrary(TrustResidentInUKPage)
 
   implicit lazy val arbitraryCountryAdministeringTrustPage: Arbitrary[CountryAdministeringTrustPage.type] =
     Arbitrary(CountryAdministeringTrustPage)

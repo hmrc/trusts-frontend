@@ -24,6 +24,7 @@ import models.IndividualOrBusiness.Individual
 import models.{FullName, InternationalAddress, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
+import pages.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteeIndividualOrBusinessPage, TrusteeLiveInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesUkAddressPage}
 
 class DeclarationMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {

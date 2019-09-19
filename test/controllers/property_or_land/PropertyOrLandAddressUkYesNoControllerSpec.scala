@@ -19,7 +19,7 @@ package controllers.property_or_land
 import base.SpecBase
 import controllers.property_or_land.routes._
 import controllers.routes._
-import forms.property_or_land.PropertyOrLandAddressUkYesNoFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
 import pages.property_or_land.PropertyOrLandAddressUkYesNoPage
@@ -32,8 +32,7 @@ import views.html.property_or_land.PropertyOrLandAddressUkYesNoView
 
 class PropertyOrLandAddressUkYesNoControllerSpec extends SpecBase {
 
-  val formProvider = new PropertyOrLandAddressUkYesNoFormProvider()
-  val form: Form[Boolean] = formProvider()
+  val form = new YesNoFormProvider().withPrefix("propertyOrLandAddressUkYesNo")
 
   val index: Int = 0
 

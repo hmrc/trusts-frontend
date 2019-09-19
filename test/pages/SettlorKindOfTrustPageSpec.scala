@@ -16,7 +16,8 @@
 
 package pages
 
-import models.SettlorKindOfTrust
+import models.{SettlorKindOfTrust, UserAnswers}
+import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
 class SettlorKindOfTrustPageSpec extends PageBehaviours {
@@ -28,5 +29,19 @@ class SettlorKindOfTrustPageSpec extends PageBehaviours {
     beSettable[SettlorKindOfTrust](SettlorKindOfTrustPage)
 
     beRemovable[SettlorKindOfTrust](SettlorKindOfTrustPage)
+  }
+
+  "for a Lifetime trust remove holdover relief when changing type of trust" in {
+    forAll(arbitrary[UserAnswers], arbitrary[String]) {
+      (initial, str) =>
+        val answers: UserAnswers = initial
+          .set(SetupAfterSettlorDiedPage, false).success.value
+          .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
+          .set(SettlorHandoverReliefYesNoPage, true).success.value
+
+        val result = answers.set(SettlorKindOfTrustPage, SettlorKindOfTrust.FlatManagement).success.value
+
+        result.get(SettlorHandoverReliefYesNoPage) mustNot be(defined)
+    }
   }
 }

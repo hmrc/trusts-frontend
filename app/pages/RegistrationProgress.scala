@@ -19,9 +19,10 @@ package pages
 import javax.inject.Inject
 import mapping.reads.{Assets, Trustees}
 import models.Status.{Completed, InProgress}
-import models.{AddABeneficiary, AddATrustee, AddAssets, Status, UserAnswers}
+import models.{AddABeneficiary, AddASettlor, AddATrustee, AddAssets, NormalMode, Status, UserAnswers}
 import navigation.TaskListNavigator
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
+import pages.trustees.AddATrusteePage
 import sections._
 import viewmodels._
 
@@ -29,7 +30,7 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
 
   def items(userAnswers: UserAnswers, draftId: String) = List(
     Task(Link(TrustDetails, navigator.nextPage(TrustDetails, userAnswers, draftId).url), isTrustDetailsComplete(userAnswers)),
-    Task(Link(Settlors, navigator.nextPage(Settlors, userAnswers, draftId).url), isDeceasedSettlorComplete(userAnswers)),
+    Task(Link(Settlors, navigator.nextPage(Settlors, userAnswers, draftId).url), isSettlorsComplete(userAnswers)),
     Task(Link(Trustees, navigator.nextPage(Trustees, userAnswers, draftId).url), isTrusteesComplete(userAnswers)),
     Task(Link(Beneficiaries, navigator.nextPage(Beneficiaries, userAnswers, draftId).url), isBeneficiariesComplete(userAnswers)),
     Task(Link(Assets, navigator.nextPage(Assets, userAnswers, draftId).url), assetsStatus(userAnswers)),
@@ -72,20 +73,28 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
     }
   }
 
-  def isDeceasedSettlorComplete(userAnswers: UserAnswers) : Option[Status] = {
+  def isSettlorsComplete(userAnswers: UserAnswers) : Option[Status] = {
     val setUpAfterSettlorDied = userAnswers.get(SetupAfterSettlorDiedPage)
 
-    setUpAfterSettlorDied match {
-      case None => None
-      case Some(x) =>
-        val deceasedCompleted = userAnswers.get(DeceasedSettlorStatus)
-
-        val isComplete = x && deceasedCompleted.contains(Completed)
-
-        determineStatus(isComplete)
+    def isDeceasedSettlorComplete: Option[Status] = {
+      val deceasedCompleted = userAnswers.get(DeceasedSettlorStatus)
+      val isComplete =  deceasedCompleted.contains(Completed)
+      determineStatus(isComplete)
     }
-  }
-
+      setUpAfterSettlorDied match {
+        case None => None
+        case Some(setupAfterDeceased) =>
+          if (setupAfterDeceased) isDeceasedSettlorComplete
+          else { userAnswers.get(LivingSettlors).getOrElse(Nil) match {
+            case Nil => None
+            case living =>
+              val noMoreToAdd = userAnswers.get(AddASettlorPage).contains(AddASettlor.NoComplete)
+              val isComplete = !living.exists(_.status == InProgress)
+              determineStatus(isComplete  && noMoreToAdd)
+          }
+          }
+      }
+    }
   def isBeneficiariesComplete(userAnswers: UserAnswers) : Option[Status] = {
 
     def individualBeneficiariesComplete : Boolean = {
@@ -137,7 +146,7 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
 
   def isTaskListComplete(userAnswers: UserAnswers) : Boolean = {
     isTrustDetailsComplete(userAnswers).contains(Completed) &&
-    isDeceasedSettlorComplete(userAnswers).contains(Completed) &&
+    isSettlorsComplete(userAnswers).contains(Completed) &&
     isTrusteesComplete(userAnswers).contains(Completed) &&
     isBeneficiariesComplete(userAnswers).contains(Completed) &&
     assetsStatus(userAnswers).contains(Completed)

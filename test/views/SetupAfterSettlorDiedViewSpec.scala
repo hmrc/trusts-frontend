@@ -17,7 +17,7 @@
 package views
 
 import controllers.routes
-import forms.SetupAfterSettlorDiedFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -29,7 +29,7 @@ class SetupAfterSettlorDiedViewSpec extends YesNoViewBehaviours {
   val messageKeyPrefix = "setupAfterSettlorDied"
 
 
-  val form = new SetupAfterSettlorDiedFormProvider()()
+  val form = new YesNoFormProvider().withPrefix("setupAfterSettlorDied")
 
   "SetupAfterSettlorDied view" must {
 

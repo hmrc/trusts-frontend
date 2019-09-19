@@ -103,7 +103,8 @@ internationalAddress.error.line4.invalidCharacters = Address line 4 must only in
 individualOrBusiness.individual = Individual
 individualOrBusiness.business = Business
 
-entity.trustee = Trustee
+entity.settlor.individual = Individual Settlor
+
 entities.no.name.added = No name added
 entities.no.value.added = No value added
 entities.no.address.added = No address added
@@ -324,8 +325,8 @@ leadTrusteesName.error.invalidFirstNameCharacters = Lead trustee’s first name 
 leadTrusteesName.error.invalidMiddleNameCharacters = Lead trustee’s middle names must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 leadTrusteesName.error.invalidLastNameCharacters = Lead trustee’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
-trusteesAnswerPage.title = Check trustee’s details
-trusteesAnswerPage.heading = Check trustee’s details
+trusteesAnswerPage.title = Check trustee details
+trusteesAnswerPage.heading = Check trustee details
 
 addATrustee.title = Add a trustee
 
@@ -334,15 +335,23 @@ addATrustee.singular.heading = Add a trustee
 addATrustee.count.heading = You have added {0} trustees
 
 addASettlor.heading = Add a settlor
-addASettlor.singular.heading = Add a settlors
+addASettlor.title = Add a settlor
+addASettlor.singular.heading = Add a settlor
+addASettlor.singular.title = Add a settlor
 addASettlor.count.heading = You have added {0} settlors
+addASettlor.count.title = You have added {0} settlors
 
-addASettlor.lifetime = This is a trust created during the settlor's lifetime to gift or transfer assets (also known as an inter vivos trust)
-addASettlor.deed.a = This trust was set up by a family agreement
-addASettlor.deed.a = This trust was set up by a family agreement, in addition to a will
-addASettlor.employees = This trust was set up for the employees of a company
-addASettlor.building = This trust was set up for a building or building with lots of tenants
-addASettlor.repair = This trust was set up to pay for the repair of historic buildings
+addASettlor.Lifetime = This is a trust created during the settlor’s lifetime to gift or transfer assets (also known as an inter vivos trust)
+addASettlor.Deed.a = This trust was set up by a family agreement
+addASettlor.Deed.a = This trust was set up by a family agreement, in addition to a will
+addASettlor.Employees = This trust was set up for the employees of a company
+addASettlor.Building = This trust was set up for a building or building with lots of tenants
+addASettlor.Repair = This trust was set up to pay for the repair of historic buildings
+addASettlor.additional-content = Do you need to add another settlor?
+addASettlor.add-them-now = Yes, I want to add them now
+addASettlor.add-them-later = Yes, I want to add them later
+addASettlor.no-complete = No, I have added all of the settlors
+addASettlor.error.required = Select yes if you want to add another settlor
 
 addATrustee.additional-content = Do you need to add another trustee?
 addATrustee.add-them-now = Yes, I want to add them now
@@ -580,7 +589,7 @@ addAssets.additional-content = Do you want to add another asset?
 addAssets.add-them-now = Yes, I want to add them now
 addAssets.add-them-later = Yes, I want to add them later
 addAssets.no-complete = No, I have added all assets
-addAssets.checkYourAnswersLabel = addAssets
+addAssets.checkYourAnswersLabel = Do you want to add another asset?
 addAssets.error.required = Select yes if you want to add another asset
 addAssets.count.heading = You have added {0} assets
 addAssets.count.title = You have added {0} assets
@@ -673,8 +682,8 @@ wasSettlorsAddressUKYesNo.heading = Was {0}’s last known address in the UK?
 wasSettlorsAddressUKYesNo.checkYourAnswersLabel = Was {0}’s last known address in the UK?
 wasSettlorsAddressUKYesNo.error.required = Select yes if the settlor’s last known address was in the UK
 
-deceasedSettlorAnswer.title = Check settlor’s details
-deceasedSettlorAnswer.heading = Check settlor’s details
+deceasedSettlorAnswer.title = Check settlor details
+deceasedSettlorAnswer.heading = Check settlor details
 
 agentName.title = What is the name of the agency registering this trust?
 agentName.heading = What is the name of the agency registering this trust?
@@ -832,7 +841,6 @@ whatTypeOfBeneficiary.ClassOfBeneficiary = Class of beneficiaries
 whatTypeOfBeneficiary.CharityOrTrust = Charity or trust
 whatTypeOfBeneficiary.CompanyOrEmployment = Company or employment related
 whatTypeOfBeneficiary.Other = Other beneficiary
-whatTypeOfBeneficiary.checkYourAnswersLabel = whatTypeOfBeneficiary
 whatTypeOfBeneficiary.error.required = Select the type of beneficiary you need to add
 whatTypeOfBeneficiary.hint = You can enter a maximum of 25 entries for each beneficiary type
 
@@ -1106,8 +1114,8 @@ settlorIndividualAddressUK.heading = What is {0}’s address?
 settlorIndividualAddressUK.checkYourAnswersLabel = What is {0}’s address?
 
 settlorIndividualAddressUKYesNo.title = Does the settlor live in the UK?
-settlorIndividualAddressUKYesNo.heading = Does {0}’s live in the UK?
-settlorIndividualAddressUKYesNo.checkYourAnswersLabel = Does {0}’s live in the UK?
+settlorIndividualAddressUKYesNo.heading = Does {0} live in the UK?
+settlorIndividualAddressUKYesNo.checkYourAnswersLabel = Does {0} live in the UK?
 settlorIndividualAddressUKYesNo.error.required = Select yes if the settlor lives in the UK
 
 settlorIndividualIDCard.title = What are the settlor’s ID card details?
@@ -1185,11 +1193,11 @@ addASettlorYesNo.error.required = Select yes if you want to add a settlor
 
 settlorKindOfTrust.title = What kind of trust did the settlor create?
 settlorKindOfTrust.heading = What kind of trust did the settlor create?
-settlorKindOfTrust.lifetime = A trust created during their lifetime to gift or transfer assets
-settlorKindOfTrust.deed = A trust through a Deed of Variation or family agreement
-settlorKindOfTrust.employees = A trust for the employees of a company
-settlorKindOfTrust.building = A trust for a building or building with tenants
-settlorKindOfTrust.repair = A trust for the repair of historic buildings
+settlorKindOfTrust.Lifetime = A trust created during their lifetime to gift or transfer assets
+settlorKindOfTrust.Deed = A trust through a Deed of Variation or family agreement
+settlorKindOfTrust.Employees = A trust for the employees of a company
+settlorKindOfTrust.Building = A trust for a building or building with tenants
+settlorKindOfTrust.Repair = A trust for the repair of historic buildings
 settlorKindOfTrust.checkYourAnswersLabel = What kind of trust did the settlor create?
 settlorKindOfTrust.error.required = Select what kind of trust the settlor created
 
@@ -1205,3 +1213,21 @@ settlorBusinessDetails.address = Address
 settlorBusinessDetails.checkYourAnswersLabel = Which of {0}’s details do you know?
 settlorBusinessDetails.error.required = Select which of the business’s details you know
 
+trusteesBasedInTheUK.title = Are the trustees based in the UK?
+trusteesBasedInTheUK.heading =  Are the trustees based in the UK?
+trusteesBasedInTheUK.UKBasedTrustees = All the trustees based in the UK
+trusteesBasedInTheUK.NonUkBasedTrustees = None of the trustees are based in the UK
+trusteesBasedInTheUK.InternationalAndUKTrustees = The trust contains international and UK-based trustees
+trusteesBasedInTheUK.checkYourAnswersLabel = Are the trustees based in the UK?
+trusteesBasedInTheUK.error.required = Select how many of the trustees are based in the UK
+
+settlorsBasedInTheUK.title = Are any of the settlors based in the UK?
+settlorsBasedInTheUK.heading = Are any of the settlors based in the UK?
+settlorsBasedInTheUK.checkYourAnswersLabel = Are any of the settlors based in the UK?
+settlorsBasedInTheUK.error.required = Select yes if the any of the settlors are based in the UK
+
+removeSettlor.title = Are you sure you want to remove the settlor?
+removeSettlor.default = the settlor
+removeSettlor.heading = Are you sure you want to remove {0}?
+removeSettlor.checkYourAnswersLabel = Are you sure you want to remove {0}?
+removeSettlor.error.required = Select yes if you want to remove the settlor

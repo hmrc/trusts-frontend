@@ -6,11 +6,11 @@ echo "Applying migration SettlorDateOfDeath"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /settlorDateOfDeath                  controllers.SettlorDateOfDeathController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /settlorDateOfDeath                  controllers.SettlorDateOfDeathController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /settlorDateOfDeath                  controllers.deceased_settlor.SettlorDateOfDeathController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /settlorDateOfDeath                  controllers.deceased_settlor.SettlorDateOfDeathController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeSettlorDateOfDeath                        controllers.SettlorDateOfDeathController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeSettlorDateOfDeath                        controllers.SettlorDateOfDeathController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeSettlorDateOfDeath                        controllers.deceased_settlor.SettlorDateOfDeathController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeSettlorDateOfDeath                        controllers.deceased_settlor.SettlorDateOfDeathController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

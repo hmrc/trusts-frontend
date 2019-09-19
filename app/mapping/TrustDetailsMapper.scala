@@ -17,11 +17,46 @@
 package mapping
 
 import mapping.TypeOfTrust.WillTrustOrIntestacyTrust
-import models.{NonResidentType, UserAnswers}
+import models.SettlorKindOfTrust.{Deed, Employees, FlatManagement, HeritageMaintenanceFund, Intervivos}
+import models.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
+import models.{NonResidentType, SettlorKindOfTrust, UserAnswers}
+import pages.entitystatus.DeceasedSettlorStatus
 import pages.{NonResidentTypePage, RegisteringTrustFor5APage, _}
 import play.api.Logger
+import sections.LivingSettlors
 
 class TrustDetailsMapper extends Mapping[TrustDetailsType] {
+
+  private def trustType(userAnswers: UserAnswers): Option[TypeOfTrust] = {
+    val settlors = (
+      userAnswers.get(LivingSettlors),
+      userAnswers.get(DeceasedSettlorStatus)
+    )
+
+    settlors match {
+      case (Some(_), Some(_)) =>
+        Logger.info("[TrustDetailsMapper] - Cannot build trust type for Deed of variation yet")
+        None
+      case (Some(_), None) =>
+        userAnswers.get(SettlorKindOfTrustPage).map(mapTrustTypeToDes)
+      case (None, Some(_)) =>
+        Some(WillTrustOrIntestacyTrust)
+      case (None, None) =>
+        Logger.info("[TrustDetailsMapper] - Cannot build trust type due to no settlors")
+        None
+    }
+
+  }
+
+  private def mapTrustTypeToDes(kind: SettlorKindOfTrust): TypeOfTrust = {
+    kind match {
+      case Intervivos => TypeOfTrust.IntervivosSettlementTrust
+      case Deed => TypeOfTrust.DeedOfVariation
+      case Employees => TypeOfTrust.EmployeeRelated
+      case FlatManagement => TypeOfTrust.FlatManagementTrust
+      case HeritageMaintenanceFund => TypeOfTrust.HeritageTrust
+    }
+  }
 
   override def build(userAnswers: UserAnswers): Option[TrustDetailsType] = {
     for {
@@ -29,15 +64,16 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
       lawCountry = userAnswers.get(CountryGoverningTrustPage)
       administrationCountryOption <- administrationCountry(userAnswers)
       residentialStatusOption <- residentialStatus(userAnswers)
+      typeOfTrust <- trustType(userAnswers)
     } yield {
       TrustDetailsType(
         startDate = startDateOption,
         lawCountry = lawCountry,
         administrationCountry = Some(administrationCountryOption),
         residentialStatus = Some(residentialStatusOption),
-        typeOfTrust = WillTrustOrIntestacyTrust,
+        typeOfTrust = typeOfTrust,
         deedOfVariation = None,
-        interVivos = None,
+        interVivos = userAnswers.get(SettlorHandoverReliefYesNoPage),
         efrbsStartDate = None
       )
     }
@@ -54,13 +90,23 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
         None
     }
   }
-
+  
   private def residentialStatus(userAnswers: UserAnswers): Option[ResidentialStatusType] = {
-    userAnswers.get(TrustResidentInUKPage) match {
-      case Some(true) =>
+    userAnswers.get(TrusteesBasedInTheUKPage) match {
+      case Some(UKBasedTrustees) =>
         ukResidentMap(userAnswers)
-      case Some(false) =>
+      case Some(NonUkBasedTrustees) =>
         nonUkResidentMap(userAnswers)
+      case Some(InternationalAndUKTrustees) =>
+        userAnswers.get(SettlorsBasedInTheUKPage) match {
+          case Some(true) =>
+            ukResidentMap(userAnswers)
+          case Some(false) =>
+            nonUkResidentMap(userAnswers)
+          case  _ =>
+            Logger.info("[TrustDetailsMapper][build] unable to determine if all settlors are based in the UK")
+            None
+        }
       case _ =>
         Logger.info(s"[TrustDetailsMapper][build] unable to determine where trust is resident")
         None
@@ -85,7 +131,9 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
       case (Some(false), None) =>
         inheritanceTaxAndAgentBarristerMap(userAnswers)
 
-      case (_, _) => None
+      case (_, _) =>
+        Logger.info(s"[TrustDetailsMapper][build] unable to build non UK resident or inheritance")
+        None
     }
 
     nonUKConstruct match {

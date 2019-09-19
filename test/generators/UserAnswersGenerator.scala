@@ -21,9 +21,11 @@ import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.TryValues
 import pages._
+import pages.deceased_settlor._
+import pages.living_settlor._
 import pages.property_or_land.{PropertyOrLandAddressUkYesNoPage, PropertyOrLandDescriptionPage, PropertyOrLandUKAddressPage, _}
-import pages.living_settlor.{SettlorBusinessDetailsPage, SettlorBusinessNamePage, SettlorIndividualAddressInternationalPage, SettlorIndividualAddressUKPage, SettlorIndividualAddressUKYesNoPage, SettlorIndividualAddressYesNoPage, SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualIDCardPage, SettlorIndividualIDCardYesNoPage, SettlorIndividualNINOPage, SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage, SettlorIndividualOrBusinessPage, SettlorIndividualPassportPage, SettlorIndividualPassportYesNoPage}
 import pages.shares._
+import pages.trustees._
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersGenerator extends TryValues {
@@ -31,9 +33,12 @@ trait UserAnswersGenerator extends TryValues {
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
     arbitrary[(SettlorKindOfTrustPage.type, JsValue)] ::
+    arbitrary[(SettlorsBasedInTheUKPage.type, JsValue)] ::
+    arbitrary[(TrusteesBasedInTheUKPage.type, JsValue)] ::
     arbitrary[(SettlorHandoverReliefYesNoPage.type, JsValue)] ::
     arbitrary[(SettlorBusinessNamePage, JsValue)] ::
     arbitrary[(SettlorBusinessDetailsPage, JsValue)] ::
+    arbitrary[(RemoveSettlorPage, JsValue)] ::
     arbitrary[(SettlorIndividualPassportYesNoPage, JsValue)] ::
     arbitrary[(SettlorIndividualPassportPage, JsValue)] ::
     arbitrary[(SettlorIndividualIDCardYesNoPage, JsValue)] ::
@@ -97,6 +102,7 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(SettlorDateOfDeathYesNoPage.type, JsValue)] ::
     arbitrary[(SettlorDateOfDeathPage.type, JsValue)] ::
     arbitrary[(SettlorDateOfBirthYesNoPage.type, JsValue)] ::
+    arbitrary[(AddASettlorPage.type, JsValue)] ::
     arbitrary[(AddAssetsPage.type, JsValue)] ::
     arbitrary[(AssetMoneyValuePage, JsValue)] ::
     arbitrary[(AgentInternalReferencePage.type, JsValue)] ::
@@ -127,7 +133,6 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(TrustResidentOffshorePage.type, JsValue)] ::
     arbitrary[(RegisteringTrustFor5APage.type, JsValue)] ::
     arbitrary[(EstablishedUnderScotsLawPage.type, JsValue)] ::
-    arbitrary[(TrustResidentInUKPage.type, JsValue)] ::
     arbitrary[(CountryAdministeringTrustPage.type, JsValue)] ::
     arbitrary[(AdministrationInsideUKPage.type, JsValue)] ::
     arbitrary[(CountryGoverningTrustPage.type, JsValue)] ::

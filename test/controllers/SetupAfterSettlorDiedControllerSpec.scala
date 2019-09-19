@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import forms.SetupAfterSettlorDiedFormProvider
+import forms.YesNoFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import pages.SetupAfterSettlorDiedPage
@@ -30,8 +30,7 @@ import views.html.SetupAfterSettlorDiedView
 
 class SetupAfterSettlorDiedControllerSpec extends SpecBase {
 
-  val formProvider = new SetupAfterSettlorDiedFormProvider()
-  val form = formProvider()
+  val form = new YesNoFormProvider().withPrefix("setupAfterSettlorDied")
 
   lazy val setupAfterSettlorDiedRoute = routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode,fakeDraftId).url
 

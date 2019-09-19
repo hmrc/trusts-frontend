@@ -21,7 +21,7 @@ import sections.Settlors
 
 case object SettlorHandoverReliefYesNoPage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ Settlors \ toString
+  override def path: JsPath = Settlors.path \ toString
 
   override def toString: String = "settlorHandoverReliefYesNo"
 }

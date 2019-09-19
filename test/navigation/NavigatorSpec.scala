@@ -19,7 +19,7 @@ package navigation
 import base.SpecBase
 import controllers.routes
 import generators.Generators
-import models.{CheckMode, NormalMode}
+import models.NormalMode
 import navigation.navigators._
 import org.scalatest.prop.PropertyChecks
 import pages._
@@ -71,15 +71,5 @@ import pages._
 
     }
 
-    "in Check mode" must {
-
-      "go to CheckYourAnswers from a page that doesn't exist in the edit route map" in {
-        case object UnknownPage extends Page
-        navigator.nextPage(UnknownPage, CheckMode, fakeDraftId)(emptyUserAnswers) mustBe routes.CheckYourAnswersController.onPageLoad(fakeDraftId)
-      }
-
-      behave like trustDetailsCheckRoutes
-
-    }
   }
 }

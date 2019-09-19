@@ -18,8 +18,7 @@ package mapping
 
 import javax.inject.Inject
 import models.UserAnswers
-import pages._
-
+import pages.deceased_settlor.{SettlorDateOfDeathPage, SettlorNationalInsuranceNumberPage, SettlorsDateOfBirthPage, SettlorsInternationalAddressPage, SettlorsLastKnownAddressYesNoPage, SettlorsNINoYesNoPage, SettlorsNamePage, SettlorsUKAddressPage, WasSettlorsAddressUKYesNoPage}
 class DeceasedSettlorMapper @Inject()(nameMapper: NameMapper, addressMapper: AddressMapper) extends Mapping[WillType] {
 
   override def build(userAnswers: UserAnswers): Option[WillType] = {
@@ -58,7 +57,8 @@ class DeceasedSettlorMapper @Inject()(nameMapper: NameMapper, addressMapper: Add
       nino =>
         Identification(
           nino = settlorNino,
-          address = None)
+          address = None
+        )
     }
   }
 

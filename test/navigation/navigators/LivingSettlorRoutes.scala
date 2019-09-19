@@ -17,14 +17,15 @@
 package navigation.navigators
 
 import base.SpecBase
+import controllers.living_settlor.routes
 import generators.Generators
-import models.{IndividualOrBusiness, NormalMode, UserAnswers}
+import models.IndividualOrBusiness.Individual
+import models.{AddASettlor, IndividualOrBusiness, NormalMode, SettlorKindOfTrust, UserAnswers}
 import navigation.{LivingSettlorNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages.living_settlor._
-import controllers.living_settlor.routes
-import pages.SettlorHandoverReliefYesNoPage
+import pages.{AddASettlorPage, AddASettlorYesNoPage, SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage}
 
 trait LivingSettlorRoutes {
 
@@ -32,9 +33,9 @@ trait LivingSettlorRoutes {
 
   private val index = 0
 
-  private val navigator : Navigator = new LivingSettlorNavigator
+  private val navigator : Navigator = injector.instanceOf[LivingSettlorNavigator]
 
-  def livingBusinessSettlorRoutes : Unit = {
+  def livingBusinessSettlorRoutes() : Unit = {
 
     "navigate from SettlorIndividualOrBusinessPage to SettlorBusinessName when user answers business" in {
 
@@ -48,9 +49,69 @@ trait LivingSettlorRoutes {
 
     }
 
+    "navigate from SettlorBusinessName to SettlorBusinessDetails" in {
+      val page = SettlorBusinessNamePage(index)
+
+      val ua = emptyUserAnswers
+        .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Business).success.value
+        .set(page, "AWS").success.value
+
+      navigator.nextPage(page, NormalMode, fakeDraftId)(ua)
+        .mustBe(routes.SettlorBusinessDetailsController.onPageLoad(NormalMode, index, fakeDraftId))
+    }
+
   }
 
   def livingSettlorRoutes(): Unit = {
+
+    "navigate from SettlorKindOfTrustPage" when {
+
+      "user answers Deed" in {
+        val page = SettlorKindOfTrustPage
+        val answer = SettlorKindOfTrust.Deed
+
+        val answers = emptyUserAnswers.set(page, answer).success.value
+
+        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(controllers.routes.SettlorKindOfTrustController.onPageLoad(NormalMode, fakeDraftId))
+      }
+
+      "user answers Lifetime" in {
+        val page = SettlorKindOfTrustPage
+        val answer = SettlorKindOfTrust.Intervivos
+
+        val answers = emptyUserAnswers.set(page, answer).success.value
+
+        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(controllers.routes.SettlorHandoverReliefYesNoController.onPageLoad(NormalMode, fakeDraftId))
+      }
+
+      "user answers Building" in {
+        val page = SettlorKindOfTrustPage
+        val answer = SettlorKindOfTrust.FlatManagement
+
+        val answers = emptyUserAnswers.set(page, answer).success.value
+
+        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(controllers.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, fakeDraftId))
+      }
+
+      "user answers Repair Historic" in {
+        val page = SettlorKindOfTrustPage
+        val answer = SettlorKindOfTrust.HeritageMaintenanceFund
+
+        val answers = emptyUserAnswers.set(page, answer).success.value
+
+        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(controllers.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, fakeDraftId))
+      }
+
+      "user answers Employees" in {
+        val page = SettlorKindOfTrustPage
+        val answer = SettlorKindOfTrust.Employees
+
+        val answers = emptyUserAnswers.set(page, answer).success.value
+
+        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(controllers.routes.SettlorKindOfTrustController.onPageLoad(NormalMode, fakeDraftId))
+      }
+
+    }
 
     "navigate from SettlorHandoverReliefYesNoPage" in {
 
@@ -285,6 +346,84 @@ trait LivingSettlorRoutes {
       }
 
     }
+
+  "add another settlor" must {
+
+    "go to the IndividualOrBusiness from AddASettlorPage when selected add them now" in {
+
+      val answers = emptyUserAnswers
+        .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
+        .set(AddASettlorPage, AddASettlor.YesNow).success.value
+
+      navigator.nextPage(AddASettlorPage, NormalMode, fakeDraftId)(answers)
+        .mustBe(controllers.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 1, fakeDraftId))
+    }
+  }
+
+  "go to RegistrationProgress from AddASettlorPage when selecting add them later" in {
+    forAll(arbitrary[UserAnswers]) {
+      userAnswers =>
+
+        val answers = emptyUserAnswers
+          .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
+          .set(AddASettlorPage, AddASettlor.YesLater).success.value
+
+        navigator.nextPage(AddASettlorPage, NormalMode, fakeDraftId)(answers)
+          .mustBe(controllers.routes.TaskListController.onPageLoad(fakeDraftId))
+    }
+  }
+
+  "go to RegistrationProgress from AddASettlorPage when selecting no complete" in {
+    forAll(arbitrary[UserAnswers]) {
+      userAnswers =>
+
+        val answers = emptyUserAnswers
+          .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
+          .set(AddASettlorPage, AddASettlor.NoComplete).success.value
+
+        navigator.nextPage(AddASettlorPage, NormalMode, fakeDraftId)(answers)
+          .mustBe(controllers.routes.TaskListController.onPageLoad(fakeDraftId))
+    }
+  }
+
+  "go to SettlorIndividualOrBusinessPage from from AddAASettlorYesNoPage when selected Yes" in {
+    val index = 0
+
+    forAll(arbitrary[UserAnswers]) {
+      userAnswers =>
+
+        val answers = userAnswers.set(AddASettlorYesNoPage, true).success.value
+
+        navigator.nextPage(AddASettlorYesNoPage, NormalMode, fakeDraftId)(answers)
+          .mustBe(controllers.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode,
+            index, fakeDraftId))
+    }
+  }
+
+  "go to RegistrationProgress from from AddASettlorYesNoPage when selected No" in {
+    forAll(arbitrary[UserAnswers]) {
+      userAnswers =>
+
+        val answers = userAnswers.set(AddASettlorYesNoPage, false).success.value
+
+        navigator.nextPage(AddASettlorYesNoPage, NormalMode, fakeDraftId)(answers)
+          .mustBe(controllers.routes.TaskListController.onPageLoad(fakeDraftId))
+    }
+  }
+
+
+
+  "navigate from SettlorIndividualAnswerPage" in {
+
+    val page = SettlorIndividualAnswerPage
+
+    forAll(arbitrary[UserAnswers]) {
+      userAnswers =>
+        navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
+          .mustBe(controllers.routes.AddASettlorController.onPageLoad(fakeDraftId))
+    }
+
+  }
 
   }
 

@@ -16,8 +16,7 @@
 
 package views.property_or_land
 
-import controllers.property_or_land.routes
-import forms.property_or_land.TrustOwnAllThePropertyOrLandFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -28,7 +27,7 @@ class TrustOwnAllThePropertyOrLandViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "trustOwnAllThePropertyOrLand"
 
-  val form = new TrustOwnAllThePropertyOrLandFormProvider()()
+  val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
   val index: Int = 0
 

@@ -18,7 +18,7 @@ package controllers.living_settlor
 
 import base.SpecBase
 import controllers.IndexValidation
-import forms.SettlorIndividualOrBusinessFormProvider
+import forms.deceased_settlor.SettlorIndividualOrBusinessFormProvider
 import models.{IndividualOrBusiness, NormalMode}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.living_settlor.SettlorIndividualOrBusinessPage

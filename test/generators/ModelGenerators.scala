@@ -34,6 +34,11 @@ trait ModelGenerators {
       Gen.oneOf(SettlorKindOfTrust.values.toSeq)
     }
 
+  implicit lazy val arbitraryTrusteesBasedInTheUK: Arbitrary[TrusteesBasedInTheUK] =
+    Arbitrary {
+      Gen.oneOf(TrusteesBasedInTheUK.values.toSeq)
+    }
+
   implicit lazy val arbitrarySettlorIndividualPassport: Arbitrary[PassportOrIdCardDetails] =
     Arbitrary {
       for {
@@ -83,6 +88,11 @@ trait ModelGenerators {
   implicit lazy val arbitraryAddAssets: Arbitrary[AddAssets] =
     Arbitrary {
       Gen.oneOf(AddAssets.values)
+    }
+
+  implicit lazy val arbitraryAddASettlor: Arbitrary[AddASettlor] =
+    Arbitrary {
+      Gen.oneOf(AddASettlor.values)
     }
 
   implicit lazy val arbitraryWhatKindOfAsset: Arbitrary[WhatKindOfAsset] =

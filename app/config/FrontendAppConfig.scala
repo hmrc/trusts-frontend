@@ -82,4 +82,6 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val auditCannotCreateRegistration : Boolean =
     configuration.get[Boolean]("microservice.services.features.auditing.cannotCreateRegistration.enabled")
 
+  lazy val livingSettlorBusinessEnabled : Boolean = configuration.get[Boolean]("microservice.services.features.journey.livingSettlorBusiness.enabled")
+
 }

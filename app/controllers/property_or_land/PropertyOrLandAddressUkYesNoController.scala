@@ -18,7 +18,7 @@ package controllers.property_or_land
 
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
-import forms.property_or_land.PropertyOrLandAddressUkYesNoFormProvider
+import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
@@ -41,12 +41,12 @@ class PropertyOrLandAddressUkYesNoController @Inject()(
                                                         getData: DraftIdRetrievalActionProvider,
                                                         requireData: DataRequiredAction,
                                                         validateIndex: IndexActionFilterProvider,
-                                                        formProvider: PropertyOrLandAddressUkYesNoFormProvider,
+                                                        yesNoFormProvider: YesNoFormProvider,
                                                         val controllerComponents: MessagesControllerComponents,
                                                         view: PropertyOrLandAddressUkYesNoView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = formProvider()
+  val form: Form[Boolean] = yesNoFormProvider.withPrefix("propertyOrLandAddressUkYesNo")
 
   private def actions(index: Int, draftId: String) =
     identify andThen
