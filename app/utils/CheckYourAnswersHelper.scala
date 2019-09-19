@@ -30,6 +30,7 @@ import pages.shares._
 import pages.trustees._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
+import sections.{DeceasedSettlor, LivingSettlors}
 import uk.gov.hmrc.domain.Nino
 import utils.CheckYourAnswersHelper._
 import utils.countryOptions.CountryOptions
@@ -51,8 +52,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorKindOfTrust.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"settlorKindOfTrust.$x")),
-        routes.SettlorKindOfTrustController.onPageLoad(NormalMode, draftId).url
-
+        routes.SettlorKindOfTrustController.onPageLoad(NormalMode, draftId).url,
+        canEdit = canEdit
       )
   }
 
@@ -267,10 +268,10 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       agentOtherThanBarrister
     ).flatten
 
-    if (questions.nonEmpty) Some(Seq(AnswerSection(None, questions, Some(Messages("answerPage.section.trustsDetails.heading"))))) else None
+    if (questions.nonEmpty) Some(Seq(AnswerSection(None, questions, Some(messages("answerPage.section.trustsDetails.heading"))))) else None
   }
 
-  def settlors: Option[Seq[AnswerSection]] = {
+  def deceasedSettlor: Option[Seq[AnswerSection]] = {
 
     val questions = Seq(
       setupAfterSettlorDied,
@@ -287,7 +288,51 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       deceasedSettlorsInternationalAddress
     ).flatten
 
-    if (questions.nonEmpty) Some(Seq(AnswerSection(None, questions, Some(Messages("answerPage.section.settlors.heading"))))) else None
+    if (deceasedSettlorsName.nonEmpty)
+      Some(Seq(AnswerSection(
+        headingKey = None,
+        questions,
+        sectionKey = Some(messages("answerPage.section.deceasedSettlor.heading"))
+      )))
+    else None
+  }
+
+  def livingSettlors: Option[Seq[AnswerSection]] = {
+
+    for {
+      livingSettlors <- userAnswers.get(LivingSettlors)
+      indexed = livingSettlors.zipWithIndex
+    } yield indexed.map {
+      case (_, index) =>
+
+        val questions = Seq(
+          setupAfterSettlorDied,
+          settlorKindOfTrust,
+          settlorHandoverReliefYesNo,
+          settlorIndividualOrBusiness(index),
+          settlorIndividualName(index),
+          settlorIndividualDateOfBirthYesNo(index),
+          settlorIndividualDateOfBirth(index),
+          settlorIndividualNINOYesNo(index),
+          settlorIndividualNINO(index),
+          settlorIndividualAddressYesNo(index),
+          settlorIndividualAddressUKYesNo(index),
+          settlorIndividualAddressUK(index),
+          settlorIndividualAddressInternational(index),
+          settlorIndividualPassportYesNo(index),
+          settlorIndividualPassport(index),
+          settlorIndividualIDCardYesNo(index),
+          settlorIndividualIDCard(index)
+        ).flatten
+
+        val sectionKey = if (index == 0) Some(messages("answerPage.section.settlors.heading")) else None
+
+        AnswerSection(
+          headingKey = Some(messages("answerPage.section.settlor.subheading", index + 1)),
+          questions,
+          sectionKey = sectionKey
+        )
+    }
   }
 
   def trustees: Option[Seq[AnswerSection]] = {
@@ -312,7 +357,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
         ).flatten
 
 
-        val sectionKey = if (index == 0) Some(Messages("answerPage.section.trustees.heading")) else None
+        val sectionKey = if (index == 0) Some(messages("answerPage.section.trustees.heading")) else None
 
         AnswerSection(
           headingKey = Some(Messages("answerPage.section.trustee.subheading") + " " + (index + 1)),
