@@ -198,6 +198,16 @@ $(document).ready(function() {
           afterPrintCall();
       }
 
+      // ------------------------------------
+      // Introduce direct skip link control, to work around voiceover failing of hash links
+      // https://bugs.webkit.org/show_bug.cgi?id=179011
+      // https://axesslab.com/skip-links/
+      // ------------------------------------
+      $('.skiplink').click(function(e) {
+          e.preventDefault();
+          $(':header:first').attr('tabindex', '-1').focus();
+      });
+
   });
 
 
@@ -232,16 +242,3 @@ $(document).ready(function() {
               e.preventDefault();
       });
   }
-
-	$(".skiplink").on("click", function(event) {
-		// strip the leading hash and declare
-		// the content we're skipping to
-		var skipTo="#"+this.href.split('#')[1];
-		// Setting 'tabindex' to -1 takes an element out of normal
-		// tab flow but allows it to be focused via javascript
-		$(skipTo).attr('tabindex', -1).on('blur focusout', function () {
-			// when focus leaves this element,
-			// remove the tabindex attribute
-			$(this).removeAttr('tabindex');
-		}).focus(); // focus on the content container
-	});
