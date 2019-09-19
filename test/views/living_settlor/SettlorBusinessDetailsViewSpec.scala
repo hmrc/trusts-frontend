@@ -43,6 +43,8 @@ class SettlorBusinessDetailsViewSpec extends ViewBehaviours {
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, fakeName)
 
     behave like pageWithBackLink(applyView(form))
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 
 
