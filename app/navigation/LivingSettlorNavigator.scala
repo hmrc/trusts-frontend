@@ -48,6 +48,8 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
     case SettlorIndividualIDCardPage(index) => _ => _ => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
     case SettlorIndividualOrBusinessPage(index) => _ => settlorIndividualOrBusinessPage(index, draftId)
     case SettlorIndividualAnswerPage => _ => _ => controllers.routes.AddASettlorController.onPageLoad(draftId)
+    case SettlorBusinessNamePage(index)  =>_ => _ => controllers.living_settlor.routes.SettlorBusinessDetailsController.onPageLoad(NormalMode, index, draftId)
+    case SettlorBusinessDetailsPage(index) =>_ => _ => controllers.living_settlor.routes.SettlorBusinessDetailsController.onPageLoad(NormalMode, index, draftId)
     case AddASettlorPage => _ => addSettlorRoute(draftId)
     case AddASettlorYesNoPage => _ => addASettlorYesNoRoute(draftId)
   }

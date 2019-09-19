@@ -20,7 +20,6 @@ import java.time.LocalDate
 
 import org.scalacheck.Arbitrary
 import pages.behaviours.PageBehaviours
-import pages.trustees.TrusteesDateOfBirthPage
 
 class TrusteesDateOfBirthPageSpec extends PageBehaviours {
 

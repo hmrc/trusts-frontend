@@ -17,17 +17,15 @@
 package navigation.navigators
 
 import base.SpecBase
+import controllers.living_settlor.routes
 import generators.Generators
-import models.{AddASettlor, NormalMode, UserAnswers}
-import models.{NormalMode, SettlorKindOfTrust, UserAnswers}
+import models.IndividualOrBusiness.Individual
+import models.{AddASettlor, IndividualOrBusiness, NormalMode, SettlorKindOfTrust, UserAnswers}
 import navigation.{LivingSettlorNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages.living_settlor._
-import controllers.living_settlor.routes
-import models.IndividualOrBusiness.Individual
-import pages.{AddASettlorPage, AddASettlorYesNoPage, AddAssetsPage, SettlorHandoverReliefYesNoPage}
-import pages.{SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage}
+import pages.{AddASettlorPage, AddASettlorYesNoPage, SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage}
 
 trait LivingSettlorRoutes {
 
@@ -36,6 +34,33 @@ trait LivingSettlorRoutes {
   private val index = 0
 
   private val navigator : Navigator = injector.instanceOf[LivingSettlorNavigator]
+
+  def livingBusinessSettlorRoutes() : Unit = {
+
+    "navigate from SettlorIndividualOrBusinessPage to SettlorBusinessName when user answers business" in {
+
+      val page = SettlorIndividualOrBusinessPage(index)
+
+      val ua = emptyUserAnswers
+        .set(page, IndividualOrBusiness.Business).success.value
+
+      navigator.nextPage(page, NormalMode, fakeDraftId)(ua)
+          .mustBe(routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, fakeDraftId))
+
+    }
+
+    "navigate from SettlorBusinessName to SettlorBusinessDetails" in {
+      val page = SettlorBusinessNamePage(index)
+
+      val ua = emptyUserAnswers
+        .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Business).success.value
+        .set(page, "AWS").success.value
+
+      navigator.nextPage(page, NormalMode, fakeDraftId)(ua)
+        .mustBe(routes.SettlorBusinessDetailsController.onPageLoad(NormalMode, index, fakeDraftId))
+    }
+
+  }
 
   def livingSettlorRoutes(): Unit = {
 
@@ -242,11 +267,10 @@ trait LivingSettlorRoutes {
 
       val page = SettlorIndividualAddressInternationalPage(index)
 
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
-            navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
-              .mustBe(routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
-        }
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
 
@@ -398,6 +422,8 @@ trait LivingSettlorRoutes {
         navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
           .mustBe(controllers.routes.AddASettlorController.onPageLoad(fakeDraftId))
     }
+
+  }
 
   }
 

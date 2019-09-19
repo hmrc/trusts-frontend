@@ -24,7 +24,7 @@ import mapping.reads._
 import models.{InternationalAddress, NormalMode, PassportOrIdCardDetails, UKAddress, UserAnswers}
 import pages._
 import pages.deceased_settlor._
-import pages.living_settlor.{SettlorIndividualAddressInternationalPage, SettlorIndividualAddressUKPage, SettlorIndividualAddressUKYesNoPage, SettlorIndividualAddressYesNoPage, SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualIDCardPage, SettlorIndividualIDCardYesNoPage, SettlorIndividualNINOPage, SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage, SettlorIndividualOrBusinessPage, SettlorIndividualPassportPage, SettlorIndividualPassportYesNoPage, _}
+import pages.living_settlor._
 import pages.property_or_land._
 import pages.shares._
 import pages.trustees._
@@ -84,6 +84,15 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
         yesOrNo(x),
         routes.SettlorHandoverReliefYesNoController.onPageLoad(NormalMode, draftId).url,
         canEdit = canEdit
+      )
+  }
+
+  def settlorBusinessDetails(index : Int): Option[AnswerRow] = userAnswers.get(SettlorBusinessDetailsPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorBusinessDetails.checkYourAnswersLabel",
+        HtmlFormat.escape(messages(s"settlorDetails.$x")),
+        controllers.living_settlor.routes.SettlorBusinessDetailsController.onPageLoad(NormalMode,index, draftId).url
       )
   }
 

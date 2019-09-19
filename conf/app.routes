@@ -582,6 +582,11 @@ POST       /:draftId/asset/:index/share/portfolio/remove                        
 GET        /:draftId/trustee/:index/remove                        controllers.trustees.RemoveTrusteeController.onPageLoad(index : Int, draftId: String)
 POST       /:draftId/trustee/:index/remove                        controllers.trustees.RemoveTrusteeController.onSubmit(index : Int, draftId: String)
 
+GET        /:draftId/settlor/living/:index/business/details                      controllers.living_settlor.SettlorBusinessDetailsController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId/settlor/living/:index/business/details                     controllers.living_settlor.SettlorBusinessDetailsController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
+GET        /:draftId/settlor/living/:index/business/change-details                  controllers.living_settlor.SettlorBusinessDetailsController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/settlor/living/:index/business/change-details                  controllers.living_settlor.SettlorBusinessDetailsController.onSubmit(mode: Mode = CheckMode, index : Int,draftId: String)
+
 
 GET        /:draftId/settlor/living/:index/business/name                        controllers.living_settlor.SettlorBusinessNameController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
 POST       /:draftId/settlor/living/:index/business/name                        controllers.living_settlor.SettlorBusinessNameController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)

@@ -18,11 +18,9 @@ package controllers.living_settlor
 
 import base.SpecBase
 import controllers.IndexValidation
-import controllers.property_or_land.routes
 import forms.RemoveIndexFormProvider
 import models.FullName
 import org.scalacheck.Arbitrary.arbitrary
-import pages.SettlorBusinessDetailsPage
 import pages.living_settlor.{RemoveSettlorPage, SettlorIndividualNamePage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest

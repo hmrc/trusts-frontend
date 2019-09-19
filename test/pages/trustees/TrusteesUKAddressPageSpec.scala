@@ -18,7 +18,6 @@ package pages.trustees
 
 import models.UKAddress
 import pages.behaviours.PageBehaviours
-import pages.trustees.TrusteesUkAddressPage
 
 class TrusteesUKAddressPageSpec extends PageBehaviours {
 
