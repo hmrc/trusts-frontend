@@ -325,8 +325,8 @@ leadTrusteesName.error.invalidFirstNameCharacters = Lead trustee’s first name 
 leadTrusteesName.error.invalidMiddleNameCharacters = Lead trustee’s middle names must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 leadTrusteesName.error.invalidLastNameCharacters = Lead trustee’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
-trusteesAnswerPage.title = Check trustee’s details
-trusteesAnswerPage.heading = Check trustee’s details
+trusteesAnswerPage.title = Check trustee details
+trusteesAnswerPage.heading = Check trustee details
 
 addATrustee.title = Add a trustee
 
@@ -341,7 +341,7 @@ addASettlor.singular.title = Add a settlor
 addASettlor.count.heading = You have added {0} settlors
 addASettlor.count.title = You have added {0} settlors
 
-addASettlor.Lifetime = This is a trust created during the settlor's lifetime to gift or transfer assets (also known as an inter vivos trust)
+addASettlor.Lifetime = This is a trust created during the settlor’s lifetime to gift or transfer assets (also known as an inter vivos trust)
 addASettlor.Deed.a = This trust was set up by a family agreement
 addASettlor.Deed.a = This trust was set up by a family agreement, in addition to a will
 addASettlor.Employees = This trust was set up for the employees of a company
@@ -562,7 +562,7 @@ removeMoneyAsset.error.required = Select yes if you want to remove the money
 removeShareAsset.title = Are you sure you want to remove {0}?
 removeShareAsset.heading = Are you sure you want to remove {0}?
 removeShareAsset.default = the share
-removeShareAsset.error.required = Select yes if you want to remove the share
+removeShareAsset.error.required = Select yes if you want to remove the shares
 
 removePropertyOrLandAsset.title = Are you sure you want to remove {0}?
 removePropertyOrLandAsset.heading = Are you sure you want to remove {0}?
@@ -589,7 +589,7 @@ addAssets.additional-content = Do you want to add another asset?
 addAssets.add-them-now = Yes, I want to add them now
 addAssets.add-them-later = Yes, I want to add them later
 addAssets.no-complete = No, I have added all assets
-addAssets.checkYourAnswersLabel = addAssets
+addAssets.checkYourAnswersLabel = Do you want to add another asset?
 addAssets.error.required = Select yes if you want to add another asset
 addAssets.count.heading = You have added {0} assets
 addAssets.count.title = You have added {0} assets
@@ -682,8 +682,8 @@ wasSettlorsAddressUKYesNo.heading = Was {0}’s last known address in the UK?
 wasSettlorsAddressUKYesNo.checkYourAnswersLabel = Was {0}’s last known address in the UK?
 wasSettlorsAddressUKYesNo.error.required = Select yes if the settlor’s last known address was in the UK
 
-deceasedSettlorAnswer.title = Check settlor’s details
-deceasedSettlorAnswer.heading = Check settlor’s details
+deceasedSettlorAnswer.title = Check settlor details
+deceasedSettlorAnswer.heading = Check settlor details
 
 agentName.title = What is the name of the agency registering this trust?
 agentName.heading = What is the name of the agency registering this trust?
@@ -841,7 +841,6 @@ whatTypeOfBeneficiary.ClassOfBeneficiary = Class of beneficiaries
 whatTypeOfBeneficiary.CharityOrTrust = Charity or trust
 whatTypeOfBeneficiary.CompanyOrEmployment = Company or employment related
 whatTypeOfBeneficiary.Other = Other beneficiary
-whatTypeOfBeneficiary.checkYourAnswersLabel = whatTypeOfBeneficiary
 whatTypeOfBeneficiary.error.required = Select the type of beneficiary you need to add
 whatTypeOfBeneficiary.hint = You can enter a maximum of 25 entries for each beneficiary type
 
@@ -904,7 +903,9 @@ confirmationAnswerPage.paragraph2 = The trust’s registration was sent on {0}.
 confirmationAnswerPage.warning = You need to declare every year through this service that the details we have are up to date.
 
 answerPage.section.trustsDetails.heading = Trust details
+answerPage.section.deceasedSettlor.heading = Settlor
 answerPage.section.settlors.heading = Settlors
+answerPage.section.settlor.subheading = Settlor {0}
 answerPage.section.trustees.heading = Trustees
 answerPage.section.trustee.subheading = Trustee
 answerPage.section.beneficiaries.heading = Beneficiaries
@@ -1115,8 +1116,8 @@ settlorIndividualAddressUK.heading = What is {0}’s address?
 settlorIndividualAddressUK.checkYourAnswersLabel = What is {0}’s address?
 
 settlorIndividualAddressUKYesNo.title = Does the settlor live in the UK?
-settlorIndividualAddressUKYesNo.heading = Does {0}’s live in the UK?
-settlorIndividualAddressUKYesNo.checkYourAnswersLabel = Does {0}’s live in the UK?
+settlorIndividualAddressUKYesNo.heading = Does {0} live in the UK?
+settlorIndividualAddressUKYesNo.checkYourAnswersLabel = Does {0} live in the UK?
 settlorIndividualAddressUKYesNo.error.required = Select yes if the settlor lives in the UK
 
 settlorIndividualIDCard.title = What are the settlor’s ID card details?
@@ -1206,6 +1207,13 @@ settlorHandoverReliefYesNo.title = Was holdover relief claimed on any assets put
 settlorHandoverReliefYesNo.heading = Was holdover relief claimed on any assets put into the trust?
 settlorHandoverReliefYesNo.checkYourAnswersLabel = Was holdover relief claimed on any assets put into the trust?
 settlorHandoverReliefYesNo.error.required = Select yes if holdover relief was claimed by any settlor on transfer into the trust
+
+settlorBusinessDetails.title = Which of the settlor’s details do you know?
+settlorBusinessDetails.heading = Which of {0}’s details do you know?
+settlorBusinessDetails.uniqueTaxReference = Unique Taxpayer Reference
+settlorBusinessDetails.address = Address
+settlorBusinessDetails.checkYourAnswersLabel = Which of {0}’s details do you know?
+settlorBusinessDetails.error.required = Select which of the business’s details you know
 
 trusteesBasedInTheUK.title = Are the trustees based in the UK?
 trusteesBasedInTheUK.heading =  Are the trustees based in the UK?

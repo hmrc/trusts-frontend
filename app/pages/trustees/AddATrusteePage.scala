@@ -19,7 +19,6 @@ package pages.trustees
 import models.AddATrustee
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.Trustees
 
 case object AddATrusteePage extends QuestionPage[AddATrustee] {
 

@@ -53,6 +53,7 @@ trait DeceasedSettlorRoutes {
               .mustBe(routes.SettlorsNameController.onPageLoad(NormalMode, fakeDraftId))
         }
     }
+
     "go to SettlorDateOfDeathYesNoPage from SettlorsNamePage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>

@@ -28,7 +28,7 @@ import pages.QuestionPage
 import pages.living_settlor.SettlorIndividualNamePage
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.{AnyContent, Call, MessagesControllerComponents}
-import queries.{RemoveAssetQuery, RemoveSettlorQuery, Settable}
+import queries.{RemoveSettlorQuery, Settable}
 import repositories.SessionRepository
 import sections.LivingSettlors
 import views.html.RemoveIndexView

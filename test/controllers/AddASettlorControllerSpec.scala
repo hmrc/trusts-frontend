@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import forms.YesNoFormProvider
 import forms.AddASettlorFormProvider
-import models.SettlorKindOfTrust.Lifetime
+import models.SettlorKindOfTrust.Intervivos
 import models.{AddASettlor, NormalMode}
 import pages.SettlorKindOfTrustPage
 import play.api.test.FakeRequest
@@ -40,7 +40,7 @@ class AddASettlorControllerSpec extends SpecBase {
   val hint = "addASettlor.Lifetime"
 
   val userAnswersWithSettlorsComplete = emptyUserAnswers
-    .set(SettlorKindOfTrustPage, Lifetime)
+    .set(SettlorKindOfTrustPage, Intervivos)
     .success
     .value
 
@@ -86,7 +86,7 @@ class AddASettlorControllerSpec extends SpecBase {
       "return OK and the correct view for a GET" in {
 
         val answers = emptyUserAnswers
-          .set(SettlorKindOfTrustPage, Lifetime)
+          .set(SettlorKindOfTrustPage, Intervivos)
           .success
           .value
 
@@ -109,7 +109,7 @@ class AddASettlorControllerSpec extends SpecBase {
       "redirect to the next page when valid data is submitted" in {
 
         val answers = emptyUserAnswers
-          .set(SettlorKindOfTrustPage, Lifetime)
+          .set(SettlorKindOfTrustPage, Intervivos)
           .success
           .value
 
@@ -132,7 +132,7 @@ class AddASettlorControllerSpec extends SpecBase {
       "return a Bad Request and errors when invalid data is submitted" in {
 
         val answers = emptyUserAnswers
-          .set(SettlorKindOfTrustPage, Lifetime)
+          .set(SettlorKindOfTrustPage, Intervivos)
           .success
           .value
 

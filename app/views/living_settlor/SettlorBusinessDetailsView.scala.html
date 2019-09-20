@@ -14,31 +14,32 @@
  * limitations under the License.
  *@
 
-@import controllers.routes
-@import models.Mode
+@import controllers.living_settlor.routes._
+@import models.{Mode, SettlorBusinessDetails}
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, index : Int, draftId: String, name : String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("settlorsBasedInTheUK.title")}"
+    title = s"${errorPrefix(form)} ${messages("settlorBusinessDetails.title", name)}"
     ) {
 
-    @formHelper(action = routes.SettlorsBasedInTheUKController.onSubmit(mode, draftId), 'autoComplete -> "off") {
+    @formHelper(action = SettlorBusinessDetailsController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.input_yes_no(
+        @components.input_radio(
             field = form("value"),
-            label = messages("settlorsBasedInTheUK.heading"),
+            legend = messages("settlorBusinessDetails.heading", name),
             legendClass = Some("heading-large"),
-            legendAsHeading = true
+            legendAsHeading = true,
+            inputs = SettlorBusinessDetails.options
         )
 
         @components.submit_button()

@@ -58,7 +58,7 @@ awk '/class / {\
      print "      AnswerRow(";\
      print "        \"$className;format="decap"$.checkYourAnswersLabel\",";\
      print "        HtmlFormat.escape(x.format(dateFormatter)),";\
-     print "        routes.$className$Controller.onPageLoad(CheckMode, draftId).url";\
+     print "        routes.$className$Controller.onPageLoad(NormalMode, draftId).url";\
      print "      )";\
      print "  }";\
      next }1' ../app/utils/CheckYourAnswersHelper.scala > tmp && mv tmp ../app/utils/CheckYourAnswersHelper.scala

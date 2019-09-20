@@ -465,21 +465,11 @@ class Navigator @Inject()() {
     case None => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def checkRouteMap(draftId: String): Page => UserAnswers => Call = {
-    // TrustDetails
-    case TrustNamePage => _ => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
-    case WhenTrustSetupPage => _ => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
-    case TrustPreviouslyResidentPage => _ => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
-    case CountryAdministeringTrustPage => _ => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
-
-    case _ => _ => routes.CheckYourAnswersController.onPageLoad(draftId)
-  }
-
   def nextPage(page: Page, mode: Mode, draftId: String,  af :AffinityGroup = AffinityGroup.Organisation): UserAnswers => Call = mode match {
     case NormalMode =>
       normalRoutes(draftId)(page)(af)
     case CheckMode =>
-      checkRouteMap(draftId)(page)
+      normalRoutes(draftId)(page)(af)
   }
 
 }

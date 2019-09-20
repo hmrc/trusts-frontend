@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package pages.trustees
+package pages.living_settlor
 
+import models.SettlorBusinessDetails
 import pages.QuestionPage
 import play.api.libs.json.JsPath
+import sections.LivingSettlors
 
-case object AddATrusteeYesNoPage extends QuestionPage[Boolean] {
+case class SettlorBusinessDetailsPage(index : Int) extends QuestionPage[SettlorBusinessDetails] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = LivingSettlors.path \ index \ toString
 
-  override def toString: String = "addATrusteeYesNo"
+  override def toString: String = "settlorBusinessDetails"
 }

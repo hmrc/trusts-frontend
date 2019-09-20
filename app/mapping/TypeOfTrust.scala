@@ -24,8 +24,23 @@ object TypeOfTrust extends Enumerable.Implicits {
 
   case object WillTrustOrIntestacyTrust extends WithName("Will Trust or Intestacy Trust") with TypeOfTrust
 
+  case object IntervivosSettlementTrust extends WithName("Inter vivos Settlement") with TypeOfTrust
+
+  case object FlatManagementTrust extends  WithName("Flat Management Company or Sinking Fund") with TypeOfTrust
+
+  case object HeritageTrust extends WithName("Heritage Maintenance Fund") with TypeOfTrust
+
+  case object DeedOfVariation extends WithName("Deed of Variation Trust or Family Arrangement") with TypeOfTrust
+
+  case object EmployeeRelated extends WithName("Employment Related") with TypeOfTrust
+
   val values: Set[TypeOfTrust] = Set(
-    WillTrustOrIntestacyTrust
+    WillTrustOrIntestacyTrust,
+    IntervivosSettlementTrust,
+    HeritageTrust,
+    FlatManagementTrust,
+    DeedOfVariation,
+    EmployeeRelated
   )
 
   implicit val enumerable: Enumerable[TypeOfTrust] =

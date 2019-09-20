@@ -23,10 +23,11 @@ import models.AddAssets.NoComplete
 import models.Status.Completed
 import models.TrusteesBasedInTheUK.UKBasedTrustees
 import models.WhatKindOfAsset.Shares
-import models.{AddABeneficiary, AddATrustee, FullName, IndividualOrBusiness, Status, UKAddress, WhatKindOfAsset}
+import models.{AddABeneficiary, AddASettlor, AddATrustee, FullName, IndividualOrBusiness, SettlorKindOfTrust, Status, UKAddress, WhatKindOfAsset}
 import pages._
 import pages.deceased_settlor._
 import pages.entitystatus._
+import pages.living_settlor.{SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNINOPage, SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage, SettlorIndividualOrBusinessPage}
 import pages.shares._
 import pages.trustees._
 import play.api.test.FakeRequest
@@ -142,6 +143,232 @@ class SummaryAnswersControllerSpec extends SpecBase {
           checkYourAnswersHelper.deceasedSettlorsLastKnownAddressYesNo.value,
           checkYourAnswersHelper.wasSettlorsAddressUKYesNo.value,
           checkYourAnswersHelper.deceasedSettlorsUKAddress.value
+        ),
+        Some("Settlor")
+      ),
+      AnswerSection(
+        Some("Trustee 1"),
+        Seq(
+          checkYourAnswersHelper.isThisLeadTrustee(index).value,
+          checkYourAnswersHelper.trusteeIndividualOrBusiness(index, leadTrusteeIndividualOrBusinessMessagePrefix).value,
+          checkYourAnswersHelper.trusteeFullName(index, leadTrusteeFullNameMessagePrefix).value,
+          checkYourAnswersHelper.trusteesDateOfBirth(index).value,
+          checkYourAnswersHelper.trusteeAUKCitizen(index).value,
+          checkYourAnswersHelper.trusteesNino(index).value,
+          checkYourAnswersHelper.trusteeLiveInTheUK(index).value,
+          checkYourAnswersHelper.trusteesUkAddress(index).value,
+          checkYourAnswersHelper.telephoneNumber(index).value
+        ),
+        Some("Trustees")
+      ),
+      AnswerSection(
+        Some("Individual beneficiary 1"),
+        Seq(
+          checkYourAnswersHelper.individualBeneficiaryName(index).value,
+          checkYourAnswersHelper.individualBeneficiaryDateOfBirthYesNo(index).value,
+          checkYourAnswersHelper.individualBeneficiaryDateOfBirth(index).value,
+          checkYourAnswersHelper.individualBeneficiaryIncomeYesNo(index).value,
+          checkYourAnswersHelper.individualBeneficiaryIncome(index).value,
+          checkYourAnswersHelper.individualBeneficiaryNationalInsuranceYesNo(index).value,
+          checkYourAnswersHelper.individualBeneficiaryNationalInsuranceNumber(index).value,
+          checkYourAnswersHelper.individualBeneficiaryAddressYesNo(index).value,
+          checkYourAnswersHelper.individualBeneficiaryAddressUKYesNo(index).value,
+          checkYourAnswersHelper.individualBeneficiaryAddressUK(index).value,
+          checkYourAnswersHelper.individualBeneficiaryVulnerableYesNo(index).value
+        ),
+        Some("Beneficiaries")
+      ),
+      AnswerSection(
+        Some("Class of beneficiary 1"),
+        Seq(
+          checkYourAnswersHelper.classBeneficiaryDescription(index).value
+        ),
+        None
+      ),
+      AnswerSection(None, Nil, Some("Assets")),
+      AnswerSection(
+        Some("Money"),
+        Seq(
+          checkYourAnswersHelper.assetMoneyValue(index).value
+        ),
+        None
+      ),
+      AnswerSection(
+        Some("Share 1"),
+        Seq(
+          checkYourAnswersHelper.sharesInAPortfolio(1).value,
+          checkYourAnswersHelper.sharePortfolioName(1).value,
+          checkYourAnswersHelper.sharePortfolioOnStockExchange(1).value,
+          checkYourAnswersHelper.sharePortfolioQuantityInTrust(1).value,
+          checkYourAnswersHelper.sharePortfolioValueInTrust(1).value
+        ),
+        None
+      )
+    )
+
+    "return OK and the correct view for a GET when tasklist completed for Organisation user" in {
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Organisation).build()
+
+      val request = FakeRequest(GET, routes.SummaryAnswerPageController.onPageLoad(fakeDraftId).url)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[SummaryAnswerPageView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(expectedSections, isAgent = false, agentClientRef = "")(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view for a GET when tasklist completed for Agent user" in {
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
+
+      val request = FakeRequest(GET, routes.SummaryAnswerPageController.onPageLoad(fakeDraftId).url)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[SummaryAnswerPageView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(expectedSections, isAgent = true, agentClientRef = "agentClientReference")(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "redirect to tasklist page when tasklist not completed" in {
+
+      val userAnswers =
+        TestUserAnswers.emptyUserAnswers
+          .set(TrustNamePage, "New Trust").success.value
+          .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
+          .set(GovernedInsideTheUKPage, true).success.value
+          .set(AdministrationInsideUKPage, true).success.value
+          .set(TrusteesBasedInTheUKPage, UKBasedTrustees).success.value
+          .set(EstablishedUnderScotsLawPage, true).success.value
+          .set(TrustResidentOffshorePage, false).success.value
+          .set(TrustDetailsStatus, Completed).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.SummaryAnswerPageController.onPageLoad(fakeDraftId).url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad(fakeDraftId).url
+
+      application.stop()
+
+    }
+
+  }
+
+  "SummaryAnswersController with Living settlor" must {
+
+    val userAnswers =
+      TestUserAnswers.emptyUserAnswers
+        .set(TrustNamePage, "New Trust").success.value
+        .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
+        .set(GovernedInsideTheUKPage, true).success.value
+        .set(AdministrationInsideUKPage, true).success.value
+        .set(TrusteesBasedInTheUKPage, UKBasedTrustees).success.value
+        .set(EstablishedUnderScotsLawPage, true).success.value
+        .set(TrustResidentOffshorePage, false).success.value
+        .set(TrustDetailsStatus, Completed).success.value
+
+        .set(IndividualBeneficiaryNamePage(index), FullName("first name", None, "last name")).success.value
+        .set(IndividualBeneficiaryDateOfBirthYesNoPage(index),true).success.value
+        .set(IndividualBeneficiaryDateOfBirthPage(index),LocalDate.now(ZoneOffset.UTC)).success.value
+        .set(IndividualBeneficiaryIncomeYesNoPage(index),true).success.value
+        .set(IndividualBeneficiaryIncomePage(index),"100").success.value
+        .set(IndividualBeneficiaryNationalInsuranceYesNoPage(index),true).success.value
+        .set(IndividualBeneficiaryNationalInsuranceNumberPage(index),"AB123456C").success.value
+        .set(IndividualBeneficiaryAddressYesNoPage(index),true).success.value
+        .set(IndividualBeneficiaryAddressUKYesNoPage(index),true).success.value
+        .set(IndividualBeneficiaryAddressUKPage(index),UKAddress("Line1",None, None, "TownOrCity","NE62RT" )).success.value
+        .set(IndividualBeneficiaryVulnerableYesNoPage(index),true).success.value
+        .set(IndividualBeneficiaryStatus(index), Status.Completed).success.value
+
+        .set(ClassBeneficiaryDescriptionPage(index),"Class of beneficary description").success.value
+        .set(ClassBeneficiaryStatus(index), Status.Completed).success.value
+        .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
+
+        .set(IsThisLeadTrusteePage(index), true).success.value
+        .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
+        .set(TrusteesNamePage(index), FullName("First", None, "Trustee")).success.value
+        .set(TrusteesDateOfBirthPage(index), LocalDate.now(ZoneOffset.UTC)).success.value
+        .set(TrusteeAUKCitizenPage(index), true).success.value
+        .set(TrusteesNinoPage(index), "AB123456C").success.value
+        .set(TelephoneNumberPage(index), "0191 1111111").success.value
+        .set(TrusteeLiveInTheUKPage(index), true).success.value
+        .set(TrusteesUkAddressPage(index), UKAddress("line1", Some("line2"), Some("line3"), "town or city", "AB1 1AB")).success.value
+        .set(TrusteeStatus(index), Status.Completed).success.value
+        .set(AddATrusteePage, AddATrustee.NoComplete).success.value
+
+        .set(SetupAfterSettlorDiedPage, false).success.value
+        .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
+        .set(SettlorHandoverReliefYesNoPage, true).success.value
+        .set(SettlorIndividualOrBusinessPage(index),IndividualOrBusiness.Individual).success.value
+        .set(SettlorIndividualNamePage(index), FullName("First", None, "Settlor")).success.value
+        .set(SettlorIndividualDateOfBirthYesNoPage(index), true).success.value
+        .set(SettlorIndividualDateOfBirthPage(index), LocalDate.now).success.value
+        .set(SettlorIndividualNINOYesNoPage(index), true).success.value
+        .set(SettlorIndividualNINOPage(index), "AB123456C").success.value
+        .set(LivingSettlorStatus(index), Status.Completed).success.value
+        .set(AddASettlorPage, AddASettlor.NoComplete).success.value
+
+        .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
+        .set(AssetMoneyValuePage(index), "100").success.value
+        .set(AssetStatus(index), Completed).success.value
+        .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
+        .set(SharesInAPortfolioPage(1), true).success.value
+        .set(SharePortfolioNamePage(1), "Company").success.value
+        .set(SharePortfolioOnStockExchangePage(1), true ).success.value
+        .set(SharePortfolioQuantityInTrustPage(1), "1234").success.value
+        .set(SharePortfolioValueInTrustPage(1), "4000").success.value
+        .set(AssetStatus(1), Completed).success.value
+        .set(AddAssetsPage, NoComplete).success.value
+        .set(AgentInternalReferencePage, "agentClientReference").success.value
+
+    val countryOptions = injector.instanceOf[CountryOptions]
+    val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers,fakeDraftId, canEdit = false)
+
+    val leadTrusteeIndividualOrBusinessMessagePrefix = "leadTrusteeIndividualOrBusiness"
+    val leadTrusteeFullNameMessagePrefix = "leadTrusteesName"
+
+    val expectedSections = Seq(
+      AnswerSection(
+        None,
+        Seq(
+          checkYourAnswersHelper.trustName.value,
+          checkYourAnswersHelper.whenTrustSetup.value,
+          checkYourAnswersHelper.governedInsideTheUK.value,
+          checkYourAnswersHelper.administrationInsideUK.value,
+          checkYourAnswersHelper.trusteesBasedInUK.value,
+          checkYourAnswersHelper.establishedUnderScotsLaw.value,
+          checkYourAnswersHelper.trustResidentOffshore.value
+        ),
+        Some("Trust details")
+      ),
+      AnswerSection(
+        headingKey = Some("Settlor 1"),
+        Seq(checkYourAnswersHelper.setupAfterSettlorDied.value,
+          checkYourAnswersHelper.settlorKindOfTrust.value,
+          checkYourAnswersHelper.settlorHandoverReliefYesNo.value,
+          checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
+          checkYourAnswersHelper.settlorIndividualName(index).value,
+          checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
+          checkYourAnswersHelper.settlorIndividualDateOfBirth(index).value,
+          checkYourAnswersHelper.settlorIndividualNINOYesNo(index).value,
+          checkYourAnswersHelper.settlorIndividualNINO(index).value
         ),
         Some("Settlors")
       ),

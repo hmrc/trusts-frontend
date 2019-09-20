@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package forms.living_settlor
 
-import play.api.libs.json.JsPath
-import sections.{LivingSettlors, Settlors}
+import forms.mappings.Mappings
+import javax.inject.Inject
+import models.SettlorBusinessDetails
+import play.api.data.Form
 
-case class SettlorBusinessDetailsPage(index : Int) extends QuestionPage[String] {
+class SettlorBusinessDetailsFormProvider @Inject() extends Mappings {
 
-  override def path: JsPath = LivingSettlors.path \ index \ toString
-
-  override def toString: String = "settlorBusinessDetails"
+  def apply(): Form[SettlorBusinessDetails] =
+    Form(
+      "value" -> enumerable[SettlorBusinessDetails]("settlorBusinessDetails.error.required")
+    )
 }
+

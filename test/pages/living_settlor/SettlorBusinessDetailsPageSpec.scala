@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
-package pages.trustees
+package pages.living_settlor
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import models.SettlorBusinessDetails
+import pages.behaviours.PageBehaviours
 
-case object AddATrusteeYesNoPage extends QuestionPage[Boolean] {
+class SettlorDetailsSpec extends PageBehaviours {
 
-  override def path: JsPath = JsPath \ toString
+  "SettlorDetailsPage" must {
 
-  override def toString: String = "addATrusteeYesNo"
+    beRetrievable[SettlorBusinessDetails](SettlorBusinessDetailsPage(0))
+
+    beSettable[SettlorBusinessDetails](SettlorBusinessDetailsPage(0))
+
+    beRemovable[SettlorBusinessDetails](SettlorBusinessDetailsPage(0))
+  }
 }

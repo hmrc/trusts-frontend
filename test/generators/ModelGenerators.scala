@@ -24,6 +24,11 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
+  implicit lazy val arbitrarySettlorDetails: Arbitrary[SettlorBusinessDetails] =
+    Arbitrary {
+      Gen.oneOf(SettlorBusinessDetails.values.toSeq)
+    }
+
   implicit lazy val arbitrarySettlorKindOfTrust: Arbitrary[SettlorKindOfTrust] =
     Arbitrary {
       Gen.oneOf(SettlorKindOfTrust.values.toSeq)

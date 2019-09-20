@@ -16,27 +16,25 @@
 
 package models
 
+import play.api.libs.json._
 import viewmodels.RadioOption
 
-sealed trait SettlorKindOfTrust
+sealed trait SettlorBusinessDetails
 
-object SettlorKindOfTrust extends Enumerable.Implicits {
+object SettlorBusinessDetails extends Enumerable.Implicits {
 
-  case object Intervivos extends WithName("Lifetime") with SettlorKindOfTrust
-  case object Deed extends WithName("Deed") with SettlorKindOfTrust
-  case object Employees extends WithName("Employees") with SettlorKindOfTrust
-  case object FlatManagement extends WithName("Building") with SettlorKindOfTrust
-  case object HeritageMaintenanceFund extends WithName("Repair") with SettlorKindOfTrust
+  case object UTR extends WithName("uniqueTaxReference") with SettlorBusinessDetails
+  case object Address extends WithName("address") with SettlorBusinessDetails
 
-  val values: List[SettlorKindOfTrust] = List(
-    Intervivos, Deed, Employees, FlatManagement, HeritageMaintenanceFund
+  val values: List[SettlorBusinessDetails] = List(
+    UTR, Address
   )
 
   val options: List[RadioOption] = values.map {
     value =>
-      RadioOption("settlorKindOfTrust", value.toString)
+      RadioOption("settlorBusinessDetails", value.toString)
   }
 
-  implicit val enumerable: Enumerable[SettlorKindOfTrust] =
+  implicit val enumerable: Enumerable[SettlorBusinessDetails] =
     Enumerable(values.map(v => v.toString -> v): _*)
 }
