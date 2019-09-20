@@ -67,7 +67,7 @@ class TaskListNavigatorSpec extends SpecBase {
       "there are no settlors" must {
 
         "go to SetupAfterSettlorDiedPage" in {
-          navigator.nextPage(Settlors, emptyUserAnswers, fakeDraftId) mustBe routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode, fakeDraftId)
+          navigator.nextPage(Settlors, emptyUserAnswers, fakeDraftId) mustBe routes.SettlorInfoController.onPageLoad(fakeDraftId)
         }
 
       }

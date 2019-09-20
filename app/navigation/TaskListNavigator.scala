@@ -18,7 +18,7 @@ package navigation
 
 import controllers.routes
 import javax.inject.{Inject, Singleton}
-import models.Status.Completed
+import models.Status.{Completed, InProgress}
 import mapping.reads.{Assets, Trustees}
 import models.{NormalMode, UserAnswers}
 import pages._
@@ -52,15 +52,19 @@ class TaskListNavigator @Inject()() {
     answers.get(DeceasedSettlorStatus) match {
       case Some(value) =>
         if(value.equals(Completed)) {
-        controllers.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
-      } else {
-        routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode,draftId)
-      }
+          controllers.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
+        } else {
+          routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode,draftId)
+        }
       case None =>
-        answers.get(LivingSettlors).getOrElse(Nil) match {
-        case Nil => controllers.routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode, draftId)
-        case _ => controllers.routes.AddASettlorController.onPageLoad(draftId)
-      }
+        answers.get(SetupAfterSettlorDiedPage).getOrElse(Nil) match {
+          case Nil => controllers.routes.SettlorInfoController.onPageLoad(draftId)
+          case _ =>
+            answers.get (LivingSettlors).getOrElse (Nil) match {
+              case Nil => controllers.routes.SetupAfterSettlorDiedController.onPageLoad (NormalMode, draftId)
+              case _ => controllers.routes.AddASettlorController.onPageLoad (draftId)
+            }
+        }
     }
   }
 
