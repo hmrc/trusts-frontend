@@ -621,3 +621,6 @@ POST       /:draftId/settlors/living/holdover-relief                         con
 GET        /:draftId/settlors/living/change-holdover-relief                  controllers.SettlorHandoverReliefYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/settlors/living/change-holdover-relief                  controllers.SettlorHandoverReliefYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
+GET        /:draftId/settlors/information-you-need                       controllers.SettlorInfoController.onPageLoad(draftId: String)
+
+
