@@ -26,7 +26,7 @@ import pages.trustees.AddATrusteePage
 import sections._
 import viewmodels._
 
-class RegistrationProgress @Inject()(navigator : TaskListNavigator){
+class RegistrationProgress @Inject()(navigator: TaskListNavigator) {
 
   def items(userAnswers: UserAnswers, draftId: String) = List(
     Task(Link(TrustDetails, navigator.nextPage(TrustDetails, userAnswers, draftId).url), isTrustDetailsComplete(userAnswers)),
@@ -37,15 +37,15 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
     Task(Link(TaxLiability, navigator.nextPage(TaxLiability, userAnswers, draftId).url), None)
   )
 
-  private def determineStatus(complete : Boolean) : Option[Status] = {
+  private def determineStatus(complete: Boolean): Option[Status] = {
     if (complete) {
       Some(Completed)
-    } else{
+    } else {
       Some(InProgress)
     }
   }
 
-  def isTrustDetailsComplete(userAnswers: UserAnswers) : Option[Status] = {
+  def isTrustDetailsComplete(userAnswers: UserAnswers): Option[Status] = {
     userAnswers.get(WhenTrustSetupPage) match {
       case None => None
       case Some(_) =>
@@ -54,7 +54,7 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
     }
   }
 
-  def isTrusteesComplete(userAnswers: UserAnswers) : Option[Status] = {
+  def isTrusteesComplete(userAnswers: UserAnswers): Option[Status] = {
     val noMoreToAdd = userAnswers.get(AddATrusteePage).contains(AddATrustee.NoComplete)
 
     userAnswers.get(_root_.sections.Trustees) match {
@@ -73,40 +73,47 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
     }
   }
 
-  def isSettlorsComplete(userAnswers: UserAnswers) : Option[Status] = {
+  def isSettlorsComplete(userAnswers: UserAnswers): Option[Status] = {
     val setUpAfterSettlorDied = userAnswers.get(SetupAfterSettlorDiedPage)
 
     def isDeceasedSettlorComplete: Option[Status] = {
       val deceasedCompleted = userAnswers.get(DeceasedSettlorStatus)
-      val isComplete =  deceasedCompleted.contains(Completed)
+      val isComplete = deceasedCompleted.contains(Completed)
       determineStatus(isComplete)
     }
-      setUpAfterSettlorDied match {
-        case None => None
-        case Some(setupAfterDeceased) =>
-          if (setupAfterDeceased) isDeceasedSettlorComplete
-          else { userAnswers.get(LivingSettlors).getOrElse(Nil) match {
-            case Nil => None
+
+    setUpAfterSettlorDied match {
+      case None => None
+      case Some(setupAfterDeceased) =>
+        if (setupAfterDeceased) {isDeceasedSettlorComplete}
+        else {
+          userAnswers.get(LivingSettlors).getOrElse(Nil) match {
+            case Nil => {
+              if (!setupAfterDeceased) {Some(Status.InProgress)}
+              else None
+            }
             case living =>
               val noMoreToAdd = userAnswers.get(AddASettlorPage).contains(AddASettlor.NoComplete)
               val isComplete = !living.exists(_.status == InProgress)
-              determineStatus(isComplete  && noMoreToAdd)
+              determineStatus(isComplete && noMoreToAdd)
           }
-          }
-      }
+        }
     }
-  def isBeneficiariesComplete(userAnswers: UserAnswers) : Option[Status] = {
+  }
 
-    def individualBeneficiariesComplete : Boolean = {
+  def isBeneficiariesComplete(userAnswers: UserAnswers): Option[Status] = {
+
+    def individualBeneficiariesComplete: Boolean = {
       val individuals = userAnswers.get(IndividualBeneficiaries).getOrElse(List.empty)
 
-      if (individuals.isEmpty) {false
+      if (individuals.isEmpty) {
+        false
       } else {
         !individuals.exists(_.status == InProgress)
       }
     }
 
-    def classComplete : Boolean  = {
+    def classComplete: Boolean = {
       val classes = userAnswers.get(ClassOfBeneficiaries).getOrElse(List.empty)
       if (classes.isEmpty) {
         false
@@ -131,7 +138,7 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
     }
   }
 
-  def assetsStatus(userAnswers: UserAnswers) : Option[Status] = {
+  def assetsStatus(userAnswers: UserAnswers): Option[Status] = {
     val noMoreToAdd = userAnswers.get(AddAssetsPage).contains(AddAssets.NoComplete)
     val assets = userAnswers.get(sections.Assets).getOrElse(List.empty)
 
@@ -144,12 +151,12 @@ class RegistrationProgress @Inject()(navigator : TaskListNavigator){
     }
   }
 
-  def isTaskListComplete(userAnswers: UserAnswers) : Boolean = {
+  def isTaskListComplete(userAnswers: UserAnswers): Boolean = {
     isTrustDetailsComplete(userAnswers).contains(Completed) &&
-    isSettlorsComplete(userAnswers).contains(Completed) &&
-    isTrusteesComplete(userAnswers).contains(Completed) &&
-    isBeneficiariesComplete(userAnswers).contains(Completed) &&
-    assetsStatus(userAnswers).contains(Completed)
+      isSettlorsComplete(userAnswers).contains(Completed) &&
+      isTrusteesComplete(userAnswers).contains(Completed) &&
+      isBeneficiariesComplete(userAnswers).contains(Completed) &&
+      assetsStatus(userAnswers).contains(Completed)
   }
 
 }

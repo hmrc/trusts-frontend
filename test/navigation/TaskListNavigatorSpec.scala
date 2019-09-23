@@ -66,13 +66,14 @@ class TaskListNavigatorSpec extends SpecBase {
 
       "there are no settlors" must {
 
-        "go to SetupAfterSettlorDiedPage" in {
+        "go to SettlorInfo" in {
           navigator.nextPage(Settlors, emptyUserAnswers, fakeDraftId) mustBe routes.SettlorInfoController.onPageLoad(fakeDraftId)
         }
 
       }
 
       "there is a deceased settlor" must {
+
         "go to DeceasedSettlorAnswerPage" in {
           val answers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, true).success.value
               .set(SettlorsNamePage, FullName("deceased",None, "settlor")).success.value
@@ -92,6 +93,7 @@ class TaskListNavigatorSpec extends SpecBase {
     }
 
     "there is a deceased settlor" must {
+
       "go to DeceasedSettlorAnswerPage" in {
         val answers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, true).success.value
           .set(SettlorsNamePage, FullName("deceased",None, "settlor")).success.value
@@ -108,6 +110,7 @@ class TaskListNavigatorSpec extends SpecBase {
 
     }
     "there are living settlors" must {
+
       "go to AddASettlor" in {
         val answers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, false).success.value
           .set(SettlorIndividualOrBusinessPage(0),Individual).success.value

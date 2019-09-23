@@ -57,8 +57,8 @@ class TaskListNavigator @Inject()() {
           routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode,draftId)
         }
       case None =>
-        answers.get(SetupAfterSettlorDiedPage).getOrElse(Nil) match {
-          case Nil => controllers.routes.SettlorInfoController.onPageLoad(draftId)
+        answers.get(SetupAfterSettlorDiedPage) match {
+          case None => controllers.routes.SettlorInfoController.onPageLoad(draftId)
           case _ =>
             answers.get (LivingSettlors).getOrElse (Nil) match {
               case Nil => controllers.routes.SetupAfterSettlorDiedController.onPageLoad (NormalMode, draftId)

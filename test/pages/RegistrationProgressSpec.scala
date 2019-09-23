@@ -22,7 +22,7 @@ import base.SpecBase
 import models.AddAssets.NoComplete
 import models.IndividualOrBusiness.Individual
 import models.Status.{Completed, InProgress}
-import models.{AddABeneficiary, AddASettlor, AddATrustee, FullName, Status, UserAnswers, WhatKindOfAsset}
+import models.{AddABeneficiary, AddASettlor, AddATrustee, FullName, SettlorKindOfTrust, Status, UserAnswers, WhatKindOfAsset}
 import pages.entitystatus.{AssetStatus, ClassBeneficiaryStatus, DeceasedSettlorStatus, IndividualBeneficiaryStatus, LivingSettlorStatus, TrustDetailsStatus, TrusteeStatus}
 import pages.living_settlor.SettlorIndividualOrBusinessPage
 import pages.shares.{SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, SharesInAPortfolioPage}
@@ -192,6 +192,14 @@ class RegistrationProgressSpec extends SpecBase {
         registrationProgress.isSettlorsComplete(userAnswers).value mustBe InProgress
       }
 
+      "there are no living settlors added and the trust was not setup after the settlor died" in {
+        val registrationProgress = injector.instanceOf[RegistrationProgress]
+
+        val userAnswers = emptyUserAnswers
+          .set(SetupAfterSettlorDiedPage, false).success.value
+
+        registrationProgress.isSettlorsComplete(userAnswers).value mustBe InProgress
+      }
 
       "there are living settlors that are not completed" in {
         val registrationProgress = injector.instanceOf[RegistrationProgress]
