@@ -624,3 +624,8 @@ POST       /:draftId/settlors/living/change-holdover-relief                  con
 GET        /:draftId/settlors/information-you-need                       controllers.SettlorInfoController.onPageLoad(draftId: String)
 
 
+
+GET        /:draftId/trustUTR                        controllers.TrustUTRController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/trustUTR                        controllers.TrustUTRController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/changeTrustUTR                  controllers.TrustUTRController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/changeTrustUTR                  controllers.TrustUTRController.onSubmit(mode: Mode = CheckMode, draftId: String)

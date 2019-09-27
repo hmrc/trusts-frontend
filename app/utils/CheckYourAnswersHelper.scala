@@ -38,6 +38,15 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers, draftId: String, canEdit: Boolean = true)(implicit messages: Messages) {
 
+  def trustUTR: Option[AnswerRow] = userAnswers.get(TrustUTRPage) map {
+    x =>
+      AnswerRow(
+        "trustUTR.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.TrustUTRController.onPageLoad(NormalMode, draftId).url
+      )
+  }
+
   def settlorBusinessName(index: Int): Option[AnswerRow] = userAnswers.get(SettlorBusinessNamePage(index)) map {
     x =>
       AnswerRow(
