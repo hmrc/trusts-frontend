@@ -176,10 +176,11 @@ establishedUnderScotsLaw.heading = Is the trust established under Scots Law?
 establishedUnderScotsLaw.checkYourAnswersLabel = Is the trust established under Scots Law?
 establishedUnderScotsLaw.error.required = Select yes if the trust was established under Scots Law
 
-registeringTrustFor5A.title = Are you registering the trust for the purposes of Schedule 5A Taxation of Chargeable Gains Act 1992?
-registeringTrustFor5A.heading = Are you registering the trust for the purposes of Schedule 5A Taxation of Chargeable Gains Act 1992?
-registeringTrustFor5A.checkYourAnswersLabel = Are you registering the trust for the purposes of Schedule 5A Taxation of Chargeable Gains Act 1992?
-registeringTrustFor5A.error.required = Select yes if you are registering the trust for the purposes of Schedule 5A Taxation of Chargeable Gains Act 1992?
+registeringTrustFor5A.title = Are you registering the trust because the settlor benefits from the trust’s assets?
+registeringTrustFor5A.heading = Are you registering the trust because the settlor benefits from the trust’s assets?
+registeringTrustFor5A.checkYourAnswersLabel = Are you registering the trust because the settlor benefits from the trust’s assets?
+registeringTrustFor5A.hint = This relates to Schedule 5A of the Taxation of Chargeable Gains Act 1992
+registeringTrustFor5A.error.required = Select yes if the settlor benefits from the trust’s assets
 
 trustResidentOffshore.title = Has the trust ever been resident offshore?
 trustResidentOffshore.heading = Has the trust ever been resident offshore?
