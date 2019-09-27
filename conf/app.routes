@@ -625,7 +625,7 @@ GET        /:draftId/settlors/information-you-need                       control
 
 
 
-GET        /:draftId/trustUTR                        controllers.TrustUTRController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trustUTR                        controllers.TrustUTRController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/changeTrustUTR                  controllers.TrustUTRController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/changeTrustUTR                  controllers.TrustUTRController.onSubmit(mode: Mode = CheckMode, draftId: String)
+GET        /:draftId/enter-trust-utr                        controllers.WhatIsTheUTRVariationController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/enter-trust-utr                        controllers.WhatIsTheUTRVariationController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/change-trust-utr                  controllers.WhatIsTheUTRVariationController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/change-trust-utr                  controllers.WhatIsTheUTRVariationController.onSubmit(mode: Mode = CheckMode, draftId: String)

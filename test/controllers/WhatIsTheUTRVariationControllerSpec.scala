@@ -17,23 +17,19 @@
 package controllers
 
 import base.SpecBase
-import forms.TrustUTRFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
-import pages.TrustUTRPage
-import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
-import play.api.mvc.Call
+import forms.WhatIsTheUTRFormProvider
+import models.NormalMode
+import pages.WhatIsTheUTRVariationPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.TrustUTRView
+import views.html.WhatIsTheUTRView
 
-class TrustUTRControllerSpec extends SpecBase {
+class WhatIsTheUTRVariationControllerSpec extends SpecBase {
 
-  val formProvider = new TrustUTRFormProvider()
+  val formProvider = new WhatIsTheUTRFormProvider()
   val form = formProvider()
 
-  lazy val trustUTRRoute = routes.TrustUTRController.onPageLoad(NormalMode, fakeDraftId).url
+  lazy val trustUTRRoute = routes.WhatIsTheUTRVariationController.onPageLoad(NormalMode, fakeDraftId).url
 
   "TrustUTR Controller" must {
 
@@ -45,7 +41,7 @@ class TrustUTRControllerSpec extends SpecBase {
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[TrustUTRView]
+      val view = application.injector.instanceOf[WhatIsTheUTRView]
 
       status(result) mustEqual OK
 
@@ -57,20 +53,20 @@ class TrustUTRControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(TrustUTRPage, "answer").success.value
+      val userAnswers = emptyUserAnswers.set(WhatIsTheUTRVariationPage, "0987654321").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, trustUTRRoute)
 
-      val view = application.injector.instanceOf[TrustUTRView]
+      val view = application.injector.instanceOf[WhatIsTheUTRView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill("0987654321"), NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -82,7 +78,7 @@ class TrustUTRControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, trustUTRRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("value", "0987654321"))
 
       val result = route(application, request).value
 
@@ -102,7 +98,7 @@ class TrustUTRControllerSpec extends SpecBase {
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[TrustUTRView]
+      val view = application.injector.instanceOf[WhatIsTheUTRView]
 
       val result = route(application, request).value
 

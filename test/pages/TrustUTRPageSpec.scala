@@ -23,10 +23,10 @@ class TrustUTRPageSpec extends PageBehaviours {
 
   "TrustUTRPage" must {
 
-    beRetrievable[String](TrustUTRPage)
+    beRetrievable[String](WhatIsTheUTRVariationPage)
 
-    beSettable[String](TrustUTRPage)
+    beSettable[String](WhatIsTheUTRVariationPage)
 
-    beRemovable[String](TrustUTRPage)
+    beRemovable[String](WhatIsTheUTRVariationPage)
   }
 }

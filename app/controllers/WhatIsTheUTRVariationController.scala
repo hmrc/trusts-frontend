@@ -17,30 +17,30 @@
 package controllers
 
 import controllers.actions._
-import forms.TrustUTRFormProvider
+import forms.WhatIsTheUTRFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.TrustUTRPage
+import pages.WhatIsTheUTRVariationPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.TrustUTRView
+import views.html.WhatIsTheUTRView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrustUTRController @Inject()(
+class WhatIsTheUTRVariationController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
                                         identify: IdentifierAction,
                                         getData: DraftIdRetrievalActionProvider,
                                         requireData: DataRequiredAction,
-                                        formProvider: TrustUTRFormProvider,
+                                        formProvider: WhatIsTheUTRFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: TrustUTRView
+                                        view: WhatIsTheUTRView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -48,7 +48,7 @@ class TrustUTRController @Inject()(
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(TrustUTRPage) match {
+      val preparedForm = request.userAnswers.get(WhatIsTheUTRVariationPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -65,9 +65,9 @@ class TrustUTRController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustUTRPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatIsTheUTRVariationPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrustUTRPage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(WhatIsTheUTRVariationPage, mode, draftId)(updatedAnswers))
         }
       )
   }
