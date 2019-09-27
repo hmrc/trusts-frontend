@@ -31,7 +31,7 @@ import views.html.WhatIsTheUTRView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class WhatIsTheUTRVariationController @Inject()(
+class WhatIsTheUTRVariationsController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,

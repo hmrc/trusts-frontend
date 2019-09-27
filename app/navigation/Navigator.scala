@@ -16,6 +16,7 @@
 
 package navigation
 
+import config.FrontendAppConfig
 import controllers.routes
 import javax.inject.{Inject, Singleton}
 import models.AddATrustee.{NoComplete, YesLater, YesNow}
@@ -32,7 +33,9 @@ import sections.{ClassOfBeneficiaries, IndividualBeneficiaries, Trustees}
 import uk.gov.hmrc.auth.core.AffinityGroup
 
 @Singleton
-class Navigator @Inject()() {
+class Navigator @Inject()(
+                         config: FrontendAppConfig
+                         ) {
 
   protected def normalRoutes(draftId: String): Page => AffinityGroup => UserAnswers => Call = {
     //  Matching
@@ -383,7 +386,12 @@ class Navigator @Inject()() {
         }
 
       case (Some(true), Some(false)) => routes.UTRSentByPostController.onPageLoad()
-      case (Some(true), Some(true)) => routes.CannotMakeChangesController.onPageLoad()
+      case (Some(true), Some(true)) =>
+        if(config.variationsEnabled) {
+          routes.WhatIsTheUTRVariationsController.onPageLoad(NormalMode, draftId)
+        } else {
+          routes.CannotMakeChangesController.onPageLoad()
+        }
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }

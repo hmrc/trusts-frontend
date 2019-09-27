@@ -38,7 +38,7 @@ import pages._
   with PropertyOrLandRoutes
   with LivingSettlorRoutes {
 
-  implicit val navigator : Navigator = new Navigator
+  implicit val navigator : Navigator = injector.instanceOf[Navigator]
 
   "Navigator" when {
 

@@ -43,7 +43,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "trustUTR.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        routes.WhatIsTheUTRVariationController.onPageLoad(NormalMode, draftId).url
+        routes.WhatIsTheUTRVariationsController.onPageLoad(NormalMode, draftId).url
       )
   }
 

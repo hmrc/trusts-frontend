@@ -84,4 +84,5 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   lazy val livingSettlorBusinessEnabled : Boolean = configuration.get[Boolean]("microservice.services.features.journey.livingSettlorBusiness.enabled")
 
+  lazy val variationsEnabled: Boolean = configuration.get[Boolean]("microservice.services.features.variations")
 }

@@ -127,7 +127,7 @@ class AgentAnswerControllerSpec extends SpecBase {
     "redirect to the next page on a post" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), agentID, navigator = new Navigator).build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), agentID, navigator = injector.instanceOf[Navigator]).build()
 
       val request =
         FakeRequest(POST, routes.AgentAnswerController.onSubmit(fakeDraftId).url)

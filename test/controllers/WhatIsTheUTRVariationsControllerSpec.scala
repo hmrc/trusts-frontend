@@ -24,12 +24,12 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.WhatIsTheUTRView
 
-class WhatIsTheUTRVariationControllerSpec extends SpecBase {
+class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
 
   val formProvider = new WhatIsTheUTRFormProvider()
   val form = formProvider()
 
-  lazy val trustUTRRoute = routes.WhatIsTheUTRVariationController.onPageLoad(NormalMode, fakeDraftId).url
+  lazy val trustUTRRoute = routes.WhatIsTheUTRVariationsController.onPageLoad(NormalMode, fakeDraftId).url
 
   "TrustUTR Controller" must {
 

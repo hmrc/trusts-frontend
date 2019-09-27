@@ -41,9 +41,10 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
   override lazy val app: Application = new GuiceApplicationBuilder()
-    .configure(
-      Seq("microservice.services.trusts.port" -> server.port(),
-        "auditing.enabled" -> false): _*).build()
+    .configure(Seq(
+      "microservice.services.trusts.port" -> server.port(),
+      "auditing.enabled" -> false): _*
+    ).build()
 
   private lazy val registrationMapper: Mapping[Registration] = injector.instanceOf[RegistrationMapper]
 
