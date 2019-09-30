@@ -203,10 +203,11 @@ nonresidentType.non-resident-cease-resident = Trustees cease to be resident
 nonresidentType.checkYourAnswersLabel = What is the non-resident type?
 nonresidentType.error.required = Select the non-resident type
 
-inheritanceTaxAct.title = Are you registering the trust for the purpose of Section 218 Inheritance Tax Act 1984?
-inheritanceTaxAct.heading = Are you registering the trust for the purpose of Section 218 Inheritance Tax Act 1984?
-inheritanceTaxAct.checkYourAnswersLabel = Are you registering the trust for the purpose of Section 218 Inheritance Tax Act 1984?
-inheritanceTaxAct.error.required = Select yes if you are registering the trust for the purpose of Section 218 Inheritance Tax Act 1984
+inheritanceTaxAct.title = Are you registering the trust for Inheritance Tax reasons?
+inheritanceTaxAct.heading = Are you registering the trust for Inheritance Tax reasons?
+inheritanceTaxAct.checkYourAnswersLabel = Are you registering the trust for Inheritance Tax reasons?
+inheritanceTaxAct.hint = This relates to Section 218 of the Inheritance Tax Act 1984
+inheritanceTaxAct.error.required = Select yes if you are registering the trust for Inheritance Tax reasons
 
 agentOtherThanBarrister.title = Has an agent who is not a barrister created the trust being registered?
 agentOtherThanBarrister.heading = Has an agent who is not a barrister created the trust being registered?
