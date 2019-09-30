@@ -209,10 +209,10 @@ inheritanceTaxAct.checkYourAnswersLabel = Are you registering the trust for Inhe
 inheritanceTaxAct.hint = This relates to Section 218 of the Inheritance Tax Act 1984
 inheritanceTaxAct.error.required = Select yes if you are registering the trust for Inheritance Tax reasons
 
-agentOtherThanBarrister.title = Has an agent who is not a barrister created the trust being registered?
-agentOtherThanBarrister.heading = Has an agent who is not a barrister created the trust being registered?
-agentOtherThanBarrister.checkYourAnswersLabel = Has an agent who is not a barrister created the trust being registered?
-agentOtherThanBarrister.error.required = Select yes if an agent who is not a barrister created the trust being registered
+agentOtherThanBarrister.title = Has an agent who is not a barrister created this trust?
+agentOtherThanBarrister.heading = Has an agent who is not a barrister created this trust?
+agentOtherThanBarrister.checkYourAnswersLabel = Has an agent who is not a barrister created this trust?
+agentOtherThanBarrister.error.required = Select yes if an agent who is not a barrister created this trust
 
 whenTrustSetup.title = When was the trust created?
 whenTrustSetup.heading = When was the trust created?
