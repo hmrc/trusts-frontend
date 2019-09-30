@@ -55,7 +55,7 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
 
   implicit def messages: Messages = messagesApi.preferred(fakeRequest)
 
-  val fakeNavigator = new FakeNavigator(frontendAppConfig)
+  lazy val fakeNavigator = new FakeNavigator(frontendAppConfig)
 
   protected def applicationBuilder(userAnswers: Option[UserAnswers] = None,
                                    affinityGroup: AffinityGroup = AffinityGroup.Organisation,
