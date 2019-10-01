@@ -1266,10 +1266,3 @@ settlorInfo.paragraph5 = For trusts set up for employees of a company, you will 
 settlorInfo.bulletpoint11 = if it’s an employer-financed retirement scheme, and if so what date it started.
 settlorInfo.bulletpoint12 = the business type (trading or investment) if the scheme’s settlor is a business
 settlorInfo.bulletpoint13 = if the business had been in existence for at least two years each time an asset was added to the trust.
-
-
-trustUTR.title = trustUTR
-trustUTR.heading = trustUTR
-trustUTR.checkYourAnswersLabel = trustUTR
-trustUTR.error.required = Enter trustUTR
-trustUTR.error.length = TrustUTR must be 10 characters or less
