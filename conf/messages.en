@@ -135,8 +135,9 @@ createAgentServicesAccount.cta = Create an agent services account
 
 trustName.title = What is the trust’s name?
 trustName.heading = What is the trust’s name?
-trustName.hint = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (SA316) or tax return.
-trustName.hint.reader = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (S A 3 1 6) or tax return.
+trustName.hint.hasUtr = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (SA316) or tax return.
+trustName.hint.hasUtr.reader = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (S A 3 1 6) or tax return.
+trustName.hint.noUtr = This must be 53 characters or less
 trustName.checkYourAnswersLabel = What is the trust’s name?
 trustName.error.length = The trust’s name must be 53 characters or less
 trustName.error.invalidCharacters = The trust’s name must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
@@ -176,10 +177,11 @@ establishedUnderScotsLaw.heading = Is the trust established under Scots Law?
 establishedUnderScotsLaw.checkYourAnswersLabel = Is the trust established under Scots Law?
 establishedUnderScotsLaw.error.required = Select yes if the trust was established under Scots Law
 
-registeringTrustFor5A.title = Are you registering the trust for the purposes of Schedule 5A Taxation of Chargeable Gains Act 1992?
-registeringTrustFor5A.heading = Are you registering the trust for the purposes of Schedule 5A Taxation of Chargeable Gains Act 1992?
-registeringTrustFor5A.checkYourAnswersLabel = Are you registering the trust for the purposes of Schedule 5A Taxation of Chargeable Gains Act 1992?
-registeringTrustFor5A.error.required = Select yes if you are registering the trust for the purposes of Schedule 5A Taxation of Chargeable Gains Act 1992?
+registeringTrustFor5A.title = Are you registering the trust because the settlor benefits from the trust’s assets?
+registeringTrustFor5A.heading = Are you registering the trust because the settlor benefits from the trust’s assets?
+registeringTrustFor5A.checkYourAnswersLabel = Are you registering the trust because the settlor benefits from the trust’s assets?
+registeringTrustFor5A.hint = This relates to Schedule 5A of the Taxation of Chargeable Gains Act 1992.
+registeringTrustFor5A.error.required = Select yes if the settlor benefits from the trust’s assets
 
 trustResidentOffshore.title = Has the trust ever been resident offshore?
 trustResidentOffshore.heading = Has the trust ever been resident offshore?
@@ -201,15 +203,16 @@ nonresidentType.non-resident-cease-resident = Trustees cease to be resident
 nonresidentType.checkYourAnswersLabel = What is the non-resident type?
 nonresidentType.error.required = Select the non-resident type
 
-inheritanceTaxAct.title = Are you registering the trust for the purpose of Section 218 Inheritance Tax Act 1984?
-inheritanceTaxAct.heading = Are you registering the trust for the purpose of Section 218 Inheritance Tax Act 1984?
-inheritanceTaxAct.checkYourAnswersLabel = Are you registering the trust for the purpose of Section 218 Inheritance Tax Act 1984?
-inheritanceTaxAct.error.required = Select yes if you are registering the trust for the purpose of Section 218 Inheritance Tax Act 1984
+inheritanceTaxAct.title = Are you registering the trust for Inheritance Tax reasons?
+inheritanceTaxAct.heading = Are you registering the trust for Inheritance Tax reasons?
+inheritanceTaxAct.checkYourAnswersLabel = Are you registering the trust for Inheritance Tax reasons?
+inheritanceTaxAct.hint = This relates to Section 218 of the Inheritance Tax Act 1984.
+inheritanceTaxAct.error.required = Select yes if you are registering the trust for Inheritance Tax reasons
 
-agentOtherThanBarrister.title = Has an agent who is not a barrister created the trust being registered?
-agentOtherThanBarrister.heading = Has an agent who is not a barrister created the trust being registered?
-agentOtherThanBarrister.checkYourAnswersLabel = Has an agent who is not a barrister created the trust being registered?
-agentOtherThanBarrister.error.required = Select yes if an agent who is not a barrister created the trust being registered
+agentOtherThanBarrister.title = Has an agent who is not a barrister created this trust?
+agentOtherThanBarrister.heading = Has an agent who is not a barrister created this trust?
+agentOtherThanBarrister.checkYourAnswersLabel = Has an agent who is not a barrister created this trust?
+agentOtherThanBarrister.error.required = Select yes if an agent who is not a barrister created this trust
 
 whenTrustSetup.title = When was the trust created?
 whenTrustSetup.heading = When was the trust created?

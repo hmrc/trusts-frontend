@@ -39,8 +39,8 @@
           field = form("value"),
           label = messages("trustName.heading"),
           labelAsHeading = true,
-          hint = if(hintTextShown) Some(messages("trustName.hint")) else None,
-          readerHint = if(hintTextShown) Some(messages(s"trustName.hint.reader")) else None,
+          hint = if(hintTextShown) Some(messages("trustName.hint.hasUtr")) else Some(messages("trustName.hint.noUtr")),
+          readerHint = if(hintTextShown) Some(messages(s"trustName.hint.hasUtr.reader")) else None,
           labelClass = Some("heading-large"),
           ariaRequired = true
         )
