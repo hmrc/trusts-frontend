@@ -16,10 +16,10 @@
 
 package views
 
-import controllers.routes
 import forms.WhatIsTheUTRFormProvider
 import models.NormalMode
 import play.api.data.Form
+import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
 import views.html.WhatIsTheUTRView
@@ -35,7 +35,7 @@ class WhatIsTheUTRViewSpec extends StringViewBehaviours {
     val view = viewFor[WhatIsTheUTRView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, Call("POST", ""))(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 

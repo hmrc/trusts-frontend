@@ -14,7 +14,6 @@
  * limitations under the License.
  *@
 
-@import controllers.routes._
 @import models.Mode
 
 @this(
@@ -22,13 +21,13 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId: String, onSubmit: Call)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("whatIsTheUTR.title")}"
     ) {
 
-    @formHelper(action = WhatIsTheUTRController.onSubmit(mode, draftId), 'autoComplete -> "off") {
+    @formHelper(action = onSubmit, 'autoComplete -> "off") {
 
         @components.back_link()
 

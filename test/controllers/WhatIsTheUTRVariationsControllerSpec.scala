@@ -20,6 +20,7 @@ import base.SpecBase
 import forms.WhatIsTheUTRFormProvider
 import models.NormalMode
 import pages.WhatIsTheUTRVariationPage
+import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.WhatIsTheUTRView
@@ -30,6 +31,8 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
   val form = formProvider()
 
   lazy val trustUTRRoute = routes.WhatIsTheUTRVariationsController.onPageLoad(NormalMode, fakeDraftId).url
+
+  lazy val onSubmit = routes.WhatIsTheUTRVariationsController.onSubmit(NormalMode, fakeDraftId)
 
   "TrustUTR Controller" must {
 
@@ -46,7 +49,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, onSubmit)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -66,7 +69,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("0987654321"), NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill("0987654321"), NormalMode, fakeDraftId, onSubmit)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -83,7 +86,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+      redirectLocation(result).value mustEqual frontendAppConfig.claimATrustUrl("0987654321")
 
       application.stop()
     }
@@ -105,7 +108,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, onSubmit)(fakeRequest, messages).toString
 
       application.stop()
     }

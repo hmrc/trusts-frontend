@@ -138,10 +138,17 @@ trait MatchingRoutes {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
-            val answers = userAnswers.set(TrustRegisteredOnlinePage, true).success.value
+            val answers = userAnswers
+              .set(TrustRegisteredOnlinePage, true).success.value
               .set(TrustHaveAUTRPage, true).success.value
 
-            navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId)(answers)
+            val app = new GuiceApplicationBuilder().overrides(
+              bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(Some(answers)))
+            ).configure(("microservice.services.features.variations", false)).build()
+
+            val nav = app.injector.instanceOf[Navigator]
+
+            nav.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId)(answers)
               .mustBe(routes.CannotMakeChangesController.onPageLoad())
         }
       }

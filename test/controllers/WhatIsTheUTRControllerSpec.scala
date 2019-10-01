@@ -35,6 +35,8 @@ class WhatIsTheUTRControllerSpec extends SpecBase {
 
   lazy val whatIsTheUTRRoute = routes.WhatIsTheUTRController.onPageLoad(NormalMode,fakeDraftId).url
 
+  lazy val onSubmit = routes.WhatIsTheUTRController.onSubmit(NormalMode, fakeDraftId)
+
   "WhatIsTheUTR Controller" must {
 
     "return OK and the correct view for a GET" in {
@@ -50,7 +52,7 @@ class WhatIsTheUTRControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,fakeDraftId)(fakeRequest, messages).toString
+        view(form, NormalMode,fakeDraftId, onSubmit)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -70,7 +72,7 @@ class WhatIsTheUTRControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("1111111111"), NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill("1111111111"), NormalMode, fakeDraftId, onSubmit)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -109,7 +111,7 @@ class WhatIsTheUTRControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, onSubmit)(fakeRequest, messages).toString
 
       application.stop()
     }

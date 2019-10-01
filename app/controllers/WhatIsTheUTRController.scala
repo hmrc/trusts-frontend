@@ -55,7 +55,7 @@ class WhatIsTheUTRController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId))
+      Ok(view(preparedForm, mode, draftId, routes.WhatIsTheUTRController.onSubmit(mode, draftId)))
   }
 
   def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
@@ -63,7 +63,7 @@ class WhatIsTheUTRController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, routes.WhatIsTheUTRController.onSubmit(mode, draftId)))),
 
         value => {
           for {

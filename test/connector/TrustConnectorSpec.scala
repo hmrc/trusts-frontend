@@ -100,7 +100,6 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
       }
     }
 
-
     "return AlreadyRegistered response " - {
       "already registered trusts is sent " in {
         val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
