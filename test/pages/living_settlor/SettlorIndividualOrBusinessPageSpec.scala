@@ -16,10 +16,12 @@
 
 package pages.living_settlor
 
+import models.Status.InProgress
 import models.{FullName, IndividualOrBusiness, SettlorKindOfTrust, UserAnswers}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.{SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage, SetupAfterSettlorDiedPage}
 import pages.behaviours.PageBehaviours
+import pages.entitystatus.LivingSettlorStatus
 
 class SettlorIndividualOrBusinessPageSpec extends PageBehaviours {
 
@@ -41,10 +43,11 @@ class SettlorIndividualOrBusinessPageSpec extends PageBehaviours {
           .set(SettlorHandoverReliefYesNoPage, true).success.value
           .set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Business).success.value
           .set(SettlorBusinessNamePage(0), "AWS").success.value
+          .set(LivingSettlorStatus(0), InProgress).success.value
 
         val result = answers.set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
 
-        result.get(SettlorBusinessNamePage(0)) mustNot be(defined)
+        result.get(LivingSettlorStatus(0)) mustNot be(defined)
     }
   }
 
@@ -57,10 +60,24 @@ class SettlorIndividualOrBusinessPageSpec extends PageBehaviours {
           .set(SettlorHandoverReliefYesNoPage, true).success.value
           .set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
           .set(SettlorIndividualNamePage(0), FullName("First", None, "Last")).success.value
+          .set(SettlorIndividualDateOfBirthYesNoPage(0), true).success.value
+          .set(LivingSettlorStatus(0), InProgress).success.value
 
         val result = answers.set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Business).success.value
 
-        result.get(SettlorIndividualNamePage(0)) mustNot be(defined)
+        result.get(SettlorIndividualDateOfBirthYesNoPage(0)) mustNot be(defined)
+        result.get(SettlorIndividualDateOfBirthPage(0)) mustNot be(defined)
+        result.get(SettlorIndividualNINOYesNoPage(0)) mustNot be(defined)
+        result.get(SettlorIndividualNINOPage(0)) mustNot be(defined)
+        result.get(SettlorIndividualAddressYesNoPage(0)) mustNot be(defined)
+        result.get(SettlorIndividualAddressUKYesNoPage(0)) mustNot be(defined)
+        result.get(SettlorIndividualAddressUKPage(0)) mustNot be(defined)
+        result.get(SettlorIndividualAddressInternationalPage(0)) mustNot be(defined)
+        result.get(SettlorIndividualPassportYesNoPage(0)) mustNot be(defined)
+        result.get(SettlorIndividualPassportPage(0)) mustNot be(defined)
+        result.get(SettlorIndividualIDCardYesNoPage(0)) mustNot be(defined)
+        result.get(SettlorIndividualIDCardPage(0)) mustNot be(defined)
+        result.get(LivingSettlorStatus(0)) mustNot be(defined)
     }
   }
 

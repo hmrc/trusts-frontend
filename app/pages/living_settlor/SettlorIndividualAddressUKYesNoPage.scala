@@ -29,10 +29,4 @@ final case class SettlorIndividualAddressUKYesNoPage(index : Int) extends Questi
 
   override def toString: String = "ukAddressYesNo"
 
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
-    value match {
-      case Some(true) => userAnswers.remove(SettlorIndividualAddressInternationalPage(index))
-      case Some(false) => userAnswers.remove(SettlorIndividualAddressUKPage(index))
-      case _ => super.cleanup(value, userAnswers)
-    }
 }
