@@ -116,6 +116,7 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
     val formatter = injector.instanceOf[DateFormatter]
 
     val trnDateTime : String = formatter.formatDate(LocalDateTime.of(2010, 10, 10, 13, 10, 10))
+
     val name = "First Last"
     val benName = "BenFirst BenLast"
     val trusteeName = "TrusteeFirst TrusteeLast"
