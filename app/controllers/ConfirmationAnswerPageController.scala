@@ -25,7 +25,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.countryOptions.CountryOptions
-import utils.{DateFormat, PrintUserAnswersHelper}
+import utils.{DateFormatter, PrintUserAnswersHelper}
 import views.html.ConfirmationAnswerPageView
 
 
@@ -38,7 +38,8 @@ class ConfirmationAnswerPageController @Inject()(
                                               view: ConfirmationAnswerPageView,
                                               countryOptions : CountryOptions,
                                               registrationComplete : TaskListCompleteActionRefiner,
-                                              printUserAnswersHelper: PrintUserAnswersHelper
+                                              printUserAnswersHelper: PrintUserAnswersHelper,
+                                              dateFormatter: DateFormatter
                                             ) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId : String) =
@@ -53,7 +54,7 @@ class ConfirmationAnswerPageController @Inject()(
 
       val trnDateTime = request.userAnswers.get(RegistrationSubmissionDatePage).getOrElse(LocalDateTime.now)
 
-      val declarationSent : String = DateFormat.formatDate(trnDateTime, "d MMMM yyyy")
+      val declarationSent : String = dateFormatter.formatDate(trnDateTime)
 
       Ok(view(sections, trn, declarationSent))
 

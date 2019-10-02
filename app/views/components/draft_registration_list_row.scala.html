@@ -16,7 +16,6 @@
 
 @import viewmodels.DraftRegistration
 @import controllers.routes._
-@import utils.DateFormat
 
 @(data: DraftRegistration)(implicit messages: Messages)
 
@@ -25,7 +24,7 @@
         @data.agentInternalRef
     </dt>
     <dd class="hmrc-add-to-a-list__identifier hmrc-add-to-a-list__identifier--light">
-        @DateFormat.formatDate(data.createdAt, "d MMMM yyyy")
+        @data.savedUntil
     </dd>
     <dd class="hmrc-add-to-a-list__change">
         <a href="@{TrustRegisteredOnlineController.onPageLoad(NormalMode, data.draftId)}">
