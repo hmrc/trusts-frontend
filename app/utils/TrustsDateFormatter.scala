@@ -19,11 +19,28 @@ package utils
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-object DateFormat {
+import com.google.inject.Inject
+import config.FrontendAppConfig
 
-  def formatDate(dateTime: LocalDateTime, format: String): String = {
+trait DateFormatter {
+
+  def formatDate(dateTime: LocalDateTime): String
+
+  def savedUntil(date: LocalDateTime) : String
+}
+
+class TrustsDateFormatter @Inject()(config: FrontendAppConfig) extends DateFormatter {
+
+  private val format = "d MMMM yyyy"
+
+  def formatDate(dateTime: LocalDateTime): String = {
     val dateFormatter = DateTimeFormatter.ofPattern(format)
     dateTime.format(dateFormatter)
+  }
+
+  def savedUntil(date: LocalDateTime) : String = {
+    val ttlInSeconds = config.ttlInSeconds
+    formatDate(date.plusSeconds(ttlInSeconds))
   }
 
 }

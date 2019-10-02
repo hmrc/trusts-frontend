@@ -28,13 +28,15 @@ import reactivemongo.api.indexes.{Index, IndexType}
 import reactivemongo.bson.BSONDocument
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import reactivemongo.play.json.collection.JSONCollection
+import utils.DateFormatter
 import viewmodels.DraftRegistration
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class DefaultSessionRepository @Inject()(
                                           mongo: ReactiveMongoApi,
-                                          config: Configuration
+                                          config: Configuration,
+                                          dateFormatter: DateFormatter
                                         )(implicit ec: ExecutionContext, m: Materializer) extends SessionRepository {
 
 
@@ -101,7 +103,7 @@ class DefaultSessionRepository @Inject()(
           x =>
             x.get(AgentInternalReferencePage).map {
               reference =>
-                DraftRegistration(x.draftId, reference, x.createdAt)
+                DraftRegistration(x.draftId, reference, dateFormatter.savedUntil(x.createdAt))
             }
 
         }

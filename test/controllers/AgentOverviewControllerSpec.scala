@@ -82,7 +82,7 @@ class AgentOverviewControllerSpec extends SpecBase {
 
       "return OK and the correct view for a GET" in {
 
-        val draft = List(DraftRegistration(fakeDraftId, "InternalRef", LocalDateTime.now()))
+        val draft = List(DraftRegistration(fakeDraftId, "InternalRef", LocalDateTime.now().toString))
 
         when(mockedSessionRepository.listDrafts(any()))
           .thenReturn(Future.successful(draft))

@@ -31,7 +31,7 @@ import repositories.SessionRepository
 import sections.TaxLiability
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.DateFormat
+import utils.DateFormatter
 import viewmodels.Task
 import views.html.TaskListView
 
@@ -49,7 +49,8 @@ class TaskListController @Inject()(
                                        registrationProgress: RegistrationProgress,
                                        sessionRepository: SessionRepository,
                                        taskListNavigator : TaskListNavigator,
-                                       requireDraft : RequireDraftRegistrationActionRefiner
+                                       requireDraft : RequireDraftRegistrationActionRefiner,
+                                       dateFormatter: DateFormatter
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) =
@@ -67,8 +68,7 @@ class TaskListController @Inject()(
     implicit request =>
 
       def renderView(affinityGroup : AffinityGroup) = {
-        val ttlInSeconds = config.ttlInSeconds
-        val savedUntil : String = DateFormat.formatDate(request.userAnswers.createdAt.plusSeconds(ttlInSeconds), "d MMMM yyyy")
+        val savedUntil : String = dateFormatter.savedUntil(request.userAnswers.createdAt)
 
         val updatedAnswers = request.userAnswers.copy(progress = InProgress)
 

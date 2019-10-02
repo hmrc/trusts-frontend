@@ -29,7 +29,7 @@ import pages.property_or_land._
 import pages.shares._
 import pages.trustees.{AddATrusteePage, IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteeIndividualOrBusinessPage, TrusteeLiveInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
 import utils.countryOptions.CountryOptions
-import utils.{CheckYourAnswersHelper, DateFormat, PrintUserAnswersHelper, TestUserAnswers}
+import utils.{CheckYourAnswersHelper, DateFormatter, PrintUserAnswersHelper, TestUserAnswers, TrustsDateFormatter}
 import views.behaviours.ViewBehaviours
 import views.html.ConfirmationAnswerPageView
 import utils.AccessibilityHelper._
@@ -114,7 +114,9 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
         .set(RegistrationTRNPage, "XNTRN000000001").success.value
         .set(RegistrationSubmissionDatePage, LocalDateTime.of(2010, 10, 10, 13, 10, 10)).success.value
 
-    val trnDateTime : String = DateFormat.formatDate(LocalDateTime.of(2010, 10, 10, 13, 10, 10), "d MMMM yyyy")
+    val formatter = injector.instanceOf[DateFormatter]
+
+    val trnDateTime : String = formatter.formatDate(LocalDateTime.of(2010, 10, 10, 13, 10, 10))
     val name = "First Last"
     val benName = "BenFirst BenLast"
     val trusteeName = "TrusteeFirst TrusteeLast"

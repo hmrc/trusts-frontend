@@ -22,6 +22,7 @@ import controllers.actions._
 import navigation.{LivingSettlorNavigator, Navigator, PropertyOrLandNavigator}
 import repositories.{DefaultSessionRepository, SessionRepository}
 import uk.gov.hmrc.auth.otac.OtacAuthConnector
+import utils.{DateFormatter, TrustsDateFormatter}
 import utils.annotations.{LivingSettlor, PropertyOrLand}
 
 class Module extends AbstractModule {
@@ -46,5 +47,7 @@ class Module extends AbstractModule {
 
     bind(classOf[Navigator]).annotatedWith(classOf[PropertyOrLand]).to(classOf[PropertyOrLandNavigator])
     bind(classOf[Navigator]).annotatedWith(classOf[LivingSettlor]).to(classOf[LivingSettlorNavigator])
+
+    bind(classOf[DateFormatter]).to(classOf[TrustsDateFormatter])
   }
 }

@@ -31,7 +31,7 @@ import pages.shares._
 import pages.trustees._
 import utils.AccessibilityHelper._
 import utils.countryOptions.CountryOptions
-import utils.{DateFormat, PrintUserAnswersHelper, TestUserAnswers}
+import utils.{DateFormatter, PrintUserAnswersHelper, TestUserAnswers, TrustsDateFormatter}
 import views.behaviours.ViewBehaviours
 import views.html.ConfirmationAnswerPageView
 
@@ -113,7 +113,10 @@ class ConfirmationAnswerPageLivingSettlorViewSpec extends ViewBehaviours {
         .set(RegistrationTRNPage, "XNTRN000000001").success.value
         .set(RegistrationSubmissionDatePage, LocalDateTime.of(2010, 10, 10, 13, 10, 10)).success.value
 
-    val trnDateTime : String = DateFormat.formatDate(LocalDateTime.of(2010, 10, 10, 13, 10, 10), "d MMMM yyyy")
+
+    val formatter = injector.instanceOf[DateFormatter]
+
+    val trnDateTime : String = formatter.formatDate(LocalDateTime.of(2010, 10, 10, 13, 10, 10))
     val name = "First Last"
     val benName = "BenFirst BenLast"
     val trusteeName = "TrusteeFirst TrusteeLast"
