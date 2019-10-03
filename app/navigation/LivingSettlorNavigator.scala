@@ -28,7 +28,7 @@ import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
 
 @Singleton
-class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Navigator {
+class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Navigator(config) {
 
   override protected def normalRoutes(draftId: String): Page => AffinityGroup => UserAnswers => Call = {
     case SettlorKindOfTrustPage => _ => settlorKindOfTrustPage(draftId)

@@ -35,6 +35,8 @@ class PostcodeForTheTrustControllerSpec extends SpecBase {
   lazy val postcodeForTheTrustRoute : String = routes.PostcodeForTheTrustController.onPageLoad(NormalMode,fakeDraftId).url
   lazy val matchingFailedRoute : String = routes.FailedMatchController.onPageLoad(fakeDraftId).url
 
+  val navigator = injector.instanceOf[Navigator]
+
   "PostcodeForTheTrust Controller" must {
 
     "return OK and the correct view for a GET" in {
@@ -78,7 +80,7 @@ class PostcodeForTheTrustControllerSpec extends SpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), navigator = new Navigator).build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), navigator = navigator).build()
 
       val request =
         FakeRequest(POST, postcodeForTheTrustRoute)
@@ -96,7 +98,7 @@ class PostcodeForTheTrustControllerSpec extends SpecBase {
     "redirect to the next page when no data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), navigator = new Navigator).build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), navigator = navigator).build()
 
       val request =
         FakeRequest(POST, postcodeForTheTrustRoute)
@@ -112,7 +114,7 @@ class PostcodeForTheTrustControllerSpec extends SpecBase {
 
     "redirect to the next page when an empty string is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), navigator = new Navigator).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), navigator = navigator).build()
 
       val request =
         FakeRequest(POST, postcodeForTheTrustRoute)

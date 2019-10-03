@@ -18,32 +18,29 @@ package controllers
 
 import base.SpecBase
 import forms.WhatIsTheUTRFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
-import pages.WhatIsTheUTRPage
-import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
+import models.NormalMode
+import pages.WhatIsTheUTRVariationPage
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.WhatIsTheUTRView
 
-class WhatIsTheUTRControllerSpec extends SpecBase {
+class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
 
   val formProvider = new WhatIsTheUTRFormProvider()
   val form = formProvider()
 
-  lazy val whatIsTheUTRRoute = routes.WhatIsTheUTRController.onPageLoad(NormalMode,fakeDraftId).url
+  lazy val trustUTRRoute = routes.WhatIsTheUTRVariationsController.onPageLoad(NormalMode, fakeDraftId).url
 
-  lazy val onSubmit = routes.WhatIsTheUTRController.onSubmit(NormalMode, fakeDraftId)
+  lazy val onSubmit = routes.WhatIsTheUTRVariationsController.onSubmit(NormalMode, fakeDraftId)
 
-  "WhatIsTheUTR Controller" must {
+  "TrustUTR Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, whatIsTheUTRRoute)
+      val request = FakeRequest(GET, trustUTRRoute)
 
       val result = route(application, request).value
 
@@ -52,18 +49,18 @@ class WhatIsTheUTRControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,fakeDraftId, onSubmit)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, onSubmit)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(WhatIsTheUTRPage, "1111111111").success.value
+      val userAnswers = emptyUserAnswers.set(WhatIsTheUTRVariationPage, "0987654321").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, whatIsTheUTRRoute)
+      val request = FakeRequest(GET, trustUTRRoute)
 
       val view = application.injector.instanceOf[WhatIsTheUTRView]
 
@@ -72,7 +69,7 @@ class WhatIsTheUTRControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("1111111111"), NormalMode, fakeDraftId, onSubmit)(fakeRequest, messages).toString
+        view(form.fill("0987654321"), NormalMode, fakeDraftId, onSubmit)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -83,13 +80,13 @@ class WhatIsTheUTRControllerSpec extends SpecBase {
         applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, whatIsTheUTRRoute)
-          .withFormUrlEncodedBody(("value", "1111111111"))
+        FakeRequest(POST, trustUTRRoute)
+          .withFormUrlEncodedBody(("value", "0987654321"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+      redirectLocation(result).value mustEqual frontendAppConfig.claimATrustUrl("0987654321")
 
       application.stop()
     }
@@ -99,7 +96,7 @@ class WhatIsTheUTRControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, whatIsTheUTRRoute)
+        FakeRequest(POST, trustUTRRoute)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
@@ -120,7 +117,7 @@ class WhatIsTheUTRControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, whatIsTheUTRRoute)
+      val request = FakeRequest(GET, trustUTRRoute)
 
       val result = route(application, request).value
 
@@ -136,8 +133,8 @@ class WhatIsTheUTRControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, whatIsTheUTRRoute)
-          .withFormUrlEncodedBody(("value", "1111111111"))
+        FakeRequest(POST, trustUTRRoute)
+          .withFormUrlEncodedBody(("value", "answer"))
 
       val result = route(application, request).value
 

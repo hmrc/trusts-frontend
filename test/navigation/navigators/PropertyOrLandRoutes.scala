@@ -31,7 +31,7 @@ trait PropertyOrLandRoutes {
 
   private val index = 0
 
-  private val navigator : Navigator = new PropertyOrLandNavigator
+  private val navigator : Navigator = injector.instanceOf[PropertyOrLandNavigator]
 
   def propertyOrLandRoutes(): Unit = {
 

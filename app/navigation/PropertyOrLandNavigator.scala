@@ -15,8 +15,9 @@
  */
 
 package navigation
+import config.FrontendAppConfig
 import controllers.property_or_land.routes
-import javax.inject.Singleton
+import javax.inject.{Inject, Singleton}
 import models.{NormalMode, UserAnswers}
 import pages.Page
 import pages.property_or_land._
@@ -24,7 +25,7 @@ import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
 
 @Singleton
-class PropertyOrLandNavigator extends Navigator {
+class PropertyOrLandNavigator @Inject()(config: FrontendAppConfig) extends Navigator(config) {
 
   override protected def normalRoutes(draftId: String): Page => AffinityGroup => UserAnswers => Call = {
     case PropertyOrLandAddressYesNoPage(index) => _ => propertyOrLandAddressYesNoPage(draftId, index)

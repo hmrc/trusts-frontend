@@ -69,7 +69,7 @@ class IsThisLeadTrusteeControllerSpec extends SpecBase with IndexValidation {
           .set(IsThisLeadTrusteePage(1), false).success.value
 
         val application =
-          applicationBuilder(userAnswers = Some(answers), navigator = new Navigator)
+          applicationBuilder(userAnswers = Some(answers), navigator = injector.instanceOf[Navigator])
             .build()
 
         val request = FakeRequest(GET, routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 1, fakeDraftId).url)

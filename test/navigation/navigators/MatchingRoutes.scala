@@ -17,6 +17,7 @@
 package navigation.navigators
 
 import base.SpecBase
+import controllers.actions.{DataRetrievalAction, FakeDataRetrievalAction}
 import generators.Generators
 import navigation.Navigator
 import org.scalatest.prop.PropertyChecks
@@ -24,6 +25,8 @@ import org.scalacheck.Arbitrary.arbitrary
 import pages._
 import models.{NormalMode, UserAnswers}
 import controllers.routes
+import play.api.inject.bind
+import play.api.inject.guice.GuiceApplicationBuilder
 import uk.gov.hmrc.auth.core.AffinityGroup
 
 trait MatchingRoutes {
@@ -131,15 +134,40 @@ trait MatchingRoutes {
         }
       }
 
-      "go to CannotMakeChanges from TrustHaveAUTR when user answers yes" in {
+      "go to CannotMakeChanges from TrustHaveAUTR when user answers yes when variations is off" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
-            val answers = userAnswers.set(TrustRegisteredOnlinePage, true).success.value
+            val answers = userAnswers
+              .set(TrustRegisteredOnlinePage, true).success.value
               .set(TrustHaveAUTRPage, true).success.value
 
-            navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId)(answers)
+            val app = new GuiceApplicationBuilder().overrides(
+              bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(Some(answers)))
+            ).configure(("microservice.services.features.variations", false)).build()
+
+            val nav = app.injector.instanceOf[Navigator]
+
+            nav.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId)(answers)
               .mustBe(routes.CannotMakeChangesController.onPageLoad())
+        }
+      }
+      "go to WhatIsTheUtrVariations from TrustHaveAUTR when user answers yes when variations is on" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers
+              .set(TrustRegisteredOnlinePage, true).success.value
+              .set(TrustHaveAUTRPage, true).success.value
+
+            val app = new GuiceApplicationBuilder().overrides(
+              bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(Some(answers)))
+            ).configure(("microservice.services.features.variations", true)).build()
+
+            val nav = app.injector.instanceOf[Navigator]
+
+            nav.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.WhatIsTheUTRVariationsController.onPageLoad(NormalMode, fakeDraftId))
         }
       }
     }
