@@ -20,7 +20,7 @@ import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
 import generators.Generators
 import mapping.{Mapping, Registration, RegistrationMapper}
-import models.{AlreadyRegistered, InternalServerError, RegistrationTRNResponse}
+import models.{AlreadyRegistered, InternalServerError, NotFound, ServiceUnavailable, Processing, RegistrationTRNResponse}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.Application
@@ -33,7 +33,6 @@ import utils.{TestUserAnswers, WireMockHelper}
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
-
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class TrustConnectorSpec extends FreeSpec with MustMatchers
@@ -50,11 +49,13 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
 
   private lazy val connector = injector.instanceOf[TrustConnector]
 
-  private val url : String = "/trusts/register"
+  private val registerUrl : String = "/trusts/register"
+
+  private def statusUrl(utr: String) : String = s"/trusts/$utr"
 
   private def wiremock(payload: String, expectedStatus: Int, expectedResponse : String)=
     server.stubFor(
-      post(urlEqualTo(url))
+      post(urlEqualTo(registerUrl))
     .withHeader(CONTENT_TYPE, containing("application/json"))
     .withRequestBody(equalTo(payload))
     .willReturn(
@@ -182,6 +183,56 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
       }
     }
 
+    "return trustFound response" in {
+
+      val utr = "10000000008"
+
+      server.stubFor(
+        get(urlEqualTo(statusUrl(utr)))
+          .willReturn(
+            aResponse()
+              .withStatus(Status.OK)
+              .withBody("""{
+                          |
+                          |  "responseHeader": {
+                          |    "status": "In Processing",
+                          |    "formBundleNo": "1"
+                          |  }
+                          |}""".stripMargin)
+          )
+      )
+
+      val result  = Await.result(connector.getTrustStatus(utr),Duration.Inf)
+      result mustBe Processing
+    }
+
+    "return notFound response" in {
+
+      val utr = "10000000008"
+
+      server.stubFor(
+        get(urlEqualTo(statusUrl(utr)))
+          .willReturn(
+            aResponse()
+              .withStatus(Status.NOT_FOUND)))
+
+      val result  = Await.result(connector.getTrustStatus(utr),Duration.Inf)
+      result mustBe NotFound
+    }
+
+    "return serviceUnavailable response" in {
+
+      val utr = "10000000008"
+
+      server.stubFor(
+        get(urlEqualTo(statusUrl(utr)))
+          .willReturn(
+            aResponse()
+              .withStatus(Status.SERVICE_UNAVAILABLE)))
+
+      val result  = Await.result(connector.getTrustStatus(utr),Duration.Inf)
+      result mustBe ServiceUnavailable
+    }
 
   }
 

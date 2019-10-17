@@ -16,16 +16,23 @@
 
 package models
 
+import play.api.Logger
+import play.api.http.Status._
 import play.api.libs.json._
+import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
+sealed trait TrustStatusResponse
 
-sealed trait TrustStatus
+sealed trait TrustStatus extends TrustStatusResponse
 
 case object Processing extends TrustStatus
-
 case object Closed extends TrustStatus
 
-object TrustStatus {
+case object NotFound extends TrustStatusResponse
+case object ServiceUnavailable extends TrustStatusResponse
+case object ServerError extends TrustStatusResponse
+
+object TrustStatusResponse {
 
   implicit object TrustStatusReads extends Reads[TrustStatus] {
     override def reads(json:JsValue): JsResult[TrustStatus] = json("responseHeader")("status") match {
@@ -33,5 +40,24 @@ object TrustStatus {
       case JsString("Closed") => JsSuccess(Closed)
     }
   }
+
+  implicit lazy val httpReads: HttpReads[TrustStatusResponse] =
+    new HttpReads[TrustStatusResponse] {
+      override def read(method: String, url: String, response: HttpResponse): TrustStatusResponse = {
+        Logger.info(s"[TrustStatus] response status received from trusts status api: ${response.status}, body :${response.body}")
+
+        response.status match {
+          case OK =>
+            response.json.as[TrustStatus]
+          case NOT_FOUND =>
+            NotFound
+          case SERVICE_UNAVAILABLE =>
+            ServiceUnavailable
+          case _ =>
+            ServerError
+        }
+      }
+    }
+
 
 }
