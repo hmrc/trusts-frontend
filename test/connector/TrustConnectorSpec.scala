@@ -182,6 +182,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
       }
     }
 
+
   }
 
 }
