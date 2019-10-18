@@ -284,6 +284,41 @@ UTRSentByPost.paragraph1 = It can take 15 working days for you to get your UTR. 
 UTRSentByPost.paragraph2 = if you have not received your UTR after this time.
 UTRSentByPost.link = Contact the trusts helpline
 
+
+
+
+CannotAccessError.title = Sorry, you cannot access this trust
+CannotAccessError.heading = Sorry, you cannot access this trust
+CannotAccessError.subheading = This trust’s UTR: {0}
+CannotAccessError.paragraph1 = You cannot make changes to this trust as it has been closed.
+CannotAccessError.paragraph2 = If the trust needs to be registered again, you can return to the Trust Registration Service here
+CannotAccessError.link.paragraph = If you need help with the service
+CannotAccessError.link = contact the trusts helpline.
+
+DoesNotMatchError.title = Sorry, you cannot access this trust
+DoesNotMatchError.heading = Sorry, you cannot access this trust
+DoesNotMatchError.subheading = This trust’s UTR: {0}
+DoesNotMatchError.paragraph1 = The Unique Taxpayer Reference (UTR) entered does not match out records.
+DoesNotMatchError.paragraph2 = Check you have entered the trust's UTR correctly.
+DoesNotMatchError.paragraph3 = If you do not have a UTR for the trust. You will need to register the trust first. You can
+DoesNotMatchError.paragraph4 = If you need help with the service
+DoesNotMatchError.contact.link = contact the trusts helpline.
+DoesNotMatchError.register.link = register here(opens in a new window or tab)
+DoesNotMatchError.return.link = return to register and maintain a trust for a client
+
+StillProcessingError.title = Sorry, you cannot access this trust
+StillProcessingError.heading = Sorry, you cannot access this trust
+StillProcessingError.subheading = This trust’s UTR: {0}
+StillProcessingError.paragraph1 = HMRC is still processing changes recently made to this trust.
+StillProcessingError.paragraph2 = Try again later.
+StillProcessingError.paragraph3 = If you need help with the service
+StillProcessingError.paragraph4 = You can
+StillProcessingError.contact.link = contact the trusts helpline.
+StillProcessingError.return.link = return to register and maintain a trust for a client
+
+
+
+
 isThisLeadTrustee.title = Is this the lead trustee?
 isThisLeadTrustee.heading = Is this the lead trustee?
 isThisLeadTrustee.checkYourAnswersLabel = Is this the lead trustee?
