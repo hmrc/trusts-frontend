@@ -36,18 +36,12 @@ form:Form[_], countryOptions: Seq[InputOption]
 @components.input_text(
   field = form("line3"),
   label = messages("site.address.international.line3"),
-  inputClass = Some("form-control-3-4")
-)
-
-@components.input_text(
-  field = form("line4"),
-  label = messages("site.address.international.line4"),
-  inputClass = Some("form-control-3-4")
+  inputClass = Some("form-control-1-2")
 )
 
 @components.select(field = form("country"),
   label = messages("site.address.international.country"),
-  labelClasses = Set("form-control-1-2 bold"),
+  labelClasses = Set("col-7 bold"),
   options = countryOptions,
   placeholder = Some("address.country.select"),
   formGroupClasses = Set("autocomplete-wrapper"),
