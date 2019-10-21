@@ -34,35 +34,17 @@
 
     <p>@messages("agentOverview.paragraph1")</p>
 
+    <p>@messages("agentOverview.paragraph2")</p>
+
+    <p>@messages("agentOverview.paragraph3") <a href="https://www.gov.uk/guidance/register-your-clients-trust" target="_blank">@messages("agentOverview.contactLink")</a></p>
+
+    <p>@messages("agentOverview.paragraph4")</p>
+
+    @if(drafts) {
     <h2 class="saved-registration">Saved registrations</h2>
+    }
 
     @components.draft_registration_list(drafts, "agent-registrations")
-
-    <details class="details">
-        <summary role="button" aria-controls="details-content-0" aria-expanded="false">
-            <span class="summary">@messages("agentOverview.helper")</span>
-        </summary>
-        <div class="panel-indent" id="details-content-0" aria-hidden="true">
-            <p>@messages("agentOverview.paragraph2")</p>
-            @components.bullet_list("agentOverview",
-                List(
-                    "bulletpoint1",
-                    "bulletpoint2",
-                    "bulletpoint3",
-                    "bulletpoint4"
-                )
-            )
-
-            <p>@messages("agentOverview.paragraph3")</p>
-            @components.bullet_list("agentOverview",
-                List(
-                    "bulletpoint5",
-                    "bulletpoint6",
-                    "bulletpoint7"
-                )
-            )
-        </div>
-    </details>
 
     @formHelper(action = AgentOverviewController.onSubmit(), 'autoComplete -> "off") {
         @components.submit_button(Some("agentOverview.start"))

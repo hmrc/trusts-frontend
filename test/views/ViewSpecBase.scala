@@ -16,11 +16,12 @@
 
 package views
 
-import org.jsoup.Jsoup
-import org.jsoup.nodes.{Document, Element}
-import play.twirl.api.Html
 import base.SpecBase
 import models.UserAnswers
+import org.jsoup.Jsoup
+import org.jsoup.nodes.{Document, Element}
+import org.scalatest.Assertion
+import play.twirl.api.Html
 import uk.gov.hmrc.auth.core.AffinityGroup
 
 import scala.reflect.ClassTag
@@ -29,61 +30,65 @@ trait ViewSpecBase extends SpecBase {
 
   def asDocument(html: Html): Document = Jsoup.parse(html.toString())
 
-  def assertContainsQuestionAnswerPair(doc:Document, questionText: String, answerText: String) = {
+  def assertContainsQuestionAnswerPair(doc: Document, questionText: String, answerText: String): Assertion = {
     val question = doc.getElementsMatchingOwnText(questionText)
     val answer = question.next.text
-    assert(answer == answerText, "\n\nquestion: " + questionText +" answer: " + answerText + " was not rendered on the page.\n")
+    assert(answer == answerText, "\n\nquestion: " + questionText + " answer: " + answerText + " was not rendered on the page.\n")
   }
 
-  def assertEqualsMessage(doc: Document, cssSelector: String, expectedMessageKey: String, args: Any*) =
-    assertEqualsValue(doc, cssSelector, messages(expectedMessageKey,  args:_*))
+  def assertEqualsMessage(doc: Document, cssSelector: String, expectedMessageKey: String, args: Any*): Assertion =
+    assertEqualsValue(doc, cssSelector, messages(expectedMessageKey, args: _*))
 
-  def assertEqualsValue(doc : Document, cssSelector : String, expectedValue: String) = {
+  def assertEqualsValue(doc: Document, cssSelector: String, expectedValue: String): Assertion = {
     val elements = doc.select(cssSelector)
 
-    if(elements.isEmpty) throw new IllegalArgumentException(s"CSS Selector $cssSelector wasn't rendered.")
+    if (elements.isEmpty) throw new IllegalArgumentException(s"CSS Selector $cssSelector wasn't rendered.")
 
     //<p> HTML elements are rendered out with a carriage return on some pages, so discount for comparison
     assert(elements.first().html().replace("\n", "") == expectedValue)
   }
 
-  def assertPageTitleEqualsMessage(doc: Document, expectedMessageKey: String, args: Any*) = {
+  def assertPageTitleEqualsMessage(doc: Document, expectedMessageKey: String, args: Any*): Assertion = {
     val headers = doc.getElementsByTag("h1")
     headers.size mustBe 1
-    headers.first.text.replaceAll("\u00a0", " ") mustBe messages(expectedMessageKey, args:_*).replaceAll("&nbsp;", " ")
+    headers.first.text.replaceAll("\u00a0", " ") mustBe messages(expectedMessageKey, args: _*).replaceAll("&nbsp;", " ")
   }
 
-  def assertContainsText(doc:Document, text: String) = assert(doc.toString.contains(text), "\n\ntext " + text + " was not rendered on the page.\n")
+  def assertContainsText(doc: Document, text: String): Assertion = assert(doc.toString.contains(text), "\n\ntext " + text + " was not rendered on the page.\n")
 
-  def assertContainsMessages(doc: Document, expectedMessageKeys: String*) = {
+  def assertContainsMessages(doc: Document, expectedMessageKeys: String*): Unit = {
     for (key <- expectedMessageKeys) assertContainsText(doc, messages(key))
   }
 
-  def assertAttributeValueForElement(element : Element, attribute: String, attributeValue : String) = {
+  def assertAttributeValueForElement(element: Element, attribute: String, attributeValue: String): Assertion = {
     assert(element.attr(attribute) == attributeValue)
   }
 
-  def assertRenderedById(doc: Document, id: String) = {
+  def assertRenderedById(doc: Document, id: String): Assertion = {
     assert(doc.getElementById(id) != null, "\n\nElement " + id + " was not rendered on the page.\n")
   }
 
-  def assertNotRenderedById(doc: Document, id: String) = {
+  def assertNotRenderedById(doc: Document, id: String): Assertion = {
     assert(doc.getElementById(id) == null, "\n\nElement " + id + " was rendered on the page.\n")
   }
 
-  def assertElementNotPresent(doc: Document, elementTag : String) = {
+  def assertNotRenderedByClass(doc: Document, className: String): Assertion = {
+    assert(doc.getElementsByClass(className).isEmpty, "\n\nElement " + className + " was rendered on the page.\n")
+  }
+
+  def assertElementNotPresent(doc: Document, elementTag: String): Assertion = {
     assert(doc.getElementsByTag(elementTag).isEmpty, s"\n\nElement $elementTag was rendered on the page.\n")
   }
 
-  def assertRenderedByCssSelector(doc: Document, cssSelector: String) = {
+  def assertRenderedByCssSelector(doc: Document, cssSelector: String): Assertion = {
     assert(!doc.select(cssSelector).isEmpty, "Element " + cssSelector + " was not rendered on the page.")
   }
 
-  def assertNotRenderedByCssSelector(doc: Document, cssSelector: String) = {
+  def assertNotRenderedByCssSelector(doc: Document, cssSelector: String): Assertion = {
     assert(doc.select(cssSelector).isEmpty, "\n\nElement " + cssSelector + " was rendered on the page.\n")
   }
 
-  def assertContainsLabel(doc: Document, forElement: String, expectedText: String, expectedHintText: Option[String] = None) = {
+  def assertContainsLabel(doc: Document, forElement: String, expectedText: String, expectedHintText: Option[String] = None): Any = {
     val labels = doc.getElementsByAttributeValue("for", forElement)
     assert(labels.size == 1, s"\n\nLabel for $forElement was not rendered on the page.")
     val label = labels.first
@@ -96,11 +101,11 @@ trait ViewSpecBase extends SpecBase {
     }
   }
 
-  def assertElementHasClass(doc: Document, id: String, expectedClass: String) = {
+  def assertElementHasClass(doc: Document, id: String, expectedClass: String): Assertion = {
     assert(doc.getElementById(id).hasClass(expectedClass), s"\n\nElement $id does not have class $expectedClass")
   }
 
-  def assertContainsRadioButton(doc: Document, id: String, name: String, value: String, isChecked: Boolean) = {
+  def assertContainsRadioButton(doc: Document, id: String, name: String, value: String, isChecked: Boolean): Assertion = {
     assertRenderedById(doc, id)
     val radio = doc.getElementById(id)
     assert(radio.attr("name") == name, s"\n\nElement $id does not have name $name")
@@ -111,18 +116,18 @@ trait ViewSpecBase extends SpecBase {
     }
   }
 
-  def assertContainsTextForId(doc: Document, id: String, expectedText: String) = {
+  def assertContainsTextForId(doc: Document, id: String, expectedText: String): Assertion = {
     assert(doc.getElementById(id).text() == expectedText, s"\n\nElement $id does not have text $expectedText")
   }
 
-  def viewFor[A](data: Option[UserAnswers])(implicit tag : ClassTag[A]) : A = {
+  def viewFor[A](data: Option[UserAnswers])(implicit tag: ClassTag[A]): A = {
     val application = applicationBuilder(data).build()
     val view = application.injector.instanceOf[A]
     application.stop()
     view
   }
 
-  def viewForAgent[A](data: Option[UserAnswers])(implicit tag : ClassTag[A]) : A = {
+  def viewForAgent[A](data: Option[UserAnswers])(implicit tag: ClassTag[A]): A = {
     val application = applicationBuilder(data, affinityGroup = AffinityGroup.Agent).build()
     val view = application.injector.instanceOf[A]
     application.stop()
