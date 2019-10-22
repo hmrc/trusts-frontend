@@ -21,7 +21,7 @@
 main_template: MainTemplate
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@(utr: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
 title = messages("CannotAccessError.title")
