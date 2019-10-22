@@ -89,7 +89,7 @@ class AgentMapperSpec extends FreeSpec with MustMatchers
           emptyUserAnswers
             .set(AgentARNPage, "SARN123456").success.value
             .set(AgentNamePage, "Agency Name").success.value
-            .set(AgentInternationalAddressPage,InternationalAddress("line1","line2",Some("line3"),Some("Pune"), "IN")).success.value
+            .set(AgentInternationalAddressPage,InternationalAddress("line1","line2",Some("line3"), "IN")).success.value
             .set(AgentTelephoneNumberPage, "+1234567890").success.value
             .set(AgentInternalReferencePage, "1234-5678").success.value
             .set(AgentAddressYesNoPage, false).success.value
@@ -97,7 +97,7 @@ class AgentMapperSpec extends FreeSpec with MustMatchers
         agentMapper.build(userAnswers).value mustBe AgentDetails(
           arn = "SARN123456",
           agentName = "Agency Name",
-          agentAddress = AddressType("line1", "line2", Some("line3"), Some("Pune"), None, "IN"),
+          agentAddress = AddressType("line1", "line2", Some("line3"), None, None, "IN"),
           agentTelephoneNumber = "+1234567890",
           clientReference = "1234-5678"
         )
@@ -109,7 +109,7 @@ class AgentMapperSpec extends FreeSpec with MustMatchers
           emptyUserAnswers
             .set(AgentARNPage, "SARN123456").success.value
             .set(AgentNamePage, "Agency Name").success.value
-            .set(AgentInternationalAddressPage,InternationalAddress("line1","line2",None, None, "IN")).success.value
+            .set(AgentInternationalAddressPage,InternationalAddress("line1","line2",None, "IN")).success.value
             .set(AgentTelephoneNumberPage, "+1234567890").success.value
             .set(AgentInternalReferencePage, "1234-5678").success.value
             .set(AgentAddressYesNoPage, false).success.value

@@ -37,7 +37,7 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
 
   val index: Int = 0
 
-  lazy val propertyOrLandAnswerRoute = controllers.property_or_land.routes.PropertyOrLandAnswerController.onPageLoad(index, fakeDraftId).url
+  lazy val propertyOrLandAnswerRoute: String = controllers.property_or_land.routes.PropertyOrLandAnswerController.onPageLoad(index, fakeDraftId).url
 
   "PropertyOrLandAnswer Controller" must {
 
@@ -246,7 +246,7 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
             .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
             .set(PropertyOrLandAddressYesNoPage(index), true).success.value
             .set(PropertyOrLandAddressUkYesNoPage(index), false).success.value
-            .set(PropertyOrLandInternationalAddressPage(index), InternationalAddress("line1", "line2", Some("line3"), Some("line4"), "ES")).success.value
+            .set(PropertyOrLandInternationalAddressPage(index), InternationalAddress("line1", "line2", Some("line3"), "ES")).success.value
             .set(PropertyOrLandTotalValuePage(index), "10000").success.value
             .set(TrustOwnAllThePropertyOrLandPage(index), true).success.value
             .set(AssetStatus(index), Completed).success.value
@@ -295,7 +295,7 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
             .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
             .set(PropertyOrLandAddressYesNoPage(index), true).success.value
             .set(PropertyOrLandAddressUkYesNoPage(index), false).success.value
-            .set(PropertyOrLandInternationalAddressPage(index), InternationalAddress("line1", "line2", Some("line3"), Some("line4"), "ES")).success.value
+            .set(PropertyOrLandInternationalAddressPage(index), InternationalAddress("line1", "line2", Some("line3"), "ES")).success.value
             .set(PropertyOrLandTotalValuePage(index), "10000").success.value
             .set(TrustOwnAllThePropertyOrLandPage(index), false).success.value
             .set(PropertyLandValueTrustPage(index), "10").success.value

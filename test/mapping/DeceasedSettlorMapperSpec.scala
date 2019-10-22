@@ -163,13 +163,13 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
             .set(SettlorsNINoYesNoPage, false).success.value
             .set(SettlorsLastKnownAddressYesNoPage, true).success.value
             .set(WasSettlorsAddressUKYesNoPage, false).success.value
-            .set(SettlorsInternationalAddressPage, InternationalAddress("line1", "line2", Some("line3"), Some("line4"), "FR")).success.value
+            .set(SettlorsInternationalAddressPage, InternationalAddress("line1", "line2", Some("line3"), "FR")).success.value
 
         deceasedSettlorMapper.build(userAnswers).value mustBe WillType(
           name = NameType("First", None, "Last"),
           dateOfBirth = None,
           dateOfDeath = None,
-          identification = Some(Identification(None, Some(AddressType("line1", "line2", Some("line3"), Some("line4"), None, "FR"))))
+          identification = Some(Identification(None, Some(AddressType("line1", "line2", Some("line3"), None, None, "FR"))))
         )
 
       }

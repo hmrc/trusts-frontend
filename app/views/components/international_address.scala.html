@@ -41,7 +41,7 @@ form:Form[_], countryOptions: Seq[InputOption]
 
 @components.select(field = form("country"),
   label = messages("site.address.international.country"),
-  labelClasses = Set("col-7 bold"),
+  labelClasses = Set("form-control-3-4 bold"),
   options = countryOptions,
   placeholder = Some("address.country.select"),
   formGroupClasses = Set("autocomplete-wrapper"),

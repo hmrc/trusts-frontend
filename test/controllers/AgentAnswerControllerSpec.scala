@@ -19,8 +19,7 @@ package controllers
 import base.SpecBase
 import models.{InternationalAddress, UKAddress, UserAnswers}
 import navigation.Navigator
-import pages.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentNamePage, AgentTelephoneNumberPage, AgentUKAddressPage}
-import play.api.mvc.Call
+import pages._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
@@ -32,22 +31,22 @@ import views.html.AgentAnswerView
 
 class AgentAnswerControllerSpec extends SpecBase {
 
-  val agentID = AffinityGroup.Agent
+  val agentID: AffinityGroup.Agent.type = AffinityGroup.Agent
 
   "AgentAnswer Controller" must {
 
     "return OK and the correct view for a UK address GET" in {
 
-      val answers =
+      val answers: UserAnswers =
         emptyUserAnswers
           .set(AgentTelephoneNumberPage, "123456789").success.value
-          .set(AgentUKAddressPage,UKAddress("Line1",None, None, "TownOrCity","NE62RT")).success.value
+          .set(AgentUKAddressPage, UKAddress("Line1", None, None, "TownOrCity", "NE62RT")).success.value
           .set(AgentAddressYesNoPage, true).success.value
           .set(AgentNamePage, "Sam Curran Trust").success.value
           .set(AgentInternalReferencePage, "123456789").success.value
 
 
-      val countryOptions = injector.instanceOf[CountryOptions]
+      val countryOptions: CountryOptions = injector.instanceOf[CountryOptions]
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId)
 
@@ -75,17 +74,17 @@ class AgentAnswerControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(fakeDraftId,expectedSections)(fakeRequest, messages).toString
+        view(fakeDraftId, expectedSections)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "return OK and the correct view for a International address GET" in {
 
-      val answers =
+      val answers: UserAnswers =
         emptyUserAnswers
           .set(AgentTelephoneNumberPage, "123456789").success.value
-          .set(AgentInternationalAddressPage, InternationalAddress("Line1", "Line2", None, None, "Country")).success.value
+          .set(AgentInternationalAddressPage, InternationalAddress("Line1", "Line2", None, "Country")).success.value
           .set(AgentAddressYesNoPage, false).success.value
           .set(AgentNamePage, "Sam Curran Trust").success.value
           .set(AgentInternalReferencePage, "123456789").success.value
@@ -119,7 +118,7 @@ class AgentAnswerControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(fakeDraftId,expectedSections)(fakeRequest, messages).toString
+        view(fakeDraftId, expectedSections)(fakeRequest, messages).toString
 
       application.stop()
     }

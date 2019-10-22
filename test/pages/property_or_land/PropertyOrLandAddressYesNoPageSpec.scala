@@ -39,7 +39,7 @@ class PropertyOrLandAddressYesNoPageSpec extends PageBehaviours {
           initial =>
             val answers: UserAnswers = initial.set(page, true).success.value
               .set(PropertyOrLandAddressUkYesNoPage(0), true).success.value
-              .set(PropertyOrLandInternationalAddressPage(0),  InternationalAddress("line 1", "line 2", None, None, "France")).success.value
+              .set(PropertyOrLandInternationalAddressPage(0),  InternationalAddress("line 1", "line 2", None, "France")).success.value
               .set(PropertyOrLandUKAddressPage(0),  UKAddress("line 1", None, None, "Newcastle upon Tyne", "NE1 1NE")).success.value
 
             val result = answers.set(page, false).success.value

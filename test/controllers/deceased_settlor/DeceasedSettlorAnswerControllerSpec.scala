@@ -19,15 +19,19 @@ package controllers.deceased_settlor
 import java.time.LocalDate
 
 import base.SpecBase
-import models.{FullName, InternationalAddress, NormalMode, UKAddress}
+import models.{FullName, InternationalAddress, NormalMode, UKAddress, UserAnswers}
 import pages.SetupAfterSettlorDiedPage
 import pages.deceased_settlor._
+import play.api.Application
+import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.deceased_settlor.DeceasedSettlorAnswerView
+
+import scala.concurrent.Future
 
 class DeceasedSettlorAnswerControllerSpec extends SpecBase {
 
@@ -37,21 +41,21 @@ class DeceasedSettlorAnswerControllerSpec extends SpecBase {
 
     "return OK and the correct view for a GET (UK National)" in {
 
-      val answers =
+      val answers: UserAnswers =
         emptyUserAnswers
-        .set(SetupAfterSettlorDiedPage, true).success.value
-        .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
-        .set(SettlorDateOfDeathYesNoPage, true).success.value
-        .set(SettlorDateOfDeathPage, LocalDate.now).success.value
-        .set(SettlorDateOfBirthYesNoPage, true).success.value
-        .set(SettlorsDateOfBirthPage, LocalDate.now).success.value
-        .set(SettlorsNINoYesNoPage, true).success.value
-        .set(SettlorNationalInsuranceNumberPage, "AB123456C").success.value
-        .set(SettlorsLastKnownAddressYesNoPage, true).success.value
-        .set(WasSettlorsAddressUKYesNoPage, true).success.value
-        .set(SettlorsUKAddressPage, UKAddress("Line1", None, None, "Town", "NE1 1ZZ")).success.value
+          .set(SetupAfterSettlorDiedPage, true).success.value
+          .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
+          .set(SettlorDateOfDeathYesNoPage, true).success.value
+          .set(SettlorDateOfDeathPage, LocalDate.now).success.value
+          .set(SettlorDateOfBirthYesNoPage, true).success.value
+          .set(SettlorsDateOfBirthPage, LocalDate.now).success.value
+          .set(SettlorsNINoYesNoPage, true).success.value
+          .set(SettlorNationalInsuranceNumberPage, "AB123456C").success.value
+          .set(SettlorsLastKnownAddressYesNoPage, true).success.value
+          .set(WasSettlorsAddressUKYesNoPage, true).success.value
+          .set(SettlorsUKAddressPage, UKAddress("Line1", None, None, "Town", "NE1 1ZZ")).success.value
 
-      val countryOptions = injector.instanceOf[CountryOptions]
+      val countryOptions: CountryOptions = injector.instanceOf[CountryOptions]
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId)
 
@@ -73,18 +77,18 @@ class DeceasedSettlorAnswerControllerSpec extends SpecBase {
         )
       )
 
-      val application = applicationBuilder(userAnswers = Some(answers)).build()
+      val application: Application = applicationBuilder(userAnswers = Some(answers)).build()
 
       val request = FakeRequest(GET, routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId).url)
 
-      val result = route(application, request).value
+      val result: Future[Result] = route(application, request).value
 
-      val view = application.injector.instanceOf[DeceasedSettlorAnswerView]
+      val view: DeceasedSettlorAnswerView = application.injector.instanceOf[DeceasedSettlorAnswerView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(fakeDraftId,expectedSections)(fakeRequest, messages).toString
+        view(fakeDraftId, expectedSections)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -103,7 +107,7 @@ class DeceasedSettlorAnswerControllerSpec extends SpecBase {
           .set(SettlorNationalInsuranceNumberPage, "AB123456C").success.value
           .set(SettlorsLastKnownAddressYesNoPage, true).success.value
           .set(WasSettlorsAddressUKYesNoPage, false).success.value
-          .set(SettlorsInternationalAddressPage, InternationalAddress("Line1", "Line2", None, None, "Country")).success.value
+          .set(SettlorsInternationalAddressPage, InternationalAddress("Line1", "Line2", None, "Country")).success.value
 
 
       val countryOptions = injector.instanceOf[CountryOptions]
@@ -139,7 +143,7 @@ class DeceasedSettlorAnswerControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(fakeDraftId,expectedSections)(fakeRequest, messages).toString
+        view(fakeDraftId, expectedSections)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -186,7 +190,7 @@ class DeceasedSettlorAnswerControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SettlorsNameController.onPageLoad(NormalMode,fakeDraftId).url
+      redirectLocation(result).value mustEqual routes.SettlorsNameController.onPageLoad(NormalMode, fakeDraftId).url
 
       application.stop()
     }
