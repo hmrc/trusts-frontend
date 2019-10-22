@@ -855,7 +855,7 @@ removeIndividualBeneficiary.error.required = Select yes if you want to remove th
 confirmationPage.title = Registration received, your reference is: {0}
 confirmationPage.heading = Registration received Your reference is: {0}
 
-confirmationPage.printsave.link = Print or save a copy of your answers (opens in a new window or tab).
+confirmationPage.printsave.link = Print or save a declared copy of the trust’s registration (opens in a new window or tab)
 confirmationPage.posthmrc.link = post the changes to HMRC (opens in a new window or tab).
 confirmationPage.contacthmrc.link = contact HMRC to find out why (opens in a new window or tab).
 
