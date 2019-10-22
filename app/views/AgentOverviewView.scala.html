@@ -39,7 +39,7 @@
     <p>@messages("agentOverview.paragraph3") <a href="https://www.gov.uk/guidance/register-your-clients-trust" target="_blank">@messages("agentOverview.contactLink")</a>.</p>
 
     @if(drafts) {
-    <h2 class="saved-registration">Saved registrations</h2>
+    <h2>@messages("agentOverview.h2")</h2>
     }
 
     @components.draft_registration_list(drafts, "agent-registrations")
