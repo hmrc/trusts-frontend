@@ -628,4 +628,8 @@ POST       /:draftId/enter-trust-utr                        controllers.WhatIsTh
 GET        /:draftId/change-trust-utr                       controllers.WhatIsTheUTRVariationsController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/change-trust-utr                       controllers.WhatIsTheUTRVariationsController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
-GET        /:draftId/cannot-access                          controllers.TrustStatusController.cannotAccess
+GET        /:draftId/status/closed                          controllers.TrustStatusController.closed(draftId: String)
+GET        /:draftId/status/processing                          controllers.TrustStatusController.processing(draftId: String)
+GET        /:draftId/status/notFound                          controllers.TrustStatusController.notFound(draftId: String)
+GET        /:draftId/status/error                          controllers.TrustStatusController.onError(draftId: String)
+
