@@ -46,6 +46,8 @@
 
     @components.task_list(sections)
 
+    <p class="push-text-top--3">@messages("taskList.paragraph2")</p>
+
     @if(isTaskListComplete) {
         <h2 id="summaryHeading">@messages("taskList.summary.heading")</h2>
         <div id="summary-paragraph" class="paragraph">
