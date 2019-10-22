@@ -482,9 +482,10 @@ agentInternalReference.error.invalidFormat = The internal reference for this cli
 
 taskList.title = Registration progress
 taskList.heading = Registration progress
-taskList.paragraph1 = You can save your registration and come back later. You have 28 days from the time you first save to register a trust. If you do not register within 28 days, your information will be deleted.
+taskList.paragraph1 = You can save your registration and come back later. You have 28 days from the first time you save to complete this registration or your information will be deleted.
 taskList.savedUntil.heading = Saved until
-taskList.sections.heading = Sections
+taskList.sections.heading = Sections to be completed
+taskList.paragraph2 = You can print a draft copy of your saved answers once all sections are completed, as well as a declared copy after you have made a declaration.
 
 taskList.trustDetails.label = Trust details
 taskList.settlors.label = Settlors
