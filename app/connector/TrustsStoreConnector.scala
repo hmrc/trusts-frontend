@@ -18,7 +18,6 @@ package connector
 
 import config.FrontendAppConfig
 import javax.inject.Inject
-import play.api.libs.json.JsValue
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 
@@ -29,10 +28,10 @@ class TrustsStoreConnector @Inject()(http: HttpClient, config : FrontendAppConfi
 
   val url: String = config.trustsStoreUrl + "/claim"
 
-  def get(internalId: String)(implicit hc : HeaderCarrier, ec : ExecutionContext): Future[JsValue] = {
-
-    http.GET[JsValue](url)
+  def get(internalId: String, utr : String)(implicit hc : HeaderCarrier, ec : ExecutionContext): Future[Option[TrustClaim]] = {
+    http.GET[Option[TrustClaim]](url)(TrustClaim.httpReads(utr), hc, ec)
   }
+
 
 
 }

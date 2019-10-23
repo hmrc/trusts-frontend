@@ -28,7 +28,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.{WhatIsTheUTRView, TrustLockedView}
+import views.html.{TrustLockedView, WhatIsTheUTRView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -59,6 +59,7 @@ class WhatIsTheUTRVariationsController @Inject()(
       Ok(view(preparedForm, mode, draftId, routes.WhatIsTheUTRVariationsController.onSubmit(mode, draftId)))
   }
 
+
   def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
 
@@ -70,21 +71,31 @@ class WhatIsTheUTRVariationsController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatIsTheUTRVariationPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-            response       <- connector.get(request.internalId)
+            claim       <- connector.get(request.internalId, value)
           } yield {
-            ((response \ "trustLocked").as[Boolean], (response \ "utr").as[String] == value) match {
-              case (true, true) => Redirect(routes.WhatIsTheUTRVariationsController.trustStillLocked(draftId))
-              case (_ , _) => Redirect(config.claimATrustUrl(value))
+
+            claim match {
+              case Some(c) => {
+                  if(c.trustLocked) {
+                    Redirect(routes.WhatIsTheUTRVariationsController.trustStillLocked(draftId))
+                  } else {
+                    Redirect(config.claimATrustUrl(value))
+                  }
+                }
+              case _ => Redirect(config.claimATrustUrl(value))
             }
           }
         }
       )
   }
 
+
   def trustStillLocked(draftId: String) : Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
       request.userAnswers.get(WhatIsTheUTRVariationPage) map {
-        utr => Future.successful(Ok(lockedView(utr)))
+        utr => {
+          Future.successful(Ok(lockedView(utr)))
+        }
       } getOrElse Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
   }
 

@@ -25,7 +25,7 @@ import pages.WhatIsTheUTRVariationPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.WhatIsTheUTRView
-import connector.TrustsStoreConnector
+import connector.{TrustClaim, TrustsStoreConnector}
 import play.api.libs.json.Json
 import play.api.inject.bind
 
@@ -87,8 +87,8 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       val jsonWithErrorKey = Json.parse(
         """
           |{
-          | "trustLocked": true,
-          | "utr": "1234567890"
+          | "trustLocked": false,
+          | "managedByAgent": true
           |}
           |""".stripMargin
       )
@@ -98,8 +98,8 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
           .overrides(bind[TrustsStoreConnector].toInstance(connector))
           .build()
 
-      when(connector.get(any[String])(any(), any()))
-        .thenReturn(Future.successful(jsonWithErrorKey))
+      when(connector.get(any[String], any[String])(any(), any()))
+        .thenReturn(Future.successful(jsonWithErrorKey.asOpt[TrustClaim]))
 
       val request =
         FakeRequest(POST, trustUTRRoute)
@@ -119,6 +119,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
         """
           |{
           | "trustLocked": true,
+          | "managedByAgent": true,
           | "utr": "0987654321"
           |}
           |""".stripMargin
@@ -129,8 +130,8 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
           .overrides(bind[TrustsStoreConnector].toInstance(connector))
           .build()
 
-      when(connector.get(any[String])(any(), any()))
-        .thenReturn(Future.successful(jsonWithErrorKey))
+      when(connector.get(any[String], any[String])(any(), any()))
+        .thenReturn(Future.successful(jsonWithErrorKey.asOpt[TrustClaim]))
 
       val request =
         FakeRequest(POST, trustUTRRoute)
