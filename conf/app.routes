@@ -629,7 +629,8 @@ GET        /:draftId/change-trust-utr                       controllers.WhatIsTh
 POST       /:draftId/change-trust-utr                       controllers.WhatIsTheUTRVariationsController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
 GET        /:draftId/status/closed                          controllers.TrustStatusController.closed(draftId: String)
-GET        /:draftId/status/processing                          controllers.TrustStatusController.processing(draftId: String)
-GET        /:draftId/status/not-found                          controllers.TrustStatusController.notFound(draftId: String)
-GET        /:draftId/status                          controllers.TrustStatusController.status(draftId: String)
+GET        /:draftId/status/processing                      controllers.TrustStatusController.processing(draftId: String)
+GET        /:draftId/status/not-found                       controllers.TrustStatusController.notFound(draftId: String)
+GET        /:draftId/status/down                            controllers.TrustStatusController.down(draftId: String)
+GET        /:draftId/status                                 controllers.TrustStatusController.status(draftId: String)
 

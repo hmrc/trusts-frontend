@@ -31,18 +31,16 @@ title = messages("ClosedError.title")
 ) {
 
 <span class="govuk-caption-xl">@messages("ClosedError.subheading", utr)</span>
-@components.heading("ClosedError.heading", headingSize = "heading-xlarge")
+@components.heading("ClosedError.heading", headingSize = "heading-xlarge heading-no-top-margin")
 
 <p>@messages("ClosedError.paragraph1")</p>
 
-<p>@messages("ClosedError.paragraph2")</p>
-
-<p>@messages("ClosedError.paragraph3")</p>
+<p>@messages("ClosedError.paragraph2") <a id="help-link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" rel="external" target="_blank">@messages("ClosedError.contact.link")</a> @messages("ClosedError.paragraph3")</p>
 
  @if(affinityGroup == AffinityGroup.Agent) {
-  @components.button_link(messages("site.try-again"), WhatIsTheUTRVariationsController.onPageLoad(NormalMode, draftId).url)
+  <p>@messages("ClosedError.paragraph4") <a id="register-and-maintain-link" href=@AgentOverviewController.onPageLoad().url rel="external" target="_blank">@messages("ClosedError.return.link")</a>.</p>
  } else {
-  <p>@messages("StillProcessingError.paragraph4") <a id="register-and-maintain-link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" rel="external" target="_blank">@messages("ClosedError.return.link")</a></p>
+  @components.button_link(messages("site.try-again"), WhatIsTheUTRVariationsController.onPageLoad(NormalMode, draftId).url)
  }
 }
 

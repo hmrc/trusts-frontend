@@ -299,13 +299,12 @@ ClosedError.link.paragraph = If you need help with the service
 DoesNotMatchError.title = Sorry, you cannot access this trust
 DoesNotMatchError.heading = Sorry, you cannot access this trust
 DoesNotMatchError.subheading = This trust’s UTR: {0}
-DoesNotMatchError.paragraph1 = The Unique Taxpayer Reference (UTR) entered does not match out records.
-DoesNotMatchError.paragraph2 = Check you have entered the trust's UTR correctly.
-DoesNotMatchError.paragraph3 = If you do not have a UTR for the trust. You will need to register the trust first. You can
+DoesNotMatchError.paragraph1 = The Unique Taxpayer Reference (UTR) entered does not match our records.
+DoesNotMatchError.paragraph2 = Check you have entered the trust’s UTR correctly.
+DoesNotMatchError.paragraph3 = If you do not have a UTR for the trust you will need to register the trust first.
 DoesNotMatchError.paragraph4 = If you need help with the service
 DoesNotMatchError.paragraph5 = You can
-DoesNotMatchError.contact.link = contact the trusts helpline.
-DoesNotMatchError.register.link = register here(opens in a new window or tab)
+DoesNotMatchError.contact.link = contact the trusts helpline
 DoesNotMatchError.return.link = return to register and maintain a trust for a client
 
 StillProcessingError.title = Sorry, you cannot access this trust
@@ -315,11 +314,16 @@ StillProcessingError.paragraph1 = HMRC is still processing changes recently made
 StillProcessingError.paragraph2 = Try again later.
 StillProcessingError.paragraph3 = If you need help with the service
 StillProcessingError.paragraph4 = You can
-StillProcessingError.contact.link = contact the trusts helpline.
+StillProcessingError.contact.link = contact the trusts helpline
 StillProcessingError.return.link = return to register and maintain a trust for a client
 
-
-
+IvDown.heading = Sorry, there is a problem with the service
+IvDown.title = Sorry, there is a problem with the service
+IvDown.paragraph1 = Try again later.
+IvDown.paragraph2 = You can
+IvDown.paragraph3 = if you need to speak to someone about registering and maintaining a trust.
+IvDown.contact.link = contact the trusts helpline
+IvDown.return.link = return to register and maintain a trust for a client
 
 isThisLeadTrustee.title = Is this the lead trustee?
 isThisLeadTrustee.heading = Is this the lead trustee?

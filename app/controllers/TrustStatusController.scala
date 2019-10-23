@@ -19,6 +19,7 @@ package controllers
 import config.FrontendAppConfig
 import connector.TrustConnector
 import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider, IdentifierAction}
+import handlers.ErrorHandler
 import javax.inject.Inject
 import models.requests.DataRequest
 import models.{Closed, NormalMode, Processed, Processing, UtrNotFound}
@@ -28,7 +29,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.{ClosedErrorView, DoesNotMatchErrorView, StillProcessingErrorView}
+import views.html.{ClosedErrorView, DoesNotMatchErrorView, IVDownView, StillProcessingErrorView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -42,8 +43,10 @@ class TrustStatusController @Inject()(
                                        closedView: ClosedErrorView,
                                        stillProcessingView: StillProcessingErrorView,
                                        doesNotMatchView: DoesNotMatchErrorView,
+                                       ivDownView: IVDownView,
                                        trustConnector: TrustConnector,
                                        config: FrontendAppConfig,
+                                       errorHandler: ErrorHandler,
                                        val controllerComponents: MessagesControllerComponents
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
@@ -69,6 +72,13 @@ class TrustStatusController @Inject()(
       }
   }
 
+  def down(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+    implicit request =>
+      enforceUtr(draftId) { utr =>
+        Future.successful(ServiceUnavailable(ivDownView(draftId, request.affinityGroup)))
+      }
+  }
+
   def status(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
       enforceUtr(draftId) { utr =>
@@ -77,6 +87,7 @@ class TrustStatusController @Inject()(
           case Processing => Redirect(routes.TrustStatusController.processing(draftId))
           case UtrNotFound => Redirect(routes.TrustStatusController.notFound(draftId))
           case Processed => Redirect(config.claimATrustUrl(utr))
+          case _ => Redirect(routes.TrustStatusController.down(draftId))
         }
       }
   }

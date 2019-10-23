@@ -18,19 +18,18 @@ package controllers
 
 import base.SpecBase
 import connector.TrustConnector
-import controllers.actions.{DataRequiredAction, DataRequiredActionImpl}
-import models.{Closed, UtrNotFound, Processing, TrustStatusResponse, UserAnswers}
-import pages.WhatIsTheUTRVariationPage
-import play.api.Application
-import play.api.mvc.{AnyContentAsEmpty, Result}
-import play.api.test.FakeRequest
-import views.html.{ClosedErrorView, DoesNotMatchErrorView, StillProcessingErrorView}
-import play.api.test.Helpers._
+import models.{Closed, Processing, ServiceUnavailable, UserAnswers, UtrNotFound}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
-import org.scalatest.mockito.MockitoSugar.mock
+import pages.WhatIsTheUTRVariationPage
+import play.api.Application
 import play.api.inject.bind
+import play.api.mvc.{AnyContentAsEmpty, Result}
+import play.api.test.FakeRequest
+import play.api.test.Helpers._
+import uk.gov.hmrc.auth.core.AffinityGroup
+import views.html.{ClosedErrorView, DoesNotMatchErrorView, IVDownView, StillProcessingErrorView}
 
 import scala.concurrent.Future
 
@@ -40,7 +39,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
     def utr = "1234567890"
 
-    def userAnswers: UserAnswers = emptyUserAnswers.set(WhatIsTheUTRVariationPage, utr ).success.value
+    def userAnswers: UserAnswers = emptyUserAnswers.set(WhatIsTheUTRVariationPage, utr).success.value
 
     val fakeTrustConnector: TrustConnector = mock[TrustConnector]
 
@@ -64,7 +63,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(utr)(fakeRequest, messages).toString
+        view(fakeDraftId, AffinityGroup.Individual, utr)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -78,7 +77,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(utr)(fakeRequest, messages).toString
+        view(fakeDraftId, AffinityGroup.Individual, utr)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -92,7 +91,21 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(utr)(fakeRequest, messages).toString
+        view(fakeDraftId, AffinityGroup.Individual)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "must return SERVICE_UNAVAILABLE and the correct view for GET ../status/down" in new LocalSetup {
+
+      override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.down(fakeDraftId).url)
+
+      val view: IVDownView = application.injector.instanceOf[IVDownView]
+
+      status(result) mustEqual SERVICE_UNAVAILABLE
+
+      contentAsString(result) mustEqual
+        view(fakeDraftId, AffinityGroup.Individual)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -100,7 +113,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
     "must redirect to the correct route for GET ../status" when {
       "a Closed status is received from the trust connector" in new LocalSetup {
 
-        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.onError(fakeDraftId).url)
+        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status(fakeDraftId).url)
 
         when(fakeTrustConnector.getTrustStatus(any[String])(any(), any())).thenReturn(Future.successful(Closed))
 
@@ -113,7 +126,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
       "a Processing status is received from the trust connector" in new LocalSetup {
 
-        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.onError(fakeDraftId).url)
+        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status(fakeDraftId).url)
 
         when(fakeTrustConnector.getTrustStatus(any[String])(any(), any())).thenReturn(Future.successful(Processing))
 
@@ -126,13 +139,26 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
       "a NotFound status is received from the trust connector" in new LocalSetup {
 
-        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.onError(fakeDraftId).url)
+        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status(fakeDraftId).url)
 
         when(fakeTrustConnector.getTrustStatus(any[String])(any(), any())).thenReturn(Future.successful(UtrNotFound))
 
         status(result) mustEqual SEE_OTHER
 
         redirectLocation(result).value mustEqual "/trusts-registration/id/status/not-found"
+
+        application.stop()
+      }
+
+      "a ServiceUnavailable status is received from the trust connector" in new LocalSetup {
+
+        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status(fakeDraftId).url)
+
+        when(fakeTrustConnector.getTrustStatus(any[String])(any(), any())).thenReturn(Future.successful(ServiceUnavailable))
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual "/trusts-registration/id/status/down"
 
         application.stop()
       }

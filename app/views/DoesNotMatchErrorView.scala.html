@@ -29,19 +29,19 @@ main_template: MainTemplate
 title = messages("DoesNotMatchError.title")
 ) {
 
- @components.heading("DoesNotMatchError.heading", headingSize = "heading-xlarge")
+ @components.heading("DoesNotMatchError.heading", headingSize = "heading-xlarge heading-no-top-margin")
 
  <p>@messages("DoesNotMatchError.paragraph1")</p>
 
  <p>@messages("DoesNotMatchError.paragraph2")</p>
 
- <p>@messages("DoesNotMatchError.paragraph3") <a id="register-for-a-utr-link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" rel="external" target="_blank">@messages("DoesNotMatchError.register.link")</a></p>
+ <p>@messages("DoesNotMatchError.paragraph3")</p>
 
- <p>@messages("DoesNotMatchError.paragraph4") <a id="register-and-maintain-link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" rel="external" target="_blank">@messages("DoesNotMatchError.contact.link")</a></p>
+ <p>@messages("DoesNotMatchError.paragraph4") <a id="help-link" href=https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts rel="external" target="_blank">@messages("DoesNotMatchError.contact.link")</a>.</p>
 
- @if(affinityGroup == AffinityGroup.Agent) {
-  @components.button_link(messages("site.try-again"), WhatIsTheUTRVariationsController.onPageLoad(NormalMode, draftId).url)
- } else {
-  <p>@messages("DoesNotMatchError.paragraph5") <a id="help-link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" rel="external" target="_blank">@messages("DoesNotMatchError.return.link")</a></p>
- }
+  @if(affinityGroup == AffinityGroup.Agent) {
+   <p>@messages("DoesNotMatchError.paragraph5") <a id="register-and-maintain-link" href=@AgentOverviewController.onPageLoad().url rel="external" target="_blank">@messages("DoesNotMatchError.return.link")</a>.</p>
+  } else {
+   @components.button_link(messages("site.try-again"), WhatIsTheUTRVariationsController.onPageLoad(NormalMode, draftId).url)
+  }
 }
