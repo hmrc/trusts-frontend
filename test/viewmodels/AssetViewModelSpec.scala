@@ -203,7 +203,7 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks 
                   |"propertyOrLandAddressUKYesNo": true,
                   |"address": {
                   | "line1": "line 1",
-                  | "townOrCity": "Newcastle",
+                  | "line2": "Newcastle",
                   | "postcode": "NE11TU"
                   |},
                   |"whatKindOfAsset" : "PropertyOrLand",

@@ -60,7 +60,7 @@ class ConfirmationAnswerPageLivingSettlorViewSpec extends ViewBehaviours {
         .set(IndividualBeneficiaryNationalInsuranceNumberPage(index),"AB123456C").success.value
         .set(IndividualBeneficiaryAddressYesNoPage(index),true).success.value
         .set(IndividualBeneficiaryAddressUKYesNoPage(index),true).success.value
-        .set(IndividualBeneficiaryAddressUKPage(index),UKAddress("Line1",None, None, "TownOrCity","NE62RT" )).success.value
+        .set(IndividualBeneficiaryAddressUKPage(index),UKAddress("Line1","line2", None, None,"NE62RT" )).success.value
         .set(IndividualBeneficiaryVulnerableYesNoPage(index),true).success.value
         .set(IndividualBeneficiaryStatus(index), Status.Completed).success.value
 
@@ -76,7 +76,7 @@ class ConfirmationAnswerPageLivingSettlorViewSpec extends ViewBehaviours {
         .set(TrusteesNinoPage(index), "AB123456C").success.value
         .set(TelephoneNumberPage(index), "0191 1111111").success.value
         .set(TrusteeLiveInTheUKPage(index), true).success.value
-        .set(TrusteesUkAddressPage(index), UKAddress("line1", Some("line2"), Some("line3"), "town or city", "AB1 1AB")).success.value
+        .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", Some("line3"), Some("line4"), "AB1 1AB")).success.value
         .set(TrusteeStatus(index), Status.Completed).success.value
         .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 

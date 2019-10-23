@@ -141,7 +141,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
             .set(SettlorsNINoYesNoPage, false).success.value
             .set(SettlorsLastKnownAddressYesNoPage, true).success.value
             .set(WasSettlorsAddressUKYesNoPage, true).success.value
-            .set(SettlorsUKAddressPage, UKAddress("line1", Some("line2"), Some("line3"), "Newcastle", "ab1 1ab")).success.value
+            .set(SettlorsUKAddressPage, UKAddress("line1", "line2", Some("line3"), Some("line4"), "ab1 1ab")).success.value
 
         deceasedSettlorMapper.build(userAnswers).value mustBe WillType(
           name = NameType("First", None, "Last"),

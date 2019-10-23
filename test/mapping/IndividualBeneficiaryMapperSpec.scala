@@ -85,7 +85,7 @@ class IndividualBeneficiaryMapperSpec extends FreeSpec with MustMatchers
             .set(IndividualBeneficiaryAddressYesNoPage(index), true).success.value
             .set(IndividualBeneficiaryAddressUKYesNoPage(index), true).success.value
             .set(IndividualBeneficiaryAddressUKPage(index),
-              UKAddress("Line1", Some("line2"), None, "Newcastle", "NE62RT")).success.value
+              UKAddress("Line1", "line2", None, None, "NE62RT")).success.value
 
 
         individualBeneficiariesMapper.build(userAnswers) mustBe defined
@@ -155,7 +155,7 @@ class IndividualBeneficiaryMapperSpec extends FreeSpec with MustMatchers
             .set(IndividualBeneficiaryAddressYesNoPage(index1), true).success.value
             .set(IndividualBeneficiaryAddressUKYesNoPage(index1), true).success.value
             .set(IndividualBeneficiaryAddressUKPage(index1),
-              UKAddress("line1", None, None, "Newcastle", "NE62RT")).success.value
+              UKAddress("line1", "line2", None, None, "NE62RT")).success.value
 
         individualBeneficiariesMapper.build(userAnswers) mustBe defined
         individualBeneficiariesMapper.build(userAnswers).value mustBe
@@ -188,7 +188,7 @@ class IndividualBeneficiaryMapperSpec extends FreeSpec with MustMatchers
                   address = Some(
                     AddressType("line1", "Newcastle", None, None, Some("NE62RT"), "GB")
                   ))
-            ))
+              ))
           )
       }
 

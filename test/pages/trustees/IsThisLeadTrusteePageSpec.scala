@@ -39,7 +39,7 @@ class IsThisLeadTrusteePageSpec extends PageBehaviours {
           .set(TrusteeAUKCitizenPage(index), true).success.value
           .set(TrusteesNinoPage(index), str).success.value
           .set(TrusteeLiveInTheUKPage(index), true).success.value
-          .set(TrusteesUkAddressPage(index), UKAddress(str,None,None,str,str)).success.value
+          .set(TrusteesUkAddressPage(index), UKAddress(str, str, None, None, str)).success.value
           .set(TelephoneNumberPage(index), str).success.value
 
         val result = answers.set(IsThisLeadTrusteePage(index), false).success.value

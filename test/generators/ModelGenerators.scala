@@ -106,9 +106,9 @@ trait ModelGenerators {
         line1 <- arbitrary[String]
         line2 <- arbitrary[String]
         line3 <- arbitrary[String]
-        townOrCity <- arbitrary[String]
+        line4 <- arbitrary[String]
         postcode <- arbitrary[String]
-      } yield UKAddress(line1, Some(line2), Some(line3), townOrCity, postcode)
+      } yield UKAddress(line1, line2, Some(line3), Some(line4), postcode)
     }
 
   implicit lazy val arbitraryAddATrustee: Arbitrary[AddATrustee] =

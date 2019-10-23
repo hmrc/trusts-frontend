@@ -1294,9 +1294,9 @@ object CheckYourAnswersHelper {
     val lines =
       Seq(
         Some(HtmlFormat.escape(address.line1)),
-        address.line2.map(HtmlFormat.escape),
+        Some(HtmlFormat.escape(address.line2)),
         address.line3.map(HtmlFormat.escape),
-        Some(HtmlFormat.escape(address.townOrCity)),
+        address.line4.map(HtmlFormat.escape),
         Some(HtmlFormat.escape(address.postcode))
       ).flatten
 

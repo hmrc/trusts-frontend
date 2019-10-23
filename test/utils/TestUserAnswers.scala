@@ -18,17 +18,16 @@ package utils
 
 import java.time.LocalDate
 
-import mapping.TypeOfTrust
 import models.Matched.{Failed, Success}
 import models.Status.Completed
 import models.TrusteesBasedInTheUK.UKBasedTrustees
 import models.{AddABeneficiary, AddATrustee, AddAssets, FullName, IndividualOrBusiness, SettlorKindOfTrust, UKAddress, UserAnswers, WhatKindOfAsset}
 import org.scalatest.TryValues
 import pages._
-import pages.deceased_settlor.{SettlorDateOfBirthYesNoPage, SettlorDateOfDeathYesNoPage, SettlorsLastKnownAddressYesNoPage, SettlorsNINoYesNoPage, SettlorsNamePage}
+import pages.deceased_settlor._
 import pages.entitystatus._
-import pages.living_settlor.{SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNINOPage, SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage, SettlorIndividualOrBusinessPage}
-import pages.trustees.{AddATrusteePage, IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteeIndividualOrBusinessPage, TrusteeLiveInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
+import pages.living_settlor._
+import pages.trustees._
 import play.api.libs.json.Json
 
 object TestUserAnswers extends TryValues {
@@ -38,37 +37,37 @@ object TestUserAnswers extends TryValues {
 
   def emptyUserAnswers = UserAnswers(draftId, Json.obj(), internalAuthId = userInternalId)
 
-  def withAgent(userAnswers: UserAnswers) : UserAnswers = {
-      userAnswers
-        .set(AgentARNPage, "SARN1234567").success.value
-        .set(AgentNamePage, "Agency Name").success.value
-        .set(AgentUKAddressPage, UKAddress("line1", Some("line2"), Some("line3"), "Newcastle", "ab1 1ab")).success.value
-        .set(AgentTelephoneNumberPage, "+1234567890").success.value
-        .set(AgentInternalReferencePage, "1234-5678").success.value
-        .set(AgentAddressYesNoPage, true).success.value
+  def withAgent(userAnswers: UserAnswers): UserAnswers = {
+    userAnswers
+      .set(AgentARNPage, "SARN1234567").success.value
+      .set(AgentNamePage, "Agency Name").success.value
+      .set(AgentUKAddressPage, UKAddress("line1", "line2", Some("line3"), Some("line4"), "ab1 1ab")).success.value
+      .set(AgentTelephoneNumberPage, "+1234567890").success.value
+      .set(AgentInternalReferencePage, "1234-5678").success.value
+      .set(AgentAddressYesNoPage, true).success.value
   }
 
-  def withLeadTrustee(userAnswers: UserAnswers) : UserAnswers = {
+  def withLeadTrustee(userAnswers: UserAnswers): UserAnswers = {
     val index = 0
     userAnswers
       .set(IsThisLeadTrusteePage(index), true).success.value
       .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
-      .set(TrusteesNamePage(index), FullName("first name",  Some("middle name"), "Last Name")).success.value
-      .set(TrusteesDateOfBirthPage(index), LocalDate.of(1500,10,10)).success.value
+      .set(TrusteesNamePage(index), FullName("first name", Some("middle name"), "Last Name")).success.value
+      .set(TrusteesDateOfBirthPage(index), LocalDate.of(1500, 10, 10)).success.value
       .set(TrusteeAUKCitizenPage(index), true).success.value
       .set(TrusteeLiveInTheUKPage(index), true).success.value
       .set(TrusteesNinoPage(index), "AB123456C").success.value
       .set(TelephoneNumberPage(index), "0191 1111111").success.value
-      .set(TrusteesUkAddressPage(index), UKAddress("line1", None,None, "town", "NE65QA")).success.value
+      .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", None, None, "NE65QA")).success.value
       .set(TrusteeStatus(index), Completed).success.value
   }
 
-  def withIndividualBeneficiary(userAnswers: UserAnswers) : UserAnswers = {
+  def withIndividualBeneficiary(userAnswers: UserAnswers): UserAnswers = {
     val index = 0
     userAnswers
       .set(IndividualBeneficiaryNamePage(index), FullName("first name", None, "last name")).success.value
       .set(IndividualBeneficiaryDateOfBirthYesNoPage(index), true).success.value
-      .set(IndividualBeneficiaryDateOfBirthPage(index), LocalDate.of(1500,10,10)).success.value
+      .set(IndividualBeneficiaryDateOfBirthPage(index), LocalDate.of(1500, 10, 10)).success.value
       .set(IndividualBeneficiaryIncomeYesNoPage(index), false).success.value
       .set(IndividualBeneficiaryIncomePage(index), "100").success.value
       .set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), true).success.value
@@ -77,8 +76,8 @@ object TestUserAnswers extends TryValues {
       .set(IndividualBeneficiaryStatus(index), Completed).success.value
   }
 
-  def withDeceasedSettlor(userAnswers: UserAnswers) : UserAnswers = {
-      userAnswers
+  def withDeceasedSettlor(userAnswers: UserAnswers): UserAnswers = {
+    userAnswers
       .set(SetupAfterSettlorDiedPage, true).success.value
       .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
       .set(SettlorDateOfDeathYesNoPage, false).success.value
@@ -88,10 +87,10 @@ object TestUserAnswers extends TryValues {
       .set(DeceasedSettlorStatus, Completed).success.value
   }
 
-  def withIndividualLivingSettlor(index: Int, userAnswers: UserAnswers) : UserAnswers = {
-      userAnswers
+  def withIndividualLivingSettlor(index: Int, userAnswers: UserAnswers): UserAnswers = {
+    userAnswers
       .set(SetupAfterSettlorDiedPage, false).success.value
-      .set(SettlorIndividualOrBusinessPage(index),IndividualOrBusiness.Individual).success.value
+      .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
       .set(SettlorIndividualNamePage(index), FullName("First", None, "Last")).success.value
       .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
       .set(SettlorIndividualNINOYesNoPage(index), true).success.value
@@ -100,10 +99,10 @@ object TestUserAnswers extends TryValues {
   }
 
 
-  def withTrustDetails(userAnswers: UserAnswers) : UserAnswers = {
-      userAnswers
+  def withTrustDetails(userAnswers: UserAnswers): UserAnswers = {
+    userAnswers
       .set(TrustNamePage, "New Trust").success.value
-      .set(WhenTrustSetupPage, LocalDate.of(1500,10,10)).success.value
+      .set(WhenTrustSetupPage, LocalDate.of(1500, 10, 10)).success.value
       .set(GovernedInsideTheUKPage, true).success.value
       .set(AdministrationInsideUKPage, true).success.value
       .set(TrusteesBasedInTheUKPage, UKBasedTrustees).success.value
@@ -112,7 +111,7 @@ object TestUserAnswers extends TryValues {
       .set(TrustDetailsStatus, Completed).success.value
   }
 
-  def withMoneyAsset(userAnswers : UserAnswers) : UserAnswers = {
+  def withMoneyAsset(userAnswers: UserAnswers): UserAnswers = {
     val index = 0
     userAnswers
       .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
@@ -120,12 +119,12 @@ object TestUserAnswers extends TryValues {
       .set(AssetStatus(index), Completed).success.value
   }
 
-  def withDeclaration(userAnswers: UserAnswers) : UserAnswers = {
+  def withDeclaration(userAnswers: UserAnswers): UserAnswers = {
     userAnswers
       .set(DeclarationPage, FullName("First", None, "Last")).success.value
   }
 
-  def withMatchingSuccess(userAnswers: UserAnswers) : UserAnswers = {
+  def withMatchingSuccess(userAnswers: UserAnswers): UserAnswers = {
     userAnswers
       .set(TrustNamePage, "Existing Trust").success.value
       .set(TrustHaveAUTRPage, true).success.value
@@ -134,12 +133,12 @@ object TestUserAnswers extends TryValues {
       .set(ExistingTrustMatched, Success).success.value
   }
 
-  def withMatchingFailed(userAnswers: UserAnswers) : UserAnswers = {
+  def withMatchingFailed(userAnswers: UserAnswers): UserAnswers = {
     userAnswers
       .set(ExistingTrustMatched, Failed).success.value
   }
 
-  def withCompleteSections(userAnswers: UserAnswers) : UserAnswers = {
+  def withCompleteSections(userAnswers: UserAnswers): UserAnswers = {
     userAnswers
       .set(AddATrusteePage, AddATrustee.NoComplete).success.value
       .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
@@ -157,18 +156,18 @@ object TestUserAnswers extends TryValues {
     userAnswers
   }
 
-  def withInterVivosTrust(userAnswers: UserAnswers) : UserAnswers = {
+  def withInterVivosTrust(userAnswers: UserAnswers): UserAnswers = {
     userAnswers
-        .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
+      .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
       .set(SettlorHandoverReliefYesNoPage, true).success.value
   }
 
-  def withHeritageTrust(userAnswers: UserAnswers) : UserAnswers = {
+  def withHeritageTrust(userAnswers: UserAnswers): UserAnswers = {
     userAnswers
       .set(SettlorKindOfTrustPage, SettlorKindOfTrust.HeritageMaintenanceFund).success.value
   }
 
-  def withFlatManagementTrust(userAnswers: UserAnswers) : UserAnswers = {
+  def withFlatManagementTrust(userAnswers: UserAnswers): UserAnswers = {
     userAnswers
       .set(SettlorKindOfTrustPage, SettlorKindOfTrust.FlatManagement).success.value
   }

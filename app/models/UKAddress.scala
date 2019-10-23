@@ -22,9 +22,9 @@ import scala.language.implicitConversions
 
 final case class UKAddress(
                             line1: String,
-                            line2: Option[String] = None,
+                            line2: String,
                             line3: Option[String] = None,
-                            townOrCity: String,
+                            line4: Option[String] = None,
                             postcode: String
                           ) extends Address
 

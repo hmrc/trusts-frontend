@@ -16,11 +16,8 @@
 
 package mapping
 
-import java.time.LocalDate
-
 import base.SpecBaseHelpers
 import generators.Generators
-import mapping.TypeOfTrust.WillTrustOrIntestacyTrust
 import models.{InternationalAddress, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
@@ -49,7 +46,7 @@ class AgentMapperSpec extends FreeSpec with MustMatchers
           emptyUserAnswers
             .set(AgentARNPage, "SARN123456").success.value
             .set(AgentNamePage, "Agency Name").success.value
-            .set(AgentUKAddressPage, UKAddress("line1", Some("line2"), Some("line3"), "Newcastle", "ab1 1ab")).success.value
+            .set(AgentUKAddressPage, UKAddress("line1", "line2", Some("line3"), Some("line4"), "ab1 1ab")).success.value
             .set(AgentTelephoneNumberPage, "+1234567890").success.value
             .set(AgentInternalReferencePage, "1234-5678").success.value
             .set(AgentAddressYesNoPage, true).success.value
@@ -69,7 +66,7 @@ class AgentMapperSpec extends FreeSpec with MustMatchers
           emptyUserAnswers
             .set(AgentARNPage, "SARN123456").success.value
             .set(AgentNamePage, "Agency Name").success.value
-            .set(AgentUKAddressPage, UKAddress("line1",None,None , "Newcastle", "ab1 1ab")).success.value
+            .set(AgentUKAddressPage, UKAddress("line1", "line2", None, None, "ab1 1ab")).success.value
             .set(AgentTelephoneNumberPage, "+1234567890").success.value
             .set(AgentInternalReferencePage, "1234-5678").success.value
             .set(AgentAddressYesNoPage, true).success.value
@@ -89,7 +86,7 @@ class AgentMapperSpec extends FreeSpec with MustMatchers
           emptyUserAnswers
             .set(AgentARNPage, "SARN123456").success.value
             .set(AgentNamePage, "Agency Name").success.value
-            .set(AgentInternationalAddressPage,InternationalAddress("line1","line2",Some("line3"),Some("Pune"), "IN")).success.value
+            .set(AgentInternationalAddressPage, InternationalAddress("line1", "line2", Some("line3"), Some("Pune"), "IN")).success.value
             .set(AgentTelephoneNumberPage, "+1234567890").success.value
             .set(AgentInternalReferencePage, "1234-5678").success.value
             .set(AgentAddressYesNoPage, false).success.value
@@ -109,7 +106,7 @@ class AgentMapperSpec extends FreeSpec with MustMatchers
           emptyUserAnswers
             .set(AgentARNPage, "SARN123456").success.value
             .set(AgentNamePage, "Agency Name").success.value
-            .set(AgentInternationalAddressPage,InternationalAddress("line1","line2",None, None, "IN")).success.value
+            .set(AgentInternationalAddressPage, InternationalAddress("line1", "line2", None, None, "IN")).success.value
             .set(AgentTelephoneNumberPage, "+1234567890").success.value
             .set(AgentInternalReferencePage, "1234-5678").success.value
             .set(AgentAddressYesNoPage, false).success.value
