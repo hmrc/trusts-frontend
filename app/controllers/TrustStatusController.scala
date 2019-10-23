@@ -16,19 +16,19 @@
 
 package controllers
 
+import config.FrontendAppConfig
 import connector.TrustConnector
-import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider, IdentifierAction, RequiredAnswer}
+import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider, IdentifierAction}
 import javax.inject.Inject
-import models.{Closed, NormalMode, Processing}
 import models.requests.DataRequest
+import models.{Closed, NormalMode, Processed, Processing, UtrNotFound}
 import navigation.Navigator
-import pages.{IndividualBeneficiaryNamePage, WhatIsTheUTRVariationPage}
+import pages.WhatIsTheUTRVariationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import queries.Gettable
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.{CannotAccessErrorView, DoesNotMatchErrorView, StillProcessingErrorView}
+import views.html.{ClosedErrorView, DoesNotMatchErrorView, StillProcessingErrorView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -39,10 +39,11 @@ class TrustStatusController @Inject()(
                                        identify: IdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
-                                       cannotAccessView: CannotAccessErrorView,
+                                       closedView: ClosedErrorView,
                                        stillProcessingView: StillProcessingErrorView,
                                        doesNotMatchView: DoesNotMatchErrorView,
                                        trustConnector: TrustConnector,
+                                       config: FrontendAppConfig,
                                        val controllerComponents: MessagesControllerComponents
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
@@ -50,35 +51,35 @@ class TrustStatusController @Inject()(
   def closed(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
       enforceUtr(draftId) { utr =>
-        Future.successful(Ok(cannotAccessView(utr)))
+        Future.successful(Ok(closedView(draftId, request.affinityGroup, utr)))
       }
   }
 
   def processing(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
       enforceUtr(draftId) { utr =>
-        Future.successful(Ok(stillProcessingView(utr)))
+        Future.successful(Ok(stillProcessingView(draftId, request.affinityGroup, utr)))
       }
   }
 
   def notFound(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
       enforceUtr(draftId) { utr =>
-        Future.successful(Ok(doesNotMatchView(utr)))
+        Future.successful(Ok(doesNotMatchView(draftId, request.affinityGroup)))
       }
   }
 
-  def onError(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+  def status(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
       enforceUtr(draftId) { utr =>
         trustConnector.getTrustStatus(utr) map {
           case Closed => Redirect(routes.TrustStatusController.closed(draftId))
           case Processing => Redirect(routes.TrustStatusController.processing(draftId))
-          case NotFound => Redirect(routes.TrustStatusController.notFound(draftId))
+          case UtrNotFound => Redirect(routes.TrustStatusController.notFound(draftId))
+          case Processed => Redirect(config.claimATrustUrl(utr))
         }
       }
   }
-
 
   def enforceUtr(draftId: String)(block: String => Future[Result])(implicit request: DataRequest[AnyContent]): Future[Result] = {
     request.userAnswers.get(WhatIsTheUTRVariationPage) match {

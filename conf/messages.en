@@ -285,15 +285,16 @@ UTRSentByPost.paragraph2 = if you have not received your UTR after this time.
 UTRSentByPost.link = Contact the trusts helpline
 
 
-
-
-CannotAccessError.title = Sorry, you cannot access this trust
-CannotAccessError.heading = Sorry, you cannot access this trust
-CannotAccessError.subheading = This trust’s UTR: {0}
-CannotAccessError.paragraph1 = You cannot make changes to this trust as it has been closed.
-CannotAccessError.paragraph2 = If the trust needs to be registered again, you can return to the Trust Registration Service here
-CannotAccessError.link.paragraph = If you need help with the service
-CannotAccessError.link = contact the trusts helpline.
+ClosedError.title = Sorry, you cannot access this trust
+ClosedError.heading = Sorry, you cannot access this trust
+ClosedError.subheading = This trust’s UTR: {0}
+ClosedError.paragraph1 = You cannot make changes to this trust as it has been closed.
+ClosedError.paragraph2 = If this has been done in error or you need help with the service, please
+ClosedError.contact.link = contact HMRC
+ClosedError.paragraph3 = to reopen the records. HMRC will contact you if a tax return is required or for any further information.
+ClosedError.paragraph4 = You can
+ClosedError.return.link = return to register and maintain a trust for a client
+ClosedError.link.paragraph = If you need help with the service
 
 DoesNotMatchError.title = Sorry, you cannot access this trust
 DoesNotMatchError.heading = Sorry, you cannot access this trust
@@ -302,6 +303,7 @@ DoesNotMatchError.paragraph1 = The Unique Taxpayer Reference (UTR) entered does 
 DoesNotMatchError.paragraph2 = Check you have entered the trust's UTR correctly.
 DoesNotMatchError.paragraph3 = If you do not have a UTR for the trust. You will need to register the trust first. You can
 DoesNotMatchError.paragraph4 = If you need help with the service
+DoesNotMatchError.paragraph5 = You can
 DoesNotMatchError.contact.link = contact the trusts helpline.
 DoesNotMatchError.register.link = register here(opens in a new window or tab)
 DoesNotMatchError.return.link = return to register and maintain a trust for a client

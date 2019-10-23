@@ -16,28 +16,31 @@
 
 @import controllers.routes._
 @import models.Mode
+@import uk.gov.hmrc.auth.core.AffinityGroup
+@import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
+
 
 @this(
 main_template: MainTemplate
 )
 
-@(utr: String)(implicit request: Request[_], messages: Messages)
+@(draftId: String, affinityGroup: AffinityGroup, utr: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
 title = messages("StillProcessingError.title")
 ) {
 
-@components.heading("StillProcessingError.heading")
+ <span class="govuk-caption-xl">@messages("StillProcessingError.subheading", utr)</span>
+ @components.heading("StillProcessingError.heading", headingSize = "heading-xlarge")
 
-<span class="govuk-caption-xl">@messages("StillProcessingError.subheading", utr)</span>
-@components.heading("StillProcessingError.heading", headingSize = "heading-large govuk-fieldset__heading")
+ <p>@messages("StillProcessingError.paragraph1")</p>
 
-<p>@messages("StillProcessingError.paragraph1")</p>
+ <p>@messages("StillProcessingError.paragraph2")</p>
 
-<p>@messages("StillProcessingError.paragraph2")</p>
-
-<p>@messages("StillProcessingError.paragraph3")<a id="help-link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" rel="external" target="_blank">@messages("DoesNotMatchError.contact.link ")</a></p>
-
-<p>@messages("StillProcessingError.paragraph4")<a id="register-and-maintain-link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" rel="external" target="_blank">@messages("DoesNotMatchError.return.link")</a></p>
-
+ <p>@messages("StillProcessingError.paragraph3") <a id="help-link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" rel="external" target="_blank">@messages("StillProcessingError.contact.link")</a></p>
+  @if(affinityGroup == AffinityGroup.Agent) {
+   @components.button_link(messages("site.try-again"), WhatIsTheUTRVariationsController.onPageLoad(NormalMode, draftId).url)
+ } else {
+  <p>@messages("StillProcessingError.paragraph4") <a id="register-and-maintain-link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" rel="external" target="_blank">@messages("StillProcessingError.return.link")</a></p>
+ }
 }

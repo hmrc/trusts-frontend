@@ -19,26 +19,26 @@ package controllers
 import base.SpecBase
 import connector.TrustConnector
 import controllers.actions.{DataRequiredAction, DataRequiredActionImpl}
-import models.{Closed, TrustStatusResponse, UserAnswers}
+import models.{Closed, UtrNotFound, Processing, TrustStatusResponse, UserAnswers}
 import pages.WhatIsTheUTRVariationPage
 import play.api.Application
 import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.FakeRequest
-import views.html.{CannotAccessErrorView, DoesNotMatchErrorView, StillProcessingErrorView}
+import views.html.{ClosedErrorView, DoesNotMatchErrorView, StillProcessingErrorView}
 import play.api.test.Helpers._
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
+import org.scalatest.BeforeAndAfterEach
 import org.scalatest.mockito.MockitoSugar.mock
 import play.api.inject.bind
 
 import scala.concurrent.Future
 
-class TrustStatusControllerSpec extends SpecBase {
-
+class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
   trait LocalSetup {
 
-    def utr = "1234567das"
+    def utr = "1234567890"
 
     def userAnswers: UserAnswers = emptyUserAnswers.set(WhatIsTheUTRVariationPage, utr ).success.value
 
@@ -55,11 +55,11 @@ class TrustStatusControllerSpec extends SpecBase {
 
   "TrustStatus Controller" when {
 
-    "navigating to GET ../closed" in new LocalSetup {
+    "must return OK and the correct view for GET ../status/closed" in new LocalSetup {
 
-      override val request = FakeRequest(GET, routes.TrustStatusController.closed(fakeDraftId).url)
+      override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.closed(fakeDraftId).url)
 
-      val view: CannotAccessErrorView = application.injector.instanceOf[CannotAccessErrorView]
+      val view: ClosedErrorView = application.injector.instanceOf[ClosedErrorView]
 
       status(result) mustEqual OK
 
@@ -69,9 +69,9 @@ class TrustStatusControllerSpec extends SpecBase {
       application.stop()
     }
 
-    "navigating to GET ../processing" in new LocalSetup {
+    "must return OK and the correct view for GET ../status/processing" in new LocalSetup {
 
-      override val request = FakeRequest(GET, routes.TrustStatusController.processing(fakeDraftId).url)
+      override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.processing(fakeDraftId).url)
 
       val view: StillProcessingErrorView = application.injector.instanceOf[StillProcessingErrorView]
 
@@ -83,9 +83,9 @@ class TrustStatusControllerSpec extends SpecBase {
       application.stop()
     }
 
-    "navigating to GET ../notFound" in new LocalSetup {
+    "must return OK and the correct view for GET ../status/not-found" in new LocalSetup {
 
-      override val request = FakeRequest(GET, routes.TrustStatusController.notFound(fakeDraftId).url)
+      override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.notFound(fakeDraftId).url)
 
       val view: DoesNotMatchErrorView = application.injector.instanceOf[DoesNotMatchErrorView]
 
@@ -97,19 +97,45 @@ class TrustStatusControllerSpec extends SpecBase {
       application.stop()
     }
 
-    "navigating to GET ../error" in new LocalSetup {
+    "must redirect to the correct route for GET ../status" when {
+      "a Closed status is received from the trust connector" in new LocalSetup {
 
-      override val application: Application = application
+        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.onError(fakeDraftId).url)
 
-      override val request = FakeRequest(GET, routes.TrustStatusController.onError(fakeDraftId).url)
+        when(fakeTrustConnector.getTrustStatus(any[String])(any(), any())).thenReturn(Future.successful(Closed))
 
-      when(fakeTrustConnector.getTrustStatus(any[String])(any(), any())).thenReturn(Future.successful(Closed))
+        status(result) mustEqual SEE_OTHER
 
-      status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual "/trusts-registration/id/status/closed"
 
-      redirectLocation(result) mustEqual true
+        application.stop()
+      }
 
-      application.stop()
+      "a Processing status is received from the trust connector" in new LocalSetup {
+
+        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.onError(fakeDraftId).url)
+
+        when(fakeTrustConnector.getTrustStatus(any[String])(any(), any())).thenReturn(Future.successful(Processing))
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual "/trusts-registration/id/status/processing"
+
+        application.stop()
+      }
+
+      "a NotFound status is received from the trust connector" in new LocalSetup {
+
+        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.onError(fakeDraftId).url)
+
+        when(fakeTrustConnector.getTrustStatus(any[String])(any(), any())).thenReturn(Future.successful(UtrNotFound))
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual "/trusts-registration/id/status/not-found"
+
+        application.stop()
+      }
     }
   }
 }

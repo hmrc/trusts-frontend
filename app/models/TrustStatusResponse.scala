@@ -27,8 +27,9 @@ sealed trait TrustStatus extends TrustStatusResponse
 
 case object Processing extends TrustStatus
 case object Closed extends TrustStatus
+case object Processed extends TrustStatus
 
-case object NotFound extends TrustStatusResponse
+case object UtrNotFound extends TrustStatusResponse
 case object ServiceUnavailable extends TrustStatusResponse
 case object ServerError extends TrustStatusResponse
 
@@ -38,6 +39,7 @@ object TrustStatusResponse {
     override def reads(json:JsValue): JsResult[TrustStatus] = json("responseHeader")("status") match {
       case JsString("In Processing") => JsSuccess(Processing)
       case JsString("Closed") => JsSuccess(Closed)
+      case JsString("Processed") => JsSuccess(Processed)
     }
   }
 
@@ -50,7 +52,7 @@ object TrustStatusResponse {
           case OK =>
             response.json.as[TrustStatus]
           case NOT_FOUND =>
-            NotFound
+            UtrNotFound
           case SERVICE_UNAVAILABLE =>
             ServiceUnavailable
           case _ =>

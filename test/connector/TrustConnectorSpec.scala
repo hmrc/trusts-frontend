@@ -20,7 +20,7 @@ import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
 import generators.Generators
 import mapping.{Mapping, Registration, RegistrationMapper}
-import models.{AlreadyRegistered, InternalServerError, NotFound, ServiceUnavailable, Processing, RegistrationTRNResponse}
+import models.{AlreadyRegistered, InternalServerError, UtrNotFound, ServiceUnavailable, Processing, RegistrationTRNResponse}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.Application
@@ -183,7 +183,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
       }
     }
 
-    "return trustFound response" in {
+    "return TrustFound response" in {
 
       val utr = "10000000008"
 
@@ -206,7 +206,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
       result mustBe Processing
     }
 
-    "return notFound response" in {
+    "return NotFound response" in {
 
       val utr = "10000000008"
 
@@ -217,10 +217,10 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
               .withStatus(Status.NOT_FOUND)))
 
       val result  = Await.result(connector.getTrustStatus(utr),Duration.Inf)
-      result mustBe NotFound
+      result mustBe UtrNotFound
     }
 
-    "return serviceUnavailable response" in {
+    "return ServiceUnavailable response" in {
 
       val utr = "10000000008"
 

@@ -16,30 +16,32 @@
 
 @import controllers.routes._
 @import models.Mode
+@import uk.gov.hmrc.auth.core.AffinityGroup
+@import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 
 @this(
 main_template: MainTemplate
 )
 
-@(utr: String)(implicit request: Request[_], messages: Messages)
+@(draftId: String, affinityGroup: AffinityGroup)(implicit request: Request[_], messages: Messages)
 
 @main_template(
 title = messages("DoesNotMatchError.title")
 ) {
 
-@components.heading("DoesNotMatchError.heading")
+ @components.heading("DoesNotMatchError.heading", headingSize = "heading-xlarge")
 
-<span class="govuk-caption-xl">@messages("DoesNotMatchError.subheading", utr)</span>
-@components.heading("DoesNotMatchError.heading", headingSize = "heading-large govuk-fieldset__heading")
+ <p>@messages("DoesNotMatchError.paragraph1")</p>
 
-<p>@messages("DoesNotMatchError.paragraph1")</p>
+ <p>@messages("DoesNotMatchError.paragraph2")</p>
 
-<p>@messages("DoesNotMatchError.paragraph2")</p>
+ <p>@messages("DoesNotMatchError.paragraph3") <a id="register-for-a-utr-link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" rel="external" target="_blank">@messages("DoesNotMatchError.register.link")</a></p>
 
-<p>@messages("DoesNotMatchError.paragraph3")<a id="register-for-a-utr-link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" rel="external" target="_blank">@messages("DoesNotMatchError.register.link")</a></p>
+ <p>@messages("DoesNotMatchError.paragraph4") <a id="register-and-maintain-link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" rel="external" target="_blank">@messages("DoesNotMatchError.contact.link")</a></p>
 
-<p>@messages("DoesNotMatchError.paragraph4")<a id="register-and-maintain-link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" rel="external" target="_blank">@messages("DoesNotMatchError.contact.link")</a></p>
-
-<p>@messages("DoesNotMatchError.link.paragraph")<a id="help-link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" rel="external" target="_blank">@messages("DoesNotMatchError.return.link")</a></p>
-
+ @if(affinityGroup == AffinityGroup.Agent) {
+  @components.button_link(messages("site.try-again"), WhatIsTheUTRVariationsController.onPageLoad(NormalMode, draftId).url)
+ } else {
+  <p>@messages("DoesNotMatchError.paragraph5") <a id="help-link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" rel="external" target="_blank">@messages("DoesNotMatchError.return.link")</a></p>
+ }
 }
