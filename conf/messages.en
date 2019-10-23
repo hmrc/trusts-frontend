@@ -897,8 +897,8 @@ declaration.individual.warning = I confirm that I have taken all reasonable step
 
 summaryAnswerPage.title = Draft copy of the trust’s registration
 summaryAnswerPage.heading = Draft copy of the trust’s registration
-summaryAnswerPage.paragraph1 = You can save your registration and come back later. You have 28 days from the time you first save to register a trust. If you do not register within 28 days, your information will be deleted.
-summaryAnswerPage.paragraph2 = This is not a declaration confirming the trust has been registered.
+summaryAnswerPage.paragraph1 = You can save your registration and come back later. You have 28 days from the first time you save to complete this registration or your information will be deleted.
+summaryAnswerPage.paragraph2 = This is not a declaration confirming the trust has been registered. You can print a declared copy after you have made a declaration.
 
 confirmationAnswerPage.title = Declared copy of the trust’s registration
 confirmationAnswerPage.heading = Declared copy of the trust’s registration
