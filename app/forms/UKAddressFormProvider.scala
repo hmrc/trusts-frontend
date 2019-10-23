@@ -42,14 +42,14 @@ class UKAddressFormProvider @Inject() extends Mappings {
               maxLength(35, "ukAddress.error.line2.length"),
               regexp(Validation.addressLineRegex, "ukAddress.error.line2.invalidCharacters")
             )),
-      "line2" ->
+      "line3" ->
         optional(Forms.text
           .verifying(
             firstError(
               maxLength(35, "ukAddress.error.line3.length"),
               regexp(Validation.addressLineRegex, "ukAddress.error.line3.invalidCharacters")
             ))),
-      "line3" ->
+      "line4" ->
         optional(Forms.text
           .verifying(
             firstError(

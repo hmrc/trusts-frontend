@@ -147,7 +147,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
           name = NameType("First", None, "Last"),
           dateOfBirth = None,
           dateOfDeath = None,
-          identification = Some(Identification(None, Some(AddressType("line1", "line2", Some("line3"), Some("Newcastle"), Some("ab1 1ab"), "GB"))))
+          identification = Some(Identification(None, Some(AddressType("line1", "line2", Some("line3"), Some("line4"), Some("ab1 1ab"), "GB"))))
         )
 
       }

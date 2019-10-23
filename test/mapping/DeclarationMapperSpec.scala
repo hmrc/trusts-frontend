@@ -81,7 +81,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
             .set(AgentInternalReferencePage, "123456789").success.value
             .set(DeclarationPage, FullName("First", None, "Last")).success.value
             .set(AgentAddressYesNoPage, true).success.value
-            .set(AgentUKAddressPage, UKAddress("Line1", "line2", None, None, "NE62RT")).success.value
+            .set(AgentUKAddressPage, UKAddress("Line1", "line2", None, Some("Newcastle"), "NE62RT")).success.value
 
           declarationMapper.build(userAnswers).value mustBe Declaration(
             name = NameType("First", None, "Last"),

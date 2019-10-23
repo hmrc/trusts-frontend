@@ -54,7 +54,7 @@ class AgentMapperSpec extends FreeSpec with MustMatchers
         agentMapper.build(userAnswers).value mustBe AgentDetails(
           arn = "SARN123456",
           agentName = "Agency Name",
-          agentAddress = AddressType("line1", "line2", Some("line3"), Some("Newcastle"), Some("ab1 1ab"), "GB"),
+          agentAddress = AddressType("line1", "line2", Some("line3"), Some("line4"), Some("ab1 1ab"), "GB"),
           agentTelephoneNumber = "+1234567890",
           clientReference = "1234-5678"
         )
@@ -74,7 +74,7 @@ class AgentMapperSpec extends FreeSpec with MustMatchers
         agentMapper.build(userAnswers).value mustBe AgentDetails(
           arn = "SARN123456",
           agentName = "Agency Name",
-          agentAddress = AddressType("line1", "Newcastle", None, None, Some("ab1 1ab"), "GB"),
+          agentAddress = AddressType("line1", "line2", None, None, Some("ab1 1ab"), "GB"),
           agentTelephoneNumber = "+1234567890",
           clientReference = "1234-5678"
         )

@@ -59,7 +59,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
         .set(IndividualBeneficiaryNationalInsuranceNumberPage(index), "AB123456C").success.value
         .set(IndividualBeneficiaryAddressYesNoPage(index), true).success.value
         .set(IndividualBeneficiaryAddressUKYesNoPage(index), true).success.value
-        .set(IndividualBeneficiaryAddressUKPage(index), UKAddress("Line1", "line2", None, None, "NE62RT")).success.value
+        .set(IndividualBeneficiaryAddressUKPage(index), UKAddress("Line1", "Line2", None, None, "NE62RT")).success.value
         .set(IndividualBeneficiaryVulnerableYesNoPage(index), true).success.value
         .set(IndividualBeneficiaryStatus(index), Status.Completed).success.value
 
@@ -89,7 +89,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
         .set(SettlorNationalInsuranceNumberPage, "AB123456C").success.value
         .set(SettlorsLastKnownAddressYesNoPage, true).success.value
         .set(WasSettlorsAddressUKYesNoPage, true).success.value
-        .set(SettlorsUKAddressPage, UKAddress("Line1", "line", None, None, "NE1 1ZZ")).success.value
+        .set(SettlorsUKAddressPage, UKAddress("Line1", "Line2", None, None, "NE1 1ZZ")).success.value
         .set(DeceasedSettlorStatus, Status.Completed).success.value
 
         .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
@@ -170,7 +170,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
       assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryAddressYesNo.checkYourAnswersLabel", benName), yes)
       assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryAddressUKYesNo.checkYourAnswersLabel", benName), yes)
       assertContainsText(doc, messages("individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel", benName))
-      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryAddressUK.checkYourAnswersLabel", benName), "Line1 TownOrCity NE62RT")
+      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryAddressUK.checkYourAnswersLabel", benName), "Line1 Line2 NE62RT")
     }
 
     "assert question labels for Class Of Beneficiaries" in {
@@ -186,7 +186,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
       assertContainsQuestionAnswerPair(doc, messages("trusteesNino.checkYourAnswersLabel", trusteeName), "AB 12 34 56 C")
       assertContainsQuestionAnswerPair(doc, messages("telephoneNumber.checkYourAnswersLabel", trusteeName), "0191 1111111")
       assertContainsQuestionAnswerPair(doc, messages("trusteeLiveInTheUK.checkYourAnswersLabel", trusteeName), yes)
-      assertContainsQuestionAnswerPair(doc, messages("trusteesUkAddress.checkYourAnswersLabel", trusteeName), "line1 line2 line3 town or city AB1 1AB")
+      assertContainsQuestionAnswerPair(doc, messages("trusteesUkAddress.checkYourAnswersLabel", trusteeName), "line1 line2 line3 line4 AB1 1AB")
     }
 
     "assert question labels for Settlors" in {
@@ -200,7 +200,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
       assertContainsQuestionAnswerPair(doc, messages("settlorNationalInsuranceNumber.checkYourAnswersLabel", name), "AB 12 34 56 C")
       assertContainsQuestionAnswerPair(doc, messages("settlorsLastKnownAddressYesNo.checkYourAnswersLabel", name), yes)
       assertContainsQuestionAnswerPair(doc, messages("wasSettlorsAddressUKYesNo.checkYourAnswersLabel", name), yes)
-      assertContainsQuestionAnswerPair(doc, messages("settlorsUKAddress.checkYourAnswersLabel", name), "Line1 Town NE1 1ZZ")
+      assertContainsQuestionAnswerPair(doc, messages("settlorsUKAddress.checkYourAnswersLabel", name), "Line1 Line2 NE1 1ZZ")
     }
 
     "assert question labels for Money Assets" in {

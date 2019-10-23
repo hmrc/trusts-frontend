@@ -85,7 +85,7 @@ class IndividualBeneficiaryMapperSpec extends FreeSpec with MustMatchers
             .set(IndividualBeneficiaryAddressYesNoPage(index), true).success.value
             .set(IndividualBeneficiaryAddressUKYesNoPage(index), true).success.value
             .set(IndividualBeneficiaryAddressUKPage(index),
-              UKAddress("Line1", "line2", None, None, "NE62RT")).success.value
+              UKAddress("Line1", "Line2", None, Some("Newcastle"), "NE62RT")).success.value
 
 
         individualBeneficiariesMapper.build(userAnswers) mustBe defined
@@ -100,7 +100,7 @@ class IndividualBeneficiaryMapperSpec extends FreeSpec with MustMatchers
             nino = None,
             None,
             address = Some(
-              AddressType("Line1", "line2", None, Some("Newcastle"), Some("NE62RT"), "GB")
+              AddressType("Line1", "Line2", None, Some("Newcastle"), Some("NE62RT"), "GB")
             )
           ))
         )
@@ -186,7 +186,7 @@ class IndividualBeneficiaryMapperSpec extends FreeSpec with MustMatchers
                   nino = None,
                   passport = None,
                   address = Some(
-                    AddressType("line1", "Newcastle", None, None, Some("NE62RT"), "GB")
+                    AddressType("line1", "line2", None, None, Some("NE62RT"), "GB")
                   ))
               ))
           )
