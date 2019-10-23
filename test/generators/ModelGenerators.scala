@@ -24,6 +24,11 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
+  implicit lazy val arbitraryDeclarationWhatNext: Arbitrary[DeclarationWhatNext] =
+    Arbitrary {
+      Gen.oneOf(DeclarationWhatNext.values.toSeq)
+    }
+
   implicit lazy val arbitrarySettlorDetails: Arbitrary[SettlorBusinessDetails] =
     Arbitrary {
       Gen.oneOf(SettlorBusinessDetails.values.toSeq)
