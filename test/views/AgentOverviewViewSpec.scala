@@ -18,7 +18,6 @@ package views
 
 import java.time.LocalDateTime
 
-import utils.TestUserAnswers
 import viewmodels.DraftRegistration
 import views.behaviours.ViewBehaviours
 import views.html.AgentOverviewView
@@ -33,19 +32,22 @@ class AgentOverviewViewSpec extends ViewBehaviours {
 
     behave like normalPage(applyView, "agentOverview",
       "paragraph1",
-      "helper",
       "paragraph2",
-      "bulletpoint1",
-      "bulletpoint2",
-      "bulletpoint3",
-      "bulletpoint4",
       "paragraph3",
-      "bulletpoint5",
-      "bulletpoint6",
-      "bulletpoint7"
+      "paragraph4"
+
     )
 
     behave like pageWithBackLink(applyView)
+  }
+
+  "not render 'Saved registrations' h2 when no draft registrations present" in {
+
+    val view = viewFor[AgentOverviewView](None)
+    val applyView = view.apply(Nil)(fakeRequest, messages)
+    val doc = asDocument(applyView)
+
+    assertNotRenderedByClass(doc, "saved-registration")
   }
 
   "render draft registrations" in {
@@ -62,6 +64,7 @@ class AgentOverviewViewSpec extends ViewBehaviours {
 
     val doc = asDocument(applyView)
 
+    assertContainsText(doc, "Saved registrations")
     assertContainsText(doc, "FakeDraftId1")
     assertContainsText(doc, "FakeDraftId2")
     assertContainsText(doc, "FakeDraftId3")
