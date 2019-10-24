@@ -627,3 +627,6 @@ GET        /:draftId/enter-trust-utr                        controllers.WhatIsTh
 POST       /:draftId/enter-trust-utr                        controllers.WhatIsTheUTRVariationsController.onSubmit(mode: Mode = NormalMode, draftId: String)
 GET        /:draftId/change-trust-utr                  controllers.WhatIsTheUTRVariationsController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/change-trust-utr                  controllers.WhatIsTheUTRVariationsController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /:draftId/information-about-maintaining-this-trust                       controllers.InformationMaintainingThisTrustController.onPageLoad(draftId: String)
+POST       /:draftId/information-about-maintaining-this-trust                       controllers.InformationMaintainingThisTrustController.onSubmit(draftId: String)
