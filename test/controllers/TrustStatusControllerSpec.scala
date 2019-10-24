@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import connector.TrustConnector
-import models.{Closed, Processing, ServiceUnavailable, UserAnswers, UtrNotFound}
+import models.{Closed, Processed, Processing, ServiceUnavailable, UserAnswers, UtrNotFound}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
@@ -159,6 +159,19 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
         status(result) mustEqual SEE_OTHER
 
         redirectLocation(result).value mustEqual "/trusts-registration/id/status/down"
+
+        application.stop()
+      }
+
+      "a Processed status is received from the trust connector" in new LocalSetup {
+
+        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status(fakeDraftId).url)
+
+        when(fakeTrustConnector.getTrustStatus(any[String])(any(), any())).thenReturn(Future.successful(Processed))
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual frontendAppConfig.claimATrustUrl(utr)
 
         application.stop()
       }
