@@ -35,3 +35,24 @@ p.font-xsmall{
 .hero__heading-small {
   display: block;
 }
+
+.govuk-caption-xl {
+    font-family: "nta", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.11111;
+    display: block;
+    margin-top: 1.25em;
+    margin-bottom: 5px;
+    color: #6f777b;
+}
+
+@media (min-width: 40.0625em) {
+  .govuk-caption-xl {
+    font-size: 27px;
+    line-height: 1.11111;
+  }
+}
+
