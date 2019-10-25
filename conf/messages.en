@@ -85,7 +85,6 @@ site.address.international.heading = What is {0}’s address?
 site.address.international.line1 = Address line 1
 site.address.international.line2 = Address line 2
 site.address.international.line3 = Address line 3 (optional)
-site.address.international.line4 = Address line 4 (optional)
 site.address.international.country = Country
 
 internationalAddress.error.line1.required = Enter address line 1
@@ -94,11 +93,9 @@ internationalAddress.error.country.required = Select a country
 internationalAddress.error.line1.length = Address line 1 must be 35 characters or less
 internationalAddress.error.line2.length = Address line 2 must be 35 characters or less
 internationalAddress.error.line3.length = Address line 3 must be 35 characters or less
-internationalAddress.error.line4.length = Address line 4 must be 35 characters or less
 internationalAddress.error.line1.invalidCharacters = Address line 1 must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 internationalAddress.error.line2.invalidCharacters = Address line 2 must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 internationalAddress.error.line3.invalidCharacters = Address line 3 must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
-internationalAddress.error.line4.invalidCharacters = Address line 4 must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
 individualOrBusiness.individual = Individual
 individualOrBusiness.business = Business
