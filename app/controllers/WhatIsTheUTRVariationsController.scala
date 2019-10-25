@@ -68,7 +68,7 @@ class WhatIsTheUTRVariationsController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatIsTheUTRVariationPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(config.claimATrustUrl(value))
+          } yield Redirect(routes.TrustStatusController.status(draftId))
         }
       )
   }
