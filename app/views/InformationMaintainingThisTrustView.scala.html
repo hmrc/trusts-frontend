@@ -58,7 +58,7 @@ title = messages("informationMaintainingThisTrust.title")
 
 <p>@messages("informationMaintainingThisTrust.paragraph3")</p>
 
-@components.submit_button()
+@components.button_link(messages("site.onlyContinue"), SessionExpiredController.onPageLoad().url)
 
 }
 

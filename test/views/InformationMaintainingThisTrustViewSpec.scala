@@ -16,16 +16,13 @@
 
 package views
 
-import controllers.routes
-import models.NormalMode
 import views.behaviours.ViewBehaviours
-import views.html.{InformationMaintainingThisTrustView, SettlorInfoView}
-import play.api.data.Form
-import views.html.helper.form
+import views.html.InformationMaintainingThisTrustView
+import controllers.routes
 
 class InformationMaintainingThisTrustViewSpec extends ViewBehaviours {
 
-  "SettlorInfo view" must {
+  "InformationMaintainingThisTrust view" must {
 
     val utr = "1234545678"
 
@@ -33,8 +30,13 @@ class InformationMaintainingThisTrustViewSpec extends ViewBehaviours {
 
     val applyView = view.apply(fakeDraftId, utr)(fakeRequest, messages)
 
+
+    "Have a dynamic utr in the subheading" in {
+      val doc = asDocument(applyView)
+      assertContainsText(doc, s"This trust’s UTR: $utr")
+    }
+
     behave like normalPage(applyView, "informationMaintainingThisTrust",
-      "subHeading",
       "warning",
       "h3",
       "paragraph1",
@@ -50,6 +52,7 @@ class InformationMaintainingThisTrustViewSpec extends ViewBehaviours {
 
     behave like pageWithBackLink(applyView)
 
-    behave like pageWithASubmitButton(applyView)
+    behave like pageWithContinueButton(applyView,routes.SessionExpiredController.onPageLoad().url)
+
   }
 }

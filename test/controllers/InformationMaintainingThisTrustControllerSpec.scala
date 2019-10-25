@@ -47,20 +47,5 @@ class InformationMaintainingThisTrustControllerSpec extends SpecBase {
 
       application.stop()
     }
-
-    "redirect to the correct page for a POST" in {
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      val request = FakeRequest(POST, routes.InformationMaintainingThisTrustController.onSubmit(fakeDraftId).url)
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustBe routes.SessionExpiredController.onPageLoad().url
-
-      application.stop()
-    }
   }
 }

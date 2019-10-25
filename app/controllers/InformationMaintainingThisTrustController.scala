@@ -48,11 +48,4 @@ class InformationMaintainingThisTrustController @Inject()(
         case None => Redirect(routes.WhatIsTheUTRController.onPageLoad(NormalMode, draftId))
       }
   }
-
-  def onSubmit(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
-    implicit request =>
-
-      Redirect(routes.SessionExpiredController.onPageLoad())
-
-  }
 }
