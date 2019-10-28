@@ -16,6 +16,8 @@ GET        /unauthorised                                controllers.Unauthorised
 
 GET        /create-agent-services-account               controllers.CreateAgentServicesAccountController.onPageLoad()
 
+GET        /signed-out                                  controllers.SignedOutController.onPageLoad()
+
 GET        /:draftId/trust-name                                   controllers.TrustNameController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/trust-name                                   controllers.TrustNameController.onSubmit(mode: Mode = NormalMode, draftId: String)
 
