@@ -59,7 +59,6 @@ class WhatIsTheUTRVariationsController @Inject()(
       Ok(view(preparedForm, mode, draftId, routes.WhatIsTheUTRVariationsController.onSubmit(mode, draftId)))
   }
 
-
   def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
 
@@ -79,10 +78,10 @@ class WhatIsTheUTRVariationsController @Inject()(
                   if(c.trustLocked) {
                     Redirect(routes.WhatIsTheUTRVariationsController.trustStillLocked(draftId))
                   } else {
-                    Redirect(config.claimATrustUrl(value))
+                    Redirect(routes.TrustStatusController.status(draftId))
                   }
                 }
-              case _ => Redirect(config.claimATrustUrl(value))
+              case _ => Redirect(routes.TrustStatusController.status(draftId))
             }
           }
         }
