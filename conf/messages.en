@@ -284,6 +284,47 @@ UTRSentByPost.paragraph1 = It can take 15 working days for you to get your UTR. 
 UTRSentByPost.paragraph2 = if you have not received your UTR after this time.
 UTRSentByPost.link = Contact the trusts helpline
 
+
+ClosedError.title = Sorry, you cannot access this trust
+ClosedError.heading = Sorry, you cannot access this trust
+ClosedError.subheading = This trust’s UTR: {0}
+ClosedError.paragraph1 = You cannot make changes to this trust as it has been closed.
+ClosedError.paragraph2 = If this has been done in error or you need help with the service, please
+ClosedError.contact.link = contact HMRC
+ClosedError.paragraph3 = to reopen the records. HMRC will contact you if a tax return is required or for any further information.
+ClosedError.paragraph4 = You can
+ClosedError.return.link = return to register and maintain a trust for a client
+ClosedError.link.paragraph = If you need help with the service
+
+DoesNotMatchError.title = Sorry, you cannot access this trust
+DoesNotMatchError.heading = Sorry, you cannot access this trust
+DoesNotMatchError.subheading = This trust’s UTR: {0}
+DoesNotMatchError.paragraph1 = The Unique Taxpayer Reference (UTR) entered does not match our records.
+DoesNotMatchError.paragraph2 = Check you have entered the trust’s UTR correctly.
+DoesNotMatchError.paragraph3 = If you do not have a UTR for the trust you will need to register the trust first.
+DoesNotMatchError.paragraph4 = If you need help with the service
+DoesNotMatchError.paragraph5 = You can
+DoesNotMatchError.contact.link = contact the trusts helpline
+DoesNotMatchError.return.link = return to register and maintain a trust for a client
+
+StillProcessingError.title = Sorry, you cannot access this trust
+StillProcessingError.heading = Sorry, you cannot access this trust
+StillProcessingError.subheading = This trust’s UTR: {0}
+StillProcessingError.paragraph1 = HMRC is still processing changes recently made to this trust.
+StillProcessingError.paragraph2 = Try again later.
+StillProcessingError.paragraph3 = If you need help with the service
+StillProcessingError.paragraph4 = You can
+StillProcessingError.contact.link = contact the trusts helpline
+StillProcessingError.return.link = return to register and maintain a trust for a client
+
+IvDown.heading = Sorry, there is a problem with the service
+IvDown.title = Sorry, there is a problem with the service
+IvDown.paragraph1 = Try again later.
+IvDown.paragraph2 = You can
+IvDown.paragraph3 = if you need to speak to someone about registering and maintaining a trust.
+IvDown.contact.link = contact the trusts helpline
+IvDown.return.link = return to register and maintain a trust for a client
+
 isThisLeadTrustee.title = Is this the lead trustee?
 isThisLeadTrustee.heading = Is this the lead trustee?
 isThisLeadTrustee.checkYourAnswersLabel = Is this the lead trustee?
@@ -477,6 +518,7 @@ agentOverview.paragraph2 = You can print a draft copy of your saved answers once
 agentOverview.paragraph3 = For information about what you need to register a trust,
 agentOverview.paragraph4 = If you need to maintain a trust which has already been registered online, any changes you make without declaring will not be saved.
 agentOverview.contactLink = read the GOV.UK trusts guidance (opens in a new window or tab)
+agentOverview.h2 = Saved registrations
 agentOverview.start = Start now
 agentOverview.internalClientReference = Internal client reference
 agentOverview.savedUntil = Saved until
@@ -896,8 +938,8 @@ declaration.individual.warning = I confirm that I have taken all reasonable step
 
 summaryAnswerPage.title = Draft copy of the trust’s registration
 summaryAnswerPage.heading = Draft copy of the trust’s registration
-summaryAnswerPage.paragraph1 = You can save your registration and come back later. You have 28 days from the time you first save to register a trust. If you do not register within 28 days, your information will be deleted.
-summaryAnswerPage.paragraph2 = This is not a declaration confirming the trust has been registered.
+summaryAnswerPage.paragraph1 = You can save your registration and come back later. You have 28 days from the first time you save to complete this registration or your information will be deleted.
+summaryAnswerPage.paragraph2 = This is not a declaration confirming the trust has been registered. You can print a declared copy after you have made a declaration.
 
 confirmationAnswerPage.title = Declared copy of the trust’s registration
 confirmationAnswerPage.heading = Declared copy of the trust’s registration
