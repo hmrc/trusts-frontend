@@ -638,3 +638,5 @@ GET        /:draftId/status                                 controllers.TrustSta
 
 GET        /:draftId/maintain-a-trust/information           controllers.InformationMaintainingThisTrustController.onPageLoad(draftId: String)
 
+GET       /:draftId/trust-locked                  controllers.WhatIsTheUTRVariationsController.trustStillLocked(draftId: String)
+

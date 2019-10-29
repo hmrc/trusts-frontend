@@ -1304,6 +1304,14 @@ settlorInfo.bulletpoint11 = if it’s an employer-financed retirement scheme, an
 settlorInfo.bulletpoint12 = the business type (trading or investment) if the scheme’s settlor is a business
 settlorInfo.bulletpoint13 = if the business had been in existence for at least two years each time an asset was added to the trust.
 
+TrustLocked.title = Sorry, you cannot access this trust
+TrustLocked.heading = Sorry, you cannot access this trust
+TrustLocked.p1 = You have not passed the security questions asked by HMRC.
+TrustLocked.p2 = Try again in 30 minutes.
+TrustLocked.p3 = If you need help with the service
+TrustLocked.link1 = contact the trusts helpline
+TrustLocked.subheading = This trust’s UTR: {0}
+
 informationMaintainingThisTrust.title = Information about maintaining this trust
 informationMaintainingThisTrust.heading = Information about maintaining this trust
 informationMaintainingThisTrust.subHeading = This trust’s UTR: {0}
