@@ -636,3 +636,5 @@ GET        /:draftId/status/not-found                       controllers.TrustSta
 GET        /:draftId/status/down                            controllers.TrustStatusController.down(draftId: String)
 GET        /:draftId/status                                 controllers.TrustStatusController.status(draftId: String)
 
+GET        /:draftId/maintain-a-trust/information           controllers.InformationMaintainingThisTrustController.onPageLoad(draftId: String)
+
