@@ -35,3 +35,27 @@ p.font-xsmall{
 .hero__heading-small {
   display: block;
 }
+
+@media (min-width: 40.0625em){
+.govuk-list > li {
+    margin-bottom: 15px;
+    }
+}
+
+.govuk-list, .app-prose-scope ul, .app-prose-scope ol {
+    font-family: "GDS Transport",Arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 400;
+    line-height: 1.25;
+    color: #0b0c0c;
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-left: 0;
+    list-style-type: none;
+}
+
+.govuk-list--number, .app-prose-scope ol {
+    padding-left: 20px;
+    list-style-type: decimal;
+}
