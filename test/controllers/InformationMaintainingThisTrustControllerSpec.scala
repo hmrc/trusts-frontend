@@ -17,6 +17,7 @@
 package controllers
 
 import base.SpecBase
+import models.NormalMode
 import pages.WhatIsTheUTRPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -44,6 +45,21 @@ class InformationMaintainingThisTrustControllerSpec extends SpecBase {
 
       contentAsString(result) mustEqual
         view(fakeDraftId, utr)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "redirect to WhatIsTheUTRPage when WhatIsTheUTRPage is not answered" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      val request = FakeRequest(GET, routes.InformationMaintainingThisTrustController.onPageLoad(fakeDraftId).url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation (result).value mustEqual routes.WhatIsTheUTRController.onPageLoad(NormalMode, fakeDraftId).url
 
       application.stop()
     }
