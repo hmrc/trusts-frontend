@@ -38,14 +38,11 @@ class AddressMapper  {
    private def buildUkAddress(address: Option[models.UKAddress]): Option[AddressType] = {
     address.map{
       x=>
-        val line2 = x.line2.getOrElse(x.townOrCity)
-        val townOrCity = if(line2==x.townOrCity) None else Some(x.townOrCity)
-
         AddressType(
           x.line1,
-          line2,
+          x.line2,
           x.line3,
-          townOrCity,
+          x.line4,
           Some(x.postcode),
           "GB")
     }

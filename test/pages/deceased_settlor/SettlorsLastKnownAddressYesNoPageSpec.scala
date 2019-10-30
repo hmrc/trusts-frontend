@@ -34,7 +34,7 @@ class SettlorsLastKnownAddressYesNoPageSpec extends PageBehaviours {
   "remove WasSettlorsAddressUKYesNoPage, SettlorsAddressUK, SettlorsInternationalAddressPage when SettlorsLastKnownAddressYesNoPage is set to false" in {
     forAll(arbitrary[UserAnswers], arbitrary[String]) {
       (initial, str) =>
-        val answers: UserAnswers = initial.set(SettlorsUKAddressPage, UKAddress(str, Some(str), Some(str), str, str)).success.value
+        val answers: UserAnswers = initial.set(SettlorsUKAddressPage, UKAddress(str, str, Some(str), Some(str), str)).success.value
           .set(WasSettlorsAddressUKYesNoPage, true).success.value
         val result = answers.set(SettlorsLastKnownAddressYesNoPage, false).success.value
 

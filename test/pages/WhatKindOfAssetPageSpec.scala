@@ -119,9 +119,9 @@ class WhatKindOfAssetPageSpec extends PageBehaviours {
           .set(PropertyOrLandAddressUkYesNoPage(0), true).success.value
           .set(PropertyOrLandUKAddressPage(0), UKAddress(
             "line 1",
+            "line 2",
             None,
             None,
-            "Newcastle",
             "NE1 1NN"
           )).success.value
           .set(PropertyOrLandTotalValuePage(0), "10,000").success.value

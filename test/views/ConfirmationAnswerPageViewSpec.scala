@@ -23,16 +23,16 @@ import models.Status.Completed
 import models.TrusteesBasedInTheUK.UKBasedTrustees
 import models.{AddABeneficiary, AddATrustee, FullName, IndividualOrBusiness, Status, UKAddress, WhatKindOfAsset}
 import pages._
-import pages.deceased_settlor.{SettlorDateOfBirthYesNoPage, SettlorDateOfDeathPage, SettlorDateOfDeathYesNoPage, SettlorNationalInsuranceNumberPage, SettlorsDateOfBirthPage, SettlorsLastKnownAddressYesNoPage, SettlorsNINoYesNoPage, SettlorsNamePage, SettlorsUKAddressPage, WasSettlorsAddressUKYesNoPage}
+import pages.deceased_settlor._
 import pages.entitystatus._
 import pages.property_or_land._
 import pages.shares._
-import pages.trustees.{AddATrusteePage, IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteeIndividualOrBusinessPage, TrusteeLiveInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
+import pages.trustees._
+import utils.AccessibilityHelper._
 import utils.countryOptions.CountryOptions
-import utils.{CheckYourAnswersHelper, DateFormatter, PrintUserAnswersHelper, TestUserAnswers, TrustsDateFormatter}
+import utils.{DateFormatter, PrintUserAnswersHelper, TestUserAnswers}
 import views.behaviours.ViewBehaviours
 import views.html.ConfirmationAnswerPageView
-import utils.AccessibilityHelper._
 
 class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
   val index = 0
@@ -51,19 +51,19 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
         .set(TrustDetailsStatus, Completed).success.value
 
         .set(IndividualBeneficiaryNamePage(index), FullName("BenFirst", None, "BenLast")).success.value
-        .set(IndividualBeneficiaryDateOfBirthYesNoPage(index),true).success.value
-        .set(IndividualBeneficiaryDateOfBirthPage(index),LocalDate.of(2010, 10, 10)).success.value
-        .set(IndividualBeneficiaryIncomeYesNoPage(index),true).success.value
-        .set(IndividualBeneficiaryIncomePage(index),"100").success.value
-        .set(IndividualBeneficiaryNationalInsuranceYesNoPage(index),true).success.value
-        .set(IndividualBeneficiaryNationalInsuranceNumberPage(index),"AB123456C").success.value
-        .set(IndividualBeneficiaryAddressYesNoPage(index),true).success.value
-        .set(IndividualBeneficiaryAddressUKYesNoPage(index),true).success.value
-        .set(IndividualBeneficiaryAddressUKPage(index),UKAddress("Line1",None, None, "TownOrCity","NE62RT" )).success.value
-        .set(IndividualBeneficiaryVulnerableYesNoPage(index),true).success.value
+        .set(IndividualBeneficiaryDateOfBirthYesNoPage(index), true).success.value
+        .set(IndividualBeneficiaryDateOfBirthPage(index), LocalDate.of(2010, 10, 10)).success.value
+        .set(IndividualBeneficiaryIncomeYesNoPage(index), true).success.value
+        .set(IndividualBeneficiaryIncomePage(index), "100").success.value
+        .set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), true).success.value
+        .set(IndividualBeneficiaryNationalInsuranceNumberPage(index), "AB123456C").success.value
+        .set(IndividualBeneficiaryAddressYesNoPage(index), true).success.value
+        .set(IndividualBeneficiaryAddressUKYesNoPage(index), true).success.value
+        .set(IndividualBeneficiaryAddressUKPage(index), UKAddress("Line1", "Line2", None, None, "NE62RT")).success.value
+        .set(IndividualBeneficiaryVulnerableYesNoPage(index), true).success.value
         .set(IndividualBeneficiaryStatus(index), Status.Completed).success.value
 
-        .set(ClassBeneficiaryDescriptionPage(index),"Class of beneficary description").success.value
+        .set(ClassBeneficiaryDescriptionPage(index), "Class of beneficary description").success.value
         .set(ClassBeneficiaryStatus(index), Status.Completed).success.value
         .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
 
@@ -75,7 +75,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
         .set(TrusteesNinoPage(index), "AB123456C").success.value
         .set(TelephoneNumberPage(index), "0191 1111111").success.value
         .set(TrusteeLiveInTheUKPage(index), true).success.value
-        .set(TrusteesUkAddressPage(index), UKAddress("line1", Some("line2"), Some("line3"), "town or city", "AB1 1AB")).success.value
+        .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", Some("line3"), Some("line4"), "AB1 1AB")).success.value
         .set(TrusteeStatus(index), Status.Completed).success.value
         .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
@@ -89,7 +89,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
         .set(SettlorNationalInsuranceNumberPage, "AB123456C").success.value
         .set(SettlorsLastKnownAddressYesNoPage, true).success.value
         .set(WasSettlorsAddressUKYesNoPage, true).success.value
-        .set(SettlorsUKAddressPage, UKAddress("Line1", None, None, "Town", "NE1 1ZZ")).success.value
+        .set(SettlorsUKAddressPage, UKAddress("Line1", "Line2", None, None, "NE1 1ZZ")).success.value
         .set(DeceasedSettlorStatus, Status.Completed).success.value
 
         .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
@@ -116,7 +116,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
     val formatter = injector.instanceOf[DateFormatter]
 
-    val trnDateTime : String = formatter.formatDate(LocalDateTime.of(2010, 10, 10, 13, 10, 10))
+    val trnDateTime: String = formatter.formatDate(LocalDateTime.of(2010, 10, 10, 13, 10, 10))
     val name = "First Last"
     val benName = "BenFirst BenLast"
     val trusteeName = "TrusteeFirst TrusteeLast"
@@ -170,7 +170,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
       assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryAddressYesNo.checkYourAnswersLabel", benName), yes)
       assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryAddressUKYesNo.checkYourAnswersLabel", benName), yes)
       assertContainsText(doc, messages("individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel", benName))
-      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryAddressUK.checkYourAnswersLabel", benName), "Line1 TownOrCity NE62RT")
+      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryAddressUK.checkYourAnswersLabel", benName), "Line1 Line2 NE62RT")
     }
 
     "assert question labels for Class Of Beneficiaries" in {
@@ -186,7 +186,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
       assertContainsQuestionAnswerPair(doc, messages("trusteesNino.checkYourAnswersLabel", trusteeName), "AB 12 34 56 C")
       assertContainsQuestionAnswerPair(doc, messages("telephoneNumber.checkYourAnswersLabel", trusteeName), "0191 1111111")
       assertContainsQuestionAnswerPair(doc, messages("trusteeLiveInTheUK.checkYourAnswersLabel", trusteeName), yes)
-      assertContainsQuestionAnswerPair(doc, messages("trusteesUkAddress.checkYourAnswersLabel", trusteeName), "line1 line2 line3 town or city AB1 1AB")
+      assertContainsQuestionAnswerPair(doc, messages("trusteesUkAddress.checkYourAnswersLabel", trusteeName), "line1 line2 line3 line4 AB1 1AB")
     }
 
     "assert question labels for Settlors" in {
@@ -200,7 +200,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
       assertContainsQuestionAnswerPair(doc, messages("settlorNationalInsuranceNumber.checkYourAnswersLabel", name), "AB 12 34 56 C")
       assertContainsQuestionAnswerPair(doc, messages("settlorsLastKnownAddressYesNo.checkYourAnswersLabel", name), yes)
       assertContainsQuestionAnswerPair(doc, messages("wasSettlorsAddressUKYesNo.checkYourAnswersLabel", name), yes)
-      assertContainsQuestionAnswerPair(doc, messages("settlorsUKAddress.checkYourAnswersLabel", name), "Line1 Town NE1 1ZZ")
+      assertContainsQuestionAnswerPair(doc, messages("settlorsUKAddress.checkYourAnswersLabel", name), "Line1 Line2 NE1 1ZZ")
     }
 
     "assert question labels for Money Assets" in {

@@ -36,8 +36,8 @@ class TrusteeLiveInTheUKPageSpec extends PageBehaviours {
     val index = 0
     forAll(arbitrary[UserAnswers], arbitrary[String]) {
       (initial, str) =>
-        val answers: UserAnswers = initial.set(TrusteesUkAddressPage(index),UKAddress(str, Some(str), Some(str), str, str) ).success.value
-        val result = answers.set(TrusteeLiveInTheUKPage(index), false).success.value
+        val answers: UserAnswers = initial.set(TrusteesUkAddressPage(index),UKAddress(str, str, Some(str), Some(str), str) ).success.value
+        val result: UserAnswers = answers.set(TrusteeLiveInTheUKPage(index), false).success.value
 
         result.get(TrusteesUkAddressPage(index)) mustNot be(defined)
     }

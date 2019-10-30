@@ -49,7 +49,7 @@ class AgentMapperSpec extends FreeSpec with MustMatchers
           emptyUserAnswers
             .set(AgentARNPage, "SARN123456").success.value
             .set(AgentNamePage, "Agency Name").success.value
-            .set(AgentUKAddressPage, UKAddress("line1", Some("line2"), Some("line3"), "Newcastle", "ab1 1ab")).success.value
+            .set(AgentUKAddressPage, UKAddress("Line1", "Line2", None, Some("Newcastle"), "ab1 1ab")).success.value
             .set(AgentTelephoneNumberPage, "+1234567890").success.value
             .set(AgentInternalReferencePage, "1234-5678").success.value
             .set(AgentAddressYesNoPage, true).success.value
@@ -57,7 +57,7 @@ class AgentMapperSpec extends FreeSpec with MustMatchers
         agentMapper.build(userAnswers).value mustBe AgentDetails(
           arn = "SARN123456",
           agentName = "Agency Name",
-          agentAddress = AddressType("line1", "line2", Some("line3"), Some("Newcastle"), Some("ab1 1ab"), "GB"),
+          agentAddress = AddressType("Line1", "Line2", None, Some("Newcastle"), Some("ab1 1ab"), "GB"),
           agentTelephoneNumber = "+1234567890",
           clientReference = "1234-5678"
         )
@@ -69,7 +69,7 @@ class AgentMapperSpec extends FreeSpec with MustMatchers
           emptyUserAnswers
             .set(AgentARNPage, "SARN123456").success.value
             .set(AgentNamePage, "Agency Name").success.value
-            .set(AgentUKAddressPage, UKAddress("line1",None,None , "Newcastle", "ab1 1ab")).success.value
+            .set(AgentUKAddressPage, UKAddress("Line1", "Newcastle", None, None, "NE62RT")).success.value
             .set(AgentTelephoneNumberPage, "+1234567890").success.value
             .set(AgentInternalReferencePage, "1234-5678").success.value
             .set(AgentAddressYesNoPage, true).success.value
@@ -77,7 +77,7 @@ class AgentMapperSpec extends FreeSpec with MustMatchers
         agentMapper.build(userAnswers).value mustBe AgentDetails(
           arn = "SARN123456",
           agentName = "Agency Name",
-          agentAddress = AddressType("line1", "Newcastle", None, None, Some("ab1 1ab"), "GB"),
+          agentAddress = AddressType("Line1", "Newcastle", None, None, Some("NE62RT"), "GB"),
           agentTelephoneNumber = "+1234567890",
           clientReference = "1234-5678"
         )
