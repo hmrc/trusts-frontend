@@ -22,16 +22,7 @@ import play.api.libs.json._
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
 sealed trait TrustStatusResponse
-
 sealed trait TrustStatus extends TrustStatusResponse
-
-case object Processing extends TrustStatus
-case object Closed extends TrustStatus
-case object Processed extends TrustStatus
-
-case object UtrNotFound extends TrustStatusResponse
-case object ServiceUnavailable extends TrustStatusResponse
-case object ServerError extends TrustStatusResponse
 
 object TrustStatusResponse {
 
@@ -43,6 +34,14 @@ object TrustStatusResponse {
       case _ => JsError("Unexpected Status")
     }
   }
+
+  case object Processing extends TrustStatus
+  case object Closed extends TrustStatus
+  case object Processed extends TrustStatus
+
+  case object UtrNotFound extends TrustStatusResponse
+  case object ServiceUnavailable extends TrustStatusResponse
+  case object ServerError extends TrustStatusResponse
 
   implicit lazy val httpReads: HttpReads[TrustStatusResponse] =
     new HttpReads[TrustStatusResponse] {

@@ -27,14 +27,10 @@ trait TrustResponse
 final case class RegistrationTRNResponse(trn : String) extends TrustResponse
 
 object RegistrationTRNResponse {
+
   implicit val formats : OFormat[RegistrationTRNResponse] = Json.format[RegistrationTRNResponse]
+
 }
-
-case object AlreadyRegistered extends TrustResponse
-
-case object InternalServerError extends TrustResponse
-
-final case class UnableToRegister() extends Exception with TrustResponse
 
 object TrustResponse {
 
@@ -48,6 +44,11 @@ object TrustResponse {
     }
 
   }
+
+  case object AlreadyRegistered extends TrustResponse
+  case object InternalServerError extends TrustResponse
+
+  final case class UnableToRegister() extends Exception with TrustResponse
 
   implicit lazy val httpReads: HttpReads[TrustResponse] =
     new HttpReads[TrustResponse] {
