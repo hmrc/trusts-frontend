@@ -62,6 +62,8 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   def claimATrustUrl(utr: String) = configuration.get[Service]("microservice.services.claim-a-trust-frontend").baseUrl + s"/claim-a-trust/save/$utr"
 
+  lazy val trustsStoreUrl: String = configuration.get[Service]("microservice.services.trusts-store").baseUrl + "/trusts-store"
+
   lazy val  posthmrc: String = configuration.get[String]("confirmation.posthmrc")
 
   def languageMap: Map[String, Lang] = Map(
