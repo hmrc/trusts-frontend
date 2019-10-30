@@ -41,7 +41,7 @@ class SettlorIndividualAddressYesNoPageSpec extends PageBehaviours {
           initial =>
             val answers: UserAnswers = initial.set(page, true).success.value
               .set(SettlorIndividualAddressUKYesNoPage(0), true).success.value
-              .set(SettlorIndividualAddressInternationalPage(0), InternationalAddress("line1", "line2", None, None, "France")).success.value
+              .set(SettlorIndividualAddressInternationalPage(0), InternationalAddress("line1", "line2", None, "France")).success.value
               .set(SettlorIndividualAddressUKPage(0), UKAddress("line1", None, None, "Town", "NE11NE")).success.value
               .set(SettlorIndividualPassportYesNoPage(0), true).success.value
               .set(SettlorIndividualPassportPage(0), PassportOrIdCardDetails("UK", "234567887", LocalDate.now())).success.value

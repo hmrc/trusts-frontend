@@ -82,7 +82,7 @@ trait ModelGenerators {
     Arbitrary {
       for {
         str <- arbitrary[String]
-      } yield InternationalAddress(str,str,Some(str),Some(str),str)
+      } yield InternationalAddress(str,str,Some(str),str)
     }
 
   implicit lazy val arbitraryAddAssets: Arbitrary[AddAssets] =

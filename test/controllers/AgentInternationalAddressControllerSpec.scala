@@ -19,11 +19,10 @@ package controllers
 import base.SpecBase
 import forms.InternationalAddressFormProvider
 import models.{InternationalAddress, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
 import pages.{AgentInternationalAddressPage, AgentNamePage}
-import play.api.inject.bind
-import play.api.libs.json.Json
-import play.api.mvc.Call
+import play.api.Application
+import play.api.data.Form
+import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
@@ -31,35 +30,37 @@ import utils.InputOption
 import utils.countryOptions.CountryOptionsNonUK
 import views.html.AgentInternationalAddressView
 
+import scala.concurrent.Future
+
 class AgentInternationalAddressControllerSpec extends SpecBase {
 
   val formProvider = new InternationalAddressFormProvider()
-  val form = formProvider()
+  val form: Form[InternationalAddress] = formProvider()
   val agencyName = "Hadrian"
 
-  lazy val agentInternationalAddressRoute = routes.AgentInternationalAddressController.onPageLoad(NormalMode,fakeDraftId).url
+  lazy val agentInternationalAddressRoute: String = routes.AgentInternationalAddressController.onPageLoad(NormalMode, fakeDraftId).url
 
   "AgentInternationalAddress Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = emptyUserAnswers.set(AgentNamePage,
+      val userAnswers: UserAnswers = emptyUserAnswers.set(AgentNamePage,
         agencyName).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
+      val application: Application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, agentInternationalAddressRoute)
 
-      val view = application.injector.instanceOf[AgentInternationalAddressView]
+      val view: AgentInternationalAddressView = application.injector.instanceOf[AgentInternationalAddressView]
 
-      val result = route(application, request).value
+      val result: Future[Result] = route(application, request).value
 
       val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, countryOptions, NormalMode, fakeDraftId,agencyName)(request, messages).toString
+        view(form, countryOptions, NormalMode, fakeDraftId, agencyName)(request, messages).toString
 
       application.stop()
     }
@@ -67,7 +68,7 @@ class AgentInternationalAddressControllerSpec extends SpecBase {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers
-        .set(AgentInternationalAddressPage, InternationalAddress("line 1", "line 2", Some("line 3"), Some("line 4"),"country")).success.value
+        .set(AgentInternationalAddressPage, InternationalAddress("line 1", "line 2", Some("line 3"), "country")).success.value
         .set(AgentNamePage, agencyName).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
@@ -83,7 +84,7 @@ class AgentInternationalAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(InternationalAddress("line 1", "line 2", Some("line 3"), Some("line 4"),"country")), countryOptions, NormalMode,fakeDraftId, agencyName)(fakeRequest, messages).toString
+        view(form.fill(InternationalAddress("line 1", "line 2", Some("line 3"), "country")), countryOptions, NormalMode, fakeDraftId, agencyName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -132,7 +133,7 @@ class AgentInternationalAddressControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, countryOptions, NormalMode,fakeDraftId,agencyName)(fakeRequest, messages).toString
+        view(boundForm, countryOptions, NormalMode, fakeDraftId, agencyName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -178,7 +179,7 @@ class AgentInternationalAddressControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.AgentNameController.onPageLoad(NormalMode,fakeDraftId).url
+      redirectLocation(result).value mustEqual routes.AgentNameController.onPageLoad(NormalMode, fakeDraftId).url
 
       application.stop()
     }

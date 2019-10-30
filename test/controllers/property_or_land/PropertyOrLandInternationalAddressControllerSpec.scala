@@ -20,36 +20,38 @@ import base.SpecBase
 import controllers.IndexValidation
 import forms.InternationalAddressFormProvider
 import models.{InternationalAddress, NormalMode}
-import navigation.{FakeNavigator, Navigator}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.property_or_land.{PropertyOrLandDescriptionPage, PropertyOrLandInternationalAddressPage}
-import play.api.inject.bind
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import pages.property_or_land.PropertyOrLandInternationalAddressPage
+import play.api.Application
+import play.api.data.Form
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils._
 import utils.countryOptions.CountryOptionsNonUK
 import views.html.property_or_land.PropertyOrLandInternationalAddressView
 
+import scala.concurrent.Future
+
 class PropertyOrLandInternationalAddressControllerSpec extends SpecBase with IndexValidation {
 
   val formProvider = new InternationalAddressFormProvider()
-  val form = formProvider()
+  val form: Form[InternationalAddress] = formProvider()
   val index: Int = 0
 
-  lazy val propertyOrLandInternationalAddressRoute = controllers.property_or_land.routes.PropertyOrLandInternationalAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
+  lazy val propertyOrLandInternationalAddressRoute: String = controllers.property_or_land.routes.PropertyOrLandInternationalAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "PropertyOrLandInternationalAddress Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application: Application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request = FakeRequest(GET, propertyOrLandInternationalAddressRoute)
 
-      val view = application.injector.instanceOf[PropertyOrLandInternationalAddressView]
+      val view: PropertyOrLandInternationalAddressView = application.injector.instanceOf[PropertyOrLandInternationalAddressView]
 
-      val result = route(application, request).value
+      val result: Future[Result] = route(application, request).value
 
       val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
 
@@ -64,7 +66,7 @@ class PropertyOrLandInternationalAddressControllerSpec extends SpecBase with Ind
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers
-        .set(PropertyOrLandInternationalAddressPage(index), InternationalAddress("line 1", "line 2", Some("line 3"), Some("line 4"),"country")).success.value
+        .set(PropertyOrLandInternationalAddressPage(index), InternationalAddress("line 1", "line 2", Some("line 3"), "country")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -79,7 +81,7 @@ class PropertyOrLandInternationalAddressControllerSpec extends SpecBase with Ind
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(InternationalAddress("line 1", "line 2", Some("line 3"), Some("line 4"),"country")), countryOptions, NormalMode,fakeDraftId, index)(fakeRequest, messages).toString
+        view(form.fill(InternationalAddress("line 1", "line 2", Some("line 3"), "country")), countryOptions, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -160,7 +162,7 @@ class PropertyOrLandInternationalAddressControllerSpec extends SpecBase with Ind
 
   "for a GET" must {
 
-    def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
+    def getForIndex(index: Int): FakeRequest[AnyContentAsEmpty.type] = {
       val route = controllers.property_or_land.routes.PropertyOrLandInternationalAddressController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       FakeRequest(GET, route)

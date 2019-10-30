@@ -137,12 +137,12 @@ class IndividualSettlorsMapperSpec extends FreeSpec with MustMatchers
             .set(SettlorIndividualNINOYesNoPage(0), false).success.value
             .set(SettlorIndividualAddressYesNoPage(0), true).success.value
             .set(SettlorIndividualAddressUKYesNoPage(0), false).success.value
-            .set(SettlorIndividualAddressInternationalPage(0), InternationalAddress("line1", "line2", Some("line3"), Some("line4"), "FR")).success.value
+            .set(SettlorIndividualAddressInternationalPage(0), InternationalAddress("line1", "line2", Some("line3"), "FR")).success.value
 
           individualSettlorsMapper.build(userAnswers).value mustBe List(Settlor(
             name = NameType("First", None, "Last"),
             dateOfBirth = Some(dateOfBirth),
-            identification = Some(IdentificationType(None, None,  Some(AddressType("line1", "line2", Some("line3"), Some("line4"), None, "FR"))))
+            identification = Some(IdentificationType(None, None,  Some(AddressType("line1", "line2", Some("line3"), None, None, "FR"))))
           )
         )
       }
