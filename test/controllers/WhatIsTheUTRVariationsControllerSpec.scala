@@ -19,11 +19,17 @@ package controllers
 import base.SpecBase
 import forms.WhatIsTheUTRFormProvider
 import models.NormalMode
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
 import pages.WhatIsTheUTRVariationPage
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.WhatIsTheUTRView
+import connector.{TrustClaim, TrustsStoreConnector}
+import play.api.libs.json.Json
+import play.api.inject.bind
+
+import scala.concurrent.Future
 
 class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
 
@@ -33,6 +39,8 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
   lazy val trustUTRRoute = routes.WhatIsTheUTRVariationsController.onPageLoad(NormalMode, fakeDraftId).url
 
   lazy val onSubmit = routes.WhatIsTheUTRVariationsController.onSubmit(NormalMode, fakeDraftId)
+
+  lazy val connector: TrustsStoreConnector = mock[TrustsStoreConnector]
 
   "TrustUTR Controller" must {
 
@@ -74,10 +82,24 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       application.stop()
     }
 
-    "redirect to the next page when valid data is submitted" in {
+    "redirect to claim a trust microservice when valid UTR is submitted which does not match the locked UTR" in {
+
+      val jsonWithErrorKey = Json.parse(
+        """
+          |{
+          | "trustLocked": false,
+          | "managedByAgent": true
+          |}
+          |""".stripMargin
+      )
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[TrustsStoreConnector].toInstance(connector))
+          .build()
+
+      when(connector.get(any[String], any[String])(any(), any()))
+        .thenReturn(Future.successful(jsonWithErrorKey.asOpt[TrustClaim]))
 
       val request =
         FakeRequest(POST, trustUTRRoute)
@@ -86,7 +108,39 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual frontendAppConfig.claimATrustUrl("0987654321")
+      redirectLocation(result).value mustEqual "/trusts-registration/id/status"
+
+      application.stop()
+    }
+
+    "redirect to trust locked page when valid UTR is submitted which matches the locked UTR" in {
+
+      val jsonWithErrorKey = Json.parse(
+        """
+          |{
+          | "trustLocked": true,
+          | "managedByAgent": true,
+          | "utr": "0987654321"
+          |}
+          |""".stripMargin
+      )
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[TrustsStoreConnector].toInstance(connector))
+          .build()
+
+      when(connector.get(any[String], any[String])(any(), any()))
+        .thenReturn(Future.successful(jsonWithErrorKey.asOpt[TrustClaim]))
+
+      val request =
+        FakeRequest(POST, trustUTRRoute)
+          .withFormUrlEncodedBody(("value", "0987654321"))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual controllers.routes.WhatIsTheUTRVariationsController.trustStillLocked(fakeDraftId).url
 
       application.stop()
     }

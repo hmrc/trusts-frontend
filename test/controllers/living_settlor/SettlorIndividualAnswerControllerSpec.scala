@@ -19,10 +19,11 @@ package controllers.living_settlor
 import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
-import models.{FullName, IndividualOrBusiness, InternationalAddress, NormalMode, PassportOrIdCardDetails, SettlorKindOfTrust, UKAddress}
-import pages.{SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage, SetupAfterSettlorDiedPage}
+import models.{FullName, IndividualOrBusiness, InternationalAddress, NormalMode, PassportOrIdCardDetails, SettlorKindOfTrust, UKAddress, UserAnswers}
 import pages.living_settlor.{SettlorIndividualOrBusinessPage, _}
-import play.api.mvc.Call
+import pages.{SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage, SetupAfterSettlorDiedPage}
+import play.api.Application
+import play.api.mvc.{Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.CheckYourAnswersHelper
@@ -30,19 +31,21 @@ import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.living_settlor.SettlorIndividualAnswersView
 
+import scala.concurrent.Future
+
 class SettlorIndividualAnswerControllerSpec extends SpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 
   val settlorName = FullName("first name", Some("middle name"), "last name")
-  val validDate = LocalDate.now(ZoneOffset.UTC)
-  val nino = "CC123456A"
+  val validDate: LocalDate = LocalDate.now(ZoneOffset.UTC)
+  val nino: String = "CC123456A"
   val AddressUK = UKAddress("line 1", "line 2", Some("line 3"), Some("line 4"), "line 5")
-  val AddressInternational = InternationalAddress("line 1", "line 2", Some("line 3"), Some("line 4"), "ES")
+  val AddressInternational = InternationalAddress("line 1", "line 2", Some("line 3"), "ES")
   val passportOrIDCardDetails = PassportOrIdCardDetails("Field 1", "Field 2", LocalDate.now(ZoneOffset.UTC))
   val index: Int = 0
 
-  lazy val settlorIndividualAnswerRoute = controllers.living_settlor.routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId).url
+  lazy val settlorIndividualAnswerRoute: String = controllers.living_settlor.routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId).url
 
   "SettlorIndividualAnswer Controller" must {
 
@@ -50,7 +53,7 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
 
       "return OK and the correct view for a GET" in {
 
-        val userAnswers =
+        val userAnswers: UserAnswers =
           emptyUserAnswers
             .set(SetupAfterSettlorDiedPage, false).success.value
             .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
@@ -61,7 +64,7 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
             .set(SettlorIndividualNINOYesNoPage(index), false).success.value
             .set(SettlorIndividualAddressYesNoPage(index), false).success.value
 
-        val countryOptions = injector.instanceOf[CountryOptions]
+        val countryOptions: CountryOptions = injector.instanceOf[CountryOptions]
         val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId)
 
         val expectedSections = Seq(
@@ -80,13 +83,13 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
           )
         )
 
-        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+        val application: Application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
         val request = FakeRequest(GET, settlorIndividualAnswerRoute)
 
-        val result = route(application, request).value
+        val result: Future[Result] = route(application, request).value
 
-        val view = application.injector.instanceOf[SettlorIndividualAnswersView]
+        val view: SettlorIndividualAnswersView = application.injector.instanceOf[SettlorIndividualAnswersView]
 
         status(result) mustEqual OK
 
@@ -102,7 +105,7 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
 
       "return OK and the correct view for a GET" in {
 
-        val userAnswers =
+        val userAnswers: UserAnswers =
           emptyUserAnswers
             .set(SetupAfterSettlorDiedPage, false).success.value
             .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value

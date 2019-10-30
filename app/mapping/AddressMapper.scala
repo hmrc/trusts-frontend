@@ -55,7 +55,7 @@ class AddressMapper  {
           x.line1,
           x.line2,
           x.line3,
-          x.line4,
+          None,
           None,
           x.country
         )

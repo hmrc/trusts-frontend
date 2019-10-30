@@ -37,7 +37,6 @@ final case class InternationalAddress(
                                        line1: String,
                                        line2: String,
                                        line3: Option[String] = None,
-                                       line4: Option[String] = None,
                                        country: String
                                      ) extends Address
 
