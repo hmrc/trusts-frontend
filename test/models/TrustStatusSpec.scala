@@ -17,37 +17,53 @@
 package models
 
 import org.scalatest.{MustMatchers, WordSpec}
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 
 class TrustStatusSpec extends WordSpec with MustMatchers {
 
-  "trust status must read from Json" when {
-    "processing" in {
+  "trust status" must {
+    "read from Json" when {
+      "processing" in {
 
-      val json = """{
-        |
-        |  "responseHeader": {
-        |    "status": "In Processing",
-        |    "formBundleNo": "1"
-        |  }
-        |}
+        val json = """{
+                     |
+                     |  "responseHeader": {
+                     |    "status": "In Processing",
+                     |    "formBundleNo": "1"
+                     |  }
+                     |}
       """.stripMargin
 
-      Json.parse(json).as[TrustStatus] mustBe Processing
+        Json.parse(json).as[TrustStatus] mustBe Processing
+      }
+
+      "closed" in {
+
+        val json = """{
+                     |
+                     |  "responseHeader": {
+                     |    "status": "Closed",
+                     |    "formBundleNo": "1"
+                     |  }
+                     |}
+                 """.stripMargin
+
+        Json.parse(json).as[TrustStatus] mustBe Closed
+      }
     }
 
-    "closed" in {
+    "return failure when not given expected response" in {
 
       val json = """{
                    |
                    |  "responseHeader": {
-                   |    "status": "Closed",
+                   |    "status": "SomethingElse",
                    |    "formBundleNo": "1"
                    |  }
                    |}
                  """.stripMargin
 
-      Json.parse(json).as[TrustStatus] mustBe Closed
+      Json.parse(json).validate[TrustStatus] mustBe JsError("Unexpected Status")
     }
   }
 
