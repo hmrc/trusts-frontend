@@ -79,7 +79,7 @@ class AssetReadsSpec extends FreeSpec with MustMatchers {
             |     "line1" : "26",
             |     "line2" : "Grangetown",
             |     "line3" : "Tyne and Wear",
-            |     "townOrCity" : "Newcastle",
+            |     "line4" : "Newcastle",
             |     "postcode" : "Z99 2YY"
             |},
             |"propertyOrLandValueTrust" : "75"
@@ -167,7 +167,7 @@ class AssetReadsSpec extends FreeSpec with MustMatchers {
             |     "line1" : "26",
             |     "line2" : "Grangetown",
             |     "line3" : "Tyne and Wear",
-            |     "townOrCity" : "Newcastle",
+            |     "line4" : "Newcastle",
             |     "postcode" : "Z99 2YY"
             |},
             |"propertyOrLandValueTrust" : "75",
@@ -182,9 +182,9 @@ class AssetReadsSpec extends FreeSpec with MustMatchers {
             address = Some(
               UKAddress(
                 line1 = "26",
-                line2 = Some("Grangetown"),
+                line2 = "Grangetown",
                 line3 = Some("Tyne and Wear"),
-                townOrCity = "Newcastle",
+                line4 = Some("Newcastle"),
                 postcode = "Z99 2YY"
               )),
             propertyLandValueTrust = Some("75"),
@@ -199,7 +199,7 @@ class AssetReadsSpec extends FreeSpec with MustMatchers {
             |"whatKindOfAsset" : "PropertyOrLand",
             |"address" : {
             |     "line1" : "26",
-            |     "townOrCity" : "Newcastle",
+            |     "line2" : "Newcastle",
             |     "postcode" : "Z99 2YY"
             |},
             |"propertyOrLandTotalValue" : "1000"
@@ -213,9 +213,9 @@ class AssetReadsSpec extends FreeSpec with MustMatchers {
             address = Some(
               UKAddress(
                 line1 = "26",
-                line2 = None,
+                line2 = "Newcastle",
                 line3 = None,
-                townOrCity = "Newcastle",
+                line4 = None,
                 postcode = "Z99 2YY"
               )),
             propertyLandValueTrust = None,

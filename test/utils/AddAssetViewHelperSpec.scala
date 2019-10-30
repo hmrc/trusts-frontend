@@ -26,18 +26,18 @@ import pages.shares._
 import pages.{AssetMoneyValuePage, WhatKindOfAssetPage}
 import viewmodels.AddRow
 
-class AddAssetViewHelperSpec extends SpecBase   {
+class AddAssetViewHelperSpec extends SpecBase {
 
-  def removeMoneyRoute(index : Int) =
+  def removeMoneyRoute(index: Int) =
     controllers.money.routes.RemoveMoneyAssetController.onPageLoad(index, fakeDraftId).url
 
-  def removeSharePortfolioRoute(index : Int) =
+  def removeSharePortfolioRoute(index: Int) =
     controllers.shares.routes.RemoveSharePortfolioAssetController.onPageLoad(index, fakeDraftId).url
 
-  def removeShareCompanyRoute(index : Int) =
+  def removeShareCompanyRoute(index: Int) =
     controllers.shares.routes.RemoveShareCompanyNameAssetController.onPageLoad(index, fakeDraftId).url
 
-  def removePropertyOrLandRoute(index : Int) =
+  def removePropertyOrLandRoute(index: Int) =
     controllers.property_or_land.routes.RemovePropertyOrLandWithAddressUKController.onPageLoad(index, fakeDraftId).url
 
   def removePropertyOrLandDescriptionRoute(index: Int) =
@@ -97,7 +97,7 @@ class AddAssetViewHelperSpec extends SpecBase   {
           .set(WhatKindOfAssetPage(2), PropertyOrLand).success.value
           .set(PropertyOrLandAddressYesNoPage(2), true).success.value
           .set(PropertyOrLandAddressUkYesNoPage(2), true).success.value
-          .set(PropertyOrLandUKAddressPage(2), UKAddress("line 1", None, None, "Newcastle upon Tyne", "NE1 1NE")).success.value
+          .set(PropertyOrLandUKAddressPage(2), UKAddress("line 1", "line 2", None, None, "NE1 1NE")).success.value
           .set(PropertyOrLandTotalValuePage(2), "100").success.value
           .set(TrustOwnAllThePropertyOrLandPage(2), true).success.value
           .set(AssetStatus(2), Completed).success.value

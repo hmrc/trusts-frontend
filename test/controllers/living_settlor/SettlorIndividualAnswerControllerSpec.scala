@@ -40,7 +40,7 @@ class SettlorIndividualAnswerControllerSpec extends SpecBase {
   val settlorName = FullName("first name", Some("middle name"), "last name")
   val validDate: LocalDate = LocalDate.now(ZoneOffset.UTC)
   val nino: String = "CC123456A"
-  val AddressUK = UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4", "line 5")
+  val AddressUK = UKAddress("line 1", "line 2", Some("line 3"), Some("line 4"), "line 5")
   val AddressInternational = InternationalAddress("line 1", "line 2", Some("line 3"), "ES")
   val passportOrIDCardDetails = PassportOrIdCardDetails("Field 1", "Field 2", LocalDate.now(ZoneOffset.UTC))
   val index: Int = 0

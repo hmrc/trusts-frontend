@@ -22,8 +22,7 @@ import base.SpecBaseHelpers
 import generators.Generators
 import models.{FullName, IndividualOrBusiness, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
-import pages._
-import pages.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteeIndividualOrBusinessPage, TrusteeLiveInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
+import pages.trustees._
 
 class TrusteeMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {
@@ -102,13 +101,13 @@ class TrusteeMapperSpec extends FreeSpec with MustMatchers
         val userAnswers = emptyUserAnswers
           .set(IsThisLeadTrusteePage(index), true).success.value
           .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
-          .set(TrusteesNamePage(index), FullName("first name",  Some("middle name"), "Last Name")).success.value
-          .set(TrusteesDateOfBirthPage(index), LocalDate.of(1500,10,10)).success.value
+          .set(TrusteesNamePage(index), FullName("first name", Some("middle name"), "Last Name")).success.value
+          .set(TrusteesDateOfBirthPage(index), LocalDate.of(1500, 10, 10)).success.value
           .set(TrusteeAUKCitizenPage(index), true).success.value
           .set(TrusteeLiveInTheUKPage(index), true).success.value
           .set(TrusteesNinoPage(index), "AB123456C").success.value
           .set(TelephoneNumberPage(index), "0191 1111111").success.value
-          .set(TrusteesUkAddressPage(index), UKAddress("line1", None,None, "town", "NE65QA")).success.value
+          .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", None, None, "NE65QA")).success.value
 
         trusteeMapper.build(userAnswers) mustNot be(defined)
 

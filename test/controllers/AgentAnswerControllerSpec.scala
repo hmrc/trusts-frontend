@@ -40,7 +40,7 @@ class AgentAnswerControllerSpec extends SpecBase {
       val answers: UserAnswers =
         emptyUserAnswers
           .set(AgentTelephoneNumberPage, "123456789").success.value
-          .set(AgentUKAddressPage, UKAddress("Line1", None, None, "TownOrCity", "NE62RT")).success.value
+          .set(AgentUKAddressPage, UKAddress("Line1", "Line2", None, Some("TownOrCity"), "NE62RT")).success.value
           .set(AgentAddressYesNoPage, true).success.value
           .set(AgentNamePage, "Sam Curran Trust").success.value
           .set(AgentInternalReferencePage, "123456789").success.value

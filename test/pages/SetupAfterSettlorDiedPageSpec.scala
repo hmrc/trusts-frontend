@@ -77,7 +77,7 @@ class SetupAfterSettlorDiedPageSpec extends PageBehaviours {
             .set(SettlorsNINoYesNoPage, false).success.value
             .set(SettlorsLastKnownAddressYesNoPage, true).success.value
             .set(WasSettlorsAddressUKYesNoPage, true).success.value
-            .set(SettlorsUKAddressPage, UKAddress(str, Some(str), Some(str), str, str)).success.value
+            .set(SettlorsUKAddressPage, UKAddress(str, str, Some(str), Some(str), str)).success.value
             .set(DeceasedSettlorStatus, Status.Completed).success.value
 
           val result = answers.set(SetupAfterSettlorDiedPage, false).success.value
@@ -122,7 +122,7 @@ class SetupAfterSettlorDiedPageSpec extends PageBehaviours {
             .set(SettlorIndividualAddressUKYesNoPage(1), true).success.value
             .set(SettlorIndividualAddressUKPage(1), UKAddress(
               line1 = "line 1",
-              townOrCity = "Newcastle",
+              line2= "Newcastle",
               postcode = "NE981ZZ"
             )).success.value
             .set(SettlorIndividualPassportYesNoPage(1), false).success.value

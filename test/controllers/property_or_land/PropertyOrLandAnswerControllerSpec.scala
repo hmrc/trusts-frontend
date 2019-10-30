@@ -146,7 +146,7 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
             .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
             .set(PropertyOrLandAddressYesNoPage(index), true).success.value
             .set(PropertyOrLandAddressUkYesNoPage(index), true).success.value
-            .set(PropertyOrLandUKAddressPage(index), UKAddress("Line1", None, None, "TownOrCity", "NE62RT")).success.value
+            .set(PropertyOrLandUKAddressPage(index), UKAddress("Line1", "Line2", None, None, "NE62RT")).success.value
             .set(PropertyOrLandTotalValuePage(index), "10000").success.value
             .set(TrustOwnAllThePropertyOrLandPage(index), true).success.value
             .set(AssetStatus(index), Completed).success.value
@@ -195,7 +195,7 @@ class PropertyOrLandAnswerControllerSpec extends SpecBase {
             .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
             .set(PropertyOrLandAddressYesNoPage(index), true).success.value
             .set(PropertyOrLandAddressUkYesNoPage(index), true).success.value
-            .set(PropertyOrLandUKAddressPage(index), UKAddress("Line1", None, None, "TownOrCity", "NE62RT")).success.value
+            .set(PropertyOrLandUKAddressPage(index), UKAddress("Line1", "Line2", None, None, "NE62RT")).success.value
             .set(PropertyOrLandTotalValuePage(index), "10000").success.value
             .set(TrustOwnAllThePropertyOrLandPage(index), false).success.value
             .set(PropertyLandValueTrustPage(index), "10").success.value
