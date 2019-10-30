@@ -17,6 +17,10 @@
 
 @import 'partials/task-list';
 
+.push-text-top--3 {
+    padding-top: govuk-spacing(3);
+}
+
 .field-error {
     border:4px solid #b10e1e !important;
 }
@@ -127,6 +131,10 @@
 
 .govuk-fieldset__heading {
     margin: 0;
+}
+
+.heading-no-top-margin {
+    margin-top: 0;
 }
 
 .label-as-heading, .legend-as-heading {margin-top:0; margin-bottom:0;}

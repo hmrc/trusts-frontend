@@ -26,7 +26,7 @@ import play.api.mvc.Call
 class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   private val contactHost = configuration.get[String]("contact-frontend.host")
-  private val contactFormServiceIdentifier = "trustsfrontend"
+  private val contactFormServiceIdentifier = "trusts-frontend"
 
   private def loadConfig(key: String) = configuration.get[String](key)
 
@@ -60,7 +60,9 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   lazy val authUrl = configuration.get[Service]("microservice.services.auth").baseUrl
 
-  def claimATrustUrl(utr: String) = configuration.get[Service]("microservice.services.claim-a-trust-frontend").baseUrl + s"/claim-a-trust/$utr"
+  def claimATrustUrl(utr: String) = configuration.get[Service]("microservice.services.claim-a-trust-frontend").baseUrl + s"/claim-a-trust/save/$utr"
+
+  lazy val trustsStoreUrl: String = configuration.get[Service]("microservice.services.trusts-store").baseUrl + "/trusts-store"
 
   lazy val  posthmrc: String = configuration.get[String]("confirmation.posthmrc")
 
