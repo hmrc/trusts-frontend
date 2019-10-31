@@ -74,7 +74,7 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
               |    ],
               |    "delegatedUserIds": [
               |       "${delegatedId.head}",
-              |       "${delegatedId.tail}"
+              |       "${delegatedId.last}"
               |    ]
               |}""".stripMargin
         )
