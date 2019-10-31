@@ -18,7 +18,7 @@ package connector
 
 import com.github.tomakehurst.wiremock.client.WireMock._
 import config.FrontendAppConfig
-import models.EnrolmentsResponse.AgentTrusts
+import models.EnrolmentsResponse.{AgentTrusts, NoTrusts}
 import org.scalatest.{AsyncFreeSpec, MustMatchers}
 import play.api.Application
 import play.api.http.Status
@@ -32,14 +32,20 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
 
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
-  private def wiremock(expectedStatus: Int, expectedResponse: String) =
-    server.stubFor(
-      get(urlEqualTo(enrolmentsUrl))
-        .willReturn(
-          aResponse()
-            .withStatus(expectedStatus)
-            .withBody(expectedResponse)
-        ))
+  private def wiremock(expectedStatus: Int, expectedResponse: Option[String]) = {
+
+    val response = expectedResponse map { response =>
+      aResponse()
+        .withStatus(expectedStatus)
+        .withBody(response)
+    } getOrElse {
+      aResponse()
+        .withStatus(expectedStatus)
+    }
+
+    server.stubFor(get(urlEqualTo(enrolmentsUrl)).willReturn(response))
+
+  }
 
   lazy val app: Application = new GuiceApplicationBuilder()
     .configure(Seq(
@@ -67,7 +73,7 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
 
         wiremock(
           expectedStatus = Status.OK,
-          expectedResponse =
+          expectedResponse = Some(
             s"""{
               |    "principalUserIds": [
               |       "${principalId.head}"
@@ -77,7 +83,7 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
               |       "${delegatedId.last}"
               |    ]
               |}""".stripMargin
-        )
+        ))
 
         connector.getAgentTrusts(identifier) map { result =>
           result mustBe AgentTrusts(principalId, delegatedId)
@@ -87,26 +93,17 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
 
     }
 
-    "" - {
+    "No Trusts when" - {
 
       "valid enrolment key retrieves a No Content 204" in {
 
         wiremock(
-          expectedStatus = Status.OK,
-          expectedResponse =
-            s"""{
-               |    "principalUserIds": [
-               |       "${principalId.head}"
-               |    ],
-               |    "delegatedUserIds": [
-               |       "${delegatedId.head}",
-               |       "${delegatedId.last}"
-               |    ]
-               |}""".stripMargin
+          expectedStatus = Status.NO_CONTENT,
+          expectedResponse = None
         )
 
         connector.getAgentTrusts(identifier) map { result =>
-          result mustBe AgentTrusts(principalId, delegatedId)
+          result mustBe NoTrusts
         }
 
       }

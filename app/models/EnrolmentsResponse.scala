@@ -28,6 +28,7 @@ object EnrolmentsResponse {
   implicit val EnrolmentsFormat: Format[AgentTrusts] = Json.format[AgentTrusts]
 
   case class AgentTrusts(principalUserIds: Seq[String], delegatedUserIds: Seq[String]) extends EnrolmentsResponse
+  case object NoTrusts extends EnrolmentsResponse
   case object ServiceUnavailable extends EnrolmentsResponse
   case object ServerError extends EnrolmentsResponse
 
@@ -39,6 +40,8 @@ object EnrolmentsResponse {
         response.status match {
           case OK =>
             response.json.as[AgentTrusts]
+          case NO_CONTENT =>
+            NoTrusts
           case SERVICE_UNAVAILABLE =>
             ServiceUnavailable
           case _ =>
