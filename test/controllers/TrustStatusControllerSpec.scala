@@ -18,7 +18,8 @@ package controllers
 
 import base.SpecBase
 import connector.TrustConnector
-import models.{Closed, Processed, Processing, ServiceUnavailable, UserAnswers, UtrNotFound}
+import models.UserAnswers
+import models.TrustStatusResponse._
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach

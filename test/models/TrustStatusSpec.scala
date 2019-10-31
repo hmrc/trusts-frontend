@@ -18,6 +18,7 @@ package models
 
 import org.scalatest.{MustMatchers, WordSpec}
 import play.api.libs.json.{JsError, Json}
+import models.TrustStatusResponse._
 
 class TrustStatusSpec extends WordSpec with MustMatchers {
 

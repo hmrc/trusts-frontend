@@ -28,6 +28,8 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   private val contactHost = configuration.get[String]("contact-frontend.host")
   private val contactFormServiceIdentifier = "trusts-frontend"
 
+  lazy val serviceName: String = configuration.get[String]("serviceName")
+
   private def loadConfig(key: String) = configuration.get[String](key)
 
   val analyticsToken: String = configuration.get[String](s"google-analytics.token")
@@ -61,6 +63,8 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val authUrl = configuration.get[Service]("microservice.services.auth").baseUrl
 
   def claimATrustUrl(utr: String) = configuration.get[Service]("microservice.services.claim-a-trust-frontend").baseUrl + s"/claim-a-trust/save/$utr"
+
+  lazy val enrolmentStoreProxyUrl = configuration.get[Service]("microservice.services.enrolment-store-proxy").baseUrl
 
   lazy val trustsStoreUrl: String = configuration.get[Service]("microservice.services.trusts-store").baseUrl + "/trusts-store"
 

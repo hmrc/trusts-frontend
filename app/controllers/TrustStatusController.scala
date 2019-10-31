@@ -21,8 +21,9 @@ import connector.TrustConnector
 import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider, IdentifierAction}
 import handlers.ErrorHandler
 import javax.inject.Inject
+import models.NormalMode
+import models.TrustStatusResponse._
 import models.requests.DataRequest
-import models.{Closed, NormalMode, Processed, Processing, UtrNotFound}
 import navigation.Navigator
 import pages.WhatIsTheUTRVariationPage
 import play.api.i18n.{I18nSupport, MessagesApi}

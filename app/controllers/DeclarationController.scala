@@ -22,7 +22,8 @@ import javax.inject.Inject
 
 import controllers.actions._
 import forms.DeclarationFormProvider
-import models.{AlreadyRegistered, Mode, RegistrationStatus, RegistrationTRNResponse, TrustResponse, UnableToRegister, UserAnswers}
+import models.{Mode, RegistrationStatus, RegistrationTRNResponse, TrustResponse, UserAnswers}
+import models.TrustResponse._
 import navigation.Navigator
 import pages.{DeclarationPage, RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.Logger

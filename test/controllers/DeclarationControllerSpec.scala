@@ -19,7 +19,8 @@ package controllers
 import base.SpecBase
 import forms.DeclarationFormProvider
 import models.RegistrationStatus.InProgress
-import models.{AlreadyRegistered, FullName, NormalMode, RegistrationTRNResponse, UnableToRegister, UserAnswers}
+import models.{FullName, NormalMode, RegistrationTRNResponse,UserAnswers}
+import models.TrustResponse._
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{verify, when, _}
 import pages.DeclarationPage

@@ -19,7 +19,7 @@ package connector
 import config.FrontendAppConfig
 import javax.inject.Inject
 import mapping.Registration
-import models.{TrustResponse, TrustStatus, TrustStatusResponse}
+import models.{TrustResponse, TrustStatusResponse}
 import play.api.libs.json.{JsValue, Json, Writes}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
@@ -44,12 +44,8 @@ class TrustConnector @Inject()(http: HttpClient, config : FrontendAppConfig) {
   }
 
 
-  def getTrustStatus(utr: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[TrustStatusResponse] = {
-
-    val response = http.GET[TrustStatusResponse](trustStatusEndPoint(utr))(TrustStatusResponse.httpReads, hc, ec)
-
-    response
-  }
+  def getTrustStatus(utr: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[TrustStatusResponse] =
+    http.GET[TrustStatusResponse](trustStatusEndPoint(utr))(TrustStatusResponse.httpReads, hc, ec)
 
 }
 
