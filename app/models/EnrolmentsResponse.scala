@@ -30,6 +30,8 @@ object EnrolmentsResponse {
   case class AgentTrusts(principalUserIds: Seq[String], delegatedUserIds: Seq[String]) extends EnrolmentsResponse
   case object NoTrusts extends EnrolmentsResponse
   case object ServiceUnavailable extends EnrolmentsResponse
+  case object Forbidden extends EnrolmentsResponse
+  case object BadRequest extends EnrolmentsResponse
   case object ServerError extends EnrolmentsResponse
 
   implicit lazy val httpReads: HttpReads[EnrolmentsResponse] =
@@ -44,8 +46,12 @@ object EnrolmentsResponse {
             NoTrusts
           case SERVICE_UNAVAILABLE =>
             ServiceUnavailable
+          case FORBIDDEN =>
+            Forbidden
+          case BAD_REQUEST =>
+            BadRequest
           case _ =>
-            ???
+            ServerError
         }
       }
     }

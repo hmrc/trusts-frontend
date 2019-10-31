@@ -18,7 +18,7 @@ package connector
 
 import com.github.tomakehurst.wiremock.client.WireMock._
 import config.FrontendAppConfig
-import models.EnrolmentsResponse.{AgentTrusts, NoTrusts}
+import models.EnrolmentsResponse.{AgentTrusts, Forbidden, BadRequest, NoTrusts, ServiceUnavailable}
 import org.scalatest.{AsyncFreeSpec, MustMatchers}
 import play.api.Application
 import play.api.http.Status
@@ -67,34 +67,32 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
   private lazy val enrolmentsUrl: String = s"/enrolment-store/enrolments/$serviceName~$identifierKey~$identifier/users"
 
   "EnrolmentStoreConnector" - {
-    "must get a list of enrolments and delegated enrolments when" - {
 
+    "must get a list of enrolments and delegated enrolments when" - {
       "valid enrolment key retrieves a Success 200 with a body of enrolments" in {
 
         wiremock(
           expectedStatus = Status.OK,
           expectedResponse = Some(
             s"""{
-              |    "principalUserIds": [
-              |       "${principalId.head}"
-              |    ],
-              |    "delegatedUserIds": [
-              |       "${delegatedId.head}",
-              |       "${delegatedId.last}"
-              |    ]
-              |}""".stripMargin
-        ))
+               |    "principalUserIds": [
+               |       "${principalId.head}"
+               |    ],
+               |    "delegatedUserIds": [
+               |       "${delegatedId.head}",
+               |       "${delegatedId.last}"
+               |    ]
+               |}""".stripMargin
+          ))
 
         connector.getAgentTrusts(identifier) map { result =>
           result mustBe AgentTrusts(principalId, delegatedId)
         }
 
       }
-
     }
 
     "No Trusts when" - {
-
       "valid enrolment key retrieves a No Content 204" in {
 
         wiremock(
@@ -107,7 +105,66 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
         }
 
       }
+    }
 
+    "Service Unavailable when" - {
+      "Service Unavailable 503" in {
+
+        wiremock(
+          expectedStatus = Status.SERVICE_UNAVAILABLE,
+          expectedResponse = Some(
+            """
+              |{
+              |   "errorCode": "SERVICE_UNAVAILABLE",
+              |   "message": "Service temporarily unavailable"
+              |}""".stripMargin
+          ))
+
+        connector.getAgentTrusts(identifier) map { result =>
+          result mustBe ServiceUnavailable
+        }
+
+      }
+    }
+
+    "Forbidden when" - {
+      "Forbidden 403" in {
+
+        wiremock(
+          expectedStatus = Status.FORBIDDEN,
+          expectedResponse = Some(
+            """
+              |{
+              |   "errorCode": "CREDENTIAL_CANNOT_PERFORM_ADMIN_ACTION",
+              |   "message": "The User credentials are valid but the user does not have permission to perform the requested function"
+              |}""".stripMargin
+          ))
+
+        connector.getAgentTrusts(identifier) map { result =>
+          result mustBe Forbidden
+        }
+
+      }
+    }
+
+    "Invalid service when" - {
+      "Bad Request 400" in {
+
+        wiremock(
+          expectedStatus = Status.BAD_REQUEST,
+          expectedResponse = Some(
+            """
+              |{
+              |   "errorCode": "INVALID_SERVICE",
+              |   "message": "The provided service does not exist"
+              |}""".stripMargin
+          ))
+
+        connector.getAgentTrusts(identifier) map { result =>
+          result mustBe BadRequest
+        }
+
+      }
     }
 
   }
