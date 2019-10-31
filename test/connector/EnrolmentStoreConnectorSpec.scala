@@ -51,8 +51,12 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
   private lazy val config = app.injector.instanceOf[FrontendAppConfig]
 
   private lazy val serviceName = config.serviceName
+
   private val identifierKey = "UTR"
   private val identifier = "0987654321"
+
+  private val principalId = Seq("ABCEDEFGI1234567")
+  private val delegatedId = Seq("ABCEDEFGI1234568", "ABCEDEFGI1234569")
 
   private lazy val enrolmentsUrl: String = s"/enrolment-store/enrolments/$serviceName~$identifierKey~$identifier/users"
 
@@ -64,19 +68,19 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
         wiremock(
           expectedStatus = Status.OK,
           expectedResponse =
-            """{
+            s"""{
               |    "principalUserIds": [
-              |       "ABCEDEFGI1234567"
+              |       "${principalId.head}"
               |    ],
               |    "delegatedUserIds": [
-              |       "ABCEDEFGI1234567",
-              |       "ABCEDEFGI1234568"
+              |       "${delegatedId.head}",
+              |       "${delegatedId.tail}"
               |    ]
               |}""".stripMargin
         )
 
         connector.getEnrolments(identifier) map { result =>
-          result mustBe Enrolments(Seq("XTRN1234567"), Seq(""))
+          result mustBe Enrolments(principalId, delegatedId)
         }
 
       }
