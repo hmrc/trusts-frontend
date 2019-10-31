@@ -25,9 +25,9 @@ sealed trait EnrolmentsResponse
 
 object EnrolmentsResponse {
 
-  implicit val EnrolmentsFormat: Format[Enrolments] = Json.format[Enrolments]
+  implicit val EnrolmentsFormat: Format[AgentTrusts] = Json.format[AgentTrusts]
 
-  case class Enrolments(principalUserIds: Seq[String], delegatedUserIds: Seq[String]) extends EnrolmentsResponse
+  case class AgentTrusts(principalUserIds: Seq[String], delegatedUserIds: Seq[String]) extends EnrolmentsResponse
   case object ServiceUnavailable extends EnrolmentsResponse
   case object ServerError extends EnrolmentsResponse
 
@@ -38,7 +38,7 @@ object EnrolmentsResponse {
 
         response.status match {
           case OK =>
-            response.json.as[Enrolments]
+            response.json.as[AgentTrusts]
           case SERVICE_UNAVAILABLE =>
             ServiceUnavailable
           case _ =>

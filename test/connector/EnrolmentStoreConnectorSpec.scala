@@ -18,7 +18,7 @@ package connector
 
 import com.github.tomakehurst.wiremock.client.WireMock._
 import config.FrontendAppConfig
-import models.EnrolmentsResponse.Enrolments
+import models.EnrolmentsResponse.AgentTrusts
 import org.scalatest.{AsyncFreeSpec, MustMatchers}
 import play.api.Application
 import play.api.http.Status
@@ -61,9 +61,9 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
   private lazy val enrolmentsUrl: String = s"/enrolment-store/enrolments/$serviceName~$identifierKey~$identifier/users"
 
   "EnrolmentStoreConnector" - {
-    "return a Success 200 with a body of enrolments when" - {
+    "must get a list of enrolments and delegated enrolments when" - {
 
-      "valid enrolment key is given" in {
+      "valid enrolment key retrieves a Success 200 with a body of enrolments" in {
 
         wiremock(
           expectedStatus = Status.OK,
@@ -79,11 +79,38 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
               |}""".stripMargin
         )
 
-        connector.getEnrolments(identifier) map { result =>
-          result mustBe Enrolments(principalId, delegatedId)
+        connector.getAgentTrusts(identifier) map { result =>
+          result mustBe AgentTrusts(principalId, delegatedId)
         }
 
       }
+
+    }
+
+    "" - {
+
+      "valid enrolment key retrieves a No Content 204" in {
+
+        wiremock(
+          expectedStatus = Status.OK,
+          expectedResponse =
+            s"""{
+               |    "principalUserIds": [
+               |       "${principalId.head}"
+               |    ],
+               |    "delegatedUserIds": [
+               |       "${delegatedId.head}",
+               |       "${delegatedId.last}"
+               |    ]
+               |}""".stripMargin
+        )
+
+        connector.getAgentTrusts(identifier) map { result =>
+          result mustBe AgentTrusts(principalId, delegatedId)
+        }
+
+      }
+
     }
 
   }

@@ -31,7 +31,7 @@ class EnrolmentStoreConnector @Inject()(http: HttpClient, config : FrontendAppCo
     s"${config.enrolmentStoreProxyUrl}/enrolment-store/enrolments/${config.serviceName}~$identifierKey~$identifier/users"
   }
 
-  def getEnrolments(utr: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[EnrolmentsResponse] =
+  def getAgentTrusts(utr: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[EnrolmentsResponse] =
     http.GET[EnrolmentsResponse](enrolmentsEndpoint(utr))(EnrolmentsResponse.httpReads, hc, ec)
 
 }
