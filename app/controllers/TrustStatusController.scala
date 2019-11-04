@@ -21,13 +21,14 @@ import connector.TrustConnector
 import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider, IdentifierAction}
 import handlers.ErrorHandler
 import javax.inject.Inject
+import models.NormalMode
+import models.playback.{Closed, Processed, Processing, UtrNotFound}
 import models.requests.DataRequest
-import models.{Closed, NormalMode, Processed, Processing, UtrNotFound}
 import navigation.Navigator
 import pages.WhatIsTheUTRVariationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import repositories.SessionRepository
+import repositories.{PlaybackRepository, RegistrationsRepository}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.{ClosedErrorView, DoesNotMatchErrorView, IVDownView, StillProcessingErrorView}
 
@@ -35,7 +36,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class TrustStatusController @Inject()(
                                        override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
+                                       registrationsRepository: RegistrationsRepository,
+                                       playbackRepository: PlaybackRepository,
                                        navigator: Navigator,
                                        identify: IdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
@@ -82,12 +84,15 @@ class TrustStatusController @Inject()(
   def status(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
       enforceUtr(draftId) { utr =>
-        trustConnector.getTrustStatus(utr) map {
-          case Closed => Redirect(routes.TrustStatusController.closed(draftId))
-          case Processing => Redirect(routes.TrustStatusController.processing(draftId))
-          case UtrNotFound => Redirect(routes.TrustStatusController.notFound(draftId))
-          case Processed => Redirect(config.claimATrustUrl(utr))
-          case _ => Redirect(routes.TrustStatusController.down(draftId))
+        trustConnector.playback(utr) flatMap {
+          case Closed => Future.successful(Redirect(routes.TrustStatusController.closed(draftId)))
+          case Processing => Future.successful(Redirect(routes.TrustStatusController.processing(draftId)))
+          case UtrNotFound => Future.successful(Redirect(routes.TrustStatusController.notFound(draftId)))
+          case Processed(playback) =>
+            playbackRepository.store(request.internalId, playback) map { _ =>
+              Redirect(config.claimATrustUrl(utr))
+            }
+          case _ => Future.successful(Redirect(routes.TrustStatusController.down(draftId)))
         }
       }
   }

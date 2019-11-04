@@ -25,22 +25,22 @@ import pages.NonResidentTypePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.NonResidentTypeView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class NonResidentTypeController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       navigator: Navigator,
-                                       identify: IdentifierAction,
-                                       getData: DraftIdRetrievalActionProvider,
-                                       requireData: DataRequiredAction,
-                                       formProvider: NonResidentTypeFormProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: NonResidentTypeView
+                                           override val messagesApi: MessagesApi,
+                                           registrationsRepository: RegistrationsRepository,
+                                           navigator: Navigator,
+                                           identify: IdentifierAction,
+                                           getData: DraftIdRetrievalActionProvider,
+                                           requireData: DataRequiredAction,
+                                           formProvider: NonResidentTypeFormProvider,
+                                           val controllerComponents: MessagesControllerComponents,
+                                           view: NonResidentTypeView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
   private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
@@ -68,7 +68,7 @@ class NonResidentTypeController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(NonResidentTypePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(NonResidentTypePage, mode, draftId)(updatedAnswers))
         }
       )

@@ -54,7 +54,7 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val languageTranslationEnabled: Boolean =
     configuration.get[Boolean]("microservice.services.features.welsh-translation")
 
-  lazy val ttlInSeconds = configuration.get[Int]("mongodb.timeToLiveInSeconds")
+  lazy val ttlInSeconds = configuration.get[Int]("mongodb.registration.ttlSeconds")
 
   lazy val trustsUrl = configuration.get[Service]("microservice.services.trusts").baseUrl
 

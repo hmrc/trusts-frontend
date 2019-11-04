@@ -18,7 +18,8 @@ package controllers
 
 import base.SpecBase
 import connector.TrustConnector
-import models.{Closed, Processed, Processing, ServiceUnavailable, UserAnswers, UtrNotFound}
+import models.UserAnswers
+import models.playback._
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
@@ -28,6 +29,7 @@ import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import play.api.libs.json._
 import uk.gov.hmrc.auth.core.AffinityGroup
 import views.html.{ClosedErrorView, DoesNotMatchErrorView, IVDownView, StillProcessingErrorView}
 
@@ -115,7 +117,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status(fakeDraftId).url)
 
-        when(fakeTrustConnector.getTrustStatus(any[String])(any(), any())).thenReturn(Future.successful(Closed))
+        when(fakeTrustConnector.playback(any[String])(any(), any())).thenReturn(Future.successful(Closed))
 
         status(result) mustEqual SEE_OTHER
 
@@ -128,7 +130,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status(fakeDraftId).url)
 
-        when(fakeTrustConnector.getTrustStatus(any[String])(any(), any())).thenReturn(Future.successful(Processing))
+        when(fakeTrustConnector.playback(any[String])(any(), any())).thenReturn(Future.successful(Processing))
 
         status(result) mustEqual SEE_OTHER
 
@@ -141,7 +143,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status(fakeDraftId).url)
 
-        when(fakeTrustConnector.getTrustStatus(any[String])(any(), any())).thenReturn(Future.successful(UtrNotFound))
+        when(fakeTrustConnector.playback(any[String])(any(), any())).thenReturn(Future.successful(UtrNotFound))
 
         status(result) mustEqual SEE_OTHER
 
@@ -154,7 +156,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status(fakeDraftId).url)
 
-        when(fakeTrustConnector.getTrustStatus(any[String])(any(), any())).thenReturn(Future.successful(ServiceUnavailable))
+        when(fakeTrustConnector.playback(any[String])(any(), any())).thenReturn(Future.successful(TrustServiceUnavailable))
 
         status(result) mustEqual SEE_OTHER
 
@@ -167,7 +169,15 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status(fakeDraftId).url)
 
-        when(fakeTrustConnector.getTrustStatus(any[String])(any(), any())).thenReturn(Future.successful(Processed))
+        val payload = Json.parse("""{
+                        |
+                        |  "responseHeader": {
+                        |    "status": "In Processing",
+                        |    "formBundleNo": "1"
+                        |  }
+                        |}""".stripMargin)
+
+        when(fakeTrustConnector.playback(any[String])(any(), any())).thenReturn(Future.successful(Processed(payload)))
 
         status(result) mustEqual SEE_OTHER
 

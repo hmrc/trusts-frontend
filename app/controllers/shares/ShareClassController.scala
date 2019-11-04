@@ -26,25 +26,25 @@ import pages.shares.{ShareClassPage, ShareCompanyNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.shares.ShareClassView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class ShareClassController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       navigator: Navigator,
-                                       identify: IdentifierAction,
-                                       getData: DraftIdRetrievalActionProvider,
-                                       requireData: DataRequiredAction,
-                                       formProvider: ShareClassFormProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: ShareClassView,
-                                       requiredAnswerActionProvider: RequiredAnswerActionProvider,
-                                       validateIndex: IndexActionFilterProvider,
-                                       requiredAnswer: RequiredAnswerActionProvider
+                                      override val messagesApi: MessagesApi,
+                                      registrationsRepository: RegistrationsRepository,
+                                      navigator: Navigator,
+                                      identify: IdentifierAction,
+                                      getData: DraftIdRetrievalActionProvider,
+                                      requireData: DataRequiredAction,
+                                      formProvider: ShareClassFormProvider,
+                                      val controllerComponents: MessagesControllerComponents,
+                                      view: ShareClassView,
+                                      requiredAnswerActionProvider: RequiredAnswerActionProvider,
+                                      validateIndex: IndexActionFilterProvider,
+                                      requiredAnswer: RequiredAnswerActionProvider
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
   val form = formProvider()
@@ -83,7 +83,7 @@ class ShareClassController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ShareClassPage(index), value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(ShareClassPage(index), mode, draftId)(updatedAnswers))
         }
       )

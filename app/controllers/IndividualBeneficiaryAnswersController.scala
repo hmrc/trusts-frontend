@@ -26,7 +26,7 @@ import pages.entitystatus.IndividualBeneficiaryStatus
 import pages.{IndividualBeneficiaryAnswersPage, IndividualBeneficiaryNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
@@ -36,17 +36,17 @@ import views.html.IndividualBenficiaryAnswersView
 import scala.concurrent.{ExecutionContext, Future}
 
 class IndividualBeneficiaryAnswersController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       identify: IdentifierAction,
-                                       navigator: Navigator,
-                                       getData: DraftIdRetrievalActionProvider,
-                                       requireData: DataRequiredAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       requiredAnswer: RequiredAnswerActionProvider,
-                                       validateIndex : IndexActionFilterProvider,
-                                       view: IndividualBenficiaryAnswersView,
-                                       countryOptions : CountryOptions
+                                                        override val messagesApi: MessagesApi,
+                                                        registrationsRepository: RegistrationsRepository,
+                                                        identify: IdentifierAction,
+                                                        navigator: Navigator,
+                                                        getData: DraftIdRetrievalActionProvider,
+                                                        requireData: DataRequiredAction,
+                                                        val controllerComponents: MessagesControllerComponents,
+                                                        requiredAnswer: RequiredAnswerActionProvider,
+                                                        validateIndex : IndexActionFilterProvider,
+                                                        view: IndividualBenficiaryAnswersView,
+                                                        countryOptions : CountryOptions
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
@@ -92,7 +92,7 @@ class IndividualBeneficiaryAnswersController @Inject()(
 
       for {
         updatedAnswers <- Future.fromTry(answers)
-        _              <- sessionRepository.set(updatedAnswers)
+        _              <- registrationsRepository.set(updatedAnswers)
       } yield Redirect(navigator.nextPage(IndividualBeneficiaryAnswersPage, NormalMode, draftId)(request.userAnswers))
   }
 }

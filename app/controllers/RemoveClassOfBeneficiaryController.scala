@@ -27,21 +27,21 @@ import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import play.twirl.api.HtmlFormat
 import queries.{RemoveClassOfBeneficiaryQuery, RemoveIndividualBeneficiaryQuery, Settable}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import views.html.RemoveIndexView
 
 import scala.concurrent.ExecutionContext
 
 class RemoveClassOfBeneficiaryController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         override val sessionRepository: SessionRepository,
-                                         identify: IdentifierAction,
-                                         getData: DraftIdRetrievalActionProvider,
-                                         requireData: DataRequiredAction,
-                                         val formProvider: RemoveIndexFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         val removeView: RemoveIndexView,
-                                         require: RequiredAnswerActionProvider
+                                                    override val messagesApi: MessagesApi,
+                                                    override val registrationsRepository: RegistrationsRepository,
+                                                    identify: IdentifierAction,
+                                                    getData: DraftIdRetrievalActionProvider,
+                                                    requireData: DataRequiredAction,
+                                                    val formProvider: RemoveIndexFormProvider,
+                                                    val controllerComponents: MessagesControllerComponents,
+                                                    val removeView: RemoveIndexView,
+                                                    require: RequiredAnswerActionProvider
                                  )(implicit ec: ExecutionContext) extends RemoveIndexController {
 
   override val messagesPrefix : String = "removeClassOfBeneficiary"

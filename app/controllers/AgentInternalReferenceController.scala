@@ -25,23 +25,23 @@ import pages.{AgentARNPage, AgentInternalReferencePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.AgentInternalReferenceView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class AgentInternalReferenceController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        hasAgentAffinityGroup: RequireStateActionProviderImpl,
-                                        getData: DraftIdRetrievalActionProvider,
-                                        requireData: DataRequiredAction,
-                                        formProvider: AgentInternalReferenceFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: AgentInternalReferenceView
+                                                  override val messagesApi: MessagesApi,
+                                                  registrationsRepository: RegistrationsRepository,
+                                                  navigator: Navigator,
+                                                  identify: IdentifierAction,
+                                                  hasAgentAffinityGroup: RequireStateActionProviderImpl,
+                                                  getData: DraftIdRetrievalActionProvider,
+                                                  requireData: DataRequiredAction,
+                                                  formProvider: AgentInternalReferenceFormProvider,
+                                                  val controllerComponents: MessagesControllerComponents,
+                                                  view: AgentInternalReferenceView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
@@ -72,7 +72,7 @@ class AgentInternalReferenceController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentInternalReferencePage, value))
             updatedAnswersWithARN <- Future.fromTry(updatedAnswers.set(AgentARNPage, request.agentARN.getOrElse("")))
-            _              <- sessionRepository.set(updatedAnswersWithARN)
+            _              <- registrationsRepository.set(updatedAnswersWithARN)
           } yield Redirect(navigator.nextPage(AgentInternalReferencePage, mode, draftId)(updatedAnswers))
         }
       )

@@ -14,38 +14,38 @@
  * limitations under the License.
  */
 
-package models
+package models.playback
 
 import play.api.Logger
 import play.api.http.Status._
 import play.api.libs.json._
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
-sealed trait TrustStatusResponse
+sealed trait TrustsResponse
 
-sealed trait TrustStatus extends TrustStatusResponse
+sealed trait TrustStatus extends TrustsResponse
 
 case object Processing extends TrustStatus
 case object Closed extends TrustStatus
-case object Processed extends TrustStatus
+case class Processed(playback: JsValue) extends TrustStatus
 
-case object UtrNotFound extends TrustStatusResponse
-case object ServiceUnavailable extends TrustStatusResponse
-case object ServerError extends TrustStatusResponse
+case object UtrNotFound extends TrustsResponse
+case object TrustServiceUnavailable extends TrustsResponse
+case object ServerError extends TrustsResponse
 
-object TrustStatusResponse {
+object TrustsResponse {
 
   implicit object TrustStatusReads extends Reads[TrustStatus] {
     override def reads(json:JsValue): JsResult[TrustStatus] = json("responseHeader")("status") match {
       case JsString("In Processing") => JsSuccess(Processing)
       case JsString("Closed") => JsSuccess(Closed)
-      case JsString("Processed") => JsSuccess(Processed)
+      case JsString("Processed") => JsSuccess(Processed(json))
     }
   }
 
-  implicit lazy val httpReads: HttpReads[TrustStatusResponse] =
-    new HttpReads[TrustStatusResponse] {
-      override def read(method: String, url: String, response: HttpResponse): TrustStatusResponse = {
+  implicit lazy val httpReads: HttpReads[TrustsResponse] =
+    new HttpReads[TrustsResponse] {
+      override def read(method: String, url: String, response: HttpResponse): TrustsResponse = {
         Logger.info(s"[TrustStatus] response status received from trusts status api: ${response.status}, body :${response.body}")
 
         response.status match {
@@ -54,12 +54,10 @@ object TrustStatusResponse {
           case NOT_FOUND =>
             UtrNotFound
           case SERVICE_UNAVAILABLE =>
-            ServiceUnavailable
+            TrustServiceUnavailable
           case _ =>
             ServerError
         }
       }
     }
-
-
 }

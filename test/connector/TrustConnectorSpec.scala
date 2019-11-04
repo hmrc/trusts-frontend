@@ -20,9 +20,10 @@ import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
 import generators.Generators
 import mapping.{Mapping, Registration, RegistrationMapper}
-import models.{AlreadyRegistered, InternalServerError, UtrNotFound, ServiceUnavailable, Processing, RegistrationTRNResponse}
+import models.playback.{Processed, Processing, TrustServiceUnavailable, UtrNotFound}
+import models.{AlreadyRegistered, InternalServerError, RegistrationTRNResponse}
 import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
+import org.scalatest.{FreeSpec, Inside, MustMatchers, OptionValues}
 import play.api.Application
 import play.api.http.Status
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -32,11 +33,11 @@ import uk.gov.hmrc.http.HeaderCarrier
 import utils.{TestUserAnswers, WireMockHelper}
 
 import scala.concurrent.Await
-import scala.concurrent.duration.Duration
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.Duration
 
 class TrustConnectorSpec extends FreeSpec with MustMatchers
-  with OptionValues with Generators with SpecBaseHelpers with WireMockHelper with ScalaFutures {
+  with OptionValues with Generators with SpecBaseHelpers with WireMockHelper with ScalaFutures with Inside {
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
   override lazy val app: Application = new GuiceApplicationBuilder()
@@ -51,7 +52,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
 
   private val registerUrl : String = "/trusts/register"
 
-  private def statusUrl(utr: String) : String = s"/trusts/$utr"
+  private def playbackUrl(utr: String) : String = s"/trusts/$utr"
 
   private def wiremock(payload: String, expectedStatus: Int, expectedResponse : String)=
     server.stubFor(
@@ -188,7 +189,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
       val utr = "10000000008"
 
       server.stubFor(
-        get(urlEqualTo(statusUrl(utr)))
+        get(urlEqualTo(playbackUrl(utr)))
           .willReturn(
             aResponse()
               .withStatus(Status.OK)
@@ -202,7 +203,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
           )
       )
 
-      val result  = Await.result(connector.getTrustStatus(utr),Duration.Inf)
+      val result  = Await.result(connector.playback(utr),Duration.Inf)
       result mustBe Processing
     }
 
@@ -211,12 +212,12 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
       val utr = "10000000008"
 
       server.stubFor(
-        get(urlEqualTo(statusUrl(utr)))
+        get(urlEqualTo(playbackUrl(utr)))
           .willReturn(
             aResponse()
               .withStatus(Status.NOT_FOUND)))
 
-      val result  = Await.result(connector.getTrustStatus(utr),Duration.Inf)
+      val result  = Await.result(connector.playback(utr),Duration.Inf)
       result mustBe UtrNotFound
     }
 
@@ -225,15 +226,39 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
       val utr = "10000000008"
 
       server.stubFor(
-        get(urlEqualTo(statusUrl(utr)))
+        get(urlEqualTo(playbackUrl(utr)))
           .willReturn(
             aResponse()
               .withStatus(Status.SERVICE_UNAVAILABLE)))
 
-      val result  = Await.result(connector.getTrustStatus(utr),Duration.Inf)
-      result mustBe ServiceUnavailable
+      val result  = Await.result(connector.playback(utr), Duration.Inf)
+      result mustBe TrustServiceUnavailable
     }
 
+    "must return playback data inside a Processed trust" in {
+
+      val utr = "10000000008"
+      val payload = """{
+                      |  "responseHeader": {
+                      |    "status": "Processed",
+                      |    "formBundleNo": "1"
+                      |  }
+                      |}""".stripMargin
+      server.stubFor(
+        get(urlEqualTo(playbackUrl(utr)))
+          .willReturn(
+            aResponse()
+              .withStatus(Status.OK)
+              .withBody(payload)
+          )
+      )
+
+      val processed = Await.result(connector.playback(utr), Duration.Inf)
+
+      inside(processed) {
+        case Processed(data) => data mustBe Json.parse(payload)
+      }
+    }
   }
 
 }

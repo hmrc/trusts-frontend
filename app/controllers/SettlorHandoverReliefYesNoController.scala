@@ -25,7 +25,7 @@ import pages.{SettlorHandoverReliefYesNoPage, SetupAfterSettlorDiedPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.annotations.LivingSettlor
 import views.html.SettlorHandoverReliefYesNoView
@@ -33,16 +33,16 @@ import views.html.SettlorHandoverReliefYesNoView
 import scala.concurrent.{ExecutionContext, Future}
 
 class SettlorHandoverReliefYesNoController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         @LivingSettlor navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DraftIdRetrievalActionProvider,
-                                         requiredAnswer: RequiredAnswerActionProvider,
-                                         requireData: DataRequiredAction,
-                                         yesNoFormProvider: YesNoFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: SettlorHandoverReliefYesNoView
+                                                      override val messagesApi: MessagesApi,
+                                                      registrationsRepository: RegistrationsRepository,
+                                                      @LivingSettlor navigator: Navigator,
+                                                      identify: IdentifierAction,
+                                                      getData: DraftIdRetrievalActionProvider,
+                                                      requiredAnswer: RequiredAnswerActionProvider,
+                                                      requireData: DataRequiredAction,
+                                                      yesNoFormProvider: YesNoFormProvider,
+                                                      val controllerComponents: MessagesControllerComponents,
+                                                      view: SettlorHandoverReliefYesNoView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = yesNoFormProvider.withPrefix("settlorHandoverReliefYesNo")
@@ -74,7 +74,7 @@ class SettlorHandoverReliefYesNoController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorHandoverReliefYesNoPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(SettlorHandoverReliefYesNoPage, mode, draftId)(updatedAnswers))
         }
       )
