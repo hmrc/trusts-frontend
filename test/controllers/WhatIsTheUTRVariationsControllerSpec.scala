@@ -19,15 +19,17 @@ package controllers
 import base.SpecBase
 import forms.WhatIsTheUTRFormProvider
 import models.NormalMode
-import org.mockito.Matchers.any
+import org.mockito.Matchers.{any, eq => eqTo}
 import org.mockito.Mockito.when
 import pages.WhatIsTheUTRVariationPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.WhatIsTheUTRView
-import connector.{TrustClaim, TrustsStoreConnector}
+import connector.{EnrolmentStoreConnector, TrustClaim, TrustsStoreConnector}
+import models.AgentTrustsResponse.NotClaimed
 import play.api.libs.json.Json
 import play.api.inject.bind
+import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 
 import scala.concurrent.Future
 
@@ -40,7 +42,9 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
 
   lazy val onSubmit = routes.WhatIsTheUTRVariationsController.onSubmit(NormalMode, fakeDraftId)
 
-  lazy val connector: TrustsStoreConnector = mock[TrustsStoreConnector]
+  lazy val trustsStoreConnector: TrustsStoreConnector = mock[TrustsStoreConnector]
+
+  lazy val enrolmentStoreConnector: EnrolmentStoreConnector = mock[EnrolmentStoreConnector]
 
   "TrustUTR Controller" must {
 
@@ -95,10 +99,10 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[TrustsStoreConnector].toInstance(connector))
+          .overrides(bind[TrustsStoreConnector].toInstance(trustsStoreConnector))
           .build()
 
-      when(connector.get(any[String], any[String])(any(), any()))
+      when(trustsStoreConnector.get(any[String], any[String])(any(), any()))
         .thenReturn(Future.successful(jsonWithErrorKey.asOpt[TrustClaim]))
 
       val request =
@@ -127,10 +131,10 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[TrustsStoreConnector].toInstance(connector))
+          .overrides(bind[TrustsStoreConnector].toInstance(trustsStoreConnector))
           .build()
 
-      when(connector.get(any[String], any[String])(any(), any()))
+      when(trustsStoreConnector.get(any[String], any[String])(any(), any()))
         .thenReturn(Future.successful(jsonWithErrorKey.asOpt[TrustClaim]))
 
       val request =
@@ -141,6 +145,42 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual controllers.routes.WhatIsTheUTRVariationsController.trustStillLocked(fakeDraftId).url
+
+      application.stop()
+    }
+
+    "redirect to NotClaimed when valid utr is submitted by agent that triggers a NotClaimed response from Enrolments" in {
+
+      val utr = "0987654321"
+
+      val json = Json.parse(
+        s"""
+          |{
+          | "trustLocked": false,
+          | "managedByAgent": true,
+          | "utr": "$utr"
+          |}
+          |""".stripMargin
+      )
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), affinityGroup = Agent)
+          .overrides(bind[TrustsStoreConnector].toInstance(trustsStoreConnector))
+          .overrides(bind[EnrolmentStoreConnector].toInstance(enrolmentStoreConnector))
+          .build()
+
+      when(trustsStoreConnector.get(any[String], any[String])(any(), any()))
+        .thenReturn(Future.successful(json.asOpt[TrustClaim]))
+
+      when(enrolmentStoreConnector.getAgentTrusts(eqTo(utr))(any(), any()))
+        .thenReturn(Future.successful(NotClaimed))
+
+      val request = FakeRequest(POST, trustUTRRoute).withFormUrlEncodedBody(("value", utr))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual controllers.routes.TrustNotClaimedController.onPageLoad(fakeDraftId).url
 
       application.stop()
     }

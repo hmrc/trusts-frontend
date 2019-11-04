@@ -18,7 +18,7 @@ package connector
 
 import com.github.tomakehurst.wiremock.client.WireMock._
 import config.FrontendAppConfig
-import models.EnrolmentsResponse.{AgentTrusts, Forbidden, BadRequest, NoTrusts, ServiceUnavailable}
+import models.AgentTrustsResponse.{AgentTrusts, Forbidden, BadRequest, NotClaimed, ServiceUnavailable}
 import org.scalatest.{AsyncFreeSpec, MustMatchers}
 import play.api.Application
 import play.api.http.Status
@@ -101,7 +101,7 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
         )
 
         connector.getAgentTrusts(identifier) map { result =>
-          result mustBe NoTrusts
+          result mustBe NotClaimed
         }
 
       }

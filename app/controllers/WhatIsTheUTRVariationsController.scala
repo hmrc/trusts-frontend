@@ -17,34 +17,37 @@
 package controllers
 
 import config.FrontendAppConfig
-import connector.TrustsStoreConnector
+import connector.{EnrolmentStoreConnector, TrustsStoreConnector}
 import controllers.actions._
 import forms.WhatIsTheUTRFormProvider
 import javax.inject.Inject
+import models.AgentTrustsResponse.NotClaimed
 import models.Mode
 import pages.WhatIsTheUTRVariationPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.{TrustLockedView, WhatIsTheUTRView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class WhatIsTheUTRVariationsController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        identify: IdentifierAction,
-                                        getData: DraftIdRetrievalActionProvider,
-                                        requireData: DataRequiredAction,
-                                        formProvider: WhatIsTheUTRFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: WhatIsTheUTRView,
-                                        lockedView: TrustLockedView,
-                                        config: FrontendAppConfig,
-                                        connector: TrustsStoreConnector
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                                  override val messagesApi: MessagesApi,
+                                                  sessionRepository: SessionRepository,
+                                                  identify: IdentifierAction,
+                                                  getData: DraftIdRetrievalActionProvider,
+                                                  requireData: DataRequiredAction,
+                                                  formProvider: WhatIsTheUTRFormProvider,
+                                                  val controllerComponents: MessagesControllerComponents,
+                                                  view: WhatIsTheUTRView,
+                                                  lockedView: TrustLockedView,
+                                                  config: FrontendAppConfig,
+                                                  trustsStoreConnector: TrustsStoreConnector,
+                                                  enrolmentStoreConnector: EnrolmentStoreConnector
+                                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
@@ -67,23 +70,33 @@ class WhatIsTheUTRVariationsController @Inject()(
           Future.successful(BadRequest(view(formWithErrors, mode, draftId, routes.WhatIsTheUTRVariationsController.onSubmit(mode, draftId)))),
 
         value => {
-          for {
+
+          val validateUtrAndRedirect = for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatIsTheUTRVariationPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-            claim       <- connector.get(request.internalId, value)
+            claim       <- trustsStoreConnector.get(request.internalId, value)
           } yield {
 
             claim match {
-              case Some(c) => {
-                  if(c.trustLocked) {
-                    Redirect(routes.WhatIsTheUTRVariationsController.trustStillLocked(draftId))
-                  } else {
-                    Redirect(routes.TrustStatusController.status(draftId))
-                  }
+              case Some(c) =>
+                if(c.trustLocked) {
+                  Redirect(routes.WhatIsTheUTRVariationsController.trustStillLocked(draftId))
+                } else {
+                  Redirect(routes.TrustStatusController.status(draftId))
                 }
               case _ => Redirect(routes.TrustStatusController.status(draftId))
             }
+
           }
+
+          request.affinityGroup match {
+            case Agent => enrolmentStoreConnector.getAgentTrusts(value) flatMap {
+              case NotClaimed => Future.successful(Redirect(routes.TrustNotClaimedController.onPageLoad(draftId)))
+              case _ => validateUtrAndRedirect
+            }
+            case _ => validateUtrAndRedirect
+          }
+
         }
       )
   }

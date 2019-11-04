@@ -21,29 +21,29 @@ import play.api.http.Status._
 import play.api.libs.json._
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
-sealed trait EnrolmentsResponse
+sealed trait AgentTrustsResponse
 
-object EnrolmentsResponse {
+object AgentTrustsResponse {
 
-  implicit val EnrolmentsFormat: Format[AgentTrusts] = Json.format[AgentTrusts]
+  implicit val format: Format[AgentTrusts] = Json.format[AgentTrusts]
 
-  case class AgentTrusts(principalUserIds: Seq[String], delegatedUserIds: Seq[String]) extends EnrolmentsResponse
-  case object NoTrusts extends EnrolmentsResponse
-  case object ServiceUnavailable extends EnrolmentsResponse
-  case object Forbidden extends EnrolmentsResponse
-  case object BadRequest extends EnrolmentsResponse
-  case object ServerError extends EnrolmentsResponse
+  case class AgentTrusts(principalUserIds: Seq[String], delegatedUserIds: Seq[String]) extends AgentTrustsResponse
+  case object NotClaimed extends AgentTrustsResponse
+  case object ServiceUnavailable extends AgentTrustsResponse
+  case object Forbidden extends AgentTrustsResponse
+  case object BadRequest extends AgentTrustsResponse
+  case object ServerError extends AgentTrustsResponse
 
-  implicit lazy val httpReads: HttpReads[EnrolmentsResponse] =
-    new HttpReads[EnrolmentsResponse] {
-      override def read(method: String, url: String, response: HttpResponse): EnrolmentsResponse = {
-        Logger.info(s"[Enrolments] response status received from ES0 api: ${response.status}, body :${response.body}")
+  implicit lazy val httpReads: HttpReads[AgentTrustsResponse] =
+    new HttpReads[AgentTrustsResponse] {
+      override def read(method: String, url: String, response: HttpResponse): AgentTrustsResponse = {
+        Logger.info(s"[AgentTrusts] response status received from ES0 api: ${response.status}, body :${response.body}")
 
         response.status match {
           case OK =>
             response.json.as[AgentTrusts]
           case NO_CONTENT =>
-            NoTrusts
+            NotClaimed
           case SERVICE_UNAVAILABLE =>
             ServiceUnavailable
           case FORBIDDEN =>
