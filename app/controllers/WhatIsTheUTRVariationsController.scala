@@ -71,30 +71,30 @@ class WhatIsTheUTRVariationsController @Inject()(
 
         value => {
 
-          val validateUtrAndRedirect = for {
+          (for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatIsTheUTRVariationPage, value))
             _              <- sessionRepository.set(updatedAnswers)
             claim       <- trustsStoreConnector.get(request.internalId, value)
-          } yield {
+          } yield claim) flatMap { claim =>
+
+            lazy val redirectTo = request.affinityGroup match {
+              case Agent => enrolmentStoreConnector.getAgentTrusts(value) map {
+                case NotClaimed => Redirect(routes.TrustNotClaimedController.onPageLoad(draftId))
+                case _ => Redirect(routes.TrustStatusController.status(draftId))
+              }
+              case _ => Future.successful(Redirect(routes.TrustStatusController.status(draftId)))
+            }
 
             claim match {
               case Some(c) =>
                 if(c.trustLocked) {
-                  Redirect(routes.WhatIsTheUTRVariationsController.trustStillLocked(draftId))
+                  Future.successful(Redirect(routes.WhatIsTheUTRVariationsController.trustStillLocked(draftId)))
                 } else {
-                  Redirect(routes.TrustStatusController.status(draftId))
+                  redirectTo
                 }
-              case _ => Redirect(routes.TrustStatusController.status(draftId))
+              case _ => redirectTo
             }
 
-          }
-
-          request.affinityGroup match {
-            case Agent => enrolmentStoreConnector.getAgentTrusts(value) flatMap {
-              case NotClaimed => Future.successful(Redirect(routes.TrustNotClaimedController.onPageLoad(draftId)))
-              case _ => validateUtrAndRedirect
-            }
-            case _ => validateUtrAndRedirect
           }
 
         }
