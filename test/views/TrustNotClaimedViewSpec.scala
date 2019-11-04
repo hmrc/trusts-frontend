@@ -25,7 +25,7 @@ class TrustNotClaimedViewSpec extends ViewBehaviours {
 
     val view = viewFor[TrustNotClaimedView](Some(emptyUserAnswers))
 
-    val applyView = view.apply()(fakeRequest, messages)
+    val applyView = view.apply("0987654321")(fakeRequest, messages)
 
     behave like normalPage(applyView, "trustNotClaimed")
 

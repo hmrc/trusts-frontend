@@ -17,6 +17,7 @@
 package controllers
 
 import base.SpecBase
+import pages.WhatIsTheUTRVariationPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.TrustNotClaimedView
@@ -27,7 +28,13 @@ class TrustNotClaimedControllerSpec extends SpecBase {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val utr = "0987654321"
+
+      val answers = emptyUserAnswers
+        .set(WhatIsTheUTRVariationPage, utr)
+        .success.value
+
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
 
       val request = FakeRequest(GET, routes.TrustNotClaimedController.onPageLoad(fakeDraftId).url)
 
@@ -38,7 +45,7 @@ class TrustNotClaimedControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view()(fakeRequest, messages).toString
+        view(utr)(fakeRequest, messages).toString
 
       application.stop()
     }

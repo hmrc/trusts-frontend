@@ -18,6 +18,7 @@ package controllers
 
 import controllers.actions._
 import javax.inject.Inject
+import pages.WhatIsTheUTRVariationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -36,6 +37,8 @@ class TrustNotClaimedController @Inject()(
 
   def onPageLoad(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
     implicit request =>
-      Ok(view())
+      request.userAnswers.get(WhatIsTheUTRVariationPage) map { utr =>
+        Ok(view(utr))
+      } getOrElse Redirect(routes.SessionExpiredController.onPageLoad())
   }
 }
