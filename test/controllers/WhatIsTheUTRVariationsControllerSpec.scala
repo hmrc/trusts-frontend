@@ -183,7 +183,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual OK
-      contentAsString(result) mustEqual view(utr)
+      contentAsString(result) mustEqual view(utr).toString
 
       application.stop()
     }
