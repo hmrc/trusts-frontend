@@ -49,13 +49,6 @@ class InternationalAddressFormProvider @Inject() extends Mappings {
               maxLength(35, "internationalAddress.error.line3.length"),
               regexp(Validation.addressLineRegex, "internationalAddress.error.line3.invalidCharacters")
             ))),
-      "line4" ->
-        optional(Forms.text
-          .verifying(
-            firstError(
-              maxLength(35, "internationalAddress.error.line4.length"),
-              regexp(Validation.addressLineRegex, "internationalAddress.error.line4.invalidCharacters")
-            ))),
       "country" ->
         text("internationalAddress.error.country.required")
           .verifying(

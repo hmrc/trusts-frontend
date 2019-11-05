@@ -63,7 +63,7 @@ class IndividualBeneficiaryAddressUKControllerSpec extends SpecBase {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers
-        .set(IndividualBeneficiaryAddressUKPage(index),  UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")).success.value.set(IndividualBeneficiaryNamePage(index),
+        .set(IndividualBeneficiaryAddressUKPage(index),  UKAddress("line 1", "line 2", Some("line 3"), Some("line 4"),"line 5")).success.value.set(IndividualBeneficiaryNamePage(index),
         name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -77,7 +77,7 @@ class IndividualBeneficiaryAddressUKControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")), NormalMode, fakeDraftId, name, index)(fakeRequest, messages).toString
+        view(form.fill(UKAddress("line 1","line 2", Some("line 3"), Some("line 4"),"line 5")), NormalMode, fakeDraftId, name, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -92,7 +92,7 @@ class IndividualBeneficiaryAddressUKControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, individualBeneficiaryAddressUKRoute)
-          .withFormUrlEncodedBody(("line1", "value 1"), ("townOrCity", "value 2"),("postcode", "NE1 1ZZ"))
+          .withFormUrlEncodedBody(("line1", "value 1"), ("line2", "value 2"),("postcode", "NE1 1ZZ"))
 
       val result = route(application, request).value
 
@@ -148,7 +148,7 @@ class IndividualBeneficiaryAddressUKControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, individualBeneficiaryAddressUKRoute)
-          .withFormUrlEncodedBody(("line1", "value 1"), ("townOrCity", "value 2"),("postcode", "NE1 1ZZ"))
+          .withFormUrlEncodedBody(("line1", "value 1"), ("line2", "value 2"),("postcode", "NE1 1ZZ"))
 
       val result = route(application, request).value
 

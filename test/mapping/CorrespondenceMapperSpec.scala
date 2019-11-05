@@ -24,7 +24,7 @@ import models.IndividualOrBusiness.Individual
 import models.{FullName, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
-import pages.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteeIndividualOrBusinessPage, TrusteeLiveInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesUkAddressPage}
+import pages.trustees._
 
 class CorrespondenceMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {
@@ -48,7 +48,7 @@ class CorrespondenceMapperSpec extends FreeSpec with MustMatchers
       "for a UK lead trustee individual" - {
 
         "must not be able to create a correspondence when do not have all answers" in {
-          val address = UKAddress("First line", Some("Second line"), None, "Newcastle", "NE981ZZ")
+          val address = UKAddress("First line", "Second line", None, Some("Newcastle"), "NE981ZZ")
 
           val userAnswers = emptyUserAnswers
             .set(TrustNamePage, "Trust of a Will").success.value
@@ -62,14 +62,14 @@ class CorrespondenceMapperSpec extends FreeSpec with MustMatchers
         }
 
         "must be able to create a correspondence when have all required answers" in {
-          val address = UKAddress("First line", Some("Second line"), None, "Newcastle", "NE981ZZ")
+          val address = UKAddress("First line", "Second line", None, Some("Newcastle"), "NE981ZZ")
 
           val userAnswers = emptyUserAnswers
             .set(TrustNamePage, "Trust of a Will").success.value
             .set(IsThisLeadTrusteePage(0), true).success.value
             .set(TrusteeIndividualOrBusinessPage(0), Individual).success.value
             .set(TrusteesNamePage(0), FullName("First", None, "Last")).success.value
-            .set(TrusteesDateOfBirthPage(0), LocalDate.of(2010,10,10)).success.value
+            .set(TrusteesDateOfBirthPage(0), LocalDate.of(2010, 10, 10)).success.value
             .set(TrusteeAUKCitizenPage(0), true).success.value
             .set(TrusteeLiveInTheUKPage(0), true).success.value
             .set(TrusteesUkAddressPage(0), address).success.value

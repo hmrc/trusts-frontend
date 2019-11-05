@@ -34,7 +34,7 @@ class IndividualBeneficiaryAddressUKPageSpec extends PageBehaviours {
   "remove IndividualBeneficiaryAddressUK when IndividualBeneficiaryAddressUKYesNoPage is set to false" in {
     forAll(arbitrary[UserAnswers]) {
       initial =>
-        val answers: UserAnswers = initial.set(IndividualBeneficiaryAddressUKPage(0), UKAddress("line1", Some("line2"), Some("line3"), "town or city", "AB1 1AB")).success.value
+        val answers: UserAnswers = initial.set(IndividualBeneficiaryAddressUKPage(0), UKAddress("line1", "line2", Some("line3"), Some("line4"), "AB1 1AB")).success.value
         val result = answers.set(IndividualBeneficiaryAddressYesNoPage(0), false).success.value
 
         result.get(IndividualBeneficiaryAddressUKPage(0)) mustNot be(defined)

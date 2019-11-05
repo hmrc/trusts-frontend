@@ -35,7 +35,7 @@ class RemoveIndividualBeneficiaryQuerySpec extends PageBehaviours {
             .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
             .set(IndividualBeneficiaryAddressYesNoPage(0), true).success.value
             .set(IndividualBeneficiaryAddressUKYesNoPage(0), true).success.value
-            .set(IndividualBeneficiaryAddressUKPage(0), UKAddress("1", Some("2"), Some("3"), "4", "5")).success.value
+            .set(IndividualBeneficiaryAddressUKPage(0), UKAddress("1", "2", Some("3"), Some("4"), "5")).success.value
             .set(IndividualBeneficiaryNamePage(1), FullName("Second", None, "Last")).success.value
 
           val result = answers.remove(RemoveIndividualBeneficiaryQuery(index)).success.value

@@ -70,7 +70,7 @@ class RemovePropertyOrLandWithAddressUKControllerSpec extends SpecBase with Prop
         val userAnswers = emptyUserAnswers
           .set(PropertyOrLandUKAddressPage(0), UKAddress(
             line1 = "line 1",
-            townOrCity = "Newcastle",
+            line2 = "Newcastle",
             postcode = "NE1 1NN"
           )).success.value
           .set(AssetStatus(0), Completed).success.value
@@ -96,7 +96,7 @@ class RemovePropertyOrLandWithAddressUKControllerSpec extends SpecBase with Prop
       val userAnswers = emptyUserAnswers
         .set(PropertyOrLandUKAddressPage(0), UKAddress(
           line1 = "line 1",
-          townOrCity = "Newcastle",
+          line2 = "Newcastle",
           postcode = "NE1 1NN"
         )).success.value
         .set(AssetStatus(0), Completed).success.value
@@ -127,7 +127,7 @@ class RemovePropertyOrLandWithAddressUKControllerSpec extends SpecBase with Prop
       val userAnswers = emptyUserAnswers
         .set(PropertyOrLandUKAddressPage(0), UKAddress(
           line1 = "line 1",
-          townOrCity = "Newcastle",
+          line2 = "Newcastle",
           postcode = "NE1 1NN"
         )).success.value
         .set(AssetStatus(0), Completed).success.value

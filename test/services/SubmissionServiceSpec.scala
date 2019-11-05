@@ -20,7 +20,8 @@ import base.SpecBaseHelpers
 import connector.TrustConnector
 import generators.Generators
 import mapping.{Registration, RegistrationMapper}
-import models.{RegistrationTRNResponse, UnableToRegister}
+import models.RegistrationTRNResponse
+import models.TrustResponse.UnableToRegister
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}

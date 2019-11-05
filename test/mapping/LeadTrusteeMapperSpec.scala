@@ -53,7 +53,7 @@ class LeadTrusteeMapperSpec extends FreeSpec with MustMatchers
           .set(TrusteeLiveInTheUKPage(index), true).success.value
           .set(TrusteesNinoPage(index), "AB123456C").success.value
           .set(TelephoneNumberPage(index), "0191 1111111").success.value
-          .set(TrusteesUkAddressPage(index), UKAddress("line1", None,None, "town", "NE65QA")).success.value
+          .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2" ,None, None, "NE65QA")).success.value
 
 
         leadTrusteeMapper.build(userAnswers).value mustBe  LeadTrusteeType(
@@ -87,7 +87,7 @@ class LeadTrusteeMapperSpec extends FreeSpec with MustMatchers
           .set(TrusteeAUKCitizenPage(index), true).success.value
           .set(TrusteeLiveInTheUKPage(index), true).success.value
           .set(TrusteesNinoPage(index), "AB123456C").success.value
-          .set(TrusteesUkAddressPage(index), UKAddress("line1", None,None, "town", "NE65QA")).success.value
+          .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2",None, Some("line4"), "NE65QA")).success.value
 
          leadTrusteeMapper.build(userAnswers) mustNot be(defined)
 
