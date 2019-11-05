@@ -50,8 +50,8 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
   lazy val app: Application = new GuiceApplicationBuilder()
     .configure(Seq(
       "microservice.services.enrolment-store-proxy.port" -> server.port(),
-      "auditing.enabled" -> false): _*
-    ).build()
+      "auditing.enabled" -> false
+    ): _*).build()
 
   private lazy val connector = app.injector.instanceOf[EnrolmentStoreConnector]
   private lazy val config = app.injector.instanceOf[FrontendAppConfig]
@@ -93,12 +93,18 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
     }
 
     "No Trusts when" - {
-      "valid enrolment key retrieves a No Content 204" in {
+      "valid enrolment key retrieves a AgentServices containing empty prinicipleIds" in {
 
         wiremock(
-          expectedStatus = Status.NO_CONTENT,
-          expectedResponse = None
-        )
+          expectedStatus = Status.OK,
+          expectedResponse = Some(
+            s"""{
+               |    "principalUserIds": [
+               |    ],
+               |    "delegatedUserIds": [
+               |    ]
+               |}""".stripMargin
+          ))
 
         connector.getAgentTrusts(identifier) map { result =>
           result mustBe NotClaimed

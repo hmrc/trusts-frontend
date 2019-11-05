@@ -29,6 +29,7 @@ object AgentTrustsResponse {
 
   case class AgentTrusts(principalUserIds: Seq[String], delegatedUserIds: Seq[String]) extends AgentTrustsResponse
   case object NotClaimed extends AgentTrustsResponse
+  case object NoContent extends AgentTrustsResponse
   case object ServiceUnavailable extends AgentTrustsResponse
   case object Forbidden extends AgentTrustsResponse
   case object BadRequest extends AgentTrustsResponse
@@ -41,9 +42,12 @@ object AgentTrustsResponse {
 
         response.status match {
           case OK =>
-            response.json.as[AgentTrusts]
+            response.json.as[AgentTrusts] match {
+              case AgentTrusts(Seq(), _) => NotClaimed
+              case agentTrusts => agentTrusts
+            }
           case NO_CONTENT =>
-            NotClaimed
+            NoContent
           case SERVICE_UNAVAILABLE =>
             ServiceUnavailable
           case FORBIDDEN =>
