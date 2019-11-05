@@ -39,7 +39,7 @@
         </h1>
     </div>
 
-    @components.link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save","confirmationPage.printsave.link", openInNewWindow = true)
+<p class="panel-indent">@components.link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save","confirmationPage.printsave.link", openInNewWindow = true)</p>
 
     @if(!isExistingTrust) {
 
@@ -49,9 +49,9 @@
 
         <h2>@messages("confirmationPage.subheading2")</h2>
 
-        <p>@messages("confirmationPage.new.paragraph2") @components.link(postHMRC, "contact-hmrc-for-utr", "confirmationPage.contacthmrc.link", true)</p>
+        <p>@messages("confirmationPage.new.paragraph2") @components.link(postHMRC, "contact-hmrc-for-utr", "confirmationPage.contacthmrc.link", true).</p>
 
-        <p>@messages("confirmationPage.paragraph3") @components.link(postHMRC, "post-to-hmrc-contact", "confirmationPage.posthmrc.link", true) @messages("confirmationPage.paragraph4")</p>
+        <p>@messages("confirmationPage.paragraph3") @components.link(postHMRC, "post-to-hmrc-contact", "confirmationPage.posthmrc.link", true). @messages("confirmationPage.paragraph4")</p>
 
     } else {
 
@@ -67,7 +67,7 @@
     }
 
     @if(isAgent) {
-        @messages("confirmationPage.agent.you.can") @components.link(agentOverviewUrl, "agent-overview", "confirmationPage.agent.link", false)
+        @messages("confirmationPage.agent.you.can") @components.link(agentOverviewUrl, "agent-overview", "confirmationPage.agent.link", false).)
     }
 
 }
