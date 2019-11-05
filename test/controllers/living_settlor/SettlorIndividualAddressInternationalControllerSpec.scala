@@ -19,41 +19,45 @@ package controllers.living_settlor
 import base.SpecBase
 import controllers.IndexValidation
 import forms.InternationalAddressFormProvider
-import models.{FullName, InternationalAddress, NormalMode}
+import models.{FullName, InternationalAddress, NormalMode, UserAnswers}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.living_settlor.{SettlorIndividualAddressInternationalPage, SettlorIndividualNINOPage, SettlorIndividualNamePage}
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import play.api.Application
+import play.api.data.Form
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils._
 import utils.countryOptions.CountryOptionsNonUK
 import views.html.living_settlor.SettlorIndividualAddressInternationalView
 
+import scala.concurrent.Future
+
 class SettlorIndividualAddressInternationalControllerSpec extends SpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new InternationalAddressFormProvider()
-  val form = formProvider()
+  val form: Form[InternationalAddress] = formProvider()
   val index = 0
   val name = FullName("First", Some("Middle"), "Last")
 
-  lazy val settlorIndividualAddressInternationalRoute = controllers.living_settlor.routes.SettlorIndividualAddressInternationalController.onPageLoad(NormalMode, index, fakeDraftId).url
+  lazy val settlorIndividualAddressInternationalRoute: String = controllers.living_settlor.routes.SettlorIndividualAddressInternationalController.onPageLoad(NormalMode, index, fakeDraftId).url
 
 
   "SettlorIndividualAddressInternational Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = emptyUserAnswers.set(SettlorIndividualNamePage(index), name).success.value
+      val userAnswers: UserAnswers = emptyUserAnswers.set(SettlorIndividualNamePage(index), name).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application: Application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, settlorIndividualAddressInternationalRoute)
 
-      val view = application.injector.instanceOf[SettlorIndividualAddressInternationalView]
+      val view: SettlorIndividualAddressInternationalView = application.injector.instanceOf[SettlorIndividualAddressInternationalView]
 
-      val result = route(application, request).value
+      val result: Future[Result] = route(application, request).value
 
       val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
 
@@ -68,7 +72,7 @@ class SettlorIndividualAddressInternationalControllerSpec extends SpecBase with 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers.set(SettlorIndividualNamePage(index), name).success.value
-        .set(SettlorIndividualAddressInternationalPage(index), InternationalAddress("line 1", "line 2", Some("line 3"), Some("line 4"), "country")).success.value
+        .set(SettlorIndividualAddressInternationalPage(index), InternationalAddress("line 1", "line 2", Some("line 3"), "country")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -83,7 +87,7 @@ class SettlorIndividualAddressInternationalControllerSpec extends SpecBase with 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(InternationalAddress("line 1", "line 2", Some("line 3"), Some("line 4"), "country")), countryOptions, NormalMode, index, fakeDraftId, name)(fakeRequest, messages).toString
+        view(form.fill(InternationalAddress("line 1", "line 2", Some("line 3"), "country")), countryOptions, NormalMode, index, fakeDraftId, name)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -91,7 +95,7 @@ class SettlorIndividualAddressInternationalControllerSpec extends SpecBase with 
     "redirect to the next page when valid data is submitted" in {
 
       val userAnswers = emptyUserAnswers.set(SettlorIndividualNamePage(index), name).success.value
-        .set(SettlorIndividualAddressInternationalPage(index), InternationalAddress("line 1", "line 2", Some("line 3"), Some("line 4"), "country")).success.value
+        .set(SettlorIndividualAddressInternationalPage(index), InternationalAddress("line 1", "line 2", Some("line 3"), "country")).success.value
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -148,7 +152,7 @@ class SettlorIndividualAddressInternationalControllerSpec extends SpecBase with 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm,countryOptions, NormalMode, index, fakeDraftId, name)(fakeRequest, messages).toString
+        view(boundForm, countryOptions, NormalMode, index, fakeDraftId, name)(fakeRequest, messages).toString
 
       application.stop()
     }

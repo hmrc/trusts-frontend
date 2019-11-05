@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import connector.TrustConnector
+import connector.{TrustClaim, TrustConnector, TrustsStoreConnector}
 import models.UserAnswers
 import models.playback._
 import org.mockito.Matchers.any
@@ -31,7 +31,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.api.libs.json._
 import uk.gov.hmrc.auth.core.AffinityGroup
-import views.html.{ClosedErrorView, DoesNotMatchErrorView, IVDownView, StillProcessingErrorView}
+import views.html.{ClosedErrorView, DoesNotMatchErrorView, IVDownView, StillProcessingErrorView, TrustLockedView}
 
 import scala.concurrent.Future
 
@@ -44,9 +44,11 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
     def userAnswers: UserAnswers = emptyUserAnswers.set(WhatIsTheUTRVariationPage, utr).success.value
 
     val fakeTrustConnector: TrustConnector = mock[TrustConnector]
+    val fakeTrustStoreConnector: TrustsStoreConnector = mock[TrustsStoreConnector]
 
     def application: Application = applicationBuilder(userAnswers = Some(userAnswers)).overrides(
-      bind[TrustConnector].to(fakeTrustConnector)
+      bind[TrustConnector].to(fakeTrustConnector),
+      bind[TrustsStoreConnector].to(fakeTrustStoreConnector)
     ).build()
 
     def request: FakeRequest[AnyContentAsEmpty.type]
@@ -98,6 +100,20 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
       application.stop()
     }
 
+    "must return OK and the correct view for GET ../status/locked" in new LocalSetup {
+
+      override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.locked(fakeDraftId).url)
+
+      val view: TrustLockedView = application.injector.instanceOf[TrustLockedView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(utr)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
     "must return SERVICE_UNAVAILABLE and the correct view for GET ../status/down" in new LocalSetup {
 
       override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.down(fakeDraftId).url)
@@ -117,6 +133,9 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status(fakeDraftId).url)
 
+        when(fakeTrustStoreConnector.get(any[String], any[String])(any(), any()))
+          .thenReturn(Future.successful(Some(TrustClaim("1234567890", trustLocked = false, managedByAgent = false))))
+
         when(fakeTrustConnector.playback(any[String])(any(), any())).thenReturn(Future.successful(Closed))
 
         status(result) mustEqual SEE_OTHER
@@ -129,6 +148,9 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
       "a Processing status is received from the trust connector" in new LocalSetup {
 
         override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status(fakeDraftId).url)
+
+        when(fakeTrustStoreConnector.get(any[String], any[String])(any(), any()))
+          .thenReturn(Future.successful(Some(TrustClaim("1234567890", trustLocked = false, managedByAgent = false))))
 
         when(fakeTrustConnector.playback(any[String])(any(), any())).thenReturn(Future.successful(Processing))
 
@@ -143,6 +165,9 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status(fakeDraftId).url)
 
+        when(fakeTrustStoreConnector.get(any[String], any[String])(any(), any()))
+          .thenReturn(Future.successful(Some(TrustClaim("1234567890", trustLocked = false, managedByAgent = false))))
+
         when(fakeTrustConnector.playback(any[String])(any(), any())).thenReturn(Future.successful(UtrNotFound))
 
         status(result) mustEqual SEE_OTHER
@@ -152,9 +177,26 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
         application.stop()
       }
 
+      "A locked trust claim is returned from the trusts store connector" in new LocalSetup {
+
+        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status(fakeDraftId).url)
+
+        when(fakeTrustStoreConnector.get(any[String], any[String])(any(), any()))
+          .thenReturn(Future.successful(Some(TrustClaim("1234567890", trustLocked = true, managedByAgent = false))))
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual "/trusts-registration/id/status/locked"
+
+        application.stop()
+      }
+
       "a ServiceUnavailable status is received from the trust connector" in new LocalSetup {
 
         override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status(fakeDraftId).url)
+
+        when(fakeTrustStoreConnector.get(any[String], any[String])(any(), any()))
+          .thenReturn(Future.successful(Some(TrustClaim("1234567890", trustLocked = false, managedByAgent = false))))
 
         when(fakeTrustConnector.playback(any[String])(any(), any())).thenReturn(Future.successful(TrustServiceUnavailable))
 
@@ -169,13 +211,17 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status(fakeDraftId).url)
 
-        val payload = Json.parse("""{
+        val payload: JsValue =
+          Json.parse("""{
                         |
                         |  "responseHeader": {
                         |    "status": "In Processing",
                         |    "formBundleNo": "1"
                         |  }
                         |}""".stripMargin)
+
+        when(fakeTrustStoreConnector.get(any[String], any[String])(any(), any()))
+          .thenReturn(Future.successful(Some(TrustClaim("1234567890", trustLocked = false, managedByAgent = false))))
 
         when(fakeTrustConnector.playback(any[String])(any(), any())).thenReturn(Future.successful(Processed(payload)))
 

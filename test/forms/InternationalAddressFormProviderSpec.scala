@@ -111,27 +111,6 @@ class InternationalAddressFormProviderSpec extends StringFieldBehaviours {
 
   }
 
-  ".line4" must {
-
-    val fieldName = "line4"
-    val lengthKey = "internationalAddress.error.line4.length"
-    val maxLength = 35
-
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
-    )
-
-    behave like optionalField(
-      form,
-      fieldName,
-      validDataGenerator = RegexpGen.from(Validation.addressLineRegex)
-    )
-
-  }
-
   ".country" must {
 
     val fieldName = "country"

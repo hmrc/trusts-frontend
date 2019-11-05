@@ -35,12 +35,13 @@ class UKAddressFormProvider @Inject() extends Mappings {
               regexp(Validation.addressLineRegex, "ukAddress.error.line1.invalidCharacters")
             )),
       "line2" ->
-        optional(Forms.text
+        text("ukAddress.error.line2.required")
           .verifying(
             firstError(
+              isNotEmpty("line2", "ukAddress.error.line2.required"),
               maxLength(35, "ukAddress.error.line2.length"),
               regexp(Validation.addressLineRegex, "ukAddress.error.line2.invalidCharacters")
-            ))),
+            )),
       "line3" ->
         optional(Forms.text
           .verifying(
@@ -48,14 +49,14 @@ class UKAddressFormProvider @Inject() extends Mappings {
               maxLength(35, "ukAddress.error.line3.length"),
               regexp(Validation.addressLineRegex, "ukAddress.error.line3.invalidCharacters")
             ))),
-      "townOrCity" ->
-        text("ukAddress.error.townOrCity.required")
+      "line4" ->
+        optional(Forms.text
           .verifying(
             firstError(
-              isNotEmpty("townOrCity", "ukAddress.error.townOrCity.required"),
-              maxLength(35, "ukAddress.error.townOrCity.length"),
-              regexp(Validation.addressLineRegex, "ukAddress.error.townOrCity.invalidCharacters")
-            )),
+              maxLength(35, "ukAddress.error.line4.length"),
+              regexp(Validation.addressLineRegex, "ukAddress.error.line4.invalidCharacters")
+            ))),
+
       "postcode" ->
         postcode("ukAddress.error.postcode.required")
           .verifying(

@@ -16,6 +16,8 @@ GET        /unauthorised                                controllers.Unauthorised
 
 GET        /create-agent-services-account               controllers.CreateAgentServicesAccountController.onPageLoad()
 
+GET        /signed-out                                  controllers.SignedOutController.onPageLoad()
+
 GET        /:draftId/trust-name                                   controllers.TrustNameController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/trust-name                                   controllers.TrustNameController.onSubmit(mode: Mode = NormalMode, draftId: String)
 
@@ -632,5 +634,7 @@ GET        /:draftId/status/closed                          controllers.TrustSta
 GET        /:draftId/status/processing                      controllers.TrustStatusController.processing(draftId: String)
 GET        /:draftId/status/not-found                       controllers.TrustStatusController.notFound(draftId: String)
 GET        /:draftId/status/down                            controllers.TrustStatusController.down(draftId: String)
+GET        /:draftId/status/locked                          controllers.TrustStatusController.locked(draftId: String)
 GET        /:draftId/status                                 controllers.TrustStatusController.status(draftId: String)
 
+GET        /:draftId/maintain-a-trust/information           controllers.InformationMaintainingThisTrustController.onPageLoad(draftId: String)

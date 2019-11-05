@@ -46,7 +46,7 @@ class SettlorsNINoYesNoPageSpec extends PageBehaviours {
       (initial, str) =>
         val answers: UserAnswers = initial.set(SettlorsLastKnownAddressYesNoPage, true).success.value
           .set(WasSettlorsAddressUKYesNoPage, true).success.value
-        .set(SettlorsUKAddressPage, UKAddress(str, Some(str), Some(str), str, str)).success.value
+        .set(SettlorsUKAddressPage, UKAddress(str, str, Some(str), Some(str), str)).success.value
 
         val result = answers.set(SettlorsNINoYesNoPage, true).success.value
 

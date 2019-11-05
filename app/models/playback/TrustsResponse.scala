@@ -40,6 +40,7 @@ object TrustsResponse {
       case JsString("In Processing") => JsSuccess(Processing)
       case JsString("Closed") => JsSuccess(Closed)
       case JsString("Processed") => JsSuccess(Processed(json))
+      case _ => JsError("Unexpected Status")
     }
   }
 

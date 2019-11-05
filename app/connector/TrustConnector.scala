@@ -19,8 +19,8 @@ package connector
 import config.FrontendAppConfig
 import javax.inject.Inject
 import mapping.Registration
+import models.TrustResponse
 import models.playback.TrustsResponse
-import models.{PlaybackResponse, TrustResponse}
 import play.api.libs.json.{JsValue, Json, Writes}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient

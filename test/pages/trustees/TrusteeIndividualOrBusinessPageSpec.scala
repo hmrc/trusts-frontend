@@ -41,12 +41,12 @@ class TrusteeIndividualOrBusinessPageSpec extends PageBehaviours {
     forAll(arbitrary[UserAnswers], arbitrary[String]) {
       (initial, str) =>
         val answers: UserAnswers = initial
-          .set(TrusteesNamePage(index), FullName(str,None, str)).success.value
+          .set(TrusteesNamePage(index), FullName(str, None, str)).success.value
           .set(TrusteesDateOfBirthPage(index), LocalDate.now()).success.value
           .set(TrusteeAUKCitizenPage(index), true).success.value
           .set(TrusteesNinoPage(index), str).success.value
           .set(TrusteeLiveInTheUKPage(index), true).success.value
-          .set(TrusteesUkAddressPage(index), UKAddress(str,None,None,str,str)).success.value
+          .set(TrusteesUkAddressPage(index), UKAddress(str, str, None, None, str)).success.value
           .set(TelephoneNumberPage(index), str).success.value
 
         val result = answers.set(TrusteeIndividualOrBusinessPage(index), Business).success.value
@@ -60,7 +60,6 @@ class TrusteeIndividualOrBusinessPageSpec extends PageBehaviours {
         result.get(TelephoneNumberPage(index)) mustNot be(defined)
     }
   }
-
 
 
 }

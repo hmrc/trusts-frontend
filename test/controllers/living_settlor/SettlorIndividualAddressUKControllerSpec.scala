@@ -63,7 +63,7 @@ class SettlorIndividualAddressUKControllerSpec extends SpecBase with IndexValida
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers.set(SettlorIndividualNamePage(index), name).success.value
-        .set(SettlorIndividualAddressUKPage(index),UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")).success.value
+        .set(SettlorIndividualAddressUKPage(index), UKAddress("line 1", "line 2", Some("line 3"), Some("line 4"), "line 5")).success.value
 
       val application = applicationBuilder(Some(userAnswers)).build()
 
@@ -76,7 +76,7 @@ class SettlorIndividualAddressUKControllerSpec extends SpecBase with IndexValida
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")), NormalMode, fakeDraftId, index, name)(fakeRequest, messages).toString
+        view(form.fill(UKAddress("line 1", "line 2", Some("line 3"), Some("line 4"), "line 5")), NormalMode, fakeDraftId, index, name)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -84,14 +84,14 @@ class SettlorIndividualAddressUKControllerSpec extends SpecBase with IndexValida
     "redirect to the next page when valid data is submitted" in {
 
       val userAnswers = emptyUserAnswers.set(SettlorIndividualNamePage(index), name).success.value
-        .set(SettlorIndividualAddressUKPage(index),UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")).success.value
+        .set(SettlorIndividualAddressUKPage(index), UKAddress("line 1", "line 2", Some("line 3"), Some("line 4"), "line 5")).success.value
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, settlorIndividualAddressUKRoute)
-          .withFormUrlEncodedBody(("line1", "value 1"),("line2","value 2"),("line3","value 3"), ("townOrCity", "value 4"),("postcode", "NE1 1ZZ"))
+          .withFormUrlEncodedBody(("line1", "value 1"), ("line2", "value 2"), ("line3", "value 3"), ("line4", "value 4"), ("postcode", "NE1 1ZZ"))
 
       val result = route(application, request).value
 

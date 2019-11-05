@@ -63,7 +63,7 @@ class AgentUKAddressControllerSpec extends SpecBase {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers
-        .set(AgentUKAddressPage,  UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")).success.value
+        .set(AgentUKAddressPage,  UKAddress("line 1", "line 2", Some("line 3"), Some("line 4"),"line 5")).success.value
         .set(AgentNamePage, agencyName).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
@@ -77,7 +77,7 @@ class AgentUKAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(UKAddress("line 1", Some("line 2"), Some("line 3"), "line 4","line 5")), NormalMode,fakeDraftId,agencyName)(fakeRequest, messages).toString
+        view(form.fill(UKAddress("line 1", "line 2", Some("line 3"), Some("line 4"),"line 5")), NormalMode,fakeDraftId,agencyName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -92,7 +92,7 @@ class AgentUKAddressControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, agentUKAddressRoute)
-          .withFormUrlEncodedBody(("line1", "value 1"), ("townOrCity", "value 2"),("postcode", "NE1 1ZZ"))
+          .withFormUrlEncodedBody(("line1", "value 1"), ("line2", "value 2"),("postcode", "NE1 1ZZ"))
 
       val result = route(application, request).value
 
