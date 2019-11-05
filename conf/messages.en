@@ -1341,3 +1341,15 @@ trustNotClaimed.bullet.2.p3 = If you need help with the service
 trustNotClaimed.bullet.2.p3.a = contact the trusts helpline.
 trustNotClaimed.bullet.2.p4 = You can
 trustNotClaimed.bullet.2.p4.a = return to register and maintain a trust for a client.
+
+agentNotAuthorised.title = Sorry, you cannot access this trust
+agentNotAuthorised.heading = Sorry, you cannot access this trust
+agentNotAuthorised.subheading = This trust’s UTR: {0}
+agentNotAuthorised.p1 = The trustee who claimed the trust needs to give you authorisation.
+agentNotAuthorised.p2 = You can create an authorisation link to send to the trustee through
+agentNotAuthorised.p2.a = Agent Services.
+agentNotAuthorised.p3 = The trustee who claimed the trust must use the same Government Gateway account to approve your request.
+agentNotAuthorised.p4 = If you need help with this service
+agentNotAuthorised.p4.a = contact the trusts helpline.
+agentNotAuthorised.p5 = You can
+agentNotAuthorised.p5.a = return to register and maintain a trust for a client.
