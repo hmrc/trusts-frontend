@@ -82,8 +82,8 @@ class WhatIsTheUTRVariationsController @Inject()(
             lazy val redirectTo = request.affinityGroup match {
               case Agent => enrolmentStoreConnector.getAgentTrusts(value) map {
                 case NotClaimed => Ok(trustNotClaimedView(value))
-                case _:AgentTrusts => Ok(agentNotAuthorised(value))
-                case _ => Redirect(routes.TrustStatusController.status(draftId))
+                case _:AgentTrusts => Redirect(routes.TrustStatusController.status(draftId))
+                case _ => Ok(agentNotAuthorised(value))
               }
               case _ => Future.successful(Redirect(routes.TrustStatusController.status(draftId)))
             }
