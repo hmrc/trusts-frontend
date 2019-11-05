@@ -24,11 +24,12 @@ import org.mockito.Mockito.when
 import pages.WhatIsTheUTRVariationPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.WhatIsTheUTRView
+import views.html.{TrustNotClaimedView, WhatIsTheUTRView}
 import connector.{EnrolmentStoreConnector, TrustClaim, TrustsStoreConnector}
 import models.AgentTrustsResponse.NotClaimed
 import play.api.libs.json.Json
 import play.api.inject.bind
+import play.api.mvc.{AnyContent, AnyContentAsFormUrlEncoded}
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 
 import scala.concurrent.Future
@@ -175,12 +176,14 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       when(enrolmentStoreConnector.getAgentTrusts(eqTo(utr))(any(), any()))
         .thenReturn(Future.successful(NotClaimed))
 
-      val request = FakeRequest(POST, trustUTRRoute).withFormUrlEncodedBody(("value", utr))
+      implicit val request = FakeRequest(POST, trustUTRRoute).withFormUrlEncodedBody(("value", utr))
+
+      val view = application.injector.instanceOf[TrustNotClaimedView]
 
       val result = route(application, request).value
 
-      status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual controllers.routes.TrustNotClaimedController.onPageLoad(fakeDraftId).url
+      status(result) mustEqual OK
+      contentAsString(result) mustEqual view(utr)
 
       application.stop()
     }

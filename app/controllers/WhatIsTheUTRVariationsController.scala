@@ -30,7 +30,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.{TrustLockedView, WhatIsTheUTRView}
+import views.html.{TrustLockedView, TrustNotClaimedView, WhatIsTheUTRView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -44,6 +44,7 @@ class WhatIsTheUTRVariationsController @Inject()(
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: WhatIsTheUTRView,
                                                   lockedView: TrustLockedView,
+                                                  trustNotClaimedView: TrustNotClaimedView,
                                                   config: FrontendAppConfig,
                                                   trustsStoreConnector: TrustsStoreConnector,
                                                   enrolmentStoreConnector: EnrolmentStoreConnector
@@ -79,7 +80,7 @@ class WhatIsTheUTRVariationsController @Inject()(
 
             lazy val redirectTo = request.affinityGroup match {
               case Agent => enrolmentStoreConnector.getAgentTrusts(value) map {
-                case NotClaimed => Redirect(routes.TrustNotClaimedController.onPageLoad(draftId))
+                case NotClaimed => Ok(trustNotClaimedView(value))
                 case _ => Redirect(routes.TrustStatusController.status(draftId))
               }
               case _ => Future.successful(Redirect(routes.TrustStatusController.status(draftId)))
