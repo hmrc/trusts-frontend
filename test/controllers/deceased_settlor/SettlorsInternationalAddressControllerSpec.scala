@@ -18,20 +18,25 @@ package controllers.deceased_settlor
 
 import base.SpecBase
 import forms.InternationalAddressFormProvider
-import models.{FullName, InternationalAddress, NormalMode}
+import models.{FullName, InternationalAddress, NormalMode, UserAnswers}
 import pages.deceased_settlor.{SettlorsInternationalAddressPage, SettlorsNamePage}
+import play.api.Application
+import play.api.data.Form
+import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.InputOption
 import utils.countryOptions.CountryOptionsNonUK
 import views.html.deceased_settlor.SettlorsInternationalAddressView
 
+import scala.concurrent.Future
+
 class SettlorsInternationalAddressControllerSpec extends SpecBase {
 
   val formProvider = new InternationalAddressFormProvider()
-  val form = formProvider()
+  val form: Form[InternationalAddress] = formProvider()
 
-  lazy val settlorsInternationalAddressRoute = routes.SettlorsInternationalAddressController.onPageLoad(NormalMode,fakeDraftId).url
+  lazy val settlorsInternationalAddressRoute: String = routes.SettlorsInternationalAddressController.onPageLoad(NormalMode,fakeDraftId).url
 
   val name = FullName("first name", None, "Last name")
 
@@ -39,16 +44,16 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = emptyUserAnswers.set(SettlorsNamePage,
+      val userAnswers: UserAnswers = emptyUserAnswers.set(SettlorsNamePage,
         name).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application: Application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, settlorsInternationalAddressRoute)
 
-      val view = application.injector.instanceOf[SettlorsInternationalAddressView]
+      val view: SettlorsInternationalAddressView = application.injector.instanceOf[SettlorsInternationalAddressView]
 
-      val result = route(application, request).value
+      val result: Future[Result] = route(application, request).value
 
       val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
 
@@ -63,7 +68,7 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers
-        .set(SettlorsInternationalAddressPage, InternationalAddress("line 1", "line 2", None, None, "country")).success.value.set(SettlorsNamePage,
+        .set(SettlorsInternationalAddressPage, InternationalAddress("line 1", "line 2", None, "country")).success.value.set(SettlorsNamePage,
         name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -79,7 +84,7 @@ class SettlorsInternationalAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(InternationalAddress("line 1", "line 2", None, None, "country")), countryOptions, NormalMode, fakeDraftId, name)(fakeRequest, messages).toString
+        view(form.fill(InternationalAddress("line 1", "line 2", None, "country")), countryOptions, NormalMode, fakeDraftId, name)(fakeRequest, messages).toString
 
       application.stop()
     }

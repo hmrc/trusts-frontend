@@ -40,7 +40,6 @@ trait InternationalAddressViewBehaviours extends ViewBehaviours {
     val fields = Seq(("line1", None),
       ("line2", None),
       ("line3", None),
-      ("line4", None),
       ("country", None)
     )
 

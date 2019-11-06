@@ -133,8 +133,16 @@
     margin: 0;
 }
 
+.heading-no-top-margin {
+    margin-top: 0;
+}
+
 .label-as-heading, .legend-as-heading {margin-top:0; margin-bottom:0;}
 .heading-large, .heading-medium {margin-top:0;}
+
+.heading-with-top-margin {
+    margin-top: .625em;
+}
 
 #value__listbox, #country__listbox {
     width: 100%;
@@ -146,7 +154,7 @@
 .autocomplete__wrapper span {display:none;}
 
 .heading-confirmation {
-  background-color: #28a197;
+  background-color: #00703c;
   color: #fff;
   padding: .6em;
   text-align: center;

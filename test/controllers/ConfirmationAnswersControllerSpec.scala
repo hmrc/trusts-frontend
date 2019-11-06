@@ -23,18 +23,17 @@ import base.SpecBase
 import models.AddAssets.NoComplete
 import models.Status.Completed
 import models.TrusteesBasedInTheUK.UKBasedTrustees
-import models.{AddABeneficiary, AddASettlor, AddATrustee, FullName, IndividualOrBusiness, PassportOrIdCardDetails, SettlorKindOfTrust, Status, UKAddress, UserAnswers, WhatKindOfAsset}
+import models.{AddABeneficiary, AddASettlor, AddATrustee, FullName, IndividualOrBusiness, SettlorKindOfTrust, Status, UKAddress, WhatKindOfAsset}
 import pages._
-import pages.deceased_settlor.{SettlorDateOfBirthYesNoPage, SettlorDateOfDeathPage, SettlorDateOfDeathYesNoPage, SettlorNationalInsuranceNumberPage, SettlorsDateOfBirthPage, SettlorsLastKnownAddressYesNoPage, SettlorsNINoYesNoPage, SettlorsNamePage, SettlorsUKAddressPage, WasSettlorsAddressUKYesNoPage}
+import pages.deceased_settlor._
 import pages.entitystatus._
-import pages.living_settlor.{SettlorIndividualAddressUKPage, SettlorIndividualAddressUKYesNoPage, SettlorIndividualAddressYesNoPage, SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNINOPage, SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage, SettlorIndividualOrBusinessPage, SettlorIndividualPassportPage, SettlorIndividualPassportYesNoPage}
-import pages.shares.{SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, SharesInAPortfolioPage}
-import pages.trustees.{AddATrusteePage, IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteeIndividualOrBusinessPage, TrusteeLiveInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
-import play.api.i18n.Messages
+import pages.living_settlor._
+import pages.shares._
+import pages.trustees._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import utils.{CheckYourAnswersHelper, TestUserAnswers}
 import utils.countryOptions.CountryOptions
+import utils.{CheckYourAnswersHelper, TestUserAnswers}
 import viewmodels.AnswerSection
 import views.html.ConfirmationAnswerPageView
 
@@ -58,19 +57,19 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
           .set(TrustDetailsStatus, Completed).success.value
 
           .set(IndividualBeneficiaryNamePage(index), FullName("first name", None, "last name")).success.value
-          .set(IndividualBeneficiaryDateOfBirthYesNoPage(index),true).success.value
-          .set(IndividualBeneficiaryDateOfBirthPage(index),LocalDate.now(ZoneOffset.UTC)).success.value
-          .set(IndividualBeneficiaryIncomeYesNoPage(index),true).success.value
-          .set(IndividualBeneficiaryIncomePage(index),"100").success.value
-          .set(IndividualBeneficiaryNationalInsuranceYesNoPage(index),true).success.value
-          .set(IndividualBeneficiaryNationalInsuranceNumberPage(index),"AB123456C").success.value
-          .set(IndividualBeneficiaryAddressYesNoPage(index),true).success.value
-          .set(IndividualBeneficiaryAddressUKYesNoPage(index),true).success.value
-          .set(IndividualBeneficiaryAddressUKPage(index),UKAddress("Line1",None, None, "TownOrCity","NE62RT" )).success.value
-          .set(IndividualBeneficiaryVulnerableYesNoPage(index),true).success.value
+          .set(IndividualBeneficiaryDateOfBirthYesNoPage(index), true).success.value
+          .set(IndividualBeneficiaryDateOfBirthPage(index), LocalDate.now(ZoneOffset.UTC)).success.value
+          .set(IndividualBeneficiaryIncomeYesNoPage(index), true).success.value
+          .set(IndividualBeneficiaryIncomePage(index), "100").success.value
+          .set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), true).success.value
+          .set(IndividualBeneficiaryNationalInsuranceNumberPage(index), "AB123456C").success.value
+          .set(IndividualBeneficiaryAddressYesNoPage(index), true).success.value
+          .set(IndividualBeneficiaryAddressUKYesNoPage(index), true).success.value
+          .set(IndividualBeneficiaryAddressUKPage(index), UKAddress("Line1", "Line2", None, None, "NE62RT")).success.value
+          .set(IndividualBeneficiaryVulnerableYesNoPage(index), true).success.value
           .set(IndividualBeneficiaryStatus(index), Status.Completed).success.value
 
-          .set(ClassBeneficiaryDescriptionPage(index),"Class of beneficary description").success.value
+          .set(ClassBeneficiaryDescriptionPage(index), "Class of beneficary description").success.value
           .set(ClassBeneficiaryStatus(index), Status.Completed).success.value
           .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
 
@@ -82,7 +81,7 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
           .set(TrusteesNinoPage(index), "AB123456C").success.value
           .set(TelephoneNumberPage(index), "0191 1111111").success.value
           .set(TrusteeLiveInTheUKPage(index), true).success.value
-          .set(TrusteesUkAddressPage(index), UKAddress("line1", Some("line2"), Some("line3"), "town or city", "AB1 1AB")).success.value
+          .set(TrusteesUkAddressPage(index), UKAddress("Line1", "Line2", None, None, "NE62RT")).success.value
           .set(TrusteeStatus(index), Status.Completed).success.value
           .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
@@ -96,7 +95,7 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
           .set(SettlorNationalInsuranceNumberPage, "AB123456C").success.value
           .set(SettlorsLastKnownAddressYesNoPage, true).success.value
           .set(WasSettlorsAddressUKYesNoPage, true).success.value
-          .set(SettlorsUKAddressPage, UKAddress("Line1", None, None, "Town", "NE1 1ZZ")).success.value
+          .set(SettlorsUKAddressPage, UKAddress("Line1", "Line2", None, None, "NE62RT")).success.value
           .set(DeceasedSettlorStatus, Status.Completed).success.value
 
           .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
@@ -105,7 +104,7 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
           .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
           .set(SharesInAPortfolioPage(1), true).success.value
           .set(SharePortfolioNamePage(1), "Company").success.value
-          .set(SharePortfolioOnStockExchangePage(1), true ).success.value
+          .set(SharePortfolioOnStockExchangePage(1), true).success.value
           .set(SharePortfolioQuantityInTrustPage(1), "1234").success.value
           .set(SharePortfolioValueInTrustPage(1), "4000").success.value
           .set(AssetStatus(1), Completed).success.value
@@ -270,19 +269,19 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
           .set(TrustDetailsStatus, Completed).success.value
 
           .set(IndividualBeneficiaryNamePage(index), FullName("first name", None, "last name")).success.value
-          .set(IndividualBeneficiaryDateOfBirthYesNoPage(index),true).success.value
-          .set(IndividualBeneficiaryDateOfBirthPage(index),LocalDate.now(ZoneOffset.UTC)).success.value
-          .set(IndividualBeneficiaryIncomeYesNoPage(index),true).success.value
-          .set(IndividualBeneficiaryIncomePage(index),"100").success.value
-          .set(IndividualBeneficiaryNationalInsuranceYesNoPage(index),true).success.value
-          .set(IndividualBeneficiaryNationalInsuranceNumberPage(index),"AB123456C").success.value
-          .set(IndividualBeneficiaryAddressYesNoPage(index),true).success.value
-          .set(IndividualBeneficiaryAddressUKYesNoPage(index),true).success.value
-          .set(IndividualBeneficiaryAddressUKPage(index),UKAddress("Line1",None, None, "TownOrCity","NE62RT" )).success.value
-          .set(IndividualBeneficiaryVulnerableYesNoPage(index),true).success.value
+          .set(IndividualBeneficiaryDateOfBirthYesNoPage(index), true).success.value
+          .set(IndividualBeneficiaryDateOfBirthPage(index), LocalDate.now(ZoneOffset.UTC)).success.value
+          .set(IndividualBeneficiaryIncomeYesNoPage(index), true).success.value
+          .set(IndividualBeneficiaryIncomePage(index), "100").success.value
+          .set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), true).success.value
+          .set(IndividualBeneficiaryNationalInsuranceNumberPage(index), "AB123456C").success.value
+          .set(IndividualBeneficiaryAddressYesNoPage(index), true).success.value
+          .set(IndividualBeneficiaryAddressUKYesNoPage(index), true).success.value
+          .set(IndividualBeneficiaryAddressUKPage(index), UKAddress("Line1", "Line2", None, None, "NE62RT")).success.value
+          .set(IndividualBeneficiaryVulnerableYesNoPage(index), true).success.value
           .set(IndividualBeneficiaryStatus(index), Status.Completed).success.value
 
-          .set(ClassBeneficiaryDescriptionPage(index),"Class of beneficary description").success.value
+          .set(ClassBeneficiaryDescriptionPage(index), "Class of beneficary description").success.value
           .set(ClassBeneficiaryStatus(index), Status.Completed).success.value
           .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
 
@@ -294,14 +293,14 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
           .set(TrusteesNinoPage(index), "AB123456C").success.value
           .set(TelephoneNumberPage(index), "0191 1111111").success.value
           .set(TrusteeLiveInTheUKPage(index), true).success.value
-          .set(TrusteesUkAddressPage(index), UKAddress("line1", Some("line2"), Some("line3"), "town or city", "AB1 1AB")).success.value
+          .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", Some("line3"), Some("line4"), "AB1 1AB")).success.value
           .set(TrusteeStatus(index), Status.Completed).success.value
           .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
           .set(SetupAfterSettlorDiedPage, false).success.value
           .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
           .set(SettlorHandoverReliefYesNoPage, true).success.value
-          .set(SettlorIndividualOrBusinessPage(index),IndividualOrBusiness.Individual).success.value
+          .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
           .set(SettlorIndividualNamePage(index), FullName("First", None, "Settlor")).success.value
           .set(SettlorIndividualDateOfBirthYesNoPage(index), true).success.value
           .set(SettlorIndividualDateOfBirthPage(index), LocalDate.now).success.value
@@ -316,7 +315,7 @@ class ConfirmationAnswersControllerSpec extends SpecBase {
           .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
           .set(SharesInAPortfolioPage(1), true).success.value
           .set(SharePortfolioNamePage(1), "Company").success.value
-          .set(SharePortfolioOnStockExchangePage(1), true ).success.value
+          .set(SharePortfolioOnStockExchangePage(1), true).success.value
           .set(SharePortfolioQuantityInTrustPage(1), "1234").success.value
           .set(SharePortfolioValueInTrustPage(1), "4000").success.value
           .set(AssetStatus(1), Completed).success.value

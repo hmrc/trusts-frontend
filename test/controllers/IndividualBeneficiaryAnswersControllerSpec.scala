@@ -47,7 +47,7 @@ class IndividualBeneficiaryAnswersControllerSpec extends SpecBase {
           .set(IndividualBeneficiaryNationalInsuranceNumberPage(index),"AB123456C").success.value
           .set(IndividualBeneficiaryAddressYesNoPage(index),true).success.value
           .set(IndividualBeneficiaryAddressUKYesNoPage(index),true).success.value
-          .set(IndividualBeneficiaryAddressUKPage(index),UKAddress("Line1",None, None, "TownOrCity","NE62RT" )).success.value
+          .set(IndividualBeneficiaryAddressUKPage(index),UKAddress("Line1", "Line2", None, None, "NE62RT")).success.value
           .set(IndividualBeneficiaryVulnerableYesNoPage(index),true).success.value
 
 

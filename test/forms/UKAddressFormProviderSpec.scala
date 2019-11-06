@@ -62,50 +62,8 @@ class UKAddressFormProviderSpec extends StringFieldBehaviours {
   ".line2" must {
 
     val fieldName = "line2"
+    val requiredKey = "ukAddress.error.line2.required"
     val lengthKey = "ukAddress.error.line2.length"
-    val maxLength = 35
-
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
-    )
-
-    behave like optionalField(
-      form,
-      fieldName,
-      validDataGenerator = RegexpGen.from(Validation.addressLineRegex)
-    )
-
-  }
-
-  ".line3" must {
-
-    val fieldName = "line3"
-    val lengthKey = "ukAddress.error.line3.length"
-    val maxLength = 35
-
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
-    )
-
-    behave like optionalField(
-      form,
-      fieldName,
-      validDataGenerator = RegexpGen.from(Validation.addressLineRegex)
-    )
-
-  }
-
-  ".townOrCity" must {
-
-    val fieldName = "townOrCity"
-    val requiredKey = "ukAddress.error.townOrCity.required"
-    val lengthKey = "ukAddress.error.townOrCity.length"
     val maxLength = 35
 
     behave like fieldThatBindsValidData(
@@ -133,6 +91,46 @@ class UKAddressFormProviderSpec extends StringFieldBehaviours {
       requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
     )
 
+  }
+
+  ".line3" must {
+
+    val fieldName = "line3"
+    val lengthKey = "ukAddress.error.line3.length"
+    val maxLength = 35
+
+    behave like fieldWithMaxLength(
+      form,
+      fieldName,
+      maxLength = maxLength,
+      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+    )
+
+    behave like optionalField(
+      form,
+      fieldName,
+      validDataGenerator = RegexpGen.from(Validation.addressLineRegex)
+    )
+  }
+
+  ".line4" must {
+
+    val fieldName = "line4"
+    val lengthKey = "ukAddress.error.line4.length"
+    val maxLength = 35
+
+    behave like fieldWithMaxLength(
+      form,
+      fieldName,
+      maxLength = maxLength,
+      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+    )
+
+    behave like optionalField(
+      form,
+      fieldName,
+      validDataGenerator = RegexpGen.from(Validation.addressLineRegex)
+    )
   }
 
   ".postcode" must {

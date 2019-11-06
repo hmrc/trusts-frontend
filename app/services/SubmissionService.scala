@@ -21,7 +21,8 @@ import com.google.inject.ImplementedBy
 import connector.TrustConnector
 import javax.inject.Inject
 import mapping.RegistrationMapper
-import models.{AlreadyRegistered, RegistrationTRNResponse, TrustResponse, UnableToRegister, UserAnswers}
+import models.TrustResponse._
+import models.{RegistrationTRNResponse, TrustResponse, UserAnswers}
 import play.api.Logger
 import uk.gov.hmrc.http.HeaderCarrier
 

@@ -60,24 +60,24 @@ site.confirm-send = Confirm and send
 site.address.uk.title = What is the address?
 site.address.uk.heading = What is {0}’s address?
 site.address.uk.line1 = Address line 1
-site.address.uk.line2 = Address line 2 (optional)
+site.address.uk.line2 = Address line 2
 site.address.uk.line3 = Address line 3 (optional)
-site.address.uk.townOrCity = Town or city
+site.address.uk.line4 = Address line 4 (optional)
 site.address.uk.postcode = Postcode
 site.address.uk.postcode.hint = For example AB1 1AB
 site.address.uk.checkYourAnswersLabel = What is {0}’s address?
 
 ukAddress.error.line1.required = Enter address line 1
-ukAddress.error.townOrCity.required = Enter a town or city
+ukAddress.error.line2.required = Enter address line 2
 ukAddress.error.postcode.required = Enter a postcode
 ukAddress.error.line1.length = Address line 1 must be 35 characters or less
 ukAddress.error.line2.length = Address line 2 must be 35 characters or less
 ukAddress.error.line3.length = Address line 3 must be 35 characters or less
-ukAddress.error.townOrCity.length = Town or city must be 35 characters or less
+ukAddress.error.line4.length = Address line 4 must be 35 characters or less
 ukAddress.error.line1.invalidCharacters = Address line 1 must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 ukAddress.error.line2.invalidCharacters = Address line 2 must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 ukAddress.error.line3.invalidCharacters = Address line 3 must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
-ukAddress.error.townOrCity.invalidCharacters = Town or city must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+ukAddress.error.line4.invalidCharacters = Address line 4 must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 ukAddress.error.postcode.invalidCharacters = Enter a real postcode
 
 site.address.international.title = What is the address?
@@ -85,7 +85,6 @@ site.address.international.heading = What is {0}’s address?
 site.address.international.line1 = Address line 1
 site.address.international.line2 = Address line 2
 site.address.international.line3 = Address line 3 (optional)
-site.address.international.line4 = Address line 4 (optional)
 site.address.international.country = Country
 
 internationalAddress.error.line1.required = Enter address line 1
@@ -94,11 +93,9 @@ internationalAddress.error.country.required = Select a country
 internationalAddress.error.line1.length = Address line 1 must be 35 characters or less
 internationalAddress.error.line2.length = Address line 2 must be 35 characters or less
 internationalAddress.error.line3.length = Address line 3 must be 35 characters or less
-internationalAddress.error.line4.length = Address line 4 must be 35 characters or less
 internationalAddress.error.line1.invalidCharacters = Address line 1 must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 internationalAddress.error.line2.invalidCharacters = Address line 2 must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 internationalAddress.error.line3.invalidCharacters = Address line 3 must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
-internationalAddress.error.line4.invalidCharacters = Address line 4 must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
 individualOrBusiness.individual = Individual
 individualOrBusiness.business = Business
@@ -283,6 +280,47 @@ UTRSentByPost.heading = Your Unique Taxpayer Reference (UTR) has been sent by po
 UTRSentByPost.paragraph1 = It can take 15 working days for you to get your UTR. For International addresses it can take 21 working days.
 UTRSentByPost.paragraph2 = if you have not received your UTR after this time.
 UTRSentByPost.link = Contact the trusts helpline
+
+
+ClosedError.title = Sorry, you cannot access this trust
+ClosedError.heading = Sorry, you cannot access this trust
+ClosedError.subheading = This trust’s UTR: {0}
+ClosedError.paragraph1 = You cannot make changes to this trust as it has been closed.
+ClosedError.paragraph2 = If this has been done in error or you need help with the service, please
+ClosedError.contact.link = contact HMRC
+ClosedError.paragraph3 = to reopen the records. HMRC will contact you if a tax return is required or for any further information.
+ClosedError.paragraph4 = You can
+ClosedError.return.link = return to register and maintain a trust for a client
+ClosedError.link.paragraph = If you need help with the service
+
+DoesNotMatchError.title = Sorry, you cannot access this trust
+DoesNotMatchError.heading = Sorry, you cannot access this trust
+DoesNotMatchError.subheading = This trust’s UTR: {0}
+DoesNotMatchError.paragraph1 = The Unique Taxpayer Reference (UTR) entered does not match our records.
+DoesNotMatchError.paragraph2 = Check you have entered the trust’s UTR correctly.
+DoesNotMatchError.paragraph3 = If you do not have a UTR for the trust you will need to register the trust first.
+DoesNotMatchError.paragraph4 = If you need help with the service
+DoesNotMatchError.paragraph5 = You can
+DoesNotMatchError.contact.link = contact the trusts helpline
+DoesNotMatchError.return.link = return to register and maintain a trust for a client
+
+StillProcessingError.title = Sorry, you cannot access this trust
+StillProcessingError.heading = Sorry, you cannot access this trust
+StillProcessingError.subheading = This trust’s UTR: {0}
+StillProcessingError.paragraph1 = HMRC is still processing changes recently made to this trust.
+StillProcessingError.paragraph2 = Try again later.
+StillProcessingError.paragraph3 = If you need help with the service
+StillProcessingError.paragraph4 = You can
+StillProcessingError.contact.link = contact the trusts helpline
+StillProcessingError.return.link = return to register and maintain a trust for a client
+
+IvDown.heading = Sorry, there is a problem with the service
+IvDown.title = Sorry, there is a problem with the service
+IvDown.paragraph1 = Try again later.
+IvDown.paragraph2 = You can
+IvDown.paragraph3 = if you need to speak to someone about registering and maintaining a trust.
+IvDown.contact.link = contact the trusts helpline
+IvDown.return.link = return to register and maintain a trust for a client
 
 isThisLeadTrustee.title = Is this the lead trustee?
 isThisLeadTrustee.heading = Is this the lead trustee?
@@ -477,6 +515,7 @@ agentOverview.paragraph2 = You can print a draft copy of your saved answers once
 agentOverview.paragraph3 = For information about what you need to register a trust,
 agentOverview.paragraph4 = If you need to maintain a trust which has already been registered online, any changes you make without declaring will not be saved.
 agentOverview.contactLink = read the GOV.UK trusts guidance (opens in a new window or tab)
+agentOverview.h2 = Saved registrations
 agentOverview.start = Start now
 agentOverview.internalClientReference = Internal client reference
 agentOverview.savedUntil = Saved until
@@ -855,9 +894,9 @@ removeIndividualBeneficiary.error.required = Select yes if you want to remove th
 confirmationPage.title = Registration received, your reference is: {0}
 confirmationPage.heading = Registration received Your reference is: {0}
 
-confirmationPage.printsave.link = Print or save a copy of your answers (opens in a new window or tab).
-confirmationPage.posthmrc.link = post the changes to HMRC (opens in a new window or tab).
-confirmationPage.contacthmrc.link = contact HMRC to find out why (opens in a new window or tab).
+confirmationPage.printsave.link = Print or save a declared copy of the trust’s registration (opens in a new window or tab)
+confirmationPage.posthmrc.link = post the changes to HMRC (opens in a new window or tab)
+confirmationPage.contacthmrc.link = contact HMRC to find out why (opens in a new window or tab)
 
 confirmationPage.heading1 = Registration received
 confirmationPage.heading2 = Your reference is:
@@ -896,8 +935,8 @@ declaration.individual.warning = I confirm that I have taken all reasonable step
 
 summaryAnswerPage.title = Draft copy of the trust’s registration
 summaryAnswerPage.heading = Draft copy of the trust’s registration
-summaryAnswerPage.paragraph1 = You can save your registration and come back later. You have 28 days from the time you first save to register a trust. If you do not register within 28 days, your information will be deleted.
-summaryAnswerPage.paragraph2 = This is not a declaration confirming the trust has been registered.
+summaryAnswerPage.paragraph1 = You can save your registration and come back later. You have 28 days from the first time you save to complete this registration or your information will be deleted.
+summaryAnswerPage.paragraph2 = This is not a declaration confirming the trust has been registered. You can print a declared copy after you have made a declaration.
 
 confirmationAnswerPage.title = Declared copy of the trust’s registration
 confirmationAnswerPage.heading = Declared copy of the trust’s registration
@@ -1261,6 +1300,29 @@ settlorInfo.paragraph5 = For trusts set up for employees of a company, you will 
 settlorInfo.bulletpoint11 = if it’s an employer-financed retirement scheme, and if so what date it started.
 settlorInfo.bulletpoint12 = the business type (trading or investment) if the scheme’s settlor is a business
 settlorInfo.bulletpoint13 = if the business had been in existence for at least two years each time an asset was added to the trust.
+
+TrustLocked.title = Sorry, you cannot access this trust
+TrustLocked.heading = Sorry, you cannot access this trust
+TrustLocked.p1 = You have not passed the security questions asked by HMRC.
+TrustLocked.p2 = Try again in 30 minutes.
+TrustLocked.p3 = If you need help with the service
+TrustLocked.link1 = contact the trusts helpline
+TrustLocked.subheading = This trust’s UTR: {0}
+
+informationMaintainingThisTrust.title = Information about maintaining this trust
+informationMaintainingThisTrust.heading = Information about maintaining this trust
+informationMaintainingThisTrust.subHeading = This trust’s UTR: {0}
+informationMaintainingThisTrust.warning = Some questions may have changed since the trust was registered. You have a legal responsibility to make sure the details held on the register are accurate.
+informationMaintainingThisTrust.h3 = Keep the trust updated
+informationMaintainingThisTrust.paragraph1 = You can make changes to the register, declare it’s up to date or close the trust by following these steps:
+informationMaintainingThisTrust.list1 = You can find out what details we hold about the trust by checking its last declaration.
+informationMaintainingThisTrust.list2 = If the trust is up to date you can continue to make a declaration. If you have written in with changes, these may not have been updated so you will need to update them now.
+informationMaintainingThisTrust.printsave.link = You can save or print a copy of this trust's last declaration (opens in a new window or tab).
+informationMaintainingThisTrust.list3 = If details about the settlors, trustees or beneficiaries have changed, you can update them through this service.
+informationMaintainingThisTrust.list4 = If you need to close the trust, you will need to declare the details we have are up to date.
+informationMaintainingThisTrust.h2 = Changes to the trust
+informationMaintainingThisTrust.paragraph2 = Any changes you make will not be saved unless you make a declaration. You can print a draft copy of your answers as well as a declared copy. You will not be able to save and come back later.
+informationMaintainingThisTrust.paragraph3 = You are not required to update the trust’s details, tax liability or assets. Use Self Assessment Online for trusts or the Trust and Estate Tax Return form (SA900) to update any of these.
 
 declarationWhatNext.title = What do you want to do next?
 declarationWhatNext.heading = What do you want to do next?

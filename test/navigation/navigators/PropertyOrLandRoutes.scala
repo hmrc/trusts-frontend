@@ -31,7 +31,7 @@ trait PropertyOrLandRoutes {
 
   private val index = 0
 
-  private val navigator : Navigator = injector.instanceOf[PropertyOrLandNavigator]
+  private val navigator: Navigator = injector.instanceOf[PropertyOrLandNavigator]
 
   def propertyOrLandRoutes(): Unit = {
 
@@ -100,7 +100,7 @@ trait PropertyOrLandRoutes {
 
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
-            val answers = userAnswers.set(page, InternationalAddress("line1", "line2", None, None, "France")).success.value
+            val answers = userAnswers.set(page, InternationalAddress("line1", "line2", None, "France")).success.value
             navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
               .mustBe(routes.PropertyOrLandTotalValueController.onPageLoad(NormalMode, index, fakeDraftId))
         }
@@ -111,7 +111,7 @@ trait PropertyOrLandRoutes {
 
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
-            val answers = userAnswers.set(page, UKAddress("line1", None, None, "Newcastle", "NE11NE")).success.value
+            val answers = userAnswers.set(page, UKAddress("line1", "line2",  None, None, "NE11NE")).success.value
             navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
               .mustBe(routes.PropertyOrLandTotalValueController.onPageLoad(NormalMode, index, fakeDraftId))
         }

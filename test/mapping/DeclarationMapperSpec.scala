@@ -61,7 +61,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
           val userAnswers = emptyUserAnswers
             .set(AgentInternalReferencePage, "123456789").success.value
             .set(AgentAddressYesNoPage, true).success.value
-            .set(AgentUKAddressPage, UKAddress("Line1", Some("line2"), None, "Newcastle", "NE62RT")).success.value
+            .set(AgentUKAddressPage, UKAddress("Line1", "line2", None, None, "NE62RT")).success.value
 
           declarationMapper.build(userAnswers) mustNot be(defined)
         }
@@ -81,7 +81,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
             .set(AgentInternalReferencePage, "123456789").success.value
             .set(DeclarationPage, FullName("First", None, "Last")).success.value
             .set(AgentAddressYesNoPage, true).success.value
-            .set(AgentUKAddressPage, UKAddress("Line1", Some("line2"), None, "Newcastle", "NE62RT")).success.value
+            .set(AgentUKAddressPage, UKAddress("Line1", "line2", None, Some("Newcastle"), "NE62RT")).success.value
 
           declarationMapper.build(userAnswers).value mustBe Declaration(
             name = NameType("First", None, "Last"),
@@ -96,7 +96,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
             .set(AgentInternalReferencePage, "123456789").success.value
             .set(DeclarationPage, FullName("First", None, "Last")).success.value
             .set(AgentAddressYesNoPage, false).success.value
-            .set(AgentInternationalAddressPage, InternationalAddress("Line1", "line2", None, None, "IN")).success.value
+            .set(AgentInternationalAddressPage, InternationalAddress("Line1", "line2", None, "IN")).success.value
 
           declarationMapper.build(userAnswers).value mustBe Declaration(
             name = NameType("First", None, "Last"),
@@ -111,7 +111,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
 
         "must not be able to create declaration when lead trustee incomplete and declaration name answered" in {
 
-          val address = UKAddress("First line", Some("Second line"), None, "Newcastle", "NE981ZZ")
+          val address = UKAddress("First line", "Second line", None, Some("Newcastle"), "NE981ZZ")
           val userAnswers = emptyUserAnswers
             .set(DeclarationPage, FullName("First", None, "Last")).success.value
             .set(IsThisLeadTrusteePage(0), true).success.value
@@ -128,7 +128,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
 
         "must be able to create declaration when lead trustee UK address and declaration name answered" in {
 
-          val address = UKAddress("First line", Some("Second line"), None, "Newcastle", "NE981ZZ")
+          val address = UKAddress("First line", "Second line", None, Some("Newcastle"), "NE981ZZ")
           val userAnswers = emptyUserAnswers
             .set(DeclarationPage, FullName("First", None, "Last")).success.value
             .set(IsThisLeadTrusteePage(0), true).success.value
