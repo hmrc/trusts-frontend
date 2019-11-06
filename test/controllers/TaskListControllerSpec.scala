@@ -21,9 +21,9 @@ import java.time.format.DateTimeFormatter
 
 import base.SpecBase
 import models.{Matched, NormalMode, UserAnswers}
-import navigation.{Navigator, TaskListNavigator}
+import navigation.Navigator
+import navigation.registration.TaskListNavigator
 import pages._
-import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

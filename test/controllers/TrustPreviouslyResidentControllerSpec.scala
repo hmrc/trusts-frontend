@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import forms.TrustPreviouslyResidentFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.FakeNavigator
 import pages.TrustPreviouslyResidentPage
 import play.api.inject.bind
 import play.api.libs.json.{JsString, Json}

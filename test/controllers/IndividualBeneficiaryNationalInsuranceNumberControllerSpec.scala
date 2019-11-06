@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import forms.IndividualBeneficiaryNationalInsuranceNumberFormProvider
 import models.{FullName, NormalMode}
-import navigation.{FakeNavigator, Navigator}
+import navigation.FakeNavigator
 import pages.{IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage}
 import play.api.inject.bind
 import play.api.mvc.Call

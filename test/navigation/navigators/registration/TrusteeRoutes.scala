@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package navigation.navigators
+package navigation.navigators.registration
 
 import base.SpecBase
 import controllers.trustees.routes
 import generators.Generators
-import sections.Trustees
 import models.IndividualOrBusiness.{Business, Individual}
 import models.{AddATrustee, NormalMode, UserAnswers}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages.trustees._
+import sections.Trustees
 
 trait TrusteeRoutes {
 

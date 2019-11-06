@@ -21,7 +21,7 @@ import controllers.IndexValidation
 import forms.shares.SharePortfolioNameFormProvider
 import generators.ModelGenerators
 import models.NormalMode
-import navigation.{FakeNavigator, Navigator}
+import navigation.FakeNavigator
 import org.scalacheck.Arbitrary.arbitrary
 import pages.shares.SharePortfolioNamePage
 import play.api.inject.bind

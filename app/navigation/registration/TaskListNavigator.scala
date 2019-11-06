@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package navigation
+package navigation.registration
 
 import controllers.routes
 import javax.inject.{Inject, Singleton}
-import models.Status.{Completed, InProgress}
 import mapping.reads.{Assets, Trustees}
+import models.Status.Completed
 import models.{NormalMode, UserAnswers}
 import pages._
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
 import play.api.mvc.Call
-import sections.{Beneficiaries, ClassOfBeneficiaries, IndividualBeneficiaries, LivingSettlors, Settlors, TaxLiability, TrustDetails}
-import viewmodels._
+import sections._
 
 @Singleton
 class TaskListNavigator @Inject()() {

@@ -62,7 +62,7 @@ title = messages("informationMaintainingThisTrust.title")
 
 <p>@messages("informationMaintainingThisTrust.paragraph3")</p>
 
-@components.button_link(messages("site.onlyContinue"), SessionExpiredController.onPageLoad().url)
+@components.button_link(messages("site.onlyContinue"), DeclarationWhatNextController.onPageLoad(draftId: String).url)
 
 }
 

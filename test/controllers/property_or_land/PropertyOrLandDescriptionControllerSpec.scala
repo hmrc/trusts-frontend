@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.IndexValidation
 import forms.property_or_land.PropertyOrLandDescriptionFormProvider
 import models.NormalMode
-import navigation.{FakeNavigator, Navigator}
+import navigation.FakeNavigator
 import org.jsoup.Jsoup
 import org.scalacheck.Arbitrary.arbitrary
 import pages.property_or_land.PropertyOrLandDescriptionPage

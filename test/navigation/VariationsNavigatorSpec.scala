@@ -20,25 +20,16 @@ import base.SpecBase
 import controllers.routes
 import generators.Generators
 import models.NormalMode
-import navigation.navigators._
-import navigation.navigators.registration._
+import navigation.navigators.variations.CheckAndConfirmRoutes
 import org.scalatest.prop.PropertyChecks
 import pages._
 
-class NavigatorSpec extends SpecBase
+class VariationsNavigatorSpec extends SpecBase
   with PropertyChecks
   with Generators
-  with TrustDetailsRoutes
-  with MatchingRoutes
-  with TrusteeRoutes
-  with AgentRoutes
-  with AssetRoutes
-  with DeceasedSettlorRoutes
-  with BeneficiaryRoutes
-  with PropertyOrLandRoutes
-  with LivingSettlorRoutes {
+  with CheckAndConfirmRoutes {
 
-  implicit val navigator : Navigator = injector.instanceOf[Navigator]
+  implicit val navigator : Navigator = injector.instanceOf[VariationsNavigator]
 
   "Navigator" when {
 
@@ -49,25 +40,7 @@ class NavigatorSpec extends SpecBase
         navigator.nextPage(UnknownPage, NormalMode, fakeDraftId)(emptyUserAnswers) mustBe routes.IndexController.onPageLoad()
       }
 
-      behave like matchingRoutes
-
-      behave like trustDetailsRoutes
-
-      behave like trusteeRoutes
-
-      behave like agentRoutes
-
-      behave like assetRoutes
-
-      behave like deceasedSettlorRoutes
-
-      behave like beneficiaryRoutes
-
-      behave like propertyOrLandRoutes
-
-      behave like livingSettlorRoutes
-
-      behave like livingBusinessSettlorRoutes
+      behave like checkAndConfirmRoutes
 
     }
 
