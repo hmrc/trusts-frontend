@@ -17,26 +17,27 @@
 package controllers
 
 import config.FrontendAppConfig
-import connector.TrustConnector
+import connector.{TrustConnector, TrustsStoreConnector}
 import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider, IdentifierAction}
 import handlers.ErrorHandler
 import javax.inject.Inject
 import models.NormalMode
-import models.TrustStatusResponse._
+import models.playback.{Closed, Processed, Processing, UtrNotFound}
 import models.requests.DataRequest
 import navigation.Navigator
 import pages.WhatIsTheUTRVariationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import repositories.SessionRepository
+import repositories.{PlaybackRepository, RegistrationsRepository}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.{ClosedErrorView, DoesNotMatchErrorView, IVDownView, StillProcessingErrorView}
+import views.html.{ClosedErrorView, DoesNotMatchErrorView, IVDownView, StillProcessingErrorView, TrustLockedView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class TrustStatusController @Inject()(
                                        override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
+                                       registrationsRepository: RegistrationsRepository,
+                                       playbackRepository: PlaybackRepository,
                                        navigator: Navigator,
                                        identify: IdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
@@ -46,8 +47,10 @@ class TrustStatusController @Inject()(
                                        doesNotMatchView: DoesNotMatchErrorView,
                                        ivDownView: IVDownView,
                                        trustConnector: TrustConnector,
+                                       trustStoreConnector: TrustsStoreConnector,
                                        config: FrontendAppConfig,
                                        errorHandler: ErrorHandler,
+                                       lockedView: TrustLockedView,
                                        val controllerComponents: MessagesControllerComponents
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
@@ -73,6 +76,13 @@ class TrustStatusController @Inject()(
       }
   }
 
+  def locked(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+    implicit request =>
+      enforceUtr(draftId) { utr =>
+        Future.successful(Ok(lockedView(utr)))
+      }
+  }
+
   def down(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
       enforceUtr(draftId) { utr =>
@@ -83,14 +93,30 @@ class TrustStatusController @Inject()(
   def status(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
       enforceUtr(draftId) { utr =>
-        trustConnector.getTrustStatus(utr) map {
-          case Closed => Redirect(routes.TrustStatusController.closed(draftId))
-          case Processing => Redirect(routes.TrustStatusController.processing(draftId))
-          case UtrNotFound => Redirect(routes.TrustStatusController.notFound(draftId))
-          case Processed => Redirect(config.claimATrustUrl(utr))
-          case _ => Redirect(routes.TrustStatusController.down(draftId))
-        }
+        checkIfLocked(draftId, utr)
       }
+  }
+
+  def checkIfLocked(draftId: String, utr: String)(implicit request: DataRequest[AnyContent]): Future[Result] = {
+    trustStoreConnector.get(request.internalId, utr).flatMap {
+      case Some(claim) if claim.trustLocked =>
+        Future.successful(Redirect(routes.TrustStatusController.locked(draftId)))
+      case _ =>
+        tryToPlayback(draftId, utr)
+    }
+  }
+
+  def tryToPlayback(draftId: String, utr: String)(implicit request: DataRequest[AnyContent]): Future[Result] = {
+    trustConnector.playback(utr) flatMap {
+      case Closed => Future.successful(Redirect(routes.TrustStatusController.closed(draftId)))
+      case Processing => Future.successful(Redirect(routes.TrustStatusController.processing(draftId)))
+      case UtrNotFound => Future.successful(Redirect(routes.TrustStatusController.notFound(draftId)))
+      case Processed(playback) =>
+        playbackRepository.store(request.internalId, playback) map { _ =>
+          Redirect(config.claimATrustUrl(utr))
+        }
+      case _ => Future.successful(Redirect(routes.TrustStatusController.down(draftId)))
+    }
   }
 
   def enforceUtr(draftId: String)(block: String => Future[Result])(implicit request: DataRequest[AnyContent]): Future[Result] = {

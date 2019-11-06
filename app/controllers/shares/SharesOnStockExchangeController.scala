@@ -26,24 +26,24 @@ import pages.shares.{ShareCompanyNamePage, SharesOnStockExchangePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.shares.SharesOnStockExchangeView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class SharesOnStockExchangeController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DraftIdRetrievalActionProvider,
-                                         requireData: DataRequiredAction,
-                                         formProvider: YesNoFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: SharesOnStockExchangeView,
-                                         requiredAnswer: RequiredAnswerActionProvider,
-                                         validateIndex: IndexActionFilterProvider
+                                                 override val messagesApi: MessagesApi,
+                                                 registrationsRepository: RegistrationsRepository,
+                                                 navigator: Navigator,
+                                                 identify: IdentifierAction,
+                                                 getData: DraftIdRetrievalActionProvider,
+                                                 requireData: DataRequiredAction,
+                                                 formProvider: YesNoFormProvider,
+                                                 val controllerComponents: MessagesControllerComponents,
+                                                 view: SharesOnStockExchangeView,
+                                                 requiredAnswer: RequiredAnswerActionProvider,
+                                                 validateIndex: IndexActionFilterProvider
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = formProvider.withPrefix("sharesOnStockExchange")
@@ -82,7 +82,7 @@ class SharesOnStockExchangeController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(SharesOnStockExchangePage(index), value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(SharesOnStockExchangePage(index), mode, draftId)(updatedAnswers))
         }
       )

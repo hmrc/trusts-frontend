@@ -8,7 +8,7 @@ import pages.$className$Page
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.$className$View
 
@@ -16,7 +16,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class $className;format="cap"$Controller @Inject()(
                                          override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
+                                         registrationsRepository: registrationsRepository,
                                          navigator: Navigator,
                                          identify: IdentifierAction,
                                          getData: DraftIdRetrievalActionProvider,
@@ -52,7 +52,7 @@ class $className;format="cap"$Controller @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set($className$Page, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage($className$Page, mode, draftId)(updatedAnswers))
         }
       )

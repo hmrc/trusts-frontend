@@ -21,11 +21,11 @@ import models.{RegistrationStatus, UserAnswers}
 import models.requests.{IdentifierRequest, OptionalDataRequest}
 import play.api.Logger
 import play.api.mvc.ActionTransformer
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DataRetrievalActionImpl @Inject()(val sessionRepository: SessionRepository)
+class DataRetrievalActionImpl @Inject()(val registrationsRepository: RegistrationsRepository)
                                        (implicit val executionContext: ExecutionContext) extends DataRetrievalAction {
 
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] = {
@@ -33,13 +33,13 @@ class DataRetrievalActionImpl @Inject()(val sessionRepository: SessionRepository
     def createdOptionalDataRequest(request: IdentifierRequest[A], userAnswers: Option[UserAnswers]) =
       OptionalDataRequest(request.request, request.identifier, userAnswers, request.affinityGroup, request.agentARN)
 
-    sessionRepository.getDraftRegistrations(request.identifier).flatMap {
+    registrationsRepository.getDraftRegistrations(request.identifier).flatMap {
       ids =>
         ids.headOption match {
           case None =>
             Future.successful(createdOptionalDataRequest(request, None))
           case Some(userAnswer) =>
-            sessionRepository.get(userAnswer.draftId, userAnswer.internalAuthId).map {
+            registrationsRepository.get(userAnswer.draftId, userAnswer.internalAuthId).map {
               case None =>
                 createdOptionalDataRequest(request, None)
               case Some(userAnswers) =>

@@ -17,17 +17,17 @@
 package controllers
 
 import base.SpecBase
+import connector.{TrustClaim, TrustsStoreConnector}
 import forms.WhatIsTheUTRFormProvider
 import models.NormalMode
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.WhatIsTheUTRVariationPage
+import play.api.inject.bind
+import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.WhatIsTheUTRView
-import connector.{TrustClaim, TrustsStoreConnector}
-import play.api.libs.json.Json
-import play.api.inject.bind
 
 import scala.concurrent.Future
 
@@ -109,38 +109,6 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual "/trusts-registration/id/status"
-
-      application.stop()
-    }
-
-    "redirect to trust locked page when valid UTR is submitted which matches the locked UTR" in {
-
-      val jsonWithErrorKey = Json.parse(
-        """
-          |{
-          | "trustLocked": true,
-          | "managedByAgent": true,
-          | "utr": "0987654321"
-          |}
-          |""".stripMargin
-      )
-
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[TrustsStoreConnector].toInstance(connector))
-          .build()
-
-      when(connector.get(any[String], any[String])(any(), any()))
-        .thenReturn(Future.successful(jsonWithErrorKey.asOpt[TrustClaim]))
-
-      val request =
-        FakeRequest(POST, trustUTRRoute)
-          .withFormUrlEncodedBody(("value", "0987654321"))
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual controllers.routes.WhatIsTheUTRVariationsController.trustStillLocked(fakeDraftId).url
 
       application.stop()
     }

@@ -25,23 +25,23 @@ import pages.AgentNamePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.AgentNameView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class AgentNameController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        hasAgentAffinityGroup: RequireStateActionProviderImpl,
-                                        getData: DraftIdRetrievalActionProvider,
-                                        requireData: DataRequiredAction,
-                                        formProvider: AgentNameFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: AgentNameView
+                                     override val messagesApi: MessagesApi,
+                                     registrationsRepository: RegistrationsRepository,
+                                     navigator: Navigator,
+                                     identify: IdentifierAction,
+                                     hasAgentAffinityGroup: RequireStateActionProviderImpl,
+                                     getData: DraftIdRetrievalActionProvider,
+                                     requireData: DataRequiredAction,
+                                     formProvider: AgentNameFormProvider,
+                                     val controllerComponents: MessagesControllerComponents,
+                                     view: AgentNameView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) = identify andThen hasAgentAffinityGroup() andThen getData(draftId) andThen requireData
@@ -69,7 +69,7 @@ class AgentNameController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentNamePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(AgentNamePage, mode, draftId)(updatedAnswers))
         }
       )

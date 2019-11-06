@@ -27,7 +27,7 @@ import pages.trustees.{IsThisLeadTrusteePage, TrusteesNamePage, TrusteesNinoPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.trustees.TrusteesNinoView
@@ -36,7 +36,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class TrusteesNinoController @Inject()(
                                         override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
+                                        registrationsRepository: RegistrationsRepository,
                                         navigator: Navigator,
                                         identify: IdentifierAction,
                                         getData: DraftIdRetrievalActionProvider,
@@ -100,7 +100,7 @@ class TrusteesNinoController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteesNinoPage(index), value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(TrusteesNinoPage(index), mode, draftId)(updatedAnswers))
         }
       )

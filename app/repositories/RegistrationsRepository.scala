@@ -33,16 +33,16 @@ import viewmodels.DraftRegistration
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DefaultSessionRepository @Inject()(
+class DefaultRegistrationsRepository @Inject()(
                                           mongo: ReactiveMongoApi,
                                           config: Configuration,
                                           dateFormatter: DateFormatter
-                                        )(implicit ec: ExecutionContext, m: Materializer) extends SessionRepository {
+                                        )(implicit ec: ExecutionContext, m: Materializer) extends RegistrationsRepository {
 
 
   private val collectionName: String = "user-answers"
 
-  private val cacheTtl = config.get[Int]("mongodb.timeToLiveInSeconds")
+  private val cacheTtl = config.get[Int]("mongodb.registration.ttlSeconds")
 
   private def collection: Future[JSONCollection] =
     mongo.database.map(_.collection[JSONCollection](collectionName))
@@ -129,7 +129,7 @@ class DefaultSessionRepository @Inject()(
   }
 }
 
-trait SessionRepository {
+trait RegistrationsRepository {
 
   val started: Future[Unit]
 

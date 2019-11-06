@@ -26,7 +26,7 @@ import pages.living_settlor.{SettlorIndividualAddressInternationalPage, SettlorI
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import sections.LivingSettlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.annotations.LivingSettlor
@@ -37,7 +37,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class SettlorIndividualAddressInternationalController @Inject()(
                                                                  override val messagesApi: MessagesApi,
-                                                                 sessionRepository: SessionRepository,
+                                                                 registrationsRepository: RegistrationsRepository,
                                                                  @LivingSettlor navigator: Navigator,
                                                                  identify: IdentifierAction,
                                                                  getData: DraftIdRetrievalActionProvider,
@@ -85,7 +85,7 @@ class SettlorIndividualAddressInternationalController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorIndividualAddressInternationalPage(index), value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(SettlorIndividualAddressInternationalPage(index), mode, draftId)(updatedAnswers))
         }
       )

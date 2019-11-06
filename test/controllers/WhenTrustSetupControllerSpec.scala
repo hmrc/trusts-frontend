@@ -30,7 +30,7 @@ import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import views.html.WhenTrustSetupView
 
 import scala.concurrent.Future

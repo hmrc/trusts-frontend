@@ -25,23 +25,23 @@ import pages.{IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsura
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.IndividualBeneficiaryNationalInsuranceYesNoView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class IndividualBeneficiaryNationalInsuranceYesNoController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DraftIdRetrievalActionProvider,
-                                         requireData: DataRequiredAction,
-                                         requiredAnswer: RequiredAnswerActionProvider,
-                                         formProvider: YesNoFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: IndividualBeneficiaryNationalInsuranceYesNoView
+                                                                       override val messagesApi: MessagesApi,
+                                                                       registrationsRepository: RegistrationsRepository,
+                                                                       navigator: Navigator,
+                                                                       identify: IdentifierAction,
+                                                                       getData: DraftIdRetrievalActionProvider,
+                                                                       requireData: DataRequiredAction,
+                                                                       requiredAnswer: RequiredAnswerActionProvider,
+                                                                       formProvider: YesNoFormProvider,
+                                                                       val controllerComponents: MessagesControllerComponents,
+                                                                       view: IndividualBeneficiaryNationalInsuranceYesNoView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = formProvider.withPrefix("individualBeneficiaryNationalInsuranceYesNo")
@@ -77,7 +77,7 @@ class IndividualBeneficiaryNationalInsuranceYesNoController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(IndividualBeneficiaryNationalInsuranceYesNoPage(index), mode, draftId)(updatedAnswers))
         }
       )

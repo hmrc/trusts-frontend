@@ -634,12 +634,10 @@ GET        /:draftId/status/closed                          controllers.TrustSta
 GET        /:draftId/status/processing                      controllers.TrustStatusController.processing(draftId: String)
 GET        /:draftId/status/not-found                       controllers.TrustStatusController.notFound(draftId: String)
 GET        /:draftId/status/down                            controllers.TrustStatusController.down(draftId: String)
+GET        /:draftId/status/locked                          controllers.TrustStatusController.locked(draftId: String)
 GET        /:draftId/status                                 controllers.TrustStatusController.status(draftId: String)
 
 GET        /:draftId/maintain-a-trust/information           controllers.InformationMaintainingThisTrustController.onPageLoad(draftId: String)
-
-GET       /:draftId/trust-locked                  controllers.WhatIsTheUTRVariationsController.trustStillLocked(draftId: String)
-
 
 GET        /:draftId/declare-change                        controllers.DeclarationWhatNextController.onPageLoad(draftId: String)
 POST       /:draftId/declare-change                        controllers.DeclarationWhatNextController.onSubmit(draftId: String)

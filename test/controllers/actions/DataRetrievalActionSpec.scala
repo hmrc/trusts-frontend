@@ -22,7 +22,7 @@ import org.mockito.Matchers._
 import org.mockito.Mockito._
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -30,7 +30,7 @@ import scala.concurrent.Future
 
 class DataRetrievalActionSpec extends SpecBase with MockitoSugar with ScalaFutures {
 
-  class Harness(sessionRepository: SessionRepository) extends DataRetrievalActionImpl(sessionRepository) {
+  class Harness(registrationsRepository: RegistrationsRepository) extends DataRetrievalActionImpl(registrationsRepository) {
     def callTransform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] = transform(request)
   }
 
@@ -40,9 +40,9 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar with ScalaFutur
 
       "set userAnswers to 'None' in the request" in {
 
-        val sessionRepository = mock[SessionRepository]
-        when(sessionRepository.getDraftRegistrations("internalId")) thenReturn Future(Nil)
-        val action = new Harness(sessionRepository)
+        val registrationsRepository = mock[RegistrationsRepository]
+        when(registrationsRepository.getDraftRegistrations("internalId")) thenReturn Future(Nil)
+        val action = new Harness(registrationsRepository)
 
         val futureResult = action.callTransform(new IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Individual))
 
@@ -56,10 +56,10 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar with ScalaFutur
 
       "build a userAnswers object and add it to the request" in {
 
-        val sessionRepository = mock[SessionRepository]
-        when(sessionRepository.getDraftRegistrations("internalId")) thenReturn Future(List(emptyUserAnswers))
-        when(sessionRepository.get(draftId = any(), internalId = any())) thenReturn Future(Some(emptyUserAnswers))
-        val action = new Harness(sessionRepository)
+        val registrationsRepository = mock[RegistrationsRepository]
+        when(registrationsRepository.getDraftRegistrations("internalId")) thenReturn Future(List(emptyUserAnswers))
+        when(registrationsRepository.get(draftId = any(), internalId = any())) thenReturn Future(Some(emptyUserAnswers))
+        val action = new Harness(registrationsRepository)
 
         val futureResult = action.callTransform(new IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Individual))
 
@@ -69,11 +69,11 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar with ScalaFutur
       }
 
       "set userAnswers to 'None' because 'get' query returns 'None'" in {
-        val sessionRepository = mock[SessionRepository]
-        when(sessionRepository.getDraftRegistrations("internalId")) thenReturn Future(List(emptyUserAnswers))
-        when(sessionRepository.get(draftId = any(), internalId = any())) thenReturn Future(None)
+        val registrationsRepository = mock[RegistrationsRepository]
+        when(registrationsRepository.getDraftRegistrations("internalId")) thenReturn Future(List(emptyUserAnswers))
+        when(registrationsRepository.get(draftId = any(), internalId = any())) thenReturn Future(None)
 
-        val action = new Harness(sessionRepository)
+        val action = new Harness(registrationsRepository)
 
         val futureResult = action.callTransform(new IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Individual))
 

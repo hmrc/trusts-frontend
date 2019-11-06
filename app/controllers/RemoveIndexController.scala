@@ -24,7 +24,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, Call}
 import play.twirl.api.HtmlFormat
 import queries.Settable
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.RemoveIndexView
 
@@ -42,7 +42,7 @@ trait RemoveIndexController extends FrontendBaseController with I18nSupport {
 
   def page(index: Int) : QuestionPage[_]
 
-  def sessionRepository : SessionRepository
+  def registrationsRepository : RegistrationsRepository
 
   def actions(draftId: String, index: Int) : ActionBuilder[DataRequest, AnyContent]
 
@@ -76,7 +76,7 @@ trait RemoveIndexController extends FrontendBaseController with I18nSupport {
           if (value) {
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.remove(removeQuery(index)))
-              _              <- sessionRepository.set(updatedAnswers)
+              _              <- registrationsRepository.set(updatedAnswers)
             } yield Redirect(redirect(draftId).url)
           } else {
             Future.successful(Redirect(redirect(draftId).url))

@@ -26,7 +26,7 @@ import pages.living_settlor.SettlorIndividualNamePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import sections.LivingSettlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.annotations.LivingSettlor
@@ -35,16 +35,16 @@ import views.html.living_settlor.SettlorIndividualNameView
 import scala.concurrent.{ExecutionContext, Future}
 
 class SettlorIndividualNameController @Inject()(
-                                      override val messagesApi: MessagesApi,
-                                      sessionRepository: SessionRepository,
-                                      @LivingSettlor navigator: Navigator,
-                                      identify: IdentifierAction,
-                                      getData: DraftIdRetrievalActionProvider,
-                                      validateIndex: IndexActionFilterProvider,
-                                      requireData: DataRequiredAction,
-                                      formProvider: SettlorIndividualNameFormProvider,
-                                      val controllerComponents: MessagesControllerComponents,
-                                      view: SettlorIndividualNameView
+                                                 override val messagesApi: MessagesApi,
+                                                 registrationsRepository: RegistrationsRepository,
+                                                 @LivingSettlor navigator: Navigator,
+                                                 identify: IdentifierAction,
+                                                 getData: DraftIdRetrievalActionProvider,
+                                                 validateIndex: IndexActionFilterProvider,
+                                                 requireData: DataRequiredAction,
+                                                 formProvider: SettlorIndividualNameFormProvider,
+                                                 val controllerComponents: MessagesControllerComponents,
+                                                 view: SettlorIndividualNameView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -76,7 +76,7 @@ class SettlorIndividualNameController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorIndividualNamePage(index), value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(SettlorIndividualNamePage(index), mode, draftId)(updatedAnswers))
         }
       )

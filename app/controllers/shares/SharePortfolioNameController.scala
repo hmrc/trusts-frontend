@@ -26,23 +26,23 @@ import pages.shares.SharePortfolioNamePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.shares.SharePortfolioNameView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class SharePortfolioNameController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DraftIdRetrievalActionProvider,
-                                        requireData: DataRequiredAction,
-                                        validateIndex: IndexActionFilterProvider,
-                                        formProvider: SharePortfolioNameFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: SharePortfolioNameView
+                                              override val messagesApi: MessagesApi,
+                                              registrationsRepository: RegistrationsRepository,
+                                              navigator: Navigator,
+                                              identify: IdentifierAction,
+                                              getData: DraftIdRetrievalActionProvider,
+                                              requireData: DataRequiredAction,
+                                              validateIndex: IndexActionFilterProvider,
+                                              formProvider: SharePortfolioNameFormProvider,
+                                              val controllerComponents: MessagesControllerComponents,
+                                              view: SharePortfolioNameView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -73,7 +73,7 @@ class SharePortfolioNameController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(SharePortfolioNamePage(index), value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(SharePortfolioNamePage(index), mode, draftId)(updatedAnswers))
         }
       )

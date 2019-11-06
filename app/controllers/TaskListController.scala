@@ -27,7 +27,7 @@ import pages._
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import sections.TaxLiability
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -38,19 +38,19 @@ import views.html.TaskListView
 import scala.concurrent.{ExecutionContext, Future}
 
 class TaskListController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
-                                       getData: DraftIdRetrievalActionProvider,
-                                       requireData: DataRequiredAction,
-                                       requiredAnswer: RequiredAnswerActionProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: TaskListView,
-                                       config: FrontendAppConfig,
-                                       registrationProgress: RegistrationProgress,
-                                       sessionRepository: SessionRepository,
-                                       taskListNavigator : TaskListNavigator,
-                                       requireDraft : RequireDraftRegistrationActionRefiner,
-                                       dateFormatter: DateFormatter
+                                    override val messagesApi: MessagesApi,
+                                    identify: IdentifierAction,
+                                    getData: DraftIdRetrievalActionProvider,
+                                    requireData: DataRequiredAction,
+                                    requiredAnswer: RequiredAnswerActionProvider,
+                                    val controllerComponents: MessagesControllerComponents,
+                                    view: TaskListView,
+                                    config: FrontendAppConfig,
+                                    registrationProgress: RegistrationProgress,
+                                    registrationsRepository: RegistrationsRepository,
+                                    taskListNavigator : TaskListNavigator,
+                                    requireDraft : RequireDraftRegistrationActionRefiner,
+                                    dateFormatter: DateFormatter
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) =
@@ -73,7 +73,7 @@ class TaskListController @Inject()(
         val updatedAnswers = request.userAnswers.copy(progress = InProgress)
 
         for {
-          _  <- sessionRepository.set(updatedAnswers)
+          _  <- registrationsRepository.set(updatedAnswers)
         } yield {
 
           val sections = if (config.removeTaxLiabilityOnTaskList) {

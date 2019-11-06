@@ -26,7 +26,7 @@ import pages.property_or_land.PropertyOrLandDescriptionPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.annotations.PropertyOrLand
 import views.html.property_or_land.PropertyOrLandDescriptionView
@@ -34,16 +34,16 @@ import views.html.property_or_land.PropertyOrLandDescriptionView
 import scala.concurrent.{ExecutionContext, Future}
 
 class PropertyOrLandDescriptionController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        @PropertyOrLand navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DraftIdRetrievalActionProvider,
-                                        requireData: DataRequiredAction,
-                                        validateIndex: IndexActionFilterProvider,
-                                        formProvider: PropertyOrLandDescriptionFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: PropertyOrLandDescriptionView
+                                                     override val messagesApi: MessagesApi,
+                                                     registrationsRepository: RegistrationsRepository,
+                                                     @PropertyOrLand navigator: Navigator,
+                                                     identify: IdentifierAction,
+                                                     getData: DraftIdRetrievalActionProvider,
+                                                     requireData: DataRequiredAction,
+                                                     validateIndex: IndexActionFilterProvider,
+                                                     formProvider: PropertyOrLandDescriptionFormProvider,
+                                                     val controllerComponents: MessagesControllerComponents,
+                                                     view: PropertyOrLandDescriptionView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form: Form[String] = formProvider()
@@ -75,7 +75,7 @@ class PropertyOrLandDescriptionController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(PropertyOrLandDescriptionPage(index), value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(PropertyOrLandDescriptionPage(index), mode, draftId)(updatedAnswers))
         }
       )

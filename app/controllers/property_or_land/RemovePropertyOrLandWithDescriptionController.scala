@@ -25,12 +25,12 @@ import pages.QuestionPage
 import pages.property_or_land.PropertyOrLandDescriptionPage
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.{AnyContent, Call, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import views.html.RemoveIndexView
 
 class RemovePropertyOrLandWithDescriptionController @Inject()(
                                                                override val messagesApi: MessagesApi,
-                                                               override val sessionRepository: SessionRepository,
+                                                               override val registrationsRepository: RegistrationsRepository,
                                                                override val formProvider: RemoveIndexFormProvider,
                                                                identify: IdentifierAction,
                                                                getData: DraftIdRetrievalActionProvider,
