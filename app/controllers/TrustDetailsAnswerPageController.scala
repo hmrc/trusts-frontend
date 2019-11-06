@@ -26,7 +26,7 @@ import pages.TrustDetailsAnswerPage
 import pages.entitystatus.TrustDetailsStatus
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
@@ -37,16 +37,16 @@ import scala.concurrent.{ExecutionContext, Future}
 
 
 class TrustDetailsAnswerPageController @Inject()(
-                                              sessionRepository: SessionRepository,
-                                              override val messagesApi: MessagesApi,
-                                              identify: IdentifierAction,
-                                              navigator: Navigator,
-                                              getData: DraftIdRetrievalActionProvider,
-                                              requireData: DataRequiredAction,
-                                              validateIndex : IndexActionFilterProvider,
-                                              val controllerComponents: MessagesControllerComponents,
-                                              view: TrustDetailsAnswerPageView,
-                                              countryOptions : CountryOptions
+                                                  registrationsRepository: RegistrationsRepository,
+                                                  override val messagesApi: MessagesApi,
+                                                  identify: IdentifierAction,
+                                                  navigator: Navigator,
+                                                  getData: DraftIdRetrievalActionProvider,
+                                                  requireData: DataRequiredAction,
+                                                  validateIndex : IndexActionFilterProvider,
+                                                  val controllerComponents: MessagesControllerComponents,
+                                                  view: TrustDetailsAnswerPageView,
+                                                  countryOptions : CountryOptions
                                             )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) =
@@ -88,7 +88,7 @@ class TrustDetailsAnswerPageController @Inject()(
 
       for {
         updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustDetailsStatus, Completed))
-        _              <- sessionRepository.set(updatedAnswers)
+        _              <- registrationsRepository.set(updatedAnswers)
       } yield Redirect(navigator.nextPage(TrustDetailsAnswerPage, NormalMode, draftId)(request.userAnswers))
   }
 }

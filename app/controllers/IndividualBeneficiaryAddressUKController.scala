@@ -25,23 +25,23 @@ import pages.{IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.IndividualBeneficiaryAddressUKView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class IndividualBeneficiaryAddressUKController @Inject()(
-                                      override val messagesApi: MessagesApi,
-                                      sessionRepository: SessionRepository,
-                                      navigator: Navigator,
-                                      identify: IdentifierAction,
-                                      getData: DraftIdRetrievalActionProvider,
-                                      requireData: DataRequiredAction,
-                                      requiredAnswer: RequiredAnswerActionProvider,
-                                      formProvider: UKAddressFormProvider,
-                                      val controllerComponents: MessagesControllerComponents,
-                                      view: IndividualBeneficiaryAddressUKView
+                                                          override val messagesApi: MessagesApi,
+                                                          registrationsRepository: RegistrationsRepository,
+                                                          navigator: Navigator,
+                                                          identify: IdentifierAction,
+                                                          getData: DraftIdRetrievalActionProvider,
+                                                          requireData: DataRequiredAction,
+                                                          requiredAnswer: RequiredAnswerActionProvider,
+                                                          formProvider: UKAddressFormProvider,
+                                                          val controllerComponents: MessagesControllerComponents,
+                                                          view: IndividualBeneficiaryAddressUKView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -77,7 +77,7 @@ class IndividualBeneficiaryAddressUKController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(IndividualBeneficiaryAddressUKPage(index), value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(IndividualBeneficiaryAddressUKPage(index), mode, draftId)(updatedAnswers))
         }
       )

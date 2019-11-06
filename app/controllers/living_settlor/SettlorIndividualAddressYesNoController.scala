@@ -26,7 +26,7 @@ import pages.living_settlor.{SettlorIndividualAddressYesNoPage, SettlorIndividua
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import sections.LivingSettlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.annotations.LivingSettlor
@@ -35,17 +35,17 @@ import views.html.living_settlor.SettlorIndividualAddressYesNoView
 import scala.concurrent.{ExecutionContext, Future}
 
 class SettlorIndividualAddressYesNoController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         @LivingSettlor navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DraftIdRetrievalActionProvider,
-                                         validateIndex: IndexActionFilterProvider,
-                                         requireData: DataRequiredAction,
-                                         requiredAnswer: RequiredAnswerActionProvider,
-                                         yesNoFormProvider: YesNoFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: SettlorIndividualAddressYesNoView
+                                                         override val messagesApi: MessagesApi,
+                                                         registrationsRepository: RegistrationsRepository,
+                                                         @LivingSettlor navigator: Navigator,
+                                                         identify: IdentifierAction,
+                                                         getData: DraftIdRetrievalActionProvider,
+                                                         validateIndex: IndexActionFilterProvider,
+                                                         requireData: DataRequiredAction,
+                                                         requiredAnswer: RequiredAnswerActionProvider,
+                                                         yesNoFormProvider: YesNoFormProvider,
+                                                         val controllerComponents: MessagesControllerComponents,
+                                                         view: SettlorIndividualAddressYesNoView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = yesNoFormProvider.withPrefix("settlorIndividualAddressYesNo")
@@ -83,7 +83,7 @@ class SettlorIndividualAddressYesNoController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorIndividualAddressYesNoPage(index), value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(SettlorIndividualAddressYesNoPage(index), mode, draftId)(updatedAnswers))
         }
       )

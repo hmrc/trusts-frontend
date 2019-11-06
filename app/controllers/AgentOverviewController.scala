@@ -21,7 +21,7 @@ import controllers.actions._
 import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.AgentOverviewView
 
@@ -31,7 +31,7 @@ class AgentOverviewController @Inject()(
                                          override val messagesApi: MessagesApi,
                                          identify: IdentifierAction,
                                          hasAgentAffinityGroup: RequireStateActionProviderImpl,
-                                         sessionRepository: SessionRepository,
+                                         registrationsRepository: RegistrationsRepository,
                                          config: FrontendAppConfig,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: AgentOverviewView
@@ -41,7 +41,7 @@ class AgentOverviewController @Inject()(
 
   def onPageLoad: Action[AnyContent] = actions.async {
     implicit request =>
-      sessionRepository.listDrafts(request.identifier).map {
+      registrationsRepository.listDrafts(request.identifier).map {
         drafts =>
           Ok(view(drafts))
       }

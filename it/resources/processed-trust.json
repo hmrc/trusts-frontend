@@ -1,0 +1,193 @@
+{
+  "getTrust" : {
+    "matchData" : {
+      "utr" : "1234567890"
+    },
+    "correspondence" : {
+      "abroadIndicator" : false,
+      "name" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+      "address" : {
+        "line1" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+        "line2" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+        "postCode" : "Z99 2YY",
+        "country" : "GB"
+      },
+      "phoneNumber" : "+123456789012345678"
+    },
+    "declaration" : {
+      "name" : {
+        "firstName" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+        "middleName" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+        "lastName" : "1234567890 QwErTyUiOp ,.(/)&'- name"
+      },
+      "address" : {
+        "line1" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+        "line2" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+        "postCode" : "Z99 2YY",
+        "country" : "GB"
+      }
+    },
+    "trust" : {
+      "details" : {
+        "startDate" : "2018-04-06",
+        "lawCountry" : "DE",
+        "administrationCountry" : "DE",
+        "residentialStatus" : {
+          "nonUK" : {
+            "sch5atcgga92" : true,
+            "trusteeStatus" : "Non Resident Non Domiciled"
+          }
+        },
+        "typeOfTrust" : "Will Trust or Intestacy Trust"
+      },
+      "entities" : {
+        "naturalPerson" : [
+          {
+            "lineNo" : "1",
+            "bpMatchStatus" : "01",
+            "name" : {
+              "firstName" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+              "lastName" : "1234567890 QwErTyUiOp ,.(/)&'- name"
+            },
+            "entityStart" : "2017-02-28"
+          }
+        ],
+        "beneficiary" : {
+          "individualDetails" : [
+            {
+              "lineNo" : "1",
+              "bpMatchStatus" : "01",
+              "name" : {
+                "firstName" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+                "middleName" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+                "lastName" : "1234567890 QwErTyUiOp ,.(/)&'- name"
+              },
+              "dateOfBirth" : "2015-03-20",
+              "vulnerableBeneficiary" : false,
+              "beneficiaryDiscretion" : false,
+              "beneficiaryShareOfIncome" : "100",
+              "identification" : {
+                "address" : {
+                  "line1" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+                  "line2" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+                  "postCode" : "Z99 2YY",
+                  "country" : "GB"
+                }
+              },
+              "entityStart" : "2019-06-22"
+            }
+          ]
+        },
+        "deceased" : {
+          "lineNo" : "1",
+          "bpMatchStatus" : "01",
+          "name" : {
+            "firstName" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+            "middleName" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+            "lastName" : "1234567890 QwErTyUiOp ,.(/)&'- name"
+          },
+          "dateOfBirth" : "1901-09-05",
+          "dateOfDeath" : "2014-04-05",
+          "identification" : {
+            "nino" : "AA000002A"
+          },
+          "entityStart" : "2019-06-22"
+        },
+        "leadTrustees" : {
+          "lineNo" : "1",
+          "bpMatchStatus" : "01",
+          "name" : {
+            "firstName" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+            "middleName" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+            "lastName" : "1234567890 QwErTyUiOp ,.(/)&'- name"
+          },
+          "dateOfBirth" : "2015-03-20",
+          "phoneNumber" : "2340773003196623",
+          "email" : "xyz@gmail.com",
+          "identification" : {
+            "passport" : {
+              "number" : "KSJDFKSDHF6456545147852369QWER",
+              "expirationDate" : "2020-02-02",
+              "countryOfIssue" : "DE"
+            },
+            "address" : {
+              "line1" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+              "line2" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+              "postCode" : "Z99 2YY",
+              "country" : "GB"
+            }
+          },
+          "entityStart" : "2017-02-28"
+        },
+        "trustees" : [
+          {
+            "trusteeInd" : {
+              "lineNo" : "1",
+              "bpMatchStatus" : "01",
+              "name" : {
+                "firstName" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+                "middleName" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+                "lastName" : "1234567890 QwErTyUiOp ,.(/)&'- name"
+              },
+              "dateOfBirth" : "1983-09-24",
+              "identification" : {
+                "address" : {
+                  "line1" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+                  "line2" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+                  "postCode" : "Z99 2YY",
+                  "country" : "GB"
+                }
+              },
+              "entityStart" : "2017-02-28"
+            }
+          }
+        ],
+        "protectors" : {
+          "protector" : [
+            {
+              "lineNo" : "1",
+              "bpMatchStatus" : "01",
+              "name" : {
+                "firstName" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+                "lastName" : "1234567890 QwErTyUiOp ,.(/)&'- name"
+              },
+              "entityStart" : "2017-02-28"
+            }
+          ]
+        },
+        "settlors" : {
+          "settlor" : [
+            {
+              "lineNo" : "1",
+              "bpMatchStatus" : "01",
+              "name" : {
+                "firstName" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+                "lastName" : "1234567890 QwErTyUiOp ,.(/)&'- name"
+              },
+              "dateOfBirth" : "1901-09-05",
+              "identification" : {
+                "nino" : "AA000003A"
+              },
+              "entityStart" : "2017-02-28"
+            }
+          ]
+        }
+      },
+      "assets" : {
+        "shares" : [
+          {
+            "numberOfShares" : "999999999999",
+            "orgName" : "1234567890 QwErTyUiOp ,.(/)&'- name",
+            "shareClass" : "Preference shares",
+            "typeOfShare" : "Quoted",
+            "value" : "999999999999"
+          }
+        ]
+      }
+    }
+  },
+  "responseHeader" : {
+    "status" : "Processed",
+    "formBundleNo" : "000000000001"
+  }
+}

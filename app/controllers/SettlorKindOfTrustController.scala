@@ -26,7 +26,7 @@ import pages.{SettlorKindOfTrustPage, SetupAfterSettlorDiedPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import sections.LivingSettlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.annotations.LivingSettlor
@@ -35,17 +35,17 @@ import views.html.SettlorKindOfTrustView
 import scala.concurrent.{ExecutionContext, Future}
 
 class SettlorKindOfTrustController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       @LivingSettlor navigator: Navigator,
-                                       identify: IdentifierAction,
-                                       getData: DraftIdRetrievalActionProvider,
-                                       requireData: DataRequiredAction,
-                                       validateIndex: IndexActionFilterProvider,
-                                       formProvider: SettlorKindOfTrustFormProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: SettlorKindOfTrustView,
-                                       requiredAnswer: RequiredAnswerActionProvider
+                                              override val messagesApi: MessagesApi,
+                                              registrationsRepository: RegistrationsRepository,
+                                              @LivingSettlor navigator: Navigator,
+                                              identify: IdentifierAction,
+                                              getData: DraftIdRetrievalActionProvider,
+                                              requireData: DataRequiredAction,
+                                              validateIndex: IndexActionFilterProvider,
+                                              formProvider: SettlorKindOfTrustFormProvider,
+                                              val controllerComponents: MessagesControllerComponents,
+                                              view: SettlorKindOfTrustView,
+                                              requiredAnswer: RequiredAnswerActionProvider
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
   def actions(draftId: String) =
@@ -77,7 +77,7 @@ class SettlorKindOfTrustController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorKindOfTrustPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(SettlorKindOfTrustPage, mode, draftId)(updatedAnswers))
         }
       )

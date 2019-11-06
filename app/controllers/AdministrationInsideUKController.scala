@@ -25,7 +25,7 @@ import pages.AdministrationInsideUKPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.AdministrationInsideUKView
 
@@ -33,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class AdministrationInsideUKController @Inject()(
                                                   override val messagesApi: MessagesApi,
-                                                  sessionRepository: SessionRepository,
+                                                  registrationsRepository: RegistrationsRepository,
                                                   navigator: Navigator,
                                                   identify: IdentifierAction,
                                                   getData: DraftIdRetrievalActionProvider,
@@ -66,7 +66,7 @@ class AdministrationInsideUKController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AdministrationInsideUKPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(AdministrationInsideUKPage, mode, draftId)(updatedAnswers))
         }
       )

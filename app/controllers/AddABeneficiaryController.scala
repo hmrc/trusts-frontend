@@ -25,7 +25,7 @@ import pages.{AddABeneficiaryPage, AddABeneficiaryYesNoPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi, MessagesProvider}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.AddABeneficiaryViewHelper
 import views.html.{AddABeneficiaryView, AddABeneficiaryYesNoView}
@@ -34,7 +34,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class AddABeneficiaryController @Inject()(
                                            override val messagesApi: MessagesApi,
-                                           sessionRepository: SessionRepository,
+                                           registrationsRepository: RegistrationsRepository,
                                            navigator: Navigator,
                                            identify: IdentifierAction,
                                            getData: DraftIdRetrievalActionProvider,
@@ -85,7 +85,7 @@ class AddABeneficiaryController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AddABeneficiaryYesNoPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(AddABeneficiaryYesNoPage, mode, draftId)(updatedAnswers))
         }
       )
@@ -104,7 +104,7 @@ class AddABeneficiaryController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AddABeneficiaryPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(AddABeneficiaryPage, mode, draftId)(updatedAnswers))
         }
       )

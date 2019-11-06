@@ -20,19 +20,17 @@ import config.FrontendAppConfig
 import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider, IdentifierAction}
 import javax.inject.Inject
 import models.NormalMode
-import navigation.Navigator
 import pages.WhatIsTheUTRPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.InformationMaintainingThisTrustView
 
 import scala.concurrent.ExecutionContext
 
 class InformationMaintainingThisTrustController @Inject()(
-                                                           sessionRepository: SessionRepository,
-                                                           navigator: Navigator,
+                                                           registrationsRepository: RegistrationsRepository,
                                                            identify: IdentifierAction,
                                                            getData: DraftIdRetrievalActionProvider,
                                                            requireData: DataRequiredAction,

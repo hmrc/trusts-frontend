@@ -25,7 +25,7 @@ import pages.{AgentInternationalAddressPage, AgentNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.countryOptions.CountryOptionsNonUK
 import views.html.AgentInternationalAddressView
@@ -33,18 +33,18 @@ import views.html.AgentInternationalAddressView
 import scala.concurrent.{ExecutionContext, Future}
 
 class AgentInternationalAddressController @Inject()(
-                                      override val messagesApi: MessagesApi,
-                                      sessionRepository: SessionRepository,
-                                      navigator: Navigator,
-                                      identify: IdentifierAction,
-                                      hasAgentAffinityGroup: RequireStateActionProviderImpl,
-                                      getData: DraftIdRetrievalActionProvider,
-                                      requireData: DataRequiredAction,
-                                      requiredAnswer: RequiredAnswerActionProvider,
-                                      formProvider: InternationalAddressFormProvider,
-                                      val controllerComponents: MessagesControllerComponents,
-                                      view: AgentInternationalAddressView,
-                                      val countryOptions: CountryOptionsNonUK
+                                                     override val messagesApi: MessagesApi,
+                                                     registrationsRepository: RegistrationsRepository,
+                                                     navigator: Navigator,
+                                                     identify: IdentifierAction,
+                                                     hasAgentAffinityGroup: RequireStateActionProviderImpl,
+                                                     getData: DraftIdRetrievalActionProvider,
+                                                     requireData: DataRequiredAction,
+                                                     requiredAnswer: RequiredAnswerActionProvider,
+                                                     formProvider: InternationalAddressFormProvider,
+                                                     val controllerComponents: MessagesControllerComponents,
+                                                     view: AgentInternationalAddressView,
+                                                     val countryOptions: CountryOptionsNonUK
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -81,7 +81,7 @@ class AgentInternationalAddressController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentInternationalAddressPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(AgentInternationalAddressPage, mode, draftId)(updatedAnswers))
         }
       )

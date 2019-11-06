@@ -26,24 +26,24 @@ import pages.shares.{ShareCompanyNamePage, ShareQuantityInTrustPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.shares.ShareQuantityInTrustView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class ShareQuantityInTrustController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DraftIdRetrievalActionProvider,
-                                        requireData: DataRequiredAction,
-                                        validateIndex: IndexActionFilterProvider,
-                                        requiredAnswer: RequiredAnswerActionProvider,
-                                        formProvider: ShareQuantityInTrustFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: ShareQuantityInTrustView
+                                                override val messagesApi: MessagesApi,
+                                                registrationsRepository: RegistrationsRepository,
+                                                navigator: Navigator,
+                                                identify: IdentifierAction,
+                                                getData: DraftIdRetrievalActionProvider,
+                                                requireData: DataRequiredAction,
+                                                validateIndex: IndexActionFilterProvider,
+                                                requiredAnswer: RequiredAnswerActionProvider,
+                                                formProvider: ShareQuantityInTrustFormProvider,
+                                                val controllerComponents: MessagesControllerComponents,
+                                                view: ShareQuantityInTrustView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -82,7 +82,7 @@ class ShareQuantityInTrustController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ShareQuantityInTrustPage(index), value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(ShareQuantityInTrustPage(index), mode, draftId)(updatedAnswers))
         }
       )

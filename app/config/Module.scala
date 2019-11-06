@@ -20,7 +20,7 @@ import com.google.inject.AbstractModule
 import connector.OtacAuthConnectorImpl
 import controllers.actions._
 import navigation.{LivingSettlorNavigator, Navigator, PropertyOrLandNavigator}
-import repositories.{DefaultSessionRepository, SessionRepository}
+import repositories.{DefaultPlaybackRepository, DefaultRegistrationsRepository, PlaybackRepository, RegistrationsRepository}
 import uk.gov.hmrc.auth.otac.OtacAuthConnector
 import utils.{DateFormatter, TrustsDateFormatter}
 import utils.annotations.{LivingSettlor, PropertyOrLand}
@@ -41,7 +41,8 @@ class Module extends AbstractModule {
 
     bind(classOf[RequiredAgentAffinityGroupActionProvider]).to(classOf[RequireStateActionProviderImpl]).asEagerSingleton()
 
-    bind(classOf[SessionRepository]).to(classOf[DefaultSessionRepository]).asEagerSingleton()
+    bind(classOf[RegistrationsRepository]).to(classOf[DefaultRegistrationsRepository]).asEagerSingleton()
+    bind(classOf[PlaybackRepository]).to(classOf[DefaultPlaybackRepository]).asEagerSingleton()
 
     bind(classOf[OtacAuthConnector]).to(classOf[OtacAuthConnectorImpl]).asEagerSingleton()
 

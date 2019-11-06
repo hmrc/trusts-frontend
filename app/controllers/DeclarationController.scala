@@ -30,7 +30,7 @@ import play.api.Logger
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import services.SubmissionService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.DeclarationView
@@ -40,7 +40,7 @@ import scala.util.control.NonFatal
 
 class DeclarationController @Inject()(
                                        override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
+                                       registrationsRepository: RegistrationsRepository,
                                        navigator: Navigator,
                                        identify: IdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
@@ -79,7 +79,7 @@ class DeclarationController @Inject()(
 
            val r = for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, value))
-              _ <- sessionRepository.set(updatedAnswers)
+              _ <- registrationsRepository.set(updatedAnswers)
               response <- submissionService.submit(updatedAnswers)
               result <- handleResponse(updatedAnswers, response, draftId)
             } yield result
@@ -119,7 +119,7 @@ class DeclarationController @Inject()(
             dateSaved =>
               val days = DAYS.between(updatedAnswers.createdAt,submissionDate )
               Logger.info(s"[saveTRNAndCompleteRegistration] Days between creation and submission : ${days}")
-              sessionRepository.set(dateSaved.copy(progress = RegistrationStatus.Complete)).map {
+              registrationsRepository.set(dateSaved.copy(progress = RegistrationStatus.Complete)).map {
               _ =>
                 Redirect(routes.ConfirmationController.onPageLoad(updatedAnswers.draftId))
             }

@@ -25,24 +25,24 @@ import pages.{AgentNamePage, AgentUKAddressPage, IndividualBeneficiaryNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.AgentUKAddressView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class AgentUKAddressController @Inject()(
-                                      override val messagesApi: MessagesApi,
-                                      sessionRepository: SessionRepository,
-                                      navigator: Navigator,
-                                      identify: IdentifierAction,
-                                      hasAgentAffinityGroup: RequireStateActionProviderImpl,
-                                      getData: DraftIdRetrievalActionProvider,
-                                      requireData: DataRequiredAction,
-                                      requiredAnswer: RequiredAnswerActionProvider,
-                                      formProvider: UKAddressFormProvider,
-                                      val controllerComponents: MessagesControllerComponents,
-                                      view: AgentUKAddressView
+                                          override val messagesApi: MessagesApi,
+                                          registrationsRepository: RegistrationsRepository,
+                                          navigator: Navigator,
+                                          identify: IdentifierAction,
+                                          hasAgentAffinityGroup: RequireStateActionProviderImpl,
+                                          getData: DraftIdRetrievalActionProvider,
+                                          requireData: DataRequiredAction,
+                                          requiredAnswer: RequiredAnswerActionProvider,
+                                          formProvider: UKAddressFormProvider,
+                                          val controllerComponents: MessagesControllerComponents,
+                                          view: AgentUKAddressView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -80,7 +80,7 @@ class AgentUKAddressController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentUKAddressPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(AgentUKAddressPage, mode, draftId)(updatedAnswers))
         }
       )

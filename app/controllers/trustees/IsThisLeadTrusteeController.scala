@@ -26,7 +26,7 @@ import pages.trustees.IsThisLeadTrusteePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import viewmodels.addAnother.TrusteeViewModel
@@ -36,7 +36,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class IsThisLeadTrusteeController @Inject()(
                                              override val messagesApi: MessagesApi,
-                                             sessionRepository: SessionRepository,
+                                             registrationsRepository: RegistrationsRepository,
                                              navigator: Navigator,
                                              identify: IdentifierAction,
                                              getData: DraftIdRetrievalActionProvider,
@@ -78,7 +78,7 @@ class IsThisLeadTrusteeController @Inject()(
           if (currentIndexIsNotTheLeadTrustee) {
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(IsThisLeadTrusteePage(index), false))
-              _              <- sessionRepository.set(updatedAnswers)
+              _              <- registrationsRepository.set(updatedAnswers)
             } yield Redirect(navigator.nextPage(IsThisLeadTrusteePage(index), mode, draftId)(updatedAnswers))
           } else {
             renderView
@@ -99,7 +99,7 @@ class IsThisLeadTrusteeController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(IsThisLeadTrusteePage(index), value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(IsThisLeadTrusteePage(index), mode, draftId)(updatedAnswers))
         }
       )
