@@ -19,11 +19,12 @@ package config
 import com.google.inject.AbstractModule
 import connector.OtacAuthConnectorImpl
 import controllers.actions._
-import navigation.{LivingSettlorNavigator, Navigator, PropertyOrLandNavigator}
+import navigation.Navigator
+import navigation.registration.{LivingSettlorNavigator, PropertyOrLandNavigator}
 import repositories.{DefaultPlaybackRepository, DefaultRegistrationsRepository, PlaybackRepository, RegistrationsRepository}
 import uk.gov.hmrc.auth.otac.OtacAuthConnector
-import utils.{DateFormatter, TrustsDateFormatter}
 import utils.annotations.{LivingSettlor, PropertyOrLand}
+import utils.{DateFormatter, TrustsDateFormatter}
 
 class Module extends AbstractModule {
 

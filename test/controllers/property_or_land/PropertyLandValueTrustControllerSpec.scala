@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.IndexValidation
 import forms.property_or_land.PropertyLandValueTrustFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.FakeNavigator
 import org.scalacheck.Arbitrary.arbitrary
 import pages.property_or_land.PropertyLandValueTrustPage
 import play.api.inject.bind

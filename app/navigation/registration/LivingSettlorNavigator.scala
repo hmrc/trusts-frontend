@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package navigation
+package navigation.registration
 
 import config.FrontendAppConfig
 import controllers.living_settlor.routes
@@ -22,8 +22,9 @@ import javax.inject.{Inject, Singleton}
 import models.IndividualOrBusiness._
 import models.SettlorKindOfTrust._
 import models.{NormalMode, UserAnswers}
-import pages.living_settlor._
+import navigation.Navigator
 import pages._
+import pages.living_settlor._
 import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
 

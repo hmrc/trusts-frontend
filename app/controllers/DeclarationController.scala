@@ -18,8 +18,8 @@ package controllers
 
 import java.time.temporal.ChronoUnit.DAYS
 import java.time.{LocalDateTime, ZoneOffset}
-import javax.inject.Inject
 
+import javax.inject.Inject
 import controllers.actions._
 import forms.DeclarationFormProvider
 import models.{Mode, RegistrationStatus, RegistrationTRNResponse, TrustResponse, UserAnswers}

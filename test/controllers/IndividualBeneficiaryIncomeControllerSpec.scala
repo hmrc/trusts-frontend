@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import forms.IndividualBeneficiaryIncomeFormProvider
 import models.{FullName, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.FakeNavigator
 import pages.{IndividualBeneficiaryIncomePage, IndividualBeneficiaryNamePage}
 import play.api.inject.bind
 import play.api.libs.json.{JsString, Json}

@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import forms.YesNoFormProvider
 import models.{FullName, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.FakeNavigator
 import pages.{IndividualBeneficiaryNamePage, IndividualBeneficiaryVulnerableYesNoPage}
 import play.api.inject.bind
 import play.api.libs.json.{JsBoolean, Json}

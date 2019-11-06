@@ -21,7 +21,7 @@ import java.time.{LocalDate, ZoneOffset}
 import base.SpecBase
 import forms.IndividualBeneficiaryDateOfBirthFormProvider
 import models.{FullName, NormalMode}
-import navigation.{FakeNavigator, Navigator}
+import navigation.FakeNavigator
 import org.scalatest.mockito.MockitoSugar
 import pages.{IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryNamePage}
 import play.api.inject.bind

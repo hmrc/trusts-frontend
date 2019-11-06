@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import forms.YesNoFormProvider
 import models.{FullName, NormalMode}
-import navigation.{FakeNavigator, Navigator}
+import navigation.FakeNavigator
 import pages.{IndividualBeneficiaryAddressUKYesNoPage, IndividualBeneficiaryNamePage}
 import play.api.inject.bind
 import play.api.mvc.Call

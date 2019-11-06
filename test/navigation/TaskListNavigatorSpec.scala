@@ -25,6 +25,7 @@ import models.WhatKindOfAsset.Money
 import mapping.reads.{Assets, Trustees}
 import models.IndividualOrBusiness.Individual
 import models.{AddASettlor, FullName, IndividualOrBusiness, NormalMode, UserAnswers}
+import navigation.registration.TaskListNavigator
 import pages._
 import pages.deceased_settlor.SettlorsNamePage
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}

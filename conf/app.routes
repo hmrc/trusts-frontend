@@ -638,3 +638,6 @@ GET        /:draftId/status/locked                          controllers.TrustSta
 GET        /:draftId/status                                 controllers.TrustStatusController.status(draftId: String)
 
 GET        /:draftId/maintain-a-trust/information           controllers.InformationMaintainingThisTrustController.onPageLoad(draftId: String)
+
+GET        /:draftId/declare-change                        controllers.DeclarationWhatNextController.onPageLoad(draftId: String)
+POST       /:draftId/declare-change                        controllers.DeclarationWhatNextController.onSubmit(draftId: String)

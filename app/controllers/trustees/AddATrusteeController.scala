@@ -18,7 +18,7 @@ package controllers.trustees
 
 import controllers.actions._
 import forms.YesNoFormProvider
-import forms.trustees.{AddATrusteeFormProvider}
+import forms.trustees.AddATrusteeFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode}
 import navigation.Navigator

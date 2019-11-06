@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package navigation.navigators
+package navigation.navigators.registration
 
 import base.SpecBase
 import controllers.living_settlor.routes
 import generators.Generators
 import models.IndividualOrBusiness.Individual
 import models.{AddASettlor, IndividualOrBusiness, NormalMode, SettlorKindOfTrust, UserAnswers}
-import navigation.{LivingSettlorNavigator, Navigator}
+import navigation.Navigator
+import navigation.registration.LivingSettlorNavigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages.living_settlor._

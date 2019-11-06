@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.IndexValidation
 import forms.YesNoFormProvider
 import models.NormalMode
-import navigation.{FakeNavigator, Navigator}
+import navigation.FakeNavigator
 import org.scalacheck.Arbitrary.arbitrary
 import pages.property_or_land.{PropertyOrLandAddressYesNoPage, PropertyOrLandDescriptionPage}
 import play.api.inject.bind

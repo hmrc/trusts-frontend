@@ -19,7 +19,6 @@ package controllers
 import controllers.actions._
 import forms.IndividualBeneficiaryNameFormProvider
 import javax.inject.Inject
-
 import models.Mode
 import navigation.Navigator
 import pages.IndividualBeneficiaryNamePage

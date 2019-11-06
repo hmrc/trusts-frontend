@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package navigation.navigators
+package navigation.navigators.registration
 
 import base.SpecBase
 import controllers.routes
@@ -25,7 +25,6 @@ import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages._
 import sections.{ClassOfBeneficiaries, IndividualBeneficiaries}
-
 
 trait BeneficiaryRoutes {
   self: PropertyChecks with Generators with SpecBase =>
