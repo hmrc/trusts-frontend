@@ -41,7 +41,7 @@ class AgentOverviewControllerSpec extends SpecBase {
 
       "return OK and the correct view for a GET" in {
 
-        when(mockedSessionRepository.listDrafts(any())).thenReturn(Future.successful(Nil))
+        when(registrationsRepository.listDrafts(any())).thenReturn(Future.successful(Nil))
 
         val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
@@ -86,7 +86,7 @@ class AgentOverviewControllerSpec extends SpecBase {
 
         val draft = List(DraftRegistration(fakeDraftId, "InternalRef", LocalDateTime.now().toString))
 
-        when(mockedSessionRepository.listDrafts(any()))
+        when(registrationsRepository.listDrafts(any()))
           .thenReturn(Future.successful(draft))
 
         val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()

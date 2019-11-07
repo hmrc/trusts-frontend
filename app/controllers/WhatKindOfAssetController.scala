@@ -28,7 +28,7 @@ import pages.WhatKindOfAssetPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import viewmodels.addAnother.{AssetViewModel, MoneyAssetViewModel}
 import views.html.WhatKindOfAssetView
@@ -37,7 +37,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class WhatKindOfAssetController @Inject()(
                                            override val messagesApi: MessagesApi,
-                                           sessionRepository: SessionRepository,
+                                           registrationsRepository: RegistrationsRepository,
                                            navigator: Navigator,
                                            identify: IdentifierAction,
                                            getData: DraftIdRetrievalActionProvider,
@@ -93,7 +93,7 @@ class WhatKindOfAssetController @Inject()(
           def insertAndRedirect =
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatKindOfAssetPage(index), value))
-              _ <- sessionRepository.set(updatedAnswers)
+              _ <- registrationsRepository.set(updatedAnswers)
             } yield Redirect(navigator.nextPage(WhatKindOfAssetPage(index), mode, draftId)(updatedAnswers))
 
           value match {

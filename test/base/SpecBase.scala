@@ -28,7 +28,7 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.inject.{Injector, bind}
 import play.api.mvc.PlayBodyParsers
 import play.api.test.FakeRequest
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import services.{CreateDraftRegistrationService, SubmissionService}
 import uk.gov.hmrc.auth.core.AffinityGroup
 import utils.TestUserAnswers
@@ -67,8 +67,8 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
         bind[IdentifierAction].toInstance(new FakeIdentifierAction(affinityGroup)(injectedParsers)),
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
         bind[DraftIdRetrievalActionProvider].toInstance(
-          new FakeDraftIdRetrievalActionProvider("draftId", RegistrationStatus.InProgress, userAnswers, mockedSessionRepository)),
-        bind[SessionRepository].toInstance(mockedSessionRepository),
+          new FakeDraftIdRetrievalActionProvider("draftId", RegistrationStatus.InProgress, userAnswers, registrationsRepository)),
+        bind[RegistrationsRepository].toInstance(registrationsRepository),
         bind[SubmissionService].toInstance(mockSubmissionService),
         bind[CreateDraftRegistrationService].toInstance(mockCreateDraftRegistrationService),
         bind[Navigator].toInstance(navigator),

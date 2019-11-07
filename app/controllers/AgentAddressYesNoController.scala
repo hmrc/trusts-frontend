@@ -25,24 +25,24 @@ import pages.{AgentAddressYesNoPage, AgentNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.AgentAddressYesNoView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class AgentAddressYesNoController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         hasAgentAffinityGroup: RequireStateActionProviderImpl,
-                                         getData: DraftIdRetrievalActionProvider,
-                                         requireData: DataRequiredAction,
-                                         requiredAnswer: RequiredAnswerActionProvider,
-                                         yesNoFormProvider: YesNoFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: AgentAddressYesNoView
+                                             override val messagesApi: MessagesApi,
+                                             registrationsRepository: RegistrationsRepository,
+                                             navigator: Navigator,
+                                             identify: IdentifierAction,
+                                             hasAgentAffinityGroup: RequireStateActionProviderImpl,
+                                             getData: DraftIdRetrievalActionProvider,
+                                             requireData: DataRequiredAction,
+                                             requiredAnswer: RequiredAnswerActionProvider,
+                                             yesNoFormProvider: YesNoFormProvider,
+                                             val controllerComponents: MessagesControllerComponents,
+                                             view: AgentAddressYesNoView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = yesNoFormProvider.withPrefix("agentAddressYesNo")
@@ -79,7 +79,7 @@ class AgentAddressYesNoController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentAddressYesNoPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(AgentAddressYesNoPage, mode, draftId)(updatedAnswers))
         }
       )

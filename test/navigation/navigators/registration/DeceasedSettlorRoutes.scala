@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package navigation.navigators
+package navigation.navigators.registration
 
 import base.SpecBase
 import controllers.deceased_settlor.routes
@@ -23,9 +23,8 @@ import models.{NormalMode, UserAnswers}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages._
+import pages.SetupAfterSettlorDiedPage
 import pages.deceased_settlor._
-
 
 trait DeceasedSettlorRoutes {
   self: PropertyChecks with Generators with SpecBase =>

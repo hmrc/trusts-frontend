@@ -21,7 +21,7 @@ import controllers.IndexValidation
 import forms.UKAddressFormProvider
 import generators.ModelGenerators
 import models.{NormalMode, UKAddress}
-import navigation.{FakeNavigator, Navigator}
+import navigation.FakeNavigator
 import org.scalacheck.Arbitrary.arbitrary
 import pages.property_or_land.PropertyOrLandUKAddressPage
 import play.api.inject.bind

@@ -25,23 +25,23 @@ import pages.AgentTelephoneNumberPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.AgentTelephoneNumberView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class AgentTelephoneNumberController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        hasAgentAffinityGroup: RequireStateActionProviderImpl,
-                                        getData: DraftIdRetrievalActionProvider,
-                                        requireData: DataRequiredAction,
-                                        formProvider: AgentTelephoneNumber,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: AgentTelephoneNumberView
+                                                override val messagesApi: MessagesApi,
+                                                registrationsRepository: RegistrationsRepository,
+                                                navigator: Navigator,
+                                                identify: IdentifierAction,
+                                                hasAgentAffinityGroup: RequireStateActionProviderImpl,
+                                                getData: DraftIdRetrievalActionProvider,
+                                                requireData: DataRequiredAction,
+                                                formProvider: AgentTelephoneNumber,
+                                                val controllerComponents: MessagesControllerComponents,
+                                                view: AgentTelephoneNumberView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) = identify andThen hasAgentAffinityGroup() andThen getData(draftId) andThen requireData
@@ -69,7 +69,7 @@ class AgentTelephoneNumberController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentTelephoneNumberPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(AgentTelephoneNumberPage, mode, draftId)(updatedAnswers))
         }
       )

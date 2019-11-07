@@ -26,7 +26,7 @@ import pages.living_settlor.SettlorBusinessNamePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import sections.LivingSettlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.annotations.LivingSettlor
@@ -35,16 +35,16 @@ import views.html.living_settlor.SettlorBusinessNameView
 import scala.concurrent.{ExecutionContext, Future}
 
 class SettlorBusinessNameController @Inject()(
-                                                  override val messagesApi: MessagesApi,
-                                                  sessionRepository: SessionRepository,
-                                                  @LivingSettlor navigator: Navigator,
-                                                  identify: IdentifierAction,
-                                                  getData: DraftIdRetrievalActionProvider,
-                                                  validateIndex : IndexActionFilterProvider,
-                                                  requireData: DataRequiredAction,
-                                                  formProvider: SettlorBusinessNameFormProvider,
-                                                  val controllerComponents: MessagesControllerComponents,
-                                                  view: SettlorBusinessNameView
+                                               override val messagesApi: MessagesApi,
+                                               registrationsRepository: RegistrationsRepository,
+                                               @LivingSettlor navigator: Navigator,
+                                               identify: IdentifierAction,
+                                               getData: DraftIdRetrievalActionProvider,
+                                               validateIndex : IndexActionFilterProvider,
+                                               requireData: DataRequiredAction,
+                                               formProvider: SettlorBusinessNameFormProvider,
+                                               val controllerComponents: MessagesControllerComponents,
+                                               view: SettlorBusinessNameView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -70,7 +70,7 @@ class SettlorBusinessNameController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorBusinessNamePage(index),  value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(SettlorBusinessNamePage(index), mode, draftId)(updatedAnswers))
         }
       )

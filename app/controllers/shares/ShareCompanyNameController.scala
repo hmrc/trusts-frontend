@@ -26,23 +26,23 @@ import pages.shares.ShareCompanyNamePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.shares.ShareCompanyNameView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class ShareCompanyNameController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DraftIdRetrievalActionProvider,
-                                        requireData: DataRequiredAction,
-                                        formProvider: ShareCompanyNameFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: ShareCompanyNameView,
-                                        validateIndex: IndexActionFilterProvider
+                                            override val messagesApi: MessagesApi,
+                                            registrationsRepository: RegistrationsRepository,
+                                            navigator: Navigator,
+                                            identify: IdentifierAction,
+                                            getData: DraftIdRetrievalActionProvider,
+                                            requireData: DataRequiredAction,
+                                            formProvider: ShareCompanyNameFormProvider,
+                                            val controllerComponents: MessagesControllerComponents,
+                                            view: ShareCompanyNameView,
+                                            validateIndex: IndexActionFilterProvider
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(mode: Mode, index : Int, draftId: String) =
@@ -73,7 +73,7 @@ class ShareCompanyNameController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ShareCompanyNamePage(index), value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(ShareCompanyNamePage(index), mode, draftId)(updatedAnswers))
         }
       )

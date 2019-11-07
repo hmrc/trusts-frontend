@@ -25,7 +25,7 @@ import pages.deceased_settlor.{DeceasedSettlorAnswerPage, SettlorsNamePage}
 import pages.entitystatus.DeceasedSettlorStatus
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
@@ -35,16 +35,16 @@ import views.html.deceased_settlor.DeceasedSettlorAnswerView
 import scala.concurrent.{ExecutionContext, Future}
 
 class DeceasedSettlorAnswerController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       identify: IdentifierAction,
-                                       getData: DraftIdRetrievalActionProvider,
-                                       navigator: Navigator,
-                                       requireData: DataRequiredAction,
-                                       requiredAnswer: RequiredAnswerActionProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: DeceasedSettlorAnswerView,
-                                       countryOptions : CountryOptions
+                                                 override val messagesApi: MessagesApi,
+                                                 registrationsRepository: RegistrationsRepository,
+                                                 identify: IdentifierAction,
+                                                 getData: DraftIdRetrievalActionProvider,
+                                                 navigator: Navigator,
+                                                 requireData: DataRequiredAction,
+                                                 requiredAnswer: RequiredAnswerActionProvider,
+                                                 val controllerComponents: MessagesControllerComponents,
+                                                 view: DeceasedSettlorAnswerView,
+                                                 countryOptions : CountryOptions
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) =
@@ -86,7 +86,7 @@ class DeceasedSettlorAnswerController @Inject()(
 
       for {
         updatedAnswers <- Future.fromTry(request.userAnswers.set(DeceasedSettlorStatus, Completed))
-        _              <- sessionRepository.set(updatedAnswers)
+        _              <- registrationsRepository.set(updatedAnswers)
       } yield Redirect(navigator.nextPage(DeceasedSettlorAnswerPage, NormalMode, draftId)(request.userAnswers))
   }
 }

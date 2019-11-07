@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package navigation.navigators
+package navigation.navigators.registration
 
 import base.SpecBase
 import controllers.property_or_land.routes
 import generators.Generators
 import models.{InternationalAddress, NormalMode, UKAddress, UserAnswers}
-import navigation.{Navigator, PropertyOrLandNavigator}
+import navigation.Navigator
+import navigation.registration.PropertyOrLandNavigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages.property_or_land._

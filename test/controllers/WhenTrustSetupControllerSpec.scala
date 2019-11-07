@@ -21,7 +21,7 @@ import java.time.{LocalDate, ZoneOffset}
 import base.SpecBase
 import forms.WhenTrustSetupFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.FakeNavigator
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.mockito.MockitoSugar
@@ -30,7 +30,7 @@ import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import views.html.WhenTrustSetupView
 
 import scala.concurrent.Future

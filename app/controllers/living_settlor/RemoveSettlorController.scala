@@ -29,7 +29,7 @@ import pages.living_settlor.SettlorIndividualNamePage
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.{AnyContent, Call, MessagesControllerComponents}
 import queries.{RemoveSettlorQuery, Settable}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import sections.LivingSettlors
 import views.html.RemoveIndexView
 
@@ -38,7 +38,7 @@ import scala.concurrent.ExecutionContext
 
 class RemoveSettlorController @Inject()(
                                          override val messagesApi: MessagesApi,
-                                         override val sessionRepository: SessionRepository,
+                                         override val registrationsRepository: RegistrationsRepository,
                                          navigator: Navigator,
                                          identify: IdentifierAction,
                                          validateIndex : IndexActionFilterProvider,

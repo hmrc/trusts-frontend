@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package navigation.navigators
-
+package navigation.navigators.registration
 
 import base.SpecBase
 import controllers.routes
 import generators.Generators
-import models.WhatKindOfAsset._
+import models.WhatKindOfAsset.{Money, PropertyOrLand, Shares}
 import models.{AddAssets, NormalMode, UserAnswers}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages._
 import pages.shares._
+import pages.{AddAnAssetYesNoPage, AddAssetsPage, AssetMoneyValuePage, WhatKindOfAssetPage}
 
 trait AssetRoutes {
 

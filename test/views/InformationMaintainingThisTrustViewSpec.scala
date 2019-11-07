@@ -52,7 +52,7 @@ class InformationMaintainingThisTrustViewSpec extends ViewBehaviours {
 
     behave like pageWithBackLink(applyView)
 
-    behave like pageWithContinueButton(applyView,routes.SessionExpiredController.onPageLoad().url)
+    behave like pageWithContinueButton(applyView,routes.DeclarationWhatNextController.onPageLoad(fakeDraftId).url)
 
   }
 }

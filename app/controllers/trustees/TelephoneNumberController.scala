@@ -27,7 +27,7 @@ import pages.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteesNameP
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.trustees.TelephoneNumberView
@@ -36,7 +36,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class TelephoneNumberController @Inject()(
                                            override val messagesApi: MessagesApi,
-                                           sessionRepository: SessionRepository,
+                                           registrationsRepository: RegistrationsRepository,
                                            navigator: Navigator,
                                            validateIndex: IndexActionFilterProvider,
                                            identify: IdentifierAction,
@@ -102,7 +102,7 @@ class TelephoneNumberController @Inject()(
 
           for {
             updatedAnswers <- Future.fromTry(answers)
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(TelephoneNumberPage(index), mode, draftId)(updatedAnswers))
         }
       )

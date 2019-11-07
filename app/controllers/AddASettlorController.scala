@@ -27,7 +27,7 @@ import pages.{AddASettlorPage, AddASettlorYesNoPage, SettlorKindOfTrustPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi, MessagesProvider}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.AddASettlorViewHelper
 import utils.annotations.LivingSettlor
@@ -37,7 +37,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class AddASettlorController @Inject()(
                                        override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
+                                       registrationsRepository: RegistrationsRepository,
                                        @LivingSettlor navigator: Navigator,
                                        identify: IdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
@@ -91,7 +91,7 @@ class AddASettlorController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AddASettlorYesNoPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(AddASettlorYesNoPage, mode, draftId)(updatedAnswers))
         }
       )
@@ -120,7 +120,7 @@ class AddASettlorController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AddASettlorPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(AddASettlorPage, mode, draftId)(updatedAnswers))
         }
       )

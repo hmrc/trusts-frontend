@@ -26,7 +26,7 @@ import pages.property_or_land.PropertyLandValueTrustPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.annotations.PropertyOrLand
 import views.html.property_or_land.PropertyLandValueTrustView
@@ -35,7 +35,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class PropertyLandValueTrustController @Inject()(
                                                   override val messagesApi: MessagesApi,
-                                                  sessionRepository: SessionRepository,
+                                                  registrationsRepository: RegistrationsRepository,
                                                   @PropertyOrLand navigator: Navigator,
                                                   identify: IdentifierAction,
                                                   getData: DraftIdRetrievalActionProvider,
@@ -75,7 +75,7 @@ class PropertyLandValueTrustController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(PropertyLandValueTrustPage(index), value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(PropertyLandValueTrustPage(index), mode, draftId)(updatedAnswers))
         }
       )

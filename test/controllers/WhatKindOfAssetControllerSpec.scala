@@ -20,7 +20,7 @@ import base.SpecBase
 import forms.WhatKindOfAssetFormProvider
 import models.WhatKindOfAsset.{Money, PropertyOrLand}
 import models.{NormalMode, UserAnswers, WhatKindOfAsset}
-import navigation.{FakeNavigator, Navigator}
+import navigation.FakeNavigator
 import org.scalacheck.Arbitrary.arbitrary
 import pages.WhatKindOfAssetPage
 import play.api.inject.bind

@@ -25,7 +25,7 @@ import pages.RegisteringTrustFor5APage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.RegisteringTrustFor5AView
 
@@ -33,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class RegisteringTrustFor5AController @Inject()(
                                                  override val messagesApi: MessagesApi,
-                                                 sessionRepository: SessionRepository,
+                                                 registrationsRepository: RegistrationsRepository,
                                                  navigator: Navigator,
                                                  identify: IdentifierAction,
                                                  getData: DraftIdRetrievalActionProvider,
@@ -68,7 +68,7 @@ class RegisteringTrustFor5AController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(RegisteringTrustFor5APage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(RegisteringTrustFor5APage, mode, draftId)(updatedAnswers))
         }
       )

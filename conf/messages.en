@@ -894,9 +894,9 @@ removeIndividualBeneficiary.error.required = Select yes if you want to remove th
 confirmationPage.title = Registration received, your reference is: {0}
 confirmationPage.heading = Registration received Your reference is: {0}
 
-confirmationPage.printsave.link = Print or save a copy of your answers (opens in a new window or tab).
-confirmationPage.posthmrc.link = post the changes to HMRC (opens in a new window or tab).
-confirmationPage.contacthmrc.link = contact HMRC to find out why (opens in a new window or tab).
+confirmationPage.printsave.link = Print or save a declared copy of the trust’s registration (opens in a new window or tab)
+confirmationPage.posthmrc.link = post the changes to HMRC (opens in a new window or tab)
+confirmationPage.contacthmrc.link = contact HMRC to find out why (opens in a new window or tab)
 
 confirmationPage.heading1 = Registration received
 confirmationPage.heading2 = Your reference is:
@@ -1323,3 +1323,11 @@ informationMaintainingThisTrust.list4 = If you need to close the trust, you will
 informationMaintainingThisTrust.h2 = Changes to the trust
 informationMaintainingThisTrust.paragraph2 = Any changes you make will not be saved unless you make a declaration. You can print a draft copy of your answers as well as a declared copy. You will not be able to save and come back later.
 informationMaintainingThisTrust.paragraph3 = You are not required to update the trust’s details, tax liability or assets. Use Self Assessment Online for trusts or the Trust and Estate Tax Return form (SA900) to update any of these.
+
+declarationWhatNext.title = What do you want to do next?
+declarationWhatNext.heading = What do you want to do next?
+declarationWhatNext.declare = Declare the trust is up to date
+declarationWhatNext.makeChanges = Make changes to the trust and declare
+declarationWhatNext.closeTrust = Close the trust/home/darryl/Applications/hmrc-development-environment/hmrc/trusts-frontend/test/controllers/DeclarationWhatNextControllerSpec.scala
+declarationWhatNext.checkYourAnswersLabel = What do you want to do next?
+declarationWhatNext.error.required = Select what you want to do next

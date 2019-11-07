@@ -20,27 +20,27 @@ import javax.inject.Inject
 import models.RegistrationStatus
 import models.requests.{IdentifierRequest, OptionalDataRequest}
 import play.api.mvc.ActionTransformer
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DraftIdDataRetrievalActionProviderImpl @Inject()(sessionRepository: SessionRepository, executionContext: ExecutionContext)
+class DraftIdDataRetrievalActionProviderImpl @Inject()(registrationsRepository: RegistrationsRepository, executionContext: ExecutionContext)
   extends DraftIdRetrievalActionProvider {
 
   def apply(draftId: String): DraftIdDataRetrievalAction =
-    new DraftIdDataRetrievalAction(draftId, sessionRepository, executionContext)
+    new DraftIdDataRetrievalAction(draftId, registrationsRepository, executionContext)
 
 }
 
 class DraftIdDataRetrievalAction(
                                   draftId : String,
-                                  sessionRepository: SessionRepository,
+                                  registrationsRepository: RegistrationsRepository,
                                   implicit protected val executionContext: ExecutionContext
                                 )
   extends ActionTransformer[IdentifierRequest, OptionalDataRequest] {
 
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] = {
-    sessionRepository.get(draftId, request.identifier).map {
+    registrationsRepository.get(draftId, request.identifier).map {
       userAnswers =>
         OptionalDataRequest(request.request, request.identifier, userAnswers, request.affinityGroup, request.agentARN)
     }

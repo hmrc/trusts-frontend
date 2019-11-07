@@ -25,7 +25,7 @@ import pages.CountryGoverningTrustPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.InputOption
 import utils.countryOptions.CountryOptionsNonUK
@@ -34,16 +34,16 @@ import views.html.CountryGoverningTrustView
 import scala.concurrent.{ExecutionContext, Future}
 
 class CountryGoverningTrustController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DraftIdRetrievalActionProvider,
-                                        requireData: DataRequiredAction,
-                                        formProvider: CountryGoverningTrustFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: CountryGoverningTrustView,
-                                        val countryOptions: CountryOptionsNonUK
+                                                 override val messagesApi: MessagesApi,
+                                                 registrationsRepository: RegistrationsRepository,
+                                                 navigator: Navigator,
+                                                 identify: IdentifierAction,
+                                                 getData: DraftIdRetrievalActionProvider,
+                                                 requireData: DataRequiredAction,
+                                                 formProvider: CountryGoverningTrustFormProvider,
+                                                 val controllerComponents: MessagesControllerComponents,
+                                                 view: CountryGoverningTrustView,
+                                                 val countryOptions: CountryOptionsNonUK
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
@@ -71,7 +71,7 @@ class CountryGoverningTrustController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(CountryGoverningTrustPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(CountryGoverningTrustPage, mode, draftId)(updatedAnswers))
         }
       )
