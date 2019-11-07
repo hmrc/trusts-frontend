@@ -38,7 +38,7 @@
     @if(affinityGroup == AffinityGroup.Agent) {
         <p>@components.link(AgentOverviewController.onPageLoad.url, "saved-registrations", "taskList.agent.savedRegistrations")</p>
 
-        <p>@components.link(AgentInternalReferenceController.onPageLoad(NormalMode, draftId).url, "agent-details", "taskList.agent.agentDetails")</p>
+        <p>@components.link(AgentAnswerController.onPageLoad(draftId).url, "agent-details", "taskList.agent.agentDetails")</p>
     } else {
         <h2>@messages("taskList.savedUntil.heading")</h2>
         <p id="saved-until">@savedUntil</p>

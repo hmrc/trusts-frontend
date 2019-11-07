@@ -153,7 +153,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         assertAttributeValueForElement(
           doc.getElementById("agent-details"),
           "href",
-          routes.AgentInternalReferenceController.onPageLoad(NormalMode, fakeDraftId).url
+          routes.AgentAnswerController.onPageLoad(fakeDraftId).url
         )
       }
 

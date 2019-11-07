@@ -640,3 +640,4 @@ GET        /:draftId/maintain-a-trust/information           controllers.Informat
 
 GET       /:draftId/trust-locked                  controllers.WhatIsTheUTRVariationsController.trustStillLocked(draftId: String)
 
+GET        /:draftId/continue                                 controllers.AgentOverviewController.continue(draftId: String)
