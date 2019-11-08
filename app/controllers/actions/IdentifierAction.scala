@@ -25,7 +25,7 @@ import play.api.mvc.Results._
 import play.api.mvc.{ActionBuilder, ActionFunction, Request, Result, _}
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import uk.gov.hmrc.auth.core._
-import uk.gov.hmrc.auth.core.retrieve.{Retrievals, ~}
+import uk.gov.hmrc.auth.core.retrieve.{Retrieval, Retrievals, ~}
 import uk.gov.hmrc.http.{HeaderCarrier, UnauthorizedException}
 import uk.gov.hmrc.play.HeaderCarrierConverter
 
@@ -39,7 +39,7 @@ class AuthenticatedIdentifierAction @Inject()(
                                              )
                                              (implicit val executionContext: ExecutionContext) extends IdentifierAction with AuthorisedFunctions {
 
-  private def authoriseAgent[A](request : Request[A],
+  protected def authoriseAgent[A](request : Request[A],
                                 enrolments : Enrolments,
                                 internalId : String,
                                 block: IdentifierRequest[A] => Future[Result]
@@ -81,15 +81,14 @@ class AuthenticatedIdentifierAction @Inject()(
     case _: UnsupportedCredentialRole => Redirect(routes.UnauthorisedController.onPageLoad())
   }
 
+  protected val retrievals: Retrieval[Option[String] ~ Option[AffinityGroup] ~ Enrolments] =
+    Retrievals.internalId and Retrievals.affinityGroup and Retrievals.allEnrolments
+
   override def invokeBlock[A](request: Request[A],
                               block: IdentifierRequest[A] => Future[Result]
                              ): Future[Result] = {
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
-
-    val retrievals = Retrievals.internalId and
-                     Retrievals.affinityGroup and
-                     Retrievals.allEnrolments
 
     authorised().retrieve(retrievals) {
       case Some(internalId) ~ Some(Agent) ~ enrolments =>
@@ -110,6 +109,34 @@ class AuthenticatedIdentifierAction @Inject()(
 }
 
 trait IdentifierAction extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest]
+
+class AuthenticatedAgentIdentifierAction @Inject()(
+                                                    override val authConnector: AuthConnector,
+                                                    config: FrontendAppConfig,
+                                                    override val parser: BodyParsers.Default
+                                                  )(override implicit val executionContext: ExecutionContext) extends AuthenticatedIdentifierAction(authConnector, config, parser) {
+
+  override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
+    val authorise = super.invokeBlock(request, block)
+
+    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+
+    authorised().retrieve(retrievals) {
+      case Some(internalId) ~ Some(Agent) ~ enrolments =>
+        val enrolled = enrolments.enrolments exists { enrolment =>
+          enrolment.key equals "HMRC-TERS-ORG"
+        }
+        if(enrolled) {
+          authoriseAgent(request, enrolments, internalId, block)
+        } else {
+          Future.successful(Redirect(routes.AgentNotAuthorisedController.onPageLoad()))
+        }
+      case _ => authorise
+    }
+
+  }
+
+}
 
 class SessionIdentifierAction @Inject()(
                                          config: FrontendAppConfig,

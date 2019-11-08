@@ -30,6 +30,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import utils.annotations.AgentAuth
 import views.html.{AgentNotAuthorised, TrustLockedView, TrustNotClaimedView, WhatIsTheUTRView}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -38,6 +39,7 @@ class WhatIsTheUTRVariationsController @Inject()(
                                                   override val messagesApi: MessagesApi,
                                                   sessionRepository: SessionRepository,
                                                   identify: IdentifierAction,
+                                                  @AgentAuth identifyAgent: IdentifierAction,
                                                   getData: DraftIdRetrievalActionProvider,
                                                   requireData: DataRequiredAction,
                                                   formProvider: WhatIsTheUTRFormProvider,
@@ -64,7 +66,7 @@ class WhatIsTheUTRVariationsController @Inject()(
       Ok(view(preparedForm, mode, draftId, routes.WhatIsTheUTRVariationsController.onSubmit(mode, draftId)))
   }
 
-  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = (identifyAgent andThen getData(draftId) andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
