@@ -37,8 +37,8 @@ title = messages("StillProcessingError.title")
 
  <p>@messages("StillProcessingError.paragraph2")</p>
 
- <p>@messages("StillProcessingError.paragraph3") <a id="help-link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts">@messages("StillProcessingError.contact.link")</a></p>
+ <p>@messages("StillProcessingError.paragraph3") <a id="help-link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts">@messages("StillProcessingError.contact.link")</a>.</p>
   @if(affinityGroup == AffinityGroup.Agent) {
-   <p>@messages("StillProcessingError.paragraph4") <a id="register-and-maintain-link" href=@AgentOverviewController.onPageLoad().url>@messages("StillProcessingError.return.link")</a></p>
+   <p>@messages("StillProcessingError.paragraph4") <a id="register-and-maintain-link" href=@AgentOverviewController.onPageLoad().url>@messages("StillProcessingError.return.link")</a>.</p>
   }
 }
