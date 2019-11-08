@@ -31,7 +31,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.api.libs.json._
 import uk.gov.hmrc.auth.core.AffinityGroup
-import views.html.{ClosedErrorView, DoesNotMatchErrorView, IVDownView, StillProcessingErrorView, TrustLockedView}
+import views.html.playback.status.{ClosedErrorView, DoesNotMatchErrorView, IVDownView, StillProcessingErrorView, TrustLockedView}
 
 import scala.concurrent.Future
 

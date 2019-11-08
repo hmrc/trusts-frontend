@@ -21,7 +21,7 @@ import java.util.UUID
 import akka.stream.Materializer
 import com.google.inject.Inject
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
-import org.scalatestplus.play.OneAppPerSuite
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
@@ -72,7 +72,7 @@ class TrustRouter @Inject()(actionBuilder : DefaultActionBuilder) {
 
 }
 
-class SessionIdFilterSpec extends WordSpec with MustMatchers with OneAppPerSuite with OptionValues {
+class SessionIdFilterSpec extends WordSpec with MustMatchers with GuiceOneAppPerSuite with OptionValues {
 
   import SessionIdFilterSpec._
 
