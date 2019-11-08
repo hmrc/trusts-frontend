@@ -23,7 +23,7 @@ import navigation.{LivingSettlorNavigator, Navigator, PropertyOrLandNavigator}
 import repositories.{DefaultSessionRepository, SessionRepository}
 import uk.gov.hmrc.auth.otac.OtacAuthConnector
 import utils.{DateFormatter, TrustsDateFormatter}
-import utils.annotations.{AgentAuth, LivingSettlor, PropertyOrLand}
+import utils.annotations.{LivingSettlor, PropertyOrLand}
 
 class Module extends AbstractModule {
 
@@ -36,7 +36,6 @@ class Module extends AbstractModule {
 
     // For session based storage instead of cred based, change to SessionIdentifierAction
     bind(classOf[IdentifierAction]).to(classOf[AuthenticatedIdentifierAction]).asEagerSingleton()
-    bind(classOf[IdentifierAction]).annotatedWith(classOf[AgentAuth]).to(classOf[AuthenticatedAgentIdentifierAction]).asEagerSingleton()
 
     bind(classOf[TaskListCompleteActionRefiner]).to(classOf[TaskListCompleteActionRefinerImpl]).asEagerSingleton()
 

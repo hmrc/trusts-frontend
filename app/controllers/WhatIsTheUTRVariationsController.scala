@@ -21,7 +21,7 @@ import connector.{EnrolmentStoreConnector, TrustsStoreConnector}
 import controllers.actions._
 import forms.WhatIsTheUTRFormProvider
 import javax.inject.Inject
-import models.AgentTrustsResponse.{AgentTrusts, NotClaimed}
+import models.AgentTrustsResponse.NotClaimed
 import models.Mode
 import pages.WhatIsTheUTRVariationPage
 import play.api.data.Form
@@ -30,8 +30,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.annotations.AgentAuth
-import views.html.{AgentNotAuthorised, TrustLockedView, TrustNotClaimedView, WhatIsTheUTRView}
+import views.html.{TrustLockedView, TrustNotClaimedView, WhatIsTheUTRView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -39,7 +38,6 @@ class WhatIsTheUTRVariationsController @Inject()(
                                                   override val messagesApi: MessagesApi,
                                                   sessionRepository: SessionRepository,
                                                   identify: IdentifierAction,
-                                                  @AgentAuth identifyAgent: IdentifierAction,
                                                   getData: DraftIdRetrievalActionProvider,
                                                   requireData: DataRequiredAction,
                                                   formProvider: WhatIsTheUTRFormProvider,
@@ -47,7 +45,6 @@ class WhatIsTheUTRVariationsController @Inject()(
                                                   view: WhatIsTheUTRView,
                                                   lockedView: TrustLockedView,
                                                   trustNotClaimedView: TrustNotClaimedView,
-                                                  agentNotAuthorised: AgentNotAuthorised,
                                                   config: FrontendAppConfig,
                                                   trustsStoreConnector: TrustsStoreConnector,
                                                   enrolmentStoreConnector: EnrolmentStoreConnector
@@ -66,7 +63,7 @@ class WhatIsTheUTRVariationsController @Inject()(
       Ok(view(preparedForm, mode, draftId, routes.WhatIsTheUTRVariationsController.onSubmit(mode, draftId)))
   }
 
-  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = (identifyAgent andThen getData(draftId) andThen requireData).async {
+  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -84,8 +81,12 @@ class WhatIsTheUTRVariationsController @Inject()(
             lazy val redirectTo = request.affinityGroup match {
               case Agent => enrolmentStoreConnector.getAgentTrusts(value) map {
                 case NotClaimed => Ok(trustNotClaimedView(value))
-                case _:AgentTrusts => Redirect(routes.TrustStatusController.status(draftId))
-                case _ => Ok(agentNotAuthorised(value))
+                case _ => {
+
+
+
+                  Redirect(routes.TrustStatusController.status(draftId))
+                }
               }
               case _ => Future.successful(Redirect(routes.TrustStatusController.status(draftId)))
             }

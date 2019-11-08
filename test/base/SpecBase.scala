@@ -32,7 +32,7 @@ import repositories.SessionRepository
 import services.{CreateDraftRegistrationService, SubmissionService}
 import uk.gov.hmrc.auth.core.AffinityGroup
 import utils.TestUserAnswers
-import utils.annotations.{AgentAuth, LivingSettlor, PropertyOrLand}
+import utils.annotations.{LivingSettlor, PropertyOrLand}
 
 trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked with BeforeAndAfter {
   this: TestSuite =>
@@ -65,7 +65,6 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
       .overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],
         bind[IdentifierAction].toInstance(new FakeIdentifierAction(affinityGroup)(injectedParsers)),
-        bind[IdentifierAction].qualifiedWith(classOf[AgentAuth]).toInstance(new FakeIdentifierAction(affinityGroup)(injectedParsers)),
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
         bind[DraftIdRetrievalActionProvider].toInstance(
           new FakeDraftIdRetrievalActionProvider("draftId", RegistrationStatus.InProgress, userAnswers, mockedSessionRepository)),

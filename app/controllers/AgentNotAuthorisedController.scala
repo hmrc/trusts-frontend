@@ -16,18 +16,26 @@
 
 package controllers
 
+import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider, IdentifierAction}
 import javax.inject.Inject
+import pages.WhatIsTheUTRVariationPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.UnauthorisedView
+import views.html.AgentNotAuthorisedView
 
 class AgentNotAuthorisedController @Inject()(
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: UnauthorisedView
+                                        identify: IdentifierAction,
+                                        getData: DraftIdRetrievalActionProvider,
+                                        requireData: DataRequiredAction,
+                                        view: AgentNotAuthorisedView
                                       ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = Action { implicit request =>
-    Ok(view())
+  def onPageLoad(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData)  {
+    implicit request =>
+      request.userAnswers.get(WhatIsTheUTRVariationPage) map { utr =>
+        Ok(view(utr))
+      } getOrElse Redirect(routes.SessionExpiredController.onPageLoad())
   }
 }

@@ -638,6 +638,6 @@ GET        /:draftId/status                                 controllers.TrustSta
 
 GET        /:draftId/maintain-a-trust/information           controllers.InformationMaintainingThisTrustController.onPageLoad(draftId: String)
 
-GET       /:draftId/trust-locked                  controllers.WhatIsTheUTRVariationsController.trustStillLocked(draftId: String)
+GET       /:draftId/trust-locked                            controllers.WhatIsTheUTRVariationsController.trustStillLocked(draftId: String)
 
-GET       /agent-not-authorised                  controllers.AgentNotAuthorisedController.onPageLoad()
+GET       /:draftId/agent-not-authorised                    controllers.AgentNotAuthorisedController.onPageLoad(draftId: String)
