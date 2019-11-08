@@ -642,4 +642,4 @@ GET        /:draftId/maintain-a-trust/information           controllers.Informat
 GET        /:draftId/declare-change                        controllers.DeclarationWhatNextController.onPageLoad(draftId: String)
 POST       /:draftId/declare-change                        controllers.DeclarationWhatNextController.onSubmit(draftId: String)
 
-GET        /:draftId/continue                                 controllers.AgentOverviewController.continue(draftId: String)
+GET        /:draftId/maintain-saved-registration           controllers.AgentOverviewController.continue(draftId: String)
