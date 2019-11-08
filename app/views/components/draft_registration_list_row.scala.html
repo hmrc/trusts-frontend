@@ -27,7 +27,7 @@
         @data.savedUntil
     </dd>
     <dd class="hmrc-add-to-a-list__change">
-        <a href="@{TrustRegisteredOnlineController.onPageLoad(NormalMode, data.draftId)}">
+        <a href="@{AgentOverviewController.continue(data.draftId)}">
             <span aria-hidden="true">@messages("site.continue")</span>
             <span class="visually-hidden">@messages("site.hidden-continue", data.draftId)</span>
         </a>
