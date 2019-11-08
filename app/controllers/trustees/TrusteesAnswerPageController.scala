@@ -26,7 +26,7 @@ import pages.entitystatus.TrusteeStatus
 import pages.trustees.{IsThisLeadTrusteePage, TrusteesAnswerPage, TrusteesNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
@@ -38,7 +38,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class TrusteesAnswerPageController @Inject()(
                                               override val messagesApi: MessagesApi,
-                                              sessionRepository: SessionRepository,
+                                              registrationsRepository: RegistrationsRepository,
                                               identify: IdentifierAction,
                                               navigator: Navigator,
                                               getData: DraftIdRetrievalActionProvider,
@@ -94,7 +94,7 @@ class TrusteesAnswerPageController @Inject()(
 
     for {
       updatedAnswers <- Future.fromTry(answers)
-      _              <- sessionRepository.set(updatedAnswers)
+      _              <- registrationsRepository.set(updatedAnswers)
     } yield Redirect(navigator.nextPage(TrusteesAnswerPage, NormalMode, draftId)(request.userAnswers))
   }
 }

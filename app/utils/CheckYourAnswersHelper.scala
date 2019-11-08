@@ -38,6 +38,15 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers, draftId: String, canEdit: Boolean = true)(implicit messages: Messages) {
 
+  def declarationWhatNext: Option[AnswerRow] = userAnswers.get(DeclarationWhatNextPage) map {
+    x =>
+      AnswerRow(
+        "declarationWhatNext.checkYourAnswersLabel",
+        HtmlFormat.escape(messages(s"declarationWhatNext.$x")),
+        routes.DeclarationWhatNextController.onPageLoad(draftId).url
+      )
+  }
+
   def settlorBusinessName(index: Int): Option[AnswerRow] = userAnswers.get(SettlorBusinessNamePage(index)) map {
     x =>
       AnswerRow(

@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import forms.UKAddressFormProvider
 import models.{NormalMode, UKAddress, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.FakeNavigator
 import pages.{AgentNamePage, AgentUKAddressPage, IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryNamePage}
 import play.api.inject.bind
 import play.api.libs.json.Json

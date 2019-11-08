@@ -26,7 +26,7 @@ import pages.entitystatus.AssetStatus
 import pages.shares.{ShareAnswerPage, ShareCompanyNamePage, SharesInAPortfolioPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
@@ -36,17 +36,17 @@ import views.html.shares.ShareAnswersView
 import scala.concurrent.{ExecutionContext, Future}
 
 class ShareAnswerController @Inject()(
-                                      override val messagesApi: MessagesApi,
-                                      sessionRepository: SessionRepository,
-                                      navigator: Navigator,
-                                      identify: IdentifierAction,
-                                      getData: DraftIdRetrievalActionProvider,
-                                      requireData: DataRequiredAction,
-                                      requiredAnswer: RequiredAnswerActionProvider,
-                                      validateIndex: IndexActionFilterProvider,
-                                      view: ShareAnswersView,
-                                      countryOptions: CountryOptions,
-                                      val controllerComponents: MessagesControllerComponents
+                                       override val messagesApi: MessagesApi,
+                                       registrationsRepository: RegistrationsRepository,
+                                       navigator: Navigator,
+                                       identify: IdentifierAction,
+                                       getData: DraftIdRetrievalActionProvider,
+                                       requireData: DataRequiredAction,
+                                       requiredAnswer: RequiredAnswerActionProvider,
+                                       validateIndex: IndexActionFilterProvider,
+                                       view: ShareAnswersView,
+                                       countryOptions: CountryOptions,
+                                       val controllerComponents: MessagesControllerComponents
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(index: Int, draftId: String) =
@@ -100,7 +100,7 @@ class ShareAnswerController @Inject()(
 
       for {
         updatedAnswers <- Future.fromTry(answers)
-        _ <- sessionRepository.set(updatedAnswers)
+        _ <- registrationsRepository.set(updatedAnswers)
       } yield Redirect(navigator.nextPage(ShareAnswerPage, NormalMode, draftId)(request.userAnswers))
 
   }

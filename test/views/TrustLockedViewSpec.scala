@@ -17,7 +17,7 @@
 package views
 
 import views.behaviours.ViewBehaviours
-import views.html.TrustLockedView
+import views.html.playback.status.TrustLockedView
 
 class TrustLockedViewSpec extends ViewBehaviours {
 

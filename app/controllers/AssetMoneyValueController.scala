@@ -27,22 +27,22 @@ import pages.entitystatus.AssetStatus
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.AssetMoneyValueView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class AssetMoneyValueController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DraftIdRetrievalActionProvider,
-                                        requireData: DataRequiredAction,
-                                        formProvider: AssetMoneyValueFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: AssetMoneyValueView
+                                           override val messagesApi: MessagesApi,
+                                           registrationsRepository: RegistrationsRepository,
+                                           navigator: Navigator,
+                                           identify: IdentifierAction,
+                                           getData: DraftIdRetrievalActionProvider,
+                                           requireData: DataRequiredAction,
+                                           formProvider: AssetMoneyValueFormProvider,
+                                           val controllerComponents: MessagesControllerComponents,
+                                           view: AssetMoneyValueView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
@@ -75,7 +75,7 @@ class AssetMoneyValueController @Inject()(
 
           for {
                 updatedAnswers <- Future.fromTry(answers)
-                _              <- sessionRepository.set(updatedAnswers)
+                _              <- registrationsRepository.set(updatedAnswers)
               } yield Redirect(navigator.nextPage(AssetMoneyValuePage(index), mode, draftId)(updatedAnswers))
           }
       )

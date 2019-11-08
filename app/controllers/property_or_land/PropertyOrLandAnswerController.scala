@@ -26,7 +26,7 @@ import pages.entitystatus.AssetStatus
 import pages.property_or_land.{PropertyOrLandAddressYesNoPage, PropertyOrLandAnswerPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import utils.annotations.PropertyOrLand
@@ -37,17 +37,17 @@ import views.html.property_or_land.PropertyOrLandAnswersView
 import scala.concurrent.{ExecutionContext, Future}
 
 class PropertyOrLandAnswerController @Inject()(
-                                      override val messagesApi: MessagesApi,
-                                      sessionRepository: SessionRepository,
-                                      @PropertyOrLand navigator: Navigator,
-                                      identify: IdentifierAction,
-                                      getData: DraftIdRetrievalActionProvider,
-                                      requireData: DataRequiredAction,
-                                      requiredAnswer: RequiredAnswerActionProvider,
-                                      validateIndex: IndexActionFilterProvider,
-                                      view: PropertyOrLandAnswersView,
-                                      countryOptions: CountryOptions,
-                                      val controllerComponents: MessagesControllerComponents
+                                                override val messagesApi: MessagesApi,
+                                                registrationsRepository: RegistrationsRepository,
+                                                @PropertyOrLand navigator: Navigator,
+                                                identify: IdentifierAction,
+                                                getData: DraftIdRetrievalActionProvider,
+                                                requireData: DataRequiredAction,
+                                                requiredAnswer: RequiredAnswerActionProvider,
+                                                validateIndex: IndexActionFilterProvider,
+                                                view: PropertyOrLandAnswersView,
+                                                countryOptions: CountryOptions,
+                                                val controllerComponents: MessagesControllerComponents
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(index: Int, draftId: String) =
@@ -89,7 +89,7 @@ class PropertyOrLandAnswerController @Inject()(
 
       for {
         updatedAnswers <- Future.fromTry(answers)
-        _ <- sessionRepository.set(updatedAnswers)
+        _ <- registrationsRepository.set(updatedAnswers)
       } yield Redirect(navigator.nextPage(PropertyOrLandAnswerPage, NormalMode, draftId)(request.userAnswers))
 
   }

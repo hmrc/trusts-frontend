@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package navigation.navigators
+package navigation.navigators.registration
 
 import base.SpecBase
 import controllers.actions.{DataRetrievalAction, FakeDataRetrievalAction}
-import generators.Generators
-import navigation.Navigator
-import org.scalatest.prop.PropertyChecks
-import org.scalacheck.Arbitrary.arbitrary
-import pages._
-import models.{NormalMode, UserAnswers}
 import controllers.routes
+import generators.Generators
+import models.{NormalMode, UserAnswers}
+import navigation.Navigator
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalatest.prop.PropertyChecks
+import pages.{TrustHaveAUTRPage, TrustNamePage, TrustRegisteredOnlinePage, WhatIsTheUTRPage}
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import uk.gov.hmrc.auth.core.AffinityGroup

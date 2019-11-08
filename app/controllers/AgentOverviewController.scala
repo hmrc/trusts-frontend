@@ -19,9 +19,11 @@ package controllers
 import config.FrontendAppConfig
 import controllers.actions._
 import javax.inject.Inject
+import models.NormalMode
+import pages.AgentTelephoneNumberPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.AgentOverviewView
 
@@ -31,8 +33,10 @@ class AgentOverviewController @Inject()(
                                          override val messagesApi: MessagesApi,
                                          identify: IdentifierAction,
                                          hasAgentAffinityGroup: RequireStateActionProviderImpl,
-                                         sessionRepository: SessionRepository,
+                                         registrationsRepository: RegistrationsRepository,
                                          config: FrontendAppConfig,
+                                         getData: DraftIdRetrievalActionProvider,
+                                         requireData: DataRequiredAction,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: AgentOverviewView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
@@ -41,7 +45,7 @@ class AgentOverviewController @Inject()(
 
   def onPageLoad: Action[AnyContent] = actions.async {
     implicit request =>
-      sessionRepository.listDrafts(request.identifier).map {
+      registrationsRepository.listDrafts(request.identifier).map {
         drafts =>
           Ok(view(drafts))
       }
@@ -51,4 +55,15 @@ class AgentOverviewController @Inject()(
     implicit request =>
       Future.successful(Redirect(routes.CreateDraftRegistrationController.create()))
   }
+
+  def continue(draftId: String): Action[AnyContent] = (actions andThen getData(draftId) andThen requireData).async {
+    implicit request =>
+
+      request.userAnswers.get(AgentTelephoneNumberPage).isEmpty match {
+        case true => Future.successful(Redirect(routes.AgentInternalReferenceController.onPageLoad(NormalMode, draftId)))
+        case false => Future.successful(Redirect(routes.TaskListController.onPageLoad(draftId)))
+      }
+
+  }
+
 }

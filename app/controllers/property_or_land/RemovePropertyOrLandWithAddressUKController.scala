@@ -26,19 +26,19 @@ import pages.QuestionPage
 import pages.property_or_land.PropertyOrLandUKAddressPage
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.{AnyContent, Call, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import views.html.RemoveIndexView
 
 class RemovePropertyOrLandWithAddressUKController @Inject()(
-                                                               override val messagesApi: MessagesApi,
-                                                               override val sessionRepository: SessionRepository,
-                                                               override val formProvider: RemoveIndexFormProvider,
-                                                               identify: IdentifierAction,
-                                                               getData: DraftIdRetrievalActionProvider,
-                                                               requireData: DataRequiredAction,
-                                                               val controllerComponents: MessagesControllerComponents,
-                                                               require: RequiredAnswerActionProvider,
-                                                               val removeView: RemoveIndexView
+                                                             override val messagesApi: MessagesApi,
+                                                             override val registrationsRepository: RegistrationsRepository,
+                                                             override val formProvider: RemoveIndexFormProvider,
+                                                             identify: IdentifierAction,
+                                                             getData: DraftIdRetrievalActionProvider,
+                                                             requireData: DataRequiredAction,
+                                                             val controllerComponents: MessagesControllerComponents,
+                                                             require: RequiredAnswerActionProvider,
+                                                             val removeView: RemoveIndexView
                                                              ) extends RemoveAssetController {
 
   override val messagesPrefix: String = "removePropertyOrLandAsset"

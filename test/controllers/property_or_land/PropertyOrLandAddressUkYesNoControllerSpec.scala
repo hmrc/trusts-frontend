@@ -21,7 +21,7 @@ import controllers.property_or_land.routes._
 import controllers.routes._
 import forms.YesNoFormProvider
 import models.NormalMode
-import navigation.{FakeNavigator, Navigator}
+import navigation.FakeNavigator
 import pages.property_or_land.PropertyOrLandAddressUkYesNoPage
 import play.api.data.Form
 import play.api.inject.bind

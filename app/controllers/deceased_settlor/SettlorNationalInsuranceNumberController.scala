@@ -25,23 +25,23 @@ import pages.deceased_settlor.{SettlorNationalInsuranceNumberPage, SettlorsNameP
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.deceased_settlor.SettlorNationalInsuranceNumberView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class SettlorNationalInsuranceNumberController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DraftIdRetrievalActionProvider,
-                                        requireData: DataRequiredAction,
-                                        requiredAnswer: RequiredAnswerActionProvider,
-                                        formProvider: SettlorNationalInsuranceNumberFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: SettlorNationalInsuranceNumberView
+                                                          override val messagesApi: MessagesApi,
+                                                          registrationsRepository: RegistrationsRepository,
+                                                          navigator: Navigator,
+                                                          identify: IdentifierAction,
+                                                          getData: DraftIdRetrievalActionProvider,
+                                                          requireData: DataRequiredAction,
+                                                          requiredAnswer: RequiredAnswerActionProvider,
+                                                          formProvider: SettlorNationalInsuranceNumberFormProvider,
+                                                          val controllerComponents: MessagesControllerComponents,
+                                                          view: SettlorNationalInsuranceNumberView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -78,7 +78,7 @@ class SettlorNationalInsuranceNumberController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorNationalInsuranceNumberPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(SettlorNationalInsuranceNumberPage, mode, draftId)(updatedAnswers))
         }
       )

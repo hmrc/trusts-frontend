@@ -21,7 +21,7 @@ import java.time.LocalDate
 import base.SpecBase
 import models.NonResidentType
 import models.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
-import navigation.{FakeNavigator, Navigator}
+import navigation.FakeNavigator
 import pages._
 import play.api.inject.bind
 import play.api.test.FakeRequest

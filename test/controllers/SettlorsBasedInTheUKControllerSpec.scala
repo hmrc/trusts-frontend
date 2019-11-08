@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import forms.SettlorsBasedInTheUKFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.FakeNavigator
 import pages.SettlorsBasedInTheUKPage
 import play.api.inject.bind
 import play.api.libs.json.{JsBoolean, Json}

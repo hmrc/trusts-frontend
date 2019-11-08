@@ -21,7 +21,7 @@ import controllers.IndexValidation
 import forms.shares.ShareClassFormProvider
 import generators.ModelGenerators
 import models.{NormalMode, ShareClass}
-import navigation.{FakeNavigator, Navigator}
+import navigation.FakeNavigator
 import org.scalacheck.Arbitrary.arbitrary
 import pages.shares.{ShareClassPage, ShareCompanyNamePage}
 import play.api.inject.bind

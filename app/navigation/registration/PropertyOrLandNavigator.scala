@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package navigation
+package navigation.registration
+
 import config.FrontendAppConfig
 import controllers.property_or_land.routes
 import javax.inject.{Inject, Singleton}
 import models.{NormalMode, UserAnswers}
+import navigation.Navigator
 import pages.Page
 import pages.property_or_land._
 import play.api.mvc.Call

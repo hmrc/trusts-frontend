@@ -21,7 +21,7 @@ import controllers.IndexValidation
 import forms.shares.ShareValueInTrustFormProvider
 import generators.ModelGenerators
 import models.NormalMode
-import navigation.{FakeNavigator, Navigator}
+import navigation.FakeNavigator
 import org.scalacheck.Arbitrary.arbitrary
 import pages.shares.{ShareCompanyNamePage, ShareValueInTrustPage}
 import play.api.inject.bind

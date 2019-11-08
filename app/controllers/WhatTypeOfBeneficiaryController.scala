@@ -26,7 +26,7 @@ import pages.WhatTypeOfBeneficiaryPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import sections.{ClassOfBeneficiaries, IndividualBeneficiaries}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.WhatTypeOfBeneficiaryView
@@ -34,15 +34,15 @@ import views.html.WhatTypeOfBeneficiaryView
 import scala.concurrent.{ExecutionContext, Future}
 
 class WhatTypeOfBeneficiaryController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       navigator: Navigator,
-                                       identify: IdentifierAction,
-                                       getData: DraftIdRetrievalActionProvider,
-                                       requireData: DataRequiredAction,
-                                       formProvider: WhatTypeOfBeneficiaryFormProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: WhatTypeOfBeneficiaryView
+                                                 override val messagesApi: MessagesApi,
+                                                 registrationsRepository: RegistrationsRepository,
+                                                 navigator: Navigator,
+                                                 identify: IdentifierAction,
+                                                 getData: DraftIdRetrievalActionProvider,
+                                                 requireData: DataRequiredAction,
+                                                 formProvider: WhatTypeOfBeneficiaryFormProvider,
+                                                 val controllerComponents: MessagesControllerComponents,
+                                                 view: WhatTypeOfBeneficiaryView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
   private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
@@ -66,7 +66,7 @@ class WhatTypeOfBeneficiaryController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatTypeOfBeneficiaryPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(WhatTypeOfBeneficiaryPage, mode, draftId)(updatedAnswers))
         }
       )

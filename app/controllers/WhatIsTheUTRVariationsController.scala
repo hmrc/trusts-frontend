@@ -27,26 +27,25 @@ import pages.WhatIsTheUTRVariationPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.{TrustLockedView, TrustNotClaimedView, WhatIsTheUTRView}
+import views.html.{TrustNotClaimedView, WhatIsTheUTRView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class WhatIsTheUTRVariationsController @Inject()(
                                                   override val messagesApi: MessagesApi,
-                                                  sessionRepository: SessionRepository,
+                                                  registrationsRepository: RegistrationsRepository,
                                                   identify: IdentifierAction,
                                                   getData: DraftIdRetrievalActionProvider,
                                                   requireData: DataRequiredAction,
                                                   formProvider: WhatIsTheUTRFormProvider,
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: WhatIsTheUTRView,
-                                                  lockedView: TrustLockedView,
                                                   trustNotClaimedView: TrustNotClaimedView,
                                                   config: FrontendAppConfig,
-                                                  trustsStoreConnector: TrustsStoreConnector,
+                                                  trustsStore: TrustsStoreConnector,
                                                   enrolmentStoreConnector: EnrolmentStoreConnector
                                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
@@ -74,8 +73,8 @@ class WhatIsTheUTRVariationsController @Inject()(
 
           (for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatIsTheUTRVariationPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-            claim       <- trustsStoreConnector.get(request.internalId, value)
+            _              <- registrationsRepository.set(updatedAnswers)
+            claim       <- trustsStore.get(request.internalId, value)
           } yield claim) flatMap { claim =>
 
             lazy val redirectTo = request.affinityGroup match {
@@ -94,7 +93,7 @@ class WhatIsTheUTRVariationsController @Inject()(
             claim match {
               case Some(c) =>
                 if(c.trustLocked) {
-                  Future.successful(Redirect(routes.WhatIsTheUTRVariationsController.trustStillLocked(draftId)))
+                  Future.successful(Redirect(routes.TrustStatusController.locked(draftId)))
                 } else {
                   redirectTo
                 }
@@ -106,15 +105,4 @@ class WhatIsTheUTRVariationsController @Inject()(
         }
       )
   }
-
-
-  def trustStillLocked(draftId: String) : Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
-    implicit request =>
-      request.userAnswers.get(WhatIsTheUTRVariationPage) map {
-        utr => {
-          Future.successful(Ok(lockedView(utr)))
-        }
-      } getOrElse Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
-  }
-
 }

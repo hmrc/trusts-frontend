@@ -26,7 +26,7 @@ import pages.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.trustees.TrusteeIndividualOrBusinessView
@@ -34,17 +34,17 @@ import views.html.trustees.TrusteeIndividualOrBusinessView
 import scala.concurrent.{ExecutionContext, Future}
 
 class TrusteeIndividualOrBusinessController @Inject()(
-                                                override val messagesApi: MessagesApi,
-                                                sessionRepository: SessionRepository,
-                                                navigator: Navigator,
-                                                identify: IdentifierAction,
-                                                getData: DraftIdRetrievalActionProvider,
-                                                requireData: DataRequiredAction,
-                                                validateIndex: IndexActionFilterProvider,
-                                                formProvider: TrusteeIndividualOrBusinessFormProvider,
-                                                requiredAnswer: RequiredAnswerActionProvider,
-                                                val controllerComponents: MessagesControllerComponents,
-                                                view: TrusteeIndividualOrBusinessView
+                                                       override val messagesApi: MessagesApi,
+                                                       registrationsRepository: RegistrationsRepository,
+                                                       navigator: Navigator,
+                                                       identify: IdentifierAction,
+                                                       getData: DraftIdRetrievalActionProvider,
+                                                       requireData: DataRequiredAction,
+                                                       validateIndex: IndexActionFilterProvider,
+                                                       formProvider: TrusteeIndividualOrBusinessFormProvider,
+                                                       requiredAnswer: RequiredAnswerActionProvider,
+                                                       val controllerComponents: MessagesControllerComponents,
+                                                       view: TrusteeIndividualOrBusinessView
                                              )(implicit ec: ExecutionContext) extends FrontendBaseController
   with I18nSupport
   with Enumerable.Implicits {
@@ -92,7 +92,7 @@ class TrusteeIndividualOrBusinessController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeIndividualOrBusinessPage(index), value))
-            _ <- sessionRepository.set(updatedAnswers)
+            _ <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(TrusteeIndividualOrBusinessPage(index), mode, draftId)(updatedAnswers))
         }
       )

@@ -27,7 +27,7 @@ import pages.trustees.{IsThisLeadTrusteePage, TrusteeAUKCitizenPage, TrusteesNam
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import repositories.RegistrationsRepository
 import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.trustees.TrusteeAUKCitizenView
@@ -36,7 +36,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class TrusteeAUKCitizenController @Inject()(
                                              override val messagesApi: MessagesApi,
-                                             sessionRepository: SessionRepository,
+                                             registrationsRepository: RegistrationsRepository,
                                              navigator: Navigator,
                                              validateIndex: IndexActionFilterProvider,
                                              identify: IdentifierAction,
@@ -89,7 +89,7 @@ class TrusteeAUKCitizenController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeAUKCitizenPage(index), value))
-            _ <- sessionRepository.set(updatedAnswers)
+            _ <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(TrusteeAUKCitizenPage(index), mode, draftId)(updatedAnswers))
         }
       )

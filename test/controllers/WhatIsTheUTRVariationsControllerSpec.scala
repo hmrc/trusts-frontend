@@ -17,11 +17,14 @@
 package controllers
 
 import base.SpecBase
+import connector.{TrustClaim, TrustsStoreConnector}
 import forms.WhatIsTheUTRFormProvider
 import models.NormalMode
 import org.mockito.Matchers.{any, eq => eqTo}
 import org.mockito.Mockito.when
 import pages.WhatIsTheUTRVariationPage
+import play.api.inject.bind
+import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.{TrustNotClaimedView, WhatIsTheUTRView}
@@ -145,7 +148,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual controllers.routes.WhatIsTheUTRVariationsController.trustStillLocked(fakeDraftId).url
+        redirectLocation(result).value mustEqual controllers.routes.TrustStatusController.locked(fakeDraftId).url
 
       application.stop()
     }

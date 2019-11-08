@@ -23,7 +23,7 @@ import controllers.routes
 import models.AddAssets.NoComplete
 import models.Status.Completed
 import models.{AddABeneficiary, AddATrustee, FullName, NormalMode, Status, UserAnswers, WhatKindOfAsset}
-import navigation.TaskListNavigator
+import navigation.registration.TaskListNavigator
 import pages.entitystatus._
 import pages._
 import pages.trustees.{AddATrusteePage, IsThisLeadTrusteePage}
@@ -153,7 +153,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         assertAttributeValueForElement(
           doc.getElementById("agent-details"),
           "href",
-          routes.AgentInternalReferenceController.onPageLoad(NormalMode, fakeDraftId).url
+          routes.AgentAnswerController.onPageLoad(fakeDraftId).url
         )
       }
 

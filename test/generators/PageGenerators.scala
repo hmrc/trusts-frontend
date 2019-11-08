@@ -26,6 +26,9 @@ import pages.trustees._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryDeclarationWhatNextPage: Arbitrary[DeclarationWhatNextPage.type] =
+    Arbitrary(DeclarationWhatNextPage)
+
   implicit lazy val arbitraryTrustUTRPage: Arbitrary[WhatIsTheUTRVariationPage.type] =
     Arbitrary(WhatIsTheUTRVariationPage)
 
