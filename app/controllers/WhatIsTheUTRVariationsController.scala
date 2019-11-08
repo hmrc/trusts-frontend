@@ -22,14 +22,13 @@ import controllers.actions._
 import forms.WhatIsTheUTRFormProvider
 import javax.inject.Inject
 import models.Mode
-import navigation.Navigator
 import pages.WhatIsTheUTRVariationPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.{TrustLockedView, WhatIsTheUTRView}
+import views.html.WhatIsTheUTRView
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -43,8 +42,7 @@ class WhatIsTheUTRVariationsController @Inject()(
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: WhatIsTheUTRView,
                                                   config: FrontendAppConfig,
-                                                  trustsStore: TrustsStoreConnector,
-                                                  lockedView: TrustLockedView
+                                                  trustsStore: TrustsStoreConnector
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()

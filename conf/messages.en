@@ -287,7 +287,7 @@ ClosedError.heading = Sorry, you cannot access this trust
 ClosedError.subheading = This trust’s UTR: {0}
 ClosedError.paragraph1 = You cannot make changes to this trust as it has been closed.
 ClosedError.paragraph2 = If this has been done in error or you need help with the service, please
-ClosedError.contact.link = contact HMRC
+ClosedError.contact.link = contact the trusts helpline (opens in a new window or tab)
 ClosedError.paragraph3 = to reopen the records. HMRC will contact you if a tax return is required or for any further information.
 ClosedError.paragraph4 = You can
 ClosedError.return.link = return to register and maintain a trust for a client
@@ -301,7 +301,7 @@ DoesNotMatchError.paragraph2 = Check you have entered the trust’s UTR correctl
 DoesNotMatchError.paragraph3 = If you do not have a UTR for the trust you will need to register the trust first.
 DoesNotMatchError.paragraph4 = If you need help with the service
 DoesNotMatchError.paragraph5 = You can
-DoesNotMatchError.contact.link = contact the trusts helpline
+DoesNotMatchError.contact.link = contact the trusts helpline (opens in a new window or tab)
 DoesNotMatchError.return.link = return to register and maintain a trust for a client
 
 StillProcessingError.title = Sorry, you cannot access this trust
@@ -311,7 +311,7 @@ StillProcessingError.paragraph1 = HMRC is still processing changes recently made
 StillProcessingError.paragraph2 = Try again later.
 StillProcessingError.paragraph3 = If you need help with the service
 StillProcessingError.paragraph4 = You can
-StillProcessingError.contact.link = contact the trusts helpline
+StillProcessingError.contact.link = contact the trusts helpline (opens in a new window or tab)
 StillProcessingError.return.link = return to register and maintain a trust for a client
 
 IvDown.heading = Sorry, there is a problem with the service
@@ -319,7 +319,7 @@ IvDown.title = Sorry, there is a problem with the service
 IvDown.paragraph1 = Try again later.
 IvDown.paragraph2 = You can
 IvDown.paragraph3 = if you need to speak to someone about registering and maintaining a trust.
-IvDown.contact.link = contact the trusts helpline
+IvDown.contact.link = contact the trusts helpline (opens in a new window or tab)
 IvDown.return.link = return to register and maintain a trust for a client
 
 isThisLeadTrustee.title = Is this the lead trustee?
@@ -1306,7 +1306,7 @@ TrustLocked.heading = Sorry, you cannot access this trust
 TrustLocked.p1 = You have not passed the security questions asked by HMRC.
 TrustLocked.p2 = Try again in 30 minutes.
 TrustLocked.p3 = If you need help with the service
-TrustLocked.link1 = contact the trusts helpline
+TrustLocked.link1 = contact the trusts helpline (opens in a new window or tab)
 TrustLocked.subheading = This trust’s UTR: {0}
 
 informationMaintainingThisTrust.title = Information about maintaining this trust

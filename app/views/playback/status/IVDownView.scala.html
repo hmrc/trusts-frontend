@@ -30,10 +30,10 @@
 
     <p>@messages("IvDown.paragraph1")</p>
 
-    <p>@messages("IvDown.paragraph2") <a id="help-link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts">@messages("IvDown.contact.link")</a> @messages("IvDown.paragraph3")</p>
+    <p>@messages("IvDown.paragraph2") <a id="help-link" target="_blank" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts">@messages("IvDown.contact.link")</a> @messages("IvDown.paragraph3")</p>
 
     @if(affinityGroup == AffinityGroup.Agent) {
-      <p>@messages("IvDown.paragraph2") <a id="register-and-maintain-link" href=@AgentOverviewController.onPageLoad().url>@messages("IvDown.return.link")</a></p>
+      <p>@messages("IvDown.paragraph2") <a id="register-and-maintain-link" href=@AgentOverviewController.onPageLoad().url>@messages("IvDown.return.link")</a>.</p>
     } else {
       @components.button_link(messages("site.try-again"), WhatIsTheUTRVariationsController.onPageLoad(NormalMode, draftId).url)
     }
