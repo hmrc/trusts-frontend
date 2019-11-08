@@ -37,7 +37,7 @@ title = messages("DoesNotMatchError.title")
 
  <p>@messages("DoesNotMatchError.paragraph3")</p>
 
- <p>@messages("DoesNotMatchError.paragraph4") <a id="help-link" href=https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts>@messages("DoesNotMatchError.contact.link")</a>.</p>
+ <p>@messages("DoesNotMatchError.paragraph4") <a id="help-link" target="_blank" href=https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts>@messages("DoesNotMatchError.contact.link")</a>.</p>
 
   @if(affinityGroup == AffinityGroup.Agent) {
    <p>@messages("DoesNotMatchError.paragraph5") <a id="register-and-maintain-link" href=@AgentOverviewController.onPageLoad().url>@messages("DoesNotMatchError.return.link")</a>.</p>

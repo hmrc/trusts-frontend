@@ -35,7 +35,7 @@ title = messages("ClosedError.title")
 
   <p>@messages("ClosedError.paragraph1")</p>
 
-  <p>@messages("ClosedError.paragraph2") <a id="help-link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts">@messages("ClosedError.contact.link")</a> @messages("ClosedError.paragraph3")</p>
+  <p>@messages("ClosedError.paragraph2") <a id="help-link" target="_blank" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts">@messages("ClosedError.contact.link")</a> @messages("ClosedError.paragraph3")</p>
 
   @if(affinityGroup == AffinityGroup.Agent) {
     <p>@messages("ClosedError.paragraph4") <a id="register-and-maintain-link" href=@AgentOverviewController.onPageLoad().url>@messages("ClosedError.return.link")</a>.</p>
