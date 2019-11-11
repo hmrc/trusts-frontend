@@ -150,7 +150,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       application.stop()
     }
 
-    "view NotClaimed when valid utr is submitted by agent that triggers a NotClaimed response from Enrolments" in {
+    "redirect to NotClaimed when valid utr is submitted by agent that triggers a NotClaimed response from Enrolments" in {
 
       val utr = "0987654321"
 
@@ -178,12 +178,10 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
 
       implicit val request = FakeRequest(POST, trustUTRRoute).withFormUrlEncodedBody(("value", utr))
 
-      val view = application.injector.instanceOf[TrustNotClaimedView]
-
       val result = route(application, request).value
 
-      status(result) mustEqual OK
-      contentAsString(result) mustEqual view(utr).toString
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual routes.TrustNotClaimedController.onPageLoad(fakeDraftId).url
 
       application.stop()
     }
@@ -260,44 +258,6 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustBe routes.TrustStatusController.status(fakeDraftId).url
-
-      application.stop()
-    }
-
-    "view AgentNotAuthorised when valid utr is submitted by agent that triggers a NotClaimed response from Enrolments" in {
-
-      val utr = "0987654321"
-
-      val json = Json.parse(
-        s"""
-          |{
-          | "trustLocked": false,
-          | "managedByAgent": true,
-          | "utr": "$utr"
-          |}
-          |""".stripMargin
-      )
-
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), affinityGroup = Agent)
-          .overrides(bind[TrustsStoreConnector].toInstance(trustsStoreConnector))
-          .overrides(bind[EnrolmentStoreConnector].toInstance(enrolmentStoreConnector))
-          .build()
-
-      when(trustsStoreConnector.get(any[String], any[String])(any(), any()))
-        .thenReturn(Future.successful(json.asOpt[TrustClaim]))
-
-      when(enrolmentStoreConnector.getAgentTrusts(eqTo(utr))(any(), any()))
-        .thenReturn(Future.successful(NotClaimed))
-
-      implicit val request = FakeRequest(POST, trustUTRRoute).withFormUrlEncodedBody(("value", utr))
-
-      val view = application.injector.instanceOf[TrustNotClaimedView]
-
-      val result = route(application, request).value
-
-      status(result) mustEqual OK
-      contentAsString(result) mustEqual view(utr).toString
 
       application.stop()
     }
