@@ -18,8 +18,8 @@ package controllers.actions
 
 import base.SpecBase
 import controllers.routes
-import models.{FullName, NormalMode, UserAnswers}
 import models.requests.DataRequest
+import models.{FullName, NormalMode}
 import org.scalatest.EitherValues
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
@@ -27,7 +27,7 @@ import pages.trustees.TrusteesNamePage
 import play.api.http.HeaderNames
 import play.api.libs.json.Reads
 import play.api.mvc.Result
-import uk.gov.hmrc.auth.core.AffinityGroup
+import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -48,7 +48,7 @@ class RequiredAnswerActionSpec extends SpecBase with MockitoSugar with ScalaFutu
           val answers = emptyUserAnswers
 
           val action = new Harness(RequiredAnswer(TrusteesNamePage(0)))
-          val futureResult = action.callRefine(new DataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation))
+          val futureResult = action.callRefine(new DataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
 
           whenReady(futureResult) { result =>
             result.left.value.header.headers(HeaderNames.LOCATION) mustBe routes.SessionExpiredController.onPageLoad().url
@@ -63,7 +63,7 @@ class RequiredAnswerActionSpec extends SpecBase with MockitoSugar with ScalaFutu
             controllers.trustees.routes.TrusteesNameController.onPageLoad(NormalMode, 0, fakeDraftId))
           )
 
-          val futureResult = action.callRefine(new DataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation))
+          val futureResult = action.callRefine(new DataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
 
           whenReady(futureResult) { result =>
             result.left.value.header.headers(HeaderNames.LOCATION) mustBe
@@ -78,7 +78,7 @@ class RequiredAnswerActionSpec extends SpecBase with MockitoSugar with ScalaFutu
       "continue with refining the request" in {
         val answers = emptyUserAnswers.set(TrusteesNamePage(0), FullName("Adam", None, "Conder")).success.value
 
-        val dataRequest = new DataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation)
+        val dataRequest = new DataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment]))
 
         val action = new Harness(RequiredAnswer(TrusteesNamePage(0)))
         val futureResult = action.callRefine(dataRequest)

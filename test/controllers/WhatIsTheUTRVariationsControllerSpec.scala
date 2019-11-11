@@ -17,8 +17,9 @@
 package controllers
 
 import base.SpecBase
-import connector.{TrustClaim, TrustsStoreConnector}
+import connector.{EnrolmentStoreConnector, TrustClaim, TrustsStoreConnector}
 import forms.WhatIsTheUTRFormProvider
+import models.AgentTrustsResponse.{AgentTrusts, NotClaimed}
 import models.NormalMode
 import org.mockito.Matchers.{any, eq => eqTo}
 import org.mockito.Mockito.when
@@ -27,13 +28,8 @@ import play.api.inject.bind
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.{TrustNotClaimedView, WhatIsTheUTRView}
-import connector.{EnrolmentStoreConnector, TrustClaim, TrustsStoreConnector}
-import models.AgentTrustsResponse.NotClaimed
-import play.api.libs.json.Json
-import play.api.inject.bind
-import play.api.mvc.{AnyContent, AnyContentAsFormUrlEncoded}
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
+import views.html.{TrustNotClaimedView, WhatIsTheUTRView}
 
 import scala.concurrent.Future
 
@@ -187,6 +183,82 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
 
       status(result) mustEqual OK
       contentAsString(result) mustEqual view(utr).toString
+
+      application.stop()
+    }
+
+    "redirect to agent not authorised page when valid utr is submitted by an agent that does not have a trusts enrolment" in {
+
+      val utr = "0987654321"
+
+      val json = Json.parse(
+        s"""
+           |{
+           | "trustLocked": false,
+           | "managedByAgent": true,
+           | "utr": "$utr"
+           |}
+           |""".stripMargin
+      )
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), affinityGroup = Agent)
+          .overrides(bind[TrustsStoreConnector].toInstance(trustsStoreConnector))
+          .overrides(bind[EnrolmentStoreConnector].toInstance(enrolmentStoreConnector))
+          .build()
+
+      when(trustsStoreConnector.get(any[String], any[String])(any(), any()))
+        .thenReturn(Future.successful(json.asOpt[TrustClaim]))
+
+      when(enrolmentStoreConnector.getAgentTrusts(eqTo(utr))(any(), any()))
+        .thenReturn(Future.successful(AgentTrusts(Seq("0987654321"), Seq.empty[String])))
+
+      implicit val request = FakeRequest(POST, trustUTRRoute).withFormUrlEncodedBody(("value", utr))
+
+      val view = application.injector.instanceOf[TrustNotClaimedView]
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustBe routes.AgentNotAuthorisedController.onPageLoad(fakeDraftId).url
+
+      application.stop()
+    }
+
+    "redirect TrustStatus page when valid utr is submitted by an agent that has a trusts enrolment" in {
+
+      val utr = "0987654321"
+
+      val json = Json.parse(
+        s"""
+           |{
+           | "trustLocked": false,
+           | "managedByAgent": true,
+           | "utr": "$utr"
+           |}
+           |""".stripMargin
+      )
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), affinityGroup = Agent)
+          .overrides(bind[TrustsStoreConnector].toInstance(trustsStoreConnector))
+          .overrides(bind[EnrolmentStoreConnector].toInstance(enrolmentStoreConnector))
+          .build()
+
+      when(trustsStoreConnector.get(any[String], any[String])(any(), any()))
+        .thenReturn(Future.successful(json.asOpt[TrustClaim]))
+
+      when(enrolmentStoreConnector.getAgentTrusts(eqTo(utr))(any(), any()))
+        .thenReturn(Future.successful(AgentTrusts(Seq("0987654321"), Seq.empty[String])))
+
+      implicit val request = FakeRequest(POST, trustUTRRoute).withFormUrlEncodedBody(("value", utr))
+
+      val view = application.injector.instanceOf[TrustNotClaimedView]
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustBe routes.TrustStatusController.status(fakeDraftId).url
 
       application.stop()
     }
