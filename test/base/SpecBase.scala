@@ -30,7 +30,7 @@ import play.api.mvc.PlayBodyParsers
 import play.api.test.FakeRequest
 import repositories.RegistrationsRepository
 import services.{CreateDraftRegistrationService, SubmissionService}
-import uk.gov.hmrc.auth.core.AffinityGroup
+import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments, Enrolment}
 import utils.TestUserAnswers
 import utils.annotations.{LivingSettlor, PropertyOrLand}
 
@@ -59,12 +59,13 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
 
   protected def applicationBuilder(userAnswers: Option[UserAnswers] = None,
                                    affinityGroup: AffinityGroup = AffinityGroup.Organisation,
+                                   enrolments: Enrolments = Enrolments(Set.empty[Enrolment]),
                                    navigator: Navigator = fakeNavigator
                                   ): GuiceApplicationBuilder =
     new GuiceApplicationBuilder()
       .overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],
-        bind[IdentifierAction].toInstance(new FakeIdentifierAction(affinityGroup)(injectedParsers)),
+        bind[IdentifierAction].toInstance(new FakeIdentifierAction(affinityGroup, enrolments)(injectedParsers)),
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
         bind[DraftIdRetrievalActionProvider].toInstance(
           new FakeDraftIdRetrievalActionProvider("draftId", RegistrationStatus.InProgress, userAnswers, registrationsRepository)),

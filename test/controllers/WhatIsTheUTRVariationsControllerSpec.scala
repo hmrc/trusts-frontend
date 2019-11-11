@@ -29,6 +29,7 @@ import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
+import uk.gov.hmrc.auth.core.{Enrolment, EnrolmentIdentifier, Enrolments}
 import views.html.{TrustNotClaimedView, WhatIsTheUTRView}
 
 import scala.concurrent.Future
@@ -215,8 +216,6 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
 
       implicit val request = FakeRequest(POST, trustUTRRoute).withFormUrlEncodedBody(("value", utr))
 
-      val view = application.injector.instanceOf[TrustNotClaimedView]
-
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
@@ -239,8 +238,12 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
            |""".stripMargin
       )
 
+      val enrolments = Enrolments(Set(Enrolment(
+        "HMRC-TERS-ORG", Seq.empty[EnrolmentIdentifier], "Activated"
+      )))
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), affinityGroup = Agent)
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), affinityGroup = Agent, enrolments = enrolments)
           .overrides(bind[TrustsStoreConnector].toInstance(trustsStoreConnector))
           .overrides(bind[EnrolmentStoreConnector].toInstance(enrolmentStoreConnector))
           .build()
@@ -252,8 +255,6 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
         .thenReturn(Future.successful(AgentTrusts(Seq("0987654321"), Seq.empty[String])))
 
       implicit val request = FakeRequest(POST, trustUTRRoute).withFormUrlEncodedBody(("value", utr))
-
-      val view = application.injector.instanceOf[TrustNotClaimedView]
 
       val result = route(application, request).value
 
