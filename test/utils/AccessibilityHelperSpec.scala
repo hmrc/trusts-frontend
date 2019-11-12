@@ -24,8 +24,8 @@ class AccessibilityHelperSpec extends SpecBase with MockitoSugar {
   "AccessibilityHelper" must {
 
     "build an accessible formated string" in {
-      val trn = "XTRN1234567890"
-      val response = AccessibilityHelper.formatTRN(trn)
+      val referenceNumber = "XTRN1234567890"
+      val response = AccessibilityHelper.formatReferenceNumber(referenceNumber)
       response mustBe "X T R N 1 2 3 4 5 6 7 8 9 0"
     }
 

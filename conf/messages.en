@@ -1331,3 +1331,12 @@ declarationWhatNext.makeChanges = Make changes to the trust and declare
 declarationWhatNext.closeTrust = Close the trust/home/darryl/Applications/hmrc-development-environment/hmrc/trusts-frontend/test/controllers/DeclarationWhatNextControllerSpec.scala
 declarationWhatNext.checkYourAnswersLabel = What do you want to do next?
 declarationWhatNext.error.required = Select what you want to do next
+
+variationsConfirmationPage.title = Declaration received, your reference is: {0}
+variationsConfirmationPage.heading = Declaration received Your reference is: {0}
+variationsConfirmationPage.printsave.link = Print or save a declared copy of the trust’s registration (opens in a new window or tab)
+variationsConfirmationPage.subheading1 = What happens next
+variationsConfirmationPage.paragraph1 = Keep a note of your reference in case you need to contact HMRC. If there is a problem with the declaration, we will contact the lead trustee.
+variationsConfirmationPage.paragraph2 = If any of the settlor, trustee or beneficiary details change (before you make your next declaration) you will need to update them using the online service.
+variationsConfirmationPage.subheading2 = Declaring the trust is up to date
+variationsConfirmationPage.paragraph3 = You need to declare every year the details we have are up to date. This needs to be done through the Trust Registration Service and Self Assessment online or the Trust and Estate Tax Return form (SA900).
