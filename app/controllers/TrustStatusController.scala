@@ -30,7 +30,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.{PlaybackRepository, RegistrationsRepository}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.{ClosedErrorView, DoesNotMatchErrorView, IVDownView, StillProcessingErrorView, TrustLockedView}
+import views.html.playback.status.{ClosedErrorView, DoesNotMatchErrorView, IVDownView, StillProcessingErrorView, TrustLockedView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -85,7 +85,7 @@ class TrustStatusController @Inject()(
 
   def down(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
-      enforceUtr(draftId) { utr =>
+      enforceUtr(draftId) { _ =>
         Future.successful(ServiceUnavailable(ivDownView(draftId, request.affinityGroup)))
       }
   }

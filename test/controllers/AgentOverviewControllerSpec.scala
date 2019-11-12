@@ -19,8 +19,10 @@ package controllers
 import java.time.LocalDateTime
 
 import base.SpecBase
+import models.{NormalMode, UserAnswers}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
+import pages.AgentTelephoneNumberPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
@@ -102,6 +104,43 @@ class AgentOverviewControllerSpec extends SpecBase {
 
         application.stop()
       }
+
+      "redirect to registration progress page for a draft with completed agent details" in {
+
+        val telephoneNumber: String = "+441234567890"
+
+        def userAnswers: UserAnswers = emptyUserAnswers.set(AgentTelephoneNumberPage, telephoneNumber).success.value
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
+
+        val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad(fakeDraftId).url
+
+        application.stop()
+
+      }
+
+      "redirect to agent internal client reference page for a draft with incomplete agent details" in {
+
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+
+        val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual routes.AgentInternalReferenceController.onPageLoad(NormalMode, fakeDraftId).url
+
+        application.stop()
+
+      }
+
     }
   }
 }

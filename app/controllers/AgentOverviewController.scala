@@ -19,6 +19,8 @@ package controllers
 import config.FrontendAppConfig
 import controllers.actions._
 import javax.inject.Inject
+import models.NormalMode
+import pages.AgentTelephoneNumberPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
@@ -33,6 +35,8 @@ class AgentOverviewController @Inject()(
                                          hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                          registrationsRepository: RegistrationsRepository,
                                          config: FrontendAppConfig,
+                                         getData: DraftIdRetrievalActionProvider,
+                                         requireData: DataRequiredAction,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: AgentOverviewView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
@@ -51,4 +55,15 @@ class AgentOverviewController @Inject()(
     implicit request =>
       Future.successful(Redirect(routes.CreateDraftRegistrationController.create()))
   }
+
+  def continue(draftId: String): Action[AnyContent] = (actions andThen getData(draftId) andThen requireData).async {
+    implicit request =>
+
+      request.userAnswers.get(AgentTelephoneNumberPage).isEmpty match {
+        case true => Future.successful(Redirect(routes.AgentInternalReferenceController.onPageLoad(NormalMode, draftId)))
+        case false => Future.successful(Redirect(routes.TaskListController.onPageLoad(draftId)))
+      }
+
+  }
+
 }
