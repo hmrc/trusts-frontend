@@ -442,8 +442,8 @@ POST       /:draftId/change-agent-international-address                  control
 GET        /:draftId/declaration                        controllers.DeclarationController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/declaration                        controllers.DeclarationController.onSubmit(mode: Mode = NormalMode, draftId: String)
 
-GET        /:draftId/variation/declaration                        controllers.DeclarationVariationsController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/variation/declaration                        controllers.DeclarationVariationsController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/no-changes/declaration                        controllers.DeclarationNoChangesController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/no-changes/declaration                        controllers.DeclarationNoChangesController.onSubmit(mode: Mode = NormalMode, draftId: String)
 
 GET        /:draftId/confirmation                         controllers.ConfirmationController.onPageLoad(draftId: String)
 

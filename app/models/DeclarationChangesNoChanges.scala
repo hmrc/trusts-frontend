@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-import models.DeclarationVariations
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Json, OFormat}
 
-case object DeclarationVariationsPage extends QuestionPage[DeclarationVariations] {
+case class DeclarationChangesNoChanges(name: FullName, email: Option[String])
 
-  override def path: JsPath = JsPath \ "declaration" \ "variations" \ toString
+object DeclarationChangesNoChanges {
 
-  override def toString: String = "declarationVariations"
+  implicit lazy val formats: OFormat[DeclarationChangesNoChanges] = Json.format[DeclarationChangesNoChanges]
+
 }
