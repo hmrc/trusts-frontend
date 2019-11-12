@@ -1328,6 +1328,6 @@ declarationWhatNext.title = What do you want to do next?
 declarationWhatNext.heading = What do you want to do next?
 declarationWhatNext.declare = Declare the trust is up to date
 declarationWhatNext.makeChanges = Make changes to the trust and declare
-declarationWhatNext.closeTrust = Close the trust/home/darryl/Applications/hmrc-development-environment/hmrc/trusts-frontend/test/controllers/DeclarationWhatNextControllerSpec.scala
+declarationWhatNext.closeTrust = Close the trust
 declarationWhatNext.checkYourAnswersLabel = What do you want to do next?
 declarationWhatNext.error.required = Select what you want to do next
