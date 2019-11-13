@@ -1332,8 +1332,9 @@ declarationWhatNext.closeTrust = Close the trust/home/darryl/Applications/hmrc-d
 declarationWhatNext.checkYourAnswersLabel = What do you want to do next?
 declarationWhatNext.error.required = Select what you want to do next
 
-variationsConfirmationPage.title = Declaration received, your reference is: {0}
-variationsConfirmationPage.heading = Declaration received Your reference is: {0}
+variationsConfirmationPage.title = Declaration received
+variationsConfirmationPage.heading = Declaration received
+variationsConfirmationPage.heading2 = Your reference is:
 variationsConfirmationPage.printsave.link = Print or save a declared copy of the trust’s registration (opens in a new window or tab)
 variationsConfirmationPage.subheading1 = What happens next
 variationsConfirmationPage.paragraph1 = Keep a note of your reference in case you need to contact HMRC. If there is a problem with the declaration, we will contact the lead trustee.

@@ -37,8 +37,6 @@ class VariationsConfirmationControllerSpec extends SpecBase {
 
       val view = application.injector.instanceOf[VariationsConfirmationView]
 
-      redirectLocation(result) mustEqual true
-
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
