@@ -64,17 +64,11 @@
             label = messages("declaration.changes.noChanges.email")
         )
 
-        <div class="govuk-warning-text">
-            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-            <strong class="govuk-warning-text__text">
-                <span class="govuk-warning-text__assistive">@messages("site.warning")</span>
-                @if(affinityGroup == AffinityGroup.Agent) {
-                  @messages("declaration.changes.noChanges.agent.warning")
-                } else {
-                  @messages("declaration.changes.noChanges.individual.warning")
-                }
-            </strong>
-        </div>
+        @if(affinityGroup == AffinityGroup.Agent) {
+            @components.warning("declaration.changes.noChanges.agent")
+        } else {
+            @components.warning("declaration.changes.noChanges.individual")
+        }
 
         @components.submit_button(Some("site.confirm-send"))
     }

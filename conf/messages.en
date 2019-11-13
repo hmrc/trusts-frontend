@@ -915,7 +915,7 @@ confirmationPage.paragraph3 = You cannot make online changes to the trust. To ch
 confirmationPage.paragraph4 = You must keep a record of any other changes until you can change them using the online service.
 
 confirmationPage.agent.you.can = You can
-confirmationPage.agent.link = return to register and maintain a trust for a client.
+confirmationPage.agent.link = return to register and maintain a trust for a client
 
 declaration.title = Declaration
 declaration.heading = Declaration
@@ -1338,7 +1338,7 @@ informationMaintainingThisTrust.h3 = Keep the trust updated
 informationMaintainingThisTrust.paragraph1 = You can make changes to the register, declare it’s up to date or close the trust by following these steps:
 informationMaintainingThisTrust.list1 = You can find out what details we hold about the trust by checking its last declaration.
 informationMaintainingThisTrust.list2 = If the trust is up to date you can continue to make a declaration. If you have written in with changes, these may not have been updated so you will need to update them now.
-informationMaintainingThisTrust.printsave.link = You can save or print a copy of this trust's last declaration (opens in a new window or tab).
+informationMaintainingThisTrust.printsave.link = You can save or print a copy of this trust's last declaration (opens in a new window or tab)
 informationMaintainingThisTrust.list3 = If details about the settlors, trustees or beneficiaries have changed, you can update them through this service.
 informationMaintainingThisTrust.list4 = If you need to close the trust, you will need to declare the details we have are up to date.
 informationMaintainingThisTrust.h2 = Changes to the trust

@@ -26,43 +26,34 @@ main_template: MainTemplate
 title = messages("informationMaintainingThisTrust.title")
 ) {
 
-@components.back_link()
+   @components.back_link()
 
-<span class="govuk-caption-xl">@messages("informationMaintainingThisTrust.subHeading", utr)</span>
-@components.heading("informationMaintainingThisTrust.heading", headingSize = "heading-large govuk-fieldset__heading")
+   <span class="govuk-caption-xl">@messages("informationMaintainingThisTrust.subHeading", utr)</span>
+   @components.heading("informationMaintainingThisTrust.heading", headingSize = "heading-large govuk-fieldset__heading")
 
-<div class="govuk-warning-text">
-  <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-<strong class="govuk-warning-text__text">
-    <span class="govuk-warning-text__assistive">Warning</span>@messages("informationMaintainingThisTrust.warning")
-</strong>
-</div>
+   @components.warning("informationMaintainingThisTrust")
 
-<h3>@messages("informationMaintainingThisTrust.h3")</h3>
+   <h3>@messages("informationMaintainingThisTrust.h3")</h3>
 
-<p>@messages("informationMaintainingThisTrust.paragraph1")</p>
+   <p>@messages("informationMaintainingThisTrust.paragraph1")</p>
 
-<ol class="govuk-list govuk-list--number">
- <li>@messages("informationMaintainingThisTrust.list1")</li>
+   <ol class="govuk-list govuk-list--number">
+      <li>@messages("informationMaintainingThisTrust.list1")</li>
+      <ul>
+         <li class="panel-indent">@components.link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save","informationMaintainingThisTrust.printsave.link", openInNewWindow = true).</li>
+      </ul>
+      <li>@messages("informationMaintainingThisTrust.list2")</li>
+      <li>@messages("informationMaintainingThisTrust.list3")</li>
+      <li>@messages("informationMaintainingThisTrust.list4")</li>
+   </ol>
 
- <ul>
-     <li class="panel-indent">@components.link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save","informationMaintainingThisTrust.printsave.link", openInNewWindow = true)</li>
- </ul>
+   <h2>@messages("informationMaintainingThisTrust.h2")</h2>
 
- <li>@messages("informationMaintainingThisTrust.list2")</li>
+   <p>@messages("informationMaintainingThisTrust.paragraph2")</p>
 
- <li>@messages("informationMaintainingThisTrust.list3")</li>
+   <p>@messages("informationMaintainingThisTrust.paragraph3")</p>
 
- <li>@messages("informationMaintainingThisTrust.list4")</li>
-</ol>
-
-<h2>@messages("informationMaintainingThisTrust.h2")</h2>
-
-<p>@messages("informationMaintainingThisTrust.paragraph2")</p>
-
-<p>@messages("informationMaintainingThisTrust.paragraph3")</p>
-
-@components.button_link(messages("site.onlyContinue"), DeclarationWhatNextController.onPageLoad(draftId: String).url)
+   @components.button_link(messages("site.onlyContinue"), DeclarationWhatNextController.onPageLoad(draftId: String).url)
 
 }
 

@@ -49,9 +49,9 @@
 
         <h2>@messages("confirmationPage.subheading2")</h2>
 
-        <p>@messages("confirmationPage.new.paragraph2")<a href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" target="_blank" >@messages("confirmationPage.contacthmrc.link")</a>.</p>
+        <p>@messages("confirmationPage.new.paragraph2") <a href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" target="_blank" >@messages("confirmationPage.contacthmrc.link")</a>.</p>
 
-        <p>@messages("confirmationPage.paragraph3")<a href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" target="_blank" >@messages("confirmationPage.posthmrc.link")</a>. @messages("confirmationPage.paragraph4")</p>
+        <p>@messages("confirmationPage.paragraph3") <a href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" target="_blank" >@messages("confirmationPage.posthmrc.link")</a>. @messages("confirmationPage.paragraph4")</p>
 
     } else {
 
@@ -63,11 +63,11 @@
 
         <p>@messages("confirmationPage.existing.paragraph2")</p>
 
-        <p>@messages("confirmationPage.paragraph3")<a href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" target="_blank" >@messages("confirmationPage.posthmrc.link")</a>. @messages("confirmationPage.paragraph4")</p>
+        <p>@messages("confirmationPage.paragraph3") <a href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" target="_blank" >@messages("confirmationPage.posthmrc.link")</a>. @messages("confirmationPage.paragraph4")</p>
     }
 
     @if(isAgent) {
-        @messages("confirmationPage.agent.you.can") @components.link(agentOverviewUrl, "agent-overview", "confirmationPage.agent.link", false).)
+        <p>@messages("confirmationPage.agent.you.can") @components.link(agentOverviewUrl, "agent-overview", "confirmationPage.agent.link", false).</p>
     }
 
 }
