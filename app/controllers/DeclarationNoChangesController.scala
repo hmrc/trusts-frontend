@@ -36,7 +36,7 @@ class DeclarationNoChangesController @Inject()(
                                        registrationsRepository: RegistrationsRepository,
                                        navigator: Navigator,
                                        identify: IdentifierAction,
-                                       getData: DraftIdRetrievalActionProvider,
+                                       getData: DataRetrievalActionImpl,
                                        requireData: DataRequiredAction,
                                        requiredAnswer: RequiredAnswerActionProvider,
                                        formProvider: DeclarationChangesNoChangesFormProvider,
@@ -47,10 +47,10 @@ class DeclarationNoChangesController @Inject()(
 
   val form = formProvider()
 
-  def actions(draftId: String) = identify andThen getData(draftId) andThen requireData andThen
-      requiredAnswer(RequiredAnswer(DeclarationWhatNextPage, routes.DeclarationWhatNextController.onPageLoad(draftId)))
+  def actions() = identify andThen getData andThen requireData andThen
+      requiredAnswer(RequiredAnswer(DeclarationWhatNextPage, routes.DeclarationWhatNextController.onPageLoad()))
 
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
+  def onPageLoad(): Action[AnyContent] = actions() {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(DeclarationChangesNoChangesPage) match {
@@ -58,15 +58,15 @@ class DeclarationNoChangesController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId,request.affinityGroup, routes.DeclarationNoChangesController.onSubmit(draftId)))
+      Ok(view(preparedForm, request.affinityGroup, routes.DeclarationNoChangesController.onSubmit()))
   }
 
-  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
+  def onSubmit(): Action[AnyContent] = actions().async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, request.affinityGroup, routes.DeclarationNoChangesController.onSubmit(draftId)))),
+          Future.successful(BadRequest(view(formWithErrors, request.affinityGroup, routes.DeclarationNoChangesController.onSubmit()))),
 
         // TODO:  Check response for submission of no change data and redirect accordingly
 
@@ -74,7 +74,7 @@ class DeclarationNoChangesController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationChangesNoChangesPage, value))
             _ <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(routes.TaskListController.onPageLoad(draftId))
+          } yield Redirect(routes.DeclarationNoChangesController.onPageLoad()) // TODO Redirect to variation confirmation page
         }
       )
 

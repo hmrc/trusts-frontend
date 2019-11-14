@@ -36,7 +36,7 @@ class DeclarationWhatNextController @Inject()(
                                                sessionRepository: RegistrationsRepository,
                                                navigator: Navigator,
                                                identify: IdentifierAction,
-                                               getData: DraftIdRetrievalActionProvider,
+                                               getData: DataRetrievalActionImpl,
                                                requireData: DataRequiredAction,
                                                formProvider: DeclarationWhatNextFormProvider,
                                                val controllerComponents: MessagesControllerComponents,
@@ -45,7 +45,7 @@ class DeclarationWhatNextController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(DeclarationWhatNextPage) match {
@@ -53,21 +53,21 @@ class DeclarationWhatNextController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, draftId))
+      Ok(view(preparedForm))
   }
 
-  def onSubmit(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, draftId))),
+          Future.successful(BadRequest(view(formWithErrors))),
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationWhatNextPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(DeclarationWhatNextPage, NormalMode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(DeclarationWhatNextPage, NormalMode, "")(updatedAnswers))
         }
       )
   }

@@ -167,7 +167,7 @@ trait MatchingRoutes {
             val nav = app.injector.instanceOf[Navigator]
 
             nav.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId)(answers)
-              .mustBe(routes.WhatIsTheUTRVariationsController.onPageLoad(NormalMode, fakeDraftId))
+              .mustBe(routes.WhatIsTheUTRVariationsController.onPageLoad())
         }
       }
     }

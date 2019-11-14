@@ -37,7 +37,7 @@ class VariationsNavigator @Inject()(config: FrontendAppConfig) extends Navigator
       case Some(DeclareTheTrustIsUpToDate) =>
         controllers.routes.DeclarationController.onPageLoad(draftId)
       case _ =>
-        controllers.routes.DeclarationWhatNextController.onPageLoad(draftId)
+        controllers.routes.DeclarationWhatNextController.onPageLoad()
     }
   }
 }

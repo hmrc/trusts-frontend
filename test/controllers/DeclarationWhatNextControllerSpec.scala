@@ -26,7 +26,7 @@ import views.html.DeclarationWhatNextView
 
 class DeclarationWhatNextControllerSpec extends SpecBase {
 
-  lazy val declarationWhatNextRoute = routes.DeclarationWhatNextController.onPageLoad(fakeDraftId).url
+  lazy val declarationWhatNextRoute = routes.DeclarationWhatNextController.onPageLoad().url
 
   val formProvider = new DeclarationWhatNextFormProvider()
   val form = formProvider()
@@ -46,7 +46,7 @@ class DeclarationWhatNextControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, fakeDraftId)(fakeRequest, messages).toString
+        view(form)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -66,7 +66,7 @@ class DeclarationWhatNextControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(DeclarationWhatNext.values.head), fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill(DeclarationWhatNext.values.head))(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -106,7 +106,7 @@ class DeclarationWhatNextControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm)(fakeRequest, messages).toString
 
       application.stop()
     }

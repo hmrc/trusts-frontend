@@ -15,7 +15,6 @@
  *@
 
 @import controllers.routes._
-@import models.Mode
 @import uk.gov.hmrc.auth.core.AffinityGroup
 @import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 @import play.api.mvc.Call
@@ -25,7 +24,7 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, affinityGroup : AffinityGroup, onSubmit: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], affinityGroup : AffinityGroup, onSubmit: Call)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("declaration.changes.noChanges.title")}"

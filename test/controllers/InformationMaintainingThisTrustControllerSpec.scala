@@ -35,7 +35,7 @@ class InformationMaintainingThisTrustControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.InformationMaintainingThisTrustController.onPageLoad(fakeDraftId).url)
+      val request = FakeRequest(GET, routes.InformationMaintainingThisTrustController.onPageLoad().url)
 
       val result = route(application, request).value
 
@@ -44,7 +44,7 @@ class InformationMaintainingThisTrustControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(fakeDraftId, utr)(fakeRequest, messages).toString
+        view(utr)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -53,7 +53,7 @@ class InformationMaintainingThisTrustControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, routes.InformationMaintainingThisTrustController.onPageLoad(fakeDraftId).url)
+      val request = FakeRequest(GET, routes.InformationMaintainingThisTrustController.onPageLoad().url)
 
       val result = route(application, request).value
 

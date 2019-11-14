@@ -43,7 +43,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "declarationWhatNext.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"declarationWhatNext.$x")),
-        routes.DeclarationWhatNextController.onPageLoad(draftId).url
+        routes.DeclarationWhatNextController.onPageLoad().url
       )
   }
 

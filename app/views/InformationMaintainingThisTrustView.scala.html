@@ -20,7 +20,7 @@
 main_template: MainTemplate
 )
 
-@(draftId: String, utr: String)(implicit request: Request[_], messages: Messages)
+@(utr: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
 title = messages("informationMaintainingThisTrust.title")
@@ -40,7 +40,7 @@ title = messages("informationMaintainingThisTrust.title")
    <ol class="govuk-list govuk-list--number">
       <li>@messages("informationMaintainingThisTrust.list1")</li>
       <ul>
-         <li class="panel-indent">@components.link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save","informationMaintainingThisTrust.printsave.link", openInNewWindow = true).</li>
+         <li class="panel-indent">@components.link(ConfirmationAnswerPageController.onPageLoad("draftId").url, "print-and-save","informationMaintainingThisTrust.printsave.link", openInNewWindow = true).</li>
       </ul>
       <li>@messages("informationMaintainingThisTrust.list2")</li>
       <li>@messages("informationMaintainingThisTrust.list3")</li>
@@ -53,7 +53,7 @@ title = messages("informationMaintainingThisTrust.title")
 
    <p>@messages("informationMaintainingThisTrust.paragraph3")</p>
 
-   @components.button_link(messages("site.onlyContinue"), DeclarationWhatNextController.onPageLoad(draftId: String).url)
+   @components.button_link(messages("site.onlyContinue"), DeclarationWhatNextController.onPageLoad().url)
 
 }
 

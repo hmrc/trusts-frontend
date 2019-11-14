@@ -36,8 +36,8 @@ class DeclarationNoChangesControllerSpec extends SpecBase {
   val form = formProvider()
   val name = "name"
 
-  lazy val declarationRoute = routes.DeclarationNoChangesController.onPageLoad(fakeDraftId).url
-  lazy val submitRoute = routes.DeclarationNoChangesController.onSubmit(fakeDraftId)
+  lazy val declarationRoute = routes.DeclarationNoChangesController.onPageLoad().url
+  lazy val submitRoute = routes.DeclarationNoChangesController.onSubmit()
 
   before {
     reset(mockSubmissionService)
@@ -60,7 +60,7 @@ class DeclarationNoChangesControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,fakeDraftId,AffinityGroup.Organisation, submitRoute)(request, messages).toString
+        view(form, AffinityGroup.Organisation, submitRoute)(request, messages).toString
 
       application.stop()
     }
@@ -80,7 +80,7 @@ class DeclarationNoChangesControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, AffinityGroup.Agent, submitRoute)(request, messages).toString
+        view(form, AffinityGroup.Agent, submitRoute)(request, messages).toString
 
       application.stop()
     }
@@ -101,7 +101,7 @@ class DeclarationNoChangesControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(DeclarationChangesNoChanges(FullName("First",None, "Last"), Some("test@test.comn"))), NormalMode,fakeDraftId, AffinityGroup.Agent, submitRoute)(fakeRequest, messages).toString
+        view(form.fill(DeclarationChangesNoChanges(FullName("First",None, "Last"), Some("test@test.comn"))), AffinityGroup.Agent, submitRoute)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -143,7 +143,7 @@ class DeclarationNoChangesControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode,fakeDraftId,AffinityGroup.Agent, submitRoute)(fakeRequest, messages).toString
+        view(boundForm, AffinityGroup.Agent, submitRoute)(fakeRequest, messages).toString
 
       application.stop()
     }

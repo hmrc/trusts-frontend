@@ -21,7 +21,7 @@
     main_template: MainTemplate
 )
 
-@(draftId: String, affinityGroup: AffinityGroup)(implicit request: Request[_], messages: Messages)
+@(affinityGroup: AffinityGroup)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("IvDown.title")
@@ -35,6 +35,6 @@
     @if(affinityGroup == AffinityGroup.Agent) {
       <p>@messages("IvDown.paragraph2") <a id="register-and-maintain-link" href=@AgentOverviewController.onPageLoad().url>@messages("IvDown.return.link")</a>.</p>
     } else {
-      @components.button_link(messages("site.try-again"), WhatIsTheUTRVariationsController.onPageLoad(NormalMode, draftId).url)
+      @components.button_link(messages("site.try-again"), WhatIsTheUTRVariationsController.onPageLoad().url)
     }
 }

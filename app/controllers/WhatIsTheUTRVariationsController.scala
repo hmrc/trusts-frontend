@@ -21,7 +21,7 @@ import connector.TrustsStoreConnector
 import controllers.actions._
 import forms.WhatIsTheUTRFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, NormalMode}
 import pages.WhatIsTheUTRVariationPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -36,7 +36,7 @@ class WhatIsTheUTRVariationsController @Inject()(
                                                   override val messagesApi: MessagesApi,
                                                   registrationsRepository: RegistrationsRepository,
                                                   identify: IdentifierAction,
-                                                  getData: DraftIdRetrievalActionProvider,
+                                                  getData: DataRetrievalActionImpl,
                                                   requireData: DataRequiredAction,
                                                   formProvider: WhatIsTheUTRFormProvider,
                                                   val controllerComponents: MessagesControllerComponents,
@@ -47,7 +47,7 @@ class WhatIsTheUTRVariationsController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(WhatIsTheUTRVariationPage) match {
@@ -55,21 +55,21 @@ class WhatIsTheUTRVariationsController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId, routes.WhatIsTheUTRVariationsController.onSubmit(mode, draftId)))
+      Ok(view(preparedForm, routes.WhatIsTheUTRVariationsController.onSubmit()))
   }
 
-  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, routes.WhatIsTheUTRVariationsController.onSubmit(mode, draftId)))),
+          Future.successful(BadRequest(view(formWithErrors, routes.WhatIsTheUTRVariationsController.onSubmit()))),
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatIsTheUTRVariationPage, value))
             _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(routes.TrustStatusController.status(draftId))
+          } yield Redirect(routes.TrustStatusController.status())
         }
       )
   }

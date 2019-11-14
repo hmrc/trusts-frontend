@@ -60,49 +60,49 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
     "must return OK and the correct view for GET ../status/closed" in new LocalSetup {
 
-      override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.closed(fakeDraftId).url)
+      override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.closed().url)
 
       val view: ClosedErrorView = application.injector.instanceOf[ClosedErrorView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(fakeDraftId, AffinityGroup.Individual, utr)(fakeRequest, messages).toString
+        view(AffinityGroup.Individual, utr)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "must return OK and the correct view for GET ../status/processing" in new LocalSetup {
 
-      override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.processing(fakeDraftId).url)
+      override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.processing().url)
 
       val view: StillProcessingErrorView = application.injector.instanceOf[StillProcessingErrorView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(fakeDraftId, AffinityGroup.Individual, utr)(fakeRequest, messages).toString
+        view(AffinityGroup.Individual, utr)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "must return OK and the correct view for GET ../status/not-found" in new LocalSetup {
 
-      override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.notFound(fakeDraftId).url)
+      override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.notFound().url)
 
       val view: DoesNotMatchErrorView = application.injector.instanceOf[DoesNotMatchErrorView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(fakeDraftId, AffinityGroup.Individual)(fakeRequest, messages).toString
+        view(AffinityGroup.Individual)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "must return OK and the correct view for GET ../status/locked" in new LocalSetup {
 
-      override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.locked(fakeDraftId).url)
+      override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.locked().url)
 
       val view: TrustLockedView = application.injector.instanceOf[TrustLockedView]
 
@@ -116,14 +116,14 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
     "must return SERVICE_UNAVAILABLE and the correct view for GET ../status/down" in new LocalSetup {
 
-      override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.down(fakeDraftId).url)
+      override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.down().url)
 
       val view: IVDownView = application.injector.instanceOf[IVDownView]
 
       status(result) mustEqual SERVICE_UNAVAILABLE
 
       contentAsString(result) mustEqual
-        view(fakeDraftId, AffinityGroup.Individual)(fakeRequest, messages).toString
+        view(AffinityGroup.Individual)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -131,7 +131,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
     "must redirect to the correct route for GET ../status" when {
       "a Closed status is received from the trust connector" in new LocalSetup {
 
-        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status(fakeDraftId).url)
+        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status().url)
 
         when(fakeTrustStoreConnector.get(any[String], any[String])(any(), any()))
           .thenReturn(Future.successful(Some(TrustClaim("1234567890", trustLocked = false, managedByAgent = false))))
@@ -147,7 +147,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
       "a Processing status is received from the trust connector" in new LocalSetup {
 
-        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status(fakeDraftId).url)
+        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status().url)
 
         when(fakeTrustStoreConnector.get(any[String], any[String])(any(), any()))
           .thenReturn(Future.successful(Some(TrustClaim("1234567890", trustLocked = false, managedByAgent = false))))
@@ -163,7 +163,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
       "a NotFound status is received from the trust connector" in new LocalSetup {
 
-        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status(fakeDraftId).url)
+        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status().url)
 
         when(fakeTrustStoreConnector.get(any[String], any[String])(any(), any()))
           .thenReturn(Future.successful(Some(TrustClaim("1234567890", trustLocked = false, managedByAgent = false))))
@@ -179,7 +179,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
       "A locked trust claim is returned from the trusts store connector" in new LocalSetup {
 
-        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status(fakeDraftId).url)
+        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status().url)
 
         when(fakeTrustStoreConnector.get(any[String], any[String])(any(), any()))
           .thenReturn(Future.successful(Some(TrustClaim("1234567890", trustLocked = true, managedByAgent = false))))
@@ -193,7 +193,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
       "a ServiceUnavailable status is received from the trust connector" in new LocalSetup {
 
-        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status(fakeDraftId).url)
+        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status().url)
 
         when(fakeTrustStoreConnector.get(any[String], any[String])(any(), any()))
           .thenReturn(Future.successful(Some(TrustClaim("1234567890", trustLocked = false, managedByAgent = false))))
@@ -209,7 +209,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
       "a Processed status is received from the trust connector" in new LocalSetup {
 
-        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status(fakeDraftId).url)
+        override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status().url)
 
         val payload: JsValue =
           Json.parse("""{

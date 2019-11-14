@@ -23,7 +23,7 @@
 main_template: MainTemplate
 )
 
-@(draftId: String, affinityGroup: AffinityGroup)(implicit request: Request[_], messages: Messages)
+@(affinityGroup: AffinityGroup)(implicit request: Request[_], messages: Messages)
 
 @main_template(
 title = messages("DoesNotMatchError.title")
@@ -42,6 +42,6 @@ title = messages("DoesNotMatchError.title")
   @if(affinityGroup == AffinityGroup.Agent) {
    <p>@messages("DoesNotMatchError.paragraph5") <a id="register-and-maintain-link" href=@AgentOverviewController.onPageLoad().url>@messages("DoesNotMatchError.return.link")</a>.</p>
   } else {
-   @components.button_link("site.try-again", WhatIsTheUTRVariationsController.onPageLoad(NormalMode, draftId).url)
+   @components.button_link("site.try-again", WhatIsTheUTRVariationsController.onPageLoad().url)
   }
 }
