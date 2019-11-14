@@ -279,7 +279,7 @@ UTRSentByPost.title = The trust’s Unique Taxpayer Reference (UTR) has been sen
 UTRSentByPost.heading = The trust’s Unique Taxpayer Reference (UTR) has been sent by post
 UTRSentByPost.paragraph1 = It can take 15 working days for you to get the trust’s UTR. For International addresses it can take 21 working days.
 UTRSentByPost.paragraph2 =  if you have not received the trust’s UTR after this time.
-UTRSentByPost.link.contactHelpline = Contact the trusts helpline
+UTRSentByPost.link.contactHelpline = Contact the trusts helpline (opens in a new window or tab)
 UTRSentByPost.paragraph3 = You can
 UTRSentByPost.link.returnToRegister = return to register and maintain a trust for a client
 
