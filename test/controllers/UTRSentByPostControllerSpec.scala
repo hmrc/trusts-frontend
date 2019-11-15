@@ -38,7 +38,7 @@ class UTRSentByPostControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view()(fakeRequest, messages).toString
+        view(isAgent = false)(fakeRequest, messages).toString
 
       application.stop()
     }
