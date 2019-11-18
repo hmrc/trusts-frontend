@@ -38,7 +38,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class IndividualBeneficiaryAnswersController @Inject()(
                                                         override val messagesApi: MessagesApi,
                                                         registrationsRepository: RegistrationsRepository,
-                                                        identify: IdentifierAction,
+                                                        identify: IdentifyForRegistration,
                                                         navigator: Navigator,
                                                         getData: DraftIdRetrievalActionProvider,
                                                         requireData: DataRequiredAction,

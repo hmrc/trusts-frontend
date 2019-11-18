@@ -26,7 +26,7 @@ import org.scalatestplus.play.guice._
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.inject.{Injector, bind}
-import play.api.mvc.PlayBodyParsers
+import play.api.mvc.{BodyParsers, PlayBodyParsers}
 import play.api.test.FakeRequest
 import repositories.RegistrationsRepository
 import services.{CreateDraftRegistrationService, SubmissionService}
@@ -53,6 +53,10 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
 
   def injectedParsers = injector.instanceOf[PlayBodyParsers]
 
+  val injectedDefaultParsers =injector.instanceOf[BodyParsers.Default]
+
+  def trustsAuth = injector.instanceOf[TrustsAuth]
+
   implicit def messages: Messages = messagesApi.preferred(fakeRequest)
 
   lazy val fakeNavigator = new FakeNavigator(frontendAppConfig)
@@ -64,7 +68,7 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
     new GuiceApplicationBuilder()
       .overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],
-        bind[IdentifierAction].toInstance(new FakeIdentifierAction(affinityGroup)(injectedParsers)),
+        bind[IdentifyForRegistration].toInstance(new FakeIdentifierAction(affinityGroup)(injectedDefaultParsers, trustsAuth)),
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
         bind[DraftIdRetrievalActionProvider].toInstance(
           new FakeDraftIdRetrievalActionProvider("draftId", RegistrationStatus.InProgress, userAnswers, registrationsRepository)),

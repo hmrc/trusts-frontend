@@ -30,7 +30,7 @@ import views.html.SummaryAnswerPageView
 
 class SummaryAnswerPageController @Inject()(
                                               override val messagesApi: MessagesApi,
-                                              identify: IdentifierAction,
+                                              identify: IdentifyForRegistration,
                                               getData: DraftIdRetrievalActionProvider,
                                               requireData: DataRequiredAction,
                                               val controllerComponents: MessagesControllerComponents,

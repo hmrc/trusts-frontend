@@ -18,7 +18,7 @@ package controllers
 
 import config.FrontendAppConfig
 import connector.{TrustConnector, TrustsStoreConnector}
-import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider, IdentifierAction}
+import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider, IdentifyForRegistration}
 import handlers.ErrorHandler
 import javax.inject.Inject
 import models.NormalMode
@@ -30,7 +30,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.{PlaybackRepository, RegistrationsRepository}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.playback.status.{ClosedErrorView, DoesNotMatchErrorView, IVDownView, StillProcessingErrorView, TrustLockedView}
+import views.html.playback.status._
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -39,7 +39,7 @@ class TrustStatusController @Inject()(
                                        registrationsRepository: RegistrationsRepository,
                                        playbackRepository: PlaybackRepository,
                                        navigator: Navigator,
-                                       identify: IdentifierAction,
+                                       identify: IdentifyForRegistration,
                                        getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
                                        closedView: ClosedErrorView,
@@ -71,7 +71,7 @@ class TrustStatusController @Inject()(
 
   def notFound(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
-      enforceUtr(draftId) { utr =>
+      enforceUtr(draftId) { _ =>
         Future.successful(Ok(doesNotMatchView(draftId, request.affinityGroup)))
       }
   }

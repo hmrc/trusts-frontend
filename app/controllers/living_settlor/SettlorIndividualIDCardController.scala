@@ -39,7 +39,7 @@ class SettlorIndividualIDCardController @Inject()(
                                                    override val messagesApi: MessagesApi,
                                                    registrationsRepository: RegistrationsRepository,
                                                    @LivingSettlor navigator: Navigator,
-                                                   identify: IdentifierAction,
+                                                   identify: IdentifyForRegistration,
                                                    getData: DraftIdRetrievalActionProvider,
                                                    validateIndex: IndexActionFilterProvider,
                                                    requireData: DataRequiredAction,

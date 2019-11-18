@@ -27,7 +27,7 @@ import scala.concurrent.ExecutionContext
 
 class UTRSentByPostController @Inject()(
                                        override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
+                                       identify: IdentifyForRegistration,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: UTRSentByPostView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {

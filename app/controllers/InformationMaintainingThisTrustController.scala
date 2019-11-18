@@ -17,7 +17,7 @@
 package controllers
 
 import config.FrontendAppConfig
-import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider, IdentifierAction}
+import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider, IdentifyForRegistration}
 import javax.inject.Inject
 import models.NormalMode
 import pages.WhatIsTheUTRPage
@@ -31,7 +31,7 @@ import scala.concurrent.ExecutionContext
 
 class InformationMaintainingThisTrustController @Inject()(
                                                            registrationsRepository: RegistrationsRepository,
-                                                           identify: IdentifierAction,
+                                                           identify: IdentifyForRegistration,
                                                            getData: DraftIdRetrievalActionProvider,
                                                            requireData: DataRequiredAction,
                                                            val controllerComponents: MessagesControllerComponents,

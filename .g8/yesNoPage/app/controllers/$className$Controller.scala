@@ -18,7 +18,7 @@ class $className;format="cap"$Controller @Inject()(
                                          override val messagesApi: MessagesApi,
                                          registrationsRepository: registrationsRepository,
                                          navigator: Navigator,
-                                         identify: IdentifierAction,
+                                         identify: IdentifyForRegistration,
                                          getData: DraftIdRetrievalActionProvider,
                                          requireData: DataRequiredAction,
                                          formProvider: $className$FormProvider,

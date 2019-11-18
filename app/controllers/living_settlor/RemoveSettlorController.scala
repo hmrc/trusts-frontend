@@ -40,7 +40,7 @@ class RemoveSettlorController @Inject()(
                                          override val messagesApi: MessagesApi,
                                          override val registrationsRepository: RegistrationsRepository,
                                          navigator: Navigator,
-                                         identify: IdentifierAction,
+                                         identify: IdentifyForRegistration,
                                          validateIndex : IndexActionFilterProvider,
                                          getData: DraftIdRetrievalActionProvider,
                                          requireData: DataRequiredAction,

@@ -35,7 +35,7 @@ class AgentUKAddressController @Inject()(
                                           override val messagesApi: MessagesApi,
                                           registrationsRepository: RegistrationsRepository,
                                           navigator: Navigator,
-                                          identify: IdentifierAction,
+                                          identify: IdentifyForRegistration,
                                           hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                           getData: DraftIdRetrievalActionProvider,
                                           requireData: DataRequiredAction,

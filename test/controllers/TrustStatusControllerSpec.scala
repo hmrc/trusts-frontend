@@ -223,7 +223,8 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
         when(fakeTrustStoreConnector.get(any[String], any[String])(any(), any()))
           .thenReturn(Future.successful(Some(TrustClaim("1234567890", trustLocked = false, managedByAgent = false))))
 
-        when(fakeTrustConnector.playback(any[String])(any(), any())).thenReturn(Future.successful(Processed(payload)))
+        when(fakeTrustConnector.playback(any[String])(any(), any()))
+          .thenReturn(Future.successful(Processed(payload)))
 
         status(result) mustEqual SEE_OTHER
 

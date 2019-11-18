@@ -31,7 +31,7 @@ import views.html.ConfirmationAnswerPageView
 
 class ConfirmationAnswerPageController @Inject()(
                                               override val messagesApi: MessagesApi,
-                                              identify: IdentifierAction,
+                                              identify: IdentifyForRegistration,
                                               getData: DraftIdRetrievalActionProvider,
                                               requireData: DataRequiredAction,
                                               val controllerComponents: MessagesControllerComponents,

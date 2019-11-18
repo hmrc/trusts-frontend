@@ -27,7 +27,7 @@ import scala.concurrent.ExecutionContext
 
 class SettlorInfoController @Inject()(
                                        override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
+                                       identify: IdentifyForRegistration,
                                        getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,

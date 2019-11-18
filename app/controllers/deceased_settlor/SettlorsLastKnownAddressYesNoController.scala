@@ -35,7 +35,7 @@ class SettlorsLastKnownAddressYesNoController @Inject()(
                                                          override val messagesApi: MessagesApi,
                                                          registrationsRepository: RegistrationsRepository,
                                                          navigator: Navigator,
-                                                         identify: IdentifierAction,
+                                                         identify: IdentifyForRegistration,
                                                          getData: DraftIdRetrievalActionProvider,
                                                          requireData: DataRequiredAction,
                                                          yesNoFormProvider: YesNoFormProvider,

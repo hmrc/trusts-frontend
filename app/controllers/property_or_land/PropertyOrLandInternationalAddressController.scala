@@ -38,7 +38,7 @@ class PropertyOrLandInternationalAddressController @Inject()(
                                                               override val messagesApi: MessagesApi,
                                                               registrationsRepository: RegistrationsRepository,
                                                               @PropertyOrLand navigator: Navigator,
-                                                              identify: IdentifierAction,
+                                                              identify: IdentifyForRegistration,
                                                               getData: DraftIdRetrievalActionProvider,
                                                               requireData: DataRequiredAction,
                                                               validateIndex: IndexActionFilterProvider,
