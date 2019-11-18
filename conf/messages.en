@@ -546,7 +546,7 @@ trusteesInfo.warning = All trustees have the same legal responsibilities.
 trusteesInfo.continue = Continue
 
 agentTelephoneNumber.title = What is the agency’s telephone number?
-agentTelephoneNumber.heading = What is the agency’s telephone number?
+agentTelephoneNumber.heading = What is {0}’s telephone number?
 agentTelephoneNumber.checkYourAnswersLabel = What is the agency’s telephone number?
 agentTelephoneNumber.hint = We will use this number to contact you about this trust’s registration. For international numbers include the country code
 agentTelephoneNumber.error.required = Enter the agency’s telephone number
