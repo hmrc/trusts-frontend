@@ -68,6 +68,8 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   lazy val trustsStoreUrl: String = configuration.get[Service]("microservice.services.trusts-store").baseUrl + "/trusts-store"
 
+  lazy val agentInvitationsUrl: String = configuration.get[Service]("microservice.services.agent-invitations-frontend").baseUrl + "/invitations/agents/client-type"
+
   lazy val  posthmrc: String = configuration.get[String]("confirmation.posthmrc")
 
   def languageMap: Map[String, Lang] = Map(
