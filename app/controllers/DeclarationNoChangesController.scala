@@ -41,8 +41,7 @@ class DeclarationNoChangesController @Inject()(
                                        requiredAnswer: RequiredAnswerActionProvider,
                                        formProvider: DeclarationChangesNoChangesFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
-                                       view: DeclarationChangesNoChangesView,
-                                       registrationComplete : TaskListCompleteActionRefiner
+                                       view: DeclarationChangesNoChangesView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
