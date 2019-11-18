@@ -40,8 +40,9 @@
           label = messages("settlorIndividualNINO.heading", name.toString),
           labelClass = Some("heading-large"),
           labelAsHeading = true,
-          hint = Some(messages("settlorIndividualNINO.hint"))
-        )
+          hint = Some(messages("settlorIndividualNINO.hint")),
+          readerHint = Some(messages("settlorIndividualNINO.hint.reader"))
+)
 
         @components.submit_button()
     }
