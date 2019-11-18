@@ -639,8 +639,6 @@ GET        /:draftId/maintain-saved-registration           controllers.AgentOver
 
 GET        /variations/enter-trust-utr                        controllers.WhatIsTheUTRVariationsController.onPageLoad()
 POST       /variations/enter-trust-utr                        controllers.WhatIsTheUTRVariationsController.onSubmit()
-#GET        /variations/change-trust-utr                       controllers.WhatIsTheUTRVariationsController.onPageLoad()
-#POST       /variations/change-trust-utr                       controllers.WhatIsTheUTRVariationsController.onSubmit()
 
 GET        /variations/maintain-a-trust/information           controllers.InformationMaintainingThisTrustController.onPageLoad()
 

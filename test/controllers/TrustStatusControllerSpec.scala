@@ -129,6 +129,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
     }
 
     "must redirect to the correct route for GET ../status" when {
+
       "a Closed status is received from the trust connector" in new LocalSetup {
 
         override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status().url)
@@ -140,7 +141,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual "/trusts-registration/id/status/closed"
+        redirectLocation(result).value mustEqual "/trusts-registration/status/closed"
 
         application.stop()
       }
@@ -156,7 +157,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual "/trusts-registration/id/status/processing"
+        redirectLocation(result).value mustEqual "/trusts-registration/status/processing"
 
         application.stop()
       }
@@ -172,7 +173,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual "/trusts-registration/id/status/not-found"
+        redirectLocation(result).value mustEqual "/trusts-registration/status/not-found"
 
         application.stop()
       }
@@ -186,7 +187,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual "/trusts-registration/id/status/locked"
+        redirectLocation(result).value mustEqual "/trusts-registration/status/locked"
 
         application.stop()
       }
@@ -202,7 +203,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual "/trusts-registration/id/status/down"
+        redirectLocation(result).value mustEqual "/trusts-registration/status/down"
 
         application.stop()
       }

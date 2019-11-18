@@ -17,7 +17,7 @@
 package base
 
 import config.FrontendAppConfig
-import controllers.actions._
+import controllers.actions.{FakeDraftIdRetrievalActionProvider, _}
 import models.{RegistrationStatus, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.scalatest.{BeforeAndAfter, TestSuite, TryValues}
@@ -57,6 +57,13 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
 
   lazy val fakeNavigator = new FakeNavigator(frontendAppConfig)
 
+  private def fakeDraftIdAction(userAnswers: Option[UserAnswers]) = new FakeDraftIdRetrievalActionProvider(
+      "draftId",
+      RegistrationStatus.InProgress,
+      userAnswers,
+      registrationsRepository
+    )
+
   protected def applicationBuilder(userAnswers: Option[UserAnswers] = None,
                                    affinityGroup: AffinityGroup = AffinityGroup.Organisation,
                                    navigator: Navigator = fakeNavigator
@@ -66,8 +73,7 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
         bind[DataRequiredAction].to[DataRequiredActionImpl],
         bind[IdentifierAction].toInstance(new FakeIdentifierAction(affinityGroup)(injectedParsers)),
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
-        bind[DraftIdRetrievalActionProvider].toInstance(
-          new FakeDraftIdRetrievalActionProvider("draftId", RegistrationStatus.InProgress, userAnswers, registrationsRepository)),
+        bind[DraftIdRetrievalActionProvider].toInstance(fakeDraftIdAction(userAnswers)),
         bind[RegistrationsRepository].toInstance(registrationsRepository),
         bind[SubmissionService].toInstance(mockSubmissionService),
         bind[CreateDraftRegistrationService].toInstance(mockCreateDraftRegistrationService),

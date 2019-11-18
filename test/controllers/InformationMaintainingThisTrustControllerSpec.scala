@@ -59,7 +59,7 @@ class InformationMaintainingThisTrustControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation (result).value mustEqual routes.WhatIsTheUTRController.onPageLoad(NormalMode, fakeDraftId).url
+      redirectLocation (result).value mustEqual routes.WhatIsTheUTRVariationsController.onPageLoad().url
 
       application.stop()
     }

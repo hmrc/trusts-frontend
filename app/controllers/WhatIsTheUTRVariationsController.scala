@@ -21,7 +21,6 @@ import connector.TrustsStoreConnector
 import controllers.actions._
 import forms.WhatIsTheUTRFormProvider
 import javax.inject.Inject
-import models.{Mode, NormalMode}
 import pages.WhatIsTheUTRVariationPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -36,7 +35,7 @@ class WhatIsTheUTRVariationsController @Inject()(
                                                   override val messagesApi: MessagesApi,
                                                   registrationsRepository: RegistrationsRepository,
                                                   identify: IdentifierAction,
-                                                  getData: DataRetrievalActionImpl,
+                                                  getData: DataRetrievalAction,
                                                   requireData: DataRequiredAction,
                                                   formProvider: WhatIsTheUTRFormProvider,
                                                   val controllerComponents: MessagesControllerComponents,

@@ -19,7 +19,6 @@ package controllers
 import controllers.actions._
 import forms.DeclarationChangesNoChangesFormProvider
 import javax.inject.Inject
-import models.Mode
 import navigation.Navigator
 import pages.{DeclarationChangesNoChangesPage, DeclarationWhatNextPage}
 import play.api.data.Form
@@ -36,7 +35,7 @@ class DeclarationNoChangesController @Inject()(
                                        registrationsRepository: RegistrationsRepository,
                                        navigator: Navigator,
                                        identify: IdentifierAction,
-                                       getData: DataRetrievalActionImpl,
+                                       getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
                                        requiredAnswer: RequiredAnswerActionProvider,
                                        formProvider: DeclarationChangesNoChangesFormProvider,

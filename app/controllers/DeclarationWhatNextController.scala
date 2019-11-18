@@ -36,7 +36,7 @@ class DeclarationWhatNextController @Inject()(
                                                sessionRepository: RegistrationsRepository,
                                                navigator: Navigator,
                                                identify: IdentifierAction,
-                                               getData: DataRetrievalActionImpl,
+                                               getData: DataRetrievalAction,
                                                requireData: DataRequiredAction,
                                                formProvider: DeclarationWhatNextFormProvider,
                                                val controllerComponents: MessagesControllerComponents,

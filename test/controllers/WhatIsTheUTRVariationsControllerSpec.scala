@@ -108,7 +108,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual "/trusts-registration/id/status"
+      redirectLocation(result).value mustEqual "/trusts-registration/status"
 
       application.stop()
     }
