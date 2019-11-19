@@ -26,7 +26,7 @@ class ConfirmationViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "confirmationPage"
   val refNumber = "XC TRN 00 00 00 49 11"
-  val accessibleRefNumber = formatTRN(refNumber)
+  val accessibleRefNumber = formatReferenceNumber(refNumber)
   val postHMRC = "https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts"
 
   val name = "John Smith"

@@ -117,7 +117,7 @@ class DeclarationNoChangesControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.DeclarationNoChangesController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.DeclarationNoChangesController.onPageLoad().url // TODO Redirect to variation confirmation page
 
       application.stop()
     }

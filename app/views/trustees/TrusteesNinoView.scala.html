@@ -39,7 +39,8 @@
           label = messages("trusteesNino.heading", trusteeName),
           labelClass = Some("heading-large"),
           labelAsHeading = true,
-          hint = Some(messages(s"trusteesNino.hint"))
+          hint = Some(messages(s"trusteesNino.hint")),
+          readerHint = Some(messages("trusteesNino.hint.reader"))
         )
 
         @components.submit_button()

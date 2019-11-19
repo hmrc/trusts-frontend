@@ -25,10 +25,33 @@ class UTRSentByPostViewSpec extends ViewBehaviours {
 
     val view = viewFor[UTRSentByPostView](Some(emptyUserAnswers))
 
-    val applyView = view.apply()(fakeRequest, messages)
+    val applyView = view.apply(isAgent = false)(fakeRequest, messages)
 
     behave like normalPage(applyView, "UTRSentByPost", "paragraph1", "paragraph2")
 
- 
+    behave like pageWithBackLink(applyView)
+  }
+
+  "when rendered for an Organisation" must {
+
+    "not render Return to register paragraph" in {
+      val view = viewFor[UTRSentByPostView](Some(emptyUserAnswers))
+      val applyView = view.apply(isAgent = false)(fakeRequest, messages)
+
+      val doc = asDocument(applyView)
+      assertNotRenderedById(doc, "saved-registrations")
+    }
+
+  }
+
+  "when rendered for an Agent" must {
+
+    "render Return to register paragraph" in {
+      val view = viewFor[UTRSentByPostView](Some(emptyUserAnswers))
+      val applyView = view.apply(isAgent = true)(fakeRequest, messages)
+
+      val doc = asDocument(applyView)
+      assertRenderedById(doc, "saved-registrations")
+    }
   }
 }
