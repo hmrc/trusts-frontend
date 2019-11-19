@@ -18,8 +18,8 @@ package utils
 
 object AccessibilityHelper {
 
-  def formatTRN(trn: String): String = {
-    val trnFormatter = trn.replace(" ", "").replace("", " ").trim()
+  def formatReferenceNumber(referenceNumber: String): String = {
+    val trnFormatter = referenceNumber.replace(" ", "").replace("", " ").trim()
     trnFormatter
   }
 

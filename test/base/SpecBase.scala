@@ -26,7 +26,7 @@ import org.scalatestplus.play.guice._
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.inject.{Injector, bind}
-import play.api.mvc.PlayBodyParsers
+import play.api.mvc.BodyParsers
 import play.api.test.FakeRequest
 import repositories.RegistrationsRepository
 import services.{CreateDraftRegistrationService, SubmissionService}
@@ -51,7 +51,7 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
 
   def fakeDraftId: String = TestUserAnswers.draftId
 
-  def injectedParsers = injector.instanceOf[PlayBodyParsers]
+  def injectedParsers = injector.instanceOf[BodyParsers.Default]
 
   implicit def messages: Messages = messagesApi.preferred(fakeRequest)
 

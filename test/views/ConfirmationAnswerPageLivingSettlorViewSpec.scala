@@ -129,14 +129,14 @@ class ConfirmationAnswerPageLivingSettlorViewSpec extends ViewBehaviours {
 
     val sections = new PrintUserAnswersHelper(countryOptions).summary(fakeDraftId, userAnswers)
 
-    val applyView = view.apply(sections, formatTRN("XNTRN000000001"), trnDateTime)(fakeRequest, messages)
+    val applyView = view.apply(sections, formatReferenceNumber("XNTRN000000001"), trnDateTime)(fakeRequest, messages)
 
     behave like normalPage(applyView, "confirmationAnswerPage")
 
     val doc = asDocument(applyView)
 
     "assert header content" in {
-      assertContainsText(doc, messages("confirmationAnswerPage.paragraph1", formatTRN("XNTRN000000001")))
+      assertContainsText(doc, messages("confirmationAnswerPage.paragraph1", formatReferenceNumber("XNTRN000000001")))
       assertContainsText(doc, messages("confirmationAnswerPage.paragraph2", trnDateTime))
     }
 
