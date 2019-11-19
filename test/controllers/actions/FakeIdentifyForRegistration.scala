@@ -23,13 +23,18 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class FakeIdentifierAction @Inject()(affinityGroup: AffinityGroup)
-                                    (override val parser: BodyParsers.Default,
+class FakeIdentifyForRegistration @Inject()(affinityGroup: AffinityGroup)
+                                           (override val parser: BodyParsers.Default,
                                      trustsAuth: TrustsAuth)
-                                    (override implicit val executionContext: ExecutionContext)
+                                           (override implicit val executionContext: ExecutionContext)
   extends IdentifyForRegistration("", parser, trustsAuth) {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] =
     block(IdentifierRequest(request, "id", affinityGroup))
 
+  override protected def composeAction[A](action: Action[A]): Action[A] = new FakeAutheticatedIdentifier(action, trustsAuth)
+}
+
+class FakeAutheticatedIdentifier[A](action: Action[A], trustsAuth: TrustsAuth) extends AuthenticatedIdentifierAction(action, trustsAuth)  {
+  override def apply(request: Request[A]): Future[Result] = action(request)
 }

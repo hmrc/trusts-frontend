@@ -17,12 +17,11 @@
 package controllers.actions
 
 import com.google.inject.Inject
-import config.FrontendAppConfig
 import controllers.routes
 import models.requests.IdentifierRequest
 import play.api.Logger
 import play.api.mvc.Results._
-import play.api.mvc.{ActionBuilder, ActionFunction, Request, Result, _}
+import play.api.mvc.{Request, Result, _}
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.{Retrievals, ~}

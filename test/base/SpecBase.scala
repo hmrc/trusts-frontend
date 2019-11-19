@@ -34,6 +34,8 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 import utils.TestUserAnswers
 import utils.annotations.{LivingSettlor, PropertyOrLand}
 
+import scala.concurrent.ExecutionContext
+
 trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked with BeforeAndAfter {
   this: TestSuite =>
 
@@ -57,6 +59,8 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
 
   def trustsAuth = injector.instanceOf[TrustsAuth]
 
+  implicit def executionContext = injector.instanceOf[ExecutionContext]
+
   implicit def messages: Messages = messagesApi.preferred(fakeRequest)
 
   lazy val fakeNavigator = new FakeNavigator(frontendAppConfig)
@@ -68,7 +72,7 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
     new GuiceApplicationBuilder()
       .overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],
-        bind[IdentifyForRegistration].toInstance(new FakeIdentifierAction(affinityGroup)(injectedDefaultParsers, trustsAuth)),
+        bind[IdentifyForRegistration].toInstance(new FakeIdentifyForRegistration(affinityGroup)(injectedDefaultParsers, trustsAuth)),
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
         bind[DraftIdRetrievalActionProvider].toInstance(
           new FakeDraftIdRetrievalActionProvider("draftId", RegistrationStatus.InProgress, userAnswers, registrationsRepository)),

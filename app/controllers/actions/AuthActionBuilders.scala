@@ -17,16 +17,13 @@
 package controllers.actions
 
 import com.google.inject.Inject
-import config.FrontendAppConfig
 import models.requests.IdentifierRequest
 import play.api.Logger
+import play.api.mvc.Results.Redirect
 import play.api.mvc.{Request, Result, _}
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.http.HeaderCarrier
-import play.api.mvc.Results.Redirect
 import uk.gov.hmrc.play.HeaderCarrierConverter
-import controllers.routes
-import pages.TrustRegisteredOnlinePage
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -52,7 +49,7 @@ class IdentifyForPlayback @Inject()(utr: String,
         // relationship does not exist
         Logger.info(s"[IdentifyForPlayback] Relationship does not exist in Trust IV for user due to $msg")
         request match {
-          case req: IdentifierRequest[A] => Future.successful(Redirect(controllers.routes.IndexController.onPageLoad()))
+          case _: IdentifierRequest[A] => Future.successful(Redirect(controllers.routes.IndexController.onPageLoad()))
           case _ => Future.successful(trustsAuth.redirectToLogin)
         }
     }
@@ -73,8 +70,10 @@ class IdentifyForRegistration @Inject()(utr: String,
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
     request match {
-      case req: IdentifierRequest[A] => block(req)
-      case _ => Future.successful(trustsAuth.redirectToLogin)
+      case req: IdentifierRequest[A] =>
+        block(req)
+      case _ =>
+        Future.successful(trustsAuth.redirectToLogin)
     }
   }
 
