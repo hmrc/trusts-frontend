@@ -16,16 +16,15 @@
 
 package controllers
 
-import config.FrontendAppConfig
 import controllers.actions._
-import handlers.ErrorHandler
 import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
+import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.VariationsConfirmationView
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 class VariationsConfirmationController @Inject()(
                                        override val messagesApi: MessagesApi,
@@ -38,8 +37,11 @@ class VariationsConfirmationController @Inject()(
   def onPageLoad() = identify {
     implicit request =>
 
+      val isAgent = request.affinityGroup == Agent
+      val agentOverviewUrl = routes.AgentOverviewController.onPageLoad().url
+
       val fakeTvn = "XC TVN 000 000 4912"
 
-      Ok(view(fakeTvn))
+      Ok(view(fakeTvn, isAgent, agentOverviewUrl))
   }
 }
