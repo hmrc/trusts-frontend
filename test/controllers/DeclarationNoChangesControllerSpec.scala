@@ -30,8 +30,6 @@ import models.DeclarationWhatNext.DeclareTheTrustIsUpToDate
 
 class DeclarationNoChangesControllerSpec extends SpecBase {
 
-  def confirmationRoute = Call("GET", "/confirmation")
-
   val formProvider = new DeclarationChangesNoChangesFormProvider()
   val form = formProvider()
   val name = "name"
@@ -56,7 +54,7 @@ class DeclarationNoChangesControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       val view = application.injector.instanceOf[DeclarationChangesNoChangesView]
-
+      
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
@@ -119,7 +117,7 @@ class DeclarationNoChangesControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad(userAnswersId).url
+      redirectLocation(result).value mustEqual routes.DeclarationNoChangesController.onPageLoad().url
 
       application.stop()
     }
