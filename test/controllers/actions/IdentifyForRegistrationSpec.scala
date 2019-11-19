@@ -18,23 +18,20 @@ package controllers.actions
 
 import base.SpecBase
 import config.FrontendAppConfig
-import controllers.routes
-import org.mockito.Matchers.any
-import org.mockito.Mockito._
 import play.api.mvc.{Action, AnyContent, Results}
-import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core._
-import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
-
-import scala.concurrent.Future
 
 class IdentifyForRegistrationSpec extends SpecBase {
 
-  type RetrievalType = Option[String] ~ Option[AffinityGroup] ~ Enrolments
-
+  val tmp = new IdentifyForRegistration("123456789")
+  val action = app.injector.instanceOf[IdentifyForRegistration]
+  val x = action = {
+    _ => Results.Ok
+  }
   val mockAuthConnector: AuthConnector = mock[AuthConnector]
   val appConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
-  val fakeAction: Action[AnyContent] = Action { _ => Results.Ok }
+
+  val fakeAction: Action[AnyContent] =  { _ => Results.Ok }
 
   lazy override val trustsAuth = new TrustsAuth(mockAuthConnector, appConfig)
 
