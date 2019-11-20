@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 
-package navigation
+package pages
 
-import javax.inject.Inject
-import models.DeclarationWhatNext.DeclareTheTrustIsUpToDate
-import models.UserAnswers
-import pages.DeclarationWhatNextPage
+import models.DeclarationChangesNoChanges
+import pages.behaviours.PageBehaviours
 
-class VariationsNavigator @Inject()() {
 
-  def declarationWhatsNextPage(answers: UserAnswers) = {
-    answers.get(DeclarationWhatNextPage) match {
-      case Some(DeclareTheTrustIsUpToDate) =>
-        controllers.routes.DeclarationNoChangesController.onPageLoad()
-      case _ =>
-        controllers.routes.DeclarationWhatNextController.onPageLoad()
-    }
+class DeclarationChangesNoChangesPageSpec extends PageBehaviours {
+
+  "DeclarationChangesNoChangesPage" must {
+
+    beRetrievable[DeclarationChangesNoChanges](DeclarationChangesNoChangesPage)
+
+    beSettable[DeclarationChangesNoChanges](DeclarationChangesNoChangesPage)
+
+    beRemovable[DeclarationChangesNoChanges](DeclarationChangesNoChangesPage)
   }
 }

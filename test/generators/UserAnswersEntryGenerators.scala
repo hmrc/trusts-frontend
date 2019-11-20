@@ -365,6 +365,14 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
+  implicit lazy val arbitraryDeclarationChangesNoChangesUserAnswersEntry: Arbitrary[(DeclarationChangesNoChangesPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[DeclarationChangesNoChangesPage.type]
+        value <- arbitrary[DeclarationChangesNoChanges].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
   implicit lazy val arbitraryWhatTypeOfBeneficiaryUserAnswersEntry: Arbitrary[(WhatTypeOfBeneficiaryPage.type, JsValue)] =
     Arbitrary {
       for {
