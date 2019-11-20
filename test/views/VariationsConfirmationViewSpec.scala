@@ -28,7 +28,6 @@ class VariationsConfirmationViewSpec extends ViewBehaviours {
   val fakeTvn = "XC TVN 000 000 4912"
   val accessibleRefNumber = formatReferenceNumber(fakeTvn)
 
-  val name = "John Smith"
 
   private def variationsTrust(view: HtmlFormat.Appendable) : Unit = {
 
@@ -47,6 +46,18 @@ class VariationsConfirmationViewSpec extends ViewBehaviours {
       assertContainsText(doc, "Declaring the trust is up to date")
 
       assertContainsText(doc, "You need to declare every year the details we have are up to date. This needs to be done through the Trust Registration Service and Self Assessment online or the Trust and Estate Tax Return form (SA900).")
+    }
+
+  }
+
+  private def agentVariationsTrust(view: HtmlFormat.Appendable) : Unit = {
+
+    "display return to agent overview link" in {
+
+      val doc = asDocument(view)
+      val agentOverviewLink = doc.getElementById("agent-overview")
+      assertAttributeValueForElement(agentOverviewLink, "href", "#")
+      assertContainsTextForId(doc, "agent-overview", "return to register and maintain a trust for a client.")
     }
 
   }

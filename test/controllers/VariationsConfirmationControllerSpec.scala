@@ -40,9 +40,10 @@ class VariationsConfirmationControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(fakeTvn)(fakeRequest, messages).toString
+        view(fakeTvn, false, "#")(fakeRequest, messages).toString
 
       application.stop()
     }
   }
+
 }
