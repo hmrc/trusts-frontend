@@ -19,24 +19,29 @@ package controllers
 import controllers.actions._
 import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.UTRSentByPostView
+import views.html.VariationsConfirmationView
 
 import scala.concurrent.ExecutionContext
 
-class UTRSentByPostController @Inject()(
+class VariationsConfirmationController @Inject()(
                                        override val messagesApi: MessagesApi,
-                                       identify: IdentifyForRegistration,
+                                       identify: IdentifyForPlayback,
                                        val controllerComponents: MessagesControllerComponents,
-                                       view: UTRSentByPostView
+                                       view: VariationsConfirmationView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = identify {
 
+  def onPageLoad() = identify {
     implicit request =>
+
       val isAgent = request.affinityGroup == Agent
-      Ok(view(isAgent))
+      val agentOverviewUrl = routes.AgentOverviewController.onPageLoad().url
+
+      val fakeTvn = "XC TVN 000 000 4912"
+
+      Ok(view(fakeTvn, isAgent, agentOverviewUrl))
   }
 }

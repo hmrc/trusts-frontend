@@ -66,6 +66,7 @@ class IdentifyForRegistration @Inject()(utr: String,
                                    )(override implicit val executionContext: ExecutionContext)
   extends ActionBuilder[IdentifierRequest, AnyContent]  {
 
+  def composedAuthAction[A](action: Action[A]) = new AuthenticatedIdentifierAction(action, trustsAuth)
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
@@ -78,5 +79,5 @@ class IdentifyForRegistration @Inject()(utr: String,
     }
   }
 
-  override protected def composeAction[A](action: Action[A]): Action[A] = new AuthenticatedIdentifierAction(action, trustsAuth)
+  override def composeAction[A](action: Action[A]): Action[A] = composedAuthAction(action)
 }

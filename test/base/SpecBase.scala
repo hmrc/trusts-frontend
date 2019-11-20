@@ -53,9 +53,7 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
 
   def fakeDraftId: String = TestUserAnswers.draftId
 
-  def injectedParsers = injector.instanceOf[PlayBodyParsers]
-
-  val injectedDefaultParsers =injector.instanceOf[BodyParsers.Default]
+  def injectedParsers = injector.instanceOf[BodyParsers.Default]
 
   def trustsAuth = injector.instanceOf[TrustsAuth]
 
@@ -72,7 +70,7 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
     new GuiceApplicationBuilder()
       .overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],
-        bind[IdentifyForRegistration].toInstance(new FakeIdentifyForRegistration(affinityGroup)(injectedDefaultParsers, trustsAuth)),
+        bind[IdentifyForRegistration].toInstance(new FakeIdentifyForRegistration(affinityGroup)(injectedParsers, trustsAuth)),
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
         bind[DraftIdRetrievalActionProvider].toInstance(
           new FakeDraftIdRetrievalActionProvider("draftId", RegistrationStatus.InProgress, userAnswers, registrationsRepository)),
