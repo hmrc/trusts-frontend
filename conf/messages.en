@@ -921,7 +921,7 @@ confirmationPage.paragraph3 = You cannot make online changes to the trust. To ch
 confirmationPage.paragraph4 = You must keep a record of any other changes until you can change them using the online service.
 
 confirmationPage.agent.you.can = You can
-confirmationPage.agent.link = return to register and maintain a trust for a client.
+confirmationPage.agent.link = return to register and maintain a trust for a client
 
 declaration.title = Declaration
 declaration.heading = Declaration
