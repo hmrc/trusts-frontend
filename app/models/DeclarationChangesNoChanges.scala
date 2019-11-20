@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-package navigation
+package models
 
-import javax.inject.Inject
-import models.DeclarationWhatNext.DeclareTheTrustIsUpToDate
-import models.UserAnswers
-import pages.DeclarationWhatNextPage
+import play.api.libs.json.{Json, OFormat}
 
-class VariationsNavigator @Inject()() {
+case class DeclarationChangesNoChanges(name: FullName, email: Option[String])
 
-  def declarationWhatsNextPage(answers: UserAnswers) = {
-    answers.get(DeclarationWhatNextPage) match {
-      case Some(DeclareTheTrustIsUpToDate) =>
-        controllers.routes.DeclarationNoChangesController.onPageLoad()
-      case _ =>
-        controllers.routes.DeclarationWhatNextController.onPageLoad()
-    }
-  }
+object DeclarationChangesNoChanges {
+
+  implicit lazy val formats: OFormat[DeclarationChangesNoChanges] = Json.format[DeclarationChangesNoChanges]
+
 }

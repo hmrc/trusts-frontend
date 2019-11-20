@@ -32,7 +32,7 @@ class DeclarationWhatNextViewSpec extends ViewBehaviours {
   val view = viewFor[DeclarationWhatNextView](Some(emptyUserAnswers))
 
   def applyView(form: Form[_]): HtmlFormat.Appendable =
-    view.apply(form, fakeDraftId)(fakeRequest, messages)
+    view.apply(form)(fakeRequest, messages)
 
   "DeclarationWhatNextView" must {
 

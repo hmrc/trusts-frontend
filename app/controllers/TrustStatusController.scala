@@ -18,10 +18,9 @@ package controllers
 
 import config.FrontendAppConfig
 import connector.{TrustConnector, TrustsStoreConnector}
-import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider, IdentifierAction}
+import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import handlers.ErrorHandler
 import javax.inject.Inject
-import models.NormalMode
 import models.playback.{Closed, Processed, Processing, UtrNotFound}
 import models.requests.DataRequest
 import navigation.Navigator
@@ -30,7 +29,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.{PlaybackRepository, RegistrationsRepository}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.playback.status.{ClosedErrorView, DoesNotMatchErrorView, IVDownView, StillProcessingErrorView, TrustLockedView}
+import views.html.playback.status._
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -40,7 +39,7 @@ class TrustStatusController @Inject()(
                                        playbackRepository: PlaybackRepository,
                                        navigator: Navigator,
                                        identify: IdentifierAction,
-                                       getData: DraftIdRetrievalActionProvider,
+                                       getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
                                        closedView: ClosedErrorView,
                                        stillProcessingView: StillProcessingErrorView,
@@ -55,73 +54,73 @@ class TrustStatusController @Inject()(
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
-  def closed(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+  def closed(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      enforceUtr(draftId) { utr =>
-        Future.successful(Ok(closedView(draftId, request.affinityGroup, utr)))
+      enforceUtr() { utr =>
+        Future.successful(Ok(closedView(request.affinityGroup, utr)))
       }
   }
 
-  def processing(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+  def processing(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      enforceUtr(draftId) { utr =>
-        Future.successful(Ok(stillProcessingView(draftId, request.affinityGroup, utr)))
+      enforceUtr() { utr =>
+        Future.successful(Ok(stillProcessingView(request.affinityGroup, utr)))
       }
   }
 
-  def notFound(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+  def notFound(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      enforceUtr(draftId) { utr =>
-        Future.successful(Ok(doesNotMatchView(draftId, request.affinityGroup)))
+      enforceUtr() { utr =>
+        Future.successful(Ok(doesNotMatchView(request.affinityGroup)))
       }
   }
 
-  def locked(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+  def locked(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      enforceUtr(draftId) { utr =>
+      enforceUtr() { utr =>
         Future.successful(Ok(lockedView(utr)))
       }
   }
 
-  def down(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+  def down(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      enforceUtr(draftId) { _ =>
-        Future.successful(ServiceUnavailable(ivDownView(draftId, request.affinityGroup)))
+      enforceUtr() { _ =>
+        Future.successful(ServiceUnavailable(ivDownView(request.affinityGroup)))
       }
   }
 
-  def status(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+  def status(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      enforceUtr(draftId) { utr =>
-        checkIfLocked(draftId, utr)
+      enforceUtr() { utr =>
+        checkIfLocked(utr)
       }
   }
 
-  def checkIfLocked(draftId: String, utr: String)(implicit request: DataRequest[AnyContent]): Future[Result] = {
+  def checkIfLocked(utr: String)(implicit request: DataRequest[AnyContent]): Future[Result] = {
     trustStoreConnector.get(request.internalId, utr).flatMap {
       case Some(claim) if claim.trustLocked =>
-        Future.successful(Redirect(routes.TrustStatusController.locked(draftId)))
+        Future.successful(Redirect(routes.TrustStatusController.locked()))
       case _ =>
-        tryToPlayback(draftId, utr)
+        tryToPlayback(utr)
     }
   }
 
-  def tryToPlayback(draftId: String, utr: String)(implicit request: DataRequest[AnyContent]): Future[Result] = {
+  def tryToPlayback(utr: String)(implicit request: DataRequest[AnyContent]): Future[Result] = {
     trustConnector.playback(utr) flatMap {
-      case Closed => Future.successful(Redirect(routes.TrustStatusController.closed(draftId)))
-      case Processing => Future.successful(Redirect(routes.TrustStatusController.processing(draftId)))
-      case UtrNotFound => Future.successful(Redirect(routes.TrustStatusController.notFound(draftId)))
+      case Closed => Future.successful(Redirect(routes.TrustStatusController.closed()))
+      case Processing => Future.successful(Redirect(routes.TrustStatusController.processing()))
+      case UtrNotFound => Future.successful(Redirect(routes.TrustStatusController.notFound()))
       case Processed(playback) =>
         playbackRepository.store(request.internalId, playback) map { _ =>
           Redirect(config.claimATrustUrl(utr))
         }
-      case _ => Future.successful(Redirect(routes.TrustStatusController.down(draftId)))
+      case _ => Future.successful(Redirect(routes.TrustStatusController.down()))
     }
   }
 
-  def enforceUtr(draftId: String)(block: String => Future[Result])(implicit request: DataRequest[AnyContent]): Future[Result] = {
+  def enforceUtr()(block: String => Future[Result])(implicit request: DataRequest[AnyContent]): Future[Result] = {
     request.userAnswers.get(WhatIsTheUTRVariationPage) match {
-      case None => Future.successful(Redirect(routes.WhatIsTheUTRVariationsController.onPageLoad(NormalMode, draftId)))
+      case None => Future.successful(Redirect(routes.WhatIsTheUTRVariationsController.onPageLoad()))
       case Some(utr) => block(utr)
     }
   }

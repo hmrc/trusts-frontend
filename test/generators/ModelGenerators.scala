@@ -83,6 +83,16 @@ trait ModelGenerators {
     }
   }
 
+  implicit lazy val arbitraryDeclarationChangesNoChanges : Arbitrary[DeclarationChangesNoChanges] = {
+    Arbitrary {
+      for {
+        str <- arbitrary[String]
+      } yield {
+        DeclarationChangesNoChanges(FullName(str, Some(str), str), Some(str))
+      }
+    }
+  }
+
   implicit lazy val arbitraryInternationalAddress: Arbitrary[InternationalAddress] =
     Arbitrary {
       for {

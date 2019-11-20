@@ -43,13 +43,7 @@
 
     <p>@messages("confirmationAnswerPage.paragraph2", declarationSent)</p>
 
-    <div class="govuk-warning-text">
-        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-        <strong class="govuk-warning-text__text">
-            <span class="govuk-warning-text__assistive">@messages("site.warning")</span>
-            @messages("confirmationAnswerPage.warning")
-        </strong>
-    </div>
+    @components.warning("confirmationAnswerPage")
 
     @for(section <- answerSections){
         @{

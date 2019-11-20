@@ -27,7 +27,6 @@ class DeclarationFormProvider @Inject() extends Mappings {
   def apply(): Form[FullName] =
   Form(
     mapping(
-
       "firstName" -> text("declaration.error.firstName.required")
         .verifying(
           firstError(

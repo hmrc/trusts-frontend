@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-package navigation
+package pages
 
-import javax.inject.Inject
-import models.DeclarationWhatNext.DeclareTheTrustIsUpToDate
-import models.UserAnswers
-import pages.DeclarationWhatNextPage
+import models.DeclarationChangesNoChanges
+import play.api.libs.json.JsPath
 
-class VariationsNavigator @Inject()() {
+case object DeclarationChangesNoChangesPage extends QuestionPage[DeclarationChangesNoChanges] {
 
-  def declarationWhatsNextPage(answers: UserAnswers) = {
-    answers.get(DeclarationWhatNextPage) match {
-      case Some(DeclareTheTrustIsUpToDate) =>
-        controllers.routes.DeclarationNoChangesController.onPageLoad()
-      case _ =>
-        controllers.routes.DeclarationWhatNextController.onPageLoad()
-    }
-  }
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "declaration"
 }
