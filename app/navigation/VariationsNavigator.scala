@@ -16,26 +16,17 @@
 
 package navigation
 
-import config.FrontendAppConfig
-import controllers.routes
 import javax.inject.Inject
 import models.DeclarationWhatNext.DeclareTheTrustIsUpToDate
 import models.UserAnswers
-import pages.{DeclarationWhatNextPage, Page}
-import play.api.mvc.Call
-import uk.gov.hmrc.auth.core.AffinityGroup
+import pages.DeclarationWhatNextPage
 
-class VariationsNavigator @Inject()(config: FrontendAppConfig) extends Navigator(config) {
+class VariationsNavigator @Inject()() {
 
-  override protected def normalRoutes(draftId: String): Page => AffinityGroup => UserAnswers => Call = {
-    case DeclarationWhatNextPage => _ => declarationWhatsNextPage(draftId)
-    case _ => _ => _ => routes.IndexController.onPageLoad()
-  }
-
-  private def declarationWhatsNextPage(draftId: String)(answers: UserAnswers) = {
+  def declarationWhatsNextPage(answers: UserAnswers) = {
     answers.get(DeclarationWhatNextPage) match {
       case Some(DeclareTheTrustIsUpToDate) =>
-        controllers.routes.DeclarationController.onPageLoad(draftId)
+        controllers.routes.DeclarationNoChangesController.onPageLoad()
       case _ =>
         controllers.routes.DeclarationWhatNextController.onPageLoad()
     }
