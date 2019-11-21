@@ -17,9 +17,8 @@
 package controllers.actions
 
 import javax.inject.Inject
-import models.{RegistrationStatus, UserAnswers}
+import models.UserAnswers
 import models.requests.{IdentifierRequest, OptionalDataRequest}
-import play.api.Logger
 import play.api.mvc.ActionTransformer
 import repositories.RegistrationsRepository
 
