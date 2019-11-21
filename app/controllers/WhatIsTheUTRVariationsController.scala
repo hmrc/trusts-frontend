@@ -23,6 +23,7 @@ import forms.WhatIsTheUTRFormProvider
 import javax.inject.Inject
 import models.AgentTrustsResponse.NotClaimed
 import models.Mode
+import models.requests.DataRequest
 import pages.WhatIsTheUTRVariationPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -63,7 +64,6 @@ class WhatIsTheUTRVariationsController @Inject()(
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(view(formWithErrors, routes.WhatIsTheUTRVariationsController.onSubmit()))),
@@ -81,9 +81,7 @@ class WhatIsTheUTRVariationsController @Inject()(
                 case NotClaimed => Redirect(routes.TrustNotClaimedController.onPageLoad())
                 case _ =>
 
-                  val agentEnrolled = request.enrolments.enrolments exists { enrolment =>
-                    enrolment.key equals config.serviceName
-                  }
+                  val agentEnrolled = checkEnrolmentOfAgent(value)
 
                   if(agentEnrolled){
                     Redirect(routes.TrustStatusController.status())
@@ -110,4 +108,12 @@ class WhatIsTheUTRVariationsController @Inject()(
         }
       )
   }
+
+  private def checkEnrolmentOfAgent(utr: String)(implicit request: DataRequest[AnyContent]) = {
+    request.enrolments.enrolments
+      .find ( _.key equals config.serviceName )
+      .flatMap ( _.identifiers.find( _.key equals "SAUTR" ) )
+      .exists( _.value equals utr)
+  }
+
 }
