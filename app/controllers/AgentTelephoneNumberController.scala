@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.AgentTelephoneNumber
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.AgentTelephoneNumberPage
+import pages.{AgentNamePage, AgentTelephoneNumberPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -39,32 +39,41 @@ class AgentTelephoneNumberController @Inject()(
                                                 hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                                 getData: DraftIdRetrievalActionProvider,
                                                 requireData: DataRequiredAction,
+                                                requiredAnswer: RequiredAnswerActionProvider,
                                                 formProvider: AgentTelephoneNumber,
                                                 val controllerComponents: MessagesControllerComponents,
                                                 view: AgentTelephoneNumberView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(draftId: String) = identify andThen hasAgentAffinityGroup() andThen getData(draftId) andThen requireData
+  private def actions(draftId: String) =
+    identify andThen
+      hasAgentAffinityGroup() andThen
+      getData(draftId) andThen requireData andThen
+      requiredAnswer(RequiredAnswer(AgentNamePage, routes.AgentNameController.onPageLoad(NormalMode, draftId)))
 
-  val form = formProvider()
+  val form: Form[String] = formProvider()
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
+
+      val agencyName = request.userAnswers.get(AgentNamePage).get.toString
 
       val preparedForm = request.userAnswers.get(AgentTelephoneNumberPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId))
+      Ok(view(preparedForm, mode, draftId, agencyName))
   }
 
   def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
+      val agencyName = request.userAnswers.get(AgentNamePage).get
+
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, agencyName))),
 
         value => {
           for {
