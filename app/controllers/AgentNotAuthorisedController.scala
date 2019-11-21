@@ -16,7 +16,7 @@
 
 package controllers
 
-import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider, IdentifierAction}
+import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import javax.inject.Inject
 import pages.WhatIsTheUTRVariationPage
 import play.api.i18n.I18nSupport
@@ -27,12 +27,12 @@ import views.html.AgentNotAuthorisedView
 class AgentNotAuthorisedController @Inject()(
                                         val controllerComponents: MessagesControllerComponents,
                                         identify: IdentifierAction,
-                                        getData: DraftIdRetrievalActionProvider,
+                                        getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
                                         view: AgentNotAuthorisedView
                                       ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData)  {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData)  {
     implicit request =>
       request.userAnswers.get(WhatIsTheUTRVariationPage) map { utr =>
         Ok(view(utr))

@@ -36,7 +36,7 @@ class TrustNotClaimedControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-      val request = FakeRequest(GET, routes.TrustNotClaimedController.onPageLoad(fakeDraftId).url)
+      val request = FakeRequest(GET, routes.TrustNotClaimedController.onPageLoad().url)
 
       val result = route(application, request).value
 

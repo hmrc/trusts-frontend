@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,23 +12,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package navigation
+@(messageKeyPrefix: String)(implicit messages: Messages)
 
-import javax.inject.Inject
-import models.DeclarationWhatNext.DeclareTheTrustIsUpToDate
-import models.UserAnswers
-import pages.DeclarationWhatNextPage
-
-class VariationsNavigator @Inject()() {
-
-  def declarationWhatsNextPage(answers: UserAnswers) = {
-    answers.get(DeclarationWhatNextPage) match {
-      case Some(DeclareTheTrustIsUpToDate) =>
-        controllers.routes.DeclarationNoChangesController.onPageLoad()
-      case _ =>
-        controllers.routes.DeclarationWhatNextController.onPageLoad()
-    }
-  }
-}
+<div class="govuk-warning-text">
+    <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+    <strong class="govuk-warning-text__text">
+        <span class="govuk-warning-text__assistive">@messages("site.warning")</span>
+        @messages(s"$messageKeyPrefix.warning")
+    </strong>
+</div>

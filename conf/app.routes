@@ -2,6 +2,22 @@
 
 GET        /                                            controllers.IndexController.onPageLoad()
 
+#variations
+
+GET        /variations/enter-trust-utr                        controllers.WhatIsTheUTRVariationsController.onPageLoad()
+POST       /variations/enter-trust-utr                        controllers.WhatIsTheUTRVariationsController.onSubmit()
+
+GET        /variations/maintain-a-trust/information           controllers.InformationMaintainingThisTrustController.onPageLoad()
+
+GET        /variations/declare-change                        controllers.DeclarationWhatNextController.onPageLoad()
+POST       /variations/declare-change                        controllers.DeclarationWhatNextController.onSubmit()
+
+GET        /variations/declaration                controllers.DeclarationNoChangesController.onPageLoad()
+POST       /variations/declaration                controllers.DeclarationNoChangesController.onSubmit()
+
+
+# Registration
+
 GET        /create-draft-registration                   controllers.CreateDraftRegistrationController.create()
 
 GET        /assets/*file                                controllers.Assets.versioned(path="/public", file: Asset)
@@ -626,25 +642,17 @@ POST       /:draftId/settlors/living/change-holdover-relief                  con
 
 GET        /:draftId/settlors/information-you-need                       controllers.SettlorInfoController.onPageLoad(draftId: String)
 
-GET        /:draftId/enter-trust-utr                        controllers.WhatIsTheUTRVariationsController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/enter-trust-utr                        controllers.WhatIsTheUTRVariationsController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-utr                       controllers.WhatIsTheUTRVariationsController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-utr                       controllers.WhatIsTheUTRVariationsController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
-GET        /:draftId/status/closed                          controllers.TrustStatusController.closed(draftId: String)
-GET        /:draftId/status/processing                      controllers.TrustStatusController.processing(draftId: String)
-GET        /:draftId/status/not-found                       controllers.TrustStatusController.notFound(draftId: String)
-GET        /:draftId/status/down                            controllers.TrustStatusController.down(draftId: String)
-GET        /:draftId/status/locked                          controllers.TrustStatusController.locked(draftId: String)
-GET        /:draftId/status                                 controllers.TrustStatusController.status(draftId: String)
+GET        /status/closed                          controllers.TrustStatusController.closed()
+GET        /status/processing                      controllers.TrustStatusController.processing()
+GET        /status/not-found                       controllers.TrustStatusController.notFound()
+GET        /status/down                            controllers.TrustStatusController.down()
+GET        /status/locked                          controllers.TrustStatusController.locked()
+GET        /status                                 controllers.TrustStatusController.status()
 
-GET        /:draftId/maintain-a-trust/information           controllers.InformationMaintainingThisTrustController.onPageLoad(draftId: String)
+GET        /variations/trust-not-claimed                       controllers.TrustNotClaimedController.onPageLoad()
 
-GET        /:draftId/trust-not-claimed                       controllers.TrustNotClaimedController.onPageLoad(draftId: String)
-
-GET        /:draftId/declare-change                        controllers.DeclarationWhatNextController.onPageLoad(draftId: String)
-POST       /:draftId/declare-change                        controllers.DeclarationWhatNextController.onSubmit(draftId: String)
-
-GET        /:draftId/agent-not-authorised                    controllers.AgentNotAuthorisedController.onPageLoad(draftId: String)
+GET        /variations/agent-not-authorised                    controllers.AgentNotAuthorisedController.onPageLoad()
 
 GET        /:draftId/maintain-saved-registration           controllers.AgentOverviewController.continue(draftId: String)
+

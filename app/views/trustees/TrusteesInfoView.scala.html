@@ -71,13 +71,7 @@
 
     <p>@messages("trusteesInfo.paragraph7")</p>
 
-    <div class="govuk-warning-text">
-        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-        <strong class="govuk-warning-text__text">
-            <span class="govuk-warning-text__assistive">@messages("site.warning")</span>
-            @messages("trusteesInfo.warning")
-        </strong>
-    </div>
+    @components.warning("trusteesInfo")
 
     @components.button_link(messages("site.onlyContinue"), IsThisLeadTrusteeController.onPageLoad(NormalMode, 0, draftId).url)
 }

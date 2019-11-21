@@ -38,7 +38,7 @@ class WhatIsTheUTRVariationsController @Inject()(
                                                   override val messagesApi: MessagesApi,
                                                   registrationsRepository: RegistrationsRepository,
                                                   identify: IdentifierAction,
-                                                  getData: DraftIdRetrievalActionProvider,
+                                                  getData: DataRetrievalAction,
                                                   requireData: DataRequiredAction,
                                                   formProvider: WhatIsTheUTRFormProvider,
                                                   val controllerComponents: MessagesControllerComponents,
@@ -50,7 +50,7 @@ class WhatIsTheUTRVariationsController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(WhatIsTheUTRVariationPage) match {
@@ -58,15 +58,15 @@ class WhatIsTheUTRVariationsController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId, routes.WhatIsTheUTRVariationsController.onSubmit(mode, draftId)))
+      Ok(view(preparedForm, routes.WhatIsTheUTRVariationsController.onSubmit()))
   }
 
-  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, routes.WhatIsTheUTRVariationsController.onSubmit(mode, draftId)))),
+          Future.successful(BadRequest(view(formWithErrors, routes.WhatIsTheUTRVariationsController.onSubmit()))),
 
         value => {
 
@@ -78,7 +78,7 @@ class WhatIsTheUTRVariationsController @Inject()(
 
             lazy val redirectTo = request.affinityGroup match {
               case Agent => enrolmentStoreConnector.getAgentTrusts(value) map {
-                case NotClaimed => Redirect(routes.TrustNotClaimedController.onPageLoad(draftId))
+                case NotClaimed => Redirect(routes.TrustNotClaimedController.onPageLoad())
                 case _ =>
 
                   val agentEnrolled = request.enrolments.enrolments exists { enrolment =>
@@ -86,19 +86,19 @@ class WhatIsTheUTRVariationsController @Inject()(
                   }
 
                   if(agentEnrolled){
-                    Redirect(routes.TrustStatusController.status(draftId))
+                    Redirect(routes.TrustStatusController.status())
                   } else {
-                    Redirect(routes.AgentNotAuthorisedController.onPageLoad(draftId))
+                    Redirect(routes.AgentNotAuthorisedController.onPageLoad())
                   }
 
               }
-              case _ => Future.successful(Redirect(routes.TrustStatusController.status(draftId)))
+              case _ => Future.successful(Redirect(routes.TrustStatusController.status()))
             }
 
             claim match {
               case Some(c) =>
                 if(c.trustLocked) {
-                  Future.successful(Redirect(routes.TrustStatusController.locked(draftId)))
+                  Future.successful(Redirect(routes.TrustStatusController.locked()))
                 } else {
                   redirectTo
                 }

@@ -20,7 +20,6 @@ import base.SpecBase
 import connector.{EnrolmentStoreConnector, TrustClaim, TrustsStoreConnector}
 import forms.WhatIsTheUTRFormProvider
 import models.AgentTrustsResponse.{AgentTrusts, NotClaimed}
-import models.NormalMode
 import org.mockito.Matchers.{any, eq => eqTo}
 import org.mockito.Mockito.when
 import pages.WhatIsTheUTRVariationPage
@@ -30,7 +29,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.auth.core.{Enrolment, EnrolmentIdentifier, Enrolments}
-import views.html.{TrustNotClaimedView, WhatIsTheUTRView}
+import views.html.WhatIsTheUTRView
 
 import scala.concurrent.Future
 
@@ -39,9 +38,9 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
   val formProvider = new WhatIsTheUTRFormProvider()
   val form = formProvider()
 
-  lazy val trustUTRRoute = routes.WhatIsTheUTRVariationsController.onPageLoad(NormalMode, fakeDraftId).url
+  lazy val trustUTRRoute = routes.WhatIsTheUTRVariationsController.onPageLoad().url
 
-  lazy val onSubmit = routes.WhatIsTheUTRVariationsController.onSubmit(NormalMode, fakeDraftId)
+  lazy val onSubmit = routes.WhatIsTheUTRVariationsController.onSubmit()
 
   lazy val trustsStoreConnector: TrustsStoreConnector = mock[TrustsStoreConnector]
 
@@ -62,7 +61,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, onSubmit)(fakeRequest, messages).toString
+        view(form, onSubmit)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -82,7 +81,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("0987654321"), NormalMode, fakeDraftId, onSubmit)(fakeRequest, messages).toString
+        view(form.fill("0987654321"), onSubmit)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -113,7 +112,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual "/trusts-registration/id/status"
+      redirectLocation(result).value mustEqual "/trusts-registration/status"
 
       application.stop()
     }
@@ -145,7 +144,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual controllers.routes.TrustStatusController.locked(fakeDraftId).url
+        redirectLocation(result).value mustEqual controllers.routes.TrustStatusController.locked().url
 
       application.stop()
     }
@@ -181,7 +180,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.TrustNotClaimedController.onPageLoad(fakeDraftId).url
+      redirectLocation(result).value mustEqual routes.TrustNotClaimedController.onPageLoad().url
 
       application.stop()
     }
@@ -217,7 +216,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustBe routes.AgentNotAuthorisedController.onPageLoad(fakeDraftId).url
+      redirectLocation(result).value mustBe routes.AgentNotAuthorisedController.onPageLoad().url
 
       application.stop()
     }
@@ -257,7 +256,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustBe routes.TrustStatusController.status(fakeDraftId).url
+      redirectLocation(result).value mustBe routes.TrustStatusController.status().url
 
       application.stop()
     }
@@ -279,7 +278,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, onSubmit)(fakeRequest, messages).toString
+        view(boundForm, onSubmit)(fakeRequest, messages).toString
 
       application.stop()
     }

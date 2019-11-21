@@ -26,7 +26,7 @@ import views.html.DeclarationWhatNextView
 
 class DeclarationWhatNextControllerSpec extends SpecBase {
 
-  lazy val declarationWhatNextRoute = routes.DeclarationWhatNextController.onPageLoad(fakeDraftId).url
+  lazy val declarationWhatNextRoute = routes.DeclarationWhatNextController.onPageLoad().url
 
   val formProvider = new DeclarationWhatNextFormProvider()
   val form = formProvider()
@@ -46,7 +46,7 @@ class DeclarationWhatNextControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, fakeDraftId)(fakeRequest, messages).toString
+        view(form)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -66,25 +66,25 @@ class DeclarationWhatNextControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(DeclarationWhatNext.values.head), fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill(DeclarationWhatNext.values.head))(fakeRequest, messages).toString
 
       application.stop()
     }
 
-    "redirect to the next page when valid data is submitted" in {
+    "redirect to the declaration page when DeclareTheTrustIsUpToDate is submitted" in {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, declarationWhatNextRoute)
-          .withFormUrlEncodedBody(("value", DeclarationWhatNext.options.head.value))
+          .withFormUrlEncodedBody(("value", DeclarationWhatNext.DeclareTheTrustIsUpToDate.toString))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+      redirectLocation(result).value mustEqual routes.DeclarationNoChangesController.onPageLoad().url
 
       application.stop()
     }
@@ -106,7 +106,7 @@ class DeclarationWhatNextControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm)(fakeRequest, messages).toString
 
       application.stop()
     }

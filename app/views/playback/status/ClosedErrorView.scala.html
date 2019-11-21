@@ -24,7 +24,7 @@
 main_template: MainTemplate
 )
 
-@(draftId: String, affinityGroup: AffinityGroup, utr: String)(implicit request: Request[_], messages: Messages)
+@(affinityGroup: AffinityGroup, utr: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
 title = messages("ClosedError.title")
@@ -40,7 +40,7 @@ title = messages("ClosedError.title")
   @if(affinityGroup == AffinityGroup.Agent) {
     <p>@messages("ClosedError.paragraph4") <a id="register-and-maintain-link" href=@AgentOverviewController.onPageLoad().url>@messages("ClosedError.return.link")</a>.</p>
   } else {
-    @components.button_link("site.try-again", WhatIsTheUTRVariationsController.onPageLoad(NormalMode, draftId).url)
+    @components.button_link("site.try-again", WhatIsTheUTRVariationsController.onPageLoad().url)
   }
 }
 
