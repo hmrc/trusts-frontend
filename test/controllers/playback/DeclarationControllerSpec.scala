@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.playback
 
 import base.SpecBase
 import forms.DeclarationChangesNoChangesFormProvider
-import models.{DeclarationChangesNoChanges, FullName, NormalMode}
-import org.mockito.Mockito._
+import models.DeclarationWhatNext.DeclareTheTrustIsUpToDate
+import models.{DeclarationChangesNoChanges, FullName}
 import pages.{DeclarationChangesNoChangesPage, DeclarationWhatNextPage}
+import views.html.DeclarationChangesNoChangesView
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
-import views.html.DeclarationChangesNoChangesView
-import models.DeclarationWhatNext.DeclareTheTrustIsUpToDate
+import org.mockito.Mockito.reset
 
-class DeclarationNoChangesControllerSpec extends SpecBase {
+class DeclarationControllerSpec extends SpecBase {
 
   val formProvider = new DeclarationChangesNoChangesFormProvider()
   val form = formProvider()
   val name = "name"
 
-  lazy val declarationRoute = routes.DeclarationNoChangesController.onPageLoad().url
-  lazy val submitRoute = routes.DeclarationNoChangesController.onSubmit()
+  lazy val declarationRoute = controllers.playback.routes.DeclarationController.onPageLoad().url
+  lazy val submitRoute = controllers.playback.routes.DeclarationController.onSubmit()
 
   before {
     reset(mockSubmissionService)
@@ -117,7 +117,7 @@ class DeclarationNoChangesControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.DeclarationNoChangesController.onPageLoad().url // TODO Redirect to variation confirmation page
+      redirectLocation(result).value mustEqual controllers.playback.routes.DeclarationController.onPageLoad().url // TODO Redirect to variation confirmation page
 
       application.stop()
     }
@@ -156,7 +156,7 @@ class DeclarationNoChangesControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -173,7 +173,7 @@ class DeclarationNoChangesControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
