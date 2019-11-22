@@ -17,7 +17,7 @@
 package controllers.playback
 
 import base.SpecBase
-import forms.DeclarationChangesNoChangesFormProvider
+import forms.playback.DeclarationFormProvider
 import models.DeclarationWhatNext.DeclareTheTrustIsUpToDate
 import models.{DeclarationChangesNoChanges, FullName}
 import pages.{DeclarationChangesNoChangesPage, DeclarationWhatNextPage}
@@ -30,7 +30,7 @@ import org.mockito.Mockito.reset
 
 class DeclarationControllerSpec extends SpecBase {
 
-  val formProvider = new DeclarationChangesNoChangesFormProvider()
+  val formProvider = new DeclarationFormProvider()
   val form = formProvider()
   val name = "name"
 

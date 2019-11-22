@@ -16,7 +16,7 @@
 
 package views
 
-import forms.DeclarationChangesNoChangesFormProvider
+import forms.playback.DeclarationFormProvider
 import models.{DeclarationChangesNoChanges, NormalMode}
 import play.api.data.Form
 import play.api.mvc.Call
@@ -29,7 +29,7 @@ class DeclarationChangesNoChangesViewSpec extends QuestionViewBehaviours[Declara
 
   val messageKeyPrefix = "declaration.changes.noChanges"
 
-  val form = new DeclarationChangesNoChangesFormProvider()()
+  val form = new DeclarationFormProvider()()
 
   "DeclarationChangesNoChangesView view for organisation or agent " must {
 

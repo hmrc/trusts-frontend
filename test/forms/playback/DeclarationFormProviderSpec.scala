@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package forms
+package forms.playback
 
+import forms.Validation
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
 
-class DeclarationChangesNoChangesFormProviderSpec extends StringFieldBehaviours {
+class DeclarationFormProviderSpec extends StringFieldBehaviours {
 
-  val form = new DeclarationChangesNoChangesFormProvider()()
+  val form = new DeclarationFormProvider()()
 
   ".firstName" must {
 

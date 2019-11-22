@@ -17,7 +17,7 @@
 package controllers.playback
 
 import controllers.actions._
-import forms.DeclarationChangesNoChangesFormProvider
+import forms.playback.DeclarationFormProvider
 import navigation.Navigator
 import pages.{DeclarationChangesNoChangesPage, DeclarationWhatNextPage}
 import repositories.RegistrationsRepository
@@ -39,7 +39,7 @@ class DeclarationController @Inject()(
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
                                        requiredAnswer: RequiredAnswerActionProvider,
-                                       formProvider: DeclarationChangesNoChangesFormProvider,
+                                       formProvider: DeclarationFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: DeclarationChangesNoChangesView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
