@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package models
+package models.core.pages
 
-sealed trait RegistrationStatus
+import play.api.libs.json._
 
-object RegistrationStatus extends Enumerable.Implicits {
+case class FullName(firstName: String, middleName: Option[String], lastName: String) {
 
-  case object NotStarted extends WithName("NotStarted") with RegistrationStatus
-  case object InProgress extends WithName("InProgress") with RegistrationStatus
-  case object Complete extends WithName("Complete") with RegistrationStatus
+  override def toString = s"$firstName $lastName"
 
-  val values: List[RegistrationStatus] = List(
-    NotStarted,InProgress,Complete
-  )
+}
 
-  implicit val enumerable: Enumerable[RegistrationStatus] =
-    Enumerable(values.map(v => v.toString -> v): _*)
+object FullName {
+
+  implicit lazy val formats: OFormat[FullName] = Json.format[FullName]
+
 }

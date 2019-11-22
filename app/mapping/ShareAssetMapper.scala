@@ -18,8 +18,9 @@ package mapping
 
 import javax.inject.Inject
 import mapping.reads.{Asset, ShareNonPortfolioAsset, SharePortfolioAsset}
-import models.WhatKindOfAsset.Shares
-import models.{ShareClass, UserAnswers}
+import models.core.UserAnswers
+import models.registration.pages.ShareClass
+import models.registration.pages.WhatKindOfAsset.Shares
 
 class ShareAssetMapper @Inject() extends Mapping[List[SharesType]]{
   override def build(userAnswers: UserAnswers): Option[List[SharesType]] = {

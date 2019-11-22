@@ -19,7 +19,8 @@ package controllers.property_or_land
 import base.SpecBase
 import controllers.IndexValidation
 import forms.property_or_land.PropertyLandValueTrustFormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
+import models.core.UserAnswers
 import navigation.FakeNavigator
 import org.scalacheck.Arbitrary.arbitrary
 import pages.property_or_land.PropertyLandValueTrustPage

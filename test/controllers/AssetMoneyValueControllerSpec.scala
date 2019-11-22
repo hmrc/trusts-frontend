@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.AssetMoneyValueFormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import navigation.FakeNavigator
 import pages.AssetMoneyValuePage
 import play.api.inject.bind

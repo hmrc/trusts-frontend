@@ -18,9 +18,11 @@ package controllers
 
 import base.SpecBase
 import forms.{AddAssetsFormProvider, YesNoFormProvider}
-import models.Status.Completed
+import models.registration.pages.Status.Completed
 import models.WhatKindOfAsset.{Money, Shares}
-import models.{AddAssets, NormalMode, ShareClass, UserAnswers}
+import models.core.UserAnswers
+import models.registration.pages.AddAssets
+import models.{AddAssets, NormalMode, ShareClass}
 import pages.entitystatus.AssetStatus
 import pages.shares._
 import pages.{AssetMoneyValuePage, WhatKindOfAssetPage}

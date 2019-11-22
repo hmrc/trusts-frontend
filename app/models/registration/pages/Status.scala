@@ -14,14 +14,22 @@
  * limitations under the License.
  */
 
-package models
+package models.registration.pages
 
-import java.time.LocalDate
+import models.{Enumerable, WithName}
 
-import play.api.libs.json.Json
+sealed trait Status
 
-case class PassportOrIdCardDetails(country: String, cardNumber: String, expiryDate:LocalDate)
+object Status extends Enumerable.Implicits {
 
-object PassportOrIdCardDetails {
-  implicit val format = Json.format[PassportOrIdCardDetails]
+  case object Completed extends WithName("completed") with Status
+
+  case object InProgress extends WithName("progress") with Status
+
+  val values: Set[Status] = Set(
+    Completed, InProgress
+  )
+
+  implicit val enumerable: Enumerable[Status] =
+    Enumerable(values.toSeq.map(v => v.toString -> v): _*)
 }

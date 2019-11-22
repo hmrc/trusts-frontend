@@ -19,6 +19,10 @@ package generators
 import java.time.LocalDate
 
 import models._
+import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
+import models.playback.pages
+import models.playback.pages.{Declaration, DeclarationWhatNext}
+import models.registration.pages.{AddABeneficiary, AddASettlor, AddATrustee, AddAssets, NonResidentType, PassportOrIdCardDetails, SettlorBusinessDetails, SettlorIndividualOrBusiness, SettlorKindOfTrust, ShareClass, TrusteesBasedInTheUK, WhatKindOfAsset, WhatTypeOfBeneficiary}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 
@@ -53,11 +57,6 @@ trait ModelGenerators {
       } yield PassportOrIdCardDetails(field1, field2, field3)
     }
 
-  implicit lazy val arbitrarySettlorIndividualOrBusiness: Arbitrary[SettlorIndividualOrBusiness] =
-    Arbitrary {
-      Gen.oneOf(SettlorIndividualOrBusiness.values.toSeq)
-    }
-
   implicit lazy val arbitraryShareClass: Arbitrary[ShareClass] =
     Arbitrary {
       Gen.oneOf(ShareClass.values.toSeq)
@@ -83,12 +82,12 @@ trait ModelGenerators {
     }
   }
 
-  implicit lazy val arbitraryDeclarationChangesNoChanges : Arbitrary[DeclarationChangesNoChanges] = {
+  implicit lazy val arbitraryPlaybackDeclaration : Arbitrary[Declaration] = {
     Arbitrary {
       for {
         str <- arbitrary[String]
       } yield {
-        DeclarationChangesNoChanges(FullName(str, Some(str), str), Some(str))
+        pages.Declaration(FullName(str, Some(str), str), Some(str))
       }
     }
   }

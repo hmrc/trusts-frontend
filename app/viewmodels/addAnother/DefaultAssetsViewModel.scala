@@ -16,8 +16,8 @@
 
 package viewmodels.addAnother
 
-import models.Status.InProgress
-import models.{Status, WhatKindOfAsset}
+import models.registration.pages.Status.InProgress
+import models.registration.pages.{Status, WhatKindOfAsset}
 
 final case class DefaultAssetsViewModel(`type` : WhatKindOfAsset,
                                         override val status : Status

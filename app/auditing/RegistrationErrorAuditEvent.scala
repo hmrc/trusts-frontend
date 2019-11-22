@@ -16,7 +16,7 @@
 
 package auditing
 
-import models.TrustResponse
+import models.core.http.TrustResponse
 import play.api.libs.json.{Json, OFormat}
 
 case class RegistrationErrorAuditEvent(status: Int, code: String, message: String) extends TrustResponse

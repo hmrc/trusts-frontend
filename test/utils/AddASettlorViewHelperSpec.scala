@@ -19,7 +19,7 @@ package utils
 import base.SpecBase
 import controllers.routes
 import models.Status.{Completed, InProgress}
-import models.{FullName, IndividualOrBusiness}
+import models.core.pages.FullName
 import pages.entitystatus.LivingSettlorStatus
 import pages.living_settlor._
 import pages.SetupAfterSettlorDiedPage

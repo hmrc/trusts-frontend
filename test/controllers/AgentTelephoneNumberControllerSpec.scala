@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.AgentTelephoneNumber
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import navigation.FakeNavigator
 import pages.AgentTelephoneNumberPage
 import play.api.inject.bind

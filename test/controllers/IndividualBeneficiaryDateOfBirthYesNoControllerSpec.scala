@@ -18,7 +18,8 @@ package controllers
 
 import base.SpecBase
 import forms.YesNoFormProvider
-import models.{FullName, NormalMode, UserAnswers}
+import models.core.pages.FullName
+import models.{FullName, NormalMode}
 import navigation.FakeNavigator
 import pages.{IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryNamePage}
 import play.api.inject.bind

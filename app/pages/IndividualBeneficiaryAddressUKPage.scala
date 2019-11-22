@@ -16,7 +16,7 @@
 
 package pages
 
-import models.UKAddress
+import models.core.pages.UKAddress
 import play.api.libs.json.JsPath
 import sections.{Beneficiaries, IndividualBeneficiaries}
 

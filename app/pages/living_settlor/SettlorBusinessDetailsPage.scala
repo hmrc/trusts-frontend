@@ -16,7 +16,7 @@
 
 package pages.living_settlor
 
-import models.SettlorBusinessDetails
+import models.registration.pages.SettlorBusinessDetails
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.LivingSettlors

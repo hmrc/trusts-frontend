@@ -22,7 +22,8 @@ import base.SpecBase
 import controllers.routes
 import generators.Generators
 import models.TrusteesBasedInTheUK.{NonUkBasedTrustees, UKBasedTrustees}
-import models.{NonResidentType, NormalMode, UserAnswers}
+import models.NormalMode
+import models.core.UserAnswers
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks

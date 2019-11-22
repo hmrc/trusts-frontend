@@ -17,7 +17,9 @@
 package pages.living_settlor
 
 import models.Status.InProgress
-import models.{FullName, IndividualOrBusiness, SettlorKindOfTrust, UserAnswers}
+import models.core.UserAnswers
+import models.core.pages.{FullName, IndividualOrBusiness}
+import models.{IndividualOrBusiness, SettlorKindOfTrust}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.{SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage, SetupAfterSettlorDiedPage}
 import pages.behaviours.PageBehaviours

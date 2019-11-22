@@ -19,7 +19,8 @@ package pages
 import java.time.LocalDate
 
 import models.IndividualOrBusiness.{Business, Individual}
-import models.{FullName, SettlorKindOfTrust, Status, UKAddress, UserAnswers}
+import models.core.UserAnswers
+import models.core.pages.{FullName, UKAddress}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 import pages.deceased_settlor._

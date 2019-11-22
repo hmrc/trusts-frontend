@@ -18,7 +18,9 @@ package pages.living_settlor
 
 import java.time.LocalDate
 
-import models.{PassportOrIdCardDetails, UserAnswers}
+import models.registration.pages.PassportOrIdCardDetails
+import models.PassportOrIdCardDetails
+import models.core.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 

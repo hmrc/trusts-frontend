@@ -18,7 +18,7 @@ package forms.shares
 
 import forms.mappings.Mappings
 import javax.inject.Inject
-import models.ShareClass
+import models.registration.pages.ShareClass
 import play.api.data.Form
 
 class ShareClassFormProvider @Inject() extends Mappings {

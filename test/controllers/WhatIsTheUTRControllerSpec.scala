@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.WhatIsTheUTRFormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import navigation.FakeNavigator
 import pages.WhatIsTheUTRPage
 import play.api.inject.bind

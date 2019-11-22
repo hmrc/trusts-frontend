@@ -18,7 +18,8 @@ package views
 
 import controllers.routes
 import forms.UKAddressFormProvider
-import models.{FullName, NormalMode}
+import models.NormalMode
+import models.core.pages.FullName
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.UkAddressViewBehaviours

@@ -21,9 +21,9 @@ import java.time.{LocalDate, LocalDateTime, ZoneOffset}
 
 import base.SpecBase
 import models.AddAssets.NoComplete
-import models.Status.Completed
+import models.registration.pages.Status.Completed
 import models.TrusteesBasedInTheUK.UKBasedTrustees
-import models.{AddABeneficiary, AddASettlor, AddATrustee, FullName, IndividualOrBusiness, SettlorKindOfTrust, Status, UKAddress, WhatKindOfAsset}
+import models.core.pages.{FullName, UKAddress}
 import pages._
 import pages.deceased_settlor._
 import pages.entitystatus._

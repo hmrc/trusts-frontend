@@ -14,27 +14,28 @@
  * limitations under the License.
  */
 
-package models
+package models.registration.pages
 
+import models.{Enumerable, WithName}
 import viewmodels.RadioOption
 
-sealed trait AddAssets
+sealed trait AddATrustee
 
-object AddAssets extends Enumerable.Implicits {
+object AddATrustee extends Enumerable.Implicits {
 
-  case object YesNow extends WithName("add-them-now") with AddAssets
-  case object YesLater extends WithName("add-them-later") with AddAssets
-  case object NoComplete extends WithName("no-complete") with AddAssets
+  case object YesNow extends WithName("add-them-now") with AddATrustee
+  case object YesLater extends WithName("add-them-later") with AddATrustee
+  case object NoComplete extends WithName("no-complete") with AddATrustee
 
-  val values: List[AddAssets] = List(
+  val values: List[AddATrustee] = List(
     YesNow, YesLater, NoComplete
   )
 
   val options: List[RadioOption] = values.map {
     value =>
-      RadioOption("addAssets", value.toString)
+      RadioOption("addATrustee", value.toString)
   }
 
-  implicit val enumerable: Enumerable[AddAssets] =
+  implicit val enumerable: Enumerable[AddATrustee] =
     Enumerable(values.map(v => v.toString -> v): _*)
 }

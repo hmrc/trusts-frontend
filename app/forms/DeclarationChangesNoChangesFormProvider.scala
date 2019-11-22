@@ -18,13 +18,14 @@ package forms
 
 import forms.mappings.Mappings
 import javax.inject.Inject
-import models.{DeclarationChangesNoChanges, FullName}
+import models.core.pages.FullName
+import models.playback.pages.Declaration
 import play.api.data.Form
 import play.api.data.Forms.{mapping, optional}
 
 class DeclarationChangesNoChangesFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[DeclarationChangesNoChanges] =
+  def apply(): Form[Declaration] =
   Form(
     mapping(
       "" -> fullName,
@@ -33,7 +34,7 @@ class DeclarationChangesNoChangesFormProvider @Inject() extends Mappings {
           maxLength(35, s"declaration.changes.noChanges.error.email.length"),
           regexp(Validation.emailRegex, s"declaration.changes.noChanges.error.email.invalid"))
       ))
-    )(DeclarationChangesNoChanges.apply)(DeclarationChangesNoChanges.unapply)
+    )(Declaration.apply)(Declaration.unapply)
   )
 
   val fullName = mapping(

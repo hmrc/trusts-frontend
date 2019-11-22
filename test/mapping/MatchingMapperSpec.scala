@@ -18,7 +18,7 @@ package mapping
 
 import base.SpecBaseHelpers
 import generators.Generators
-import models.Matched
+import models.registration.Matched
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.{ExistingTrustMatched, PostcodeForTheTrustPage, TrustHaveAUTRPage, TrustNamePage, WhatIsTheUTRPage}
 import utils.TestUserAnswers

@@ -17,7 +17,7 @@
 package pages.behaviours
 
 import generators.Generators
-import models.UserAnswers
+import models.core.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.prop.PropertyChecks

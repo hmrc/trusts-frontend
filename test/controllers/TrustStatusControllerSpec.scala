@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import connector.{TrustClaim, TrustConnector, TrustsStoreConnector}
-import models.UserAnswers
+import models.core.UserAnswers
 import models.playback._
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when

@@ -18,7 +18,8 @@ package repositories
 
 import akka.stream.Materializer
 import javax.inject.Inject
-import models.{RegistrationStatus, UserAnswers}
+import models.core.UserAnswers
+import models.registration.pages.RegistrationStatus
 import pages.AgentInternalReferencePage
 import play.api.Configuration
 import play.api.libs.json._

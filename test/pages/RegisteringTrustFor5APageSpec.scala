@@ -16,7 +16,9 @@
 
 package pages
 
-import models.{NonResidentType, UserAnswers}
+import models.registration.pages.NonResidentType
+import models.NonResidentType
+import models.core.UserAnswers
 import pages.behaviours.PageBehaviours
 import org.scalacheck.Arbitrary.arbitrary
 import pages.entitystatus.TrustDetailsStatus

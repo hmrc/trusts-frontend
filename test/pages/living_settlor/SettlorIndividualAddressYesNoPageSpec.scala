@@ -18,7 +18,10 @@ package pages.living_settlor
 
 import java.time.LocalDate
 
-import models.{InternationalAddress, PassportOrIdCardDetails, UKAddress, UserAnswers}
+import models.core.UserAnswers
+import models.core.pages.{InternationalAddress, UKAddress}
+import models.registration.pages.PassportOrIdCardDetails
+import models.{InternationalAddress, PassportOrIdCardDetails}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 

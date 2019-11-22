@@ -18,7 +18,7 @@ package mapping
 
 import base.SpecBaseHelpers
 import generators.Generators
-import models.{UKAddress, WhatKindOfAsset}
+import models.core.pages.UKAddress
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.WhatKindOfAssetPage
 import pages.property_or_land._

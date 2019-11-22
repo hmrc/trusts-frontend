@@ -18,9 +18,10 @@ package controllers.trustees
 
 import base.SpecBase
 import forms.YesNoFormProvider
-import forms.trustees.{AddATrusteeFormProvider}
-import models.Status.Completed
-import models.{AddATrustee, FullName, IndividualOrBusiness, NormalMode}
+import forms.trustees.AddATrusteeFormProvider
+import models.registration.pages.Status.Completed
+import models.core.pages.FullName
+import models.{FullName, NormalMode}
 import pages.entitystatus.TrusteeStatus
 import pages.trustees.{TrusteeIndividualOrBusinessPage, TrusteesNamePage}
 import play.api.test.FakeRequest

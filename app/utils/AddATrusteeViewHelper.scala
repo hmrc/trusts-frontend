@@ -16,9 +16,9 @@
 
 package utils
 
-import controllers.routes
-import models.Status.{Completed, InProgress}
-import models.{IndividualOrBusiness, UserAnswers}
+import models.registration.pages.Status.{Completed, InProgress}
+import models.core.UserAnswers
+import models.core.pages.IndividualOrBusiness
 import play.api.i18n.Messages
 import sections.Trustees
 import viewmodels._

@@ -20,7 +20,8 @@ import java.time.LocalDate
 
 import controllers.routes
 import forms.IndividualBeneficiaryDateOfBirthFormProvider
-import models.{FullName, NormalMode, UserAnswers}
+import models.core.pages.FullName
+import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours

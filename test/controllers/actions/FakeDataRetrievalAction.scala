@@ -16,7 +16,7 @@
 
 package controllers.actions
 
-import models.UserAnswers
+import models.core.UserAnswers
 import models.requests.{IdentifierRequest, OptionalDataRequest}
 
 import scala.concurrent.{ExecutionContext, Future}

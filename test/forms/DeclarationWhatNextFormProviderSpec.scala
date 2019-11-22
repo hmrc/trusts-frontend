@@ -17,7 +17,7 @@
 package forms
 
 import forms.behaviours.OptionFieldBehaviours
-import models.DeclarationWhatNext
+import models.playback.pages.DeclarationWhatNext
 import play.api.data.FormError
 
 class DeclarationWhatNextFormProviderSpec extends OptionFieldBehaviours {

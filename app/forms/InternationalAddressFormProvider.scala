@@ -18,9 +18,9 @@ package forms
 
 import javax.inject.Inject
 import forms.mappings.Mappings
+import models.core.pages.InternationalAddress
 import play.api.data.{Form, Forms}
 import play.api.data.Forms._
-import models.InternationalAddress
 
 class InternationalAddressFormProvider @Inject() extends Mappings {
 

@@ -19,8 +19,11 @@ package controllers
 import base.SpecBase
 import forms.DeclarationFormProvider
 import models.RegistrationStatus.InProgress
-import models.{FullName, NormalMode, RegistrationTRNResponse,UserAnswers}
-import models.TrustResponse._
+import models.{FullName, NormalMode}
+import models.core.http.TrustResponse._
+import models.core.UserAnswers
+import models.core.http.RegistrationTRNResponse
+import models.core.pages.FullName
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{verify, when, _}
 import pages.DeclarationPage

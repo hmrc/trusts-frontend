@@ -21,7 +21,10 @@ import java.time.format.DateTimeFormatter
 import controllers.routes
 import javax.inject.Inject
 import mapping.reads._
-import models.{InternationalAddress, NormalMode, PassportOrIdCardDetails, UKAddress, UserAnswers}
+import models.NormalMode
+import models.core.UserAnswers
+import models.core.pages.{InternationalAddress, UKAddress}
+import models.registration.pages.PassportOrIdCardDetails
 import pages._
 import pages.deceased_settlor._
 import pages.living_settlor._
@@ -30,7 +33,7 @@ import pages.shares._
 import pages.trustees._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
-import sections.{DeceasedSettlor, LivingSettlors}
+import sections.LivingSettlors
 import uk.gov.hmrc.domain.Nino
 import utils.CheckYourAnswersHelper._
 import utils.countryOptions.CountryOptions

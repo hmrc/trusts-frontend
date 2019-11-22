@@ -20,7 +20,7 @@ import java.util.UUID
 
 import akka.stream.Materializer
 import javax.inject.Inject
-import models.UserAnswers
+import models.core.UserAnswers
 import models.requests.{IdentifierRequest, OptionalDataRequest}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier

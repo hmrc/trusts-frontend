@@ -19,8 +19,8 @@ package controllers
 import java.time.LocalDate
 
 import base.SpecBase
-import models.NonResidentType
 import models.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
+import models.registration.pages.NonResidentType
 import navigation.FakeNavigator
 import pages._
 import play.api.inject.bind

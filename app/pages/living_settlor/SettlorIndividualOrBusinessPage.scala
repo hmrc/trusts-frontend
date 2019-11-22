@@ -16,8 +16,9 @@
 
 package pages.living_settlor
 
-import models.IndividualOrBusiness.{Business, Individual}
-import models.{IndividualOrBusiness, UserAnswers}
+import models.core.UserAnswers
+import models.core.pages.IndividualOrBusiness
+import models.core.pages.IndividualOrBusiness.{Business, Individual}
 import pages.QuestionPage
 import pages.entitystatus.LivingSettlorStatus
 import play.api.libs.json.JsPath

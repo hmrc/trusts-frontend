@@ -19,7 +19,8 @@ package controllers.living_settlor
 import base.SpecBase
 import controllers.IndexValidation
 import forms.UKAddressFormProvider
-import models.{FullName, NormalMode, UKAddress}
+import models.core.pages.{FullName, UKAddress}
+import models.NormalMode
 import org.scalacheck.Arbitrary.arbitrary
 import pages.living_settlor.{SettlorIndividualAddressUKPage, SettlorIndividualNINOPage, SettlorIndividualNamePage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}

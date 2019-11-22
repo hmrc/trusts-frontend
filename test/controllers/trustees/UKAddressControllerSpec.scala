@@ -19,7 +19,8 @@ package controllers.trustees
 import base.SpecBase
 import controllers.IndexValidation
 import forms.UKAddressFormProvider
-import models.{FullName, NormalMode, UKAddress}
+import models.core.pages.{FullName, UKAddress}
+import models.{FullName, NormalMode}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.trustees.{IsThisLeadTrusteePage, TrusteesNamePage, TrusteesUkAddressPage}
 import play.api.data.Form

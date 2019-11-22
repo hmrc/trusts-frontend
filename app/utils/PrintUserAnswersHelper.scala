@@ -17,7 +17,7 @@
 package utils
 
 import javax.inject.Inject
-import models.UserAnswers
+import models.core.UserAnswers
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection

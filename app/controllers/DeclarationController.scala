@@ -19,11 +19,14 @@ package controllers
 import java.time.temporal.ChronoUnit.DAYS
 import java.time.{LocalDateTime, ZoneOffset}
 
-import javax.inject.Inject
 import controllers.actions._
 import forms.DeclarationFormProvider
-import models.{Mode, RegistrationStatus, RegistrationTRNResponse, TrustResponse, UserAnswers}
-import models.TrustResponse._
+import javax.inject.Inject
+import models.Mode
+import models.core.UserAnswers
+import models.core.http.TrustResponse._
+import models.core.http.{RegistrationTRNResponse, TrustResponse}
+import models.registration.pages.RegistrationStatus
 import navigation.Navigator
 import pages.{DeclarationPage, RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.Logger

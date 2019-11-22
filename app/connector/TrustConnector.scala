@@ -19,7 +19,7 @@ package connector
 import config.FrontendAppConfig
 import javax.inject.Inject
 import mapping.Registration
-import models.TrustResponse
+import models.core.http.TrustResponse
 import models.playback.TrustsResponse
 import play.api.libs.json.{JsValue, Json, Writes}
 import uk.gov.hmrc.http.HeaderCarrier

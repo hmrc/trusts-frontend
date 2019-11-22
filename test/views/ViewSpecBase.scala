@@ -17,7 +17,7 @@
 package views
 
 import base.SpecBase
-import models.UserAnswers
+import models.core.UserAnswers
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import org.scalatest.Assertion

@@ -20,7 +20,8 @@ import base.SpecBase
 import controllers.living_settlor.routes
 import generators.Generators
 import models.IndividualOrBusiness.Individual
-import models.{AddASettlor, IndividualOrBusiness, NormalMode, SettlorKindOfTrust, UserAnswers}
+import models.NormalMode
+import models.core.UserAnswers
 import navigation.Navigator
 import navigation.registration.LivingSettlorNavigator
 import org.scalacheck.Arbitrary.arbitrary

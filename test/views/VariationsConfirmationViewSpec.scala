@@ -16,7 +16,7 @@
 
 package views
 
-import models.FullName
+import models.core.pages.FullName
 import play.twirl.api.HtmlFormat
 import utils.AccessibilityHelper._
 import views.behaviours.ViewBehaviours

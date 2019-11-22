@@ -18,6 +18,7 @@ package controllers.deceased_settlor
 
 import base.SpecBase
 import forms.YesNoFormProvider
+import models.core.pages.FullName
 import models.{FullName, NormalMode}
 import pages.deceased_settlor.{SettlorsNINoYesNoPage, SettlorsNamePage}
 import play.api.test.FakeRequest

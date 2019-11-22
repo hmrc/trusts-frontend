@@ -17,7 +17,7 @@
 package views
 
 import forms.AddAssetsFormProvider
-import models.{AddAssets, NormalMode, WhatKindOfAsset}
+import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import viewmodels.AddRow

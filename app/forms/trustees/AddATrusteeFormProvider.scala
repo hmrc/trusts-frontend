@@ -18,7 +18,7 @@ package forms.trustees
 
 import forms.mappings.Mappings
 import javax.inject.Inject
-import models.AddATrustee
+import models.registration.pages.AddATrustee
 import play.api.data.Form
 
 class AddATrusteeFormProvider @Inject() extends Mappings {

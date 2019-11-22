@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 
-package models
+package models.registration
 
-sealed trait Status
+import models.{Enumerable, WithName}
 
-object Status extends Enumerable.Implicits {
+sealed trait Matched
 
-  case object Completed extends WithName("completed") with Status
+object Matched extends Enumerable.Implicits {
 
-  case object InProgress extends WithName("progress") with Status
+  case object Success extends WithName("success") with Matched
+  case object AlreadyRegistered extends WithName("already-registered") with Matched
+  case object Failed extends WithName("failed") with Matched
 
-  val values: Set[Status] = Set(
-    Completed, InProgress
+  val values: Set[Matched] = Set(
+    Success, AlreadyRegistered, Failed
   )
 
-  implicit val enumerable: Enumerable[Status] =
+  implicit val enumerable: Enumerable[Matched] =
     Enumerable(values.toSeq.map(v => v.toString -> v): _*)
 }

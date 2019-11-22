@@ -20,7 +20,8 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 import base.SpecBase
-import models.{Matched, NormalMode, UserAnswers}
+import models.NormalMode
+import models.core.UserAnswers
 import navigation.Navigator
 import navigation.registration.TaskListNavigator
 import pages._

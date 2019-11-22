@@ -20,7 +20,8 @@ import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
 import forms.IndividualBeneficiaryDateOfBirthFormProvider
-import models.{FullName, NormalMode}
+import models.NormalMode
+import models.core.pages.FullName
 import navigation.FakeNavigator
 import org.scalatest.mockito.MockitoSugar
 import pages.{IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryNamePage}

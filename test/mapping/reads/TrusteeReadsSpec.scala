@@ -19,7 +19,7 @@ package mapping.reads
 import java.time.LocalDate
 
 import generators.{Generators, ModelGenerators}
-import models.{FullName, IndividualOrBusiness, UKAddress}
+import models.core.pages.{FullName, UKAddress}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import org.scalatest.prop.PropertyChecks

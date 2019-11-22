@@ -17,11 +17,10 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
+import models.core.pages.FullName
 import play.api.data.Form
 import play.api.data.Forms._
-import models.FullName
 
 class IndividualBeneficiaryNameFormProvider @Inject() extends Mappings {
 

@@ -14,20 +14,15 @@
  * limitations under the License.
  */
 
-package models
+package models.playback.pages
 
-sealed trait Matched
+import models.core.pages.FullName
+import play.api.libs.json.{Json, OFormat}
 
-object Matched extends Enumerable.Implicits {
+case class Declaration(name: FullName, email: Option[String])
 
-  case object Success extends WithName("success") with Matched
-  case object AlreadyRegistered extends WithName("already-registered") with Matched
-  case object Failed extends WithName("failed") with Matched
+object Declaration {
 
-  val values: Set[Matched] = Set(
-    Success, AlreadyRegistered, Failed
-  )
+  implicit lazy val formats: OFormat[Declaration] = Json.format[Declaration]
 
-  implicit val enumerable: Enumerable[Matched] =
-    Enumerable(values.toSeq.map(v => v.toString -> v): _*)
 }

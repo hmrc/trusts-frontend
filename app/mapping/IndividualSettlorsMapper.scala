@@ -18,7 +18,8 @@ package mapping
 
 import javax.inject.Inject
 import mapping.reads.IndividualSettlor
-import models.{PassportOrIdCardDetails, UserAnswers}
+import models.core.UserAnswers
+import models.registration.pages.PassportOrIdCardDetails
 
 class IndividualSettlorsMapper @Inject()(nameMapper: NameMapper, addressMapper: AddressMapper) extends Mapping[List[Settlor]] {
 

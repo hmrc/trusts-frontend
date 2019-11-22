@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.YesNoFormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import navigation.FakeNavigator
 import pages.{AgentAddressYesNoPage, AgentNamePage}
 import play.api.inject.bind

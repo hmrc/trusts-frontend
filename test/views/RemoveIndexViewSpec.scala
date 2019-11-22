@@ -18,7 +18,8 @@ package views
 
 import controllers.routes
 import forms.RemoveIndexFormProvider
-import models.{FullName, NormalMode}
+import models.NormalMode
+import models.core.pages.FullName
 import pages.IndividualBeneficiaryNamePage
 import play.api.data.Form
 import play.twirl.api.HtmlFormat

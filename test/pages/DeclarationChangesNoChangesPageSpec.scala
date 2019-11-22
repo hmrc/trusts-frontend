@@ -16,7 +16,7 @@
 
 package pages
 
-import models.DeclarationChangesNoChanges
+import models.playback.pages.Declaration
 import pages.behaviours.PageBehaviours
 
 
@@ -24,10 +24,10 @@ class DeclarationChangesNoChangesPageSpec extends PageBehaviours {
 
   "DeclarationChangesNoChangesPage" must {
 
-    beRetrievable[DeclarationChangesNoChanges](DeclarationChangesNoChangesPage)
+    beRetrievable[Declaration](DeclarationChangesNoChangesPage)
 
-    beSettable[DeclarationChangesNoChanges](DeclarationChangesNoChangesPage)
+    beSettable[Declaration](DeclarationChangesNoChangesPage)
 
-    beRemovable[DeclarationChangesNoChanges](DeclarationChangesNoChangesPage)
+    beRemovable[Declaration](DeclarationChangesNoChangesPage)
   }
 }

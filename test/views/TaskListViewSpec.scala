@@ -21,8 +21,10 @@ import java.time.format.DateTimeFormatter
 
 import controllers.routes
 import models.AddAssets.NoComplete
-import models.Status.Completed
-import models.{AddABeneficiary, AddATrustee, FullName, NormalMode, Status, UserAnswers, WhatKindOfAsset}
+import models.registration.pages.Status.Completed
+import models.core.UserAnswers
+import models.core.pages.FullName
+import models.{FullName, NormalMode}
 import navigation.registration.TaskListNavigator
 import pages.entitystatus._
 import pages._

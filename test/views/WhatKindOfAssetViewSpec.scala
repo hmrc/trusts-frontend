@@ -17,7 +17,7 @@
 package views
 
 import forms.WhatKindOfAssetFormProvider
-import models.{NormalMode, WhatKindOfAsset}
+import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.ViewBehaviours

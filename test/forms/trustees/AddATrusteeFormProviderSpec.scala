@@ -17,7 +17,7 @@
 package forms.trustees
 
 import forms.behaviours.OptionFieldBehaviours
-import models.AddATrustee
+import models.registration.pages.AddATrustee
 import play.api.data.FormError
 
 class AddATrusteeFormProviderSpec extends OptionFieldBehaviours {

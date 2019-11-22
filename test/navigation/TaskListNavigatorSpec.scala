@@ -20,11 +20,12 @@ import java.time.LocalDate
 
 import base.SpecBase
 import controllers.routes
-import models.Status.Completed
+import models.registration.pages.Status.Completed
 import models.WhatKindOfAsset.Money
 import mapping.reads.{Assets, Trustees}
 import models.IndividualOrBusiness.Individual
-import models.{AddASettlor, FullName, IndividualOrBusiness, NormalMode, UserAnswers}
+import models.core.pages.FullName
+import models.NormalMode
 import navigation.registration.TaskListNavigator
 import pages._
 import pages.deceased_settlor.SettlorsNamePage

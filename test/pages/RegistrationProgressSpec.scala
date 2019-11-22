@@ -22,7 +22,9 @@ import base.SpecBase
 import models.AddAssets.NoComplete
 import models.IndividualOrBusiness.Individual
 import models.Status.{Completed, InProgress}
-import models.{AddABeneficiary, AddASettlor, AddATrustee, FullName, SettlorKindOfTrust, Status, UserAnswers, WhatKindOfAsset}
+import models.core.pages.FullName
+import models.FullName
+import models.core.UserAnswers
 import pages.entitystatus.{AssetStatus, ClassBeneficiaryStatus, DeceasedSettlorStatus, IndividualBeneficiaryStatus, LivingSettlorStatus, TrustDetailsStatus, TrusteeStatus}
 import pages.living_settlor.SettlorIndividualOrBusinessPage
 import pages.shares.{SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, SharesInAPortfolioPage}

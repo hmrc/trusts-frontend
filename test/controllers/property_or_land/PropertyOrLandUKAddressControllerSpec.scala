@@ -20,7 +20,8 @@ import base.SpecBase
 import controllers.IndexValidation
 import forms.UKAddressFormProvider
 import generators.ModelGenerators
-import models.{NormalMode, UKAddress}
+import models.NormalMode
+import models.core.pages.UKAddress
 import navigation.FakeNavigator
 import org.scalacheck.Arbitrary.arbitrary
 import pages.property_or_land.PropertyOrLandUKAddressPage

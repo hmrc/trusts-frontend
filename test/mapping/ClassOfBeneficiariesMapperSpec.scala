@@ -18,7 +18,7 @@ package mapping
 
 import base.SpecBaseHelpers
 import generators.Generators
-import models.WhatTypeOfBeneficiary
+import models.registration.pages.WhatTypeOfBeneficiary
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
 

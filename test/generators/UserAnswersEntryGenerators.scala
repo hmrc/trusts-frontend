@@ -17,6 +17,9 @@
 package generators
 
 import models._
+import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
+import models.playback.pages.{Declaration, DeclarationWhatNext}
+import models.registration.pages.{AddABeneficiary, AddASettlor, AddAssets, NonResidentType, PassportOrIdCardDetails, SettlorBusinessDetails, SettlorIndividualOrBusiness, SettlorKindOfTrust, ShareClass, TrusteesBasedInTheUK, WhatKindOfAsset, WhatTypeOfBeneficiary}
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
 import pages._
@@ -209,7 +212,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
     Arbitrary {
       for {
         page  <- arbitrary[SettlorIndividualOrBusinessPage]
-        value <- arbitrary[SettlorIndividualOrBusiness].map(Json.toJson(_))
+        value <- arbitrary[IndividualOrBusiness].map(Json.toJson(_))
       } yield (page, value)
     }
 
@@ -369,7 +372,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
     Arbitrary {
       for {
         page  <- arbitrary[DeclarationChangesNoChangesPage.type]
-        value <- arbitrary[DeclarationChangesNoChanges].map(Json.toJson(_))
+        value <- arbitrary[Declaration].map(Json.toJson(_))
       } yield (page, value)
     }
 

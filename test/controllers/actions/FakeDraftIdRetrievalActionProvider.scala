@@ -16,10 +16,12 @@
 
 package controllers.actions
 
-import models.{RegistrationStatus, UserAnswers}
+import models.core.UserAnswers
+import models.registration.pages.RegistrationStatus
 import repositories.RegistrationsRepository
 import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
+
 import scala.concurrent.{ExecutionContext, Future}
 import org.mockito.Matchers._
 

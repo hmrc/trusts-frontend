@@ -14,26 +14,27 @@
  * limitations under the License.
  */
 
-package models
+package models.core.pages
 
+import models.{Enumerable, WithName}
 import viewmodels.RadioOption
 
-sealed trait SettlorIndividualOrBusiness
+sealed trait IndividualOrBusiness
 
-object SettlorIndividualOrBusiness extends Enumerable.Implicits {
+object IndividualOrBusiness extends Enumerable.Implicits {
 
-  case object Individual extends WithName("individual") with SettlorIndividualOrBusiness
-  case object Business extends WithName("business") with SettlorIndividualOrBusiness
+  case object Individual extends WithName("individual") with IndividualOrBusiness
+  case object Business extends WithName("business") with IndividualOrBusiness
 
-  val values: List[SettlorIndividualOrBusiness] = List(
+  val values: Set[IndividualOrBusiness] = Set(
     Individual, Business
   )
 
-  val options: List[RadioOption] = values.map {
+  val options: Set[RadioOption] = values.map {
     value =>
-      RadioOption("settlorIndividualOrBusiness", value.toString)
+      RadioOption("individualOrBusiness", value.toString)
   }
 
-  implicit val enumerable: Enumerable[SettlorIndividualOrBusiness] =
-    Enumerable(values.map(v => v.toString -> v): _*)
+  implicit val enumerable: Enumerable[IndividualOrBusiness] =
+    Enumerable(values.toSeq.map(v => v.toString -> v): _*)
 }

@@ -17,6 +17,7 @@
 package views.trustees
 
 import forms.YesNoFormProvider
+import models.core.pages.FullName
 import models.{FullName, NormalMode}
 import pages.trustees.TrusteesNamePage
 import play.api.data.Form

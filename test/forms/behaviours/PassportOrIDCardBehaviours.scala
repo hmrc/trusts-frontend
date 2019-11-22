@@ -20,7 +20,7 @@ import java.time.LocalDate
 
 import forms.{FormSpec, Validation}
 import generators.Generators
-import models.PassportOrIdCardDetails
+import models.registration.pages.PassportOrIdCardDetails
 import org.scalatest.prop.PropertyChecks
 import play.api.data.{Form, FormError}
 

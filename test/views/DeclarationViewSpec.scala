@@ -18,6 +18,7 @@ package views
 
 import controllers.routes
 import forms.DeclarationFormProvider
+import models.core.pages.FullName
 import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat

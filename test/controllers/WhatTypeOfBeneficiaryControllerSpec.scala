@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.WhatTypeOfBeneficiaryFormProvider
-import models.{NormalMode, UserAnswers, WhatTypeOfBeneficiary}
+import models.NormalMode
 import navigation.FakeNavigator
 import pages.{ClassBeneficiaryDescriptionPage, WhatTypeOfBeneficiaryPage}
 import play.api.inject.bind

@@ -16,7 +16,7 @@
 
 package views
 
-import models.FullName
+import models.core.pages.FullName
 import play.twirl.api.HtmlFormat
 import views.behaviours.ViewBehaviours
 import views.html.ConfirmationView

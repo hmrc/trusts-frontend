@@ -16,7 +16,7 @@
 
 package pages.living_settlor
 
-import models.PassportOrIdCardDetails
+import models.registration.pages.PassportOrIdCardDetails
 import pages.behaviours.PageBehaviours
 
 class SettlorIndividualPassportPageSpec extends PageBehaviours {

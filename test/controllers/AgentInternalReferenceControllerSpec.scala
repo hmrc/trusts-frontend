@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.AgentInternalReferenceFormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import navigation.FakeNavigator
 import pages.AgentInternalReferencePage
 import play.api.inject.bind

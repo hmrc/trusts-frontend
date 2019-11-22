@@ -16,8 +16,8 @@
 
 package queries
 
-import models.Status.Completed
-import models.{ShareClass, UserAnswers, WhatKindOfAsset}
+import models.registration.pages.Status.Completed
+import models.core.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
 import pages._
 import pages.behaviours.PageBehaviours

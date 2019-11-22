@@ -19,9 +19,11 @@ package utils
 import java.time.LocalDate
 
 import models.Matched.{Failed, Success}
-import models.Status.Completed
+import models.registration.pages.Status.Completed
 import models.TrusteesBasedInTheUK.UKBasedTrustees
-import models.{AddABeneficiary, AddATrustee, AddAssets, FullName, IndividualOrBusiness, SettlorKindOfTrust, UKAddress, UserAnswers, WhatKindOfAsset}
+import models.core.pages.{FullName, UKAddress}
+import models.FullName
+import models.core.UserAnswers
 import org.scalatest.TryValues
 import pages._
 import pages.deceased_settlor._

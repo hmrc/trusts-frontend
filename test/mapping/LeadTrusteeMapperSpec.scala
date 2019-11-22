@@ -20,7 +20,7 @@ import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBaseHelpers
 import generators.Generators
-import models.{FullName, IndividualOrBusiness, UKAddress}
+import models.core.pages.{FullName, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
 import pages.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteeIndividualOrBusinessPage, TrusteeLiveInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}

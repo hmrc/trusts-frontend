@@ -16,8 +16,9 @@
 
 package viewmodels.addAnother
 
-import models.Status.InProgress
-import models.{FullName, IndividualOrBusiness, Status}
+import models.core.pages.{FullName, IndividualOrBusiness}
+import models.registration.pages.Status
+import models.registration.pages.Status.InProgress
 
 final case class TrusteeViewModel(isLead : Boolean,
                                     name : Option[FullName],

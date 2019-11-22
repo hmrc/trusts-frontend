@@ -20,7 +20,9 @@ import java.time.LocalDate
 
 import base.SpecBaseHelpers
 import generators.Generators
-import models.{FullName, IndividualOrBusiness, InternationalAddress, PassportOrIdCardDetails, UKAddress}
+import models.core.pages.{FullName, InternationalAddress, UKAddress}
+import models.registration.pages.PassportOrIdCardDetails
+import models.{IndividualOrBusiness, InternationalAddress, PassportOrIdCardDetails}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
 import pages.living_settlor.{SettlorIndividualAddressInternationalPage, SettlorIndividualAddressUKPage, SettlorIndividualAddressUKYesNoPage, SettlorIndividualAddressYesNoPage, SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNINOPage, SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage, SettlorIndividualOrBusinessPage, SettlorIndividualPassportPage, SettlorIndividualPassportYesNoPage}

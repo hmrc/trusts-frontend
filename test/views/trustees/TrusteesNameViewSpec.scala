@@ -18,6 +18,7 @@ package views.trustees
 
 import forms.trustees.TrusteesNameFormProvider
 import generators.Generators
+import models.core.pages.FullName
 import models.{FullName, NormalMode}
 import pages.trustees.IsThisLeadTrusteePage
 import play.api.data.Form

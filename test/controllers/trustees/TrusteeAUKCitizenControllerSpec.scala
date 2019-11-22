@@ -19,6 +19,7 @@ package controllers.trustees
 import base.SpecBase
 import controllers.IndexValidation
 import forms.YesNoFormProvider
+import models.core.pages.FullName
 import models.{FullName, NormalMode}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.trustees.{IsThisLeadTrusteePage, TrusteeAUKCitizenPage, TrusteesNamePage}

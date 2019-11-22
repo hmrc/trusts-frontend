@@ -16,7 +16,9 @@
 
 package queries
 
-import models.{FullName, UKAddress, UserAnswers}
+import models.core.pages.{FullName, UKAddress}
+import models.FullName
+import models.core.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
 import pages._
 import pages.behaviours.PageBehaviours

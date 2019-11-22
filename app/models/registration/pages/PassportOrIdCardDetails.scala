@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-package models
+package models.registration.pages
 
-import play.api.libs.json._
+import java.time.LocalDate
 
-case class FullName(firstName: String, middleName: Option[String], lastName: String) {
+import play.api.libs.json.Json
 
-  override def toString = s"$firstName $lastName"
+case class PassportOrIdCardDetails(country: String, cardNumber: String, expiryDate:LocalDate)
 
-}
-
-object FullName {
-
-  implicit lazy val formats: OFormat[FullName] = Json.format[FullName]
-
+object PassportOrIdCardDetails {
+  implicit val format = Json.format[PassportOrIdCardDetails]
 }

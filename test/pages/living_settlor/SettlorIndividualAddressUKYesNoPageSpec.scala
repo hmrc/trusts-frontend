@@ -16,7 +16,7 @@
 
 package pages.living_settlor
 
-import models.{InternationalAddress, UKAddress, UserAnswers}
+import models.core.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 

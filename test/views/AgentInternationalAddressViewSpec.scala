@@ -18,7 +18,8 @@ package views
 
 import controllers.routes
 import forms.InternationalAddressFormProvider
-import models.{InternationalAddress, NormalMode}
+import models.NormalMode
+import models.core.pages.InternationalAddress
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import utils.InputOption

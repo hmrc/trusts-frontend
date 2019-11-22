@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.SettlorsBasedInTheUKFormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import navigation.FakeNavigator
 import pages.SettlorsBasedInTheUKPage
 import play.api.inject.bind

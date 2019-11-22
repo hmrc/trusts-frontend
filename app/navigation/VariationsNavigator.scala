@@ -19,8 +19,8 @@ package navigation
 import config.FrontendAppConfig
 import controllers.routes
 import javax.inject.Inject
-import models.DeclarationWhatNext.DeclareTheTrustIsUpToDate
-import models.UserAnswers
+import models.core.UserAnswers
+import models.playback.pages.DeclarationWhatNext.DeclareTheTrustIsUpToDate
 import pages.{DeclarationWhatNextPage, Page}
 import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup

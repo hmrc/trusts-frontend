@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package models
+package models.playback.http
 
 import play.api.Logger
 import play.api.http.Status._

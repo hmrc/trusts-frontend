@@ -16,7 +16,9 @@
 
 package pages
 
-import models.{SettlorKindOfTrust, UserAnswers}
+import models.registration.pages.SettlorKindOfTrust
+import models.SettlorKindOfTrust
+import models.core.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 

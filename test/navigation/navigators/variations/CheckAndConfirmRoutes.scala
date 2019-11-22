@@ -20,7 +20,8 @@ import base.SpecBase
 import controllers.routes
 import generators.Generators
 import models.DeclarationWhatNext.DeclareTheTrustIsUpToDate
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
+import models.core.UserAnswers
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks

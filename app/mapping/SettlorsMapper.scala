@@ -17,7 +17,7 @@
 package mapping
 
 import javax.inject.Inject
-import models.UserAnswers
+import models.core.UserAnswers
 
 class SettlorsMapper @Inject()(individualSettlorsMapper: IndividualSettlorsMapper) extends Mapping[Settlors] {
 

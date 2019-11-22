@@ -20,7 +20,7 @@ import base.SpecBase
 import forms.YesNoFormProvider
 import forms.AddASettlorFormProvider
 import models.SettlorKindOfTrust.Intervivos
-import models.{AddASettlor, NormalMode}
+import models.NormalMode
 import pages.SettlorKindOfTrustPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

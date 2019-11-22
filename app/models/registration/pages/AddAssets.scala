@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-package models
+package models.registration.pages
 
-import play.api.libs.json._
+import models.{Enumerable, WithName}
 import viewmodels.RadioOption
 
-sealed trait TrusteesBasedInTheUK
+sealed trait AddAssets
 
-object TrusteesBasedInTheUK extends Enumerable.Implicits {
+object AddAssets extends Enumerable.Implicits {
 
-  case object UKBasedTrustees extends WithName("UKBasedTrustees") with TrusteesBasedInTheUK
-  case object NonUkBasedTrustees extends WithName("NonUkBasedTrustees") with TrusteesBasedInTheUK
-  case object InternationalAndUKTrustees extends WithName("InternationalAndUKTrustees") with TrusteesBasedInTheUK
+  case object YesNow extends WithName("add-them-now") with AddAssets
+  case object YesLater extends WithName("add-them-later") with AddAssets
+  case object NoComplete extends WithName("no-complete") with AddAssets
 
-  val values: List[TrusteesBasedInTheUK] = List(
-    UKBasedTrustees, NonUkBasedTrustees, InternationalAndUKTrustees
+  val values: List[AddAssets] = List(
+    YesNow, YesLater, NoComplete
   )
 
   val options: List[RadioOption] = values.map {
     value =>
-      RadioOption("trusteesBasedInTheUK", value.toString)
+      RadioOption("addAssets", value.toString)
   }
 
-  implicit val enumerable: Enumerable[TrusteesBasedInTheUK] =
+  implicit val enumerable: Enumerable[AddAssets] =
     Enumerable(values.map(v => v.toString -> v): _*)
 }

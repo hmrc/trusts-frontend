@@ -19,7 +19,9 @@ package navigation.navigators.registration
 import base.SpecBase
 import controllers.routes
 import generators.Generators
-import models.{AddABeneficiary, FullName, NormalMode, UserAnswers, WhatTypeOfBeneficiary}
+import models.core.UserAnswers
+import models.core.pages.FullName
+import models.{FullName, NormalMode}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks

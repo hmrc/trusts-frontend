@@ -16,8 +16,8 @@
 
 package mapping
 
-import models.UserAnswers
 import mapping.reads.ClassOfBeneficiary
+import models.core.UserAnswers
 
 
 class ClassOfBeneficiariesMapper extends Mapping[List[UnidentifiedType]]{

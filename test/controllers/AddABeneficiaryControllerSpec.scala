@@ -18,8 +18,9 @@ package controllers
 
 import base.SpecBase
 import forms.{AddABeneficiaryFormProvider, YesNoFormProvider}
-import models.Status.Completed
-import models.{AddABeneficiary, FullName, NormalMode}
+import models.registration.pages.Status.Completed
+import models.core.pages.FullName
+import models.{FullName, NormalMode}
 import pages.entitystatus.{ClassBeneficiaryStatus, IndividualBeneficiaryStatus}
 import pages.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage, IndividualBeneficiaryNamePage}
 import play.api.mvc.Call

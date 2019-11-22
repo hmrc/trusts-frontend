@@ -17,9 +17,9 @@
 package mapping
 
 import javax.inject.Inject
-
-import models.{Address, UserAnswers}
 import mapping.reads.{ClassOfBeneficiary, IndividualBeneficiary}
+import models.core.UserAnswers
+import models.core.pages.Address
 
 class IndividualBeneficiaryMapper @Inject()(nameMapper: NameMapper,
                                             addressMapper: AddressMapper) extends Mapping[List[IndividualDetailsType]] {

@@ -19,7 +19,8 @@ package controllers
 import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
-import models.{FullName, IndividualOrBusiness, UKAddress, UserAnswers}
+import models.core.pages.{FullName, UKAddress}
+import models.FullName
 import pages._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

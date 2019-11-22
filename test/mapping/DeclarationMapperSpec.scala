@@ -21,7 +21,8 @@ import java.time.LocalDate
 import base.SpecBaseHelpers
 import generators.Generators
 import models.IndividualOrBusiness.Individual
-import models.{FullName, InternationalAddress, UKAddress}
+import models.core.pages.{FullName, InternationalAddress, UKAddress}
+import models.{FullName, InternationalAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
 import pages.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteeIndividualOrBusinessPage, TrusteeLiveInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesUkAddressPage}

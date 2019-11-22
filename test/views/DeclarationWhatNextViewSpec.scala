@@ -17,7 +17,7 @@
 package views
 
 import forms.DeclarationWhatNextFormProvider
-import models.DeclarationWhatNext
+import models.playback.pages.DeclarationWhatNext
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.ViewBehaviours

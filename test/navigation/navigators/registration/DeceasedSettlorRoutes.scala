@@ -19,7 +19,8 @@ package navigation.navigators.registration
 import base.SpecBase
 import controllers.deceased_settlor.routes
 import generators.Generators
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
+import models.core.UserAnswers
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks

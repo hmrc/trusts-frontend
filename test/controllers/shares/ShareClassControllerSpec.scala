@@ -20,6 +20,7 @@ import base.SpecBase
 import controllers.IndexValidation
 import forms.shares.ShareClassFormProvider
 import generators.ModelGenerators
+import models.registration.pages.ShareClass
 import models.{NormalMode, ShareClass}
 import navigation.FakeNavigator
 import org.scalacheck.Arbitrary.arbitrary

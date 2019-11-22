@@ -17,10 +17,9 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
+import models.registration.pages.WhatKindOfAsset
 import play.api.data.Form
-import models.WhatKindOfAsset
 
 class WhatKindOfAssetFormProvider @Inject() extends Mappings {
 

@@ -19,9 +19,11 @@ package navigation.registration
 import config.FrontendAppConfig
 import controllers.living_settlor.routes
 import javax.inject.{Inject, Singleton}
-import models.IndividualOrBusiness._
-import models.SettlorKindOfTrust._
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
+import models.core.UserAnswers
+import models.registration.pages.AddASettlor
+import models.core.pages.IndividualOrBusiness._
+import models.registration.pages.SettlorKindOfTrust._
 import navigation.Navigator
 import pages._
 import pages.living_settlor._
@@ -79,11 +81,11 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
     }
 
     addAnother match {
-      case Some(models.AddASettlor.YesNow) =>
+      case Some(AddASettlor.YesNow) =>
         routeToSettlorIndex
-      case Some(models.AddASettlor.YesLater) =>
+      case Some(AddASettlor.YesLater) =>
         controllers.routes.TaskListController.onPageLoad(draftId)
-      case Some(models.AddASettlor.NoComplete) =>
+      case Some(AddASettlor.NoComplete) =>
         controllers.routes.TaskListController.onPageLoad(draftId)
       case _ => controllers.routes.SessionExpiredController.onPageLoad()
     }

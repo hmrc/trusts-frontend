@@ -17,9 +17,10 @@
 package controllers.property_or_land
 
 import base.SpecBase
-import models.{InternationalAddress, NormalMode, ShareClass, UKAddress}
-import models.Status.Completed
+import models.{InternationalAddress, NormalMode}
+import models.registration.pages.Status.Completed
 import models.WhatKindOfAsset.PropertyOrLand
+import models.core.pages.{InternationalAddress, UKAddress}
 import pages.WhatKindOfAssetPage
 import pages.entitystatus.AssetStatus
 import pages.property_or_land._

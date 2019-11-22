@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.DeclarationChangesNoChangesFormProvider
-import models.{DeclarationChangesNoChanges, FullName, NormalMode}
+import models.{FullName, NormalMode, playback}
 import org.mockito.Mockito._
 import pages.{DeclarationChangesNoChangesPage, DeclarationWhatNextPage}
 import play.api.mvc.Call
@@ -27,6 +27,8 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
 import views.html.DeclarationChangesNoChangesView
 import models.DeclarationWhatNext.DeclareTheTrustIsUpToDate
+import models.core.pages.FullName
+import models.playback.pages.Declaration
 
 class DeclarationNoChangesControllerSpec extends SpecBase {
 
@@ -86,7 +88,7 @@ class DeclarationNoChangesControllerSpec extends SpecBase {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers.set(DeclarationWhatNextPage, DeclareTheTrustIsUpToDate).success.value
-        .set(DeclarationChangesNoChangesPage, DeclarationChangesNoChanges(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
+        .set(DeclarationChangesNoChangesPage, Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
@@ -99,7 +101,7 @@ class DeclarationNoChangesControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(DeclarationChangesNoChanges(FullName("First",None, "Last"), Some("test@test.comn"))), AffinityGroup.Agent, submitRoute)(fakeRequest, messages).toString
+        view(form.fill(playback.pages.Declaration(FullName("First",None, "Last"), Some("test@test.comn"))), AffinityGroup.Agent, submitRoute)(fakeRequest, messages).toString
 
       application.stop()
     }

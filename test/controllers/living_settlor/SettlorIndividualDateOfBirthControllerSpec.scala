@@ -21,9 +21,9 @@ import java.time.{LocalDate, ZoneOffset}
 import base.SpecBase
 import controllers.IndexValidation
 import forms.DateOfBirthFormProvider
-import models.FullName
 import pages.living_settlor.{SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNamePage}
 import models.NormalMode
+import models.core.pages.FullName
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}

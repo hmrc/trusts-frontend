@@ -16,7 +16,9 @@
 
 package pages
 
-import models.{InternationalAddress, UKAddress, UserAnswers}
+import models.core.pages.{InternationalAddress, UKAddress}
+import models.InternationalAddress
+import models.core.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 

@@ -14,14 +14,22 @@
  * limitations under the License.
  */
 
-package models
+package models.registration.pages
 
-import play.api.libs.json.{Json, OFormat}
+import models.{Enumerable, WithName}
 
-case class DeclarationChangesNoChanges(name: FullName, email: Option[String])
+sealed trait RegistrationStatus
 
-object DeclarationChangesNoChanges {
+object RegistrationStatus extends Enumerable.Implicits {
 
-  implicit lazy val formats: OFormat[DeclarationChangesNoChanges] = Json.format[DeclarationChangesNoChanges]
+  case object NotStarted extends WithName("NotStarted") with RegistrationStatus
+  case object InProgress extends WithName("InProgress") with RegistrationStatus
+  case object Complete extends WithName("Complete") with RegistrationStatus
 
+  val values: List[RegistrationStatus] = List(
+    NotStarted,InProgress,Complete
+  )
+
+  implicit val enumerable: Enumerable[RegistrationStatus] =
+    Enumerable(values.map(v => v.toString -> v): _*)
 }

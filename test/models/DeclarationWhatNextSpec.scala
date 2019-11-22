@@ -16,6 +16,7 @@
 
 package models
 
+import models.playback.pages.DeclarationWhatNext
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import org.scalatest.prop.PropertyChecks

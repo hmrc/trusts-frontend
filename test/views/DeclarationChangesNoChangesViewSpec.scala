@@ -17,7 +17,8 @@
 package views
 
 import forms.DeclarationChangesNoChangesFormProvider
-import models.{DeclarationChangesNoChanges, NormalMode}
+import models.NormalMode
+import models.playback.pages.Declaration
 import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
@@ -25,7 +26,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 import views.behaviours.QuestionViewBehaviours
 import views.html.DeclarationChangesNoChangesView
 
-class DeclarationChangesNoChangesViewSpec extends QuestionViewBehaviours[DeclarationChangesNoChanges] {
+class DeclarationChangesNoChangesViewSpec extends QuestionViewBehaviours[Declaration] {
 
   val messageKeyPrefix = "declaration.changes.noChanges"
 

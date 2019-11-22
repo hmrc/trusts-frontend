@@ -16,7 +16,7 @@
 
 package generators
 
-import models.UserAnswers
+import models.core.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.TryValues

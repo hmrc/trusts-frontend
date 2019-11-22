@@ -19,7 +19,8 @@ package controllers
 import controllers.actions._
 import forms.PostcodeForTheTrustFormProvider
 import javax.inject.Inject
-import models.{Mode, UserAnswers}
+import models.Mode
+import models.core.UserAnswers
 import navigation.Navigator
 import pages.PostcodeForTheTrustPage
 import play.api.data.Form

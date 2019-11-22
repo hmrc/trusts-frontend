@@ -20,6 +20,7 @@ import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
 import forms.deceased_settlor.SettlorsDateOfBirthFormProvider
+import models.core.pages.FullName
 import models.{FullName, NormalMode}
 import org.scalatest.mockito.MockitoSugar
 import pages.deceased_settlor.{SettlorsDateOfBirthPage, SettlorsNamePage}

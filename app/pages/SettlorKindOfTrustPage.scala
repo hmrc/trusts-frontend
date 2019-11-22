@@ -16,8 +16,9 @@
 
 package pages
 
-import models.SettlorKindOfTrust.Intervivos
-import models.{SettlorKindOfTrust, UserAnswers}
+import models.core.UserAnswers
+import models.registration.pages.SettlorKindOfTrust
+import models.registration.pages.SettlorKindOfTrust.Intervivos
 import play.api.libs.json.JsPath
 import sections.Settlors
 

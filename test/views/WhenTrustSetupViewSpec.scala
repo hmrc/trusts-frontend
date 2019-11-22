@@ -20,7 +20,7 @@ import java.time.LocalDate
 
 import controllers.routes
 import forms.WhenTrustSetupFormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours

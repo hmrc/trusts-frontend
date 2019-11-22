@@ -18,8 +18,8 @@ package utils
 
 import base.SpecBase
 import controllers.routes
-import models.Status.Completed
-import models.{FullName, WhatTypeOfBeneficiary}
+import models.registration.pages.Status.Completed
+import models.core.pages.FullName
 import pages.entitystatus.{ClassBeneficiaryStatus, IndividualBeneficiaryStatus}
 import pages.{ClassBeneficiaryDescriptionPage, IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage, WhatTypeOfBeneficiaryPage}
 import viewmodels.AddRow

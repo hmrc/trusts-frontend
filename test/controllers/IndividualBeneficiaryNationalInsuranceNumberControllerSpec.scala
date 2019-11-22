@@ -18,6 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.IndividualBeneficiaryNationalInsuranceNumberFormProvider
+import models.core.pages.FullName
 import models.{FullName, NormalMode}
 import navigation.FakeNavigator
 import pages.{IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage}

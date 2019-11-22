@@ -17,7 +17,7 @@
 package mapping
 
 import javax.inject.Inject
-import models.UserAnswers
+import models.core.UserAnswers
 
 class TaxLiabilityMapper @Inject()() extends Mapping[YearsReturns] {
 

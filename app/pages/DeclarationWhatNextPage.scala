@@ -16,7 +16,7 @@
 
 package pages
 
-import models.DeclarationWhatNext
+import models.playback.pages.DeclarationWhatNext
 import play.api.libs.json.JsPath
 
 case object DeclarationWhatNextPage extends QuestionPage[DeclarationWhatNext] {

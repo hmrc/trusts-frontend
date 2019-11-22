@@ -17,9 +17,9 @@
 package controllers.shares
 
 import base.SpecBase
-import models.ShareClass
-import models.Status.Completed
+import models.registration.pages.Status.Completed
 import models.WhatKindOfAsset.Shares
+import models.registration.pages.ShareClass
 import pages.WhatKindOfAssetPage
 import pages.entitystatus.AssetStatus
 import pages.shares._
