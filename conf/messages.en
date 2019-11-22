@@ -1384,7 +1384,7 @@ trustNotClaimed.bullet.2.title = Trustee needs to authorise your online access t
 trustNotClaimed.bullet.2.p1 = Through Agent Services you can create an authorisation link to send to the trustee.
 trustNotClaimed.bullet.2.p2 = The trustee needs to use the same Government Gateway organisation account used to claim the trust to approve your request.
 trustNotClaimed.bullet.2.p3 = If you need help with the service
-trustNotClaimed.bullet.2.p3.a = contact the trusts helpline.
+trustNotClaimed.bullet.2.p3.a = contact the trusts helpline (opens in a new window or tab).
 trustNotClaimed.bullet.2.p4 = You can
 trustNotClaimed.bullet.2.p4.a = return to register and maintain a trust for a client.
 
@@ -1396,7 +1396,7 @@ agentNotAuthorised.p2 = You can create an authorisation link to send to the trus
 agentNotAuthorised.p2.a = Agent Services.
 agentNotAuthorised.p3 = The trustee who claimed the trust must use the same Government Gateway account to approve your request.
 agentNotAuthorised.p4 = If you need help with this service
-agentNotAuthorised.p4.a = contact the trusts helpline.
+agentNotAuthorised.p4.a = contact the trusts helpline (opens in a new window or tab).
 agentNotAuthorised.p5 = You can
 agentNotAuthorised.p5.a = return to register and maintain a trust for a client.
 
