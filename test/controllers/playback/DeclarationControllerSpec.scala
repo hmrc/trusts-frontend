@@ -21,13 +21,14 @@ import forms.playback.DeclarationFormProvider
 import models.DeclarationWhatNext.DeclareTheTrustIsUpToDate
 import models.{FullName, playback}
 import models.playback.Declaration
-import pages.{DeclarationChangesNoChangesPage, DeclarationWhatNextPage}
+import pages.DeclarationWhatNextPage
 import views.html.DeclarationChangesNoChangesView
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
 import org.mockito.Mockito.reset
+import pages.playback.DeclarationPage
 
 class DeclarationControllerSpec extends SpecBase {
 
@@ -87,7 +88,7 @@ class DeclarationControllerSpec extends SpecBase {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers.set(DeclarationWhatNextPage, DeclareTheTrustIsUpToDate).success.value
-        .set(DeclarationChangesNoChangesPage, Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
+        .set(DeclarationPage, Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 

@@ -19,7 +19,7 @@ package controllers.playback
 import controllers.actions._
 import forms.playback.DeclarationFormProvider
 import navigation.Navigator
-import pages.{DeclarationChangesNoChangesPage, DeclarationWhatNextPage}
+import pages.DeclarationWhatNextPage
 import repositories.RegistrationsRepository
 import views.html.DeclarationChangesNoChangesView
 
@@ -29,6 +29,7 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import javax.inject.Inject
+import pages.playback.DeclarationPage
 
 
 class DeclarationController @Inject()(
@@ -52,7 +53,7 @@ class DeclarationController @Inject()(
   def onPageLoad(): Action[AnyContent] = actions() {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(DeclarationChangesNoChangesPage) match {
+      val preparedForm = request.userAnswers.get(DeclarationPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -71,7 +72,7 @@ class DeclarationController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationChangesNoChangesPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, value))
             _ <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(routes.DeclarationController.onPageLoad()) // TODO Redirect to variation confirmation page
         }
