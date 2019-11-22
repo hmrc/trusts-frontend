@@ -17,7 +17,7 @@
 package views.playback
 
 import forms.playback.DeclarationFormProvider
-import models.DeclarationChangesNoChanges
+import models.playback.Declaration
 import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
@@ -25,7 +25,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 import views.behaviours.QuestionViewBehaviours
 import views.html.playback.DeclarationView
 
-class DeclarationViewSpec extends QuestionViewBehaviours[DeclarationChangesNoChanges] {
+class DeclarationViewSpec extends QuestionViewBehaviours[Declaration] {
 
   val messageKeyPrefix = "declaration.changes.noChanges"
 

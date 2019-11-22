@@ -19,7 +19,8 @@ package controllers.playback
 import base.SpecBase
 import forms.playback.DeclarationFormProvider
 import models.DeclarationWhatNext.DeclareTheTrustIsUpToDate
-import models.{DeclarationChangesNoChanges, FullName}
+import models.{FullName, playback}
+import models.playback.Declaration
 import pages.{DeclarationChangesNoChangesPage, DeclarationWhatNextPage}
 import views.html.DeclarationChangesNoChangesView
 import play.api.mvc.Call
@@ -86,7 +87,7 @@ class DeclarationControllerSpec extends SpecBase {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers.set(DeclarationWhatNextPage, DeclareTheTrustIsUpToDate).success.value
-        .set(DeclarationChangesNoChangesPage, DeclarationChangesNoChanges(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
+        .set(DeclarationChangesNoChangesPage, Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
@@ -99,7 +100,7 @@ class DeclarationControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(DeclarationChangesNoChanges(FullName("First",None, "Last"), Some("test@test.comn"))), AffinityGroup.Agent, submitRoute)(fakeRequest, messages).toString
+        view(form.fill(playback.Declaration(FullName("First",None, "Last"), Some("test@test.comn"))), AffinityGroup.Agent, submitRoute)(fakeRequest, messages).toString
 
       application.stop()
     }

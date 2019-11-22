@@ -19,13 +19,14 @@ package forms.playback
 import forms.Validation
 import forms.mappings.Mappings
 import javax.inject.Inject
-import models.{DeclarationChangesNoChanges, FullName}
+import models.FullName
+import models.playback.Declaration
 import play.api.data.Form
 import play.api.data.Forms.{mapping, optional}
 
 class DeclarationFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[DeclarationChangesNoChanges] =
+  def apply(): Form[Declaration] =
   Form(
     mapping(
       "" -> fullName,
@@ -34,7 +35,7 @@ class DeclarationFormProvider @Inject() extends Mappings {
           maxLength(35, s"declaration.changes.noChanges.error.email.length"),
           regexp(Validation.emailRegex, s"declaration.changes.noChanges.error.email.invalid"))
       ))
-    )(DeclarationChangesNoChanges.apply)(DeclarationChangesNoChanges.unapply)
+    )(Declaration.apply)(Declaration.unapply)
   )
 
   val fullName = mapping(

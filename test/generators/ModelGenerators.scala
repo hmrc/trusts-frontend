@@ -18,7 +18,8 @@ package generators
 
 import java.time.LocalDate
 
-import models._
+import models.{playback, _}
+import models.playback.Declaration
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 
@@ -83,12 +84,12 @@ trait ModelGenerators {
     }
   }
 
-  implicit lazy val arbitraryDeclarationChangesNoChanges : Arbitrary[DeclarationChangesNoChanges] = {
+  implicit lazy val arbitraryDeclarationChangesNoChanges : Arbitrary[Declaration] = {
     Arbitrary {
       for {
         str <- arbitrary[String]
       } yield {
-        DeclarationChangesNoChanges(FullName(str, Some(str), str), Some(str))
+        playback.Declaration(FullName(str, Some(str), str), Some(str))
       }
     }
   }

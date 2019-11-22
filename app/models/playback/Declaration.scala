@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package models
+package models.playback
 
+import models.FullName
 import play.api.libs.json.{Json, OFormat}
 
-case class DeclarationChangesNoChanges(name: FullName, email: Option[String])
+case class Declaration(name: FullName, email: Option[String])
 
-object DeclarationChangesNoChanges {
+object Declaration {
 
-  implicit lazy val formats: OFormat[DeclarationChangesNoChanges] = Json.format[DeclarationChangesNoChanges]
+  implicit lazy val formats: OFormat[Declaration] = Json.format[Declaration]
 
 }
