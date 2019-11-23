@@ -29,18 +29,17 @@ import scala.concurrent.{ExecutionContext, Future}
 
 
 class IdentifyForPlayback @Inject()(utr: String,
-                                    override val authConnector: AuthConnector,
                                     val parser: BodyParsers.Default,
                                     trustsAuth: TrustsAuth
                              )(override implicit val executionContext: ExecutionContext)
-  extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest] with AuthorisedFunctions {
+  extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest] {
 
 
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
-    authorised(Relationship(trustsAuth.config.relationshipName, Set(BusinessKey(trustsAuth.config.relationshipIdentifier, utr)))) {
+    trustsAuth.authorised(Relationship(trustsAuth.config.relationshipName, Set(BusinessKey(trustsAuth.config.relationshipIdentifier, utr)))) {
       request match {
         case req: IdentifierRequest[A] => block(req)
         case _ => Future.successful(trustsAuth.redirectToLogin)
@@ -64,9 +63,7 @@ class IdentifyForRegistration @Inject()(utr: String,
                                         val parser: BodyParsers.Default,
                                         trustsAuth: TrustsAuth
                                    )(override implicit val executionContext: ExecutionContext)
-  extends ActionBuilder[IdentifierRequest, AnyContent]  {
-
-  def composedAuthAction[A](action: Action[A]) = new AuthenticatedIdentifierAction(action, trustsAuth)
+  extends ActionBuilder[IdentifierRequest, AnyContent]   {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
@@ -79,5 +76,5 @@ class IdentifyForRegistration @Inject()(utr: String,
     }
   }
 
-  override def composeAction[A](action: Action[A]): Action[A] = composedAuthAction(action)
+  override def composeAction[A](action: Action[A]): Action[A] = new AuthenticatedIdentifierAction(action, trustsAuth)
 }

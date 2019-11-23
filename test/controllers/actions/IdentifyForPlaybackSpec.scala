@@ -19,17 +19,16 @@ package controllers.actions
 import base.SpecBase
 import config.FrontendAppConfig
 import models.requests.IdentifierRequest
+import org.mockito.Matchers.{any, eq => mEq}
+import org.mockito.Mockito._
 import play.api.mvc.{Action, AnyContent, Results}
 import play.api.test.Helpers._
-import play.api.inject.{Injector, bind}
-import org.mockito.Matchers.any
-import org.mockito.Mockito._
-import uk.gov.hmrc.auth.core.{AffinityGroup, AuthConnector, BearerTokenExpired, Enrolment, EnrolmentIdentifier, Enrolments}
-import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
+import uk.gov.hmrc.auth.core.retrieve.{EmptyRetrieval, Retrieval, ~}
+import uk.gov.hmrc.auth.core._
 
 import scala.concurrent.Future
 
-class IdentifyForRegistrationSpec extends SpecBase {
+class IdentifyForPlaybackSpec extends SpecBase {
 
   type RetrievalType = Option[String] ~ Option[AffinityGroup] ~ Enrolments
 
@@ -45,11 +44,11 @@ class IdentifyForRegistrationSpec extends SpecBase {
   private val agentEnrolment = Enrolments(Set(Enrolment("HMRC-AS-AGENT", List(EnrolmentIdentifier("AgentReferenceNumber", "SomeVal")), "Activated", None)))
 
 
-  "invoking the IdentifyForRegistrations action builder" when {
+  "invoking the IdentifyForPlaybacks action builder" when {
     "passing a non authenticated request" must {
       "redirect to the login page" in {
 
-        val identify: IdentifyForRegistration = new IdentifyForRegistration("", injectedParsers, trustsAuth)
+        val identify: IdentifyForPlayback = new IdentifyForPlayback("", injectedParsers, trustsAuth)
         val application = applicationBuilder(userAnswers = None).build()
 
         def fakeAction: Action[AnyContent] = identify { _ => Results.Ok }
@@ -68,7 +67,7 @@ class IdentifyForRegistrationSpec extends SpecBase {
     "passing an identifier request" must {
       "execute the body of the action" in {
 
-        val identify: IdentifyForRegistration = new IdentifyForRegistration("", injectedParsers, trustsAuth)
+        val identify: IdentifyForPlayback = new IdentifyForPlayback("", injectedParsers, trustsAuth)
 
         val fakeAction: Action[AnyContent] = identify { _ => Results.Ok }
 
@@ -78,6 +77,9 @@ class IdentifyForRegistrationSpec extends SpecBase {
 
         when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
           .thenReturn(authRetrievals(AffinityGroup.Agent, agentEnrolment))
+
+        when(mockAuthConnector.authorise(any[Relationship], mEq(EmptyRetrieval))(any(), any()))
+          .thenReturn(Future.successful(()))
 
         val result = fakeAction.apply(idRequest)
 
