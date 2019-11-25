@@ -1,5 +1,6 @@
 package repositories
 
+import models.playback.UserAnswers
 import org.scalatest._
 import org.scalatest.concurrent.{Eventually, IntegrationPatience, ScalaFutures}
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -16,16 +17,18 @@ class PlaybackRepositorySpec extends FreeSpec with MustMatchers with FailOnUnind
   private lazy val appBuilder: GuiceApplicationBuilder =
     new GuiceApplicationBuilder()
 
-  val json = Json.parse(
-    """
-      |{
-      |  "data" : "lots-of-playback-data",
-      |  "responseHeader" : {
-      |    "status" : "Processed",
-      |    "formBundleNo" : "000000000001"
-      |  }
-      |}
-      |""".stripMargin)
+//  val json = Json.parse(
+//    """
+//      |{
+//      |  "data" : "lots-of-playback-data",
+//      |  "responseHeader" : {
+//      |    "status" : "Processed",
+//      |    "formBundleNo" : "000000000001"
+//      |  }
+//      |}
+//      |""".stripMargin)
+
+  val userAnswers = new UserAnswers("test")
 
   "a playback repository" - {
     "must be able to store a playback payload for a processed trust" in {
@@ -40,10 +43,11 @@ class PlaybackRepositorySpec extends FreeSpec with MustMatchers with FailOnUnind
 
         started(application).futureValue
 
-        val storedOk = repository.store("some-internal-id", json)
+        val storedOk = repository.store(userAnswers)
 
         storedOk.futureValue mustBe true
+
+        }
       }
     }
-  }
 }

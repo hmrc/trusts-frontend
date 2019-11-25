@@ -14,23 +14,19 @@
  * limitations under the License.
  */
 
-package models
+package models.playback
 
 import java.time.LocalDateTime
-
-import models.RegistrationStatus.NotStarted
+import models.{MongoDateTimeFormats, RichJsObject}
 import play.api.Logger
 import play.api.libs.json._
 import queries.{Gettable, Settable}
-
 import scala.util.{Failure, Success, Try}
 
 final case class UserAnswers(
-                              draftId: String,
+                              internalAuthId: String,
                               data: JsObject = Json.obj(),
-                              progress : RegistrationStatus = NotStarted,
-                              createdAt : LocalDateTime = LocalDateTime.now,
-                              internalAuthId :String
+                              updatedAt: LocalDateTime = LocalDateTime.now
                             ) {
 
   def get[A](page: Gettable[A])(implicit rds: Reads[A]): Option[A] = {
@@ -75,10 +71,6 @@ final case class UserAnswers(
         query.cleanup(None, updatedAnswers)
     }
   }
-
-  def toPlaybackUserAnswers: models.playback.UserAnswers = {
-    new models.playback.UserAnswers(internalAuthId, data)
-  }
 }
 
 object UserAnswers {
@@ -88,12 +80,10 @@ object UserAnswers {
     import play.api.libs.functional.syntax._
 
     (
-      (__ \ "_id").read[String] and
+      (__ \ "internalId").read[String] and
       (__ \ "data").read[JsObject] and
-      (__ \ "progress").read[RegistrationStatus] and
-      (__ \ "createdAt").read(MongoDateTimeFormats.localDateTimeRead) and
-      (__ \ "internalId").read[String]
-    ) (UserAnswers.apply _)
+      (__ \ "updatedAt").read(MongoDateTimeFormats.localDateTimeRead)
+      ) (UserAnswers.apply _)
   }
 
   implicit lazy val writes: OWrites[UserAnswers] = {
@@ -101,11 +91,9 @@ object UserAnswers {
     import play.api.libs.functional.syntax._
 
     (
-      (__ \ "_id").write[String] and
+      (__ \ "internalId").write[String] and
       (__ \ "data").write[JsObject] and
-      (__ \ "progress").write[RegistrationStatus] and
-      (__ \ "createdAt").write(MongoDateTimeFormats.localDateTimeWrite) and
-      (__ \ "internalId").write[String]
-    ) (unlift(UserAnswers.unapply))
+      (__ \ "updatedAt").write(MongoDateTimeFormats.localDateTimeWrite)
+      ) (unlift(UserAnswers.unapply))
   }
 }

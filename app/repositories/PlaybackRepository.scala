@@ -16,13 +16,15 @@
 
 package repositories
 
+import java.time.LocalDateTime
 import akka.stream.Materializer
 import javax.inject.Inject
+import models.playback.UserAnswers
 import play.api.Configuration
 import play.api.libs.json._
 import play.modules.reactivemongo.ReactiveMongoApi
-import reactivemongo.api.commands.WriteError
 import reactivemongo.api.indexes.{Index, IndexType}
+import reactivemongo.bson.BSONDocument
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import reactivemongo.play.json.collection.JSONCollection
 import utils.DateFormatter
@@ -35,40 +37,47 @@ class DefaultPlaybackRepository @Inject()(
                                           dateFormatter: DateFormatter
                                         )(implicit ec: ExecutionContext, m: Materializer) extends PlaybackRepository {
 
-
   private val collectionName: String = "playback"
+
+  private val cacheTtl = config.get[Int]("mongodb.playback.ttlSeconds")
 
   private def collection: Future[JSONCollection] =
     mongo.database.map(_.collection[JSONCollection](collectionName))
 
+  private val lastUpdatedIndex = Index(
+    key = Seq("lastUpdated" -> IndexType.Ascending),
+    name = Some("user-answers-last-updated-index"),
+    options = BSONDocument("expireAfterSeconds" -> cacheTtl)
+  )
 
   private val internalAuthIdIndex = Index(
     key = Seq("internalId" -> IndexType.Ascending),
     name = Some("internal-auth-id-index")
   )
 
-    val started : Future[Unit] = {
-      Future.sequence {
-        Seq(
-          collection.map(_.indexesManager.ensure(internalAuthIdIndex))
-        )
-      }.map(_ => ())
-    }
+  val started : Future[Unit] = {
+    Future.sequence {
+      Seq(
+        collection.map(_.indexesManager.ensure(lastUpdatedIndex)),
+        collection.map(_.indexesManager.ensure(internalAuthIdIndex))
+      )
+    }.map(_ => ())
+  }
 
 
-  override def store(internalId: String, playback: JsValue): Future[Boolean] = {
+  override def store(userAnswers: UserAnswers): Future[Boolean] = {
 
     val selector = Json.obj(
-      "_id" -> internalId
+      "_id" -> userAnswers.internalAuthId
     )
 
     val modifier = Json.obj(
-      "$set" -> playback
+      "$set" -> (userAnswers copy(updatedAt = LocalDateTime.now))
     )
 
     collection.flatMap {
       _.update(ordered = false).one(selector, modifier, upsert = true, multi = false).map {
-        result => result.ok
+            result => result.ok
       }
     }
   }
@@ -78,5 +87,5 @@ trait PlaybackRepository {
 
   val started: Future[Unit]
 
-  def store(internalId: String, playback: JsValue): Future[Boolean]
+  def store(userAnswers: UserAnswers): Future[Boolean]
 }

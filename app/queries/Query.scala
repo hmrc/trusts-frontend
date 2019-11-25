@@ -32,4 +32,7 @@ trait Settable[A] extends Query {
 
   def cleanup(value: Option[A], userAnswers: UserAnswers): Try[UserAnswers] =
     Success(userAnswers)
+
+  def cleanup(value: Option[A], userAnswers: models.playback.UserAnswers): Try[models.playback.UserAnswers] =
+    Success(userAnswers)
 }
