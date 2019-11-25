@@ -15,7 +15,8 @@
  */
 
 package mapping
-import models.{Address, InternationalAddress, UKAddress, UserAnswers}
+import models.core.UserAnswers
+import models.core.pages.{Address, InternationalAddress, UKAddress}
 import pages.QuestionPage
 
 class AddressMapper  {
@@ -35,7 +36,7 @@ class AddressMapper  {
     }
   }
 
-   private def buildUkAddress(address: Option[models.UKAddress]): Option[AddressType] = {
+   private def buildUkAddress(address: Option[UKAddress]): Option[AddressType] = {
     address.map{
       x=>
         AddressType(
@@ -48,7 +49,7 @@ class AddressMapper  {
     }
   }
 
-  private def buildInternationalAddress(address: Option[models.InternationalAddress]): Option[AddressType] = {
+  private def buildInternationalAddress(address: Option[InternationalAddress]): Option[AddressType] = {
     address.map{
       x=>
         AddressType(

@@ -20,10 +20,10 @@ import java.time.LocalDate
 
 import base.SpecBaseHelpers
 import generators.Generators
-import models.{FullName, IndividualOrBusiness, InternationalAddress, PassportOrIdCardDetails, UKAddress}
+import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
+import models.registration.pages.PassportOrIdCardDetails
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
-import pages._
-import pages.living_settlor.{SettlorIndividualAddressInternationalPage, SettlorIndividualAddressUKPage, SettlorIndividualAddressUKYesNoPage, SettlorIndividualAddressYesNoPage, SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNINOPage, SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage, SettlorIndividualOrBusinessPage, SettlorIndividualPassportPage, SettlorIndividualPassportYesNoPage}
+import pages.living_settlor._
 
 class IndividualSettlorsMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers  {

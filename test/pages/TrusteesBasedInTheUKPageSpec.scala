@@ -16,7 +16,7 @@
 
 package pages
 
-import models.TrusteesBasedInTheUK
+import models.registration.pages.TrusteesBasedInTheUK
 import pages.behaviours.PageBehaviours
 
 class TrusteesBasedInTheUKSpec extends PageBehaviours {

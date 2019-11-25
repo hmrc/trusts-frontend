@@ -20,11 +20,9 @@ import base.SpecBase
 import controllers.IndexValidation
 import forms.YesNoFormProvider
 import models.NormalMode
-import navigation.FakeNavigator
 import org.scalacheck.Arbitrary.arbitrary
 import pages.property_or_land.TrustOwnAllThePropertyOrLandPage
-import play.api.inject.bind
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.property_or_land.TrustOwnAllThePropertyOrLandView

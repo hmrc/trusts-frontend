@@ -18,16 +18,12 @@ package controllers
 
 import base.SpecBase
 import forms.AgentNameFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.FakeNavigator
+import models.NormalMode
 import pages.AgentNamePage
-import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.AgentNameView
 import uk.gov.hmrc.auth.core.AffinityGroup
+import views.html.AgentNameView
 
 class AgentNameControllerSpec extends SpecBase {
 

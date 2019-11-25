@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package models
+package models.core.http
 
 import auditing.RegistrationErrorAuditEvent
 import play.api.Logger
 import play.api.http.Status._
-import play.api.libs.json.{Format, JsResult, JsValue, Json, OFormat}
+import play.api.libs.json._
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
 trait TrustResponse

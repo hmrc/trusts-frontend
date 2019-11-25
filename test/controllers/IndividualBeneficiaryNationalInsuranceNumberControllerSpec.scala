@@ -18,11 +18,9 @@ package controllers
 
 import base.SpecBase
 import forms.IndividualBeneficiaryNationalInsuranceNumberFormProvider
-import models.{FullName, NormalMode}
-import navigation.FakeNavigator
+import models.NormalMode
+import models.core.pages.FullName
 import pages.{IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage}
-import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.IndividualBeneficiaryNationalInsuranceNumberView

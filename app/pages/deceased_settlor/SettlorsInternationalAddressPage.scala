@@ -16,7 +16,7 @@
 
 package pages.deceased_settlor
 
-import models.InternationalAddress
+import models.core.pages.InternationalAddress
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.DeceasedSettlor

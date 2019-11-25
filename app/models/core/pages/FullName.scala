@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package models.core.pages
 
-import java.time.LocalDate
+import play.api.libs.json._
 
-import play.api.libs.json.JsPath
-import sections.TrustDetails
+case class FullName(firstName: String, middleName: Option[String], lastName: String) {
 
-case object WhenTrustSetupPage extends QuestionPage[LocalDate] {
+  override def toString = s"$firstName $lastName"
 
-  override def path: JsPath = JsPath \ TrustDetails \ toString
+}
 
-  override def toString: String = "whenTrustSetup"
+object FullName {
+
+  implicit lazy val formats: OFormat[FullName] = Json.format[FullName]
+
 }

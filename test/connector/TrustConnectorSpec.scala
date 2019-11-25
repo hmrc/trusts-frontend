@@ -20,8 +20,8 @@ import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
 import generators.Generators
 import mapping.{Mapping, Registration, RegistrationMapper}
-import models.RegistrationTRNResponse
-import models.TrustResponse._
+import models.core.http.RegistrationTRNResponse
+import models.core.http.TrustResponse._
 import models.playback.{Processed, Processing, TrustServiceUnavailable, UtrNotFound}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{FreeSpec, Inside, MustMatchers, OptionValues}
@@ -80,6 +80,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
   }
 
   "TrustConnector" - {
+
     "return a Trust Registration Number (TRN)" - {
 
       "valid payload to trusts is sent" in {
@@ -104,6 +105,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
     }
 
     "return AlreadyRegistered response " - {
+
       "already registered trusts is sent " in {
         val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
         val registration = registrationMapper.build(userAnswers).value
@@ -150,6 +152,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
     }
 
     "return InternalServerError response " - {
+
       "api returns bad request response " in {
         val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
         val registration = registrationMapper.build(userAnswers).value
@@ -168,6 +171,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
     }
 
     "return InternalServerError response " - {
+
       "api returns service unavailable response " in {
         val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
         val registration = registrationMapper.build(userAnswers).value

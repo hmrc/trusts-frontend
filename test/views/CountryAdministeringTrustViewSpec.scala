@@ -16,7 +16,6 @@
 
 package views
 
-import controllers.routes
 import forms.CountryAdministeringTrustFormProvider
 import models.NormalMode
 import play.api.data.Form

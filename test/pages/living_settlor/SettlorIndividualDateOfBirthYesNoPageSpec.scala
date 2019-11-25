@@ -18,7 +18,7 @@ package pages.living_settlor
 
 import java.time.LocalDate
 
-import models.UserAnswers
+import models.core.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 

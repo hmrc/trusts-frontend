@@ -17,8 +17,8 @@
 package navigation
 
 import javax.inject.Inject
-import models.DeclarationWhatNext.DeclareTheTrustIsUpToDate
-import models.UserAnswers
+import models.core.UserAnswers
+import models.playback.pages.DeclarationWhatNext.DeclareTheTrustIsUpToDate
 import pages.DeclarationWhatNextPage
 
 class VariationsNavigator @Inject()() {

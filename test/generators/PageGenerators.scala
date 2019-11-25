@@ -16,6 +16,7 @@
 
 package generators
 
+import models.registration.pages.WhenTrustSetupPage
 import org.scalacheck.Arbitrary
 import pages._
 import pages.deceased_settlor._

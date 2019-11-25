@@ -16,9 +16,9 @@
 
 package views.behaviours
 
-import views.ViewSpecBase
 import play.twirl.api.HtmlFormat
 import viewmodels.Task
+import views.ViewSpecBase
 
 trait TaskListViewBehaviours extends ViewSpecBase {
 

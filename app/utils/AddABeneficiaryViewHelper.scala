@@ -17,7 +17,8 @@
 package utils
 
 import controllers.routes
-import models.{FullName, NormalMode, UserAnswers}
+import models.core.UserAnswers
+import models.core.pages.FullName
 import play.api.i18n.Messages
 import sections.{ClassOfBeneficiaries, IndividualBeneficiaries}
 import viewmodels.addAnother.{ClassOfBeneficiaryViewModel, IndividualBeneficiaryViewModel}

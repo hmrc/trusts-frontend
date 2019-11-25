@@ -16,9 +16,10 @@
 
 package viewmodels.addAnother
 
-import models.Status.InProgress
-import models.WhatKindOfAsset.PropertyOrLand
-import models.{InternationalAddress, Status, UKAddress, WhatKindOfAsset}
+import models.core.pages.{InternationalAddress, UKAddress}
+import models.registration.pages.Status.InProgress
+import models.registration.pages.WhatKindOfAsset.PropertyOrLand
+import models.registration.pages.{Status, WhatKindOfAsset}
 
 sealed trait PropertyOrLandAssetViewModel extends AssetViewModel
 

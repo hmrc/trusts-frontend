@@ -20,17 +20,17 @@ import base.SpecBaseHelpers
 import connector.TrustConnector
 import generators.Generators
 import mapping.{Registration, RegistrationMapper}
-import models.RegistrationTRNResponse
-import models.TrustResponse.UnableToRegister
+import models.core.http.RegistrationTRNResponse
+import models.core.http.TrustResponse.UnableToRegister
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
-import scala.concurrent.ExecutionContext.Implicits.global
 
 class SubmissionServiceSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers

@@ -18,12 +18,9 @@ package controllers
 
 import base.SpecBase
 import forms.TrusteesBasedInTheUKFormProvider
-import models.{NormalMode, TrusteesBasedInTheUK, UserAnswers}
-import navigation.FakeNavigator
+import models.NormalMode
+import models.registration.pages.TrusteesBasedInTheUK
 import pages.TrusteesBasedInTheUKPage
-import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.TrusteesBasedInTheUKView

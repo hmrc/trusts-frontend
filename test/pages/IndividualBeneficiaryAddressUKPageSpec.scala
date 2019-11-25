@@ -16,9 +16,10 @@
 
 package pages
 
-import models.{ UKAddress, UserAnswers}
-import pages.behaviours.PageBehaviours
+import models.core.UserAnswers
+import models.core.pages.UKAddress
 import org.scalacheck.Arbitrary.arbitrary
+import pages.behaviours.PageBehaviours
 
 class IndividualBeneficiaryAddressUKPageSpec extends PageBehaviours {
 

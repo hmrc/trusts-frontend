@@ -16,7 +16,7 @@
 
 package pages.trustees
 
-import models.AddATrustee
+import models.registration.pages.AddATrustee
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 

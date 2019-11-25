@@ -16,7 +16,7 @@
 
 package pages
 
-import models.InternationalAddress
+import models.core.pages.InternationalAddress
 import play.api.libs.json.JsPath
 import sections.Agent
 

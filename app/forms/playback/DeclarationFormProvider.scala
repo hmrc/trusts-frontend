@@ -19,8 +19,8 @@ package forms.playback
 import forms.Validation
 import forms.mappings.Mappings
 import javax.inject.Inject
-import models.FullName
-import models.playback.Declaration
+import models.core.pages.FullName
+import models.playback.pages.Declaration
 import play.api.data.Form
 import play.api.data.Forms.{mapping, optional}
 

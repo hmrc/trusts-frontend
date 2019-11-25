@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models.playback
+package models.playback.pages
 
-import models.FullName
+import models.core.pages.FullName
 import play.api.libs.json.{Json, OFormat}
 
 case class Declaration(name: FullName, email: Option[String])

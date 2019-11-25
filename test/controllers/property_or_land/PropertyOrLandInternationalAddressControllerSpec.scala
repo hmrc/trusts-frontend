@@ -19,7 +19,8 @@ package controllers.property_or_land
 import base.SpecBase
 import controllers.IndexValidation
 import forms.InternationalAddressFormProvider
-import models.{InternationalAddress, NormalMode}
+import models.NormalMode
+import models.core.pages.InternationalAddress
 import org.scalacheck.Arbitrary.arbitrary
 import pages.property_or_land.PropertyOrLandInternationalAddressPage
 import play.api.Application

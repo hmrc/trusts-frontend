@@ -21,7 +21,10 @@ import java.time.format.DateTimeFormatter
 import controllers.routes
 import javax.inject.Inject
 import mapping.reads._
-import models.{InternationalAddress, NormalMode, PassportOrIdCardDetails, UKAddress, UserAnswers}
+import models.NormalMode
+import models.core.UserAnswers
+import models.core.pages.{InternationalAddress, UKAddress}
+import models.registration.pages.{PassportOrIdCardDetails, WhenTrustSetupPage}
 import pages._
 import pages.deceased_settlor._
 import pages.living_settlor._

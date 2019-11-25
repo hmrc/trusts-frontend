@@ -18,17 +18,15 @@ package controllers.playback
 
 import base.SpecBase
 import forms.playback.DeclarationFormProvider
-import models.DeclarationWhatNext.DeclareTheTrustIsUpToDate
-import models.{FullName, playback}
-import models.playback.Declaration
+import models.core.pages.FullName
+import models.playback.pages.Declaration
+import models.playback.pages.DeclarationWhatNext.DeclareTheTrustIsUpToDate
+import org.mockito.Mockito.reset
 import pages.DeclarationWhatNextPage
-import views.html.playback.DeclarationView
-import play.api.mvc.Call
+import pages.playback.DeclarationPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
-import org.mockito.Mockito.reset
-import pages.playback.DeclarationPage
 
 class DeclarationControllerSpec extends SpecBase {
 
@@ -55,7 +53,7 @@ class DeclarationControllerSpec extends SpecBase {
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[DeclarationView]
+      val view = application.injector.instanceOf[views.html.playback.DeclarationView]
       
       status(result) mustEqual OK
 
@@ -75,7 +73,7 @@ class DeclarationControllerSpec extends SpecBase {
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[DeclarationView]
+      val view = application.injector.instanceOf[views.html.playback.DeclarationView]
 
       status(result) mustEqual OK
 
@@ -94,14 +92,14 @@ class DeclarationControllerSpec extends SpecBase {
 
       val request = FakeRequest(GET, declarationRoute)
 
-      val view = application.injector.instanceOf[DeclarationView]
+      val view = application.injector.instanceOf[views.html.playback.DeclarationView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(playback.Declaration(FullName("First",None, "Last"), Some("test@test.comn"))), AffinityGroup.Agent, submitRoute)(fakeRequest, messages).toString
+        view(form.fill(Declaration(FullName("First",None, "Last"), Some("test@test.comn"))), AffinityGroup.Agent, submitRoute)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -136,7 +134,7 @@ class DeclarationControllerSpec extends SpecBase {
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[DeclarationView]
+      val view = application.injector.instanceOf[views.html.playback.DeclarationView]
 
       val result = route(application, request).value
 

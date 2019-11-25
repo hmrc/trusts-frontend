@@ -17,7 +17,7 @@
 package mapping
 
 import javax.inject.Inject
-import models.UserAnswers
+import models.core.UserAnswers
 import play.api.Logger
 
 class AssetMapper @Inject()(moneyAssetMapper: MoneyAssetMapper, shareAssetMapper: ShareAssetMapper,

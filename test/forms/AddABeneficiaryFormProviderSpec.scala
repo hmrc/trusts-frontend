@@ -17,7 +17,7 @@
 package forms
 
 import forms.behaviours.OptionFieldBehaviours
-import models.AddABeneficiary
+import models.registration.pages.AddABeneficiary
 import play.api.data.FormError
 
 class AddABeneficiaryFormProviderSpec extends OptionFieldBehaviours {

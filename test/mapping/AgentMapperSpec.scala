@@ -16,12 +16,9 @@
 
 package mapping
 
-import java.time.LocalDate
-
 import base.SpecBaseHelpers
 import generators.Generators
-import mapping.TypeOfTrust.WillTrustOrIntestacyTrust
-import models.{InternationalAddress, UKAddress}
+import models.core.pages.{InternationalAddress, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
 

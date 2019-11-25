@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package models
+package models.core
 
 import java.time.LocalDateTime
 
-import models.RegistrationStatus.NotStarted
+import models.MongoDateTimeFormats
+import models.registration.pages.RegistrationStatus
+import models.registration.pages.RegistrationStatus.NotStarted
 import play.api.Logger
 import play.api.libs.json._
 import queries.{Gettable, Settable}
@@ -32,6 +34,8 @@ final case class UserAnswers(
                               createdAt : LocalDateTime = LocalDateTime.now,
                               internalAuthId :String
                             ) {
+
+  import UserAnswerImplicits._
 
   def get[A](page: Gettable[A])(implicit rds: Reads[A]): Option[A] = {
     Reads.at(page.path).reads(data) match {

@@ -17,10 +17,9 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
+import models.registration.pages.SettlorKindOfTrust
 import play.api.data.Form
-import models.SettlorKindOfTrust
 
 class SettlorKindOfTrustFormProvider @Inject() extends Mappings {
 

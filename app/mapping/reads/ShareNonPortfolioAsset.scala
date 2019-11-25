@@ -16,8 +16,8 @@
 
 package mapping.reads
 
-import models.WhatKindOfAsset.Shares
-import models.{ShareClass, Status, WhatKindOfAsset}
+import models.registration.pages.WhatKindOfAsset.Shares
+import models.registration.pages.{ShareClass, Status, WhatKindOfAsset}
 import play.api.libs.json._
 
 trait ShareAsset

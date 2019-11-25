@@ -17,9 +17,8 @@
 package mapping
 
 import javax.inject.Inject
-
-import models.UserAnswers
 import mapping.reads.{LeadTrusteeIndividual, Trustee, Trustees}
+import models.core.UserAnswers
 
 
 class LeadTrusteeMapper @Inject()(

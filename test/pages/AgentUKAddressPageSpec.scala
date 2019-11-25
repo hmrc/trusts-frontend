@@ -16,7 +16,7 @@
 
 package pages
 
-import models.UKAddress
+import models.core.pages.UKAddress
 import pages.behaviours.PageBehaviours
 
 class AgentUKAddressPageSpec extends PageBehaviours {

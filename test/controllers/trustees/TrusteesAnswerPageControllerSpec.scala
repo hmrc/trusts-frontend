@@ -19,7 +19,8 @@ package controllers.trustees
 import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
-import models.{FullName, IndividualOrBusiness, NormalMode, UKAddress}
+import models.NormalMode
+import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
 import pages.trustees._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models
+package models.registration.pages
 
-import play.api.libs.json._
+import models.{Enumerable, WithName}
 import viewmodels.RadioOption
 
 sealed trait WhatTypeOfBeneficiary

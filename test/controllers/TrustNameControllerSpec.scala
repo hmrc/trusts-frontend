@@ -19,7 +19,8 @@ package controllers
 import base.SpecBase
 import forms.TrustNameFormProvider
 import generators.Generators
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
+import models.core.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.mockito.MockitoSugar
 import org.scalatest.prop.PropertyChecks

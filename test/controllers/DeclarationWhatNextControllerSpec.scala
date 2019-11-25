@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.DeclarationWhatNextFormProvider
-import models.DeclarationWhatNext
+import models.playback.pages.DeclarationWhatNext
 import pages.DeclarationWhatNextPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

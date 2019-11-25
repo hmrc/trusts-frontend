@@ -18,7 +18,7 @@ package connector
 
 import com.github.tomakehurst.wiremock.client.WireMock._
 import config.FrontendAppConfig
-import models.AgentTrustsResponse.{AgentTrusts, Forbidden, BadRequest, NotClaimed, ServiceUnavailable}
+import models.AgentTrustsResponse.{AgentTrusts, BadRequest, Forbidden, NotClaimed, ServiceUnavailable}
 import org.scalatest.{AsyncFreeSpec, MustMatchers}
 import play.api.Application
 import play.api.http.Status

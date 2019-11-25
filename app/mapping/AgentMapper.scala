@@ -17,8 +17,7 @@
 package mapping
 
 import javax.inject.Inject
-
-import models.{UKAddress, UserAnswers}
+import models.core.UserAnswers
 import pages._
 
 class AgentMapper @Inject()(addressMapper : AddressMapper) extends Mapping[AgentDetails] {

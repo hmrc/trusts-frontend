@@ -17,7 +17,7 @@
 package views.playback
 
 import forms.playback.DeclarationFormProvider
-import models.playback.Declaration
+import models.playback.pages.Declaration
 import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.HtmlFormat

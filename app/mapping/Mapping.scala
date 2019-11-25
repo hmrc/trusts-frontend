@@ -16,7 +16,7 @@
 
 package mapping
 
-import models.UserAnswers
+import models.core.UserAnswers
 
 trait Mapping[T] {
 

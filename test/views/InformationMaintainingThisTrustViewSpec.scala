@@ -16,9 +16,9 @@
 
 package views
 
+import controllers.routes
 import views.behaviours.ViewBehaviours
 import views.html.InformationMaintainingThisTrustView
-import controllers.routes
 
 class InformationMaintainingThisTrustViewSpec extends ViewBehaviours {
 

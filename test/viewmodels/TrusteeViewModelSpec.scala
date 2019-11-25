@@ -19,8 +19,8 @@ package viewmodels
 import java.time.LocalDate
 
 import generators.{Generators, ModelGenerators}
-import models.Status.Completed
-import models.{FullName, IndividualOrBusiness}
+import models.core.pages.{FullName, IndividualOrBusiness}
+import models.registration.pages.Status.Completed
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import org.scalatest.prop.PropertyChecks

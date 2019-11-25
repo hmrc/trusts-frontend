@@ -19,8 +19,10 @@ package navigation.navigators.registration
 import base.SpecBase
 import controllers.trustees.routes
 import generators.Generators
-import models.IndividualOrBusiness.{Business, Individual}
-import models.{AddATrustee, NormalMode, UserAnswers}
+import models.NormalMode
+import models.core.UserAnswers
+import models.core.pages.IndividualOrBusiness.{Business, Individual}
+import models.registration.pages.AddATrustee
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks

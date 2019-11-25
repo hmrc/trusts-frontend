@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package models
+package models.registration
+
+import models.{Enumerable, WithName}
 
 sealed trait Matched
 

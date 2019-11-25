@@ -16,7 +16,7 @@
 
 package pages.property_or_land
 
-import models.UserAnswers
+import models.core.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 

@@ -16,9 +16,9 @@
 
 package mapping
 
-import models.{FullName, UserAnswers}
+import models.core.UserAnswers
+import models.core.pages.FullName
 import pages.QuestionPage
-
 
 class NameMapper {
 

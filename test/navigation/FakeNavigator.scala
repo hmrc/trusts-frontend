@@ -17,7 +17,8 @@
 package navigation
 
 import config.FrontendAppConfig
-import models.{Mode, NormalMode, UserAnswers}
+import models.core.UserAnswers
+import models.{Mode, NormalMode}
 import pages._
 import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup

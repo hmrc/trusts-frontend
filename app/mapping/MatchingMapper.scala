@@ -15,8 +15,10 @@
  */
 
 package mapping
-import models.{Matched, UserAnswers}
-import pages.{ExistingTrustMatched, PostcodeForTheTrustPage, TrustHaveAUTRPage, TrustNamePage, WhatIsTheUTRPage}
+
+import models.core.UserAnswers
+import models.registration.Matched
+import pages._
 import play.api.Logger
 
 class MatchingMapper extends Mapping[MatchData] {

@@ -20,8 +20,8 @@ import java.time.LocalDate
 
 import base.SpecBaseHelpers
 import generators.Generators
-import models.IndividualOrBusiness.Individual
-import models.{FullName, UKAddress}
+import models.core.pages.IndividualOrBusiness.Individual
+import models.core.pages.{FullName, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
 import pages.trustees._

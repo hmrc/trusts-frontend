@@ -18,7 +18,7 @@ package controllers.actions
 
 import base.SpecBase
 import controllers.routes
-import models.RegistrationStatus.{Complete, InProgress}
+import models.registration.pages.RegistrationStatus.{Complete, InProgress}
 import models.requests.DataRequest
 import org.scalatest.EitherValues
 import org.scalatest.concurrent.ScalaFutures

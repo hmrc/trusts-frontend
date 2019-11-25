@@ -17,10 +17,9 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
+import models.registration.pages.WhatTypeOfBeneficiary
 import play.api.data.Form
-import models.WhatTypeOfBeneficiary
 
 class WhatTypeOfBeneficiaryFormProvider @Inject() extends Mappings {
 

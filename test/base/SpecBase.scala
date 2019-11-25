@@ -18,7 +18,8 @@ package base
 
 import config.FrontendAppConfig
 import controllers.actions.{FakeDraftIdRetrievalActionProvider, _}
-import models.{RegistrationStatus, UserAnswers}
+import models.core.UserAnswers
+import models.registration.pages.RegistrationStatus
 import navigation.{FakeNavigator, Navigator}
 import org.scalatest.{BeforeAndAfter, TestSuite, TryValues}
 import org.scalatestplus.play.PlaySpec
