@@ -22,7 +22,7 @@ import generators.Generators
 import mapping.{Mapping, Registration, RegistrationMapper}
 import models.RegistrationTRNResponse
 import models.TrustResponse._
-import models.playback.{Processed, Processing, TrustServiceUnavailable, UtrNotFound}
+import models.playback.http._
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{FreeSpec, Inside, MustMatchers, OptionValues}
 import play.api.Application
@@ -36,6 +36,7 @@ import utils.{TestUserAnswers, WireMockHelper}
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
+import scala.io.Source
 
 class TrustConnectorSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers with WireMockHelper with ScalaFutures with Inside {
@@ -239,12 +240,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
     "must return playback data inside a Processed trust" in {
 
       val utr = "10000000008"
-      val payload = """{
-                      |  "responseHeader": {
-                      |    "status": "Processed",
-                      |    "formBundleNo": "1"
-                      |  }
-                      |}""".stripMargin
+      val payload = Source.fromFile(getClass.getResource("/display-trust.json").getPath).mkString
       server.stubFor(
         get(urlEqualTo(playbackUrl(utr)))
           .willReturn(
@@ -257,7 +253,8 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
       val processed = Await.result(connector.playback(utr), Duration.Inf)
 
       inside(processed) {
-        case Processed(data) => data mustBe Json.parse(payload)
+        case Processed(data) =>
+          data.trust.entities.leadTrustee.leadTrusteeInd.value.name mustBe new NameType("Lead", None, "Trustee")
       }
     }
   }

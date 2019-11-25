@@ -21,12 +21,11 @@ import connector.{TrustConnector, TrustsStoreConnector}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import handlers.ErrorHandler
 import javax.inject.Inject
-import models.playback.{Closed, Processed, Processing, UserAnswers, UtrNotFound}
+import models.playback.http.{Closed, Processed, Processing, UtrNotFound}
 import models.requests.DataRequest
 import navigation.Navigator
 import pages.WhatIsTheUTRVariationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.JsObject
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.{PlaybackRepository, RegistrationsRepository}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController

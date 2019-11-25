@@ -19,16 +19,16 @@ package controllers.playback
 import base.SpecBase
 import forms.playback.DeclarationFormProvider
 import models.DeclarationWhatNext.DeclareTheTrustIsUpToDate
+import models.playback.pages.Declaration
 import models.{FullName, playback}
-import models.playback.Declaration
+import org.mockito.Mockito.reset
 import pages.DeclarationWhatNextPage
-import views.html.playback.DeclarationView
+import pages.playback.DeclarationPage
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
-import org.mockito.Mockito.reset
-import pages.playback.DeclarationPage
+import views.html.playback.DeclarationView
 
 class DeclarationControllerSpec extends SpecBase {
 
@@ -36,8 +36,8 @@ class DeclarationControllerSpec extends SpecBase {
   val form = formProvider()
   val name = "name"
 
-  lazy val declarationRoute = controllers.playback.routes.DeclarationController.onPageLoad().url
-  lazy val submitRoute = controllers.playback.routes.DeclarationController.onSubmit()
+  lazy val declarationRoute: String = controllers.playback.routes.DeclarationController.onPageLoad().url
+  lazy val submitRoute: Call = controllers.playback.routes.DeclarationController.onSubmit()
 
   before {
     reset(mockSubmissionService)
@@ -101,7 +101,7 @@ class DeclarationControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(playback.Declaration(FullName("First",None, "Last"), Some("test@test.comn"))), AffinityGroup.Agent, submitRoute)(fakeRequest, messages).toString
+        view(form.fill(playback.pages.Declaration(FullName("First",None, "Last"), Some("test@test.comn"))), AffinityGroup.Agent, submitRoute)(fakeRequest, messages).toString
 
       application.stop()
     }

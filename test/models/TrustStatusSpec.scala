@@ -16,7 +16,7 @@
 
 package models
 
-import models.playback.{Closed, Processing, TrustStatus}
+import models.playback.http.{Closed, Processing, TrustStatus}
 import org.scalatest.{MustMatchers, WordSpec}
 import play.api.libs.json.{JsError, Json}
 

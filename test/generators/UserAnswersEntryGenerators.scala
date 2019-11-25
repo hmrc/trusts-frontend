@@ -17,6 +17,7 @@
 package generators
 
 import models._
+import models.playback.pages.Declaration
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
 import pages._
@@ -369,7 +370,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
     Arbitrary {
       for {
         page  <- arbitrary[pages.playback.DeclarationPage.type]
-        value <- arbitrary[models.playback.Declaration].map(Json.toJson(_))
+        value <- arbitrary[Declaration].map(Json.toJson(_))
       } yield (page, value)
     }
 

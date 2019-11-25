@@ -16,7 +16,7 @@
 
 package pages.playback
 
-import models.playback.Declaration
+import models.playback.pages.Declaration
 import pages.behaviours.PageBehaviours
 
 

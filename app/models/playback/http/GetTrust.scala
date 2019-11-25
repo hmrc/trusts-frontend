@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package models.playback
+package models.playback.http
 
-import mapping.{AssetMonetaryAmount, PassportType, PropertyLandType, TrustDetailsType}
 import mapping.Constant._
+import mapping.{AssetMonetaryAmount, PassportType, PropertyLandType, TrustDetailsType}
+import models.playback._
 import org.joda.time.DateTime
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
@@ -75,7 +76,7 @@ object GetTrust {
     (JsPath \ "matchData").read[MatchData] and
       (JsPath \ "correspondence").read[Correspondence] and
       (JsPath \ "declaration").read[Declaration] and
-      (JsPath \ "details" \ "trust").read[DisplayTrust]
+      (JsPath \ "trust").read[DisplayTrust]
     ) (GetTrust.apply _)
 }
 
@@ -122,26 +123,8 @@ case class DisplayTrustEntitiesType(naturalPerson: Option[List[DisplayTrustNatur
 
 object DisplayTrustEntitiesType {
 
-  implicit val displayTrustEntitiesTypeReads : Reads[DisplayTrustEntitiesType] = (
-    (__ \ "naturalPerson").readNullable[List[DisplayTrustNaturalPersonType]] and
-      (__ \ "beneficiary").read[DisplayTrustBeneficiaryType] and
-      (__ \ "deceased").readNullable[DisplayTrustWillType] and
-      (__ \ "leadTrustees").read[DisplayTrustLeadTrusteeType] and
-      (__ \ "trustees").readNullable[List[DisplayTrustTrusteeType]] and
-      (__ \ "protectors").readNullable[DisplayTrustProtectorsType] and
-      (__ \ "settlors").readNullable[DisplayTrustSettlors]
-    )(
-    (natural, beneficiary, deceased, leadTrustee, trustees, protectors, settlors) =>
-      DisplayTrustEntitiesType(
-        natural,
-        beneficiary,
-        deceased,
-        leadTrustee,
-        trustees,
-        protectors,
-        settlors
-      )
-  )
+  implicit val displayTrustEntitiesTypeReads : Reads[DisplayTrustEntitiesType] = Json.reads[DisplayTrustEntitiesType]
+
 
   implicit val trustEntitiesTypeWrites: Writes[DisplayTrustEntitiesType] = Json.writes[DisplayTrustEntitiesType]
 }
@@ -154,7 +137,7 @@ case class DisplayTrustNaturalPersonType(lineNo: String,
                                          entityStart: String)
 
 object DisplayTrustNaturalPersonType {
-  implicit val dateFormat: Format[DateTime] = Format[DateTime](Reads.jodaDateReads(dateTimePattern), Writes.jodaDateWrites(dateTimePattern))
+  implicit val dateFormat: Format[DateTime] = Format[DateTime](JodaReads.jodaDateReads(dateTimePattern), JodaWrites.jodaDateWrites(dateTimePattern))
   implicit val naturalPersonTypeFormat: Format[DisplayTrustNaturalPersonType] = Json.format[DisplayTrustNaturalPersonType]
 }
 
@@ -171,7 +154,7 @@ case class DisplayTrustLeadTrusteeIndType(
 
 object DisplayTrustLeadTrusteeIndType {
 
-  implicit val dateFormat: Format[DateTime] = Format[DateTime](Reads.jodaDateReads(dateTimePattern), Writes.jodaDateWrites(dateTimePattern))
+  implicit val dateFormat: Format[DateTime] = Format[DateTime](JodaReads.jodaDateReads(dateTimePattern), JodaWrites.jodaDateWrites(dateTimePattern))
   implicit val leadTrusteeIndTypeFormat: Format[DisplayTrustLeadTrusteeIndType] = Json.format[DisplayTrustLeadTrusteeIndType]
 
 }
@@ -197,27 +180,11 @@ case class DisplayTrustLeadTrusteeType(
 
 object DisplayTrustLeadTrusteeType {
 
-  implicit val dateFormat: Format[DateTime] = Format[DateTime](Reads.jodaDateReads(dateTimePattern), Writes.jodaDateWrites(dateTimePattern))
+  implicit val dateFormat: Format[DateTime] = Format[DateTime](JodaReads.jodaDateReads(dateTimePattern), JodaWrites.jodaDateWrites(dateTimePattern))
 
   implicit val writes: Writes[DisplayTrustLeadTrusteeType] = Json.writes[DisplayTrustLeadTrusteeType]
 
-  object LeadTrusteeReads extends Reads[DisplayTrustLeadTrusteeType] {
-
-    override def reads(json: JsValue): JsResult[DisplayTrustLeadTrusteeType] = {
-
-      json.validate[DisplayTrustLeadTrusteeIndType].map {
-        leadTrusteeInd =>
-          DisplayTrustLeadTrusteeType(leadTrusteeInd = Some(leadTrusteeInd))
-      }.orElse {
-        json.validate[DisplayTrustLeadTrusteeOrgType].map {
-          org =>
-            DisplayTrustLeadTrusteeType(leadTrusteeOrg = Some(org))
-        }
-      }
-    }
-  }
-
-  implicit val reads : Reads[DisplayTrustLeadTrusteeType] = LeadTrusteeReads
+  implicit val reads : Reads[DisplayTrustLeadTrusteeType] = Json.reads[DisplayTrustLeadTrusteeType]
 }
 
 case class DisplayTrustBeneficiaryType(individualDetails: Option[List[DisplayTrustIndividualDetailsType]],
@@ -245,7 +212,7 @@ case class DisplayTrustIndividualDetailsType(lineNo: String,
                                              entityStart: String)
 
 object DisplayTrustIndividualDetailsType {
-  implicit val dateFormat: Format[DateTime] = Format[DateTime](Reads.jodaDateReads(dateTimePattern), Writes.jodaDateWrites(dateTimePattern))
+  implicit val dateFormat: Format[DateTime] = Format[DateTime](JodaReads.jodaDateReads(dateTimePattern), JodaWrites.jodaDateWrites(dateTimePattern))
   implicit val individualDetailsTypeFormat: Format[DisplayTrustIndividualDetailsType] = Json.format[DisplayTrustIndividualDetailsType]
 }
 
@@ -269,7 +236,7 @@ case class DisplayTrustWillType(lineNo: String,
                                 entityStart: String)
 
 object DisplayTrustWillType {
-  implicit val dateFormat: Format[DateTime] = Format[DateTime](Reads.jodaDateReads(dateTimePattern), Writes.jodaDateWrites(dateTimePattern))
+  implicit val dateFormat: Format[DateTime] = Format[DateTime](JodaReads.jodaDateReads(dateTimePattern), JodaWrites.jodaDateWrites(dateTimePattern))
   implicit val willTypeFormat: Format[DisplayTrustWillType] = Json.format[DisplayTrustWillType]
 }
 
@@ -369,7 +336,7 @@ case class DisplayTrustTrusteeIndividualType(lineNo: String,
 
 object DisplayTrustTrusteeIndividualType {
 
-  implicit val dateFormat: Format[DateTime] = Format[DateTime](Reads.jodaDateReads(dateTimePattern), Writes.jodaDateWrites(dateTimePattern))
+  implicit val dateFormat: Format[DateTime] = Format[DateTime](JodaReads.jodaDateReads(dateTimePattern), JodaWrites.jodaDateWrites(dateTimePattern))
   implicit val trusteeIndividualTypeFormat: Format[DisplayTrustTrusteeIndividualType] = Json.format[DisplayTrustTrusteeIndividualType]
 }
 
@@ -389,7 +356,7 @@ case class DisplayTrustProtector(lineNo: String,
                                  entityStart: String)
 
 object DisplayTrustProtector {
-  implicit val dateFormat: Format[DateTime] = Format[DateTime](Reads.jodaDateReads(dateTimePattern), Writes.jodaDateWrites(dateTimePattern))
+  implicit val dateFormat: Format[DateTime] = Format[DateTime](JodaReads.jodaDateReads(dateTimePattern), JodaWrites.jodaDateWrites(dateTimePattern))
   implicit val protectorFormat: Format[DisplayTrustProtector] = Json.format[DisplayTrustProtector]
 }
 
@@ -419,7 +386,7 @@ case class DisplayTrustSettlor(lineNo: String,
                                entityStart: String)
 
 object DisplayTrustSettlor {
-  implicit val dateFormat: Format[DateTime] = Format[DateTime](Reads.jodaDateReads(dateTimePattern), Writes.jodaDateWrites(dateTimePattern))
+  implicit val dateFormat: Format[DateTime] = Format[DateTime](JodaReads.jodaDateReads(dateTimePattern), JodaWrites.jodaDateWrites(dateTimePattern))
   implicit val settlorFormat: Format[DisplayTrustSettlor] = Json.format[DisplayTrustSettlor]
 }
 
@@ -458,7 +425,7 @@ case class DisplayTrustPartnershipType(utr: Option[String],
 
 object DisplayTrustPartnershipType {
 
-  implicit val dateFormat: Format[DateTime] = Format[DateTime](Reads.jodaDateReads(dateTimePattern), Writes.jodaDateWrites(dateTimePattern))
+  implicit val dateFormat: Format[DateTime] = Format[DateTime](JodaReads.jodaDateReads(dateTimePattern), JodaWrites.jodaDateWrites(dateTimePattern))
   implicit val partnershipTypeFormat: Format[DisplayTrustPartnershipType] = Json.format[DisplayTrustPartnershipType]
 }
 

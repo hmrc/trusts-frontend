@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package models.playback
+package models.playback.http
 
+import models.playback.http.GetTrust
 import play.api.Logger
 import play.api.http.Status._
 import play.api.libs.json._
@@ -40,9 +41,9 @@ object TrustsResponse {
       case JsString("In Processing") => JsSuccess(Processing)
       case JsString("Closed") => JsSuccess(Closed)
       case JsString("Processed") =>{
-         json("getTrust").asOpt[GetTrust] match {
-          case Some(trust) => JsSuccess(Processed(trust))
-          case None => JsError("Can not parse as GetTrust")
+         json("getTrust").validate[GetTrust] match {
+          case JsSuccess(trust, _) => JsSuccess(Processed(trust))
+          case JsError(errors) => JsError(s"Can not parse as GetTrust due to ${errors}")
         }
       }
       case _ => JsError("Unexpected Status")

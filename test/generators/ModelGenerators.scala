@@ -18,8 +18,8 @@ package generators
 
 import java.time.LocalDate
 
+import models.playback.pages.Declaration
 import models.{playback, _}
-import models.playback.Declaration
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 
@@ -89,7 +89,7 @@ trait ModelGenerators {
       for {
         str <- arbitrary[String]
       } yield {
-        playback.Declaration(FullName(str, Some(str), str), Some(str))
+        playback.pages.Declaration(FullName(str, Some(str), str), Some(str))
       }
     }
   }

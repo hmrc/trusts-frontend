@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package models.playback
+package models.playback.pages
 
 import models.FullName
 import play.api.libs.json.{Json, OFormat}

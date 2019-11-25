@@ -16,22 +16,22 @@
 
 package controllers
 
+import _root_.pages.WhatIsTheUTRVariationPage
 import base.SpecBase
 import connector.{TrustClaim, TrustConnector, TrustsStoreConnector}
 import models.UserAnswers
-import models.playback._
+import models.playback.http._
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
-import pages.WhatIsTheUTRVariationPage
 import play.api.Application
 import play.api.inject.bind
+import play.api.libs.json._
 import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import play.api.libs.json._
 import uk.gov.hmrc.auth.core.AffinityGroup
-import views.html.playback.status.{ClosedErrorView, DoesNotMatchErrorView, IVDownView, StillProcessingErrorView, TrustLockedView}
+import views.html.playback.status._
 
 import scala.concurrent.Future
 
@@ -221,10 +221,12 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
                         |  }
                         |}""".stripMargin)
 
+        val getTrust: GetTrust = payload.as[GetTrust]
+
         when(fakeTrustStoreConnector.get(any[String], any[String])(any(), any()))
           .thenReturn(Future.successful(Some(TrustClaim("1234567890", trustLocked = false, managedByAgent = false))))
 
-        when(fakeTrustConnector.playback(any[String])(any(), any())).thenReturn(Future.successful(Processed(payload)))
+        when(fakeTrustConnector.playback(any[String])(any(), any())).thenReturn(Future.successful(Processed(getTrust)))
 
         status(result) mustEqual SEE_OTHER
 
