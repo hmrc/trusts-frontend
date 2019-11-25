@@ -22,7 +22,7 @@ import models.DeclarationWhatNext.DeclareTheTrustIsUpToDate
 import models.{FullName, playback}
 import models.playback.Declaration
 import pages.DeclarationWhatNextPage
-import views.html.DeclarationChangesNoChangesView
+import views.html.playback.DeclarationView
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -55,7 +55,7 @@ class DeclarationControllerSpec extends SpecBase {
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[DeclarationChangesNoChangesView]
+      val view = application.injector.instanceOf[DeclarationView]
       
       status(result) mustEqual OK
 
@@ -75,7 +75,7 @@ class DeclarationControllerSpec extends SpecBase {
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[DeclarationChangesNoChangesView]
+      val view = application.injector.instanceOf[DeclarationView]
 
       status(result) mustEqual OK
 
@@ -94,7 +94,7 @@ class DeclarationControllerSpec extends SpecBase {
 
       val request = FakeRequest(GET, declarationRoute)
 
-      val view = application.injector.instanceOf[DeclarationChangesNoChangesView]
+      val view = application.injector.instanceOf[DeclarationView]
 
       val result = route(application, request).value
 
@@ -136,7 +136,7 @@ class DeclarationControllerSpec extends SpecBase {
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[DeclarationChangesNoChangesView]
+      val view = application.injector.instanceOf[DeclarationView]
 
       val result = route(application, request).value
 

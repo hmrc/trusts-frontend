@@ -21,8 +21,7 @@ import forms.playback.DeclarationFormProvider
 import navigation.Navigator
 import pages.DeclarationWhatNextPage
 import repositories.RegistrationsRepository
-import views.html.DeclarationChangesNoChangesView
-
+import views.html.playback.DeclarationView
 import scala.concurrent.{ExecutionContext, Future}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import play.api.data.Form
@@ -42,7 +41,7 @@ class DeclarationController @Inject()(
                                        requiredAnswer: RequiredAnswerActionProvider,
                                        formProvider: DeclarationFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
-                                       view: DeclarationChangesNoChangesView
+                                       view: DeclarationView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
