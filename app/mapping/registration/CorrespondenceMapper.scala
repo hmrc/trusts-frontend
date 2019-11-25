@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
 
 import javax.inject.Inject
 import mapping.reads.{LeadTrusteeIndividual, Trustees}
+import mapping.{Correspondence, Mapping}
 import models.core.UserAnswers
 import pages.TrustNamePage
 import pages.trustees.{TrusteeLiveInTheUKPage, TrusteesInternationalAddressPage, TrusteesUkAddressPage}

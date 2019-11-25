@@ -18,6 +18,7 @@ package mapping
 
 import base.SpecBaseHelpers
 import generators.Generators
+import mapping.registration.ShareAssetMapper
 import models.registration.pages.Status.{Completed, InProgress}
 import models.registration.pages.{ShareClass, WhatKindOfAsset}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}

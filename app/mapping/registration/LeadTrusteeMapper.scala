@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
 
 import javax.inject.Inject
 import mapping.reads.{LeadTrusteeIndividual, Trustee, Trustees}
+import mapping._
 import models.core.UserAnswers
 
 
@@ -45,10 +46,11 @@ class LeadTrusteeMapper @Inject()(
           name = nameMapper.build(leadTrustee.name),
           dateOfBirth = leadTrustee.dateOfBirth,
           phoneNumber = leadTrustee.telephoneNumber,
-          identification = IdentificationType
-          (nino = leadTrustee.nino,
+          identification = IdentificationType(
+            nino = leadTrustee.nino,
             passport = None,
-            address = None)
+            address = None
+          )
         )
       ),
       None

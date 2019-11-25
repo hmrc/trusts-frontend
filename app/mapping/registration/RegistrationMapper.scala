@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
+
 import javax.inject.Inject
+import mapping._
 import models.core.UserAnswers
-import play.api.Logger
-import play.api.libs.json.Json
 
 class RegistrationMapper @Inject()(
                                     declarationMapper: DeclarationMapper,

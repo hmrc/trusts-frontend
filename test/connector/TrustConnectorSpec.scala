@@ -19,7 +19,8 @@ package connector
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
 import generators.Generators
-import mapping.{Mapping, Registration, RegistrationMapper}
+import mapping.registration.RegistrationMapper
+import mapping.{Mapping, Registration}
 import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse._
 import models.playback.{Processed, Processing, TrustServiceUnavailable, UtrNotFound}

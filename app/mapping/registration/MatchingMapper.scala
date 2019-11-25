@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
 
+import mapping.{Mapping, MatchData}
 import models.core.UserAnswers
 import models.registration.Matched
 import pages._

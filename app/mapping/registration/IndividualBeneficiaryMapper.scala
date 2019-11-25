@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
 
 import javax.inject.Inject
-import mapping.reads.{ClassOfBeneficiary, IndividualBeneficiary}
+import mapping.reads.IndividualBeneficiary
+import mapping.{IdentificationType, IndividualDetailsType, Mapping}
 import models.core.UserAnswers
 import models.core.pages.Address
 

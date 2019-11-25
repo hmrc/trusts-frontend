@@ -20,6 +20,7 @@ import java.time.LocalDate
 
 import base.SpecBaseHelpers
 import generators.Generators
+import mapping.registration.BeneficiariesMapper
 import models.core.pages.FullName
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._

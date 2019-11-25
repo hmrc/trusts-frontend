@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
 
 import mapping.TypeOfTrust.WillTrustOrIntestacyTrust
+import mapping._
 import models.core.UserAnswers
 import models.registration.pages.SettlorKindOfTrust.{Deed, Employees, FlatManagement, HeritageMaintenanceFund, Intervivos}
 import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}

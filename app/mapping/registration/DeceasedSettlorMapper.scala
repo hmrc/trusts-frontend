@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
 
 import javax.inject.Inject
+import mapping.{Identification, Mapping, WillType}
 import models.core.UserAnswers
-import pages.deceased_settlor.{SettlorDateOfDeathPage, SettlorNationalInsuranceNumberPage, SettlorsDateOfBirthPage, SettlorsInternationalAddressPage, SettlorsLastKnownAddressYesNoPage, SettlorsNINoYesNoPage, SettlorsNamePage, SettlorsUKAddressPage, WasSettlorsAddressUKYesNoPage}
+import pages.deceased_settlor._
 class DeceasedSettlorMapper @Inject()(nameMapper: NameMapper, addressMapper: AddressMapper) extends Mapping[WillType] {
 
   override def build(userAnswers: UserAnswers): Option[WillType] = {
