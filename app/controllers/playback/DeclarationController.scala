@@ -14,23 +14,24 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.playback
 
 import controllers.actions._
-import forms.DeclarationChangesNoChangesFormProvider
-import javax.inject.Inject
+import forms.playback.DeclarationFormProvider
 import navigation.Navigator
-import pages.{DeclarationChangesNoChangesPage, DeclarationWhatNextPage}
+import pages.DeclarationWhatNextPage
+import repositories.RegistrationsRepository
+import views.html.playback.DeclarationView
+import scala.concurrent.{ExecutionContext, Future}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.RegistrationsRepository
-import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.DeclarationChangesNoChangesView
+import javax.inject.Inject
+import pages.playback.DeclarationPage
 
-import scala.concurrent.{ExecutionContext, Future}
 
-class DeclarationNoChangesController @Inject()(
+class DeclarationController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        registrationsRepository: RegistrationsRepository,
                                        navigator: Navigator,
@@ -38,25 +39,25 @@ class DeclarationNoChangesController @Inject()(
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
                                        requiredAnswer: RequiredAnswerActionProvider,
-                                       formProvider: DeclarationChangesNoChangesFormProvider,
+                                       formProvider: DeclarationFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
-                                       view: DeclarationChangesNoChangesView
+                                       view: DeclarationView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def actions() = identify andThen getData andThen requireData andThen
-      requiredAnswer(RequiredAnswer(DeclarationWhatNextPage, routes.DeclarationWhatNextController.onPageLoad()))
+      requiredAnswer(RequiredAnswer(DeclarationWhatNextPage, controllers.routes.DeclarationWhatNextController.onPageLoad()))
 
   def onPageLoad(): Action[AnyContent] = actions() {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(DeclarationChangesNoChangesPage) match {
+      val preparedForm = request.userAnswers.get(DeclarationPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, request.affinityGroup, routes.DeclarationNoChangesController.onSubmit()))
+      Ok(view(preparedForm, request.affinityGroup, routes.DeclarationController.onSubmit()))
   }
 
   def onSubmit(): Action[AnyContent] = actions().async {
@@ -64,15 +65,15 @@ class DeclarationNoChangesController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, request.affinityGroup, routes.DeclarationNoChangesController.onSubmit()))),
+          Future.successful(BadRequest(view(formWithErrors, request.affinityGroup, routes.DeclarationController.onSubmit()))),
 
         // TODO:  Check response for submission of no change data and redirect accordingly
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationChangesNoChangesPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, value))
             _ <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(routes.DeclarationNoChangesController.onPageLoad()) // TODO Redirect to variation confirmation page
+          } yield Redirect(routes.DeclarationController.onPageLoad()) // TODO Redirect to variation confirmation page
         }
       )
 

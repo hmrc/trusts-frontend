@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
-package views
+package views.playback
 
-import forms.DeclarationChangesNoChangesFormProvider
-import models.{DeclarationChangesNoChanges, NormalMode}
+import forms.playback.DeclarationFormProvider
+import models.playback.Declaration
 import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.auth.core.AffinityGroup
 import views.behaviours.QuestionViewBehaviours
-import views.html.DeclarationChangesNoChangesView
+import views.html.playback.DeclarationView
 
-class DeclarationChangesNoChangesViewSpec extends QuestionViewBehaviours[DeclarationChangesNoChanges] {
+class DeclarationViewSpec extends QuestionViewBehaviours[Declaration] {
 
   val messageKeyPrefix = "declaration.changes.noChanges"
 
-  val form = new DeclarationChangesNoChangesFormProvider()()
+  val form = new DeclarationFormProvider()()
 
-  "DeclarationChangesNoChangesView view for organisation or agent " must {
+  "DeclarationView view for organisation or agent " must {
 
-    val view = viewFor[DeclarationChangesNoChangesView](Some(emptyUserAnswers))
+    val view = viewFor[DeclarationView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, AffinityGroup.Agent, Call("POST", ""))(fakeRequest, messages)
@@ -53,7 +53,7 @@ class DeclarationChangesNoChangesViewSpec extends QuestionViewBehaviours[Declara
   "rendered for an Organisation" must {
 
     "render declaration warning for organisation" in {
-      val view = viewFor[DeclarationChangesNoChangesView](Some(emptyUserAnswers))
+      val view = viewFor[DeclarationView](Some(emptyUserAnswers))
 
       def applyView(form: Form[_]): HtmlFormat.Appendable =
         view.apply(form, AffinityGroup.Organisation, Call("POST", ""))(fakeRequest, messages)
@@ -70,7 +70,7 @@ class DeclarationChangesNoChangesViewSpec extends QuestionViewBehaviours[Declara
   "rendered for an Agent" must {
 
     "render declaration warning for Agent" in {
-      val view = viewFor[DeclarationChangesNoChangesView](Some(emptyUserAnswers))
+      val view = viewFor[DeclarationView](Some(emptyUserAnswers))
 
       def applyView(form: Form[_]): HtmlFormat.Appendable =
         view.apply(form, AffinityGroup.Agent, Call("POST", ""))(fakeRequest, messages)
