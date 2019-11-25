@@ -21,6 +21,7 @@ import connector.{TrustConnector, TrustsStoreConnector}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import handlers.ErrorHandler
 import javax.inject.Inject
+import models.UserAnswers
 import models.playback.{Closed, Processed, Processing, UtrNotFound}
 import models.requests.DataRequest
 import navigation.Navigator
@@ -111,7 +112,8 @@ class TrustStatusController @Inject()(
       case Processing => Future.successful(Redirect(routes.TrustStatusController.processing()))
       case UtrNotFound => Future.successful(Redirect(routes.TrustStatusController.notFound()))
       case Processed(playback) =>
-        playbackRepository.store(request.internalId, playback) map { _ =>
+        val userAnswers = UserAnswers(draftId =  "", internalAuthId = "")
+        playbackRepository.store(request.internalId, userAnswers) map { _ =>
           Redirect(config.claimATrustUrl(utr))
         }
       case _ => Future.successful(Redirect(routes.TrustStatusController.down()))
