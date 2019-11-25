@@ -17,9 +17,8 @@
 package controllers.actions
 
 import javax.inject.Inject
-import models.{RegistrationStatus, UserAnswers}
+import models.UserAnswers
 import models.requests.{IdentifierRequest, OptionalDataRequest}
-import play.api.Logger
 import play.api.mvc.ActionTransformer
 import repositories.RegistrationsRepository
 
@@ -31,7 +30,7 @@ class DataRetrievalActionImpl @Inject()(val registrationsRepository: Registratio
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] = {
 
     def createdOptionalDataRequest(request: IdentifierRequest[A], userAnswers: Option[UserAnswers]) =
-      OptionalDataRequest(request.request, request.identifier, userAnswers, request.affinityGroup, request.agentARN)
+      OptionalDataRequest(request.request, request.identifier, userAnswers, request.affinityGroup, request.enrolments, request.agentARN)
 
     registrationsRepository.getDraftRegistrations(request.identifier).flatMap {
       ids =>
