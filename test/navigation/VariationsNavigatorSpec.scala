@@ -18,7 +18,7 @@ package navigation
 
 import base.SpecBase
 import controllers.routes
-import models.DeclarationWhatNext
+import models.playback.pages.DeclarationWhatNext
 import pages._
 
 class VariationsNavigatorSpec extends SpecBase {
