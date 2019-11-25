@@ -66,7 +66,7 @@ class AuthenticatedIdentifierAction @Inject()(
             if(arn.isEmpty) {
               redirectToCreateAgentServicesAccount("agent reference number is empty")
             } else {
-              block(IdentifierRequest(request, internalId, AffinityGroup.Agent, Some(arn)))
+              block(IdentifierRequest(request, internalId, AffinityGroup.Agent, enrolments, Some(arn)))
             }
       }
     }
@@ -95,9 +95,9 @@ class AuthenticatedIdentifierAction @Inject()(
       case Some(internalId) ~ Some(Agent) ~ enrolments =>
         Logger.info(s"[IdentifierAction] successfully identified as an Agent")
         authoriseAgent(request, enrolments, internalId, block)
-      case Some(internalId) ~ Some(Organisation) ~ _ =>
+      case Some(internalId) ~ Some(Organisation) ~ enrolments =>
         Logger.info(s"[IdentifierAction] successfully identified as Organisation")
-        block(IdentifierRequest(request, internalId, AffinityGroup.Organisation))
+        block(IdentifierRequest(request, internalId, AffinityGroup.Organisation, enrolments))
       case Some(_) ~ _ ~ _ =>
         Logger.info(s"[IdentifierAction] Unauthorised due to affinityGroup being Individual")
         Future.successful(Redirect(routes.UnauthorisedController.onPageLoad()))
@@ -110,22 +110,3 @@ class AuthenticatedIdentifierAction @Inject()(
 }
 
 trait IdentifierAction extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest]
-
-class SessionIdentifierAction @Inject()(
-                                         config: FrontendAppConfig,
-                                         val parser: BodyParsers.Default
-                                       )
-                                       (implicit val executionContext: ExecutionContext) extends IdentifierAction {
-
-  override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
-
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
-
-    hc.sessionId match {
-      case Some(session) =>
-        block(IdentifierRequest(request, session.value, AffinityGroup.Individual))
-      case None =>
-        Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
-    }
-  }
-}
