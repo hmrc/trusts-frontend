@@ -71,8 +71,8 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(SharePortfolioNamePage, JsValue)] ::
     arbitrary[(ShareClassPage, JsValue)] ::
     arbitrary[(PropertyOrLandUKAddressPage, JsValue)] ::
-    arbitrary[(DeclarationPage.type, JsValue)] ::
-    arbitrary[(DeclarationChangesNoChangesPage.type, JsValue)] ::
+    arbitrary[(pages.DeclarationPage.type, JsValue)] ::
+    arbitrary[(pages.playback.DeclarationPage.type, JsValue)] ::
     arbitrary[(WhatTypeOfBeneficiaryPage.type, JsValue)] ::
     arbitrary[(AgentInternationalAddressPage.type, JsValue)] ::
     arbitrary[(AgentUKAddressPage.type, JsValue)] ::

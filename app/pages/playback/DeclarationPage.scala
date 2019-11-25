@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package pages
+package pages.playback
 
-import models.DeclarationChangesNoChanges
+import models.playback.Declaration
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object DeclarationChangesNoChangesPage extends QuestionPage[DeclarationChangesNoChanges] {
+case object DeclarationPage extends QuestionPage[Declaration] {
 
   override def path: JsPath = JsPath \ toString
 

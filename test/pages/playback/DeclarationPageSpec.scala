@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 
-package models
+package pages.playback
 
-import play.api.libs.json.{Json, OFormat}
+import models.playback.Declaration
+import pages.behaviours.PageBehaviours
 
-case class DeclarationChangesNoChanges(name: FullName, email: Option[String])
 
-object DeclarationChangesNoChanges {
+class DeclarationPageSpec extends PageBehaviours {
 
-  implicit lazy val formats: OFormat[DeclarationChangesNoChanges] = Json.format[DeclarationChangesNoChanges]
+  "DeclarationPage" must {
 
+    beRetrievable[Declaration](DeclarationPage)
+
+    beSettable[Declaration](DeclarationPage)
+
+    beRemovable[Declaration](DeclarationPage)
+  }
 }

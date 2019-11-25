@@ -153,11 +153,11 @@ trait PageGenerators {
   implicit lazy val arbitraryShareClassPage: Arbitrary[ShareClassPage] =
     Arbitrary(ShareClassPage(0))
 
-  implicit lazy val arbitraryDeclarationPage: Arbitrary[DeclarationPage.type] =
-    Arbitrary(DeclarationPage)
+  implicit lazy val arbitraryDeclarationPage: Arbitrary[pages.DeclarationPage.type] =
+    Arbitrary(pages.DeclarationPage)
 
-  implicit lazy val arbitraryDeclarationChangesNoChangesPage: Arbitrary[DeclarationChangesNoChangesPage.type] =
-    Arbitrary(DeclarationChangesNoChangesPage)
+  implicit lazy val arbitraryDeclarationChangesNoChangesPage: Arbitrary[pages.playback.DeclarationPage.type] =
+    Arbitrary(pages.playback.DeclarationPage)
 
   implicit lazy val arbitraryWhatTypeOfBeneficiaryPage: Arbitrary[WhatTypeOfBeneficiaryPage.type] =
     Arbitrary(WhatTypeOfBeneficiaryPage)

@@ -956,7 +956,7 @@ declaration.changes.noChanges.error.middleName.length = Your middle names must b
 declaration.changes.noChanges.error.middleName.invalid = Your middle names must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 declaration.changes.noChanges.error.lastName.length = Your last name must be 35 characters or less
 declaration.changes.noChanges.error.email.length = Your email must be 35 characters or less
-declaration.changes.noChanges.error.email.invalid = Your email is not valid
+declaration.changes.noChanges.error.email.invalid = Enter a valid email address with no spaces, like name@example.com
 declaration.changes.noChanges.agent.warning = I confirm that my client has taken all reasonable steps to obtain up to date and accurate information for all of the entities given in this registration. I understand that if my client knowingly provides false information and cannot demonstrate that they have taken all reasonable steps, they could be subject to penalties.
 declaration.changes.noChanges.individual.warning = I confirm that the information given is true and complete to the best of my knowledge and belief. I will ensure it is regularly kept up to date as required including changes of address. If I discover that I have made an error or something has changed, I will update this register.
 
