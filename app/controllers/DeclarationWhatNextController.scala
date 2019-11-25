@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.DeclarationWhatNextFormProvider
 import javax.inject.Inject
 import models.{Enumerable, NormalMode}
-import navigation.Navigator
+import navigation.VariationsNavigator
 import pages.DeclarationWhatNextPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -34,7 +34,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class DeclarationWhatNextController @Inject()(
                                                override val messagesApi: MessagesApi,
                                                sessionRepository: RegistrationsRepository,
-                                               navigator: Navigator,
+                                               navigator: VariationsNavigator,
                                                identify: IdentifierAction,
                                                getData: DataRetrievalAction,
                                                requireData: DataRequiredAction,
@@ -67,7 +67,7 @@ class DeclarationWhatNextController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationWhatNextPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(DeclarationWhatNextPage, NormalMode, "")(updatedAnswers))
+          } yield Redirect(navigator.declarationWhatsNextPage(updatedAnswers))
         }
       )
   }

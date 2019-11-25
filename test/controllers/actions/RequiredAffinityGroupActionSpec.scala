@@ -24,7 +24,7 @@ import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
 import play.api.http.HeaderNames
 import play.api.mvc.Result
-import uk.gov.hmrc.auth.core.AffinityGroup
+import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -45,7 +45,7 @@ import scala.concurrent.Future
         "continue with returning None" in {
 
           val action = new Harness()
-          val futureResult = action.callFilter(new IdentifierRequest(fakeRequest, "id", AffinityGroup.Agent))
+          val futureResult = action.callFilter(new IdentifierRequest(fakeRequest, "id", AffinityGroup.Agent, Enrolments(Set.empty[Enrolment])))
 
           whenReady(futureResult) { result =>
             result mustBe None
@@ -59,7 +59,7 @@ import scala.concurrent.Future
         "redirect to Unauthorised page" in {
 
           val action = new Harness()
-          val futureResult = action.callFilter(new IdentifierRequest(fakeRequest, "id", AffinityGroup.Organisation))
+          val futureResult = action.callFilter(new IdentifierRequest(fakeRequest, "id", AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
 
           whenReady(futureResult) { result =>
             result.value.header.headers(HeaderNames.LOCATION) mustBe routes.UnauthorisedController.onPageLoad().url

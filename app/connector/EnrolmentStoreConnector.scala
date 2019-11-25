@@ -18,7 +18,7 @@ package connector
 
 import config.FrontendAppConfig
 import javax.inject.Inject
-import models.playback.http.EnrolmentsResponse
+import models.AgentTrustsResponse
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 
@@ -26,12 +26,12 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class EnrolmentStoreConnector @Inject()(http: HttpClient, config : FrontendAppConfig) {
 
-  def enrolmentsEndpoint(identifier: String): String = {
+  private def enrolmentsEndpoint(identifier: String): String = {
     val identifierKey = "UTR"
     s"${config.enrolmentStoreProxyUrl}/enrolment-store/enrolments/${config.serviceName}~$identifierKey~$identifier/users"
   }
 
-  def getAgentTrusts(utr: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[EnrolmentsResponse] =
-    http.GET[EnrolmentsResponse](enrolmentsEndpoint(utr))(EnrolmentsResponse.httpReads, hc, ec)
+  def getAgentTrusts(utr: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[AgentTrustsResponse] =
+    http.GET[AgentTrustsResponse](enrolmentsEndpoint(utr))(AgentTrustsResponse.httpReads, hc, ec)
 
 }

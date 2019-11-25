@@ -71,20 +71,20 @@ class DeclarationWhatNextControllerSpec extends SpecBase {
       application.stop()
     }
 
-    "redirect to the next page when valid data is submitted" in {
+    "redirect to the declaration page when DeclareTheTrustIsUpToDate is submitted" in {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, declarationWhatNextRoute)
-          .withFormUrlEncodedBody(("value", DeclarationWhatNext.options.head.value))
+          .withFormUrlEncodedBody(("value", DeclarationWhatNext.DeclareTheTrustIsUpToDate.toString))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+      redirectLocation(result).value mustEqual routes.DeclarationNoChangesController.onPageLoad().url
 
       application.stop()
     }

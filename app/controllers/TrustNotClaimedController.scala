@@ -18,30 +18,27 @@ package controllers
 
 import controllers.actions._
 import javax.inject.Inject
+import pages.WhatIsTheUTRVariationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.MessagesControllerComponents
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.VariationsConfirmationView
+import views.html.TrustNotClaimedView
 
 import scala.concurrent.ExecutionContext
 
-class VariationsConfirmationController @Inject()(
+class TrustNotClaimedController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        identify: IdentifierAction,
+                                       getData: DataRetrievalAction,
+                                       requireData: DataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,
-                                       view: VariationsConfirmationView
+                                       view: TrustNotClaimedView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-
-  def onPageLoad() = identify {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
-      val isAgent = request.affinityGroup == Agent
-      val agentOverviewUrl = routes.AgentOverviewController.onPageLoad().url
-
-      val fakeTvn = "XC TVN 000 000 4912"
-
-      Ok(view(fakeTvn, isAgent, agentOverviewUrl))
+      request.userAnswers.get(WhatIsTheUTRVariationPage) map { utr =>
+        Ok(view(utr))
+      } getOrElse Redirect(routes.SessionExpiredController.onPageLoad())
   }
 }

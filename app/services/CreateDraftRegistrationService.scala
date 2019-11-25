@@ -44,7 +44,7 @@ class CreateDraftRegistrationService @Inject()(
   }
 
   def create[A](request: IdentifierRequest[A])(implicit hc : HeaderCarrier) : Future[String] = {
-    val transformed = OptionalDataRequest(request.request, request.identifier, None, request.affinityGroup, request.agentARN)
+    val transformed = OptionalDataRequest(request.request, request.identifier, None, request.affinityGroup, request.enrolments, request.agentARN)
     build(transformed)
   }
 

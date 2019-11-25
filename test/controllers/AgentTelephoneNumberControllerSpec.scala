@@ -19,70 +19,108 @@ package controllers
 import base.SpecBase
 import forms.AgentTelephoneNumber
 import models.NormalMode
-import pages.AgentTelephoneNumberPage
+import models.core.UserAnswers
+import pages.{AgentNamePage, AgentTelephoneNumberPage}
+import play.api.Application
+import play.api.data.Form
+import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
 import views.html.AgentTelephoneNumberView
 
+import scala.concurrent.Future
+
 class AgentTelephoneNumberControllerSpec extends SpecBase {
 
   val formProvider = new AgentTelephoneNumber()
-  val form = formProvider()
+  val form: Form[String] = formProvider()
+  val agencyName = "FirstName LastName"
 
-  lazy val agentTelephoneNumberRoute = routes.AgentTelephoneNumberController.onPageLoad(NormalMode,fakeDraftId).url
+  lazy val agentTelephoneNumberRoute: String = routes.AgentTelephoneNumberController.onPageLoad(NormalMode, fakeDraftId).url
 
   "AgentTelephoneNumber Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+      val userAnswers: UserAnswers = emptyUserAnswers
+        .set(AgentNamePage, "FirstName LastName").success.value
+
+      val application: Application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, agentTelephoneNumberRoute)
 
-      val result = route(application, request).value
+      val result: Future[Result] = route(application, request).value
 
-      val view = application.injector.instanceOf[AgentTelephoneNumberView]
+      val view: AgentTelephoneNumberView = application.injector.instanceOf[AgentTelephoneNumberView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,fakeDraftId)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, agencyName)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(AgentTelephoneNumberPage, "answer").success.value
+      val userAnswers: UserAnswers = emptyUserAnswers
+        .set(AgentNamePage, "FirstName LastName").success.value
+        .set(AgentTelephoneNumberPage, "answer").success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
+      val application: Application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, agentTelephoneNumberRoute)
 
-      val view = application.injector.instanceOf[AgentTelephoneNumberView]
+      val view: AgentTelephoneNumberView = application.injector.instanceOf[AgentTelephoneNumberView]
 
-      val result = route(application, request).value
+      val result: Future[Result] = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode,fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill("answer"), NormalMode, fakeDraftId, agencyName)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "redirect to AgentName page when AgentName is not answered" in {
+
+      val userAnswers: UserAnswers = emptyUserAnswers
+        .set(AgentTelephoneNumberPage, "answer").success.value
+
+      val application: Application =
+        applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent)
+          .build()
+
+      val request: FakeRequest[AnyContentAsFormUrlEncoded] =
+        FakeRequest(POST, agentTelephoneNumberRoute)
+          .withFormUrlEncodedBody(("value", "0191 1111111"))
+
+      val result: Future[Result] = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.AgentNameController.onPageLoad(NormalMode, fakeDraftId).url
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
+      val userAnswers: UserAnswers = emptyUserAnswers
+        .set(AgentNamePage, "FirstName LastName").success.value
+        .set(AgentTelephoneNumberPage, "answer").success.value
+
+      val application: Application =
+        applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent)
           .build()
 
-      val request =
+      val request: FakeRequest[AnyContentAsFormUrlEncoded] =
         FakeRequest(POST, agentTelephoneNumberRoute)
           .withFormUrlEncodedBody(("value", "0191 1111111"))
 
-      val result = route(application, request).value
+      val result: Future[Result] = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
@@ -92,33 +130,37 @@ class AgentTelephoneNumberControllerSpec extends SpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers),AffinityGroup.Agent).build()
+      val userAnswers: UserAnswers = emptyUserAnswers
+        .set(AgentNamePage, "FirstName LastName").success.value
+        .set(AgentTelephoneNumberPage, "answer").success.value
 
-      val request =
+      val application: Application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
+
+      val request: FakeRequest[AnyContentAsFormUrlEncoded] =
         FakeRequest(POST, agentTelephoneNumberRoute)
           .withFormUrlEncodedBody(("value", ""))
 
-      val boundForm = form.bind(Map("value" -> ""))
+      val boundForm: Form[String] = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[AgentTelephoneNumberView]
+      val view: AgentTelephoneNumberView = application.injector.instanceOf[AgentTelephoneNumberView]
 
-      val result = route(application, request).value
+      val result: Future[Result] = route(application, request).value
 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode,fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, agencyName)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
+      val application: Application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, agentTelephoneNumberRoute)
 
-      val result = route(application, request).value
+      val result: Future[Result] = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
@@ -129,13 +171,13 @@ class AgentTelephoneNumberControllerSpec extends SpecBase {
 
     "redirect to Session Expired for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
+      val application: Application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
-      val request =
+      val request: FakeRequest[AnyContentAsFormUrlEncoded] =
         FakeRequest(POST, agentTelephoneNumberRoute)
           .withFormUrlEncodedBody(("value", "answer"))
 
-      val result = route(application, request).value
+      val result: Future[Result] = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 

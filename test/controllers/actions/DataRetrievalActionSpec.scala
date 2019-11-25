@@ -23,7 +23,7 @@ import org.mockito.Mockito._
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
 import repositories.RegistrationsRepository
-import uk.gov.hmrc.auth.core.AffinityGroup
+import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -44,7 +44,7 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar with ScalaFutur
         when(registrationsRepository.getDraftRegistrations("internalId")) thenReturn Future(Nil)
         val action = new Harness(registrationsRepository)
 
-        val futureResult = action.callTransform(new IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Individual))
+        val futureResult = action.callTransform(new IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Individual, Enrolments(Set.empty[Enrolment])))
 
         whenReady(futureResult) { result =>
           result.userAnswers.isEmpty mustBe true
@@ -61,7 +61,7 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar with ScalaFutur
         when(registrationsRepository.get(draftId = any(), internalId = any())) thenReturn Future(Some(emptyUserAnswers))
         val action = new Harness(registrationsRepository)
 
-        val futureResult = action.callTransform(new IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Individual))
+        val futureResult = action.callTransform(new IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Individual, Enrolments(Set.empty[Enrolment])))
 
         whenReady(futureResult) { result =>
           result.userAnswers.isDefined mustBe true
@@ -75,7 +75,7 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar with ScalaFutur
 
         val action = new Harness(registrationsRepository)
 
-        val futureResult = action.callTransform(new IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Individual))
+        val futureResult = action.callTransform(new IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Individual, Enrolments(Set.empty[Enrolment])))
 
         whenReady(futureResult) { result =>
           result.userAnswers.isEmpty mustBe true

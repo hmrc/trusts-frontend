@@ -42,7 +42,7 @@ class DraftIdDataRetrievalAction(
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] = {
     registrationsRepository.get(draftId, request.identifier).map {
       userAnswers =>
-        OptionalDataRequest(request.request, request.identifier, userAnswers, request.affinityGroup, request.agentARN)
+        OptionalDataRequest(request.request, request.identifier, userAnswers, request.affinityGroup, request.enrolments, request.agentARN)
     }
   }
 
