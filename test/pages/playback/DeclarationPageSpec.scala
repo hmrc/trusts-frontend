@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package pages
+package pages.playback
 
 import models.playback.pages.Declaration
 import pages.behaviours.PageBehaviours
 
 
-class DeclarationChangesNoChangesPageSpec extends PageBehaviours {
+class DeclarationPageSpec extends PageBehaviours {
 
-  "DeclarationChangesNoChangesPage" must {
+  "DeclarationPage" must {
 
-    beRetrievable[Declaration](DeclarationChangesNoChangesPage)
+    beRetrievable[Declaration](DeclarationPage)
 
-    beSettable[Declaration](DeclarationChangesNoChangesPage)
+    beSettable[Declaration](DeclarationPage)
 
-    beRemovable[Declaration](DeclarationChangesNoChangesPage)
+    beRemovable[Declaration](DeclarationPage)
   }
 }

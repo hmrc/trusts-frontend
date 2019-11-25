@@ -84,7 +84,7 @@ class DeclarationWhatNextControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.DeclarationNoChangesController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.playback.routes.DeclarationController.onPageLoad().url
 
       application.stop()
     }

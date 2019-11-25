@@ -367,11 +367,11 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryDeclarationChangesNoChangesUserAnswersEntry: Arbitrary[(DeclarationChangesNoChangesPage.type, JsValue)] =
+  implicit lazy val arbitraryDeclarationChangesNoChangesUserAnswersEntry: Arbitrary[(pages.playback.DeclarationPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[DeclarationChangesNoChangesPage.type]
-        value <- arbitrary[Declaration].map(Json.toJson(_))
+        page  <- arbitrary[pages.playback.DeclarationPage.type]
+        value <- arbitrary[models.playback.pages.Declaration].map(Json.toJson(_))
       } yield (page, value)
     }
 

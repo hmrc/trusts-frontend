@@ -18,8 +18,10 @@
 @import uk.gov.hmrc.auth.core.AffinityGroup
 @import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 @import play.api.mvc.Call
+@import config.FrontendAppConfig
 
 @this(
+    appConfig: FrontendAppConfig,
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
@@ -55,13 +57,16 @@
             ariaRequired = true
         )
 
-        <p>@messages("declaration.changes.noChanges.paragraph1")</p>
-        <p>@messages("declaration.changes.noChanges.paragraph2")</p>
 
-        @components.input_text(
-            field = form("email"),
-            label = messages("declaration.changes.noChanges.email")
-        )
+        @if(appConfig.variationsDeclarationEmailEnabled) {
+            <p>@messages("declaration.changes.noChanges.paragraph1")</p>
+            <p>@messages("declaration.changes.noChanges.paragraph2")</p>
+            @components.input_text(
+                field = form("email"),
+                inputClass = Some("declaration-email"),
+                label = messages("declaration.changes.noChanges.email")
+            )
+        }
 
         @if(affinityGroup == AffinityGroup.Agent) {
             @components.warning("declaration.changes.noChanges.agent")

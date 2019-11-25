@@ -19,7 +19,6 @@ package generators
 import java.time.LocalDate
 
 import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
-import models.playback.pages
 import models.playback.pages.{Declaration, DeclarationWhatNext}
 import models.registration.pages._
 import org.scalacheck.Arbitrary.arbitrary
@@ -81,12 +80,12 @@ trait ModelGenerators {
     }
   }
 
-  implicit lazy val arbitraryPlaybackDeclaration : Arbitrary[Declaration] = {
+  implicit lazy val arbitraryDeclarationChangesNoChanges : Arbitrary[models.playback.pages.Declaration] = {
     Arbitrary {
       for {
         str <- arbitrary[String]
       } yield {
-        pages.Declaration(FullName(str, Some(str), str), Some(str))
+        Declaration(FullName(str, Some(str), str), Some(str))
       }
     }
   }

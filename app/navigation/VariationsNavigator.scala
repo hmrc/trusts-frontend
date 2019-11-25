@@ -26,7 +26,7 @@ class VariationsNavigator @Inject()() {
   def declarationWhatsNextPage(answers: UserAnswers) = {
     answers.get(DeclarationWhatNextPage) match {
       case Some(DeclareTheTrustIsUpToDate) =>
-        controllers.routes.DeclarationNoChangesController.onPageLoad()
+        controllers.playback.routes.DeclarationController.onPageLoad()
       case _ =>
         controllers.routes.DeclarationWhatNextController.onPageLoad()
     }

@@ -14,29 +14,28 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.playback
 
 import base.SpecBase
-import forms.DeclarationChangesNoChangesFormProvider
+import forms.playback.DeclarationFormProvider
 import models.core.pages.FullName
-import models.playback
 import models.playback.pages.Declaration
 import models.playback.pages.DeclarationWhatNext.DeclareTheTrustIsUpToDate
-import org.mockito.Mockito._
-import pages.{DeclarationChangesNoChangesPage, DeclarationWhatNextPage}
+import org.mockito.Mockito.reset
+import pages.DeclarationWhatNextPage
+import pages.playback.DeclarationPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
-import views.html.DeclarationChangesNoChangesView
 
-class DeclarationNoChangesControllerSpec extends SpecBase {
+class DeclarationControllerSpec extends SpecBase {
 
-  val formProvider = new DeclarationChangesNoChangesFormProvider()
+  val formProvider = new DeclarationFormProvider()
   val form = formProvider()
   val name = "name"
 
-  lazy val declarationRoute = routes.DeclarationNoChangesController.onPageLoad().url
-  lazy val submitRoute = routes.DeclarationNoChangesController.onSubmit()
+  lazy val declarationRoute = controllers.playback.routes.DeclarationController.onPageLoad().url
+  lazy val submitRoute = controllers.playback.routes.DeclarationController.onSubmit()
 
   before {
     reset(mockSubmissionService)
@@ -54,7 +53,7 @@ class DeclarationNoChangesControllerSpec extends SpecBase {
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[DeclarationChangesNoChangesView]
+      val view = application.injector.instanceOf[views.html.playback.DeclarationView]
       
       status(result) mustEqual OK
 
@@ -74,7 +73,7 @@ class DeclarationNoChangesControllerSpec extends SpecBase {
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[DeclarationChangesNoChangesView]
+      val view = application.injector.instanceOf[views.html.playback.DeclarationView]
 
       status(result) mustEqual OK
 
@@ -87,20 +86,20 @@ class DeclarationNoChangesControllerSpec extends SpecBase {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers.set(DeclarationWhatNextPage, DeclareTheTrustIsUpToDate).success.value
-        .set(DeclarationChangesNoChangesPage, Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
+        .set(DeclarationPage, Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, declarationRoute)
 
-      val view = application.injector.instanceOf[DeclarationChangesNoChangesView]
+      val view = application.injector.instanceOf[views.html.playback.DeclarationView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(playback.pages.Declaration(FullName("First",None, "Last"), Some("test@test.comn"))), AffinityGroup.Agent, submitRoute)(fakeRequest, messages).toString
+        view(form.fill(Declaration(FullName("First",None, "Last"), Some("test@test.comn"))), AffinityGroup.Agent, submitRoute)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -118,7 +117,7 @@ class DeclarationNoChangesControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.DeclarationNoChangesController.onPageLoad().url // TODO Redirect to variation confirmation page
+      redirectLocation(result).value mustEqual controllers.playback.routes.DeclarationController.onPageLoad().url // TODO Redirect to variation confirmation page
 
       application.stop()
     }
@@ -135,7 +134,7 @@ class DeclarationNoChangesControllerSpec extends SpecBase {
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[DeclarationChangesNoChangesView]
+      val view = application.injector.instanceOf[views.html.playback.DeclarationView]
 
       val result = route(application, request).value
 
@@ -157,7 +156,7 @@ class DeclarationNoChangesControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -174,7 +173,7 @@ class DeclarationNoChangesControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }

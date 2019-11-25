@@ -31,7 +31,7 @@ class VariationsNavigatorSpec extends SpecBase {
       "go to the DeclarationNoChanges page" in {
         val answers = emptyUserAnswers
           .set(DeclarationWhatNextPage, DeclarationWhatNext.DeclareTheTrustIsUpToDate).success.value
-        navigator.declarationWhatsNextPage(answers) mustBe routes.DeclarationNoChangesController.onPageLoad()
+        navigator.declarationWhatsNextPage(answers) mustBe controllers.playback.routes.DeclarationController.onPageLoad()
       }
     }
 
