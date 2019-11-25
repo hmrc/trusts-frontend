@@ -80,6 +80,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
   }
 
   "TrustConnector" - {
+
     "return a Trust Registration Number (TRN)" - {
 
       "valid payload to trusts is sent" in {
@@ -104,6 +105,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
     }
 
     "return AlreadyRegistered response " - {
+
       "already registered trusts is sent " in {
         val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
         val registration = registrationMapper.build(userAnswers).value
@@ -150,6 +152,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
     }
 
     "return InternalServerError response " - {
+
       "api returns bad request response " in {
         val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
         val registration = registrationMapper.build(userAnswers).value
@@ -168,6 +171,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
     }
 
     "return InternalServerError response " - {
+
       "api returns service unavailable response " in {
         val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
         val registration = registrationMapper.build(userAnswers).value

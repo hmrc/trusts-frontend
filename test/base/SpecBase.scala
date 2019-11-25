@@ -38,10 +38,6 @@ import utils.annotations.{LivingSettlor, PropertyOrLand}
 trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked with BeforeAndAfter {
   this: TestSuite =>
 
-  after {
-    app.stop()
-  }
-
   val userAnswersId = TestUserAnswers.draftId
 
   def emptyUserAnswers = TestUserAnswers.emptyUserAnswers
