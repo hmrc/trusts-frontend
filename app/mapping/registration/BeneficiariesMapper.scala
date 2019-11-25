@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
+
 import javax.inject.Inject
+import mapping.{BeneficiaryType, Mapping}
 import models.core.UserAnswers
 import play.api.Logger
 

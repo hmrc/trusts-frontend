@@ -21,7 +21,7 @@ import java.time.LocalDate
 import play.api.libs.json._
 
 /**
-  * DES API Schema - definitions models below
+  * Trust Registration API Schema - definitions models below
   */
 
 case class Registration(matchData: Option[MatchData],

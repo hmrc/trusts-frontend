@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
 
 import javax.inject.Inject
 import mapping.reads.IndividualSettlor
+import mapping._
 import models.core.UserAnswers
 import models.registration.pages.PassportOrIdCardDetails
 

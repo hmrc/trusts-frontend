@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
 
 import mapping.reads.ClassOfBeneficiary
+import mapping.{Mapping, UnidentifiedType}
 import models.core.UserAnswers
 
 

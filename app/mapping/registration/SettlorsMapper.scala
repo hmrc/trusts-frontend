@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
 
 import javax.inject.Inject
+import mapping.{Mapping, Settlors}
 import models.core.UserAnswers
 
 class SettlorsMapper @Inject()(individualSettlorsMapper: IndividualSettlorsMapper) extends Mapping[Settlors] {

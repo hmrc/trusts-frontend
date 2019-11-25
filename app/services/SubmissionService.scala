@@ -20,7 +20,7 @@ import auditing.{RegistrationErrorAuditEvent, TrustAuditing}
 import com.google.inject.ImplementedBy
 import connector.TrustConnector
 import javax.inject.Inject
-import mapping.RegistrationMapper
+import mapping.registration.RegistrationMapper
 import models.core.UserAnswers
 import models.core.http.TrustResponse._
 import models.core.http.{RegistrationTRNResponse, TrustResponse}

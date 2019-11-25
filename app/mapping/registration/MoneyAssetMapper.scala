@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
 
 import javax.inject.Inject
 import mapping.reads.MoneyAsset
+import mapping.{AssetMonetaryAmount, Mapping}
 import models.core.UserAnswers
 
 import scala.util.Try

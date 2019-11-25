@@ -18,6 +18,7 @@ package mapping
 
 import base.SpecBaseHelpers
 import generators.Generators
+import mapping.registration.MoneyAssetMapper
 import models.registration.pages.Status.Completed
 import models.registration.pages.WhatKindOfAsset
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}

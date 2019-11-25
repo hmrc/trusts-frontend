@@ -20,6 +20,7 @@ import java.time.LocalDate
 
 import base.SpecBaseHelpers
 import generators.Generators
+import mapping.registration.CorrespondenceMapper
 import models.core.pages.IndividualOrBusiness.Individual
 import models.core.pages.{FullName, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}

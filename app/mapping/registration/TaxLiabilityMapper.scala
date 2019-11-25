@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
 
 import javax.inject.Inject
+import mapping.{Mapping, YearsReturns}
 import models.core.UserAnswers
 
 class TaxLiabilityMapper @Inject()() extends Mapping[YearsReturns] {
