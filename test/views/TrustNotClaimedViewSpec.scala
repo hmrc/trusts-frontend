@@ -14,9 +14,21 @@
  * limitations under the License.
  */
 
-package models.requests
+package views
 
-import play.api.mvc.{Request, WrappedRequest}
-import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
+import views.behaviours.ViewBehaviours
+import views.html.TrustNotClaimedView
 
-case class IdentifierRequest[A] (request: Request[A], identifier: String, affinityGroup: AffinityGroup, enrolments: Enrolments, agentARN: Option[String] = None) extends WrappedRequest[A](request)
+class TrustNotClaimedViewSpec extends ViewBehaviours {
+
+  "TrustNotClaimed view" must {
+
+    val view = viewFor[TrustNotClaimedView](Some(emptyUserAnswers))
+
+    val applyView = view.apply("0987654321")(fakeRequest, messages)
+
+    behave like normalPage(applyView, "trustNotClaimed")
+
+    behave like pageWithBackLink(applyView)
+  }
+}

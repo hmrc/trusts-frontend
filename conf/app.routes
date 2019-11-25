@@ -650,5 +650,9 @@ GET        /status/down                            controllers.TrustStatusContro
 GET        /status/locked                          controllers.TrustStatusController.locked()
 GET        /status                                 controllers.TrustStatusController.status()
 
+GET        /variations/trust-not-claimed                       controllers.TrustNotClaimedController.onPageLoad()
+
+GET        /variations/agent-not-authorised                    controllers.AgentNotAuthorisedController.onPageLoad()
+
 GET        /:draftId/maintain-saved-registration           controllers.AgentOverviewController.continue(draftId: String)
 
