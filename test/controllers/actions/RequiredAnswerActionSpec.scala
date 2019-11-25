@@ -18,8 +18,8 @@ package controllers.actions
 
 import base.SpecBase
 import controllers.routes
+import models.NormalMode
 import models.core.pages.FullName
-import models.{FullName, NormalMode}
 import models.requests.DataRequest
 import org.scalatest.EitherValues
 import org.scalatest.concurrent.ScalaFutures

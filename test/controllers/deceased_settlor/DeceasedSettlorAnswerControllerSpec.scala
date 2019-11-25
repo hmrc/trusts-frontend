@@ -19,9 +19,9 @@ package controllers.deceased_settlor
 import java.time.LocalDate
 
 import base.SpecBase
+import models.NormalMode
 import models.core.UserAnswers
 import models.core.pages.{FullName, InternationalAddress, UKAddress}
-import models.{InternationalAddress, NormalMode}
 import pages.SetupAfterSettlorDiedPage
 import pages.deceased_settlor._
 import play.api.Application

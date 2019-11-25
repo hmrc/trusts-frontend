@@ -16,7 +16,6 @@
 
 package views
 
-import controllers.routes
 import forms.ClassBeneficiaryDescriptionFormProvider
 import models.NormalMode
 import play.api.data.Form

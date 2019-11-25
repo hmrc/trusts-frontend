@@ -16,9 +16,8 @@
 
 package pages.property_or_land
 
-import models.core.pages.{InternationalAddress, UKAddress}
-import models.InternationalAddress
 import models.core.UserAnswers
+import models.core.pages.{InternationalAddress, UKAddress}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 

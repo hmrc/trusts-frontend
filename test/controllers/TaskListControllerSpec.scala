@@ -22,6 +22,7 @@ import java.time.format.DateTimeFormatter
 import base.SpecBase
 import models.NormalMode
 import models.core.UserAnswers
+import models.registration.Matched
 import navigation.Navigator
 import navigation.registration.TaskListNavigator
 import pages._

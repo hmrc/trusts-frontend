@@ -16,9 +16,8 @@
 
 package pages.deceased_settlor
 
-import models.core.pages.{InternationalAddress, UKAddress}
-import models.InternationalAddress
 import models.core.UserAnswers
+import models.core.pages.{InternationalAddress, UKAddress}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 

@@ -20,7 +20,7 @@ import base.SpecBaseHelpers
 import generators.Generators
 import models.registration.Matched
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
-import pages.{ExistingTrustMatched, PostcodeForTheTrustPage, TrustHaveAUTRPage, TrustNamePage, WhatIsTheUTRPage}
+import pages._
 import utils.TestUserAnswers
 
 class MatchingMapperSpec extends FreeSpec with MustMatchers

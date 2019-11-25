@@ -21,8 +21,9 @@ import java.time.LocalDate
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping.TypeOfTrust.WillTrustOrIntestacyTrust
-import models.NonResidentType.Domiciled
-import models.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
+import models.registration.pages.NonResidentType.Domiciled
+import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
+import models.registration.pages.WhenTrustSetupPage
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
 import utils.TestUserAnswers

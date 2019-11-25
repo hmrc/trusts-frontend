@@ -21,10 +21,9 @@ import java.time.LocalDate
 import base.SpecBaseHelpers
 import generators.Generators
 import models.core.pages.{FullName, InternationalAddress, UKAddress}
-import models.InternationalAddress
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
-import pages.deceased_settlor.{SettlorDateOfBirthYesNoPage, SettlorDateOfDeathPage, SettlorDateOfDeathYesNoPage, SettlorNationalInsuranceNumberPage, SettlorsDateOfBirthPage, SettlorsInternationalAddressPage, SettlorsLastKnownAddressYesNoPage, SettlorsNINoYesNoPage, SettlorsNamePage, SettlorsUKAddressPage, WasSettlorsAddressUKYesNoPage}
+import pages.deceased_settlor._
 
 class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {

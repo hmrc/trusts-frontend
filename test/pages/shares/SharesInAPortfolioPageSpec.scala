@@ -17,6 +17,7 @@
 package pages.shares
 
 import models.core.UserAnswers
+import models.registration.pages.{ShareClass, Status}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 import pages.entitystatus.AssetStatus

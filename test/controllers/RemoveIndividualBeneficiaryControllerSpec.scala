@@ -20,7 +20,6 @@ import base.SpecBase
 import controllers.routes._
 import forms.RemoveIndexFormProvider
 import models.core.pages.FullName
-import models.{FullName, NormalMode}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages.IndividualBeneficiaryNamePage

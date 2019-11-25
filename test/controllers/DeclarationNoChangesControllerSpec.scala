@@ -18,17 +18,16 @@ package controllers
 
 import base.SpecBase
 import forms.DeclarationChangesNoChangesFormProvider
-import models.{FullName, NormalMode, playback}
+import models.core.pages.FullName
+import models.playback
+import models.playback.pages.Declaration
+import models.playback.pages.DeclarationWhatNext.DeclareTheTrustIsUpToDate
 import org.mockito.Mockito._
 import pages.{DeclarationChangesNoChangesPage, DeclarationWhatNextPage}
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
 import views.html.DeclarationChangesNoChangesView
-import models.DeclarationWhatNext.DeclareTheTrustIsUpToDate
-import models.core.pages.FullName
-import models.playback.pages.Declaration
 
 class DeclarationNoChangesControllerSpec extends SpecBase {
 

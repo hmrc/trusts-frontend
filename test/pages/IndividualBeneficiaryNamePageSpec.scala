@@ -16,7 +16,6 @@
 
 package pages
 
-import models.FullName
 import models.core.pages.FullName
 import pages.behaviours.PageBehaviours
 

@@ -23,15 +23,15 @@ import models.playback._
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
-import pages.WhatIsTheUTRVariationPage
+import _root_.pages.WhatIsTheUTRVariationPage
 import play.api.Application
 import play.api.inject.bind
+import play.api.libs.json._
 import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import play.api.libs.json._
 import uk.gov.hmrc.auth.core.AffinityGroup
-import views.html.playback.status.{ClosedErrorView, DoesNotMatchErrorView, IVDownView, StillProcessingErrorView, TrustLockedView}
+import views.html.playback.status._
 
 import scala.concurrent.Future
 

@@ -18,13 +18,9 @@ package controllers
 
 import base.SpecBase
 import forms.UKAddressFormProvider
-import models.core.pages.UKAddress
 import models.NormalMode
-import navigation.FakeNavigator
-import pages.{AgentNamePage, AgentUKAddressPage, IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryNamePage}
-import play.api.inject.bind
-import play.api.libs.json.Json
-import play.api.mvc.Call
+import models.core.pages.UKAddress
+import pages.{AgentNamePage, AgentUKAddressPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup

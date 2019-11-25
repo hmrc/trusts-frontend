@@ -18,13 +18,12 @@ package controllers.actions
 
 import base.SpecBase
 import controllers.routes
-import models.RegistrationStatus.{Complete, InProgress}
+import models.registration.pages.RegistrationStatus.{Complete, InProgress}
 import models.requests.DataRequest
 import org.scalatest.EitherValues
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
 import play.api.http.HeaderNames
-import play.api.libs.json.Reads
 import play.api.mvc.Result
 import uk.gov.hmrc.auth.core.AffinityGroup
 import utils.TestUserAnswers

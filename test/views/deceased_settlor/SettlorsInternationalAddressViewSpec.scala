@@ -18,8 +18,8 @@ package views.deceased_settlor
 
 import controllers.deceased_settlor.routes
 import forms.InternationalAddressFormProvider
+import models.NormalMode
 import models.core.pages.FullName
-import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import utils.InputOption

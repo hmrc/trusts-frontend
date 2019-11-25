@@ -18,20 +18,20 @@ package views
 
 import java.time.{LocalDate, LocalDateTime}
 
-import models.AddAssets.NoComplete
+import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
+import models.registration.pages.AddAssets.NoComplete
 import models.registration.pages.Status.Completed
-import models.TrusteesBasedInTheUK.UKBasedTrustees
-import models.core.pages.{FullName, UKAddress}
+import models.registration.pages.TrusteesBasedInTheUK.UKBasedTrustees
+import models.registration.pages.{AddABeneficiary, AddATrustee, SettlorKindOfTrust, Status, WhatKindOfAsset, WhenTrustSetupPage}
 import pages._
-import pages.deceased_settlor._
 import pages.entitystatus._
-import pages.living_settlor.{SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNINOPage, SettlorIndividualNINOYesNoPage, SettlorIndividualNamePage, SettlorIndividualOrBusinessPage}
+import pages.living_settlor._
 import pages.property_or_land._
 import pages.shares._
 import pages.trustees._
 import utils.AccessibilityHelper._
 import utils.countryOptions.CountryOptions
-import utils.{DateFormatter, PrintUserAnswersHelper, TestUserAnswers, TrustsDateFormatter}
+import utils.{DateFormatter, PrintUserAnswersHelper, TestUserAnswers}
 import views.behaviours.ViewBehaviours
 import views.html.ConfirmationAnswerPageView
 

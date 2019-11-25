@@ -18,8 +18,8 @@ package controllers.deceased_settlor
 
 import base.SpecBase
 import forms.UKAddressFormProvider
+import models.NormalMode
 import models.core.pages.{FullName, UKAddress}
-import models.{FullName, NormalMode}
 import pages.deceased_settlor.{SettlorsNamePage, SettlorsUKAddressPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

@@ -18,6 +18,7 @@ package views
 
 import forms.WhatTypeOfBeneficiaryFormProvider
 import models.NormalMode
+import models.registration.pages.WhatTypeOfBeneficiary
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.ViewBehaviours

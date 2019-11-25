@@ -19,13 +19,13 @@ package navigation.navigators.variations
 import base.SpecBase
 import controllers.routes
 import generators.Generators
-import models.DeclarationWhatNext.DeclareTheTrustIsUpToDate
 import models.NormalMode
 import models.core.UserAnswers
+import models.playback.pages.DeclarationWhatNext.DeclareTheTrustIsUpToDate
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages.{DeclarationPage, DeclarationWhatNextPage}
+import pages.DeclarationWhatNextPage
 
 trait CheckAndConfirmRoutes {
 

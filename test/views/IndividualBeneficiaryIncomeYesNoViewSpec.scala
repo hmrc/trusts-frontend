@@ -16,10 +16,9 @@
 
 package views
 
-import controllers.routes
 import forms.YesNoFormProvider
-import models.core.pages.FullName
 import models.NormalMode
+import models.core.pages.FullName
 import pages.IndividualBeneficiaryNamePage
 import play.api.data.Form
 import play.twirl.api.HtmlFormat

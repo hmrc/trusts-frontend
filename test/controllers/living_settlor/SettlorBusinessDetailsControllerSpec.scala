@@ -19,10 +19,10 @@ package controllers.living_settlor
 import base.SpecBase
 import controllers.IndexValidation
 import forms.living_settlor.SettlorBusinessDetailsFormProvider
+import models.NormalMode
 import models.registration.pages.SettlorBusinessDetails
-import models.{NormalMode, SettlorBusinessDetails}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.living_settlor.{SettlorBusinessDetailsPage, SettlorBusinessNamePage, SettlorIndividualNINOPage}
+import pages.living_settlor.{SettlorBusinessDetailsPage, SettlorBusinessNamePage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}

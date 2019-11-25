@@ -18,8 +18,8 @@ package controllers.property_or_land
 
 import base.SpecBase
 import forms.RemoveIndexFormProvider
-import models.registration.pages.Status.Completed
 import models.core.pages.InternationalAddress
+import models.registration.pages.Status.Completed
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages.entitystatus.AssetStatus

@@ -18,9 +18,9 @@ package mapping
 
 import base.SpecBaseHelpers
 import generators.Generators
-import mapping.reads.PropertyOrLandAsset
-import models.registration.pages.Status.Completed
 import models.core.pages.UKAddress
+import models.registration.pages.Status.Completed
+import models.registration.pages.WhatKindOfAsset
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.entitystatus.AssetStatus
 import pages.property_or_land._

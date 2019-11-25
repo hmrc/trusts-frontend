@@ -18,13 +18,9 @@ package controllers
 
 import base.SpecBase
 import forms.YesNoFormProvider
-import models.core.pages.FullName
 import models.NormalMode
-import navigation.FakeNavigator
+import models.core.pages.FullName
 import pages.{IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage}
-import play.api.inject.bind
-import play.api.libs.json.{JsBoolean, Json}
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.IndividualBeneficiaryIncomeYesNoView

@@ -16,8 +16,6 @@
 
 package pages.living_settlor
 
-import models.core.UserAnswers
-import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
 class SettlorIndividualAddressUKYesNoPageSpec extends PageBehaviours {

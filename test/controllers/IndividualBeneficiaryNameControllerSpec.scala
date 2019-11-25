@@ -20,9 +20,7 @@ import base.SpecBase
 import forms.IndividualBeneficiaryNameFormProvider
 import models.NormalMode
 import models.core.pages.FullName
-import navigation.FakeNavigator
 import pages.IndividualBeneficiaryNamePage
-import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.IndividualBeneficiaryNameView

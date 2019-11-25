@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.IndexValidation
 import forms.living_settlor.SettlorIndividualNameFormProvider
 import models.NormalMode
-import models.core.pages.FullName
+import models.core.pages.{FullName, IndividualOrBusiness}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.living_settlor.SettlorIndividualNamePage
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}

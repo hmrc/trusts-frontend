@@ -19,7 +19,6 @@ package queries
 import base.SpecBaseHelpers
 import models.core.UserAnswers
 import models.core.pages.FullName
-import pages._
 import pages.behaviours.PageBehaviours
 import pages.trustees.TrusteesNamePage
 

@@ -19,11 +19,7 @@ package controllers
 import base.SpecBase
 import forms.AgentTelephoneNumber
 import models.NormalMode
-import navigation.FakeNavigator
 import pages.AgentTelephoneNumberPage
-import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup

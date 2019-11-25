@@ -19,9 +19,9 @@ package navigation.navigators.registration
 import base.SpecBase
 import controllers.property_or_land.routes
 import generators.Generators
+import models.NormalMode
 import models.core.UserAnswers
 import models.core.pages.{InternationalAddress, UKAddress}
-import models.{InternationalAddress, NormalMode}
 import navigation.Navigator
 import navigation.registration.PropertyOrLandNavigator
 import org.scalacheck.Arbitrary.arbitrary

@@ -16,7 +16,6 @@
 
 package views
 
-import controllers.routes
 import forms.IndividualBeneficiaryNationalInsuranceNumberFormProvider
 import models.NormalMode
 import models.core.pages.FullName

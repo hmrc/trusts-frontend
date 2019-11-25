@@ -18,13 +18,9 @@ package controllers
 
 import base.SpecBase
 import forms.IndividualBeneficiaryIncomeFormProvider
+import models.NormalMode
 import models.core.pages.FullName
-import models.{FullName, NormalMode}
-import navigation.FakeNavigator
 import pages.{IndividualBeneficiaryIncomePage, IndividualBeneficiaryNamePage}
-import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.IndividualBeneficiaryIncomeView

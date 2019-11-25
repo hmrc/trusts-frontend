@@ -18,6 +18,7 @@ package views
 
 import forms.AddAssetsFormProvider
 import models.NormalMode
+import models.registration.pages.{AddAssets, WhatKindOfAsset}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import viewmodels.AddRow

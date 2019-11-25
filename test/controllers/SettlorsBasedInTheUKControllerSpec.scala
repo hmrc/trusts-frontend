@@ -19,11 +19,7 @@ package controllers
 import base.SpecBase
 import forms.SettlorsBasedInTheUKFormProvider
 import models.NormalMode
-import navigation.FakeNavigator
 import pages.SettlorsBasedInTheUKPage
-import play.api.inject.bind
-import play.api.libs.json.{JsBoolean, Json}
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.SettlorsBasedInTheUKView

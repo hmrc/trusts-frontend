@@ -19,15 +19,15 @@ package pages
 import java.time.LocalDate
 
 import base.SpecBase
-import models.AddAssets.NoComplete
-import models.IndividualOrBusiness.Individual
-import models.Status.{Completed, InProgress}
-import models.core.pages.FullName
-import models.FullName
 import models.core.UserAnswers
-import pages.entitystatus.{AssetStatus, ClassBeneficiaryStatus, DeceasedSettlorStatus, IndividualBeneficiaryStatus, LivingSettlorStatus, TrustDetailsStatus, TrusteeStatus}
+import models.core.pages.FullName
+import models.core.pages.IndividualOrBusiness.Individual
+import models.registration.pages.AddAssets.NoComplete
+import models.registration.pages.Status.{Completed, InProgress}
+import models.registration.pages._
+import pages.entitystatus._
 import pages.living_settlor.SettlorIndividualOrBusinessPage
-import pages.shares.{SharePortfolioNamePage, SharePortfolioOnStockExchangePage, SharePortfolioQuantityInTrustPage, SharePortfolioValueInTrustPage, SharesInAPortfolioPage}
+import pages.shares._
 import pages.trustees.{AddATrusteePage, IsThisLeadTrusteePage}
 import play.api.libs.json.{JsObject, Json}
 

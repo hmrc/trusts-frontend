@@ -18,12 +18,12 @@ package controllers.actions
 
 import models.core.UserAnswers
 import models.registration.pages.RegistrationStatus
-import repositories.RegistrationsRepository
+import org.mockito.Matchers._
 import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
+import repositories.RegistrationsRepository
 
 import scala.concurrent.{ExecutionContext, Future}
-import org.mockito.Matchers._
 
 class FakeDraftIdRetrievalActionProvider(draftId: String,
                                          status :  RegistrationStatus = RegistrationStatus.InProgress,

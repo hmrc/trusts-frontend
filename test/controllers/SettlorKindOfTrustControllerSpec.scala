@@ -19,9 +19,8 @@ package controllers
 import base.SpecBase
 import forms.SettlorKindOfTrustFormProvider
 import models.NormalMode
-import org.scalacheck.Arbitrary.arbitrary
+import models.registration.pages.SettlorKindOfTrust
 import pages.{SettlorKindOfTrustPage, SetupAfterSettlorDiedPage}
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.SettlorKindOfTrustView

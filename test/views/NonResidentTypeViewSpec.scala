@@ -18,6 +18,7 @@ package views
 
 import forms.NonResidentTypeFormProvider
 import models.NormalMode
+import models.registration.pages.NonResidentType
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.ViewBehaviours

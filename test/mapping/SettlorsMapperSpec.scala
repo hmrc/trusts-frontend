@@ -20,9 +20,8 @@ import java.time.LocalDate
 
 import base.SpecBaseHelpers
 import generators.Generators
-import models.core.pages.FullName
+import models.core.pages.{FullName, IndividualOrBusiness}
 import models.registration.pages.PassportOrIdCardDetails
-import models.{IndividualOrBusiness, PassportOrIdCardDetails}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.living_settlor._
 

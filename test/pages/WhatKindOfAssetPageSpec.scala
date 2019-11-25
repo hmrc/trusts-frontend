@@ -16,10 +16,9 @@
 
 package pages
 
-import models.core.pages.UKAddress
-import models.registration.pages.WhatKindOfAsset
-import models.WhatKindOfAsset
 import models.core.UserAnswers
+import models.core.pages.UKAddress
+import models.registration.pages.{ShareClass, Status, WhatKindOfAsset}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 import pages.entitystatus.AssetStatus

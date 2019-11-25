@@ -19,6 +19,7 @@ package controllers
 import base.SpecBase
 import models.NormalMode
 import models.core.pages.FullName
+import models.registration.pages.RegistrationStatus
 import pages.{RegistrationTRNPage, TrustHaveAUTRPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

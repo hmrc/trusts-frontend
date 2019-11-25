@@ -16,10 +16,9 @@
 
 package generators
 
-import models._
 import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
 import models.playback.pages.{Declaration, DeclarationWhatNext}
-import models.registration.pages.{AddABeneficiary, AddASettlor, AddAssets, NonResidentType, PassportOrIdCardDetails, SettlorBusinessDetails, SettlorIndividualOrBusiness, SettlorKindOfTrust, ShareClass, TrusteesBasedInTheUK, WhatKindOfAsset, WhatTypeOfBeneficiary}
+import models.registration.pages._
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
 import pages._

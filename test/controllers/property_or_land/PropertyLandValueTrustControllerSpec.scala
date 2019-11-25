@@ -21,12 +21,10 @@ import controllers.IndexValidation
 import forms.property_or_land.PropertyLandValueTrustFormProvider
 import models.NormalMode
 import models.core.UserAnswers
-import navigation.FakeNavigator
 import org.scalacheck.Arbitrary.arbitrary
 import pages.property_or_land.PropertyLandValueTrustPage
-import play.api.inject.bind
 import play.api.libs.json.Json
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils._

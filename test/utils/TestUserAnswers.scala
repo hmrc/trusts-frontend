@@ -18,12 +18,12 @@ package utils
 
 import java.time.LocalDate
 
-import models.Matched.{Failed, Success}
-import models.registration.pages.Status.Completed
-import models.TrusteesBasedInTheUK.UKBasedTrustees
-import models.core.pages.{FullName, UKAddress}
-import models.FullName
 import models.core.UserAnswers
+import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
+import models.registration.Matched.{Failed, Success}
+import models.registration.pages.Status.Completed
+import models.registration.pages.TrusteesBasedInTheUK.UKBasedTrustees
+import models.registration.pages._
 import org.scalatest.TryValues
 import pages._
 import pages.deceased_settlor._

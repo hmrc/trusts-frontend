@@ -20,8 +20,8 @@ import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
 import generators.Generators
 import mapping.{Mapping, Registration, RegistrationMapper}
-import models.TrustResponse._
 import models.core.http.RegistrationTRNResponse
+import models.core.http.TrustResponse._
 import models.playback.{Processed, Processing, TrustServiceUnavailable, UtrNotFound}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{FreeSpec, Inside, MustMatchers, OptionValues}

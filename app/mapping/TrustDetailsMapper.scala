@@ -20,7 +20,7 @@ import mapping.TypeOfTrust.WillTrustOrIntestacyTrust
 import models.core.UserAnswers
 import models.registration.pages.SettlorKindOfTrust.{Deed, Employees, FlatManagement, HeritageMaintenanceFund, Intervivos}
 import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
-import models.registration.pages.{NonResidentType, SettlorKindOfTrust}
+import models.registration.pages.{NonResidentType, SettlorKindOfTrust, WhenTrustSetupPage}
 import pages.entitystatus.DeceasedSettlorStatus
 import pages.{NonResidentTypePage, RegisteringTrustFor5APage, _}
 import play.api.Logger

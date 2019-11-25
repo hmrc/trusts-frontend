@@ -18,11 +18,10 @@ package generators
 
 import java.time.LocalDate
 
-import models._
 import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
 import models.playback.pages
 import models.playback.pages.{Declaration, DeclarationWhatNext}
-import models.registration.pages.{AddABeneficiary, AddASettlor, AddATrustee, AddAssets, NonResidentType, PassportOrIdCardDetails, SettlorBusinessDetails, SettlorIndividualOrBusiness, SettlorKindOfTrust, ShareClass, TrusteesBasedInTheUK, WhatKindOfAsset, WhatTypeOfBeneficiary}
+import models.registration.pages._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 

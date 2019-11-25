@@ -17,9 +17,10 @@
 package utils
 
 import base.SpecBase
-import models.registration.pages.Status.Completed
-import models.WhatKindOfAsset.{Money, PropertyOrLand, Shares}
 import models.core.pages.UKAddress
+import models.registration.pages.ShareClass
+import models.registration.pages.Status.Completed
+import models.registration.pages.WhatKindOfAsset.{Money, PropertyOrLand, Shares}
 import pages.entitystatus.AssetStatus
 import pages.property_or_land._
 import pages.shares._

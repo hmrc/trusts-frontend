@@ -19,14 +19,14 @@ package controllers.actions
 import base.SpecBase
 import controllers.routes
 import models.requests.IdentifierRequest
+import org.scalatest.EitherValues
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
-import org.scalatest.EitherValues
 import play.api.http.HeaderNames
 import play.api.mvc.Result
 import uk.gov.hmrc.auth.core.AffinityGroup
-import scala.concurrent.ExecutionContext.Implicits.global
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
   class RequiredAffinityGroupActionSpec extends SpecBase with MockitoSugar with ScalaFutures with EitherValues {

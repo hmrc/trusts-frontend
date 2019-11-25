@@ -19,10 +19,7 @@ package controllers
 import base.SpecBase
 import forms.YesNoFormProvider
 import models.NormalMode
-import navigation.FakeNavigator
 import pages.EstablishedUnderScotsLawPage
-import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.EstablishedUnderScotsLawView

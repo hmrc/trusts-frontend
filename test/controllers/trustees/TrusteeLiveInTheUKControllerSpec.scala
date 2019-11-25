@@ -18,8 +18,8 @@ package controllers.trustees
 
 import base.SpecBase
 import forms.YesNoFormProvider
+import models.NormalMode
 import models.core.pages.FullName
-import models.{FullName, NormalMode}
 import pages.trustees.{IsThisLeadTrusteePage, TrusteeLiveInTheUKPage, TrusteesNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

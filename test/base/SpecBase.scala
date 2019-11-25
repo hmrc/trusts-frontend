@@ -19,6 +19,7 @@ package base
 import config.FrontendAppConfig
 import controllers.actions.{FakeDraftIdRetrievalActionProvider, _}
 import models.core.UserAnswers
+import models.registration.pages.RegistrationStatus
 import navigation.{FakeNavigator, Navigator}
 import org.scalatest.{BeforeAndAfter, TestSuite, TryValues}
 import org.scalatestplus.play.PlaySpec
@@ -36,6 +37,10 @@ import utils.annotations.{LivingSettlor, PropertyOrLand}
 
 trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked with BeforeAndAfter {
   this: TestSuite =>
+
+  after {
+    app.stop()
+  }
 
   val userAnswersId = TestUserAnswers.draftId
 

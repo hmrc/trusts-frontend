@@ -19,7 +19,6 @@ package controllers
 import base.SpecBase
 import connector.{TrustClaim, TrustsStoreConnector}
 import forms.WhatIsTheUTRFormProvider
-import models.NormalMode
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.WhatIsTheUTRVariationPage

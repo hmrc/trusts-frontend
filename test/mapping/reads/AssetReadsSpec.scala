@@ -16,8 +16,9 @@
 
 package mapping.reads
 
-import models.WhatKindOfAsset.Money
 import models.core.pages.UKAddress
+import models.registration.pages.{ShareClass, Status, WhatKindOfAsset}
+import models.registration.pages.WhatKindOfAsset.Money
 import org.scalatest.{FreeSpec, MustMatchers}
 import play.api.libs.json.{JsError, JsSuccess, Json}
 

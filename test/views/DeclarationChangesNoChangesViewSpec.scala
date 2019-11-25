@@ -17,7 +17,6 @@
 package views
 
 import forms.DeclarationChangesNoChangesFormProvider
-import models.NormalMode
 import models.playback.pages.Declaration
 import play.api.data.Form
 import play.api.mvc.Call

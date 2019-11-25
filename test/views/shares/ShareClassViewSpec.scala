@@ -18,6 +18,7 @@ package views.shares
 
 import forms.shares.ShareClassFormProvider
 import models.NormalMode
+import models.registration.pages.ShareClass
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.ViewBehaviours

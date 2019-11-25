@@ -16,11 +16,10 @@
 
 package pages
 
-import models.registration.pages.NonResidentType
-import models.NonResidentType
 import models.core.UserAnswers
-import pages.behaviours.PageBehaviours
+import models.registration.pages.NonResidentType
 import org.scalacheck.Arbitrary.arbitrary
+import pages.behaviours.PageBehaviours
 import pages.entitystatus.TrustDetailsStatus
 
 class RegisteringTrustFor5APageSpec extends PageBehaviours {

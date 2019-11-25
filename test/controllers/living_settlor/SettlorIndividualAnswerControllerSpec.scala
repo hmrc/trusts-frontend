@@ -19,10 +19,10 @@ package controllers.living_settlor
 import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
+import models.NormalMode
 import models.core.UserAnswers
-import models.core.pages.{FullName, InternationalAddress, UKAddress}
-import models.registration.pages.PassportOrIdCardDetails
-import models.{InternationalAddress, NormalMode}
+import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
+import models.registration.pages.{PassportOrIdCardDetails, SettlorKindOfTrust}
 import pages.living_settlor.{SettlorIndividualOrBusinessPage, _}
 import pages.{SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage, SetupAfterSettlorDiedPage}
 import play.api.Application

@@ -18,10 +18,11 @@ package views
 
 import java.time.{LocalDate, LocalDateTime}
 
-import models.AddAssets.NoComplete
+import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
+import models.registration.pages.AddAssets.NoComplete
 import models.registration.pages.Status.Completed
-import models.TrusteesBasedInTheUK.UKBasedTrustees
-import models.core.pages.{FullName, UKAddress}
+import models.registration.pages.TrusteesBasedInTheUK.UKBasedTrustees
+import models.registration.pages._
 import pages._
 import pages.deceased_settlor._
 import pages.entitystatus._

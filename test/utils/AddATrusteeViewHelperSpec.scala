@@ -17,8 +17,8 @@
 package utils
 
 import base.SpecBase
+import models.core.pages.{FullName, IndividualOrBusiness}
 import models.registration.pages.Status.Completed
-import models.core.pages.FullName
 import pages.entitystatus.TrusteeStatus
 import pages.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage, TrusteesNamePage}
 import viewmodels.AddRow

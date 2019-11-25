@@ -16,14 +16,15 @@
 
 package queries
 
-import models.registration.pages.Status.Completed
 import models.core.UserAnswers
+import models.registration.pages.Status.Completed
+import models.registration.pages.{ShareClass, WhatKindOfAsset}
 import org.scalacheck.Arbitrary.arbitrary
 import pages._
 import pages.behaviours.PageBehaviours
 import pages.entitystatus.AssetStatus
 import pages.property_or_land.{PropertyOrLandDescriptionPage, PropertyOrLandTotalValuePage, TrustOwnAllThePropertyOrLandPage}
-import pages.shares.{ShareClassPage, ShareCompanyNamePage, ShareQuantityInTrustPage, ShareValueInTrustPage, SharesInAPortfolioPage, SharesOnStockExchangePage}
+import pages.shares._
 
 class RemoveAssetQuerySpec extends PageBehaviours {
 

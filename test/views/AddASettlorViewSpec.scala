@@ -18,6 +18,8 @@ package views
 
 import forms.AddAssetsFormProvider
 import models.NormalMode
+import models.core.pages.IndividualOrBusiness
+import models.registration.pages.AddASettlor
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import viewmodels.AddRow

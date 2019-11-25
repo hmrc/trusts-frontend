@@ -18,6 +18,7 @@ package views
 
 import forms.WhatKindOfAssetFormProvider
 import models.NormalMode
+import models.registration.pages.WhatKindOfAsset
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.ViewBehaviours

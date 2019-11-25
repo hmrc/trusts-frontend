@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package pages
+package models.registration.pages
 
 import java.time.LocalDate
 
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.TrustDetails
 

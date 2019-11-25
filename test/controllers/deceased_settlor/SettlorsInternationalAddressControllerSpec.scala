@@ -18,9 +18,9 @@ package controllers.deceased_settlor
 
 import base.SpecBase
 import forms.InternationalAddressFormProvider
-import models.core.pages.{FullName, InternationalAddress}
 import models.NormalMode
 import models.core.UserAnswers
+import models.core.pages.{FullName, InternationalAddress}
 import pages.deceased_settlor.{SettlorsInternationalAddressPage, SettlorsNamePage}
 import play.api.Application
 import play.api.data.Form

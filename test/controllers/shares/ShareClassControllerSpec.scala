@@ -20,13 +20,11 @@ import base.SpecBase
 import controllers.IndexValidation
 import forms.shares.ShareClassFormProvider
 import generators.ModelGenerators
+import models.NormalMode
 import models.registration.pages.ShareClass
-import models.{NormalMode, ShareClass}
-import navigation.FakeNavigator
 import org.scalacheck.Arbitrary.arbitrary
 import pages.shares.{ShareClassPage, ShareCompanyNamePage}
-import play.api.inject.bind
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.shares.ShareClassView

@@ -16,10 +16,9 @@
 
 package views
 
-import controllers.routes
 import forms.DeclarationFormProvider
+import models.NormalMode
 import models.core.pages.FullName
-import models.{FullName, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.auth.core.AffinityGroup
