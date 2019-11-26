@@ -5,7 +5,7 @@
     },
     "correspondence": {
       "abroadIndicator": false,
-      "name": "1234567890 QwErTyUiOp ,.(/)&'- name",
+      "name": "Trust of Brian Cloud",
       "address": {
         "line1": "1234567890 QwErTyUiOp ,.(/)&'- name",
         "line2": "1234567890 QwErTyUiOp ,.(/)&'- name",
@@ -18,8 +18,8 @@
     },
     "declaration": {
       "name": {
-        "firstName": "1234567890 QwErTyUiOp ,.(/)&'- name",
-        "lastName": "1234567890 QwErTyUiOp ,.(/)&'- name"
+        "firstName": "Agent",
+        "lastName": "Agency"
       },
       "address": {
         "line1": "DECLARED WITH NINO",
@@ -96,7 +96,7 @@
             {
               "lineNo": "1",
               "bpMatchStatus": "01",
-              "name": "1234567890 QwErTyUiOp ,.(/)&'- name",
+              "name": "Protector Org 01",
               "identification": {
                 "address": {
                   "line1": "1234567890 QwErTyUiOp ,.(/)&'- name",
@@ -105,7 +105,7 @@
                   "country": "DE"
                 }
               },
-              "entityStart": "2019-02-28"
+              "entityStart": "2019-03-05"
             }
           ]
         },
@@ -114,7 +114,7 @@
             {
               "lineNo": "1",
               "bpMatchStatus": "01",
-              "name": "1234567890 QwErTyUiOp ,.(/)&'- name",
+              "name": "Settlor Org 01",
               "identification": {
                 "address": {
                   "line1": "1234567890 QwErTyUiOp ,.(/)&'- name",
@@ -133,7 +133,7 @@
       "assets": {
         "propertyOrLand": [
           {
-            "buildingLandName": "1234567890&`'^ -QWERTYqwertyzxcvbnmasdfghjklpoiuypoiuytr",
+            "buildingLandName": "Land of Brian Cloud",
             "valueFull": 999999999999,
             "valuePrevious": 999999999999
           }

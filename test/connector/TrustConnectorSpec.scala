@@ -16,6 +16,8 @@
 
 package connector
 
+import java.time.LocalDate
+
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
 import generators.Generators
@@ -259,9 +261,27 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
 
           bundleNumber mustBe "000012345678"
 
+          data.matchData.utr mustBe "1000000007"
+
+          data.correspondence.name mustBe "Trust of Brian Cloud"
+
+          data.declaration.name mustBe NameType("Agent", None, "Agency")
+
           data.trust.entities.leadTrustee.leadTrusteeInd.value.name mustBe NameType("Lead", None, "Trustee")
 
-          // Todo Add more assertions!
+          data.trust.details.startDate mustBe LocalDate.of(2016, 4, 6)
+
+          data.trust.entities.trustees.value.head.trusteeInd.value.lineNo mustBe "1"
+          data.trust.entities.trustees.value.head.trusteeInd.value.identification.value.nino.value mustBe "JS123456A"
+          data.trust.entities.trustees.value.head.trusteeInd.value.entityStart mustBe "2019-02-28"
+
+          data.trust.entities.settlors.value.settlorCompany.value.head.name mustBe "Settlor Org 01"
+
+          data.trust.entities.protectors.value.protectorCompany.value.head.lineNo mustBe "1"
+          data.trust.entities.protectors.value.protectorCompany.value.head.name mustBe "Protector Org 01"
+          data.trust.entities.protectors.value.protectorCompany.value.head.entityStart mustBe "2019-03-05"
+
+          data.trust.assets.propertyOrLand.value.head.buildingLandName.value mustBe "Land of Brian Cloud"
 
       }
     }
