@@ -26,14 +26,15 @@ import org.scalatest.BeforeAndAfterEach
 import pages.WhatIsTheUTRVariationPage
 import play.api.Application
 import play.api.inject.bind
+import play.api.libs.json._
 import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import play.api.libs.json._
 import uk.gov.hmrc.auth.core.AffinityGroup
-import views.html.playback.status.{ClosedErrorView, DoesNotMatchErrorView, IVDownView, StillProcessingErrorView, TrustLockedView}
+import views.html.playback.status._
 
 import scala.concurrent.Future
+import scala.io.Source
 
 class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
@@ -212,14 +213,11 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status().url)
 
-        val payload: JsValue =
-          Json.parse("""{
-                        |
-                        |  "responseHeader": {
-                        |    "status": "In Processing",
-                        |    "formBundleNo": "1"
-                        |  }
-                        |}""".stripMargin)
+        val payload = Source.fromFile(getClass.getResource("/display-trust.json").getPath).mkString
+
+        val json = Json.parse(payload)
+
+        val getTrust: GetTrust = json.as[GetTrust]
 
         when(fakeTrustStoreConnector.get(any[String], any[String])(any(), any()))
           .thenReturn(Future.successful(Some(TrustClaim("1234567890", trustLocked = false, managedByAgent = false))))
