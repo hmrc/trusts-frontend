@@ -213,11 +213,12 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status().url)
 
-        val payload = Source.fromFile(getClass.getResource("/display-trust.json").getPath).mkString
+        val payload : String =
+          Source.fromFile(getClass.getResource("/display-trust.json").getPath).mkString
 
-        val json = Json.parse(payload)
+        val json : JsValue = Json.parse(payload)
 
-        val getTrust: GetTrustDesResponse = json.as[GetTrustDesResponse]
+        val getTrust : GetTrustDesResponse = json.as[GetTrustDesResponse]
 
         when(fakeTrustStoreConnector.get(any[String], any[String])(any(), any()))
           .thenReturn(Future.successful(Some(TrustClaim("1234567890", trustLocked = false, managedByAgent = false))))
