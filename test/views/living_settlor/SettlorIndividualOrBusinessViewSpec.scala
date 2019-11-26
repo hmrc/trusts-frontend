@@ -17,7 +17,8 @@
 package views.living_settlor
 
 import forms.deceased_settlor.SettlorIndividualOrBusinessFormProvider
-import models.{IndividualOrBusiness, NormalMode}
+import models.NormalMode
+import models.core.pages.IndividualOrBusiness
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.OptionsViewBehaviours

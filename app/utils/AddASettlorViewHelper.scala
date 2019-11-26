@@ -16,11 +16,10 @@
 
 package utils
 
-import controllers.routes
-import models.Status.Completed
-import models.UserAnswers
+import models.core.UserAnswers
+import models.registration.pages.Status._
 import play.api.i18n.Messages
-import sections.{LivingSettlors, Settlors}
+import sections.LivingSettlors
 import viewmodels.addAnother._
 import viewmodels.{AddRow, AddToRows}
 

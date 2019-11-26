@@ -17,7 +17,7 @@
 package forms
 
 import forms.behaviours.OptionFieldBehaviours
-import models.TrusteesBasedInTheUK
+import models.registration.pages.TrusteesBasedInTheUK
 import play.api.data.FormError
 
 class TrusteesBasedInTheUKFormProviderSpec extends OptionFieldBehaviours {

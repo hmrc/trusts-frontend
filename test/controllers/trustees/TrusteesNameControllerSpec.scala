@@ -19,7 +19,8 @@ package controllers.trustees
 import base.SpecBase
 import controllers.IndexValidation
 import forms.trustees.TrusteesNameFormProvider
-import models.{FullName, NormalMode}
+import models.NormalMode
+import models.core.pages.FullName
 import org.scalacheck.Arbitrary.arbitrary
 import pages.trustees._
 import play.api.i18n.Messages

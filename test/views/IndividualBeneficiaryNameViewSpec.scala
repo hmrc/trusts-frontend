@@ -16,14 +16,14 @@
 
 package views
 
-import controllers.routes
 import forms.IndividualBeneficiaryNameFormProvider
-import models.{FullName,  NormalMode}
+import generators.Generators
+import models.NormalMode
+import models.core.pages.FullName
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
 import views.html.IndividualBeneficiaryNameView
-import generators.Generators
 
 class IndividualBeneficiaryNameViewSpec extends QuestionViewBehaviours[FullName] with Generators {
 

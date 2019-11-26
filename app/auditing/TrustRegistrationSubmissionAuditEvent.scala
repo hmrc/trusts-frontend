@@ -17,7 +17,7 @@
 package auditing
 
 import mapping.Registration
-import models.TrustResponse
+import models.core.http.TrustResponse
 import play.api.libs.json.{Format, Json}
 
 case class TrustRegistrationSubmissionAuditEvent(

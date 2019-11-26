@@ -19,9 +19,9 @@ package controllers
 import config.FrontendAppConfig
 import controllers.actions._
 import javax.inject.Inject
-import models.Matched.{AlreadyRegistered, Failed, Success}
 import models.NormalMode
-import models.RegistrationStatus.InProgress
+import models.registration.Matched.{AlreadyRegistered, Failed, Success}
+import models.registration.pages.RegistrationStatus.InProgress
 import navigation.registration.TaskListNavigator
 import pages._
 import play.api.Logger

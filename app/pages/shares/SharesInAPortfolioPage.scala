@@ -16,7 +16,7 @@
 
 package pages.shares
 
-import models.UserAnswers
+import models.core.UserAnswers
 import pages.QuestionPage
 import pages.entitystatus.AssetStatus
 import play.api.libs.json.JsPath

@@ -16,7 +16,7 @@
 
 package pages
 
-import models.FullName
+import models.core.pages.FullName
 import play.api.libs.json.JsPath
 
 case object DeclarationPage extends QuestionPage[FullName] {

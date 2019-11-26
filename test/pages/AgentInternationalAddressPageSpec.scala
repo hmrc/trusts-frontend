@@ -16,7 +16,7 @@
 
 package pages
 
-import models.InternationalAddress
+import models.core.pages.InternationalAddress
 import pages.behaviours.PageBehaviours
 
 class AgentInternationalAddressPageSpec extends PageBehaviours {

@@ -18,8 +18,8 @@ package mapping.reads
 
 import java.time.LocalDate
 
-import models.IndividualOrBusiness.Individual
-import models.{Address, FullName}
+import models.core.pages.IndividualOrBusiness.Individual
+import models.core.pages.{Address, FullName}
 import play.api.libs.json.{JsError, JsSuccess, Reads, __}
 
 final case class LeadTrusteeIndividual(override val isLead : Boolean = true,

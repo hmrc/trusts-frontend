@@ -18,8 +18,9 @@ package pages
 
 import javax.inject.Inject
 import mapping.reads.{Assets, Trustees}
-import models.Status.{Completed, InProgress}
-import models.{AddABeneficiary, AddASettlor, AddATrustee, AddAssets, NormalMode, Status, UserAnswers}
+import models.core.UserAnswers
+import models.registration.pages.Status._
+import models.registration.pages._
 import navigation.registration.TaskListNavigator
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
 import pages.trustees.AddATrusteePage

@@ -18,13 +18,12 @@ package controllers
 
 import base.SpecBase
 import forms.WhatKindOfAssetFormProvider
-import models.WhatKindOfAsset.{Money, PropertyOrLand}
-import models.{NormalMode, UserAnswers, WhatKindOfAsset}
-import navigation.FakeNavigator
+import models.NormalMode
+import models.registration.pages.WhatKindOfAsset
+import models.registration.pages.WhatKindOfAsset.Money
 import org.scalacheck.Arbitrary.arbitrary
 import pages.WhatKindOfAssetPage
-import play.api.inject.bind
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.WhatKindOfAssetView

@@ -21,7 +21,8 @@ import java.time.{LocalDate, ZoneOffset}
 import base.SpecBase
 import controllers.IndexValidation
 import forms.trustees.TrusteesDateOfBirthFormProvider
-import models.{FullName, NormalMode}
+import models.NormalMode
+import models.core.pages.FullName
 import org.scalacheck.Gen
 import org.scalatest.mockito.MockitoSugar
 import pages.trustees.{IsThisLeadTrusteePage, TrusteesDateOfBirthPage, TrusteesNamePage}

@@ -16,7 +16,7 @@
 
 package pages.property_or_land
 
-import models.InternationalAddress
+import models.core.pages.InternationalAddress
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.Assets

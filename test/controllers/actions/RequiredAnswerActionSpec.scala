@@ -18,8 +18,9 @@ package controllers.actions
 
 import base.SpecBase
 import controllers.routes
+import models.NormalMode
+import models.core.pages.FullName
 import models.requests.DataRequest
-import models.{FullName, NormalMode}
 import org.scalatest.EitherValues
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar

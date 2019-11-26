@@ -16,8 +16,8 @@
 
 package mapping.reads
 
-import models.WhatKindOfAsset
-import models.WhatKindOfAsset.Money
+import models.registration.pages.WhatKindOfAsset.Money
+import models.registration.pages.WhatKindOfAsset
 import play.api.libs.json.Reads
 import play.api.libs.json._
 

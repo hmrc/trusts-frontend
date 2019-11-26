@@ -16,9 +16,9 @@
 
 package viewmodels.addAnother
 
-import models.Status.InProgress
-import models.WhatKindOfAsset.Shares
-import models.{Status, WhatKindOfAsset}
+import models.registration.pages.Status.InProgress
+import models.registration.pages.WhatKindOfAsset.Shares
+import models.registration.pages.{Status, WhatKindOfAsset}
 
 final case class ShareAssetViewModel(`type` : WhatKindOfAsset,
                                      inPortfolio: Boolean,

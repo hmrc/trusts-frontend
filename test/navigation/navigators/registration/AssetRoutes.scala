@@ -19,8 +19,10 @@ package navigation.navigators.registration
 import base.SpecBase
 import controllers.routes
 import generators.Generators
-import models.WhatKindOfAsset.{Money, PropertyOrLand, Shares}
-import models.{AddAssets, NormalMode, UserAnswers}
+import models.NormalMode
+import models.core.UserAnswers
+import models.registration.pages.AddAssets
+import models.registration.pages.WhatKindOfAsset.{Money, PropertyOrLand, Shares}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks

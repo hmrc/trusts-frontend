@@ -16,7 +16,7 @@
 
 package pages.shares
 
-import models.ShareClass
+import models.registration.pages.ShareClass
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.Assets

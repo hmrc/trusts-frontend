@@ -16,7 +16,7 @@
 
 package pages
 
-import models.DeclarationWhatNext
+import models.playback.pages.DeclarationWhatNext
 import pages.behaviours.PageBehaviours
 
 class DeclarationWhatNextSpec extends PageBehaviours {

@@ -18,12 +18,11 @@ package controllers.property_or_land
 
 import base.SpecBase
 import forms.RemoveIndexFormProvider
-import models.Status.Completed
+import models.registration.pages.Status.Completed
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages.entitystatus.AssetStatus
 import pages.property_or_land.PropertyOrLandDescriptionPage
-import pages.shares.ShareCompanyNamePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RemoveIndexView

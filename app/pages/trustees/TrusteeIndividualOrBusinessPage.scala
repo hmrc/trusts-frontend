@@ -16,8 +16,9 @@
 
 package pages.trustees
 
-import models.IndividualOrBusiness.Business
-import models.{IndividualOrBusiness, UserAnswers}
+import models.core.UserAnswers
+import models.core.pages.IndividualOrBusiness
+import models.core.pages.IndividualOrBusiness.Business
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.Trustees

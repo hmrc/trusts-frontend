@@ -16,7 +16,7 @@
 
 package pages
 
-import models.NonResidentType
+import models.registration.pages.NonResidentType
 import pages.behaviours.PageBehaviours
 
 class NonResidentTypePageSpec extends PageBehaviours {

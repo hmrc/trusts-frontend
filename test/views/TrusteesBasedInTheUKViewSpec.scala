@@ -17,7 +17,8 @@
 package views
 
 import forms.TrusteesBasedInTheUKFormProvider
-import models.{NormalMode, TrusteesBasedInTheUK}
+import models.NormalMode
+import models.registration.pages.TrusteesBasedInTheUK
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.ViewBehaviours

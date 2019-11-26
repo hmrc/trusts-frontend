@@ -16,7 +16,7 @@
 
 package pages
 
-import models.AddAssets
+import models.registration.pages.AddAssets
 import pages.behaviours.PageBehaviours
 
 class AddAssetsSpec extends PageBehaviours {

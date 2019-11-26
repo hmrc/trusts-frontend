@@ -20,7 +20,7 @@ import controllers.RemoveAssetController
 import controllers.actions._
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
-import models.UKAddress
+import models.core.pages.UKAddress
 import models.requests.DataRequest
 import pages.QuestionPage
 import pages.property_or_land.PropertyOrLandUKAddressPage

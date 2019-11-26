@@ -17,8 +17,8 @@
 package viewmodels
 
 import generators.{Generators, ModelGenerators}
-import models.Status.{Completed, InProgress}
-import models.WhatKindOfAsset.{Money, Partnership, PropertyOrLand, Shares}
+import models.registration.pages.Status.{Completed, InProgress}
+import models.registration.pages.WhatKindOfAsset._
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.{FreeSpec, MustMatchers}
 import play.api.libs.json.{JsPath, JsSuccess, Json, KeyPathNode}

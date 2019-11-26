@@ -19,7 +19,8 @@ package controllers.trustees
 import base.SpecBase
 import controllers.IndexValidation
 import forms.trustees.TrusteeIndividualOrBusinessFormProvider
-import models.{IndividualOrBusiness, NormalMode}
+import models.NormalMode
+import models.core.pages.IndividualOrBusiness
 import org.scalacheck.Arbitrary.arbitrary
 import pages.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage}
 import play.api.i18n.Messages

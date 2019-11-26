@@ -18,11 +18,9 @@ package controllers
 
 import base.SpecBase
 import forms.NonResidentTypeFormProvider
-import models.{NonResidentType, NormalMode}
-import navigation.FakeNavigator
+import models.NormalMode
+import models.registration.pages.NonResidentType
 import pages.NonResidentTypePage
-import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.NonResidentTypeView

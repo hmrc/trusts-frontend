@@ -17,7 +17,8 @@
 package views.trustees
 
 import forms.trustees.TrusteeIndividualOrBusinessFormProvider
-import models.{IndividualOrBusiness, NormalMode}
+import models.NormalMode
+import models.core.pages.IndividualOrBusiness
 import pages.trustees.IsThisLeadTrusteePage
 import play.api.data.Form
 import play.api.i18n.Messages

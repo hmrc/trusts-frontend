@@ -16,6 +16,6 @@
 
 package viewmodels
 
-import models.Status
+import models.registration.pages.Status
 
 case class Task(link : Link, tag : Option[Status])

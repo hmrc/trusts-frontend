@@ -16,7 +16,7 @@
 
 package queries
 
-import models.UserAnswers
+import models.core.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
 import pages._
 import pages.behaviours.PageBehaviours

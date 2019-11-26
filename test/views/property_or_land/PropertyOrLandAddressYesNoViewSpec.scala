@@ -16,7 +16,6 @@
 
 package views.property_or_land
 
-import controllers.routes
 import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.data.Form

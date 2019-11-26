@@ -18,9 +18,9 @@ package views
 
 import java.time.LocalDate
 
-import controllers.routes
 import forms.IndividualBeneficiaryDateOfBirthFormProvider
-import models.{FullName, NormalMode, UserAnswers}
+import models.NormalMode
+import models.core.pages.FullName
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours

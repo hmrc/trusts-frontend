@@ -16,7 +16,9 @@
 
 package generators
 
-import models._
+import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
+import models.playback.pages.{Declaration, DeclarationWhatNext}
+import models.registration.pages._
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
 import pages._
@@ -209,7 +211,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
     Arbitrary {
       for {
         page  <- arbitrary[SettlorIndividualOrBusinessPage]
-        value <- arbitrary[SettlorIndividualOrBusiness].map(Json.toJson(_))
+        value <- arbitrary[IndividualOrBusiness].map(Json.toJson(_))
       } yield (page, value)
     }
 
@@ -365,11 +367,11 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryDeclarationChangesNoChangesUserAnswersEntry: Arbitrary[(DeclarationChangesNoChangesPage.type, JsValue)] =
+  implicit lazy val arbitraryDeclarationChangesNoChangesUserAnswersEntry: Arbitrary[(pages.playback.DeclarationPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[DeclarationChangesNoChangesPage.type]
-        value <- arbitrary[DeclarationChangesNoChanges].map(Json.toJson(_))
+        page  <- arbitrary[pages.playback.DeclarationPage.type]
+        value <- arbitrary[models.playback.pages.Declaration].map(Json.toJson(_))
       } yield (page, value)
     }
 

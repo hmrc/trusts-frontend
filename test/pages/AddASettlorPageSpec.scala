@@ -16,7 +16,7 @@
 
 package pages
 
-import models.AddASettlor
+import models.registration.pages.AddASettlor
 import pages.behaviours.PageBehaviours
 
 class AddASettlorPageSpec extends PageBehaviours {
