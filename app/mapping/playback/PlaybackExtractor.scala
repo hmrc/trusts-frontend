@@ -16,13 +16,17 @@
 
 package mapping.playback
 
+import mapping.playback.PlaybackExtractionErrors.PlaybackExtractionError
 import models.core.UserAnswers
-
-sealed trait PlaybackExtractionError
-case object FailedToExtractData extends PlaybackExtractionError
 
 trait PlaybackExtractor[T] {
 
   def extract(answers: UserAnswers, data: T): Either[PlaybackExtractionError, UserAnswers]
+
+}
+
+trait PlaybackAnswerCombiner {
+
+  def extract(answers: UserAnswers): Either[PlaybackExtractionError, UserAnswers]
 
 }
