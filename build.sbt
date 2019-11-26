@@ -9,6 +9,7 @@ lazy val appName: String = "trusts-frontend"
 lazy val root = (project in file("."))
   .enablePlugins(PlayScala, SbtAutoBuildPlugin, SbtDistributablesPlugin, SbtArtifactory)
   .settings(DefaultBuildSettings.scalaSettings: _*)
+  .settings(unmanagedSourceDirectories in Compile += baseDirectory.value / "resources")
   .settings(DefaultBuildSettings.defaultSettings(): _*)
   .settings(SbtDistributablesPlugin.publishingSettings: _*)
   .settings(inConfig(Test)(testSettings): _*)

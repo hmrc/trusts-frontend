@@ -23,7 +23,7 @@ import mapping.registration.RegistrationMapper
 import mapping.{Mapping, Registration}
 import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse._
-import models.playback.{Processed, Processing, TrustServiceUnavailable, UtrNotFound}
+import models.playback.{NameType, Processed, Processing, TrustServiceUnavailable, UtrNotFound}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{FreeSpec, Inside, MustMatchers, OptionValues}
 import play.api.Application
@@ -37,6 +37,7 @@ import utils.{TestUserAnswers, WireMockHelper}
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
+import scala.io.Source
 
 class TrustConnectorSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers with WireMockHelper with ScalaFutures with Inside {
@@ -243,26 +244,25 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
 
     "must return playback data inside a Processed trust" in {
 
-      val utr = "10000000008"
-      val payload = """{
-                      |  "responseHeader": {
-                      |    "status": "Processed",
-                      |    "formBundleNo": "1"
-                      |  }
-                      |}""".stripMargin
+      val utr = "1000000007"
+      val payload = Source.fromFile(getClass.getResource("/display-trust.json").getPath).mkString
+
       server.stubFor(
         get(urlEqualTo(playbackUrl(utr)))
-          .willReturn(
-            aResponse()
-              .withStatus(Status.OK)
-              .withBody(payload)
-          )
+          .willReturn(okJson(payload))
       )
 
       val processed = Await.result(connector.playback(utr), Duration.Inf)
 
       inside(processed) {
-        case Processed(data) => data mustBe Json.parse(payload)
+        case Processed(data, bundleNumber) =>
+
+          bundleNumber mustBe "000012345678"
+
+          data.trust.entities.leadTrustee.leadTrusteeInd.value.name mustBe NameType("Lead", None, "Trustee")
+
+          // Todo Add more assertions!
+
       }
     }
   }

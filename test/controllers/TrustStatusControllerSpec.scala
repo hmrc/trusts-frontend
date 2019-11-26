@@ -217,12 +217,13 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         val json = Json.parse(payload)
 
-        val getTrust: GetTrust = json.as[GetTrust]
+        val getTrust: GetTrustDesResponse = json.as[GetTrustDesResponse]
 
         when(fakeTrustStoreConnector.get(any[String], any[String])(any(), any()))
           .thenReturn(Future.successful(Some(TrustClaim("1234567890", trustLocked = false, managedByAgent = false))))
 
-        when(fakeTrustConnector.playback(any[String])(any(), any())).thenReturn(Future.successful(Processed(payload)))
+        when(fakeTrustConnector.playback(any[String])(any(), any()))
+          .thenReturn(Future.successful(Processed(getTrust.getTrust.value, "9873459837459837")))
 
         status(result) mustEqual SEE_OTHER
 

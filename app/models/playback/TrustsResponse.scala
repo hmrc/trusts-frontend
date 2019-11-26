@@ -27,7 +27,7 @@ sealed trait TrustStatus extends TrustsResponse
 
 case object Processing extends TrustStatus
 case object Closed extends TrustStatus
-case class Processed(playback: GetTrust) extends TrustStatus
+case class Processed(playback: GetTrust, formBundleNumber : String) extends TrustStatus
 
 case object UtrNotFound extends TrustsResponse
 case object TrustServiceUnavailable extends TrustsResponse
@@ -39,12 +39,13 @@ object TrustsResponse {
     override def reads(json:JsValue): JsResult[TrustStatus] = json("responseHeader")("status") match {
       case JsString("In Processing") => JsSuccess(Processing)
       case JsString("Closed") => JsSuccess(Closed)
-      case JsString("Processed") =>{
-         json("getTrust").asOpt[GetTrust] match {
-          case Some(trust) => JsSuccess(Processed(trust))
-          case None => JsError("Can not parse as GetTrust")
+      case JsString("Processed") =>
+         json("getTrust").validate[GetTrust] match {
+          case JsSuccess(trust, _) =>
+            val formBundle = json("responseHeader")("formBundleNo").as[String]
+            JsSuccess(Processed(trust, formBundle))
+          case JsError(errors) => JsError(s"Can not parse as GetTrust due to $errors")
         }
-      }
       case _ => JsError("Unexpected Status")
     }
   }

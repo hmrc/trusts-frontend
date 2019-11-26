@@ -111,7 +111,7 @@ class TrustStatusController @Inject()(
       case Closed => Future.successful(Redirect(routes.TrustStatusController.closed()))
       case Processing => Future.successful(Redirect(routes.TrustStatusController.processing()))
       case UtrNotFound => Future.successful(Redirect(routes.TrustStatusController.notFound()))
-      case Processed(playback) =>
+      case Processed(playback, formBundleNumber) =>
         playbackRepository.store(request.userAnswers.toPlaybackUserAnswers) map { _ =>
           Redirect(config.claimATrustUrl(utr))
         }

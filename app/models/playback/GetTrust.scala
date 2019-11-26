@@ -19,13 +19,17 @@ package models.playback
 import mapping.Constant._
 import mapping.{AssetMonetaryAmount, PassportType, PropertyLandType, TrustDetailsType}
 import org.joda.time.DateTime
-import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
 case class GetTrust(matchData: MatchData,
                     correspondence: Correspondence,
                     declaration: Declaration,
                     trust: DisplayTrust)
+
+object GetTrust {
+  implicit val writes: Writes[GetTrust] = Json.writes[GetTrust]
+  implicit val reads: Reads[GetTrust] = Json.reads[GetTrust]
+}
 
 case class MatchData(utr: String)
 
@@ -69,25 +73,12 @@ object NameType {
   implicit val nameTypeFormat: Format[NameType] = Json.format[NameType]
 }
 
-object GetTrust {
-  implicit val writes: Writes[GetTrust] = Json.writes[GetTrust]
-  implicit val reads: Reads[GetTrust] = (
-    (JsPath \ "matchData").read[MatchData] and
-      (JsPath \ "correspondence").read[Correspondence] and
-      (JsPath \ "declaration").read[Declaration] and
-      (JsPath \ "details" \ "trust").read[DisplayTrust]
-    ) (GetTrust.apply _)
-}
-
 case class GetTrustDesResponse(getTrust: Option[GetTrust],
                                responseHeader: ResponseHeader)
 
 object GetTrustDesResponse {
   implicit val writes: Writes[GetTrustDesResponse] = Json.writes[GetTrustDesResponse]
-  implicit val reads: Reads[GetTrustDesResponse] = (
-    (JsPath \ "trustOrEstateDisplay").readNullable[GetTrust] and
-      (JsPath \ "responseHeader").read[ResponseHeader]
-    ) (GetTrustDesResponse.apply _)
+  implicit val reads: Reads[GetTrustDesResponse] = Json.reads[GetTrustDesResponse]
 }
 
 case class ResponseHeader(status: String,
@@ -95,10 +86,7 @@ case class ResponseHeader(status: String,
 
 object ResponseHeader {
   implicit val writes: Writes[ResponseHeader] = Json.writes[ResponseHeader]
-  implicit val reads: Reads[ResponseHeader] = (
-    (JsPath \ "dfmcaReturnUserStatus").read[String] and
-      (JsPath \ "formBundleNo").read[String]
-    )(ResponseHeader.apply _)
+  implicit val reads: Reads[ResponseHeader] = Json.reads[ResponseHeader]
 }
 
 case class DisplayTrust(
@@ -122,26 +110,7 @@ case class DisplayTrustEntitiesType(naturalPerson: Option[List[DisplayTrustNatur
 
 object DisplayTrustEntitiesType {
 
-  implicit val displayTrustEntitiesTypeReads : Reads[DisplayTrustEntitiesType] = (
-    (__ \ "naturalPerson").readNullable[List[DisplayTrustNaturalPersonType]] and
-      (__ \ "beneficiary").read[DisplayTrustBeneficiaryType] and
-      (__ \ "deceased").readNullable[DisplayTrustWillType] and
-      (__ \ "leadTrustees").read[DisplayTrustLeadTrusteeType] and
-      (__ \ "trustees").readNullable[List[DisplayTrustTrusteeType]] and
-      (__ \ "protectors").readNullable[DisplayTrustProtectorsType] and
-      (__ \ "settlors").readNullable[DisplayTrustSettlors]
-    )(
-    (natural, beneficiary, deceased, leadTrustee, trustees, protectors, settlors) =>
-      DisplayTrustEntitiesType(
-        natural,
-        beneficiary,
-        deceased,
-        leadTrustee,
-        trustees,
-        protectors,
-        settlors
-      )
-  )
+  implicit val displayTrustEntitiesTypeReads : Reads[DisplayTrustEntitiesType] = Json.reads[DisplayTrustEntitiesType]
 
   implicit val trustEntitiesTypeWrites: Writes[DisplayTrustEntitiesType] = Json.writes[DisplayTrustEntitiesType]
 }
@@ -201,23 +170,7 @@ object DisplayTrustLeadTrusteeType {
 
   implicit val writes: Writes[DisplayTrustLeadTrusteeType] = Json.writes[DisplayTrustLeadTrusteeType]
 
-  object LeadTrusteeReads extends Reads[DisplayTrustLeadTrusteeType] {
-
-    override def reads(json: JsValue): JsResult[DisplayTrustLeadTrusteeType] = {
-
-      json.validate[DisplayTrustLeadTrusteeIndType].map {
-        leadTrusteeInd =>
-          DisplayTrustLeadTrusteeType(leadTrusteeInd = Some(leadTrusteeInd))
-      }.orElse {
-        json.validate[DisplayTrustLeadTrusteeOrgType].map {
-          org =>
-            DisplayTrustLeadTrusteeType(leadTrusteeOrg = Some(org))
-        }
-      }
-    }
-  }
-
-  implicit val reads : Reads[DisplayTrustLeadTrusteeType] = LeadTrusteeReads
+  implicit val reads : Reads[DisplayTrustLeadTrusteeType] = Json.reads[DisplayTrustLeadTrusteeType]
 }
 
 case class DisplayTrustBeneficiaryType(individualDetails: Option[List[DisplayTrustIndividualDetailsType]],
