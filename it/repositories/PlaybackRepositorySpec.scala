@@ -17,17 +17,6 @@ class PlaybackRepositorySpec extends FreeSpec with MustMatchers with FailOnUnind
   private lazy val appBuilder: GuiceApplicationBuilder =
     new GuiceApplicationBuilder()
 
-//  val json = Json.parse(
-//    """
-//      |{
-//      |  "data" : "lots-of-playback-data",
-//      |  "responseHeader" : {
-//      |    "status" : "Processed",
-//      |    "formBundleNo" : "000000000001"
-//      |  }
-//      |}
-//      |""".stripMargin)
-
   val userAnswers = new UserAnswers("test")
 
   "a playback repository" - {
