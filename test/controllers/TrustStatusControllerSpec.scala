@@ -34,6 +34,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 import views.html.playback.status._
 
 import scala.concurrent.Future
+import scala.io.Source
 
 class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
@@ -212,14 +213,11 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status().url)
 
-        val payload: JsValue =
-          Json.parse("""{
-                        |
-                        |  "responseHeader": {
-                        |    "status": "In Processing",
-                        |    "formBundleNo": "1"
-                        |  }
-                        |}""".stripMargin)
+        val payload = Source.fromFile(getClass.getResource("/display-trust.json").getPath).mkString
+
+        val json = Json.parse(payload)
+
+        val getTrust: GetTrust = json.as[GetTrust]
 
         when(fakeTrustStoreConnector.get(any[String], any[String])(any(), any()))
           .thenReturn(Future.successful(Some(TrustClaim("1234567890", trustLocked = false, managedByAgent = false))))
