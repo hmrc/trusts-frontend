@@ -21,12 +21,12 @@ import connector.{TrustConnector, TrustsStoreConnector}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import handlers.ErrorHandler
 import javax.inject.Inject
-import models.UserAnswers
-import models.playback.{Closed, Processed, Processing, UtrNotFound}
+import models.playback.{Closed, Processed, Processing, UserAnswers, UtrNotFound}
 import models.requests.DataRequest
 import navigation.Navigator
 import pages.WhatIsTheUTRVariationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.libs.json.JsObject
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.{PlaybackRepository, RegistrationsRepository}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -112,8 +112,7 @@ class TrustStatusController @Inject()(
       case Processing => Future.successful(Redirect(routes.TrustStatusController.processing()))
       case UtrNotFound => Future.successful(Redirect(routes.TrustStatusController.notFound()))
       case Processed(playback) =>
-        val userAnswers = UserAnswers(draftId =  "", internalAuthId = "")
-        playbackRepository.store(request.internalId, userAnswers) map { _ =>
+        playbackRepository.store(request.userAnswers.toPlaybackUserAnswers) map { _ =>
           Redirect(config.claimATrustUrl(utr))
         }
       case _ => Future.successful(Redirect(routes.TrustStatusController.down()))
