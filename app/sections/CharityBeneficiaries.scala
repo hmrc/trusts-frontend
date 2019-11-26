@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package pages
+package sections
 
-import java.time.LocalDate
-
+import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.{Beneficiaries, IndividualBeneficiaries}
+import viewmodels.addAnother.IndividualBeneficiaryViewModel
 
-final case class IndividualBeneficiaryDateOfBirthPage(index : Int) extends QuestionPage[LocalDate] {
+case object CharityBeneficiaries extends QuestionPage[Nothing]{
 
-  override def path: JsPath = JsPath \ Beneficiaries \ IndividualBeneficiaries \ index \ toString
+  override def path: JsPath = JsPath \ Beneficiaries \ toString
 
-  override def toString: String = "dateOfBirth"
+  override def toString: String = "charities"
+
 }

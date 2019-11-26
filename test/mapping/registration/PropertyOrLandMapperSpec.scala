@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
 
 import base.SpecBaseHelpers
 import generators.Generators
-import mapping.registration.PropertyOrLandMapper
+import mapping.{AddressType, Mapping, PropertyLandType}
 import models.core.pages.UKAddress
 import models.registration.pages.WhatKindOfAsset
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}

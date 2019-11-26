@@ -19,15 +19,13 @@ package mapping.playback
 import cats.kernel.Semigroup
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors._
-import models.core.UserAnswers
+import models.playback.UserAnswers
 import play.api.Logger
 
 class UserAnswersExtractor @Inject()(charity: CharityBeneficiaryExtractor) extends PlaybackAnswerCombiner {
 
-  import models.core.UserAnswerImplicits._
+  import models.playback.UserAnswersCombinator._
 
-  // TODO change signature to use playback.UserAnswers
-  // TODO Add tests
   override def extract(answers: UserAnswers): Either[PlaybackExtractionError, UserAnswers] = {
 
     val answersCombined = for {

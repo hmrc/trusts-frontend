@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
 
 import base.SpecBaseHelpers
 import generators.Generators
-import mapping.registration.ClassOfBeneficiariesMapper
+import mapping.{Mapping, UnidentifiedType}
 import models.registration.pages.WhatTypeOfBeneficiary
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._

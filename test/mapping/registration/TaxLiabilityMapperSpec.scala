@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
 
 import base.SpecBaseHelpers
 import generators.Generators
-import mapping.registration.TaxLiabilityMapper
+import mapping.{Mapping, YearsReturns}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 
 class TaxLiabilityMapperSpec extends FreeSpec with MustMatchers

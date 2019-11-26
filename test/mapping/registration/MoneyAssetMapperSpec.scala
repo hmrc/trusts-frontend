@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
 
 import base.SpecBaseHelpers
 import generators.Generators
-import mapping.registration.MoneyAssetMapper
+import mapping.{AssetMonetaryAmount, Mapping}
 import models.registration.pages.Status.Completed
 import models.registration.pages.WhatKindOfAsset
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}

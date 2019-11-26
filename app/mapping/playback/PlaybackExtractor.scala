@@ -17,7 +17,7 @@
 package mapping.playback
 
 import mapping.playback.PlaybackExtractionErrors.PlaybackExtractionError
-import models.core.UserAnswers
+import models.playback.UserAnswers
 
 trait PlaybackExtractor[T] {
 

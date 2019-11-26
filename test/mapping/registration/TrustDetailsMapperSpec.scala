@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
 
 import java.time.LocalDate
 
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping.TypeOfTrust.WillTrustOrIntestacyTrust
-import mapping.registration.TrustDetailsMapper
+import mapping._
 import models.registration.pages.NonResidentType.Domiciled
 import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
 import models.registration.pages.WhenTrustSetupPage

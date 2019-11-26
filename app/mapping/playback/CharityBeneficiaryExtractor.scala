@@ -17,16 +17,30 @@
 package mapping.playback
 
 import com.google.inject.Inject
-import mapping.CharityType
-import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
-import models.core.UserAnswers
+import mapping.playback.PlaybackExtractionErrors.PlaybackExtractionError
+import models.playback.{DisplayTrustCharityType, UserAnswers}
+import pages.beneficiaries.charity.CharityBeneficiaryNamePage
 
-class CharityBeneficiaryExtractor @Inject() extends PlaybackExtractor[List[CharityType]] {
+class CharityBeneficiaryExtractor @Inject() extends PlaybackExtractor[List[DisplayTrustCharityType]] {
 
-  override def extract(answers: UserAnswers, data: List[CharityType]): Either[PlaybackExtractionError, UserAnswers] =
+  import models.playback.UserAnswersCombinator._
+
+  override def extract(answers: UserAnswers, data: List[DisplayTrustCharityType]): Either[PlaybackExtractionError, UserAnswers] =
     {
-//      Right(answers)
-      Left(FailedToExtractData)
+      data match {
+        case Nil => Right(answers)
+        case charities =>
+
+          val updated = for {
+            (char, index) <- charities.zipWithIndex
+          } yield {
+            answers.set(CharityBeneficiaryNamePage(index), char.organisationName)
+          }
+
+          println(updated)
+
+          Right(updated.squish.combine)
+      }
     }
 
 }

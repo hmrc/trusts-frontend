@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package pages
+package pages.beneficiaries.charity
 
-import java.time.LocalDate
-
+import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.{Beneficiaries, IndividualBeneficiaries}
+import sections.{Beneficiaries, CharityBeneficiaries}
 
-final case class IndividualBeneficiaryDateOfBirthPage(index : Int) extends QuestionPage[LocalDate] {
+final case class CharityBeneficiaryNamePage(index : Int) extends QuestionPage[String] {
 
-  override def path: JsPath = JsPath \ Beneficiaries \ IndividualBeneficiaries \ index \ toString
+  override def path: JsPath = JsPath \ Beneficiaries \ CharityBeneficiaries \ index \ toString
 
-  override def toString: String = "dateOfBirth"
+  override def toString: String = "name"
 }
