@@ -17,7 +17,6 @@
 package views
 
 import forms.WhatIsTheUTRFormProvider
-import models.NormalMode
 import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.HtmlFormat

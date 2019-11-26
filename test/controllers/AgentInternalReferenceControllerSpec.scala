@@ -18,12 +18,8 @@ package controllers
 
 import base.SpecBase
 import forms.AgentInternalReferenceFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.FakeNavigator
+import models.NormalMode
 import pages.AgentInternalReferencePage
-import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup

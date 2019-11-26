@@ -17,7 +17,9 @@
 package views.trustees
 
 import forms.trustees.AddATrusteeFormProvider
-import models.{AddATrustee, IndividualOrBusiness, NormalMode}
+import models.NormalMode
+import models.core.pages.IndividualOrBusiness
+import models.registration.pages.AddATrustee
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import viewmodels.AddRow

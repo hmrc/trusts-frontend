@@ -19,7 +19,8 @@ package controllers.living_settlor
 import base.SpecBase
 import controllers.IndexValidation
 import forms.deceased_settlor.SettlorIndividualOrBusinessFormProvider
-import models.{IndividualOrBusiness, NormalMode}
+import models.NormalMode
+import models.core.pages.IndividualOrBusiness
 import org.scalacheck.Arbitrary.arbitrary
 import pages.living_settlor.SettlorIndividualOrBusinessPage
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}

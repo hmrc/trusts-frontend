@@ -17,7 +17,7 @@
 package viewmodels
 
 import generators.{Generators, ModelGenerators}
-import models.Status.Completed
+import models.registration.pages.Status.Completed
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.{FreeSpec, MustMatchers}
 import play.api.libs.json.{JsSuccess, Json}

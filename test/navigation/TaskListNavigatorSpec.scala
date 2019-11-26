@@ -20,11 +20,13 @@ import java.time.LocalDate
 
 import base.SpecBase
 import controllers.routes
-import models.Status.Completed
-import models.WhatKindOfAsset.Money
 import mapping.reads.{Assets, Trustees}
-import models.IndividualOrBusiness.Individual
-import models.{AddASettlor, FullName, IndividualOrBusiness, NormalMode, UserAnswers}
+import models.NormalMode
+import models.core.pages.FullName
+import models.core.pages.IndividualOrBusiness.Individual
+import models.registration.pages.Status.Completed
+import models.registration.pages.WhatKindOfAsset.Money
+import models.registration.pages.WhenTrustSetupPage
 import navigation.registration.TaskListNavigator
 import pages._
 import pages.deceased_settlor.SettlorsNamePage
@@ -114,7 +116,7 @@ class TaskListNavigatorSpec extends SpecBase {
 
       "go to AddASettlor" in {
         val answers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, false).success.value
-          .set(SettlorIndividualOrBusinessPage(0),Individual).success.value
+          .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
           .set(SettlorIndividualNamePage(0), FullName("living settlor",None, "settlor")).success.value
 
         navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.routes.AddASettlorController.onPageLoad(fakeDraftId)

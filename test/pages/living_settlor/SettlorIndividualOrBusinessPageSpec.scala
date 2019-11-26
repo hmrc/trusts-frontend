@@ -16,12 +16,14 @@
 
 package pages.living_settlor
 
-import models.Status.InProgress
-import models.{FullName, IndividualOrBusiness, SettlorKindOfTrust, UserAnswers}
+import models.core.UserAnswers
+import models.core.pages.{FullName, IndividualOrBusiness}
+import models.registration.pages.SettlorKindOfTrust
+import models.registration.pages.Status.InProgress
 import org.scalacheck.Arbitrary.arbitrary
-import pages.{SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage, SetupAfterSettlorDiedPage}
 import pages.behaviours.PageBehaviours
 import pages.entitystatus.LivingSettlorStatus
+import pages.{SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage, SetupAfterSettlorDiedPage}
 
 class SettlorIndividualOrBusinessPageSpec extends PageBehaviours {
 

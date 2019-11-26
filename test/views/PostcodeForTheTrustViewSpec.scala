@@ -16,7 +16,6 @@
 
 package views
 
-import controllers.routes
 import forms.PostcodeForTheTrustFormProvider
 import models.NormalMode
 import play.api.data.Form

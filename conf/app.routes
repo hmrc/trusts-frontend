@@ -12,8 +12,8 @@ GET        /variations/maintain-a-trust/information           controllers.Inform
 GET        /variations/declare-change                        controllers.DeclarationWhatNextController.onPageLoad()
 POST       /variations/declare-change                        controllers.DeclarationWhatNextController.onSubmit()
 
-GET        /variations/declaration                controllers.DeclarationNoChangesController.onPageLoad()
-POST       /variations/declaration                controllers.DeclarationNoChangesController.onSubmit()
+GET        /variations/declaration                      controllers.playback.DeclarationController.onPageLoad()
+POST       /variations/declaration                      controllers.playback.DeclarationController.onSubmit()
 
 
 # Registration

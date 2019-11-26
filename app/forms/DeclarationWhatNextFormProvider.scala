@@ -16,11 +16,10 @@
 
 package forms
 
-import javax.inject.Inject
-
 import forms.mappings.Mappings
+import javax.inject.Inject
+import models.playback.pages.DeclarationWhatNext
 import play.api.data.Form
-import models.DeclarationWhatNext
 
 class DeclarationWhatNextFormProvider @Inject() extends Mappings {
 

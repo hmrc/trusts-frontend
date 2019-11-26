@@ -16,8 +16,8 @@
 
 package mapping.reads
 
-import models.WhatKindOfAsset.Shares
-import models.{Status, WhatKindOfAsset}
+import models.registration.pages.WhatKindOfAsset.Shares
+import models.registration.pages.{Status, WhatKindOfAsset}
 import play.api.libs.json._
 
 final case class SharePortfolioAsset(override val whatKindOfAsset: WhatKindOfAsset,

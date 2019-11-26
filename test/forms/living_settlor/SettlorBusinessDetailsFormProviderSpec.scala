@@ -17,7 +17,7 @@
 package forms.living_settlor
 
 import forms.behaviours.OptionFieldBehaviours
-import models.SettlorBusinessDetails
+import models.registration.pages.SettlorBusinessDetails
 import play.api.data.FormError
 
 class SettlorBusinessDetailsFormProviderSpec extends OptionFieldBehaviours {

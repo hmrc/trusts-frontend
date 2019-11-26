@@ -15,7 +15,7 @@
  */
 
 package pages
-import models.Matched
+import models.registration.Matched
 import play.api.libs.json.JsPath
 
 object ExistingTrustMatched extends QuestionPage[Matched] {

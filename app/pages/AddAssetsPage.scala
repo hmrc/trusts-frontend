@@ -16,7 +16,7 @@
 
 package pages
 
-import models.AddAssets
+import models.registration.pages.AddAssets
 import play.api.libs.json.JsPath
 
 case object AddAssetsPage extends QuestionPage[AddAssets] {

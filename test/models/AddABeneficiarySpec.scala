@@ -16,6 +16,7 @@
 
 package models
 
+import models.registration.pages.AddABeneficiary
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import org.scalatest.prop.PropertyChecks

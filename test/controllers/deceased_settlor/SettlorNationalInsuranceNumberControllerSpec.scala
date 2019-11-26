@@ -18,7 +18,8 @@ package controllers.deceased_settlor
 
 import base.SpecBase
 import forms.deceased_settlor.SettlorNationalInsuranceNumberFormProvider
-import models.{FullName, NormalMode}
+import models.NormalMode
+import models.core.pages.FullName
 import pages.deceased_settlor.{SettlorNationalInsuranceNumberPage, SettlorsNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

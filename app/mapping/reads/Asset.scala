@@ -16,7 +16,7 @@
 
 package mapping.reads
 
-import models.WhatKindOfAsset
+import models.registration.pages.WhatKindOfAsset
 import play.api.libs.json.Reads
 
 trait Asset {

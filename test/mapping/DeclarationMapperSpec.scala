@@ -20,11 +20,12 @@ import java.time.LocalDate
 
 import base.SpecBaseHelpers
 import generators.Generators
-import models.IndividualOrBusiness.Individual
-import models.{FullName, InternationalAddress, UKAddress}
+import mapping.registration.DeclarationMapper
+import models.core.pages.IndividualOrBusiness.Individual
+import models.core.pages.{FullName, InternationalAddress, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
-import pages.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteeIndividualOrBusinessPage, TrusteeLiveInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesUkAddressPage}
+import pages.trustees._
 
 class DeclarationMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {

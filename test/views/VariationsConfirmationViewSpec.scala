@@ -16,11 +16,9 @@
 
 package views
 
-import models.FullName
 import play.twirl.api.HtmlFormat
 import utils.AccessibilityHelper._
 import views.behaviours.ViewBehaviours
-import views.html.ConfirmationView
 
 class VariationsConfirmationViewSpec extends ViewBehaviours {
 

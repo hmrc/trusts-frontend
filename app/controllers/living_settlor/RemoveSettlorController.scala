@@ -21,7 +21,7 @@ import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
-import models.FullName
+import models.core.pages.FullName
 import models.requests.DataRequest
 import navigation.Navigator
 import pages.QuestionPage

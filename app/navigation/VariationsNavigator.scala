@@ -17,8 +17,8 @@
 package navigation
 
 import javax.inject.Inject
-import models.DeclarationWhatNext.DeclareTheTrustIsUpToDate
-import models.UserAnswers
+import models.core.UserAnswers
+import models.playback.pages.DeclarationWhatNext.DeclareTheTrustIsUpToDate
 import pages.DeclarationWhatNextPage
 
 class VariationsNavigator @Inject()() {
@@ -26,7 +26,7 @@ class VariationsNavigator @Inject()() {
   def declarationWhatsNextPage(answers: UserAnswers) = {
     answers.get(DeclarationWhatNextPage) match {
       case Some(DeclareTheTrustIsUpToDate) =>
-        controllers.routes.DeclarationNoChangesController.onPageLoad()
+        controllers.playback.routes.DeclarationController.onPageLoad()
       case _ =>
         controllers.routes.DeclarationWhatNextController.onPageLoad()
     }

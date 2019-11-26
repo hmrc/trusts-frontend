@@ -16,8 +16,8 @@
 
 package utils
 
-import models.Status.Completed
-import models.UserAnswers
+import models.core.UserAnswers
+import models.registration.pages.Status.Completed
 import play.api.i18n.Messages
 import sections.Assets
 import viewmodels.addAnother._

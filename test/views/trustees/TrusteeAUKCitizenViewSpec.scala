@@ -17,7 +17,8 @@
 package views.trustees
 
 import forms.YesNoFormProvider
-import models.{FullName, NormalMode}
+import models.NormalMode
+import models.core.pages.FullName
 import pages.trustees.TrusteesNamePage
 import play.api.data.Form
 import play.twirl.api.HtmlFormat

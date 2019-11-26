@@ -16,7 +16,7 @@
 
 package mapping.reads
 
-import models.FullName
+import models.core.pages.FullName
 import play.api.libs.json.Reads
 
 trait Trustee {

@@ -16,7 +16,8 @@
 
 package generators
 
-import models.UserAnswers
+import models.core.UserAnswers
+import models.registration.pages.WhenTrustSetupPage
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.TryValues
@@ -30,6 +31,8 @@ import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersGenerator extends TryValues {
   self: Generators =>
+
+  import models.core.UserAnswerImplicits._
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
     arbitrary[(DeclarationWhatNextPage.type, JsValue)] ::
@@ -71,8 +74,8 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(SharePortfolioNamePage, JsValue)] ::
     arbitrary[(ShareClassPage, JsValue)] ::
     arbitrary[(PropertyOrLandUKAddressPage, JsValue)] ::
-    arbitrary[(DeclarationPage.type, JsValue)] ::
-    arbitrary[(DeclarationChangesNoChangesPage.type, JsValue)] ::
+    arbitrary[(pages.DeclarationPage.type, JsValue)] ::
+    arbitrary[(pages.playback.DeclarationPage.type, JsValue)] ::
     arbitrary[(WhatTypeOfBeneficiaryPage.type, JsValue)] ::
     arbitrary[(AgentInternationalAddressPage.type, JsValue)] ::
     arbitrary[(AgentUKAddressPage.type, JsValue)] ::
@@ -144,8 +147,6 @@ trait UserAnswersGenerator extends TryValues {
     Nil
 
   implicit lazy val arbitraryUserData: Arbitrary[UserAnswers] = {
-
-    import models._
 
     Arbitrary {
       for {

@@ -18,7 +18,7 @@ package mapping.reads
 
 import java.time.LocalDate
 
-import models.{FullName, IndividualOrBusiness}
+import models.core.pages.{FullName, IndividualOrBusiness}
 import play.api.libs.json._
 
 final case class TrusteeIndividual(override val isLead : Boolean,

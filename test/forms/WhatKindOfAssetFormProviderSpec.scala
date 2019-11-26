@@ -17,7 +17,7 @@
 package forms
 
 import forms.behaviours.OptionFieldBehaviours
-import models.WhatKindOfAsset
+import models.registration.pages.WhatKindOfAsset
 import play.api.data.FormError
 
 class WhatKindOfAssetFormProviderSpec extends OptionFieldBehaviours {

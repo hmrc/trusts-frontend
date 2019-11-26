@@ -20,7 +20,8 @@ import auditing.{TrustAuditing, TrustRegistrationSubmissionAuditEvent}
 import config.FrontendAppConfig
 import javax.inject.Inject
 import mapping.Registration
-import models.{TrustResponse, UserAnswers}
+import models.core.UserAnswers
+import models.core.http.TrustResponse
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 

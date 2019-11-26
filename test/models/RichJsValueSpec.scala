@@ -23,6 +23,8 @@ import play.api.libs.json._
 
 class RichJsValueSpec extends FreeSpec with MustMatchers with PropertyChecks with OptionValues {
 
+  import models.core.UserAnswerImplicits._
+
   implicit val dontShrink: Shrink[String] = Shrink.shrinkAny
 
   val nonEmptyAlphaStr: Gen[String] = Gen.alphaStr.suchThat(_.nonEmpty)

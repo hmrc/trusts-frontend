@@ -20,12 +20,11 @@ import base.SpecBase
 import controllers.IndexValidation
 import forms.UKAddressFormProvider
 import generators.ModelGenerators
-import models.{NormalMode, UKAddress}
-import navigation.FakeNavigator
+import models.NormalMode
+import models.core.pages.UKAddress
 import org.scalacheck.Arbitrary.arbitrary
 import pages.property_or_land.PropertyOrLandUKAddressPage
-import play.api.inject.bind
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.property_or_land.PropertyOrLandUKAddressView

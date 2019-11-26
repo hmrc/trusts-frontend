@@ -16,16 +16,18 @@
 
 package views
 
-import java.time.{LocalDate, LocalDateTime}
 import java.time.format.DateTimeFormatter
+import java.time.{LocalDate, LocalDateTime}
 
 import controllers.routes
-import models.AddAssets.NoComplete
-import models.Status.Completed
-import models.{AddABeneficiary, AddATrustee, FullName, NormalMode, Status, UserAnswers, WhatKindOfAsset}
+import models.core.UserAnswers
+import models.core.pages.FullName
+import models.registration.pages.AddAssets.NoComplete
+import models.registration.pages.Status.Completed
+import models.registration.pages._
 import navigation.registration.TaskListNavigator
-import pages.entitystatus._
 import pages._
+import pages.entitystatus._
 import pages.trustees.{AddATrusteePage, IsThisLeadTrusteePage}
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import views.behaviours.{TaskListViewBehaviours, ViewBehaviours}

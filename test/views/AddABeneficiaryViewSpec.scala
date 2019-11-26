@@ -17,7 +17,8 @@
 package views
 
 import forms.AddABeneficiaryFormProvider
-import models.{AddABeneficiary, NormalMode}
+import models.NormalMode
+import models.registration.pages.AddABeneficiary
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import viewmodels.AddRow

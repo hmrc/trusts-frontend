@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.DeclarationWhatNextFormProvider
-import models.DeclarationWhatNext
+import models.playback.pages.DeclarationWhatNext
 import pages.DeclarationWhatNextPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -84,7 +84,7 @@ class DeclarationWhatNextControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.DeclarationNoChangesController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.playback.routes.DeclarationController.onPageLoad().url
 
       application.stop()
     }

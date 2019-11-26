@@ -18,7 +18,8 @@ package controllers
 
 import base.SpecBase
 import forms.AgentTelephoneNumber
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
+import models.core.UserAnswers
 import pages.{AgentNamePage, AgentTelephoneNumberPage}
 import play.api.Application
 import play.api.data.Form

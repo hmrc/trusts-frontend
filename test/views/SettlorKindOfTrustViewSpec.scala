@@ -17,7 +17,8 @@
 package views
 
 import forms.SettlorKindOfTrustFormProvider
-import models.{NormalMode, SettlorKindOfTrust}
+import models.NormalMode
+import models.registration.pages.SettlorKindOfTrust
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.ViewBehaviours

@@ -19,6 +19,7 @@ package mapping
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping.TypeOfTrust.{FlatManagementTrust, HeritageTrust, IntervivosSettlementTrust, WillTrustOrIntestacyTrust}
+import mapping.registration.RegistrationMapper
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import utils.TestUserAnswers
 

@@ -21,11 +21,10 @@ import java.time.{LocalDate, ZoneOffset}
 import base.SpecBase
 import controllers.IndexValidation
 import forms.DateOfBirthFormProvider
-import models.FullName
-import pages.living_settlor.{SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNamePage}
 import models.NormalMode
-import org.scalacheck.Arbitrary.arbitrary
+import models.core.pages.FullName
 import org.scalacheck.Gen
+import pages.living_settlor.{SettlorIndividualDateOfBirthPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNamePage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

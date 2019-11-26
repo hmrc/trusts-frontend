@@ -16,7 +16,7 @@
 
 package pages.trustees
 
-import models.FullName
+import models.core.pages.FullName
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.Trustees

@@ -21,11 +21,9 @@ import controllers.IndexValidation
 import forms.shares.ShareQuantityInTrustFormProvider
 import generators.ModelGenerators
 import models.NormalMode
-import navigation.FakeNavigator
 import org.scalacheck.Arbitrary.arbitrary
 import pages.shares.{ShareCompanyNamePage, ShareQuantityInTrustPage}
-import play.api.inject.bind
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.shares.ShareQuantityInTrustView

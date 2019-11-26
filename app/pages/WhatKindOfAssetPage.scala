@@ -17,8 +17,9 @@
 package pages
 
 import mapping.reads.Assets
-import models.WhatKindOfAsset.{Business, Money, Other, Partnership, PropertyOrLand, Shares}
-import models.{UserAnswers, WhatKindOfAsset}
+import models.core.UserAnswers
+import models.registration.pages.WhatKindOfAsset
+import models.registration.pages.WhatKindOfAsset._
 import pages.entitystatus.AssetStatus
 import pages.property_or_land._
 import pages.shares._

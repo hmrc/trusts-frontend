@@ -16,7 +16,7 @@
 
 package viewmodels.addAnother
 
-import models.Status
+import models.registration.pages.Status
 
 trait AssetViewModel {
 
