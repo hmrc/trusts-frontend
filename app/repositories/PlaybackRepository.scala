@@ -64,7 +64,6 @@ class DefaultPlaybackRepository @Inject()(
     }.map(_ => ())
   }
 
-
   override def store(userAnswers: UserAnswers): Future[Boolean] = {
 
     val selector = Json.obj(

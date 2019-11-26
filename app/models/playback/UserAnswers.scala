@@ -17,11 +17,15 @@
 package models.playback
 
 import java.time.LocalDateTime
-import models.{MongoDateTimeFormats, RichJsObject}
+
+import models.MongoDateTimeFormats
 import play.api.Logger
 import play.api.libs.json._
 import queries.{Gettable, Settable}
+
 import scala.util.{Failure, Success, Try}
+
+import models.core.UserAnswerImplicits._
 
 final case class UserAnswers(
                               internalAuthId: String,
