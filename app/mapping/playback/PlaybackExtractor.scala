@@ -22,7 +22,6 @@ import models.core.UserAnswers
 trait PlaybackExtractor[T] {
 
   def extract(answers: UserAnswers, data: T): Either[PlaybackExtractionError, UserAnswers]
-
 }
 
 trait PlaybackAnswerCombiner {
