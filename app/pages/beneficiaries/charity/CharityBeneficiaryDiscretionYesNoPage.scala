@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package mapping.playback
+package pages.beneficiaries.charity
 
-object PlaybackExtractionErrors {
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import sections.{Beneficiaries, CharityBeneficiaries}
 
-  sealed trait PlaybackExtractionError
+final case class CharityBeneficiaryDiscretionYesNoPage(index: Int) extends QuestionPage[Boolean] {
 
-  case class FailedToExtractData(reason: String) extends PlaybackExtractionError
-  case object FailedToCombineAnswers extends RuntimeException with PlaybackExtractionError
+  override def path: JsPath = JsPath \ Beneficiaries \ CharityBeneficiaries \ index \ toString
 
+  override def toString: String = "discretionYesNo"
 }

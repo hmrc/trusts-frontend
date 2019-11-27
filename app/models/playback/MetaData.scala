@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package mapping.playback
+package models.playback
 
-object PlaybackExtractionErrors {
+import play.api.libs.json.{Format, Json}
 
-  sealed trait PlaybackExtractionError
+case class MetaData(lineNo: String, bpMatchStatus: Option[String], entityStart: String)
 
-  case class FailedToExtractData(reason: String) extends PlaybackExtractionError
-  case object FailedToCombineAnswers extends RuntimeException with PlaybackExtractionError
+object MetaData {
 
+  implicit val format: Format[MetaData] = Json.format[MetaData]
 }

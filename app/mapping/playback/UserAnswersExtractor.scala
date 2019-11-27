@@ -43,7 +43,7 @@ class UserAnswersExtractor @Inject()(charity: CharityBeneficiaryExtractor) exten
     answersCombined match {
       case Left(error) =>
         Logger.error(s"[PlaybackToUserAnswers] failed to unpack data to user answers, failed for $error")
-        Left(FailedToExtractData)
+        Left(error)
       case Right(None) =>
         Logger.error(s"[PlaybackToUserAnswers] failed to combine user answers")
         Left(FailedToCombineAnswers)

@@ -42,20 +42,31 @@ final case class UserAnswers(
     }
   }
 
-  def set[A](page: Settable[A], value: A)(implicit writes: Writes[A]): Try[UserAnswers] = {
 
+  def set[A](page: Settable[A], value: Option[A])(implicit writes: Writes[A]) : Try[UserAnswers] = {
+    value match {
+      case Some(v) => setValue(page, v)
+      case None =>
+        val updatedAnswers = this
+        page.cleanup(value, updatedAnswers)
+    }
+  }
+
+  def set[A](page: Settable[A], value: A)(implicit writes: Writes[A]): Try[UserAnswers] = setValue(page, value)
+
+  private def setValue[A](page: Settable[A], value: A)(implicit writes: Writes[A]) = {
     val updatedData = data.setObject(page.path, Json.toJson(value)) match {
       case JsSuccess(jsValue, _) =>
         Success(jsValue)
       case JsError(errors) =>
-        val errorPaths = errors.collectFirst{ case (path, e) => s"$path $e"}
+        val errorPaths = errors.collectFirst { case (path, e) => s"$path $e" }
         Logger.warn(s"[UserAnswers] unable to set path ${page.path} due to errors $errorPaths")
         Failure(JsResultException(errors))
     }
 
     updatedData.flatMap {
       d =>
-        val updatedAnswers = copy (data = d)
+        val updatedAnswers = copy(data = d)
         page.cleanup(Some(value), updatedAnswers)
     }
   }
