@@ -21,27 +21,35 @@ import java.time.LocalDateTime
 import cats.kernel.Semigroup
 import mapping.playback.PlaybackExtractionErrors.FailedToCombineAnswers
 
-import scala.util.{Success, Try}
+import scala.util.{Failure, Success, Try}
 
 object UserAnswersCombinator {
 
-  implicit val userAnswersSemigroup : Semigroup[UserAnswers] = new Semigroup[UserAnswers] {
+  implicit val userAnswersSemigroup : Semigroup[Try[UserAnswers]] = new Semigroup[Try[UserAnswers]] {
 
-    override def combine(x: UserAnswers, y: UserAnswers): UserAnswers = {
-      UserAnswers(
-        data = x.data ++ y.data,
-        internalAuthId = x.internalAuthId,
-        updatedAt = LocalDateTime.now
-      )
+    override def combine(x: Try[UserAnswers], y: Try[UserAnswers]): Try[UserAnswers] = {
+
+      for {
+        ua1 <- x
+        ua2 <- y
+      } yield {
+
+        UserAnswers(
+          data = ua1.data ++ ua2.data,
+          internalAuthId = ua1.internalAuthId,
+          updatedAt = LocalDateTime.now
+        )
+
+      }
     }
   }
 
-  implicit class Combinator(answers: List[UserAnswers]) {
+  implicit class Combinator(answers: List[Try[UserAnswers]]) {
 
     def combine = {
-      Semigroup[UserAnswers].combineAllOption(answers) match {
+      Semigroup[Try[UserAnswers]].combineAllOption(answers) match {
         case Some(userAnswers) => userAnswers
-        case None => throw FailedToCombineAnswers
+        case None => Failure(FailedToCombineAnswers)
       }
     }
 
@@ -49,7 +57,7 @@ object UserAnswersCombinator {
 
   implicit class UserAnswersCollector(answers: List[Try[UserAnswers]]) {
 
-    def squish : List[UserAnswers] = answers.collect {
+    def collectAnswers : List[UserAnswers] = answers.collect {
       case Success(answer) => answer
     }
 

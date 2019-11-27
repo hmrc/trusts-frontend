@@ -22,11 +22,13 @@ import mapping.playback.PlaybackExtractionErrors._
 import models.playback.UserAnswers
 import play.api.Logger
 
+import scala.util.Try
+
 class UserAnswersExtractor @Inject()(charity: CharityBeneficiaryExtractor) extends PlaybackAnswerCombiner {
 
   import models.playback.UserAnswersCombinator._
 
-  override def extract(answers: UserAnswers): Either[PlaybackExtractionError, UserAnswers] = {
+  override def extract(answers: UserAnswers): Either[PlaybackExtractionError, Try[UserAnswers]] = {
 
     val answersCombined = for {
       ua <- charity.extract(answers, Nil).right
@@ -34,7 +36,7 @@ class UserAnswersExtractor @Inject()(charity: CharityBeneficiaryExtractor) exten
       ua2 <- charity.extract(answers, Nil).right
     } yield {
         for {
-          combined <- Semigroup[UserAnswers].combineAllOption(List(ua, ua2))
+          combined <- Semigroup[Try[UserAnswers]].combineAllOption(List(ua, ua2))
         } yield combined
     }
 

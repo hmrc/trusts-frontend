@@ -73,10 +73,8 @@ class CharityBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
 
         extraction mustBe 'right
 
-        println(s"${extraction.right.value.data}")
-
-        extraction.right.value.get(CharityBeneficiaryNamePage(0)).get mustBe "Charity 0"
-        extraction.right.value.get(CharityBeneficiaryNamePage(1)).get mustBe "Charity 1"
+        extraction.right.value.success.value.get(CharityBeneficiaryNamePage(0)).get mustBe "Charity 0"
+        extraction.right.value.success.value.get(CharityBeneficiaryNamePage(1)).get mustBe "Charity 1"
       }
 
     }

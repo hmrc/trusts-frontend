@@ -17,29 +17,32 @@
 package mapping.playback
 
 import com.google.inject.Inject
-import mapping.playback.PlaybackExtractionErrors.PlaybackExtractionError
+import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
 import models.playback.{DisplayTrustCharityType, UserAnswers}
 import pages.beneficiaries.charity.CharityBeneficiaryNamePage
+import play.api.Logger
+
+import scala.util.{Failure, Success, Try}
 
 class CharityBeneficiaryExtractor @Inject() extends PlaybackExtractor[List[DisplayTrustCharityType]] {
 
-  import models.playback.UserAnswersCombinator._
-
-  override def extract(answers: UserAnswers, data: List[DisplayTrustCharityType]): Either[PlaybackExtractionError, UserAnswers] =
+  override def extract(answers: UserAnswers, data: List[DisplayTrustCharityType]): Either[PlaybackExtractionError, Try[UserAnswers]] =
     {
       data match {
-        case Nil => Right(answers)
+        case Nil => Right(Success(answers))
         case charities =>
 
-          val updated = for {
-            (char, index) <- charities.zipWithIndex
-          } yield {
-            answers.set(CharityBeneficiaryNamePage(index), char.organisationName)
+          val updated = charities.zipWithIndex.foldLeft[Try[UserAnswers]](Success(answers)){ (answers, y) =>
+            answers.flatMap(_.set(CharityBeneficiaryNamePage(y._2), y._1.organisationName))
           }
 
-          println(updated)
-
-          Right(updated.squish.combine)
+          updated match {
+            case Success(a) =>
+              Right(Success(a))
+            case Failure(exception) =>
+              Logger.warn(s"$exception")
+              Left(FailedToExtractData)
+          }
       }
     }
 

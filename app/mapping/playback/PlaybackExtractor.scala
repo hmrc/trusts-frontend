@@ -19,13 +19,15 @@ package mapping.playback
 import mapping.playback.PlaybackExtractionErrors.PlaybackExtractionError
 import models.playback.UserAnswers
 
+import scala.util.Try
+
 trait PlaybackExtractor[T] {
 
-  def extract(answers: UserAnswers, data: T): Either[PlaybackExtractionError, UserAnswers]
+  def extract(answers: UserAnswers, data: T): Either[PlaybackExtractionError, Try[UserAnswers]]
 }
 
 trait PlaybackAnswerCombiner {
 
-  def extract(answers: UserAnswers): Either[PlaybackExtractionError, UserAnswers]
+  def extract(answers: UserAnswers): Either[PlaybackExtractionError, Try[UserAnswers]]
 
 }
