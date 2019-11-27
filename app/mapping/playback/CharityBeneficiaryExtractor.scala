@@ -18,6 +18,7 @@ package mapping.playback
 
 import com.google.inject.Inject
 import mapping.CharityType
+import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
 import models.core.UserAnswers
 
 class CharityBeneficiaryExtractor @Inject() extends PlaybackExtractor[List[CharityType]] {

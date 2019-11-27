@@ -16,9 +16,22 @@
 
 package models.core
 
+import cats.kernel.Semigroup
 import play.api.libs.json._
 
 object UserAnswerImplicits {
+
+  // TODO change definition to playback.UserAnswers
+  implicit val userAnswersSemigroup : Semigroup[UserAnswers] = new Semigroup[UserAnswers] {
+
+    override def combine(x: UserAnswers, y: UserAnswers): UserAnswers = {
+      UserAnswers(
+        draftId = x.draftId,
+        data = x.data ++ y.data,
+        internalAuthId = x.internalAuthId
+      )
+    }
+  }
 
   implicit class RichJsObject(jsObject: JsObject) {
 

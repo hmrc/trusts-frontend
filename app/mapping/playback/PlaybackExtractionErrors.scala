@@ -16,24 +16,11 @@
 
 package mapping.playback
 
-import com.google.inject.Inject
-import models.core.UserAnswers
-import play.api.Logger
+object PlaybackExtractionErrors {
 
-class PlaybackToUserAnswers @Inject()(charity: CharityBeneficiaryExtractor)
-  extends PlaybackExtractor[Nothing] {
+  sealed trait PlaybackExtractionError
 
-  override def extract(answers: UserAnswers, data: Nothing): Either[PlaybackExtractionError, UserAnswers] = {
-    (for {
-      ua <- charity.extract(answers, Nil).right
-    } yield {
-      ua
-    }) match {
-      case l @ Left(reason) =>
-        Logger.error(s"$reason")
-        l
-      case r @ Right(extractedAnswers) =>
-        r
-    }
-  }
+  case object FailedToExtractData extends PlaybackExtractionError
+  case object FailedToCombineAnswers extends RuntimeException with PlaybackExtractionError
+
 }
