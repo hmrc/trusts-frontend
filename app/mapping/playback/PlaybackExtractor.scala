@@ -25,9 +25,3 @@ trait PlaybackExtractor[T] {
 
   def extract(answers: UserAnswers, data: T): Either[PlaybackExtractionError, Try[UserAnswers]]
 }
-
-trait PlaybackAnswerCombiner {
-
-  def extract(answers: UserAnswers): Either[PlaybackExtractionError, Try[UserAnswers]]
-
-}

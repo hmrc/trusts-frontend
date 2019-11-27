@@ -16,8 +16,6 @@
 
 package repositories
 
-import java.util.Date
-
 import akka.stream.Materializer
 import javax.inject.Inject
 import models.core.UserAnswers
@@ -53,7 +51,7 @@ class DefaultRegistrationsRepository @Inject()(
   private val createdAtIndex = Index(
     key = Seq("createdAt" -> IndexType.Ascending),
     name = Some("user-answers-created-at-index"),
-    options = BSONDocument("expireAfterSeconds" -> cacheTtl, "lastUpdated" -> new Date())
+    options = BSONDocument("expireAfterSeconds" -> cacheTtl)
   )
 
   private val internalAuthIdIndex = Index(

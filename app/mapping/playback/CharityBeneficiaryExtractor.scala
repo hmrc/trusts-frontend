@@ -18,25 +18,29 @@ package mapping.playback
 
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
-import models.core.pages.{Address, InternationalAddress, UKAddress}
-import models.playback.{AddressType, DisplayTrustCharityType, MetaData, UserAnswers}
+import models.core.pages.{InternationalAddress, UKAddress}
+import models.playback.http.DisplayTrustCharityType
+import models.playback.{MetaData, UserAnswers}
 import pages.beneficiaries.charity._
 import play.api.Logger
 
 import scala.util.{Failure, Success, Try}
 
-class CharityBeneficiaryExtractor @Inject() extends PlaybackExtractor[List[DisplayTrustCharityType]] {
+class CharityBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[List[DisplayTrustCharityType]]] {
 
   import PlaybackAddressImplicits._
 
-  override def extract(answers: UserAnswers, data: List[DisplayTrustCharityType]): Either[PlaybackExtractionError, Try[UserAnswers]] =
+  override def extract(answers: UserAnswers, data: Option[List[DisplayTrustCharityType]]): Either[PlaybackExtractionError, Try[UserAnswers]] =
     {
       data match {
-        case Nil => Right(Success(answers))
-        case charities =>
+        case Some(Nil) | None => Right(Success(answers))
+        case Some(charities) =>
 
-          val updated = charities.zipWithIndex.foldLeft[Try[UserAnswers]](Success(answers)){ case (answers, (charityBeneficiary, index)) =>
-            answers.flatMap(_.set(CharityBeneficiaryNamePage(index), charityBeneficiary.organisationName))
+          val updated = charities.zipWithIndex.foldLeft[Try[UserAnswers]](Success(answers)){
+            case (answers, (charityBeneficiary, index)) =>
+
+            answers
+              .flatMap(_.set(CharityBeneficiaryNamePage(index), charityBeneficiary.organisationName))
               .flatMap(_.set(CharityBeneficiaryDiscretionYesNoPage(index), charityBeneficiary.beneficiaryDiscretion))
               .flatMap(_.set(CharityBeneficiaryShareOfIncomePage(index), charityBeneficiary.beneficiaryShareOfIncome))
               .flatMap(_.set(CharityBeneficiaryUtrPage(index), charityBeneficiary.identification.flatMap(_.utr)))
@@ -64,23 +68,14 @@ class CharityBeneficiaryExtractor @Inject() extends PlaybackExtractor[List[Displ
               }
           }
 
-          println(updated)
-
           updated match {
             case Success(a) =>
               Right(Success(a))
             case Failure(exception) =>
-              Logger.warn(s"$exception")
+              Logger.warn(s"[CharityBeneficiaryExtractor] failed to extract data due to ${exception.getMessage}")
               Left(FailedToExtractData(DisplayTrustCharityType.toString))
           }
       }
     }
-
-//  def extractDiscretion(userAnswers: UserAnswers, charity: DisplayTrustCharityType): UserAnswers = {
-//    charity.beneficiaryDiscretion match {
-//      case Some(discretion) => userAnswers.set()
-//      case None => ???
-//    }
-//  }
 
 }

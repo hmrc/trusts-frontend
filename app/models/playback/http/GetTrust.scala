@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package models.playback
+package models.playback.http
 
 import mapping.Constant._
 import mapping.{AssetMonetaryAmount, PassportType, PropertyLandType, TrustDetailsType}

@@ -17,7 +17,7 @@
 package generators
 
 import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
-import models.playback.pages.{Declaration, DeclarationWhatNext}
+import models.playback.pages.DeclarationWhatNext
 import models.registration.pages._
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary

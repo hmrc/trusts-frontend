@@ -20,23 +20,22 @@ import cats.kernel.Semigroup
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors._
 import models.playback.UserAnswers
+import models.playback.http.GetTrust
 import play.api.Logger
 
 import scala.util.Try
 
-class UserAnswersExtractor @Inject()(charity: CharityBeneficiaryExtractor) extends PlaybackAnswerCombiner {
+class UserAnswersExtractor @Inject()(charity: CharityBeneficiaryExtractor) extends PlaybackExtractor[GetTrust] {
 
   import models.playback.UserAnswersCombinator._
 
-  override def extract(answers: UserAnswers): Either[PlaybackExtractionError, Try[UserAnswers]] = {
+  override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionError, Try[UserAnswers]] = {
 
     val answersCombined = for {
-      ua <- charity.extract(answers, Nil).right
-      // add in further extractors here for LeadTrustee, Trustees, Beneficiaries etc
-      ua2 <- charity.extract(answers, Nil).right
+      ua <- charity.extract(answers, data.trust.entities.beneficiary.charity).right
     } yield {
         for {
-          combined <- Semigroup[Try[UserAnswers]].combineAllOption(List(ua, ua2))
+          combined <- Semigroup[Try[UserAnswers]].combineAllOption(List(ua))
         } yield combined
     }
 

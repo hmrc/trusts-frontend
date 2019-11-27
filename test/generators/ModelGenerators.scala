@@ -19,6 +19,7 @@ package generators
 import java.time.LocalDate
 
 import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
+import models.playback
 import models.playback.pages.{Declaration, DeclarationWhatNext}
 import models.registration.pages._
 import org.scalacheck.Arbitrary.arbitrary
@@ -85,7 +86,7 @@ trait ModelGenerators {
       for {
         str <- arbitrary[String]
       } yield {
-        Declaration(FullName(str, Some(str), str), Some(str))
+        playback.pages.Declaration(FullName(str, Some(str), str), Some(str))
       }
     }
   }

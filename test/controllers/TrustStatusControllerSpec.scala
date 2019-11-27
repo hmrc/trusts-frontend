@@ -18,12 +18,12 @@ package controllers
 
 import base.SpecBase
 import connector.{TrustClaim, TrustConnector, TrustsStoreConnector}
+import _root_.pages.WhatIsTheUTRVariationPage
 import models.core.UserAnswers
-import models.playback._
+import models.playback.http._
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
-import _root_.pages.WhatIsTheUTRVariationPage
 import play.api.Application
 import play.api.inject.bind
 import play.api.libs.json._

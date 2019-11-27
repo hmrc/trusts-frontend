@@ -16,7 +16,9 @@
 
 package repositories
 
+import java.sql.Timestamp
 import java.time.LocalDateTime
+
 import akka.stream.Materializer
 import javax.inject.Inject
 import models.playback.UserAnswers
@@ -64,10 +66,30 @@ class DefaultPlaybackRepository @Inject()(
     }.map(_ => ())
   }
 
+  override def get(internalId: String): Future[Option[UserAnswers]] = {
+
+    val selector = Json.obj(
+      "internalId" -> internalId
+    )
+
+    val modifier = Json.obj(
+      "$set" ->
+        Json.obj(
+        "updatedAt" -> Json.obj(
+          "$date" -> Timestamp.valueOf(LocalDateTime.now)
+        )
+      )
+    )
+
+    collection.flatMap {
+      _.findAndUpdate(selector, modifier, fetchNewObject = true, upsert = false).map(_.result[UserAnswers])
+    }
+  }
+
   override def store(userAnswers: UserAnswers): Future[Boolean] = {
 
     val selector = Json.obj(
-      "_id" -> userAnswers.internalAuthId
+      "internalId" -> userAnswers.internalAuthId
     )
 
     val modifier = Json.obj(
@@ -85,6 +107,8 @@ class DefaultPlaybackRepository @Inject()(
 trait PlaybackRepository {
 
   val started: Future[Unit]
+
+  def get(internalId: String): Future[Option[UserAnswers]]
 
   def store(userAnswers: UserAnswers): Future[Boolean]
 }

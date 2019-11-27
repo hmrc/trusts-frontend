@@ -19,7 +19,8 @@ package mapping.playback
 import base.SpecBaseHelpers
 import generators.Generators
 import models.core.pages.UKAddress
-import models.playback.{AddressType, DisplayTrustCharityType, DisplayTrustIdentificationOrgType, MetaData, UserAnswers}
+import models.playback.http._
+import models.playback.{MetaData, UserAnswers}
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import pages.beneficiaries.charity._
 
@@ -42,7 +43,7 @@ class CharityBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
     entityStart = "2019-11-26"
   )
 
-  val charityExtractor : PlaybackExtractor[List[DisplayTrustCharityType]] =
+  val charityExtractor : PlaybackExtractor[Option[List[DisplayTrustCharityType]]] =
     injector.instanceOf[CharityBeneficiaryExtractor]
 
   "Charity Beneficiary Extractor" - {
@@ -51,7 +52,7 @@ class CharityBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
 
       "must return user answers" in {
 
-        val charities : List[DisplayTrustCharityType] = Nil
+        val charities = None
 
         val ua = UserAnswers("fakeId")
 
@@ -70,7 +71,7 @@ class CharityBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
 
         val ua = UserAnswers("fakeId")
 
-        val extraction = charityExtractor.extract(ua, charities)
+        val extraction = charityExtractor.extract(ua, Some(charities))
 
         extraction mustBe 'right
 

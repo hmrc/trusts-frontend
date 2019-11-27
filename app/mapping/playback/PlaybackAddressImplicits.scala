@@ -17,7 +17,7 @@
 package mapping.playback
 
 import models.core.pages.{Address, InternationalAddress, UKAddress}
-import models.playback.AddressType
+import models.playback.http.AddressType
 
 object PlaybackAddressImplicits {
 

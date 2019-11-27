@@ -22,10 +22,10 @@ import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
 import generators.Generators
 import mapping.registration.RegistrationMapper
-import mapping.{Mapping, Registration}
 import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse._
-import models.playback.{NameType, Processed, Processing, TrustServiceUnavailable, UtrNotFound}
+import mapping.{Mapping, Registration}
+import models.playback.http._
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{FreeSpec, Inside, MustMatchers, OptionValues}
 import play.api.Application
@@ -245,7 +245,6 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
     }
 
     "must return playback data inside a Processed trust" in {
-
       val utr = "1000000007"
       val payload = Source.fromFile(getClass.getResource("/display-trust.json").getPath).mkString
 
@@ -282,7 +281,6 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
           data.trust.entities.protectors.value.protectorCompany.value.head.entityStart mustBe "2019-03-05"
 
           data.trust.assets.propertyOrLand.value.head.buildingLandName.value mustBe "Land of Brian Cloud"
-
       }
     }
   }
