@@ -18,8 +18,10 @@
 @import models.Mode
 @import uk.gov.hmrc.auth.core.AffinityGroup
 @import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
+@import config.FrontendAppConfig
 
 @this(
+    appConfig: FrontendAppConfig,
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
@@ -39,21 +41,31 @@
         @components.heading("declaration.heading")
 
         @components.input_text(
-        field = form("firstName"),
-        label = messages("declaration.firstName"),
-        ariaRequired = true
+            field = form("firstName"),
+            label = messages("declaration.firstName"),
+            ariaRequired = true
         )
 
         @components.input_text(
-        field = form("middleName"),
-        label = messages("declaration.middleName")
+            field = form("middleName"),
+            label = messages("declaration.middleName")
         )
 
         @components.input_text(
-        field = form("lastName"),
-        label = messages("declaration.lastName"),
-        ariaRequired = true
+            field = form("lastName"),
+            label = messages("declaration.lastName"),
+            ariaRequired = true
         )
+
+        @if(appConfig.declarationEmailEnabled) {
+            <p>@messages("declaration.paragraph1")</p>
+            <p>@messages("declaration.paragraph2")</p>
+            @components.input_text(
+                field = form("email"),
+                inputClass = Some("declaration-email"),
+                label = messages("declaration.email")
+            )
+        }
 
         @if(affinityGroup == AffinityGroup.Agent) {
             @components.warning("declaration.agent")
