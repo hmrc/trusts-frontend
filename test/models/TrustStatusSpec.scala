@@ -16,6 +16,7 @@
 
 package models
 
+import models.AgentTrustsResponse.{AgentTrusts, Claimed}
 import models.playback.{Closed, Processing, TrustStatus}
 import org.scalatest.{MustMatchers, WordSpec}
 import play.api.libs.json.{JsError, Json}
@@ -50,6 +51,20 @@ class TrustStatusSpec extends WordSpec with MustMatchers {
                  """.stripMargin
 
         Json.parse(json).as[TrustStatus] mustBe Closed
+      }
+
+      "claimed" in {
+
+        val json = """{
+                     |
+                     |  "responseHeader": {
+                     |    "status": "Claimed",
+                     |    "formBundleNo": "1"
+                     |  }
+                     |}
+                 """.stripMargin
+
+        Json.parse(json).as[AgentTrusts] mustBe Claimed
       }
     }
 
