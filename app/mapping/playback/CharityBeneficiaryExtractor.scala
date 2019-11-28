@@ -40,7 +40,6 @@ class CharityBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[Lis
             case (answers, (charityBeneficiary, index)) =>
 
             answers
-              .flatMap(_.set(BeneficiaryCharityOrTrustPage(index), CharityOrTrust.Charity))
               .flatMap(_.set(CharityBeneficiaryNamePage(index), charityBeneficiary.organisationName))
               .flatMap(_.set(CharityBeneficiaryDiscretionYesNoPage(index), charityBeneficiary.beneficiaryDiscretion))
               .flatMap(_.set(CharityBeneficiaryShareOfIncomePage(index), charityBeneficiary.beneficiaryShareOfIncome))
