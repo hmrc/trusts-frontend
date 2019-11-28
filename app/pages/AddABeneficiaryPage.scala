@@ -16,7 +16,7 @@
 
 package pages
 
-import models.AddABeneficiary
+import models.registration.pages.AddABeneficiary
 import play.api.libs.json.JsPath
 
 case object AddABeneficiaryPage extends QuestionPage[AddABeneficiary] {

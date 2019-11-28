@@ -16,7 +16,7 @@
 
 package pages
 
-import models.NonResidentType
+import models.registration.pages.NonResidentType
 import play.api.libs.json.JsPath
 import sections.TrustDetails
 

@@ -21,8 +21,10 @@ import controllers.actions._
 import handlers.ErrorHandler
 import javax.inject.Inject
 import mapping.reads.{LeadTrusteeIndividual, Trustees}
+import models.NormalMode
+import models.core.UserAnswers
+import models.registration.pages.RegistrationStatus
 import models.requests.DataRequest
-import models.{NormalMode, RegistrationStatus, UserAnswers}
 import pages.{RegistrationTRNPage, TrustHaveAUTRPage}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}

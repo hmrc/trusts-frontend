@@ -19,7 +19,7 @@ package controllers.shares
 import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
 import javax.inject.Inject
-import models.Status.Completed
+import models.registration.pages.Status.Completed
 import models.{Mode, NormalMode}
 import navigation.Navigator
 import pages.entitystatus.AssetStatus

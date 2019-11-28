@@ -16,7 +16,7 @@
 
 package pages.shares
 
-import models.ShareClass
+import models.registration.pages.ShareClass
 import pages.behaviours.PageBehaviours
 
 class ShareClassPageSpec extends PageBehaviours {

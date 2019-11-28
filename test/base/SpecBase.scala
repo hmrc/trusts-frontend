@@ -17,8 +17,9 @@
 package base
 
 import config.FrontendAppConfig
-import controllers.actions._
-import models.{RegistrationStatus, UserAnswers}
+import controllers.actions.{FakeDraftIdRetrievalActionProvider, _}
+import models.core.UserAnswers
+import models.registration.pages.RegistrationStatus
 import navigation.{FakeNavigator, Navigator}
 import org.scalatest.{BeforeAndAfter, TestSuite, TryValues}
 import org.scalatestplus.play.PlaySpec
@@ -26,11 +27,11 @@ import org.scalatestplus.play.guice._
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.inject.{Injector, bind}
-import play.api.mvc.{BodyParsers, PlayBodyParsers}
+import play.api.mvc.BodyParsers
 import play.api.test.FakeRequest
 import repositories.RegistrationsRepository
 import services.{CreateDraftRegistrationService, SubmissionService}
-import uk.gov.hmrc.auth.core.AffinityGroup
+import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments, Enrolment}
 import utils.TestUserAnswers
 import utils.annotations.{LivingSettlor, PropertyOrLand}
 
@@ -63,8 +64,16 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
 
   lazy val fakeNavigator = new FakeNavigator(frontendAppConfig)
 
+  private def fakeDraftIdAction(userAnswers: Option[UserAnswers]) = new FakeDraftIdRetrievalActionProvider(
+      "draftId",
+      RegistrationStatus.InProgress,
+      userAnswers,
+      registrationsRepository
+    )
+
   protected def applicationBuilder(userAnswers: Option[UserAnswers] = None,
                                    affinityGroup: AffinityGroup = AffinityGroup.Organisation,
+                                   enrolments: Enrolments = Enrolments(Set.empty[Enrolment]),
                                    navigator: Navigator = fakeNavigator
                                   ): GuiceApplicationBuilder =
     new GuiceApplicationBuilder()
@@ -72,8 +81,7 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
         bind[DataRequiredAction].to[DataRequiredActionImpl],
         bind[IdentifyForRegistration].toInstance(new FakeIdentifyForRegistration(affinityGroup)(injectedParsers, trustsAuth)),
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
-        bind[DraftIdRetrievalActionProvider].toInstance(
-          new FakeDraftIdRetrievalActionProvider("draftId", RegistrationStatus.InProgress, userAnswers, registrationsRepository)),
+        bind[DraftIdRetrievalActionProvider].toInstance(fakeDraftIdAction(userAnswers)),
         bind[RegistrationsRepository].toInstance(registrationsRepository),
         bind[SubmissionService].toInstance(mockSubmissionService),
         bind[CreateDraftRegistrationService].toInstance(mockCreateDraftRegistrationService),

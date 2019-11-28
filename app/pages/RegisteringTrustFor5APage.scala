@@ -16,7 +16,7 @@
 
 package pages
 
-import models.UserAnswers
+import models.core.UserAnswers
 import pages.entitystatus.TrustDetailsStatus
 import play.api.libs.json.JsPath
 import sections.TrustDetails

@@ -17,7 +17,7 @@
 package views
 
 import forms.DeclarationWhatNextFormProvider
-import models.DeclarationWhatNext
+import models.playback.pages.DeclarationWhatNext
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.ViewBehaviours
@@ -32,7 +32,7 @@ class DeclarationWhatNextViewSpec extends ViewBehaviours {
   val view = viewFor[DeclarationWhatNextView](Some(emptyUserAnswers))
 
   def applyView(form: Form[_]): HtmlFormat.Appendable =
-    view.apply(form, fakeDraftId)(fakeRequest, messages)
+    view.apply(form)(fakeRequest, messages)
 
   "DeclarationWhatNextView" must {
 

@@ -16,7 +16,7 @@
 
 package controllers.actions
 
-import models.UserAnswers
+import models.core.UserAnswers
 import models.requests.{IdentifierRequest, OptionalDataRequest}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -26,9 +26,9 @@ class FakeDataRetrievalAction(dataToReturn: Option[UserAnswers]) extends DataRet
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] =
     dataToReturn match {
       case None =>
-        Future(OptionalDataRequest(request.request, request.identifier, None, request.affinityGroup))
+        Future(OptionalDataRequest(request.request, request.identifier, None, request.affinityGroup, request.enrolments))
       case Some(userAnswers) =>
-        Future(OptionalDataRequest(request.request, request.identifier, Some(userAnswers), request.affinityGroup))
+        Future(OptionalDataRequest(request.request, request.identifier, Some(userAnswers), request.affinityGroup, request.enrolments))
     }
 
   override protected implicit val executionContext: ExecutionContext =

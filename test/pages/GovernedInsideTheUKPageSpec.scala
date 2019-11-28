@@ -16,9 +16,9 @@
 
 package pages
 
-import models.UserAnswers
-import pages.behaviours.PageBehaviours
+import models.core.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
+import pages.behaviours.PageBehaviours
 import pages.entitystatus.TrustDetailsStatus
 
 class GovernedInsideTheUKPageSpec extends PageBehaviours {

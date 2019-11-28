@@ -19,7 +19,8 @@ package controllers.trustees
 import base.SpecBase
 import controllers.IndexValidation
 import forms.NinoFormProvider
-import models.{FullName, IndividualOrBusiness, NormalMode}
+import models.NormalMode
+import models.core.pages.{FullName, IndividualOrBusiness}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.trustees.{IsThisLeadTrusteePage, TrusteesNamePage, TrusteesNinoPage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}

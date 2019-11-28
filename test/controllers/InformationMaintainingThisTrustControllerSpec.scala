@@ -17,8 +17,7 @@
 package controllers
 
 import base.SpecBase
-import models.NormalMode
-import pages.WhatIsTheUTRPage
+import pages.WhatIsTheUTRVariationPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.InformationMaintainingThisTrustView
@@ -31,11 +30,11 @@ class InformationMaintainingThisTrustControllerSpec extends SpecBase {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = emptyUserAnswers.set(WhatIsTheUTRPage, utr).success.value
+      val userAnswers = emptyUserAnswers.set(WhatIsTheUTRVariationPage, utr).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.InformationMaintainingThisTrustController.onPageLoad(fakeDraftId).url)
+      val request = FakeRequest(GET, routes.InformationMaintainingThisTrustController.onPageLoad().url)
 
       val result = route(application, request).value
 
@@ -44,7 +43,7 @@ class InformationMaintainingThisTrustControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(fakeDraftId, utr)(fakeRequest, messages).toString
+        view(utr)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -53,13 +52,13 @@ class InformationMaintainingThisTrustControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, routes.InformationMaintainingThisTrustController.onPageLoad(fakeDraftId).url)
+      val request = FakeRequest(GET, routes.InformationMaintainingThisTrustController.onPageLoad().url)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation (result).value mustEqual routes.WhatIsTheUTRController.onPageLoad(NormalMode, fakeDraftId).url
+      redirectLocation (result).value mustEqual routes.WhatIsTheUTRVariationsController.onPageLoad().url
 
       application.stop()
     }

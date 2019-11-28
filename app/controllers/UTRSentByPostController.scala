@@ -16,6 +16,7 @@
 
 package controllers
 
+import config.FrontendAppConfig
 import controllers.actions._
 import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -23,15 +24,19 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.UTRSentByPostView
+import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 
 import scala.concurrent.ExecutionContext
 
 class UTRSentByPostController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifyForRegistration,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: UTRSentByPostView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                         override val messagesApi: MessagesApi,
+                                         identify: IdentifyForRegistration,
+                                         requireData: DataRequiredAction,
+                                         config: FrontendAppConfig,
+                                         val controllerComponents: MessagesControllerComponents,
+                                         view: UTRSentByPostView
+                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+
 
   def onPageLoad: Action[AnyContent] = identify {
 

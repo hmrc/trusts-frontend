@@ -73,6 +73,8 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   lazy val trustsStoreUrl: String = configuration.get[Service]("microservice.services.trusts-store").baseUrl + "/trusts-store"
 
+  lazy val agentInvitationsUrl: String = configuration.get[String]("urls.agentInvitations")
+
   lazy val  posthmrc: String = configuration.get[String]("confirmation.posthmrc")
 
   def languageMap: Map[String, Lang] = Map(
@@ -98,4 +100,7 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val livingSettlorBusinessEnabled : Boolean = configuration.get[Boolean]("microservice.services.features.journey.livingSettlorBusiness.enabled")
 
   lazy val variationsEnabled: Boolean = configuration.get[Boolean]("microservice.services.features.variations")
+
+  lazy val variationsDeclarationEmailEnabled: Boolean = configuration.getBoolean("microservice.services.features.playback.declaration.email.enabled").getOrElse(false)
+
 }

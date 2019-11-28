@@ -19,8 +19,9 @@ package navigation.registration
 import controllers.routes
 import javax.inject.{Inject, Singleton}
 import mapping.reads.{Assets, Trustees}
-import models.Status.Completed
-import models.{NormalMode, UserAnswers}
+import models.registration.pages.Status.Completed
+import models.NormalMode
+import models.core.UserAnswers
 import pages._
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
 import play.api.mvc.Call

@@ -17,7 +17,8 @@
 package controllers
 
 import base.SpecBase
-import models.{InternationalAddress, UKAddress, UserAnswers}
+import models.core.UserAnswers
+import models.core.pages.{InternationalAddress, UKAddress}
 import navigation.Navigator
 import pages._
 import play.api.test.FakeRequest

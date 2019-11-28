@@ -16,7 +16,7 @@
 
 package pages.deceased_settlor
 
-import models.FullName
+import models.core.pages.FullName
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.DeceasedSettlor

@@ -16,7 +16,7 @@
 
 package pages
 
-import models.WhatTypeOfBeneficiary
+import models.registration.pages.WhatTypeOfBeneficiary
 import pages.behaviours.PageBehaviours
 
 class WhatTypeOfBeneficiaryPageSpec extends PageBehaviours {

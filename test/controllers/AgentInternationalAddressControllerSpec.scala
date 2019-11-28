@@ -18,7 +18,9 @@ package controllers
 
 import base.SpecBase
 import forms.InternationalAddressFormProvider
-import models.{InternationalAddress, NormalMode, UserAnswers}
+import models.NormalMode
+import models.core.UserAnswers
+import models.core.pages.InternationalAddress
 import pages.{AgentInternationalAddressPage, AgentNamePage}
 import play.api.Application
 import play.api.data.Form

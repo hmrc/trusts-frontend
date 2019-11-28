@@ -16,7 +16,7 @@
 
 package pages
 
-import models.FullName
+import models.core.pages.FullName
 import play.api.libs.json.JsPath
 import sections.{Beneficiaries, IndividualBeneficiaries}
 

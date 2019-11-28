@@ -62,7 +62,7 @@ class AuthenticatedIdentifierAction[A] @Inject()(action: Action[A],
             if(arn.isEmpty) {
               redirectToCreateAgentServicesAccount("agent reference number is empty")
             } else {
-              action(IdentifierRequest(request, internalId, AffinityGroup.Agent, Some(arn)))
+              action(IdentifierRequest(request, internalId, AffinityGroup.Agent, enrolments, Some(arn)))
             }
       }
     }
@@ -81,9 +81,9 @@ class AuthenticatedIdentifierAction[A] @Inject()(action: Action[A],
       case Some(internalId) ~ Some(Agent) ~ enrolments =>
         Logger.info(s"[AuthenticatedIdentifierAction] successfully identified as an Agent")
         authoriseAgent(request, enrolments, internalId, action)
-      case Some(internalId) ~ Some(Organisation) ~ _ =>
+      case Some(internalId) ~ Some(Organisation) ~ enrolments =>
         Logger.info(s"[AuthenticatedIdentifierAction] successfully identified as Organisation")
-        action(IdentifierRequest(request, internalId, AffinityGroup.Organisation))
+        action(IdentifierRequest(request, internalId, AffinityGroup.Organisation, enrolments))
       case Some(_) ~ _ ~ _ =>
         Logger.info(s"[AuthenticatedIdentifierAction] Unauthorised due to affinityGroup being Individual")
         Future.successful(Redirect(routes.UnauthorisedController.onPageLoad()))

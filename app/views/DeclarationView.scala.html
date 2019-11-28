@@ -55,17 +55,11 @@
         ariaRequired = true
         )
 
-        <div class="govuk-warning-text">
-            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-            <strong class="govuk-warning-text__text">
-                <span class="govuk-warning-text__assistive">@messages("site.warning")</span>
-                @if(affinityGroup == AffinityGroup.Agent) {
-                  @messages("declaration.agent.warning")
-                } else {
-                  @messages("declaration.individual.warning")
-                }
-            </strong>
-        </div>
+        @if(affinityGroup == AffinityGroup.Agent) {
+            @components.warning("declaration.agent")
+        } else {
+            @components.warning("declaration.individual")
+        }
 
         @components.submit_button(Some("site.confirm-send"))
     }

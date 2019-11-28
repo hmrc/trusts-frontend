@@ -19,13 +19,11 @@ package controllers
 import controllers.actions._
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
-import models.{FullName, Mode, NormalMode}
+import models.core.pages.FullName
 import models.requests.DataRequest
 import pages.{IndividualBeneficiaryNamePage, QuestionPage}
-import play.api.data.Form
 import play.api.i18n.{Messages, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
-import play.twirl.api.HtmlFormat
+import play.api.mvc.{AnyContent, Call, MessagesControllerComponents}
 import queries.{RemoveIndividualBeneficiaryQuery, Settable}
 import repositories.RegistrationsRepository
 import views.html.RemoveIndexView

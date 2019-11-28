@@ -18,15 +18,14 @@ package controllers.actions
 
 import base.SpecBase
 import controllers.routes
-import models.RegistrationStatus.{Complete, InProgress}
+import models.registration.pages.RegistrationStatus.{Complete, InProgress}
 import models.requests.DataRequest
 import org.scalatest.EitherValues
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
 import play.api.http.HeaderNames
-import play.api.libs.json.Reads
 import play.api.mvc.Result
-import uk.gov.hmrc.auth.core.AffinityGroup
+import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import utils.TestUserAnswers
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -48,7 +47,7 @@ class RequireDraftRegistrationActionRefinerSpec extends SpecBase with MockitoSug
           val answers = TestUserAnswers.emptyUserAnswers.copy(progress = Complete)
 
           val action = new Harness()
-          val futureResult = action.callRefine(new DataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation))
+          val futureResult = action.callRefine(new DataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
 
           whenReady(futureResult) { result =>
             result.left.value.header.headers(HeaderNames.LOCATION) mustBe routes.ConfirmationController.onPageLoad(answers.draftId).url
@@ -62,7 +61,7 @@ class RequireDraftRegistrationActionRefinerSpec extends SpecBase with MockitoSug
       "continue with refining the request" in {
         val answers = TestUserAnswers.emptyUserAnswers.copy(progress = InProgress)
 
-        val dataRequest = new DataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation)
+        val dataRequest = new DataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment]))
 
         val action = new Harness()
         val futureResult = action.callRefine(dataRequest)

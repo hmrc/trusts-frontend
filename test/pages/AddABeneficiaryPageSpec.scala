@@ -16,7 +16,7 @@
 
 package pages
 
-import models.AddABeneficiary
+import models.registration.pages.AddABeneficiary
 import pages.behaviours.PageBehaviours
 
 class AddABeneficiarySpec extends PageBehaviours {

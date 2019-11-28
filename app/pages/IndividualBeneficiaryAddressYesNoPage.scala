@@ -16,7 +16,7 @@
 
 package pages
 
-import models.UserAnswers
+import models.core.UserAnswers
 import play.api.libs.json.JsPath
 import sections.{Beneficiaries, IndividualBeneficiaries}
 

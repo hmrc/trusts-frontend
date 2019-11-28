@@ -16,7 +16,7 @@
 
 package views.behaviours
 
-import models.InternationalAddress
+import models.core.pages.InternationalAddress
 import play.api.data.{Form, FormError}
 import play.twirl.api.HtmlFormat
 

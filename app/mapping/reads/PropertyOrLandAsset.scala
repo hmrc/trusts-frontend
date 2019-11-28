@@ -16,8 +16,9 @@
 
 package mapping.reads
 
-import models.WhatKindOfAsset.PropertyOrLand
-import models.{Address, WhatKindOfAsset}
+import models.core.pages.Address
+import models.registration.pages.WhatKindOfAsset
+import models.registration.pages.WhatKindOfAsset.PropertyOrLand
 import play.api.libs.json.{JsError, JsSuccess, Reads, __}
 
 final case class PropertyOrLandAsset(override val whatKindOfAsset: WhatKindOfAsset,

@@ -18,12 +18,8 @@ package controllers
 
 import base.SpecBase
 import forms.YesNoFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.FakeNavigator
+import models.NormalMode
 import pages.SetupAfterSettlorDiedPage
-import play.api.inject.bind
-import play.api.libs.json.{JsBoolean, Json}
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.SetupAfterSettlorDiedView

@@ -16,9 +16,9 @@
 
 package views
 
+import controllers.routes
 import views.behaviours.ViewBehaviours
 import views.html.IndividualBeneficiaryInfoView
-import controllers.routes
 
 class IndividualBeneficiaryInfoViewSpec extends ViewBehaviours {
 

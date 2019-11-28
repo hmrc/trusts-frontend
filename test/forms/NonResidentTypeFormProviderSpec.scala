@@ -17,7 +17,7 @@
 package forms
 
 import forms.behaviours.OptionFieldBehaviours
-import models.NonResidentType
+import models.registration.pages.NonResidentType
 import play.api.data.FormError
 
 class NonResidentTypeFormProviderSpec extends OptionFieldBehaviours {

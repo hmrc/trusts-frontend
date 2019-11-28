@@ -18,7 +18,7 @@ package forms.living_settlor
 
 import forms.mappings.Mappings
 import javax.inject.Inject
-import models.SettlorBusinessDetails
+import models.registration.pages.SettlorBusinessDetails
 import play.api.data.Form
 
 class SettlorBusinessDetailsFormProvider @Inject() extends Mappings {

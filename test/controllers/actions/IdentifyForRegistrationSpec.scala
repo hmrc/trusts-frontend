@@ -55,14 +55,6 @@ class IdentifyForRegistrationSpec extends SpecBase {
 
         def fakeAction: Action[AnyContent] = mockIdentify { _ => Results.Ok }
 
-//        when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
-//          .thenReturn(authRetrievals(AffinityGroup.Agent, agentEnrolment))
-
-
-        when(mockIdentify.invokeBlock(any(), any())).thenCallRealMethod()
-        when(mockIdentify.composeAction(any[Action[AnyContent]])).then(new FakeAuthenticatedIdentifierAction(fakeAction, trustsAuth))
-
-
         val result = fakeAction.apply(fakeRequest)
 
         status(result) mustBe SEE_OTHER
@@ -80,7 +72,7 @@ class IdentifyForRegistrationSpec extends SpecBase {
 
         val application = applicationBuilder(userAnswers = None).build()
 
-        val idRequest = IdentifierRequest(fakeRequest, "id", AffinityGroup.Agent)
+        val idRequest = IdentifierRequest(fakeRequest, "id", AffinityGroup.Agent, Enrolments(Set.empty[Enrolment]))
 
         when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
           .thenReturn(authRetrievals(AffinityGroup.Agent, agentEnrolment))

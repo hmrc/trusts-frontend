@@ -17,7 +17,7 @@
 package forms
 
 import forms.behaviours.OptionFieldBehaviours
-import models.SettlorKindOfTrust
+import models.registration.pages.SettlorKindOfTrust
 import play.api.data.FormError
 
 class SettlorKindOfTrustFormProviderSpec extends OptionFieldBehaviours {

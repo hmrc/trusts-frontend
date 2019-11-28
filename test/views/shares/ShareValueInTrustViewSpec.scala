@@ -16,7 +16,6 @@
 
 package views.shares
 
-import controllers.shares.routes
 import forms.shares.ShareValueInTrustFormProvider
 import models.NormalMode
 import play.api.data.Form

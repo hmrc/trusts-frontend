@@ -16,6 +16,7 @@
 
 package models
 
+import models.core.pages.IndividualOrBusiness
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import org.scalatest.prop.PropertyChecks

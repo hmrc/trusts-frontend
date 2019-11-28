@@ -18,7 +18,7 @@ package controllers.money
 
 import base.SpecBase
 import forms.RemoveIndexFormProvider
-import models.Status.Completed
+import models.registration.pages.Status.Completed
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages.AssetMoneyValuePage

@@ -19,7 +19,7 @@ package controllers.deceased_settlor
 import controllers.actions._
 import javax.inject.Inject
 import models.NormalMode
-import models.Status.Completed
+import models.registration.pages.Status.Completed
 import navigation.Navigator
 import pages.deceased_settlor.{DeceasedSettlorAnswerPage, SettlorsNamePage}
 import pages.entitystatus.DeceasedSettlorStatus

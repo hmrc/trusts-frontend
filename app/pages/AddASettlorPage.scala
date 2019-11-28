@@ -16,7 +16,7 @@
 
 package pages
 
-import models.AddASettlor
+import models.registration.pages.AddASettlor
 import play.api.libs.json.JsPath
 
 case object AddASettlorPage extends QuestionPage[AddASettlor] {

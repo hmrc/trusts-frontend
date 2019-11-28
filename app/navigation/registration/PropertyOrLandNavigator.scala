@@ -19,7 +19,8 @@ package navigation.registration
 import config.FrontendAppConfig
 import controllers.property_or_land.routes
 import javax.inject.{Inject, Singleton}
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
+import models.core.UserAnswers
 import navigation.Navigator
 import pages.Page
 import pages.property_or_land._

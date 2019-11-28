@@ -16,9 +16,9 @@
 
 package viewmodels.addAnother
 
-import models.Status.InProgress
-import models.WhatKindOfAsset.Money
-import models.{Status, WhatKindOfAsset}
+import models.registration.pages.Status.InProgress
+import models.registration.pages.WhatKindOfAsset.Money
+import models.registration.pages.{Status, WhatKindOfAsset}
 
 final case class MoneyAssetViewModel(`type` : WhatKindOfAsset,
                                      value : Option[String],

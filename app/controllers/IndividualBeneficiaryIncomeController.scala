@@ -19,7 +19,7 @@ package controllers
 import controllers.actions._
 import forms.IndividualBeneficiaryIncomeFormProvider
 import javax.inject.Inject
-import models.{Mode, NormalMode, UserAnswers}
+import models.{Mode, NormalMode}
 import navigation.Navigator
 import pages.{IndividualBeneficiaryIncomePage, IndividualBeneficiaryNamePage}
 import play.api.data.Form

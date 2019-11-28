@@ -19,11 +19,12 @@ package navigation
 import config.FrontendAppConfig
 import controllers.routes
 import javax.inject.{Inject, Singleton}
-import models.AddATrustee.{NoComplete, YesLater, YesNow}
-import models.IndividualOrBusiness.Individual
-import models.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
-import models.WhatKindOfAsset.{Business, Money, Other, Partnership, PropertyOrLand, Shares}
 import models._
+import models.core.UserAnswers
+import models.core.pages.IndividualOrBusiness
+import models.registration.pages.TrusteesBasedInTheUK._
+import models.registration.pages.WhatKindOfAsset._
+import models.registration.pages._
 import pages._
 import pages.deceased_settlor._
 import pages.shares._
@@ -284,11 +285,11 @@ class Navigator @Inject()(
     }
 
     addAnother match {
-      case Some(models.AddAssets.YesNow) =>
+      case Some(AddAssets.YesNow) =>
         routeToAssetIndex
-      case Some(models.AddAssets.YesLater) =>
+      case Some(AddAssets.YesLater) =>
         routes.TaskListController.onPageLoad(draftId)
-      case Some(models.AddAssets.NoComplete) =>
+      case Some(AddAssets.NoComplete) =>
         routes.TaskListController.onPageLoad(draftId)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
@@ -336,11 +337,11 @@ class Navigator @Inject()(
     }
 
     addAnother match {
-      case Some(YesNow) =>
+      case Some(AddATrustee.YesNow) =>
         routeToTrusteeIndex
-      case Some(YesLater) =>
+      case Some(AddATrustee.YesLater) =>
         routes.TaskListController.onPageLoad(draftId)
-      case Some(NoComplete) =>
+      case Some(AddATrustee.NoComplete) =>
         routes.TaskListController.onPageLoad(draftId)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
@@ -388,7 +389,7 @@ class Navigator @Inject()(
       case (Some(true), Some(false)) => routes.UTRSentByPostController.onPageLoad()
       case (Some(true), Some(true)) =>
         if(config.variationsEnabled) {
-          routes.WhatIsTheUTRVariationsController.onPageLoad(NormalMode, draftId)
+          routes.WhatIsTheUTRVariationsController.onPageLoad()
         } else {
           routes.CannotMakeChangesController.onPageLoad()
         }
@@ -468,7 +469,7 @@ class Navigator @Inject()(
   }
 
   private def trusteeIndividualOrBusinessRoute(answers: UserAnswers, index : Int, draftId: String) = answers.get(TrusteeIndividualOrBusinessPage(index)) match {
-    case Some(Individual) => controllers.trustees.routes.TrusteesNameController.onPageLoad(NormalMode, index, draftId)
+    case Some(IndividualOrBusiness.Individual) => controllers.trustees.routes.TrusteesNameController.onPageLoad(NormalMode, index, draftId)
     case Some(IndividualOrBusiness.Business) => controllers.trustees.routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode,index, draftId)
     case None => routes.SessionExpiredController.onPageLoad()
   }

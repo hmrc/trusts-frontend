@@ -17,8 +17,10 @@
 package mapping.reads
 
 import java.time.LocalDate
+
+import models.core.pages.{Address, FullName}
+import models.registration.pages.PassportOrIdCardDetails
 import play.api.libs.json.{Format, Json}
-import models.{Address, FullName, PassportOrIdCardDetails}
 
 final case class IndividualSettlor(name: FullName,
                                    dateOfBirth: Option[LocalDate],
@@ -26,6 +28,7 @@ final case class IndividualSettlor(name: FullName,
                                    address : Option[Address],
                                    passport: Option[PassportOrIdCardDetails],
                                    idCard: Option[PassportOrIdCardDetails]) {
+
   def passportOrId: Option[PassportOrIdCardDetails] = if (passport.isDefined) passport else idCard
 }
 

@@ -20,9 +20,10 @@ import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
 import forms.WhatKindOfAssetFormProvider
 import javax.inject.Inject
-import models.WhatKindOfAsset.Money
+import models.registration.pages.WhatKindOfAsset
+import models.registration.pages.WhatKindOfAsset.Money
 import models.requests.DataRequest
-import models.{Enumerable, Mode, WhatKindOfAsset}
+import models.{Enumerable, Mode}
 import navigation.Navigator
 import pages.WhatKindOfAssetPage
 import play.api.data.Form

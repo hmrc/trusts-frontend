@@ -17,7 +17,7 @@
 package forms.shares
 
 import forms.behaviours.OptionFieldBehaviours
-import models.ShareClass
+import models.registration.pages.ShareClass
 import play.api.data.FormError
 
 class ShareClassFormProviderSpec extends OptionFieldBehaviours {

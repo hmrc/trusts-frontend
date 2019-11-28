@@ -16,7 +16,7 @@
 
 package pages.property_or_land
 
-import models.InternationalAddress
+import models.core.pages.InternationalAddress
 import pages.behaviours.PageBehaviours
 
 class PropertyOrLandInternationalAddressPageSpec extends PageBehaviours {

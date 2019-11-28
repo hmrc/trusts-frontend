@@ -18,7 +18,7 @@ package forms
 
 import javax.inject.Inject
 import forms.mappings.Mappings
-import models.FullName
+import models.core.pages.FullName
 import play.api.data.Form
 import play.api.data.Forms.{mapping, optional}
 
@@ -27,7 +27,6 @@ class DeclarationFormProvider @Inject() extends Mappings {
   def apply(): Form[FullName] =
   Form(
     mapping(
-
       "firstName" -> text("declaration.error.firstName.required")
         .verifying(
           firstError(

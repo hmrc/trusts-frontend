@@ -19,7 +19,8 @@ package controllers
 import controllers.actions._
 import forms.{AddAssetsFormProvider, YesNoFormProvider}
 import javax.inject.Inject
-import models.{AddAssets, Enumerable, Mode}
+import models.registration.pages.AddAssets
+import models.{Enumerable, Mode}
 import navigation.Navigator
 import pages.{AddAnAssetYesNoPage, AddAssetsPage}
 import play.api.data.Form

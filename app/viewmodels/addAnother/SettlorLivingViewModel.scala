@@ -16,9 +16,10 @@
 
 package viewmodels.addAnother
 
-import models.IndividualOrBusiness.Individual
-import models.Status.InProgress
-import models.{FullName, IndividualOrBusiness, Status}
+import models.core.pages.IndividualOrBusiness.Individual
+import models.core.pages.{FullName, IndividualOrBusiness}
+import models.registration.pages.Status
+import models.registration.pages.Status.InProgress
 
 sealed trait SettlorLivingViewModel extends SettlorViewModel
 

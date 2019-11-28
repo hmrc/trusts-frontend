@@ -20,7 +20,7 @@ import controllers.actions._
 import controllers.filters.IndexActionFilterProvider
 import javax.inject.Inject
 import models.NormalMode
-import models.Status.Completed
+import models.registration.pages.Status.Completed
 import navigation.Navigator
 import pages.entitystatus.LivingSettlorStatus
 import pages.living_settlor.{SettlorIndividualAnswerPage, SettlorIndividualOrBusinessPage}

@@ -20,7 +20,7 @@ import java.util.UUID
 
 import akka.stream.Materializer
 import javax.inject.Inject
-import models.UserAnswers
+import models.core.UserAnswers
 import models.requests.{IdentifierRequest, OptionalDataRequest}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
@@ -44,7 +44,7 @@ class CreateDraftRegistrationService @Inject()(
   }
 
   def create[A](request: IdentifierRequest[A])(implicit hc : HeaderCarrier) : Future[String] = {
-    val transformed = OptionalDataRequest(request.request, request.identifier, None, request.affinityGroup, request.agentARN)
+    val transformed = OptionalDataRequest(request.request, request.identifier, None, request.affinityGroup, request.enrolments, request.agentARN)
     build(transformed)
   }
 

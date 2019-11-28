@@ -17,7 +17,8 @@
 package views.trustees
 
 import forms.trustees.TelephoneNumberFormProvider
-import models.{FullName, NormalMode}
+import models.NormalMode
+import models.core.pages.FullName
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours

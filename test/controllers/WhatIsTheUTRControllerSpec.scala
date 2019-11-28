@@ -18,12 +18,8 @@ package controllers
 
 import base.SpecBase
 import forms.WhatIsTheUTRFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.FakeNavigator
+import models.NormalMode
 import pages.WhatIsTheUTRPage
-import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.WhatIsTheUTRView
@@ -52,7 +48,7 @@ class WhatIsTheUTRControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,fakeDraftId, onSubmit)(fakeRequest, messages).toString
+        view(form, onSubmit)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -72,7 +68,7 @@ class WhatIsTheUTRControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("1111111111"), NormalMode, fakeDraftId, onSubmit)(fakeRequest, messages).toString
+        view(form.fill("1111111111"), onSubmit)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -111,7 +107,7 @@ class WhatIsTheUTRControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, onSubmit)(fakeRequest, messages).toString
+        view(boundForm, onSubmit)(fakeRequest, messages).toString
 
       application.stop()
     }

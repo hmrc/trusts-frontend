@@ -16,7 +16,7 @@
 
 package pages.deceased_settlor
 
-import models.UKAddress
+import models.core.pages.UKAddress
 import pages.behaviours.PageBehaviours
 
 class SettlorsUKAddressPageSpec extends PageBehaviours {

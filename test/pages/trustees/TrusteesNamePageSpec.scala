@@ -16,7 +16,7 @@
 
 package pages.trustees
 
-import models.FullName
+import models.core.pages.FullName
 import pages.behaviours.PageBehaviours
 
 class TrusteesNamePageSpec extends PageBehaviours  {

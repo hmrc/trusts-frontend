@@ -19,7 +19,7 @@ package controllers.living_settlor
 import base.SpecBase
 import controllers.IndexValidation
 import forms.RemoveIndexFormProvider
-import models.FullName
+import models.core.pages.FullName
 import org.scalacheck.Arbitrary.arbitrary
 import pages.living_settlor.{RemoveSettlorPage, SettlorIndividualNamePage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}

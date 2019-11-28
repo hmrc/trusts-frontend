@@ -16,7 +16,7 @@
 
 package pages
 
-import models.WhatTypeOfBeneficiary
+import models.registration.pages.WhatTypeOfBeneficiary
 import play.api.libs.json.JsPath
 import sections.Beneficiaries
 

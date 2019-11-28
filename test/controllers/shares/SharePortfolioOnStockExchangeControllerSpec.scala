@@ -21,11 +21,9 @@ import controllers.IndexValidation
 import forms.YesNoFormProvider
 import generators.ModelGenerators
 import models.NormalMode
-import navigation.FakeNavigator
 import org.scalacheck.Arbitrary.arbitrary
 import pages.shares.SharePortfolioOnStockExchangePage
-import play.api.inject.bind
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.shares.SharePortfolioOnStockExchangeView

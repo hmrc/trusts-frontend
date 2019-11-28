@@ -18,10 +18,7 @@ package utils.countryOptions
 
 import base.SpecBase
 import com.typesafe.config.ConfigException
-import config.FrontendAppConfig
 import org.scalatest.mockito.MockitoSugar
-import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.test.Helpers._
 import utils.InputOption
 
 class CountryOptionsNonUKSpec extends SpecBase with MockitoSugar {

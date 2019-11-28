@@ -19,7 +19,8 @@ package controllers.trustees
 import base.SpecBase
 import controllers.IndexValidation
 import forms.trustees.TelephoneNumberFormProvider
-import models.{FullName, NormalMode}
+import models.NormalMode
+import models.core.pages.FullName
 import org.scalacheck.Arbitrary.arbitrary
 import pages.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteesNamePage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}

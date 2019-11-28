@@ -18,7 +18,7 @@ package controllers.trustees
 
 import base.SpecBase
 import forms.RemoveIndexFormProvider
-import models.FullName
+import models.core.pages.FullName
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages.trustees.TrusteesNamePage

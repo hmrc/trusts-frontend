@@ -18,7 +18,7 @@ package mapping.reads
 
 import java.time.LocalDate
 
-import models.{Address, FullName}
+import models.core.pages.{Address, FullName}
 import play.api.libs.json.{Format, Json}
 
 

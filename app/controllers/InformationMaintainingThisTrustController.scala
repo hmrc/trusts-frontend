@@ -17,10 +17,9 @@
 package controllers
 
 import config.FrontendAppConfig
-import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider, IdentifyForRegistration}
+import controllers.actions._
 import javax.inject.Inject
-import models.NormalMode
-import pages.WhatIsTheUTRPage
+import pages.WhatIsTheUTRVariationPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
@@ -32,18 +31,18 @@ import scala.concurrent.ExecutionContext
 class InformationMaintainingThisTrustController @Inject()(
                                                            registrationsRepository: RegistrationsRepository,
                                                            identify: IdentifyForRegistration,
-                                                           getData: DraftIdRetrievalActionProvider,
+                                                           getData: DataRetrievalAction,
                                                            requireData: DataRequiredAction,
                                                            val controllerComponents: MessagesControllerComponents,
                                                            view: InformationMaintainingThisTrustView
                                                          )(implicit ec: ExecutionContext,
                                                            config: FrontendAppConfig) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      request.userAnswers.get(WhatIsTheUTRPage) match {
-        case Some(utr) => Ok(view(draftId, utr))
-        case None => Redirect(routes.WhatIsTheUTRController.onPageLoad(NormalMode, draftId))
+      request.userAnswers.get(WhatIsTheUTRVariationPage) match {
+        case Some(utr) => Ok(view(utr))
+        case None => Redirect(routes.WhatIsTheUTRVariationsController.onPageLoad())
       }
   }
 }

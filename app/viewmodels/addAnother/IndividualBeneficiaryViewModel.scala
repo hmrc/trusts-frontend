@@ -16,8 +16,9 @@
 
 package viewmodels.addAnother
 
-import models.Status.{Completed, InProgress}
-import models.{FullName, Status}
+import models.core.pages.FullName
+import models.registration.pages.Status
+import models.registration.pages.Status._
 import play.api.libs.json.{Reads, _}
 
 case class IndividualBeneficiaryViewModel(name: Option[FullName], status: Status) {

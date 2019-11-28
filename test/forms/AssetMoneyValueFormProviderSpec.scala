@@ -17,12 +17,9 @@
 package forms
 
 import forms.behaviours.{IntFieldBehaviours, StringFieldBehaviours}
-import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
-
-import scala.collection.mutable
 
 class AssetMoneyValueFormProviderSpec extends StringFieldBehaviours with IntFieldBehaviours {
 

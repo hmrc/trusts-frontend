@@ -18,7 +18,7 @@ package forms.deceased_settlor
 
 import forms.mappings.Mappings
 import javax.inject.Inject
-import models.IndividualOrBusiness
+import models.core.pages.IndividualOrBusiness
 import play.api.data.Form
 
 class SettlorIndividualOrBusinessFormProvider @Inject() extends Mappings {

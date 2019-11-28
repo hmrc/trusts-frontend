@@ -18,30 +18,27 @@ package navigation
 
 import base.SpecBase
 import controllers.routes
-import generators.Generators
-import models.NormalMode
-import navigation.navigators.variations.CheckAndConfirmRoutes
-import org.scalatest.prop.PropertyChecks
+import models.playback.pages.DeclarationWhatNext
 import pages._
 
-class VariationsNavigatorSpec extends SpecBase
-  with PropertyChecks
-  with Generators
-  with CheckAndConfirmRoutes {
+class VariationsNavigatorSpec extends SpecBase {
 
-  implicit val navigator : Navigator = injector.instanceOf[VariationsNavigator]
+  implicit val navigator : VariationsNavigator = injector.instanceOf[VariationsNavigator]
 
-  "Navigator" when {
+  "VariationsNavigator" when {
 
-    "in Normal mode" must {
-
-      "go to Index from a page that doesn't exist in the route map" in {
-        case object UnknownPage extends Page
-        navigator.nextPage(UnknownPage, NormalMode, fakeDraftId)(emptyUserAnswers) mustBe routes.IndexController.onPageLoad()
+    "DeclareTheTrustIsUpToDate has been selected" must {
+      "go to the DeclarationNoChanges page" in {
+        val answers = emptyUserAnswers
+          .set(DeclarationWhatNextPage, DeclarationWhatNext.DeclareTheTrustIsUpToDate).success.value
+        navigator.declarationWhatsNextPage(answers) mustBe controllers.playback.routes.DeclarationController.onPageLoad()
       }
+    }
 
-      behave like checkAndConfirmRoutes
-
+    "DeclareTheTrustIsUpToDate has not been selected" must {
+      "go to the DeclarationNoChanges page" in {
+        navigator.declarationWhatsNextPage(emptyUserAnswers) mustBe routes.DeclarationWhatNextController.onPageLoad()
+      }
     }
 
   }

@@ -16,11 +16,11 @@
 
 package views
 
-import models.FullName
+import models.core.pages.FullName
 import play.twirl.api.HtmlFormat
+import utils.AccessibilityHelper._
 import views.behaviours.ViewBehaviours
 import views.html.ConfirmationView
-import utils.AccessibilityHelper._
 
 class ConfirmationViewSpec extends ViewBehaviours {
 
@@ -82,7 +82,7 @@ class ConfirmationViewSpec extends ViewBehaviours {
       val doc = asDocument(view)
       val agentOverviewLink = doc.getElementById("agent-overview")
       assertAttributeValueForElement(agentOverviewLink, "href", "#")
-      assertContainsTextForId(doc, "agent-overview", "return to register and maintain a trust for a client.")
+      assertContainsTextForId(doc, "agent-overview", "return to register and maintain a trust for a client")
     }
   }
 

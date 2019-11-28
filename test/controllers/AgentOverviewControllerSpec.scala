@@ -19,7 +19,8 @@ package controllers
 import java.time.LocalDateTime
 
 import base.SpecBase
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
+import models.core.UserAnswers
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.AgentTelephoneNumberPage

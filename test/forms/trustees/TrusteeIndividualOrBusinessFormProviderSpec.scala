@@ -17,7 +17,7 @@
 package forms.trustees
 
 import forms.behaviours.OptionFieldBehaviours
-import models.IndividualOrBusiness
+import models.core.pages.IndividualOrBusiness
 import play.api.data.FormError
 
 class TrusteeIndividualOrBusinessFormProviderSpec extends OptionFieldBehaviours {

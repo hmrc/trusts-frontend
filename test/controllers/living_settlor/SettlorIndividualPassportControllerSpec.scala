@@ -21,11 +21,12 @@ import java.time.{LocalDate, ZoneOffset}
 import base.SpecBase
 import controllers.IndexValidation
 import forms.PassportOrIdCardFormProvider
-import models.{FullName, IndividualOrBusiness, NormalMode, PassportOrIdCardDetails}
+import models.NormalMode
+import models.core.pages.{FullName, IndividualOrBusiness}
+import models.registration.pages.PassportOrIdCardDetails
 import org.scalacheck.Arbitrary.arbitrary
 import pages.living_settlor.{SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNamePage, SettlorIndividualPassportPage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils._

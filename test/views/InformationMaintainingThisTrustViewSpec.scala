@@ -16,9 +16,9 @@
 
 package views
 
+import controllers.routes
 import views.behaviours.ViewBehaviours
 import views.html.InformationMaintainingThisTrustView
-import controllers.routes
 
 class InformationMaintainingThisTrustViewSpec extends ViewBehaviours {
 
@@ -28,7 +28,7 @@ class InformationMaintainingThisTrustViewSpec extends ViewBehaviours {
 
     val view = viewFor[InformationMaintainingThisTrustView](Some(emptyUserAnswers))
 
-    val applyView = view.apply(fakeDraftId, utr)(fakeRequest, messages)
+    val applyView = view.apply(utr)(fakeRequest, messages)
 
 
     "Have a dynamic utr in the subheading" in {
@@ -52,7 +52,7 @@ class InformationMaintainingThisTrustViewSpec extends ViewBehaviours {
 
     behave like pageWithBackLink(applyView)
 
-    behave like pageWithContinueButton(applyView,routes.DeclarationWhatNextController.onPageLoad(fakeDraftId).url)
+    behave like pageWithContinueButton(applyView,routes.DeclarationWhatNextController.onPageLoad().url)
 
   }
 }

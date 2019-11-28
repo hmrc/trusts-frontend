@@ -17,7 +17,6 @@
 package forms
 
 import forms.behaviours.StringFieldBehaviours
-import org.scalacheck.Arbitrary.arbitrary
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
 

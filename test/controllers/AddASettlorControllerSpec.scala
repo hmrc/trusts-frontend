@@ -17,10 +17,10 @@
 package controllers
 
 import base.SpecBase
-import forms.YesNoFormProvider
-import forms.AddASettlorFormProvider
-import models.SettlorKindOfTrust.Intervivos
-import models.{AddASettlor, NormalMode}
+import forms.{AddASettlorFormProvider, YesNoFormProvider}
+import models.NormalMode
+import models.registration.pages.AddASettlor
+import models.registration.pages.SettlorKindOfTrust.Intervivos
 import pages.SettlorKindOfTrustPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

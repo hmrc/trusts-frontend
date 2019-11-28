@@ -18,8 +18,9 @@ package pages.trustees
 
 import java.time.LocalDate
 
-import models.IndividualOrBusiness.Business
-import models.{FullName, IndividualOrBusiness, UKAddress, UserAnswers}
+import models.core.UserAnswers
+import models.core.pages.IndividualOrBusiness.Business
+import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 

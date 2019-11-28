@@ -17,7 +17,7 @@
 package controllers.actions
 
 import javax.inject.Inject
-import models.RegistrationStatus
+import models.registration.pages.RegistrationStatus
 import models.requests.{IdentifierRequest, OptionalDataRequest}
 import play.api.mvc.ActionTransformer
 import repositories.RegistrationsRepository
@@ -42,7 +42,7 @@ class DraftIdDataRetrievalAction(
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] = {
     registrationsRepository.get(draftId, request.identifier).map {
       userAnswers =>
-        OptionalDataRequest(request.request, request.identifier, userAnswers, request.affinityGroup, request.agentARN)
+        OptionalDataRequest(request.request, request.identifier, userAnswers, request.affinityGroup, request.enrolments, request.agentARN)
     }
   }
 
