@@ -114,7 +114,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
       application.stop()
     }
 
-    "must return OK and the correct view for GET ../status/cannot-access" in new LocalSetup {
+    "must return OK and the correct view for GET ../status/claimed" in new LocalSetup {
 
       override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.claimed().url)
 
