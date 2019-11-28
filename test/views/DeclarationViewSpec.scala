@@ -18,14 +18,14 @@ package views
 
 import forms.DeclarationFormProvider
 import models.NormalMode
-import models.core.pages.FullName
+import models.core.pages.Declaration
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.auth.core.AffinityGroup
 import views.behaviours.QuestionViewBehaviours
 import views.html.DeclarationView
 
-class DeclarationViewSpec extends QuestionViewBehaviours[FullName] {
+class DeclarationViewSpec extends QuestionViewBehaviours[Declaration] {
 
   val messageKeyPrefix = "declaration"
 

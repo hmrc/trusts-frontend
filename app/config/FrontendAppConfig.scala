@@ -96,6 +96,6 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   lazy val variationsEnabled: Boolean = configuration.get[Boolean]("microservice.services.features.variations")
 
-  lazy val variationsDeclarationEmailEnabled: Boolean = configuration.getBoolean("microservice.services.features.playback.declaration.email.enabled").getOrElse(false)
+  lazy val declarationEmailEnabled: Boolean = configuration.getOptional[Boolean]("microservice.services.features.declaration.email.enabled").getOrElse(false)
 
 }

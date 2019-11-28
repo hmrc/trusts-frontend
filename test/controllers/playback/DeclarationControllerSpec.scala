@@ -17,13 +17,12 @@
 package controllers.playback
 
 import base.SpecBase
-import forms.playback.DeclarationFormProvider
-import models.core.pages.FullName
-import models.playback.pages.Declaration
+import forms.DeclarationFormProvider
+import models.core.pages.{Declaration, FullName}
 import models.playback.pages.DeclarationWhatNext.DeclareTheTrustIsUpToDate
 import org.mockito.Mockito.reset
 import pages.DeclarationWhatNextPage
-import pages.playback.DeclarationPage
+import pages.DeclarationPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
@@ -117,7 +116,7 @@ class DeclarationControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual controllers.playback.routes.DeclarationController.onPageLoad().url // TODO Redirect to variation confirmation page
+      redirectLocation(result).value mustEqual controllers.routes.VariationsConfirmationController.onPageLoad().url
 
       application.stop()
     }

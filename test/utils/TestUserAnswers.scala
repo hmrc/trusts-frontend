@@ -19,7 +19,7 @@ package utils
 import java.time.LocalDate
 
 import models.core.UserAnswers
-import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
+import models.core.pages.{Declaration, FullName, IndividualOrBusiness, UKAddress}
 import models.registration.Matched.{Failed, Success}
 import models.registration.pages.Status.Completed
 import models.registration.pages.TrusteesBasedInTheUK.UKBasedTrustees
@@ -123,7 +123,7 @@ object TestUserAnswers extends TryValues {
 
   def withDeclaration(userAnswers: UserAnswers): UserAnswers = {
     userAnswers
-      .set(DeclarationPage, FullName("First", None, "Last")).success.value
+      .set(DeclarationPage, Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
   }
 
   def withMatchingSuccess(userAnswers: UserAnswers): UserAnswers = {

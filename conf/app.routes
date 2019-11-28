@@ -15,6 +15,7 @@ POST       /variations/declare-change                        controllers.Declara
 GET        /variations/declaration                      controllers.playback.DeclarationController.onPageLoad()
 POST       /variations/declaration                      controllers.playback.DeclarationController.onSubmit()
 
+GET        /variations/confirmation              controllers.VariationsConfirmationController.onPageLoad()
 
 # Registration
 
@@ -458,7 +459,6 @@ POST       /:draftId/change-agent-international-address                  control
 GET        /:draftId/declaration                        controllers.DeclarationController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/declaration                        controllers.DeclarationController.onSubmit(mode: Mode = NormalMode, draftId: String)
 
-GET        /variations/confirmation              controllers.VariationsConfirmationController.onPageLoad()
 GET        /:draftId/confirmation                         controllers.ConfirmationController.onPageLoad(draftId: String)
 
 GET        /:draftId/your-draft-registration                          controllers.SummaryAnswerPageController.onPageLoad(draftId : String)
