@@ -23,17 +23,17 @@ class TrustClaimedViewSpec extends ViewBehaviours {
 
   val utr = "0987654321"
 
-  "CannotAccessTrust view" must {
+  "TrustClaimed view" must {
 
     val view = viewFor[TrustClaimedView](Some(emptyUserAnswers))
 
     val applyView = view.apply(utr)(fakeRequest, messages)
 
-    behave like normalPage(applyView, "cannotAccessTrust","p1", "p2","p2.a")
+    behave like normalPage(applyView, "trustClaimed","p1", "p2","p2.a")
 
     "display the correct subheading" in {
       val doc = asDocument(applyView)
-      assertContainsText(doc, messages("cannotAccessTrust.subheading", utr))
+      assertContainsText(doc, messages("trustClaimed.subheading", utr))
     }
   }
 }
