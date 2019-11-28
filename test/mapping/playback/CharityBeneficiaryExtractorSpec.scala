@@ -18,7 +18,7 @@ package mapping.playback
 
 import base.SpecBaseHelpers
 import generators.Generators
-import models.core.pages.UKAddress
+import models.core.pages.{CharityOrTrust, UKAddress}
 import models.playback.http._
 import models.playback.{MetaData, UserAnswers}
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
@@ -74,6 +74,9 @@ class CharityBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
         val extraction = charityExtractor.extract(ua, Some(charities))
 
         extraction mustBe 'right
+
+        extraction.right.value.success.value.get(BeneficiaryCharityOrTrustPage(0)).get mustBe CharityOrTrust.Charity
+        extraction.right.value.success.value.get(BeneficiaryCharityOrTrustPage(1)).get mustBe CharityOrTrust.Charity
 
         extraction.right.value.success.value.get(CharityBeneficiaryNamePage(0)).get mustBe "Charity 0"
         extraction.right.value.success.value.get(CharityBeneficiaryNamePage(1)).get mustBe "Charity 1"

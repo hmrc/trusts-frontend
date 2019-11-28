@@ -18,7 +18,7 @@ package mapping.playback
 
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
-import models.core.pages.{InternationalAddress, UKAddress}
+import models.core.pages.{CharityOrTrust, InternationalAddress, UKAddress}
 import models.playback.http.DisplayTrustCharityType
 import models.playback.{MetaData, UserAnswers}
 import pages.beneficiaries.charity._
@@ -40,6 +40,7 @@ class CharityBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[Lis
             case (answers, (charityBeneficiary, index)) =>
 
             answers
+              .flatMap(_.set(BeneficiaryCharityOrTrustPage(index), CharityOrTrust.Charity))
               .flatMap(_.set(CharityBeneficiaryNamePage(index), charityBeneficiary.organisationName))
               .flatMap(_.set(CharityBeneficiaryDiscretionYesNoPage(index), charityBeneficiary.beneficiaryDiscretion))
               .flatMap(_.set(CharityBeneficiaryShareOfIncomePage(index), charityBeneficiary.beneficiaryShareOfIncome))
