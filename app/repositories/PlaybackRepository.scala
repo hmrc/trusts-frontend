@@ -39,7 +39,7 @@ class DefaultPlaybackRepository @Inject()(
                                           dateFormatter: DateFormatter
                                         )(implicit ec: ExecutionContext, m: Materializer) extends PlaybackRepository {
 
-  private val collectionName: String = "playback"
+  private val collectionName: String = "playback-answers"
 
   private val cacheTtl = config.get[Int]("mongodb.playback.ttlSeconds")
 
@@ -47,8 +47,8 @@ class DefaultPlaybackRepository @Inject()(
     mongo.database.map(_.collection[JSONCollection](collectionName))
 
   private val lastUpdatedIndex = Index(
-    key = Seq("lastUpdated" -> IndexType.Ascending),
-    name = Some("user-answers-last-updated-index"),
+    key = Seq("updatedAt" -> IndexType.Ascending),
+    name = Some("user-answers-updated-at-index"),
     options = BSONDocument("expireAfterSeconds" -> cacheTtl)
   )
 
@@ -73,8 +73,7 @@ class DefaultPlaybackRepository @Inject()(
     )
 
     val modifier = Json.obj(
-      "$set" ->
-        Json.obj(
+      "$set" -> Json.obj(
         "updatedAt" -> Json.obj(
           "$date" -> Timestamp.valueOf(LocalDateTime.now)
         )
