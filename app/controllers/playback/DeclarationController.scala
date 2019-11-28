@@ -17,7 +17,7 @@
 package controllers.playback
 
 import controllers.actions._
-import forms.playback.DeclarationFormProvider
+import forms.DeclarationFormProvider
 import navigation.Navigator
 import pages.DeclarationWhatNextPage
 import repositories.RegistrationsRepository
@@ -28,8 +28,7 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import javax.inject.Inject
-import pages.playback.DeclarationPage
-
+import pages.DeclarationPage
 
 class DeclarationController @Inject()(
                                        override val messagesApi: MessagesApi,
@@ -57,7 +56,7 @@ class DeclarationController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, request.affinityGroup, routes.DeclarationController.onSubmit()))
+      Ok(view(preparedForm, request.affinityGroup, controllers.playback.routes.DeclarationController.onSubmit()))
   }
 
   def onSubmit(): Action[AnyContent] = actions().async {
@@ -65,7 +64,7 @@ class DeclarationController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, request.affinityGroup, routes.DeclarationController.onSubmit()))),
+          Future.successful(BadRequest(view(formWithErrors, request.affinityGroup, controllers.playback.routes.DeclarationController.onSubmit()))),
 
         // TODO:  Check response for submission of no change data and redirect accordingly
 
@@ -73,7 +72,7 @@ class DeclarationController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, value))
             _ <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(routes.DeclarationController.onPageLoad()) // TODO Redirect to variation confirmation page
+          } yield Redirect(controllers.routes.VariationsConfirmationController.onPageLoad())
         }
       )
 

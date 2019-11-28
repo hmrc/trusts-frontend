@@ -19,6 +19,7 @@ package views
 import controllers.routes
 import views.behaviours.ViewBehaviours
 import views.html.InformationMaintainingThisTrustView
+import config.FrontendAppConfig
 
 class InformationMaintainingThisTrustViewSpec extends ViewBehaviours {
 
@@ -30,6 +31,7 @@ class InformationMaintainingThisTrustViewSpec extends ViewBehaviours {
 
     val applyView = view.apply(utr)(fakeRequest, messages)
 
+    val config = app.injector.instanceOf[FrontendAppConfig]
 
     "Have a dynamic utr in the subheading" in {
       val doc = asDocument(applyView)
@@ -52,7 +54,9 @@ class InformationMaintainingThisTrustViewSpec extends ViewBehaviours {
 
     behave like pageWithBackLink(applyView)
 
-    behave like pageWithContinueButton(applyView,routes.DeclarationWhatNextController.onPageLoad().url)
+    if (config.playbackEnabled) {
+      behave like pageWithContinueButton(applyView, routes.DeclarationWhatNextController.onPageLoad().url)
+    }
 
   }
 }

@@ -20,6 +20,7 @@ import javax.inject.Inject
 import mapping.reads.{LeadTrusteeIndividual, Trustee, Trustees}
 import mapping.{AddressType, Declaration, Mapping}
 import models.core.UserAnswers
+import models.core.pages.FullName
 import pages.trustees.{TrusteeLiveInTheUKPage, TrusteesInternationalAddressPage, TrusteesUkAddressPage}
 import pages.{AgentInternalReferencePage, _}
 import play.api.Logger
@@ -29,7 +30,7 @@ class DeclarationMapper @Inject()(nameMapper: NameMapper,
 
   override def build(userAnswers: UserAnswers): Option[Declaration] = {
 
-    val declarationName = userAnswers.get(DeclarationPage)
+    val declaration = userAnswers.get(DeclarationPage)
     val agentInternalReference = userAnswers.get(AgentInternalReferencePage)
 
     val address = agentInternalReference match {
@@ -39,10 +40,10 @@ class DeclarationMapper @Inject()(nameMapper: NameMapper,
 
     address flatMap {
       declarationAddress =>
-        declarationName.map {
-          decName =>
+        declaration.map {
+          dec =>
             Declaration(
-              name = nameMapper.build(decName),
+              name = nameMapper.build(dec.name),
               address = declarationAddress
             )
         }

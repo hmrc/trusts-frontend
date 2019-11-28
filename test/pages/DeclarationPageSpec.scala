@@ -16,7 +16,7 @@
 
 package pages
 
-import models.core.pages.FullName
+import models.core.pages.Declaration
 import pages.behaviours.PageBehaviours
 
 
@@ -24,10 +24,10 @@ class DeclarationPageSpec extends PageBehaviours {
 
   "DeclarationPage" must {
 
-    beRetrievable[FullName](DeclarationPage)
+    beRetrievable[Declaration](DeclarationPage)
 
-    beSettable[FullName](DeclarationPage)
+    beSettable[Declaration](DeclarationPage)
 
-    beRemovable[FullName](DeclarationPage)
+    beRemovable[Declaration](DeclarationPage)
   }
 }
