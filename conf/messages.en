@@ -1401,3 +1401,10 @@ agentNotAuthorised.p5 = You can
 agentNotAuthorised.p5.a = return to register and maintain a trust for a client.
 
 variationsConfirmationPage.paragraph4 = You can
+
+trustClaimed.title = Sorry, you cannot access this trust
+trustClaimed.heading = Sorry, you cannot access this trust
+trustClaimed.subheading = This trust’s UTR: {0}
+trustClaimed.p1 = Another Government Gateway account is linked to it. Please sign in with that account.
+trustClaimed.p2 = If you are unable to do so,
+trustClaimed.p2.a = contact the trusts helpline (opens in a new window or tab)

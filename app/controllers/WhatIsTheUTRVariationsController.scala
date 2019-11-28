@@ -21,8 +21,7 @@ import connector.{EnrolmentStoreConnector, TrustsStoreConnector}
 import controllers.actions._
 import forms.WhatIsTheUTRFormProvider
 import javax.inject.Inject
-import models.AgentTrustsResponse.NotClaimed
-import models.Mode
+import models.AgentTrustsResponse.{Claimed, NotClaimed}
 import models.requests.DataRequest
 import pages.WhatIsTheUTRVariationPage
 import play.api.data.Form
@@ -83,14 +82,17 @@ class WhatIsTheUTRVariationsController @Inject()(
 
                   val agentEnrolled = checkEnrolmentOfAgent(value)
 
-                  if(agentEnrolled){
+                  if(agentEnrolled) {
                     Redirect(routes.TrustStatusController.status())
                   } else {
                     Redirect(routes.AgentNotAuthorisedController.onPageLoad())
                   }
 
               }
-              case _ => Future.successful(Redirect(routes.TrustStatusController.status()))
+              case _ => enrolmentStoreConnector.getAgentTrusts(value) map {
+                case Claimed => Redirect(routes.TrustStatusController.claimed())
+                case _ => Redirect(routes.TrustStatusController.status())
+              }
             }
 
             claim match {

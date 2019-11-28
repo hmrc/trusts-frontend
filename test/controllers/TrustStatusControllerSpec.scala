@@ -114,6 +114,20 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
       application.stop()
     }
 
+    "must return OK and the correct view for GET ../status/cannot-access" in new LocalSetup {
+
+      override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.claimed().url)
+
+      val view: TrustClaimedView = application.injector.instanceOf[TrustClaimedView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(utr)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
     "must return SERVICE_UNAVAILABLE and the correct view for GET ../status/down" in new LocalSetup {
 
       override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.down().url)

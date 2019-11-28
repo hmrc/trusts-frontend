@@ -34,6 +34,7 @@ object AgentTrustsResponse {
   case object Forbidden extends AgentTrustsResponse
   case object BadRequest extends AgentTrustsResponse
   case object ServerError extends AgentTrustsResponse
+  case object Claimed extends AgentTrustsResponse
 
   implicit lazy val httpReads: HttpReads[AgentTrustsResponse] =
     new HttpReads[AgentTrustsResponse] {
@@ -43,8 +44,8 @@ object AgentTrustsResponse {
         response.status match {
           case OK =>
             response.json.as[AgentTrusts] match {
-              case AgentTrusts(Seq(), _) => NotClaimed
-              case agentTrusts => agentTrusts
+                case AgentTrusts(Seq(), _) => NotClaimed
+                case agentTrusts => if (agentTrusts.principalUserIds.nonEmpty) agentTrusts else Claimed
             }
           case NO_CONTENT =>
             NoContent
@@ -59,5 +60,4 @@ object AgentTrustsResponse {
         }
       }
     }
-
 }
