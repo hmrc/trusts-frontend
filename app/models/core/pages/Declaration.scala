@@ -14,20 +14,14 @@
  * limitations under the License.
  */
 
-package pages.playback
+package models.core.pages
 
-import models.playback.pages.Declaration
-import pages.behaviours.PageBehaviours
+import play.api.libs.json.{Json, OFormat}
 
+case class Declaration(name: FullName, email: Option[String])
 
-class DeclarationPageSpec extends PageBehaviours {
+object Declaration {
 
-  "DeclarationPage" must {
+  implicit lazy val formats: OFormat[Declaration] = Json.format[Declaration]
 
-    beRetrievable[Declaration](DeclarationPage)
-
-    beSettable[Declaration](DeclarationPage)
-
-    beRemovable[Declaration](DeclarationPage)
-  }
 }

@@ -109,4 +109,25 @@ class DeclarationFormProviderSpec extends StringFieldBehaviours {
       requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
     )
   }
+
+  ".email" must {
+
+    val fieldName = "email"
+    val lengthKey = "declaration.error.email.length"
+    val maxLength = 35
+
+    behave like fieldWithMaxLength(
+      form,
+      fieldName,
+      maxLength = maxLength,
+      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+    )
+
+    behave like optionalField(
+      form,
+      fieldName,
+      validDataGenerator = RegexpGen.from(Validation.emailRegex)
+    )
+  }
+
 }
