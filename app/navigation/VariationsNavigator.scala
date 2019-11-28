@@ -28,7 +28,7 @@ class VariationsNavigator @Inject()() {
       case Some(DeclareTheTrustIsUpToDate) =>
         controllers.playback.routes.DeclarationController.onPageLoad()
       case _ =>
-        controllers.routes.DeclarationWhatNextController.onPageLoad()
+        controllers.playback.routes.DeclarationWhatNextController.onPageLoad()
     }
   }
 }

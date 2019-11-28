@@ -37,7 +37,7 @@ class VariationsNavigatorSpec extends SpecBase {
 
     "DeclareTheTrustIsUpToDate has not been selected" must {
       "go to the DeclarationNoChanges page" in {
-        navigator.declarationWhatsNextPage(emptyUserAnswers) mustBe routes.DeclarationWhatNextController.onPageLoad()
+        navigator.declarationWhatsNextPage(emptyUserAnswers) mustBe controllers.playback.routes.DeclarationWhatNextController.onPageLoad()
       }
     }
 

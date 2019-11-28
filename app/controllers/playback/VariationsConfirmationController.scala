@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.playback
 
 import controllers.actions._
 import javax.inject.Inject
@@ -38,7 +38,7 @@ class VariationsConfirmationController @Inject()(
     implicit request =>
 
       val isAgent = request.affinityGroup == Agent
-      val agentOverviewUrl = routes.AgentOverviewController.onPageLoad().url
+      val agentOverviewUrl = controllers.routes.AgentOverviewController.onPageLoad().url
 
       val fakeTvn = "XC TVN 000 000 4912"
 

@@ -16,7 +16,7 @@
 
 package views
 
-import controllers.routes
+import controllers.playback.routes
 import views.behaviours.ViewBehaviours
 import views.html.InformationMaintainingThisTrustView
 

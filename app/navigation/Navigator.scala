@@ -389,7 +389,7 @@ class Navigator @Inject()(
       case (Some(true), Some(false)) => routes.UTRSentByPostController.onPageLoad()
       case (Some(true), Some(true)) =>
         if(config.variationsEnabled) {
-          routes.WhatIsTheUTRVariationsController.onPageLoad()
+          controllers.playback.routes.WhatIsTheUTRVariationsController.onPageLoad()
         } else {
           routes.CannotMakeChangesController.onPageLoad()
         }

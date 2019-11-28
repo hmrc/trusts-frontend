@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.playback
 
 import base.SpecBase
 import connector.{EnrolmentStoreConnector, TrustClaim, TrustsStoreConnector}
@@ -144,7 +144,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual controllers.routes.TrustStatusController.locked().url
+        redirectLocation(result).value mustEqual controllers.playback.routes.TrustStatusController.locked().url
 
       application.stop()
     }
@@ -257,7 +257,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustBe routes.AgentNotAuthorisedController.onPageLoad().url
+        redirectLocation(result).value mustBe controllers.playback.routes.AgentNotAuthorisedController.onPageLoad().url
 
         application.stop()
       }
@@ -335,7 +335,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -352,7 +352,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }

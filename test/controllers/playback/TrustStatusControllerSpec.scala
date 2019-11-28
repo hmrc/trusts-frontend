@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.playback
 
+import _root_.pages.WhatIsTheUTRVariationPage
 import base.SpecBase
 import connector.{TrustClaim, TrustConnector, TrustsStoreConnector}
 import models.core.UserAnswers
@@ -23,7 +24,6 @@ import models.playback._
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
-import _root_.pages.WhatIsTheUTRVariationPage
 import play.api.Application
 import play.api.inject.bind
 import play.api.libs.json._

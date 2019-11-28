@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.playback
 
 import config.FrontendAppConfig
 import controllers.actions._

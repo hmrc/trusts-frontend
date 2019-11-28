@@ -35,6 +35,6 @@
     @if(affinityGroup == AffinityGroup.Agent) {
       <p>@messages("IvDown.paragraph2") <a id="register-and-maintain-link" href=@AgentOverviewController.onPageLoad().url>@messages("IvDown.return.link")</a>.</p>
     } else {
-      @components.button_link(messages("site.try-again"), WhatIsTheUTRVariationsController.onPageLoad().url)
+      @components.button_link(messages("site.try-again"), controllers.playback.routes.WhatIsTheUTRVariationsController.onPageLoad().url)
     }
 }

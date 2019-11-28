@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.playback
 
 import config.FrontendAppConfig
 import connector.{EnrolmentStoreConnector, TrustsStoreConnector}
@@ -22,7 +22,6 @@ import controllers.actions._
 import forms.WhatIsTheUTRFormProvider
 import javax.inject.Inject
 import models.AgentTrustsResponse.NotClaimed
-import models.Mode
 import models.requests.DataRequest
 import pages.WhatIsTheUTRVariationPage
 import play.api.data.Form
@@ -86,7 +85,7 @@ class WhatIsTheUTRVariationsController @Inject()(
                   if(agentEnrolled){
                     Redirect(routes.TrustStatusController.status())
                   } else {
-                    Redirect(routes.AgentNotAuthorisedController.onPageLoad())
+                    Redirect(controllers.playback.routes.AgentNotAuthorisedController.onPageLoad())
                   }
 
               }

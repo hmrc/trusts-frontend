@@ -14,36 +14,40 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.playback
 
 import base.SpecBase
+import pages.WhatIsTheUTRVariationPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.VariationsConfirmationView
+import views.html.TrustNotClaimedView
 
-class VariationsConfirmationControllerSpec extends SpecBase {
+class TrustNotClaimedControllerSpec extends SpecBase {
 
-  "Variations confirmation Controller" must {
+  "TrustNotClaimed Controller" must {
 
-    "return OK and the correct view for a onPageLoad when TVN is available" in {
+    "return OK and the correct view for a GET" in {
 
-      val fakeTvn = "XC TVN 000 000 4912"
+      val utr = "0987654321"
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val answers = emptyUserAnswers
+        .set(WhatIsTheUTRVariationPage, utr)
+        .success.value
 
-      val request = FakeRequest(GET, routes.VariationsConfirmationController.onPageLoad().url)
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+      val request = FakeRequest(GET, routes.TrustNotClaimedController.onPageLoad().url)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[VariationsConfirmationView]
+      val view = application.injector.instanceOf[TrustNotClaimedView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(fakeTvn, false, "#")(fakeRequest, messages).toString
+        view(utr)(fakeRequest, messages).toString
 
       application.stop()
     }
   }
-
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.playback
 
 import base.SpecBase
 import pages.WhatIsTheUTRVariationPage

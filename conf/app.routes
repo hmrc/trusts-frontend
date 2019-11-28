@@ -4,13 +4,13 @@ GET        /                                            controllers.IndexControl
 
 #variations
 
-GET        /variations/enter-trust-utr                        controllers.WhatIsTheUTRVariationsController.onPageLoad()
-POST       /variations/enter-trust-utr                        controllers.WhatIsTheUTRVariationsController.onSubmit()
+GET        /variations/enter-trust-utr                        controllers.playback.WhatIsTheUTRVariationsController.onPageLoad()
+POST       /variations/enter-trust-utr                        controllers.playback.WhatIsTheUTRVariationsController.onSubmit()
 
-GET        /variations/maintain-a-trust/information           controllers.InformationMaintainingThisTrustController.onPageLoad()
+GET        /variations/maintain-a-trust/information           controllers.playback.InformationMaintainingThisTrustController.onPageLoad()
 
-GET        /variations/declare-change                        controllers.DeclarationWhatNextController.onPageLoad()
-POST       /variations/declare-change                        controllers.DeclarationWhatNextController.onSubmit()
+GET        /variations/declare-change                        controllers.playback.DeclarationWhatNextController.onPageLoad()
+POST       /variations/declare-change                        controllers.playback.DeclarationWhatNextController.onSubmit()
 
 GET        /variations/declaration                      controllers.playback.DeclarationController.onPageLoad()
 POST       /variations/declaration                      controllers.playback.DeclarationController.onSubmit()
@@ -458,7 +458,7 @@ POST       /:draftId/change-agent-international-address                  control
 GET        /:draftId/declaration                        controllers.DeclarationController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/declaration                        controllers.DeclarationController.onSubmit(mode: Mode = NormalMode, draftId: String)
 
-GET        /variations/confirmation              controllers.VariationsConfirmationController.onPageLoad()
+GET        /variations/confirmation              controllers.playback.VariationsConfirmationController.onPageLoad()
 GET        /:draftId/confirmation                         controllers.ConfirmationController.onPageLoad(draftId: String)
 
 GET        /:draftId/your-draft-registration                          controllers.SummaryAnswerPageController.onPageLoad(draftId : String)
@@ -643,16 +643,16 @@ POST       /:draftId/settlors/living/change-holdover-relief                  con
 GET        /:draftId/settlors/information-you-need                       controllers.SettlorInfoController.onPageLoad(draftId: String)
 
 
-GET        /status/closed                          controllers.TrustStatusController.closed()
-GET        /status/processing                      controllers.TrustStatusController.processing()
-GET        /status/not-found                       controllers.TrustStatusController.notFound()
-GET        /status/down                            controllers.TrustStatusController.down()
-GET        /status/locked                          controllers.TrustStatusController.locked()
-GET        /status                                 controllers.TrustStatusController.status()
+GET        /status/closed                          controllers.playback.TrustStatusController.closed()
+GET        /status/processing                      controllers.playback.TrustStatusController.processing()
+GET        /status/not-found                       controllers.playback.TrustStatusController.notFound()
+GET        /status/down                            controllers.playback.TrustStatusController.down()
+GET        /status/locked                          controllers.playback.TrustStatusController.locked()
+GET        /status                                 controllers.playback.TrustStatusController.status()
 
-GET        /variations/trust-not-claimed                       controllers.TrustNotClaimedController.onPageLoad()
+GET        /variations/trust-not-claimed                       controllers.playback.TrustNotClaimedController.onPageLoad()
 
-GET        /variations/agent-not-authorised                    controllers.AgentNotAuthorisedController.onPageLoad()
+GET        /variations/agent-not-authorised                    controllers.playback.AgentNotAuthorisedController.onPageLoad()
 
 GET        /:draftId/maintain-saved-registration           controllers.AgentOverviewController.continue(draftId: String)
 

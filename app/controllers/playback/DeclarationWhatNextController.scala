@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.playback
 
 import controllers.actions._
 import forms.DeclarationWhatNextFormProvider
 import javax.inject.Inject
-import models.{Enumerable, NormalMode}
+import models.Enumerable
 import navigation.VariationsNavigator
 import pages.DeclarationWhatNextPage
 import play.api.data.Form

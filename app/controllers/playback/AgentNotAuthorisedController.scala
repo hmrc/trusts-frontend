@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.playback
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifyForPlayback}
 import javax.inject.Inject
@@ -36,6 +36,6 @@ class AgentNotAuthorisedController @Inject()(
     implicit request =>
       request.userAnswers.get(WhatIsTheUTRVariationPage) map { utr =>
         Ok(view(utr))
-      } getOrElse Redirect(routes.SessionExpiredController.onPageLoad())
+      } getOrElse Redirect(controllers.routes.SessionExpiredController.onPageLoad())
   }
 }

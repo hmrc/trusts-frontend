@@ -6,11 +6,11 @@ echo "Applying migration DeclarationWhatNext"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /:draftId/declarationWhatNext                        controllers.DeclarationWhatNextController.onPageLoad(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
-echo "POST       /:draftId/declarationWhatNext                        controllers.DeclarationWhatNextController.onSubmit(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
+echo "GET        /:draftId/declarationWhatNext                        controllers.playback.DeclarationWhatNextController.onPageLoad(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
+echo "POST       /:draftId/declarationWhatNext                        controllers.playback.DeclarationWhatNextController.onSubmit(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
 
-echo "GET        /:draftId/changeDeclarationWhatNext                  controllers.DeclarationWhatNextController.onPageLoad(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
-echo "POST       /:draftId/changeDeclarationWhatNext                  controllers.DeclarationWhatNextController.onSubmit(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
+echo "GET        /:draftId/changeDeclarationWhatNext                  controllers.playback.DeclarationWhatNextController.onPageLoad(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
+echo "POST       /:draftId/changeDeclarationWhatNext                  controllers.playback.DeclarationWhatNextController.onSubmit(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

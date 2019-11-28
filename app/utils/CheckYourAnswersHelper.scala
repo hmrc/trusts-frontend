@@ -46,7 +46,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "declarationWhatNext.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"declarationWhatNext.$x")),
-        routes.DeclarationWhatNextController.onPageLoad().url
+        controllers.playback.routes.DeclarationWhatNextController.onPageLoad().url
       )
   }
 

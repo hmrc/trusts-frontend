@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.playback
 
 import controllers.actions._
 import javax.inject.Inject
@@ -39,6 +39,6 @@ class TrustNotClaimedController @Inject()(
     implicit request =>
       request.userAnswers.get(WhatIsTheUTRVariationPage) map { utr =>
         Ok(view(utr))
-      } getOrElse Redirect(routes.SessionExpiredController.onPageLoad())
+      } getOrElse Redirect(controllers.routes.SessionExpiredController.onPageLoad())
   }
 }
