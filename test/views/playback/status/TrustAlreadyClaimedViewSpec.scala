@@ -17,23 +17,23 @@
 package views.playback.status
 
 import views.behaviours.ViewBehaviours
-import views.html.playback.status.TrustClaimedView
+import views.html.playback.status.TrustAlreadyClaimedView
 
-class TrustClaimedViewSpec extends ViewBehaviours {
+class TrustAlreadyClaimedViewSpec extends ViewBehaviours {
 
   val utr = "0987654321"
 
-  "TrustClaimed view" must {
+  "TrustAlreadyClaimed view" must {
 
-    val view = viewFor[TrustClaimedView](Some(emptyUserAnswers))
+    val view = viewFor[TrustAlreadyClaimedView](Some(emptyUserAnswers))
 
     val applyView = view.apply(utr)(fakeRequest, messages)
 
-    behave like normalPage(applyView, "trustClaimed","p1", "p2","p2.a")
+    behave like normalPage(applyView, "trustAlreadyClaimed","p1", "p2","p2.a")
 
     "display the correct subheading" in {
       val doc = asDocument(applyView)
-      assertContainsText(doc, messages("trustClaimed.subheading", utr))
+      assertContainsText(doc, messages("trustAlreadyClaimed.subheading", utr))
     }
   }
 }

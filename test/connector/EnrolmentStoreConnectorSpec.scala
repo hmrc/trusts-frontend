@@ -18,7 +18,7 @@ package connector
 
 import com.github.tomakehurst.wiremock.client.WireMock._
 import config.FrontendAppConfig
-import models.AgentTrustsResponse.{AgentTrusts, BadRequest, Claimed, Forbidden, NotClaimed, ServiceUnavailable}
+import models.EnrolmentStoreResponse.{EnrolmentStore, BadRequest, AlreadyClaimed, Forbidden, NotClaimed, ServiceUnavailable}
 import org.scalatest.{AsyncFreeSpec, MustMatchers}
 import play.api.Application
 import play.api.http.Status
@@ -82,7 +82,7 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
                |}""".stripMargin
           ))
 
-        connector.getAgentTrusts(identifier) map { result =>
+        connector.checkIfClaimed(identifier) map { result =>
           result mustBe NotClaimed
         }
 
@@ -104,8 +104,8 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
                |}""".stripMargin
           ))
 
-        connector.getAgentTrusts(identifier) map { result =>
-          result mustBe Claimed
+        connector.checkIfClaimed(identifier) map { result =>
+          result mustBe AlreadyClaimed
         }
 
       }
@@ -124,7 +124,7 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
               |}""".stripMargin
           ))
 
-        connector.getAgentTrusts(identifier) map { result =>
+        connector.checkIfClaimed(identifier) map { result =>
           result mustBe ServiceUnavailable
         }
 
@@ -144,7 +144,7 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
               |}""".stripMargin
           ))
 
-        connector.getAgentTrusts(identifier) map { result =>
+        connector.checkIfClaimed(identifier) map { result =>
           result mustBe Forbidden
         }
 
@@ -164,7 +164,7 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
               |}""".stripMargin
           ))
 
-        connector.getAgentTrusts(identifier) map { result =>
+        connector.checkIfClaimed(identifier) map { result =>
           result mustBe BadRequest
         }
 

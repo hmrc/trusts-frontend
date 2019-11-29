@@ -21,34 +21,34 @@ import play.api.http.Status._
 import play.api.libs.json._
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
-sealed trait AgentTrustsResponse
+sealed trait EnrolmentStoreResponse
 
-object AgentTrustsResponse {
+object EnrolmentStoreResponse {
 
-  implicit val format: Format[AgentTrusts] = Json.format[AgentTrusts]
+  implicit val format: Format[EnrolmentStore] = Json.format[EnrolmentStore]
 
-  case class AgentTrusts(principalUserIds: Seq[String], delegatedUserIds: Seq[String]) extends AgentTrustsResponse
-  case object NotClaimed extends AgentTrustsResponse
-  case object NoContent extends AgentTrustsResponse
-  case object ServiceUnavailable extends AgentTrustsResponse
-  case object Forbidden extends AgentTrustsResponse
-  case object BadRequest extends AgentTrustsResponse
-  case object ServerError extends AgentTrustsResponse
-  case object Claimed extends AgentTrustsResponse
+  case class EnrolmentStore(principalUserIds: Seq[String], delegatedUserIds: Seq[String]) extends EnrolmentStoreResponse
+  case object NotClaimed extends EnrolmentStoreResponse
+  case object NoContent extends EnrolmentStoreResponse
+  case object ServiceUnavailable extends EnrolmentStoreResponse
+  case object Forbidden extends EnrolmentStoreResponse
+  case object BadRequest extends EnrolmentStoreResponse
+  case object ServerError extends EnrolmentStoreResponse
+  case object AlreadyClaimed extends EnrolmentStoreResponse
 
-  implicit lazy val httpReads: HttpReads[AgentTrustsResponse] =
-    new HttpReads[AgentTrustsResponse] {
-      override def read(method: String, url: String, response: HttpResponse): AgentTrustsResponse = {
+  implicit lazy val httpReads: HttpReads[EnrolmentStoreResponse] =
+    new HttpReads[EnrolmentStoreResponse] {
+      override def read(method: String, url: String, response: HttpResponse): EnrolmentStoreResponse = {
         Logger.info(s"[AgentTrusts] response status received from ES0 api: ${response.status}, body :${response.body}")
 
         response.status match {
           case OK =>
-            response.json.as[AgentTrusts] match {
-                case AgentTrusts(Seq(), _) => NotClaimed
-                case _ => Claimed
+            response.json.as[EnrolmentStore] match {
+                case EnrolmentStore(Seq(), _) => NotClaimed
+                case _ => AlreadyClaimed
             }
           case NO_CONTENT =>
-            NoContent
+            NotClaimed
           case SERVICE_UNAVAILABLE =>
             ServiceUnavailable
           case FORBIDDEN =>

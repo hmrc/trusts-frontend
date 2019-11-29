@@ -648,7 +648,7 @@ GET        /status/processing                      controllers.TrustStatusContro
 GET        /status/not-found                       controllers.TrustStatusController.notFound()
 GET        /status/down                            controllers.TrustStatusController.down()
 GET        /status/locked                          controllers.TrustStatusController.locked()
-GET        /status/claimed                         controllers.TrustStatusController.claimed()
+GET        /status/already-claimed                 controllers.TrustStatusController.alreadyClaimed()
 GET        /status                                 controllers.TrustStatusController.status()
 
 GET        /variations/trust-not-claimed                       controllers.TrustNotClaimedController.onPageLoad()

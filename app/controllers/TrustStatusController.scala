@@ -52,7 +52,7 @@ class TrustStatusController @Inject()(
                                        config: FrontendAppConfig,
                                        errorHandler: ErrorHandler,
                                        lockedView: TrustLockedView,
-                                       claimedView: TrustClaimedView,
+                                       alreadyClaimedView: TrustAlreadyClaimedView,
                                        playbackExtractor: UserAnswersExtractor,
                                        val controllerComponents: MessagesControllerComponents
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
@@ -92,10 +92,10 @@ class TrustStatusController @Inject()(
       }
   }
 
-  def claimed(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def alreadyClaimed(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       enforceUtr() { utr =>
-        Future.successful(Ok(claimedView(utr)))
+        Future.successful(Ok(alreadyClaimedView(utr)))
       }
   }
 
