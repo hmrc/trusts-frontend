@@ -47,7 +47,7 @@ class CharityBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[Lis
                     answers.set(CharityBeneficiaryDiscretionYesNoPage(index), false)
                       .flatMap(_.set(CharityBeneficiaryShareOfIncomePage(index), income))
                   case None =>
-                    // Assumption user answered yes as the share of income is not provided
+                    // Assumption that user answered yes as the share of income is not provided
                     answers.set(CharityBeneficiaryDiscretionYesNoPage(index), true)
                 }
               }
