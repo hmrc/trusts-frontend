@@ -17,16 +17,65 @@
 package mapping.playback
 
 import com.google.inject.Inject
-import mapping.CharityType
 import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
-import models.core.UserAnswers
+import models.core.pages.{CharityOrTrust, InternationalAddress, UKAddress}
+import models.playback.http.DisplayTrustCharityType
+import models.playback.{MetaData, UserAnswers}
+import pages.beneficiaries.charity._
+import play.api.Logger
 
-class CharityBeneficiaryExtractor @Inject() extends PlaybackExtractor[List[CharityType]] {
+import scala.util.{Failure, Success, Try}
 
-  override def extract(answers: UserAnswers, data: List[CharityType]): Either[PlaybackExtractionError, UserAnswers] =
+class CharityBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[List[DisplayTrustCharityType]]] {
+
+  import PlaybackAddressImplicits._
+
+  override def extract(answers: UserAnswers, data: Option[List[DisplayTrustCharityType]]): Either[PlaybackExtractionError, Try[UserAnswers]] =
     {
-//      Right(answers)
-      Left(FailedToExtractData)
+      data match {
+        case Some(Nil) | None => Right(Success(answers))
+        case Some(charities) =>
+
+          val updated = charities.zipWithIndex.foldLeft[Try[UserAnswers]](Success(answers)){
+            case (answers, (charityBeneficiary, index)) =>
+
+            answers
+              .flatMap(_.set(CharityBeneficiaryNamePage(index), charityBeneficiary.organisationName))
+              .flatMap(_.set(CharityBeneficiaryDiscretionYesNoPage(index), charityBeneficiary.beneficiaryDiscretion))
+              .flatMap(_.set(CharityBeneficiaryShareOfIncomePage(index), charityBeneficiary.beneficiaryShareOfIncome))
+              .flatMap(_.set(CharityBeneficiaryUtrPage(index), charityBeneficiary.identification.flatMap(_.utr)))
+              .flatMap(_.set(CharityBeneficiarySafeIdPage(index), charityBeneficiary.identification.flatMap(_.safeId)))
+              .flatMap { answers =>
+                charityBeneficiary.identification.flatMap(_.address.convert) match {
+                  case Some(uk: UKAddress) =>
+                    answers.set(CharityBeneficiaryAddressPage(index), uk)
+                      .flatMap(_.set(CharityBeneficiaryAddressUKYesNoPage(index), true))
+                  case Some(nonUk: InternationalAddress) =>
+                    answers.set(CharityBeneficiaryAddressPage(index), nonUk)
+                      .flatMap(_.set(CharityBeneficiaryAddressUKYesNoPage(index), false))
+                  case _ => Success(answers)
+                }
+              }
+              .flatMap {
+                _.set(
+                  CharityBeneficiaryMetaData(index),
+                  MetaData(
+                    lineNo = charityBeneficiary.lineNo,
+                    bpMatchStatus = charityBeneficiary.bpMatchStatus,
+                    entityStart = charityBeneficiary.entityStart
+                  )
+                )
+              }
+          }
+
+          updated match {
+            case Success(a) =>
+              Right(Success(a))
+            case Failure(exception) =>
+              Logger.warn(s"[CharityBeneficiaryExtractor] failed to extract data due to ${exception.getMessage}")
+              Left(FailedToExtractData(DisplayTrustCharityType.toString))
+          }
+      }
     }
 
 }

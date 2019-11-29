@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
 
 import java.time.LocalDate
 
 import base.SpecBaseHelpers
 import generators.Generators
-import mapping.registration.DeclarationMapper
-import models.core
+import mapping.{AddressType, Declaration, Mapping, NameType}
 import models.core.pages.IndividualOrBusiness.Individual
 import models.core.pages.{FullName, InternationalAddress, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
 import pages.trustees._
-import models.playback._
 
 class DeclarationMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {
@@ -54,7 +52,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
 
           val userAnswers = emptyUserAnswers
             .set(AgentInternalReferencePage, "123456789").success.value
-            .set(DeclarationPage, core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
+            .set(DeclarationPage, models.core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
 
           declarationMapper.build(userAnswers) mustNot be(defined)
         }
@@ -82,7 +80,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
 
           val userAnswers = emptyUserAnswers
             .set(AgentInternalReferencePage, "123456789").success.value
-            .set(DeclarationPage, core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
+            .set(DeclarationPage, models.core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
             .set(AgentAddressYesNoPage, true).success.value
             .set(AgentUKAddressPage, UKAddress("Line1", "line2", None, Some("Newcastle"), "NE62RT")).success.value
 
@@ -97,7 +95,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
 
           val userAnswers = emptyUserAnswers
             .set(AgentInternalReferencePage, "123456789").success.value
-            .set(DeclarationPage, core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
+            .set(DeclarationPage, models.core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
             .set(AgentAddressYesNoPage, false).success.value
             .set(AgentInternationalAddressPage, InternationalAddress("Line1", "line2", None, "IN")).success.value
 
@@ -116,7 +114,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
 
           val address = UKAddress("First line", "Second line", None, Some("Newcastle"), "NE981ZZ")
           val userAnswers = emptyUserAnswers
-            .set(DeclarationPage, core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
+            .set(DeclarationPage, models.core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
             .set(IsThisLeadTrusteePage(0), true).success.value
             .set(TrusteeIndividualOrBusinessPage(0), Individual).success.value
             .set(TrusteesNamePage(0), FullName("First", None, "Last")).success.value
@@ -133,7 +131,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
 
           val address = UKAddress("First line", "Second line", None, Some("Newcastle"), "NE981ZZ")
           val userAnswers = emptyUserAnswers
-            .set(DeclarationPage, core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
+            .set(DeclarationPage, models.core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
             .set(IsThisLeadTrusteePage(0), true).success.value
             .set(TrusteeIndividualOrBusinessPage(0), Individual).success.value
             .set(TrusteesNamePage(0), FullName("First", None, "Last")).success.value

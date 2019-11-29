@@ -18,12 +18,12 @@ package controllers
 
 import base.SpecBase
 import connector.{TrustClaim, TrustConnector, TrustsStoreConnector}
+import _root_.pages.WhatIsTheUTRVariationPage
 import models.core.UserAnswers
-import models.playback._
+import models.playback.http._
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
-import _root_.pages.WhatIsTheUTRVariationPage
 import play.api.Application
 import play.api.inject.bind
 import play.api.libs.json._
@@ -34,6 +34,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 import views.html.playback.status._
 
 import scala.concurrent.Future
+import scala.io.Source
 
 class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
@@ -226,19 +227,18 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status().url)
 
-        val payload: JsValue =
-          Json.parse("""{
-                        |
-                        |  "responseHeader": {
-                        |    "status": "In Processing",
-                        |    "formBundleNo": "1"
-                        |  }
-                        |}""".stripMargin)
+        val payload : String =
+          Source.fromFile(getClass.getResource("/display-trust.json").getPath).mkString
+
+        val json : JsValue = Json.parse(payload)
+
+        val getTrust : GetTrustDesResponse = json.as[GetTrustDesResponse]
 
         when(fakeTrustStoreConnector.get(any[String], any[String])(any(), any()))
           .thenReturn(Future.successful(Some(TrustClaim("1234567890", trustLocked = false, managedByAgent = false))))
 
-        when(fakeTrustConnector.playback(any[String])(any(), any())).thenReturn(Future.successful(Processed(payload)))
+        when(fakeTrustConnector.playback(any[String])(any(), any()))
+          .thenReturn(Future.successful(Processed(getTrust.getTrust.value, "9873459837459837")))
 
         status(result) mustEqual SEE_OTHER
 

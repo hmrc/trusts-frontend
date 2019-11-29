@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
 
 import java.time.LocalDate
 
 import base.SpecBaseHelpers
 import generators.Generators
-import mapping.registration.LeadTrusteeMapper
+import mapping.{IdentificationType, LeadTrusteeIndType, LeadTrusteeType, Mapping, NameType}
 import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.trustees._

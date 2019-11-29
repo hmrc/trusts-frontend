@@ -14,25 +14,13 @@
  * limitations under the License.
  */
 
-package queries
+package models.playback
 
-import models.core.UserAnswers
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Format, Json}
 
-import scala.util.{Success, Try}
+case class MetaData(lineNo: String, bpMatchStatus: Option[String], entityStart: String)
 
-sealed trait Query {
+object MetaData {
 
-  def path: JsPath
-}
-
-trait Gettable[A] extends Query
-
-trait Settable[A] extends Query {
-
-  def cleanup(value: Option[A], userAnswers: UserAnswers): Try[UserAnswers] =
-    Success(userAnswers)
-
-  def cleanup(value: Option[A], userAnswers: models.playback.UserAnswers): Try[models.playback.UserAnswers] =
-    Success(userAnswers)
+  implicit val format: Format[MetaData] = Json.format[MetaData]
 }

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
 
 import base.SpecBaseHelpers
 import generators.Generators
-import mapping.registration.AssetMapper
+import mapping._
 import models.core.pages.UKAddress
 import models.registration.pages.Status.Completed
 import models.registration.pages.WhatKindOfAsset

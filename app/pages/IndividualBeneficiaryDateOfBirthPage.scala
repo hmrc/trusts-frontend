@@ -23,7 +23,7 @@ import sections.{Beneficiaries, IndividualBeneficiaries}
 
 final case class IndividualBeneficiaryDateOfBirthPage(index : Int) extends QuestionPage[LocalDate] {
 
-  override def path: JsPath = JsPath \  Beneficiaries \ IndividualBeneficiaries \ index \ toString
+  override def path: JsPath = JsPath \ Beneficiaries \ IndividualBeneficiaries \ index \ toString
 
   override def toString: String = "dateOfBirth"
 }

@@ -101,6 +101,9 @@ internationalAddress.error.line3.invalidCharacters = Address line 3 must only in
 individualOrBusiness.individual = Individual
 individualOrBusiness.business = Business
 
+charityOrTrust.charity = Charity
+charityOrTrust.trust = Trust
+
 entity.settlor.individual = Individual Settlor
 
 entity.trustee = Trustees

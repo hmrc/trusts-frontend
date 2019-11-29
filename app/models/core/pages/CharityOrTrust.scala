@@ -14,25 +14,29 @@
  * limitations under the License.
  */
 
-package queries
+package models.core.pages
 
-import models.core.UserAnswers
-import play.api.libs.json.JsPath
+import models.{Enumerable, WithName}
+import viewmodels.RadioOption
 
-import scala.util.{Success, Try}
+sealed trait CharityOrTrust
 
-sealed trait Query {
+object CharityOrTrust extends Enumerable.Implicits {
 
-  def path: JsPath
+  case object Charity extends WithName("charity") with CharityOrTrust
+  case object Trust extends WithName("trust") with CharityOrTrust
+
+  val values: Set[CharityOrTrust] = Set(
+    Charity, Trust
+  )
+
+  val options: Set[RadioOption] = values.map {
+    value =>
+      RadioOption("charityOrTrust", value.toString)
+  }
+
+  implicit val enumerable: Enumerable[CharityOrTrust] =
+    Enumerable(values.toSeq.map(v => v.toString -> v): _*)
 }
 
-trait Gettable[A] extends Query
 
-trait Settable[A] extends Query {
-
-  def cleanup(value: Option[A], userAnswers: UserAnswers): Try[UserAnswers] =
-    Success(userAnswers)
-
-  def cleanup(value: Option[A], userAnswers: models.playback.UserAnswers): Try[models.playback.UserAnswers] =
-    Success(userAnswers)
-}

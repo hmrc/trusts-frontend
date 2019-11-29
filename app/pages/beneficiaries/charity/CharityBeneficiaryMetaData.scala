@@ -14,25 +14,17 @@
  * limitations under the License.
  */
 
-package queries
+package pages.beneficiaries.charity
 
-import models.core.UserAnswers
+import models.playback.MetaData
+import pages.QuestionPage
 import play.api.libs.json.JsPath
+import sections.{Beneficiaries, CharityBeneficiaries}
 
-import scala.util.{Success, Try}
+case class CharityBeneficiaryMetaData(index: Int) extends QuestionPage[MetaData]{
 
-sealed trait Query {
+  override def path: JsPath = JsPath \ Beneficiaries \ CharityBeneficiaries \ index \ toString
 
-  def path: JsPath
-}
+  override def toString: String = "metaData"
 
-trait Gettable[A] extends Query
-
-trait Settable[A] extends Query {
-
-  def cleanup(value: Option[A], userAnswers: UserAnswers): Try[UserAnswers] =
-    Success(userAnswers)
-
-  def cleanup(value: Option[A], userAnswers: models.playback.UserAnswers): Try[models.playback.UserAnswers] =
-    Success(userAnswers)
 }
