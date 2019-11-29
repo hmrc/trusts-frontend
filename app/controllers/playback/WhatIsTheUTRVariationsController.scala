@@ -17,18 +17,15 @@
 package controllers.playback
 
 import config.FrontendAppConfig
-import connector.{EnrolmentStoreConnector, TrustsStoreConnector}
+import connector.TrustsStoreConnector
 import controllers.actions._
 import forms.WhatIsTheUTRFormProvider
 import javax.inject.Inject
-import models.AgentTrustsResponse.NotClaimed
-import models.requests.DataRequest
 import pages.WhatIsTheUTRVariationPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.WhatIsTheUTRView
 
@@ -44,8 +41,7 @@ class WhatIsTheUTRVariationsController @Inject()(
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: WhatIsTheUTRView,
                                                   config: FrontendAppConfig,
-                                                  trustsStore: TrustsStoreConnector,
-                                                  enrolmentStoreConnector: EnrolmentStoreConnector
+                                                  trustsStore: TrustsStoreConnector
                                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -69,50 +65,24 @@ class WhatIsTheUTRVariationsController @Inject()(
 
         value => {
 
-          (for {
+          for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatIsTheUTRVariationPage, value))
             _              <- registrationsRepository.set(updatedAnswers)
             claim       <- trustsStore.get(request.internalId, value)
-          } yield claim) flatMap { claim =>
-
-            lazy val redirectTo = request.affinityGroup match {
-              case Agent => enrolmentStoreConnector.getAgentTrusts(value) map {
-                case NotClaimed => Redirect(routes.TrustNotClaimedController.onPageLoad())
-                case _ =>
-
-                  val agentEnrolled = checkEnrolmentOfAgent(value)
-
-                  if(agentEnrolled){
-                    Redirect(routes.TrustStatusController.status())
-                  } else {
-                    Redirect(controllers.playback.routes.AgentNotAuthorisedController.onPageLoad())
-                  }
-
-              }
-              case _ => Future.successful(Redirect(routes.TrustStatusController.status()))
-            }
-
+          } yield {
             claim match {
               case Some(c) =>
                 if(c.trustLocked) {
-                  Future.successful(Redirect(routes.TrustStatusController.locked()))
+                  Redirect(routes.TrustStatusController.locked())
                 } else {
-                  redirectTo
+                  Redirect(routes.TrustStatusController.status())
                 }
-              case _ => redirectTo
+              case _ => Redirect(routes.TrustStatusController.status())
             }
-
           }
 
         }
       )
-  }
-
-  private def checkEnrolmentOfAgent(utr: String)(implicit request: DataRequest[AnyContent]) = {
-    request.enrolments.enrolments
-      .find ( _.key equals config.serviceName )
-      .flatMap ( _.identifiers.find( _.key equals "SAUTR" ) )
-      .exists( _.value equals utr)
   }
 
 }

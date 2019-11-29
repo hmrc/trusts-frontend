@@ -33,8 +33,34 @@ class IdentifyForPlayback @Inject()(utr: String,
                                     trustsAuth: TrustsAuth
                              )(override implicit val executionContext: ExecutionContext)
   extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest] {
-
-
+//
+//  {
+//    {
+//      lazy val redirectTo = request.affinityGroup match {
+//        case Agent => enrolmentStoreConnector.getAgentTrusts(value) map {
+//          case NotClaimed => Redirect(routes.TrustNotClaimedController.onPageLoad())
+//          case _ =>
+//
+//            val agentEnrolled = checkEnrolmentOfAgent(value)
+//
+//            if(agentEnrolled){
+//              Redirect(routes.TrustStatusController.status())
+//            } else {
+//              Redirect(controllers.playback.routes.AgentNotAuthorisedController.onPageLoad())
+//            }
+//
+//        }
+//        case _ => Future.successful(Redirect(routes.TrustStatusController.status()))
+//      }
+//    }
+//
+//    private def checkEnrolmentOfAgent(utr: String)(implicit request: DataRequest[AnyContent]) = {
+//    request.enrolments.enrolments
+//      .find ( _.key equals config.serviceName )
+//      .flatMap ( _.identifiers.find( _.key equals "SAUTR" ) )
+//      .exists( _.value equals utr)
+//  }
+//  }
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))

@@ -18,15 +18,23 @@ package controllers.actions
 
 import base.SpecBase
 import config.FrontendAppConfig
+import connector.EnrolmentStoreConnector
+import controllers.playback.routes
+import models.AgentTrustsResponse.NotClaimed
 import models.requests.IdentifierRequest
 import org.mockito.Matchers.{any, eq => mEq}
 import org.mockito.Mockito._
+import play.api.inject.bind
+import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, Results}
+import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.auth.core.retrieve.{EmptyRetrieval, Retrieval, ~}
+import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.auth.core._
+import uk.gov.hmrc.auth.core.retrieve.{EmptyRetrieval, Retrieval, ~}
+import uk.gov.hmrc.http.HeaderCarrier
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class IdentifyForPlaybackSpec extends SpecBase {
 
@@ -88,6 +96,92 @@ class IdentifyForPlaybackSpec extends SpecBase {
         application.stop()
       }
     }
+
+    "fetching NotClaimed response from Enrolments" must {
+      "redirect to NotClaimed" in {
+
+        val enrolmentStoreConnector = mock[EnrolmentStoreConnector]
+
+        val identify: IdentifyForPlayback = new IdentifyForPlayback("", injectedParsers, trustsAuth)
+
+        val fakeAction: Action[AnyContent] = identify { _ => Results.Ok }
+
+        val application = applicationBuilder(userAnswers = None, affinityGroup = Agent)
+          .overrides(bind[EnrolmentStoreConnector].toInstance(enrolmentStoreConnector))
+          .build()
+
+        val idRequest = IdentifierRequest(fakeRequest, "id", AffinityGroup.Agent, Enrolments(Set.empty[Enrolment]))
+
+        when(enrolmentStoreConnector.getAgentTrusts(any[String])(any[HeaderCarrier], any[ExecutionContext]))
+          .thenReturn(Future.successful(NotClaimed))
+
+        val result = fakeAction.apply(idRequest)
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.TrustNotClaimedController.onPageLoad().url
+
+        application.stop()
+      }
+    }
+
+
+    "an agent that does not have a trusts enrolment" must {
+      "redirect to agent not authorised" in {
+
+        val utr = "0987654321"
+
+        val enrolmentStoreConnector = mock[EnrolmentStoreConnector]
+
+        val identify: IdentifyForPlayback = new IdentifyForPlayback("", injectedParsers, trustsAuth)
+
+        val fakeAction: Action[AnyContent] = identify { _ => Results.Ok }
+
+        val application = applicationBuilder(userAnswers = None, affinityGroup = Agent)
+          .overrides(bind[EnrolmentStoreConnector].toInstance(enrolmentStoreConnector))
+          .build()
+
+        val idRequest = IdentifierRequest(fakeRequest, "id", AffinityGroup.Agent, Enrolments(Set.empty[Enrolment]))
+
+        when(enrolmentStoreConnector.getAgentTrusts(any[String])(any[HeaderCarrier], any[ExecutionContext]))
+          .thenReturn(Future.successful(NotClaimed))
+
+        val result = fakeAction.apply(idRequest)
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustBe routes.AgentNotAuthorisedController.onPageLoad().url
+
+        application.stop()
+      }
+    }
+
+    "an agent that has a trusts enrolment without matching submitted utr" must {
+      "redirect to agent not authorised" in {
+
+        val utr = "0987654321"
+
+        val enrolmentStoreConnector = mock[EnrolmentStoreConnector]
+
+        val identify: IdentifyForPlayback = new IdentifyForPlayback("", injectedParsers, trustsAuth)
+
+        val fakeAction: Action[AnyContent] = identify { _ => Results.Ok }
+
+        val application = applicationBuilder(userAnswers = None, affinityGroup = Agent)
+          .overrides(bind[EnrolmentStoreConnector].toInstance(enrolmentStoreConnector))
+          .build()
+
+        val idRequest = IdentifierRequest(fakeRequest, "id", AffinityGroup.Agent, Enrolments(Set.empty[Enrolment]))
+
+        when(enrolmentStoreConnector.getAgentTrusts(any[String])(any[HeaderCarrier], any[ExecutionContext]))
+          .thenReturn(Future.successful(NotClaimed))
+
+        val result = fakeAction.apply(idRequest)
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustBe controllers.playback.routes.AgentNotAuthorisedController.onPageLoad().url
+
+        application.stop()
+      }
+    }
+
   }
 }
-
