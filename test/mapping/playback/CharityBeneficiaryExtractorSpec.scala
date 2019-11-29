@@ -18,7 +18,7 @@ package mapping.playback
 
 import base.SpecBaseHelpers
 import generators.Generators
-import models.core.pages.{CharityOrTrust, UKAddress}
+import models.core.pages.UKAddress
 import models.playback.http._
 import models.playback.{MetaData, UserAnswers}
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
@@ -31,7 +31,7 @@ class CharityBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
     lineNo = s"$index",
     bpMatchStatus = Some("01"),
     organisationName = s"Charity $index",
-    beneficiaryDiscretion = Some(true),
+    beneficiaryDiscretion = Some(false), // This value is inferred in the extractor
     beneficiaryShareOfIncome = Some("98"),
     identification = Some(
       DisplayTrustIdentificationOrgType(
@@ -66,7 +66,32 @@ class CharityBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
 
     "when there are charities" - {
 
-      "must return user answers updated" in {
+      "with minimum data must return user answers updated" in {
+        val charity = List(DisplayTrustCharityType(
+          lineNo = s"1",
+          bpMatchStatus = Some("01"),
+          organisationName = s"Charity 1",
+          beneficiaryDiscretion = None,
+          beneficiaryShareOfIncome = None,
+          identification = None,
+          entityStart = "2019-11-26"
+        ))
+
+        val ua = UserAnswers("fakeId")
+
+        val extraction = charityExtractor.extract(ua, Some(charity))
+
+        extraction.right.value.success.value.get(CharityBeneficiaryNamePage(0)).get mustBe "Charity 1"
+        extraction.right.value.success.value.get(CharityBeneficiaryMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
+        extraction.right.value.success.value.get(CharityBeneficiaryDiscretionYesNoPage(0)).get mustBe true
+        extraction.right.value.success.value.get(CharityBeneficiaryShareOfIncomePage(0)) mustNot be(defined)
+        extraction.right.value.success.value.get(CharityBeneficiaryUtrPage(0)) mustNot be(defined)
+        extraction.right.value.success.value.get(CharityBeneficiarySafeIdPage(0)) mustNot be(defined)
+        extraction.right.value.success.value.get(CharityBeneficiaryAddressPage(0)) mustNot be(defined)
+        extraction.right.value.success.value.get(CharityBeneficiaryAddressUKYesNoPage(0)) mustNot be(defined)
+      }
+
+      "with full data must return user answers updated" in {
         val charities = (for(index <- 0 to 2) yield generateCharity(index)).toList
 
         val ua = UserAnswers("fakeId")
@@ -80,8 +105,8 @@ class CharityBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
 
         extraction.right.value.success.value.get(CharityBeneficiaryMetaData(0)).get mustBe MetaData("0", Some("01"), "2019-11-26")
 
-        extraction.right.value.success.value.get(CharityBeneficiaryDiscretionYesNoPage(0)).get mustBe true
-        extraction.right.value.success.value.get(CharityBeneficiaryDiscretionYesNoPage(1)).get mustBe true
+        extraction.right.value.success.value.get(CharityBeneficiaryDiscretionYesNoPage(0)).get mustBe false
+        extraction.right.value.success.value.get(CharityBeneficiaryDiscretionYesNoPage(1)).get mustBe false
 
         extraction.right.value.success.value.get(CharityBeneficiaryShareOfIncomePage(0)).get mustBe "98"
         extraction.right.value.success.value.get(CharityBeneficiaryShareOfIncomePage(1)).get mustBe "98"
@@ -97,8 +122,6 @@ class CharityBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
 
         extraction.right.value.success.value.get(CharityBeneficiaryAddressUKYesNoPage(0)).get mustBe true
         extraction.right.value.success.value.get(CharityBeneficiaryAddressUKYesNoPage(1)).get mustBe true
-
-
       }
 
     }
