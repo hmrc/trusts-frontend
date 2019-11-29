@@ -93,7 +93,7 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
     }
 
     "No Trusts when" - {
-      "valid enrolment key retrieves a AgentServices containing empty prinicipleIds" in {
+      "valid enrolment key retrieves a AgentServices containing empty principalUserIds" in {
 
         wiremock(
           expectedStatus = Status.OK,
@@ -114,13 +114,14 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
     }
 
     "Cannot access trust when" - {
-      "non-empty principleIds retrieved" in {
+      "non-empty principalUserIds retrieved" in {
 
         wiremock(
           expectedStatus = Status.OK,
           expectedResponse = Some(
             s"""{
                |    "principalUserIds": [
+               |    "${principalId.head}"
                |    ],
                |    "delegatedUserIds": [
                |    ]

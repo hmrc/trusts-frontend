@@ -16,10 +16,8 @@
 
 package models
 
-import models.AgentTrustsResponse.{AgentTrusts, Claimed}
 import models.playback.{Closed, Processing, TrustStatus}
 import org.scalatest.{MustMatchers, WordSpec}
-import play.api.http.Status
 import play.api.libs.json.{JsError, Json}
 
 class TrustStatusSpec extends WordSpec with MustMatchers {
