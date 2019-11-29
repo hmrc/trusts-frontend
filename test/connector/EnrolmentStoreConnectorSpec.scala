@@ -121,7 +121,7 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
           expectedResponse = Some(
             s"""{
                |    "principalUserIds": [
-               |    "${principalId.head}"
+               |       "${principalId.head}"
                |    ],
                |    "delegatedUserIds": [
                |    ]
