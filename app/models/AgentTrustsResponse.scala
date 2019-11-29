@@ -45,7 +45,7 @@ object AgentTrustsResponse {
           case OK =>
             response.json.as[AgentTrusts] match {
                 case AgentTrusts(Seq(), _) => NotClaimed
-                case agentTrusts => if (agentTrusts.principalUserIds.nonEmpty) agentTrusts else Claimed
+                case _ => Claimed
             }
           case NO_CONTENT =>
             NoContent

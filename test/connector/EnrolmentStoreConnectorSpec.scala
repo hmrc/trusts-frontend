@@ -68,32 +68,8 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
 
   "EnrolmentStoreConnector" - {
 
-    "must get a list of enrolments and delegated enrolments when" - {
-      "valid enrolment key retrieves a Success 200 with a body of enrolments" in {
-
-        wiremock(
-          expectedStatus = Status.OK,
-          expectedResponse = Some(
-            s"""{
-               |    "principalUserIds": [
-               |       "${principalId.head}"
-               |    ],
-               |    "delegatedUserIds": [
-               |       "${delegatedId.head}",
-               |       "${delegatedId.last}"
-               |    ]
-               |}""".stripMargin
-          ))
-
-        connector.getAgentTrusts(identifier) map { result =>
-          result mustBe AgentTrusts(principalId, delegatedId)
-        }
-
-      }
-    }
-
     "No Trusts when" - {
-      "valid enrolment key retrieves a AgentServices containing empty principalUserIds" in {
+      "valid enrolment key retrieves AgentTrusts containing empty principalUserIds" in {
 
         wiremock(
           expectedStatus = Status.OK,
