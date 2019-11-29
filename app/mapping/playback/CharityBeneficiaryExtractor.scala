@@ -41,8 +41,16 @@ class CharityBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[Lis
 
             answers
               .flatMap(_.set(CharityBeneficiaryNamePage(index), charityBeneficiary.organisationName))
-              .flatMap(_.set(CharityBeneficiaryDiscretionYesNoPage(index), charityBeneficiary.beneficiaryDiscretion))
-              .flatMap(_.set(CharityBeneficiaryShareOfIncomePage(index), charityBeneficiary.beneficiaryShareOfIncome))
+              .flatMap { answers =>
+                charityBeneficiary.beneficiaryShareOfIncome match {
+                  case Some(income) =>
+                    answers.set(CharityBeneficiaryDiscretionYesNoPage(index), false)
+                      .flatMap(_.set(CharityBeneficiaryShareOfIncomePage(index), income))
+                  case None =>
+                    // Assumption that user answered yes as the share of income is not provided
+                    answers.set(CharityBeneficiaryDiscretionYesNoPage(index), true)
+                }
+              }
               .flatMap(_.set(CharityBeneficiaryUtrPage(index), charityBeneficiary.identification.flatMap(_.utr)))
               .flatMap(_.set(CharityBeneficiarySafeIdPage(index), charityBeneficiary.identification.flatMap(_.safeId)))
               .flatMap { answers =>
