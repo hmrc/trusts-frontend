@@ -17,11 +17,14 @@
 package controllers.playback
 
 import base.SpecBase
+import config.FrontendAppConfig
+import controllers.actions.TrustsAuth
 import forms.DeclarationWhatNextFormProvider
 import models.playback.pages.DeclarationWhatNext
 import pages.DeclarationWhatNextPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.auth.core.AuthConnector
 import views.html.DeclarationWhatNextView
 
 class DeclarationWhatNextControllerSpec extends SpecBase {
@@ -30,6 +33,11 @@ class DeclarationWhatNextControllerSpec extends SpecBase {
 
   val formProvider = new DeclarationWhatNextFormProvider()
   val form = formProvider()
+
+  val mockAuthConnector: AuthConnector = injector.instanceOf[AuthConnector]
+  val appConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
+
+  override def trustsAuth = new TrustsAuth(mockAuthConnector, appConfig)
 
   "DeclarationWhatNext Controller" must {
 

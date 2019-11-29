@@ -40,7 +40,7 @@ class AuthenticatedIdentifierActionSpec extends SpecBase {
 
   private val noEnrollment = Enrolments(Set())
 
-  private def authRetrievals(affinityGroup: AffinityGroup, enrolment: Enrolments) =
+  private def authRetrievals(affinityGroup: AffinityGroup, enrolment: Enrolments): Future[Some[String] ~ Some[AffinityGroup] ~ Enrolments] =
     Future.successful(new ~(new ~(Some("id"), Some(affinityGroup)), enrolment))
 
   private val agentEnrolment = Enrolments(Set(Enrolment("HMRC-AS-AGENT", List(EnrolmentIdentifier("AgentReferenceNumber", "SomeVal")), "Activated", None)))
@@ -62,7 +62,6 @@ class AuthenticatedIdentifierActionSpec extends SpecBase {
         application.stop()
       }
     }
-
 
     "Agent user has correct enrolled in Agent Services Account" must {
       "allow user to continue" in {
