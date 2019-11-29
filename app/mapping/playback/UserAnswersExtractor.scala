@@ -19,31 +19,30 @@ package mapping.playback
 import cats.kernel.Semigroup
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors._
-import models.core.UserAnswers
+import models.playback.UserAnswers
+import models.playback.http.GetTrust
 import play.api.Logger
 
-class UserAnswersExtractor @Inject()(charity: CharityBeneficiaryExtractor) extends PlaybackAnswerCombiner {
+import scala.util.Try
 
-  import models.core.UserAnswerImplicits._
+class UserAnswersExtractor @Inject()(charity: CharityBeneficiaryExtractor) extends PlaybackExtractor[GetTrust] {
 
-  // TODO change signature to use playback.UserAnswers
-  // TODO Add tests
-  override def extract(answers: UserAnswers): Either[PlaybackExtractionError, UserAnswers] = {
+  import models.playback.UserAnswersCombinator._
+
+  override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionError, Try[UserAnswers]] = {
 
     val answersCombined = for {
-      ua <- charity.extract(answers, Nil).right
-      // add in further extractors here for LeadTrustee, Trustees, Beneficiaries etc
-      ua2 <- charity.extract(answers, Nil).right
+      ua <- charity.extract(answers, data.trust.entities.beneficiary.charity).right
     } yield {
         for {
-          combined <- Semigroup[UserAnswers].combineAllOption(List(ua, ua2))
+          combined <- Semigroup[Try[UserAnswers]].combineAllOption(List(ua))
         } yield combined
     }
 
     answersCombined match {
       case Left(error) =>
         Logger.error(s"[PlaybackToUserAnswers] failed to unpack data to user answers, failed for $error")
-        Left(FailedToExtractData)
+        Left(error)
       case Right(None) =>
         Logger.error(s"[PlaybackToUserAnswers] failed to combine user answers")
         Left(FailedToCombineAnswers)

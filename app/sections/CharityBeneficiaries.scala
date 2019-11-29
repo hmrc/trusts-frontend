@@ -14,25 +14,16 @@
  * limitations under the License.
  */
 
-package queries
+package sections
 
-import models.core.UserAnswers
+import pages.QuestionPage
 import play.api.libs.json.JsPath
+import viewmodels.addAnother.IndividualBeneficiaryViewModel
 
-import scala.util.{Success, Try}
+case object CharityBeneficiaries extends QuestionPage[Nothing]{
 
-sealed trait Query {
+  override def path: JsPath = JsPath \ Beneficiaries \ toString
 
-  def path: JsPath
-}
+  override def toString: String = "charities"
 
-trait Gettable[A] extends Query
-
-trait Settable[A] extends Query {
-
-  def cleanup(value: Option[A], userAnswers: UserAnswers): Try[UserAnswers] =
-    Success(userAnswers)
-
-  def cleanup(value: Option[A], userAnswers: models.playback.UserAnswers): Try[models.playback.UserAnswers] =
-    Success(userAnswers)
 }

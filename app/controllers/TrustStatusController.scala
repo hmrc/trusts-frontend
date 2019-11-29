@@ -21,7 +21,8 @@ import connector.{TrustConnector, TrustsStoreConnector}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import handlers.ErrorHandler
 import javax.inject.Inject
-import models.playback.{Closed, Processed, Processing, UtrNotFound}
+import mapping.playback.UserAnswersExtractor
+import models.playback.http._
 import models.requests.DataRequest
 import navigation.Navigator
 import pages.WhatIsTheUTRVariationPage
@@ -32,6 +33,7 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.playback.status._
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success}
 
 class TrustStatusController @Inject()(
                                        override val messagesApi: MessagesApi,
@@ -50,6 +52,7 @@ class TrustStatusController @Inject()(
                                        config: FrontendAppConfig,
                                        errorHandler: ErrorHandler,
                                        lockedView: TrustLockedView,
+                                       playbackExtractor: UserAnswersExtractor,
                                        val controllerComponents: MessagesControllerComponents
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
@@ -110,12 +113,25 @@ class TrustStatusController @Inject()(
       case Closed => Future.successful(Redirect(routes.TrustStatusController.closed()))
       case Processing => Future.successful(Redirect(routes.TrustStatusController.processing()))
       case UtrNotFound => Future.successful(Redirect(routes.TrustStatusController.notFound()))
-      case Processed(playback) =>
-        playbackRepository.store(request.internalId, playback) map { _ =>
-          Redirect(config.claimATrustUrl(utr))
-        }
+      case Processed(playback, _) => extract(utr, playback)
       case _ => Future.successful(Redirect(routes.TrustStatusController.down()))
     }
+  }
+
+  def extract(utr: String, playback: GetTrust)(implicit request: DataRequest[AnyContent]) : Future[Result] = {
+      // Todo create new getData, requireData to return instance of PlaybackData for all Variations controllers rather than calling request.userAnswers.toPlaybackUserAnswers
+      playbackExtractor.extract(request.userAnswers.toPlaybackUserAnswers, playback) match {
+        case Right(Success(answers)) =>
+          playbackRepository.store(answers) map { _ =>
+            Redirect(config.claimATrustUrl(utr))
+          }
+        case Right(Failure(reason)) =>
+        // Todo update where it goes and log reason?
+        Future.successful(Redirect(routes.TrustStatusController.down()))
+        case Left(reason) =>
+          // Todo update where it goes and log reason?
+          Future.successful(Redirect(routes.TrustStatusController.down()))
+      }
   }
 
   def enforceUtr()(block: String => Future[Result])(implicit request: DataRequest[AnyContent]): Future[Result] = {

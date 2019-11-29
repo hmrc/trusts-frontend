@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
 
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping.TypeOfTrust.{FlatManagementTrust, HeritageTrust, IntervivosSettlementTrust, WillTrustOrIntestacyTrust}
-import mapping.registration.RegistrationMapper
+import mapping.{Declaration, Mapping, Registration}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import utils.TestUserAnswers
 

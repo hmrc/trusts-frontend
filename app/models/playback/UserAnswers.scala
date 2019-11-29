@@ -14,28 +14,24 @@
  * limitations under the License.
  */
 
-package models.core
+package models.playback
 
 import java.time.LocalDateTime
 
 import models.MongoDateTimeFormats
-import models.registration.pages.RegistrationStatus
-import models.registration.pages.RegistrationStatus.NotStarted
 import play.api.Logger
 import play.api.libs.json._
 import queries.{Gettable, Settable}
 
 import scala.util.{Failure, Success, Try}
 
-final case class UserAnswers(
-                              draftId: String,
-                              data: JsObject = Json.obj(),
-                              progress : RegistrationStatus = NotStarted,
-                              createdAt : LocalDateTime = LocalDateTime.now,
-                              internalAuthId :String
-                            ) {
+import models.core.UserAnswerImplicits._
 
-  import UserAnswerImplicits._
+final case class UserAnswers(
+                              internalAuthId: String,
+                              data: JsObject = Json.obj(),
+                              updatedAt: LocalDateTime = LocalDateTime.now
+                            ) {
 
   def get[A](page: Gettable[A])(implicit rds: Reads[A]): Option[A] = {
     Reads.at(page.path).reads(data) match {
@@ -46,20 +42,31 @@ final case class UserAnswers(
     }
   }
 
-  def set[A](page: Settable[A], value: A)(implicit writes: Writes[A]): Try[UserAnswers] = {
 
+  def set[A](page: Settable[A], value: Option[A])(implicit writes: Writes[A]) : Try[UserAnswers] = {
+    value match {
+      case Some(v) => setValue(page, v)
+      case None =>
+        val updatedAnswers = this
+        page.cleanup(value, updatedAnswers)
+    }
+  }
+
+  def set[A](page: Settable[A], value: A)(implicit writes: Writes[A]): Try[UserAnswers] = setValue(page, value)
+
+  private def setValue[A](page: Settable[A], value: A)(implicit writes: Writes[A]) = {
     val updatedData = data.setObject(page.path, Json.toJson(value)) match {
       case JsSuccess(jsValue, _) =>
         Success(jsValue)
       case JsError(errors) =>
-        val errorPaths = errors.collectFirst{ case (path, e) => s"$path $e"}
+        val errorPaths = errors.collectFirst { case (path, e) => s"$path $e" }
         Logger.warn(s"[UserAnswers] unable to set path ${page.path} due to errors $errorPaths")
         Failure(JsResultException(errors))
     }
 
     updatedData.flatMap {
       d =>
-        val updatedAnswers = copy (data = d)
+        val updatedAnswers = copy(data = d)
         page.cleanup(Some(value), updatedAnswers)
     }
   }
@@ -79,10 +86,6 @@ final case class UserAnswers(
         query.cleanup(None, updatedAnswers)
     }
   }
-
-  def toPlaybackUserAnswers: models.playback.UserAnswers = {
-    new models.playback.UserAnswers(internalAuthId, data)
-  }
 }
 
 object UserAnswers {
@@ -92,12 +95,10 @@ object UserAnswers {
     import play.api.libs.functional.syntax._
 
     (
-      (__ \ "_id").read[String] and
+      (__ \ "internalId").read[String] and
       (__ \ "data").read[JsObject] and
-      (__ \ "progress").read[RegistrationStatus] and
-      (__ \ "createdAt").read(MongoDateTimeFormats.localDateTimeRead) and
-      (__ \ "internalId").read[String]
-    ) (UserAnswers.apply _)
+      (__ \ "updatedAt").read(MongoDateTimeFormats.localDateTimeRead)
+      ) (UserAnswers.apply _)
   }
 
   implicit lazy val writes: OWrites[UserAnswers] = {
@@ -105,11 +106,9 @@ object UserAnswers {
     import play.api.libs.functional.syntax._
 
     (
-      (__ \ "_id").write[String] and
+      (__ \ "internalId").write[String] and
       (__ \ "data").write[JsObject] and
-      (__ \ "progress").write[RegistrationStatus] and
-      (__ \ "createdAt").write(MongoDateTimeFormats.localDateTimeWrite) and
-      (__ \ "internalId").write[String]
-    ) (unlift(UserAnswers.unapply))
+      (__ \ "updatedAt").write(MongoDateTimeFormats.localDateTimeWrite)
+      ) (unlift(UserAnswers.unapply))
   }
 }

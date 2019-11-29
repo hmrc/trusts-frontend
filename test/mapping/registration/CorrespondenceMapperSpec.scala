@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
 
 import java.time.LocalDate
 
 import base.SpecBaseHelpers
 import generators.Generators
-import mapping.registration.CorrespondenceMapper
+import mapping.{AddressType, Correspondence, Mapping}
 import models.core.pages.IndividualOrBusiness.Individual
 import models.core.pages.{FullName, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
