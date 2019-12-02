@@ -27,7 +27,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class EnrolmentStoreConnector @Inject()(http: HttpClient, config : FrontendAppConfig) {
 
   private def enrolmentsEndpoint(identifier: String): String = {
-    val identifierKey = "UTR"
+    val identifierKey = "SAUTR"
     s"${config.enrolmentStoreProxyUrl}/enrolment-store/enrolments/${config.serviceName}~$identifierKey~$identifier/users"
   }
 

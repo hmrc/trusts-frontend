@@ -58,7 +58,7 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
 
   private lazy val serviceName = config.serviceName
 
-  private val identifierKey = "UTR"
+  private val identifierKey = "SAUTR"
   private val identifier = "0987654321"
 
   private val principalId = Seq("ABCEDEFGI1234567")
