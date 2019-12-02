@@ -28,7 +28,7 @@ class EnrolmentStoreConnector @Inject()(http: HttpClient, config : FrontendAppCo
 
   private def enrolmentsEndpoint(identifier: String): String = {
     val identifierKey = "SAUTR"
-    s"${config.enrolmentStoreProxyUrl}/enrolment-store/enrolments/${config.serviceName}~$identifierKey~$identifier/users"
+    s"${config.enrolmentStoreProxyUrl}/enrolment-store-proxy/enrolment-store/enrolments/${config.serviceName}~$identifierKey~$identifier/users"
   }
 
   def checkIfClaimed(utr: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[EnrolmentStoreResponse] =
