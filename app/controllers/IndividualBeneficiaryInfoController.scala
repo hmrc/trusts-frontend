@@ -26,12 +26,12 @@ import views.html.IndividualBeneficiaryInfoView
 import scala.concurrent.ExecutionContext
 
 class IndividualBeneficiaryInfoController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifyForRegistration,
-                                       getData: DraftIdRetrievalActionProvider,
-                                       requireData: DataRequiredAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: IndividualBeneficiaryInfoView
+                                                     override val messagesApi: MessagesApi,
+                                                     identify: IdentifierAction,
+                                                     getData: DraftIdRetrievalActionProvider,
+                                                     requireData: DataRequiredAction,
+                                                     val controllerComponents: MessagesControllerComponents,
+                                                     view: IndividualBeneficiaryInfoView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {

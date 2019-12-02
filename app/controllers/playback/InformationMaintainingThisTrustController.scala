@@ -30,7 +30,7 @@ import scala.concurrent.ExecutionContext
 
 class InformationMaintainingThisTrustController @Inject()(
                                                            registrationsRepository: RegistrationsRepository,
-                                                           identify: IdentifyForRegistration,
+                                                           identify: IdentifierAction,
                                                            getData: DataRetrievalAction,
                                                            requireData: DataRequiredAction,
                                                            val controllerComponents: MessagesControllerComponents,

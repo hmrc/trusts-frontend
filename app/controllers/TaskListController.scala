@@ -39,7 +39,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class TaskListController @Inject()(
                                     override val messagesApi: MessagesApi,
-                                    identify: IdentifyForRegistration,
+                                    identify: IdentifierAction,
                                     getData: DraftIdRetrievalActionProvider,
                                     requireData: DataRequiredAction,
                                     requiredAnswer: RequiredAnswerActionProvider,

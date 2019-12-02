@@ -26,10 +26,10 @@ import views.html.trustees.TrusteesInfoView
 import scala.concurrent.ExecutionContext
 
 class TrusteesInfoController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifyForRegistration,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: TrusteesInfoView
+                                        override val messagesApi: MessagesApi,
+                                        identify: IdentifierAction,
+                                        val controllerComponents: MessagesControllerComponents,
+                                        view: TrusteesInfoView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(draftId: String): Action[AnyContent] = identify {

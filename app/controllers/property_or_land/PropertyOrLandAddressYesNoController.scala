@@ -37,7 +37,7 @@ class PropertyOrLandAddressYesNoController @Inject()(
                                                       override val messagesApi: MessagesApi,
                                                       registrationsRepository: RegistrationsRepository,
                                                       @PropertyOrLand navigator: Navigator,
-                                                      identify: IdentifyForRegistration,
+                                                      identify: IdentifierAction,
                                                       getData: DraftIdRetrievalActionProvider,
                                                       requireData: DataRequiredAction,
                                                       validateIndex: IndexActionFilterProvider,

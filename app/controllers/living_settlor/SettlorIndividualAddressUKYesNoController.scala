@@ -38,7 +38,7 @@ class SettlorIndividualAddressUKYesNoController @Inject()(
                                                            override val messagesApi: MessagesApi,
                                                            registrationsRepository: RegistrationsRepository,
                                                            @LivingSettlor navigator: Navigator,
-                                                           identify: IdentifyForRegistration,
+                                                           identify: IdentifierAction,
                                                            getData: DraftIdRetrievalActionProvider,
                                                            validateIndex: IndexActionFilterProvider,
                                                            requireData: DataRequiredAction,

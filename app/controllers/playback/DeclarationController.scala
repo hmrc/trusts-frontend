@@ -36,7 +36,8 @@ class DeclarationController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        registrationsRepository: RegistrationsRepository,
                                        navigator: Navigator,
-                                       identify: IdentifyForPlayback,
+                                       identify: IdentifierAction,
+                                       playbackAction: PlaybackAction,
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
                                        requiredAnswer: RequiredAnswerActionProvider,
@@ -47,7 +48,7 @@ class DeclarationController @Inject()(
 
   val form = formProvider()
 
-  def actions() = identify andThen getData andThen requireData andThen
+  def actions() = identify andThen getData andThen requireData andThen playbackAction andThen
       requiredAnswer(RequiredAnswer(DeclarationWhatNextPage, routes.DeclarationWhatNextController.onPageLoad()))
 
   def onPageLoad(): Action[AnyContent] = actions() {

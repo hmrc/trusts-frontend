@@ -25,9 +25,7 @@ import models.requests.IdentifierRequest
 import org.mockito.Matchers.{any, eq => mEq}
 import org.mockito.Mockito._
 import play.api.inject.bind
-import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, Results}
-import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.auth.core._
@@ -42,6 +40,7 @@ class IdentifyForPlaybackSpec extends SpecBase {
 
   val mockAuthConnector: AuthConnector = mock[AuthConnector]
   val appConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
+
   lazy override val trustsAuth = new TrustsAuth(mockAuthConnector, appConfig)
 
   private val noEnrollment = Enrolments(Set())
@@ -56,7 +55,7 @@ class IdentifyForPlaybackSpec extends SpecBase {
     "passing a non authenticated request" must {
       "redirect to the login page" in {
 
-        val identify: IdentifyForPlayback = new IdentifyForPlayback("", injectedParsers, trustsAuth)
+        val identify: IdentifierAction = injector.instanceOf[IdentifierAction]
         val application = applicationBuilder(userAnswers = None).build()
 
         def fakeAction: Action[AnyContent] = identify { _ => Results.Ok }
@@ -75,8 +74,7 @@ class IdentifyForPlaybackSpec extends SpecBase {
     "passing an identifier request" must {
       "execute the body of the action" in {
 
-        val identify: IdentifyForPlayback = new IdentifyForPlayback("", injectedParsers, trustsAuth)
-
+        val identify: IdentifierAction = injector.instanceOf[IdentifierAction]
         val fakeAction: Action[AnyContent] = identify { _ => Results.Ok }
 
         val application = applicationBuilder(userAnswers = None).build()
@@ -102,8 +100,7 @@ class IdentifyForPlaybackSpec extends SpecBase {
 
         val enrolmentStoreConnector = mock[EnrolmentStoreConnector]
 
-        val identify: IdentifyForPlayback = new IdentifyForPlayback("", injectedParsers, trustsAuth)
-
+        val identify: IdentifierAction = injector.instanceOf[IdentifierAction]
         val fakeAction: Action[AnyContent] = identify { _ => Results.Ok }
 
         val application = applicationBuilder(userAnswers = None, affinityGroup = Agent)
@@ -132,8 +129,7 @@ class IdentifyForPlaybackSpec extends SpecBase {
 
         val enrolmentStoreConnector = mock[EnrolmentStoreConnector]
 
-        val identify: IdentifyForPlayback = new IdentifyForPlayback("", injectedParsers, trustsAuth)
-
+        val identify: IdentifierAction = injector.instanceOf[IdentifierAction]
         val fakeAction: Action[AnyContent] = identify { _ => Results.Ok }
 
         val application = applicationBuilder(userAnswers = None, affinityGroup = Agent)
@@ -161,8 +157,7 @@ class IdentifyForPlaybackSpec extends SpecBase {
 
         val enrolmentStoreConnector = mock[EnrolmentStoreConnector]
 
-        val identify: IdentifyForPlayback = new IdentifyForPlayback("", injectedParsers, trustsAuth)
-
+        val identify: IdentifierAction = injector.instanceOf[IdentifierAction]
         val fakeAction: Action[AnyContent] = identify { _ => Results.Ok }
 
         val application = applicationBuilder(userAnswers = None, affinityGroup = Agent)

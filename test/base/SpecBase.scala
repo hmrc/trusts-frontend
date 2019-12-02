@@ -31,7 +31,8 @@ import play.api.mvc.BodyParsers
 import play.api.test.FakeRequest
 import repositories.RegistrationsRepository
 import services.{CreateDraftRegistrationService, SubmissionService}
-import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments, Enrolment}
+import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
+import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import utils.TestUserAnswers
 import utils.annotations.{LivingSettlor, PropertyOrLand}
 
@@ -79,12 +80,12 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
     new GuiceApplicationBuilder()
       .overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],
-        bind[IdentifyForRegistration].toInstance(new FakeIdentifyForRegistration(affinityGroup)(injectedParsers, trustsAuth, enrolments)),
-        bind[IdentifyForPlayback].toInstance(new FakeIdentifyForPlayback(affinityGroup)(injectedParsers, trustsAuth, enrolments)),
+        bind[IdentifierAction].toInstance(new FakeIdentifyForRegistration(affinityGroup)(injectedParsers, trustsAuth, enrolments)),
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
         bind[DraftIdRetrievalActionProvider].toInstance(fakeDraftIdAction(userAnswers)),
         bind[RegistrationsRepository].toInstance(registrationsRepository),
         bind[SubmissionService].toInstance(mockSubmissionService),
+        bind[AffinityGroup].toInstance(Organisation),
         bind[CreateDraftRegistrationService].toInstance(mockCreateDraftRegistrationService),
         bind[Navigator].toInstance(navigator),
         bind[Navigator].qualifiedWith(classOf[PropertyOrLand]).toInstance(navigator),

@@ -16,9 +16,11 @@
 
 package controllers.actions
 
+import connector.EnrolmentStoreConnector
 import javax.inject.Inject
 import models.requests.IdentifierRequest
 import play.api.mvc._
+import services.AgentAuthenticationService
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -28,20 +30,7 @@ class FakeIdentifyForRegistration @Inject()(affinityGroup: AffinityGroup)
                                             trustsAuth: TrustsAuth,
                                             enrolments: Enrolments = Enrolments(Set.empty[Enrolment]))
                                            (override implicit val executionContext: ExecutionContext)
-  extends IdentifyForRegistration("", parser, trustsAuth) {
-
-  override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] =
-    block(IdentifierRequest(request, "id", affinityGroup, enrolments))
-
-  override def composeAction[A](action: Action[A]): Action[A] = new FakeAuthenticatedIdentifierAction(action, trustsAuth)
-
-}
-
-class FakeIdentifyForPlayback @Inject()(affinityGroup: AffinityGroup)
-                                       (override val parser: BodyParsers.Default,
-                                        trustsAuth: TrustsAuth,
-                                        enrolments: Enrolments = Enrolments(Set.empty[Enrolment]))
-                                       (override implicit val executionContext: ExecutionContext) extends IdentifyForPlayback("", parser, trustsAuth){
+  extends IdentifierAction(parser, trustsAuth) {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] =
     block(IdentifierRequest(request, "id", affinityGroup, enrolments))

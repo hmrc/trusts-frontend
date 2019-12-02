@@ -35,7 +35,8 @@ class DeclarationWhatNextController @Inject()(
                                                override val messagesApi: MessagesApi,
                                                sessionRepository: RegistrationsRepository,
                                                navigator: VariationsNavigator,
-                                               identify: IdentifyForPlayback,
+                                               identify: IdentifierAction,
+                                               playbackAction: PlaybackAction,
                                                getData: DataRetrievalAction,
                                                requireData: DataRequiredAction,
                                                formProvider: DeclarationWhatNextFormProvider,
@@ -45,7 +46,7 @@ class DeclarationWhatNextController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData andThen playbackAction) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(DeclarationWhatNextPage) match {
@@ -56,7 +57,7 @@ class DeclarationWhatNextController @Inject()(
       Ok(view(preparedForm))
   }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData andThen playbackAction).async {
     implicit request =>
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>

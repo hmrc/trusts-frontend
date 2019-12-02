@@ -39,7 +39,7 @@ class TrusteesUkAddressController @Inject()(
                                              registrationsRepository: RegistrationsRepository,
                                              navigator: Navigator,
                                              validateIndex: IndexActionFilterProvider,
-                                             identify: IdentifyForRegistration,
+                                             identify: IdentifierAction,
                                              getData: DraftIdRetrievalActionProvider,
                                              requireData: DataRequiredAction,
                                              requiredAnswer: RequiredAnswerActionProvider,

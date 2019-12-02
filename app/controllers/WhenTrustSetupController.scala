@@ -35,7 +35,7 @@ class WhenTrustSetupController @Inject()(
                                           override val messagesApi: MessagesApi,
                                           registrationsRepository: RegistrationsRepository,
                                           navigator: Navigator,
-                                          identify: IdentifyForRegistration,
+                                          identify: IdentifierAction,
                                           getData: DraftIdRetrievalActionProvider,
                                           requireData: DataRequiredAction,
                                           formProvider: WhenTrustSetupFormProvider,

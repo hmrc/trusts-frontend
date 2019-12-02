@@ -29,16 +29,16 @@ import views.html.SummaryAnswerPageView
 
 
 class SummaryAnswerPageController @Inject()(
-                                              override val messagesApi: MessagesApi,
-                                              identify: IdentifyForRegistration,
-                                              getData: DraftIdRetrievalActionProvider,
-                                              requireData: DataRequiredAction,
-                                              val controllerComponents: MessagesControllerComponents,
-                                              view: SummaryAnswerPageView,
-                                              countryOptions : CountryOptions,
-                                              registrationProgress: RegistrationProgress,
-                                              registrationComplete : TaskListCompleteActionRefiner,
-                                              printUserAnswersHelper: PrintUserAnswersHelper
+                                             override val messagesApi: MessagesApi,
+                                             identify: IdentifierAction,
+                                             getData: DraftIdRetrievalActionProvider,
+                                             requireData: DataRequiredAction,
+                                             val controllerComponents: MessagesControllerComponents,
+                                             view: SummaryAnswerPageView,
+                                             countryOptions : CountryOptions,
+                                             registrationProgress: RegistrationProgress,
+                                             registrationComplete : TaskListCompleteActionRefiner,
+                                             printUserAnswersHelper: PrintUserAnswersHelper
                                             ) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId : String) =

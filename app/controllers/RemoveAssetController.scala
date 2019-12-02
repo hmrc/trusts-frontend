@@ -16,7 +16,7 @@
 
 package controllers
 
-import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider, IdentifyForRegistration, RequiredAnswerActionProvider}
+import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider, IdentifierAction, RequiredAnswerActionProvider}
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
 import models.requests.DataRequest
@@ -40,7 +40,7 @@ class DefaultRemoveAssetController @Inject()(
                                               override val messagesApi: MessagesApi,
                                               override val registrationsRepository: RegistrationsRepository,
                                               override val formProvider: RemoveIndexFormProvider,
-                                              identify: IdentifyForRegistration,
+                                              identify: IdentifierAction,
                                               getData: DraftIdRetrievalActionProvider,
                                               requireData: DataRequiredAction,
                                               val controllerComponents: MessagesControllerComponents,

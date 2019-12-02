@@ -27,7 +27,7 @@ import scala.concurrent.ExecutionContext
 
 class FailedMatchController @Inject()(
                                        override val messagesApi: MessagesApi,
-                                       identify: IdentifyForRegistration,
+                                       identify: IdentifierAction,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: FailedMatchView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {

@@ -28,7 +28,7 @@ import scala.concurrent.ExecutionContext
 
 class AssetInterruptPageController @Inject()(
                                               override val messagesApi: MessagesApi,
-                                              identify: IdentifyForRegistration,
+                                              identify: IdentifierAction,
                                               getData: DraftIdRetrievalActionProvider,
                                               requireData: DataRequiredAction,
                                               val controllerComponents: MessagesControllerComponents,

@@ -30,16 +30,16 @@ import views.html.ConfirmationAnswerPageView
 
 
 class ConfirmationAnswerPageController @Inject()(
-                                              override val messagesApi: MessagesApi,
-                                              identify: IdentifyForRegistration,
-                                              getData: DraftIdRetrievalActionProvider,
-                                              requireData: DataRequiredAction,
-                                              val controllerComponents: MessagesControllerComponents,
-                                              view: ConfirmationAnswerPageView,
-                                              countryOptions : CountryOptions,
-                                              registrationComplete : TaskListCompleteActionRefiner,
-                                              printUserAnswersHelper: PrintUserAnswersHelper,
-                                              dateFormatter: DateFormatter
+                                                  override val messagesApi: MessagesApi,
+                                                  identify: IdentifierAction,
+                                                  getData: DraftIdRetrievalActionProvider,
+                                                  requireData: DataRequiredAction,
+                                                  val controllerComponents: MessagesControllerComponents,
+                                                  view: ConfirmationAnswerPageView,
+                                                  countryOptions : CountryOptions,
+                                                  registrationComplete : TaskListCompleteActionRefiner,
+                                                  printUserAnswersHelper: PrintUserAnswersHelper,
+                                                  dateFormatter: DateFormatter
                                             ) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId : String) =

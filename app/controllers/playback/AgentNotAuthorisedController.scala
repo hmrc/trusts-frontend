@@ -16,7 +16,7 @@
 
 package controllers.playback
 
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifyForPlayback}
+import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import javax.inject.Inject
 import pages.WhatIsTheUTRVariationPage
 import play.api.i18n.I18nSupport
@@ -26,7 +26,7 @@ import views.html.AgentNotAuthorisedView
 
 class AgentNotAuthorisedController @Inject()(
                                               val controllerComponents: MessagesControllerComponents,
-                                              identify: IdentifyForPlayback,
+                                              identify: IdentifierAction,
                                               getData: DataRetrievalAction,
                                               requireData: DataRequiredAction,
                                               view: AgentNotAuthorisedView

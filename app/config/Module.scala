@@ -22,6 +22,7 @@ import controllers.actions._
 import navigation.Navigator
 import navigation.registration.{LivingSettlorNavigator, PropertyOrLandNavigator}
 import repositories.{DefaultPlaybackRepository, DefaultRegistrationsRepository, PlaybackRepository, RegistrationsRepository}
+import services.{AgentAuthenticationService, AgentAuthenticationServiceImpl}
 import uk.gov.hmrc.auth.otac.OtacAuthConnector
 import utils.annotations.{LivingSettlor, PropertyOrLand}
 import utils.{DateFormatter, TrustsDateFormatter}
@@ -43,6 +44,8 @@ class Module extends AbstractModule {
     bind(classOf[PlaybackRepository]).to(classOf[DefaultPlaybackRepository]).asEagerSingleton()
 
     bind(classOf[OtacAuthConnector]).to(classOf[OtacAuthConnectorImpl]).asEagerSingleton()
+
+    bind(classOf[AgentAuthenticationService]).to(classOf[AgentAuthenticationServiceImpl]).asEagerSingleton()
 
     bind(classOf[Navigator]).annotatedWith(classOf[PropertyOrLand]).to(classOf[PropertyOrLandNavigator])
     bind(classOf[Navigator]).annotatedWith(classOf[LivingSettlor]).to(classOf[LivingSettlorNavigator])

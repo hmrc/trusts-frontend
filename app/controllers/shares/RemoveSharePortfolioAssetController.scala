@@ -32,7 +32,7 @@ class RemoveSharePortfolioAssetController @Inject()(
                                                      override val messagesApi: MessagesApi,
                                                      override val registrationsRepository: RegistrationsRepository,
                                                      override val formProvider: RemoveIndexFormProvider,
-                                                     identify: IdentifyForRegistration,
+                                                     identify: IdentifierAction,
                                                      getData: DraftIdRetrievalActionProvider,
                                                      requireData: DataRequiredAction,
                                                      val controllerComponents: MessagesControllerComponents,

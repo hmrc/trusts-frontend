@@ -16,7 +16,7 @@
 
 package controllers
 
-import controllers.actions.IdentifyForRegistration
+import controllers.actions.IdentifierAction
 import javax.inject.Inject
 import models.NormalMode
 import play.api.i18n.I18nSupport
@@ -29,7 +29,7 @@ import scala.concurrent.ExecutionContext
 class CreateDraftRegistrationController @Inject()(
                                                    val controllerComponents: MessagesControllerComponents,
                                                    draftService : CreateDraftRegistrationService,
-                                                   identify: IdentifyForRegistration
+                                                   identify: IdentifierAction
                                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def create: Action[AnyContent] = identify.async { implicit request =>

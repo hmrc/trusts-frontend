@@ -34,7 +34,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class WhatIsTheUTRVariationsController @Inject()(
                                                   override val messagesApi: MessagesApi,
                                                   registrationsRepository: RegistrationsRepository,
-                                                  identify: IdentifyForPlayback,
+                                                  identify: IdentifierAction,
                                                   getData: DataRetrievalAction,
                                                   requireData: DataRequiredAction,
                                                   formProvider: WhatIsTheUTRFormProvider,
@@ -64,7 +64,6 @@ class WhatIsTheUTRVariationsController @Inject()(
           Future.successful(BadRequest(view(formWithErrors, routes.WhatIsTheUTRVariationsController.onSubmit()))),
 
         value => {
-
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatIsTheUTRVariationPage, value))
             _              <- registrationsRepository.set(updatedAnswers)

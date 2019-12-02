@@ -39,7 +39,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class TrusteesAnswerPageController @Inject()(
                                               override val messagesApi: MessagesApi,
                                               registrationsRepository: RegistrationsRepository,
-                                              identify: IdentifyForRegistration,
+                                              identify: IdentifierAction,
                                               navigator: Navigator,
                                               getData: DraftIdRetrievalActionProvider,
                                               requireData: DataRequiredAction,

@@ -28,7 +28,7 @@ import scala.concurrent.ExecutionContext
 
 class TrustNotClaimedController @Inject()(
                                        override val messagesApi: MessagesApi,
-                                       identify: IdentifyForPlayback,
+                                       identify: IdentifierAction,
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,

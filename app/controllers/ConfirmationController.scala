@@ -36,14 +36,14 @@ import views.html.ConfirmationView
 import scala.concurrent.{ExecutionContext, Future}
 
 class ConfirmationController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifyForRegistration,
-                                       getData: DraftIdRetrievalActionProvider,
-                                       requireData: DataRequiredAction,
-                                       config: FrontendAppConfig,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: ConfirmationView,
-                                       errorHandler: ErrorHandler
+                                        override val messagesApi: MessagesApi,
+                                        identify: IdentifierAction,
+                                        getData: DraftIdRetrievalActionProvider,
+                                        requireData: DataRequiredAction,
+                                        config: FrontendAppConfig,
+                                        val controllerComponents: MessagesControllerComponents,
+                                        view: ConfirmationView,
+                                        errorHandler: ErrorHandler
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def renderView(trn : String, userAnswers: UserAnswers, draftId: String)(implicit request : DataRequest[AnyContent]) : Future[Result] = {

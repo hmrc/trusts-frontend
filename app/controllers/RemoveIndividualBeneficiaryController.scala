@@ -33,7 +33,7 @@ import scala.concurrent.ExecutionContext
 class RemoveIndividualBeneficiaryController @Inject()(
                                                        override val messagesApi: MessagesApi,
                                                        override val registrationsRepository: RegistrationsRepository,
-                                                       identify: IdentifyForRegistration,
+                                                       identify: IdentifierAction,
                                                        getData: DraftIdRetrievalActionProvider,
                                                        requireData: DataRequiredAction,
                                                        val formProvider: RemoveIndexFormProvider,

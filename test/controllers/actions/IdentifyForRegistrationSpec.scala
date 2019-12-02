@@ -49,7 +49,7 @@ class IdentifyForRegistrationSpec extends SpecBase {
     "passing a non authenticated request" must {
       "redirect to the login page" in {
 
-        val identify: IdentifyForRegistration = new IdentifyForRegistration("", injectedParsers, trustsAuth)
+        val identify: IdentifierAction = new IdentifierAction(injectedParsers, trustsAuth)
         val application = applicationBuilder(userAnswers = None).build()
 
         def fakeAction: Action[AnyContent] = identify { _ => Results.Ok }
@@ -68,7 +68,7 @@ class IdentifyForRegistrationSpec extends SpecBase {
     "passing an identifier request" must {
       "execute the body of the action" in {
 
-        val identify: IdentifyForRegistration = new IdentifyForRegistration("", injectedParsers, trustsAuth)
+        val identify: IdentifierAction = new IdentifierAction(injectedParsers, trustsAuth)
 
         val fakeAction: Action[AnyContent] = identify { _ => Results.Ok }
 
