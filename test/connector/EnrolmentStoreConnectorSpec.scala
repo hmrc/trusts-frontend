@@ -18,7 +18,7 @@ package connector
 
 import com.github.tomakehurst.wiremock.client.WireMock._
 import config.FrontendAppConfig
-import models.EnrolmentStoreResponse.{EnrolmentStore, BadRequest, AlreadyClaimed, Forbidden, NotClaimed, ServiceUnavailable}
+import models.EnrolmentStoreResponse.{BadRequest, AlreadyClaimed, Forbidden, NotClaimed, ServiceUnavailable}
 import org.scalatest.{AsyncFreeSpec, MustMatchers}
 import play.api.Application
 import play.api.http.Status
@@ -68,19 +68,13 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
 
   "EnrolmentStoreConnector" - {
 
-    "No Trusts when" - {
-      "valid enrolment key retrieves AgentTrusts containing empty principalUserIds" in {
+    "No Content when" - {
+      "No Content 204" in {
 
         wiremock(
-          expectedStatus = Status.OK,
-          expectedResponse = Some(
-            s"""{
-               |    "principalUserIds": [
-               |    ],
-               |    "delegatedUserIds": [
-               |    ]
-               |}""".stripMargin
-          ))
+          expectedStatus = Status.NO_CONTENT,
+          expectedResponse = None
+        )
 
         connector.checkIfClaimed(identifier) map { result =>
           result mustBe NotClaimed
