@@ -52,10 +52,10 @@ class TrustStatusController @Inject()(
                                        config: FrontendAppConfig,
                                        errorHandler: ErrorHandler,
                                        lockedView: TrustLockedView,
+                                       alreadyClaimedView: TrustAlreadyClaimedView,
                                        playbackExtractor: UserAnswersExtractor,
                                        val controllerComponents: MessagesControllerComponents
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
 
   def closed(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
@@ -92,6 +92,13 @@ class TrustStatusController @Inject()(
       }
   }
 
+  def alreadyClaimed(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      enforceUtr() { utr =>
+        Future.successful(Ok(alreadyClaimedView(utr)))
+      }
+  }
+
   def status(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       enforceUtr() { utr =>
@@ -119,19 +126,19 @@ class TrustStatusController @Inject()(
   }
 
   def extract(utr: String, playback: GetTrust)(implicit request: DataRequest[AnyContent]) : Future[Result] = {
-      // Todo create new getData, requireData to return instance of PlaybackData for all Variations controllers rather than calling request.userAnswers.toPlaybackUserAnswers
-      playbackExtractor.extract(request.userAnswers.toPlaybackUserAnswers, playback) match {
-        case Right(Success(answers)) =>
-          playbackRepository.store(answers) map { _ =>
-            Redirect(config.claimATrustUrl(utr))
-          }
-        case Right(Failure(reason)) =>
+    // Todo create new getData, requireData to return instance of PlaybackData for all Variations controllers rather than calling request.userAnswers.toPlaybackUserAnswers
+    playbackExtractor.extract(request.userAnswers.toPlaybackUserAnswers, playback) match {
+      case Right(Success(answers)) =>
+        playbackRepository.store(answers) map { _ =>
+          Redirect(config.claimATrustUrl(utr))
+        }
+      case Right(Failure(reason)) =>
         // Todo update where it goes and log reason?
         Future.successful(Redirect(routes.TrustStatusController.down()))
-        case Left(reason) =>
-          // Todo update where it goes and log reason?
-          Future.successful(Redirect(routes.TrustStatusController.down()))
-      }
+      case Left(reason) =>
+        // Todo update where it goes and log reason?
+        Future.successful(Redirect(routes.TrustStatusController.down()))
+    }
   }
 
   def enforceUtr()(block: String => Future[Result])(implicit request: DataRequest[AnyContent]): Future[Result] = {

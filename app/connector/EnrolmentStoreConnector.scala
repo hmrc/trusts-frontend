@@ -18,7 +18,7 @@ package connector
 
 import config.FrontendAppConfig
 import javax.inject.Inject
-import models.AgentTrustsResponse
+import models.EnrolmentStoreResponse
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 
@@ -31,7 +31,7 @@ class EnrolmentStoreConnector @Inject()(http: HttpClient, config : FrontendAppCo
     s"${config.enrolmentStoreProxyUrl}/enrolment-store/enrolments/${config.serviceName}~$identifierKey~$identifier/users"
   }
 
-  def getAgentTrusts(utr: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[AgentTrustsResponse] =
-    http.GET[AgentTrustsResponse](enrolmentsEndpoint(utr))(AgentTrustsResponse.httpReads, hc, ec)
+  def checkIfClaimed(utr: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[EnrolmentStoreResponse] =
+    http.GET[EnrolmentStoreResponse](enrolmentsEndpoint(utr))(EnrolmentStoreResponse.httpReads, hc, ec)
 
 }

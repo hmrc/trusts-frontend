@@ -19,7 +19,8 @@ package controllers
 import base.SpecBase
 import connector.{EnrolmentStoreConnector, TrustClaim, TrustsStoreConnector}
 import forms.WhatIsTheUTRFormProvider
-import models.AgentTrustsResponse.{AgentTrusts, NotClaimed}
+import models.EnrolmentStoreResponse
+import models.EnrolmentStoreResponse.{AlreadyClaimed, BadRequest, EnrolmentStore, NotClaimed}
 import org.mockito.Matchers.{any, eq => eqTo}
 import org.mockito.Mockito.when
 import pages.WhatIsTheUTRVariationPage
@@ -27,7 +28,7 @@ import play.api.inject.bind
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
+import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import uk.gov.hmrc.auth.core.{Enrolment, EnrolmentIdentifier, Enrolments}
 import views.html.WhatIsTheUTRView
 
@@ -100,10 +101,14 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(bind[TrustsStoreConnector].toInstance(trustsStoreConnector))
+          .overrides(bind[EnrolmentStoreConnector].toInstance(enrolmentStoreConnector))
           .build()
 
       when(trustsStoreConnector.get(any[String], any[String])(any(), any()))
         .thenReturn(Future.successful(jsonWithErrorKey.asOpt[TrustClaim]))
+
+      when(enrolmentStoreConnector.checkIfClaimed(any[String])(any(), any()))
+        .thenReturn(Future.successful(NotClaimed))
 
       val request =
         FakeRequest(POST, trustUTRRoute)
@@ -172,7 +177,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       when(trustsStoreConnector.get(any[String], any[String])(any(), any()))
         .thenReturn(Future.successful(json.asOpt[TrustClaim]))
 
-      when(enrolmentStoreConnector.getAgentTrusts(eqTo(utr))(any(), any()))
+      when(enrolmentStoreConnector.checkIfClaimed(eqTo(utr))(any(), any()))
         .thenReturn(Future.successful(NotClaimed))
 
       implicit val request = FakeRequest(POST, trustUTRRoute).withFormUrlEncodedBody(("value", utr))
@@ -181,6 +186,77 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.TrustNotClaimedController.onPageLoad().url
+
+      application.stop()
+    }
+
+    "redirect to AlreadyClaimed when valid utr is submitted by organisation credential user that triggers an AlreadyClaimed response from Enrolments" in {
+
+      val utr = "0987654321"
+
+      val json = Json.parse(
+        s"""
+           |{
+           | "trustLocked": false,
+           | "managedByAgent": true,
+           | "utr": "$utr"
+           |}
+           |""".stripMargin
+      )
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), affinityGroup = Organisation)
+          .overrides(bind[TrustsStoreConnector].toInstance(trustsStoreConnector))
+          .overrides(bind[EnrolmentStoreConnector].toInstance(enrolmentStoreConnector))
+          .build()
+
+      when(trustsStoreConnector.get(any[String], any[String])(any(), any()))
+        .thenReturn(Future.successful(json.asOpt[TrustClaim]))
+
+      when(enrolmentStoreConnector.checkIfClaimed(eqTo(utr))(any(), any()))
+        .thenReturn(Future.successful(AlreadyClaimed))
+
+      implicit val request = FakeRequest(POST, trustUTRRoute).withFormUrlEncodedBody(("value", utr))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual routes.TrustStatusController.alreadyClaimed().url
+
+      application.stop()
+    }
+
+    "redirect to ServerError when valid utr is submitted by organisation credential user that does not trigger an AlreadyClaimed or NotClaimed response from Enrolments" in {
+
+      val utr = "0987654321"
+
+      val json = Json.parse(
+        s"""
+           |{
+           | "trustLocked": false,
+           | "managedByAgent": true,
+           | "utr": "$utr"
+           |}
+           |""".stripMargin
+      )
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), affinityGroup = Organisation)
+          .overrides(bind[TrustsStoreConnector].toInstance(trustsStoreConnector))
+          .overrides(bind[EnrolmentStoreConnector].toInstance(enrolmentStoreConnector))
+          .build()
+
+      when(trustsStoreConnector.get(any[String], any[String])(any(), any()))
+        .thenReturn(Future.successful(json.asOpt[TrustClaim]))
+
+      when(enrolmentStoreConnector.checkIfClaimed(eqTo(utr))(any(), any()))
+        .thenReturn(Future.successful(BadRequest))
+
+      implicit val request = FakeRequest(POST, trustUTRRoute).withFormUrlEncodedBody(("value", utr))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual INTERNAL_SERVER_ERROR
 
       application.stop()
     }
@@ -209,8 +285,8 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
         when(trustsStoreConnector.get(any[String], any[String])(any(), any()))
           .thenReturn(Future.successful(json.asOpt[TrustClaim]))
 
-        when(enrolmentStoreConnector.getAgentTrusts(eqTo(utr))(any(), any()))
-          .thenReturn(Future.successful(AgentTrusts(Seq("0987654321"), Seq.empty[String])))
+        when(enrolmentStoreConnector.checkIfClaimed(eqTo(utr))(any(), any()))
+          .thenReturn(Future.successful(AlreadyClaimed))
 
         implicit val request = FakeRequest(POST, trustUTRRoute).withFormUrlEncodedBody(("value", utr))
 
@@ -249,8 +325,8 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
         when(trustsStoreConnector.get(any[String], any[String])(any(), any()))
           .thenReturn(Future.successful(json.asOpt[TrustClaim]))
 
-        when(enrolmentStoreConnector.getAgentTrusts(eqTo(utr))(any(), any()))
-          .thenReturn(Future.successful(AgentTrusts(Seq("0987654321"), Seq.empty[String])))
+        when(enrolmentStoreConnector.checkIfClaimed(eqTo(utr))(any(), any()))
+          .thenReturn(Future.successful(AlreadyClaimed))
 
         implicit val request = FakeRequest(POST, trustUTRRoute).withFormUrlEncodedBody(("value", utr))
 
@@ -290,8 +366,8 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       when(trustsStoreConnector.get(any[String], any[String])(any(), any()))
         .thenReturn(Future.successful(json.asOpt[TrustClaim]))
 
-      when(enrolmentStoreConnector.getAgentTrusts(eqTo(utr))(any(), any()))
-        .thenReturn(Future.successful(AgentTrusts(Seq(utr), Seq.empty[String])))
+      when(enrolmentStoreConnector.checkIfClaimed(eqTo(utr))(any(), any()))
+        .thenReturn(Future.successful(AlreadyClaimed))
 
       implicit val request = FakeRequest(POST, trustUTRRoute).withFormUrlEncodedBody(("value", utr))
 

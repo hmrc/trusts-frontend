@@ -20,9 +20,9 @@ import config.FrontendAppConfig
 import connector.{EnrolmentStoreConnector, TrustsStoreConnector}
 import controllers.actions._
 import forms.WhatIsTheUTRFormProvider
+import handlers.ErrorHandler
 import javax.inject.Inject
-import models.AgentTrustsResponse.NotClaimed
-import models.Mode
+import models.EnrolmentStoreResponse.{AlreadyClaimed, NotClaimed}
 import models.requests.DataRequest
 import pages.WhatIsTheUTRVariationPage
 import play.api.data.Form
@@ -46,7 +46,8 @@ class WhatIsTheUTRVariationsController @Inject()(
                                                   view: WhatIsTheUTRView,
                                                   config: FrontendAppConfig,
                                                   trustsStore: TrustsStoreConnector,
-                                                  enrolmentStoreConnector: EnrolmentStoreConnector
+                                                  enrolmentStoreConnector: EnrolmentStoreConnector,
+                                                  errorHandler : ErrorHandler
                                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -77,20 +78,24 @@ class WhatIsTheUTRVariationsController @Inject()(
           } yield claim) flatMap { claim =>
 
             lazy val redirectTo = request.affinityGroup match {
-              case Agent => enrolmentStoreConnector.getAgentTrusts(value) map {
+              case Agent => enrolmentStoreConnector.checkIfClaimed(value) map {
                 case NotClaimed => Redirect(routes.TrustNotClaimedController.onPageLoad())
                 case _ =>
 
                   val agentEnrolled = checkEnrolmentOfAgent(value)
 
-                  if(agentEnrolled){
+                  if(agentEnrolled) {
                     Redirect(routes.TrustStatusController.status())
                   } else {
                     Redirect(routes.AgentNotAuthorisedController.onPageLoad())
                   }
 
               }
-              case _ => Future.successful(Redirect(routes.TrustStatusController.status()))
+              case _ => enrolmentStoreConnector.checkIfClaimed(value) map {
+                case AlreadyClaimed => Redirect(routes.TrustStatusController.alreadyClaimed())
+                case NotClaimed => Redirect(routes.TrustStatusController.status())
+                case _ => InternalServerError(errorHandler.internalServerErrorTemplate)
+              }
             }
 
             claim match {
