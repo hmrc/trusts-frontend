@@ -19,7 +19,6 @@ package services
 import com.google.inject.ImplementedBy
 import config.FrontendAppConfig
 import connector.EnrolmentStoreConnector
-import controllers.actions.{PlaybackActionImpl, TrustsAuth}
 import controllers.playback.routes
 import handlers.ErrorHandler
 import javax.inject.Inject
@@ -28,7 +27,6 @@ import models.requests.DataRequest
 import play.api.mvc.Result
 import play.api.mvc.Results._
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
-import uk.gov.hmrc.auth.core.{BusinessKey, Relationship}
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -36,30 +34,24 @@ import scala.concurrent.{ExecutionContext, Future}
 class AuthenticationServiceImpl @Inject()(
                                            enrolmentStoreConnector: EnrolmentStoreConnector,
                                            config: FrontendAppConfig,
-                                           trustsAuth: TrustsAuth,
                                            errorHandler: ErrorHandler,
                                            implicit val ec: ExecutionContext
                                          ) extends AuthenticationService {
 
-  def redirectToLogin: Result = trustsAuth.redirectToLogin
-
   def authenticate[A](utr: String)(implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]] =
-    trustsAuth.authorised(Relationship(trustsAuth.config.relationshipName, Set(BusinessKey(trustsAuth.config.relationshipIdentifier, utr)))) {
-      request.affinityGroup match {
-        case Agent => checkIfAgentAuthorised(utr)
-        case _ => checkIfTrustIsNotClaimed(utr)
-      }
+    request.affinityGroup match {
+      case Agent => checkIfAgentAuthorised(utr)
+      case _ => checkIfTrustIsNotClaimed(utr)
     }
 
-
-  def checkIfTrustIsNotClaimed[A](utr: String)(implicit request: DataRequest[A], hc : HeaderCarrier): Future[Either[Result, DataRequest[A]]] =
+  private def checkIfTrustIsNotClaimed[A](utr: String)(implicit request: DataRequest[A], hc : HeaderCarrier): Future[Either[Result, DataRequest[A]]] =
     enrolmentStoreConnector.checkIfClaimed(utr) map {
       case AlreadyClaimed => Left(Redirect(routes.TrustStatusController.alreadyClaimed()))
       case NotClaimed => Right(request)
       case _ => Left(InternalServerError(errorHandler.internalServerErrorTemplate))
     }
 
-  def checkIfAgentAuthorised[A](utr: String)(implicit request: DataRequest[A], hc : HeaderCarrier): Future[Either[Result, DataRequest[A]]] =
+  private def checkIfAgentAuthorised[A](utr: String)(implicit request: DataRequest[A], hc : HeaderCarrier): Future[Either[Result, DataRequest[A]]] =
     enrolmentStoreConnector.checkIfClaimed(utr) map {
       case NotClaimed => Left(Redirect(routes.TrustNotClaimedController.onPageLoad()))
       case _ =>
@@ -83,13 +75,5 @@ class AuthenticationServiceImpl @Inject()(
 
 @ImplementedBy(classOf[AuthenticationServiceImpl])
 trait AuthenticationService {
-
-  def redirectToLogin: Result
-
   def authenticate[A](utr: String)(implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]]
-
-  def checkIfTrustIsNotClaimed[A](utr: String)(implicit request: DataRequest[A], hc : HeaderCarrier): Future[Either[Result, DataRequest[A]]]
-
-  def checkIfAgentAuthorised[A](utr: String)(implicit request: DataRequest[A], hc : HeaderCarrier): Future[Either[Result, DataRequest[A]]]
-
 }

@@ -50,14 +50,8 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
   lazy val trustsStoreConnector: TrustsStoreConnector = mock[TrustsStoreConnector]
 
   class FakeAuthenticationService extends AuthenticationService {
-
-    override def redirectToLogin: Result = Ok
-
-    override def authenticate[A](utr: String)(implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]] = Future.successful(Right(request))
-
-    override def checkIfTrustIsNotClaimed[A](utr: String)(implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]] = Future.successful(Right(request))
-
-    override def checkIfAgentAuthorised[A](utr: String)(implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]] = Future.successful(Right(request))
+    override def authenticate[A](utr: String)(implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]] =
+      Future.successful(Right(request))
   }
 
   "TrustUTR Controller" must {

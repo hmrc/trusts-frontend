@@ -74,12 +74,7 @@ class WhatIsTheUTRVariationsController @Inject()(
             claim <- trustsStore.get(request.internalId, value)
           } yield claim) flatMap { claim =>
 
-            lazy val handleTrustNotLocked = {
-              request.affinityGroup match {
-                case Agent => authenticationService.checkIfAgentAuthorised(value)
-                case _ => authenticationService.checkIfTrustIsNotClaimed(value)
-              }
-            } map { redirect =>
+            lazy val handleTrustNotLocked = authenticationService.authenticate(value) map { redirect =>
               redirect.fold(
                 result => result,
                 _ => Redirect(routes.TrustStatusController.status())
