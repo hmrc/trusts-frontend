@@ -36,7 +36,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AgentAuthenticationServiceSpec extends SpecBase with ScalaFutures with EitherValues with RecoverMethods {
+class AuthenticationServiceSpec extends SpecBase with ScalaFutures with EitherValues with RecoverMethods {
 
   val utr = "0987654321"
 
@@ -74,7 +74,7 @@ class AgentAuthenticationServiceSpec extends SpecBase with ScalaFutures with Eit
         when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
           .thenReturn(Future failed BearerTokenExpired())
 
-        val service = app.injector.instanceOf[AgentAuthenticationService]
+        val service = app.injector.instanceOf[AuthenticationService]
 
         recoverToSucceededIf[BearerTokenExpired](service.authenticate[AnyContent](utr))
 
@@ -98,7 +98,7 @@ class AgentAuthenticationServiceSpec extends SpecBase with ScalaFutures with Eit
           .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
           .build()
 
-        val service = app.injector.instanceOf[AgentAuthenticationService]
+        val service = app.injector.instanceOf[AuthenticationService]
 
         whenReady(service.authenticate[AnyContent](utr)) {
           result =>
@@ -125,7 +125,7 @@ class AgentAuthenticationServiceSpec extends SpecBase with ScalaFutures with Eit
           .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
           .build()
 
-        val service = app.injector.instanceOf[AgentAuthenticationService]
+        val service = app.injector.instanceOf[AuthenticationService]
 
         whenReady(service.authenticate[AnyContent](utr)) {
           result =>
@@ -154,7 +154,7 @@ class AgentAuthenticationServiceSpec extends SpecBase with ScalaFutures with Eit
           .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
           .build()
 
-        val service = app.injector.instanceOf[AgentAuthenticationService]
+        val service = app.injector.instanceOf[AuthenticationService]
 
         implicit val dataRequest = DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Agent, enrolments)
 
@@ -188,7 +188,7 @@ class AgentAuthenticationServiceSpec extends SpecBase with ScalaFutures with Eit
           .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
           .build()
 
-        val service = app.injector.instanceOf[AgentAuthenticationService]
+        val service = app.injector.instanceOf[AuthenticationService]
 
         implicit val dataRequest = DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Agent, enrolments)
 

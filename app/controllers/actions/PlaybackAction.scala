@@ -16,14 +16,14 @@
 
 package controllers.actions
 
-import com.google.inject.Inject
+import com.google.inject.{ImplementedBy, Inject}
 import connector.EnrolmentStoreConnector
 import models.requests.DataRequest
 import pages.WhatIsTheUTRVariationPage
 import play.api.Logger
 import play.api.mvc.Results.Redirect
 import play.api.mvc._
-import services.AgentAuthenticationService
+import services.AuthenticationService
 import uk.gov.hmrc.auth.core.FailedRelationship
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.HeaderCarrierConverter
@@ -31,9 +31,9 @@ import uk.gov.hmrc.play.HeaderCarrierConverter
 import scala.concurrent.{ExecutionContext, Future}
 
 class PlaybackActionImpl @Inject()(val parser: BodyParsers.Default,
-                               enrolmentStoreConnector: EnrolmentStoreConnector,
-                               agentAuthenticationService: AgentAuthenticationService
-                              )(override implicit val executionContext: ExecutionContext) extends PlaybackAction {
+                                   enrolmentStoreConnector: EnrolmentStoreConnector,
+                                   agentAuthenticationService: AuthenticationService
+                                  )(override implicit val executionContext: ExecutionContext) extends PlaybackAction {
 
   override def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
@@ -42,7 +42,7 @@ class PlaybackActionImpl @Inject()(val parser: BodyParsers.Default,
 
     request.userAnswers.get(WhatIsTheUTRVariationPage) map { utr =>
 
-      agentAuthenticationService.authenticate(utr)(request, hc, implicitly) recoverWith {
+      agentAuthenticationService.authenticate(utr)(request, hc) recoverWith {
         case FailedRelationship(msg) =>
           Logger.info(s"[IdentifyForPlayback] Relationship does not exist in Trust IV for user due to $msg")
           Future.successful(Left(redirectToLogin))
@@ -54,6 +54,7 @@ class PlaybackActionImpl @Inject()(val parser: BodyParsers.Default,
 
 }
 
+@ImplementedBy(classOf[PlaybackActionImpl])
 trait PlaybackAction extends ActionRefiner[DataRequest, DataRequest] {
 
   def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]]

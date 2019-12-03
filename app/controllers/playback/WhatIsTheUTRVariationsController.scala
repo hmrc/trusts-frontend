@@ -17,20 +17,18 @@
 package controllers.playback
 
 import config.FrontendAppConfig
-import connector.{EnrolmentStoreConnector, TrustClaim, TrustsStoreConnector}
+import connector.{TrustClaim, TrustsStoreConnector}
 import controllers.actions._
 import forms.WhatIsTheUTRFormProvider
 import handlers.ErrorHandler
 import javax.inject.Inject
-import models.EnrolmentStoreResponse.{AlreadyClaimed, NotClaimed}
-import models.requests.DataRequest
 import pages.WhatIsTheUTRVariationPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.RegistrationsRepository
+import services.AuthenticationService
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
-import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.WhatIsTheUTRView
 
@@ -47,8 +45,8 @@ class WhatIsTheUTRVariationsController @Inject()(
                                                   view: WhatIsTheUTRView,
                                                   config: FrontendAppConfig,
                                                   trustsStore: TrustsStoreConnector,
-                                                  enrolmentStoreConnector: EnrolmentStoreConnector,
-                                                  errorHandler: ErrorHandler
+                                                  errorHandler: ErrorHandler,
+                                                  authenticationService: AuthenticationService
                                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -76,9 +74,16 @@ class WhatIsTheUTRVariationsController @Inject()(
             claim <- trustsStore.get(request.internalId, value)
           } yield claim) flatMap { claim =>
 
-            lazy val handleTrustNotLocked = request.affinityGroup match {
-              case Agent => checkIfAgentAuthorised(value)
-              case _ => checkIfTrustIsNotClaimed(value)
+            lazy val handleTrustNotLocked = {
+              request.affinityGroup match {
+                case Agent => authenticationService.checkIfAgentAuthorised(value)
+                case _ => authenticationService.checkIfTrustIsNotClaimed(value)
+              }
+            } map { redirect =>
+              redirect.fold(
+                result => result,
+                _ => Redirect(routes.TrustStatusController.status())
+              )
             }
 
             claim match {
@@ -98,36 +103,6 @@ class WhatIsTheUTRVariationsController @Inject()(
     } else {
       onTrustNotLocked
     }
-  }
-
-  private def checkIfTrustIsNotClaimed(utr: String)(implicit hc : HeaderCarrier, request: DataRequest[AnyContent]) = {
-    enrolmentStoreConnector.checkIfClaimed(utr) map {
-      case AlreadyClaimed => Redirect(routes.TrustStatusController.alreadyClaimed())
-      case NotClaimed => Redirect(routes.TrustStatusController.status())
-      case _ => InternalServerError(errorHandler.internalServerErrorTemplate)
-    }
-  }
-
-  private def checkIfAgentAuthorised(utr: String)(implicit hc : HeaderCarrier, request: DataRequest[AnyContent]) = {
-    enrolmentStoreConnector.checkIfClaimed(utr) map {
-      case NotClaimed => Redirect(routes.TrustNotClaimedController.onPageLoad())
-      case _ =>
-
-        val agentEnrolled = checkEnrolmentOfAgent(utr)
-
-        if (agentEnrolled) {
-          Redirect(routes.TrustStatusController.status())
-        } else {
-          Redirect(routes.AgentNotAuthorisedController.onPageLoad())
-        }
-    }
-  }
-
-  private def checkEnrolmentOfAgent(utr: String)(implicit request: DataRequest[AnyContent]) = {
-    request.enrolments.enrolments
-      .find(_.key equals config.serviceName)
-      .flatMap(_.identifiers.find(_.key equals "SAUTR"))
-      .exists(_.value equals utr)
   }
 
 }

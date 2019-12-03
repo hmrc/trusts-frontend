@@ -18,18 +18,22 @@ package controllers.playback
 
 import base.SpecBase
 import connector.{TrustClaim, TrustsStoreConnector}
+import controllers.actions.FakePlaybackAction
 import forms.WhatIsTheUTRFormProvider
-import models.EnrolmentStoreResponse
-import models.EnrolmentStoreResponse.{AlreadyClaimed, BadRequest, EnrolmentStore, NotClaimed}
-import org.mockito.Matchers.{any, eq => eqTo}
+import models.requests.DataRequest
+import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.WhatIsTheUTRVariationPage
 import play.api.inject.bind
 import play.api.libs.json.Json
+import play.api.mvc.Result
+import play.api.mvc.Results.Ok
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
+import services.AuthenticationService
+import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.auth.core.{Enrolment, EnrolmentIdentifier, Enrolments}
+import uk.gov.hmrc.http.HeaderCarrier
 import views.html.WhatIsTheUTRView
 
 import scala.concurrent.Future
@@ -44,6 +48,17 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
   lazy val onSubmit = routes.WhatIsTheUTRVariationsController.onSubmit()
 
   lazy val trustsStoreConnector: TrustsStoreConnector = mock[TrustsStoreConnector]
+
+  class FakeAuthenticationService extends AuthenticationService {
+
+    override def redirectToLogin: Result = Ok
+
+    override def authenticate[A](utr: String)(implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]] = Future.successful(Right(request))
+
+    override def checkIfTrustIsNotClaimed[A](utr: String)(implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]] = Future.successful(Right(request))
+
+    override def checkIfAgentAuthorised[A](utr: String)(implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]] = Future.successful(Right(request))
+  }
 
   "TrustUTR Controller" must {
 
@@ -99,6 +114,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(bind[TrustsStoreConnector].toInstance(trustsStoreConnector))
+          .overrides(bind[AuthenticationService].toInstance(new FakeAuthenticationService()))
           .build()
 
       when(trustsStoreConnector.get(any[String], any[String])(any(), any()))
@@ -169,6 +185,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), affinityGroup = Agent, enrolments = enrolments)
           .overrides(bind[TrustsStoreConnector].toInstance(trustsStoreConnector))
+          .overrides(bind[AuthenticationService].toInstance(new FakeAuthenticationService()))
           .build()
 
       when(trustsStoreConnector.get(any[String], any[String])(any(), any()))
