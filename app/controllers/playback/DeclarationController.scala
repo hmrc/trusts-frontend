@@ -17,20 +17,18 @@
 package controllers.playback
 
 import controllers.actions._
-import forms.playback.DeclarationFormProvider
-import javax.inject.Inject
+import forms.DeclarationFormProvider
 import navigation.Navigator
 import pages.DeclarationWhatNextPage
-import pages.playback.DeclarationPage
+import repositories.RegistrationsRepository
+import views.html.playback.DeclarationView
+import scala.concurrent.{ExecutionContext, Future}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.RegistrationsRepository
-import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.playback.DeclarationView
-
-import scala.concurrent.{ExecutionContext, Future}
-
+import javax.inject.Inject
+import pages.DeclarationPage
 
 class DeclarationController @Inject()(
                                        override val messagesApi: MessagesApi,
@@ -59,7 +57,7 @@ class DeclarationController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, request.affinityGroup, routes.DeclarationController.onSubmit()))
+      Ok(view(preparedForm, request.affinityGroup, controllers.playback.routes.DeclarationController.onSubmit()))
   }
 
   def onSubmit(): Action[AnyContent] = actions().async {
@@ -67,7 +65,7 @@ class DeclarationController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, request.affinityGroup, routes.DeclarationController.onSubmit()))),
+          Future.successful(BadRequest(view(formWithErrors, request.affinityGroup, controllers.playback.routes.DeclarationController.onSubmit()))),
 
         // TODO:  Check response for submission of no change data and redirect accordingly
 
@@ -75,7 +73,7 @@ class DeclarationController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, value))
             _ <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(routes.DeclarationController.onPageLoad()) // TODO Redirect to variation confirmation page
+          } yield Redirect(controllers.playback.routes.VariationsConfirmationController.onPageLoad())
         }
       )
 

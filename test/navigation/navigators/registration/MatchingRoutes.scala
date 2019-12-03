@@ -135,7 +135,7 @@ trait MatchingRoutes {
         }
       }
 
-      "go to CannotMakeChanges from TrustHaveAUTR when user answers yes when variations is off" in {
+      "go to CannotMakeChanges from TrustHaveAUTR when user answers yes when claim is off" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
@@ -145,7 +145,7 @@ trait MatchingRoutes {
 
             val app = new GuiceApplicationBuilder().overrides(
               bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(Some(answers)))
-            ).configure(("microservice.services.features.variations", false)).build()
+            ).configure(("microservice.services.features.claim.enabled", false)).build()
 
             val nav = app.injector.instanceOf[Navigator]
 
@@ -153,7 +153,7 @@ trait MatchingRoutes {
               .mustBe(routes.CannotMakeChangesController.onPageLoad())
         }
       }
-      "go to WhatIsTheUtrVariations from TrustHaveAUTR when user answers yes when variations is on" in {
+      "go to WhatIsTheUtrVariations from TrustHaveAUTR when user answers yes when claim is on" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
@@ -163,7 +163,7 @@ trait MatchingRoutes {
 
             val app = new GuiceApplicationBuilder().overrides(
               bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(Some(answers)))
-            ).configure(("microservice.services.features.variations", true)).build()
+            ).configure(("microservice.services.features.claim.enabled", true)).build()
 
             val nav = app.injector.instanceOf[Navigator]
 

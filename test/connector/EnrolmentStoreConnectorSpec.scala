@@ -18,7 +18,7 @@ package connector
 
 import com.github.tomakehurst.wiremock.client.WireMock._
 import config.FrontendAppConfig
-import models.AgentTrustsResponse.{AgentTrusts, BadRequest, Forbidden, NotClaimed, ServiceUnavailable}
+import models.EnrolmentStoreResponse.{BadRequest, AlreadyClaimed, Forbidden, NotClaimed, ServiceUnavailable}
 import org.scalatest.{AsyncFreeSpec, MustMatchers}
 import play.api.Application
 import play.api.http.Status
@@ -58,18 +58,33 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
 
   private lazy val serviceName = config.serviceName
 
-  private val identifierKey = "UTR"
+  private val identifierKey = "SAUTR"
   private val identifier = "0987654321"
 
   private val principalId = Seq("ABCEDEFGI1234567")
   private val delegatedId = Seq("ABCEDEFGI1234568", "ABCEDEFGI1234569")
 
-  private lazy val enrolmentsUrl: String = s"/enrolment-store/enrolments/$serviceName~$identifierKey~$identifier/users"
+  private lazy val enrolmentsUrl: String = s"/enrolment-store-proxy/enrolment-store/enrolments/$serviceName~$identifierKey~$identifier/users"
 
   "EnrolmentStoreConnector" - {
 
-    "must get a list of enrolments and delegated enrolments when" - {
-      "valid enrolment key retrieves a Success 200 with a body of enrolments" in {
+    "No Content when" - {
+      "No Content 204" in {
+
+        wiremock(
+          expectedStatus = Status.NO_CONTENT,
+          expectedResponse = None
+        )
+
+        connector.checkIfClaimed(identifier) map { result =>
+          result mustBe NotClaimed
+        }
+
+      }
+    }
+
+    "Cannot access trust when" - {
+      "non-empty principalUserIds retrieved" in {
 
         wiremock(
           expectedStatus = Status.OK,
@@ -79,35 +94,12 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
                |       "${principalId.head}"
                |    ],
                |    "delegatedUserIds": [
-               |       "${delegatedId.head}",
-               |       "${delegatedId.last}"
                |    ]
                |}""".stripMargin
           ))
 
-        connector.getAgentTrusts(identifier) map { result =>
-          result mustBe AgentTrusts(principalId, delegatedId)
-        }
-
-      }
-    }
-
-    "No Trusts when" - {
-      "valid enrolment key retrieves a AgentServices containing empty prinicipleIds" in {
-
-        wiremock(
-          expectedStatus = Status.OK,
-          expectedResponse = Some(
-            s"""{
-               |    "principalUserIds": [
-               |    ],
-               |    "delegatedUserIds": [
-               |    ]
-               |}""".stripMargin
-          ))
-
-        connector.getAgentTrusts(identifier) map { result =>
-          result mustBe NotClaimed
+        connector.checkIfClaimed(identifier) map { result =>
+          result mustBe AlreadyClaimed
         }
 
       }
@@ -126,7 +118,7 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
               |}""".stripMargin
           ))
 
-        connector.getAgentTrusts(identifier) map { result =>
+        connector.checkIfClaimed(identifier) map { result =>
           result mustBe ServiceUnavailable
         }
 
@@ -146,7 +138,7 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
               |}""".stripMargin
           ))
 
-        connector.getAgentTrusts(identifier) map { result =>
+        connector.checkIfClaimed(identifier) map { result =>
           result mustBe Forbidden
         }
 
@@ -166,7 +158,7 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
               |}""".stripMargin
           ))
 
-        connector.getAgentTrusts(identifier) map { result =>
+        connector.checkIfClaimed(identifier) map { result =>
           result mustBe BadRequest
         }
 

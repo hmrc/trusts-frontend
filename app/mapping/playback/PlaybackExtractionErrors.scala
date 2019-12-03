@@ -20,7 +20,7 @@ object PlaybackExtractionErrors {
 
   sealed trait PlaybackExtractionError
 
-  case object FailedToExtractData extends PlaybackExtractionError
+  case class FailedToExtractData(reason: String) extends PlaybackExtractionError
   case object FailedToCombineAnswers extends RuntimeException with PlaybackExtractionError
 
 }

@@ -16,12 +16,12 @@
 
 package pages
 
-import models.core.pages.FullName
+import models.core.pages.Declaration
 import play.api.libs.json.JsPath
 
-case object DeclarationPage extends QuestionPage[FullName] {
+case object DeclarationPage extends QuestionPage[Declaration] {
 
-  override def path: JsPath = JsPath \"declaration"\ toString
+  override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "name"
+  override def toString: String = "declaration"
 }

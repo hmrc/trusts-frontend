@@ -19,14 +19,16 @@ package controllers.playback
 import base.SpecBase
 import connector.{TrustClaim, TrustsStoreConnector}
 import forms.WhatIsTheUTRFormProvider
-import org.mockito.Matchers.any
+import models.EnrolmentStoreResponse
+import models.EnrolmentStoreResponse.{AlreadyClaimed, BadRequest, EnrolmentStore, NotClaimed}
+import org.mockito.Matchers.{any, eq => eqTo}
 import org.mockito.Mockito.when
 import pages.WhatIsTheUTRVariationPage
 import play.api.inject.bind
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
+import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import uk.gov.hmrc.auth.core.{Enrolment, EnrolmentIdentifier, Enrolments}
 import views.html.WhatIsTheUTRView
 

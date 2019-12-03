@@ -22,7 +22,7 @@ import models.NormalMode
 import models.core.UserAnswers
 import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse._
-import models.core.pages.FullName
+import models.core.pages.{Declaration, FullName}
 import models.registration.pages.RegistrationStatus.InProgress
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{verify, when, _}
@@ -126,7 +126,7 @@ class DeclarationControllerSpec extends SpecBase {
             TestUserAnswers.newTrustCompleteUserAnswers.copy(progress = InProgress)
           )
         )
-        .set(DeclarationPage, FullName("First", None, "Last")).success.value
+        .set(DeclarationPage, Declaration(FullName("First", None, "Last"), Some("email@email.com"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
@@ -139,7 +139,8 @@ class DeclarationControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(FullName("First",None, "Last")), NormalMode,fakeDraftId,AffinityGroup.Agent)(fakeRequest, messages).toString
+        view(form.fill(Declaration(FullName("First",None, "Last"), Some("email@email.com"))),
+          NormalMode,fakeDraftId,AffinityGroup.Agent)(fakeRequest, messages).toString
 
       application.stop()
     }

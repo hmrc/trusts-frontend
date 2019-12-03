@@ -15,6 +15,7 @@ POST       /variations/declare-change                        controllers.playbac
 GET        /variations/declaration                      controllers.playback.DeclarationController.onPageLoad()
 POST       /variations/declaration                      controllers.playback.DeclarationController.onSubmit()
 
+GET        /variations/confirmation              controllers.playback.VariationsConfirmationController.onPageLoad()
 
 # Registration
 
@@ -648,6 +649,7 @@ GET        /status/processing                      controllers.playback.TrustSta
 GET        /status/not-found                       controllers.playback.TrustStatusController.notFound()
 GET        /status/down                            controllers.playback.TrustStatusController.down()
 GET        /status/locked                          controllers.playback.TrustStatusController.locked()
+GET        /status/already-claimed                 controllers.playback.TrustStatusController.alreadyClaimed()
 GET        /status                                 controllers.playback.TrustStatusController.status()
 
 GET        /variations/trust-not-claimed                       controllers.playback.TrustNotClaimedController.onPageLoad()

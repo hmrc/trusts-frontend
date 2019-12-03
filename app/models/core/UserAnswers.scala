@@ -79,6 +79,10 @@ final case class UserAnswers(
         query.cleanup(None, updatedAnswers)
     }
   }
+
+  def toPlaybackUserAnswers: models.playback.UserAnswers = {
+    new models.playback.UserAnswers(internalAuthId, data)
+  }
 }
 
 object UserAnswers {

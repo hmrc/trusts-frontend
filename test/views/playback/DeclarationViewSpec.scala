@@ -16,8 +16,8 @@
 
 package views.playback
 
-import forms.playback.DeclarationFormProvider
-import models.playback.pages.Declaration
+import forms.DeclarationFormProvider
+import models.core.pages.Declaration
 import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
@@ -27,7 +27,7 @@ import views.html.playback.DeclarationView
 
 class DeclarationViewSpec extends QuestionViewBehaviours[Declaration] {
 
-  val messageKeyPrefix = "declaration.changes.noChanges"
+  val messageKeyPrefix = "declaration"
 
   val form = new DeclarationFormProvider()()
 

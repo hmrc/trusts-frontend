@@ -20,8 +20,8 @@ import base.SpecBase
 import config.FrontendAppConfig
 import connector.EnrolmentStoreConnector
 import controllers.actions.TrustsAuth
-import models.AgentTrustsResponse.{AgentTrusts, NotClaimed}
-import models.requests.{DataRequest, IdentifierRequest}
+import models.EnrolmentStoreResponse.{AlreadyClaimed, NotClaimed}
+import models.requests.DataRequest
 import org.mockito.Matchers.{any, eq => mEq}
 import org.mockito.Mockito.when
 import org.scalatest.concurrent.ScalaFutures
@@ -90,8 +90,8 @@ class AgentAuthenticationServiceSpec extends SpecBase with ScalaFutures with Eit
         when(mockAuthConnector.authorise(any[Relationship], mEq(EmptyRetrieval))(any(), any()))
           .thenReturn(Future.successful(()))
 
-        when(mockEnrolmentStoreConnector.getAgentTrusts(mEq(utr))(any(), any()))
-          .thenReturn(Future.successful(AgentTrusts(Seq(""), Seq(""))))
+        when(mockEnrolmentStoreConnector.checkIfClaimed(mEq(utr))(any(), any()))
+          .thenReturn(Future.successful(AlreadyClaimed))
 
         val app = applicationBuilder()
           .overrides(bind[TrustsAuth].toInstance(trustsAuth))
@@ -117,7 +117,7 @@ class AgentAuthenticationServiceSpec extends SpecBase with ScalaFutures with Eit
         when(mockAuthConnector.authorise(any[Relationship], mEq(EmptyRetrieval))(any(), any()))
           .thenReturn(Future.successful(()))
 
-        when(mockEnrolmentStoreConnector.getAgentTrusts(mEq(utr))(any[HeaderCarrier], any[ExecutionContext]))
+        when(mockEnrolmentStoreConnector.checkIfClaimed(mEq(utr))(any[HeaderCarrier], any[ExecutionContext]))
           .thenReturn(Future.successful(NotClaimed))
 
         val app = applicationBuilder()
@@ -146,8 +146,8 @@ class AgentAuthenticationServiceSpec extends SpecBase with ScalaFutures with Eit
         when(mockAuthConnector.authorise(any[Relationship], mEq(EmptyRetrieval))(any(), any()))
           .thenReturn(Future.successful(()))
 
-        when(mockEnrolmentStoreConnector.getAgentTrusts(mEq(utr))(any(), any()))
-          .thenReturn(Future.successful(AgentTrusts(Seq(""), Seq(""))))
+        when(mockEnrolmentStoreConnector.checkIfClaimed(mEq(utr))(any(), any()))
+          .thenReturn(Future.successful(AlreadyClaimed))
 
         val app = applicationBuilder()
           .overrides(bind[TrustsAuth].toInstance(trustsAuth))
@@ -180,8 +180,8 @@ class AgentAuthenticationServiceSpec extends SpecBase with ScalaFutures with Eit
         when(mockAuthConnector.authorise(any[Relationship], mEq(EmptyRetrieval))(any(), any()))
           .thenReturn(Future.successful(()))
 
-        when(mockEnrolmentStoreConnector.getAgentTrusts(mEq(utr))(any(), any()))
-          .thenReturn(Future.successful(AgentTrusts(Seq(""), Seq(""))))
+        when(mockEnrolmentStoreConnector.checkIfClaimed(mEq(utr))(any(), any()))
+          .thenReturn(Future.successful(AlreadyClaimed))
 
         val app = applicationBuilder()
           .overrides(bind[TrustsAuth].toInstance(trustsAuth))

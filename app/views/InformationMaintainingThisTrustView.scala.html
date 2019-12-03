@@ -15,9 +15,11 @@
  *@
 
 @import models.Mode
+@import config.FrontendAppConfig
 
 @this(
-main_template: MainTemplate
+    appConfig: FrontendAppConfig,
+    main_template: MainTemplate
 )
 
 @(utr: String)(implicit request: Request[_], messages: Messages)
@@ -53,7 +55,9 @@ title = messages("informationMaintainingThisTrust.title")
 
    <p>@messages("informationMaintainingThisTrust.paragraph3")</p>
 
-   @components.button_link(messages("site.onlyContinue"), controllers.playback.routes.DeclarationWhatNextController.onPageLoad().url)
+    @if(appConfig.playbackEnabled) {
+        @components.button_link(messages("site.onlyContinue"), controllers.playback.routes.DeclarationWhatNextController.onPageLoad().url)
+    }
 
 }
 

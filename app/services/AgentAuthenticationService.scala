@@ -21,7 +21,7 @@ import connector.EnrolmentStoreConnector
 import controllers.actions.TrustsAuth
 import controllers.playback.routes
 import javax.inject.Inject
-import models.AgentTrustsResponse.NotClaimed
+import models.EnrolmentStoreResponse.NotClaimed
 import models.requests.DataRequest
 import play.api.mvc.Result
 import play.api.mvc.Results.Redirect
@@ -44,7 +44,7 @@ class AgentAuthenticationServiceImpl @Inject()(
     trustsAuth.authorised(Relationship(trustsAuth.config.relationshipName, Set(BusinessKey(trustsAuth.config.relationshipIdentifier, utr)))) {
 
       request.affinityGroup match {
-        case Agent => enrolmentStoreConnector.getAgentTrusts(utr) map {
+        case Agent => enrolmentStoreConnector.checkIfClaimed(utr) map {
           case NotClaimed => Left(Redirect(controllers.playback.routes.TrustNotClaimedController.onPageLoad()))
           case _ =>
 

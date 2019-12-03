@@ -18,8 +18,8 @@ package generators
 
 import java.time.LocalDate
 
-import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
-import models.playback.pages.{Declaration, DeclarationWhatNext}
+import models.core.pages._
+import models.playback.pages.DeclarationWhatNext
 import models.registration.pages._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
@@ -80,12 +80,12 @@ trait ModelGenerators {
     }
   }
 
-  implicit lazy val arbitraryDeclarationChangesNoChanges : Arbitrary[models.playback.pages.Declaration] = {
+  implicit lazy val arbitraryDeclaration : Arbitrary[Declaration] = {
     Arbitrary {
       for {
         str <- arbitrary[String]
       } yield {
-        Declaration(FullName(str, Some(str), str), Some(str))
+        models.core.pages.Declaration(FullName(str, Some(str), str), Some(str))
       }
     }
   }
