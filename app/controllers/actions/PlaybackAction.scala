@@ -30,10 +30,10 @@ import uk.gov.hmrc.play.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class PlaybackAction @Inject()(val parser: BodyParsers.Default,
+class PlaybackActionImpl @Inject()(val parser: BodyParsers.Default,
                                enrolmentStoreConnector: EnrolmentStoreConnector,
                                agentAuthenticationService: AgentAuthenticationService
-                              )(override implicit val executionContext: ExecutionContext) extends ActionRefiner[DataRequest, DataRequest] {
+                              )(override implicit val executionContext: ExecutionContext) extends PlaybackAction {
 
   override def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
@@ -51,5 +51,11 @@ class PlaybackAction @Inject()(val parser: BodyParsers.Default,
     } getOrElse Future.successful(Left(Redirect(controllers.routes.IndexController.onPageLoad())))
 
   }
+
+}
+
+trait PlaybackAction extends ActionRefiner[DataRequest, DataRequest] {
+
+  def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]]
 
 }
