@@ -20,6 +20,7 @@ import play.api.Logger
 import play.api.http.Status.OK
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 import play.api.libs.json.{Json, OFormat}
+import scala.language.implicitConversions
 
 case class TrustClaim(utr:String, managedByAgent: Boolean, trustLocked:Boolean)
 
@@ -30,7 +31,7 @@ object TrustClaim {
   implicit def httpReads(utr : String): HttpReads[Option[TrustClaim]] =
     new HttpReads[Option[TrustClaim]] {
       override def read(method: String, url: String, response: HttpResponse): Option[TrustClaim] = {
-        Logger.info(s"[TrustResponse]  response status received from trusts store api: ${response.status}, body :${response.body}")
+        Logger.info(s"[TrustClaim] response status received from trusts store api: ${response.status}, body :${response.body}")
 
         response.status match {
           case OK =>
