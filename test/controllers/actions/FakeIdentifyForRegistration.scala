@@ -16,11 +16,9 @@
 
 package controllers.actions
 
-import connector.EnrolmentStoreConnector
 import javax.inject.Inject
 import models.requests.IdentifierRequest
 import play.api.mvc._
-import services.AgentAuthenticationService
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 
 import scala.concurrent.{ExecutionContext, Future}
