@@ -43,13 +43,11 @@ class InformationMaintainingThisTrustController @Inject()(
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       request.userAnswers.get(WhatIsTheUTRVariationPage) match {
-        case Some(utr) => {
-
+        case Some(utr) =>
           request.affinityGroup match {
             case Agent if !config.playbackEnabled => Ok(agentCannotAccessTrustYetView(utr))
             case _ => Ok(maintainingTrustView(utr))
           }
-        }
         case None => Redirect(routes.WhatIsTheUTRVariationsController.onPageLoad())
       }
   }

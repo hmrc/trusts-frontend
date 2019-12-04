@@ -1401,7 +1401,7 @@ trustAlreadyClaimed.p2.a = contact the trusts helpline (opens in a new window or
 
 agentCannotAccessTrustYet.title = You cannot access this trust yet
 agentCannotAccessTrustYet.heading = You cannot access this trust yet
-agentCannotAccessTrustYet.subheading = This trust’s UTR: {0}
+agentCannotAccessTrustYet.subHeading = This trust’s UTR: {0}
 agentCannotAccessTrustYet.p1 = You have been authorised by your client and do not need to do anything else at the moment.
 agentCannotAccessTrustYet.p2 = You will be able to access this trust by 2020.
 agentCannotAccessTrustYet.heading.2 = What you need to know about maintaining this trust
