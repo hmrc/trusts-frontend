@@ -41,29 +41,10 @@ class CharityBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[Lis
 
             answers
               .flatMap(_.set(CharityBeneficiaryNamePage(index), charityBeneficiary.organisationName))
-              .flatMap { answers =>
-                charityBeneficiary.beneficiaryShareOfIncome match {
-                  case Some(income) =>
-                    answers.set(CharityBeneficiaryDiscretionYesNoPage(index), false)
-                      .flatMap(_.set(CharityBeneficiaryShareOfIncomePage(index), income))
-                  case None =>
-                    // Assumption that user answered yes as the share of income is not provided
-                    answers.set(CharityBeneficiaryDiscretionYesNoPage(index), true)
-                }
-              }
+              .flatMap(answers => extractShareOfIncome(charityBeneficiary, index, answers))
               .flatMap(_.set(CharityBeneficiaryUtrPage(index), charityBeneficiary.identification.flatMap(_.utr)))
               .flatMap(_.set(CharityBeneficiarySafeIdPage(index), charityBeneficiary.identification.flatMap(_.safeId)))
-              .flatMap { answers =>
-                charityBeneficiary.identification.flatMap(_.address.convert) match {
-                  case Some(uk: UKAddress) =>
-                    answers.set(CharityBeneficiaryAddressPage(index), uk)
-                      .flatMap(_.set(CharityBeneficiaryAddressUKYesNoPage(index), true))
-                  case Some(nonUk: InternationalAddress) =>
-                    answers.set(CharityBeneficiaryAddressPage(index), nonUk)
-                      .flatMap(_.set(CharityBeneficiaryAddressUKYesNoPage(index), false))
-                  case _ => Success(answers)
-                }
-              }
+              .flatMap(answers => extractAddress(charityBeneficiary, index, answers))
               .flatMap {
                 _.set(
                   CharityBeneficiaryMetaData(index),
@@ -86,4 +67,29 @@ class CharityBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[Lis
       }
     }
 
+  private def extractShareOfIncome(charityBeneficiary: DisplayTrustCharityType, index: Int, answers: UserAnswers) = {
+    charityBeneficiary.beneficiaryShareOfIncome match {
+      case Some(income) =>
+        answers.set(CharityBeneficiaryDiscretionYesNoPage(index), false)
+          .flatMap(_.set(CharityBeneficiaryShareOfIncomePage(index), income))
+      case None =>
+        // Assumption that user answered yes as the share of income is not provided
+        answers.set(CharityBeneficiaryDiscretionYesNoPage(index), true)
+    }
+  }
+
+  private def extractAddress(charityBeneficiary: DisplayTrustCharityType, index: Int, answers: UserAnswers) = {
+    charityBeneficiary.identification.flatMap(_.address.convert) match {
+      case Some(uk: UKAddress) =>
+        answers.set(CharityBeneficiaryAddressPage(index), uk)
+          .flatMap(_.set(CharityBeneficiaryAddressYesNoPage(index), true))
+          .flatMap(_.set(CharityBeneficiaryAddressUKYesNoPage(index), true))
+      case Some(nonUk: InternationalAddress) =>
+        answers.set(CharityBeneficiaryAddressPage(index), nonUk)
+          .flatMap(_.set(CharityBeneficiaryAddressYesNoPage(index), true))
+          .flatMap(_.set(CharityBeneficiaryAddressUKYesNoPage(index), false))
+      case None =>
+        answers.set(CharityBeneficiaryAddressYesNoPage(index), false)
+    }
+  }
 }
