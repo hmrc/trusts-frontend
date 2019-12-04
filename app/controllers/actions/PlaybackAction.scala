@@ -32,25 +32,15 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class PlaybackActionImpl @Inject()(val parser: BodyParsers.Default,
                                    enrolmentStoreConnector: EnrolmentStoreConnector,
-                                   trustsAuth: TrustsAuth,
                                    agentAuthenticationService: AuthenticationService
                                   )(override implicit val executionContext: ExecutionContext) extends PlaybackAction {
 
   override def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
+
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
-    val redirectToLogin: Result = trustsAuth.redirectToLogin
-
     request.userAnswers.get(WhatIsTheUTRVariationPage) map { utr =>
-
-      trustsAuth.authorised(Relationship(trustsAuth.config.relationshipName, Set(BusinessKey(trustsAuth.config.relationshipIdentifier, utr)))) {
-        agentAuthenticationService.authenticate(utr)(request, hc)
-      } recoverWith {
-        case FailedRelationship(msg) =>
-          Logger.info(s"[IdentifyForPlayback] Relationship does not exist in Trust IV for user due to $msg")
-          Future.successful(Left(redirectToLogin))
-      }
-
+      agentAuthenticationService.authenticate(utr)(request, hc)
     } getOrElse Future.successful(Left(Redirect(controllers.routes.IndexController.onPageLoad())))
 
   }

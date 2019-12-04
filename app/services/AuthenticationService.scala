@@ -19,14 +19,17 @@ package services
 import com.google.inject.ImplementedBy
 import config.FrontendAppConfig
 import connector.EnrolmentStoreConnector
+import controllers.actions.TrustsAuth
 import controllers.playback.routes
 import handlers.ErrorHandler
 import javax.inject.Inject
 import models.EnrolmentStoreResponse.{AlreadyClaimed, NotClaimed}
 import models.requests.DataRequest
+import play.api.Logger
 import play.api.mvc.Result
 import play.api.mvc.Results._
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
+import uk.gov.hmrc.auth.core.{BusinessKey, FailedRelationship, Relationship}
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -35,6 +38,7 @@ class AuthenticationServiceImpl @Inject()(
                                            enrolmentStoreConnector: EnrolmentStoreConnector,
                                            config: FrontendAppConfig,
                                            errorHandler: ErrorHandler,
+                                           trustsAuth: TrustsAuth,
                                            implicit val ec: ExecutionContext
                                          ) extends AuthenticationService {
 
@@ -45,10 +49,16 @@ class AuthenticationServiceImpl @Inject()(
     }
 
   private def checkIfTrustIsNotClaimed[A](utr: String)(implicit request: DataRequest[A], hc : HeaderCarrier): Future[Either[Result, DataRequest[A]]] =
-    enrolmentStoreConnector.checkIfClaimed(utr) map {
-      case AlreadyClaimed => Left(Redirect(routes.TrustStatusController.alreadyClaimed()))
-      case NotClaimed => Right(request)
-      case _ => Left(InternalServerError(errorHandler.internalServerErrorTemplate))
+    trustsAuth.authorised(Relationship(trustsAuth.config.relationshipName, Set(BusinessKey(trustsAuth.config.relationshipIdentifier, utr)))) {
+      enrolmentStoreConnector.checkIfClaimed(utr) map {
+        case AlreadyClaimed => Left(Redirect(routes.TrustStatusController.alreadyClaimed()))
+        case NotClaimed => Right(request)
+        case _ => Left(InternalServerError(errorHandler.internalServerErrorTemplate))
+      }
+    } recoverWith {
+      case FailedRelationship(msg) =>
+        Logger.info(s"[IdentifyForPlayback] Relationship does not exist in Trust IV for user due to $msg")
+        Future.successful(Left(trustsAuth.redirectToLogin))
     }
 
   private def checkIfAgentAuthorised[A](utr: String)(implicit request: DataRequest[A], hc : HeaderCarrier): Future[Either[Result, DataRequest[A]]] =
