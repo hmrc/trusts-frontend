@@ -28,7 +28,6 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.RegistrationsRepository
 import services.AuthenticationService
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.WhatIsTheUTRView
 
@@ -74,8 +73,8 @@ class WhatIsTheUTRVariationsController @Inject()(
             claim <- trustsStore.get(request.internalId, value)
           } yield claim) flatMap { claim =>
 
-            lazy val handleTrustNotLocked = authenticationService.authenticate(value) map { redirect =>
-              redirect.fold(
+            lazy val handleTrustNotLocked = authenticationService.authenticate(value) map {
+              _.fold(
                 result => result,
                 _ => Redirect(routes.TrustStatusController.status())
               )
@@ -92,12 +91,11 @@ class WhatIsTheUTRVariationsController @Inject()(
       )
   }
 
-  private def checkIfUTRLocked(onTrustNotLocked: => Future[Result], c: TrustClaim) = {
+  private def checkIfUTRLocked(onTrustNotLocked: => Future[Result], c: TrustClaim) =
     if (c.trustLocked) {
       Future.successful(Redirect(routes.TrustStatusController.locked()))
     } else {
       onTrustNotLocked
     }
-  }
 
 }
