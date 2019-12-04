@@ -86,7 +86,7 @@ class AuthenticationServiceImpl @Inject()(
     enrolmentStoreConnector.checkIfClaimed(utr) map {
       case NotClaimed =>
         Left(Redirect(routes.TrustNotClaimedController.onPageLoad()))
-      case _ =>
+      case AlreadyClaimed =>
 
         val agentEnrolled = checkForTrustEnrolmentForUTR(utr)
 
@@ -95,6 +95,8 @@ class AuthenticationServiceImpl @Inject()(
         } else {
           Left(Redirect(routes.AgentNotAuthorisedController.onPageLoad()))
         }
+      case _ =>
+        Left(InternalServerError(errorHandler.internalServerErrorTemplate))
     }
 
   private def checkForTrustEnrolmentForUTR[A](utr: String)(implicit request: DataRequest[A]): Boolean =

@@ -29,7 +29,6 @@ object EnrolmentStoreResponse {
 
   case class EnrolmentStore(principalUserIds: Seq[String], delegatedUserIds: Seq[String]) extends EnrolmentStoreResponse
   case object NotClaimed extends EnrolmentStoreResponse
-  case object NoContent extends EnrolmentStoreResponse
   case object ServiceUnavailable extends EnrolmentStoreResponse
   case object Forbidden extends EnrolmentStoreResponse
   case object BadRequest extends EnrolmentStoreResponse
