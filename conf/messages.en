@@ -1398,3 +1398,17 @@ trustAlreadyClaimed.subheading = This trust’s UTR: {0}
 trustAlreadyClaimed.p1 = Another Government Gateway account is linked to it. Please sign in with that account.
 trustAlreadyClaimed.p2 = If you are unable to do so,
 trustAlreadyClaimed.p2.a = contact the trusts helpline (opens in a new window or tab)
+
+agentCannotAccessTrustYet.title = You cannot access this trust yet
+agentCannotAccessTrustYet.heading = You cannot access this trust yet
+agentCannotAccessTrustYet.subheading = This trust’s UTR: {0}
+agentCannotAccessTrustYet.p1 = You have been authorised by your client and do not need to do anything else at the moment.
+agentCannotAccessTrustYet.p2 = You will be able to access this trust by 2020.
+agentCannotAccessTrustYet.heading.2 = What you need to know about maintaining this trust
+agentCannotAccessTrustYet.p3 = You will be able to make changes to the register, declare it’s up to date or close the trust.
+agentCannotAccessTrustYet.bullet.1 = You will be able to find out what details we hold about the trust by checking its last declaration.
+agentCannotAccessTrustYet.bullet.2 = If the trust is up to date you will be able to continue to make a declaration. If you have written in with changes, these may not have been updated so you will need to update them now.
+agentCannotAccessTrustYet.bullet.3 = If details about the settlors, trustees or beneficiaries have changed, you will be able to update them through this service.
+agentCannotAccessTrustYet.bullet.4 = If you need to close the trust, you will need to declare the details we have are up to date.
+agentCannotAccessTrustYet.heading.3 = Changes you cannot tell us about on this service
+agentCannotAccessTrustYet.p4 = You are not required to update the trust’s details, tax liability or assets. Use Self Assessment Online for trusts or the Trust and Estate Tax Return form (SA900) to update any of these.
