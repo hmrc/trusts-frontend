@@ -66,36 +66,19 @@ class WhatIsTheUTRVariationsController @Inject()(
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(view(formWithErrors, routes.WhatIsTheUTRVariationsController.onSubmit()))),
-        value => {
-          (for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatIsTheUTRVariationPage, value))
+        utr => {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatIsTheUTRVariationPage, utr))
             _ <- registrationsRepository.set(updatedAnswers)
-            claim <- trustsStore.get(request.internalId, value)
-          } yield claim) flatMap { claim =>
-
-            lazy val handleTrustNotLocked = authenticationService.authenticate(value) map {
-              _.fold(
-                result => result,
-                _ => Redirect(routes.TrustStatusController.status())
-              )
-            }
-
-            claim match {
-              case Some(c) =>
-                checkIfUTRLocked(handleTrustNotLocked, c)
-              case _ =>
-                handleTrustNotLocked
+            authenticationResult <- authenticationService.authenticate(utr)
+          } yield {
+            authenticationResult match {
+              case Left(failureRedirect) => failureRedirect
+              case Right(_) => Redirect(routes.TrustStatusController.status())
             }
           }
         }
       )
   }
-
-  private def checkIfUTRLocked(onTrustNotLocked: => Future[Result], c: TrustClaim) =
-    if (c.trustLocked) {
-      Future.successful(Redirect(routes.TrustStatusController.locked()))
-    } else {
-      onTrustNotLocked
-    }
 
 }

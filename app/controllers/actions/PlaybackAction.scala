@@ -20,11 +20,9 @@ import com.google.inject.{ImplementedBy, Inject}
 import connector.EnrolmentStoreConnector
 import models.requests.DataRequest
 import pages.WhatIsTheUTRVariationPage
-import play.api.Logger
 import play.api.mvc.Results.Redirect
 import play.api.mvc._
 import services.AuthenticationService
-import uk.gov.hmrc.auth.core.{BusinessKey, FailedRelationship, Relationship}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.HeaderCarrierConverter
 
@@ -32,7 +30,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class PlaybackActionImpl @Inject()(val parser: BodyParsers.Default,
                                    enrolmentStoreConnector: EnrolmentStoreConnector,
-                                   agentAuthenticationService: AuthenticationService
+                                   authenticationService: AuthenticationService
                                   )(override implicit val executionContext: ExecutionContext) extends PlaybackAction {
 
   override def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
@@ -40,7 +38,7 @@ class PlaybackActionImpl @Inject()(val parser: BodyParsers.Default,
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
     request.userAnswers.get(WhatIsTheUTRVariationPage) map { utr =>
-      agentAuthenticationService.authenticate(utr)(request, hc)
+      authenticationService.authenticate(utr)(request, hc)
     } getOrElse Future.successful(Left(Redirect(controllers.routes.IndexController.onPageLoad())))
 
   }

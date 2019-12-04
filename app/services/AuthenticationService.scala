@@ -45,28 +45,50 @@ class AuthenticationServiceImpl @Inject()(
   def authenticate[A](utr: String)(implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]] =
     request.affinityGroup match {
       case Agent => checkIfAgentAuthorised(utr)
-      case _ => checkIfTrustIsNotClaimed(utr)
+      case _ => checkIfTrustIsClaimedAndTrustIV(utr)
     }
 
-  private def checkIfTrustIsNotClaimed[A](utr: String)(implicit request: DataRequest[A], hc : HeaderCarrier): Future[Either[Result, DataRequest[A]]] =
-    trustsAuth.authorised(Relationship(trustsAuth.config.relationshipName, Set(BusinessKey(trustsAuth.config.relationshipIdentifier, utr)))) {
-      enrolmentStoreConnector.checkIfClaimed(utr) map {
-        case AlreadyClaimed => Left(Redirect(routes.TrustStatusController.alreadyClaimed()))
-        case NotClaimed => Right(request)
-        case _ => Left(InternalServerError(errorHandler.internalServerErrorTemplate))
+  private def checkIfTrustIsClaimedAndTrustIV[A](utr: String)(implicit request: DataRequest[A], hc : HeaderCarrier): Future[Either[Result, DataRequest[A]]] = {
+
+    val userEnrolled = checkForTrustEnrolmentForUTR(utr)
+
+    if (userEnrolled) {
+      // TODO TRUS-2015 send to Trust IV for a non claiming journey as this credential already claimed the Trust
+      organisationAuthorisedByTrustIV(utr)
+    } else {
+      enrolmentStoreConnector.checkIfClaimed(utr) flatMap {
+        case AlreadyClaimed =>
+          Future.successful(Left(Redirect(routes.TrustStatusController.alreadyClaimed())))
+        case NotClaimed =>
+          organisationAuthorisedByTrustIV(utr)
+        case _ =>
+          Future.successful(Left(InternalServerError(errorHandler.internalServerErrorTemplate)))
       }
+    }
+
+  }
+
+  private def organisationAuthorisedByTrustIV[A](utr : String)(implicit request: DataRequest[A], hc : HeaderCarrier) = {
+
+    val trustIVRelationship =
+      Relationship(trustsAuth.config.relationshipName, Set(BusinessKey(trustsAuth.config.relationshipIdentifier, utr)))
+
+    trustsAuth.authorised(trustIVRelationship) {
+      Future.successful(Right(request))
     } recoverWith {
       case FailedRelationship(msg) =>
         Logger.info(s"[IdentifyForPlayback] Relationship does not exist in Trust IV for user due to $msg")
-        Future.successful(Left(trustsAuth.redirectToLogin))
+        Future.successful(Left(Redirect(config.claimATrustUrl(utr))))
     }
+  }
 
   private def checkIfAgentAuthorised[A](utr: String)(implicit request: DataRequest[A], hc : HeaderCarrier): Future[Either[Result, DataRequest[A]]] =
     enrolmentStoreConnector.checkIfClaimed(utr) map {
-      case NotClaimed => Left(Redirect(routes.TrustNotClaimedController.onPageLoad()))
+      case NotClaimed =>
+        Left(Redirect(routes.TrustNotClaimedController.onPageLoad()))
       case _ =>
 
-        val agentEnrolled = checkEnrolmentOfAgent(utr)
+        val agentEnrolled = checkForTrustEnrolmentForUTR(utr)
 
         if (agentEnrolled) {
           Right(request)
@@ -75,7 +97,7 @@ class AuthenticationServiceImpl @Inject()(
         }
     }
 
-  private def checkEnrolmentOfAgent[A](utr: String)(implicit request: DataRequest[A]): Boolean =
+  private def checkForTrustEnrolmentForUTR[A](utr: String)(implicit request: DataRequest[A]): Boolean =
     request.enrolments.enrolments
       .find(_.key equals config.serviceName)
       .flatMap(_.identifiers.find(_.key equals "SAUTR"))
