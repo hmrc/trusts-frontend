@@ -6,11 +6,11 @@ echo "Applying migration TrustPreviouslyResident"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /trustPreviouslyResident                        controllers.TrustPreviouslyResidentController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /trustPreviouslyResident                        controllers.TrustPreviouslyResidentController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /trustPreviouslyResident                        controllers.register.TrustPreviouslyResidentController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /trustPreviouslyResident                        controllers.register.TrustPreviouslyResidentController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeTrustPreviouslyResident                  controllers.TrustPreviouslyResidentController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeTrustPreviouslyResident                  controllers.TrustPreviouslyResidentController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeTrustPreviouslyResident                  controllers.register.TrustPreviouslyResidentController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeTrustPreviouslyResident                  controllers.register.TrustPreviouslyResidentController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

@@ -6,11 +6,11 @@ echo "Applying migration ClassBeneficiaryDescription"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /classBeneficiaryDescription                        controllers.ClassBeneficiaryDescriptionController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /classBeneficiaryDescription                        controllers.ClassBeneficiaryDescriptionController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /classBeneficiaryDescription                        controllers.register.beneficiaries.ClassBeneficiaryDescriptionController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /classBeneficiaryDescription                        controllers.register.beneficiaries.ClassBeneficiaryDescriptionController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeClassBeneficiaryDescription                  controllers.ClassBeneficiaryDescriptionController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeClassBeneficiaryDescription                  controllers.ClassBeneficiaryDescriptionController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeClassBeneficiaryDescription                  controllers.register.beneficiaries.ClassBeneficiaryDescriptionController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeClassBeneficiaryDescription                  controllers.register.beneficiaries.ClassBeneficiaryDescriptionController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

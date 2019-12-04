@@ -35,7 +35,7 @@ class TaskListCompleteActionRefinerImpl @Inject()(
     if (registrationProgress.isTaskListComplete(request.userAnswers)) {
       Future.successful(Right(request))
     } else {
-      Future.successful(Left(Redirect(routes.TaskListController.onPageLoad(request.userAnswers.draftId))))
+      Future.successful(Left(Redirect(controllers.register.routes.TaskListController.onPageLoad(request.userAnswers.draftId))))
     }
   }
 }

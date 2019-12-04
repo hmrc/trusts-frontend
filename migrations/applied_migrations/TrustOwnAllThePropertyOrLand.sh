@@ -6,11 +6,11 @@ echo "Applying migration TrustOwnAllThePropertyOrLand"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /:draftId/trustOwnAllThePropertyOrLand                        controllers.property_or_land.TrustOwnAllThePropertyOrLandController.onPageLoad(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
-echo "POST       /:draftId/trustOwnAllThePropertyOrLand                        controllers.property_or_land.TrustOwnAllThePropertyOrLandController.onSubmit(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
+echo "GET        /:draftId/trustOwnAllThePropertyOrLand                        controllers.register.asset.property_or_land.TrustOwnAllThePropertyOrLandController.onPageLoad(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
+echo "POST       /:draftId/trustOwnAllThePropertyOrLand                        controllers.register.asset.property_or_land.TrustOwnAllThePropertyOrLandController.onSubmit(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
 
-echo "GET        /:draftId/changeTrustOwnAllThePropertyOrLand                  controllers.property_or_land.TrustOwnAllThePropertyOrLandController.onPageLoad(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
-echo "POST       /:draftId/changeTrustOwnAllThePropertyOrLand                  controllers.property_or_land.TrustOwnAllThePropertyOrLandController.onSubmit(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
+echo "GET        /:draftId/changeTrustOwnAllThePropertyOrLand                  controllers.register.asset.property_or_land.TrustOwnAllThePropertyOrLandController.onPageLoad(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
+echo "POST       /:draftId/changeTrustOwnAllThePropertyOrLand                  controllers.register.asset.property_or_land.TrustOwnAllThePropertyOrLandController.onSubmit(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

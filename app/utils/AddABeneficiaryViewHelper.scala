@@ -16,7 +16,7 @@
 
 package utils
 
-import controllers.routes
+import controllers.register.beneficiaries.routes
 import models.core.UserAnswers
 import models.core.pages.FullName
 import play.api.i18n.Messages

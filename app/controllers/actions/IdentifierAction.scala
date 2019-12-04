@@ -47,7 +47,7 @@ class AuthenticatedIdentifierAction @Inject()(
 
     def redirectToCreateAgentServicesAccount(reason: String): Future[Result] = {
       Logger.info(s"[AuthenticatedIdentifierAction][authoriseAgent]: Agent services account required - $reason")
-      Future.successful(Redirect(routes.CreateAgentServicesAccountController.onPageLoad()))
+      Future.successful(Redirect(controllers.register.routes.CreateAgentServicesAccountController.onPageLoad()))
     }
 
     val hmrcAgentEnrolmentKey = "HMRC-AS-AGENT"
@@ -74,11 +74,11 @@ class AuthenticatedIdentifierAction @Inject()(
 
   private def recoverFromAuthorisation : PartialFunction[Throwable, Result] = {
     case _: NoActiveSession => Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl)))
-    case _: InsufficientEnrolments => Redirect(routes.UnauthorisedController.onPageLoad())
-    case _: InsufficientConfidenceLevel => Redirect(routes.UnauthorisedController.onPageLoad())
-    case _: UnsupportedAuthProvider => Redirect(routes.UnauthorisedController.onPageLoad())
-    case _: UnsupportedAffinityGroup => Redirect(routes.UnauthorisedController.onPageLoad())
-    case _: UnsupportedCredentialRole => Redirect(routes.UnauthorisedController.onPageLoad())
+    case _: InsufficientEnrolments => Redirect(controllers.register.routes.UnauthorisedController.onPageLoad())
+    case _: InsufficientConfidenceLevel => Redirect(controllers.register.routes.UnauthorisedController.onPageLoad())
+    case _: UnsupportedAuthProvider => Redirect(controllers.register.routes.UnauthorisedController.onPageLoad())
+    case _: UnsupportedAffinityGroup => Redirect(controllers.register.routes.UnauthorisedController.onPageLoad())
+    case _: UnsupportedCredentialRole => Redirect(controllers.register.routes.UnauthorisedController.onPageLoad())
   }
 
   override def invokeBlock[A](request: Request[A],
@@ -100,7 +100,7 @@ class AuthenticatedIdentifierAction @Inject()(
         block(IdentifierRequest(request, internalId, AffinityGroup.Organisation, enrolments))
       case Some(_) ~ _ ~ _ =>
         Logger.info(s"[IdentifierAction] Unauthorised due to affinityGroup being Individual")
-        Future.successful(Redirect(routes.UnauthorisedController.onPageLoad()))
+        Future.successful(Redirect(controllers.register.routes.UnauthorisedController.onPageLoad()))
       case _ =>
         Logger.warn(s"[IdentifierAction] Unable to retrieve internal id")
         throw new UnauthorizedException("Unable to retrieve internal Id")

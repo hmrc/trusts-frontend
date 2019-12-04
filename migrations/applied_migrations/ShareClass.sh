@@ -6,11 +6,11 @@ echo "Applying migration ShareClass"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /shareClass                        controllers.shares.ShareClassController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /shareClass                        controllers.shares.ShareClassController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /shareClass                        controllers.register.asset.shares.ShareClassController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /shareClass                        controllers.register.asset.shares.ShareClassController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeShareClass                  controllers.shares.ShareClassController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeShareClass                  controllers.shares.ShareClassController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeShareClass                  controllers.register.asset.shares.ShareClassController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeShareClass                  controllers.register.asset.shares.ShareClassController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

@@ -1,0 +1,86 @@
+@*
+ * Copyright 2019 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import models.Mode
+@import controllers.register.settlors.deceased_settlor.routes._
+
+@this(
+    main_template: MainTemplate
+)
+
+@(draftId: String)(implicit request: Request[_], messages: Messages)
+
+@main_template(
+    title = messages("settlorInfo.title")
+    ) {
+
+    @components.back_link()
+
+    <span class="govuk-caption-xl">@messages("settlorInfo.caption")</span>
+    @components.heading("settlorInfo.heading", headingSize = "heading-large govuk-fieldset__heading")
+
+    <h2>@messages("settlorInfo.subheading1")</h2>
+
+    <p>@messages("settlorInfo.paragraph1")</p>
+
+    @components.bullet_list("settlorInfo",
+        List(
+            "bulletpoint1",
+            "bulletpoint2",
+            "bulletpoint3",
+            "bulletpoint4"
+        )
+    )
+
+    <p>@messages("settlorInfo.paragraph2")</p>
+
+    @components.bullet_list("settlorInfo",
+        List(
+            "bulletpoint5",
+            "bulletpoint6",
+            "bulletpoint7",
+            "bulletpoint8"
+        )
+    )
+
+    <h2>@messages("settlorInfo.subheading2")</h2>
+
+    <p>@messages("settlorInfo.paragraph3")</p>
+
+    @components.bullet_list("settlorInfo",
+        List(
+            "bulletpoint9",
+            "bulletpoint10"
+        )
+    )
+
+    <h2>@messages("settlorInfo.subheading3")</h2>
+
+    <p>@messages("settlorInfo.paragraph4")</p>
+
+    <p>@messages("settlorInfo.paragraph5")</p>
+
+    @components.bullet_list("settlorInfo",
+        List(
+            "bulletpoint11",
+            "bulletpoint12",
+            "bulletpoint13"
+        )
+    )
+
+    @components.button_link(messages("site.onlyContinue"), SetupAfterSettlorDiedController.onPageLoad(NormalMode, draftId).url)
+
+}

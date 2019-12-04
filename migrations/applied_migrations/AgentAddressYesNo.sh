@@ -6,11 +6,11 @@ echo "Applying migration AgentAddressYesNo"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /agentAddressYesNo                        controllers.AgentAddressYesNoController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /agentAddressYesNo                        controllers.AgentAddressYesNoController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /agentAddressYesNo                        controllers.register.agents.AgentAddressYesNoController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /agentAddressYesNo                        controllers.register.agents.AgentAddressYesNoController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeAgentAddressYesNo                  controllers.AgentAddressYesNoController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeAgentAddressYesNo                  controllers.AgentAddressYesNoController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeAgentAddressYesNo                  controllers.register.agents.AgentAddressYesNoController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeAgentAddressYesNo                  controllers.register.agents.AgentAddressYesNoController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

@@ -17,7 +17,7 @@
 package navigation.registration
 
 import config.FrontendAppConfig
-import controllers.property_or_land.routes
+import controllers.register.asset.property_or_land.routes
 import javax.inject.{Inject, Singleton}
 import models.NormalMode
 import models.core.UserAnswers
@@ -39,25 +39,25 @@ class PropertyOrLandNavigator @Inject()(config: FrontendAppConfig) extends Navig
     case PropertyOrLandTotalValuePage(index) => _ => _ => routes.TrustOwnAllThePropertyOrLandController.onPageLoad(NormalMode, index, draftId)
     case TrustOwnAllThePropertyOrLandPage(index) => _ => trustOwnAllThePropertyOrLandPage(draftId, index)
     case PropertyLandValueTrustPage(index) => _ => _ => routes.PropertyOrLandAnswerController.onPageLoad(index, draftId)
-    case PropertyOrLandAnswerPage => _ => _ => controllers.routes.AddAssetsController.onPageLoad(draftId)
+    case PropertyOrLandAnswerPage => _ => _ => controllers.register.asset.routes.AddAssetsController.onPageLoad(draftId)
   }
 
   private def propertyOrLandAddressYesNoPage(draftId: String, index: Int)(answers: UserAnswers) = answers.get(PropertyOrLandAddressYesNoPage(index)) match {
     case Some(true)  => routes.PropertyOrLandAddressUkYesNoController.onPageLoad(NormalMode, index, draftId)
     case Some(false) => routes.PropertyOrLandDescriptionController.onPageLoad(NormalMode, index, draftId)
-    case None        => controllers.routes.SessionExpiredController.onPageLoad()
+    case None        => controllers.register.routes.SessionExpiredController.onPageLoad()
   }
 
   private def propertyOrLandAddressUkYesNoPage(draftId: String, index: Int)(answers: UserAnswers) = answers.get(PropertyOrLandAddressUkYesNoPage(index)) match {
     case Some(true)  => routes.PropertyOrLandUKAddressController.onPageLoad(NormalMode, index, draftId)
     case Some(false) => routes.PropertyOrLandInternationalAddressController.onPageLoad(NormalMode, index, draftId)
-    case None        => controllers.routes.SessionExpiredController.onPageLoad()
+    case None        => controllers.register.routes.SessionExpiredController.onPageLoad()
   }
 
   private def trustOwnAllThePropertyOrLandPage(draftId: String, index: Int)(answers: UserAnswers) = answers.get(TrustOwnAllThePropertyOrLandPage(index)) match {
     case Some(true) => routes.PropertyOrLandAnswerController.onPageLoad(index, draftId)
     case Some(false)  => routes.PropertyLandValueTrustController.onPageLoad(NormalMode, index, draftId)
-    case None        => controllers.routes.SessionExpiredController.onPageLoad()
+    case None        => controllers.register.routes.SessionExpiredController.onPageLoad()
   }
 
 }

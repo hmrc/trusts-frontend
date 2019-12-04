@@ -6,11 +6,11 @@ echo "Applying migration WhatTypeOfBeneficiary"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /whatTypeOfBeneficiary                        controllers.WhatTypeOfBeneficiaryController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /whatTypeOfBeneficiary                        controllers.WhatTypeOfBeneficiaryController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /whatTypeOfBeneficiary                        controllers.register.beneficiaries.WhatTypeOfBeneficiaryController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /whatTypeOfBeneficiary                        controllers.register.beneficiaries.WhatTypeOfBeneficiaryController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeWhatTypeOfBeneficiary                  controllers.WhatTypeOfBeneficiaryController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeWhatTypeOfBeneficiary                  controllers.WhatTypeOfBeneficiaryController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeWhatTypeOfBeneficiary                  controllers.register.beneficiaries.WhatTypeOfBeneficiaryController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeWhatTypeOfBeneficiary                  controllers.register.beneficiaries.WhatTypeOfBeneficiaryController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

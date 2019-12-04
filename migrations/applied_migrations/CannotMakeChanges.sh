@@ -5,7 +5,7 @@ echo "Applying migration CannotMakeChanges"
 
 echo "Adding routes to conf/app.routes"
 echo "" >> ../conf/app.routes
-echo "GET        /cannotMakeChanges                       controllers.CannotMakeChangesController.onPageLoad()" >> ../conf/app.routes
+echo "GET        /cannotMakeChanges                       controllers.register.CannotMakeChangesController.onPageLoad()" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

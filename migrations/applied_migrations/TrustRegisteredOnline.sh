@@ -6,11 +6,11 @@ echo "Applying migration TrustRegisteredOnline"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /trustRegisteredOnline                        controllers.TrustRegisteredOnlineController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /trustRegisteredOnline                        controllers.TrustRegisteredOnlineController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /trustRegisteredOnline                        controllers.register.TrustRegisteredOnlineController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /trustRegisteredOnline                        controllers.register.TrustRegisteredOnlineController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeTrustRegisteredOnline                  controllers.TrustRegisteredOnlineController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeTrustRegisteredOnline                  controllers.TrustRegisteredOnlineController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeTrustRegisteredOnline                  controllers.register.TrustRegisteredOnlineController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeTrustRegisteredOnline                  controllers.register.TrustRegisteredOnlineController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

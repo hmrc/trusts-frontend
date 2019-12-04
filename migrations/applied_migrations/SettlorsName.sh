@@ -6,11 +6,11 @@ echo "Applying migration SettlorsName"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /settlorsName                        controllers.deceased_settlor.SettlorsNameController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /settlorsName                        controllers.deceased_settlor.SettlorsNameController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /settlorsName                        controllers.register.settlors.deceased_settlor.SettlorsNameController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /settlorsName                        controllers.register.settlors.deceased_settlor.SettlorsNameController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeSettlorsName                  controllers.deceased_settlor.SettlorsNameController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeSettlorsName                  controllers.deceased_settlor.SettlorsNameController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeSettlorsName                  controllers.register.settlors.deceased_settlor.SettlorsNameController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeSettlorsName                  controllers.register.settlors.deceased_settlor.SettlorsNameController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

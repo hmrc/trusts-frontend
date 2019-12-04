@@ -6,11 +6,11 @@ echo "Applying migration AddATrustee"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /addATrustee                        controllers.trustees.AddATrusteeController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /addATrustee                        controllers.trustees.AddATrusteeController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /addATrustee                        controllers.register.trustees.AddATrusteeController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /addATrustee                        controllers.register.trustees.AddATrusteeController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeAddATrustee                  controllers.trustees.AddATrusteeController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeAddATrustee                  controllers.trustees.AddATrusteeController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeAddATrustee                  controllers.register.trustees.AddATrusteeController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeAddATrustee                  controllers.register.trustees.AddATrusteeController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

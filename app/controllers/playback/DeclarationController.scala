@@ -46,7 +46,7 @@ class DeclarationController @Inject()(
   val form = formProvider()
 
   def actions() = identify andThen getData andThen requireData andThen
-      requiredAnswer(RequiredAnswer(DeclarationWhatNextPage, controllers.routes.DeclarationWhatNextController.onPageLoad()))
+      requiredAnswer(RequiredAnswer(DeclarationWhatNextPage, routes.DeclarationWhatNextController.onPageLoad()))
 
   def onPageLoad(): Action[AnyContent] = actions() {
     implicit request =>
@@ -72,7 +72,7 @@ class DeclarationController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, value))
             _ <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(controllers.routes.VariationsConfirmationController.onPageLoad())
+          } yield Redirect(routes.VariationsConfirmationController.onPageLoad())
         }
       )
 

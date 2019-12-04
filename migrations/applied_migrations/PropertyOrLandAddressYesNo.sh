@@ -6,11 +6,11 @@ echo "Applying migration PropertyOrLandAddressYesNo"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /:draftId/propertyOrLandAddressYesNo                        controllers.property_or_land.PropertyOrLandAddressYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
-echo "POST       /:draftId/propertyOrLandAddressYesNo                        controllers.property_or_land.PropertyOrLandAddressYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
+echo "GET        /:draftId/propertyOrLandAddressYesNo                        controllers.register.asset.property_or_land.PropertyOrLandAddressYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
+echo "POST       /:draftId/propertyOrLandAddressYesNo                        controllers.register.asset.property_or_land.PropertyOrLandAddressYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
 
-echo "GET        /:draftId/changePropertyOrLandAddressYesNo                  controllers.property_or_land.PropertyOrLandAddressYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
-echo "POST       /:draftId/changePropertyOrLandAddressYesNo                  controllers.property_or_land.PropertyOrLandAddressYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
+echo "GET        /:draftId/changePropertyOrLandAddressYesNo                  controllers.register.asset.property_or_land.PropertyOrLandAddressYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
+echo "POST       /:draftId/changePropertyOrLandAddressYesNo                  controllers.register.asset.property_or_land.PropertyOrLandAddressYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

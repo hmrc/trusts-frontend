@@ -6,11 +6,11 @@ echo "Applying migration PostcodeForTheTrust"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /postcodeForTheTrust                        controllers.PostcodeForTheTrustController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /postcodeForTheTrust                        controllers.PostcodeForTheTrustController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /postcodeForTheTrust                        controllers.register.PostcodeForTheTrustController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /postcodeForTheTrust                        controllers.register.PostcodeForTheTrustController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changePostcodeForTheTrust                  controllers.PostcodeForTheTrustController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changePostcodeForTheTrust                  controllers.PostcodeForTheTrustController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changePostcodeForTheTrust                  controllers.register.PostcodeForTheTrustController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changePostcodeForTheTrust                  controllers.register.PostcodeForTheTrustController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

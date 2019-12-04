@@ -16,6 +16,7 @@
 
 @import uk.gov.hmrc.auth.core.AffinityGroup
 @import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
+@import controllers.playback.routes._
 
 @this(
     main_template: MainTemplate
@@ -33,7 +34,7 @@
     <p>@messages("IvDown.paragraph2") <a id="help-link" target="_blank" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts">@messages("IvDown.contact.link")</a> @messages("IvDown.paragraph3")</p>
 
     @if(affinityGroup == AffinityGroup.Agent) {
-      <p>@messages("IvDown.paragraph2") <a id="register-and-maintain-link" href=@AgentOverviewController.onPageLoad().url>@messages("IvDown.return.link")</a>.</p>
+      <p>@messages("IvDown.paragraph2") <a id="register-and-maintain-link" href=@controllers.register.agents.routes.AgentOverviewController.onPageLoad().url>@messages("IvDown.return.link")</a>.</p>
     } else {
       @components.button_link(messages("site.try-again"), WhatIsTheUTRVariationsController.onPageLoad().url)
     }

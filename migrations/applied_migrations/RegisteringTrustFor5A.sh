@@ -6,11 +6,11 @@ echo "Applying migration RegisteringTrustFor5A"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /registeringTrustFor5A                        controllers.RegisteringTrustFor5AController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /registeringTrustFor5A                        controllers.RegisteringTrustFor5AController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /registeringTrustFor5A                        controllers.register.RegisteringTrustFor5AController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /registeringTrustFor5A                        controllers.register.RegisteringTrustFor5AController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeRegisteringTrustFor5A                  controllers.RegisteringTrustFor5AController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeRegisteringTrustFor5A                  controllers.RegisteringTrustFor5AController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeRegisteringTrustFor5A                  controllers.register.RegisteringTrustFor5AController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeRegisteringTrustFor5A                  controllers.register.RegisteringTrustFor5AController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

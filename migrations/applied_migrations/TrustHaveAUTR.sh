@@ -6,11 +6,11 @@ echo "Applying migration TrustHaveAUTR"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /trustHaveAUTR                        controllers.TrustHaveAUTRController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /trustHaveAUTR                        controllers.TrustHaveAUTRController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /trustHaveAUTR                        controllers.register.TrustHaveAUTRController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /trustHaveAUTR                        controllers.register.TrustHaveAUTRController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeTrustHaveAUTR                  controllers.TrustHaveAUTRController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeTrustHaveAUTR                  controllers.TrustHaveAUTRController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeTrustHaveAUTR                  controllers.register.TrustHaveAUTRController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeTrustHaveAUTR                  controllers.register.TrustHaveAUTRController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

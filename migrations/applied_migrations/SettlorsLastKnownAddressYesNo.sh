@@ -6,11 +6,11 @@ echo "Applying migration SettlorsLastKnownAddressYesNo"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /settlorsLastKnownAddressYesNo                        controllers.deceased_settlor.SettlorsLastKnownAddressYesNoController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /settlorsLastKnownAddressYesNo                        controllers.deceased_settlor.SettlorsLastKnownAddressYesNoController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /settlorsLastKnownAddressYesNo                        controllers.register.settlors.deceased_settlor.SettlorsLastKnownAddressYesNoController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /settlorsLastKnownAddressYesNo                        controllers.register.settlors.deceased_settlor.SettlorsLastKnownAddressYesNoController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeSettlorsLastKnownAddressYesNo                  controllers.deceased_settlor.SettlorsLastKnownAddressYesNoController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeSettlorsLastKnownAddressYesNo                  controllers.deceased_settlor.SettlorsLastKnownAddressYesNoController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeSettlorsLastKnownAddressYesNo                  controllers.register.settlors.deceased_settlor.SettlorsLastKnownAddressYesNoController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeSettlorsLastKnownAddressYesNo                  controllers.register.settlors.deceased_settlor.SettlorsLastKnownAddressYesNoController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

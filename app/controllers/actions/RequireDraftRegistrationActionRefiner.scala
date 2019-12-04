@@ -30,7 +30,7 @@ class RequireDraftRegistrationActionRefinerImpl @Inject()(implicit val execution
   override protected def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
     request.userAnswers.progress match {
       case Complete =>
-        Future.successful(Left(Redirect(routes.ConfirmationController.onPageLoad(request.userAnswers.draftId))))
+        Future.successful(Left(Redirect(controllers.register.routes.ConfirmationController.onPageLoad(request.userAnswers.draftId))))
       case _ =>
         Future.successful(Right(request))
     }

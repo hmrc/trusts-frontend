@@ -6,11 +6,11 @@ echo "Applying migration IndividualBeneficiaryVulnerableYesNo"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /individualBeneficiaryVulnerableYesNo                        controllers.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /individualBeneficiaryVulnerableYesNo                        controllers.IndividualBeneficiaryVulnerableYesNoController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /individualBeneficiaryVulnerableYesNo                        controllers.register.beneficiaries.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /individualBeneficiaryVulnerableYesNo                        controllers.register.beneficiaries.IndividualBeneficiaryVulnerableYesNoController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeIndividualBeneficiaryVulnerableYesNo                  controllers.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeIndividualBeneficiaryVulnerableYesNo                  controllers.IndividualBeneficiaryVulnerableYesNoController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeIndividualBeneficiaryVulnerableYesNo                  controllers.register.beneficiaries.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeIndividualBeneficiaryVulnerableYesNo                  controllers.register.beneficiaries.IndividualBeneficiaryVulnerableYesNoController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

@@ -6,11 +6,11 @@ echo "Applying migration IndividualBeneficiaryIncomeYesNo"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /individualBeneficiaryIncomeYesNo                        controllers.IndividualBeneficiaryIncomeYesNoController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /individualBeneficiaryIncomeYesNo                        controllers.IndividualBeneficiaryIncomeYesNoController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /individualBeneficiaryIncomeYesNo                        controllers.register.beneficiaries.IndividualBeneficiaryIncomeYesNoController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /individualBeneficiaryIncomeYesNo                        controllers.register.beneficiaries.IndividualBeneficiaryIncomeYesNoController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeIndividualBeneficiaryIncomeYesNo                  controllers.IndividualBeneficiaryIncomeYesNoController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeIndividualBeneficiaryIncomeYesNo                  controllers.IndividualBeneficiaryIncomeYesNoController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeIndividualBeneficiaryIncomeYesNo                  controllers.register.beneficiaries.IndividualBeneficiaryIncomeYesNoController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeIndividualBeneficiaryIncomeYesNo                  controllers.register.beneficiaries.IndividualBeneficiaryIncomeYesNoController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en
