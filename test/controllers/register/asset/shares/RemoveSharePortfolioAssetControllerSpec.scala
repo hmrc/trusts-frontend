@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package views.register.asset.shares
+package controllers.register.asset.shares
 
 import base.SpecBase
 import forms.RemoveIndexFormProvider
@@ -26,7 +26,6 @@ import pages.register.asset.shares.SharePortfolioNamePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RemoveIndexView
-import controllers.register.asset.shares.routes
 
 class RemoveSharePortfolioAssetControllerSpec extends SpecBase with PropertyChecks {
 

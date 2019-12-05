@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package views.register.asset.shares
+package controllers.register.asset.shares
 
 import base.SpecBase
-import controllers.register.asset.shares.routes
 import forms.RemoveIndexFormProvider
 import models.registration.pages.Status.Completed
 import org.scalacheck.Arbitrary.arbitrary

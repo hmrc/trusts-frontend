@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 
-package views.register.asset.shares
+package controllers.register.asset.shares
 
 import base.SpecBase
 import models.registration.pages.ShareClass
 import models.registration.pages.Status.Completed
 import models.registration.pages.WhatKindOfAsset.Shares
 import pages.entitystatus.AssetStatus
+import pages.register.asset.WhatKindOfAssetPage
 import pages.register.asset.shares._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
-import controllers.register.asset.shares.routes
-import pages.register.asset.WhatKindOfAssetPage
 import views.html.register.asset.shares.ShareAnswersView
 
 class ShareAnswerControllerSpec extends SpecBase {

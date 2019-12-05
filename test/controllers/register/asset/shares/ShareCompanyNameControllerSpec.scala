@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package views.register.asset.shares
+package controllers.register.asset.shares
 
 import base.SpecBase
 import controllers.IndexValidation
@@ -27,7 +27,6 @@ import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.register.asset.shares.ShareCompanyNameView
-import controllers.register.asset.shares.routes
 
 class ShareCompanyNameControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
 

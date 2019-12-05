@@ -14,39 +14,39 @@
  * limitations under the License.
  */
 
-package views.register.asset.shares
+package controllers.register.asset.shares
 
 import base.SpecBase
 import controllers.IndexValidation
-import forms.YesNoFormProvider
+import forms.shares.SharePortfolioValueInTrustFormProvider
 import generators.ModelGenerators
 import models.NormalMode
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.asset.shares.SharePortfolioOnStockExchangePage
+import pages.register.asset.shares.SharePortfolioValueInTrustPage
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
-import controllers.register.asset.shares.routes
-import views.html.register.asset.shares.SharePortfolioOnStockExchangeView
+import views.html.register.asset.shares.SharePortfolioValueInTrustView
 
-class SharePortfolioOnStockExchangeControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
+class SharePortfolioValueInTrustControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
 
-  val form = new YesNoFormProvider().withPrefix("sharePortfolioOnStockExchange")
+  val formProvider = new SharePortfolioValueInTrustFormProvider()
+  val form = formProvider()
   val index: Int = 0
 
-  lazy val sharePortfolioOnStockExchangeRoute = routes.SharePortfolioOnStockExchangeController.onPageLoad(NormalMode, index, fakeDraftId).url
+  lazy val sharePortfolioValueInTrustRoute = routes.SharePortfolioValueInTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
 
-  "SharePortfolioOnStockExchange Controller" must {
+  "SharePortfolioValueInTrust Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, sharePortfolioOnStockExchangeRoute)
+      val request = FakeRequest(GET, sharePortfolioValueInTrustRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[SharePortfolioOnStockExchangeView]
+      val view = application.injector.instanceOf[SharePortfolioValueInTrustView]
 
       status(result) mustEqual OK
 
@@ -58,20 +58,20 @@ class SharePortfolioOnStockExchangeControllerSpec extends SpecBase with ModelGen
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(SharePortfolioOnStockExchangePage(index), true).success.value
+      val userAnswers = emptyUserAnswers.set(SharePortfolioValueInTrustPage(index), "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, sharePortfolioOnStockExchangeRoute)
+      val request = FakeRequest(GET, sharePortfolioValueInTrustRoute)
 
-      val view = application.injector.instanceOf[SharePortfolioOnStockExchangeView]
+      val view = application.injector.instanceOf[SharePortfolioValueInTrustView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(form.fill("answer"), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -82,13 +82,12 @@ class SharePortfolioOnStockExchangeControllerSpec extends SpecBase with ModelGen
         applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, sharePortfolioOnStockExchangeRoute)
-          .withFormUrlEncodedBody(("value", "true"))
+        FakeRequest(POST, sharePortfolioValueInTrustRoute)
+          .withFormUrlEncodedBody(("value", "12345678"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-
       redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
@@ -99,12 +98,12 @@ class SharePortfolioOnStockExchangeControllerSpec extends SpecBase with ModelGen
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, sharePortfolioOnStockExchangeRoute)
+        FakeRequest(POST, sharePortfolioValueInTrustRoute)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[SharePortfolioOnStockExchangeView]
+      val view = application.injector.instanceOf[SharePortfolioValueInTrustView]
 
       val result = route(application, request).value
 
@@ -120,7 +119,7 @@ class SharePortfolioOnStockExchangeControllerSpec extends SpecBase with ModelGen
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, sharePortfolioOnStockExchangeRoute)
+      val request = FakeRequest(GET, sharePortfolioValueInTrustRoute)
 
       val result = route(application, request).value
 
@@ -136,8 +135,8 @@ class SharePortfolioOnStockExchangeControllerSpec extends SpecBase with ModelGen
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, sharePortfolioOnStockExchangeRoute)
-          .withFormUrlEncodedBody(("value", "true"))
+        FakeRequest(POST, sharePortfolioValueInTrustRoute)
+          .withFormUrlEncodedBody(("value", "answer"))
 
       val result = route(application, request).value
 
@@ -153,14 +152,14 @@ class SharePortfolioOnStockExchangeControllerSpec extends SpecBase with ModelGen
   "for a GET" must {
 
     def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
-      val route = routes.SharePortfolioOnStockExchangeController.onPageLoad(NormalMode, index, fakeDraftId).url
+      val route = routes.SharePortfolioValueInTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       FakeRequest(GET, route)
     }
 
     validateIndex(
-      arbitrary[Boolean],
-      SharePortfolioOnStockExchangePage.apply,
+      arbitrary[String],
+      SharePortfolioValueInTrustPage.apply,
       getForIndex
     )
 
@@ -170,15 +169,15 @@ class SharePortfolioOnStockExchangeControllerSpec extends SpecBase with ModelGen
     def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
       val route =
-        routes.SharePortfolioOnStockExchangeController.onPageLoad(NormalMode, index, fakeDraftId).url
+        routes.SharePortfolioValueInTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       FakeRequest(POST, route)
-        .withFormUrlEncodedBody(("value", "true"))
+        .withFormUrlEncodedBody(("currency", "1234"))
     }
 
     validateIndex(
-      arbitrary[Boolean],
-      SharePortfolioOnStockExchangePage.apply,
+      arbitrary[String],
+      SharePortfolioValueInTrustPage.apply,
       postForIndex
     )
   }

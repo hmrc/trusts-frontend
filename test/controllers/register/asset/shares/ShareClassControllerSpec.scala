@@ -14,81 +14,88 @@
  * limitations under the License.
  */
 
-package views.register.asset.shares
+package controllers.register.asset.shares
 
 import base.SpecBase
 import controllers.IndexValidation
-import forms.shares.SharePortfolioQuantityInTrustFormProvider
+import forms.shares.ShareClassFormProvider
 import generators.ModelGenerators
 import models.NormalMode
+import models.registration.pages.ShareClass
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.asset.shares.SharePortfolioQuantityInTrustPage
+import pages.register.asset.shares.{ShareClassPage, ShareCompanyNamePage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
-import controllers.register.asset.shares.routes
-import views.html.register.asset.shares.SharePortfolioQuantityInTrustView
+import views.html.register.asset.shares.ShareClassView
 
-class SharePortfolioQuantityInTrustControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
+class ShareClassControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
 
-  val formProvider = new SharePortfolioQuantityInTrustFormProvider()
+  val formProvider = new ShareClassFormProvider()
   val form = formProvider()
   val index: Int = 0
+  val companyName = "Company"
 
-  lazy val sharePortfolioQuantityInTrustRoute = routes.SharePortfolioQuantityInTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
+  lazy val shareClassRoute = routes.ShareClassController.onPageLoad(NormalMode, index, fakeDraftId).url
 
-  "SharePortfolioQuantityInTrust Controller" must {
+  "ShareClass Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val ua = emptyUserAnswers.set(ShareCompanyNamePage(0), "Company").success.value
 
-      val request = FakeRequest(GET, sharePortfolioQuantityInTrustRoute)
+      val application = applicationBuilder(userAnswers = Some(ua)).build()
+
+      val request = FakeRequest(GET, shareClassRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[SharePortfolioQuantityInTrustView]
+      val view = application.injector.instanceOf[ShareClassView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index, companyName)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(SharePortfolioQuantityInTrustPage(index), "answer").success.value
+      val ua = emptyUserAnswers.set(ShareCompanyNamePage(0), "Company").success.value
+        .set(ShareClassPage(index), ShareClass.values.head).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(ua)).build()
 
-      val request = FakeRequest(GET, sharePortfolioQuantityInTrustRoute)
+      val request = FakeRequest(GET, shareClassRoute)
 
-      val view = application.injector.instanceOf[SharePortfolioQuantityInTrustView]
+      val view = application.injector.instanceOf[ShareClassView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(form.fill(ShareClass.values.head), NormalMode, fakeDraftId, index, companyName)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
+      val ua = emptyUserAnswers.set(ShareCompanyNamePage(0), "Company").success.value
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        applicationBuilder(userAnswers = Some(ua)).build()
 
       val request =
-        FakeRequest(POST, sharePortfolioQuantityInTrustRoute)
-          .withFormUrlEncodedBody(("value", "23456"))
+        FakeRequest(POST, shareClassRoute)
+          .withFormUrlEncodedBody(("value", ShareClass.options.head.value))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
+
       redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
@@ -96,22 +103,24 @@ class SharePortfolioQuantityInTrustControllerSpec extends SpecBase with ModelGen
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val ua = emptyUserAnswers.set(ShareCompanyNamePage(0), "Company").success.value
+
+      val application = applicationBuilder(userAnswers = Some(ua)).build()
 
       val request =
-        FakeRequest(POST, sharePortfolioQuantityInTrustRoute)
-          .withFormUrlEncodedBody(("value", ""))
+        FakeRequest(POST, shareClassRoute)
+          .withFormUrlEncodedBody(("value", "invalid value"))
 
-      val boundForm = form.bind(Map("value" -> ""))
+      val boundForm = form.bind(Map("value" -> "invalid value"))
 
-      val view = application.injector.instanceOf[SharePortfolioQuantityInTrustView]
+      val view = application.injector.instanceOf[ShareClassView]
 
       val result = route(application, request).value
 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index, companyName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -120,12 +129,11 @@ class SharePortfolioQuantityInTrustControllerSpec extends SpecBase with ModelGen
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, sharePortfolioQuantityInTrustRoute)
+      val request = FakeRequest(GET, shareClassRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-
       redirectLocation(result).value mustEqual controllers.register.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
@@ -136,8 +144,8 @@ class SharePortfolioQuantityInTrustControllerSpec extends SpecBase with ModelGen
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, sharePortfolioQuantityInTrustRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+        FakeRequest(POST, shareClassRoute)
+          .withFormUrlEncodedBody(("value", ShareClass.values.head.toString))
 
       val result = route(application, request).value
 
@@ -148,19 +156,33 @@ class SharePortfolioQuantityInTrustControllerSpec extends SpecBase with ModelGen
       application.stop()
     }
 
+    "redirect to ShareCompanyNamePage when company name is not answered" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      val request = FakeRequest(GET, shareClassRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.ShareCompanyNameController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+      application.stop()
+    }
   }
 
   "for a GET" must {
 
     def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
-      val route = routes.SharePortfolioQuantityInTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
+      val route = routes.ShareClassController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       FakeRequest(GET, route)
     }
 
     validateIndex(
-      arbitrary[String],
-      SharePortfolioQuantityInTrustPage.apply,
+      arbitrary[ShareClass],
+      ShareClassPage.apply,
       getForIndex
     )
 
@@ -170,15 +192,15 @@ class SharePortfolioQuantityInTrustControllerSpec extends SpecBase with ModelGen
     def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
       val route =
-        routes.SharePortfolioQuantityInTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
+        routes.ShareClassController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       FakeRequest(POST, route)
-        .withFormUrlEncodedBody(("currency", "1234"))
+        .withFormUrlEncodedBody(("shareClass", "other"))
     }
 
     validateIndex(
-      arbitrary[String],
-      SharePortfolioQuantityInTrustPage.apply,
+      arbitrary[ShareClass],
+      ShareClassPage.apply,
       postForIndex
     )
   }

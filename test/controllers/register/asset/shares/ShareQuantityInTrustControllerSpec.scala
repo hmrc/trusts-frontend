@@ -14,32 +14,30 @@
  * limitations under the License.
  */
 
-package views.register.asset.shares
+package controllers.register.asset.shares
 
 import base.SpecBase
 import controllers.IndexValidation
-import forms.shares.ShareClassFormProvider
+import forms.shares.ShareQuantityInTrustFormProvider
 import generators.ModelGenerators
 import models.NormalMode
-import models.registration.pages.ShareClass
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.asset.shares.{ShareClassPage, ShareCompanyNamePage}
+import pages.register.asset.shares.{ShareCompanyNamePage, ShareQuantityInTrustPage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
-import controllers.register.asset.shares.routes
-import views.html.register.asset.shares.ShareClassView
+import views.html.register.asset.shares.ShareQuantityInTrustView
 
-class ShareClassControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
+class ShareQuantityInTrustControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
 
-  val formProvider = new ShareClassFormProvider()
+  val formProvider = new ShareQuantityInTrustFormProvider()
   val form = formProvider()
   val index: Int = 0
   val companyName = "Company"
 
-  lazy val shareClassRoute = routes.ShareClassController.onPageLoad(NormalMode, index, fakeDraftId).url
+  lazy val shareQuantityInTrustRoute = routes.ShareQuantityInTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
 
-  "ShareClass Controller" must {
+  "ShareQuantityInTrustController" must {
 
     "return OK and the correct view for a GET" in {
 
@@ -47,11 +45,11 @@ class ShareClassControllerSpec extends SpecBase with ModelGenerators with IndexV
 
       val application = applicationBuilder(userAnswers = Some(ua)).build()
 
-      val request = FakeRequest(GET, shareClassRoute)
+      val request = FakeRequest(GET, shareQuantityInTrustRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[ShareClassView]
+      val view = application.injector.instanceOf[ShareQuantityInTrustView]
 
       status(result) mustEqual OK
 
@@ -64,20 +62,20 @@ class ShareClassControllerSpec extends SpecBase with ModelGenerators with IndexV
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val ua = emptyUserAnswers.set(ShareCompanyNamePage(0), "Company").success.value
-        .set(ShareClassPage(index), ShareClass.values.head).success.value
+        .set(ShareQuantityInTrustPage(index), "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(ua)).build()
 
-      val request = FakeRequest(GET, shareClassRoute)
+      val request = FakeRequest(GET, shareQuantityInTrustRoute)
 
-      val view = application.injector.instanceOf[ShareClassView]
+      val view = application.injector.instanceOf[ShareQuantityInTrustView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(ShareClass.values.head), NormalMode, fakeDraftId, index, companyName)(fakeRequest, messages).toString
+        view(form.fill("answer"), NormalMode, fakeDraftId, index, companyName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -90,13 +88,12 @@ class ShareClassControllerSpec extends SpecBase with ModelGenerators with IndexV
         applicationBuilder(userAnswers = Some(ua)).build()
 
       val request =
-        FakeRequest(POST, shareClassRoute)
-          .withFormUrlEncodedBody(("value", ShareClass.options.head.value))
+        FakeRequest(POST, shareQuantityInTrustRoute)
+          .withFormUrlEncodedBody(("value", "12345"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-
       redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
       application.stop()
@@ -109,12 +106,12 @@ class ShareClassControllerSpec extends SpecBase with ModelGenerators with IndexV
       val application = applicationBuilder(userAnswers = Some(ua)).build()
 
       val request =
-        FakeRequest(POST, shareClassRoute)
-          .withFormUrlEncodedBody(("value", "invalid value"))
+        FakeRequest(POST, shareQuantityInTrustRoute)
+          .withFormUrlEncodedBody(("value", ""))
 
-      val boundForm = form.bind(Map("value" -> "invalid value"))
+      val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[ShareClassView]
+      val view = application.injector.instanceOf[ShareQuantityInTrustView]
 
       val result = route(application, request).value
 
@@ -130,11 +127,12 @@ class ShareClassControllerSpec extends SpecBase with ModelGenerators with IndexV
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, shareClassRoute)
+      val request = FakeRequest(GET, shareQuantityInTrustRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
+
       redirectLocation(result).value mustEqual controllers.register.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
@@ -145,8 +143,8 @@ class ShareClassControllerSpec extends SpecBase with ModelGenerators with IndexV
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, shareClassRoute)
-          .withFormUrlEncodedBody(("value", ShareClass.values.head.toString))
+        FakeRequest(POST, shareQuantityInTrustRoute)
+          .withFormUrlEncodedBody(("value", "answer"))
 
       val result = route(application, request).value
 
@@ -157,11 +155,11 @@ class ShareClassControllerSpec extends SpecBase with ModelGenerators with IndexV
       application.stop()
     }
 
-    "redirect to ShareCompanyNamePage when company name is not answered" in {
+    "redirect to AssetsShareCompanyNamePage when company name is not answered" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, shareClassRoute)
+      val request = FakeRequest(GET, shareQuantityInTrustRoute)
 
       val result = route(application, request).value
 
@@ -176,14 +174,14 @@ class ShareClassControllerSpec extends SpecBase with ModelGenerators with IndexV
   "for a GET" must {
 
     def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
-      val route = routes.ShareClassController.onPageLoad(NormalMode, index, fakeDraftId).url
+      val route = routes.ShareQuantityInTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       FakeRequest(GET, route)
     }
 
     validateIndex(
-      arbitrary[ShareClass],
-      ShareClassPage.apply,
+      arbitrary[String],
+      ShareQuantityInTrustPage.apply,
       getForIndex
     )
 
@@ -193,15 +191,15 @@ class ShareClassControllerSpec extends SpecBase with ModelGenerators with IndexV
     def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
       val route =
-        routes.ShareClassController.onPageLoad(NormalMode, index, fakeDraftId).url
+        routes.ShareQuantityInTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       FakeRequest(POST, route)
-        .withFormUrlEncodedBody(("shareClass", "other"))
+        .withFormUrlEncodedBody(("currency", "1234"))
     }
 
     validateIndex(
-      arbitrary[ShareClass],
-      ShareClassPage.apply,
+      arbitrary[String],
+      ShareQuantityInTrustPage.apply,
       postForIndex
     )
   }
