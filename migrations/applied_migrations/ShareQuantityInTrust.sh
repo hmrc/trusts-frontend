@@ -6,11 +6,11 @@ echo "Applying migration ShareQuantityInTrust"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /shareQuantityInTrust                        controllers.shares.ShareQuantityInTrustController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /shareQuantityInTrust                        controllers.shares.ShareQuantityInTrustController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /shareQuantityInTrust                        controllers.register.asset.shares.ShareQuantityInTrustController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /shareQuantityInTrust                        controllers.register.asset.shares.ShareQuantityInTrustController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeShareQuantityInTrust                  controllers.shares.ShareQuantityInTrustController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeShareQuantityInTrust                  controllers.shares.ShareQuantityInTrustController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeShareQuantityInTrust                  controllers.register.asset.shares.ShareQuantityInTrustController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeShareQuantityInTrust                  controllers.register.asset.shares.ShareQuantityInTrustController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

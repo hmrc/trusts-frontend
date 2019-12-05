@@ -26,10 +26,16 @@ import models.registration.pages.TrusteesBasedInTheUK.UKBasedTrustees
 import models.registration.pages._
 import org.scalatest.TryValues
 import pages._
-import pages.deceased_settlor._
+import pages.register.agents.{AgentARNPage, AgentAddressYesNoPage, AgentInternalReferencePage, AgentNamePage, AgentTelephoneNumberPage, AgentUKAddressPage}
+import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
+import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.beneficiaries.AddABeneficiaryPage
+import pages.register.beneficiaries.individual.{IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryIncomePage, IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage, IndividualBeneficiaryNationalInsuranceYesNoPage, IndividualBeneficiaryVulnerableYesNoPage}
+import pages.register.settlors.deceased_settlor._
 import pages.entitystatus._
-import pages.living_settlor._
-import pages.trustees._
+import pages.register.{AdministrationInsideUKPage, DeclarationPage, EstablishedUnderScotsLawPage, ExistingTrustMatched, GovernedInsideTheUKPage, PostcodeForTheTrustPage, TrustHaveAUTRPage, TrustNamePage, TrustResidentOffshorePage, WhatIsTheUTRPage}
+import pages.register.settlors.living_settlor._
+import pages.register.trustees._
 import play.api.libs.json.Json
 
 object TestUserAnswers extends TryValues {

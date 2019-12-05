@@ -5,7 +5,7 @@ echo "Applying migration IndividualBeneficiaryInfo"
 
 echo "Adding routes to conf/app.routes"
 echo "" >> ../conf/app.routes
-echo "GET        /individualBeneficiaryInfo                       controllers.IndividualBeneficiaryInfoController.onPageLoad()" >> ../conf/app.routes
+echo "GET        /individualBeneficiaryInfo                       controllers.register.beneficiaries.IndividualBeneficiaryInfoController.onPageLoad()" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

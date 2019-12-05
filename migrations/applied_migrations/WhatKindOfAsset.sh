@@ -6,11 +6,11 @@ echo "Applying migration WhatKindOfAsset"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /whatKindOfAsset                        controllers.WhatKindOfAssetController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /whatKindOfAsset                        controllers.WhatKindOfAssetController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /whatKindOfAsset                        controllers.register.asset.WhatKindOfAssetController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /whatKindOfAsset                        controllers.register.asset.WhatKindOfAssetController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeWhatKindOfAsset                  controllers.WhatKindOfAssetController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeWhatKindOfAsset                  controllers.WhatKindOfAssetController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeWhatKindOfAsset                  controllers.register.asset.WhatKindOfAssetController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeWhatKindOfAsset                  controllers.register.asset.WhatKindOfAssetController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

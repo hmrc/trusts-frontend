@@ -6,11 +6,11 @@ echo "Applying migration ShareValueInTrust"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /shareValueInTrust                        controllers.shares.ShareValueInTrustController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /shareValueInTrust                        controllers.shares.ShareValueInTrustController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /shareValueInTrust                        controllers.register.asset.shares.ShareValueInTrustController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /shareValueInTrust                        controllers.register.asset.shares.ShareValueInTrustController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeShareValueInTrust                  controllers.shares.ShareValueInTrustController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeShareValueInTrust                  controllers.shares.ShareValueInTrustController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeShareValueInTrust                  controllers.register.asset.shares.ShareValueInTrustController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeShareValueInTrust                  controllers.register.asset.shares.ShareValueInTrustController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

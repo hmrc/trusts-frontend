@@ -6,11 +6,11 @@ echo "Applying migration ShareCompanyName"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /shareCompanyName                        controllers.shares.ShareCompanyNameController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /shareCompanyName                        controllers.shares.ShareCompanyNameController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /shareCompanyName                        controllers.register.asset.shares.ShareCompanyNameController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /shareCompanyName                        controllers.register.asset.shares.ShareCompanyNameController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeShareCompanyName                  controllers.shares.ShareCompanyNameController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeShareCompanyName                  controllers.shares.ShareCompanyNameController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeShareCompanyName                  controllers.register.asset.shares.ShareCompanyNameController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeShareCompanyName                  controllers.register.asset.shares.ShareCompanyNameController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

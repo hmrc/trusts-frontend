@@ -17,7 +17,7 @@
 package controllers.actions
 
 import base.SpecBase
-import controllers.routes
+import controllers.register.routes._
 import models.registration.pages.RegistrationStatus.{Complete, InProgress}
 import models.requests.DataRequest
 import org.scalatest.EitherValues
@@ -50,7 +50,7 @@ class RequireDraftRegistrationActionRefinerSpec extends SpecBase with MockitoSug
           val futureResult = action.callRefine(new DataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
 
           whenReady(futureResult) { result =>
-            result.left.value.header.headers(HeaderNames.LOCATION) mustBe routes.ConfirmationController.onPageLoad(answers.draftId).url
+            result.left.value.header.headers(HeaderNames.LOCATION) mustBe ConfirmationController.onPageLoad(answers.draftId).url
           }
         }
 

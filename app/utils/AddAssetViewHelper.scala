@@ -54,7 +54,7 @@ class AddAssetViewHelper(userAnswers: UserAnswers, draftId: String)(implicit mes
       mvm.value.getOrElse(defaultValue),
       mvm.`type`.toString,
       "#",
-      controllers.money.routes.RemoveMoneyAssetController.onPageLoad(index, draftId).url
+      controllers.register.asset.money.routes.RemoveMoneyAssetController.onPageLoad(index, draftId).url
     )
   }
 
@@ -62,9 +62,9 @@ class AddAssetViewHelper(userAnswers: UserAnswers, draftId: String)(implicit mes
     val defaultName = messages("entities.no.name.added")
 
     val removeRoute = if (mvm.inPortfolio) {
-      controllers.shares.routes.RemoveSharePortfolioAssetController.onPageLoad(index, draftId)
+      controllers.register.asset.shares.routes.RemoveSharePortfolioAssetController.onPageLoad(index, draftId)
     } else {
-      controllers.shares.routes.RemoveShareCompanyNameAssetController.onPageLoad(index, draftId)
+      controllers.register.asset.shares.routes.RemoveShareCompanyNameAssetController.onPageLoad(index, draftId)
     }
 
     AddRow(mvm.name.getOrElse(defaultName), mvm.`type`.toString, "#", removeRoute.url)
@@ -81,13 +81,13 @@ class AddAssetViewHelper(userAnswers: UserAnswers, draftId: String)(implicit mes
         address.getOrElse(defaultAddressName),
         typeLabel,
         "#",
-        controllers.property_or_land.routes.RemovePropertyOrLandWithAddressUKController.onPageLoad(index, draftId).url
+        controllers.register.asset.property_or_land.routes.RemovePropertyOrLandWithAddressUKController.onPageLoad(index, draftId).url
       )
       case PropertyOrLandAssetInternationalAddressViewModel(_, address, _) => AddRow(
         address.getOrElse(defaultAddressName),
         typeLabel,
         "#",
-        controllers.property_or_land.routes.RemovePropertyOrLandWithAddressInternationalController.onPageLoad(index, draftId).url
+        controllers.register.asset.property_or_land.routes.RemovePropertyOrLandWithAddressInternationalController.onPageLoad(index, draftId).url
       )
       case PropertyOrLandAssetAddressViewModel(_, address, _) => AddRow(
         address.getOrElse(defaultAddressName),
@@ -99,14 +99,14 @@ class AddAssetViewHelper(userAnswers: UserAnswers, draftId: String)(implicit mes
         description.getOrElse(defaultDescriptionName),
         typeLabel,
         "#",
-        controllers.property_or_land.routes.RemovePropertyOrLandWithDescriptionController.onPageLoad(index, draftId).url
+        controllers.register.asset.property_or_land.routes.RemovePropertyOrLandWithDescriptionController.onPageLoad(index, draftId).url
       )
       case PropertyOrLandDefaultViewModel(_, _) =>
         AddRow(
           messages("entities.propertyOrLand.default"),
           typeLabel,
           "#",
-          controllers.routes.DefaultRemoveAssetController.onPageLoad(index, draftId).url
+          controllers.register.asset.routes.DefaultRemoveAssetController.onPageLoad(index, draftId).url
         )
     }
 

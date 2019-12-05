@@ -6,11 +6,11 @@ echo "Applying migration CountryGoverningTrust"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /countryGoverningTrust                        controllers.CountryGoverningTrustController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /countryGoverningTrust                        controllers.CountryGoverningTrustController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /countryGoverningTrust                        controllers.register.CountryGoverningTrustController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /countryGoverningTrust                        controllers.register.CountryGoverningTrustController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeCountryGoverningTrust                  controllers.CountryGoverningTrustController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeCountryGoverningTrust                  controllers.CountryGoverningTrustController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeCountryGoverningTrust                  controllers.register.CountryGoverningTrustController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeCountryGoverningTrust                  controllers.register.CountryGoverningTrustController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

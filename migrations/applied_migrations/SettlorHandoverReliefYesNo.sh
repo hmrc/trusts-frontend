@@ -6,11 +6,11 @@ echo "Applying migration SettlorHandoverReliefYesNo"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /:draftId/settlorHandoverReliefYesNo                        controllers.SettlorHandoverReliefYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
-echo "POST       /:draftId/settlorHandoverReliefYesNo                        controllers.SettlorHandoverReliefYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
+echo "GET        /:draftId/settlorHandoverReliefYesNo                        controllers.register.settlors.living_settlor.SettlorHandoverReliefYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
+echo "POST       /:draftId/settlorHandoverReliefYesNo                        controllers.register.settlors.living_settlor.SettlorHandoverReliefYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
 
-echo "GET        /:draftId/changeSettlorHandoverReliefYesNo                  controllers.SettlorHandoverReliefYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
-echo "POST       /:draftId/changeSettlorHandoverReliefYesNo                  controllers.SettlorHandoverReliefYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
+echo "GET        /:draftId/changeSettlorHandoverReliefYesNo                  controllers.register.settlors.living_settlor.SettlorHandoverReliefYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
+echo "POST       /:draftId/changeSettlorHandoverReliefYesNo                  controllers.register.settlors.living_settlor.SettlorHandoverReliefYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

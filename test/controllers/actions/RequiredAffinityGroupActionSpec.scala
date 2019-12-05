@@ -17,7 +17,7 @@
 package controllers.actions
 
 import base.SpecBase
-import controllers.routes
+import controllers.register.routes._
 import models.requests.IdentifierRequest
 import org.scalatest.EitherValues
 import org.scalatest.concurrent.ScalaFutures
@@ -62,7 +62,7 @@ import scala.concurrent.Future
           val futureResult = action.callFilter(new IdentifierRequest(fakeRequest, "id", AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
 
           whenReady(futureResult) { result =>
-            result.value.header.headers(HeaderNames.LOCATION) mustBe routes.UnauthorisedController.onPageLoad().url
+            result.value.header.headers(HeaderNames.LOCATION) mustBe UnauthorisedController.onPageLoad().url
           }
         }
 

@@ -6,11 +6,11 @@ echo "Applying migration IndividualBeneficiaryName"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /individualBeneficiaryName                        controllers.IndividualBeneficiaryNameController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /individualBeneficiaryName                        controllers.IndividualBeneficiaryNameController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /individualBeneficiaryName                        controllers.register.beneficiaries.IndividualBeneficiaryNameController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /individualBeneficiaryName                        controllers.register.beneficiaries.IndividualBeneficiaryNameController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeIndividualBeneficiaryName                  controllers.IndividualBeneficiaryNameController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeIndividualBeneficiaryName                  controllers.IndividualBeneficiaryNameController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeIndividualBeneficiaryName                  controllers.register.beneficiaries.IndividualBeneficiaryNameController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeIndividualBeneficiaryName                  controllers.register.beneficiaries.IndividualBeneficiaryNameController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

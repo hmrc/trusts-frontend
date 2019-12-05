@@ -6,11 +6,11 @@ echo "Applying migration TrusteesNino"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /trusteesNino                        controllers.trustees.TrusteesNinoController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /trusteesNino                        controllers.trustees.TrusteesNinoController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /trusteesNino                        controllers.register.trustees.TrusteesNinoController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /trusteesNino                        controllers.register.trustees.TrusteesNinoController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeTrusteesNino                  controllers.trustees.TrusteesNinoController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeTrusteesNino                  controllers.trustees.TrusteesNinoController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeTrusteesNino                  controllers.register.trustees.TrusteesNinoController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeTrusteesNino                  controllers.register.trustees.TrusteesNinoController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

@@ -6,11 +6,11 @@ echo "Applying migration WasSettlorsAddressUKYesNo"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /wasSettlorsAddressUKYesNo                        controllers.deceased_settlor.WasSettlorsAddressUKYesNoController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /wasSettlorsAddressUKYesNo                        controllers.deceased_settlor.WasSettlorsAddressUKYesNoController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /wasSettlorsAddressUKYesNo                        controllers.register.settlors.deceased_settlor.WasSettlorsAddressUKYesNoController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /wasSettlorsAddressUKYesNo                        controllers.register.settlors.deceased_settlor.WasSettlorsAddressUKYesNoController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeWasSettlorsAddressUKYesNo                  controllers.deceased_settlor.WasSettlorsAddressUKYesNoController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeWasSettlorsAddressUKYesNo                  controllers.deceased_settlor.WasSettlorsAddressUKYesNoController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeWasSettlorsAddressUKYesNo                  controllers.register.settlors.deceased_settlor.WasSettlorsAddressUKYesNoController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeWasSettlorsAddressUKYesNo                  controllers.register.settlors.deceased_settlor.WasSettlorsAddressUKYesNoController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

@@ -16,7 +16,6 @@
 
 package mapping.registration
 
-import mapping.AddressType
 import models.core.UserAnswers
 import models.core.pages.{Address, InternationalAddress, UKAddress}
 import pages.QuestionPage

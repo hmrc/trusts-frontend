@@ -16,6 +16,7 @@
 
 package utils
 
+import controllers.register.trustees.routes
 import models.registration.pages.Status.{Completed, InProgress}
 import models.core.UserAnswers
 import models.core.pages.IndividualOrBusiness
@@ -48,7 +49,7 @@ class AddATrusteeViewHelper(userAnswers: UserAnswers, draftId: String)(implicit 
       name = nameOfTrustee,
       typeLabel = trusteeType,
       changeUrl = "#",
-      removeUrl = controllers.trustees.routes.RemoveTrusteeController.onPageLoad(index, draftId).url
+      removeUrl = routes.RemoveTrusteeController.onPageLoad(index, draftId).url
     )
   }
 

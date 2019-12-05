@@ -6,11 +6,11 @@ echo "Applying migration SettlorsInternationalAddress"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /settlorsInternationalAddress                        controllers.deceased_settlor.SettlorsInternationalAddressController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /settlorsInternationalAddress                        controllers.deceased_settlor.SettlorsInternationalAddressController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /settlorsInternationalAddress                        controllers.register.settlors.deceased_settlor.SettlorsInternationalAddressController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /settlorsInternationalAddress                        controllers.register.settlors.deceased_settlor.SettlorsInternationalAddressController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeSettlorsInternationalAddress                  controllers.deceased_settlor.SettlorsInternationalAddressController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeSettlorsInternationalAddress                  controllers.deceased_settlor.SettlorsInternationalAddressController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeSettlorsInternationalAddress                  controllers.register.settlors.deceased_settlor.SettlorsInternationalAddressController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeSettlorsInternationalAddress                  controllers.register.settlors.deceased_settlor.SettlorsInternationalAddressController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

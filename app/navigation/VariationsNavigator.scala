@@ -19,7 +19,7 @@ package navigation
 import javax.inject.Inject
 import models.core.UserAnswers
 import models.playback.pages.DeclarationWhatNext.DeclareTheTrustIsUpToDate
-import pages.DeclarationWhatNextPage
+import pages.playback.DeclarationWhatNextPage
 
 class VariationsNavigator @Inject()() {
 
@@ -28,7 +28,7 @@ class VariationsNavigator @Inject()() {
       case Some(DeclareTheTrustIsUpToDate) =>
         controllers.playback.routes.DeclarationController.onPageLoad()
       case _ =>
-        controllers.routes.DeclarationWhatNextController.onPageLoad()
+        controllers.playback.routes.DeclarationWhatNextController.onPageLoad()
     }
   }
 }

@@ -19,8 +19,7 @@ package services
 import base.SpecBaseHelpers
 import connector.TrustConnector
 import generators.Generators
-import mapping.Registration
-import mapping.registration.RegistrationMapper
+import mapping.registration.{Registration, RegistrationMapper}
 import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse.UnableToRegister
 import org.mockito.Matchers.any

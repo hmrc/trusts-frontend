@@ -19,7 +19,7 @@ package navigation.navigators.registration
 import java.time.LocalDate
 
 import base.SpecBase
-import controllers.routes
+import controllers.register.routes
 import generators.Generators
 import models.NormalMode
 import models.core.UserAnswers
@@ -29,6 +29,9 @@ import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages._
+import pages.register.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, RegisteringTrustFor5APage, TrustDetailsAnswerPage, TrustHaveAUTRPage, TrustNamePage, TrustPreviouslyResidentPage, TrustRegisteredOnlinePage, TrustResidentOffshorePage}
+import pages.register.agents.AgentOtherThanBarristerPage
+import pages.register.trustees.TrusteesBasedInTheUKPage
 
 trait TrustDetailsRoutes {
 
@@ -109,7 +112,7 @@ trait TrustDetailsRoutes {
           val answers = userAnswers.set(AdministrationInsideUKPage, value = true).success.value
 
           navigator.nextPage(AdministrationInsideUKPage, NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, fakeDraftId))
+            .mustBe(controllers.register.trustees.routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -120,7 +123,7 @@ trait TrustDetailsRoutes {
           val answers = userAnswers.set(CountryAdministeringTrustPage, value = "France").success.value
 
           navigator.nextPage(CountryAdministeringTrustPage, NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, fakeDraftId))
+            .mustBe(controllers.register.trustees.routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -164,7 +167,7 @@ trait TrustDetailsRoutes {
           val answers = userAnswers.set(InheritanceTaxActPage, value = true).success.value
 
           navigator.nextPage(InheritanceTaxActPage, NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.AgentOtherThanBarristerController.onPageLoad(NormalMode, fakeDraftId))
+            .mustBe(controllers.register.agents.routes.AgentOtherThanBarristerController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 

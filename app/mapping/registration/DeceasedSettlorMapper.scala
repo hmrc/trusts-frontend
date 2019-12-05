@@ -17,9 +17,9 @@
 package mapping.registration
 
 import javax.inject.Inject
-import mapping.{Identification, Mapping, WillType}
+import mapping.Mapping
 import models.core.UserAnswers
-import pages.deceased_settlor._
+import pages.register.settlors.deceased_settlor._
 class DeceasedSettlorMapper @Inject()(nameMapper: NameMapper, addressMapper: AddressMapper) extends Mapping[WillType] {
 
   override def build(userAnswers: UserAnswers): Option[WillType] = {

@@ -6,11 +6,11 @@ echo "Applying migration AddABeneficiary"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /addABeneficiary                        controllers.AddABeneficiaryController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /addABeneficiary                        controllers.AddABeneficiaryController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /addABeneficiary                        controllers.register.beneficiaries.AddABeneficiaryController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /addABeneficiary                        controllers.register.beneficiaries.AddABeneficiaryController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeAddABeneficiary                  controllers.AddABeneficiaryController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeAddABeneficiary                  controllers.AddABeneficiaryController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeAddABeneficiary                  controllers.register.beneficiaries.AddABeneficiaryController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeAddABeneficiary                  controllers.register.beneficiaries.AddABeneficiaryController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

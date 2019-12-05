@@ -6,11 +6,11 @@ echo "Applying migration SharePortfolioOnStockExchange"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /sharePortfolioOnStockExchange                        controllers.shares.SharePortfolioOnStockExchangeController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /sharePortfolioOnStockExchange                        controllers.shares.SharePortfolioOnStockExchangeController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /sharePortfolioOnStockExchange                        controllers.register.asset.shares.SharePortfolioOnStockExchangeController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /sharePortfolioOnStockExchange                        controllers.register.asset.shares.SharePortfolioOnStockExchangeController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeSharePortfolioOnStockExchange                  controllers.shares.SharePortfolioOnStockExchangeController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeSharePortfolioOnStockExchange                  controllers.shares.SharePortfolioOnStockExchangeController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeSharePortfolioOnStockExchange                  controllers.register.asset.shares.SharePortfolioOnStockExchangeController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeSharePortfolioOnStockExchange                  controllers.register.asset.shares.SharePortfolioOnStockExchangeController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

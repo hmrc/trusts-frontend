@@ -19,16 +19,17 @@ package controllers.playback
 import controllers.actions._
 import forms.DeclarationFormProvider
 import navigation.Navigator
-import pages.DeclarationWhatNextPage
 import repositories.RegistrationsRepository
 import views.html.playback.DeclarationView
+
 import scala.concurrent.{ExecutionContext, Future}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import javax.inject.Inject
-import pages.DeclarationPage
+import pages.playback.DeclarationWhatNextPage
+import pages.register.DeclarationPage
 
 class DeclarationController @Inject()(
                                        override val messagesApi: MessagesApi,
@@ -46,7 +47,7 @@ class DeclarationController @Inject()(
   val form = formProvider()
 
   def actions() = identify andThen getData andThen requireData andThen
-      requiredAnswer(RequiredAnswer(DeclarationWhatNextPage, controllers.routes.DeclarationWhatNextController.onPageLoad()))
+      requiredAnswer(RequiredAnswer(DeclarationWhatNextPage, routes.DeclarationWhatNextController.onPageLoad()))
 
   def onPageLoad(): Action[AnyContent] = actions() {
     implicit request =>
@@ -72,7 +73,7 @@ class DeclarationController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, value))
             _ <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(controllers.routes.VariationsConfirmationController.onPageLoad())
+          } yield Redirect(routes.VariationsConfirmationController.onPageLoad())
         }
       )
 

@@ -19,7 +19,7 @@ package controllers.actions
 import controllers.routes
 import javax.inject.Inject
 import models.requests.DataRequest
-import pages.RegistrationProgress
+import pages.register.RegistrationProgress
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Result}
 
@@ -35,7 +35,7 @@ class TaskListCompleteActionRefinerImpl @Inject()(
     if (registrationProgress.isTaskListComplete(request.userAnswers)) {
       Future.successful(Right(request))
     } else {
-      Future.successful(Left(Redirect(routes.TaskListController.onPageLoad(request.userAnswers.draftId))))
+      Future.successful(Left(Redirect(controllers.register.routes.TaskListController.onPageLoad(request.userAnswers.draftId))))
     }
   }
 }

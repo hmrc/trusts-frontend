@@ -6,11 +6,11 @@ echo "Applying migration SettlorDateOfBirthYesNo"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /settlorDateOfBirthYesNo                        controllers.deceased_settlor.SettlorDateOfBirthYesNoController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /settlorDateOfBirthYesNo                        controllers.deceased_settlor.SettlorDateOfBirthYesNoController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /settlorDateOfBirthYesNo                        controllers.register.settlors.deceased_settlor.SettlorDateOfBirthYesNoController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /settlorDateOfBirthYesNo                        controllers.register.settlors.deceased_settlor.SettlorDateOfBirthYesNoController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeSettlorDateOfBirthYesNo                  controllers.deceased_settlor.SettlorDateOfBirthYesNoController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeSettlorDateOfBirthYesNo                  controllers.deceased_settlor.SettlorDateOfBirthYesNoController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeSettlorDateOfBirthYesNo                  controllers.register.settlors.deceased_settlor.SettlorDateOfBirthYesNoController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeSettlorDateOfBirthYesNo                  controllers.register.settlors.deceased_settlor.SettlorDateOfBirthYesNoController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

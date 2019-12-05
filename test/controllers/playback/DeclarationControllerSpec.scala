@@ -19,10 +19,11 @@ package controllers.playback
 import base.SpecBase
 import forms.DeclarationFormProvider
 import models.core.pages.{Declaration, FullName}
-import models.playback
+import controllers.playback.routes._
 import models.playback.pages.DeclarationWhatNext.DeclareTheTrustIsUpToDate
 import org.mockito.Mockito.reset
-import pages.{DeclarationPage, DeclarationWhatNextPage}
+import pages.playback.DeclarationWhatNextPage
+import pages.register.DeclarationPage
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -116,7 +117,7 @@ class DeclarationControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual controllers.routes.VariationsConfirmationController.onPageLoad().url
+      redirectLocation(result).value mustEqual VariationsConfirmationController.onPageLoad().url
 
       application.stop()
     }
@@ -155,7 +156,7 @@ class DeclarationControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.register.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -172,7 +173,7 @@ class DeclarationControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.register.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }

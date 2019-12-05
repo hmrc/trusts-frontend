@@ -17,7 +17,7 @@
 package navigation.navigators.registration
 
 import base.SpecBase
-import controllers.routes
+import controllers.register.asset.routes
 import generators.Generators
 import models.NormalMode
 import models.core.UserAnswers
@@ -26,8 +26,9 @@ import models.registration.pages.WhatKindOfAsset.{Money, PropertyOrLand, Shares}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages.shares._
-import pages.{AddAnAssetYesNoPage, AddAssetsPage, AssetMoneyValuePage, WhatKindOfAssetPage}
+import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
+import pages.register.asset.shares._
 
 trait AssetRoutes {
 
@@ -55,7 +56,7 @@ trait AssetRoutes {
           val answers = userAnswers.set(AddAnAssetYesNoPage, false).success.value
 
           navigator.nextPage(AddAnAssetYesNoPage, NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -70,7 +71,7 @@ trait AssetRoutes {
             val answers = userAnswers.set(WhatKindOfAssetPage(index), Money).success.value
 
             navigator.nextPage(WhatKindOfAssetPage(index), NormalMode, fakeDraftId)(answers)
-              .mustBe(routes.AssetMoneyValueController.onPageLoad(NormalMode, index, fakeDraftId))
+              .mustBe(controllers.register.asset.money.routes.AssetMoneyValueController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 
@@ -83,7 +84,7 @@ trait AssetRoutes {
             val answers = userAnswers.set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
 
             navigator.nextPage(WhatKindOfAssetPage(index), NormalMode, fakeDraftId)(answers)
-              .mustBe(controllers.property_or_land.routes.PropertyOrLandAddressYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
+              .mustBe(controllers.register.asset.property_or_land.routes.PropertyOrLandAddressYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 
@@ -127,7 +128,7 @@ trait AssetRoutes {
             val answers = userAnswers.set(WhatKindOfAssetPage(index), Shares).success.value
 
             navigator.nextPage(WhatKindOfAssetPage(index), NormalMode, fakeDraftId)(answers)
-              .mustBe(controllers.shares.routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, fakeDraftId))
+              .mustBe(controllers.register.asset.shares.routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 
@@ -142,7 +143,7 @@ trait AssetRoutes {
               val answers = userAnswers.set(SharesInAPortfolioPage(index), true).success.value
 
               navigator.nextPage(SharesInAPortfolioPage(index), NormalMode, fakeDraftId)(answers)
-                .mustBe(controllers.shares.routes.SharePortfolioNameController.onPageLoad(NormalMode, index, fakeDraftId))
+                .mustBe(controllers.register.asset.shares.routes.SharePortfolioNameController.onPageLoad(NormalMode, index, fakeDraftId))
           }
         }
 
@@ -152,7 +153,7 @@ trait AssetRoutes {
           forAll(arbitrary[UserAnswers]) {
             userAnswers =>
               navigator.nextPage(SharePortfolioNamePage(index), NormalMode, fakeDraftId)(userAnswers)
-                .mustBe(controllers.shares.routes.SharePortfolioOnStockExchangeController.onPageLoad(NormalMode, index, fakeDraftId))
+                .mustBe(controllers.register.asset.shares.routes.SharePortfolioOnStockExchangeController.onPageLoad(NormalMode, index, fakeDraftId))
           }
         }
 
@@ -162,7 +163,7 @@ trait AssetRoutes {
           forAll(arbitrary[UserAnswers]) {
             userAnswers =>
               navigator.nextPage(SharePortfolioOnStockExchangePage(index), NormalMode, fakeDraftId)(userAnswers)
-                .mustBe(controllers.shares.routes.SharePortfolioQuantityInTrustController.onPageLoad(NormalMode, index, fakeDraftId))
+                .mustBe(controllers.register.asset.shares.routes.SharePortfolioQuantityInTrustController.onPageLoad(NormalMode, index, fakeDraftId))
           }
         }
 
@@ -172,7 +173,7 @@ trait AssetRoutes {
           forAll(arbitrary[UserAnswers]) {
             userAnswers =>
               navigator.nextPage(SharePortfolioQuantityInTrustPage(index), NormalMode, fakeDraftId)(userAnswers)
-                .mustBe(controllers.shares.routes.SharePortfolioValueInTrustController.onPageLoad(NormalMode, index, fakeDraftId))
+                .mustBe(controllers.register.asset.shares.routes.SharePortfolioValueInTrustController.onPageLoad(NormalMode, index, fakeDraftId))
           }
         }
 
@@ -182,7 +183,7 @@ trait AssetRoutes {
           forAll(arbitrary[UserAnswers]) {
             userAnswers =>
               navigator.nextPage(SharePortfolioValueInTrustPage(index), NormalMode, fakeDraftId)(userAnswers)
-                .mustBe(controllers.shares.routes.ShareAnswerController.onPageLoad(index, fakeDraftId))
+                .mustBe(controllers.register.asset.shares.routes.ShareAnswerController.onPageLoad(index, fakeDraftId))
           }
         }
 
@@ -199,7 +200,7 @@ trait AssetRoutes {
               val answers = userAnswers.set(SharesInAPortfolioPage(index), false).success.value
 
               navigator.nextPage(SharesInAPortfolioPage(index), NormalMode, fakeDraftId)(answers)
-                .mustBe(controllers.shares.routes.ShareCompanyNameController.onPageLoad(NormalMode, index, fakeDraftId))
+                .mustBe(controllers.register.asset.shares.routes.ShareCompanyNameController.onPageLoad(NormalMode, index, fakeDraftId))
           }
         }
 
@@ -210,7 +211,7 @@ trait AssetRoutes {
             userAnswers =>
 
               navigator.nextPage(ShareCompanyNamePage(index), NormalMode, fakeDraftId)(userAnswers)
-                .mustBe(controllers.shares.routes.SharesOnStockExchangeController.onPageLoad(NormalMode, index, fakeDraftId))
+                .mustBe(controllers.register.asset.shares.routes.SharesOnStockExchangeController.onPageLoad(NormalMode, index, fakeDraftId))
           }
         }
 
@@ -221,7 +222,7 @@ trait AssetRoutes {
             userAnswers =>
 
               navigator.nextPage(SharesOnStockExchangePage(index), NormalMode, fakeDraftId)(userAnswers)
-                .mustBe(controllers.shares.routes.ShareClassController.onPageLoad(NormalMode, index, fakeDraftId))
+                .mustBe(controllers.register.asset.shares.routes.ShareClassController.onPageLoad(NormalMode, index, fakeDraftId))
           }
         }
 
@@ -232,7 +233,7 @@ trait AssetRoutes {
             userAnswers =>
 
               navigator.nextPage(ShareClassPage(index), NormalMode, fakeDraftId)(userAnswers)
-                .mustBe(controllers.shares.routes.ShareQuantityInTrustController.onPageLoad(NormalMode, index, fakeDraftId))
+                .mustBe(controllers.register.asset.shares.routes.ShareQuantityInTrustController.onPageLoad(NormalMode, index, fakeDraftId))
           }
         }
 
@@ -243,7 +244,7 @@ trait AssetRoutes {
             userAnswers =>
 
               navigator.nextPage(ShareQuantityInTrustPage(index), NormalMode, fakeDraftId)(userAnswers)
-                .mustBe(controllers.shares.routes.ShareValueInTrustController.onPageLoad(NormalMode, index, fakeDraftId))
+                .mustBe(controllers.register.asset.shares.routes.ShareValueInTrustController.onPageLoad(NormalMode, index, fakeDraftId))
           }
         }
 
@@ -254,7 +255,7 @@ trait AssetRoutes {
             userAnswers =>
 
               navigator.nextPage(ShareValueInTrustPage(index), NormalMode, fakeDraftId)(userAnswers)
-                .mustBe(controllers.shares.routes.ShareAnswerController.onPageLoad(index, fakeDraftId))
+                .mustBe(controllers.register.asset.shares.routes.ShareAnswerController.onPageLoad(index, fakeDraftId))
           }
         }
 
@@ -285,7 +286,7 @@ trait AssetRoutes {
             .set(AddAssetsPage, AddAssets.YesLater).success.value
 
           navigator.nextPage(AddAssetsPage, NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -298,7 +299,7 @@ trait AssetRoutes {
             .set(AddAssetsPage, AddAssets.NoComplete).success.value
 
           navigator.nextPage(AddAssetsPage, NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
       }
     }
   }

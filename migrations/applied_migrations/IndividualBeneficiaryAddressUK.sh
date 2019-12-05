@@ -6,11 +6,11 @@ echo "Applying migration IndividualBeneficiaryAddressUK"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /individualBeneficiaryAddressUK                        controllers.IndividualBeneficiaryAddressUKController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /individualBeneficiaryAddressUK                        controllers.IndividualBeneficiaryAddressUKController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /individualBeneficiaryAddressUK                        controllers.register.beneficiaries.IndividualBeneficiaryAddressUKController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /individualBeneficiaryAddressUK                        controllers.register.beneficiaries.IndividualBeneficiaryAddressUKController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeIndividualBeneficiaryAddressUK                  controllers.IndividualBeneficiaryAddressUKController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeIndividualBeneficiaryAddressUK                  controllers.IndividualBeneficiaryAddressUKController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeIndividualBeneficiaryAddressUK                  controllers.register.beneficiaries.IndividualBeneficiaryAddressUKController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeIndividualBeneficiaryAddressUK                  controllers.register.beneficiaries.IndividualBeneficiaryAddressUKController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

@@ -17,7 +17,7 @@
 package navigation
 
 import base.SpecBase
-import controllers.routes
+import controllers.register.routes
 import generators.Generators
 import models.NormalMode
 import navigation.navigators.registration._

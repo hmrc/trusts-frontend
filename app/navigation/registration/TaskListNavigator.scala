@@ -16,7 +16,7 @@
 
 package navigation.registration
 
-import controllers.routes
+import controllers.register.routes
 import javax.inject.{Inject, Singleton}
 import mapping.reads.{Assets, Trustees}
 import models.registration.pages.Status.Completed
@@ -24,6 +24,7 @@ import models.NormalMode
 import models.core.UserAnswers
 import pages._
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
+import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
 import play.api.mvc.Call
 import sections._
 
@@ -42,9 +43,9 @@ class TaskListNavigator @Inject()() {
   private def trusteeRoute(draftId: String)(answers: UserAnswers) = {
     answers.get(sections.Trustees).getOrElse(Nil) match {
       case Nil =>
-        controllers.trustees.routes.TrusteesInfoController.onPageLoad(draftId)
+        controllers.register.trustees.routes.TrusteesInfoController.onPageLoad(draftId)
       case _ :: _ =>
-        controllers.trustees.routes.AddATrusteeController.onPageLoad(draftId)
+        controllers.register.trustees.routes.AddATrusteeController.onPageLoad(draftId)
     }
   }
 
@@ -52,17 +53,17 @@ class TaskListNavigator @Inject()() {
     answers.get(DeceasedSettlorStatus) match {
       case Some(value) =>
         if(value.equals(Completed)) {
-          controllers.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
+          controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
         } else {
-          routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode,draftId)
+          controllers.register.settlors.deceased_settlor.routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode,draftId)
         }
       case None =>
         answers.get(SetupAfterSettlorDiedPage) match {
-          case None => controllers.routes.SettlorInfoController.onPageLoad(draftId)
+          case None => controllers.register.settlors.routes.SettlorInfoController.onPageLoad(draftId)
           case _ =>
             answers.get (LivingSettlors).getOrElse (Nil) match {
-              case Nil => controllers.routes.SetupAfterSettlorDiedController.onPageLoad (NormalMode, draftId)
-              case _ => controllers.routes.AddASettlorController.onPageLoad (draftId)
+              case Nil => controllers.register.settlors.deceased_settlor.routes.SetupAfterSettlorDiedController.onPageLoad (NormalMode, draftId)
+              case _ => controllers.register.settlors.routes.AddASettlorController.onPageLoad (draftId)
             }
         }
     }
@@ -70,9 +71,9 @@ class TaskListNavigator @Inject()() {
 
   private def beneficiaryRoute(draftId: String)(answers: UserAnswers) = {
     if(isAnyBeneficiaryAdded(answers)) {
-      routes.AddABeneficiaryController.onPageLoad(draftId)
+      controllers.register.beneficiaries.routes.AddABeneficiaryController.onPageLoad(draftId)
     } else {
-      routes.IndividualBeneficiaryInfoController.onPageLoad(draftId)
+      controllers.register.beneficiaries.routes.IndividualBeneficiaryInfoController.onPageLoad(draftId)
     }
   }
 
@@ -87,9 +88,9 @@ class TaskListNavigator @Inject()() {
   private def assetRoute(draftId: String)(answers: UserAnswers) = {
     answers.get(sections.Assets).getOrElse(Nil) match {
       case _ :: _ =>
-        routes.AddAssetsController.onPageLoad(draftId)
+        controllers.register.asset.routes.AddAssetsController.onPageLoad(draftId)
       case Nil =>
-        routes.AssetInterruptPageController.onPageLoad(draftId)
+        controllers.register.asset.routes.AssetInterruptPageController.onPageLoad(draftId)
     }
   }
 

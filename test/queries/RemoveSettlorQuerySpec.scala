@@ -20,7 +20,7 @@ import base.SpecBaseHelpers
 import models.core.UserAnswers
 import models.core.pages.FullName
 import pages.behaviours.PageBehaviours
-import pages.living_settlor.SettlorIndividualNamePage
+import pages.register.settlors.living_settlor.SettlorIndividualNamePage
 
 class RemoveSettlorQuerySpec extends  PageBehaviours with SpecBaseHelpers {
 

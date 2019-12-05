@@ -5,7 +5,7 @@ echo "Applying migration Confirmation"
 
 echo "Adding routes to conf/app.routes"
 echo "" >> ../conf/app.routes
-echo "GET        /confirmation                       controllers.ConfirmationController.onPageLoad()" >> ../conf/app.routes
+echo "GET        /confirmation                       controllers.register.ConfirmationController.onPageLoad()" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

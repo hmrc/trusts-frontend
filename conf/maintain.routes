@@ -1,0 +1,18 @@
+# Variations
+
+GET        /variations/enter-trust-utr                        controllers.playback.WhatIsTheUTRVariationsController.onPageLoad()
+POST       /variations/enter-trust-utr                        controllers.playback.WhatIsTheUTRVariationsController.onSubmit()
+
+GET        /variations/maintain-a-trust/information           controllers.playback.InformationMaintainingThisTrustController.onPageLoad()
+
+GET        /variations/declare-change                         controllers.playback.DeclarationWhatNextController.onPageLoad()
+POST       /variations/declare-change                         controllers.playback.DeclarationWhatNextController.onSubmit()
+
+GET        /variations/declaration                            controllers.playback.DeclarationController.onPageLoad()
+POST       /variations/declaration                            controllers.playback.DeclarationController.onSubmit()
+
+GET        /variations/confirmation                           controllers.playback.VariationsConfirmationController.onPageLoad()
+
+GET        /variations/trust-not-claimed                      controllers.playback.TrustNotClaimedController.onPageLoad()
+
+GET        /variations/agent-not-authorised                   controllers.playback.AgentNotAuthorisedController.onPageLoad()
