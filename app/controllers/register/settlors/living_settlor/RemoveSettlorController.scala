@@ -25,7 +25,7 @@ import models.core.pages.FullName
 import models.requests.DataRequest
 import navigation.Navigator
 import pages.QuestionPage
-import pages.living_settlor.SettlorIndividualNamePage
+import pages.register.settlors.living_settlor.SettlorIndividualNamePage
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.{AnyContent, Call, MessagesControllerComponents}
 import queries.{RemoveSettlorQuery, Settable}

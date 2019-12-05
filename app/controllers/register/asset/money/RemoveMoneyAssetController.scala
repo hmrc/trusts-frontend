@@ -21,7 +21,8 @@ import controllers.register.asset.RemoveAssetController
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
 import models.requests.DataRequest
-import pages.{AssetMoneyValuePage, QuestionPage}
+import pages.QuestionPage
+import pages.register.asset.money.AssetMoneyValuePage
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.{AnyContent, Call, MessagesControllerComponents}
 import repositories.RegistrationsRepository

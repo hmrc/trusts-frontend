@@ -21,7 +21,7 @@ import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.trustees.TrusteeLiveInTheUKView
+import views.html.register.trustees.TrusteeLiveInTheUKView
 
 class TrusteeLiveInTheUKViewSpec extends YesNoViewBehaviours {
 

@@ -17,7 +17,7 @@
 package navigation.navigators.registration
 
 import base.SpecBase
-import controllers.property_or_land.routes
+import controllers.register.asset.property_or_land.routes
 import generators.Generators
 import models.NormalMode
 import models.core.UserAnswers
@@ -26,7 +26,7 @@ import navigation.Navigator
 import navigation.registration.PropertyOrLandNavigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages.property_or_land._
+import pages.register.asset.property_or_land._
 
 trait PropertyOrLandRoutes {
 
@@ -181,7 +181,7 @@ trait PropertyOrLandRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(controllers.routes.AddAssetsController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.asset.routes.AddAssetsController.onPageLoad(fakeDraftId))
       }
     }
 

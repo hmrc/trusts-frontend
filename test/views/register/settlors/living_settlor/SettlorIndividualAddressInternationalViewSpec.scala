@@ -24,7 +24,8 @@ import play.twirl.api.HtmlFormat
 import utils.InputOption
 import utils.countryOptions.CountryOptionsNonUK
 import views.behaviours.InternationalAddressViewBehaviours
-import views.html.living_settlor.SettlorIndividualAddressInternationalView
+import views.html.register.settlors.living_settlor.SettlorIndividualAddressInternationalView
+import controllers.register.settlors.living_settlor.routes
 
 class SettlorIndividualAddressInternationalViewSpec extends InternationalAddressViewBehaviours {
 
@@ -50,7 +51,7 @@ class SettlorIndividualAddressInternationalViewSpec extends InternationalAddress
     behave like internationalAddress(
       applyView,
       Some(messageKeyPrefix),
-      controllers.living_settlor.routes.SettlorIndividualAddressInternationalController.onSubmit(NormalMode, index, fakeDraftId).url,
+      routes.SettlorIndividualAddressInternationalController.onSubmit(NormalMode, index, fakeDraftId).url,
       name.toString
     )
 

@@ -21,7 +21,7 @@ import forms.deceased_settlor.SettlorNationalInsuranceNumberFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.deceased_settlor.{SettlorNationalInsuranceNumberPage, SettlorsNamePage}
+import pages.register.settlors.deceased_settlor.{SettlorNationalInsuranceNumberPage, SettlorsNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

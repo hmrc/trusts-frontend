@@ -20,7 +20,7 @@ import java.time.LocalDateTime
 
 import controllers.actions._
 import javax.inject.Inject
-import pages.{RegistrationSubmissionDatePage, RegistrationTRNPage}
+import pages.register.{RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController

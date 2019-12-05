@@ -19,7 +19,7 @@ package controllers.actions
 import controllers.routes
 import javax.inject.Inject
 import models.requests.DataRequest
-import pages.RegistrationProgress
+import pages.register.RegistrationProgress
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Result}
 

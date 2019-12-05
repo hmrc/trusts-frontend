@@ -17,7 +17,7 @@
 package navigation.navigators.registration
 
 import base.SpecBase
-import controllers.routes
+import controllers.register.agents.routes
 import generators.Generators
 import models.NormalMode
 import models.core.UserAnswers
@@ -25,6 +25,7 @@ import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages._
+import pages.register.agents.{AgentAddressYesNoPage, AgentAnswerPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentNamePage, AgentTelephoneNumberPage, AgentUKAddressPage}
 import uk.gov.hmrc.auth.core.AffinityGroup
 
 trait AgentRoutes {
@@ -99,7 +100,7 @@ trait AgentRoutes {
         userAnswers =>
 
           navigator.nextPage(AgentAnswerPage, NormalMode, fakeDraftId, AffinityGroup.Agent)(userAnswers)
-            .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
       }
     }
   }

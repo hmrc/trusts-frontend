@@ -21,7 +21,7 @@ import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackE
 import models.core.pages.{CharityOrTrust, InternationalAddress, UKAddress}
 import models.playback.http.DisplayTrustCharityType
 import models.playback.{MetaData, UserAnswers}
-import pages.beneficiaries.charity._
+import pages.register.beneficiaries.charity._
 import play.api.Logger
 
 import scala.util.{Failure, Success, Try}

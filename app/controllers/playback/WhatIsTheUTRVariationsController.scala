@@ -24,7 +24,7 @@ import handlers.ErrorHandler
 import javax.inject.Inject
 import models.EnrolmentStoreResponse.{AlreadyClaimed, NotClaimed}
 import models.requests.DataRequest
-import pages.WhatIsTheUTRVariationPage
+import pages.playback.WhatIsTheUTRVariationPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

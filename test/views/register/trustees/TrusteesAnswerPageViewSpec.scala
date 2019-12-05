@@ -17,7 +17,7 @@
 package views.register.trustees
 
 import views.behaviours.ViewBehaviours
-import views.html.trustees.TrusteesAnswerPageView
+import views.html.register.trustees.TrusteesAnswerPageView
 
 class TrusteesAnswerPageViewSpec extends ViewBehaviours {
 

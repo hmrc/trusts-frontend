@@ -17,7 +17,7 @@
 package views.register.asset.property_or_land
 
 import views.behaviours.ViewBehaviours
-import views.html.property_or_land.PropertyOrLandAnswersView
+import views.html.register.asset.property_or_land.PropertyOrLandAnswersView
 
 class PropertyOrLandAnswerPageViewSpec extends ViewBehaviours {
   val index = 0

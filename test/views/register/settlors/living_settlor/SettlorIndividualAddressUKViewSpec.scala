@@ -22,7 +22,7 @@ import models.core.pages.FullName
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.UkAddressViewBehaviours
-import views.html.living_settlor.SettlorIndividualAddressUKView
+import views.html.register.settlors.living_settlor.SettlorIndividualAddressUKView
 
 class SettlorIndividualAddressUKViewSpec extends UkAddressViewBehaviours {
 

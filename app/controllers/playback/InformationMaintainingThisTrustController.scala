@@ -19,7 +19,7 @@ package controllers.playback
 import config.FrontendAppConfig
 import controllers.actions._
 import javax.inject.Inject
-import pages.WhatIsTheUTRVariationPage
+import pages.playback.WhatIsTheUTRVariationPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository

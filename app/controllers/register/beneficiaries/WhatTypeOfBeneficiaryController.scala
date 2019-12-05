@@ -22,7 +22,7 @@ import javax.inject.Inject
 import models.requests.DataRequest
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.WhatTypeOfBeneficiaryPage
+import pages.register.beneficiaries.WhatTypeOfBeneficiaryPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

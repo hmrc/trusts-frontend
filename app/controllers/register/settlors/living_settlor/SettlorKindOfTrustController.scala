@@ -22,7 +22,8 @@ import forms.SettlorKindOfTrustFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode, NormalMode}
 import navigation.Navigator
-import pages.{SettlorKindOfTrustPage, SetupAfterSettlorDiedPage}
+import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
+import pages.register.settlors.living_settlor.SettlorKindOfTrustPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

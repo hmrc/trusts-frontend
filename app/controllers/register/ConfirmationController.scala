@@ -25,7 +25,7 @@ import models.NormalMode
 import models.core.UserAnswers
 import models.registration.pages.RegistrationStatus
 import models.requests.DataRequest
-import pages.{RegistrationTRNPage, TrustHaveAUTRPage}
+import pages.register.{RegistrationTRNPage, TrustHaveAUTRPage}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}

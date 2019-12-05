@@ -21,7 +21,7 @@ import forms.TrusteesBasedInTheUKFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.TrusteesBasedInTheUKPage
+import pages.register.trustees.TrusteesBasedInTheUKPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

@@ -22,6 +22,7 @@ import mapping.{Mapping, MatchData}
 import models.registration.Matched
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
+import pages.register.{ExistingTrustMatched, PostcodeForTheTrustPage, TrustHaveAUTRPage, TrustNamePage, WhatIsTheUTRPage}
 import utils.TestUserAnswers
 
 class MatchingMapperSpec extends FreeSpec with MustMatchers

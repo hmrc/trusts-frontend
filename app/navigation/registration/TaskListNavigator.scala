@@ -24,6 +24,7 @@ import models.NormalMode
 import models.core.UserAnswers
 import pages._
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
+import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
 import play.api.mvc.Call
 import sections._
 

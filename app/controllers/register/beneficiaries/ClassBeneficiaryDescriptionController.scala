@@ -22,7 +22,7 @@ import javax.inject.Inject
 import models.Mode
 import models.registration.pages.Status.Completed
 import navigation.Navigator
-import pages.ClassBeneficiaryDescriptionPage
+import pages.register.beneficiaries.ClassBeneficiaryDescriptionPage
 import pages.entitystatus.ClassBeneficiaryStatus
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}

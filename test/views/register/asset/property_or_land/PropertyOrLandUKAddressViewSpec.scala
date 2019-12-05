@@ -16,13 +16,13 @@
 
 package views.register.asset.property_or_land
 
-import controllers.property_or_land.routes
+import controllers.register.asset.property_or_land.routes
 import forms.UKAddressFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.UkAddressViewBehaviours
-import views.html.property_or_land.PropertyOrLandUKAddressView
+import views.html.register.asset.property_or_land.PropertyOrLandUKAddressView
 
 class PropertyOrLandUKAddressViewSpec extends UkAddressViewBehaviours {
 

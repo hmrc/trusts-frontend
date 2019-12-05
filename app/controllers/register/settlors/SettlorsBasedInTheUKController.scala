@@ -21,7 +21,7 @@ import forms.SettlorsBasedInTheUKFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.SettlorsBasedInTheUKPage
+import pages.register.settlors.SettlorsBasedInTheUKPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

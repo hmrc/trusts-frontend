@@ -21,7 +21,7 @@ import forms.CountryGoverningTrustFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.CountryGoverningTrustPage
+import pages.register.CountryGoverningTrustPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

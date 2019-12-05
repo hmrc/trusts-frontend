@@ -21,7 +21,8 @@ import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider, 
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
 import models.requests.DataRequest
-import pages.{DefaultRemoveAssetPage, QuestionPage}
+import pages.QuestionPage
+import pages.register.asset.DefaultRemoveAssetPage
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.{AnyContent, Call, MessagesControllerComponents}
 import queries.{RemoveAssetQuery, Settable}

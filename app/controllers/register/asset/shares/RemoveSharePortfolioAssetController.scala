@@ -22,7 +22,7 @@ import forms.RemoveIndexFormProvider
 import javax.inject.Inject
 import models.requests.DataRequest
 import pages.QuestionPage
-import pages.shares.SharePortfolioNamePage
+import pages.register.asset.shares.SharePortfolioNamePage
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.{AnyContent, Call, MessagesControllerComponents}
 import repositories.RegistrationsRepository

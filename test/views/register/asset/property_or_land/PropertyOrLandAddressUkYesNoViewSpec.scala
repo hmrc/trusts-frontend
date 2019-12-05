@@ -21,7 +21,7 @@ import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.property_or_land.PropertyOrLandAddressUkYesNoView
+import views.html.register.asset.property_or_land.PropertyOrLandAddressUkYesNoView
 
 class PropertyOrLandAddressUkYesNoViewSpec extends YesNoViewBehaviours {
 

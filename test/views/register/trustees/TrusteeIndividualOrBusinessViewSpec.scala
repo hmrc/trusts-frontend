@@ -19,12 +19,12 @@ package views.register.trustees
 import forms.trustees.TrusteeIndividualOrBusinessFormProvider
 import models.NormalMode
 import models.core.pages.IndividualOrBusiness
-import pages.trustees.IsThisLeadTrusteePage
+import pages.register.trustees.IsThisLeadTrusteePage
 import play.api.data.Form
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import views.behaviours.OptionsViewBehaviours
-import views.html.trustees.TrusteeIndividualOrBusinessView
+import views.html.register.trustees.TrusteeIndividualOrBusinessView
 
 class TrusteeIndividualOrBusinessViewSpec extends OptionsViewBehaviours {
 

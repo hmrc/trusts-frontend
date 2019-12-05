@@ -22,7 +22,7 @@ import models.core.pages.FullName
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.living_settlor.SettlorIndividualAddressYesNoView
+import views.html.register.settlors.living_settlor.SettlorIndividualAddressYesNoView
 
 class SettlorIndividualAddressYesNoViewSpec extends YesNoViewBehaviours {
 

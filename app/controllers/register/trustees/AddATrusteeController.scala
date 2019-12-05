@@ -22,7 +22,7 @@ import forms.trustees.AddATrusteeFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.trustees.{AddATrusteePage, AddATrusteeYesNoPage}
+import pages.register.trustees.{AddATrusteePage, AddATrusteeYesNoPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi, MessagesProvider}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

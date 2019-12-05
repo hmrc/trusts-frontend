@@ -22,7 +22,7 @@ import javax.inject.Inject
 import models.registration.pages.AddAssets
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.{AddAnAssetYesNoPage, AddAssetsPage}
+import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi, MessagesProvider}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

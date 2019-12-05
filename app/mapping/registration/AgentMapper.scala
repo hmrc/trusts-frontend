@@ -20,6 +20,7 @@ import javax.inject.Inject
 import mapping.{AgentDetails, Mapping}
 import models.core.UserAnswers
 import pages._
+import pages.register.agents.{AgentARNPage, AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentNamePage, AgentTelephoneNumberPage, AgentUKAddressPage}
 
 class AgentMapper @Inject()(addressMapper : AddressMapper) extends Mapping[AgentDetails] {
 

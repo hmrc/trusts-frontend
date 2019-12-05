@@ -22,30 +22,32 @@ import models.registration.pages.ShareClass
 import models.registration.pages.Status.Completed
 import models.registration.pages.WhatKindOfAsset.{Money, PropertyOrLand, Shares}
 import pages.entitystatus.AssetStatus
-import pages.property_or_land._
-import pages.shares._
-import pages.{AssetMoneyValuePage, WhatKindOfAssetPage}
+import pages.register.asset.property_or_land._
+import pages.register.asset.shares._
 import viewmodels.AddRow
+import controllers.register.asset._
+import pages.register.asset.WhatKindOfAssetPage
+import pages.register.asset.money.AssetMoneyValuePage
 
 class AddAssetViewHelperSpec extends SpecBase {
 
   def removeMoneyRoute(index: Int) =
-    controllers.money.routes.RemoveMoneyAssetController.onPageLoad(index, fakeDraftId).url
+    money.routes.RemoveMoneyAssetController.onPageLoad(index, fakeDraftId).url
 
   def removeSharePortfolioRoute(index: Int) =
-    controllers.shares.routes.RemoveSharePortfolioAssetController.onPageLoad(index, fakeDraftId).url
+    shares.routes.RemoveSharePortfolioAssetController.onPageLoad(index, fakeDraftId).url
 
   def removeShareCompanyRoute(index: Int) =
-    controllers.shares.routes.RemoveShareCompanyNameAssetController.onPageLoad(index, fakeDraftId).url
+    shares.routes.RemoveShareCompanyNameAssetController.onPageLoad(index, fakeDraftId).url
 
   def removePropertyOrLandRoute(index: Int) =
-    controllers.property_or_land.routes.RemovePropertyOrLandWithAddressUKController.onPageLoad(index, fakeDraftId).url
+    property_or_land.routes.RemovePropertyOrLandWithAddressUKController.onPageLoad(index, fakeDraftId).url
 
   def removePropertyOrLandDescriptionRoute(index: Int) =
-    controllers.property_or_land.routes.RemovePropertyOrLandWithDescriptionController.onPageLoad(index, fakeDraftId).url
+    property_or_land.routes.RemovePropertyOrLandWithDescriptionController.onPageLoad(index, fakeDraftId).url
 
   def removeAssetRoute(index: Int) =
-    controllers.routes.DefaultRemoveAssetController.onPageLoad(index, fakeDraftId).url
+    routes.DefaultRemoveAssetController.onPageLoad(index, fakeDraftId).url
 
   "AddAssetViewHelper" when {
 

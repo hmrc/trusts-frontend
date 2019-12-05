@@ -22,7 +22,7 @@ import forms.property_or_land.PropertyOrLandTotalValueFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.property_or_land.PropertyOrLandTotalValuePage
+import pages.register.asset.property_or_land.PropertyOrLandTotalValuePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

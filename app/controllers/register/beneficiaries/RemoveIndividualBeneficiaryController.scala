@@ -22,7 +22,8 @@ import forms.RemoveIndexFormProvider
 import javax.inject.Inject
 import models.core.pages.FullName
 import models.requests.DataRequest
-import pages.{IndividualBeneficiaryNamePage, QuestionPage}
+import pages.QuestionPage
+import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.{AnyContent, Call, MessagesControllerComponents}
 import queries.{RemoveIndividualBeneficiaryQuery, Settable}

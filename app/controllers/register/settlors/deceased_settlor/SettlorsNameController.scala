@@ -37,7 +37,7 @@ import forms.deceased_settlor.SettlorsNameFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.deceased_settlor.SettlorsNamePage
+import pages.register.settlors.deceased_settlor.SettlorsNamePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

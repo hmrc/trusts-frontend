@@ -20,8 +20,8 @@ import javax.inject.Inject
 import mapping.reads.{LeadTrusteeIndividual, Trustees}
 import mapping.{Correspondence, Mapping}
 import models.core.UserAnswers
-import pages.TrustNamePage
-import pages.trustees.{TrusteeLiveInTheUKPage, TrusteesInternationalAddressPage, TrusteesUkAddressPage}
+import pages.register.TrustNamePage
+import pages.register.trustees.{TrusteeLiveInTheUKPage, TrusteesInternationalAddressPage, TrusteesUkAddressPage}
 import play.api.Logger
 
 class CorrespondenceMapper @Inject()(addressMapper: AddressMapper) extends Mapping[Correspondence] {

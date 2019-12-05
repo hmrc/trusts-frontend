@@ -21,7 +21,7 @@ import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
-import views.html.living_settlor.SettlorBusinessNameView
+import views.html.register.settlors.living_settlor.SettlorBusinessNameView
 
 class SettlorBusinessNameViewSpec extends StringViewBehaviours {
 

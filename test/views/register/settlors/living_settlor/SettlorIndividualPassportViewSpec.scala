@@ -25,7 +25,7 @@ import play.twirl.api.HtmlFormat
 import utils.InputOption
 import utils.countryOptions.CountryOptionsNonUK
 import views.behaviours.QuestionViewBehaviours
-import views.html.living_settlor.SettlorIndividualPassportView
+import views.html.register.settlors.living_settlor.SettlorIndividualPassportView
 
 class SettlorIndividualPassportViewSpec extends QuestionViewBehaviours[PassportOrIdCardDetails] {
 

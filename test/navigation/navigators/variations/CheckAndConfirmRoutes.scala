@@ -17,7 +17,7 @@
 package navigation.navigators.variations
 
 import base.SpecBase
-import controllers.routes
+import controllers.register.routes
 import generators.Generators
 import models.NormalMode
 import models.core.UserAnswers
@@ -25,7 +25,7 @@ import models.playback.pages.DeclarationWhatNext.DeclareTheTrustIsUpToDate
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages.DeclarationWhatNextPage
+import pages.playback.DeclarationWhatNextPage
 
 trait CheckAndConfirmRoutes {
 

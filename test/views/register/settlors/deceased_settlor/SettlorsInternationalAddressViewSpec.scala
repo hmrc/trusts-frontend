@@ -16,7 +16,7 @@
 
 package views.register.settlors.deceased_settlor
 
-import controllers.deceased_settlor.routes
+import controllers.register.settlors.deceased_settlor.routes
 import forms.InternationalAddressFormProvider
 import models.NormalMode
 import models.core.pages.FullName
@@ -25,7 +25,7 @@ import play.twirl.api.HtmlFormat
 import utils.InputOption
 import utils.countryOptions.CountryOptionsNonUK
 import views.behaviours.InternationalAddressViewBehaviours
-import views.html.deceased_settlor.SettlorsInternationalAddressView
+import views.html.register.settlors.deceased_settlor.SettlorsInternationalAddressView
 
 class SettlorsInternationalAddressViewSpec extends InternationalAddressViewBehaviours {
 

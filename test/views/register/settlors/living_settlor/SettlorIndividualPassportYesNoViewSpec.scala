@@ -22,7 +22,7 @@ import models.core.pages.FullName
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.living_settlor.SettlorIndividualPassportYesNoView
+import views.html.register.settlors.living_settlor.SettlorIndividualPassportYesNoView
 
 class SettlorIndividualPassportYesNoViewSpec extends YesNoViewBehaviours {
 

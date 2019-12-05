@@ -28,7 +28,7 @@ import models.core.http.TrustResponse._
 import models.core.http.{RegistrationTRNResponse, TrustResponse}
 import models.registration.pages.RegistrationStatus
 import navigation.Navigator
-import pages.{DeclarationPage, RegistrationSubmissionDatePage, RegistrationTRNPage}
+import pages.register.{DeclarationPage, RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.Logger
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}

@@ -22,7 +22,7 @@ import forms.UKAddressFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.property_or_land.PropertyOrLandUKAddressPage
+import pages.register.asset.property_or_land.PropertyOrLandUKAddressPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

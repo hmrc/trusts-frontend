@@ -17,7 +17,7 @@
 package navigation.navigators.registration
 
 import base.SpecBase
-import controllers.trustees.routes
+import controllers.register.trustees.routes
 import generators.Generators
 import models.NormalMode
 import models.core.UserAnswers
@@ -26,7 +26,7 @@ import models.registration.pages.AddATrustee
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages.trustees._
+import pages.register.trustees._
 import sections.Trustees
 
 trait TrusteeRoutes {
@@ -72,7 +72,7 @@ trait TrusteeRoutes {
               .remove(Trustees).success.value
 
             navigator.nextPage(AddATrusteeYesNoPage, NormalMode, fakeDraftId)(answers)
-              .mustBe(controllers.routes.TaskListController.onPageLoad(fakeDraftId))
+              .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
         }
       }
 
@@ -100,7 +100,7 @@ trait TrusteeRoutes {
             .set(AddATrusteePage, AddATrustee.YesLater).success.value
 
           navigator.nextPage(AddATrusteePage, NormalMode, fakeDraftId)(answers)
-            .mustBe(controllers.routes.TaskListController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -112,7 +112,7 @@ trait TrusteeRoutes {
             .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
           navigator.nextPage(AddATrusteePage, NormalMode, fakeDraftId)(answers)
-            .mustBe(controllers.routes.TaskListController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
       }
     }
 

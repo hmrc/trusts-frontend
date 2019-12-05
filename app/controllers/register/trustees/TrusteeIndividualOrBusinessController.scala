@@ -22,7 +22,7 @@ import forms.trustees.TrusteeIndividualOrBusinessFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode, NormalMode}
 import navigation.Navigator
-import pages.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage}
+import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

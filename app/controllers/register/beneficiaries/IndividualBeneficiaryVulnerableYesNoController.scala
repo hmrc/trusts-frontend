@@ -21,7 +21,7 @@ import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.{IndividualBeneficiaryNamePage, IndividualBeneficiaryVulnerableYesNoPage}
+import pages.register.beneficiaries.individual.{IndividualBeneficiaryNamePage, IndividualBeneficiaryVulnerableYesNoPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

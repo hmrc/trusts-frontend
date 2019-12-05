@@ -22,7 +22,7 @@ import models.core.pages.FullName
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
-import views.html.deceased_settlor.SettlorNationalInsuranceNumberView
+import views.html.register.settlors.deceased_settlor.SettlorNationalInsuranceNumberView
 
 class SettlorNationalInsuranceNumberViewSpec extends StringViewBehaviours {
 

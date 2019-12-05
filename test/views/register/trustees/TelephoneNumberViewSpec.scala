@@ -22,7 +22,7 @@ import models.core.pages.FullName
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
-import views.html.trustees.TelephoneNumberView
+import views.html.register.trustees.TelephoneNumberView
 
 class TelephoneNumberViewSpec extends StringViewBehaviours {
 

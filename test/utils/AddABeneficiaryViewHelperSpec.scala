@@ -17,12 +17,13 @@
 package utils
 
 import base.SpecBase
-import controllers.routes
+import controllers.register.beneficiaries.routes
 import models.core.pages.FullName
 import models.registration.pages.Status.Completed
 import models.registration.pages.WhatTypeOfBeneficiary
 import pages.entitystatus.{ClassBeneficiaryStatus, IndividualBeneficiaryStatus}
-import pages.{ClassBeneficiaryDescriptionPage, IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage, WhatTypeOfBeneficiaryPage}
+import pages.register.beneficiaries.individual.{IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage}
+import pages.register.beneficiaries.{ClassBeneficiaryDescriptionPage, WhatTypeOfBeneficiaryPage}
 import viewmodels.AddRow
 
 class AddABeneficiaryViewHelperSpec extends SpecBase {

@@ -21,7 +21,7 @@ import forms.TrustPreviouslyResidentFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.TrustPreviouslyResidentPage
+import pages.register.TrustPreviouslyResidentPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

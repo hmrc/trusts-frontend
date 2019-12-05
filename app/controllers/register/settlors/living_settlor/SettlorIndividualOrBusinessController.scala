@@ -22,7 +22,7 @@ import forms.deceased_settlor.SettlorIndividualOrBusinessFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.living_settlor.SettlorIndividualOrBusinessPage
+import pages.register.settlors.living_settlor.SettlorIndividualOrBusinessPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

@@ -22,7 +22,7 @@ import models.registration.pages.SettlorBusinessDetails
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.ViewBehaviours
-import views.html.living_settlor.SettlorBusinessDetailsView
+import views.html.register.settlors.living_settlor.SettlorBusinessDetailsView
 
 class SettlorBusinessDetailsViewSpec extends ViewBehaviours {
 

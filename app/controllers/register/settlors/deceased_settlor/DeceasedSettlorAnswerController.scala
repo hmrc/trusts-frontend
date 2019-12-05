@@ -21,7 +21,7 @@ import javax.inject.Inject
 import models.NormalMode
 import models.registration.pages.Status.Completed
 import navigation.Navigator
-import pages.deceased_settlor.{DeceasedSettlorAnswerPage, SettlorsNamePage}
+import pages.register.settlors.deceased_settlor.{DeceasedSettlorAnswerPage, SettlorsNamePage}
 import pages.entitystatus.DeceasedSettlorStatus
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

@@ -22,7 +22,7 @@ import forms.living_settlor.SettlorIndividualNameFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.living_settlor.SettlorIndividualNamePage
+import pages.register.settlors.living_settlor.SettlorIndividualNamePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

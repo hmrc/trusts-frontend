@@ -27,6 +27,10 @@ import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustee
 import models.registration.pages.WhenTrustSetupPage
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
+import pages.register.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, RegisteringTrustFor5APage, TrustNamePage, TrustPreviouslyResidentPage, TrustResidentOffshorePage}
+import pages.register.agents.AgentOtherThanBarristerPage
+import pages.register.settlors.SettlorsBasedInTheUKPage
+import pages.register.trustees.TrusteesBasedInTheUKPage
 import utils.TestUserAnswers
 
 class TrustDetailsMapperSpec extends FreeSpec with MustMatchers

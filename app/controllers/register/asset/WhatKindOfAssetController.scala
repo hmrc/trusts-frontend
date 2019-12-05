@@ -25,7 +25,7 @@ import models.registration.pages.WhatKindOfAsset.Money
 import models.requests.DataRequest
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.WhatKindOfAssetPage
+import pages.register.asset.WhatKindOfAssetPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

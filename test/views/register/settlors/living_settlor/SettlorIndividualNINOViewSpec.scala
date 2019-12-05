@@ -22,7 +22,7 @@ import models.core.pages.FullName
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
-import views.html.living_settlor.SettlorIndividualNINOView
+import views.html.register.settlors.living_settlor.SettlorIndividualNINOView
 
 class SettlorIndividualNINOViewSpec extends StringViewBehaviours {
 

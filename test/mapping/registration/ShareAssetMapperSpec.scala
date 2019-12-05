@@ -22,9 +22,9 @@ import mapping.{Mapping, SharesType}
 import models.registration.pages.Status.{Completed, InProgress}
 import models.registration.pages.{ShareClass, WhatKindOfAsset}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
-import pages.WhatKindOfAssetPage
 import pages.entitystatus.AssetStatus
-import pages.shares._
+import pages.register.asset.WhatKindOfAssetPage
+import pages.register.asset.shares._
 
 class ShareAssetMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {

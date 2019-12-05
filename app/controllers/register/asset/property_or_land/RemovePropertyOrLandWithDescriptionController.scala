@@ -22,7 +22,7 @@ import forms.RemoveIndexFormProvider
 import javax.inject.Inject
 import models.requests.DataRequest
 import pages.QuestionPage
-import pages.property_or_land.PropertyOrLandDescriptionPage
+import pages.register.asset.property_or_land.PropertyOrLandDescriptionPage
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.{AnyContent, Call, MessagesControllerComponents}
 import repositories.RegistrationsRepository

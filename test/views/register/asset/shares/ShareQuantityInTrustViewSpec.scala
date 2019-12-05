@@ -21,7 +21,7 @@ import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
-import views.html.shares.ShareQuantityInTrustView
+import views.html.register.asset.shares.ShareQuantityInTrustView
 
 class ShareQuantityInTrustViewSpec extends StringViewBehaviours {
 

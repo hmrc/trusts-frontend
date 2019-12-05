@@ -26,7 +26,8 @@ import models.core.pages.IndividualOrBusiness._
 import models.registration.pages.SettlorKindOfTrust._
 import navigation.Navigator
 import pages._
-import pages.living_settlor._
+import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage}
+import pages.register.settlors.living_settlor._
 import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
 

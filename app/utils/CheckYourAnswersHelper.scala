@@ -26,11 +26,19 @@ import models.core.UserAnswers
 import models.core.pages.{InternationalAddress, UKAddress}
 import models.registration.pages.{PassportOrIdCardDetails, WhenTrustSetupPage}
 import pages._
-import pages.deceased_settlor._
-import pages.living_settlor._
-import pages.property_or_land._
-import pages.shares._
-import pages.trustees._
+import pages.register.agents.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentNamePage, AgentOtherThanBarristerPage, AgentTelephoneNumberPage, AgentUKAddressPage}
+import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.settlors.deceased_settlor._
+import pages.register.settlors.living_settlor._
+import pages.register.asset.property_or_land._
+import pages.register.asset.shares._
+import pages.register.beneficiaries.individual.{IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryAddressUKYesNoPage, IndividualBeneficiaryAddressYesNoPage, IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryIncomePage, IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage, IndividualBeneficiaryNationalInsuranceYesNoPage, IndividualBeneficiaryVulnerableYesNoPage}
+import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
+import pages.playback.DeclarationWhatNextPage
+import pages.register.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, PostcodeForTheTrustPage, RegisteringTrustFor5APage, TrustHaveAUTRPage, TrustNamePage, TrustPreviouslyResidentPage, TrustRegisteredOnlinePage, TrustResidentOffshorePage, WhatIsTheUTRPage}
+import pages.register.asset.WhatKindOfAssetPage
+import pages.register.settlors.SettlorsBasedInTheUKPage
+import pages.register.trustees._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
 import sections.LivingSettlors

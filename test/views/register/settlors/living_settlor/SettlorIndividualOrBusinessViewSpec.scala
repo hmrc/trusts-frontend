@@ -22,7 +22,7 @@ import models.core.pages.IndividualOrBusiness
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.OptionsViewBehaviours
-import views.html.living_settlor.SettlorIndividualOrBusinessView
+import views.html.register.settlors.living_settlor.SettlorIndividualOrBusinessView
 
 class SettlorIndividualOrBusinessViewSpec extends OptionsViewBehaviours {
 

@@ -24,7 +24,7 @@ import models.core.pages.FullName
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
-import views.html.living_settlor.SettlorIndividualDateOfBirthView
+import views.html.register.settlors.living_settlor.SettlorIndividualDateOfBirthView
 
 class SettlorIndividualDateOfBirthViewSpec extends QuestionViewBehaviours[LocalDate] {
 

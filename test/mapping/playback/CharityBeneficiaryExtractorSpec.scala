@@ -22,7 +22,7 @@ import models.core.pages.UKAddress
 import models.playback.http._
 import models.playback.{MetaData, UserAnswers}
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
-import pages.beneficiaries.charity._
+import pages.register.beneficiaries.charity._
 
 class CharityBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
   with EitherValues with Generators with SpecBaseHelpers {

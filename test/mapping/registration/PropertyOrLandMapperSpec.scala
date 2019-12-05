@@ -22,8 +22,8 @@ import mapping.{AddressType, Mapping, PropertyLandType}
 import models.core.pages.UKAddress
 import models.registration.pages.WhatKindOfAsset
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
-import pages.WhatKindOfAssetPage
-import pages.property_or_land._
+import pages.register.asset.WhatKindOfAssetPage
+import pages.register.asset.property_or_land._
 
 class PropertyOrLandMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {

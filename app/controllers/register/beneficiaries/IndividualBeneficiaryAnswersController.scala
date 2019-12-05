@@ -23,7 +23,7 @@ import models.NormalMode
 import models.registration.pages.Status.Completed
 import navigation.Navigator
 import pages.entitystatus.IndividualBeneficiaryStatus
-import pages.{IndividualBeneficiaryAnswersPage, IndividualBeneficiaryNamePage}
+import pages.register.beneficiaries.individual.{IndividualBeneficiaryAnswersPage, IndividualBeneficiaryNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository

@@ -21,7 +21,7 @@ import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
-import views.html.shares.SharePortfolioNameView
+import views.html.register.asset.shares.SharePortfolioNameView
 
 class SharePortfolioNameViewSpec extends StringViewBehaviours {
 

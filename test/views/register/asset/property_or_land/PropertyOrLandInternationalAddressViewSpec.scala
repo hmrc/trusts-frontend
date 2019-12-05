@@ -16,6 +16,7 @@
 
 package views.register.asset.property_or_land
 
+import controllers.register.asset.property_or_land.routes
 import forms.InternationalAddressFormProvider
 import models.NormalMode
 import play.api.data.Form
@@ -23,7 +24,7 @@ import play.twirl.api.HtmlFormat
 import utils.InputOption
 import utils.countryOptions.CountryOptionsNonUK
 import views.behaviours.InternationalAddressViewBehaviours
-import views.html.property_or_land.PropertyOrLandInternationalAddressView
+import views.html.register.asset.property_or_land.PropertyOrLandInternationalAddressView
 
 class PropertyOrLandInternationalAddressViewSpec extends InternationalAddressViewBehaviours {
 
@@ -48,7 +49,7 @@ class PropertyOrLandInternationalAddressViewSpec extends InternationalAddressVie
     behave like internationalAddress(
       applyView,
       None,
-      controllers.property_or_land.routes.PropertyOrLandInternationalAddressController.onSubmit(NormalMode, index, fakeDraftId).url
+      routes.PropertyOrLandInternationalAddressController.onSubmit(NormalMode, index, fakeDraftId).url
     )
 
     behave like pageWithASubmitButton(applyView(form))

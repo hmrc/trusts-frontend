@@ -22,7 +22,7 @@ import models.registration.pages.ShareClass
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.ViewBehaviours
-import views.html.shares.ShareClassView
+import views.html.register.asset.shares.ShareClassView
 
 class ShareClassViewSpec extends ViewBehaviours {
 

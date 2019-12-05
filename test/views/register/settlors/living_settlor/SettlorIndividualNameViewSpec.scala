@@ -22,7 +22,7 @@ import models.core.pages.FullName
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
-import views.html.living_settlor.SettlorIndividualNameView
+import views.html.register.settlors.living_settlor.SettlorIndividualNameView
 
 class SettlorIndividualNameViewSpec extends QuestionViewBehaviours[FullName] {
 

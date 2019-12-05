@@ -19,11 +19,11 @@ package views.register.trustees
 import forms.YesNoFormProvider
 import models.NormalMode
 import models.core.pages.FullName
-import pages.trustees.TrusteesNamePage
+import pages.register.trustees.TrusteesNamePage
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.trustees.TrusteeAUKCitizenView
+import views.html.register.trustees.TrusteeAUKCitizenView
 
 class TrusteeAUKCitizenViewSpec extends YesNoViewBehaviours {
 

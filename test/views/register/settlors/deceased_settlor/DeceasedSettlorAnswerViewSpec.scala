@@ -17,7 +17,7 @@
 package views.register.settlors.deceased_settlor
 
 import views.behaviours.ViewBehaviours
-import views.html.deceased_settlor.DeceasedSettlorAnswerView
+import views.html.register.settlors.deceased_settlor.DeceasedSettlorAnswerView
 
 class DeceasedSettlorAnswerViewSpec extends ViewBehaviours {
 

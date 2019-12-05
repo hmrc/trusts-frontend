@@ -21,7 +21,7 @@ import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.shares.SharesOnStockExchangeView
+import views.html.register.asset.shares.SharesOnStockExchangeView
 
 class SharesOnStockExchangeViewSpec extends YesNoViewBehaviours {
 

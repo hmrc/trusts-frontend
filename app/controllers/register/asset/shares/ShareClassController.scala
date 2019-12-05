@@ -22,7 +22,7 @@ import forms.shares.ShareClassFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode, NormalMode}
 import navigation.Navigator
-import pages.shares.{ShareClassPage, ShareCompanyNamePage}
+import pages.register.asset.shares.{ShareClassPage, ShareCompanyNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

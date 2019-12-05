@@ -22,7 +22,7 @@ import models.core.pages.FullName
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.deceased_settlor.SettlorDateOfBirthYesNoView
+import views.html.register.settlors.deceased_settlor.SettlorDateOfBirthYesNoView
 
 class SettlorDateOfBirthYesNoViewSpec extends YesNoViewBehaviours {
 

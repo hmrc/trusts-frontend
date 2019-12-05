@@ -22,7 +22,8 @@ import javax.inject.Inject
 import models.requests.DataRequest
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.{AddASettlorPage, AddASettlorYesNoPage, SettlorKindOfTrustPage}
+import pages.register.settlors.living_settlor.SettlorKindOfTrustPage
+import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi, MessagesProvider}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

@@ -21,7 +21,8 @@ import controllers.actions._
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
 import models.requests.DataRequest
-import pages.{ClassBeneficiaryDescriptionPage, QuestionPage}
+import pages.QuestionPage
+import pages.register.beneficiaries.ClassBeneficiaryDescriptionPage
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.{AnyContent, Call, MessagesControllerComponents}
 import queries.{RemoveClassOfBeneficiaryQuery, Settable}

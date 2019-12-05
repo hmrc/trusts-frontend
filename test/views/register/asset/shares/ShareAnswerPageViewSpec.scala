@@ -17,7 +17,7 @@
 package views.register.asset.shares
 
 import views.behaviours.ViewBehaviours
-import views.html.shares.ShareAnswersView
+import views.html.register.asset.shares.ShareAnswersView
 
 class ShareAnswerPageViewSpec extends ViewBehaviours {
 

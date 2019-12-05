@@ -23,7 +23,7 @@ import models.NormalMode
 import models.registration.pages.Status.Completed
 import navigation.Navigator
 import pages.entitystatus.LivingSettlorStatus
-import pages.living_settlor.{SettlorIndividualAnswerPage, SettlorIndividualOrBusinessPage}
+import pages.register.settlors.living_settlor.{SettlorIndividualAnswerPage, SettlorIndividualOrBusinessPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository

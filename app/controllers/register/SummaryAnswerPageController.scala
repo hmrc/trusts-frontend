@@ -18,7 +18,8 @@ package controllers.register
 
 import controllers.actions._
 import javax.inject.Inject
-import pages.{AgentInternalReferencePage, RegistrationProgress}
+import pages.register.RegistrationProgress
+import pages.register.agents.AgentInternalReferencePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent

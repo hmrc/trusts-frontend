@@ -24,7 +24,7 @@ import mapping._
 import models.core.pages.{FullName, InternationalAddress, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
-import pages.deceased_settlor._
+import pages.register.settlors.deceased_settlor._
 
 class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {

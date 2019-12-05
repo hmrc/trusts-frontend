@@ -16,10 +16,10 @@
 
 package views.register.trustees
 
-import controllers._
+import controllers.register.routes
 import models.NormalMode
 import views.behaviours.ViewBehaviours
-import views.html.trustees.TrusteesInfoView
+import views.html.register.trustees.TrusteesInfoView
 
 
 class TrusteesInfoViewSpec extends ViewBehaviours {
