@@ -28,6 +28,7 @@ sealed trait TrustStatus extends TrustsResponse
 case object Processing extends TrustStatus
 case object Closed extends TrustStatus
 case class Processed(playback: GetTrust, formBundleNumber : String) extends TrustStatus
+case object SorryThereHasBeenAProblem extends TrustStatus
 
 case object UtrNotFound extends TrustsResponse
 case object TrustServiceUnavailable extends TrustsResponse
@@ -46,6 +47,9 @@ object TrustsResponse {
             JsSuccess(Processed(trust, formBundle))
           case JsError(errors) => JsError(s"Can not parse as GetTrust due to $errors")
         }
+      case JsString("Parked") => JsSuccess(SorryThereHasBeenAProblem)
+      case JsString("Obsoleted") => JsSuccess(SorryThereHasBeenAProblem)
+      case JsString("Suspended") => JsSuccess(SorryThereHasBeenAProblem)
       case _ => JsError("Unexpected Status")
     }
   }

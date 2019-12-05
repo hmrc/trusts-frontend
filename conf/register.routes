@@ -124,14 +124,6 @@ GET        /:draftId/your-draft-registration                                    
 
 GET        /:draftId/your-declared-registration                                                     controllers.register.ConfirmationAnswerPageController.onPageLoad(draftId : String)
 
-GET        /status/closed                                                                           controllers.register.TrustStatusController.closed()
-GET        /status/processing                                                                       controllers.register.TrustStatusController.processing()
-GET        /status/not-found                                                                        controllers.register.TrustStatusController.notFound()
-GET        /status/down                                                                             controllers.register.TrustStatusController.down()
-GET        /status/locked                                                                           controllers.register.TrustStatusController.locked()
-GET        /status/already-claimed                                                                  controllers.register.TrustStatusController.alreadyClaimed()
-GET        /status                                                                                  controllers.register.TrustStatusController.status()
-
 ## Agents
 
 GET        /:draftId/client-reference                                                               controllers.register.agents.AgentInternalReferenceController.onPageLoad(mode: Mode = NormalMode, draftId: String)

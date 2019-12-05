@@ -38,17 +38,14 @@ class TrustConnector @Inject()(http: HttpClient, config : FrontendAppConfig) {
     val newHc : HeaderCarrier = hc.withExtraHeaders(
       Headers.DraftRegistrationId -> draftId
     )
-    val response = http.POST[JsValue, TrustResponse](registrationUrl, Json.toJson(registration))(implicitly[Writes[JsValue]], TrustResponse.httpReads, newHc, ec)
 
-    response
+    http.POST[JsValue, TrustResponse](registrationUrl, Json.toJson(registration))(implicitly[Writes[JsValue]], TrustResponse.httpReads, newHc, ec)
   }
 
 
   def playback(utr: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[TrustsResponse] = {
 
-    val response = http.GET[TrustsResponse](playbackUrl(utr))(TrustsResponse.httpReads, hc, ec)
-
-    response
+    http.GET[TrustsResponse](playbackUrl(utr))(TrustsResponse.httpReads, hc, ec)
   }
 }
 

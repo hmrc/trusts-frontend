@@ -29,7 +29,7 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import uk.gov.hmrc.auth.core.{Enrolment, EnrolmentIdentifier, Enrolments}
 import views.html.register.WhatIsTheUTRView
-import controllers.register.routes._
+import controllers.playback.routes._
 import pages.playback.WhatIsTheUTRVariationPage
 
 import scala.concurrent.Future
@@ -117,7 +117,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual "/trusts-registration/status"
+      redirectLocation(result).value mustEqual "/maintain-a-trust/status"
 
       application.stop()
     }
@@ -411,7 +411,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.register.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -428,7 +428,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.register.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers.register
+package controllers.playback
 
 import config.FrontendAppConfig
 import connector.{TrustConnector, TrustsStoreConnector}
@@ -30,6 +30,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.{PlaybackRepository, RegistrationsRepository}
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.playback.status._
 
@@ -54,6 +55,7 @@ class TrustStatusController @Inject()(
                                        errorHandler: ErrorHandler,
                                        lockedView: TrustLockedView,
                                        alreadyClaimedView: TrustAlreadyClaimedView,
+                                       playbackProblemContactHMRCView: PlaybackProblemContactHMRCView,
                                        playbackExtractor: UserAnswersExtractor,
                                        val controllerComponents: MessagesControllerComponents
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
@@ -69,6 +71,13 @@ class TrustStatusController @Inject()(
     implicit request =>
       enforceUtr() { utr =>
         Future.successful(Ok(stillProcessingView(request.affinityGroup, utr)))
+      }
+  }
+
+  def sorryThereHasBeenAProblem(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      enforceUtr() { utr =>
+        Future.successful(Ok(playbackProblemContactHMRCView(utr)))
       }
   }
 
@@ -122,6 +131,7 @@ class TrustStatusController @Inject()(
       case Processing => Future.successful(Redirect(routes.TrustStatusController.processing()))
       case UtrNotFound => Future.successful(Redirect(routes.TrustStatusController.notFound()))
       case Processed(playback, _) => extract(utr, playback)
+      case SorryThereHasBeenAProblem => Future.successful(Redirect(routes.TrustStatusController.sorryThereHasBeenAProblem()))
       case _ => Future.successful(Redirect(routes.TrustStatusController.down()))
     }
   }
