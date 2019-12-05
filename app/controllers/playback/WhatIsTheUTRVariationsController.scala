@@ -43,7 +43,6 @@ class WhatIsTheUTRVariationsController @Inject()(
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: WhatIsTheUTRView,
                                                   config: FrontendAppConfig,
-                                                  trustsStore: TrustsStoreConnector,
                                                   errorHandler: ErrorHandler,
                                                   authenticationService: AuthenticationService
                                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {

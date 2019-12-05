@@ -20,7 +20,7 @@ import base.SpecBase
 import config.FrontendAppConfig
 import connector.EnrolmentStoreConnector
 import controllers.actions.TrustsAuth
-import models.EnrolmentStoreResponse.{AlreadyClaimed, NotClaimed}
+import models.EnrolmentStoreResponse.{AlreadyClaimed, NotClaimed, ServerError}
 import models.requests.DataRequest
 import org.mockito.Matchers.{any, eq => mEq}
 import org.mockito.Mockito.when
@@ -29,7 +29,8 @@ import org.scalatest.{EitherValues, RecoverMethods}
 import play.api.http.HeaderNames
 import play.api.inject.bind
 import play.api.mvc.AnyContent
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
+import play.api.test.Helpers._
+import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.{EmptyRetrieval, Retrieval, ~}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -64,142 +65,300 @@ class AuthenticationServiceSpec extends SpecBase with ScalaFutures with EitherVa
   lazy override val trustsAuth = new TrustsAuth(mockAuthConnector, appConfig)
 
   "invoking the IdentifyForPlaybacks action builder" when {
-    "passing a non authenticated request" must {
-      "redirect to the login page" in {
 
-        val app = applicationBuilder()
-          .overrides(bind[TrustsAuth].toInstance(trustsAuth))
-          .build()
+    "authenticating an agent" when {
 
-        when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
-          .thenReturn(Future failed BearerTokenExpired())
+      "trust is claimed and agent is authorised" must {
 
-        val service = app.injector.instanceOf[AuthenticationService]
+        "continue processing the request" in {
 
-        recoverToSucceededIf[BearerTokenExpired](service.authenticate[AnyContent](utr))
+          when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
+            .thenReturn(authRetrievals(AffinityGroup.Agent, enrolments))
 
+          when(mockEnrolmentStoreConnector.checkIfAlreadyClaimed(mEq(utr))(any(), any()))
+            .thenReturn(Future.successful(AlreadyClaimed))
+
+          val app = applicationBuilder()
+            .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+            .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
+            .build()
+
+          val service = app.injector.instanceOf[AuthenticationService]
+
+          whenReady(service.authenticate[AnyContent](utr)) {
+            result =>
+              result.right.value mustBe dataRequest
+          }
+
+        }
       }
+
+      "trust has not been claimed by a trustee" must {
+
+        "redirect to trust not claimed page" in {
+
+          when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
+            .thenReturn(authRetrievals(AffinityGroup.Agent, enrolments))
+
+          when(mockEnrolmentStoreConnector.checkIfAlreadyClaimed(mEq(utr))(any[HeaderCarrier], any[ExecutionContext]))
+            .thenReturn(Future.successful(NotClaimed))
+
+          val app = applicationBuilder()
+            .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+            .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
+            .build()
+
+          val service = app.injector.instanceOf[AuthenticationService]
+
+          whenReady(service.authenticate[AnyContent](utr)) {
+            result =>
+              result.left.value.header.headers(HeaderNames.LOCATION) mustBe controllers.playback.routes.TrustNotClaimedController.onPageLoad().url
+          }
+        }
+      }
+
+      "agent has not been authorised for any trusts" must {
+
+        "redirect to agent not authorised" in {
+
+          val enrolments = Enrolments(Set(agentEnrolment))
+
+          when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
+            .thenReturn(authRetrievals(AffinityGroup.Agent, enrolments))
+
+          when(mockEnrolmentStoreConnector.checkIfAlreadyClaimed(mEq(utr))(any(), any()))
+            .thenReturn(Future.successful(AlreadyClaimed))
+
+          val app = applicationBuilder()
+            .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+            .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
+            .build()
+
+          val service = app.injector.instanceOf[AuthenticationService]
+
+          implicit val dataRequest = DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Agent, enrolments)
+
+          whenReady(service.authenticate[AnyContent](utr)) {
+            result =>
+              result.left.value.header.headers(HeaderNames.LOCATION) mustBe controllers.playback.routes.AgentNotAuthorisedController.onPageLoad().url
+          }
+
+        }
+      }
+
+      "an agent that has a trusts enrolment without matching submitted utr" must {
+
+        "redirect to agent not authorised" in {
+
+          val enrolments = Enrolments(Set(
+            agentEnrolment,
+            Enrolment(appConfig.serviceName, List(EnrolmentIdentifier("SAUTR", "1234567890")), "Activated", None)
+          ))
+
+          when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
+            .thenReturn(authRetrievals(AffinityGroup.Agent, enrolments))
+
+          when(mockEnrolmentStoreConnector.checkIfAlreadyClaimed(mEq(utr))(any(), any()))
+            .thenReturn(Future.successful(AlreadyClaimed))
+
+          val app = applicationBuilder()
+            .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+            .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
+            .build()
+
+          val service = app.injector.instanceOf[AuthenticationService]
+
+          implicit val dataRequest = DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Agent, enrolments)
+
+          whenReady(service.authenticate[AnyContent](utr)) {
+            result =>
+              result.left.value.header.headers(HeaderNames.LOCATION) mustBe controllers.playback.routes.AgentNotAuthorisedController.onPageLoad().url
+          }
+
+        }
+      }
+
     }
 
-    "passing an identifier request" must {
-      "execute the body of the action" in {
+    "authenticating an organisation user" when {
 
-        when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
-          .thenReturn(authRetrievals(AffinityGroup.Agent, enrolments))
+      "organisation user has an enrolment for the trust" when {
 
-        when(mockAuthConnector.authorise(any[Relationship], mEq(EmptyRetrieval))(any(), any()))
-          .thenReturn(Future.successful(()))
+        "relationship does not exist in Trust IV" must {
 
-        when(mockEnrolmentStoreConnector.checkIfClaimed(mEq(utr))(any(), any()))
-          .thenReturn(Future.successful(AlreadyClaimed))
+          "redirect to trust IV for a non claiming check" in {
 
-        val app = applicationBuilder()
-          .overrides(bind[TrustsAuth].toInstance(trustsAuth))
-          .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
-          .build()
+            val enrolments = Enrolments(Set(trustsEnrolment))
 
-        val service = app.injector.instanceOf[AuthenticationService]
+            when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
+              .thenReturn(authRetrievals(AffinityGroup.Organisation, enrolments))
 
-        whenReady(service.authenticate[AnyContent](utr)) {
-          result =>
-            result.right.value mustBe dataRequest
+            when(mockAuthConnector.authorise(any[Relationship], mEq(EmptyRetrieval))(any(), any()))
+              .thenReturn(Future.failed(FailedRelationship()))
+
+            val app = applicationBuilder()
+              .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+              .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
+              .build()
+
+            val service = app.injector.instanceOf[AuthenticationService]
+
+            implicit val dataRequest =
+              DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
+
+            whenReady(service.authenticate[AnyContent](utr)) {
+              result =>
+                result.left.value.header.headers(HeaderNames.LOCATION) must include("/claim-a-trust")
+            }
+          }
+
+        }
+
+        "relationship does exist in Trust IV" must {
+
+          "continue processing the request" in {
+
+            val enrolments = Enrolments(Set(trustsEnrolment))
+
+            when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
+              .thenReturn(authRetrievals(AffinityGroup.Organisation, enrolments))
+
+            when(mockAuthConnector.authorise(any[Relationship], mEq(EmptyRetrieval))(any(), any()))
+              .thenReturn(Future.successful())
+
+            val app = applicationBuilder()
+              .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+              .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
+              .build()
+
+            val service = app.injector.instanceOf[AuthenticationService]
+
+            implicit val dataRequest =
+              DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
+
+            whenReady(service.authenticate[AnyContent](utr)) {
+              result =>
+                result.right.value mustBe dataRequest
+            }
+          }
+
         }
 
       }
-    }
 
-    "fetching NotClaimed response from Enrolments" must {
-      "redirect to NotClaimed" in {
+      "organisation user has no enrolment for the trust" when {
 
-        when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
-          .thenReturn(authRetrievals(AffinityGroup.Agent, enrolments))
+        "unable to determine if the UTR belongs to a different org account" must {
 
-        when(mockAuthConnector.authorise(any[Relationship], mEq(EmptyRetrieval))(any(), any()))
-          .thenReturn(Future.successful(()))
+          "redirect to tech difficulties" in {
+            val enrolments = Enrolments(Set())
 
-        when(mockEnrolmentStoreConnector.checkIfClaimed(mEq(utr))(any[HeaderCarrier], any[ExecutionContext]))
-          .thenReturn(Future.successful(NotClaimed))
+            when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
+              .thenReturn(authRetrievals(AffinityGroup.Organisation, enrolments))
 
-        val app = applicationBuilder()
-          .overrides(bind[TrustsAuth].toInstance(trustsAuth))
-          .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
-          .build()
+            when(mockEnrolmentStoreConnector.checkIfAlreadyClaimed(mEq(utr))(any(), any()))
+              .thenReturn(Future.successful(ServerError))
 
-        val service = app.injector.instanceOf[AuthenticationService]
+            val app = applicationBuilder()
+              .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+              .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
+              .build()
 
-        whenReady(service.authenticate[AnyContent](utr)) {
-          result =>
-            result.left.value.header.headers(HeaderNames.LOCATION) mustBe controllers.playback.routes.TrustNotClaimedController.onPageLoad().url
+            val service = app.injector.instanceOf[AuthenticationService]
+
+            implicit val dataRequest =
+              DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
+
+            val result = service.authenticate(utr)
+            val left = result.map(_.left.value)
+
+            status(left) mustBe INTERNAL_SERVER_ERROR
+
+          }
+        }
+
+        "utr is already claimed by a different org account" must {
+
+          "redirect to already claimed" in {
+
+            val enrolments = Enrolments(Set())
+
+            when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
+              .thenReturn(authRetrievals(AffinityGroup.Organisation, enrolments))
+
+            when(mockEnrolmentStoreConnector.checkIfAlreadyClaimed(mEq(utr))(any(), any()))
+              .thenReturn(Future.successful(AlreadyClaimed))
+
+            val app = applicationBuilder()
+              .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+              .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
+              .build()
+
+            val service = app.injector.instanceOf[AuthenticationService]
+
+            implicit val dataRequest =
+              DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
+
+            whenReady(service.authenticate[AnyContent](utr)) {
+              result =>
+                result.left.value.header.headers(HeaderNames.LOCATION) mustBe
+                  controllers.playback.routes.TrustStatusController.alreadyClaimed().url
+            }
+          }
+        }
+
+        "utr is not already claimed by an org account" must {
+
+          "redirect to claim a trust" in {
+
+            val enrolments = Enrolments(Set())
+
+            when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
+              .thenReturn(authRetrievals(AffinityGroup.Organisation, enrolments))
+
+            when(mockEnrolmentStoreConnector.checkIfAlreadyClaimed(mEq(utr))(any(), any()))
+              .thenReturn(Future.successful(NotClaimed))
+
+
+            val app = applicationBuilder()
+              .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+              .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
+              .build()
+
+            val service = app.injector.instanceOf[AuthenticationService]
+
+            implicit val dataRequest =
+              DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
+
+            whenReady(service.authenticate[AnyContent](utr)) {
+              result =>
+                result.left.value.header.headers(HeaderNames.LOCATION) must include("/claim-a-trust")
+            }
+          }
+
         }
 
       }
+
     }
 
-    "an agent that does not have a trusts enrolment" must {
-      "redirect to agent not authorised" in {
+  }
 
-        val enrolments = Enrolments(Set(agentEnrolment))
+  "passing a non authenticated request" must {
 
-        when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
-          .thenReturn(authRetrievals(AffinityGroup.Agent, enrolments))
+    "redirect to the login page" in {
 
-        when(mockAuthConnector.authorise(any[Relationship], mEq(EmptyRetrieval))(any(), any()))
-          .thenReturn(Future.successful(()))
+      val app = applicationBuilder()
+        .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+        .build()
 
-        when(mockEnrolmentStoreConnector.checkIfClaimed(mEq(utr))(any(), any()))
-          .thenReturn(Future.successful(AlreadyClaimed))
+      when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
+        .thenReturn(Future failed BearerTokenExpired())
 
-        val app = applicationBuilder()
-          .overrides(bind[TrustsAuth].toInstance(trustsAuth))
-          .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
-          .build()
+      val service = app.injector.instanceOf[AuthenticationService]
 
-        val service = app.injector.instanceOf[AuthenticationService]
-
-        implicit val dataRequest = DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Agent, enrolments)
-
-        whenReady(service.authenticate[AnyContent](utr)) {
-          result =>
-            result.left.value.header.headers(HeaderNames.LOCATION) mustBe controllers.playback.routes.AgentNotAuthorisedController.onPageLoad().url
-        }
-
-      }
+      recoverToSucceededIf[BearerTokenExpired](service.authenticate[AnyContent](utr))
     }
-
-    "an agent that has a trusts enrolment without matching submitted utr" must {
-      "redirect to agent not authorised" in {
-
-        val enrolments = Enrolments(Set(
-          agentEnrolment,
-          Enrolment(appConfig.serviceName, List(EnrolmentIdentifier("SAUTR", "1234567890")), "Activated", None)
-        ))
-
-        when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
-          .thenReturn(authRetrievals(AffinityGroup.Agent, enrolments))
-
-        when(mockAuthConnector.authorise(any[Relationship], mEq(EmptyRetrieval))(any(), any()))
-          .thenReturn(Future.successful(()))
-
-        when(mockEnrolmentStoreConnector.checkIfClaimed(mEq(utr))(any(), any()))
-          .thenReturn(Future.successful(AlreadyClaimed))
-
-        val app = applicationBuilder()
-          .overrides(bind[TrustsAuth].toInstance(trustsAuth))
-          .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
-          .build()
-
-        val service = app.injector.instanceOf[AuthenticationService]
-
-        implicit val dataRequest = DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Agent, enrolments)
-
-        whenReady(service.authenticate[AnyContent](utr)) {
-          result =>
-            result.left.value.header.headers(HeaderNames.LOCATION) mustBe controllers.playback.routes.AgentNotAuthorisedController.onPageLoad().url
-        }
-
-      }
-    }
-
   }
 
 }
