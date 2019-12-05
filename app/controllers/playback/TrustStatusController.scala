@@ -29,7 +29,6 @@ import pages.playback.WhatIsTheUTRVariationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.{PlaybackRepository, RegistrationsRepository}
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.playback.status._
 
@@ -140,13 +139,7 @@ class TrustStatusController @Inject()(
     playbackExtractor.extract(request.userAnswers.toPlaybackUserAnswers, playback) match {
       case Right(Success(answers)) =>
         playbackRepository.store(answers) map { _ =>
-
-          request.affinityGroup match {
-            case Agent =>
-              Redirect(routes.InformationMaintainingThisTrustController.onPageLoad())
-            case _ =>
-              Redirect(config.claimATrustUrl(utr))
-          }
+          Redirect(routes.InformationMaintainingThisTrustController.onPageLoad())
         }
       case Right(Failure(reason)) =>
         // Todo update where it goes and log reason?

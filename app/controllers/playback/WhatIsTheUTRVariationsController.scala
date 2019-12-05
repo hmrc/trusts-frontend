@@ -71,8 +71,9 @@ class WhatIsTheUTRVariationsController @Inject()(
             authenticationResult <- authenticationService.authenticateForPlayback(utr)
           } yield {
             authenticationResult match {
-              case Left(failureRedirect) => failureRedirect
-              case Right(_) => Redirect(controllers.playback.routes.TrustStatusController.status())
+              case Left(failureResult) => failureResult
+              case Right(_) =>
+                Redirect(controllers.playback.routes.TrustStatusController.status())
             }
           }
         }

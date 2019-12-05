@@ -256,7 +256,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual frontendAppConfig.claimATrustUrl(utr)
+        redirectLocation(result).value mustEqual routes.InformationMaintainingThisTrustController.onPageLoad().url
 
         application.stop()
       }
