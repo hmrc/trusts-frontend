@@ -87,8 +87,9 @@ class CharityBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.success.value.get(CharityBeneficiaryShareOfIncomePage(0)) mustNot be(defined)
         extraction.right.value.success.value.get(CharityBeneficiaryUtrPage(0)) mustNot be(defined)
         extraction.right.value.success.value.get(CharityBeneficiarySafeIdPage(0)) mustNot be(defined)
-        extraction.right.value.success.value.get(CharityBeneficiaryAddressPage(0)) mustNot be(defined)
+        extraction.right.value.success.value.get(CharityBeneficiaryAddressYesNoPage(0)).get mustBe false
         extraction.right.value.success.value.get(CharityBeneficiaryAddressUKYesNoPage(0)) mustNot be(defined)
+        extraction.right.value.success.value.get(CharityBeneficiaryAddressPage(0)) mustNot be(defined)
       }
 
       "with full data must return user answers updated" in {
@@ -116,6 +117,9 @@ class CharityBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
 
         extraction.right.value.success.value.get(CharityBeneficiarySafeIdPage(0)).get mustBe "8947584-94759745-84758745"
         extraction.right.value.success.value.get(CharityBeneficiarySafeIdPage(1)).get mustBe "8947584-94759745-84758745"
+
+        extraction.right.value.success.value.get(CharityBeneficiaryAddressYesNoPage(0)).get mustBe true
+        extraction.right.value.success.value.get(CharityBeneficiaryAddressYesNoPage(1)).get mustBe true
 
         extraction.right.value.success.value.get(CharityBeneficiaryAddressPage(0)).get mustBe UKAddress("line 0", "line2", None, None, "NE11NE")
         extraction.right.value.success.value.get(CharityBeneficiaryAddressPage(1)).get mustBe UKAddress("line 1", "line2", None, None, "NE11NE")

@@ -58,13 +58,13 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
 
   private lazy val serviceName = config.serviceName
 
-  private val identifierKey = "UTR"
+  private val identifierKey = "SAUTR"
   private val identifier = "0987654321"
 
   private val principalId = Seq("ABCEDEFGI1234567")
   private val delegatedId = Seq("ABCEDEFGI1234568", "ABCEDEFGI1234569")
 
-  private lazy val enrolmentsUrl: String = s"/enrolment-store/enrolments/$serviceName~$identifierKey~$identifier/users"
+  private lazy val enrolmentsUrl: String = s"/enrolment-store-proxy/enrolment-store/enrolments/$serviceName~$identifierKey~$identifier/users"
 
   "EnrolmentStoreConnector" - {
 

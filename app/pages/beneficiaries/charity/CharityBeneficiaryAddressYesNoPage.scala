@@ -14,33 +14,15 @@
  * limitations under the License.
  */
 
-package viewmodels.addAnother
+package pages.beneficiaries.charity
 
-import models.registration.pages.Status
-import scala.language.implicitConversions
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import sections.{Beneficiaries, CharityBeneficiaries}
 
-trait SettlorViewModel {
+final case class CharityBeneficiaryAddressYesNoPage(index: Int) extends QuestionPage[Boolean] {
 
-  val status : Status
+  override def path: JsPath = JsPath \ Beneficiaries \ CharityBeneficiaries \ index \ toString
 
-}
-
-object SettlorViewModel {
-
-  import play.api.libs.json._
-
-  implicit class ReadsWithContravariantOr[A](a: Reads[A]) {
-
-    def or[B >: A](b: Reads[B]): Reads[B] =
-      a.map[B](identity).orElse(b)
-  }
-
-  implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
-    a.map(identity)
-
-  implicit lazy val reads : Reads[SettlorViewModel] = {
-      SettlorLivingViewModel.reads or
-      DefaultSettlorViewModel.reads
-  }
-
+  override def toString: String = "addressYesNo"
 }

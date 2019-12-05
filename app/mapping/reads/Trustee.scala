@@ -18,6 +18,7 @@ package mapping.reads
 
 import models.core.pages.FullName
 import play.api.libs.json.Reads
+import scala.language.implicitConversions
 
 trait Trustee {
 

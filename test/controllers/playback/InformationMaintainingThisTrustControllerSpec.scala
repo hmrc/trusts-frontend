@@ -20,6 +20,7 @@ import base.SpecBase
 import pages.playback.WhatIsTheUTRVariationPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import views.html.playback.InformationMaintainingThisTrustView
 
 class InformationMaintainingThisTrustControllerSpec extends SpecBase {
@@ -28,24 +29,52 @@ class InformationMaintainingThisTrustControllerSpec extends SpecBase {
 
     val utr = "1234545678"
 
-    "return OK and the correct view for a GET" in {
+    "return OK and the correct view for a GET" when {
+      "variations is switched off" when {
+        "agent" in {
 
-      val userAnswers = emptyUserAnswers.set(WhatIsTheUTRVariationPage, utr).success.value
+          val userAnswers = emptyUserAnswers.set(WhatIsTheUTRVariationPage, utr).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+          val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = Agent)
+            .configure("microservice.services.features.playback.enabled" -> false)
+            .build()
 
-      val request = FakeRequest(GET, routes.InformationMaintainingThisTrustController.onPageLoad().url)
+          val request = FakeRequest(GET, routes.InformationMaintainingThisTrustController.onPageLoad().url)
 
-      val result = route(application, request).value
+          val result = route(application, request).value
 
-      val view = application.injector.instanceOf[InformationMaintainingThisTrustView]
+          val view = application.injector.instanceOf[AgentCannotAccessTrustYetView]
 
-      status(result) mustEqual OK
+          status(result) mustEqual OK
 
-      contentAsString(result) mustEqual
-        view(utr)(fakeRequest, messages).toString
+          contentAsString(result) mustEqual
+            view(utr)(fakeRequest, messages).toString
 
-      application.stop()
+          application.stop()
+        }
+
+        "organisation" in {
+
+          val userAnswers = emptyUserAnswers.set(WhatIsTheUTRVariationPage, utr).success.value
+
+          val application = applicationBuilder(userAnswers = Some(userAnswers))
+            .configure("microservice.services.features.playback.enabled" -> true)
+            .build()
+
+          val request = FakeRequest(GET, routes.InformationMaintainingThisTrustController.onPageLoad().url)
+
+          val result = route(application, request).value
+
+          val view = application.injector.instanceOf[InformationMaintainingThisTrustView]
+
+          status(result) mustEqual OK
+
+          contentAsString(result) mustEqual
+            view(utr)(fakeRequest, messages).toString
+
+          application.stop()
+        }
+      }
     }
 
     "redirect to WhatIsTheUTRPage when WhatIsTheUTRPage is not answered" in {

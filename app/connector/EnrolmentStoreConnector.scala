@@ -27,8 +27,8 @@ import scala.concurrent.{ExecutionContext, Future}
 class EnrolmentStoreConnector @Inject()(http: HttpClient, config : FrontendAppConfig) {
 
   private def enrolmentsEndpoint(identifier: String): String = {
-    val identifierKey = "UTR"
-    s"${config.enrolmentStoreProxyUrl}/enrolment-store/enrolments/${config.serviceName}~$identifierKey~$identifier/users"
+    val identifierKey = "SAUTR"
+    s"${config.enrolmentStoreProxyUrl}/enrolment-store-proxy/enrolment-store/enrolments/${config.serviceName}~$identifierKey~$identifier/users"
   }
 
   def checkIfClaimed(utr: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[EnrolmentStoreResponse] =
