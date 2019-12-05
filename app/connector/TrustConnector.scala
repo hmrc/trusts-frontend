@@ -18,7 +18,7 @@ package connector
 
 import config.FrontendAppConfig
 import javax.inject.Inject
-import mapping.Registration
+import mapping.registration.Registration
 import models.core.http.TrustResponse
 import models.playback.http.TrustsResponse
 import play.api.libs.json.{JsValue, Json, Writes}

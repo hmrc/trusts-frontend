@@ -17,7 +17,7 @@
 package models.playback.http
 
 import mapping.Constant._
-import mapping.{AssetMonetaryAmount, PassportType, PropertyLandType, TrustDetailsType}
+import mapping.registration.{AssetMonetaryAmount, PassportType, PropertyLandType, TrustDetailsType}
 import org.joda.time.DateTime
 import play.api.libs.json._
 

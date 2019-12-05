@@ -18,7 +18,7 @@ package mapping.registration
 
 import base.SpecBaseHelpers
 import generators.Generators
-import mapping.{AddressType, AgentDetails, Mapping}
+import mapping.Mapping
 import models.core.pages.{InternationalAddress, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._

@@ -17,7 +17,7 @@
 package mapping.registration
 
 import javax.inject.Inject
-import mapping.{Identification, Mapping, WillType}
+import mapping.Mapping
 import models.core.UserAnswers
 import pages.register.settlors.deceased_settlor._
 class DeceasedSettlorMapper @Inject()(nameMapper: NameMapper, addressMapper: AddressMapper) extends Mapping[WillType] {

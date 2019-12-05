@@ -18,7 +18,7 @@ package mapping.registration
 
 import javax.inject.Inject
 import mapping.reads.{LeadTrusteeIndividual, Trustee, Trustees}
-import mapping.{AddressType, Declaration, Mapping}
+import mapping.Mapping
 import models.core.UserAnswers
 import pages.register.DeclarationPage
 import pages.register.agents.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentUKAddressPage}

@@ -17,7 +17,7 @@
 package mapping.registration
 
 import mapping.reads.ClassOfBeneficiary
-import mapping.{Mapping, UnidentifiedType}
+import mapping.Mapping
 import models.core.UserAnswers
 
 

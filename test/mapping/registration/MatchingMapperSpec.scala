@@ -18,7 +18,7 @@ package mapping.registration
 
 import base.SpecBaseHelpers
 import generators.Generators
-import mapping.{Mapping, MatchData}
+import mapping.Mapping
 import models.registration.Matched
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._

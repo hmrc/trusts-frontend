@@ -16,7 +16,7 @@
 
 package mapping.registration
 
-import mapping.{Mapping, MatchData}
+import mapping.Mapping
 import models.core.UserAnswers
 import models.registration.Matched
 import pages._

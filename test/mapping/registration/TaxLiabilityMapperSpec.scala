@@ -18,7 +18,7 @@ package mapping.registration
 
 import base.SpecBaseHelpers
 import generators.Generators
-import mapping.{Mapping, YearsReturns}
+import mapping.Mapping
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 
 class TaxLiabilityMapperSpec extends FreeSpec with MustMatchers

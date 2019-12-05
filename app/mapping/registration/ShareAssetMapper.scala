@@ -18,7 +18,7 @@ package mapping.registration
 
 import javax.inject.Inject
 import mapping.reads.{Asset, ShareNonPortfolioAsset, SharePortfolioAsset}
-import mapping.{Mapping, SharesType}
+import mapping.Mapping
 import models.core.UserAnswers
 import models.registration.pages.ShareClass
 import models.registration.pages.WhatKindOfAsset.Shares

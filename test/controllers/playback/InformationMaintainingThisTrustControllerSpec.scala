@@ -21,7 +21,7 @@ import pages.playback.WhatIsTheUTRVariationPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
-import views.html.playback.InformationMaintainingThisTrustView
+import views.html.playback.{AgentCannotAccessTrustYetView, InformationMaintainingThisTrustView}
 
 class InformationMaintainingThisTrustControllerSpec extends SpecBase {
 

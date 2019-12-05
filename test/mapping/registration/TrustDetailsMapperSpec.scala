@@ -21,7 +21,7 @@ import java.time.LocalDate
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping.TypeOfTrust.WillTrustOrIntestacyTrust
-import mapping._
+import mapping.{registration, _}
 import models.registration.pages.NonResidentType.Domiciled
 import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
 import models.registration.pages.WhenTrustSetupPage
@@ -67,7 +67,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
 
         val uaWithSettlor = TestUserAnswers.withDeceasedSettlor(userAnswers)
 
-        trustDetailsMapper.build(uaWithSettlor).value mustBe TrustDetailsType(
+        trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
           startDate = date,
           lawCountry = None,
           administrationCountry = Some("GB"),
@@ -104,7 +104,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
 
         val uaWithSettlor = TestUserAnswers.withDeceasedSettlor(userAnswers)
 
-        trustDetailsMapper.build(uaWithSettlor).value mustBe TrustDetailsType(
+        trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
           startDate = date,
           lawCountry = None,
           administrationCountry = Some("GB"),
@@ -142,7 +142,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
 
         val uaWithSettlor = TestUserAnswers.withDeceasedSettlor(userAnswers)
 
-        trustDetailsMapper.build(uaWithSettlor).value mustBe TrustDetailsType(
+        trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
           startDate = date,
           lawCountry = Some("FR"),
           administrationCountry = Some("FR"),
@@ -177,7 +177,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
 
         val uaWithSettlor = TestUserAnswers.withDeceasedSettlor(userAnswers)
 
-        trustDetailsMapper.build(uaWithSettlor).value mustBe TrustDetailsType(
+        trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
           startDate = date,
           lawCountry = Some("FR"),
           administrationCountry = Some("GB"),
@@ -210,7 +210,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
 
         val uaWithSettlor = TestUserAnswers.withDeceasedSettlor(userAnswers)
 
-        trustDetailsMapper.build(uaWithSettlor).value mustBe TrustDetailsType(
+        trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
           startDate = date,
           lawCountry = Some("FR"),
           administrationCountry = Some("GB"),
@@ -263,7 +263,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
 
         val uaWithSettlor = TestUserAnswers.withDeceasedSettlor(userAnswers)
 
-        trustDetailsMapper.build(uaWithSettlor).value mustBe TrustDetailsType(
+        trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
           startDate = date,
           lawCountry = Some("GB"),
           administrationCountry = Some("GB"),
@@ -302,7 +302,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
 
         val uaWithSettlor = TestUserAnswers.withDeceasedSettlor(userAnswers)
 
-        trustDetailsMapper.build(uaWithSettlor).value mustBe TrustDetailsType(
+        trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
           startDate = date,
           lawCountry = Some("FR"),
           administrationCountry = Some("GB"),

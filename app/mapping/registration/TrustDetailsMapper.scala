@@ -17,7 +17,7 @@
 package mapping.registration
 
 import mapping.TypeOfTrust.WillTrustOrIntestacyTrust
-import mapping._
+import mapping.{registration, _}
 import models.core.UserAnswers
 import models.registration.pages.SettlorKindOfTrust.{Deed, Employees, FlatManagement, HeritageMaintenanceFund, Intervivos}
 import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
@@ -72,7 +72,7 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
       residentialStatusOption <- residentialStatus(userAnswers)
       typeOfTrust <- trustType(userAnswers)
     } yield {
-      TrustDetailsType(
+      registration.TrustDetailsType(
         startDate = startDateOption,
         lawCountry = lawCountry,
         administrationCountry = Some(administrationCountryOption),

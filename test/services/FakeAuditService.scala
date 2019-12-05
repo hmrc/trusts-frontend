@@ -18,7 +18,7 @@ package services
 
 import config.FrontendAppConfig
 import javax.inject.Inject
-import mapping.Registration
+import mapping.registration.Registration
 import models.core.UserAnswers
 import models.core.http.TrustResponse
 import uk.gov.hmrc.http.HeaderCarrier

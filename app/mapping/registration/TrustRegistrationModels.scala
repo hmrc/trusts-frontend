@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package mapping
+package mapping.registration
 
 import java.time.LocalDate
 
+import mapping.TypeOfTrust
 import play.api.libs.json._
 
 /**
