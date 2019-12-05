@@ -1,4 +1,4 @@
-# Add all the application routes to the app.routes file
+# Add all the application routes to the relevant .routes files
 ->         /trusts-registration       register.Routes
 ->         /maintain-a-trust          maintain.Routes
 ->         /                          health.Routes
