@@ -18,7 +18,7 @@ package mapping.registration
 
 import javax.inject.Inject
 import mapping.reads.MoneyAsset
-import mapping.{AssetMonetaryAmount, Mapping}
+import mapping.Mapping
 import models.core.UserAnswers
 
 import scala.util.Try

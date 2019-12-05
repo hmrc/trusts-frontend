@@ -6,11 +6,11 @@ echo "Applying migration SharePortfolioQuantityInTrust"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /sharePortfolioQuantityInTrust                        controllers.shares.SharePortfolioQuantityInTrustController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /sharePortfolioQuantityInTrust                        controllers.shares.SharePortfolioQuantityInTrustController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /sharePortfolioQuantityInTrust                        controllers.register.asset.shares.SharePortfolioQuantityInTrustController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /sharePortfolioQuantityInTrust                        controllers.register.asset.shares.SharePortfolioQuantityInTrustController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeSharePortfolioQuantityInTrust                  controllers.shares.SharePortfolioQuantityInTrustController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeSharePortfolioQuantityInTrust                  controllers.shares.SharePortfolioQuantityInTrustController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeSharePortfolioQuantityInTrust                  controllers.register.asset.shares.SharePortfolioQuantityInTrustController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeSharePortfolioQuantityInTrust                  controllers.register.asset.shares.SharePortfolioQuantityInTrustController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

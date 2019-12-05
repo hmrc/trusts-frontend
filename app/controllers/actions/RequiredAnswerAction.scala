@@ -27,7 +27,7 @@ import queries.Gettable
 import scala.concurrent.{ExecutionContext, Future}
 
 final case class RequiredAnswer[T](answer : Gettable[T],
-                                   redirect : Call = routes.SessionExpiredController.onPageLoad())
+                                   redirect : Call = controllers.register.routes.SessionExpiredController.onPageLoad())
 
 class RequiredAnswerAction[T] @Inject()(required : RequiredAnswer[T])
                                        (implicit val executionContext: ExecutionContext,

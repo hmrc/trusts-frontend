@@ -25,7 +25,7 @@ import mapping.playback.UserAnswersExtractor
 import models.playback.http._
 import models.requests.DataRequest
 import navigation.Navigator
-import pages.WhatIsTheUTRVariationPage
+import pages.playback.WhatIsTheUTRVariationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.{PlaybackRepository, RegistrationsRepository}
@@ -110,7 +110,7 @@ class TrustStatusController @Inject()(
   def checkIfLocked(utr: String)(implicit request: DataRequest[AnyContent]): Future[Result] = {
     trustStoreConnector.get(request.internalId, utr).flatMap {
       case Some(claim) if claim.trustLocked =>
-        Future.successful(Redirect(routes.TrustStatusController.locked()))
+        Future.successful(Redirect(controllers.playback.routes.TrustStatusController.locked()))
       case _ =>
         tryToPlayback(utr)
     }
@@ -118,11 +118,11 @@ class TrustStatusController @Inject()(
 
   def tryToPlayback(utr: String)(implicit request: DataRequest[AnyContent]): Future[Result] = {
     trustConnector.playback(utr) flatMap {
-      case Closed => Future.successful(Redirect(routes.TrustStatusController.closed()))
-      case Processing => Future.successful(Redirect(routes.TrustStatusController.processing()))
-      case UtrNotFound => Future.successful(Redirect(routes.TrustStatusController.notFound()))
+      case Closed => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.closed()))
+      case Processing => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.processing()))
+      case UtrNotFound => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.notFound()))
       case Processed(playback, _) => extract(utr, playback)
-      case _ => Future.successful(Redirect(routes.TrustStatusController.down()))
+      case _ => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.down()))
     }
   }
 
@@ -141,10 +141,10 @@ class TrustStatusController @Inject()(
         }
       case Right(Failure(reason)) =>
         // Todo update where it goes and log reason?
-        Future.successful(Redirect(routes.TrustStatusController.down()))
+        Future.successful(Redirect(controllers.playback.routes.TrustStatusController.down()))
       case Left(reason) =>
         // Todo update where it goes and log reason?
-        Future.successful(Redirect(routes.TrustStatusController.down()))
+        Future.successful(Redirect(controllers.playback.routes.TrustStatusController.down()))
     }
   }
 

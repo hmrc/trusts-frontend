@@ -17,7 +17,7 @@
 package mapping.registration
 
 import javax.inject.Inject
-import mapping.{Mapping, YearsReturns}
+import mapping.Mapping
 import models.core.UserAnswers
 
 class TaxLiabilityMapper @Inject()() extends Mapping[YearsReturns] {

@@ -5,7 +5,7 @@ echo "Applying migration DeceasedSettlorAnswer"
 
 echo "Adding routes to conf/app.routes"
 echo "" >> ../conf/app.routes
-echo "GET        /deceasedSettlorAnswer                       controllers.deceased_settlor.DeceasedSettlorAnswerController.onPageLoad()" >> ../conf/app.routes
+echo "GET        /deceasedSettlorAnswer                       controllers.register.settlors.deceased_settlor.DeceasedSettlorAnswerController.onPageLoad()" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

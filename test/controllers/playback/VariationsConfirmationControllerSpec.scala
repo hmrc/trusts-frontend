@@ -19,7 +19,7 @@ package controllers.playback
 import base.SpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.VariationsConfirmationView
+import views.html.playback.VariationsConfirmationView
 
 class VariationsConfirmationControllerSpec extends SpecBase {
 

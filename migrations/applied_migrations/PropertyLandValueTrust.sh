@@ -6,11 +6,11 @@ echo "Applying migration PropertyLandValueTrust"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /:draftId/propertyLandValueTrust                        controllers.property_or_land.PropertyLandValueTrustController.onPageLoad(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
-echo "POST       /:draftId/propertyLandValueTrust                        controllers.property_or_land.PropertyLandValueTrustController.onSubmit(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
+echo "GET        /:draftId/propertyLandValueTrust                        controllers.register.asset.property_or_land.PropertyLandValueTrustController.onPageLoad(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
+echo "POST       /:draftId/propertyLandValueTrust                        controllers.register.asset.property_or_land.PropertyLandValueTrustController.onSubmit(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
 
-echo "GET        /:draftId/changePropertyLandValueTrust                  controllers.property_or_land.PropertyLandValueTrustController.onPageLoad(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
-echo "POST       /:draftId/changePropertyLandValueTrust                  controllers.property_or_land.PropertyLandValueTrustController.onSubmit(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
+echo "GET        /:draftId/changePropertyLandValueTrust                  controllers.register.asset.property_or_land.PropertyLandValueTrustController.onPageLoad(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
+echo "POST       /:draftId/changePropertyLandValueTrust                  controllers.register.asset.property_or_land.PropertyLandValueTrustController.onSubmit(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

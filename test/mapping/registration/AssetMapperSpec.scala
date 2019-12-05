@@ -24,9 +24,10 @@ import models.registration.pages.Status.Completed
 import models.registration.pages.WhatKindOfAsset
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.entitystatus.AssetStatus
-import pages.property_or_land._
-import pages.shares._
-import pages.{AssetMoneyValuePage, WhatKindOfAssetPage}
+import pages.register.asset.WhatKindOfAssetPage
+import pages.register.asset.property_or_land._
+import pages.register.asset.shares._
+import pages.register.asset.money.AssetMoneyValuePage
 
 class AssetMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {

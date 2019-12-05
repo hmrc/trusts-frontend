@@ -6,11 +6,11 @@ echo "Applying migration AgentInternationalAddress"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /agentInternationalAddress                        controllers.AgentInternationalAddressController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /agentInternationalAddress                        controllers.AgentInternationalAddressController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /agentInternationalAddress                        controllers.register.agents.AgentInternationalAddressController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /agentInternationalAddress                        controllers.register.agents.AgentInternationalAddressController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeAgentInternationalAddress                  controllers.AgentInternationalAddressController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeAgentInternationalAddress                  controllers.AgentInternationalAddressController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeAgentInternationalAddress                  controllers.register.agents.AgentInternationalAddressController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeAgentInternationalAddress                  controllers.register.agents.AgentInternationalAddressController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

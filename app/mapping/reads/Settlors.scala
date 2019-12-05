@@ -16,7 +16,7 @@
 
 package mapping.reads
 
-import mapping.Settlors
+import mapping.registration.Settlors
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 

@@ -16,7 +16,6 @@
 
 package mapping.registration
 
-import mapping.NameType
 import models.core.UserAnswers
 import models.core.pages.FullName
 import pages.QuestionPage

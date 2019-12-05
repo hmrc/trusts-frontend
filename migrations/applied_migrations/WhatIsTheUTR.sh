@@ -6,11 +6,11 @@ echo "Applying migration WhatIsTheUTR"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /WhatIsTheUTR                  controllers.WhatIsTheUTRController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /WhatIsTheUTR                  controllers.WhatIsTheUTRController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /WhatIsTheUTR                  controllers.register.WhatIsTheUTRController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /WhatIsTheUTR                  controllers.register.WhatIsTheUTRController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeWhatIsTheUTR                        controllers.WhatIsTheUTRController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeWhatIsTheUTR                        controllers.WhatIsTheUTRController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeWhatIsTheUTR                        controllers.register.WhatIsTheUTRController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeWhatIsTheUTR                        controllers.register.WhatIsTheUTRController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

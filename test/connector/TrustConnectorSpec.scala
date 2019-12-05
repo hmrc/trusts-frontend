@@ -21,10 +21,10 @@ import java.time.LocalDate
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
 import generators.Generators
-import mapping.registration.RegistrationMapper
+import mapping.registration.{Registration, RegistrationMapper}
 import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse._
-import mapping.{Mapping, Registration}
+import mapping.Mapping
 import models.playback.http._
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{FreeSpec, Inside, MustMatchers, OptionValues}

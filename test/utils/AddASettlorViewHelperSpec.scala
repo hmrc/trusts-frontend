@@ -19,17 +19,18 @@ package utils
 import base.SpecBase
 import models.core.pages.{FullName, IndividualOrBusiness}
 import models.registration.pages.Status.{Completed, InProgress}
-import pages.SetupAfterSettlorDiedPage
 import pages.entitystatus.LivingSettlorStatus
-import pages.living_settlor._
+import pages.register.settlors.living_settlor._
 import viewmodels.AddRow
+import controllers.register.settlors.living_settlor.routes
+import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
 
 class AddASettlorViewHelperSpec extends SpecBase   {
 
   val settlorName = FullName("first name", Some("middle name"), "last name")
 
   def removeSettlorRoute(index : Int) =
-    controllers.living_settlor.routes.RemoveSettlorController.onPageLoad(index, fakeDraftId).url
+    routes.RemoveSettlorController.onPageLoad(index, fakeDraftId).url
 
   "AddSettlorViewHelper" when {
 

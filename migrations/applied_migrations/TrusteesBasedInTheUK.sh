@@ -6,11 +6,11 @@ echo "Applying migration TrusteesBasedInTheUK"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /:draftId/trusteesBasedInTheUK                        controllers.TrusteesBasedInTheUKController.onPageLoad(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
-echo "POST       /:draftId/trusteesBasedInTheUK                        controllers.TrusteesBasedInTheUKController.onSubmit(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
+echo "GET        /:draftId/trusteesBasedInTheUK                        controllers.register.trustees.TrusteesBasedInTheUKController.onPageLoad(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
+echo "POST       /:draftId/trusteesBasedInTheUK                        controllers.register.trustees.TrusteesBasedInTheUKController.onSubmit(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
 
-echo "GET        /:draftId/changeTrusteesBasedInTheUK                  controllers.TrusteesBasedInTheUKController.onPageLoad(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
-echo "POST       /:draftId/changeTrusteesBasedInTheUK                  controllers.TrusteesBasedInTheUKController.onSubmit(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
+echo "GET        /:draftId/changeTrusteesBasedInTheUK                  controllers.register.trustees.TrusteesBasedInTheUKController.onPageLoad(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
+echo "POST       /:draftId/changeTrusteesBasedInTheUK                  controllers.register.trustees.TrusteesBasedInTheUKController.onSubmit(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

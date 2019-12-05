@@ -6,11 +6,11 @@ echo "Applying migration AgentInternalReference"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /agentInternalReference                        controllers.AgentInternalReferenceController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /agentInternalReference                        controllers.AgentInternalReferenceController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /agentInternalReference                        controllers.register.agents.AgentInternalReferenceController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /agentInternalReference                        controllers.register.agents.AgentInternalReferenceController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeAgentInternalReference                  controllers.AgentInternalReferenceController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeAgentInternalReference                  controllers.AgentInternalReferenceController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeAgentInternalReference                  controllers.register.agents.AgentInternalReferenceController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeAgentInternalReference                  controllers.register.agents.AgentInternalReferenceController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

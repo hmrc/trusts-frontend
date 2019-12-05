@@ -18,14 +18,14 @@ package navigation.navigators.registration
 
 import base.SpecBase
 import controllers.actions.{DataRetrievalAction, FakeDataRetrievalAction}
-import controllers.routes
+import controllers.register.routes
 import generators.Generators
 import models.NormalMode
 import models.core.UserAnswers
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages.{TrustHaveAUTRPage, TrustNamePage, TrustRegisteredOnlinePage, WhatIsTheUTRPage}
+import pages.register.{TrustHaveAUTRPage, TrustNamePage, TrustRegisteredOnlinePage, WhatIsTheUTRPage}
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import uk.gov.hmrc.auth.core.AffinityGroup
@@ -96,7 +96,7 @@ trait MatchingRoutes {
                   .set(TrustHaveAUTRPage, false).success.value
 
                 navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId, AffinityGroup.Agent)(answers)
-                  .mustBe(routes.AgentInternalReferenceController.onPageLoad(NormalMode, fakeDraftId))
+                  .mustBe(controllers.register.agents.routes.AgentInternalReferenceController.onPageLoad(NormalMode, fakeDraftId))
             }
           }
         }

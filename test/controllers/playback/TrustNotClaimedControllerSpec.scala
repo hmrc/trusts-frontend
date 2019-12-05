@@ -17,10 +17,10 @@
 package controllers.playback
 
 import base.SpecBase
-import pages.WhatIsTheUTRVariationPage
+import pages.playback.WhatIsTheUTRVariationPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.TrustNotClaimedView
+import views.html.playback.TrustNotClaimedView
 
 class TrustNotClaimedControllerSpec extends SpecBase {
 

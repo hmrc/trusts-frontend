@@ -18,11 +18,11 @@ package controllers.playback
 
 import controllers.actions._
 import javax.inject.Inject
-import pages.WhatIsTheUTRVariationPage
+import pages.playback.WhatIsTheUTRVariationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.TrustNotClaimedView
+import views.html.playback.TrustNotClaimedView
 
 import scala.concurrent.ExecutionContext
 
@@ -39,6 +39,6 @@ class TrustNotClaimedController @Inject()(
     implicit request =>
       request.userAnswers.get(WhatIsTheUTRVariationPage) map { utr =>
         Ok(view(utr))
-      } getOrElse Redirect(controllers.routes.SessionExpiredController.onPageLoad())
+      } getOrElse Redirect(controllers.register.routes.SessionExpiredController.onPageLoad())
   }
 }

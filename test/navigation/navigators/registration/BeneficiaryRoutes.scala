@@ -17,7 +17,7 @@
 package navigation.navigators.registration
 
 import base.SpecBase
-import controllers.routes
+import controllers.register.beneficiaries.routes
 import generators.Generators
 import models.NormalMode
 import models.core.UserAnswers
@@ -27,6 +27,8 @@ import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages._
+import pages.register.beneficiaries.individual.{IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryAddressUKYesNoPage, IndividualBeneficiaryAddressYesNoPage, IndividualBeneficiaryAnswersPage, IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryIncomePage, IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage, IndividualBeneficiaryNationalInsuranceYesNoPage, IndividualBeneficiaryVulnerableYesNoPage}
+import pages.register.beneficiaries.{AddABeneficiaryPage, AddABeneficiaryYesNoPage, ClassBeneficiaryDescriptionPage, WhatTypeOfBeneficiaryPage}
 import sections.{ClassOfBeneficiaries, IndividualBeneficiaries}
 
 trait BeneficiaryRoutes {
@@ -52,7 +54,7 @@ trait BeneficiaryRoutes {
           val answers = userAnswers.set(AddABeneficiaryYesNoPage, false).success.value
 
           navigator.nextPage(AddABeneficiaryYesNoPage, NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -76,7 +78,7 @@ trait BeneficiaryRoutes {
             .set(AddABeneficiaryPage, AddABeneficiary.YesLater).success.value
 
           navigator.nextPage(AddABeneficiaryPage, NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -89,7 +91,7 @@ trait BeneficiaryRoutes {
             .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
 
           navigator.nextPage(AddABeneficiaryPage, NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
       }
     }
 

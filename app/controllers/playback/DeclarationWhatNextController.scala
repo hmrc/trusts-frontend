@@ -21,13 +21,13 @@ import forms.DeclarationWhatNextFormProvider
 import javax.inject.Inject
 import models.Enumerable
 import navigation.VariationsNavigator
-import pages.DeclarationWhatNextPage
+import pages.playback.DeclarationWhatNextPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.DeclarationWhatNextView
+import views.html.playback.DeclarationWhatNextView
 
 import scala.concurrent.{ExecutionContext, Future}
 

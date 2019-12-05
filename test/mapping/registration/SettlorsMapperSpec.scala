@@ -24,7 +24,7 @@ import mapping._
 import models.core.pages.{FullName, IndividualOrBusiness}
 import models.registration.pages.PassportOrIdCardDetails
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
-import pages.living_settlor._
+import pages.register.settlors.living_settlor._
 
 class SettlorsMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers  {

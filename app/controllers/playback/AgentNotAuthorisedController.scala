@@ -18,11 +18,11 @@ package controllers.playback
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import javax.inject.Inject
-import pages.WhatIsTheUTRVariationPage
+import pages.playback.WhatIsTheUTRVariationPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.AgentNotAuthorisedView
+import views.html.playback.AgentNotAuthorisedView
 
 class AgentNotAuthorisedController @Inject()(
                                               val controllerComponents: MessagesControllerComponents,
@@ -36,6 +36,6 @@ class AgentNotAuthorisedController @Inject()(
     implicit request =>
       request.userAnswers.get(WhatIsTheUTRVariationPage) map { utr =>
         Ok(view(utr))
-      } getOrElse Redirect(controllers.routes.SessionExpiredController.onPageLoad())
+      } getOrElse Redirect(controllers.register.routes.SessionExpiredController.onPageLoad())
   }
 }

@@ -17,19 +17,18 @@
 package controllers.playback
 
 import config.FrontendAppConfig
-import connector.{TrustClaim, TrustsStoreConnector}
 import controllers.actions._
 import forms.WhatIsTheUTRFormProvider
 import handlers.ErrorHandler
 import javax.inject.Inject
-import pages.WhatIsTheUTRVariationPage
+import pages.playback.WhatIsTheUTRVariationPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
-import services.AuthenticationService
+import services.PlaybackAuthenticationService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.WhatIsTheUTRView
+import views.html.register.WhatIsTheUTRView
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -44,7 +43,7 @@ class WhatIsTheUTRVariationsController @Inject()(
                                                   view: WhatIsTheUTRView,
                                                   config: FrontendAppConfig,
                                                   errorHandler: ErrorHandler,
-                                                  authenticationService: AuthenticationService
+                                                  authenticationService: PlaybackAuthenticationService
                                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -69,11 +68,11 @@ class WhatIsTheUTRVariationsController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatIsTheUTRVariationPage, utr))
             _ <- registrationsRepository.set(updatedAnswers)
-            authenticationResult <- authenticationService.authenticate(utr)
+            authenticationResult <- authenticationService.authenticateForPlayback(utr)
           } yield {
             authenticationResult match {
               case Left(failureRedirect) => failureRedirect
-              case Right(_) => Redirect(routes.TrustStatusController.status())
+              case Right(_) => Redirect(controllers.playback.routes.TrustStatusController.status())
             }
           }
         }

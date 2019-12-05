@@ -6,11 +6,11 @@ echo "Applying migration SharesOnStockExchange"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /sharesOnStockExchange                        controllers.shares.SharesOnStockExchangeController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /sharesOnStockExchange                        controllers.shares.SharesOnStockExchangeController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /sharesOnStockExchange                        controllers.register.asset.shares.SharesOnStockExchangeController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /sharesOnStockExchange                        controllers.register.asset.shares.SharesOnStockExchangeController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeSharesOnStockExchange                  controllers.shares.SharesOnStockExchangeController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeSharesOnStockExchange                  controllers.shares.SharesOnStockExchangeController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeSharesOnStockExchange                  controllers.register.asset.shares.SharesOnStockExchangeController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeSharesOnStockExchange                  controllers.register.asset.shares.SharesOnStockExchangeController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

@@ -6,11 +6,11 @@ echo "Applying migration SetupAfterSettlorDied"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /setupAfterSettlorDied                        controllers.SetupAfterSettlorDiedController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /setupAfterSettlorDied                        controllers.SetupAfterSettlorDiedController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /setupAfterSettlorDied                        controllers.register.settlors.deceased_settlor.SetupAfterSettlorDiedController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /setupAfterSettlorDied                        controllers.register.settlors.deceased_settlor.SetupAfterSettlorDiedController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeSetupAfterSettlorDied                  controllers.SetupAfterSettlorDiedController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeSetupAfterSettlorDied                  controllers.SetupAfterSettlorDiedController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeSetupAfterSettlorDied                  controllers.register.settlors.deceased_settlor.SetupAfterSettlorDiedController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeSetupAfterSettlorDied                  controllers.register.settlors.deceased_settlor.SetupAfterSettlorDiedController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

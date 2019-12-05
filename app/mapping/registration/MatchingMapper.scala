@@ -16,10 +16,11 @@
 
 package mapping.registration
 
-import mapping.{Mapping, MatchData}
+import mapping.Mapping
 import models.core.UserAnswers
 import models.registration.Matched
 import pages._
+import pages.register.{ExistingTrustMatched, PostcodeForTheTrustPage, TrustHaveAUTRPage, TrustNamePage, WhatIsTheUTRPage}
 import play.api.Logger
 
 class MatchingMapper extends Mapping[MatchData] {

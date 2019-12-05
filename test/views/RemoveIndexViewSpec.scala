@@ -16,10 +16,10 @@
 
 package views
 
-import controllers.routes
+import controllers.register.beneficiaries.routes
 import forms.RemoveIndexFormProvider
 import models.core.pages.FullName
-import pages.IndividualBeneficiaryNamePage
+import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours

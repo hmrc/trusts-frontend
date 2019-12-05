@@ -16,7 +16,7 @@
 
 package auditing
 
-import mapping.Registration
+import mapping.registration.Registration
 import models.core.http.TrustResponse
 import play.api.libs.json.{Format, Json}
 

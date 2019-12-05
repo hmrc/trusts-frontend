@@ -20,10 +20,10 @@ import java.time.LocalDate
 
 import base.SpecBaseHelpers
 import generators.Generators
-import mapping.{IdentificationType, LeadTrusteeIndType, LeadTrusteeType, Mapping, NameType}
+import mapping.Mapping
 import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
-import pages.trustees._
+import pages.register.trustees._
 
 
 class LeadTrusteeMapperSpec extends FreeSpec with MustMatchers

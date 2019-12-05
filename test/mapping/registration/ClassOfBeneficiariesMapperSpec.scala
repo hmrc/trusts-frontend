@@ -18,10 +18,11 @@ package mapping.registration
 
 import base.SpecBaseHelpers
 import generators.Generators
-import mapping.{Mapping, UnidentifiedType}
+import mapping.Mapping
 import models.registration.pages.WhatTypeOfBeneficiary
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
+import pages.register.beneficiaries.{ClassBeneficiaryDescriptionPage, WhatTypeOfBeneficiaryPage}
 
 class ClassOfBeneficiariesMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {

@@ -17,13 +17,17 @@
 package mapping.registration
 
 import mapping.TypeOfTrust.WillTrustOrIntestacyTrust
-import mapping._
+import mapping.{registration, _}
 import models.core.UserAnswers
 import models.registration.pages.SettlorKindOfTrust.{Deed, Employees, FlatManagement, HeritageMaintenanceFund, Intervivos}
 import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
 import models.registration.pages.{NonResidentType, SettlorKindOfTrust, WhenTrustSetupPage}
 import pages.entitystatus.DeceasedSettlorStatus
-import pages.{NonResidentTypePage, RegisteringTrustFor5APage, _}
+import pages.register.agents.AgentOtherThanBarristerPage
+import pages.register.settlors.SettlorsBasedInTheUKPage
+import pages.register.settlors.living_settlor.{SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage}
+import pages.register.trustees.TrusteesBasedInTheUKPage
+import pages.register._
 import play.api.Logger
 import sections.LivingSettlors
 
@@ -68,7 +72,7 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
       residentialStatusOption <- residentialStatus(userAnswers)
       typeOfTrust <- trustType(userAnswers)
     } yield {
-      TrustDetailsType(
+      registration.TrustDetailsType(
         startDate = startDateOption,
         lawCountry = lawCountry,
         administrationCountry = Some(administrationCountryOption),

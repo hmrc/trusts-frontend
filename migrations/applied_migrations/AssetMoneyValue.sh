@@ -6,11 +6,11 @@ echo "Applying migration AssetMoneyValue"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /assetMoneyValue                        controllers.AssetMoneyValueController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /assetMoneyValue                        controllers.AssetMoneyValueController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /assetMoneyValue                        controllers.register.asset.money.AssetMoneyValueController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /assetMoneyValue                        controllers.register.asset.money.AssetMoneyValueController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeAssetMoneyValue                  controllers.AssetMoneyValueController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeAssetMoneyValue                  controllers.AssetMoneyValueController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeAssetMoneyValue                  controllers.register.asset.money.AssetMoneyValueController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeAssetMoneyValue                  controllers.register.asset.money.AssetMoneyValueController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

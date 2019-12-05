@@ -58,7 +58,7 @@ class AuthenticatedIdentifierActionSpec extends SpecBase {
         val result = new AuthenticatedIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
 
         status(result) mustBe SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.CreateAgentServicesAccountController.onPageLoad().url)
+        redirectLocation(result) mustBe Some(controllers.register.routes.CreateAgentServicesAccountController.onPageLoad().url)
         application.stop()
       }
     }
@@ -104,7 +104,7 @@ class AuthenticatedIdentifierActionSpec extends SpecBase {
         val result = new AuthenticatedIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
 
         status(result) mustBe SEE_OTHER
-        redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad().url)
+        redirectLocation(result) mustBe Some(controllers.register.routes.UnauthorisedController.onPageLoad().url)
 
         application.stop()
       }
@@ -153,7 +153,7 @@ class AuthenticatedIdentifierActionSpec extends SpecBase {
 
         status(result) mustBe SEE_OTHER
 
-        redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad().url)
+        redirectLocation(result) mustBe Some(controllers.register.routes.UnauthorisedController.onPageLoad().url)
         application.stop()
       }
     }
@@ -169,7 +169,7 @@ class AuthenticatedIdentifierActionSpec extends SpecBase {
 
         status(result) mustBe SEE_OTHER
 
-        redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad().url)
+        redirectLocation(result) mustBe Some(controllers.register.routes.UnauthorisedController.onPageLoad().url)
         application.stop()
       }
     }
@@ -185,7 +185,7 @@ class AuthenticatedIdentifierActionSpec extends SpecBase {
 
         status(result) mustBe SEE_OTHER
 
-        redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad().url)
+        redirectLocation(result) mustBe Some(controllers.register.routes.UnauthorisedController.onPageLoad().url)
         application.stop()
       }
     }
@@ -201,7 +201,7 @@ class AuthenticatedIdentifierActionSpec extends SpecBase {
 
         status(result) mustBe SEE_OTHER
 
-        redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad().url)
+        redirectLocation(result) mustBe Some(controllers.register.routes.UnauthorisedController.onPageLoad().url)
         application.stop()
       }
     }
@@ -217,7 +217,7 @@ class AuthenticatedIdentifierActionSpec extends SpecBase {
 
         status(result) mustBe SEE_OTHER
 
-        redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad().url)
+        redirectLocation(result) mustBe Some(controllers.register.routes.UnauthorisedController.onPageLoad().url)
         application.stop()
       }
     }

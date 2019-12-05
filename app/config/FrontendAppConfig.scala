@@ -83,7 +83,7 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   )
 
   def routeToSwitchLanguage: String => Call =
-    (lang: String) => routes.LanguageSwitchController.switchToLanguage(lang)
+    (lang: String) => controllers.register.routes.LanguageSwitchController.switchToLanguage(lang)
 
   lazy val removeTaxLiabilityOnTaskList : Boolean =
     configuration.get[Boolean]("microservice.services.features.removeTaxLiabilityOnTaskList")

@@ -24,12 +24,12 @@ import models.requests.DataRequest
 import org.scalatest.EitherValues
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
-import pages.trustees.TrusteesNamePage
+import pages.register.trustees.TrusteesNamePage
 import play.api.http.HeaderNames
 import play.api.libs.json.Reads
 import play.api.mvc.Result
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
-
+import controllers.register.routes._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -52,7 +52,7 @@ class RequiredAnswerActionSpec extends SpecBase with MockitoSugar with ScalaFutu
           val futureResult = action.callRefine(new DataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
 
           whenReady(futureResult) { result =>
-            result.left.value.header.headers(HeaderNames.LOCATION) mustBe routes.SessionExpiredController.onPageLoad().url
+            result.left.value.header.headers(HeaderNames.LOCATION) mustBe SessionExpiredController.onPageLoad().url
           }
         }
 
@@ -61,14 +61,14 @@ class RequiredAnswerActionSpec extends SpecBase with MockitoSugar with ScalaFutu
 
           val action = new Harness(RequiredAnswer(
             TrusteesNamePage(0),
-            controllers.trustees.routes.TrusteesNameController.onPageLoad(NormalMode, 0, fakeDraftId))
+            controllers.register.trustees.routes.TrusteesNameController.onPageLoad(NormalMode, 0, fakeDraftId))
           )
 
           val futureResult = action.callRefine(new DataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
 
           whenReady(futureResult) { result =>
             result.left.value.header.headers(HeaderNames.LOCATION) mustBe
-              controllers.trustees.routes.TrusteesNameController.onPageLoad(NormalMode, 0, fakeDraftId).url
+              controllers.register.trustees.routes.TrusteesNameController.onPageLoad(NormalMode, 0, fakeDraftId).url
           }
         }
 

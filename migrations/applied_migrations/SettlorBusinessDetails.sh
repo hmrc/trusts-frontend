@@ -6,11 +6,11 @@ echo "Applying migration SettlorBusinessDetails"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /:draftId/settlorBusinessDetails                        controllers.living_settlor.SettlorBusinessDetailsController.onPageLoad(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
-echo "POST       /:draftId/settlorBusinessDetails                        controllers.living_settlor.SettlorBusinessDetailsController.onSubmit(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
+echo "GET        /:draftId/settlorBusinessDetails                        controllers.register.settlors.living_settlor.SettlorBusinessDetailsController.onPageLoad(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
+echo "POST       /:draftId/settlorBusinessDetails                        controllers.register.settlors.living_settlor.SettlorBusinessDetailsController.onSubmit(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
 
-echo "GET        /:draftId/changeSettlorBusinessDetails                  controllers.living_settlor.SettlorBusinessDetailsController.onPageLoad(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
-echo "POST       /:draftId/changeSettlorBusinessDetails                  controllers.living_settlor.SettlorBusinessDetailsController.onSubmit(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
+echo "GET        /:draftId/changeSettlorBusinessDetails                  controllers.register.settlors.living_settlor.SettlorBusinessDetailsController.onPageLoad(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
+echo "POST       /:draftId/changeSettlorBusinessDetails                  controllers.register.settlors.living_settlor.SettlorBusinessDetailsController.onSubmit(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

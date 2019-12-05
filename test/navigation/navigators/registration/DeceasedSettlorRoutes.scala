@@ -17,15 +17,14 @@
 package navigation.navigators.registration
 
 import base.SpecBase
-import controllers.deceased_settlor.routes
+import controllers.register.settlors.deceased_settlor.routes
 import generators.Generators
 import models.NormalMode
 import models.core.UserAnswers
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages.SetupAfterSettlorDiedPage
-import pages.deceased_settlor._
+import pages.register.settlors.deceased_settlor.{SetupAfterSettlorDiedPage, _}
 
 trait DeceasedSettlorRoutes {
   self: PropertyChecks with Generators with SpecBase =>
@@ -39,7 +38,7 @@ trait DeceasedSettlorRoutes {
           val answers = userAnswers.set(SetupAfterSettlorDiedPage, value = false).success.value
 
           navigator.nextPage(SetupAfterSettlorDiedPage, NormalMode, fakeDraftId)(answers)
-            .mustBe(controllers.routes.SettlorKindOfTrustController.onPageLoad(NormalMode, fakeDraftId))
+            .mustBe(controllers.register.settlors.living_settlor.routes.SettlorKindOfTrustController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 
@@ -191,7 +190,7 @@ trait DeceasedSettlorRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(DeceasedSettlorAnswerPage, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(controllers.routes.TaskListController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
       }
     }
   }

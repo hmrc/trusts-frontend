@@ -33,7 +33,7 @@ class RequiredAgentAffinityGroupAction @Inject()(implicit val executionContext: 
       case AffinityGroup.Agent =>
         Future.successful(None)
       case _ =>
-        Future.successful(Some(Redirect(routes.UnauthorisedController.onPageLoad())))
+        Future.successful(Some(Redirect(controllers.register.routes.UnauthorisedController.onPageLoad())))
     }
   }
 }

@@ -17,7 +17,7 @@
 package navigation.navigators.registration
 
 import base.SpecBase
-import controllers.living_settlor.routes
+import controllers.register.settlors.living_settlor.routes
 import generators.Generators
 import models.NormalMode
 import models.core.UserAnswers
@@ -28,8 +28,8 @@ import navigation.Navigator
 import navigation.registration.LivingSettlorNavigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages.living_settlor._
-import pages.{AddASettlorPage, AddASettlorYesNoPage, SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage}
+import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage}
+import pages.register.settlors.living_settlor._
 
 trait LivingSettlorRoutes {
 
@@ -76,7 +76,7 @@ trait LivingSettlorRoutes {
 
         val answers = emptyUserAnswers.set(page, answer).success.value
 
-        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(controllers.routes.SettlorKindOfTrustController.onPageLoad(NormalMode, fakeDraftId))
+        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(routes.SettlorKindOfTrustController.onPageLoad(NormalMode, fakeDraftId))
       }
 
       "user answers Lifetime" in {
@@ -85,7 +85,7 @@ trait LivingSettlorRoutes {
 
         val answers = emptyUserAnswers.set(page, answer).success.value
 
-        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(controllers.routes.SettlorHandoverReliefYesNoController.onPageLoad(NormalMode, fakeDraftId))
+        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(routes.SettlorHandoverReliefYesNoController.onPageLoad(NormalMode, fakeDraftId))
       }
 
       "user answers Building" in {
@@ -94,7 +94,7 @@ trait LivingSettlorRoutes {
 
         val answers = emptyUserAnswers.set(page, answer).success.value
 
-        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(controllers.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, fakeDraftId))
+        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, fakeDraftId))
       }
 
       "user answers Repair Historic" in {
@@ -103,7 +103,7 @@ trait LivingSettlorRoutes {
 
         val answers = emptyUserAnswers.set(page, answer).success.value
 
-        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(controllers.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, fakeDraftId))
+        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, fakeDraftId))
       }
 
       "user answers Employees" in {
@@ -112,7 +112,7 @@ trait LivingSettlorRoutes {
 
         val answers = emptyUserAnswers.set(page, answer).success.value
 
-        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(controllers.routes.SettlorKindOfTrustController.onPageLoad(NormalMode, fakeDraftId))
+        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(routes.SettlorKindOfTrustController.onPageLoad(NormalMode, fakeDraftId))
       }
 
     }
@@ -360,7 +360,7 @@ trait LivingSettlorRoutes {
         .set(AddASettlorPage, AddASettlor.YesNow).success.value
 
       navigator.nextPage(AddASettlorPage, NormalMode, fakeDraftId)(answers)
-        .mustBe(controllers.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 1, fakeDraftId))
+        .mustBe(routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 1, fakeDraftId))
     }
   }
 
@@ -373,7 +373,7 @@ trait LivingSettlorRoutes {
           .set(AddASettlorPage, AddASettlor.YesLater).success.value
 
         navigator.nextPage(AddASettlorPage, NormalMode, fakeDraftId)(answers)
-          .mustBe(controllers.routes.TaskListController.onPageLoad(fakeDraftId))
+          .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
     }
   }
 
@@ -386,7 +386,7 @@ trait LivingSettlorRoutes {
           .set(AddASettlorPage, AddASettlor.NoComplete).success.value
 
         navigator.nextPage(AddASettlorPage, NormalMode, fakeDraftId)(answers)
-          .mustBe(controllers.routes.TaskListController.onPageLoad(fakeDraftId))
+          .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
     }
   }
 
@@ -399,7 +399,7 @@ trait LivingSettlorRoutes {
         val answers = userAnswers.set(AddASettlorYesNoPage, true).success.value
 
         navigator.nextPage(AddASettlorYesNoPage, NormalMode, fakeDraftId)(answers)
-          .mustBe(controllers.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode,
+          .mustBe(routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode,
             index, fakeDraftId))
     }
   }
@@ -411,7 +411,7 @@ trait LivingSettlorRoutes {
         val answers = userAnswers.set(AddASettlorYesNoPage, false).success.value
 
         navigator.nextPage(AddASettlorYesNoPage, NormalMode, fakeDraftId)(answers)
-          .mustBe(controllers.routes.TaskListController.onPageLoad(fakeDraftId))
+          .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
     }
   }
 
@@ -424,7 +424,7 @@ trait LivingSettlorRoutes {
     forAll(arbitrary[UserAnswers]) {
       userAnswers =>
         navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
-          .mustBe(controllers.routes.AddASettlorController.onPageLoad(fakeDraftId))
+          .mustBe(controllers.register.settlors.routes.AddASettlorController.onPageLoad(fakeDraftId))
     }
 
   }

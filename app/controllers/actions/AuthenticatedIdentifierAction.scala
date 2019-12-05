@@ -17,19 +17,18 @@
 package controllers.actions
 
 import com.google.inject.Inject
-import controllers.routes
 import models.requests.IdentifierRequest
 import play.api.Logger
 import play.api.mvc.Results._
 import play.api.mvc.{Request, Result, _}
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import uk.gov.hmrc.auth.core._
-import uk.gov.hmrc.auth.core.retrieve.{Retrievals, ~}
+import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
+import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.http.{HeaderCarrier, UnauthorizedException}
 import uk.gov.hmrc.play.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
-
 
 class AuthenticatedIdentifierAction[A] @Inject()(action: Action[A],
                                                  trustsAuthFunctions: TrustsAuth
@@ -43,7 +42,7 @@ class AuthenticatedIdentifierAction[A] @Inject()(action: Action[A],
 
     def redirectToCreateAgentServicesAccount(reason: String): Future[Result] = {
       Logger.info(s"[AuthenticatedIdentifierAction][authoriseAgent]: Agent services account required - $reason")
-      Future.successful(Redirect(routes.CreateAgentServicesAccountController.onPageLoad()))
+      Future.successful(Redirect(controllers.register.routes.CreateAgentServicesAccountController.onPageLoad()))
     }
 
     val hmrcAgentEnrolmentKey = "HMRC-AS-AGENT"
@@ -86,7 +85,7 @@ class AuthenticatedIdentifierAction[A] @Inject()(action: Action[A],
         action(IdentifierRequest(request, internalId, AffinityGroup.Organisation, enrolments))
       case Some(_) ~ _ ~ _ =>
         Logger.info(s"[AuthenticatedIdentifierAction] Unauthorised due to affinityGroup being Individual")
-        Future.successful(Redirect(routes.UnauthorisedController.onPageLoad()))
+        Future.successful(Redirect(controllers.register.routes.UnauthorisedController.onPageLoad()))
       case _ =>
         Logger.warn(s"[AuthenticatedIdentifierAction] Unable to retrieve internal id")
         throw new UnauthorizedException("Unable to retrieve internal Id")

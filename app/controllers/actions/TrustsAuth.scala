@@ -17,7 +17,6 @@
 package controllers.actions
 
 import config.FrontendAppConfig
-import controllers.routes
 import javax.inject.Inject
 import play.api.mvc.Result
 import play.api.mvc.Results.Redirect
@@ -28,7 +27,7 @@ class TrustsAuth @Inject()(override val authConnector: AuthConnector,
 
   def recoverFromAuthorisation : PartialFunction[Throwable, Result] = {
     case _: NoActiveSession => redirectToLogin
-    case _ => Redirect(routes.UnauthorisedController.onPageLoad())
+    case _ => Redirect(controllers.register.routes.UnauthorisedController.onPageLoad())
   }
 
   def redirectToLogin: Result = {

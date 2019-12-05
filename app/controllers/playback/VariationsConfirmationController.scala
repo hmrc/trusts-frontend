@@ -22,7 +22,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.VariationsConfirmationView
+import views.html.playback.VariationsConfirmationView
 
 import scala.concurrent.ExecutionContext
 
@@ -41,7 +41,7 @@ class VariationsConfirmationController @Inject()(
     implicit request =>
 
       val isAgent = request.affinityGroup == Agent
-      val agentOverviewUrl = controllers.routes.AgentOverviewController.onPageLoad().url
+      val agentOverviewUrl = controllers.register.agents.routes.AgentOverviewController.onPageLoad().url
 
       val fakeTvn = "XC TVN 000 000 4912"
 

@@ -19,10 +19,10 @@ package controllers.actions
 import com.google.inject.{ImplementedBy, Inject}
 import connector.EnrolmentStoreConnector
 import models.requests.DataRequest
-import pages.WhatIsTheUTRVariationPage
+import pages.playback.WhatIsTheUTRVariationPage
 import play.api.mvc.Results.Redirect
 import play.api.mvc._
-import services.AuthenticationService
+import services.PlaybackAuthenticationService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.HeaderCarrierConverter
 
@@ -30,7 +30,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class PlaybackActionImpl @Inject()(val parser: BodyParsers.Default,
                                    enrolmentStoreConnector: EnrolmentStoreConnector,
-                                   authenticationService: AuthenticationService
+                                   authenticationService: PlaybackAuthenticationService
                                   )(override implicit val executionContext: ExecutionContext) extends PlaybackAction {
 
   override def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
@@ -38,8 +38,8 @@ class PlaybackActionImpl @Inject()(val parser: BodyParsers.Default,
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
     request.userAnswers.get(WhatIsTheUTRVariationPage) map { utr =>
-      authenticationService.authenticate(utr)(request, hc)
-    } getOrElse Future.successful(Left(Redirect(controllers.routes.IndexController.onPageLoad())))
+      authenticationService.authenticateForPlayback(utr)(request, hc)
+    } getOrElse Future.successful(Left(Redirect(controllers.register.routes.IndexController.onPageLoad())))
 
   }
 

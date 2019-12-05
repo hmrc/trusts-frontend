@@ -19,12 +19,13 @@ package controllers.playback
 import config.FrontendAppConfig
 import controllers.actions._
 import javax.inject.Inject
-import pages.WhatIsTheUTRVariationPage
+import pages.playback.WhatIsTheUTRVariationPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
+import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.InformationMaintainingThisTrustView
+import views.html.playback.{AgentCannotAccessTrustYetView, InformationMaintainingThisTrustView}
 
 import scala.concurrent.ExecutionContext
 
@@ -33,15 +34,21 @@ class InformationMaintainingThisTrustController @Inject()(
                                                            identify: IdentifierAction,
                                                            getData: DataRetrievalAction,
                                                            requireData: DataRequiredAction,
+                                                           playbackAction: PlaybackAction,
                                                            val controllerComponents: MessagesControllerComponents,
-                                                           view: InformationMaintainingThisTrustView
+                                                           maintainingTrustView: InformationMaintainingThisTrustView,
+                                                           agentCannotAccessTrustYetView: AgentCannotAccessTrustYetView
                                                          )(implicit ec: ExecutionContext,
                                                            config: FrontendAppConfig) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData andThen playbackAction) {
     implicit request =>
       request.userAnswers.get(WhatIsTheUTRVariationPage) match {
-        case Some(utr) => Ok(view(utr))
+        case Some(utr) =>
+          request.affinityGroup match {
+            case Agent if !config.playbackEnabled => Ok(agentCannotAccessTrustYetView(utr))
+            case _ => Ok(maintainingTrustView(utr))
+          }
         case None => Redirect(routes.WhatIsTheUTRVariationsController.onPageLoad())
       }
   }

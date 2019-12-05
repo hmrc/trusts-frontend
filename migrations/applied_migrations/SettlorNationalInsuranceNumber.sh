@@ -6,11 +6,11 @@ echo "Applying migration SettlorNationalInsuranceNumber"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /settlorNationalInsuranceNumber                        controllers.deceased_settlor.SettlorNationalInsuranceNumberController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /settlorNationalInsuranceNumber                        controllers.deceased_settlor.SettlorNationalInsuranceNumberController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /settlorNationalInsuranceNumber                        controllers.register.settlors.deceased_settlor.SettlorNationalInsuranceNumberController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /settlorNationalInsuranceNumber                        controllers.register.settlors.deceased_settlor.SettlorNationalInsuranceNumberController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeSettlorNationalInsuranceNumber                  controllers.deceased_settlor.SettlorNationalInsuranceNumberController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeSettlorNationalInsuranceNumber                  controllers.deceased_settlor.SettlorNationalInsuranceNumberController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeSettlorNationalInsuranceNumber                  controllers.register.settlors.deceased_settlor.SettlorNationalInsuranceNumberController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeSettlorNationalInsuranceNumber                  controllers.register.settlors.deceased_settlor.SettlorNationalInsuranceNumberController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

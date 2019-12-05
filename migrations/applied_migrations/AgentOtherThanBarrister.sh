@@ -6,11 +6,11 @@ echo "Applying migration AgentOtherThanBarrister"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /agentOtherThanBarrister                        controllers.AgentOtherThanBarristerController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /agentOtherThanBarrister                        controllers.AgentOtherThanBarristerController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /agentOtherThanBarrister                        controllers.register.agents.AgentOtherThanBarristerController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /agentOtherThanBarrister                        controllers.register.agents.AgentOtherThanBarristerController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeAgentOtherThanBarrister                  controllers.AgentOtherThanBarristerController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeAgentOtherThanBarrister                  controllers.AgentOtherThanBarristerController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeAgentOtherThanBarrister                  controllers.register.agents.AgentOtherThanBarristerController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeAgentOtherThanBarrister                  controllers.register.agents.AgentOtherThanBarristerController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en
