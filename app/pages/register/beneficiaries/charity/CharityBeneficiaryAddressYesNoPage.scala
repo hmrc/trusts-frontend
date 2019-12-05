@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package pages.beneficiaries.charity
+package pages.register.beneficiaries.charity
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath

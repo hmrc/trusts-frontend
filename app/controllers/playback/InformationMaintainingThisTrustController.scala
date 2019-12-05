@@ -25,6 +25,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import views.html.AgentCannotAccessTrustYetView
 import views.html.playback.InformationMaintainingThisTrustView
 
 import scala.concurrent.ExecutionContext

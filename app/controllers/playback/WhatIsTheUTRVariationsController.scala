@@ -33,7 +33,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.register.WhatIsTheUTRView
-
+import controllers.register.routes._
 import scala.concurrent.{ExecutionContext, Future}
 
 class WhatIsTheUTRVariationsController @Inject()(
@@ -95,7 +95,7 @@ class WhatIsTheUTRVariationsController @Inject()(
 
   private def checkIfUTRLocked(onTrustNotLocked: => Future[Result], c: TrustClaim) = {
     if (c.trustLocked) {
-      Future.successful(Redirect(routes.TrustStatusController.locked()))
+      Future.successful(Redirect(TrustStatusController.locked()))
     } else {
       onTrustNotLocked
     }
@@ -103,8 +103,8 @@ class WhatIsTheUTRVariationsController @Inject()(
 
   private def checkIfTrustIsNotClaimed(utr: String)(implicit hc : HeaderCarrier, request: DataRequest[AnyContent]) = {
     enrolmentStoreConnector.checkIfClaimed(utr) map {
-      case AlreadyClaimed => Redirect(routes.TrustStatusController.alreadyClaimed())
-      case NotClaimed => Redirect(routes.TrustStatusController.status())
+      case AlreadyClaimed => Redirect(TrustStatusController.alreadyClaimed())
+      case NotClaimed => Redirect(TrustStatusController.status())
       case _ => InternalServerError(errorHandler.internalServerErrorTemplate)
     }
   }
@@ -117,7 +117,7 @@ class WhatIsTheUTRVariationsController @Inject()(
         val agentEnrolled = checkEnrolmentOfAgent(utr)
 
         if (agentEnrolled) {
-          Redirect(routes.TrustStatusController.status())
+          Redirect(TrustStatusController.status())
         } else {
           Redirect(routes.AgentNotAuthorisedController.onPageLoad())
         }

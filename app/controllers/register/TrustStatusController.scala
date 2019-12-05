@@ -134,7 +134,7 @@ class TrustStatusController @Inject()(
 
           request.affinityGroup match {
             case Agent =>
-              Redirect(routes.InformationMaintainingThisTrustController.onPageLoad())
+              Redirect(controllers.playback.routes.InformationMaintainingThisTrustController.onPageLoad())
             case _ =>
               Redirect(config.claimATrustUrl(utr))
           }

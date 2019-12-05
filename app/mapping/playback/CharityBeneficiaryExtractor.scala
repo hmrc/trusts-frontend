@@ -18,10 +18,10 @@ package mapping.playback
 
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
-import models.core.pages.{CharityOrTrust, InternationalAddress, UKAddress}
+import models.core.pages.{InternationalAddress, UKAddress}
 import models.playback.http.DisplayTrustCharityType
 import models.playback.{MetaData, UserAnswers}
-import pages.register.beneficiaries.charity._
+import pages.register.beneficiaries.charity.{CharityBeneficiaryAddressYesNoPage, _}
 import play.api.Logger
 
 import scala.util.{Failure, Success, Try}
