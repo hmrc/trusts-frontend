@@ -33,7 +33,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.register.WhatIsTheUTRView
-import controllers.register.routes._
+import controllers.playback.routes._
 import scala.concurrent.{ExecutionContext, Future}
 
 class WhatIsTheUTRVariationsController @Inject()(

@@ -16,3 +16,12 @@ GET        /variations/confirmation                           controllers.playba
 GET        /variations/trust-not-claimed                      controllers.playback.TrustNotClaimedController.onPageLoad()
 
 GET        /variations/agent-not-authorised                   controllers.playback.AgentNotAuthorisedController.onPageLoad()
+
+GET        /status/closed                                     controllers.playback.TrustStatusController.closed()
+GET        /status/processing                                 controllers.playback.TrustStatusController.processing()
+GET        /status/not-found                                  controllers.playback.TrustStatusController.notFound()
+GET        /status/down                                       controllers.playback.TrustStatusController.down()
+GET        /status/locked                                     controllers.playback.TrustStatusController.locked()
+GET        /status/already-claimed                            controllers.playback.TrustStatusController.alreadyClaimed()
+GET        /status/sorry-there-has-been-a-problem             controllers.playback.TrustStatusController.sorryThereHasBeenAProblem()
+GET        /status                                            controllers.playback.TrustStatusController.status()

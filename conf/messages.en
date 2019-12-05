@@ -1412,3 +1412,11 @@ agentCannotAccessTrustYet.bullet.3 = If details about the settlors, trustees or 
 agentCannotAccessTrustYet.bullet.4 = If you need to close the trust, you will need to declare the details we have are up to date.
 agentCannotAccessTrustYet.heading.3 = Changes you cannot tell us about on this service
 agentCannotAccessTrustYet.p4 = You are not required to update the trust’s details, tax liability or assets. Use Self Assessment Online for trusts or the Trust and Estate Tax Return form (SA900) to update any of these.
+
+playbackProblemContactHMRC.title = Sorry, there has been a problem accessing your trust's registration
+playbackProblemContactHMRC.heading = Sorry, there has been a problem accessing your trust's registration
+playbackProblemContactHMRC.subheading = This trust’s UTR: {0}
+playbackProblemContactHMRC.p1.beforeLink = You need to
+playbackProblemContactHMRC.p1.link = contact the trusts helpline (opens in a new window or tab)
+playbackProblemContactHMRC.p1.afterLink = so we can confirm details with you about the trust.
+playbackProblemContactHMRC.p2 = Please have the relevant documents relating to the trust and its Self Assessment available when you contact HMRC.
