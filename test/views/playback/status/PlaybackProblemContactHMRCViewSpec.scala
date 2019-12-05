@@ -14,29 +14,26 @@
  * limitations under the License.
  */
 
-package views.register
+package views.playback.status
 
 import views.behaviours.ViewBehaviours
-import views.html.playback.status.TrustLockedView
+import views.html.playback.status.PlaybackProblemContactHMRCView
 
-class TrustLockedViewSpec extends ViewBehaviours {
+class PlaybackProblemContactHMRCViewSpec extends ViewBehaviours {
 
   val utr = "0987654321"
 
-  "TrustLocked view" must {
+  "PlaybackProblemContactHMRC view" must {
 
-    val view = viewFor[TrustLockedView](Some(emptyUserAnswers))
+    val view = viewFor[PlaybackProblemContactHMRCView](Some(emptyUserAnswers))
 
     val applyView = view.apply(utr)(fakeRequest, messages)
 
-    behave like normalPage(applyView, "TrustLocked","p1", "p2","p3",
-      "link1")
+    behave like normalPage(applyView, "playbackProblemContactHMRC","p1.beforeLink", "p1.link", "p1.afterLink","p2")
 
     "display the correct subheading" in {
       val doc = asDocument(applyView)
-      assertContainsText(doc, messages("TrustLocked.subheading", utr))
+      assertContainsText(doc, messages("playbackProblemContactHMRC.subheading", utr))
     }
-
   }
-
 }

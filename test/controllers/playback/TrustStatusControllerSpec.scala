@@ -129,6 +129,20 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
       application.stop()
     }
 
+    "must return OK and the correct view for GET ../status/sorry-there-has-been-a-problem" in new LocalSetup {
+
+      override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.sorryThereHasBeenAProblem().url)
+
+      val view: PlaybackProblemContactHMRCView = application.injector.instanceOf[PlaybackProblemContactHMRCView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(utr)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
     "must return SERVICE_UNAVAILABLE and the correct view for GET ../status/down" in new LocalSetup {
 
       override val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.down().url)
@@ -156,7 +170,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual "/trusts-registration/status/closed"
+        redirectLocation(result).value mustEqual "/maintain-a-trust/status/closed"
 
         application.stop()
       }
@@ -172,7 +186,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual "/trusts-registration/status/processing"
+        redirectLocation(result).value mustEqual "/maintain-a-trust/status/processing"
 
         application.stop()
       }
@@ -188,7 +202,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual "/trusts-registration/status/not-found"
+        redirectLocation(result).value mustEqual "/maintain-a-trust/status/not-found"
 
         application.stop()
       }
@@ -202,7 +216,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual "/trusts-registration/status/locked"
+        redirectLocation(result).value mustEqual "/maintain-a-trust/status/locked"
 
         application.stop()
       }
@@ -218,7 +232,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual "/trusts-registration/status/down"
+        redirectLocation(result).value mustEqual "/maintain-a-trust/status/down"
 
         application.stop()
       }

@@ -18,7 +18,6 @@ package controllers.playback
 
 import base.SpecBase
 import connector.{EnrolmentStoreConnector, TrustClaim, TrustsStoreConnector}
-import controllers.register.routes._
 import forms.WhatIsTheUTRFormProvider
 import models.EnrolmentStoreResponse.{AlreadyClaimed, BadRequest, NotClaimed}
 import org.mockito.Matchers.{any, eq => eqTo}
@@ -117,7 +116,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual "/trusts-registration/status"
+      redirectLocation(result).value mustEqual "/maintain-a-trust/status"
 
       application.stop()
     }
@@ -411,7 +410,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.register.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -428,7 +427,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.register.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }

@@ -54,6 +54,7 @@ class TrustStatusController @Inject()(
                                        errorHandler: ErrorHandler,
                                        lockedView: TrustLockedView,
                                        alreadyClaimedView: TrustAlreadyClaimedView,
+                                       playbackProblemContactHMRCView: PlaybackProblemContactHMRCView,
                                        playbackExtractor: UserAnswersExtractor,
                                        val controllerComponents: MessagesControllerComponents
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
@@ -69,6 +70,13 @@ class TrustStatusController @Inject()(
     implicit request =>
       enforceUtr() { utr =>
         Future.successful(Ok(stillProcessingView(request.affinityGroup, utr)))
+      }
+  }
+
+  def sorryThereHasBeenAProblem(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      enforceUtr() { utr =>
+        Future.successful(Ok(playbackProblemContactHMRCView(utr)))
       }
   }
 
@@ -122,7 +130,8 @@ class TrustStatusController @Inject()(
       case Processing => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.processing()))
       case UtrNotFound => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.notFound()))
       case Processed(playback, _) => extract(utr, playback)
-      case _ => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.down()))
+      case SorryThereHasBeenAProblem => Future.successful(Redirect(routes.TrustStatusController.sorryThereHasBeenAProblem()))
+      case _ => Future.successful(Redirect(routes.TrustStatusController.down()))
     }
   }
 
