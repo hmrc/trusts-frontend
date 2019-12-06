@@ -1,4 +1,5 @@
 # Maintain
+GET        /                                       controllers.playback.IndexController.onPageLoad()
 
 GET        /trust-not-claimed                      controllers.playback.TrustNotClaimedController.onPageLoad()
 GET        /agent-not-authorised                   controllers.playback.AgentNotAuthorisedController.onPageLoad()

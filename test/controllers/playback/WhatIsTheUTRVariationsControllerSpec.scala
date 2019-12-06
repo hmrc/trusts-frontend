@@ -21,7 +21,6 @@ import forms.WhatIsTheUTRFormProvider
 import pages.playback.WhatIsTheUTRVariationPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import services.{FakePlaybackAuthenticationService, PlaybackAuthenticationService}
 import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.{Enrolment, EnrolmentIdentifier, Enrolments}
 import views.html.register.WhatIsTheUTRView

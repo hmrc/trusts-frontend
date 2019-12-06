@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers.register
+package controllers.playback
 
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import javax.inject.Inject
@@ -35,24 +35,11 @@ class IndexController @Inject()(
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData).async {
     implicit request =>
-
-      request.affinityGroup match {
-        case AffinityGroup.Agent =>
-          Future.successful(Redirect(controllers.register.agents.routes.AgentOverviewController.onPageLoad()))
-        case _ =>
-          request.userAnswers match {
-            case Some(userAnswers) =>
-              userAnswers.get(TrustRegisteredOnlinePage) match {
-                case Some(false) =>
-                  Future.successful(Redirect(routes.TaskListController.onPageLoad(userAnswers.draftId)))
-                case Some(true) =>
-                  Future.successful(Redirect(controllers.playback.routes.IndexController.onPageLoad()))
-                case None =>
-                  Future.successful(Redirect(controllers.register.routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, userAnswers.draftId)))
-              }
-            case None =>
-              Future.successful(Redirect(routes.CreateDraftRegistrationController.create()))
-          }
+      request.userAnswers match {
+        case Some(_) =>
+          Future.successful(Redirect(controllers.playback.routes.WhatIsTheUTRVariationsController.onPageLoad()))
+        case None =>
+          Future.successful(Redirect(controllers.register.routes.IndexController.onPageLoad()))
       }
   }
 }

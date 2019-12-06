@@ -33,7 +33,7 @@ object PlaybackResponse {
   implicit lazy val httpReads: HttpReads[PlaybackResponse] =
     new HttpReads[PlaybackResponse] {
       override def read(method: String, url: String, response: HttpResponse): PlaybackResponse = {
-        Logger.info(s"[PlaybackResponse] response status received from trusts api: ${response.status}, body :${response.body}")
+        Logger.info(s"[PlaybackResponse] response status received from trusts api: ${response.status}")
 
         response.status match {
           case OK =>

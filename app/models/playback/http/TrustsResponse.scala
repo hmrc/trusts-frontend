@@ -57,7 +57,7 @@ object TrustsResponse {
   implicit lazy val httpReads: HttpReads[TrustsResponse] =
     new HttpReads[TrustsResponse] {
       override def read(method: String, url: String, response: HttpResponse): TrustsResponse = {
-        Logger.info(s"[TrustStatus] response status received from trusts status api: ${response.status}, body :${response.body}")
+        Logger.info(s"[TrustStatus] response status received from trusts status api: ${response.status}")
 
         response.status match {
           case OK =>

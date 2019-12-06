@@ -31,7 +31,7 @@ object TrustClaim {
   implicit def httpReads(utr : String): HttpReads[Option[TrustClaim]] =
     new HttpReads[Option[TrustClaim]] {
       override def read(method: String, url: String, response: HttpResponse): Option[TrustClaim] = {
-        Logger.info(s"[TrustClaim] response status received from trusts store api: ${response.status}, body :${response.body}")
+        Logger.info(s"[TrustClaim] response status received from trusts store api: ${response.status}")
 
         response.status match {
           case OK =>

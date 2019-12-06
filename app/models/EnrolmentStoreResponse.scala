@@ -38,7 +38,7 @@ object EnrolmentStoreResponse {
   implicit lazy val httpReads: HttpReads[EnrolmentStoreResponse] =
     new HttpReads[EnrolmentStoreResponse] {
       override def read(method: String, url: String, response: HttpResponse): EnrolmentStoreResponse = {
-        Logger.debug(s"[EnrolmentStoreResponse] response status received from ES0 api: ${response.status}, body :${response.body}")
+        Logger.debug(s"[EnrolmentStoreResponse] response status received from ES0 api: ${response.status}")
 
         response.status match {
           case OK =>
