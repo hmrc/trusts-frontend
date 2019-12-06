@@ -21,6 +21,7 @@ import forms.WhatIsTheUTRFormProvider
 import pages.playback.WhatIsTheUTRVariationPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.{FakePlaybackAuthenticationService, PlaybackAuthenticationService}
 import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.{Enrolment, EnrolmentIdentifier, Enrolments}
 import views.html.register.WhatIsTheUTRView
@@ -76,6 +77,8 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
 
     "redirect to trust status when playback authentication has passed" in {
 
+      import play.api.inject.bind
+
       val utr = "0987654321"
 
       val enrolments = Enrolments(Set(Enrolment(
@@ -83,8 +86,13 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       )))
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), affinityGroup = Organisation, enrolments = enrolments)
-          .build()
+        applicationBuilder(
+          userAnswers = Some(emptyUserAnswers),
+          affinityGroup = Organisation,
+          enrolments = enrolments
+        ).overrides(
+          bind[PlaybackAuthenticationService].toInstance(new FakePlaybackAuthenticationService())
+        ).build()
 
       implicit val request = FakeRequest(POST, trustUTRRoute).withFormUrlEncodedBody(("value", utr))
 
