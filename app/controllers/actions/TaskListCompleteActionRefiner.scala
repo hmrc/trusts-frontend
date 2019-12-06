@@ -16,7 +16,6 @@
 
 package controllers.actions
 
-import controllers.routes
 import javax.inject.Inject
 import models.requests.DataRequest
 import pages.register.RegistrationProgress

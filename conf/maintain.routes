@@ -1,27 +1,27 @@
-# Variations
+# Maintain
+GET        /                                       controllers.playback.IndexController.onPageLoad()
 
-GET        /variations/enter-trust-utr                        controllers.playback.WhatIsTheUTRVariationsController.onPageLoad()
-POST       /variations/enter-trust-utr                        controllers.playback.WhatIsTheUTRVariationsController.onSubmit()
+GET        /trust-not-claimed                      controllers.playback.TrustNotClaimedController.onPageLoad()
+GET        /agent-not-authorised                   controllers.playback.AgentNotAuthorisedController.onPageLoad()
 
-GET        /variations/maintain-a-trust/information           controllers.playback.InformationMaintainingThisTrustController.onPageLoad()
+GET        /status/closed                          controllers.playback.TrustStatusController.closed()
+GET        /status/processing                      controllers.playback.TrustStatusController.processing()
+GET        /status/not-found                       controllers.playback.TrustStatusController.notFound()
+GET        /status/down                            controllers.playback.TrustStatusController.down()
+GET        /status/locked                          controllers.playback.TrustStatusController.locked()
+GET        /status/already-claimed                 controllers.playback.TrustStatusController.alreadyClaimed()
+GET        /status/sorry-there-has-been-a-problem  controllers.playback.TrustStatusController.sorryThereHasBeenAProblem()
+GET        /status                                 controllers.playback.TrustStatusController.status()
 
-GET        /variations/declare-change                         controllers.playback.DeclarationWhatNextController.onPageLoad()
-POST       /variations/declare-change                         controllers.playback.DeclarationWhatNextController.onSubmit()
+GET        /trust-utr                              controllers.playback.WhatIsTheUTRVariationsController.onPageLoad()
+POST       /trust-utr                              controllers.playback.WhatIsTheUTRVariationsController.onSubmit()
 
-GET        /variations/declaration                            controllers.playback.DeclarationController.onPageLoad()
-POST       /variations/declaration                            controllers.playback.DeclarationController.onSubmit()
+GET        /information                            controllers.playback.InformationMaintainingThisTrustController.onPageLoad()
 
-GET        /variations/confirmation                           controllers.playback.VariationsConfirmationController.onPageLoad()
+GET        /declare-what-changed                   controllers.playback.DeclarationWhatNextController.onPageLoad()
+POST       /declare-what-changed                   controllers.playback.DeclarationWhatNextController.onSubmit()
 
-GET        /variations/trust-not-claimed                      controllers.playback.TrustNotClaimedController.onPageLoad()
+GET        /declaration                            controllers.playback.DeclarationController.onPageLoad()
+POST       /declaration                            controllers.playback.DeclarationController.onSubmit()
 
-GET        /variations/agent-not-authorised                   controllers.playback.AgentNotAuthorisedController.onPageLoad()
-
-GET        /status/closed                                     controllers.playback.TrustStatusController.closed()
-GET        /status/processing                                 controllers.playback.TrustStatusController.processing()
-GET        /status/not-found                                  controllers.playback.TrustStatusController.notFound()
-GET        /status/down                                       controllers.playback.TrustStatusController.down()
-GET        /status/locked                                     controllers.playback.TrustStatusController.locked()
-GET        /status/already-claimed                            controllers.playback.TrustStatusController.alreadyClaimed()
-GET        /status/sorry-there-has-been-a-problem             controllers.playback.TrustStatusController.sorryThereHasBeenAProblem()
-GET        /status                                            controllers.playback.TrustStatusController.status()
+GET        /confirmation                           controllers.playback.VariationsConfirmationController.onPageLoad()

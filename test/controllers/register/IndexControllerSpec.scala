@@ -22,6 +22,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
 import controllers.register.agents.routes._
+import pages.register.TrustRegisteredOnlinePage
 
 class IndexControllerSpec extends SpecBase {
 
@@ -61,40 +62,68 @@ class IndexControllerSpec extends SpecBase {
 
     }
 
-  "redirect when registration has been started" should {
+  "redirect when registration has been started" when {
 
-    "redirect to RegistrationProgress with Non-Agent affinityGroup" in {
+    "for a playback" should {
 
-      val answers = emptyUserAnswers.copy(progress = InProgress)
+        "redirect to RegistrationProgress with Non-Agent affinityGroup" in {
 
-      val application = applicationBuilder(userAnswers = Some(answers)).build()
+          val answers = emptyUserAnswers.copy(progress = InProgress)
+            .set(TrustRegisteredOnlinePage, true).success.value
 
-      val request = FakeRequest(GET, routes.IndexController.onPageLoad().url)
+          val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-      val result = route(application, request).value
+          val request = FakeRequest(GET, routes.IndexController.onPageLoad().url)
 
-      status(result) mustEqual SEE_OTHER
+          val result = route(application, request).value
 
-      redirectLocation(result).value mustBe routes.TaskListController.onPageLoad(fakeDraftId).url
+          status(result) mustEqual SEE_OTHER
 
-      application.stop()
+          redirectLocation(result).value mustBe controllers.playback.routes.IndexController.onPageLoad().url
+
+          application.stop()
+        }
+
     }
 
-    "redirect to AgentOverview with Agent affinityGroup" in {
+    "for a registration" should {
 
-      val answers = emptyUserAnswers.copy(progress = InProgress)
+      "redirect to RegistrationProgress with Non-Agent affinityGroup" in {
 
-      val application = applicationBuilder(userAnswers = Some(answers), AffinityGroup.Agent).build()
+        val answers = emptyUserAnswers.copy(progress = InProgress)
+          .set(TrustRegisteredOnlinePage, false).success.value
 
-      val request = FakeRequest(GET, routes.IndexController.onPageLoad().url)
+        val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-      val result = route(application, request).value
+        val request = FakeRequest(GET, routes.IndexController.onPageLoad().url)
 
-      status(result) mustEqual SEE_OTHER
+        val result = route(application, request).value
 
-      redirectLocation(result).value mustBe AgentOverviewController.onPageLoad().url
+        status(result) mustEqual SEE_OTHER
 
-      application.stop()
+        redirectLocation(result).value mustBe routes.TaskListController.onPageLoad(fakeDraftId).url
+
+        application.stop()
+      }
+
+      "redirect to AgentOverview with Agent affinityGroup" in {
+
+        val answers = emptyUserAnswers.copy(progress = InProgress)
+          .set(TrustRegisteredOnlinePage, false).success.value
+
+        val application = applicationBuilder(userAnswers = Some(answers), AffinityGroup.Agent).build()
+
+        val request = FakeRequest(GET, routes.IndexController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustBe AgentOverviewController.onPageLoad().url
+
+        application.stop()
+      }
+
     }
 
   }

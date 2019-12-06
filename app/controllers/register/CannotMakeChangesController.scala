@@ -26,10 +26,10 @@ import views.html.register.CannotMakeChangesView
 import scala.concurrent.ExecutionContext
 
 class CannotMakeChangesController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: CannotMakeChangesView
+                                             override val messagesApi: MessagesApi,
+                                             identify: IdentifierAction,
+                                             val controllerComponents: MessagesControllerComponents,
+                                             view: CannotMakeChangesView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = identify {

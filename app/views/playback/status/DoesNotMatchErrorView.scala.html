@@ -42,6 +42,6 @@ title = messages("DoesNotMatchError.title")
   @if(affinityGroup == AffinityGroup.Agent) {
    <p>@messages("DoesNotMatchError.paragraph5") <a id="register-and-maintain-link" href=@controllers.register.agents.routes.AgentOverviewController.onPageLoad().url>@messages("DoesNotMatchError.return.link")</a>.</p>
   } else {
-   @components.button_link("site.try-again", WhatIsTheUTRVariationsController.onPageLoad().url)
+   @components.button_link("site.try-again", controllers.playback.routes.WhatIsTheUTRVariationsController.onPageLoad().url)
   }
 }

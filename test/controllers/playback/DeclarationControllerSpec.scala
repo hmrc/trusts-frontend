@@ -117,7 +117,7 @@ class DeclarationControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual VariationsConfirmationController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.playback.routes.VariationsConfirmationController.onPageLoad().url
 
       application.stop()
     }

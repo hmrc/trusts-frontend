@@ -34,13 +34,14 @@ class InformationMaintainingThisTrustController @Inject()(
                                                            identify: IdentifierAction,
                                                            getData: DataRetrievalAction,
                                                            requireData: DataRequiredAction,
+                                                           playbackAction: PlaybackAction,
                                                            val controllerComponents: MessagesControllerComponents,
                                                            maintainingTrustView: InformationMaintainingThisTrustView,
                                                            agentCannotAccessTrustYetView: AgentCannotAccessTrustYetView
                                                          )(implicit ec: ExecutionContext,
                                                            config: FrontendAppConfig) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData andThen playbackAction) {
     implicit request =>
       request.userAnswers.get(WhatIsTheUTRVariationPage) match {
         case Some(utr) =>

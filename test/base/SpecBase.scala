@@ -30,10 +30,13 @@ import play.api.inject.{Injector, bind}
 import play.api.mvc.BodyParsers
 import play.api.test.FakeRequest
 import repositories.RegistrationsRepository
-import services.{CreateDraftRegistrationService, SubmissionService}
-import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments, Enrolment}
+import services.{CreateDraftRegistrationService, FakePlaybackAuthenticationService, PlaybackAuthenticationService, SubmissionService}
+import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
+import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import utils.TestUserAnswers
 import utils.annotations.{LivingSettlor, PropertyOrLand}
+
+import scala.concurrent.ExecutionContext
 
 trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked with BeforeAndAfter {
   this: TestSuite =>
@@ -54,6 +57,10 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
 
   def injectedParsers = injector.instanceOf[BodyParsers.Default]
 
+  def trustsAuth = injector.instanceOf[TrustsAuth]
+
+  implicit def executionContext = injector.instanceOf[ExecutionContext]
+
   implicit def messages: Messages = messagesApi.preferred(fakeRequest)
 
   lazy val fakeNavigator = new FakeNavigator(frontendAppConfig)
@@ -73,11 +80,13 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
     new GuiceApplicationBuilder()
       .overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],
-        bind[IdentifierAction].toInstance(new FakeIdentifierAction(affinityGroup, enrolments)(injectedParsers)),
+        bind[IdentifierAction].toInstance(new FakeIdentifyForRegistration(affinityGroup)(injectedParsers, trustsAuth, enrolments)),
+        bind[PlaybackAction].toInstance(new FakePlaybackAction()),
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
         bind[DraftIdRetrievalActionProvider].toInstance(fakeDraftIdAction(userAnswers)),
         bind[RegistrationsRepository].toInstance(registrationsRepository),
         bind[SubmissionService].toInstance(mockSubmissionService),
+        bind[AffinityGroup].toInstance(Organisation),
         bind[CreateDraftRegistrationService].toInstance(mockCreateDraftRegistrationService),
         bind[Navigator].toInstance(navigator),
         bind[Navigator].qualifiedWith(classOf[PropertyOrLand]).toInstance(navigator),

@@ -58,11 +58,11 @@ class TaskListController @Inject()(
     identify andThen getData(draftId) andThen requireData andThen
       requiredAnswer(
         RequiredAnswer(
-          TrustRegisteredOnlinePage, routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId))
+          TrustRegisteredOnlinePage, controllers.register.routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId))
       ) andThen
       requiredAnswer(
         RequiredAnswer(
-          TrustHaveAUTRPage, routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId))
+          TrustHaveAUTRPage, controllers.register.routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId))
       ) andThen requireDraft
 
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async {
@@ -99,10 +99,10 @@ class TaskListController @Inject()(
             renderView(request.affinityGroup)
 
           case Some(AlreadyRegistered) | Some(Failed) =>
-            Future.successful(Redirect(routes.FailedMatchController.onPageLoad(draftId).url))
+            Future.successful(Redirect(controllers.register.routes.FailedMatchController.onPageLoad(draftId).url))
 
           case None =>
-            Future.successful(Redirect(routes.WhatIsTheUTRController.onPageLoad(NormalMode, draftId).url))
+            Future.successful(Redirect(controllers.register.routes.WhatIsTheUTRController.onPageLoad(NormalMode, draftId).url))
         }
       } else {
         renderView(request.affinityGroup)

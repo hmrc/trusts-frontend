@@ -29,12 +29,15 @@ import scala.concurrent.ExecutionContext
 class VariationsConfirmationController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        identify: IdentifierAction,
+                                       playbackAction: PlaybackAction,
+                                       getData: DataRetrievalAction,
+                                       requireData: DataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: VariationsConfirmationView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
-  def onPageLoad() = identify {
+  def onPageLoad() = (identify andThen getData andThen requireData andThen playbackAction) {
     implicit request =>
 
       val isAgent = request.affinityGroup == Agent
