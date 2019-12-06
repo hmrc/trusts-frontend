@@ -75,9 +75,7 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       application.stop()
     }
 
-    "redirect to trust status when playback authentication has passed" in {
-
-      import play.api.inject.bind
+    "redirect to trust status on a POST" in {
 
       val utr = "0987654321"
 
@@ -90,8 +88,6 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
           userAnswers = Some(emptyUserAnswers),
           affinityGroup = Organisation,
           enrolments = enrolments
-        ).overrides(
-          bind[PlaybackAuthenticationService].toInstance(new FakePlaybackAuthenticationService())
         ).build()
 
       implicit val request = FakeRequest(POST, trustUTRRoute).withFormUrlEncodedBody(("value", utr))

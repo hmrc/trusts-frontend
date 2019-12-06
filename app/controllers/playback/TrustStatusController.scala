@@ -29,6 +29,7 @@ import pages.playback.WhatIsTheUTRVariationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.{PlaybackRepository, RegistrationsRepository}
+import services.PlaybackAuthenticationService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.playback.status._
 
@@ -55,6 +56,7 @@ class TrustStatusController @Inject()(
                                        alreadyClaimedView: TrustAlreadyClaimedView,
                                        playbackProblemContactHMRCView: PlaybackProblemContactHMRCView,
                                        playbackExtractor: UserAnswersExtractor,
+                                       authenticationService: PlaybackAuthenticationService,
                                        val controllerComponents: MessagesControllerComponents
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
@@ -128,7 +130,11 @@ class TrustStatusController @Inject()(
       case Closed => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.closed()))
       case Processing => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.processing()))
       case UtrNotFound => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.notFound()))
-      case Processed(playback, _) => extract(utr, playback)
+      case Processed(playback, _) =>
+        authenticationService.authenticateForPlayback(utr) flatMap {
+          case Left(failure) => Future.successful(failure)
+          case Right(_) => extract(utr, playback)
+        }
       case SorryThereHasBeenAProblem => Future.successful(Redirect(routes.TrustStatusController.sorryThereHasBeenAProblem()))
       case _ => Future.successful(Redirect(routes.TrustStatusController.down()))
     }

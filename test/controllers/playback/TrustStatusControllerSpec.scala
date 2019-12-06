@@ -30,6 +30,7 @@ import play.api.libs.json._
 import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.{FakePlaybackAuthenticationService, PlaybackAuthenticationService}
 import uk.gov.hmrc.auth.core.AffinityGroup
 import views.html.playback.status._
 
@@ -49,7 +50,8 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
     def application: Application = applicationBuilder(userAnswers = Some(userAnswers)).overrides(
       bind[TrustConnector].to(fakeTrustConnector),
-      bind[TrustsStoreConnector].to(fakeTrustStoreConnector)
+      bind[TrustsStoreConnector].to(fakeTrustStoreConnector),
+      bind[PlaybackAuthenticationService].to(new FakePlaybackAuthenticationService())
     ).build()
 
     def request: FakeRequest[AnyContentAsEmpty.type]

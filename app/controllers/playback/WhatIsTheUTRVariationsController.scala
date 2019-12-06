@@ -68,14 +68,7 @@ class WhatIsTheUTRVariationsController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatIsTheUTRVariationPage, utr))
             _ <- registrationsRepository.set(updatedAnswers)
-            authenticationResult <- authenticationService.authenticateForPlayback(utr)
-          } yield {
-            authenticationResult match {
-              case Left(failureResult) => failureResult
-              case Right(_) =>
-                Redirect(controllers.playback.routes.TrustStatusController.status())
-            }
-          }
+          } yield Redirect(controllers.playback.routes.TrustStatusController.status())
         }
       )
   }
