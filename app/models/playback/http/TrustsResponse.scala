@@ -40,6 +40,7 @@ object TrustsResponse {
     override def reads(json:JsValue): JsResult[TrustStatus] = json("responseHeader")("status") match {
       case JsString("In Processing") => JsSuccess(Processing)
       case JsString("Closed") => JsSuccess(Closed)
+      case JsString("Pending Closure") => JsSuccess(Closed)
       case JsString("Processed") =>
          json("getTrust").validate[GetTrust] match {
           case JsSuccess(trust, _) =>
