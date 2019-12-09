@@ -22,6 +22,7 @@ import controllers.actions._
 import navigation.Navigator
 import navigation.registration.{LivingSettlorNavigator, PropertyOrLandNavigator}
 import repositories.{DefaultPlaybackRepository, DefaultRegistrationsRepository, PlaybackRepository, RegistrationsRepository}
+import services.{PlaybackAuthenticationService, PlaybackAuthenticationServiceImpl}
 import uk.gov.hmrc.auth.otac.OtacAuthConnector
 import utils.annotations.{LivingSettlor, PropertyOrLand}
 import utils.{DateFormatter, TrustsDateFormatter}
@@ -32,11 +33,9 @@ class Module extends AbstractModule {
 
     bind(classOf[DataRetrievalAction]).to(classOf[DataRetrievalActionImpl]).asEagerSingleton()
     bind(classOf[DataRequiredAction]).to(classOf[DataRequiredActionImpl]).asEagerSingleton()
+    bind(classOf[PlaybackAction]).to(classOf[PlaybackActionImpl]).asEagerSingleton()
     bind(classOf[DraftIdRetrievalActionProvider]).to(classOf[DraftIdDataRetrievalActionProviderImpl]).asEagerSingleton()
     bind(classOf[RequireDraftRegistrationActionRefiner]).to(classOf[RequireDraftRegistrationActionRefinerImpl]).asEagerSingleton()
-
-    // For session based storage instead of cred based, change to SessionIdentifierAction
-    bind(classOf[IdentifierAction]).to(classOf[AuthenticatedIdentifierAction]).asEagerSingleton()
 
     bind(classOf[TaskListCompleteActionRefiner]).to(classOf[TaskListCompleteActionRefinerImpl]).asEagerSingleton()
 
@@ -46,6 +45,8 @@ class Module extends AbstractModule {
     bind(classOf[PlaybackRepository]).to(classOf[DefaultPlaybackRepository]).asEagerSingleton()
 
     bind(classOf[OtacAuthConnector]).to(classOf[OtacAuthConnectorImpl]).asEagerSingleton()
+
+    bind(classOf[PlaybackAuthenticationService]).to(classOf[PlaybackAuthenticationServiceImpl]).asEagerSingleton()
 
     bind(classOf[Navigator]).annotatedWith(classOf[PropertyOrLand]).to(classOf[PropertyOrLandNavigator])
     bind(classOf[Navigator]).annotatedWith(classOf[LivingSettlor]).to(classOf[LivingSettlorNavigator])

@@ -21,7 +21,6 @@ import forms.DeclarationFormProvider
 import navigation.Navigator
 import repositories.RegistrationsRepository
 import views.html.playback.DeclarationView
-
 import scala.concurrent.{ExecutionContext, Future}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import play.api.data.Form
@@ -36,6 +35,7 @@ class DeclarationController @Inject()(
                                        registrationsRepository: RegistrationsRepository,
                                        navigator: Navigator,
                                        identify: IdentifierAction,
+                                       playbackAction: PlaybackAction,
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
                                        requiredAnswer: RequiredAnswerActionProvider,
@@ -46,7 +46,7 @@ class DeclarationController @Inject()(
 
   val form = formProvider()
 
-  def actions() = identify andThen getData andThen requireData andThen
+  def actions() = identify andThen getData andThen requireData andThen playbackAction andThen
       requiredAnswer(RequiredAnswer(DeclarationWhatNextPage, routes.DeclarationWhatNextController.onPageLoad()))
 
   def onPageLoad(): Action[AnyContent] = actions() {
@@ -73,7 +73,7 @@ class DeclarationController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, value))
             _ <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(routes.VariationsConfirmationController.onPageLoad())
+          } yield Redirect(controllers.playback.routes.VariationsConfirmationController.onPageLoad())
         }
       )
 

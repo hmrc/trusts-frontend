@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers.register
+package controllers.playback
 
 import config.FrontendAppConfig
 import connector.{TrustConnector, TrustsStoreConnector}
@@ -29,7 +29,7 @@ import pages.playback.WhatIsTheUTRVariationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.{PlaybackRepository, RegistrationsRepository}
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
+import services.PlaybackAuthenticationService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.playback.status._
 
@@ -54,7 +54,9 @@ class TrustStatusController @Inject()(
                                        errorHandler: ErrorHandler,
                                        lockedView: TrustLockedView,
                                        alreadyClaimedView: TrustAlreadyClaimedView,
+                                       playbackProblemContactHMRCView: PlaybackProblemContactHMRCView,
                                        playbackExtractor: UserAnswersExtractor,
+                                       authenticationService: PlaybackAuthenticationService,
                                        val controllerComponents: MessagesControllerComponents
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
@@ -72,9 +74,16 @@ class TrustStatusController @Inject()(
       }
   }
 
-  def notFound(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def sorryThereHasBeenAProblem(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       enforceUtr() { utr =>
+        Future.successful(Ok(playbackProblemContactHMRCView(utr)))
+      }
+  }
+
+  def notFound(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      enforceUtr() { _ =>
         Future.successful(Ok(doesNotMatchView(request.affinityGroup)))
       }
   }
@@ -110,7 +119,7 @@ class TrustStatusController @Inject()(
   def checkIfLocked(utr: String)(implicit request: DataRequest[AnyContent]): Future[Result] = {
     trustStoreConnector.get(request.internalId, utr).flatMap {
       case Some(claim) if claim.trustLocked =>
-        Future.successful(Redirect(routes.TrustStatusController.locked()))
+        Future.successful(Redirect(controllers.playback.routes.TrustStatusController.locked()))
       case _ =>
         tryToPlayback(utr)
     }
@@ -118,10 +127,15 @@ class TrustStatusController @Inject()(
 
   def tryToPlayback(utr: String)(implicit request: DataRequest[AnyContent]): Future[Result] = {
     trustConnector.playback(utr) flatMap {
-      case Closed => Future.successful(Redirect(routes.TrustStatusController.closed()))
-      case Processing => Future.successful(Redirect(routes.TrustStatusController.processing()))
-      case UtrNotFound => Future.successful(Redirect(routes.TrustStatusController.notFound()))
-      case Processed(playback, _) => extract(utr, playback)
+      case Closed => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.closed()))
+      case Processing => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.processing()))
+      case UtrNotFound => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.notFound()))
+      case Processed(playback, _) =>
+        authenticationService.authenticateForPlayback(utr) flatMap {
+          case Left(failure) => Future.successful(failure)
+          case Right(_) => extract(utr, playback)
+        }
+      case SorryThereHasBeenAProblem => Future.successful(Redirect(routes.TrustStatusController.sorryThereHasBeenAProblem()))
       case _ => Future.successful(Redirect(routes.TrustStatusController.down()))
     }
   }
@@ -131,26 +145,20 @@ class TrustStatusController @Inject()(
     playbackExtractor.extract(request.userAnswers.toPlaybackUserAnswers, playback) match {
       case Right(Success(answers)) =>
         playbackRepository.store(answers) map { _ =>
-
-          request.affinityGroup match {
-            case Agent =>
-              Redirect(controllers.playback.routes.InformationMaintainingThisTrustController.onPageLoad())
-            case _ =>
-              Redirect(config.claimATrustUrl(utr))
-          }
+          Redirect(routes.InformationMaintainingThisTrustController.onPageLoad())
         }
       case Right(Failure(reason)) =>
         // Todo update where it goes and log reason?
-        Future.successful(Redirect(routes.TrustStatusController.down()))
+        Future.successful(Redirect(controllers.playback.routes.TrustStatusController.down()))
       case Left(reason) =>
         // Todo update where it goes and log reason?
-        Future.successful(Redirect(routes.TrustStatusController.down()))
+        Future.successful(Redirect(controllers.playback.routes.TrustStatusController.down()))
     }
   }
 
   def enforceUtr()(block: String => Future[Result])(implicit request: DataRequest[AnyContent]): Future[Result] = {
     request.userAnswers.get(WhatIsTheUTRVariationPage) match {
-      case None => Future.successful(Redirect(controllers.playback.routes.WhatIsTheUTRVariationsController.onPageLoad()))
+      case None => Future.successful(Redirect(routes.WhatIsTheUTRVariationsController.onPageLoad()))
       case Some(utr) => block(utr)
     }
   }

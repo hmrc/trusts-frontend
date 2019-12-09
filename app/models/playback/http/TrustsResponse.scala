@@ -28,6 +28,7 @@ sealed trait TrustStatus extends TrustsResponse
 case object Processing extends TrustStatus
 case object Closed extends TrustStatus
 case class Processed(playback: GetTrust, formBundleNumber : String) extends TrustStatus
+case object SorryThereHasBeenAProblem extends TrustStatus
 
 case object UtrNotFound extends TrustsResponse
 case object TrustServiceUnavailable extends TrustsResponse
@@ -39,6 +40,7 @@ object TrustsResponse {
     override def reads(json:JsValue): JsResult[TrustStatus] = json("responseHeader")("status") match {
       case JsString("In Processing") => JsSuccess(Processing)
       case JsString("Closed") => JsSuccess(Closed)
+      case JsString("Pending Closure") => JsSuccess(Closed)
       case JsString("Processed") =>
          json("getTrust").validate[GetTrust] match {
           case JsSuccess(trust, _) =>
@@ -46,6 +48,9 @@ object TrustsResponse {
             JsSuccess(Processed(trust, formBundle))
           case JsError(errors) => JsError(s"Can not parse as GetTrust due to $errors")
         }
+      case JsString("Parked") => JsSuccess(SorryThereHasBeenAProblem)
+      case JsString("Obsoleted") => JsSuccess(SorryThereHasBeenAProblem)
+      case JsString("Suspended") => JsSuccess(SorryThereHasBeenAProblem)
       case _ => JsError("Unexpected Status")
     }
   }
@@ -53,7 +58,7 @@ object TrustsResponse {
   implicit lazy val httpReads: HttpReads[TrustsResponse] =
     new HttpReads[TrustsResponse] {
       override def read(method: String, url: String, response: HttpResponse): TrustsResponse = {
-        Logger.info(s"[TrustStatus] response status received from trusts status api: ${response.status}, body :${response.body}")
+        Logger.info(s"[TrustStatus] response status received from trusts status api: ${response.status}")
 
         response.status match {
           case OK =>

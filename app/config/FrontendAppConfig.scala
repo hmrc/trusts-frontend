@@ -53,6 +53,11 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val locationCanonicalList: String = loadConfig("location.canonical.list.all")
   lazy val locationCanonicalListNonUK: String = loadConfig("location.canonical.list.nonUK")
 
+  lazy val relationshipName : String =
+    configuration.get[String]("microservice.services.self.relationship-establishment.name")
+  lazy val relationshipIdentifier : String =
+    configuration.get[String]("microservice.services.self.relationship-establishment.identifier")
+
   lazy val languageTranslationEnabled: Boolean =
     configuration.get[Boolean]("microservice.services.features.welsh-translation")
 

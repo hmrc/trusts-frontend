@@ -17,23 +17,19 @@
 package controllers.playback
 
 import config.FrontendAppConfig
-import connector.{EnrolmentStoreConnector, TrustClaim, TrustsStoreConnector}
 import controllers.actions._
 import forms.WhatIsTheUTRFormProvider
 import handlers.ErrorHandler
 import javax.inject.Inject
-import models.EnrolmentStoreResponse.{AlreadyClaimed, NotClaimed}
-import models.requests.DataRequest
 import pages.playback.WhatIsTheUTRVariationPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
-import uk.gov.hmrc.http.HeaderCarrier
+import services.PlaybackAuthenticationService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.register.WhatIsTheUTRView
-import controllers.register.routes._
+
 import scala.concurrent.{ExecutionContext, Future}
 
 class WhatIsTheUTRVariationsController @Inject()(
@@ -46,9 +42,8 @@ class WhatIsTheUTRVariationsController @Inject()(
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: WhatIsTheUTRView,
                                                   config: FrontendAppConfig,
-                                                  trustsStore: TrustsStoreConnector,
-                                                  enrolmentStoreConnector: EnrolmentStoreConnector,
-                                                  errorHandler: ErrorHandler
+                                                  errorHandler: ErrorHandler,
+                                                  authenticationService: PlaybackAuthenticationService
                                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -69,66 +64,13 @@ class WhatIsTheUTRVariationsController @Inject()(
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(view(formWithErrors, routes.WhatIsTheUTRVariationsController.onSubmit()))),
-        value => {
-
-          (for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatIsTheUTRVariationPage, value))
+        utr => {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatIsTheUTRVariationPage, utr))
             _ <- registrationsRepository.set(updatedAnswers)
-            claim <- trustsStore.get(request.internalId, value)
-          } yield claim) flatMap { claim =>
-
-            lazy val handleTrustNotLocked = request.affinityGroup match {
-              case Agent => checkIfAgentAuthorised(value)
-              case _ => checkIfTrustIsNotClaimed(value)
-            }
-
-            claim match {
-              case Some(c) =>
-                checkIfUTRLocked(handleTrustNotLocked, c)
-              case _ =>
-                handleTrustNotLocked
-            }
-          }
+          } yield Redirect(controllers.playback.routes.TrustStatusController.status())
         }
       )
-  }
-
-  private def checkIfUTRLocked(onTrustNotLocked: => Future[Result], c: TrustClaim) = {
-    if (c.trustLocked) {
-      Future.successful(Redirect(TrustStatusController.locked()))
-    } else {
-      onTrustNotLocked
-    }
-  }
-
-  private def checkIfTrustIsNotClaimed(utr: String)(implicit hc : HeaderCarrier, request: DataRequest[AnyContent]) = {
-    enrolmentStoreConnector.checkIfClaimed(utr) map {
-      case AlreadyClaimed => Redirect(TrustStatusController.alreadyClaimed())
-      case NotClaimed => Redirect(TrustStatusController.status())
-      case _ => InternalServerError(errorHandler.internalServerErrorTemplate)
-    }
-  }
-
-  private def checkIfAgentAuthorised(utr: String)(implicit hc : HeaderCarrier, request: DataRequest[AnyContent]) = {
-    enrolmentStoreConnector.checkIfClaimed(utr) map {
-      case NotClaimed => Redirect(routes.TrustNotClaimedController.onPageLoad())
-      case _ =>
-
-        val agentEnrolled = checkEnrolmentOfAgent(utr)
-
-        if (agentEnrolled) {
-          Redirect(TrustStatusController.status())
-        } else {
-          Redirect(routes.AgentNotAuthorisedController.onPageLoad())
-        }
-    }
-  }
-
-  private def checkEnrolmentOfAgent(utr: String)(implicit request: DataRequest[AnyContent]) = {
-    request.enrolments.enrolments
-      .find(_.key equals config.serviceName)
-      .flatMap(_.identifiers.find(_.key equals "SAUTR"))
-      .exists(_.value equals utr)
   }
 
 }

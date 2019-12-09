@@ -17,6 +17,8 @@
 package controllers.playback
 
 import base.SpecBase
+import config.FrontendAppConfig
+import controllers.actions.TrustsAuth
 import forms.DeclarationWhatNextFormProvider
 import models.playback.pages.DeclarationWhatNext
 import play.api.test.FakeRequest
@@ -24,6 +26,7 @@ import play.api.test.Helpers._
 import views.html.playback.DeclarationWhatNextView
 import controllers.register.routes._
 import pages.playback.DeclarationWhatNextPage
+import uk.gov.hmrc.auth.core.AuthConnector
 
 class DeclarationWhatNextControllerSpec extends SpecBase {
 
@@ -31,6 +34,11 @@ class DeclarationWhatNextControllerSpec extends SpecBase {
 
   val formProvider = new DeclarationWhatNextFormProvider()
   val form = formProvider()
+
+  val mockAuthConnector: AuthConnector = mock[AuthConnector]
+  val appConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
+
+  override def trustsAuth = new TrustsAuth(mockAuthConnector, appConfig)
 
   "DeclarationWhatNext Controller" must {
 
@@ -121,7 +129,7 @@ class DeclarationWhatNextControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.register.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }

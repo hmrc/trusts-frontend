@@ -31,7 +31,7 @@ class EnrolmentStoreConnector @Inject()(http: HttpClient, config : FrontendAppCo
     s"${config.enrolmentStoreProxyUrl}/enrolment-store-proxy/enrolment-store/enrolments/${config.serviceName}~$identifierKey~$identifier/users"
   }
 
-  def checkIfClaimed(utr: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[EnrolmentStoreResponse] =
+  def checkIfAlreadyClaimed(utr: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[EnrolmentStoreResponse] =
     http.GET[EnrolmentStoreResponse](enrolmentsEndpoint(utr))(EnrolmentStoreResponse.httpReads, hc, ec)
 
 }

@@ -29,7 +29,6 @@ object EnrolmentStoreResponse {
 
   case class EnrolmentStore(principalUserIds: Seq[String], delegatedUserIds: Seq[String]) extends EnrolmentStoreResponse
   case object NotClaimed extends EnrolmentStoreResponse
-  case object NoContent extends EnrolmentStoreResponse
   case object ServiceUnavailable extends EnrolmentStoreResponse
   case object Forbidden extends EnrolmentStoreResponse
   case object BadRequest extends EnrolmentStoreResponse
@@ -39,7 +38,7 @@ object EnrolmentStoreResponse {
   implicit lazy val httpReads: HttpReads[EnrolmentStoreResponse] =
     new HttpReads[EnrolmentStoreResponse] {
       override def read(method: String, url: String, response: HttpResponse): EnrolmentStoreResponse = {
-        Logger.debug(s"[EnrolmentStoreResponse] response status received from ES0 api: ${response.status}, body :${response.body}")
+        Logger.debug(s"[EnrolmentStoreResponse] response status received from ES0 api: ${response.status}")
 
         response.status match {
           case OK =>

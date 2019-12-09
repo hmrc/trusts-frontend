@@ -76,7 +76,7 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
           expectedResponse = None
         )
 
-        connector.checkIfClaimed(identifier) map { result =>
+        connector.checkIfAlreadyClaimed(identifier) map { result =>
           result mustBe NotClaimed
         }
 
@@ -98,7 +98,7 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
                |}""".stripMargin
           ))
 
-        connector.checkIfClaimed(identifier) map { result =>
+        connector.checkIfAlreadyClaimed(identifier) map { result =>
           result mustBe AlreadyClaimed
         }
 
@@ -118,7 +118,7 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
               |}""".stripMargin
           ))
 
-        connector.checkIfClaimed(identifier) map { result =>
+        connector.checkIfAlreadyClaimed(identifier) map { result =>
           result mustBe ServiceUnavailable
         }
 
@@ -138,7 +138,7 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
               |}""".stripMargin
           ))
 
-        connector.checkIfClaimed(identifier) map { result =>
+        connector.checkIfAlreadyClaimed(identifier) map { result =>
           result mustBe Forbidden
         }
 
@@ -158,7 +158,7 @@ class EnrolmentStoreConnectorSpec extends AsyncFreeSpec with MustMatchers with W
               |}""".stripMargin
           ))
 
-        connector.checkIfClaimed(identifier) map { result =>
+        connector.checkIfAlreadyClaimed(identifier) map { result =>
           result mustBe BadRequest
         }
 

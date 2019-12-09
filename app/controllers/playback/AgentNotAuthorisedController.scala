@@ -25,12 +25,12 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.playback.AgentNotAuthorisedView
 
 class AgentNotAuthorisedController @Inject()(
-                                        val controllerComponents: MessagesControllerComponents,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        view: AgentNotAuthorisedView
-                                      ) extends FrontendBaseController with I18nSupport {
+                                              val controllerComponents: MessagesControllerComponents,
+                                              identify: IdentifierAction,
+                                              getData: DataRetrievalAction,
+                                              requireData: DataRequiredAction,
+                                              view: AgentNotAuthorisedView
+                                            ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData)  {
     implicit request =>

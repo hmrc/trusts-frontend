@@ -14,29 +14,18 @@
  * limitations under the License.
  */
 
-package views.register
+package controllers.actions
 
-import views.behaviours.ViewBehaviours
-import views.html.playback.status.TrustLockedView
+import javax.inject.Inject
+import models.requests.DataRequest
+import play.api.mvc.Result
 
-class TrustLockedViewSpec extends ViewBehaviours {
+import scala.concurrent.{ExecutionContext, Future}
 
-  val utr = "0987654321"
+class FakePlaybackAction @Inject()(
+                                  implicit val executionContext: ExecutionContext
+                                  ) extends PlaybackAction {
 
-  "TrustLocked view" must {
-
-    val view = viewFor[TrustLockedView](Some(emptyUserAnswers))
-
-    val applyView = view.apply(utr)(fakeRequest, messages)
-
-    behave like normalPage(applyView, "TrustLocked","p1", "p2","p3",
-      "link1")
-
-    "display the correct subheading" in {
-      val doc = asDocument(applyView)
-      assertContainsText(doc, messages("TrustLocked.subheading", utr))
-    }
-
-  }
+  override def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] = Future.successful(Right(request))
 
 }
