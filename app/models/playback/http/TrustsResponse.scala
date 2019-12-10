@@ -29,7 +29,6 @@ case object Processing extends TrustStatus
 case object Closed extends TrustStatus
 case class Processed(playback: GetTrust, formBundleNumber : String) extends TrustStatus
 case object SorryThereHasBeenAProblem extends TrustStatus
-
 case object UtrNotFound extends TrustsResponse
 case object TrustServiceUnavailable extends TrustsResponse
 case object ServerError extends TrustsResponse
@@ -63,6 +62,8 @@ object TrustsResponse {
         response.status match {
           case OK =>
             response.json.as[TrustStatus]
+          case NO_CONTENT =>
+            SorryThereHasBeenAProblem
           case NOT_FOUND =>
             UtrNotFound
           case SERVICE_UNAVAILABLE =>
