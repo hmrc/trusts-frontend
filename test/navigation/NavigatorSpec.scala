@@ -40,7 +40,7 @@ class NavigatorSpec extends SpecBase
 
   implicit val navigator : Navigator = injector.instanceOf[Navigator]
 
-  "Navigator" ignore {
+  "Navigator" when {
 
     "in Normal mode" must {
 
