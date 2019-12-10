@@ -216,6 +216,20 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
       result mustBe Processing
     }
 
+    "return NoContent response" in {
+
+      val utr = "6666666666"
+
+      server.stubFor(
+        get(urlEqualTo(playbackUrl(utr)))
+          .willReturn(
+            aResponse()
+              .withStatus(Status.NO_CONTENT)))
+
+      val result  = Await.result(connector.playback(utr),Duration.Inf)
+      result mustBe SorryThereHasBeenAProblem
+    }
+
     "return NotFound response" in {
 
       val utr = "10000000008"
