@@ -24,6 +24,7 @@ import handlers.ErrorHandler
 import javax.inject.Inject
 import models.EnrolmentStoreResponse.{AlreadyClaimed, NotClaimed}
 import models.requests.DataRequest
+import play.api.Logger
 import play.api.mvc.Result
 import play.api.mvc.Results._
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
@@ -50,17 +51,30 @@ class PlaybackAuthenticationServiceImpl @Inject()(
     val userEnrolled = checkForTrustEnrolmentForUTR(utr)
 
     if (userEnrolled) {
+
+      Logger.info(s"[PlaybackAuthentication] user is enrolled")
+
       // TODO TRUS-2015 send to Trust IV for a non claiming journey when no relationship in IV exists
       trustsIV.authenticate(
         utr = utr,
-        onIVRelationshipExisting = Future.successful(Right(request)),
-        onIVRelationshipNotExisting = Future.successful(Left(Redirect(config.claimATrustUrl(utr))))
+        onIVRelationshipExisting = {
+          Logger.info(s"[PlaybackAuthentication] user is enrolled, redirecting to maintain")
+          Future.successful(Right(request))
+        },
+        onIVRelationshipNotExisting = {
+          Logger.info(s"[PlaybackAuthentication] user is enrolled, redirecting to trust IV")
+          Future.successful(Left(Redirect(config.claimATrustUrl(utr))))
+        }
       )
     } else {
       enrolmentStoreConnector.checkIfAlreadyClaimed(utr) flatMap {
         case AlreadyClaimed =>
+          Logger.info(s"[PlaybackAuthentication] user is not enrolled but the trust is already claimed")
+
           Future.successful(Left(Redirect(controllers.playback.routes.TrustStatusController.alreadyClaimed())))
         case NotClaimed =>
+          Logger.info(s"[PlaybackAuthentication] user is not enrolled and the trust is not claimed")
+
           Future.successful(Left(Redirect(config.claimATrustUrl(utr))))
         case _ =>
           Future.successful(Left(InternalServerError(errorHandler.internalServerErrorTemplate)))
