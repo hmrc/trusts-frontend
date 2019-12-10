@@ -379,27 +379,30 @@ class Navigator @Inject()(
     }
   }
 
+  private def routeToMaintain = {
+    if (config.claimEnabled) {
+      controllers.playback.routes.WhatIsTheUTRVariationsController.onPageLoad()
+    } else {
+      controllers.register.routes.CannotMakeChangesController.onPageLoad()
+    }
+  }
+
+  private def routeToRegistration(affinityGroup: AffinityGroup, draftId: String) = {
+    if(affinityGroup == AffinityGroup.Organisation){
+      routes.TaskListController.onPageLoad(draftId)
+    } else {
+      controllers.register.agents.routes.AgentInternalReferenceController.onPageLoad(NormalMode, draftId)
+    }
+  }
 
   private def trustHaveAUTRRoute(answers: UserAnswers, af: AffinityGroup, draftId: String) = {
     val condition = (answers.get(TrustRegisteredOnlinePage), answers.get(TrustHaveAUTRPage))
 
     condition match {
       case (Some(false), Some(true)) => routes.WhatIsTheUTRController.onPageLoad(NormalMode, draftId)
-      case (Some(false), Some(false)) =>
-
-        if(af == AffinityGroup.Organisation){
-          routes.TaskListController.onPageLoad(draftId)
-        } else {
-          controllers.register.agents.routes.AgentInternalReferenceController.onPageLoad(NormalMode, draftId)
-        }
-
+      case (Some(false), Some(false)) => routeToRegistration(af, draftId)
       case (Some(true), Some(false)) => routes.UTRSentByPostController.onPageLoad()
-      case (Some(true), Some(true)) =>
-        if(config.claimEnabled) {
-          controllers.playback.routes.WhatIsTheUTRVariationsController.onPageLoad()
-        } else {
-          routes.CannotMakeChangesController.onPageLoad()
-        }
+      case (Some(true), Some(true)) => routeToMaintain
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
