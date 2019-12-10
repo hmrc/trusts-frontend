@@ -16,7 +16,7 @@
 
 package models
 
-import models.playback.http.{Closed, Processing, TrustStatus}
+import models.playback.http.{Closed, Processing, SorryThereHasBeenAProblem, TrustStatus}
 import org.scalatest.{MustMatchers, WordSpec}
 import play.api.libs.json.{JsError, Json}
 
@@ -50,6 +50,62 @@ class TrustStatusSpec extends WordSpec with MustMatchers {
                  """.stripMargin
 
         Json.parse(json).as[TrustStatus] mustBe Closed
+      }
+
+      "pending closure" in {
+
+        val json = """{
+                     |
+                     |  "responseHeader": {
+                     |    "status": "Pending Closure",
+                     |    "formBundleNo": "1"
+                     |  }
+                     |}
+                 """.stripMargin
+
+        Json.parse(json).as[TrustStatus] mustBe Closed
+      }
+
+      "parked" in {
+
+        val json = """{
+                     |
+                     |  "responseHeader": {
+                     |    "status": "Parked",
+                     |    "formBundleNo": "1"
+                     |  }
+                     |}
+                 """.stripMargin
+
+        Json.parse(json).as[TrustStatus] mustBe SorryThereHasBeenAProblem
+      }
+
+      "obsoleted" in {
+
+        val json = """{
+                     |
+                     |  "responseHeader": {
+                     |    "status": "Obsoleted",
+                     |    "formBundleNo": "1"
+                     |  }
+                     |}
+                 """.stripMargin
+
+        Json.parse(json).as[TrustStatus] mustBe SorryThereHasBeenAProblem
+      }
+
+      "suspended" in {
+
+        val json = """{
+                     |
+                     |  "responseHeader": {
+                     |    "status": "Suspended",
+                     |    "formBundleNo": "1"
+                     |  }
+                     |}
+                 """.stripMargin
+
+        Json.parse(json).as[TrustStatus] mustBe SorryThereHasBeenAProblem
       }
     }
 
