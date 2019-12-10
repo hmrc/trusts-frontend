@@ -23,6 +23,7 @@ import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackE
 import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
 import models.playback.http.DisplayTrustLeadTrusteeIndType
 import models.playback.{MetaData, UserAnswers}
+import models.registration.pages.PassportOrIdCardDetails
 import pages.register.trustees._
 import play.api.Logger
 
@@ -48,6 +49,7 @@ class LeadTrusteeIndExtractor @Inject() extends PlaybackExtractor[Option[Display
                 .flatMap(_.set(TrusteesDateOfBirthPage(0),
                   LocalDate.of(leadTrustee.dateOfBirth.getYear, leadTrustee.dateOfBirth.getMonthOfYear, leadTrustee.dateOfBirth.getDayOfMonth)))
                 .flatMap(answers => extractNino(leadTrustee, answers))
+                .flatMap(answers => extractPassportOrIDCard(leadTrustee, answers))
                 .flatMap(answers => extractAddress(leadTrustee, answers))
                 .flatMap(_.set(TelephoneNumberPage(0), leadTrustee.phoneNumber))
                 .flatMap(_.set(EmailPage(0), leadTrustee.email))
@@ -63,7 +65,7 @@ class LeadTrusteeIndExtractor @Inject() extends PlaybackExtractor[Option[Display
                   )
                 }
             }
-          
+
           updated match {
             case Success(a) =>
               Right(Success(a))
@@ -82,6 +84,14 @@ class LeadTrusteeIndExtractor @Inject() extends PlaybackExtractor[Option[Display
       case None =>
         // Assumption that user answered no as nino is not provided
         answers.set(TrusteeAUKCitizenPage(0), false)
+    }
+  }
+
+  private def extractPassportOrIDCard(leadTrustee: DisplayTrustLeadTrusteeIndType, answers: UserAnswers) = {
+    leadTrustee.identification.passport match {
+      case Some(passport) =>
+        answers.set(TrusteePassportIDCardPage(0), PassportOrIdCardDetails(passport.countryOfIssue, passport.number, passport.expirationDate))
+      case None => Try(answers)
     }
   }
 
