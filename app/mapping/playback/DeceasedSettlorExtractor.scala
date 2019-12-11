@@ -33,10 +33,10 @@ class DeceasedSettlorExtractor @Inject() extends PlaybackExtractor[Option[Displa
 
   import PlaybackAddressImplicits._
 
-  override def extract(answers: UserAnswers, data: Option[DisplayTrustWillType]): Either[PlaybackExtractionError, Try[UserAnswers]] =
+  override def extract(answers: UserAnswers, data: Option[DisplayTrustWillType]): Either[PlaybackExtractionError, UserAnswers] =
     {
       data match {
-        case None => Right(Success(answers))
+        case None => Right(answers)
         case deceasedSettlor =>
 
           val updated = deceasedSettlor.foldLeft[Try[UserAnswers]](Success(answers)){
@@ -64,7 +64,7 @@ class DeceasedSettlorExtractor @Inject() extends PlaybackExtractor[Option[Displa
 
           updated match {
             case Success(a) =>
-              Right(Success(a))
+              Right(a)
             case Failure(exception) =>
               Logger.warn(s"[DeceasedSettlorExtractor] failed to extract data due to ${exception.getMessage}")
               Left(FailedToExtractData(DisplayTrustWillType.toString))

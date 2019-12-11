@@ -33,10 +33,10 @@ class LeadTrusteeIndExtractor @Inject() extends PlaybackExtractor[Option[Display
 
   import PlaybackAddressImplicits._
 
-  override def extract(answers: UserAnswers, data: Option[DisplayTrustLeadTrusteeIndType]): Either[PlaybackExtractionError, Try[UserAnswers]] =
+  override def extract(answers: UserAnswers, data: Option[DisplayTrustLeadTrusteeIndType]): Either[PlaybackExtractionError, UserAnswers] =
     {
       data match {
-        case None => Right(Success(answers))
+        case None => Left(FailedToExtractData("No Lead Trustee Ind"))
         case leadTrustee =>
 
           val updated = leadTrustee.foldLeft[Try[UserAnswers]](Success(answers)){
@@ -68,7 +68,7 @@ class LeadTrusteeIndExtractor @Inject() extends PlaybackExtractor[Option[Display
 
           updated match {
             case Success(a) =>
-              Right(Success(a))
+              Right(a)
             case Failure(exception) =>
               Logger.warn(s"[LeadTrusteeIndExtractor] failed to extract data due to ${exception.getMessage}")
               Left(FailedToExtractData(DisplayTrustLeadTrusteeIndType.toString))
@@ -91,7 +91,7 @@ class LeadTrusteeIndExtractor @Inject() extends PlaybackExtractor[Option[Display
     leadTrustee.identification.passport match {
       case Some(passport) =>
         answers.set(TrusteePassportIDCardPage(0), PassportOrIdCardDetails(passport.countryOfIssue, passport.number, passport.expirationDate))
-      case None => Try(answers)
+      case None => Success(answers)
     }
   }
 
@@ -103,7 +103,7 @@ class LeadTrusteeIndExtractor @Inject() extends PlaybackExtractor[Option[Display
       case Some(nonUk: InternationalAddress) =>
         answers.set(TrusteesInternationalAddressPage(0), nonUk)
           .flatMap(_.set(TrusteeLiveInTheUKPage(0), false))
-      case None => Try(answers)
+      case None => Success(answers)
     }
   }
 

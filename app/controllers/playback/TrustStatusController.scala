@@ -143,13 +143,10 @@ class TrustStatusController @Inject()(
   def extract(utr: String, playback: GetTrust)(implicit request: DataRequest[AnyContent]) : Future[Result] = {
     // Todo create new getData, requireData to return instance of PlaybackData for all Variations controllers rather than calling request.userAnswers.toPlaybackUserAnswers
     playbackExtractor.extract(request.userAnswers.toPlaybackUserAnswers, playback) match {
-      case Right(Success(answers)) =>
+      case Right(answers) =>
         playbackRepository.store(answers) map { _ =>
           Redirect(routes.InformationMaintainingThisTrustController.onPageLoad())
         }
-      case Right(Failure(reason)) =>
-        // Todo update where it goes and log reason?
-        Future.successful(Redirect(controllers.playback.routes.TrustStatusController.down()))
       case Left(reason) =>
         // Todo update where it goes and log reason?
         Future.successful(Redirect(controllers.playback.routes.TrustStatusController.down()))

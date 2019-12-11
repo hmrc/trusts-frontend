@@ -19,38 +19,28 @@ package models.playback
 import java.time.LocalDateTime
 
 import cats.kernel.Semigroup
-import mapping.playback.PlaybackExtractionErrors.FailedToCombineAnswers
 
-import scala.util.{Failure, Success, Try}
+import scala.util.{Success, Try}
 
 object UserAnswersCombinator {
 
-  implicit val userAnswersSemigroup : Semigroup[Try[UserAnswers]] = new Semigroup[Try[UserAnswers]] {
+  implicit val userAnswersSemigroup : Semigroup[UserAnswers] = new Semigroup[UserAnswers] {
 
-    override def combine(x: Try[UserAnswers], y: Try[UserAnswers]): Try[UserAnswers] = {
-
-      for {
-        ua1 <- x
-        ua2 <- y
-      } yield {
+    override def combine(x: UserAnswers, y: UserAnswers): UserAnswers = {
 
         UserAnswers(
-          data = ua1.data ++ ua2.data,
-          internalAuthId = ua1.internalAuthId,
+          data = x.data ++ y.data,
+          internalAuthId = x.internalAuthId,
           updatedAt = LocalDateTime.now
         )
 
-      }
     }
   }
 
-  implicit class Combinator(answers: List[Try[UserAnswers]]) {
+  implicit class Combinator(answers: List[UserAnswers]) {
 
-    def combine = {
-      Semigroup[Try[UserAnswers]].combineAllOption(answers) match {
-        case Some(userAnswers) => userAnswers
-        case None => Failure(FailedToCombineAnswers)
-      }
+    def combine: Option[UserAnswers] = {
+      Semigroup[UserAnswers].combineAllOption(answers)
     }
 
   }
