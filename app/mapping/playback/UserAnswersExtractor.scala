@@ -26,7 +26,9 @@ import play.api.Logger
 import scala.util.Try
 
 class UserAnswersExtractor @Inject()(charity: CharityBeneficiaryExtractor,
-                                     leadTrusteeInd: LeadTrusteeIndExtractor) extends PlaybackExtractor[GetTrust] {
+                                     leadTrusteeInd: LeadTrusteeIndExtractor,
+                                     deceasedSettlor: DeceasedSettlorExtractor
+                                    ) extends PlaybackExtractor[GetTrust] {
 
   import models.playback.UserAnswersCombinator._
 
@@ -35,9 +37,10 @@ class UserAnswersExtractor @Inject()(charity: CharityBeneficiaryExtractor,
     val answersCombined = for {
       ua <- charity.extract(answers, data.trust.entities.beneficiary.charity).right
       ua1 <- leadTrusteeInd.extract(answers, data.trust.entities.leadTrustee.leadTrusteeInd).right
+      ua2 <- deceasedSettlor.extract(answers, data.trust.entities.deceased).right
     } yield {
         for {
-          combined <- Semigroup[Try[UserAnswers]].combineAllOption(List(ua, ua1))
+          combined <- Semigroup[Try[UserAnswers]].combineAllOption(List(ua, ua1, ua2))
         } yield combined
     }
 
