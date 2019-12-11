@@ -19,21 +19,21 @@ package mapping.playback
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
 import models.core.pages.{IndividualOrBusiness, InternationalAddress, UKAddress}
-import models.playback.http.DisplayTrustLeadTrusteeIndType
+import models.playback.http.DisplayTrustLeadTrusteeOrgType
 import models.playback.{MetaData, UserAnswers}
 import pages.register.trustees._
 import play.api.Logger
 
 import scala.util.{Failure, Success, Try}
 
-class LeadTrusteeIndExtractor @Inject() extends PlaybackExtractor[Option[DisplayTrustLeadTrusteeIndType]] {
+class LeadTrusteeOrgExtractor @Inject() extends PlaybackExtractor[Option[DisplayTrustLeadTrusteeOrgType]] {
 
   import PlaybackImplicits._
 
-  override def extract(answers: UserAnswers, data: Option[DisplayTrustLeadTrusteeIndType]): Either[PlaybackExtractionError, UserAnswers] =
+  override def extract(answers: UserAnswers, data: Option[DisplayTrustLeadTrusteeOrgType]): Either[PlaybackExtractionError, UserAnswers] =
     {
       data match {
-        case None => Left(FailedToExtractData("No Lead Trustee Ind"))
+        case None => Left(FailedToExtractData("No Lead Trustee Org"))
         case leadTrustee =>
 
           val updated = leadTrustee.foldLeft[Try[UserAnswers]](Success(answers)){
@@ -41,11 +41,9 @@ class LeadTrusteeIndExtractor @Inject() extends PlaybackExtractor[Option[Display
 
               answers
                 .flatMap(_.set(IsThisLeadTrusteePage(0), true))
-                .flatMap(_.set(TrusteeIndividualOrBusinessPage(0), IndividualOrBusiness.Individual))
-                .flatMap(_.set(TrusteesNamePage(0), leadTrustee.name.convert))
-                .flatMap(_.set(TrusteesDateOfBirthPage(0), leadTrustee.dateOfBirth.convert))
-                .flatMap(answers => extractNino(leadTrustee, answers))
-                .flatMap(answers => extractPassportOrIDCard(leadTrustee, answers))
+                .flatMap(_.set(TrusteeIndividualOrBusinessPage(0), IndividualOrBusiness.Business))
+                .flatMap(_.set(TrusteeOrgNamePage(0), leadTrustee.name))
+                .flatMap(answers => extractUtr(leadTrustee, answers))
                 .flatMap(answers => extractAddress(leadTrustee, answers))
                 .flatMap(_.set(TelephoneNumberPage(0), leadTrustee.phoneNumber))
                 .flatMap(_.set(EmailPage(0), leadTrustee.email))
@@ -66,42 +64,32 @@ class LeadTrusteeIndExtractor @Inject() extends PlaybackExtractor[Option[Display
             case Success(a) =>
               Right(a)
             case Failure(exception) =>
-              Logger.warn(s"[LeadTrusteeIndExtractor] failed to extract data due to ${exception.getMessage}")
-              Left(FailedToExtractData(DisplayTrustLeadTrusteeIndType.toString))
+              Logger.warn(s"[LeadTrusteeOrgExtractor] failed to extract data due to ${exception.getMessage}")
+              Left(FailedToExtractData(DisplayTrustLeadTrusteeOrgType.toString))
           }
       }
     }
 
-  private def extractNino(leadTrustee: DisplayTrustLeadTrusteeIndType, answers: UserAnswers) = {
-    leadTrustee.identification.nino match {
-      case Some(nino) =>
-        answers.set(TrusteeAUKCitizenPage(0), true)
-          .flatMap(_.set(TrusteesNinoPage(0), nino))
+  private def extractUtr(leadTrustee: DisplayTrustLeadTrusteeOrgType, answers: UserAnswers) = {
+    leadTrustee.identification.utr match {
+      case Some(utr) =>
+        answers.set(TrusteeAUKBusinessPage(0), true)
+          .flatMap(_.set(TrusteesUtrPage(0), utr))
       case None =>
-        // Assumption that user answered no as nino is not provided
-        answers.set(TrusteeAUKCitizenPage(0), false)
+        // Assumption that user answered no as utr is not provided
+        answers.set(TrusteeAUKBusinessPage(0), false)
     }
   }
 
-  private def extractPassportOrIDCard(leadTrustee: DisplayTrustLeadTrusteeIndType, answers: UserAnswers) = {
-    leadTrustee.identification.passport match {
-      case Some(passport) =>
-        answers.set(TrusteePassportIDCardPage(0), passport.convert)
-      case None =>
-        Success(answers)
-    }
-  }
-
-  private def extractAddress(leadTrusteeInd: DisplayTrustLeadTrusteeIndType, answers: UserAnswers) = {
-    leadTrusteeInd.identification.address.convert match {
+  private def extractAddress(leadTrusteeOrg: DisplayTrustLeadTrusteeOrgType, answers: UserAnswers) = {
+    leadTrusteeOrg.identification.address.convert match {
       case Some(uk: UKAddress) =>
         answers.set(TrusteesUkAddressPage(0), uk)
           .flatMap(_.set(TrusteeLiveInTheUKPage(0), true))
       case Some(nonUk: InternationalAddress) =>
         answers.set(TrusteesInternationalAddressPage(0), nonUk)
           .flatMap(_.set(TrusteeLiveInTheUKPage(0), false))
-      case None =>
-        Success(answers)
+      case None => Success(answers)
     }
   }
 

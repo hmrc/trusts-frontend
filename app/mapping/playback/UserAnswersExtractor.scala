@@ -16,29 +16,24 @@
 
 package mapping.playback
 
-import cats.kernel.Semigroup
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors._
 import models.playback.UserAnswers
 import models.playback.http.GetTrust
 import play.api.Logger
 
-import scala.util.Try
-
 class UserAnswersExtractor @Inject()(charity: CharityBeneficiaryExtractor,
-                                     leadTrusteeInd: LeadTrusteeIndExtractor) extends PlaybackExtractor[GetTrust] {
+                                     leadTrustee: LeadTrusteeExtractor) extends PlaybackExtractor[GetTrust] {
 
   import models.playback.UserAnswersCombinator._
 
-  override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionError, Try[UserAnswers]] = {
+  override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionError, UserAnswers] = {
 
     val answersCombined = for {
       ua <- charity.extract(answers, data.trust.entities.beneficiary.charity).right
-      ua1 <- leadTrusteeInd.extract(answers, data.trust.entities.leadTrustee.leadTrusteeInd).right
+      ua1 <- leadTrustee.extract(answers, data.trust.entities.leadTrustee).right
     } yield {
-        for {
-          combined <- Semigroup[Try[UserAnswers]].combineAllOption(List(ua, ua1))
-        } yield combined
+      List(ua, ua1).combine
     }
 
     answersCombined match {
@@ -52,4 +47,5 @@ class UserAnswersExtractor @Inject()(charity: CharityBeneficiaryExtractor,
         Right(ua)
     }
   }
+
 }

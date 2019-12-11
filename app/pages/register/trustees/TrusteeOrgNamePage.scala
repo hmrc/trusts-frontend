@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package mapping.playback
+package pages.register.trustees
 
-import mapping.playback.PlaybackExtractionErrors.PlaybackExtractionError
-import models.playback.UserAnswers
+import models.core.pages.FullName
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import sections.Trustees
 
-import scala.util.Try
+final case class TrusteeOrgNamePage(index : Int) extends QuestionPage[String] {
 
-trait PlaybackExtractor[T] {
+  override def path: JsPath = Trustees.path \ index \ toString
 
-  def extract(answers: UserAnswers, data: T): Either[PlaybackExtractionError, UserAnswers]
+  override def toString: String = "name"
 }

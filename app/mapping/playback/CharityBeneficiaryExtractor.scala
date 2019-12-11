@@ -28,12 +28,12 @@ import scala.util.{Failure, Success, Try}
 
 class CharityBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[List[DisplayTrustCharityType]]] {
 
-  import PlaybackAddressImplicits._
+  import PlaybackImplicits._
 
-  override def extract(answers: UserAnswers, data: Option[List[DisplayTrustCharityType]]): Either[PlaybackExtractionError, Try[UserAnswers]] =
+  override def extract(answers: UserAnswers, data: Option[List[DisplayTrustCharityType]]): Either[PlaybackExtractionError, UserAnswers] =
     {
       data match {
-        case Some(Nil) | None => Right(Success(answers))
+        case None => Right(answers)
         case Some(charities) =>
 
           val updated = charities.zipWithIndex.foldLeft[Try[UserAnswers]](Success(answers)){
@@ -59,7 +59,7 @@ class CharityBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[Lis
 
           updated match {
             case Success(a) =>
-              Right(Success(a))
+              Right(a)
             case Failure(exception) =>
               Logger.warn(s"[CharityBeneficiaryExtractor] failed to extract data due to ${exception.getMessage}")
               Left(FailedToExtractData(DisplayTrustCharityType.toString))

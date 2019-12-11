@@ -81,15 +81,15 @@ class CharityBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = charityExtractor.extract(ua, Some(charity))
 
-        extraction.right.value.success.value.get(CharityBeneficiaryNamePage(0)).get mustBe "Charity 1"
-        extraction.right.value.success.value.get(CharityBeneficiaryMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
-        extraction.right.value.success.value.get(CharityBeneficiaryDiscretionYesNoPage(0)).get mustBe true
-        extraction.right.value.success.value.get(CharityBeneficiaryShareOfIncomePage(0)) mustNot be(defined)
-        extraction.right.value.success.value.get(CharityBeneficiaryUtrPage(0)) mustNot be(defined)
-        extraction.right.value.success.value.get(CharityBeneficiarySafeIdPage(0)) mustNot be(defined)
-        extraction.right.value.success.value.get(CharityBeneficiaryAddressYesNoPage(0)).get mustBe false
-        extraction.right.value.success.value.get(CharityBeneficiaryAddressUKYesNoPage(0)) mustNot be(defined)
-        extraction.right.value.success.value.get(CharityBeneficiaryAddressPage(0)) mustNot be(defined)
+        extraction.right.value.get(CharityBeneficiaryNamePage(0)).get mustBe "Charity 1"
+        extraction.right.value.get(CharityBeneficiaryMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
+        extraction.right.value.get(CharityBeneficiaryDiscretionYesNoPage(0)).get mustBe true
+        extraction.right.value.get(CharityBeneficiaryShareOfIncomePage(0)) mustNot be(defined)
+        extraction.right.value.get(CharityBeneficiaryUtrPage(0)) mustNot be(defined)
+        extraction.right.value.get(CharityBeneficiarySafeIdPage(0)) mustNot be(defined)
+        extraction.right.value.get(CharityBeneficiaryAddressYesNoPage(0)).get mustBe false
+        extraction.right.value.get(CharityBeneficiaryAddressUKYesNoPage(0)) mustNot be(defined)
+        extraction.right.value.get(CharityBeneficiaryAddressPage(0)) mustNot be(defined)
       }
 
       "with full data must return user answers updated" in {
@@ -101,31 +101,31 @@ class CharityBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
 
         extraction mustBe 'right
 
-        extraction.right.value.success.value.get(CharityBeneficiaryNamePage(0)).get mustBe "Charity 0"
-        extraction.right.value.success.value.get(CharityBeneficiaryNamePage(1)).get mustBe "Charity 1"
+        extraction.right.value.get(CharityBeneficiaryNamePage(0)).get mustBe "Charity 0"
+        extraction.right.value.get(CharityBeneficiaryNamePage(1)).get mustBe "Charity 1"
 
-        extraction.right.value.success.value.get(CharityBeneficiaryMetaData(0)).get mustBe MetaData("0", Some("01"), "2019-11-26")
+        extraction.right.value.get(CharityBeneficiaryMetaData(0)).get mustBe MetaData("0", Some("01"), "2019-11-26")
 
-        extraction.right.value.success.value.get(CharityBeneficiaryDiscretionYesNoPage(0)).get mustBe false
-        extraction.right.value.success.value.get(CharityBeneficiaryDiscretionYesNoPage(1)).get mustBe false
+        extraction.right.value.get(CharityBeneficiaryDiscretionYesNoPage(0)).get mustBe false
+        extraction.right.value.get(CharityBeneficiaryDiscretionYesNoPage(1)).get mustBe false
 
-        extraction.right.value.success.value.get(CharityBeneficiaryShareOfIncomePage(0)).get mustBe "98"
-        extraction.right.value.success.value.get(CharityBeneficiaryShareOfIncomePage(1)).get mustBe "98"
+        extraction.right.value.get(CharityBeneficiaryShareOfIncomePage(0)).get mustBe "98"
+        extraction.right.value.get(CharityBeneficiaryShareOfIncomePage(1)).get mustBe "98"
 
-        extraction.right.value.success.value.get(CharityBeneficiaryUtrPage(0)).get mustBe "0234567890"
-        extraction.right.value.success.value.get(CharityBeneficiaryUtrPage(1)).get mustBe "1234567890"
+        extraction.right.value.get(CharityBeneficiaryUtrPage(0)).get mustBe "0234567890"
+        extraction.right.value.get(CharityBeneficiaryUtrPage(1)).get mustBe "1234567890"
 
-        extraction.right.value.success.value.get(CharityBeneficiarySafeIdPage(0)).get mustBe "8947584-94759745-84758745"
-        extraction.right.value.success.value.get(CharityBeneficiarySafeIdPage(1)).get mustBe "8947584-94759745-84758745"
+        extraction.right.value.get(CharityBeneficiarySafeIdPage(0)).get mustBe "8947584-94759745-84758745"
+        extraction.right.value.get(CharityBeneficiarySafeIdPage(1)).get mustBe "8947584-94759745-84758745"
 
-        extraction.right.value.success.value.get(CharityBeneficiaryAddressYesNoPage(0)).get mustBe true
-        extraction.right.value.success.value.get(CharityBeneficiaryAddressYesNoPage(1)).get mustBe true
+        extraction.right.value.get(CharityBeneficiaryAddressYesNoPage(0)).get mustBe true
+        extraction.right.value.get(CharityBeneficiaryAddressYesNoPage(1)).get mustBe true
 
-        extraction.right.value.success.value.get(CharityBeneficiaryAddressPage(0)).get mustBe UKAddress("line 0", "line2", None, None, "NE11NE")
-        extraction.right.value.success.value.get(CharityBeneficiaryAddressPage(1)).get mustBe UKAddress("line 1", "line2", None, None, "NE11NE")
+        extraction.right.value.get(CharityBeneficiaryAddressPage(0)).get mustBe UKAddress("line 0", "line2", None, None, "NE11NE")
+        extraction.right.value.get(CharityBeneficiaryAddressPage(1)).get mustBe UKAddress("line 1", "line2", None, None, "NE11NE")
 
-        extraction.right.value.success.value.get(CharityBeneficiaryAddressUKYesNoPage(0)).get mustBe true
-        extraction.right.value.success.value.get(CharityBeneficiaryAddressUKYesNoPage(1)).get mustBe true
+        extraction.right.value.get(CharityBeneficiaryAddressUKYesNoPage(0)).get mustBe true
+        extraction.right.value.get(CharityBeneficiaryAddressUKYesNoPage(1)).get mustBe true
       }
 
     }
