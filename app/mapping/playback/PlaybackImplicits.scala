@@ -16,17 +16,34 @@
 
 package mapping.playback
 
-import models.core.pages.{Address, InternationalAddress, UKAddress}
-import models.playback.http.AddressType
+import java.time.LocalDate
 
-object PlaybackAddressImplicits {
+import mapping.registration.PassportType
+import models.core.pages.{Address, FullName, InternationalAddress, UKAddress}
+import models.playback.http.{AddressType, NameType}
+import models.registration.pages.PassportOrIdCardDetails
+import org.joda.time.DateTime
+
+object PlaybackImplicits {
+
+  implicit class FullNameConverter(name: NameType) {
+    def convert : FullName = FullName(name.firstName, name.middleName, name.lastName)
+  }
+
+  implicit class DateTimeConverter(date : DateTime) {
+    def convert : LocalDate = LocalDate.of(date.getYear, date.getMonthOfYear, date.getDayOfMonth)
+  }
+
+  implicit class PassportTypeConverter(passport: PassportType) {
+    def convert : PassportOrIdCardDetails =
+      PassportOrIdCardDetails(passport.countryOfIssue, passport.number, passport.expirationDate)
+  }
 
   implicit class AddressConverter(address : Option[AddressType]) {
 
     def convert : Option[Address] = {
       address map {
         add =>
-
           add.postCode match {
             case Some(post) =>
               UKAddress(

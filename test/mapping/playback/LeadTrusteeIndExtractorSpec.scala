@@ -21,6 +21,7 @@ import java.time.LocalDate
 import org.joda.time.DateTime
 import base.SpecBaseHelpers
 import generators.Generators
+import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
 import mapping.registration.PassportType
 import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
 import models.playback.http._
@@ -38,7 +39,7 @@ class LeadTrusteeIndExtractorSpec extends FreeSpec with MustMatchers
 
     "when no lead trustee individual" - {
 
-      "must return user answers" in {
+      "must return an error" in {
 
         val leadTrustee = None
 
@@ -46,8 +47,7 @@ class LeadTrusteeIndExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = leadTrusteeIndExtractor.extract(ua, leadTrustee)
 
-        extraction mustBe 'right
-
+        extraction.left.value mustBe a[FailedToExtractData]
       }
 
     }
