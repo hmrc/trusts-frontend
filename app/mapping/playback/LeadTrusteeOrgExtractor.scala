@@ -28,7 +28,7 @@ import scala.util.{Failure, Success, Try}
 
 class LeadTrusteeOrgExtractor @Inject() extends PlaybackExtractor[Option[DisplayTrustLeadTrusteeOrgType]] {
 
-  import PlaybackAddressImplicits._
+  import PlaybackImplicits._
 
   override def extract(answers: UserAnswers, data: Option[DisplayTrustLeadTrusteeOrgType]): Either[PlaybackExtractionError, UserAnswers] =
     {

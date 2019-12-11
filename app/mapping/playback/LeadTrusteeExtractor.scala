@@ -22,19 +22,18 @@ import models.playback.UserAnswers
 import models.playback.http.DisplayTrustLeadTrusteeType
 
 class LeadTrusteeExtractor @Inject()(leadTrusteeInd: LeadTrusteeIndExtractor,
-                                     leadTrusteeOrg: LeadTrusteeIndExtractor) extends PlaybackExtractor[DisplayTrustLeadTrusteeType] {
+                                     leadTrusteeOrg: LeadTrusteeOrgExtractor) extends PlaybackExtractor[DisplayTrustLeadTrusteeType] {
 
   override def extract(answers: UserAnswers, data: DisplayTrustLeadTrusteeType): Either[PlaybackExtractionError, UserAnswers] = {
 
-    val individual = leadTrusteeInd.extract(answers, data.leadTrusteeInd)
-    val organisation = leadTrusteeInd.extract(answers, data.leadTrusteeInd)
+    val leadTrustees = Seq(
+      leadTrusteeInd.extract(answers, data.leadTrusteeInd),
+      leadTrusteeOrg.extract(answers, data.leadTrusteeOrg)
+    )
 
-    (individual, organisation) match {
-      case (Right(ind), Left(_)) => Right(ind)
-      case (Left(_), Right(org)) => Right(org)
-      case (_, _) => Left(FailedToExtractData("Lead Trustee Extraction Error"))
-    }
-
+    leadTrustees.collectFirst {
+      case z if z.isRight => z
+    }.getOrElse(Left(FailedToExtractData("Lead Trustee Extraction Error")))
   }
 
 }
