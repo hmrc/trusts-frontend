@@ -31,7 +31,7 @@ import scala.util.{Failure, Success, Try}
 
 class DeceasedSettlorExtractor @Inject() extends PlaybackExtractor[Option[DisplayTrustWillType]] {
 
-  import PlaybackAddressImplicits._
+  import PlaybackImplicits._
 
   override def extract(answers: UserAnswers, data: Option[DisplayTrustWillType]): Either[PlaybackExtractionError, UserAnswers] =
     {

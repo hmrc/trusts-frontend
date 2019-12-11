@@ -28,7 +28,7 @@ import scala.util.{Failure, Success, Try}
 
 class CharityBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[List[DisplayTrustCharityType]]] {
 
-  import PlaybackAddressImplicits._
+  import PlaybackImplicits._
 
   override def extract(answers: UserAnswers, data: Option[List[DisplayTrustCharityType]]): Either[PlaybackExtractionError, UserAnswers] =
     {

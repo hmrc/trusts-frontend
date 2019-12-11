@@ -16,14 +16,11 @@
 
 package mapping.playback
 
-import java.time.LocalDate
-
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
-import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
+import models.core.pages.{IndividualOrBusiness, InternationalAddress, UKAddress}
 import models.playback.http.DisplayTrustLeadTrusteeIndType
 import models.playback.{MetaData, UserAnswers}
-import models.registration.pages.PassportOrIdCardDetails
 import pages.register.trustees._
 import play.api.Logger
 
@@ -31,7 +28,7 @@ import scala.util.{Failure, Success, Try}
 
 class LeadTrusteeIndExtractor @Inject() extends PlaybackExtractor[Option[DisplayTrustLeadTrusteeIndType]] {
 
-  import PlaybackAddressImplicits._
+  import PlaybackImplicits._
 
   override def extract(answers: UserAnswers, data: Option[DisplayTrustLeadTrusteeIndType]): Either[PlaybackExtractionError, UserAnswers] =
     {
@@ -45,9 +42,8 @@ class LeadTrusteeIndExtractor @Inject() extends PlaybackExtractor[Option[Display
               answers
                 .flatMap(_.set(IsThisLeadTrusteePage(0), true))
                 .flatMap(_.set(TrusteeIndividualOrBusinessPage(0), IndividualOrBusiness.Individual))
-                .flatMap(_.set(TrusteesNamePage(0), FullName(leadTrustee.name.firstName, leadTrustee.name.middleName, leadTrustee.name.lastName)))
-                .flatMap(_.set(TrusteesDateOfBirthPage(0),
-                  LocalDate.of(leadTrustee.dateOfBirth.getYear, leadTrustee.dateOfBirth.getMonthOfYear, leadTrustee.dateOfBirth.getDayOfMonth)))
+                .flatMap(_.set(TrusteesNamePage(0), leadTrustee.name.convert))
+                .flatMap(_.set(TrusteesDateOfBirthPage(0), leadTrustee.dateOfBirth.convert))
                 .flatMap(answers => extractNino(leadTrustee, answers))
                 .flatMap(answers => extractPassportOrIDCard(leadTrustee, answers))
                 .flatMap(answers => extractAddress(leadTrustee, answers))
@@ -90,8 +86,9 @@ class LeadTrusteeIndExtractor @Inject() extends PlaybackExtractor[Option[Display
   private def extractPassportOrIDCard(leadTrustee: DisplayTrustLeadTrusteeIndType, answers: UserAnswers) = {
     leadTrustee.identification.passport match {
       case Some(passport) =>
-        answers.set(TrusteePassportIDCardPage(0), PassportOrIdCardDetails(passport.countryOfIssue, passport.number, passport.expirationDate))
-      case None => Success(answers)
+        answers.set(TrusteePassportIDCardPage(0), passport.convert)
+      case None =>
+        Success(answers)
     }
   }
 
@@ -103,7 +100,8 @@ class LeadTrusteeIndExtractor @Inject() extends PlaybackExtractor[Option[Display
       case Some(nonUk: InternationalAddress) =>
         answers.set(TrusteesInternationalAddressPage(0), nonUk)
           .flatMap(_.set(TrusteeLiveInTheUKPage(0), false))
-      case None => Success(answers)
+      case None =>
+        Success(answers)
     }
   }
 
