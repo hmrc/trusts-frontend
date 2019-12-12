@@ -24,7 +24,8 @@ import play.api.Logger
 
 class UserAnswersExtractor @Inject()(charity: CharityBeneficiaryExtractor,
                                      leadTrustee: LeadTrusteeExtractor,
-                                     deceasedSettlor: DeceasedSettlorExtractor
+                                     deceasedSettlor: DeceasedSettlorExtractor,
+                                     trustBeneficiaryExtractor: TrustBeneficiaryExtractor
                                     ) extends PlaybackExtractor[GetTrust] {
 
   import models.playback.UserAnswersCombinator._
@@ -35,8 +36,9 @@ class UserAnswersExtractor @Inject()(charity: CharityBeneficiaryExtractor,
       ua <- charity.extract(answers, data.trust.entities.beneficiary.charity).right
       ua1 <- leadTrustee.extract(answers, data.trust.entities.leadTrustee).right
       ua2 <- deceasedSettlor.extract(answers, data.trust.entities.deceased).right
+      ua3 <- trustBeneficiaryExtractor.extract(answers, data.trust.entities.beneficiary.trust).right
     } yield {
-      List(ua, ua1, ua2).combine
+      List(ua, ua1, ua2, ua3).combine
     }
 
     answersCombined match {
