@@ -22,7 +22,8 @@ import models.playback.UserAnswers
 import models.playback.http.DisplayTrustBeneficiaryType
 
 class BeneficiaryExtractor @Inject()(charityBeneficiaryExtractor: CharityBeneficiaryExtractor,
-                                     companyBeneficiaryExtractor: CompanyBeneficiaryExtractor) extends PlaybackExtractor[DisplayTrustBeneficiaryType] {
+                                     companyBeneficiaryExtractor: CompanyBeneficiaryExtractor,
+                                     trustBeneficiaryExtractor: TrustBeneficiaryExtractor) extends PlaybackExtractor[DisplayTrustBeneficiaryType] {
 
   override def extract(answers: UserAnswers, data: DisplayTrustBeneficiaryType): Either[PlaybackExtractionError, UserAnswers] = {
 
@@ -30,7 +31,8 @@ class BeneficiaryExtractor @Inject()(charityBeneficiaryExtractor: CharityBenefic
 
     val beneficiaries: List[UserAnswers] = List(
       charityBeneficiaryExtractor.extract(answers, data.charity),
-      companyBeneficiaryExtractor.extract(answers, data.company)
+      companyBeneficiaryExtractor.extract(answers, data.company),
+      trustBeneficiaryExtractor.extract(answers, data.trust)
     ).collect {
       case Right(z) => z
     }

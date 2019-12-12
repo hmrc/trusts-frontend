@@ -25,6 +25,7 @@ import models.playback.http._
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import pages.register.beneficiaries.charity._
 import pages.register.beneficiaries.company._
+import pages.register.beneficiaries.trust._
 
 class BeneficiaryExtractorSpec extends FreeSpec with MustMatchers
   with EitherValues with Generators with SpecBaseHelpers {
@@ -62,7 +63,7 @@ class BeneficiaryExtractorSpec extends FreeSpec with MustMatchers
                 bpMatchStatus = Some("01"),
                 organisationName = s"Company 1",
                 beneficiaryDiscretion = Some(false),
-                beneficiaryShareOfIncome = Some("60"),
+                beneficiaryShareOfIncome = Some("10"),
                 identification = Some(
                   DisplayTrustIdentificationOrgType(
                     safeId = Some("8947584-94759745-84758745"),
@@ -74,23 +75,41 @@ class BeneficiaryExtractorSpec extends FreeSpec with MustMatchers
               )
             )
           ),
-          trust = None,
-          charity = Some(
+          trust = Some(
             List(
-              DisplayTrustCharityType(
-                lineNo = s"2",
-                bpMatchStatus = Some("02"),
-                organisationName = s"Charity 1",
+              DisplayTrustBeneficiaryTrustType(
+                lineNo = s"1",
+                bpMatchStatus = Some("01"),
+                organisationName = s"Trust 1",
                 beneficiaryDiscretion = Some(false),
-                beneficiaryShareOfIncome = Some("40"),
+                beneficiaryShareOfIncome = Some("10"),
                 identification = Some(
                   DisplayTrustIdentificationOrgType(
                     safeId = Some("8947584-94759745-84758745"),
-                    utr = Some(s"0987654321"),
-                    address = Some(AddressType(s"line 3", "line 4", None, None, Some("NE22NE"), "GB"))
+                    utr = Some(s"1234567890"),
+                    address = Some(AddressType(s"line 1", "line 2", None, None, Some("NE11NE"), "GB"))
                   )
                 ),
-                entityStart = "2019-11-27"
+                entityStart = "2019-11-26"
+              )
+            )
+          ),
+          charity = Some(
+            List(
+              DisplayTrustCharityType(
+                lineNo = s"1",
+                bpMatchStatus = Some("01"),
+                organisationName = s"Charity 1",
+                beneficiaryDiscretion = Some(false),
+                beneficiaryShareOfIncome = Some("10"),
+                identification = Some(
+                  DisplayTrustIdentificationOrgType(
+                    safeId = Some("8947584-94759745-84758745"),
+                    utr = Some(s"1234567890"),
+                    address = Some(AddressType(s"line 1", "line 2", None, None, Some("NE11NE"), "GB"))
+                  )
+                ),
+                entityStart = "2019-11-26"
               )
             )
           ),
@@ -105,7 +124,7 @@ class BeneficiaryExtractorSpec extends FreeSpec with MustMatchers
 
         extraction.right.value.get(CompanyBeneficiaryNamePage(0)).get mustBe "Company 1"
         extraction.right.value.get(CompanyBeneficiaryDiscretionYesNoPage(0)).get mustBe false
-        extraction.right.value.get(CompanyBeneficiaryShareOfIncomePage(0)).get mustBe "60"
+        extraction.right.value.get(CompanyBeneficiaryShareOfIncomePage(0)).get mustBe "10"
         extraction.right.value.get(CompanyBeneficiaryAddressYesNoPage(0)).get mustBe true
         extraction.right.value.get(CompanyBeneficiaryAddressUKYesNoPage(0)).get mustBe true
         extraction.right.value.get(CompanyBeneficiaryAddressPage(0)).get mustBe UKAddress("line 1", "line 2", None, None, "NE11NE")
@@ -113,14 +132,24 @@ class BeneficiaryExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(CompanyBeneficiaryMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
         extraction.right.value.get(CompanyBeneficiarySafeIdPage(0)) must be(defined)
 
+        extraction.right.value.get(TrustBeneficiaryNamePage(0)).get mustBe "Trust 1"
+        extraction.right.value.get(TrustBeneficiaryDiscretionYesNoPage(0)).get mustBe false
+        extraction.right.value.get(TrustBeneficiaryShareOfIncomePage(0)).get mustBe "10"
+        extraction.right.value.get(TrustBeneficiaryAddressYesNoPage(0)).get mustBe true
+        extraction.right.value.get(TrustBeneficiaryAddressUKYesNoPage(0)).get mustBe true
+        extraction.right.value.get(TrustBeneficiaryAddressPage(0)).get mustBe UKAddress("line 1", "line 2", None, None, "NE11NE")
+        extraction.right.value.get(TrustBeneficiaryUtrPage(0)).get mustBe "1234567890"
+        extraction.right.value.get(TrustBeneficiaryMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
+        extraction.right.value.get(TrustBeneficiarySafeIdPage(0)) must be(defined)
+
         extraction.right.value.get(CharityBeneficiaryNamePage(0)).get mustBe "Charity 1"
         extraction.right.value.get(CharityBeneficiaryDiscretionYesNoPage(0)).get mustBe false
-        extraction.right.value.get(CharityBeneficiaryShareOfIncomePage(0)).get mustBe "40"
+        extraction.right.value.get(CharityBeneficiaryShareOfIncomePage(0)).get mustBe "10"
         extraction.right.value.get(CharityBeneficiaryAddressYesNoPage(0)).get mustBe true
         extraction.right.value.get(CharityBeneficiaryAddressUKYesNoPage(0)).get mustBe true
-        extraction.right.value.get(CharityBeneficiaryAddressPage(0)).get mustBe UKAddress("line 3", "line 4", None, None, "NE22NE")
-        extraction.right.value.get(CharityBeneficiaryUtrPage(0)).get mustBe "0987654321"
-        extraction.right.value.get(CharityBeneficiaryMetaData(0)).get mustBe MetaData("2", Some("02"), "2019-11-27")
+        extraction.right.value.get(CharityBeneficiaryAddressPage(0)).get mustBe UKAddress("line 1", "line 2", None, None, "NE11NE")
+        extraction.right.value.get(CharityBeneficiaryUtrPage(0)).get mustBe "1234567890"
+        extraction.right.value.get(CharityBeneficiaryMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
         extraction.right.value.get(CharityBeneficiarySafeIdPage(0)) must be(defined)
       }
 
