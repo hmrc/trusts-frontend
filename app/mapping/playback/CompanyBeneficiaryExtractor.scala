@@ -43,6 +43,7 @@ class CompanyBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[Lis
               .flatMap(_.set(CompanyBeneficiaryNamePage(index), companyBeneficiary.organisationName))
               .flatMap(answers => extractShareOfIncome(companyBeneficiary, index, answers))
               .flatMap(_.set(CompanyBeneficiaryUtrPage(index), companyBeneficiary.identification.flatMap(_.utr)))
+              .flatMap(_.set(CompanyBeneficiarySafeIdPage(index), companyBeneficiary.identification.flatMap(_.safeId)))
               .flatMap(answers => extractAddress(companyBeneficiary, index, answers))
               .flatMap {
                 _.set(

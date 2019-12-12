@@ -58,7 +58,7 @@ class CharityBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = charityExtractor.extract(ua, charities)
 
-        extraction mustBe 'right
+        extraction mustBe 'left
 
       }
 
