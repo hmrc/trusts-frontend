@@ -33,7 +33,7 @@ class CharityBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[Lis
   override def extract(answers: UserAnswers, data: Option[List[DisplayTrustCharityType]]): Either[PlaybackExtractionError, UserAnswers] =
     {
       data match {
-        case None => Right(answers)
+        case None => Left(FailedToExtractData("No Charity Beneficiary"))
         case Some(charities) =>
 
           val updated = charities.zipWithIndex.foldLeft[Try[UserAnswers]](Success(answers)){
