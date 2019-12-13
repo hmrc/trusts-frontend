@@ -30,7 +30,10 @@ class OtherBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
 
   def generateOther(index: Int) = DisplayTrustOtherType(
     lineNo = s"$index",
-    bpMatchStatus = Some("01"),
+    bpMatchStatus = index match {
+      case 0 => Some("01")
+      case _ => None
+    },
     description = s"Other $index",
     beneficiaryDiscretion = index match {
       case 0 => Some(false)
@@ -109,8 +112,8 @@ class OtherBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(OtherBeneficiaryDescriptionPage(2)).get mustBe "Other 2"
 
         extraction.right.value.get(OtherBeneficiaryMetaData(0)).get mustBe MetaData("0", Some("01"), "2019-11-26")
-        extraction.right.value.get(OtherBeneficiaryMetaData(1)).get mustBe MetaData("1", Some("01"), "2019-11-26")
-        extraction.right.value.get(OtherBeneficiaryMetaData(2)).get mustBe MetaData("2", Some("01"), "2019-11-26")
+        extraction.right.value.get(OtherBeneficiaryMetaData(1)).get mustBe MetaData("1", Some("98"), "2019-11-26")
+        extraction.right.value.get(OtherBeneficiaryMetaData(2)).get mustBe MetaData("2", Some("98"), "2019-11-26")
 
         extraction.right.value.get(OtherBeneficiaryDiscretionYesNoPage(0)).get mustBe false
         extraction.right.value.get(OtherBeneficiaryDiscretionYesNoPage(1)).get mustBe true
