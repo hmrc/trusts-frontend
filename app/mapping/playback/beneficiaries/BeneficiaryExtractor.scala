@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package mapping.playback
+package mapping.playback.beneficiaries
 
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
+import mapping.playback.PlaybackExtractor
 import models.playback.UserAnswers
 import models.playback.http.DisplayTrustBeneficiaryType
 
 class BeneficiaryExtractor @Inject()(charityBeneficiaryExtractor: CharityBeneficiaryExtractor,
                                      companyBeneficiaryExtractor: CompanyBeneficiaryExtractor,
-                                     trustBeneficiaryExtractor: TrustBeneficiaryExtractor) extends PlaybackExtractor[DisplayTrustBeneficiaryType] {
+                                     trustBeneficiaryExtractor: TrustBeneficiaryExtractor,
+                                     otherBeneficiaryExtractor: OtherBeneficiaryExtractor) extends PlaybackExtractor[DisplayTrustBeneficiaryType] {
 
   override def extract(answers: UserAnswers, data: DisplayTrustBeneficiaryType): Either[PlaybackExtractionError, UserAnswers] = {
 
@@ -32,7 +34,8 @@ class BeneficiaryExtractor @Inject()(charityBeneficiaryExtractor: CharityBenefic
     val beneficiaries: List[UserAnswers] = List(
       charityBeneficiaryExtractor.extract(answers, data.charity),
       companyBeneficiaryExtractor.extract(answers, data.company),
-      trustBeneficiaryExtractor.extract(answers, data.trust)
+      trustBeneficiaryExtractor.extract(answers, data.trust),
+      otherBeneficiaryExtractor.extract(answers, data.other)
     ).collect {
       case Right(z) => z
     }

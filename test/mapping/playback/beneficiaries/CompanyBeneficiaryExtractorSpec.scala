@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package mapping.playback
+package mapping.playback.beneficiaries
 
 import base.SpecBaseHelpers
 import generators.Generators
+import mapping.playback.PlaybackExtractor
 import models.core.pages.{InternationalAddress, UKAddress}
 import models.playback.http._
 import models.playback.{MetaData, UserAnswers}

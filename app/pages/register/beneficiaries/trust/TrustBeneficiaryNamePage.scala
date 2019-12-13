@@ -18,7 +18,7 @@ package pages.register.beneficiaries.trust
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.{Beneficiaries, TrustBeneficiaries}
+import sections.beneficiaries.{Beneficiaries, TrustBeneficiaries}
 
 final case class TrustBeneficiaryNamePage(index: Int) extends QuestionPage[String] {
 

@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package sections
+package sections.beneficiaries
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object TrustBeneficiaries extends QuestionPage[Nothing]{
+case object OtherBeneficiaries extends QuestionPage[Nothing]{
 
   override def path: JsPath = JsPath \ Beneficiaries \ toString
 
-  override def toString: String = "trusts"
+  override def toString: String = "other"
 
 }

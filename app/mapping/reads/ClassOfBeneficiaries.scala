@@ -18,7 +18,7 @@ package mapping.reads
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.Beneficiaries
+import sections.beneficiaries.Beneficiaries
 
 case object ClassOfBeneficiaries extends QuestionPage[List[ClassOfBeneficiary]]{
 

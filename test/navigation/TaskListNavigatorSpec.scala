@@ -37,7 +37,8 @@ import pages.register.TrustNamePage
 import pages.register.asset.WhatKindOfAssetPage
 import pages.register.settlors.living_settlor.{SettlorIndividualNamePage, SettlorIndividualOrBusinessPage}
 import pages.register.trustees.IsThisLeadTrusteePage
-import sections.{Beneficiaries, Settlors, TaxLiability, TrustDetails}
+import sections.beneficiaries.Beneficiaries
+import sections.{Settlors, TaxLiability, TrustDetails}
 
 class TaskListNavigatorSpec extends SpecBase {
 

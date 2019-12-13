@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package pages.entitystatus
+package pages.register.beneficiaries.other
 
-import models.registration.pages.Status
+import models.playback.MetaData
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.beneficiaries.{Beneficiaries, ClassOfBeneficiaries}
+import sections.beneficiaries.{Beneficiaries, OtherBeneficiaries}
 
-final case class ClassBeneficiaryStatus(index : Int) extends QuestionPage[Status] {
+case class OtherBeneficiaryMetaData(index: Int) extends QuestionPage[MetaData]{
 
-  override def path: JsPath = JsPath \ Beneficiaries \ ClassOfBeneficiaries \ index \ toString
+  override def path: JsPath = JsPath \ Beneficiaries \ OtherBeneficiaries \ index \ toString
 
-  override def toString: String = "status"
+  override def toString: String = "metaData"
+
 }

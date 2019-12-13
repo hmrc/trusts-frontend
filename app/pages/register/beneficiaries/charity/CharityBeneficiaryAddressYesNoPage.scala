@@ -18,7 +18,7 @@ package pages.register.beneficiaries.charity
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.{Beneficiaries, CharityBeneficiaries}
+import sections.beneficiaries.{Beneficiaries, CharityBeneficiaries}
 
 final case class CharityBeneficiaryAddressYesNoPage(index: Int) extends QuestionPage[Boolean] {
 
