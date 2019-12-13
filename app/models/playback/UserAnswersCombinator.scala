@@ -29,7 +29,7 @@ object UserAnswersCombinator {
     override def combine(x: UserAnswers, y: UserAnswers): UserAnswers = {
 
         UserAnswers(
-          data = x.data ++ y.data,
+          data = x.data.deepMerge(y.data),
           internalAuthId = x.internalAuthId,
           updatedAt = LocalDateTime.now
         )

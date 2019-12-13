@@ -22,10 +22,9 @@ import models.playback.UserAnswers
 import models.playback.http.GetTrust
 import play.api.Logger
 
-class UserAnswersExtractor @Inject()(charity: CharityBeneficiaryExtractor,
+class UserAnswersExtractor @Inject()(beneficiary: BeneficiaryExtractor,
                                      leadTrustee: LeadTrusteeExtractor,
-                                     deceasedSettlor: DeceasedSettlorExtractor,
-                                     trustBeneficiaryExtractor: TrustBeneficiaryExtractor
+                                     deceasedSettlor: DeceasedSettlorExtractor
                                     ) extends PlaybackExtractor[GetTrust] {
 
   import models.playback.UserAnswersCombinator._
@@ -33,12 +32,11 @@ class UserAnswersExtractor @Inject()(charity: CharityBeneficiaryExtractor,
   override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionError, UserAnswers] = {
 
     val answersCombined = for {
-      ua <- charity.extract(answers, data.trust.entities.beneficiary.charity).right
+      ua <- beneficiary.extract(answers, data.trust.entities.beneficiary).right
       ua1 <- leadTrustee.extract(answers, data.trust.entities.leadTrustee).right
       ua2 <- deceasedSettlor.extract(answers, data.trust.entities.deceased).right
-      ua3 <- trustBeneficiaryExtractor.extract(answers, data.trust.entities.beneficiary.trust).right
     } yield {
-      List(ua, ua1, ua2, ua3).combine
+      List(ua, ua1, ua2).combine
     }
 
     answersCombined match {

@@ -33,7 +33,7 @@ class TrustBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[List[
   override def extract(answers: UserAnswers, data: Option[List[DisplayTrustBeneficiaryTrustType]]): Either[PlaybackExtractionError, UserAnswers] =
     {
       data match {
-        case None => Right(answers)
+        case None => Left(FailedToExtractData("No Trust Beneficiary"))
         case Some(trusts) =>
 
           val updated = trusts.zipWithIndex.foldLeft[Try[UserAnswers]](Success(answers)){

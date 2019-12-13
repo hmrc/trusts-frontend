@@ -71,7 +71,7 @@ class TrustBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = trustExtractor.extract(ua, trusts)
 
-        extraction mustBe 'right
+        extraction mustBe 'left
 
       }
 
