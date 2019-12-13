@@ -35,9 +35,9 @@ class OtherBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[List[
     {
       data match {
         case None => Left(FailedToExtractData("No Other Beneficiary"))
-        case Some(charities) =>
+        case Some(others) =>
 
-          val updated = charities.zipWithIndex.foldLeft[Try[UserAnswers]](Success(answers)){
+          val updated = others.zipWithIndex.foldLeft[Try[UserAnswers]](Success(answers)){
             case (answers, (otherBeneficiary, index)) =>
 
             answers
