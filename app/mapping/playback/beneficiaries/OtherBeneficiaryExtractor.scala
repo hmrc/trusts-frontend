@@ -49,7 +49,7 @@ class OtherBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[List[
                   OtherBeneficiaryMetaData(index),
                   MetaData(
                     lineNo = otherBeneficiary.lineNo,
-                    bpMatchStatus = otherBeneficiary.bpMatchStatus,
+                    bpMatchStatus = otherBeneficiary.bpMatchStatus.fold(Some("98"))(x => Some(x)),
                     entityStart = otherBeneficiary.entityStart
                   )
                 )

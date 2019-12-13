@@ -25,6 +25,7 @@ import models.playback.http._
 import models.playback.{MetaData, UserAnswers}
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import pages.register.beneficiaries.charity._
+import pages.register.beneficiaries.classOfBeneficiary._
 import pages.register.beneficiaries.company._
 import pages.register.beneficiaries.other._
 import pages.register.beneficiaries.trust._
@@ -115,7 +116,18 @@ class BeneficiaryExtractorSpec extends FreeSpec with MustMatchers
               )
             )
           ),
-          unidentified = None,
+          unidentified = Some(
+            List(
+              DisplayTrustUnidentifiedType(
+                lineNo = s"1",
+                bpMatchStatus = Some("01"),
+                description = s"Class Of Beneficiary 1",
+                beneficiaryDiscretion = Some(false),
+                beneficiaryShareOfIncome = Some("10"),
+                entityStart = "2019-11-26"
+              )
+            )
+          ),
           large = None,
           other = Some(
             List(
@@ -173,6 +185,11 @@ class BeneficiaryExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(OtherBeneficiaryAddressUKYesNoPage(0)).get mustBe true
         extraction.right.value.get(OtherBeneficiaryAddressPage(0)).get mustBe UKAddress("line 1", "line 2", None, None, "NE11NE")
         extraction.right.value.get(OtherBeneficiaryMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
+
+        extraction.right.value.get(ClassOfBeneficiaryDescriptionPage(0)).get mustBe "Class Of Beneficiary 1"
+        extraction.right.value.get(ClassOfBeneficiaryDiscretionYesNoPage(0)).get mustBe false
+        extraction.right.value.get(ClassOfBeneficiaryShareOfIncomePage(0)).get mustBe "10"
+        extraction.right.value.get(ClassOfBeneficiaryMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
       }
 
     }
