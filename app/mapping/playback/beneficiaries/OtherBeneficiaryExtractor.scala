@@ -41,7 +41,7 @@ class OtherBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[List[
             case (answers, (otherBeneficiary, index)) =>
 
             answers
-              .flatMap(_.set(OtherBeneficiaryNamePage(index), otherBeneficiary.description))
+              .flatMap(_.set(OtherBeneficiaryDescriptionPage(index), otherBeneficiary.description))
               .flatMap(answers => extractShareOfIncome(otherBeneficiary, index, answers))
               .flatMap(answers => extractAddress(otherBeneficiary, index, answers))
               .flatMap {

@@ -14,19 +14,25 @@
  * limitations under the License.
  */
 
-package pages.register.beneficiaries
+package pages.register.beneficiaries.individual
 
+import java.time.LocalDate
+
+import org.scalacheck.Arbitrary
 import pages.behaviours.PageBehaviours
-import pages.register.beneficiaries.individual.IndividualBeneficiaryVulnerableYesNoPage
 
-class IndividualBeneficiaryVulnerableYesNoPageSpec extends PageBehaviours {
+class IndividualBeneficiaryDateOfBirthPageSpec extends PageBehaviours {
 
-  "IndividualBeneficiaryVulnerableYesNoPage" must {
+  "IndividualBeneficiaryDateOfBirthPage" must {
 
-    beRetrievable[Boolean](IndividualBeneficiaryVulnerableYesNoPage(0))
+    implicit lazy val arbitraryLocalDate: Arbitrary[LocalDate] = Arbitrary {
+      datesBetween(LocalDate.of(1900, 1, 1), LocalDate.of(2100, 1, 1))
+    }
 
-    beSettable[Boolean](IndividualBeneficiaryVulnerableYesNoPage(0))
+    beRetrievable[LocalDate](IndividualBeneficiaryDateOfBirthPage(0))
 
-    beRemovable[Boolean](IndividualBeneficiaryVulnerableYesNoPage(0))
+    beSettable[LocalDate](IndividualBeneficiaryDateOfBirthPage(0))
+
+    beRemovable[LocalDate](IndividualBeneficiaryDateOfBirthPage(0))
   }
 }

@@ -166,7 +166,7 @@ class BeneficiaryExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(CharityBeneficiaryMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
         extraction.right.value.get(CharityBeneficiarySafeIdPage(0)) must be(defined)
         
-        extraction.right.value.get(OtherBeneficiaryNamePage(0)).get mustBe "Other 1"
+        extraction.right.value.get(OtherBeneficiaryDescriptionPage(0)).get mustBe "Other 1"
         extraction.right.value.get(OtherBeneficiaryDiscretionYesNoPage(0)).get mustBe false
         extraction.right.value.get(OtherBeneficiaryShareOfIncomePage(0)).get mustBe "10"
         extraction.right.value.get(OtherBeneficiaryAddressYesNoPage(0)).get mustBe true

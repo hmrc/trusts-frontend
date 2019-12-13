@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package pages.register.beneficiaries
+package pages.register.beneficiaries.individual
 
 import models.core.pages.FullName
 import pages.behaviours.PageBehaviours
-import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
 
 class IndividualBeneficiaryNamePageSpec extends PageBehaviours  {
 

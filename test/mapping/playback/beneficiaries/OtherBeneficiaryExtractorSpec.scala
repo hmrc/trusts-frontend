@@ -86,7 +86,7 @@ class OtherBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = otherExtractor.extract(ua, Some(other))
 
-        extraction.right.value.get(OtherBeneficiaryNamePage(0)).get mustBe "Other 1"
+        extraction.right.value.get(OtherBeneficiaryDescriptionPage(0)).get mustBe "Other 1"
         extraction.right.value.get(OtherBeneficiaryMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
         extraction.right.value.get(OtherBeneficiaryDiscretionYesNoPage(0)).get mustBe true
         extraction.right.value.get(OtherBeneficiaryShareOfIncomePage(0)) mustNot be(defined)
@@ -104,9 +104,9 @@ class OtherBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
 
         extraction mustBe 'right
 
-        extraction.right.value.get(OtherBeneficiaryNamePage(0)).get mustBe "Other 0"
-        extraction.right.value.get(OtherBeneficiaryNamePage(1)).get mustBe "Other 1"
-        extraction.right.value.get(OtherBeneficiaryNamePage(2)).get mustBe "Other 2"
+        extraction.right.value.get(OtherBeneficiaryDescriptionPage(0)).get mustBe "Other 0"
+        extraction.right.value.get(OtherBeneficiaryDescriptionPage(1)).get mustBe "Other 1"
+        extraction.right.value.get(OtherBeneficiaryDescriptionPage(2)).get mustBe "Other 2"
 
         extraction.right.value.get(OtherBeneficiaryMetaData(0)).get mustBe MetaData("0", Some("01"), "2019-11-26")
         extraction.right.value.get(OtherBeneficiaryMetaData(1)).get mustBe MetaData("1", Some("01"), "2019-11-26")
