@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-package pages.entitystatus
+package pages.register.beneficiaries.individual
 
-import models.registration.pages.Status
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.beneficiaries.{Beneficiaries, ClassOfBeneficiaries}
+import pages.behaviours.PageBehaviours
 
-final case class ClassBeneficiaryStatus(index : Int) extends QuestionPage[Status] {
 
-  override def path: JsPath = JsPath \ Beneficiaries \ ClassOfBeneficiaries \ index \ toString
+class IndividualBeneficiaryNationalInsuranceNumberPageSpec extends PageBehaviours {
 
-  override def toString: String = "status"
+  "IndividualBeneficiaryNationalInsuranceNumberPage" must {
+
+    beRetrievable[String](IndividualBeneficiaryNationalInsuranceNumberPage(0))
+
+    beSettable[String](IndividualBeneficiaryNationalInsuranceNumberPage(0))
+
+    beRemovable[String](IndividualBeneficiaryNationalInsuranceNumberPage(0))
+  }
 }

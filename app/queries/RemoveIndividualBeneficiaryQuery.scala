@@ -17,7 +17,7 @@
 package queries
 
 import play.api.libs.json.JsPath
-import sections.{Beneficiaries, IndividualBeneficiaries}
+import sections.beneficiaries.{Beneficiaries, IndividualBeneficiaries}
 
 final case class RemoveIndividualBeneficiaryQuery(index : Int) extends Settable[Boolean] {
 

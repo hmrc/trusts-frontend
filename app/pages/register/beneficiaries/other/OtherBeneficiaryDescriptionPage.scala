@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-package pages.register.beneficiaries
+package pages.register.beneficiaries.other
 
-import pages.behaviours.PageBehaviours
-import pages.register.beneficiaries.individual.IndividualBeneficiaryAddressUKYesNoPage
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import sections.beneficiaries.{Beneficiaries, OtherBeneficiaries}
 
-class IndividualBeneficiaryAddressUKYesNoPageSpec extends PageBehaviours {
+final case class OtherBeneficiaryDescriptionPage(index : Int) extends QuestionPage[String] {
 
-  "IndividualBeneficiaryAddressUKYesNoPage" must {
+  override def path: JsPath = JsPath \ Beneficiaries \ OtherBeneficiaries \ index \ toString
 
-    beRetrievable[Boolean](IndividualBeneficiaryAddressUKYesNoPage(0))
-
-    beSettable[Boolean](IndividualBeneficiaryAddressUKYesNoPage(0))
-
-    beRemovable[Boolean](IndividualBeneficiaryAddressUKYesNoPage(0))
-  }
+  override def toString: String = "description"
 }

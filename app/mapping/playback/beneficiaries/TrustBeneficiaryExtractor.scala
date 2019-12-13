@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package mapping.playback
+package mapping.playback.beneficiaries
 
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
+import mapping.playback.{PlaybackExtractor, PlaybackImplicits}
 import models.core.pages.{InternationalAddress, UKAddress}
 import models.playback.http.DisplayTrustBeneficiaryTrustType
 import models.playback.{MetaData, UserAnswers}

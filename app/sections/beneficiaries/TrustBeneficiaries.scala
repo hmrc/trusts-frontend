@@ -14,20 +14,15 @@
  * limitations under the License.
  */
 
-package pages.register.beneficiaries
+package sections.beneficiaries
 
-import pages.behaviours.PageBehaviours
-import pages.register.beneficiaries.individual.IndividualBeneficiaryNationalInsuranceNumberPage
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
+case object TrustBeneficiaries extends QuestionPage[Nothing]{
 
-class IndividualBeneficiaryNationalInsuranceNumberPageSpec extends PageBehaviours {
+  override def path: JsPath = JsPath \ Beneficiaries \ toString
 
-  "IndividualBeneficiaryNationalInsuranceNumberPage" must {
+  override def toString: String = "trusts"
 
-    beRetrievable[String](IndividualBeneficiaryNationalInsuranceNumberPage(0))
-
-    beSettable[String](IndividualBeneficiaryNationalInsuranceNumberPage(0))
-
-    beRemovable[String](IndividualBeneficiaryNationalInsuranceNumberPage(0))
-  }
 }

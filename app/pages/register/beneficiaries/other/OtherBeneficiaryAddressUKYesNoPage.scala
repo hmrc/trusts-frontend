@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package sections
+package pages.register.beneficiaries.other
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
+import sections.beneficiaries.{Beneficiaries, OtherBeneficiaries}
 
-case object Beneficiaries extends QuestionPage[List[Nothing]]{
+final case class OtherBeneficiaryAddressUKYesNoPage(index: Int) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ Beneficiaries \ OtherBeneficiaries \ index \ toString
 
-  override def toString: String = "beneficiaries"
-
+  override def toString: String = "addressUKYesNo"
 }

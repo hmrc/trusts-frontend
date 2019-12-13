@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-package pages.register.beneficiaries
+package sections.beneficiaries
 
-import pages.behaviours.PageBehaviours
-import pages.register.beneficiaries.individual.IndividualBeneficiaryVulnerableYesNoPage
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-class IndividualBeneficiaryVulnerableYesNoPageSpec extends PageBehaviours {
+case object CompanyBeneficiaries extends QuestionPage[Nothing]{
 
-  "IndividualBeneficiaryVulnerableYesNoPage" must {
+  override def path: JsPath = JsPath \ Beneficiaries \ toString
 
-    beRetrievable[Boolean](IndividualBeneficiaryVulnerableYesNoPage(0))
+  override def toString: String = "companies"
 
-    beSettable[Boolean](IndividualBeneficiaryVulnerableYesNoPage(0))
-
-    beRemovable[Boolean](IndividualBeneficiaryVulnerableYesNoPage(0))
-  }
 }

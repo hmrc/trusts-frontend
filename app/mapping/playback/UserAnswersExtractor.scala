@@ -18,6 +18,7 @@ package mapping.playback
 
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors._
+import mapping.playback.beneficiaries.BeneficiaryExtractor
 import models.playback.UserAnswers
 import models.playback.http.GetTrust
 import play.api.Logger

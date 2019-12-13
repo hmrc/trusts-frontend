@@ -29,6 +29,7 @@ import pages.register.settlors.AddASettlorPage
 import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
 import pages.register.trustees.AddATrusteePage
 import sections._
+import sections.beneficiaries.{Beneficiaries, ClassOfBeneficiaries, IndividualBeneficiaries}
 import viewmodels._
 
 class RegistrationProgress @Inject()(navigator: TaskListNavigator) {

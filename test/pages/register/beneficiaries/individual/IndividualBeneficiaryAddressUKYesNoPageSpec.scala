@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package pages.register.beneficiaries
+package pages.register.beneficiaries.individual
 
 import pages.behaviours.PageBehaviours
-import pages.register.beneficiaries.individual.IndividualBeneficiaryIncomePage
 
+class IndividualBeneficiaryAddressUKYesNoPageSpec extends PageBehaviours {
 
-class IndividualBeneficiaryIncomePageSpec extends PageBehaviours {
+  "IndividualBeneficiaryAddressUKYesNoPage" must {
 
-  "IndividualBeneficiaryIncomePage" must {
+    beRetrievable[Boolean](IndividualBeneficiaryAddressUKYesNoPage(0))
 
-    beRetrievable[String](IndividualBeneficiaryIncomePage(0))
+    beSettable[Boolean](IndividualBeneficiaryAddressUKYesNoPage(0))
 
-    beSettable[String](IndividualBeneficiaryIncomePage(0))
-
-    beRemovable[String](IndividualBeneficiaryIncomePage(0))
+    beRemovable[Boolean](IndividualBeneficiaryAddressUKYesNoPage(0))
   }
 }

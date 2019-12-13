@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package mapping.playback
+package mapping.playback.beneficiaries
 
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
+import mapping.playback.PlaybackExtractor
 import models.core.pages.UKAddress
-import models.playback.{MetaData, UserAnswers}
 import models.playback.http._
+import models.playback.{MetaData, UserAnswers}
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import pages.register.beneficiaries.charity._
 import pages.register.beneficiaries.company._
+import pages.register.beneficiaries.other._
 import pages.register.beneficiaries.trust._
 
 class BeneficiaryExtractorSpec extends FreeSpec with MustMatchers
@@ -115,7 +117,19 @@ class BeneficiaryExtractorSpec extends FreeSpec with MustMatchers
           ),
           unidentified = None,
           large = None,
-          other = None
+          other = Some(
+            List(
+              DisplayTrustOtherType(
+                lineNo = s"1",
+                bpMatchStatus = Some("01"),
+                description = s"Other 1",
+                beneficiaryDiscretion = Some(false),
+                beneficiaryShareOfIncome = Some("10"),
+                address = Some(AddressType(s"line 1", "line 2", None, None, Some("NE11NE"), "GB")),
+                entityStart = "2019-11-26"
+              )
+            )
+          )
         )
 
         val ua = UserAnswers("fakeId")
@@ -151,6 +165,14 @@ class BeneficiaryExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(CharityBeneficiaryUtrPage(0)).get mustBe "1234567890"
         extraction.right.value.get(CharityBeneficiaryMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
         extraction.right.value.get(CharityBeneficiarySafeIdPage(0)) must be(defined)
+        
+        extraction.right.value.get(OtherBeneficiaryDescriptionPage(0)).get mustBe "Other 1"
+        extraction.right.value.get(OtherBeneficiaryDiscretionYesNoPage(0)).get mustBe false
+        extraction.right.value.get(OtherBeneficiaryShareOfIncomePage(0)).get mustBe "10"
+        extraction.right.value.get(OtherBeneficiaryAddressYesNoPage(0)).get mustBe true
+        extraction.right.value.get(OtherBeneficiaryAddressUKYesNoPage(0)).get mustBe true
+        extraction.right.value.get(OtherBeneficiaryAddressPage(0)).get mustBe UKAddress("line 1", "line 2", None, None, "NE11NE")
+        extraction.right.value.get(OtherBeneficiaryMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
       }
 
     }

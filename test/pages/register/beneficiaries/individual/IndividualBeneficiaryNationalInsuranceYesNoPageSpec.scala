@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package pages.register.beneficiaries
+package pages.register.beneficiaries.individual
 
 import models.core.UserAnswers
 import models.core.pages.UKAddress
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
-import pages._
-import pages.register.beneficiaries.individual.{IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryAddressUKYesNoPage, IndividualBeneficiaryAddressYesNoPage, IndividualBeneficiaryNationalInsuranceNumberPage, IndividualBeneficiaryNationalInsuranceYesNoPage}
 
 class IndividualBeneficiaryNationalInsuranceYesNoPageSpec extends PageBehaviours {
 

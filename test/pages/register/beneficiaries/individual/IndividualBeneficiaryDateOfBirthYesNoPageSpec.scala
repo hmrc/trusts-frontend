@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package pages.register.beneficiaries
+package pages.register.beneficiaries.individual
 
 import java.time.LocalDate
 
 import models.core.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
-import pages.register.beneficiaries.individual.{IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryDateOfBirthYesNoPage}
 
 class IndividualBeneficiaryDateOfBirthYesNoPageSpec extends PageBehaviours {
 
