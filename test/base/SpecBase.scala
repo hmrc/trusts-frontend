@@ -18,7 +18,9 @@ package base
 
 import config.FrontendAppConfig
 import controllers.actions.{FakeDraftIdRetrievalActionProvider, _}
+import mapping.playback.{FakeUserAnswerExtractor, PlaybackExtractor, UserAnswersExtractor}
 import models.core.UserAnswers
+import models.playback.http.GetTrust
 import models.registration.pages.RegistrationStatus
 import navigation.{FakeNavigator, Navigator}
 import org.scalatest.{BeforeAndAfter, TestSuite, TryValues}
@@ -30,7 +32,7 @@ import play.api.inject.{Injector, bind}
 import play.api.mvc.BodyParsers
 import play.api.test.FakeRequest
 import repositories.RegistrationsRepository
-import services.{CreateDraftRegistrationService, FakePlaybackAuthenticationService, PlaybackAuthenticationService, SubmissionService}
+import services.{CreateDraftRegistrationService, SubmissionService}
 import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import utils.TestUserAnswers

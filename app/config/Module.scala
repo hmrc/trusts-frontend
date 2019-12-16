@@ -19,6 +19,8 @@ package config
 import com.google.inject.AbstractModule
 import connector.OtacAuthConnectorImpl
 import controllers.actions._
+import mapping.playback.{PlaybackExtractor, UserAnswersExtractor}
+import models.playback.http.GetTrust
 import navigation.Navigator
 import navigation.registration.{LivingSettlorNavigator, PropertyOrLandNavigator}
 import repositories.{DefaultPlaybackRepository, DefaultRegistrationsRepository, PlaybackRepository, RegistrationsRepository}
