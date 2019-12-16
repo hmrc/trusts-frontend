@@ -292,6 +292,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
               def application: Application = applicationBuilder(userAnswers = Some(userAnswers)).overrides(
                 bind[TrustConnector].to(fakeTrustConnector),
+                bind[TrustsStoreConnector].to(fakeTrustStoreConnector),
                 bind[PlaybackRepository].toInstance(fakePlaybackRepository),
                 bind[UserAnswersExtractor].to[FakeFailingUserAnswerExtractor],
                 bind[PlaybackAuthenticationService].to(new FakePlaybackAuthenticationService())
