@@ -208,7 +208,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
 
             whenReady(service.authenticateForPlayback[AnyContent](utr)) {
               result =>
-                result.left.value.header.headers(HeaderNames.LOCATION) must include("/claim-a-trust")
+                result.left.value.header.headers(HeaderNames.LOCATION) must include("/verify-your-identity-for-a-trust")
             }
           }
 

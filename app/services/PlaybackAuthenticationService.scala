@@ -53,7 +53,6 @@ class PlaybackAuthenticationServiceImpl @Inject()(
     if (userEnrolled) {
       Logger.info(s"[PlaybackAuthentication] user is enrolled")
 
-      // TODO TRUS-2015 send to Trust IV for a non claiming journey when no relationship in IV exists
       trustsIV.authenticate(
         utr = utr,
         onIVRelationshipExisting = {
@@ -61,8 +60,8 @@ class PlaybackAuthenticationServiceImpl @Inject()(
           Future.successful(Right(request))
         },
         onIVRelationshipNotExisting = {
-          Logger.info(s"[PlaybackAuthentication] user is enrolled, redirecting to trust IV")
-          Future.successful(Left(Redirect(config.claimATrustUrl(utr))))
+          Logger.info(s"[PlaybackAuthentication] user is enrolled, redirecting to /verify-identity-for-a-trust")
+          Future.successful(Left(Redirect(config.verifyIdentityForATrustUrl(utr))))
         }
       )
     } else {
