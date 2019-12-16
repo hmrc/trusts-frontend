@@ -26,6 +26,7 @@ import models.playback.http._
 import models.requests.DataRequest
 import navigation.Navigator
 import pages.playback.WhatIsTheUTRVariationPage
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.{PlaybackRepository, RegistrationsRepository}
@@ -34,7 +35,6 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.playback.status._
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.{Failure, Success}
 
 class TrustStatusController @Inject()(
                                        override val messagesApi: MessagesApi,
@@ -116,7 +116,7 @@ class TrustStatusController @Inject()(
       }
   }
 
-  def checkIfLocked(utr: String)(implicit request: DataRequest[AnyContent]): Future[Result] = {
+  private def checkIfLocked(utr: String)(implicit request: DataRequest[AnyContent]): Future[Result] = {
     trustStoreConnector.get(request.internalId, utr).flatMap {
       case Some(claim) if claim.trustLocked =>
         Future.successful(Redirect(controllers.playback.routes.TrustStatusController.locked()))
@@ -125,7 +125,7 @@ class TrustStatusController @Inject()(
     }
   }
 
-  def tryToPlayback(utr: String)(implicit request: DataRequest[AnyContent]): Future[Result] = {
+  private def tryToPlayback(utr: String)(implicit request: DataRequest[AnyContent]): Future[Result] = {
     trustConnector.playback(utr) flatMap {
       case Closed => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.closed()))
       case Processing => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.processing()))
@@ -140,7 +140,7 @@ class TrustStatusController @Inject()(
     }
   }
 
-  def extract(utr: String, playback: GetTrust)(implicit request: DataRequest[AnyContent]) : Future[Result] = {
+  private def extract(utr: String, playback: GetTrust)(implicit request: DataRequest[AnyContent]) : Future[Result] = {
     // Todo create new getData, requireData to return instance of PlaybackData for all Variations controllers rather than calling request.userAnswers.toPlaybackUserAnswers
     playbackExtractor.extract(request.userAnswers.toPlaybackUserAnswers, playback) match {
       case Right(answers) =>
@@ -148,12 +148,12 @@ class TrustStatusController @Inject()(
           Redirect(routes.InformationMaintainingThisTrustController.onPageLoad())
         }
       case Left(reason) =>
-        // Todo update where it goes and log reason?
-        Future.successful(Redirect(controllers.playback.routes.TrustStatusController.down()))
+        Logger.warn(s"[TrustStatusController] unable to extract user answers due to $reason")
+        Future.successful(Redirect(routes.TrustStatusController.sorryThereHasBeenAProblem()))
     }
   }
 
-  def enforceUtr()(block: String => Future[Result])(implicit request: DataRequest[AnyContent]): Future[Result] = {
+  private def enforceUtr()(block: String => Future[Result])(implicit request: DataRequest[AnyContent]): Future[Result] = {
     request.userAnswers.get(WhatIsTheUTRVariationPage) match {
       case None => Future.successful(Redirect(routes.WhatIsTheUTRVariationsController.onPageLoad()))
       case Some(utr) => block(utr)

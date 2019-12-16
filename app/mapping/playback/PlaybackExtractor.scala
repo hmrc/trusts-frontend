@@ -19,8 +19,6 @@ package mapping.playback
 import mapping.playback.PlaybackExtractionErrors.PlaybackExtractionError
 import models.playback.UserAnswers
 
-import scala.util.Try
-
 trait PlaybackExtractor[T] {
 
   def extract(answers: UserAnswers, data: T): Either[PlaybackExtractionError, UserAnswers]
