@@ -27,6 +27,7 @@ import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
 import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
 import play.api.mvc.Call
 import sections._
+import sections.beneficiaries.{Beneficiaries, ClassOfBeneficiaries, IndividualBeneficiaries}
 
 @Singleton
 class TaskListNavigator @Inject()() {

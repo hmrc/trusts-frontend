@@ -38,6 +38,7 @@ import pages.register.settlors.SettlorsBasedInTheUKPage
 import pages.register.trustees._
 import play.api.mvc.Call
 import sections._
+import sections.beneficiaries.{ClassOfBeneficiaries, IndividualBeneficiaries}
 import uk.gov.hmrc.auth.core.AffinityGroup
 
 @Singleton

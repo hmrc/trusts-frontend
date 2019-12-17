@@ -19,7 +19,7 @@ package pages.register.beneficiaries.charity
 import models.playback.MetaData
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.{Beneficiaries, CharityBeneficiaries}
+import sections.beneficiaries.{Beneficiaries, CharityBeneficiaries}
 
 case class CharityBeneficiaryMetaData(index: Int) extends QuestionPage[MetaData]{
 

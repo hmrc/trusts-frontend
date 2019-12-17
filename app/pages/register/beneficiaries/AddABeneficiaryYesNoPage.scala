@@ -18,7 +18,7 @@ package pages.register.beneficiaries
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.Beneficiaries
+import sections.beneficiaries.Beneficiaries
 
 case object AddABeneficiaryYesNoPage extends QuestionPage[Boolean] {
 

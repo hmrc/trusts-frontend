@@ -19,7 +19,7 @@ package pages.register.beneficiaries.individual
 import models.core.pages.FullName
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.{Beneficiaries, IndividualBeneficiaries}
+import sections.beneficiaries.{Beneficiaries, IndividualBeneficiaries}
 
 final case class IndividualBeneficiaryNamePage(index: Int) extends QuestionPage[FullName] {
 

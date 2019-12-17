@@ -19,7 +19,7 @@ package pages.register.beneficiaries.company
 import models.core.pages.Address
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.{Beneficiaries, CompanyBeneficiaries}
+import sections.beneficiaries.{Beneficiaries, CompanyBeneficiaries}
 
 case class CompanyBeneficiaryAddressPage(index: Int) extends QuestionPage[Address] {
 

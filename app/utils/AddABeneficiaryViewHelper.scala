@@ -20,7 +20,7 @@ import controllers.register.beneficiaries.routes
 import models.core.UserAnswers
 import models.core.pages.FullName
 import play.api.i18n.Messages
-import sections.{ClassOfBeneficiaries, IndividualBeneficiaries}
+import sections.beneficiaries.{ClassOfBeneficiaries, IndividualBeneficiaries}
 import viewmodels.addAnother.{ClassOfBeneficiaryViewModel, IndividualBeneficiaryViewModel}
 import viewmodels.{AddRow, AddToRows}
 

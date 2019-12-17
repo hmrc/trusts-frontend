@@ -19,7 +19,7 @@ package pages.register.beneficiaries
 import models.registration.pages.WhatTypeOfBeneficiary
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.Beneficiaries
+import sections.beneficiaries.Beneficiaries
 
 case object WhatTypeOfBeneficiaryPage extends QuestionPage[WhatTypeOfBeneficiary] {
 
