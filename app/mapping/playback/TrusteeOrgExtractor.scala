@@ -76,7 +76,6 @@ class TrusteeOrgExtractor @Inject() extends PlaybackExtractor[Option[DisplayTrus
           answers.set(TrusteeAUKBusinessPage(0), true)
             .flatMap(_.set(TrusteesUtrPage(0), utr))
       case None =>
-        // Assumption that user answered no as utr is not provided
         answers.set(TrusteeAUKBusinessPage(0), false)
     }
 
@@ -88,12 +87,11 @@ class TrusteeOrgExtractor @Inject() extends PlaybackExtractor[Option[DisplayTrus
       case Some(nonUk: InternationalAddress) =>
         answers.set(TrusteesInternationalAddressPage(0), nonUk)
           .flatMap(_.set(TrusteeLiveInTheUKPage(0), false))
-      case None => {
+      case None =>
         trusteeOrg.identification.flatMap(_.utr) match {
           case None => answers.set(TrusteeAddressKnownPage(0), false)
           case _ => Success(answers)
         }
-      }
     }
 
 
