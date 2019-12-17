@@ -16,16 +16,12 @@
 
 package mapping.playback
 
-import java.time.LocalDate
-
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
-import mapping.registration.PassportType
-import models.core.pages.{FullName, IndividualOrBusiness}
+import models.core.pages.IndividualOrBusiness
 import models.playback.http._
 import models.playback.{MetaData, UserAnswers}
-import org.joda.time.DateTime
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import pages.register.trustees._
 
