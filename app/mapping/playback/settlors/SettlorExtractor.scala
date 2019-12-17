@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package mapping.playback
+package mapping.playback.settlors
 
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
+import mapping.playback.PlaybackExtractor
 import models.playback.UserAnswers
 import models.playback.http.DisplayTrustEntitiesType
 

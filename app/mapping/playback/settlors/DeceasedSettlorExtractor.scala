@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package mapping.playback
+package mapping.playback.settlors
+
+import java.time.LocalDate
 
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
+import mapping.playback.{PlaybackExtractor, PlaybackImplicits}
 import models.core.pages.{FullName, InternationalAddress, UKAddress}
 import models.playback.http.DisplayTrustWillType
 import models.playback.{MetaData, UserAnswers}
-import java.time.LocalDate
-
 import models.registration.pages.PassportOrIdCardDetails
 import pages.register.settlors.deceased_settlor._
 import play.api.Logger

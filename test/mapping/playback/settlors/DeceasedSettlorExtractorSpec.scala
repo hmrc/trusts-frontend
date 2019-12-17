@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package mapping.playback
+package mapping.playback.settlors
 
 import java.time.LocalDate
 
 import base.SpecBaseHelpers
 import generators.Generators
+import mapping.playback.PlaybackExtractor
 import mapping.registration.PassportType
-import models.core.pages.{FullName, UKAddress}
+import models.core.pages.FullName
 import models.playback.http._
 import models.playback.{MetaData, UserAnswers}
 import org.joda.time.DateTime

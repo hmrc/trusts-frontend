@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package mapping.playback
+package mapping.playback.settlors
 
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
-import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
+import mapping.playback.PlaybackExtractor
+import models.core.pages.{FullName, IndividualOrBusiness}
 import models.playback.http._
 import models.playback.{MetaData, UserAnswers}
-import org.joda.time.DateTime
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
