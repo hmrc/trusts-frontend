@@ -36,7 +36,7 @@ class DeceasedSettlorExtractor @Inject() extends PlaybackExtractor[Option[Displa
   override def extract(answers: UserAnswers, data: Option[DisplayTrustWillType]): Either[PlaybackExtractionError, UserAnswers] =
     {
       data match {
-        case None => Right(answers)
+        case None => Left(FailedToExtractData("No Deceased Settlor"))
         case deceasedSettlor =>
 
           val updated = deceasedSettlor.foldLeft[Try[UserAnswers]](Success(answers)){

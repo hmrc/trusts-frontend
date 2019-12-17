@@ -24,7 +24,7 @@ import play.api.Logger
 
 class UserAnswersExtractor @Inject()(beneficiary: BeneficiaryExtractor,
                                      leadTrustee: LeadTrusteeExtractor,
-                                     deceasedSettlor: DeceasedSettlorExtractor
+                                     settlors: SettlorExtractor
                                     ) extends PlaybackExtractor[GetTrust] {
 
   import models.playback.UserAnswersCombinator._
@@ -34,7 +34,7 @@ class UserAnswersExtractor @Inject()(beneficiary: BeneficiaryExtractor,
     val answersCombined = for {
       ua <- beneficiary.extract(answers, data.trust.entities.beneficiary).right
       ua1 <- leadTrustee.extract(answers, data.trust.entities.leadTrustee).right
-      ua2 <- deceasedSettlor.extract(answers, data.trust.entities.deceased).right
+      ua2 <- settlors.extract(answers, data.trust.entities).right
     } yield {
       List(ua, ua1, ua2).combine
     }

@@ -46,7 +46,7 @@ class DeceasedSettlorExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = deceasedSettlorExtractor.extract(ua, deceasedSettlor)
 
-        extraction mustBe 'right
+        extraction mustBe 'left
 
       }
 

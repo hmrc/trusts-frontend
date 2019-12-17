@@ -29,6 +29,10 @@ class BeneficiaryExtractor @Inject()(charityBeneficiaryExtractor: CharityBenefic
 
     import models.playback.UserAnswersCombinator._
 
+    println(data.charity)
+    println(data.company)
+    println(data.trust)
+
     val beneficiaries: List[UserAnswers] = List(
       charityBeneficiaryExtractor.extract(answers, data.charity),
       companyBeneficiaryExtractor.extract(answers, data.company),
@@ -36,6 +40,8 @@ class BeneficiaryExtractor @Inject()(charityBeneficiaryExtractor: CharityBenefic
     ).collect {
       case Right(z) => z
     }
+
+    println(beneficiaries)
 
     beneficiaries match {
       case Nil => Left(FailedToExtractData("Beneficiary Extraction Error"))
