@@ -55,13 +55,13 @@ class TrusteeOrgExtractorSpec extends FreeSpec with MustMatchers with EitherValu
           lineNo = "1",
           bpMatchStatus = Some("01"),
           name = "org1",
-          phoneNumber = Some("+441234567890"),
-          email = Some("test@test.com"),
+          phoneNumber = None,
+          email = None,
           identification =
             Some(DisplayTrustIdentificationOrgType(
               safeId = Some("8947584-94759745-84758745"),
               utr = Some("1234567890"),
-              address = Some(AddressType("line 1", "line2", None, None, Some("NE11NE"), "GB"))
+              address = None
             )),
           entityStart = "2019-11-26"
         )
@@ -75,6 +75,7 @@ class TrusteeOrgExtractorSpec extends FreeSpec with MustMatchers with EitherValu
         extraction.right.value.get(TrusteeOrgNamePage(0)).get mustBe "org1"
         extraction.right.value.get(TrusteeAUKBusinessPage(0)).get mustBe true
         extraction.right.value.get(TrusteesUtrPage(0)).get mustBe "1234567890"
+        extraction.right.value.get(TrusteeAddressKnownPage(0)) must not be defined
         extraction.right.value.get(TrusteeLiveInTheUKPage(0)) must not be defined
         extraction.right.value.get(TrusteesUkAddressPage(0)) must not be defined
         extraction.right.value.get(TrusteesInternationalAddressPage(0)) must not be defined
@@ -90,13 +91,13 @@ class TrusteeOrgExtractorSpec extends FreeSpec with MustMatchers with EitherValu
           lineNo = s"1",
           bpMatchStatus = Some("01"),
           name = "org1",
-          phoneNumber = Some("+441234567890"),
-          email = Some("test@test.com"),
+          phoneNumber = None,
+          email = None,
           identification =
             Some(DisplayTrustIdentificationOrgType(
               safeId = Some("8947584-94759745-84758745"),
-              utr = Some("1234567890"),
-              address = Some(AddressType("line 1", "line2", None, None, Some("NE11NE"), "GB"))
+              utr = None,
+              address = None
             )),
           entityStart = "2019-11-26"
         )
@@ -105,18 +106,18 @@ class TrusteeOrgExtractorSpec extends FreeSpec with MustMatchers with EitherValu
 
         val extraction = trusteeOrgExtractor.extract(ua, Some(trustee))
 
-        extraction.right.value.get(IsThisLeadTrusteePage(0)).get mustBe true
+        extraction.right.value.get(IsThisLeadTrusteePage(0)).get mustBe false
         extraction.right.value.get(TrusteeIndividualOrBusinessPage(0)).get mustBe IndividualOrBusiness.Business
         extraction.right.value.get(TrusteeOrgNamePage(0)).get mustBe "org1"
-        extraction.right.value.get(TrusteeAUKBusinessPage(0)).get mustBe true
-        extraction.right.value.get(TrusteesUtrPage(0)).get mustBe "1234567890"
-        extraction.right.value.get(TrusteeLiveInTheUKPage(0)).get mustBe true
-        extraction.right.value.get(TrusteesUkAddressPage(0)) must be(defined)
-        extraction.right.value.get(TrusteesUkAddressPage(0)).get.postcode mustBe "NE11NE"
-        extraction.right.value.get(TrusteesInternationalAddressPage(0)) mustNot be(defined)
-        extraction.right.value.get(TelephoneNumberPage(0)).get mustBe "+441234567890"
-        extraction.right.value.get(EmailPage(0)).get mustBe "test@test.com"
-        extraction.right.value.get(LeadTrusteeMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
+        extraction.right.value.get(TrusteesUtrPage(0)) must not be defined
+        extraction.right.value.get(TrusteeAUKBusinessPage(0)).get mustBe false
+        extraction.right.value.get(TrusteeAddressKnownPage(0)).get mustBe false
+        extraction.right.value.get(TrusteeLiveInTheUKPage(0)) must not be defined
+        extraction.right.value.get(TrusteesUkAddressPage(0)) must not be defined
+        extraction.right.value.get(TrusteesInternationalAddressPage(0)) must not be defined
+        extraction.right.value.get(TelephoneNumberPage(0)) must not be defined
+        extraction.right.value.get(EmailPage(0)) must not be defined
+        extraction.right.value.get(TrusteeMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
         extraction.right.value.get(TrusteesSafeIdPage(0)) must be(defined)
       }
 
@@ -141,7 +142,7 @@ class TrusteeOrgExtractorSpec extends FreeSpec with MustMatchers with EitherValu
 
         val extraction = trusteeOrgExtractor.extract(ua, Some(trustee))
 
-        extraction.right.value.get(IsThisLeadTrusteePage(0)).get mustBe true
+        extraction.right.value.get(IsThisLeadTrusteePage(0)).get mustBe false
         extraction.right.value.get(TrusteeIndividualOrBusinessPage(0)).get mustBe IndividualOrBusiness.Business
         extraction.right.value.get(TrusteeOrgNamePage(0)).get mustBe "org1"
         extraction.right.value.get(TrusteeAUKBusinessPage(0)).get mustBe true
@@ -168,7 +169,7 @@ class TrusteeOrgExtractorSpec extends FreeSpec with MustMatchers with EitherValu
             Some(DisplayTrustIdentificationOrgType(
               safeId = Some("8947584-94759745-84758745"),
               utr = None,
-              address = Some(AddressType("line 1", "line2", None, None, Some("NE11NE"), "GB"))
+              address = Some(AddressType("line 1", "line2", None, None, None, "FR"))
             )),
           entityStart = "2019-11-26"
         )
@@ -177,15 +178,14 @@ class TrusteeOrgExtractorSpec extends FreeSpec with MustMatchers with EitherValu
 
         val extraction = trusteeOrgExtractor.extract(ua, Some(trustee))
 
-        extraction.right.value.get(IsThisLeadTrusteePage(0)).get mustBe true
+        extraction.right.value.get(IsThisLeadTrusteePage(0)).get mustBe false
         extraction.right.value.get(TrusteeIndividualOrBusinessPage(0)).get mustBe IndividualOrBusiness.Business
         extraction.right.value.get(TrusteeOrgNamePage(0)).get mustBe "org1"
         extraction.right.value.get(TrusteeAUKBusinessPage(0)).get mustBe false
         extraction.right.value.get(TrusteesUtrPage(0)) mustNot be(defined)
-        extraction.right.value.get(TrusteeLiveInTheUKPage(0)).get mustBe true
-        extraction.right.value.get(TrusteesUkAddressPage(0)) must be(defined)
-        extraction.right.value.get(TrusteesUkAddressPage(0)).get.postcode mustBe "NE11NE"
-        extraction.right.value.get(TrusteesInternationalAddressPage(0)) mustNot be(defined)
+        extraction.right.value.get(TrusteeLiveInTheUKPage(0)).get mustBe false
+        extraction.right.value.get(TrusteesUkAddressPage(0)) must not be defined
+        extraction.right.value.get(TrusteesInternationalAddressPage(0)) mustBe defined
         extraction.right.value.get(TelephoneNumberPage(0)).get mustBe "+441234567890"
         extraction.right.value.get(EmailPage(0)).get mustBe "test@test.com"
         extraction.right.value.get(LeadTrusteeMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
