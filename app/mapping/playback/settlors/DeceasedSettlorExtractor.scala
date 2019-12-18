@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package mapping.playback
+package mapping.playback.settlors
+
+import java.time.LocalDate
 
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
+import mapping.playback.{PlaybackExtractor, PlaybackImplicits}
 import models.core.pages.{FullName, InternationalAddress, UKAddress}
 import models.playback.http.DisplayTrustWillType
 import models.playback.{MetaData, UserAnswers}
-import java.time.LocalDate
-
 import models.registration.pages.PassportOrIdCardDetails
 import pages.register.settlors.deceased_settlor._
 import play.api.Logger
@@ -36,7 +37,7 @@ class DeceasedSettlorExtractor @Inject() extends PlaybackExtractor[Option[Displa
   override def extract(answers: UserAnswers, data: Option[DisplayTrustWillType]): Either[PlaybackExtractionError, UserAnswers] =
     {
       data match {
-        case None => Right(answers)
+        case None => Left(FailedToExtractData("No Deceased Settlor"))
         case deceasedSettlor =>
 
           val updated = deceasedSettlor.foldLeft[Try[UserAnswers]](Success(answers)){

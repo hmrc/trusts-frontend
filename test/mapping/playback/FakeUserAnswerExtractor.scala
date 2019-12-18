@@ -19,14 +19,15 @@ package mapping.playback
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
 import mapping.playback.beneficiaries.BeneficiaryExtractor
+import mapping.playback.settlors.SettlorExtractor
 import models.playback.UserAnswers
 import models.playback.http.GetTrust
 
 class FakeUserAnswerExtractor @Inject()(beneficiary: BeneficiaryExtractor,
-                                         leadTrustee: LeadTrusteeExtractor,
-                                         deceasedSettlor: DeceasedSettlorExtractor
+                                        leadTrustee: LeadTrusteeExtractor,
+                                        settlors: SettlorExtractor
                                         ) extends UserAnswersExtractor(
-  beneficiary, leadTrustee, deceasedSettlor
+  beneficiary, leadTrustee, settlors
 ) {
 
   override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionErrors.PlaybackExtractionError, UserAnswers] =
@@ -37,9 +38,9 @@ class FakeUserAnswerExtractor @Inject()(beneficiary: BeneficiaryExtractor,
 
 class FakeFailingUserAnswerExtractor @Inject()(beneficiary: BeneficiaryExtractor,
                                         leadTrustee: LeadTrusteeExtractor,
-                                        deceasedSettlor: DeceasedSettlorExtractor
+                                               settlors: SettlorExtractor
                                        ) extends UserAnswersExtractor(
-  beneficiary, leadTrustee, deceasedSettlor
+  beneficiary, leadTrustee, settlors
 ) {
 
   override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionErrors.PlaybackExtractionError, UserAnswers] =

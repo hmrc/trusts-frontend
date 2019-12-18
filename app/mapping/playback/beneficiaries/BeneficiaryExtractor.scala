@@ -41,7 +41,7 @@ class BeneficiaryExtractor @Inject()(charityBeneficiaryExtractor: CharityBenefic
     ).collect {
       case Right(z) => z
     }
-
+    
     beneficiaries match {
       case Nil => Left(FailedToExtractData("Beneficiary Extraction Error"))
       case _ => beneficiaries.combine.map(Right.apply).getOrElse(Left(FailedToExtractData("Beneficiary Extraction Error")))
