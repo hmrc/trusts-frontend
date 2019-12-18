@@ -40,8 +40,7 @@ object MatchData {
 case class Correspondence(abroadIndicator: Boolean,
                           name: String,
                           address: AddressType,
-                                         bpMatchStatus: Option[String],
-                                         phoneNumber: String)
+                          phoneNumber: String)
 
 object Correspondence {
   implicit val correspondenceFormat : Format[Correspondence] = Json.format[Correspondence]
@@ -117,6 +116,7 @@ object DisplayTrustEntitiesType {
 }
 
 case class DisplayTrustNaturalPersonType(lineNo: String,
+                                         bpMatchStatus: Option[String],
                                          name: NameType,
                                          dateOfBirth: Option[DateTime],
                                          identification: Option[DisplayTrustIdentificationType],
