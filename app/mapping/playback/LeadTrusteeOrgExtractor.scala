@@ -73,11 +73,11 @@ class LeadTrusteeOrgExtractor @Inject() extends PlaybackExtractor[Option[Display
   private def extractUtr(leadTrustee: DisplayTrustLeadTrusteeOrgType, answers: UserAnswers) = {
     leadTrustee.identification.utr match {
       case Some(utr) =>
-        answers.set(TrusteeAUKBusinessPage(0), true)
+        answers.set(TrusteeUTRYesNoPagePage(0), true)
           .flatMap(_.set(TrusteesUtrPage(0), utr))
       case None =>
         // Assumption that user answered no as utr is not provided
-        answers.set(TrusteeAUKBusinessPage(0), false)
+        answers.set(TrusteeUTRYesNoPagePage(0), false)
     }
   }
 
