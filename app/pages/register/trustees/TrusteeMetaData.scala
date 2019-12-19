@@ -16,13 +16,15 @@
 
 package pages.register.trustees
 
+import models.playback.MetaData
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.Trustees
 
-final case class  TrusteeAUKBusinessPage(index : Int) extends QuestionPage[Boolean] {
+case class TrusteeMetaData(index: Int) extends QuestionPage[MetaData] {
 
   override def path: JsPath = Trustees.path \ index \ toString
 
-  override def toString: String = "isUKBusiness"
+  override def toString: String = "metaData"
+
 }
