@@ -360,6 +360,8 @@ object DisplayTrustProtectorCompany {
 case class DisplayTrustSettlors(settlor: Option[List[DisplayTrustSettlor]],
                                 settlorCompany: Option[List[DisplayTrustSettlorCompany]])
 
+sealed trait LivingSettlor
+
 object DisplayTrustSettlors {
   implicit val settlorsFormat: Format[DisplayTrustSettlors] = Json.format[DisplayTrustSettlors]
 }
@@ -369,7 +371,7 @@ case class DisplayTrustSettlor(lineNo: String,
                                name: NameType,
                                dateOfBirth: Option[DateTime],
                                identification: Option[DisplayTrustIdentificationType],
-                               entityStart: String)
+                               entityStart: String) extends LivingSettlor
 
 object DisplayTrustSettlor {
   implicit val dateFormat: Format[DateTime] = Format[DateTime](JodaReads.jodaDateReads(dateTimePattern), JodaWrites.jodaDateWrites(dateTimePattern))
@@ -382,7 +384,7 @@ case class DisplayTrustSettlorCompany(lineNo: String,
                                       companyType: Option[String],
                                       companyTime: Option[Boolean],
                                       identification: Option[DisplayTrustIdentificationOrgType],
-                                      entityStart: String)
+                                      entityStart: String) extends LivingSettlor
 
 object DisplayTrustSettlorCompany {
   implicit val settlorCompanyFormat: Format[DisplayTrustSettlorCompany] = Json.format[DisplayTrustSettlorCompany]

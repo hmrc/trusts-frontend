@@ -25,7 +25,7 @@ import models.playback.{MetaData, UserAnswers}
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import pages.register.settlors.living_settlor._
 
-class SettlorCompanyExtractorSpec extends FreeSpec with MustMatchers
+class LivingSettlorExtractorSpec extends FreeSpec with MustMatchers
   with EitherValues with Generators with SpecBaseHelpers {
 
   def generateSettlorCompany(index: Int) = DisplayTrustSettlorCompany(
@@ -60,7 +60,7 @@ class SettlorCompanyExtractorSpec extends FreeSpec with MustMatchers
   )
 
   val settlorCompanyExtractor : PlaybackExtractor[Option[List[DisplayTrustSettlorCompany]]] =
-    injector.instanceOf[SettlorCompanyExtractor]
+    injector.instanceOf[LivingSettlorExtractor]
 
   "Settlor Company Extractor" - {
 
