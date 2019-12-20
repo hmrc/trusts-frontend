@@ -81,7 +81,14 @@ class SettlorExtractorSpec extends FreeSpec with MustMatchers
           trustees = None,
           protectors = None,
           settlors = Some(DisplayTrustSettlors(
-            settlor = None,
+            settlor = Some(List(DisplayTrustSettlor(
+              lineNo = s"1",
+              bpMatchStatus = Some("01"),
+              name = NameType("individual", Some("living"), "settlor"),
+              dateOfBirth = None,
+              identification = None,
+              entityStart = "2019-11-26"
+            ))),
             settlorCompany = Some(List(DisplayTrustSettlorCompany(
               lineNo = s"1",
               bpMatchStatus = Some("01"),
@@ -96,7 +103,23 @@ class SettlorExtractorSpec extends FreeSpec with MustMatchers
                 )
               ),
               entityStart = "2019-11-26"
-            )))
+            ),
+              DisplayTrustSettlorCompany(
+                lineNo = s"1",
+                bpMatchStatus = Some("01"),
+                name = s"Company Settlor 2",
+                companyType = Some("Trading"),
+                companyTime = Some(false),
+                identification = Some(
+                  DisplayTrustIdentificationOrgType(
+                    safeId = Some("8947584-94759745-84758745"),
+                    utr = Some("1234567890"),
+                    address = None
+                  )
+                ),
+                entityStart = "2019-11-26"
+              )
+            ))
           ))
         )
 
@@ -128,6 +151,32 @@ class SettlorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SettlorCompanyTimePage(0)).get mustBe false
         extraction.right.value.get(SettlorSafeIdPage(0)).get mustBe "8947584-94759745-84758745"
         extraction.right.value.get(SettlorMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
+
+        extraction.right.value.get(SettlorIndividualOrBusinessPage(1)).get mustBe IndividualOrBusiness.Business
+        extraction.right.value.get(SettlorBusinessNamePage(1)).get mustBe "Company Settlor 2"
+        extraction.right.value.get(SettlorUtrYesNoPage(1)).get mustBe true
+        extraction.right.value.get(SettlorUtrPage(1)).get mustBe "1234567890"
+        extraction.right.value.get(SettlorIndividualAddressYesNoPage(1)).get mustBe false
+        extraction.right.value.get(SettlorIndividualAddressUKYesNoPage(1)) mustNot be(defined)
+        extraction.right.value.get(SettlorIndividualAddressUKPage(1)) mustNot be(defined)
+        extraction.right.value.get(SettlorIndividualAddressInternationalPage(1)) mustNot be(defined)
+        extraction.right.value.get(SettlorCompanyTypePage(1)).get mustBe "Trading"
+        extraction.right.value.get(SettlorCompanyTimePage(1)).get mustBe false
+        extraction.right.value.get(SettlorSafeIdPage(1)).get mustBe "8947584-94759745-84758745"
+        extraction.right.value.get(SettlorMetaData(1)).get mustBe MetaData("1", Some("01"), "2019-11-26")
+
+        extraction.right.value.get(SettlorIndividualOrBusinessPage(2)).get mustBe IndividualOrBusiness.Individual
+        extraction.right.value.get(SettlorIndividualNamePage(2)).get mustBe FullName("individual", Some("living"), "settlor")
+        extraction.right.value.get(SettlorIndividualNINOYesNoPage(2)).get mustBe false
+        extraction.right.value.get(SettlorIndividualNINOPage(2)) mustNot be(defined)
+        extraction.right.value.get(SettlorIndividualAddressYesNoPage(2)).get mustBe false
+        extraction.right.value.get(SettlorIndividualAddressUKYesNoPage(2)) mustNot be(defined)
+        extraction.right.value.get(SettlorIndividualAddressUKPage(2)) mustNot be(defined)
+        extraction.right.value.get(SettlorIndividualAddressInternationalPage(2)) mustNot be(defined)
+        extraction.right.value.get(SettlorIndividualPassportIDCardYesNoPage(2)).get mustBe false
+        extraction.right.value.get(SettlorIndividualPassportIDCardPage(2)) mustNot be(defined)
+        extraction.right.value.get(SettlorSafeIdPage(2)) mustNot be(defined)
+        extraction.right.value.get(SettlorMetaData(2)).get mustBe MetaData("1", Some("01"), "2019-11-26")
 
       }
 

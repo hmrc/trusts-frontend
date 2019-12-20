@@ -22,6 +22,8 @@ import mapping.playback.{PlaybackExtractor, PlaybackImplicits}
 import models.core.pages.{IndividualOrBusiness, InternationalAddress, UKAddress}
 import models.playback.http.{DisplayTrustCharityType, DisplayTrustSettlor}
 import models.playback.{MetaData, UserAnswers}
+import models.registration.pages.Status.Completed
+import pages.entitystatus.LivingSettlorStatus
 import pages.register.settlors.living_settlor._
 import play.api.Logger
 
@@ -38,9 +40,9 @@ class SettlorIndividualExtractor @Inject() extends PlaybackExtractor[Option[List
         case Some(individuals) =>
 
           val updated = individuals.zipWithIndex.foldLeft[Try[UserAnswers]](Success(answers)){
-            case (answers, (settlorIndividual, ind)) =>
-            val index = ind + 1
-            answers
+            case (answers, (settlorIndividual, index)) =>
+
+              answers
               .flatMap(_.set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual))
               .flatMap(_.set(SettlorIndividualNamePage(index), settlorIndividual.name.convert))
               .flatMap(answers => extractDateOfBirth(settlorIndividual, index, answers))
@@ -58,6 +60,8 @@ class SettlorIndividualExtractor @Inject() extends PlaybackExtractor[Option[List
                 )
               }
               .flatMap(_.set(SettlorSafeIdPage(index), settlorIndividual.identification.flatMap(_.safeId)))
+              .flatMap(_.set(LivingSettlorStatus(index), Completed))
+
           }
 
           updated match {

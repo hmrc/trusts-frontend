@@ -22,7 +22,9 @@ import mapping.playback.{PlaybackExtractor, PlaybackImplicits}
 import models.core.pages.{IndividualOrBusiness, InternationalAddress, UKAddress}
 import models.playback.http.{DisplayTrustCharityType, DisplayTrustSettlorCompany}
 import models.playback.{MetaData, UserAnswers}
+import models.registration.pages.Status.Completed
 import pages.register.settlors.living_settlor._
+import pages.entitystatus.LivingSettlorStatus
 import play.api.Logger
 
 import scala.util.{Failure, Success, Try}
@@ -36,6 +38,7 @@ class SettlorCompanyExtractor @Inject() extends PlaybackExtractor[Option[List[Di
       data match {
         case None => Left(FailedToExtractData("No Settlor Company"))
         case Some(companies) =>
+
 
           val updated = companies.zipWithIndex.foldLeft[Try[UserAnswers]](Success(answers)){
             case (answers, (settlorCompany, index)) =>
@@ -58,6 +61,7 @@ class SettlorCompanyExtractor @Inject() extends PlaybackExtractor[Option[List[Di
               .flatMap(_.set(SettlorCompanyTypePage(index), settlorCompany.companyType))
               .flatMap(_.set(SettlorCompanyTimePage(index), settlorCompany.companyTime))
               .flatMap(_.set(SettlorSafeIdPage(index), settlorCompany.identification.flatMap(_.safeId)))
+              .flatMap(_.set(LivingSettlorStatus(index), Completed))
           }
 
           updated match {
