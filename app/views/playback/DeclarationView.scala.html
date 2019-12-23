@@ -19,6 +19,7 @@
 @import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 @import play.api.mvc.Call
 @import config.FrontendAppConfig
+@import viewmodels.AnswerSection
 
 @this(
     appConfig: FrontendAppConfig,
@@ -26,7 +27,7 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], affinityGroup : AffinityGroup, onSubmit: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], affinityGroup : AffinityGroup, sections: Seq[AnswerSection], onSubmit: Call)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("declaration.title")}"
