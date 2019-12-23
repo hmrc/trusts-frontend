@@ -16,15 +16,12 @@
 
 package mapping.playback.settlors
 
-import java.time.LocalDate
-
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
 import mapping.playback.{PlaybackExtractor, PlaybackImplicits}
-import models.core.pages.{FullName, InternationalAddress, UKAddress}
+import models.core.pages.{InternationalAddress, UKAddress}
 import models.playback.http.DisplayTrustWillType
 import models.playback.{MetaData, UserAnswers}
-import models.registration.pages.PassportOrIdCardDetails
 import pages.register.settlors.deceased_settlor._
 import play.api.Logger
 
@@ -44,7 +41,7 @@ class DeceasedSettlorExtractor @Inject() extends PlaybackExtractor[Option[Displa
             case (answers, deceasedSettlor) =>
 
             answers
-              .flatMap(_.set(SettlorsNamePage, FullName(deceasedSettlor.name.firstName, deceasedSettlor.name.middleName, deceasedSettlor.name.lastName )))
+              .flatMap(_.set(SettlorsNamePage, deceasedSettlor.name.convert))
               .flatMap(answers => extractDateOfDeath(deceasedSettlor, answers))
               .flatMap(answers => extractDateOfBirth(deceasedSettlor, answers))
               .flatMap(answers => extractNino(deceasedSettlor, answers))
@@ -77,7 +74,7 @@ class DeceasedSettlorExtractor @Inject() extends PlaybackExtractor[Option[Displa
     deceasedSettlor.dateOfDeath match {
       case Some(dateOfDeath) =>
         answers.set(SettlorDateOfDeathYesNoPage, true)
-          .flatMap(_.set(SettlorDateOfDeathPage, LocalDate.of(dateOfDeath.getYear, dateOfDeath.getMonthOfYear, dateOfDeath.getDayOfMonth)))
+          .flatMap(_.set(SettlorDateOfDeathPage, dateOfDeath.convert))
       case None =>
         // Assumption that user answered no as the date of death is not provided
         answers.set(SettlorDateOfDeathYesNoPage, false)
@@ -88,7 +85,7 @@ class DeceasedSettlorExtractor @Inject() extends PlaybackExtractor[Option[Displa
     deceasedSettlor.dateOfBirth match {
       case Some(dateOfBirth) =>
         answers.set(SettlorDateOfBirthYesNoPage, true)
-          .flatMap(_.set(SettlorsDateOfBirthPage, LocalDate.of(dateOfBirth.getYear, dateOfBirth.getMonthOfYear, dateOfBirth.getDayOfMonth)))
+          .flatMap(_.set(SettlorsDateOfBirthPage, dateOfBirth.convert))
       case None =>
         // Assumption that user answered no as the date of birth is not provided
         answers.set(SettlorDateOfBirthYesNoPage, false)
@@ -123,7 +120,7 @@ class DeceasedSettlorExtractor @Inject() extends PlaybackExtractor[Option[Displa
   private def extractPassportIdCard(deceasedSettlor: DisplayTrustWillType, answers: UserAnswers) = {
     deceasedSettlor.identification.flatMap(_.passport) match {
       case Some(passportIdCard) =>
-        answers.set(SettlorsPassportIDCardPage, PassportOrIdCardDetails(passportIdCard.countryOfIssue, passportIdCard.number, passportIdCard.expirationDate))
+        answers.set(SettlorsPassportIDCardPage, passportIdCard.convert)
       case None => Try(answers)
     }
   }
