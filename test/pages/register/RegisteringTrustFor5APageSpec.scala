@@ -35,16 +35,13 @@ class RegisteringTrustFor5APageSpec extends PageBehaviours {
   }
 
 
-  "remove NonResidentTypePage when RegisteringTrustFor5APage is set to false" in {
+  "Trust Details must not be defined when RegisteringTrustFor5APage is set to false" in {
 
-    forAll(arbitrary[UserAnswers], arbitrary[NonResidentType]) {
-      (initial, resident) =>
+    forAll(arbitrary[UserAnswers]) {
+      initial =>
 
-        val answers = initial.set(NonResidentTypePage, resident).success.value
+        val result = initial.set(RegisteringTrustFor5APage, false).success.value
 
-        val result = answers.set(RegisteringTrustFor5APage, false).success.value
-
-        result.get(NonResidentTypePage) mustNot be (defined)
         result.get(TrustDetailsStatus) mustNot be(defined)
     }
 

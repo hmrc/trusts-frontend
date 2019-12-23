@@ -34,8 +34,7 @@ case object RegisteringTrustFor5APage extends QuestionPage[Boolean] {
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
       case Some(false) =>
-        userAnswers.remove(NonResidentTypePage)
-          .flatMap(_.remove(TrustDetailsStatus))
+        userAnswers.remove(TrustDetailsStatus)
       case Some(true) =>
         userAnswers.remove(InheritanceTaxActPage)
           .flatMap(_.remove(AgentOtherThanBarristerPage))

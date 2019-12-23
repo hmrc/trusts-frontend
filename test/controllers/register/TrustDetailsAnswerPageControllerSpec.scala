@@ -20,9 +20,8 @@ import java.time.LocalDate
 
 import base.SpecBase
 import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
-import models.registration.pages.{NonResidentType, WhenTrustSetupPage}
-import pages._
-import pages.register.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, RegisteringTrustFor5APage, TrustNamePage, TrustPreviouslyResidentPage, TrustResidentOffshorePage}
+import models.registration.pages.WhenTrustSetupPage
+import pages.register._
 import pages.register.agents.AgentOtherThanBarristerPage
 import pages.register.settlors.SettlorsBasedInTheUKPage
 import pages.register.trustees.TrusteesBasedInTheUKPage
@@ -153,7 +152,6 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
             .set(AdministrationInsideUKPage, true).success.value
             .set(TrusteesBasedInTheUKPage, NonUkBasedTrustees).success.value
             .set(RegisteringTrustFor5APage, true).success.value
-            .set(NonResidentTypePage, NonResidentType.NonDomiciled).success.value
 
         val application = applicationBuilder(userAnswers = Some(answers)).build()
 
@@ -170,8 +168,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
               checkYourAnswersHelper.governedInsideTheUK.value,
               checkYourAnswersHelper.administrationInsideUK.value,
               checkYourAnswersHelper.trusteesBasedInUK.value,
-              checkYourAnswersHelper.registeringTrustFor5A.value,
-              checkYourAnswersHelper.nonresidentType.value
+              checkYourAnswersHelper.registeringTrustFor5A.value
             )
           )
         )
@@ -205,7 +202,6 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
             .set(TrusteesBasedInTheUKPage, InternationalAndUKTrustees).success.value
             .set(SettlorsBasedInTheUKPage, false).success.value
             .set(RegisteringTrustFor5APage, true).success.value
-            .set(NonResidentTypePage, NonResidentType.NonDomiciled).success.value
 
         val application = applicationBuilder(userAnswers = Some(answers)).build()
 
@@ -223,8 +219,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
               checkYourAnswersHelper.administrationInsideUK.value,
               checkYourAnswersHelper.trusteesBasedInUK.value,
               checkYourAnswersHelper.settlorsBasedInTheUK.value,
-              checkYourAnswersHelper.registeringTrustFor5A.value,
-              checkYourAnswersHelper.nonresidentType.value
+              checkYourAnswersHelper.registeringTrustFor5A.value
             )
           )
         )
@@ -243,7 +238,7 @@ class TrustDetailsAnswerPageControllerSpec extends SpecBase {
         application.stop()
       }
 
-  }
+    }
 
     "trust not administered in the UK and registering for inheritance tax" must {
 

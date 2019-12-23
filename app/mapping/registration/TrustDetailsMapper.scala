@@ -21,20 +21,21 @@ import mapping.{registration, _}
 import models.core.UserAnswers
 import models.registration.pages.SettlorKindOfTrust.{Deed, Employees, FlatManagement, HeritageMaintenanceFund, Intervivos}
 import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
-import models.registration.pages.{NonResidentType, SettlorKindOfTrust, WhenTrustSetupPage}
+import models.registration.pages.{SettlorKindOfTrust, Status, WhenTrustSetupPage}
 import pages.entitystatus.DeceasedSettlorStatus
+import pages.register._
 import pages.register.agents.AgentOtherThanBarristerPage
 import pages.register.settlors.SettlorsBasedInTheUKPage
 import pages.register.settlors.living_settlor.{SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage}
 import pages.register.trustees.TrusteesBasedInTheUKPage
-import pages.register._
 import play.api.Logger
 import sections.LivingSettlors
+import viewmodels.addAnother.SettlorViewModel
 
 class TrustDetailsMapper extends Mapping[TrustDetailsType] {
 
   private def trustType(userAnswers: UserAnswers): Option[TypeOfTrust] = {
-    val settlors = (
+    val settlors: (Option[List[SettlorViewModel]], Option[Status]) = (
       userAnswers.get(LivingSettlors),
       userAnswers.get(DeceasedSettlorStatus)
     )
@@ -96,7 +97,7 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
         None
     }
   }
-  
+
   private def residentialStatus(userAnswers: UserAnswers): Option[ResidentialStatusType] = {
     userAnswers.get(TrusteesBasedInTheUKPage) match {
       case Some(UKBasedTrustees) =>
@@ -109,7 +110,7 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
             ukResidentMap(userAnswers)
           case Some(false) =>
             nonUkResidentMap(userAnswers)
-          case  _ =>
+          case _ =>
             Logger.info("[TrustDetailsMapper][build] unable to determine if all settlors are based in the UK")
             None
         }
@@ -121,23 +122,20 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
 
   private def nonUkResidentMap(userAnswers: UserAnswers) = {
     val registeringTrustFor5A = userAnswers.get(RegisteringTrustFor5APage)
-    val nonResidentTypePage = userAnswers.get(NonResidentTypePage)
-    val nonResTypeDES = nonResidentTypePage.map(NonResidentType.toDES)
 
-    val nonUKConstruct: Option[NonUKType] = (registeringTrustFor5A, nonResTypeDES) match {
-      case (Some(true), r@Some(_)) =>
+    val nonUKConstruct: Option[NonUKType] = registeringTrustFor5A match {
+      case Some(true) =>
         Some(
           NonUKType(
             sch5atcgga92 = true,
             s218ihta84 = None,
-            agentS218IHTA84 = None,
-            trusteeStatus = r)
+            agentS218IHTA84 = None)
         )
 
-      case (Some(false), None) =>
+      case Some(false) =>
         inheritanceTaxAndAgentBarristerMap(userAnswers)
 
-      case (_, _) =>
+      case _ =>
         Logger.info(s"[TrustDetailsMapper][build] unable to build non UK resident or inheritance")
         None
     }
@@ -181,8 +179,7 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
           NonUKType(
             sch5atcgga92 = false,
             s218ihta84 = s218ihta84,
-            agentS218IHTA84 = agentS218IHTA84,
-            trusteeStatus = None)
+            agentS218IHTA84 = agentS218IHTA84)
         )
 
       case _ => None

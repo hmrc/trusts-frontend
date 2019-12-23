@@ -196,14 +196,6 @@ trustPreviouslyResident.error.required = Enter the country the trust was previou
 trustPreviouslyResident.error.length = The country the trust was previously resident in must be 100 characters or less
 trustPreviouslyResident.error.invalidCharacters = The country that governs the trust must only include letters a to z, apostrophes, commas, full stops, hyphens, round brackets and spaces
 
-nonresidentType.title = What is the non-resident type?
-nonresidentType.heading = What is the non-resident type?
-nonresidentType.non-resident-domiciled = Settlor domiciled trustees are non-resident
-nonresidentType.non-resident-non-domiciled = Settlor non-domiciled becomes domiciled then resident
-nonresidentType.non-resident-cease-resident = Trustees cease to be resident
-nonresidentType.checkYourAnswersLabel = What is the non-resident type?
-nonresidentType.error.required = Select the non-resident type
-
 inheritanceTaxAct.title = Are you registering the trust for Inheritance Tax reasons?
 inheritanceTaxAct.heading = Are you registering the trust for Inheritance Tax reasons?
 inheritanceTaxAct.checkYourAnswersLabel = Are you registering the trust for Inheritance Tax reasons?

@@ -24,20 +24,19 @@ import generators.Generators
 import models.NormalMode
 import models.core.UserAnswers
 import models.registration.pages.TrusteesBasedInTheUK.{NonUkBasedTrustees, UKBasedTrustees}
-import models.registration.pages.{NonResidentType, WhenTrustSetupPage}
+import models.registration.pages.WhenTrustSetupPage
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages._
-import pages.register.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, RegisteringTrustFor5APage, TrustDetailsAnswerPage, TrustHaveAUTRPage, TrustNamePage, TrustPreviouslyResidentPage, TrustRegisteredOnlinePage, TrustResidentOffshorePage}
 import pages.register.agents.AgentOtherThanBarristerPage
 import pages.register.trustees.TrusteesBasedInTheUKPage
+import pages.register._
 
 trait TrustDetailsRoutes {
 
   self: PropertyChecks with Generators with SpecBase =>
 
-  def trustDetailsRoutes()(implicit navigator : Navigator) = {
+  def trustDetailsRoutes()(implicit navigator: Navigator) = {
 
     "go to TrustSetup from TrustName when user does not have a UTR" in {
       forAll(arbitrary[UserAnswers]) {
@@ -182,25 +181,14 @@ trait TrustDetailsRoutes {
       }
     }
 
-    "go to Check Trust Details Answers from What is The Non Resident Type" in {
-      forAll(arbitrary[UserAnswers]) {
-        userAnswers =>
-
-          val answers = userAnswers.set(NonResidentTypePage, value = NonResidentType.Domiciled).success.value
-
-          navigator.nextPage(NonResidentTypePage, NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId))
-      }
-    }
-
-    "go to What Is Non Resident Type from Registering for Purpose of Schedule 5A when user answers Yes" in {
+    "go to Check Trust Details Answers from Registering for Purpose of Schedule 5A when user answers Yes" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
           val answers = userAnswers.set(RegisteringTrustFor5APage, value = true).success.value
 
           navigator.nextPage(RegisteringTrustFor5APage, NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.NonResidentTypeController.onPageLoad(NormalMode, fakeDraftId))
+            .mustBe(routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId))
       }
     }
 

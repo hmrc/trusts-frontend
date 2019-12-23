@@ -19,11 +19,11 @@ package pages.register.trustees
 import models.core.UserAnswers
 import models.registration.pages.TrusteesBasedInTheUK
 import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
-import pages.register.agents.AgentOtherThanBarristerPage
-import pages.entitystatus.TrustDetailsStatus
-import pages.register.settlors.SettlorsBasedInTheUKPage
 import pages._
-import pages.register.{EstablishedUnderScotsLawPage, InheritanceTaxActPage, NonResidentTypePage, RegisteringTrustFor5APage, TrustPreviouslyResidentPage, TrustResidentOffshorePage}
+import pages.entitystatus.TrustDetailsStatus
+import pages.register.agents.AgentOtherThanBarristerPage
+import pages.register.settlors.SettlorsBasedInTheUKPage
+import pages.register._
 import play.api.libs.json.JsPath
 import sections.TrustDetails
 
@@ -46,7 +46,6 @@ case object TrusteesBasedInTheUKPage extends QuestionPage[TrusteesBasedInTheUK] 
       case Some(NonUkBasedTrustees) | Some(InternationalAndUKTrustees) =>
         userAnswers.remove(RegisteringTrustFor5APage)
           .flatMap(_.remove(InheritanceTaxActPage))
-          .flatMap(_.remove(NonResidentTypePage))
           .flatMap(_.remove(AgentOtherThanBarristerPage))
           .flatMap(_.remove(TrustDetailsStatus))
           .flatMap(_.remove(SettlorsBasedInTheUKPage))

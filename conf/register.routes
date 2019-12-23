@@ -64,11 +64,6 @@ POST       /:draftId/trust-offshore-country                                     
 GET        /:draftId/change-trust-offshore-country                                                  controllers.register.TrustPreviouslyResidentController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/change-trust-offshore-country                                                  controllers.register.TrustPreviouslyResidentController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
-GET        /:draftId/trust-non-resident-type                                                        controllers.register.NonResidentTypeController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-non-resident-type                                                        controllers.register.NonResidentTypeController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-non-resident-type                                                 controllers.register.NonResidentTypeController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-non-resident-type                                                 controllers.register.NonResidentTypeController.onSubmit(mode: Mode = CheckMode, draftId: String)
-
 GET        /:draftId/trust-inheritance-tax-act                                                      controllers.register.InheritanceTaxActController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/trust-inheritance-tax-act                                                      controllers.register.InheritanceTaxActController.onSubmit(mode: Mode = NormalMode, draftId: String)
 GET        /:draftId/change-trust-inheritance-tax-act                                               controllers.register.InheritanceTaxActController.onPageLoad(mode: Mode = CheckMode, draftId: String)

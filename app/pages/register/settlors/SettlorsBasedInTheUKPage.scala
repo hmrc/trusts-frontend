@@ -17,10 +17,10 @@
 package pages.register.settlors
 
 import models.core.UserAnswers
-import pages.entitystatus.TrustDetailsStatus
 import pages._
-import pages.register.{EstablishedUnderScotsLawPage, InheritanceTaxActPage, NonResidentTypePage, RegisteringTrustFor5APage, TrustPreviouslyResidentPage, TrustResidentOffshorePage}
+import pages.entitystatus.TrustDetailsStatus
 import pages.register.agents.AgentOtherThanBarristerPage
+import pages.register._
 import play.api.libs.json.JsPath
 import sections.TrustDetails
 
@@ -42,7 +42,6 @@ case object SettlorsBasedInTheUKPage extends QuestionPage[Boolean] {
       case Some(true) =>
         userAnswers.remove(RegisteringTrustFor5APage)
           .flatMap(_.remove(InheritanceTaxActPage))
-          .flatMap(_.remove(NonResidentTypePage))
           .flatMap(_.remove(AgentOtherThanBarristerPage))
           .flatMap(_.remove(TrustDetailsStatus))
       case _ => super.cleanup(value, userAnswers)

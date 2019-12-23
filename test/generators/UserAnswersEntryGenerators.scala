@@ -21,20 +21,19 @@ import models.playback.pages.DeclarationWhatNext
 import models.registration.pages._
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
-import pages._
-import pages.register.agents.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentNamePage, AgentOtherThanBarristerPage, AgentTelephoneNumberPage, AgentUKAddressPage}
+import pages.playback.{DeclarationWhatNextPage, WhatIsTheUTRVariationPage}
+import pages.register.agents._
 import pages.register.asset.money.AssetMoneyValuePage
-import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.settlors.deceased_settlor._
-import pages.register.settlors.living_settlor._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
-import pages.register.beneficiaries.individual.{IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryAddressUKYesNoPage, IndividualBeneficiaryAddressYesNoPage, IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryIncomePage, IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage, IndividualBeneficiaryNationalInsuranceYesNoPage, IndividualBeneficiaryVulnerableYesNoPage}
+import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
+import pages.register.beneficiaries.individual._
 import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage, WhatTypeOfBeneficiaryPage}
-import pages.playback.{DeclarationWhatNextPage, WhatIsTheUTRVariationPage}
-import pages.register.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, DeclarationPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, PostcodeForTheTrustPage, RegisteringTrustFor5APage, TrustHaveAUTRPage, TrustNamePage, TrustPreviouslyResidentPage, TrustRegisteredOnlinePage, TrustResidentOffshorePage, WhatIsTheUTRPage}
+import pages.register.settlors.deceased_settlor._
+import pages.register.settlors.living_settlor._
 import pages.register.settlors.{AddASettlorPage, SettlorsBasedInTheUKPage}
 import pages.register.trustees._
+import pages.register._
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
@@ -42,7 +41,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryDeclarationWhatNextUserAnswersEntry: Arbitrary[(DeclarationWhatNextPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[DeclarationWhatNextPage.type]
+        page <- arbitrary[DeclarationWhatNextPage.type]
         value <- arbitrary[DeclarationWhatNext].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -50,7 +49,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryTrustUTRUserAnswersEntry: Arbitrary[(WhatIsTheUTRVariationPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[WhatIsTheUTRVariationPage.type]
+        page <- arbitrary[WhatIsTheUTRVariationPage.type]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -58,7 +57,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorDetailsUserAnswersEntry: Arbitrary[(SettlorBusinessDetailsPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorBusinessDetailsPage]
+        page <- arbitrary[SettlorBusinessDetailsPage]
         value <- arbitrary[SettlorBusinessDetails].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -66,7 +65,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorBusinessDetailsUserAnswersEntry: Arbitrary[(SettlorBusinessNamePage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorBusinessNamePage]
+        page <- arbitrary[SettlorBusinessNamePage]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -74,7 +73,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorsBasedInTheUKUserAnswersEntry: Arbitrary[(SettlorsBasedInTheUKPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorsBasedInTheUKPage.type]
+        page <- arbitrary[SettlorsBasedInTheUKPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -82,7 +81,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryTrusteesBasedInTheUKUserAnswersEntry: Arbitrary[(TrusteesBasedInTheUKPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[TrusteesBasedInTheUKPage.type]
+        page <- arbitrary[TrusteesBasedInTheUKPage.type]
         value <- arbitrary[TrusteesBasedInTheUK].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -90,7 +89,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorHandoverReliefYesNoUserAnswersEntry: Arbitrary[(SettlorHandoverReliefYesNoPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorHandoverReliefYesNoPage.type]
+        page <- arbitrary[SettlorHandoverReliefYesNoPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -98,7 +97,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryRemoveSettlorUserAnswersEntry: Arbitrary[(RemoveSettlorPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[RemoveSettlorPage]
+        page <- arbitrary[RemoveSettlorPage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -106,7 +105,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorKindOfTrustUserAnswersEntry: Arbitrary[(SettlorKindOfTrustPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorKindOfTrustPage.type]
+        page <- arbitrary[SettlorKindOfTrustPage.type]
         value <- arbitrary[SettlorKindOfTrust].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -114,7 +113,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorIndividualPassportYesNoUserAnswersEntry: Arbitrary[(SettlorIndividualPassportYesNoPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorIndividualPassportYesNoPage]
+        page <- arbitrary[SettlorIndividualPassportYesNoPage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -122,7 +121,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorIndividualPassportUserAnswersEntry: Arbitrary[(SettlorIndividualPassportPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorIndividualPassportPage]
+        page <- arbitrary[SettlorIndividualPassportPage]
         value <- arbitrary[PassportOrIdCardDetails].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -130,7 +129,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorIndividualIDCardYesNoUserAnswersEntry: Arbitrary[(SettlorIndividualIDCardYesNoPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorIndividualIDCardYesNoPage]
+        page <- arbitrary[SettlorIndividualIDCardYesNoPage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -138,7 +137,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorIndividualIDCardUserAnswersEntry: Arbitrary[(SettlorIndividualIDCardPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorIndividualIDCardPage]
+        page <- arbitrary[SettlorIndividualIDCardPage]
         value <- arbitrary[PassportOrIdCardDetails].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -146,7 +145,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorIndividualAddressUKYesNoUserAnswersEntry: Arbitrary[(SettlorIndividualAddressUKYesNoPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorIndividualAddressUKYesNoPage]
+        page <- arbitrary[SettlorIndividualAddressUKYesNoPage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -154,7 +153,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorIndividualAddressUKUserAnswersEntry: Arbitrary[(SettlorIndividualAddressUKPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorIndividualAddressUKPage]
+        page <- arbitrary[SettlorIndividualAddressUKPage]
         value <- arbitrary[UKAddress].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -162,7 +161,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorIndividualAddressInternationalUserAnswersEntry: Arbitrary[(SettlorIndividualAddressInternationalPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorIndividualAddressInternationalPage]
+        page <- arbitrary[SettlorIndividualAddressInternationalPage]
         value <- arbitrary[InternationalAddress].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -170,7 +169,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorIndividualNINOYesNoUserAnswersEntry: Arbitrary[(SettlorIndividualNINOYesNoPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorIndividualNINOYesNoPage]
+        page <- arbitrary[SettlorIndividualNINOYesNoPage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -178,7 +177,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorIndividualNINOUserAnswersEntry: Arbitrary[(SettlorIndividualNINOPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorIndividualNINOPage]
+        page <- arbitrary[SettlorIndividualNINOPage]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -186,7 +185,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorIndividualAddressYesNoUserAnswersEntry: Arbitrary[(SettlorIndividualAddressYesNoPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorIndividualAddressYesNoPage]
+        page <- arbitrary[SettlorIndividualAddressYesNoPage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -194,7 +193,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorIndividualDateOfBirthUserAnswersEntry: Arbitrary[(SettlorIndividualDateOfBirthPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorIndividualDateOfBirthPage]
+        page <- arbitrary[SettlorIndividualDateOfBirthPage]
         value <- arbitrary[Int].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -202,7 +201,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorIndividualDateOfBirthYesNoUserAnswersEntry: Arbitrary[(SettlorIndividualDateOfBirthYesNoPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorIndividualDateOfBirthYesNoPage]
+        page <- arbitrary[SettlorIndividualDateOfBirthYesNoPage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -210,7 +209,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorIndividualNameUserAnswersEntry: Arbitrary[(SettlorIndividualNamePage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorIndividualNamePage]
+        page <- arbitrary[SettlorIndividualNamePage]
         value <- arbitrary[FullName].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -218,7 +217,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorIndividualOrBusinessUserAnswersEntry: Arbitrary[(SettlorIndividualOrBusinessPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorIndividualOrBusinessPage]
+        page <- arbitrary[SettlorIndividualOrBusinessPage]
         value <- arbitrary[IndividualOrBusiness].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -226,7 +225,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryAddAnAssetYesNoUserAnswersEntry: Arbitrary[(AddAnAssetYesNoPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[AddAnAssetYesNoPage.type]
+        page <- arbitrary[AddAnAssetYesNoPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -234,7 +233,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryPropertyOrLandAddressYesNoUserAnswersEntry: Arbitrary[(PropertyOrLandAddressYesNoPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[PropertyOrLandAddressYesNoPage]
+        page <- arbitrary[PropertyOrLandAddressYesNoPage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -242,7 +241,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryPropertyOrLandInternationalAddressUkYesNoUserAnswersEntry: Arbitrary[(PropertyOrLandInternationalAddressPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[PropertyOrLandInternationalAddressPage]
+        page <- arbitrary[PropertyOrLandInternationalAddressPage]
         value <- arbitrary[InternationalAddress].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -250,7 +249,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryPropertyOrLandTotalValueUserAnswersEntry: Arbitrary[(PropertyOrLandTotalValuePage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[PropertyOrLandTotalValuePage]
+        page <- arbitrary[PropertyOrLandTotalValuePage]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -258,7 +257,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryPropertyOrLandDescriptionUserAnswersEntry: Arbitrary[(PropertyOrLandDescriptionPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[PropertyOrLandDescriptionPage]
+        page <- arbitrary[PropertyOrLandDescriptionPage]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -266,7 +265,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryPropertyOrLandAddressUkYesNoUserAnswersEntry: Arbitrary[(PropertyOrLandAddressUkYesNoPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[PropertyOrLandAddressUkYesNoPage]
+        page <- arbitrary[PropertyOrLandAddressUkYesNoPage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -274,7 +273,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryTrustOwnAllThePropertyOrLandUserAnswersEntry: Arbitrary[(TrustOwnAllThePropertyOrLandPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[TrustOwnAllThePropertyOrLandPage]
+        page <- arbitrary[TrustOwnAllThePropertyOrLandPage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -282,7 +281,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryShareCompanyNameUserAnswersEntry: Arbitrary[(ShareCompanyNamePage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[ShareCompanyNamePage]
+        page <- arbitrary[ShareCompanyNamePage]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -290,7 +289,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryPropertyOrLandAddressUserAnswersEntry: Arbitrary[(PropertyOrLandUKAddressPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[PropertyOrLandUKAddressPage]
+        page <- arbitrary[PropertyOrLandUKAddressPage]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -298,7 +297,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySharesOnStockExchangeUserAnswersEntry: Arbitrary[(SharesOnStockExchangePage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SharesOnStockExchangePage]
+        page <- arbitrary[SharesOnStockExchangePage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -306,7 +305,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySharesInAPortfolioUserAnswersEntry: Arbitrary[(SharesInAPortfolioPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SharesInAPortfolioPage]
+        page <- arbitrary[SharesInAPortfolioPage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -314,7 +313,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryShareValueInTrustUserAnswersEntry: Arbitrary[(ShareValueInTrustPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[ShareValueInTrustPage]
+        page <- arbitrary[ShareValueInTrustPage]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -322,7 +321,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryShareQuantityInTrustUserAnswersEntry: Arbitrary[(ShareQuantityInTrustPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[ShareQuantityInTrustPage]
+        page <- arbitrary[ShareQuantityInTrustPage]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -330,7 +329,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySharePortfolioValueInTrustUserAnswersEntry: Arbitrary[(SharePortfolioValueInTrustPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SharePortfolioValueInTrustPage]
+        page <- arbitrary[SharePortfolioValueInTrustPage]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -338,7 +337,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySharePortfolioQuantityInTrustUserAnswersEntry: Arbitrary[(SharePortfolioQuantityInTrustPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SharePortfolioQuantityInTrustPage]
+        page <- arbitrary[SharePortfolioQuantityInTrustPage]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -346,7 +345,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySharePortfolioOnStockExchangeUserAnswersEntry: Arbitrary[(SharePortfolioOnStockExchangePage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SharePortfolioOnStockExchangePage]
+        page <- arbitrary[SharePortfolioOnStockExchangePage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -354,7 +353,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySharePortfolioNameUserAnswersEntry: Arbitrary[(SharePortfolioNamePage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SharePortfolioNamePage]
+        page <- arbitrary[SharePortfolioNamePage]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -362,7 +361,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryShareClassUserAnswersEntry: Arbitrary[(ShareClassPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[ShareClassPage]
+        page <- arbitrary[ShareClassPage]
         value <- arbitrary[ShareClass].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -370,7 +369,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryDeclarationUserAnswersEntry: Arbitrary[(DeclarationPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[DeclarationPage.type]
+        page <- arbitrary[DeclarationPage.type]
         value <- arbitrary[Declaration].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -386,7 +385,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryAgentInternationalAddressUserAnswersEntry: Arbitrary[(AgentInternationalAddressPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[AgentInternationalAddressPage.type]
+        page <- arbitrary[AgentInternationalAddressPage.type]
         value <- arbitrary[InternationalAddress].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -402,7 +401,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryAgentUKAddressUserAnswersEntry: Arbitrary[(AgentUKAddressPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[AgentUKAddressPage.type]
+        page <- arbitrary[AgentUKAddressPage.type]
         value <- arbitrary[UKAddress].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -410,7 +409,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryAgentAddressYesNoUserAnswersEntry: Arbitrary[(AgentAddressYesNoPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[AgentAddressYesNoPage.type]
+        page <- arbitrary[AgentAddressYesNoPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -418,7 +417,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryIndividualBeneficiaryAddressUKYesNoUserAnswersEntry: Arbitrary[(IndividualBeneficiaryAddressUKYesNoPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[IndividualBeneficiaryAddressUKYesNoPage]
+        page <- arbitrary[IndividualBeneficiaryAddressUKYesNoPage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -427,7 +426,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryAgentNameUserAnswersEntry: Arbitrary[(AgentNamePage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[AgentNamePage.type]
+        page <- arbitrary[AgentNamePage.type]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -435,7 +434,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryAddABeneficiaryUserAnswersEntry: Arbitrary[(AddABeneficiaryPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[AddABeneficiaryPage.type]
+        page <- arbitrary[AddABeneficiaryPage.type]
         value <- arbitrary[AddABeneficiary].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -443,7 +442,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryIndividualBeneficiaryVulnerableYesNoUserAnswersEntry: Arbitrary[(IndividualBeneficiaryVulnerableYesNoPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[IndividualBeneficiaryVulnerableYesNoPage]
+        page <- arbitrary[IndividualBeneficiaryVulnerableYesNoPage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -451,7 +450,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryIndividualBeneficiaryAddressUKUserAnswersEntry: Arbitrary[(IndividualBeneficiaryAddressUKPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[IndividualBeneficiaryAddressUKPage]
+        page <- arbitrary[IndividualBeneficiaryAddressUKPage]
         value <- arbitrary[UKAddress].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -459,7 +458,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryIndividualBeneficiaryAddressYesNoUserAnswersEntry: Arbitrary[(IndividualBeneficiaryAddressYesNoPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[IndividualBeneficiaryAddressYesNoPage]
+        page <- arbitrary[IndividualBeneficiaryAddressYesNoPage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -467,7 +466,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryIndividualBeneficiaryNationalInsuranceNumberUserAnswersEntry: Arbitrary[(IndividualBeneficiaryNationalInsuranceNumberPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[IndividualBeneficiaryNationalInsuranceNumberPage]
+        page <- arbitrary[IndividualBeneficiaryNationalInsuranceNumberPage]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -475,7 +474,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryIndividualBeneficiaryNationalInsuranceYesNoUserAnswersEntry: Arbitrary[(IndividualBeneficiaryNationalInsuranceYesNoPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[IndividualBeneficiaryNationalInsuranceYesNoPage]
+        page <- arbitrary[IndividualBeneficiaryNationalInsuranceYesNoPage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -483,7 +482,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryIndividualBeneficiaryIncomeUserAnswersEntry: Arbitrary[(IndividualBeneficiaryIncomePage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[IndividualBeneficiaryIncomePage]
+        page <- arbitrary[IndividualBeneficiaryIncomePage]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -491,7 +490,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryIndividualBeneficiaryIncomeYesNoUserAnswersEntry: Arbitrary[(IndividualBeneficiaryIncomeYesNoPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[IndividualBeneficiaryIncomeYesNoPage]
+        page <- arbitrary[IndividualBeneficiaryIncomeYesNoPage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -499,7 +498,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryIndividualBeneficiaryDateOfBirthUserAnswersEntry: Arbitrary[(IndividualBeneficiaryDateOfBirthPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[IndividualBeneficiaryDateOfBirthPage]
+        page <- arbitrary[IndividualBeneficiaryDateOfBirthPage]
         value <- arbitrary[Int].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -507,7 +506,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryIndividualBeneficiaryDateOfBirthYesNoUserAnswersEntry: Arbitrary[(IndividualBeneficiaryDateOfBirthYesNoPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[IndividualBeneficiaryDateOfBirthYesNoPage]
+        page <- arbitrary[IndividualBeneficiaryDateOfBirthYesNoPage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -523,7 +522,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryWasSettlorsAddressUKYesNoUserAnswersEntry: Arbitrary[(WasSettlorsAddressUKYesNoPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[WasSettlorsAddressUKYesNoPage.type]
+        page <- arbitrary[WasSettlorsAddressUKYesNoPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -531,7 +530,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySetupAfterSettlorDiedUserAnswersEntry: Arbitrary[(SetupAfterSettlorDiedPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SetupAfterSettlorDiedPage.type]
+        page <- arbitrary[SetupAfterSettlorDiedPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -539,7 +538,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorsUKAddressUserAnswersEntry: Arbitrary[(SettlorsUKAddressPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorsUKAddressPage.type]
+        page <- arbitrary[SettlorsUKAddressPage.type]
         value <- arbitrary[UKAddress].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -547,7 +546,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorsNINoYesNoUserAnswersEntry: Arbitrary[(SettlorsNINoYesNoPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorsNINoYesNoPage.type]
+        page <- arbitrary[SettlorsNINoYesNoPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -555,7 +554,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorsNameUserAnswersEntry: Arbitrary[(SettlorsNamePage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorsNamePage.type]
+        page <- arbitrary[SettlorsNamePage.type]
         value <- arbitrary[FullName].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -563,7 +562,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorsLastKnownAddressYesNoUserAnswersEntry: Arbitrary[(SettlorsLastKnownAddressYesNoPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorsLastKnownAddressYesNoPage.type]
+        page <- arbitrary[SettlorsLastKnownAddressYesNoPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -571,7 +570,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorsInternationalAddressUserAnswersEntry: Arbitrary[(SettlorsInternationalAddressPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorsInternationalAddressPage.type]
+        page <- arbitrary[SettlorsInternationalAddressPage.type]
         value <- arbitrary[InternationalAddress].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -579,7 +578,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorsDateOfBirthUserAnswersEntry: Arbitrary[(SettlorsDateOfBirthPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorsDateOfBirthPage.type]
+        page <- arbitrary[SettlorsDateOfBirthPage.type]
         value <- arbitrary[Int].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -587,7 +586,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorNationalInsuranceNumberUserAnswersEntry: Arbitrary[(SettlorNationalInsuranceNumberPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorNationalInsuranceNumberPage.type]
+        page <- arbitrary[SettlorNationalInsuranceNumberPage.type]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -595,7 +594,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorDateOfDeathYesNoUserAnswersEntry: Arbitrary[(SettlorDateOfDeathYesNoPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorDateOfDeathYesNoPage.type]
+        page <- arbitrary[SettlorDateOfDeathYesNoPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -603,7 +602,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorDateOfDeathUserAnswersEntry: Arbitrary[(SettlorDateOfDeathPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorDateOfDeathPage.type]
+        page <- arbitrary[SettlorDateOfDeathPage.type]
         value <- arbitrary[Int].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -611,7 +610,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarySettlorDateOfBirthYesNoUserAnswersEntry: Arbitrary[(SettlorDateOfBirthYesNoPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorDateOfBirthYesNoPage.type]
+        page <- arbitrary[SettlorDateOfBirthYesNoPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -619,7 +618,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryAddAssetsUserAnswersEntry: Arbitrary[(AddAssetsPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[AddAssetsPage.type]
+        page <- arbitrary[AddAssetsPage.type]
         value <- arbitrary[AddAssets].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -627,7 +626,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryAddASettlorUserAnswersEntry: Arbitrary[(AddASettlorPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[AddASettlorPage.type]
+        page <- arbitrary[AddASettlorPage.type]
         value <- arbitrary[AddASettlor].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -635,7 +634,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryAssetMoneyValueUserAnswersEntry: Arbitrary[(AssetMoneyValuePage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[AssetMoneyValuePage]
+        page <- arbitrary[AssetMoneyValuePage]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -653,7 +652,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryWhatKindOfAssetUserAnswersEntry: Arbitrary[(WhatKindOfAssetPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[WhatKindOfAssetPage]
+        page <- arbitrary[WhatKindOfAssetPage]
         value <- arbitrary[WhatKindOfAsset].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -661,7 +660,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryAgentTelephoneNumberUserAnswersEntry: Arbitrary[(AgentTelephoneNumberPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[AgentTelephoneNumberPage.type]
+        page <- arbitrary[AgentTelephoneNumberPage.type]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -669,7 +668,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryTelephoneNumberUserAnswersEntry: Arbitrary[(TelephoneNumberPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[TelephoneNumberPage]
+        page <- arbitrary[TelephoneNumberPage]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -677,7 +676,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryTrusteesNinoUserAnswersEntry: Arbitrary[(TrusteesNinoPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[TrusteesNinoPage]
+        page <- arbitrary[TrusteesNinoPage]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -685,7 +684,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryTrusteeLiveInTheUKUserAnswersEntry: Arbitrary[(TrusteeLiveInTheUKPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[TrusteeLiveInTheUKPage]
+        page <- arbitrary[TrusteeLiveInTheUKPage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -693,7 +692,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryTrusteesUkAddressUserAnswersEntry: Arbitrary[(TrusteesUkAddressPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[TrusteesUkAddressPage]
+        page <- arbitrary[TrusteesUkAddressPage]
         value <- arbitrary[UKAddress].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -701,7 +700,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitrarytrusteeAUKCitizenUserAnswersEntry: Arbitrary[(TrusteeAUKCitizenPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[TrusteeAUKCitizenPage]
+        page <- arbitrary[TrusteeAUKCitizenPage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -709,7 +708,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryTrusteesNameUserAnswersEntry: Arbitrary[(TrusteesNamePage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[TrusteesNamePage]
+        page <- arbitrary[TrusteesNamePage]
         value <- arbitrary[FullName].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -717,7 +716,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryTrusteeIndividualOrBusinessUserAnswersEntry: Arbitrary[(TrusteeIndividualOrBusinessPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[TrusteeIndividualOrBusinessPage]
+        page <- arbitrary[TrusteeIndividualOrBusinessPage]
         value <- arbitrary[IndividualOrBusiness].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -725,7 +724,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryIsThisLeadTrusteeUserAnswersEntry: Arbitrary[(IsThisLeadTrusteePage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[IsThisLeadTrusteePage]
+        page <- arbitrary[IsThisLeadTrusteePage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -733,7 +732,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryTrusteesDateOfBirthUserAnswersEntry: Arbitrary[(TrusteesDateOfBirthPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[TrusteesDateOfBirthPage]
+        page <- arbitrary[TrusteesDateOfBirthPage]
         value <- arbitrary[Int].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -741,7 +740,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryPostcodeForTheTrustUserAnswersEntry: Arbitrary[(PostcodeForTheTrustPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[PostcodeForTheTrustPage.type]
+        page <- arbitrary[PostcodeForTheTrustPage.type]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -749,7 +748,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryWhatIsTheUTRUserAnswersEntry: Arbitrary[(WhatIsTheUTRPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[WhatIsTheUTRPage.type]
+        page <- arbitrary[WhatIsTheUTRPage.type]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -757,7 +756,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryTrustHaveAUTRUserAnswersEntry: Arbitrary[(TrustHaveAUTRPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[TrustHaveAUTRPage.type]
+        page <- arbitrary[TrustHaveAUTRPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -765,7 +764,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryTrustRegisteredOnlineUserAnswersEntry: Arbitrary[(TrustRegisteredOnlinePage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[TrustRegisteredOnlinePage.type]
+        page <- arbitrary[TrustRegisteredOnlinePage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -773,7 +772,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryWhenTrustSetupUserAnswersEntry: Arbitrary[(WhenTrustSetupPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[WhenTrustSetupPage.type]
+        page <- arbitrary[WhenTrustSetupPage.type]
         value <- arbitrary[Int].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -781,7 +780,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryAgentOtherThanBarristerUserAnswersEntry: Arbitrary[(AgentOtherThanBarristerPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[AgentOtherThanBarristerPage.type]
+        page <- arbitrary[AgentOtherThanBarristerPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -789,23 +788,15 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryInheritanceTaxActUserAnswersEntry: Arbitrary[(InheritanceTaxActPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[InheritanceTaxActPage.type]
+        page <- arbitrary[InheritanceTaxActPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryNonResidentTypeUserAnswersEntry: Arbitrary[(NonResidentTypePage.type, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[NonResidentTypePage.type]
-        value <- arbitrary[NonResidentType].map(Json.toJson(_))
       } yield (page, value)
     }
 
   implicit lazy val arbitraryTrustPreviouslyResidentUserAnswersEntry: Arbitrary[(TrustPreviouslyResidentPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[TrustPreviouslyResidentPage.type]
+        page <- arbitrary[TrustPreviouslyResidentPage.type]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -813,7 +804,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryTrustResidentOffshoreUserAnswersEntry: Arbitrary[(TrustResidentOffshorePage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[TrustResidentOffshorePage.type]
+        page <- arbitrary[TrustResidentOffshorePage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -821,7 +812,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryRegisteringTrustFor5AUserAnswersEntry: Arbitrary[(RegisteringTrustFor5APage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[RegisteringTrustFor5APage.type]
+        page <- arbitrary[RegisteringTrustFor5APage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -829,7 +820,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryEstablishedUnderScotsLawUserAnswersEntry: Arbitrary[(EstablishedUnderScotsLawPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[EstablishedUnderScotsLawPage.type]
+        page <- arbitrary[EstablishedUnderScotsLawPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -837,7 +828,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryCountryAdministeringTrustUserAnswersEntry: Arbitrary[(CountryAdministeringTrustPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[CountryAdministeringTrustPage.type]
+        page <- arbitrary[CountryAdministeringTrustPage.type]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -845,7 +836,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryAdministrationInsideUKUserAnswersEntry: Arbitrary[(AdministrationInsideUKPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[AdministrationInsideUKPage.type]
+        page <- arbitrary[AdministrationInsideUKPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -853,7 +844,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryCountryGoverningTrustUserAnswersEntry: Arbitrary[(CountryGoverningTrustPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[CountryGoverningTrustPage.type]
+        page <- arbitrary[CountryGoverningTrustPage.type]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
@@ -861,7 +852,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryGovernedInsideTheUKUserAnswersEntry: Arbitrary[(GovernedInsideTheUKPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[GovernedInsideTheUKPage.type]
+        page <- arbitrary[GovernedInsideTheUKPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -869,7 +860,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
   implicit lazy val arbitraryTrustNameUserAnswersEntry: Arbitrary[(TrustNamePage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[TrustNamePage.type]
+        page <- arbitrary[TrustNamePage.type]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }

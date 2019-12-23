@@ -73,7 +73,6 @@ class TrustDetailsAnswerPageController @Inject()(
             checkYourAnswersHelper.trustResidentOffshore,
             checkYourAnswersHelper.trustPreviouslyResident,
             checkYourAnswersHelper.registeringTrustFor5A,
-            checkYourAnswersHelper.nonresidentType,
             checkYourAnswersHelper.inheritanceTaxAct,
             checkYourAnswersHelper.agentOtherThanBarrister
           ).flatten
