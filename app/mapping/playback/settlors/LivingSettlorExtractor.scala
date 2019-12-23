@@ -36,7 +36,7 @@ class LivingSettlorExtractor @Inject() extends PlaybackExtractor[Option[List[Liv
   override def extract(answers: UserAnswers, data: Option[List[LivingSettlor]]): Either[PlaybackExtractionError, UserAnswers] =
     {
       data match {
-        case None => Left(FailedToExtractData("No Settlor Company"))
+        case None => Left(FailedToExtractData("No Living Settlors"))
         case Some(settlors) =>
 
           val updated = settlors.zipWithIndex.foldLeft[Try[UserAnswers]](Success(answers)){

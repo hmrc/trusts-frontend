@@ -31,9 +31,9 @@ class SettlorExtractor @Inject()(deceasedSettlorExtractor: DeceasedSettlorExtrac
 
     val livingSettlors = for {
       settlors <- data.settlors
-      living = settlors.settlor.getOrElse(Nil)
       companies = settlors.settlorCompany.getOrElse(Nil)
-    } yield living ++ companies
+      living = settlors.settlor.getOrElse(Nil)
+    } yield  companies ++ living
 
     val settlors: List[UserAnswers] = List(
       deceasedSettlorExtractor.extract(answers, data.deceased),
