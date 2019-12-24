@@ -27,33 +27,41 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 class PlaybackAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers)(implicit messages: Messages) {
 
-  def deceasedSettlor: Option[Seq[AnswerSection]] = {
+  def deceasedSettlor: Option[Seq[AnswerSection]] = DeceasedSettlorSection(userAnswers, countryOptions)
+
+}
+
+object DeceasedSettlorSection {
+
+  def apply(userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] = {
 
     val questions = Seq(
-      setupAfterSettlorDied,
-      deceasedSettlorsName,
-      deceasedSettlorDateOfDeathYesNo,
-      deceasedSettlorDateOfDeath,
-      deceasedSettlorDateOfBirthYesNo,
-      deceasedSettlorsDateOfBirth,
-      deceasedSettlorsNINoYesNo,
-      deceasedSettlorNationalInsuranceNumber,
-      deceasedSettlorsLastKnownAddressYesNo,
-      wasSettlorsAddressUKYesNo,
-      deceasedSettlorsUKAddress,
-      deceasedSettlorsInternationalAddress
+      setupAfterSettlorDied(userAnswers),
+      deceasedSettlorsName(userAnswers),
+      deceasedSettlorDateOfDeathYesNo(userAnswers),
+      deceasedSettlorDateOfDeath(userAnswers),
+      deceasedSettlorDateOfBirthYesNo(userAnswers),
+      deceasedSettlorsDateOfBirth(userAnswers),
+      deceasedSettlorsNINoYesNo(userAnswers),
+      deceasedSettlorNationalInsuranceNumber(userAnswers),
+      deceasedSettlorsLastKnownAddressYesNo(userAnswers),
+      wasSettlorsAddressUKYesNo(userAnswers),
+      deceasedSettlorsUKAddress(userAnswers),
+      deceasedSettlorsInternationalAddress(userAnswers, countryOptions)
     ).flatten
 
-    if (deceasedSettlorsName.nonEmpty)
+    if (deceasedSettlorsName(userAnswers).nonEmpty) {
       Some(Seq(AnswerSection(
         headingKey = None,
         questions,
         sectionKey = Some(messages("answerPage.section.deceasedSettlor.heading"))
       )))
-    else None
+    } else {
+      None
+    }
   }
 
-  def setupAfterSettlorDied: Option[AnswerRow] = userAnswers.get(SetupAfterSettlorDiedPage) map {
+  def setupAfterSettlorDied(userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SetupAfterSettlorDiedPage) map {
     x =>
       AnswerRow(
         "setupAfterSettlorDied.checkYourAnswersLabel",
@@ -62,7 +70,7 @@ class PlaybackAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswer
       )
   }
 
-  def deceasedSettlorsUKAddress: Option[AnswerRow] = userAnswers.get(SettlorsUKAddressPage) map {
+  def deceasedSettlorsUKAddress(userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(SettlorsUKAddressPage) map {
     x =>
       AnswerRow(
         "settlorsUKAddress.checkYourAnswersLabel",
@@ -71,7 +79,7 @@ class PlaybackAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswer
       )
   }
 
-  def deceasedSettlorsNINoYesNo: Option[AnswerRow] = userAnswers.get(SettlorsNINoYesNoPage) map {
+  def deceasedSettlorsNINoYesNo(userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SettlorsNINoYesNoPage) map {
     x =>
       AnswerRow(
         "settlorsNINoYesNo.checkYourAnswersLabel",
@@ -80,7 +88,7 @@ class PlaybackAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswer
       )
   }
 
-  def deceasedSettlorsName: Option[AnswerRow] = userAnswers.get(SettlorsNamePage) map {
+  def deceasedSettlorsName(userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(SettlorsNamePage) map {
     x =>
       AnswerRow(
         "settlorsName.checkYourAnswersLabel",
@@ -89,7 +97,8 @@ class PlaybackAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswer
       )
   }
 
-  def deceasedSettlorsLastKnownAddressYesNo: Option[AnswerRow] = userAnswers.get(SettlorsLastKnownAddressYesNoPage) map {
+  def deceasedSettlorsLastKnownAddressYesNo(userAnswers: UserAnswers)
+                                           (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SettlorsLastKnownAddressYesNoPage) map {
     x =>
       AnswerRow(
         "settlorsLastKnownAddressYesNo.checkYourAnswersLabel",
@@ -98,16 +107,17 @@ class PlaybackAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswer
       )
   }
 
-  def deceasedSettlorsInternationalAddress: Option[AnswerRow] = userAnswers.get(SettlorsInternationalAddressPage) map {
-    x =>
-      AnswerRow(
-        "settlorsInternationalAddress.checkYourAnswersLabel",
-        internationalAddress(x, countryOptions),
-        None
-      )
-  }
+  def deceasedSettlorsInternationalAddress(userAnswers: UserAnswers, countryOptions: CountryOptions): Option[AnswerRow] =
+    userAnswers.get(SettlorsInternationalAddressPage) map {
+      x =>
+        AnswerRow(
+          "settlorsInternationalAddress.checkYourAnswersLabel",
+          internationalAddress(x, countryOptions),
+          None
+        )
+    }
 
-  def deceasedSettlorsDateOfBirth: Option[AnswerRow] = userAnswers.get(SettlorsDateOfBirthPage) map {
+  def deceasedSettlorsDateOfBirth(userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(SettlorsDateOfBirthPage) map {
     x =>
       AnswerRow(
         "settlorsDateOfBirth.checkYourAnswersLabel",
@@ -116,7 +126,7 @@ class PlaybackAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswer
       )
   }
 
-  def deceasedSettlorNationalInsuranceNumber: Option[AnswerRow] = userAnswers.get(SettlorNationalInsuranceNumberPage) map {
+  def deceasedSettlorNationalInsuranceNumber(userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(SettlorNationalInsuranceNumberPage) map {
     x =>
       AnswerRow(
         "settlorNationalInsuranceNumber.checkYourAnswersLabel",
@@ -125,7 +135,8 @@ class PlaybackAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswer
       )
   }
 
-  def deceasedSettlorDateOfDeathYesNo: Option[AnswerRow] = userAnswers.get(SettlorDateOfDeathYesNoPage) map {
+  def deceasedSettlorDateOfDeathYesNo(userAnswers: UserAnswers)
+                                     (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SettlorDateOfDeathYesNoPage) map {
     x =>
       AnswerRow(
         "settlorDateOfDeathYesNo.checkYourAnswersLabel",
@@ -134,7 +145,7 @@ class PlaybackAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswer
       )
   }
 
-  def deceasedSettlorDateOfDeath: Option[AnswerRow] = userAnswers.get(SettlorDateOfDeathPage) map {
+  def deceasedSettlorDateOfDeath(userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(SettlorDateOfDeathPage) map {
     x =>
       AnswerRow(
         "settlorDateOfDeath.checkYourAnswersLabel",
@@ -143,7 +154,8 @@ class PlaybackAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswer
       )
   }
 
-  def deceasedSettlorDateOfBirthYesNo: Option[AnswerRow] = userAnswers.get(SettlorDateOfBirthYesNoPage) map {
+  def deceasedSettlorDateOfBirthYesNo(userAnswers: UserAnswers)
+                                     (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SettlorDateOfBirthYesNoPage) map {
     x =>
       AnswerRow(
         "settlorDateOfBirthYesNo.checkYourAnswersLabel",
@@ -152,7 +164,8 @@ class PlaybackAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswer
       )
   }
 
-  def wasSettlorsAddressUKYesNo: Option[AnswerRow] = userAnswers.get(WasSettlorsAddressUKYesNoPage) map {
+  def wasSettlorsAddressUKYesNo(userAnswers: UserAnswers)
+                               (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(WasSettlorsAddressUKYesNoPage) map {
     x =>
       AnswerRow(
         "wasSettlorsAddressUKYesNo.checkYourAnswersLabel",
