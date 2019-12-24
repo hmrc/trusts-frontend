@@ -22,9 +22,10 @@ import base.SpecBaseHelpers
 import generators.Generators
 import mapping.playback.PlaybackExtractor
 import mapping.registration.PassportType
-import models.core.pages.{InternationalAddress, UKAddress}
+import models.core.pages.{FullName, InternationalAddress, UKAddress}
 import models.playback.http._
 import models.playback.{MetaData, UserAnswers}
+import models.registration.pages.RoleInCompany
 import org.joda.time.DateTime
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import pages.register.beneficiaries.individual._
@@ -36,9 +37,16 @@ class IndividualBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
     lineNo = s"$index",
     bpMatchStatus = Some("01"),
     name = NameType(s"First Name $index", None, s"Last Name $index"),
-    dateOfBirth = Some(DateTime.parse("2070-02-01")),
+    dateOfBirth = index match {
+      case 0 => Some(DateTime.parse("1970-02-01"))
+      case _ => None
+    },
     vulnerableBeneficiary = true,
-    beneficiaryType = Some("Director"),
+    beneficiaryType = index match {
+      case 0 => Some("Director")
+      case 1 => Some("Employee")
+      case 2 => Some("NA")
+    },
     beneficiaryDiscretion = index match {
       case 0 => Some(false)
       case _ => None
@@ -71,7 +79,7 @@ class IndividualBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
   val individualExtractor : PlaybackExtractor[Option[List[DisplayTrustIndividualDetailsType]]] =
     injector.instanceOf[IndividualBeneficiaryExtractor]
 
-  "Company Beneficiary Extractor" - {
+  "Individual Beneficiary Extractor" - {
 
     "when no individual" - {
 
@@ -89,13 +97,16 @@ class IndividualBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
 
     }
 
-    "when there are companies" - {
+    "when there are individuals" - {
 
       "with minimum data must return user answers updated" in {
         val individual = List(DisplayTrustIndividualDetailsType(
           lineNo = s"1",
           bpMatchStatus = Some("01"),
-          organisationName = s"Company 1",
+          name = NameType("First Name", None, "Last Name"),
+          dateOfBirth = None,
+          vulnerableBeneficiary = false,
+          beneficiaryType = None,
           beneficiaryDiscretion = None,
           beneficiaryShareOfIncome = None,
           identification = None,
@@ -106,15 +117,22 @@ class IndividualBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = individualExtractor.extract(ua, Some(individual))
 
-        extraction.right.value.get(CompanyBeneficiaryNamePage(0)).get mustBe "Company 1"
-        extraction.right.value.get(CompanyBeneficiaryMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
-        extraction.right.value.get(CompanyBeneficiaryDiscretionYesNoPage(0)).get mustBe true
-        extraction.right.value.get(CompanyBeneficiaryShareOfIncomePage(0)) mustNot be(defined)
-        extraction.right.value.get(CompanyBeneficiaryUtrPage(0)) mustNot be(defined)
-        extraction.right.value.get(CompanyBeneficiaryUtrPage(0)) mustNot be(defined)
-        extraction.right.value.get(CompanyBeneficiaryAddressYesNoPage(0)).get mustBe false
-        extraction.right.value.get(CompanyBeneficiaryAddressUKYesNoPage(0)) mustNot be(defined)
-        extraction.right.value.get(CompanyBeneficiaryAddressPage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryNamePage(0)).get mustBe FullName("First Name", None, "Last Name")
+        extraction.right.value.get(IndividualBeneficiaryMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
+        extraction.right.value.get(IndividualBeneficiaryRoleInCompanyPage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryVulnerableYesNoPage(0)).get mustBe false
+        extraction.right.value.get(IndividualBeneficiaryDateOfBirthYesNoPage(0)).get mustBe false
+        extraction.right.value.get(IndividualBeneficiaryDateOfBirthPage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryIncomeYesNoPage(0)).get mustBe true
+        extraction.right.value.get(IndividualBeneficiaryIncomePage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryNationalInsuranceYesNoPage(0)).get mustBe false
+        extraction.right.value.get(IndividualBeneficiaryNationalInsuranceNumberPage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryAddressYesNoPage(0)).get mustBe false
+        extraction.right.value.get(IndividualBeneficiaryAddressUKYesNoPage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryAddressPage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryPassportIDCardYesNoPage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryPassportIDCardPage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiarySafeIdPage(0)) mustNot be(defined)
       }
 
       "with full data must return user answers updated" in {
@@ -126,41 +144,70 @@ class IndividualBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
 
         extraction mustBe 'right
 
-        extraction.right.value.get(CompanyBeneficiaryNamePage(0)).get mustBe "Company 0"
-        extraction.right.value.get(CompanyBeneficiaryNamePage(1)).get mustBe "Company 1"
-        extraction.right.value.get(CompanyBeneficiaryNamePage(2)).get mustBe "Company 2"
+        extraction.right.value.get(IndividualBeneficiaryNamePage(0)).get mustBe FullName("First Name 0", None, "Last Name 0")
+        extraction.right.value.get(IndividualBeneficiaryNamePage(1)).get mustBe FullName("First Name 1", None, "Last Name 1")
+        extraction.right.value.get(IndividualBeneficiaryNamePage(2)).get mustBe FullName("First Name 2", None, "Last Name 2")
 
-        extraction.right.value.get(CompanyBeneficiaryMetaData(0)).get mustBe MetaData("0", Some("01"), "2019-11-26")
-        extraction.right.value.get(CompanyBeneficiaryMetaData(1)).get mustBe MetaData("1", Some("01"), "2019-11-26")
-        extraction.right.value.get(CompanyBeneficiaryMetaData(2)).get mustBe MetaData("2", Some("01"), "2019-11-26")
+        extraction.right.value.get(IndividualBeneficiaryMetaData(0)).get mustBe MetaData("0", Some("01"), "2019-11-26")
+        extraction.right.value.get(IndividualBeneficiaryMetaData(1)).get mustBe MetaData("1", Some("01"), "2019-11-26")
+        extraction.right.value.get(IndividualBeneficiaryMetaData(2)).get mustBe MetaData("2", Some("01"), "2019-11-26")
 
-        extraction.right.value.get(CompanyBeneficiaryDiscretionYesNoPage(0)).get mustBe false
-        extraction.right.value.get(CompanyBeneficiaryDiscretionYesNoPage(1)).get mustBe true
-        extraction.right.value.get(CompanyBeneficiaryDiscretionYesNoPage(1)).get mustBe true
+        extraction.right.value.get(IndividualBeneficiaryRoleInCompanyPage(0)).get mustBe RoleInCompany.Director
+        extraction.right.value.get(IndividualBeneficiaryRoleInCompanyPage(1)).get mustBe RoleInCompany.Employee
+        extraction.right.value.get(IndividualBeneficiaryRoleInCompanyPage(2)).get mustBe RoleInCompany.NA
 
-        extraction.right.value.get(CompanyBeneficiaryShareOfIncomePage(0)).get mustBe "98"
-        extraction.right.value.get(CompanyBeneficiaryShareOfIncomePage(1)) mustNot be(defined)
-        extraction.right.value.get(CompanyBeneficiaryShareOfIncomePage(2)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryVulnerableYesNoPage(0)).get mustBe true
+        extraction.right.value.get(IndividualBeneficiaryVulnerableYesNoPage(1)).get mustBe true
+        extraction.right.value.get(IndividualBeneficiaryVulnerableYesNoPage(2)).get mustBe true
 
-        extraction.right.value.get(CompanyBeneficiaryUtrPage(0)) mustNot be(defined)
-        extraction.right.value.get(CompanyBeneficiaryUtrPage(1)).get mustBe "1234567890"
-        extraction.right.value.get(CompanyBeneficiaryUtrPage(2)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryDateOfBirthYesNoPage(0)).get mustBe true
+        extraction.right.value.get(IndividualBeneficiaryDateOfBirthYesNoPage(1)).get mustBe false
+        extraction.right.value.get(IndividualBeneficiaryDateOfBirthYesNoPage(2)).get mustBe false
 
-        extraction.right.value.get(CompanyBeneficiarySafeIdPage(0)).get mustBe "8947584-94759745-84758745"
-        extraction.right.value.get(CompanyBeneficiarySafeIdPage(1)).get mustBe "8947584-94759745-84758745"
-        extraction.right.value.get(CompanyBeneficiarySafeIdPage(2)).get mustBe "8947584-94759745-84758745"
+        extraction.right.value.get(IndividualBeneficiaryDateOfBirthPage(0)).get mustBe LocalDate.of(1970,2,1)
+        extraction.right.value.get(IndividualBeneficiaryDateOfBirthPage(1)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryDateOfBirthPage(2)) mustNot be(defined)
 
-        extraction.right.value.get(CompanyBeneficiaryAddressYesNoPage(0)).get mustBe true
-        extraction.right.value.get(CompanyBeneficiaryAddressYesNoPage(1)).get mustBe false
-        extraction.right.value.get(CompanyBeneficiaryAddressYesNoPage(2)).get mustBe true
+        extraction.right.value.get(IndividualBeneficiaryIncomeYesNoPage(0)).get mustBe false
+        extraction.right.value.get(IndividualBeneficiaryIncomeYesNoPage(1)).get mustBe true
+        extraction.right.value.get(IndividualBeneficiaryIncomeYesNoPage(2)).get mustBe true
 
-        extraction.right.value.get(CompanyBeneficiaryAddressPage(0)).get mustBe InternationalAddress("line 0", "line2", None, "DE")
-        extraction.right.value.get(CompanyBeneficiaryAddressPage(1)) mustNot be(defined)
-        extraction.right.value.get(CompanyBeneficiaryAddressPage(2)).get mustBe UKAddress("line 2", "line2", None, None, "NE11NE")
+        extraction.right.value.get(IndividualBeneficiaryIncomePage(0)).get mustBe "98"
+        extraction.right.value.get(IndividualBeneficiaryIncomePage(1)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryIncomePage(2)) mustNot be(defined)
 
-        extraction.right.value.get(CompanyBeneficiaryAddressUKYesNoPage(0)).get mustBe false
-        extraction.right.value.get(CompanyBeneficiaryAddressUKYesNoPage(1)) mustNot be(defined)
-        extraction.right.value.get(CompanyBeneficiaryAddressUKYesNoPage(2)).get mustBe true
+        extraction.right.value.get(IndividualBeneficiaryNationalInsuranceYesNoPage(0)).get mustBe true
+        extraction.right.value.get(IndividualBeneficiaryNationalInsuranceYesNoPage(1)).get mustBe false
+        extraction.right.value.get(IndividualBeneficiaryNationalInsuranceYesNoPage(2)).get mustBe false
+
+        extraction.right.value.get(IndividualBeneficiaryNationalInsuranceNumberPage(0)).get mustBe "0234567890"
+        extraction.right.value.get(IndividualBeneficiaryNationalInsuranceNumberPage(1)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryNationalInsuranceNumberPage(2)) mustNot be(defined)
+
+        extraction.right.value.get(IndividualBeneficiaryAddressYesNoPage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryAddressYesNoPage(1)).get mustBe true
+        extraction.right.value.get(IndividualBeneficiaryAddressYesNoPage(2)).get mustBe true
+
+        extraction.right.value.get(IndividualBeneficiaryAddressUKYesNoPage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryAddressUKYesNoPage(1)).get mustBe false
+        extraction.right.value.get(IndividualBeneficiaryAddressUKYesNoPage(2)).get mustBe true
+
+        extraction.right.value.get(IndividualBeneficiaryAddressPage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryAddressPage(1)).get mustBe InternationalAddress("line 1", "line2", None, "DE")
+        extraction.right.value.get(IndividualBeneficiaryAddressPage(2)).get mustBe UKAddress("line 2", "line2", None, None, "NE11NE")
+
+
+        extraction.right.value.get(IndividualBeneficiaryPassportIDCardYesNoPage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryPassportIDCardPage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryPassportIDCardYesNoPage(1)).get mustBe false
+        extraction.right.value.get(IndividualBeneficiaryPassportIDCardPage(1)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryPassportIDCardYesNoPage(2)).get mustBe true
+        extraction.right.value.get(IndividualBeneficiaryPassportIDCardPage(2)).get.country mustBe "DE"
+
+        extraction.right.value.get(IndividualBeneficiarySafeIdPage(0)).get mustBe "8947584-94759745-84758745"
+        extraction.right.value.get(IndividualBeneficiarySafeIdPage(1)).get mustBe "8947584-94759745-84758745"
+        extraction.right.value.get(IndividualBeneficiarySafeIdPage(2)).get mustBe "8947584-94759745-84758745"
+
       }
 
     }

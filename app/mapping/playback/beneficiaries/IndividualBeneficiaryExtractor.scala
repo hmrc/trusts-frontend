@@ -43,7 +43,7 @@ class IndividualBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[
 
             answers
               .flatMap(_.set(IndividualBeneficiaryNamePage(index), individualBeneficiary.name.convert))
-              .flatMap(_.set(IndividualBeneficiaryRoleInCompanyPage(index), individualBeneficiary.beneficiaryType.asInstanceOf[RoleInCompany]))
+              .flatMap(_.set(IndividualBeneficiaryRoleInCompanyPage(index), individualBeneficiary.beneficiaryType.map(mapRoleInCompany)))
               .flatMap(answers => extractDateOfBirth(individualBeneficiary, index, answers))
               .flatMap(answers => extractShareOfIncome(individualBeneficiary, index, answers))
               .flatMap(answers => extractNino(individualBeneficiary, index, answers))
@@ -55,7 +55,7 @@ class IndividualBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[
                   IndividualBeneficiaryMetaData(index),
                   MetaData(
                     lineNo = individualBeneficiary.lineNo,
-                    bpMatchStatus = individualBeneficiary.bpMatchStatus,
+                    bpMatchStatus = individualBeneficiary.bpMatchStatus,  // TODO does this need to be filtered as ClassOfBeneficiary ?
                     entityStart = individualBeneficiary.entityStart
                   )
                 )
@@ -73,14 +73,14 @@ class IndividualBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[
       }
     }
 
-//  private def extractRoleInCompany(individualBeneficiary: DisplayTrustIndividualDetailsType, index: Int, answers: UserAnswers) = {
-//    individualBeneficiary.beneficiaryType match {
-//      case Some(benType) =>
-//        answers.set(IndividualBeneficiaryRoleInCompanyPage(index), benType.flatMap(_.ben))
-//      case None =>
-//        Success(answers)
-//    }
-//  }
+
+  private def mapRoleInCompany(role: String): RoleInCompany = {
+    role match {
+      case "Director" => RoleInCompany.Director
+      case "Employee" => RoleInCompany.Employee
+      case "NA" => RoleInCompany.NA
+    }
+  }
 
   private def extractDateOfBirth(individualBeneficiary: DisplayTrustIndividualDetailsType, index: Int, answers: UserAnswers) = {
     individualBeneficiary.dateOfBirth match {
@@ -116,27 +116,29 @@ class IndividualBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[
   }
 
     private def extractPassportIdCard(individualBeneficiary: DisplayTrustIndividualDetailsType, index: Int, answers: UserAnswers) = {
-      individualBeneficiary.identification.flatMap(_.passport) match {
-        case Some(passportIdCard) =>
+      (individualBeneficiary.identification.flatMap(_.passport), individualBeneficiary.identification.flatMap(_.address)) match {
+        case (Some(passportIdCard), _) =>
           answers.set(IndividualBeneficiaryPassportIDCardYesNoPage(index), true)
             .flatMap(_.set(IndividualBeneficiaryPassportIDCardPage(index), passportIdCard.convert))
-        case None =>
+        case (None, Some(address)) =>
           answers.set(IndividualBeneficiaryPassportIDCardYesNoPage(index), false)
+        case (_,_) => Success(answers)
       }
     }
 
   private def extractAddress(individualBeneficiary: DisplayTrustIndividualDetailsType, index: Int, answers: UserAnswers) = {
-    individualBeneficiary.identification.flatMap(_.address.convert) match {
-      case Some(uk: UKAddress) =>
+    (individualBeneficiary.identification.flatMap(_.address.convert), individualBeneficiary.identification.flatMap(_.nino)) match {
+      case (Some(uk: UKAddress), _) =>
         answers.set(IndividualBeneficiaryAddressPage(index), uk)
           .flatMap(_.set(IndividualBeneficiaryAddressYesNoPage(index), true))
           .flatMap(_.set(IndividualBeneficiaryAddressUKYesNoPage(index), true))
-      case Some(nonUk: InternationalAddress) =>
+      case (Some(nonUk: InternationalAddress), _) =>
         answers.set(IndividualBeneficiaryAddressPage(index), nonUk)
           .flatMap(_.set(IndividualBeneficiaryAddressYesNoPage(index), true))
           .flatMap(_.set(IndividualBeneficiaryAddressUKYesNoPage(index), false))
-      case None =>
+      case (None, None) =>
         answers.set(IndividualBeneficiaryAddressYesNoPage(index), false)
+      case (_,_) => Success(answers)
     }
   }
 }
