@@ -59,7 +59,7 @@ class DeclarationController @Inject()(
     implicit request =>
 
       request.userAnswers.get(WhatIsTheUTRVariationPage) match {
-        case Some(utr) => connector.playback(connector.playbackUrl(utr)) map {
+        case Some(utr) => connector.playback(utr) map {
           case Processed(trust, _) =>
 
             val preparedForm = request.userAnswers.get(DeclarationPage) match {
@@ -84,7 +84,7 @@ class DeclarationController @Inject()(
 
           request.userAnswers.get(WhatIsTheUTRVariationPage) match {
             case Some(utr) =>
-              connector.playback(connector.playbackUrl(utr)) map {
+              connector.playback(utr) map {
                 case Processed(trust, _) =>
 
                   BadRequest(view(formWithErrors, request.affinityGroup, playBackHelper.summary(trust), controllers.playback.routes.DeclarationController.onSubmit()))
