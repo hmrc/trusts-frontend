@@ -376,7 +376,8 @@ object UkType {
 
 case class NonUKType(sch5atcgga92: Boolean,
                      s218ihta84: Option[Boolean],
-                     agentS218IHTA84: Option[Boolean])
+                     agentS218IHTA84: Option[Boolean],
+                     trusteeStatus: Option[String])
 
 object NonUKType {
   implicit val nonUKTypeFormat: Format[NonUKType] = Json.format[NonUKType]

@@ -145,7 +145,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
           administrationCountry = Some("FR"),
           residentialStatus = Some(ResidentialStatusType(
             uk = None,
-            nonUK = Some(NonUKType(true, None, None))
+            nonUK = Some(NonUKType(true, None, None, None))
           )),
 
           typeOfTrust = WillTrustOrIntestacyTrust,
@@ -180,7 +180,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
           administrationCountry = Some("GB"),
           residentialStatus = Some(ResidentialStatusType(
             uk = None,
-            nonUK = Some(NonUKType(false, Some(true), Some(true)))
+            nonUK = Some(NonUKType(false, Some(true), Some(true), None))
           )),
 
           typeOfTrust = WillTrustOrIntestacyTrust,
@@ -213,7 +213,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
           administrationCountry = Some("GB"),
           residentialStatus = Some(ResidentialStatusType(
             uk = None,
-            nonUK = Some(NonUKType(false, Some(false), None))
+            nonUK = Some(NonUKType(false, Some(false), None, None))
           )),
 
           typeOfTrust = WillTrustOrIntestacyTrust,
@@ -306,7 +306,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
           residentialStatus = Some(
             ResidentialStatusType(
               uk = None,
-              nonUK = Some(NonUKType(false, Some(false), None))
+              nonUK = Some(NonUKType(false, Some(false), None, None))
             )),
           typeOfTrust = WillTrustOrIntestacyTrust,
           deedOfVariation = None,

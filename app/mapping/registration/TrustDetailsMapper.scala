@@ -129,7 +129,8 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
           NonUKType(
             sch5atcgga92 = true,
             s218ihta84 = None,
-            agentS218IHTA84 = None)
+            agentS218IHTA84 = None,
+            trusteeStatus = None)
         )
 
       case Some(false) =>
@@ -179,7 +180,8 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
           NonUKType(
             sch5atcgga92 = false,
             s218ihta84 = s218ihta84,
-            agentS218IHTA84 = agentS218IHTA84)
+            agentS218IHTA84 = agentS218IHTA84,
+            trusteeStatus = None)
         )
 
       case _ => None
