@@ -23,15 +23,21 @@ import models.playback.UserAnswers
 import models.playback.http.DisplayTrustEntitiesType
 
 class SettlorExtractor @Inject()(deceasedSettlorExtractor: DeceasedSettlorExtractor,
-                                 settlorCompanyExtractor: SettlorCompanyExtractor) extends PlaybackExtractor[DisplayTrustEntitiesType] {
+                                 livingSettlorExtractor: LivingSettlorExtractor) extends PlaybackExtractor[DisplayTrustEntitiesType] {
 
   override def extract(answers: UserAnswers, data: DisplayTrustEntitiesType): Either[PlaybackExtractionError, UserAnswers] = {
 
     import models.playback.UserAnswersCombinator._
 
+    val livingSettlors = for {
+      settlors <- data.settlors
+      companies = settlors.settlorCompany.getOrElse(Nil)
+      living = settlors.settlor.getOrElse(Nil)
+    } yield  companies ++ living
+
     val settlors: List[UserAnswers] = List(
       deceasedSettlorExtractor.extract(answers, data.deceased),
-      settlorCompanyExtractor.extract(answers, data.settlors.flatMap(_.settlorCompany))
+      livingSettlorExtractor.extract(answers, livingSettlors)
     ).collect {
       case Right(z) => z
     }
