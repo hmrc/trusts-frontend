@@ -38,7 +38,8 @@ class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions,
 
         val settlors = playbackAnswersHelper.deceasedSettlor.getOrElse(Nil)
 
-        settlors
+        settlors ++ playbackAnswersHelper.charityBeneficiary(0).getOrElse(Nil)
+
       case _ => Seq.empty
     }
 

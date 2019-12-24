@@ -18,6 +18,7 @@ package utils
 
 import javax.inject.Inject
 import models.playback.UserAnswers
+import pages.register.beneficiaries.charity._
 import pages.register.settlors.deceased_settlor._
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
@@ -28,6 +29,57 @@ import viewmodels.{AnswerRow, AnswerSection}
 class PlaybackAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers)(implicit messages: Messages) {
 
   def deceasedSettlor: Option[Seq[AnswerSection]] = DeceasedSettlorSection(userAnswers, countryOptions)
+
+  def charityBeneficiary(index: Int): Option[Seq[AnswerSection]] = CharityBeneficiary(index, userAnswers, countryOptions)
+
+}
+
+object CharityBeneficiary {
+
+  def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] = {
+    if (charityName(index, userAnswers).nonEmpty) {
+      Some(Seq(AnswerSection(
+        headingKey = None,
+        Seq(
+          charityName(index, userAnswers),
+          charityShareOfIncomeYesNo(index, userAnswers),
+          charityAddressYesNo(index, userAnswers)
+        ).flatten,
+        sectionKey = Some(messages("answerPage.section.charityBeneficiary.heading"))
+      )))
+    } else {
+      None
+    }
+  }
+
+  def charityName(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(CharityBeneficiaryNamePage(index)) map {
+    x =>
+      AnswerRow(
+        "charityName.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        None
+      )
+  }
+
+  def charityShareOfIncomeYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+    userAnswers.get(CharityBeneficiaryDiscretionYesNoPage(index)) map {
+      x =>
+        AnswerRow(
+          "charityShareOfIncomeYesNo.checkYourAnswersLabel",
+          yesOrNo(x),
+          None
+        )
+    }
+
+  def charityAddressYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+    userAnswers.get(CharityBeneficiaryAddressYesNoPage(index)) map {
+      x =>
+        AnswerRow(
+          "charityAddressYesNo.checkYourAnswersLabel",
+          yesOrNo(x),
+          None
+        )
+    }
 
 }
 
