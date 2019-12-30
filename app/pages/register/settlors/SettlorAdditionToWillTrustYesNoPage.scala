@@ -18,11 +18,11 @@ package pages.register.settlors
 
 import pages._
 import play.api.libs.json.JsPath
-import sections.TrustDetails
+import sections.Settlors
 
 case object SettlorAdditionToWillTrustYesNoPage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ TrustDetails \ toString
+  override def path: JsPath = Settlors.path \ toString
 
   override def toString: String = "settlorAdditionToWillTrustYesNo"
 

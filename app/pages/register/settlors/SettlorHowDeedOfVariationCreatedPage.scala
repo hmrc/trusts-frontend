@@ -19,11 +19,11 @@ package pages.register.settlors
 import mapping.DeedOfVariation
 import pages._
 import play.api.libs.json.JsPath
-import sections.TrustDetails
+import sections.Settlors
 
 case object SettlorHowDeedOfVariationCreatedPage extends QuestionPage[DeedOfVariation] {
 
-  override def path: JsPath = JsPath \ TrustDetails \ toString
+  override def path: JsPath = Settlors.path \ toString
 
   override def toString: String = "settlorHowDeedOfVariationCreated"
 
