@@ -20,6 +20,7 @@ import javax.inject.Inject
 import models.playback.UserAnswers
 import pages.register.beneficiaries.charity._
 import pages.register.settlors.deceased_settlor._
+import pages.register.trustees._
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import utils.CheckYourAnswersHelper._
@@ -31,6 +32,8 @@ class PlaybackAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswer
   def deceasedSettlor: Option[Seq[AnswerSection]] = DeceasedSettlorSection(userAnswers, countryOptions)
 
   def charityBeneficiary(index: Int): Option[Seq[AnswerSection]] = CharityBeneficiary(index, userAnswers, countryOptions)
+
+  def leadTrustee(index: Int): Option[Seq[AnswerSection]] = LeadTrusteeIndividual(index, userAnswers, countryOptions)
 
 }
 
@@ -228,4 +231,111 @@ object DeceasedSettlorSection {
 
   def deceasedSettlorName(userAnswers: UserAnswers): String = userAnswers.get(SettlorsNamePage).map(_.toString).getOrElse("")
 
+}
+
+object LeadTrusteeIndividual {
+
+  def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] = {
+    if (trusteeName(index, userAnswers).nonEmpty) {
+      Some(Seq(AnswerSection(
+        headingKey = None,
+        Seq(
+          trusteeName(index, userAnswers),
+          trusteeDateOfBirth(index, userAnswers),
+          trusteeUKCitizen(index, userAnswers),
+          trusteeNationalInsuranceNumber(index, userAnswers),
+          trusteePassportOrIDCard(index, userAnswers, countryOptions),
+          trusteeAddressUKYesNo(index, userAnswers),
+          trusteeTelephone(index, userAnswers),
+          trusteeEmail(index, userAnswers)
+        ).flatten,
+        sectionKey = Some(messages("answerPage.section.leadTrusteeIndividual.heading"))
+      )))
+    } else {
+      None
+    }
+  }
+
+
+  def trusteeName(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(TrusteesNamePage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeName.checkYourAnswersLabel",
+        HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"),
+        None
+      )
+  }
+
+  def trusteeDateOfBirth(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(TrusteesDateOfBirthPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeDateOfBirth.checkYourAnswersLabel",
+        HtmlFormat.escape(x.format(dateFormatter)),
+        None
+      )
+  }
+
+  def trusteeUKCitizen(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+    userAnswers.get(TrusteeAUKCitizenPage(index)) map {
+      x =>
+        AnswerRow(
+          "trusteeUKCitizen.checkYourAnswersLabel",
+          yesOrNo(x),
+          None
+        )
+    }
+
+  def trusteeNationalInsuranceNumber(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(TrusteesNinoPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeNationalInsuranceNumber.checkYourAnswersLabel",
+        HtmlFormat.escape(formatNino(x)),
+        None
+      )
+  }
+
+  def trusteePassportOrIDCard(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions): Option[AnswerRow] =
+    userAnswers.get(TrusteePassportIDCardPage(index)) map {
+      x =>
+        AnswerRow(
+          "trusteeNationalInsuranceNumber.checkYourAnswersLabel",
+          passportOrIDCard(x, countryOptions),
+          None
+        )
+    }
+
+  def trusteeAddressUKYesNo(index: Int, userAnswers: UserAnswers)
+                           (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TrusteeLiveInTheUKPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeAddressUKYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        None
+      )
+  }
+
+  def trusteeTelephone(index: Int, userAnswers: UserAnswers)
+                      (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TelephoneNumberPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeTelephone.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        None
+      )
+  }
+
+  def trusteeEmail(index: Int, userAnswers: UserAnswers)
+                  (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(EmailPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeEmail.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        None
+      )
+  }
+
+}
+
+object CompanyBeneficiary {
+  
 }
