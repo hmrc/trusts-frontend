@@ -17,10 +17,11 @@
 package utils
 
 import javax.inject.Inject
-import models.core.pages.IndividualOrBusiness
+import models.core.pages.{IndividualOrBusiness, InternationalAddress, UKAddress}
 import models.playback.UserAnswers
 import pages.register.beneficiaries.charity._
 import pages.register.beneficiaries.company._
+import pages.register.beneficiaries.trust._
 import pages.register.settlors.deceased_settlor._
 import pages.register.trustees._
 import play.api.i18n.Messages
@@ -89,6 +90,20 @@ object CharityBeneficiary {
           yesOrNo(x),
           None
         )
+    }
+
+  def charityAddressYesNo(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[AnswerRow] =
+    userAnswers.get(CharityBeneficiaryAddressPage(index)) map {
+      case address: UKAddress => AnswerRow(
+        "charityBeneficiaryAddress.checkYourAnswersLabel",
+        ukAddress(address),
+        None
+      )
+      case address: InternationalAddress => AnswerRow(
+        "charityBeneficiaryAddress.checkYourAnswersLabel",
+        internationalAddress(address, countryOptions),
+        None
+      )
     }
 
 }
@@ -274,6 +289,26 @@ object LeadTrusteeBusiness {
       AnswerRow(
         "trusteeAddressUKYesNo.checkYourAnswersLabel",
         yesOrNo(x),
+        None
+      )
+  }
+
+  def trusteeAddressUK(index: Int, userAnswers: UserAnswers)
+                           (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TrusteesUkAddressPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeAddressUK.checkYourAnswersLabel",
+        ukAddress(x),
+        None
+      )
+  }
+
+  def trusteeAddressNonUK(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)
+                           (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TrusteesInternationalAddressPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeAddressNonUK.checkYourAnswersLabel",
+        internationalAddress(x, countryOptions),
         None
       )
   }
@@ -476,6 +511,89 @@ object CompanyBeneficiary {
           yesOrNo(x),
           None
         )
+    }
+
+  def companyBeneficiaryAddress(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[AnswerRow] =
+    userAnswers.get(CompanyBeneficiaryAddressPage(index)) map {
+      case address: UKAddress => AnswerRow(
+        "companyBeneficiaryAddress.checkYourAnswersLabel",
+        ukAddress(address),
+        None
+      )
+      case address: InternationalAddress => AnswerRow(
+        "companyBeneficiaryAddress.checkYourAnswersLabel",
+        internationalAddress(address, countryOptions),
+        None
+      )
+    }
+
+}
+
+object TrustBeneficiary {
+
+  def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] =
+    if (trustBeneficiaryNamePage(index, userAnswers).nonEmpty) {
+      Some(Seq(AnswerSection(
+        headingKey = None,
+        Seq(
+        ).flatten,
+        sectionKey = Some(messages("answerPage.section.companyBeneficiary.heading"))
+      )))
+    } else {
+      None
+    }
+
+  def trustBeneficiaryNamePage(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(TrustBeneficiaryNamePage(index)) map {
+    x =>
+      AnswerRow(
+        "trustBeneficiaryName.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        None
+      )
+  }
+
+  def trustBeneficiaryShareOfIncomeYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+    userAnswers.get(TrustBeneficiaryDiscretionYesNoPage(index)) map {
+      x =>
+        AnswerRow(
+          "trustBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel",
+          yesOrNo(x),
+          None
+        )
+    }
+
+  def trustBeneficiaryShareOfIncome(index: Int, userAnswers: UserAnswers): Option[AnswerRow] =
+    userAnswers.get(TrustBeneficiaryShareOfIncomePage(index)) map {
+      x =>
+        AnswerRow(
+          "trustBeneficiaryShareOfIncome.checkYourAnswersLabel",
+          HtmlFormat.escape(x),
+          None
+        )
+    }
+
+  def trustBeneficiaryAddressYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+    userAnswers.get(TrustBeneficiaryAddressYesNoPage(index)) map {
+      x =>
+        AnswerRow(
+          "trustBeneficiaryAddressYesNo.checkYourAnswersLabel",
+          yesOrNo(x),
+          None
+        )
+    }
+
+  def trustBeneficiaryAddress(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[AnswerRow] =
+    userAnswers.get(TrustBeneficiaryAddressPage(index)) map {
+      case address: UKAddress => AnswerRow(
+        "trustBeneficiaryAddress.checkYourAnswersLabel",
+        ukAddress(address),
+        None
+      )
+      case address: InternationalAddress => AnswerRow(
+        "trustBeneficiaryAddress.checkYourAnswersLabel",
+        internationalAddress(address, countryOptions),
+        None
+      )
     }
 
 }
