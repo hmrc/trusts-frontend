@@ -18,7 +18,8 @@ package controllers.playback
 
 import config.FrontendAppConfig
 import connector.{TrustConnector, TrustsStoreConnector}
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, RegistrationIdentifierAction}
+import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import handlers.ErrorHandler
 import javax.inject.Inject
 import mapping.playback.UserAnswersExtractor

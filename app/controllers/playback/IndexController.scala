@@ -16,7 +16,8 @@
 
 package controllers.playback
 
-import controllers.actions.{DataRetrievalAction, RegistrationIdentifierAction}
+import controllers.actions.DataRetrievalAction
+import controllers.actions.register.RegistrationIdentifierAction
 import javax.inject.Inject
 import models.NormalMode
 import pages.register.TrustRegisteredOnlinePage

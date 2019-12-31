@@ -18,6 +18,7 @@ package controllers.register
 
 import config.FrontendAppConfig
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.Mode

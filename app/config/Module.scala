@@ -19,6 +19,7 @@ package config
 import com.google.inject.AbstractModule
 import connector.OtacAuthConnectorImpl
 import controllers.actions._
+import controllers.actions.playback.{PlaybackIdentifierAction, PlaybackIdentifierActionImpl}
 import mapping.playback.{PlaybackExtractor, UserAnswersExtractor}
 import models.playback.http.GetTrust
 import navigation.Navigator

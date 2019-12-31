@@ -16,7 +16,8 @@
 
 package controllers.playback
 
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, RegistrationIdentifierAction}
+import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import javax.inject.Inject
 import pages.playback.WhatIsTheUTRVariationPage
 import play.api.i18n.I18nSupport

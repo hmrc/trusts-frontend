@@ -17,6 +17,8 @@
 package controllers.playback
 
 import controllers.actions._
+import controllers.actions.playback.PlaybackIdentifierAction
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.DeclarationWhatNextFormProvider
 import javax.inject.Inject
 import models.Enumerable

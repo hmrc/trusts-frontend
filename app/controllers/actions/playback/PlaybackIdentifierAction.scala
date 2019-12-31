@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package controllers.actions
+package controllers.actions.playback
 
 import com.google.inject.{ImplementedBy, Inject}
 import connector.EnrolmentStoreConnector
 import models.requests.DataRequest
 import pages.playback.WhatIsTheUTRVariationPage
 import play.api.mvc.Results.Redirect
-import play.api.mvc._
+import play.api.mvc.{ActionRefiner, BodyParsers, Result}
 import services.PlaybackAuthenticationService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.HeaderCarrierConverter

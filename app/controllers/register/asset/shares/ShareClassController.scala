@@ -17,6 +17,7 @@
 package controllers.register.asset.shares
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import controllers.filters.IndexActionFilterProvider
 import forms.shares.ShareClassFormProvider
 import javax.inject.Inject

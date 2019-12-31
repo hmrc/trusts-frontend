@@ -17,6 +17,7 @@
 package controllers.register.trustees
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import controllers.filters.IndexActionFilterProvider
 import forms.UKAddressFormProvider
 import javax.inject.Inject

@@ -17,6 +17,8 @@
 package base
 
 import config.FrontendAppConfig
+import controllers.actions.playback.PlaybackIdentifierAction
+import controllers.actions.register.RegistrationIdentifierAction
 import controllers.actions.{FakeDraftIdRetrievalActionProvider, _}
 import mapping.playback.{FakeUserAnswerExtractor, PlaybackExtractor, UserAnswersExtractor}
 import models.core.UserAnswers

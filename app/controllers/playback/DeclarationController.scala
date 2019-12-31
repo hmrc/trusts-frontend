@@ -18,6 +18,8 @@ package controllers.playback
 
 import connector.TrustConnector
 import controllers.actions._
+import controllers.actions.playback.PlaybackIdentifierAction
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.DeclarationFormProvider
 import javax.inject.Inject
 import models.playback.http.Processed

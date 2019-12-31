@@ -17,6 +17,7 @@
 package controllers.register.beneficiaries
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.UKAddressFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}

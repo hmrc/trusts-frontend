@@ -18,6 +18,7 @@ package controllers.register.agents
 
 import config.FrontendAppConfig
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import javax.inject.Inject
 import models.NormalMode
 import pages.register.agents.AgentTelephoneNumberPage

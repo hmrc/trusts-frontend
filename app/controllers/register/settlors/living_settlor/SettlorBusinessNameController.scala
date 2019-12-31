@@ -17,6 +17,7 @@
 package controllers.register.settlors.living_settlor
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import controllers.filters.IndexActionFilterProvider
 import forms.living_settlor.SettlorBusinessNameFormProvider
 import javax.inject.Inject

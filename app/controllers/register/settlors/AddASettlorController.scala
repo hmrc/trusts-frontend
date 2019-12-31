@@ -17,6 +17,7 @@
 package controllers.register.settlors
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.{AddASettlorFormProvider, YesNoFormProvider}
 import javax.inject.Inject
 import models.requests.DataRequest

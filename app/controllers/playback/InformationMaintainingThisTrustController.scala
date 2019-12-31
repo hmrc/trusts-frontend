@@ -18,6 +18,8 @@ package controllers.playback
 
 import config.FrontendAppConfig
 import controllers.actions._
+import controllers.actions.playback.PlaybackIdentifierAction
+import controllers.actions.register.RegistrationIdentifierAction
 import javax.inject.Inject
 import pages.playback.WhatIsTheUTRVariationPage
 import play.api.i18n.I18nSupport

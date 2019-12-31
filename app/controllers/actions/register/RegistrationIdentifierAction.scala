@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package controllers.actions
+package controllers.actions.register
 
 import com.google.inject.Inject
+import controllers.actions.{AffinityGroupIdentifierAction, TrustsAuthorisedFunctions}
 import models.requests.IdentifierRequest
 import play.api.mvc.{Request, Result, _}
 import uk.gov.hmrc.http.HeaderCarrier

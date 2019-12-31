@@ -17,6 +17,7 @@
 package controllers.register.trustees
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.TrusteesBasedInTheUKFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode}

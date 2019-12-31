@@ -17,6 +17,7 @@
 package controllers.playback
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import javax.inject.Inject
 import pages.playback.WhatIsTheUTRVariationPage
 import play.api.i18n.{I18nSupport, MessagesApi}

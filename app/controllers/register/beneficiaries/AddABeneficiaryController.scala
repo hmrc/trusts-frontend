@@ -17,6 +17,7 @@
 package controllers.register.beneficiaries
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.{AddABeneficiaryFormProvider, YesNoFormProvider}
 import javax.inject.Inject
 import models.{Enumerable, Mode}

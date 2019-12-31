@@ -17,6 +17,7 @@
 package controllers.register.asset
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.{AddAssetsFormProvider, YesNoFormProvider}
 import javax.inject.Inject
 import models.registration.pages.AddAssets

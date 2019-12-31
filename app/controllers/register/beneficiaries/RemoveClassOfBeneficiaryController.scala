@@ -18,6 +18,7 @@ package controllers.register.beneficiaries
 
 import controllers.RemoveIndexController
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
 import models.requests.DataRequest

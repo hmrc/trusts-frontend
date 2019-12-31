@@ -18,6 +18,7 @@ package controllers.actions
 
 import base.SpecBase
 import config.FrontendAppConfig
+import controllers.actions.register.RegistrationIdentifierAction
 import models.requests.IdentifierRequest
 import play.api.mvc.{Action, AnyContent, Results}
 import play.api.test.Helpers._

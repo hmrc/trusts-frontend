@@ -33,6 +33,7 @@
 package controllers.register.settlors.deceased_settlor
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.deceased_settlor.SettlorsNameFormProvider
 import javax.inject.Inject
 import models.Mode

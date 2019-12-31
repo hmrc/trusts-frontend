@@ -17,6 +17,7 @@
 package controllers.register.asset
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import controllers.filters.IndexActionFilterProvider
 import forms.WhatKindOfAssetFormProvider
 import javax.inject.Inject

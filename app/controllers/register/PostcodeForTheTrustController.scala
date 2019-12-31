@@ -17,6 +17,7 @@
 package controllers.register
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.PostcodeForTheTrustFormProvider
 import javax.inject.Inject
 import models.Mode

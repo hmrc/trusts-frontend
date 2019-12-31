@@ -18,6 +18,7 @@ package controllers.playback
 
 import config.FrontendAppConfig
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.WhatIsTheUTRFormProvider
 import handlers.ErrorHandler
 import javax.inject.Inject

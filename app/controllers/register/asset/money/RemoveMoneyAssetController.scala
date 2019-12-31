@@ -17,6 +17,7 @@
 package controllers.register.asset.money
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import controllers.register.asset.RemoveAssetController
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject

@@ -16,7 +16,7 @@
 
 package controllers.register
 
-import controllers.actions.RegistrationIdentifierAction
+import controllers.actions.register.RegistrationIdentifierAction
 import javax.inject.Inject
 import models.NormalMode
 import play.api.i18n.I18nSupport

@@ -16,6 +16,7 @@
 
 package controllers.actions
 
+import controllers.actions.register.RegistrationIdentifierAction
 import javax.inject.Inject
 import models.requests.IdentifierRequest
 import play.api.mvc._

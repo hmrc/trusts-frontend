@@ -17,7 +17,8 @@
 package controllers.register
 
 import com.google.inject.Inject
-import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider, RegistrationIdentifierAction}
+import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController

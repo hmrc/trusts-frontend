@@ -17,6 +17,7 @@
 package controllers.register.settlors.deceased_settlor
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.InternationalAddressFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}

@@ -17,6 +17,7 @@
 package controllers.register
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.NonResidentTypeFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode}

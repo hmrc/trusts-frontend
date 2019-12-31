@@ -17,6 +17,7 @@
 package controllers.register.asset.money
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.AssetMoneyValueFormProvider
 import javax.inject.Inject
 import models.Mode
