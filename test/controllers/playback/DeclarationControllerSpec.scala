@@ -16,10 +16,9 @@
 
 package controllers.playback
 
-import base.SpecBase
+import base.PlaybackSpecBase
 import forms.DeclarationFormProvider
 import models.core.pages.{Declaration, FullName}
-import controllers.playback.routes._
 import models.playback.pages.DeclarationWhatNext.DeclareTheTrustIsUpToDate
 import org.mockito.Mockito.reset
 import pages.playback.DeclarationWhatNextPage
@@ -29,7 +28,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
 
-class DeclarationControllerSpec extends SpecBase {
+class DeclarationControllerSpec extends PlaybackSpecBase {
 
   val formProvider = new DeclarationFormProvider()
   val form = formProvider()

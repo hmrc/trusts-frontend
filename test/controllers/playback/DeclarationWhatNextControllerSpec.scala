@@ -16,19 +16,19 @@
 
 package controllers.playback
 
-import base.SpecBase
+import base.PlaybackSpecBase
 import config.FrontendAppConfig
 import controllers.actions.TrustsAuthorisedFunctions
+import controllers.register.routes._
 import forms.DeclarationWhatNextFormProvider
 import models.playback.pages.DeclarationWhatNext
+import pages.playback.DeclarationWhatNextPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.playback.DeclarationWhatNextView
-import controllers.register.routes._
-import pages.playback.DeclarationWhatNextPage
 import uk.gov.hmrc.auth.core.AuthConnector
+import views.html.playback.DeclarationWhatNextView
 
-class DeclarationWhatNextControllerSpec extends SpecBase {
+class DeclarationWhatNextControllerSpec extends PlaybackSpecBase {
 
   lazy val declarationWhatNextRoute = routes.DeclarationWhatNextController.onPageLoad().url
 

@@ -16,11 +16,11 @@
 
 package controllers.register
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 
-class SignedOutControllerSpec extends SpecBase {
+class SignedOutControllerSpec extends RegistrationSpecBase {
 
   "SignedOutController" must {
     "return a 200 OK status" in {

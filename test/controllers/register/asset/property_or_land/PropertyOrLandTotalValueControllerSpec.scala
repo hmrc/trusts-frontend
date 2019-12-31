@@ -16,7 +16,7 @@
 
 package controllers.register.asset.property_or_land
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.IndexValidation
 import forms.property_or_land.PropertyOrLandTotalValueFormProvider
 import models.NormalMode
@@ -28,7 +28,7 @@ import play.api.test.Helpers._
 import views.html.register.asset.property_or_land.PropertyOrLandTotalValueView
 import controllers.register.routes._
 
-class PropertyOrLandTotalValueControllerSpec extends SpecBase with IndexValidation {
+class PropertyOrLandTotalValueControllerSpec extends RegistrationSpecBase with IndexValidation {
 
   val formProvider = new PropertyOrLandTotalValueFormProvider()
   val form = formProvider()

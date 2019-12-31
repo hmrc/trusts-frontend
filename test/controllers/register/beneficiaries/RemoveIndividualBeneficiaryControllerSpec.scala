@@ -16,7 +16,7 @@
 
 package controllers.register.beneficiaries
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.RemoveIndexFormProvider
 import models.core.pages.FullName
 import org.scalacheck.Arbitrary.arbitrary
@@ -27,7 +27,7 @@ import views.html.RemoveIndexView
 import controllers.register.routes._
 import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
 
-class RemoveIndividualBeneficiaryControllerSpec extends SpecBase with PropertyChecks {
+class RemoveIndividualBeneficiaryControllerSpec extends RegistrationSpecBase with PropertyChecks {
 
   val messagesPrefix = "removeIndividualBeneficiary"
 

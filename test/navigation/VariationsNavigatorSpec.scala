@@ -16,13 +16,12 @@
 
 package navigation
 
-import base.SpecBase
+import base.PlaybackSpecBase
 import controllers.playback.routes
 import models.playback.pages.DeclarationWhatNext
-import pages._
 import pages.playback.DeclarationWhatNextPage
 
-class VariationsNavigatorSpec extends SpecBase {
+class VariationsNavigatorSpec extends PlaybackSpecBase {
 
   implicit val navigator : VariationsNavigator = injector.instanceOf[VariationsNavigator]
 

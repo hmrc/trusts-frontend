@@ -18,7 +18,7 @@ package controllers.filters
 
 import com.google.inject.Inject
 import handlers.ErrorHandler
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import play.api.Logger
 import play.api.http.Status
 import play.api.libs.json.Reads
@@ -29,9 +29,9 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class IndexActionFilter[T](index : Int, entity : Gettable[List[T]], errorHandler : ErrorHandler)
                           (implicit val reads : Reads[T], val executionContext: ExecutionContext)
-  extends ActionFilter[DataRequest] {
+  extends ActionFilter[RegistrationDataRequest] {
 
-  override protected def filter[A](request: DataRequest[A]): Future[Option[Result]] = {
+  override protected def filter[A](request: RegistrationDataRequest[A]): Future[Option[Result]] = {
 
     lazy val entities = request.userAnswers.get(entity).getOrElse(List.empty)
 

@@ -19,7 +19,7 @@ package controllers.register
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import models.NormalMode
 import models.core.UserAnswers
 import models.registration.Matched
@@ -34,7 +34,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import views.html.register.TaskListView
 
-class TaskListControllerSpec extends SpecBase {
+class TaskListControllerSpec extends RegistrationSpecBase {
 
   private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
   private val savedUntil : String = LocalDateTime.now.plusSeconds(frontendAppConfig.ttlInSeconds).format(dateFormatter)

@@ -16,7 +16,7 @@
 
 package controllers.register.asset.property_or_land
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.RemoveIndexFormProvider
 import models.registration.pages.Status.Completed
 import org.scalacheck.Arbitrary.arbitrary
@@ -28,7 +28,7 @@ import play.api.test.Helpers._
 import views.html.RemoveIndexView
 import controllers.register.routes._
 
-class RemovePropertyOrLandWithDescriptionControllerSpec extends SpecBase with PropertyChecks {
+class RemovePropertyOrLandWithDescriptionControllerSpec extends RegistrationSpecBase with PropertyChecks {
 
   val messagesPrefix = "removePropertyOrLandAsset"
 

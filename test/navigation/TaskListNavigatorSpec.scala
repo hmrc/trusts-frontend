@@ -18,7 +18,7 @@ package navigation
 
 import java.time.LocalDate
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.register.routes
 import mapping.reads.{Assets, Trustees}
 import models.NormalMode
@@ -40,7 +40,7 @@ import pages.register.trustees.IsThisLeadTrusteePage
 import sections.beneficiaries.Beneficiaries
 import sections.{Settlors, TaxLiability, TrustDetails}
 
-class TaskListNavigatorSpec extends SpecBase {
+class TaskListNavigatorSpec extends RegistrationSpecBase {
 
   val navigator : TaskListNavigator = new TaskListNavigator
 

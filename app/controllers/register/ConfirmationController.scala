@@ -25,7 +25,7 @@ import mapping.reads.{LeadTrusteeIndividual, Trustees}
 import models.NormalMode
 import models.core.UserAnswers
 import models.registration.pages.RegistrationStatus
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import pages.register.{RegistrationTRNPage, TrustHaveAUTRPage}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -47,7 +47,7 @@ class ConfirmationController @Inject()(
                                         errorHandler: ErrorHandler
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def renderView(trn : String, userAnswers: UserAnswers, draftId: String)(implicit request : DataRequest[AnyContent]) : Future[Result] = {
+  private def renderView(trn : String, userAnswers: UserAnswers, draftId: String)(implicit request : RegistrationDataRequest[AnyContent]) : Future[Result] = {
     val trustees = userAnswers.get(Trustees).getOrElse(Nil)
     val isAgent = request.affinityGroup == Agent
     val agentOverviewUrl = controllers.register.agents.routes.AgentOverviewController.onPageLoad().url

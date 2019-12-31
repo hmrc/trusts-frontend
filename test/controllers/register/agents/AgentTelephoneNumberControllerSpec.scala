@@ -16,7 +16,7 @@
 
 package controllers.register.agents
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.AgentTelephoneNumber
 import models.NormalMode
 import models.core.UserAnswers
@@ -32,7 +32,7 @@ import pages.register.agents.{AgentNamePage, AgentTelephoneNumberPage}
 
 import scala.concurrent.Future
 
-class AgentTelephoneNumberControllerSpec extends SpecBase {
+class AgentTelephoneNumberControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new AgentTelephoneNumber()
   val form: Form[String] = formProvider()

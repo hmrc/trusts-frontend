@@ -21,7 +21,7 @@ import controllers.actions.register.{DraftIdRetrievalActionProvider, Registratio
 import controllers.filters.IndexActionFilterProvider
 import forms.UKAddressFormProvider
 import javax.inject.Inject
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
 import pages.register.trustees.{IsThisLeadTrusteePage, TrusteesNamePage, TrusteesUkAddressPage}
@@ -73,7 +73,7 @@ class TrusteesUkAddressController @Inject()(
       Ok(view(preparedForm, mode, draftId, index, messagePrefix, trusteeName))
   }
 
-  private def getMessagePrefix(index: Int, request: DataRequest[AnyContent]) = {
+  private def getMessagePrefix(index: Int, request: RegistrationDataRequest[AnyContent]) = {
     val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
 
     val messagePrefix = if (isLead) {

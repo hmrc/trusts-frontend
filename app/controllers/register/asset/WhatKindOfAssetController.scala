@@ -23,7 +23,7 @@ import forms.WhatKindOfAssetFormProvider
 import javax.inject.Inject
 import models.registration.pages.WhatKindOfAsset
 import models.registration.pages.WhatKindOfAsset.Money
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import models.{Enumerable, Mode}
 import navigation.Navigator
 import pages.register.asset.WhatKindOfAssetPage
@@ -55,7 +55,7 @@ class WhatKindOfAssetController @Inject()(
   private def findAssetThatIsMoney(assets : List[AssetViewModel]): Option[(AssetViewModel, Int)] =
     assets.zipWithIndex.find {_._1.isInstanceOf[MoneyAssetViewModel]}
 
-  private def options(request : DataRequest[AnyContent], index: Int) = {
+  private def options(request : RegistrationDataRequest[AnyContent], index: Int) = {
     val assets = request.userAnswers.get(sections.Assets).getOrElse(Nil)
     
     findAssetThatIsMoney(assets) match {

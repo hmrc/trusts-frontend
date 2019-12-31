@@ -16,7 +16,7 @@
 
 package controllers.register.settlors.deceased_settlor
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.test.FakeRequest
@@ -25,7 +25,7 @@ import views.html.register.settlors.deceased_settlor.SetupAfterSettlorDiedView
 import controllers.register.routes._
 import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
 
-class SetupAfterSettlorDiedControllerSpec extends SpecBase {
+class SetupAfterSettlorDiedControllerSpec extends RegistrationSpecBase {
 
   val form = new YesNoFormProvider().withPrefix("setupAfterSettlorDied")
 

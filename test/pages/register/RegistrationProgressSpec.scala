@@ -18,7 +18,7 @@ package pages.register
 
 import java.time.LocalDate
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import models.core.UserAnswers
 import models.core.pages.FullName
 import models.core.pages.IndividualOrBusiness.Individual
@@ -37,7 +37,7 @@ import pages.register.settlors.living_settlor.SettlorIndividualOrBusinessPage
 import pages.register.trustees.{AddATrusteePage, IsThisLeadTrusteePage}
 import play.api.libs.json.{JsObject, Json}
 
-class RegistrationProgressSpec extends SpecBase {
+class RegistrationProgressSpec extends RegistrationSpecBase {
 
   "Trust details section" must {
 

@@ -16,12 +16,12 @@
 
 package controllers.playback
 
-import base.SpecBase
+import base.PlaybackSpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.playback.VariationsConfirmationView
 
-class VariationsConfirmationControllerSpec extends SpecBase {
+class VariationsConfirmationControllerSpec extends PlaybackSpecBase {
 
   "Variations confirmation Controller" must {
 

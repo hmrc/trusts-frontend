@@ -16,7 +16,7 @@
 
 package controllers.register
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.CountryGoverningTrustFormProvider
 import models.NormalMode
 import pages.register.CountryGoverningTrustPage
@@ -26,7 +26,7 @@ import utils.InputOption
 import utils.countryOptions.CountryOptionsNonUK
 import views.html.register.CountryGoverningTrustView
 
-class CountryGoverningTrustControllerSpec extends SpecBase {
+class CountryGoverningTrustControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new CountryGoverningTrustFormProvider()
   val form = formProvider()

@@ -18,7 +18,7 @@ package controllers.actions.playback
 
 import com.google.inject.{ImplementedBy, Inject}
 import connector.EnrolmentStoreConnector
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import pages.playback.WhatIsTheUTRVariationPage
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, BodyParsers, Result}
@@ -33,7 +33,7 @@ class PlaybackIdentifierActionImpl @Inject()(val parser: BodyParsers.Default,
                                              playbackAuthenticationService: PlaybackAuthenticationService
                                   )(override implicit val executionContext: ExecutionContext) extends PlaybackIdentifierAction {
 
-  override def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
+  override def refine[A](request: PlaybackDataRequest[A]): Future[Either[Result, PlaybackDataRequest[A]]] = {
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
@@ -46,8 +46,8 @@ class PlaybackIdentifierActionImpl @Inject()(val parser: BodyParsers.Default,
 }
 
 @ImplementedBy(classOf[PlaybackIdentifierActionImpl])
-trait PlaybackIdentifierAction extends ActionRefiner[DataRequest, DataRequest] {
+trait PlaybackIdentifierAction extends ActionRefiner[PlaybackDataRequest, PlaybackDataRequest] {
 
-  def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]]
+  def refine[A](request: PlaybackDataRequest[A]): Future[Either[Result, PlaybackDataRequest[A]]]
 
 }

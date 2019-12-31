@@ -18,7 +18,7 @@ package controllers.register.settlors.deceased_settlor
 
 import java.time.{LocalDate, ZoneOffset}
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.deceased_settlor.SettlorDateOfDeathFormProvider
 import models.NormalMode
 import models.core.pages.FullName
@@ -29,7 +29,7 @@ import play.api.test.Helpers._
 import views.html.register.settlors.deceased_settlor.SettlorDateOfDeathView
 import controllers.register.routes._
 
-class SettlorDateOfDeathControllerSpec extends SpecBase with MockitoSugar {
+class SettlorDateOfDeathControllerSpec extends RegistrationSpecBase with MockitoSugar {
 
   val formProvider = new SettlorDateOfDeathFormProvider()
   val form = formProvider()

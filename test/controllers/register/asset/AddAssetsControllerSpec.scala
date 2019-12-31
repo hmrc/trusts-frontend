@@ -16,7 +16,7 @@
 
 package controllers.register.asset
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.{AddAssetsFormProvider, YesNoFormProvider}
 import models.NormalMode
 import models.core.UserAnswers
@@ -34,7 +34,7 @@ import pages.register.asset.WhatKindOfAssetPage
 import pages.register.asset.money.AssetMoneyValuePage
 import views.html.register.asset.{AddAnAssetYesNoView, AddAssetsView}
 
-class AddAssetsControllerSpec extends SpecBase {
+class AddAssetsControllerSpec extends RegistrationSpecBase {
 
   lazy val addAssetsRoute: String = routes.AddAssetsController.onPageLoad(fakeDraftId).url
   lazy val addOnePostRoute: String = routes.AddAssetsController.submitOne(fakeDraftId).url

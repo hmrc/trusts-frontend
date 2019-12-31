@@ -16,7 +16,7 @@
 
 package controllers.register.asset.property_or_land
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.register.asset.property_or_land.routes._
 import forms.YesNoFormProvider
 import models.NormalMode
@@ -26,7 +26,7 @@ import play.api.test.Helpers._
 import controllers.register.routes._
 import views.html.register.asset.property_or_land.PropertyOrLandAddressUkYesNoView
 
-class PropertyOrLandAddressUkYesNoControllerSpec extends SpecBase {
+class PropertyOrLandAddressUkYesNoControllerSpec extends RegistrationSpecBase {
 
   val form = new YesNoFormProvider().withPrefix("propertyOrLandAddressUkYesNo")
 

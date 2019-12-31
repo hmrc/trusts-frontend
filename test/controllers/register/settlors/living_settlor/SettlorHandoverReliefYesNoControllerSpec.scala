@@ -16,7 +16,7 @@
 
 package controllers.register.settlors.living_settlor
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.test.FakeRequest
@@ -26,7 +26,7 @@ import controllers.register.routes._
 import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
 import pages.register.settlors.living_settlor.SettlorHandoverReliefYesNoPage
 
-class SettlorHandoverReliefYesNoControllerSpec extends SpecBase {
+class SettlorHandoverReliefYesNoControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new YesNoFormProvider()
   val form = formProvider.withPrefix("settlorHandoverReliefYesNo")

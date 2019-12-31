@@ -16,7 +16,7 @@
 
 package controllers.register.asset.shares
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.RemoveIndexFormProvider
 import models.registration.pages.Status.Completed
 import org.scalacheck.Arbitrary.arbitrary
@@ -27,7 +27,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RemoveIndexView
 
-class RemoveShareCompanyNameAssetControllerSpec extends SpecBase with PropertyChecks {
+class RemoveShareCompanyNameAssetControllerSpec extends RegistrationSpecBase with PropertyChecks {
 
   val messagesPrefix = "removeShareAsset"
 

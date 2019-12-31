@@ -16,7 +16,7 @@
 
 package controllers.register.agents
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.AgentNameFormProvider
 import models.NormalMode
 import play.api.test.FakeRequest
@@ -26,7 +26,7 @@ import views.html.register.agents.AgentNameView
 import controllers.register.routes._
 import pages.register.agents.AgentNamePage
 
-class AgentNameControllerSpec extends SpecBase {
+class AgentNameControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new AgentNameFormProvider()
   val form = formProvider()

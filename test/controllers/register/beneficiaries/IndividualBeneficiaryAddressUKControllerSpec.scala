@@ -16,7 +16,7 @@
 
 package controllers.register.beneficiaries
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.UKAddressFormProvider
 import models.NormalMode
 import models.core.pages.{FullName, UKAddress}
@@ -26,7 +26,7 @@ import views.html.register.beneficiaries.IndividualBeneficiaryAddressUKView
 import controllers.register.routes._
 import pages.register.beneficiaries.individual.{IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryNamePage}
 
-class IndividualBeneficiaryAddressUKControllerSpec extends SpecBase {
+class IndividualBeneficiaryAddressUKControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new UKAddressFormProvider()
   val form = formProvider()

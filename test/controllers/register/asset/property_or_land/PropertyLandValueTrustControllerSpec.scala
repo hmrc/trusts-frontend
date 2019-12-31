@@ -16,7 +16,7 @@
 
 package controllers.register.asset.property_or_land
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.IndexValidation
 import forms.property_or_land.PropertyLandValueTrustFormProvider
 import models.NormalMode
@@ -31,7 +31,7 @@ import utils._
 import views.html.register.asset.property_or_land.PropertyLandValueTrustView
 import controllers.register.routes._
 
-class PropertyLandValueTrustControllerSpec extends SpecBase with IndexValidation {
+class PropertyLandValueTrustControllerSpec extends RegistrationSpecBase with IndexValidation {
 
   val formProvider = new PropertyLandValueTrustFormProvider()
   val form = formProvider()
@@ -41,7 +41,7 @@ class PropertyLandValueTrustControllerSpec extends SpecBase with IndexValidation
   lazy val propertyLandValueTrustRoute = routes.PropertyLandValueTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   val userAnswers = UserAnswers(
-    draftId = userAnswersId,
+    draftId = fakeDraftId,
     data = Json.obj(
       PropertyLandValueTrustPage.toString -> Json.obj(
         "value" -> "value 1"

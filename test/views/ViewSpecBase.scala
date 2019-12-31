@@ -16,7 +16,7 @@
 
 package views
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import models.core.UserAnswers
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
@@ -26,7 +26,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 
 import scala.reflect.ClassTag
 
-trait ViewSpecBase extends SpecBase {
+trait ViewSpecBase extends RegistrationSpecBase {
 
   def asDocument(html: Html): Document = Jsoup.parse(html.toString())
 

@@ -16,11 +16,10 @@
 
 package utils
 
+import controllers.actions.playback.PlaybackDataRequest
 import javax.inject.Inject
 import mapping.playback.UserAnswersExtractor
-import models.playback.UserAnswers
 import models.playback.http.GetTrust
-import models.requests.DataRequest
 import play.api.i18n.Messages
 import play.api.mvc.AnyContent
 import utils.countryOptions.CountryOptions
@@ -29,9 +28,9 @@ import viewmodels.AnswerSection
 class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions,
                                     userAnswersExtractor: UserAnswersExtractor){
 
-  def summary(trust: GetTrust)(implicit messages: Messages, request: DataRequest[AnyContent]) : Seq[AnswerSection] = {
+  def summary(trust: GetTrust)(implicit messages: Messages, request: PlaybackDataRequest[AnyContent]) : Seq[AnswerSection] = {
 
-    userAnswersExtractor.extract(UserAnswers(request.internalId), trust) match {
+    userAnswersExtractor.extract(request.userAnswers, trust) match {
       case Right(userAnswers) =>
 
         val playbackAnswersHelper: PlaybackAnswersHelper = new PlaybackAnswersHelper(countryOptions)(userAnswers)

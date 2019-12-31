@@ -16,7 +16,7 @@
 
 package controllers.register.agents
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.InternationalAddressFormProvider
 import models.NormalMode
 import models.core.UserAnswers
@@ -35,7 +35,7 @@ import pages.register.agents.{AgentInternationalAddressPage, AgentNamePage}
 
 import scala.concurrent.Future
 
-class AgentInternationalAddressControllerSpec extends SpecBase {
+class AgentInternationalAddressControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new InternationalAddressFormProvider()
   val form: Form[InternationalAddress] = formProvider()

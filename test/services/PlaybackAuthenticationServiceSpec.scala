@@ -16,12 +16,12 @@
 
 package services
 
-import base.SpecBase
+import base.PlaybackSpecBase
 import config.FrontendAppConfig
 import connector.EnrolmentStoreConnector
 import controllers.actions.TrustsAuthorisedFunctions
+import controllers.actions.playback.PlaybackDataRequest
 import models.EnrolmentStoreResponse.{AlreadyClaimed, NotClaimed, ServerError}
-import models.requests.DataRequest
 import org.mockito.Matchers.{any, eq => mEq}
 import org.mockito.Mockito.when
 import org.scalatest.concurrent.ScalaFutures
@@ -37,7 +37,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with EitherValues with RecoverMethods {
+class PlaybackAuthenticationServiceSpec extends PlaybackSpecBase with ScalaFutures with EitherValues with RecoverMethods {
 
   val utr = "0987654321"
 
@@ -52,7 +52,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
   ))
 
   implicit val hc: HeaderCarrier = HeaderCarrier()
-  implicit val dataRequest = DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Agent, enrolments)
+  implicit val dataRequest = PlaybackDataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Agent, enrolments)
 
   val mockAuthConnector: AuthConnector = mock[AuthConnector]
   val mockEnrolmentStoreConnector: EnrolmentStoreConnector = mock[EnrolmentStoreConnector]
@@ -136,7 +136,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
 
           val service = app.injector.instanceOf[PlaybackAuthenticationService]
 
-          implicit val dataRequest = DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Agent, enrolments)
+          implicit val dataRequest = PlaybackDataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Agent, enrolments)
 
           whenReady(service.authenticate[AnyContent](utr)) {
             result =>
@@ -168,7 +168,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
 
           val service = app.injector.instanceOf[PlaybackAuthenticationService]
 
-          implicit val dataRequest = DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Agent, enrolments)
+          implicit val dataRequest = PlaybackDataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Agent, enrolments)
 
           whenReady(service.authenticate[AnyContent](utr)) {
             result =>
@@ -204,7 +204,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
             val service = app.injector.instanceOf[PlaybackAuthenticationService]
 
             implicit val dataRequest =
-              DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
+              PlaybackDataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
 
             whenReady(service.authenticate[AnyContent](utr)) {
               result =>
@@ -234,7 +234,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
             val service = app.injector.instanceOf[PlaybackAuthenticationService]
 
             implicit val dataRequest =
-              DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
+              PlaybackDataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
 
             whenReady(service.authenticate[AnyContent](utr)) {
               result =>
@@ -267,7 +267,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
             val service = app.injector.instanceOf[PlaybackAuthenticationService]
 
             implicit val dataRequest =
-              DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
+              PlaybackDataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
 
             val result = service.authenticate(utr)
             val left = result.map(_.left.value)
@@ -297,7 +297,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
             val service = app.injector.instanceOf[PlaybackAuthenticationService]
 
             implicit val dataRequest =
-              DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
+              PlaybackDataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
 
             whenReady(service.authenticate[AnyContent](utr)) {
               result =>
@@ -328,7 +328,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
             val service = app.injector.instanceOf[PlaybackAuthenticationService]
 
             implicit val dataRequest =
-              DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
+              PlaybackDataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
 
             whenReady(service.authenticate[AnyContent](utr)) {
               result =>

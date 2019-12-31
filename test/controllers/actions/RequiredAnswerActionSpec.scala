@@ -16,11 +16,11 @@
 
 package controllers.actions
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.routes
 import models.NormalMode
 import models.core.pages.FullName
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import org.scalatest.EitherValues
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
@@ -33,12 +33,12 @@ import controllers.register.routes._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class RequiredAnswerActionSpec extends SpecBase with MockitoSugar with ScalaFutures with EitherValues {
+class RequiredAnswerActionSpec extends RegistrationSpecBase with MockitoSugar with ScalaFutures with EitherValues {
 
   class Harness[T](required: RequiredAnswer[T])(implicit val r: Reads[T])
     extends RequiredAnswerAction(required) {
 
-    def callRefine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] = refine(request)
+    def callRefine[A](request: RegistrationDataRequest[A]): Future[Either[Result, RegistrationDataRequest[A]]] = refine(request)
   }
 
   "Required Answer Action" when {
@@ -49,7 +49,7 @@ class RequiredAnswerActionSpec extends SpecBase with MockitoSugar with ScalaFutu
           val answers = emptyUserAnswers
 
           val action = new Harness(RequiredAnswer(TrusteesNamePage(0)))
-          val futureResult = action.callRefine(new DataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
+          val futureResult = action.callRefine(new RegistrationDataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
 
           whenReady(futureResult) { result =>
             result.left.value.header.headers(HeaderNames.LOCATION) mustBe SessionExpiredController.onPageLoad().url
@@ -64,7 +64,7 @@ class RequiredAnswerActionSpec extends SpecBase with MockitoSugar with ScalaFutu
             controllers.register.trustees.routes.TrusteesNameController.onPageLoad(NormalMode, 0, fakeDraftId))
           )
 
-          val futureResult = action.callRefine(new DataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
+          val futureResult = action.callRefine(new RegistrationDataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
 
           whenReady(futureResult) { result =>
             result.left.value.header.headers(HeaderNames.LOCATION) mustBe
@@ -79,7 +79,7 @@ class RequiredAnswerActionSpec extends SpecBase with MockitoSugar with ScalaFutu
       "continue with refining the request" in {
         val answers = emptyUserAnswers.set(TrusteesNamePage(0), FullName("Adam", None, "Conder")).success.value
 
-        val dataRequest = new DataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment]))
+        val dataRequest = new RegistrationDataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment]))
 
         val action = new Harness(RequiredAnswer(TrusteesNamePage(0)))
         val futureResult = action.callRefine(dataRequest)

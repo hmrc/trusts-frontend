@@ -16,7 +16,7 @@
 
 package controllers.register.trustees
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.YesNoFormProvider
 import forms.trustees.AddATrusteeFormProvider
 import models.NormalMode
@@ -31,7 +31,7 @@ import viewmodels.AddRow
 import controllers.register.routes._
 import views.html.register.trustees.{AddATrusteeView, AddATrusteeYesNoView}
 
-class AddATrusteeControllerSpec extends SpecBase {
+class AddATrusteeControllerSpec extends RegistrationSpecBase {
 
   lazy val getRoute : String = routes.AddATrusteeController.onPageLoad(fakeDraftId).url
   lazy val submitAnotherRoute : String = routes.AddATrusteeController.submitAnother(fakeDraftId).url

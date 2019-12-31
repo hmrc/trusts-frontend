@@ -16,7 +16,7 @@
 
 package controllers.register
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.YesNoFormProvider
 import models.NormalMode
 import pages.register.TrustHaveAUTRPage
@@ -25,7 +25,7 @@ import play.api.test.Helpers._
 import viewmodels.Link
 import views.html.register.TrustHaveAUTRView
 
-class TrustHaveAUTRControllerSpec extends SpecBase {
+class TrustHaveAUTRControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new YesNoFormProvider()
   val form = formProvider.withPrefix("trustHaveAUTR")

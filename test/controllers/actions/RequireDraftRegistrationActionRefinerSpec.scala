@@ -16,11 +16,11 @@
 
 package controllers.actions
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.actions.register.RequireDraftRegistrationActionRefinerImpl
 import controllers.register.routes._
 import models.registration.pages.RegistrationStatus.{Complete, InProgress}
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import org.scalatest.EitherValues
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
@@ -32,12 +32,12 @@ import utils.TestUserAnswers
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class RequireDraftRegistrationActionRefinerSpec extends SpecBase with MockitoSugar with ScalaFutures with EitherValues {
+class RequireDraftRegistrationActionRefinerSpec extends RegistrationSpecBase with MockitoSugar with ScalaFutures with EitherValues {
 
   class Harness()
     extends RequireDraftRegistrationActionRefinerImpl {
 
-    def callRefine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] = refine(request)
+    def callRefine[A](request: RegistrationDataRequest[A]): Future[Either[Result, RegistrationDataRequest[A]]] = refine(request)
   }
 
   "require draft registration action" when {
@@ -48,7 +48,7 @@ class RequireDraftRegistrationActionRefinerSpec extends SpecBase with MockitoSug
           val answers = TestUserAnswers.emptyUserAnswers.copy(progress = Complete)
 
           val action = new Harness()
-          val futureResult = action.callRefine(new DataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
+          val futureResult = action.callRefine(new RegistrationDataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
 
           whenReady(futureResult) { result =>
             result.left.value.header.headers(HeaderNames.LOCATION) mustBe ConfirmationController.onPageLoad(answers.draftId).url
@@ -62,7 +62,7 @@ class RequireDraftRegistrationActionRefinerSpec extends SpecBase with MockitoSug
       "continue with refining the request" in {
         val answers = TestUserAnswers.emptyUserAnswers.copy(progress = InProgress)
 
-        val dataRequest = new DataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment]))
+        val dataRequest = new RegistrationDataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment]))
 
         val action = new Harness()
         val futureResult = action.callRefine(dataRequest)

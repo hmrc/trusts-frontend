@@ -16,9 +16,8 @@
 
 package controllers.playback
 
-import controllers.actions._
-import controllers.actions.playback.PlaybackIdentifierAction
-import controllers.actions.register.{RegistrationDataRequiredAction, RegistrationDataRetrievalAction, RegistrationIdentifierAction}
+import controllers.actions.playback.{PlaybackDataRequiredAction, PlaybackDataRetrievalAction, PlaybackIdentifierAction}
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.DeclarationWhatNextFormProvider
 import javax.inject.Inject
 import models.Enumerable
@@ -27,7 +26,7 @@ import pages.playback.DeclarationWhatNextPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.RegistrationsRepository
+import repositories.PlaybackRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.playback.DeclarationWhatNextView
 
@@ -35,12 +34,12 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class DeclarationWhatNextController @Inject()(
                                                override val messagesApi: MessagesApi,
-                                               sessionRepository: RegistrationsRepository,
+                                               sessionRepository: PlaybackRepository,
                                                navigator: VariationsNavigator,
                                                identify: RegistrationIdentifierAction,
                                                playbackAction: PlaybackIdentifierAction,
-                                               getData: RegistrationDataRetrievalAction,
-                                               requireData: RegistrationDataRequiredAction,
+                                               getData: PlaybackDataRetrievalAction,
+                                               requireData: PlaybackDataRequiredAction,
                                                formProvider: DeclarationWhatNextFormProvider,
                                                val controllerComponents: MessagesControllerComponents,
                                                view: DeclarationWhatNextView

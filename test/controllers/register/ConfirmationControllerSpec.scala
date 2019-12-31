@@ -16,7 +16,7 @@
 
 package controllers.register
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import models.NormalMode
 import models.core.pages.FullName
 import models.registration.pages.RegistrationStatus
@@ -26,7 +26,7 @@ import play.api.test.Helpers._
 import utils.TestUserAnswers
 import views.html.register.ConfirmationView
 
-class ConfirmationControllerSpec extends SpecBase {
+class ConfirmationControllerSpec extends RegistrationSpecBase {
 
   val postHMRC = "https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts"
 
@@ -42,7 +42,7 @@ class ConfirmationControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(userAnswersId).url)
+      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -62,7 +62,7 @@ class ConfirmationControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(userAnswersId).url)
+      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -78,7 +78,7 @@ class ConfirmationControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(userAnswersId).url)
+      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -94,7 +94,7 @@ class ConfirmationControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(userAnswersId).url)
+      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
 
       val result = route(application, request).value
 

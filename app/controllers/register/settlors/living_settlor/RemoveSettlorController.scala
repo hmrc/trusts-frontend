@@ -23,7 +23,7 @@ import controllers.filters.IndexActionFilterProvider
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
 import models.core.pages.FullName
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import navigation.Navigator
 import pages.QuestionPage
 import pages.register.settlors.living_settlor.SettlorIndividualNamePage
@@ -59,7 +59,7 @@ class RemoveSettlorController @Inject()(
   override def actions(draftId : String, index: Int) =
     identify andThen getData(draftId) andThen requireData andThen validateIndex(index, LivingSettlors)
 
-  override def content(index: Int)(implicit request: DataRequest[AnyContent]) : String =
+  override def content(index: Int)(implicit request: RegistrationDataRequest[AnyContent]) : String =
     request.userAnswers.get(page(index)).map(_.toString).getOrElse(Messages(s"$messagesPrefix.default"))
 
   override def formRoute(draftId: String, index: Int): Call =

@@ -16,12 +16,12 @@
 
 package controllers.register
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.CreateAgentServicesAccountView
 
-class CreateAgentServicesAccountControllerSpec extends SpecBase {
+class CreateAgentServicesAccountControllerSpec extends RegistrationSpecBase {
 
   "Create Agent Services Account Controller" must {
 

@@ -16,7 +16,7 @@
 
 package navigation.navigators.registration
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.register.trustees.routes
 import generators.Generators
 import models.NormalMode
@@ -31,7 +31,7 @@ import sections.Trustees
 
 trait TrusteeRoutes {
 
-  self: PropertyChecks with Generators with SpecBase =>
+  self: PropertyChecks with Generators with RegistrationSpecBase =>
 
   val index = 0
 

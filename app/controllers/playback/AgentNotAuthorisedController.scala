@@ -16,7 +16,8 @@
 
 package controllers.playback
 
-import controllers.actions.register.{RegistrationDataRequiredAction, RegistrationDataRetrievalAction, RegistrationIdentifierAction}
+import controllers.actions.playback.{PlaybackDataRequiredAction, PlaybackDataRetrievalAction}
+import controllers.actions.register.RegistrationIdentifierAction
 import javax.inject.Inject
 import pages.playback.WhatIsTheUTRVariationPage
 import play.api.i18n.I18nSupport
@@ -27,8 +28,8 @@ import views.html.playback.AgentNotAuthorisedView
 class AgentNotAuthorisedController @Inject()(
                                               val controllerComponents: MessagesControllerComponents,
                                               identify: RegistrationIdentifierAction,
-                                              getData: RegistrationDataRetrievalAction,
-                                              requireData: RegistrationDataRequiredAction,
+                                              getData: PlaybackDataRetrievalAction,
+                                              requireData: PlaybackDataRequiredAction,
                                               view: AgentNotAuthorisedView
                                             ) extends FrontendBaseController with I18nSupport {
 

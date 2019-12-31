@@ -16,7 +16,7 @@
 
 package controllers.actions
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import config.FrontendAppConfig
 import controllers.routes
 import org.mockito.Matchers.any
@@ -28,7 +28,7 @@ import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
 
 import scala.concurrent.Future
 
-class AffinityGroupIdentifierActionSpec extends SpecBase {
+class AffinityGroupIdentifierActionSpec extends RegistrationSpecBase {
 
   type RetrievalType = Option[String] ~ Option[AffinityGroup] ~ Enrolments
 

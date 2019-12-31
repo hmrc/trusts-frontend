@@ -21,7 +21,7 @@ import controllers.actions.register.{DraftIdRetrievalActionProvider, Registratio
 import controllers.register.asset.RemoveAssetController
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import pages.QuestionPage
 import pages.register.asset.shares.SharePortfolioNamePage
 import play.api.i18n.{Messages, MessagesApi}
@@ -46,7 +46,7 @@ class RemoveSharePortfolioAssetController @Inject()(
   override def actions(draftId: String, index: Int) =
     identify andThen getData(draftId) andThen requireData
 
-  override def content(index: Int)(implicit request: DataRequest[AnyContent]): String =
+  override def content(index: Int)(implicit request: RegistrationDataRequest[AnyContent]): String =
     request.userAnswers.get(page(index)).getOrElse(Messages(s"$messagesPrefix.default"))
 
   override def page(index: Int): QuestionPage[String] = SharePortfolioNamePage(index)

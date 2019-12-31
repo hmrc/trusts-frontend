@@ -18,7 +18,7 @@ package controllers.actions.register
 
 import javax.inject.Inject
 import models.registration.pages.RegistrationStatus.Complete
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Result}
 
@@ -26,7 +26,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class RequireDraftRegistrationActionRefinerImpl @Inject()(implicit val executionContext: ExecutionContext) extends RequireDraftRegistrationActionRefiner {
 
-  override protected def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
+  override protected def refine[A](request: RegistrationDataRequest[A]): Future[Either[Result, RegistrationDataRequest[A]]] = {
     request.userAnswers.progress match {
       case Complete =>
         Future.successful(Left(Redirect(controllers.register.routes.ConfirmationController.onPageLoad(request.userAnswers.draftId))))
@@ -36,4 +36,4 @@ class RequireDraftRegistrationActionRefinerImpl @Inject()(implicit val execution
   }
 }
 
-trait RequireDraftRegistrationActionRefiner extends ActionRefiner[DataRequest, DataRequest]
+trait RequireDraftRegistrationActionRefiner extends ActionRefiner[RegistrationDataRequest, RegistrationDataRequest]

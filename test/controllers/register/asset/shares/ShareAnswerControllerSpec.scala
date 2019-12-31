@@ -16,7 +16,7 @@
 
 package controllers.register.asset.shares
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import models.registration.pages.ShareClass
 import models.registration.pages.Status.Completed
 import models.registration.pages.WhatKindOfAsset.Shares
@@ -30,7 +30,7 @@ import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.register.asset.shares.ShareAnswersView
 
-class ShareAnswerControllerSpec extends SpecBase {
+class ShareAnswerControllerSpec extends RegistrationSpecBase {
 
   val index: Int = 0
 

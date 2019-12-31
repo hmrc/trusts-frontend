@@ -16,7 +16,7 @@
 
 package controllers.register.asset.shares
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.IndexValidation
 import forms.shares.ShareCompanyNameFormProvider
 import generators.ModelGenerators
@@ -28,7 +28,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.register.asset.shares.ShareCompanyNameView
 
-class ShareCompanyNameControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
+class ShareCompanyNameControllerSpec extends RegistrationSpecBase with ModelGenerators with IndexValidation {
 
   val formProvider = new ShareCompanyNameFormProvider()
   val form = formProvider()

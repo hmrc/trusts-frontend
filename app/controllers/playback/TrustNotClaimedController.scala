@@ -16,8 +16,8 @@
 
 package controllers.playback
 
-import controllers.actions._
-import controllers.actions.register.{RegistrationDataRequiredAction, RegistrationDataRetrievalAction, RegistrationIdentifierAction}
+import controllers.actions.playback.{PlaybackDataRequiredAction, PlaybackDataRetrievalAction}
+import controllers.actions.register.RegistrationIdentifierAction
 import javax.inject.Inject
 import pages.playback.WhatIsTheUTRVariationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -30,8 +30,8 @@ import scala.concurrent.ExecutionContext
 class TrustNotClaimedController @Inject()(
                                            override val messagesApi: MessagesApi,
                                            identify: RegistrationIdentifierAction,
-                                           getData: RegistrationDataRetrievalAction,
-                                           requireData: RegistrationDataRequiredAction,
+                                           getData: PlaybackDataRetrievalAction,
+                                           requireData: PlaybackDataRequiredAction,
                                            val controllerComponents: MessagesControllerComponents,
                                            view: TrustNotClaimedView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {

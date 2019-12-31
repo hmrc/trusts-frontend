@@ -16,7 +16,7 @@
 
 package navigation.navigators.registration
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.actions.FakeRegistrationDataRetrievalAction
 import controllers.actions.register.RegistrationDataRetrievalAction
 import controllers.register.routes
@@ -33,7 +33,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 
 trait MatchingRoutes {
 
-  self: PropertyChecks with Generators with SpecBase =>
+  self: PropertyChecks with Generators with RegistrationSpecBase =>
 
   def matchingRoutes()(implicit navigator : Navigator) = {
 

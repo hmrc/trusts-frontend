@@ -16,7 +16,7 @@
 
 package controllers.register.trustees
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.IndexValidation
 import forms.YesNoFormProvider
 import models.NormalMode
@@ -30,7 +30,7 @@ import views.html.register.trustees.TrusteeAUKCitizenView
 import controllers.register.routes._
 
 
-class TrusteeAUKCitizenControllerSpec extends SpecBase with IndexValidation {
+class TrusteeAUKCitizenControllerSpec extends RegistrationSpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 

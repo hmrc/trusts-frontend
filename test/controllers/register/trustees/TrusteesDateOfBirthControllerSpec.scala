@@ -18,7 +18,7 @@ package controllers.register.trustees
 
 import java.time.{LocalDate, ZoneOffset}
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.IndexValidation
 import forms.trustees.TrusteesDateOfBirthFormProvider
 import models.NormalMode
@@ -32,7 +32,7 @@ import play.api.test.Helpers.{route, _}
 import views.html.register.trustees.TrusteesDateOfBirthView
 import controllers.register.routes._
 
-class TrusteesDateOfBirthControllerSpec extends SpecBase with MockitoSugar with IndexValidation {
+class TrusteesDateOfBirthControllerSpec extends RegistrationSpecBase with MockitoSugar with IndexValidation {
 
   val leadTrusteeMessagePrefix = "leadTrusteesDateOfBirth"
   val trusteeMessagePrefix = "trusteesDateOfBirth"

@@ -18,18 +18,18 @@ package controllers.playback
 
 import connector.TrustConnector
 import controllers.actions._
-import controllers.actions.playback.PlaybackIdentifierAction
-import controllers.actions.register.{RegistrationDataRequiredAction, RegistrationDataRetrievalAction, RegistrationIdentifierAction}
+import controllers.actions.playback.{PlaybackDataRequiredAction, PlaybackDataRetrievalAction, PlaybackIdentifierAction}
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.DeclarationFormProvider
 import javax.inject.Inject
 import models.playback.http.Processed
 import navigation.Navigator
-import pages.playback.{DeclarationWhatNextPage, WhatIsTheUTRVariationPage}
+import pages.playback.WhatIsTheUTRVariationPage
 import pages.register.DeclarationPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.RegistrationsRepository
+import repositories.PlaybackRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.PrintPlaybackHelper
 import views.html.playback.DeclarationView
@@ -38,12 +38,12 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class DeclarationController @Inject()(
                                        override val messagesApi: MessagesApi,
-                                       registrationsRepository: RegistrationsRepository,
+                                       playbackRepository: PlaybackRepository,
                                        navigator: Navigator,
                                        identify: RegistrationIdentifierAction,
                                        playbackAction: PlaybackIdentifierAction,
-                                       getData: RegistrationDataRetrievalAction,
-                                       requireData: RegistrationDataRequiredAction,
+                                       getData: PlaybackDataRetrievalAction,
+                                       requireData: PlaybackDataRequiredAction,
                                        requiredAnswer: RequiredAnswerActionProvider,
                                        formProvider: DeclarationFormProvider,
                                        connector: TrustConnector,
@@ -54,8 +54,8 @@ class DeclarationController @Inject()(
 
   val form = formProvider()
 
-  def actions() = identify andThen getData andThen requireData andThen playbackAction andThen
-    requiredAnswer(RequiredAnswer(DeclarationWhatNextPage, routes.DeclarationWhatNextController.onPageLoad()))
+  def actions() = identify andThen getData andThen requireData andThen playbackAction //andThen
+    //requiredAnswer(RequiredAnswer(DeclarationWhatNextPage, routes.DeclarationWhatNextController.onPageLoad()))
 
   def onPageLoad(): Action[AnyContent] = actions().async {
     implicit request =>
@@ -104,7 +104,7 @@ class DeclarationController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, value))
-            _ <- registrationsRepository.set(updatedAnswers)
+            _ <- playbackRepository.set(updatedAnswers)
           } yield Redirect(controllers.playback.routes.VariationsConfirmationController.onPageLoad())
         }
       )

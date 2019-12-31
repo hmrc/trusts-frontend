@@ -85,7 +85,7 @@ class DefaultPlaybackRepository @Inject()(
     }
   }
 
-  override def store(userAnswers: UserAnswers): Future[Boolean] = {
+  override def set(userAnswers: UserAnswers): Future[Boolean] = {
 
     val selector = Json.obj(
       "internalId" -> userAnswers.internalAuthId
@@ -109,5 +109,5 @@ trait PlaybackRepository {
 
   def get(internalId: String): Future[Option[UserAnswers]]
 
-  def store(userAnswers: UserAnswers): Future[Boolean]
+  def set(userAnswers: UserAnswers): Future[Boolean]
 }

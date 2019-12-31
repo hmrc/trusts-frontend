@@ -17,7 +17,7 @@
 package controllers
 
 import forms.RemoveForm
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import pages.QuestionPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -44,7 +44,7 @@ trait RemoveIndexController extends FrontendBaseController with I18nSupport {
 
   def registrationsRepository : RegistrationsRepository
 
-  def actions(draftId: String, index: Int) : ActionBuilder[DataRequest, AnyContent]
+  def actions(draftId: String, index: Int) : ActionBuilder[RegistrationDataRequest, AnyContent]
 
   def redirect(draftId : String) : Call
 
@@ -52,10 +52,10 @@ trait RemoveIndexController extends FrontendBaseController with I18nSupport {
 
   def removeQuery(index : Int) : Settable[_]
 
-  def content(index: Int)(implicit request: DataRequest[AnyContent]) : String
+  def content(index: Int)(implicit request: RegistrationDataRequest[AnyContent]) : String
 
   def view(form: Form[_], index: Int, draftId: String)
-                   (implicit request: DataRequest[AnyContent], messagesApi: MessagesApi): HtmlFormat.Appendable = {
+                   (implicit request: RegistrationDataRequest[AnyContent], messagesApi: MessagesApi): HtmlFormat.Appendable = {
     removeView(messagesPrefix, form, index, draftId, content(index), formRoute(draftId, index))
   }
 

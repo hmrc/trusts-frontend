@@ -21,7 +21,7 @@ import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import pages.QuestionPage
 import pages.register.beneficiaries.ClassBeneficiaryDescriptionPage
 import play.api.i18n.{Messages, MessagesApi}
@@ -59,7 +59,7 @@ class RemoveClassOfBeneficiaryController @Inject()(
 
   override def removeQuery(index: Int): Settable[_] = RemoveClassOfBeneficiaryQuery(index)
 
-  override def content(index: Int)(implicit request: DataRequest[AnyContent]) : String =
+  override def content(index: Int)(implicit request: RegistrationDataRequest[AnyContent]) : String =
     request.userAnswers.get(page(index)).map(_.toString).getOrElse(Messages(s"$messagesPrefix.default"))
 
 }

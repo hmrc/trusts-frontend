@@ -16,9 +16,8 @@
 
 package controllers.actions
 
-import controllers.actions.playback.PlaybackIdentifierAction
+import controllers.actions.playback.{PlaybackDataRequest, PlaybackIdentifierAction}
 import javax.inject.Inject
-import models.requests.DataRequest
 import play.api.mvc.Result
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -27,6 +26,6 @@ class FakePlaybackIdentifierAction @Inject()(
                                   implicit val executionContext: ExecutionContext
                                   ) extends PlaybackIdentifierAction {
 
-  override def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] = Future.successful(Right(request))
+  override def refine[A](request: PlaybackDataRequest[A]): Future[Either[Result, PlaybackDataRequest[A]]] = Future.successful(Right(request))
 
 }

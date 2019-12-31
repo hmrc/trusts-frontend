@@ -16,7 +16,7 @@
 
 package controllers.register.agents
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import models.core.UserAnswers
 import models.core.pages.{InternationalAddress, UKAddress}
 import navigation.Navigator
@@ -32,7 +32,7 @@ import controllers.register.routes._
 import pages.register.agents.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentNamePage, AgentTelephoneNumberPage, AgentUKAddressPage}
 
 
-class AgentAnswerControllerSpec extends SpecBase {
+class AgentAnswerControllerSpec extends RegistrationSpecBase {
 
   val agentID: AffinityGroup.Agent.type = AffinityGroup.Agent
 

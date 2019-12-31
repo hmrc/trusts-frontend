@@ -16,7 +16,7 @@
 
 package controllers.actions
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.register.routes._
 import models.requests.IdentifierRequest
 import org.scalatest.EitherValues
@@ -29,7 +29,7 @@ import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-  class RequiredAffinityGroupActionSpec extends SpecBase with MockitoSugar with ScalaFutures with EitherValues {
+  class RequiredAffinityGroupActionSpec extends RegistrationSpecBase with MockitoSugar with ScalaFutures with EitherValues {
 
     class Harness[T]()
       extends RequiredAgentAffinityGroupAction() {

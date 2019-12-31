@@ -18,7 +18,7 @@ package controllers.register.beneficiaries
 
 import java.time.{LocalDate, ZoneOffset}
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import models.core.pages.{FullName, UKAddress}
 import pages.register.beneficiaries.individual.{IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryAddressUKYesNoPage, IndividualBeneficiaryAddressYesNoPage, IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryIncomePage, IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage, IndividualBeneficiaryNationalInsuranceYesNoPage, IndividualBeneficiaryVulnerableYesNoPage}
 import play.api.test.FakeRequest
@@ -28,7 +28,7 @@ import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.register.beneficiaries.IndividualBenficiaryAnswersView
 
-class IndividualBeneficiaryAnswersControllerSpec extends SpecBase {
+class IndividualBeneficiaryAnswersControllerSpec extends RegistrationSpecBase {
 
   val index = 0
 

@@ -16,7 +16,7 @@
 
 package controllers.register.asset.shares
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.IndexValidation
 import forms.YesNoFormProvider
 import generators.ModelGenerators
@@ -28,7 +28,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.register.asset.shares.SharePortfolioOnStockExchangeView
 
-class SharePortfolioOnStockExchangeControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
+class SharePortfolioOnStockExchangeControllerSpec extends RegistrationSpecBase with ModelGenerators with IndexValidation {
 
   val form = new YesNoFormProvider().withPrefix("sharePortfolioOnStockExchange")
   val index: Int = 0

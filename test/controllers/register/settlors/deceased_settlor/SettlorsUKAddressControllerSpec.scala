@@ -16,7 +16,7 @@
 
 package controllers.register.settlors.deceased_settlor
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.UKAddressFormProvider
 import models.NormalMode
 import models.core.pages.{FullName, UKAddress}
@@ -26,7 +26,7 @@ import play.api.test.Helpers._
 import views.html.register.settlors.deceased_settlor.SettlorsUKAddressView
 import controllers.register.routes._
 
-class SettlorsUKAddressControllerSpec extends SpecBase {
+class SettlorsUKAddressControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new UKAddressFormProvider()
   val form = formProvider()

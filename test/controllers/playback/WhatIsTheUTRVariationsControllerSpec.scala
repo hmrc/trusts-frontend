@@ -16,7 +16,7 @@
 
 package controllers.playback
 
-import base.SpecBase
+import base.PlaybackSpecBase
 import forms.WhatIsTheUTRFormProvider
 import pages.playback.WhatIsTheUTRVariationPage
 import play.api.test.FakeRequest
@@ -25,7 +25,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.{Enrolment, EnrolmentIdentifier, Enrolments}
 import views.html.register.WhatIsTheUTRView
 
-class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
+class WhatIsTheUTRVariationsControllerSpec extends PlaybackSpecBase {
 
   val formProvider = new WhatIsTheUTRFormProvider()
   val form = formProvider()

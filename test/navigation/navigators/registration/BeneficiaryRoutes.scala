@@ -16,7 +16,7 @@
 
 package navigation.navigators.registration
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.register.beneficiaries.routes
 import generators.Generators
 import models.NormalMode
@@ -31,7 +31,7 @@ import pages.register.beneficiaries.{AddABeneficiaryPage, AddABeneficiaryYesNoPa
 import sections.beneficiaries.{ClassOfBeneficiaries, IndividualBeneficiaries}
 
 trait BeneficiaryRoutes {
-  self: PropertyChecks with Generators with SpecBase =>
+  self: PropertyChecks with Generators with RegistrationSpecBase =>
 
   def beneficiaryRoutes()(implicit navigator: Navigator) = {
 

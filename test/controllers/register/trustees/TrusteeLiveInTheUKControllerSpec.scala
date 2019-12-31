@@ -16,7 +16,7 @@
 
 package controllers.register.trustees
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.YesNoFormProvider
 import models.NormalMode
 import models.core.pages.FullName
@@ -26,7 +26,7 @@ import play.api.test.Helpers._
 import views.html.register.trustees.TrusteeLiveInTheUKView
 import controllers.register.routes._
 
-class TrusteeLiveInTheUKControllerSpec extends SpecBase {
+class TrusteeLiveInTheUKControllerSpec extends RegistrationSpecBase {
 
   val leadTrusteeMessagePrefix = "leadTrusteeLiveInTheUK"
   val trusteeMessagePrefix = "trusteeLiveInTheUK"

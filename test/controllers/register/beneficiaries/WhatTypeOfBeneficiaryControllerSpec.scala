@@ -16,7 +16,7 @@
 
 package controllers.register.beneficiaries
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.WhatTypeOfBeneficiaryFormProvider
 import models.NormalMode
 import models.registration.pages.WhatTypeOfBeneficiary
@@ -26,7 +26,7 @@ import views.html.register.beneficiaries.WhatTypeOfBeneficiaryView
 import controllers.register.routes._
 import pages.register.beneficiaries.{ClassBeneficiaryDescriptionPage, WhatTypeOfBeneficiaryPage}
 
-class WhatTypeOfBeneficiaryControllerSpec extends SpecBase {
+class WhatTypeOfBeneficiaryControllerSpec extends RegistrationSpecBase {
 
   lazy val whatTypeOfBeneficiaryRoute = routes.WhatTypeOfBeneficiaryController.onPageLoad(fakeDraftId).url
 

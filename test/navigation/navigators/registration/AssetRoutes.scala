@@ -16,7 +16,7 @@
 
 package navigation.navigators.registration
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.register.asset.routes
 import generators.Generators
 import models.NormalMode
@@ -32,7 +32,7 @@ import pages.register.asset.shares._
 
 trait AssetRoutes {
 
-  self: PropertyChecks with Generators with SpecBase =>
+  self: PropertyChecks with Generators with RegistrationSpecBase =>
 
   def assetRoutes()(implicit navigator: Navigator) = {
 

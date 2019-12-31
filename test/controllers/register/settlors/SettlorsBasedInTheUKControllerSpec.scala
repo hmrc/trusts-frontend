@@ -16,7 +16,7 @@
 
 package controllers.register.settlors
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.SettlorsBasedInTheUKFormProvider
 import models.NormalMode
 import play.api.test.FakeRequest
@@ -25,7 +25,7 @@ import views.html.register.settlors.SettlorsBasedInTheUKView
 import controllers.register.routes._
 import pages.register.settlors.SettlorsBasedInTheUKPage
 
-class SettlorsBasedInTheUKControllerSpec extends SpecBase {
+class SettlorsBasedInTheUKControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new SettlorsBasedInTheUKFormProvider()
   val form = formProvider()

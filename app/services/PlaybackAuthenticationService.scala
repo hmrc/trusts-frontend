@@ -19,11 +19,11 @@ package services
 import com.google.inject.ImplementedBy
 import config.FrontendAppConfig
 import connector.EnrolmentStoreConnector
+import controllers.actions.playback.PlaybackDataRequest
 import controllers.playback.routes
 import handlers.ErrorHandler
 import javax.inject.Inject
 import models.EnrolmentStoreResponse.{AlreadyClaimed, NotClaimed}
-import models.requests.DataRequest
 import play.api.Logger
 import play.api.mvc.Result
 import play.api.mvc.Results._
@@ -40,13 +40,16 @@ class PlaybackAuthenticationServiceImpl @Inject()(
                                            implicit val ec: ExecutionContext
                                          ) extends PlaybackAuthenticationService {
 
-  def authenticate[A](utr: String)(implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]] =
-    request.affinityGroup match {
+  def authenticate[A](utr: String)
+                     (implicit request: PlaybackDataRequest[A],
+                      hc: HeaderCarrier): Future[Either[Result, PlaybackDataRequest[A]]] = request.affinityGroup match {
       case Agent => checkIfAgentAuthorised(utr)
       case _ => checkIfTrustIsClaimedAndTrustIV(utr)
     }
 
-  private def checkIfTrustIsClaimedAndTrustIV[A](utr: String)(implicit request: DataRequest[A], hc : HeaderCarrier): Future[Either[Result, DataRequest[A]]] = {
+  private def checkIfTrustIsClaimedAndTrustIV[A](utr: String)
+                                                (implicit request: PlaybackDataRequest[A],
+                                                 hc : HeaderCarrier): Future[Either[Result, PlaybackDataRequest[A]]] = {
 
     val userEnrolled = checkForTrustEnrolmentForUTR(utr)
 
@@ -78,7 +81,10 @@ class PlaybackAuthenticationServiceImpl @Inject()(
     }
   }
 
-  private def checkIfAgentAuthorised[A](utr: String)(implicit request: DataRequest[A], hc : HeaderCarrier): Future[Either[Result, DataRequest[A]]] =
+  private def checkIfAgentAuthorised[A](utr: String)
+                                       (implicit request: PlaybackDataRequest[A],
+                                        hc : HeaderCarrier): Future[Either[Result, PlaybackDataRequest[A]]] =
+
     enrolmentStoreConnector.checkIfAlreadyClaimed(utr) map {
       case NotClaimed =>
         Logger.info(s"[PlaybackAuthentication] trust is not claimed")
@@ -98,7 +104,7 @@ class PlaybackAuthenticationServiceImpl @Inject()(
         Left(InternalServerError(errorHandler.internalServerErrorTemplate))
     }
 
-  private def checkForTrustEnrolmentForUTR[A](utr: String)(implicit request: DataRequest[A]): Boolean =
+  private def checkForTrustEnrolmentForUTR[A](utr: String)(implicit request: PlaybackDataRequest[A]): Boolean =
     request.enrolments.enrolments
       .find(_.key equals config.serviceName)
       .flatMap(_.identifiers.find(_.key equals "SAUTR"))
@@ -108,5 +114,8 @@ class PlaybackAuthenticationServiceImpl @Inject()(
 
 @ImplementedBy(classOf[PlaybackAuthenticationServiceImpl])
 trait PlaybackAuthenticationService {
-  def authenticate[A](utr: String)(implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]]
+
+  def authenticate[A](utr: String)
+                     (implicit request: PlaybackDataRequest[A],
+                      hc: HeaderCarrier): Future[Either[Result, PlaybackDataRequest[A]]]
 }

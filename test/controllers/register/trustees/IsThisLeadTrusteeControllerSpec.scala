@@ -16,7 +16,7 @@
 
 package controllers.register.trustees
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.IndexValidation
 import forms.YesNoFormProvider
 import models.NormalMode
@@ -29,7 +29,7 @@ import play.api.test.Helpers.{route, _}
 import views.html.register.trustees.IsThisLeadTrusteeView
 import controllers.register.routes._
 
-class IsThisLeadTrusteeControllerSpec extends SpecBase with IndexValidation {
+class IsThisLeadTrusteeControllerSpec extends RegistrationSpecBase with IndexValidation {
 
   val form = new YesNoFormProvider().withPrefix("isThisLeadTrustee")
 

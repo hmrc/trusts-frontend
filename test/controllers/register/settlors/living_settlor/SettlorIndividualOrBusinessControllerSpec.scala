@@ -16,7 +16,7 @@
 
 package controllers.register.settlors.living_settlor
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.IndexValidation
 import forms.deceased_settlor.SettlorIndividualOrBusinessFormProvider
 import models.NormalMode
@@ -29,7 +29,7 @@ import play.api.test.Helpers.{route, _}
 import views.html.register.settlors.living_settlor.SettlorIndividualOrBusinessView
 import controllers.register.routes._
 
-class SettlorIndividualOrBusinessControllerSpec extends SpecBase with IndexValidation {
+class SettlorIndividualOrBusinessControllerSpec extends RegistrationSpecBase with IndexValidation {
 
   lazy val settlorIndividualOrBusinessRoute = routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
 

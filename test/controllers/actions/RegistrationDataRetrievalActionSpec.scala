@@ -16,9 +16,9 @@
 
 package controllers.actions
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.actions.register.RegistrationDataRetrievalActionImpl
-import models.requests.{IdentifierRequest, OptionalDataRequest}
+import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 import org.scalatest.concurrent.ScalaFutures
@@ -29,10 +29,10 @@ import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class RegistrationDataRetrievalActionSpec extends SpecBase with MockitoSugar with ScalaFutures {
+class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with MockitoSugar with ScalaFutures {
 
   class Harness(registrationsRepository: RegistrationsRepository) extends RegistrationDataRetrievalActionImpl(registrationsRepository) {
-    def callTransform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] = transform(request)
+    def callTransform[A](request: IdentifierRequest[A]): Future[OptionalRegistrationDataRequest[A]] = transform(request)
   }
 
   "Data Retrieval Action" when {

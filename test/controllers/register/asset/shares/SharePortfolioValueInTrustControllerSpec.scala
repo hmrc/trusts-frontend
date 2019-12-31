@@ -16,7 +16,7 @@
 
 package controllers.register.asset.shares
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.IndexValidation
 import forms.shares.SharePortfolioValueInTrustFormProvider
 import generators.ModelGenerators
@@ -28,7 +28,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.register.asset.shares.SharePortfolioValueInTrustView
 
-class SharePortfolioValueInTrustControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
+class SharePortfolioValueInTrustControllerSpec extends RegistrationSpecBase with ModelGenerators with IndexValidation {
 
   val formProvider = new SharePortfolioValueInTrustFormProvider()
   val form = formProvider()

@@ -20,7 +20,7 @@ import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.WhatTypeOfBeneficiaryFormProvider
 import javax.inject.Inject
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import models.{Enumerable, Mode}
 import navigation.Navigator
 import pages.register.beneficiaries.WhatTypeOfBeneficiaryPage
@@ -73,7 +73,7 @@ class WhatTypeOfBeneficiaryController @Inject()(
       )
   }
 
-  private def isAnyBeneficiaryAdded(request: DataRequest[AnyContent]) = {
+  private def isAnyBeneficiaryAdded(request: RegistrationDataRequest[AnyContent]) = {
    request.userAnswers.get(IndividualBeneficiaries).
      getOrElse(List.empty).nonEmpty  ||
      request.userAnswers.get(ClassOfBeneficiaries).getOrElse(List.empty).nonEmpty

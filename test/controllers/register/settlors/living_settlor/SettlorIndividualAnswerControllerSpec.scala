@@ -18,7 +18,7 @@ package controllers.register.settlors.living_settlor
 
 import java.time.{LocalDate, ZoneOffset}
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import models.NormalMode
 import models.core.UserAnswers
 import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
@@ -37,7 +37,7 @@ import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
 
 import scala.concurrent.Future
 
-class SettlorIndividualAnswerControllerSpec extends SpecBase {
+class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 

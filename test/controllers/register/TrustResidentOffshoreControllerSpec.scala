@@ -16,7 +16,7 @@
 
 package controllers.register
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.YesNoFormProvider
 import models.NormalMode
 import org.scalatest.mockito.MockitoSugar
@@ -25,7 +25,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.TrustResidentOffshoreView
 
-class TrustResidentOffshoreControllerSpec extends SpecBase with MockitoSugar {
+class TrustResidentOffshoreControllerSpec extends RegistrationSpecBase with MockitoSugar {
 
   val formProvider = new YesNoFormProvider()
   val form = formProvider.withPrefix("trustResidentOffshore")

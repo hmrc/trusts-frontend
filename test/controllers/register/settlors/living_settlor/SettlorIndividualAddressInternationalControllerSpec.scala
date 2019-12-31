@@ -16,7 +16,7 @@
 
 package controllers.register.settlors.living_settlor
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.IndexValidation
 import forms.InternationalAddressFormProvider
 import models.NormalMode
@@ -36,7 +36,7 @@ import controllers.register.routes._
 
 import scala.concurrent.Future
 
-class SettlorIndividualAddressInternationalControllerSpec extends SpecBase with IndexValidation {
+class SettlorIndividualAddressInternationalControllerSpec extends RegistrationSpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 

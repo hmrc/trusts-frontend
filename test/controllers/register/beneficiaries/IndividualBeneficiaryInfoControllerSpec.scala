@@ -16,12 +16,12 @@
 
 package controllers.register.beneficiaries
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.beneficiaries.IndividualBeneficiaryInfoView
 
-class IndividualBeneficiaryInfoControllerSpec extends SpecBase {
+class IndividualBeneficiaryInfoControllerSpec extends RegistrationSpecBase {
 
   "IndividualBeneficiaryInfo Controller" must {
 

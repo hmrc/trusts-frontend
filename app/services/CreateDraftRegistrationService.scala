@@ -21,7 +21,7 @@ import java.util.UUID
 import akka.stream.Materializer
 import javax.inject.Inject
 import models.core.UserAnswers
-import models.requests.{IdentifierRequest, OptionalDataRequest}
+import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
@@ -33,7 +33,7 @@ class CreateDraftRegistrationService @Inject()(
                                                 auditConnector: AuditConnector
                                               )(implicit ec: ExecutionContext, m: Materializer) {
 
-  private def build[A](request: OptionalDataRequest[A])(implicit hc : HeaderCarrier) : Future[String] = {
+  private def build[A](request: OptionalRegistrationDataRequest[A])(implicit hc : HeaderCarrier) : Future[String] = {
     val draftId = UUID.randomUUID().toString
     val userAnswers = UserAnswers(draftId = draftId, internalAuthId = request.internalId)
 
@@ -44,11 +44,11 @@ class CreateDraftRegistrationService @Inject()(
   }
 
   def create[A](request: IdentifierRequest[A])(implicit hc : HeaderCarrier) : Future[String] = {
-    val transformed = OptionalDataRequest(request.request, request.identifier, None, request.affinityGroup, request.enrolments, request.agentARN)
+    val transformed = OptionalRegistrationDataRequest(request.request, request.identifier, None, request.affinityGroup, request.enrolments, request.agentARN)
     build(transformed)
   }
 
-  def create[A](request : OptionalDataRequest[A])(implicit hc : HeaderCarrier) : Future[String] =
+  def create[A](request : OptionalRegistrationDataRequest[A])(implicit hc : HeaderCarrier) : Future[String] =
     build(request)
 
 }

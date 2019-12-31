@@ -16,7 +16,7 @@
 
 package controllers.register.asset.property_or_land
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import models.NormalMode
 import models.core.pages.{InternationalAddress, UKAddress}
 import models.registration.pages.Status.Completed
@@ -33,7 +33,7 @@ import views.html.register.asset.property_or_land.PropertyOrLandAnswersView
 import controllers.register.routes._
 import pages.register.asset.WhatKindOfAssetPage
 
-class PropertyOrLandAnswerControllerSpec extends SpecBase {
+class PropertyOrLandAnswerControllerSpec extends RegistrationSpecBase {
 
   def onwardRoute = Call("GET", "/foo")
 

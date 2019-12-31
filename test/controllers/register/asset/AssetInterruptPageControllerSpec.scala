@@ -16,13 +16,13 @@
 
 package controllers.register.asset
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import models.NormalMode
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.asset.AssetInterruptPageView
 
-class AssetInterruptPageControllerSpec extends SpecBase {
+class AssetInterruptPageControllerSpec extends RegistrationSpecBase {
 
   "AssetInterruptPage Controller" must {
 

@@ -16,7 +16,7 @@
 
 package controllers.register.agents
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.test.FakeRequest
@@ -26,7 +26,7 @@ import views.html.register.agents.AgentAddressYesNoView
 import controllers.register.routes._
 import pages.register.agents.{AgentAddressYesNoPage, AgentNamePage}
 
-class AgentAddressYesNoControllerSpec extends SpecBase {
+class AgentAddressYesNoControllerSpec extends RegistrationSpecBase {
 
   val form = new YesNoFormProvider().withPrefix("agentAddressYesNo")
   val name = "name"

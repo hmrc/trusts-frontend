@@ -18,7 +18,7 @@ package navigation.navigators.registration
 
 import java.time.LocalDate
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.register.routes
 import generators.Generators
 import models.NormalMode
@@ -35,7 +35,7 @@ import pages.register.trustees.TrusteesBasedInTheUKPage
 
 trait TrustDetailsRoutes {
 
-  self: PropertyChecks with Generators with SpecBase =>
+  self: PropertyChecks with Generators with RegistrationSpecBase =>
 
   def trustDetailsRoutes()(implicit navigator : Navigator) = {
 

@@ -16,7 +16,7 @@
 
 package controllers.register.beneficiaries
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.IndividualBeneficiaryIncomeFormProvider
 import models.NormalMode
 import models.core.pages.FullName
@@ -26,7 +26,7 @@ import views.html.register.beneficiaries.IndividualBeneficiaryIncomeView
 import controllers.register.routes._
 import pages.register.beneficiaries.individual.{IndividualBeneficiaryIncomePage, IndividualBeneficiaryNamePage}
 
-class IndividualBeneficiaryIncomeControllerSpec extends SpecBase {
+class IndividualBeneficiaryIncomeControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new IndividualBeneficiaryIncomeFormProvider()
   val form = formProvider()

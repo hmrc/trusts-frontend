@@ -16,7 +16,7 @@
 
 package controllers.register
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.WhatIsTheUTRFormProvider
 import models.NormalMode
 import pages.register.WhatIsTheUTRPage
@@ -24,7 +24,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.WhatIsTheUTRView
 
-class WhatIsTheUTRControllerSpec extends SpecBase {
+class WhatIsTheUTRControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new WhatIsTheUTRFormProvider()
   val form = formProvider()

@@ -16,14 +16,14 @@
 
 package utils
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import models.core.pages.{FullName, IndividualOrBusiness}
 import models.registration.pages.Status.Completed
 import pages.entitystatus.TrusteeStatus
 import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage, TrusteesNamePage}
 import viewmodels.AddRow
 
-class AddATrusteeViewHelperSpec extends SpecBase {
+class AddATrusteeViewHelperSpec extends RegistrationSpecBase {
 
   val userAnswersWithTrusteesComplete = emptyUserAnswers
     .set(IsThisLeadTrusteePage(0), true).success.value

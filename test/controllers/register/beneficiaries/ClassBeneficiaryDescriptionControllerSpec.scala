@@ -16,7 +16,7 @@
 
 package controllers.register.beneficiaries
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.ClassBeneficiaryDescriptionFormProvider
 import models.NormalMode
 import play.api.test.FakeRequest
@@ -25,7 +25,7 @@ import views.html.register.beneficiaries.ClassBeneficiaryDescriptionView
 import controllers.register.routes._
 import pages.register.beneficiaries.ClassBeneficiaryDescriptionPage
 
-class ClassBeneficiaryDescriptionControllerSpec extends SpecBase {
+class ClassBeneficiaryDescriptionControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new ClassBeneficiaryDescriptionFormProvider()
   val form = formProvider()

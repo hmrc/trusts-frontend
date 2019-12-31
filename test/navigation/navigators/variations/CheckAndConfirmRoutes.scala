@@ -16,7 +16,7 @@
 
 package navigation.navigators.variations
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.register.routes
 import generators.Generators
 import models.NormalMode
@@ -29,7 +29,7 @@ import pages.playback.DeclarationWhatNextPage
 
 trait CheckAndConfirmRoutes {
 
-  self: PropertyChecks with Generators with SpecBase =>
+  self: PropertyChecks with Generators with RegistrationSpecBase =>
 
   def checkAndConfirmRoutes()(implicit navigator: Navigator) = {
 

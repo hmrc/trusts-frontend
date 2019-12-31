@@ -16,7 +16,7 @@
 
 package controllers.register.asset.property_or_land
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.IndexValidation
 import forms.UKAddressFormProvider
 import generators.ModelGenerators
@@ -30,7 +30,7 @@ import play.api.test.Helpers.{route, _}
 import views.html.register.asset.property_or_land.PropertyOrLandUKAddressView
 import controllers.register.routes._
 
-class PropertyOrLandUKAddressControllerSpec extends SpecBase with ModelGenerators with IndexValidation {
+class PropertyOrLandUKAddressControllerSpec extends RegistrationSpecBase with ModelGenerators with IndexValidation {
 
   val formProvider = new UKAddressFormProvider()
   val form = formProvider()

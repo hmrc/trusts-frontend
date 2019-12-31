@@ -18,7 +18,7 @@ package controllers.register.agents
 
 import java.time.LocalDateTime
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import models.NormalMode
 import models.core.UserAnswers
 import org.mockito.Matchers.any
@@ -33,7 +33,7 @@ import pages.register.agents.AgentTelephoneNumberPage
 
 import scala.concurrent.Future
 
-class AgentOverviewControllerSpec extends SpecBase {
+class AgentOverviewControllerSpec extends RegistrationSpecBase {
 
   lazy val agentOverviewRoute: String = routes.AgentOverviewController.onSubmit().url
 

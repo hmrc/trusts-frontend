@@ -19,7 +19,7 @@ package config
 import com.google.inject.AbstractModule
 import connector.OtacAuthConnectorImpl
 import controllers.actions._
-import controllers.actions.playback.{PlaybackIdentifierAction, PlaybackIdentifierActionImpl}
+import controllers.actions.playback._
 import controllers.actions.register._
 import navigation.Navigator
 import navigation.registration.{LivingSettlorNavigator, PropertyOrLandNavigator}
@@ -35,9 +35,12 @@ class Module extends AbstractModule {
 
     bind(classOf[RegistrationDataRetrievalAction]).to(classOf[RegistrationDataRetrievalActionImpl]).asEagerSingleton()
     bind(classOf[RegistrationDataRequiredAction]).to(classOf[RegistrationDataRequiredActionImpl]).asEagerSingleton()
-    bind(classOf[PlaybackIdentifierAction]).to(classOf[PlaybackIdentifierActionImpl]).asEagerSingleton()
     bind(classOf[DraftIdRetrievalActionProvider]).to(classOf[DraftIdDataRetrievalActionProviderImpl]).asEagerSingleton()
     bind(classOf[RequireDraftRegistrationActionRefiner]).to(classOf[RequireDraftRegistrationActionRefinerImpl]).asEagerSingleton()
+
+    bind(classOf[PlaybackIdentifierAction]).to(classOf[PlaybackIdentifierActionImpl]).asEagerSingleton()
+    bind(classOf[PlaybackDataRequiredAction]).to(classOf[PlaybackDataRequiredActionImpl]).asEagerSingleton()
+    bind(classOf[PlaybackDataRetrievalAction]).to(classOf[PlaybackDataRetrievalActionImpl]).asEagerSingleton()
 
     bind(classOf[TaskListCompleteActionRefiner]).to(classOf[TaskListCompleteActionRefinerImpl]).asEagerSingleton()
 
