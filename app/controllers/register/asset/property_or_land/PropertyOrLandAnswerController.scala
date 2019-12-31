@@ -43,7 +43,7 @@ class PropertyOrLandAnswerController @Inject()(
                                                 @PropertyOrLand navigator: Navigator,
                                                 identify: RegistrationIdentifierAction,
                                                 getData: DraftIdRetrievalActionProvider,
-                                                requireData: DataRequiredAction,
+                                                requireData: RegistrationDataRequiredAction,
                                                 requiredAnswer: RequiredAnswerActionProvider,
                                                 validateIndex: IndexActionFilterProvider,
                                                 view: PropertyOrLandAnswersView,

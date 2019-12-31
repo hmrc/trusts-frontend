@@ -38,7 +38,7 @@ class SettlorsBasedInTheUKController @Inject()(
                                                 navigator: Navigator,
                                                 identify: RegistrationIdentifierAction,
                                                 getData: DraftIdRetrievalActionProvider,
-                                                requireData: DataRequiredAction,
+                                                requireData: RegistrationDataRequiredAction,
                                                 formProvider: SettlorsBasedInTheUKFormProvider,
                                                 val controllerComponents: MessagesControllerComponents,
                                                 view: SettlorsBasedInTheUKView

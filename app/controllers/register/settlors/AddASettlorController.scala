@@ -42,7 +42,7 @@ class AddASettlorController @Inject()(
                                        @LivingSettlor navigator: Navigator,
                                        identify: RegistrationIdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
-                                       requireData: DataRequiredAction,
+                                       requireData: RegistrationDataRequiredAction,
                                        yesNoFormProvider: YesNoFormProvider,
                                        addAnotherFormProvider: AddASettlorFormProvider,
                                        val controllerComponents: MessagesControllerComponents,

@@ -35,7 +35,7 @@ class InformationMaintainingThisTrustController @Inject()(
                                                            registrationsRepository: RegistrationsRepository,
                                                            identify: RegistrationIdentifierAction,
                                                            getData: DataRetrievalAction,
-                                                           requireData: DataRequiredAction,
+                                                           requireData: RegistrationDataRequiredAction,
                                                            playbackAction: PlaybackIdentifierAction,
                                                            val controllerComponents: MessagesControllerComponents,
                                                            maintainingTrustView: InformationMaintainingThisTrustView,

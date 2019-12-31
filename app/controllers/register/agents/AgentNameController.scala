@@ -39,7 +39,7 @@ class AgentNameController @Inject()(
                                      identify: RegistrationIdentifierAction,
                                      hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                      getData: DraftIdRetrievalActionProvider,
-                                     requireData: DataRequiredAction,
+                                     requireData: RegistrationDataRequiredAction,
                                      formProvider: AgentNameFormProvider,
                                      val controllerComponents: MessagesControllerComponents,
                                      view: AgentNameView

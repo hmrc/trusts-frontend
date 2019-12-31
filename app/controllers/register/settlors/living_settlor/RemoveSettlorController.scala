@@ -44,7 +44,7 @@ class RemoveSettlorController @Inject()(
                                          identify: RegistrationIdentifierAction,
                                          validateIndex : IndexActionFilterProvider,
                                          getData: DraftIdRetrievalActionProvider,
-                                         requireData: DataRequiredAction,
+                                         requireData: RegistrationDataRequiredAction,
                                          override val formProvider: RemoveIndexFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          override val removeView: RemoveIndexView

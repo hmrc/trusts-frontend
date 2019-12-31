@@ -38,7 +38,7 @@ class SettlorDateOfDeathController @Inject()(
                                               navigator: Navigator,
                                               identify: RegistrationIdentifierAction,
                                               getData: DraftIdRetrievalActionProvider,
-                                              requireData: DataRequiredAction,
+                                              requireData: RegistrationDataRequiredAction,
                                               formProvider: SettlorDateOfDeathFormProvider,
                                               requiredAnswer: RequiredAnswerActionProvider,
                                               val controllerComponents: MessagesControllerComponents,

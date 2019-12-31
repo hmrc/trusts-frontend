@@ -37,7 +37,7 @@ class AgentOverviewController @Inject()(
                                          registrationsRepository: RegistrationsRepository,
                                          config: FrontendAppConfig,
                                          getData: DraftIdRetrievalActionProvider,
-                                         requireData: DataRequiredAction,
+                                         requireData: RegistrationDataRequiredAction,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: AgentOverviewView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {

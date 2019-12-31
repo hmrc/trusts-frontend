@@ -39,7 +39,7 @@ class CountryAdministeringTrustController @Inject()(
                                                      navigator: Navigator,
                                                      identify: RegistrationIdentifierAction,
                                                      getData: DraftIdRetrievalActionProvider,
-                                                     requireData: DataRequiredAction,
+                                                     requireData: RegistrationDataRequiredAction,
                                                      formProvider: CountryAdministeringTrustFormProvider,
                                                      val controllerComponents: MessagesControllerComponents,
                                                      view: CountryAdministeringTrustView,

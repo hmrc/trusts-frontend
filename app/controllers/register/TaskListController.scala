@@ -43,7 +43,7 @@ class TaskListController @Inject()(
                                     override val messagesApi: MessagesApi,
                                     identify: RegistrationIdentifierAction,
                                     getData: DraftIdRetrievalActionProvider,
-                                    requireData: DataRequiredAction,
+                                    requireData: RegistrationDataRequiredAction,
                                     requiredAnswer: RequiredAnswerActionProvider,
                                     val controllerComponents: MessagesControllerComponents,
                                     view: TaskListView,

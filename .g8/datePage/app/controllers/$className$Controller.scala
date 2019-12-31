@@ -22,7 +22,7 @@ class $className$Controller @Inject()(
                                        navigator: Navigator,
                                        identify: RegistrationIdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
-                                       requireData: DataRequiredAction,
+                                       requireData: RegistrationDataRequiredAction,
                                        formProvider: $className$FormProvider,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: $className$View

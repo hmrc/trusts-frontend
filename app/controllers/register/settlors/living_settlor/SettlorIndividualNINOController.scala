@@ -42,7 +42,7 @@ class SettlorIndividualNINOController @Inject()(
                                                  identify: RegistrationIdentifierAction,
                                                  getData: DraftIdRetrievalActionProvider,
                                                  validateIndex: IndexActionFilterProvider,
-                                                 requireData: DataRequiredAction,
+                                                 requireData: RegistrationDataRequiredAction,
                                                  requiredAnswer: RequiredAnswerActionProvider,
                                                  formProvider: NinoFormProvider,
                                                  val controllerComponents: MessagesControllerComponents,

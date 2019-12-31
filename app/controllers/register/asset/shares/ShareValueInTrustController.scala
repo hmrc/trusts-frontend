@@ -39,7 +39,7 @@ class ShareValueInTrustController @Inject()(
                                              navigator: Navigator,
                                              identify: RegistrationIdentifierAction,
                                              getData: DraftIdRetrievalActionProvider,
-                                             requireData: DataRequiredAction,
+                                             requireData: RegistrationDataRequiredAction,
                                              formProvider: ShareValueInTrustFormProvider,
                                              val controllerComponents: MessagesControllerComponents,
                                              view: ShareValueInTrustView,

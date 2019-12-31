@@ -38,7 +38,7 @@ class WhatIsTheUTRVariationsController @Inject()(
                                                   registrationsRepository: RegistrationsRepository,
                                                   identify: RegistrationIdentifierAction,
                                                   getData: DataRetrievalAction,
-                                                  requireData: DataRequiredAction,
+                                                  requireData: RegistrationDataRequiredAction,
                                                   formProvider: WhatIsTheUTRFormProvider,
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: WhatIsTheUTRView,

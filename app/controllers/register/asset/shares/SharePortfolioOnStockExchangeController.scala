@@ -39,7 +39,7 @@ class SharePortfolioOnStockExchangeController @Inject()(
                                                          navigator: Navigator,
                                                          identify: RegistrationIdentifierAction,
                                                          getData: DraftIdRetrievalActionProvider,
-                                                         requireData: DataRequiredAction,
+                                                         requireData: RegistrationDataRequiredAction,
                                                          validateIndex: IndexActionFilterProvider,
                                                          yesNoFormProvider: YesNoFormProvider,
                                                          val controllerComponents: MessagesControllerComponents,

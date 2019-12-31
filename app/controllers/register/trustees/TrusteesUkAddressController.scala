@@ -42,7 +42,7 @@ class TrusteesUkAddressController @Inject()(
                                              validateIndex: IndexActionFilterProvider,
                                              identify: RegistrationIdentifierAction,
                                              getData: DraftIdRetrievalActionProvider,
-                                             requireData: DataRequiredAction,
+                                             requireData: RegistrationDataRequiredAction,
                                              requiredAnswer: RequiredAnswerActionProvider,
                                              formProvider: UKAddressFormProvider,
                                              val controllerComponents: MessagesControllerComponents,

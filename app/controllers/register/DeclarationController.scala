@@ -48,7 +48,7 @@ class DeclarationController @Inject()(
                                        navigator: Navigator,
                                        identify: RegistrationIdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
-                                       requireData: DataRequiredAction,
+                                       requireData: RegistrationDataRequiredAction,
                                        formProvider: DeclarationFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: DeclarationView,

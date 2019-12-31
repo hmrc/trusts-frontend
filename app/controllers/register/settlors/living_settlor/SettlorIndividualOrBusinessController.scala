@@ -42,7 +42,7 @@ class SettlorIndividualOrBusinessController @Inject()(
                                                        identify: RegistrationIdentifierAction,
                                                        getData: DraftIdRetrievalActionProvider,
                                                        validateIndex: IndexActionFilterProvider,
-                                                       requireData: DataRequiredAction,
+                                                       requireData: RegistrationDataRequiredAction,
                                                        formProvider: SettlorIndividualOrBusinessFormProvider,
                                                        val controllerComponents: MessagesControllerComponents,
                                                        view: SettlorIndividualOrBusinessView

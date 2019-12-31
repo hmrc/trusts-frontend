@@ -42,7 +42,7 @@ class TelephoneNumberController @Inject()(
                                            validateIndex: IndexActionFilterProvider,
                                            identify: RegistrationIdentifierAction,
                                            getData: DraftIdRetrievalActionProvider,
-                                           requireData: DataRequiredAction,
+                                           requireData: RegistrationDataRequiredAction,
                                            requiredAnswer: RequiredAnswerActionProvider,
                                            formProvider: TelephoneNumberFormProvider,
                                            val controllerComponents: MessagesControllerComponents,

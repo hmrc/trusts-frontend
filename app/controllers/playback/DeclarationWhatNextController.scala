@@ -40,7 +40,7 @@ class DeclarationWhatNextController @Inject()(
                                                identify: RegistrationIdentifierAction,
                                                playbackAction: PlaybackIdentifierAction,
                                                getData: DataRetrievalAction,
-                                               requireData: DataRequiredAction,
+                                               requireData: RegistrationDataRequiredAction,
                                                formProvider: DeclarationWhatNextFormProvider,
                                                val controllerComponents: MessagesControllerComponents,
                                                view: DeclarationWhatNextView

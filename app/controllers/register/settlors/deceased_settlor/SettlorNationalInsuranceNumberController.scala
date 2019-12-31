@@ -38,7 +38,7 @@ class SettlorNationalInsuranceNumberController @Inject()(
                                                           navigator: Navigator,
                                                           identify: RegistrationIdentifierAction,
                                                           getData: DraftIdRetrievalActionProvider,
-                                                          requireData: DataRequiredAction,
+                                                          requireData: RegistrationDataRequiredAction,
                                                           requiredAnswer: RequiredAnswerActionProvider,
                                                           formProvider: SettlorNationalInsuranceNumberFormProvider,
                                                           val controllerComponents: MessagesControllerComponents,

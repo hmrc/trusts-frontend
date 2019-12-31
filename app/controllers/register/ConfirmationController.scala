@@ -40,7 +40,7 @@ class ConfirmationController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         identify: RegistrationIdentifierAction,
                                         getData: DraftIdRetrievalActionProvider,
-                                        requireData: DataRequiredAction,
+                                        requireData: RegistrationDataRequiredAction,
                                         config: FrontendAppConfig,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: ConfirmationView,

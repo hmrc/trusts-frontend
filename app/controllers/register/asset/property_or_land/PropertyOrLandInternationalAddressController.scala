@@ -41,7 +41,7 @@ class PropertyOrLandInternationalAddressController @Inject()(
                                                               @PropertyOrLand navigator: Navigator,
                                                               identify: RegistrationIdentifierAction,
                                                               getData: DraftIdRetrievalActionProvider,
-                                                              requireData: DataRequiredAction,
+                                                              requireData: RegistrationDataRequiredAction,
                                                               validateIndex: IndexActionFilterProvider,
                                                               formProvider: InternationalAddressFormProvider,
                                                               val controllerComponents: MessagesControllerComponents,

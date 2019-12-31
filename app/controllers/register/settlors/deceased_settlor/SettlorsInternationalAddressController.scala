@@ -39,7 +39,7 @@ class SettlorsInternationalAddressController @Inject()(
                                                         navigator: Navigator,
                                                         identify: RegistrationIdentifierAction,
                                                         getData: DraftIdRetrievalActionProvider,
-                                                        requireData: DataRequiredAction,
+                                                        requireData: RegistrationDataRequiredAction,
                                                         formProvider: InternationalAddressFormProvider,
                                                         requiredAnswer: RequiredAnswerActionProvider,
                                                         val controllerComponents: MessagesControllerComponents,

@@ -39,7 +39,7 @@ class AddABeneficiaryController @Inject()(
                                            navigator: Navigator,
                                            identify: RegistrationIdentifierAction,
                                            getData: DraftIdRetrievalActionProvider,
-                                           requireData: DataRequiredAction,
+                                           requireData: RegistrationDataRequiredAction,
                                            addAnotherFormProvider: AddABeneficiaryFormProvider,
                                            yesNoFormProvider: YesNoFormProvider,
                                            val controllerComponents: MessagesControllerComponents,

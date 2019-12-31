@@ -40,7 +40,7 @@ class TrusteesNameController @Inject()(
                                         navigator: Navigator,
                                         identify: RegistrationIdentifierAction,
                                         getData: DraftIdRetrievalActionProvider,
-                                        requireData: DataRequiredAction,
+                                        requireData: RegistrationDataRequiredAction,
                                         validateIndex: IndexActionFilterProvider,
                                         formProvider: TrusteesNameFormProvider,
                                         requiredAnswer: RequiredAnswerActionProvider,

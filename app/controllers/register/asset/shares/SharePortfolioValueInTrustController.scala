@@ -39,7 +39,7 @@ class SharePortfolioValueInTrustController @Inject()(
                                                       navigator: Navigator,
                                                       identify: RegistrationIdentifierAction,
                                                       getData: DraftIdRetrievalActionProvider,
-                                                      requireData: DataRequiredAction,
+                                                      requireData: RegistrationDataRequiredAction,
                                                       formProvider: SharePortfolioValueInTrustFormProvider,
                                                       val controllerComponents: MessagesControllerComponents,
                                                       view: SharePortfolioValueInTrustView,

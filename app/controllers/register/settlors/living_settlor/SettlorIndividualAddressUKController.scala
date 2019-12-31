@@ -42,7 +42,7 @@ class SettlorIndividualAddressUKController @Inject()(
                                                       identify: RegistrationIdentifierAction,
                                                       getData: DraftIdRetrievalActionProvider,
                                                       validateIndex: IndexActionFilterProvider,
-                                                      requireData: DataRequiredAction,
+                                                      requireData: RegistrationDataRequiredAction,
                                                       requiredAnswer: RequiredAnswerActionProvider,
                                                       formProvider: UKAddressFormProvider,
                                                       val controllerComponents: MessagesControllerComponents,

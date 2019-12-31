@@ -38,7 +38,7 @@ class IndividualBeneficiaryDateOfBirthController @Inject()(
                                                             navigator: Navigator,
                                                             identify: RegistrationIdentifierAction,
                                                             getData: DraftIdRetrievalActionProvider,
-                                                            requireData: DataRequiredAction,
+                                                            requireData: RegistrationDataRequiredAction,
                                                             requiredAnswer: RequiredAnswerActionProvider,
                                                             formProvider: IndividualBeneficiaryDateOfBirthFormProvider,
                                                             val controllerComponents: MessagesControllerComponents,

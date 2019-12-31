@@ -38,7 +38,7 @@ class AgentAnswerController @Inject()(
                                        navigator: Navigator,
                                        hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                        getData: DraftIdRetrievalActionProvider,
-                                       requireData: DataRequiredAction,
+                                       requireData: RegistrationDataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: AgentAnswerView, countryOptions : CountryOptions
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {

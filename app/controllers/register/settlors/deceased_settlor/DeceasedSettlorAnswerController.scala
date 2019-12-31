@@ -41,7 +41,7 @@ class DeceasedSettlorAnswerController @Inject()(
                                                  identify: RegistrationIdentifierAction,
                                                  getData: DraftIdRetrievalActionProvider,
                                                  navigator: Navigator,
-                                                 requireData: DataRequiredAction,
+                                                 requireData: RegistrationDataRequiredAction,
                                                  requiredAnswer: RequiredAnswerActionProvider,
                                                  val controllerComponents: MessagesControllerComponents,
                                                  view: DeceasedSettlorAnswerView,

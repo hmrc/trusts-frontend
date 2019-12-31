@@ -38,7 +38,7 @@ class IndividualBeneficiaryNationalInsuranceYesNoController @Inject()(
                                                                        navigator: Navigator,
                                                                        identify: RegistrationIdentifierAction,
                                                                        getData: DraftIdRetrievalActionProvider,
-                                                                       requireData: DataRequiredAction,
+                                                                       requireData: RegistrationDataRequiredAction,
                                                                        requiredAnswer: RequiredAnswerActionProvider,
                                                                        formProvider: YesNoFormProvider,
                                                                        val controllerComponents: MessagesControllerComponents,

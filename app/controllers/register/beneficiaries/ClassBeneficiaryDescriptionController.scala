@@ -40,7 +40,7 @@ class ClassBeneficiaryDescriptionController @Inject()(
                                                        navigator: Navigator,
                                                        identify: RegistrationIdentifierAction,
                                                        getData: DraftIdRetrievalActionProvider,
-                                                       requireData: DataRequiredAction,
+                                                       requireData: RegistrationDataRequiredAction,
                                                        formProvider: ClassBeneficiaryDescriptionFormProvider,
                                                        val controllerComponents: MessagesControllerComponents,
                                                        view: ClassBeneficiaryDescriptionView

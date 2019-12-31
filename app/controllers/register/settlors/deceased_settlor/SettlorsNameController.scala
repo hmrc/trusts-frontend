@@ -54,7 +54,7 @@ class SettlorsNameController @Inject()(
                                         navigator: Navigator,
                                         identify: RegistrationIdentifierAction,
                                         getData: DraftIdRetrievalActionProvider,
-                                        requireData: DataRequiredAction,
+                                        requireData: RegistrationDataRequiredAction,
                                         formProvider: SettlorsNameFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: SettlorsNameView

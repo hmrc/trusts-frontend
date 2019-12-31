@@ -43,7 +43,7 @@ class TrusteesAnswerPageController @Inject()(
                                               identify: RegistrationIdentifierAction,
                                               navigator: Navigator,
                                               getData: DraftIdRetrievalActionProvider,
-                                              requireData: DataRequiredAction,
+                                              requireData: RegistrationDataRequiredAction,
                                               requiredAnswer: RequiredAnswerActionProvider,
                                               validateIndex : IndexActionFilterProvider,
                                               val controllerComponents: MessagesControllerComponents,

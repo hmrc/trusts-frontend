@@ -38,7 +38,7 @@ class TrusteesBasedInTheUKController @Inject()(
                                                 navigator: Navigator,
                                                 identify: RegistrationIdentifierAction,
                                                 getData: DraftIdRetrievalActionProvider,
-                                                requireData: DataRequiredAction,
+                                                requireData: RegistrationDataRequiredAction,
                                                 formProvider: TrusteesBasedInTheUKFormProvider,
                                                 val controllerComponents: MessagesControllerComponents,
                                                 view: TrusteesBasedInTheUKView

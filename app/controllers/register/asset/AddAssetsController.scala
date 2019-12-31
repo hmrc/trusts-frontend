@@ -40,7 +40,7 @@ class AddAssetsController @Inject()(
                                      navigator: Navigator,
                                      identify: RegistrationIdentifierAction,
                                      getData: DraftIdRetrievalActionProvider,
-                                     requireData: DataRequiredAction,
+                                     requireData: RegistrationDataRequiredAction,
                                      addAnotherFormProvider: AddAssetsFormProvider,
                                      yesNoFormProvider: YesNoFormProvider,
                                      val controllerComponents: MessagesControllerComponents,

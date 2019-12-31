@@ -40,7 +40,7 @@ class WhatTypeOfBeneficiaryController @Inject()(
                                                  navigator: Navigator,
                                                  identify: RegistrationIdentifierAction,
                                                  getData: DraftIdRetrievalActionProvider,
-                                                 requireData: DataRequiredAction,
+                                                 requireData: RegistrationDataRequiredAction,
                                                  formProvider: WhatTypeOfBeneficiaryFormProvider,
                                                  val controllerComponents: MessagesControllerComponents,
                                                  view: WhatTypeOfBeneficiaryView

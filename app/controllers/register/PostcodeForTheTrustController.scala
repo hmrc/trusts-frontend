@@ -39,7 +39,7 @@ class PostcodeForTheTrustController @Inject()(
                                                navigator: Navigator,
                                                identify: RegistrationIdentifierAction,
                                                getData: DraftIdRetrievalActionProvider,
-                                               requireData: DataRequiredAction,
+                                               requireData: RegistrationDataRequiredAction,
                                                formProvider: PostcodeForTheTrustFormProvider,
                                                val controllerComponents: MessagesControllerComponents,
                                                view: PostcodeForTheTrustView

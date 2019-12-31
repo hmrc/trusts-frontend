@@ -39,7 +39,7 @@ class AgentTelephoneNumberController @Inject()(
                                                 identify: RegistrationIdentifierAction,
                                                 hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                                 getData: DraftIdRetrievalActionProvider,
-                                                requireData: DataRequiredAction,
+                                                requireData: RegistrationDataRequiredAction,
                                                 requiredAnswer: RequiredAnswerActionProvider,
                                                 formProvider: AgentTelephoneNumber,
                                                 val controllerComponents: MessagesControllerComponents,

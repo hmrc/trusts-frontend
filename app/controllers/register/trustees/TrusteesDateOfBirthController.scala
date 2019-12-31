@@ -41,7 +41,7 @@ class TrusteesDateOfBirthController @Inject()(
                                                navigator: Navigator,
                                                identify: RegistrationIdentifierAction,
                                                getData: DraftIdRetrievalActionProvider,
-                                               requireData: DataRequiredAction,
+                                               requireData: RegistrationDataRequiredAction,
                                                validateIndex : IndexActionFilterProvider,
                                                requiredAnswer: RequiredAnswerActionProvider,
                                                formProvider: TrusteesDateOfBirthFormProvider,

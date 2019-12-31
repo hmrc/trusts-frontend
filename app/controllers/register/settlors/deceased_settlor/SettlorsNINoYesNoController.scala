@@ -38,7 +38,7 @@ class SettlorsNINoYesNoController @Inject()(
                                              navigator: Navigator,
                                              identify: RegistrationIdentifierAction,
                                              getData: DraftIdRetrievalActionProvider,
-                                             requireData: DataRequiredAction,
+                                             requireData: RegistrationDataRequiredAction,
                                              yesNoFormProvider: YesNoFormProvider,
                                              requiredAnswer: RequiredAnswerActionProvider,
                                              val controllerComponents: MessagesControllerComponents,

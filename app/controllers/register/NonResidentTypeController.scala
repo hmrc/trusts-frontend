@@ -38,7 +38,7 @@ class NonResidentTypeController @Inject()(
                                            navigator: Navigator,
                                            identify: RegistrationIdentifierAction,
                                            getData: DraftIdRetrievalActionProvider,
-                                           requireData: DataRequiredAction,
+                                           requireData: RegistrationDataRequiredAction,
                                            formProvider: NonResidentTypeFormProvider,
                                            val controllerComponents: MessagesControllerComponents,
                                            view: NonResidentTypeView

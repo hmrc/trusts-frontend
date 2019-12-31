@@ -43,7 +43,7 @@ class TrustDetailsAnswerPageController @Inject()(
                                                   identify: RegistrationIdentifierAction,
                                                   navigator: Navigator,
                                                   getData: DraftIdRetrievalActionProvider,
-                                                  requireData: DataRequiredAction,
+                                                  requireData: RegistrationDataRequiredAction,
                                                   validateIndex : IndexActionFilterProvider,
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: TrustDetailsAnswerPageView,

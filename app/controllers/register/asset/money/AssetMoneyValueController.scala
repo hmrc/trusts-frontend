@@ -40,7 +40,7 @@ class AssetMoneyValueController @Inject()(
                                            navigator: Navigator,
                                            identify: RegistrationIdentifierAction,
                                            getData: DraftIdRetrievalActionProvider,
-                                           requireData: DataRequiredAction,
+                                           requireData: RegistrationDataRequiredAction,
                                            formProvider: AssetMoneyValueFormProvider,
                                            val controllerComponents: MessagesControllerComponents,
                                            view: AssetMoneyValueView

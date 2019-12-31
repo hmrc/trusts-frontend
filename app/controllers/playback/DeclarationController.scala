@@ -43,7 +43,7 @@ class DeclarationController @Inject()(
                                        identify: RegistrationIdentifierAction,
                                        playbackAction: PlaybackIdentifierAction,
                                        getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
+                                       requireData: RegistrationDataRequiredAction,
                                        requiredAnswer: RequiredAnswerActionProvider,
                                        formProvider: DeclarationFormProvider,
                                        connector: TrustConnector,

@@ -34,7 +34,7 @@ class ConfirmationAnswerPageController @Inject()(
                                                   override val messagesApi: MessagesApi,
                                                   identify: RegistrationIdentifierAction,
                                                   getData: DraftIdRetrievalActionProvider,
-                                                  requireData: DataRequiredAction,
+                                                  requireData: RegistrationDataRequiredAction,
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: ConfirmationAnswerPageView,
                                                   countryOptions : CountryOptions,

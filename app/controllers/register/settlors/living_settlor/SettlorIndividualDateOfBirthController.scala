@@ -42,7 +42,7 @@ class SettlorIndividualDateOfBirthController @Inject()(
                                                         identify: RegistrationIdentifierAction,
                                                         getData: DraftIdRetrievalActionProvider,
                                                         validateIndex: IndexActionFilterProvider,
-                                                        requireData: DataRequiredAction,
+                                                        requireData: RegistrationDataRequiredAction,
                                                         requiredAnswer: RequiredAnswerActionProvider,
                                                         formProvider: DateOfBirthFormProvider,
                                                         val controllerComponents: MessagesControllerComponents,

@@ -30,7 +30,7 @@ class SettlorInfoController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        identify: RegistrationIdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
-                                       requireData: DataRequiredAction,
+                                       requireData: RegistrationDataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: SettlorInfoView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {

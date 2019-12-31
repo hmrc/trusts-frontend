@@ -41,7 +41,7 @@ class SettlorHandoverReliefYesNoController @Inject()(
                                                       identify: RegistrationIdentifierAction,
                                                       getData: DraftIdRetrievalActionProvider,
                                                       requiredAnswer: RequiredAnswerActionProvider,
-                                                      requireData: DataRequiredAction,
+                                                      requireData: RegistrationDataRequiredAction,
                                                       yesNoFormProvider: YesNoFormProvider,
                                                       val controllerComponents: MessagesControllerComponents,
                                                       view: SettlorHandoverReliefYesNoView

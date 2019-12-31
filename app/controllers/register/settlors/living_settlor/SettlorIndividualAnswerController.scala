@@ -43,7 +43,7 @@ class SettlorIndividualAnswerController @Inject()(
                                                    @LivingSettlor navigator: Navigator,
                                                    identify: RegistrationIdentifierAction,
                                                    getData: DraftIdRetrievalActionProvider,
-                                                   requireData: DataRequiredAction,
+                                                   requireData: RegistrationDataRequiredAction,
                                                    requiredAnswer: RequiredAnswerActionProvider,
                                                    validateIndex: IndexActionFilterProvider,
                                                    view: SettlorIndividualAnswersView,

@@ -42,7 +42,7 @@ class IndividualBeneficiaryAnswersController @Inject()(
                                                         identify: RegistrationIdentifierAction,
                                                         navigator: Navigator,
                                                         getData: DraftIdRetrievalActionProvider,
-                                                        requireData: DataRequiredAction,
+                                                        requireData: RegistrationDataRequiredAction,
                                                         val controllerComponents: MessagesControllerComponents,
                                                         requiredAnswer: RequiredAnswerActionProvider,
                                                         validateIndex : IndexActionFilterProvider,

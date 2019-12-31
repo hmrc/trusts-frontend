@@ -40,7 +40,7 @@ class AgentInternationalAddressController @Inject()(
                                                      identify: RegistrationIdentifierAction,
                                                      hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                                      getData: DraftIdRetrievalActionProvider,
-                                                     requireData: DataRequiredAction,
+                                                     requireData: RegistrationDataRequiredAction,
                                                      requiredAnswer: RequiredAnswerActionProvider,
                                                      formProvider: InternationalAddressFormProvider,
                                                      val controllerComponents: MessagesControllerComponents,

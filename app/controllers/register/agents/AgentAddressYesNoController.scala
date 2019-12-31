@@ -39,7 +39,7 @@ class AgentAddressYesNoController @Inject()(
                                              identify: RegistrationIdentifierAction,
                                              hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                              getData: DraftIdRetrievalActionProvider,
-                                             requireData: DataRequiredAction,
+                                             requireData: RegistrationDataRequiredAction,
                                              requiredAnswer: RequiredAnswerActionProvider,
                                              yesNoFormProvider: YesNoFormProvider,
                                              val controllerComponents: MessagesControllerComponents,

@@ -41,7 +41,7 @@ class SettlorKindOfTrustController @Inject()(
                                               @LivingSettlor navigator: Navigator,
                                               identify: RegistrationIdentifierAction,
                                               getData: DraftIdRetrievalActionProvider,
-                                              requireData: DataRequiredAction,
+                                              requireData: RegistrationDataRequiredAction,
                                               validateIndex: IndexActionFilterProvider,
                                               formProvider: SettlorKindOfTrustFormProvider,
                                               val controllerComponents: MessagesControllerComponents,

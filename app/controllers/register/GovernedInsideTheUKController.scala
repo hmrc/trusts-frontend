@@ -38,7 +38,7 @@ class GovernedInsideTheUKController @Inject()(
                                                navigator: Navigator,
                                                identify: RegistrationIdentifierAction,
                                                getData: DraftIdRetrievalActionProvider,
-                                               requireData: DataRequiredAction,
+                                               requireData: RegistrationDataRequiredAction,
                                                yesNoFormProvider: YesNoFormProvider,
                                                val controllerComponents: MessagesControllerComponents,
                                                view: GovernedInsideTheUKView

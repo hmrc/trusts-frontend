@@ -38,7 +38,7 @@ class WasSettlorsAddressUKYesNoController @Inject()(
                                                      navigator: Navigator,
                                                      identify: RegistrationIdentifierAction,
                                                      getData: DraftIdRetrievalActionProvider,
-                                                     requireData: DataRequiredAction,
+                                                     requireData: RegistrationDataRequiredAction,
                                                      formProvider: YesNoFormProvider,
                                                      requiredAnswer: RequiredAnswerActionProvider,
                                                      val controllerComponents: MessagesControllerComponents,

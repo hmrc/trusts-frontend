@@ -39,7 +39,7 @@ class ShareClassController @Inject()(
                                       navigator: Navigator,
                                       identify: RegistrationIdentifierAction,
                                       getData: DraftIdRetrievalActionProvider,
-                                      requireData: DataRequiredAction,
+                                      requireData: RegistrationDataRequiredAction,
                                       formProvider: ShareClassFormProvider,
                                       val controllerComponents: MessagesControllerComponents,
                                       view: ShareClassView,

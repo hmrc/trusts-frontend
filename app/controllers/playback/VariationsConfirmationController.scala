@@ -33,7 +33,7 @@ class VariationsConfirmationController @Inject()(
                                                   identify: RegistrationIdentifierAction,
                                                   playbackAction: PlaybackIdentifierAction,
                                                   getData: DataRetrievalAction,
-                                                  requireData: DataRequiredAction,
+                                                  requireData: RegistrationDataRequiredAction,
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: VariationsConfirmationView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {

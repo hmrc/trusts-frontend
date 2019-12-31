@@ -43,7 +43,7 @@ class WhatKindOfAssetController @Inject()(
                                            navigator: Navigator,
                                            identify: RegistrationIdentifierAction,
                                            getData: DraftIdRetrievalActionProvider,
-                                           requireData: DataRequiredAction,
+                                           requireData: RegistrationDataRequiredAction,
                                            validateIndex: IndexActionFilterProvider,
                                            formProvider: WhatKindOfAssetFormProvider,
                                            val controllerComponents: MessagesControllerComponents,

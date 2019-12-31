@@ -39,7 +39,7 @@ class AgentInternalReferenceController @Inject()(
                                                   identify: RegistrationIdentifierAction,
                                                   hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                                   getData: DraftIdRetrievalActionProvider,
-                                                  requireData: DataRequiredAction,
+                                                  requireData: RegistrationDataRequiredAction,
                                                   formProvider: AgentInternalReferenceFormProvider,
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: AgentInternalReferenceView

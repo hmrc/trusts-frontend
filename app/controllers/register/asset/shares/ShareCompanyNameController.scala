@@ -39,7 +39,7 @@ class ShareCompanyNameController @Inject()(
                                             navigator: Navigator,
                                             identify: RegistrationIdentifierAction,
                                             getData: DraftIdRetrievalActionProvider,
-                                            requireData: DataRequiredAction,
+                                            requireData: RegistrationDataRequiredAction,
                                             formProvider: ShareCompanyNameFormProvider,
                                             val controllerComponents: MessagesControllerComponents,
                                             view: ShareCompanyNameView,

@@ -38,7 +38,7 @@ class IndividualBeneficiaryAddressUKYesNoController @Inject()(
                                                                navigator: Navigator,
                                                                identify: RegistrationIdentifierAction,
                                                                getData: DraftIdRetrievalActionProvider,
-                                                               requireData: DataRequiredAction,
+                                                               requireData: RegistrationDataRequiredAction,
                                                                requiredAnswer: RequiredAnswerActionProvider,
                                                                YesNoFormProvider: YesNoFormProvider,
                                                                val controllerComponents: MessagesControllerComponents,

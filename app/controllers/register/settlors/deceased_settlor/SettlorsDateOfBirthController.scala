@@ -38,7 +38,7 @@ class SettlorsDateOfBirthController @Inject()(
                                                navigator: Navigator,
                                                identify: RegistrationIdentifierAction,
                                                getData: DraftIdRetrievalActionProvider,
-                                               requireData: DataRequiredAction,
+                                               requireData: RegistrationDataRequiredAction,
                                                formProvider: SettlorsDateOfBirthFormProvider,
                                                requiredAnswer: RequiredAnswerActionProvider,
                                                val controllerComponents: MessagesControllerComponents,

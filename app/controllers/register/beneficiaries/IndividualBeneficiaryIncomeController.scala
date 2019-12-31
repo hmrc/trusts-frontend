@@ -38,7 +38,7 @@ class IndividualBeneficiaryIncomeController @Inject()(
                                                        navigator: Navigator,
                                                        identify: RegistrationIdentifierAction,
                                                        getData: DraftIdRetrievalActionProvider,
-                                                       requireData: DataRequiredAction,
+                                                       requireData: RegistrationDataRequiredAction,
                                                        requiredAnswer: RequiredAnswerActionProvider,
                                                        formProvider: IndividualBeneficiaryIncomeFormProvider,
                                                        val controllerComponents: MessagesControllerComponents,

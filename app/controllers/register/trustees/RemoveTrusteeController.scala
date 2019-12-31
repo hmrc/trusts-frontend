@@ -38,7 +38,7 @@ class RemoveTrusteeController @Inject()(
                                          override val registrationsRepository: RegistrationsRepository,
                                          identify: RegistrationIdentifierAction,
                                          getData: DraftIdRetrievalActionProvider,
-                                         requireData: DataRequiredAction,
+                                         requireData: RegistrationDataRequiredAction,
                                          val formProvider: RemoveIndexFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          val removeView: RemoveIndexView,

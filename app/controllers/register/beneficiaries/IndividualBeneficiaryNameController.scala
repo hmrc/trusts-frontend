@@ -38,7 +38,7 @@ class IndividualBeneficiaryNameController @Inject()(
                                                      navigator: Navigator,
                                                      identify: RegistrationIdentifierAction,
                                                      getData: DraftIdRetrievalActionProvider,
-                                                     requireData: DataRequiredAction,
+                                                     requireData: RegistrationDataRequiredAction,
                                                      formProvider: IndividualBeneficiaryNameFormProvider,
                                                      val controllerComponents: MessagesControllerComponents,
                                                      view: IndividualBeneficiaryNameView

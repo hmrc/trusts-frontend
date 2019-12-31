@@ -40,7 +40,7 @@ class PropertyOrLandDescriptionController @Inject()(
                                                      @PropertyOrLand navigator: Navigator,
                                                      identify: RegistrationIdentifierAction,
                                                      getData: DraftIdRetrievalActionProvider,
-                                                     requireData: DataRequiredAction,
+                                                     requireData: RegistrationDataRequiredAction,
                                                      validateIndex: IndexActionFilterProvider,
                                                      formProvider: PropertyOrLandDescriptionFormProvider,
                                                      val controllerComponents: MessagesControllerComponents,

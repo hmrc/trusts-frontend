@@ -39,7 +39,7 @@ class TrustPreviouslyResidentController @Inject()(
                                                    navigator: Navigator,
                                                    identify: RegistrationIdentifierAction,
                                                    getData: DraftIdRetrievalActionProvider,
-                                                   requireData: DataRequiredAction,
+                                                   requireData: RegistrationDataRequiredAction,
                                                    formProvider: TrustPreviouslyResidentFormProvider,
                                                    val controllerComponents: MessagesControllerComponents,
                                                    view: TrustPreviouslyResidentView,

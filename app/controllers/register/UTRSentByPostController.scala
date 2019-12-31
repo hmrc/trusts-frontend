@@ -31,7 +31,7 @@ import scala.concurrent.ExecutionContext
 class UTRSentByPostController @Inject()(
                                          override val messagesApi: MessagesApi,
                                          identify: RegistrationIdentifierAction,
-                                         requireData: DataRequiredAction,
+                                         requireData: RegistrationDataRequiredAction,
                                          config: FrontendAppConfig,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: UTRSentByPostView

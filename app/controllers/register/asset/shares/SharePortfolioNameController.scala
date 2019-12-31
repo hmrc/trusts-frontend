@@ -39,7 +39,7 @@ class SharePortfolioNameController @Inject()(
                                               navigator: Navigator,
                                               identify: RegistrationIdentifierAction,
                                               getData: DraftIdRetrievalActionProvider,
-                                              requireData: DataRequiredAction,
+                                              requireData: RegistrationDataRequiredAction,
                                               validateIndex: IndexActionFilterProvider,
                                               formProvider: SharePortfolioNameFormProvider,
                                               val controllerComponents: MessagesControllerComponents,

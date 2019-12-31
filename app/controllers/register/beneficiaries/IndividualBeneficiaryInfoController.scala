@@ -30,7 +30,7 @@ class IndividualBeneficiaryInfoController @Inject()(
                                                      override val messagesApi: MessagesApi,
                                                      identify: RegistrationIdentifierAction,
                                                      getData: DraftIdRetrievalActionProvider,
-                                                     requireData: DataRequiredAction,
+                                                     requireData: RegistrationDataRequiredAction,
                                                      val controllerComponents: MessagesControllerComponents,
                                                      view: IndividualBeneficiaryInfoView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {

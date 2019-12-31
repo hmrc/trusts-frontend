@@ -38,7 +38,7 @@ class WhenTrustSetupController @Inject()(
                                           navigator: Navigator,
                                           identify: RegistrationIdentifierAction,
                                           getData: DraftIdRetrievalActionProvider,
-                                          requireData: DataRequiredAction,
+                                          requireData: RegistrationDataRequiredAction,
                                           formProvider: WhenTrustSetupFormProvider,
                                           val controllerComponents: MessagesControllerComponents,
                                           view: WhenTrustSetupView
