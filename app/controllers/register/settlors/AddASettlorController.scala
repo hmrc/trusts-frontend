@@ -17,7 +17,7 @@
 package controllers.register.settlors
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.{AddASettlorFormProvider, YesNoFormProvider}
 import javax.inject.Inject
 import models.requests.DataRequest
@@ -42,7 +42,7 @@ class AddASettlorController @Inject()(
                                        @LivingSettlor navigator: Navigator,
                                        identify: RegistrationIdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
-                                       requireData: DataRequiredAction,
+                                       requireData: RegistrationDataRequiredAction,
                                        yesNoFormProvider: YesNoFormProvider,
                                        addAnotherFormProvider: AddASettlorFormProvider,
                                        val controllerComponents: MessagesControllerComponents,

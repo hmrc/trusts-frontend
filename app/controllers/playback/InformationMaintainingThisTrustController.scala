@@ -19,7 +19,7 @@ package controllers.playback
 import config.FrontendAppConfig
 import controllers.actions._
 import controllers.actions.playback.PlaybackIdentifierAction
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{RegistrationDataRequiredAction, RegistrationDataRetrievalAction, RegistrationIdentifierAction}
 import javax.inject.Inject
 import pages.playback.WhatIsTheUTRVariationPage
 import play.api.i18n.I18nSupport
@@ -34,8 +34,8 @@ import scala.concurrent.ExecutionContext
 class InformationMaintainingThisTrustController @Inject()(
                                                            registrationsRepository: RegistrationsRepository,
                                                            identify: RegistrationIdentifierAction,
-                                                           getData: DataRetrievalAction,
-                                                           requireData: DataRequiredAction,
+                                                           getData: RegistrationDataRetrievalAction,
+                                                           requireData: RegistrationDataRequiredAction,
                                                            playbackAction: PlaybackIdentifierAction,
                                                            val controllerComponents: MessagesControllerComponents,
                                                            maintainingTrustView: InformationMaintainingThisTrustView,

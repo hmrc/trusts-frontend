@@ -18,7 +18,7 @@ package controllers.playback
 
 import controllers.actions._
 import controllers.actions.playback.PlaybackIdentifierAction
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{RegistrationDataRequiredAction, RegistrationDataRetrievalAction, RegistrationIdentifierAction}
 import forms.DeclarationFormProvider
 import navigation.Navigator
 import repositories.RegistrationsRepository
@@ -38,8 +38,8 @@ class DeclarationController @Inject()(
                                        navigator: Navigator,
                                        identify: RegistrationIdentifierAction,
                                        playbackAction: PlaybackIdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
+                                       getData: RegistrationDataRetrievalAction,
+                                       requireData: RegistrationDataRequiredAction,
                                        requiredAnswer: RequiredAnswerActionProvider,
                                        formProvider: DeclarationFormProvider,
                                        val controllerComponents: MessagesControllerComponents,

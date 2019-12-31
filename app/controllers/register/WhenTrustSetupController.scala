@@ -17,7 +17,7 @@
 package controllers.register
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.WhenTrustSetupFormProvider
 import javax.inject.Inject
 import models.Mode
@@ -38,7 +38,7 @@ class WhenTrustSetupController @Inject()(
                                           navigator: Navigator,
                                           identify: RegistrationIdentifierAction,
                                           getData: DraftIdRetrievalActionProvider,
-                                          requireData: DataRequiredAction,
+                                          requireData: RegistrationDataRequiredAction,
                                           formProvider: WhenTrustSetupFormProvider,
                                           val controllerComponents: MessagesControllerComponents,
                                           view: WhenTrustSetupView

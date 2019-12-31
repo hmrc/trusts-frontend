@@ -17,7 +17,7 @@
 package controllers.register
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.TrustNameFormProvider
 import javax.inject.Inject
 import models.Mode
@@ -38,7 +38,7 @@ class TrustNameController @Inject()(
                                      navigator: Navigator,
                                      identify: RegistrationIdentifierAction,
                                      getData: DraftIdRetrievalActionProvider,
-                                     requireData: DataRequiredAction,
+                                     requireData: RegistrationDataRequiredAction,
                                      formProvider: TrustNameFormProvider,
                                      val controllerComponents: MessagesControllerComponents,
                                      view: TrustNameView

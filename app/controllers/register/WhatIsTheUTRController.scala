@@ -17,7 +17,7 @@
 package controllers.register
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.WhatIsTheUTRFormProvider
 import javax.inject.Inject
 import models.Mode
@@ -38,7 +38,7 @@ class WhatIsTheUTRController @Inject()(
                                         navigator: Navigator,
                                         identify: RegistrationIdentifierAction,
                                         getData: DraftIdRetrievalActionProvider,
-                                        requireData: DataRequiredAction,
+                                        requireData: RegistrationDataRequiredAction,
                                         formProvider: WhatIsTheUTRFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: WhatIsTheUTRView

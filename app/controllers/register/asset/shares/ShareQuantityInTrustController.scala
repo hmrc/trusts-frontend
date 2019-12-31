@@ -17,7 +17,7 @@
 package controllers.register.asset.shares
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
 import forms.shares.ShareQuantityInTrustFormProvider
 import javax.inject.Inject
@@ -39,7 +39,7 @@ class ShareQuantityInTrustController @Inject()(
                                                 navigator: Navigator,
                                                 identify: RegistrationIdentifierAction,
                                                 getData: DraftIdRetrievalActionProvider,
-                                                requireData: DataRequiredAction,
+                                                requireData: RegistrationDataRequiredAction,
                                                 validateIndex: IndexActionFilterProvider,
                                                 requiredAnswer: RequiredAnswerActionProvider,
                                                 formProvider: ShareQuantityInTrustFormProvider,

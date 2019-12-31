@@ -17,6 +17,7 @@
 package controllers.actions
 
 import base.SpecBase
+import controllers.actions.register.RequireDraftRegistrationActionRefinerImpl
 import controllers.register.routes._
 import models.registration.pages.RegistrationStatus.{Complete, InProgress}
 import models.requests.DataRequest

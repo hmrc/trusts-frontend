@@ -17,7 +17,7 @@
 package controllers.register
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.PostcodeForTheTrustFormProvider
 import javax.inject.Inject
 import models.Mode
@@ -39,7 +39,7 @@ class PostcodeForTheTrustController @Inject()(
                                                navigator: Navigator,
                                                identify: RegistrationIdentifierAction,
                                                getData: DraftIdRetrievalActionProvider,
-                                               requireData: DataRequiredAction,
+                                               requireData: RegistrationDataRequiredAction,
                                                formProvider: PostcodeForTheTrustFormProvider,
                                                val controllerComponents: MessagesControllerComponents,
                                                view: PostcodeForTheTrustView

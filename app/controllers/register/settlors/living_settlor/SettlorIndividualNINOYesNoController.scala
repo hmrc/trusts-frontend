@@ -17,7 +17,7 @@
 package controllers.register.settlors.living_settlor
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
 import forms.YesNoFormProvider
 import javax.inject.Inject
@@ -42,7 +42,7 @@ class SettlorIndividualNINOYesNoController @Inject()(
                                                       identify: RegistrationIdentifierAction,
                                                       getData: DraftIdRetrievalActionProvider,
                                                       validateIndex: IndexActionFilterProvider,
-                                                      requireData: DataRequiredAction,
+                                                      requireData: RegistrationDataRequiredAction,
                                                       requiredAnswer: RequiredAnswerActionProvider,
                                                       yesNoFormProvider: YesNoFormProvider,
                                                       val controllerComponents: MessagesControllerComponents,

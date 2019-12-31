@@ -17,7 +17,7 @@
 package controllers.register.asset.money
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.AssetMoneyValueFormProvider
 import javax.inject.Inject
 import models.Mode
@@ -40,7 +40,7 @@ class AssetMoneyValueController @Inject()(
                                            navigator: Navigator,
                                            identify: RegistrationIdentifierAction,
                                            getData: DraftIdRetrievalActionProvider,
-                                           requireData: DataRequiredAction,
+                                           requireData: RegistrationDataRequiredAction,
                                            formProvider: AssetMoneyValueFormProvider,
                                            val controllerComponents: MessagesControllerComponents,
                                            view: AssetMoneyValueView

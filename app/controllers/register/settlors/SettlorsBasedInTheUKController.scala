@@ -17,7 +17,7 @@
 package controllers.register.settlors
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.SettlorsBasedInTheUKFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode}
@@ -38,7 +38,7 @@ class SettlorsBasedInTheUKController @Inject()(
                                                 navigator: Navigator,
                                                 identify: RegistrationIdentifierAction,
                                                 getData: DraftIdRetrievalActionProvider,
-                                                requireData: DataRequiredAction,
+                                                requireData: RegistrationDataRequiredAction,
                                                 formProvider: SettlorsBasedInTheUKFormProvider,
                                                 val controllerComponents: MessagesControllerComponents,
                                                 view: SettlorsBasedInTheUKView

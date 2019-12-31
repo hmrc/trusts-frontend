@@ -17,7 +17,7 @@
 package controllers.register.asset
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.{AddAssetsFormProvider, YesNoFormProvider}
 import javax.inject.Inject
 import models.registration.pages.AddAssets
@@ -40,7 +40,7 @@ class AddAssetsController @Inject()(
                                      navigator: Navigator,
                                      identify: RegistrationIdentifierAction,
                                      getData: DraftIdRetrievalActionProvider,
-                                     requireData: DataRequiredAction,
+                                     requireData: RegistrationDataRequiredAction,
                                      addAnotherFormProvider: AddAssetsFormProvider,
                                      yesNoFormProvider: YesNoFormProvider,
                                      val controllerComponents: MessagesControllerComponents,

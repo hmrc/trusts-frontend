@@ -16,12 +16,13 @@
 
 package controllers.actions
 
+import controllers.actions.register.RegistrationDataRetrievalAction
 import models.core.UserAnswers
 import models.requests.{IdentifierRequest, OptionalDataRequest}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class FakeDataRetrievalAction(dataToReturn: Option[UserAnswers]) extends DataRetrievalAction {
+class FakeRegistrationDataRetrievalAction(dataToReturn: Option[UserAnswers]) extends RegistrationDataRetrievalAction {
 
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] =
     dataToReturn match {

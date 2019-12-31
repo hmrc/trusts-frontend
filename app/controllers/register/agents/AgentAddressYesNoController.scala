@@ -17,7 +17,7 @@
 package controllers.register.agents
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
@@ -39,7 +39,7 @@ class AgentAddressYesNoController @Inject()(
                                              identify: RegistrationIdentifierAction,
                                              hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                              getData: DraftIdRetrievalActionProvider,
-                                             requireData: DataRequiredAction,
+                                             requireData: RegistrationDataRequiredAction,
                                              requiredAnswer: RequiredAnswerActionProvider,
                                              yesNoFormProvider: YesNoFormProvider,
                                              val controllerComponents: MessagesControllerComponents,

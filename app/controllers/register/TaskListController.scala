@@ -18,7 +18,7 @@ package controllers.register
 
 import config.FrontendAppConfig
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction, RequireDraftRegistrationActionRefiner}
 import javax.inject.Inject
 import models.NormalMode
 import models.registration.Matched.{AlreadyRegistered, Failed, Success}
@@ -43,7 +43,7 @@ class TaskListController @Inject()(
                                     override val messagesApi: MessagesApi,
                                     identify: RegistrationIdentifierAction,
                                     getData: DraftIdRetrievalActionProvider,
-                                    requireData: DataRequiredAction,
+                                    requireData: RegistrationDataRequiredAction,
                                     requiredAnswer: RequiredAnswerActionProvider,
                                     val controllerComponents: MessagesControllerComponents,
                                     view: TaskListView,

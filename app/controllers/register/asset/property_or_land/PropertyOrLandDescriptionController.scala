@@ -17,7 +17,7 @@
 package controllers.register.asset.property_or_land
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
 import forms.property_or_land.PropertyOrLandDescriptionFormProvider
 import javax.inject.Inject
@@ -40,7 +40,7 @@ class PropertyOrLandDescriptionController @Inject()(
                                                      @PropertyOrLand navigator: Navigator,
                                                      identify: RegistrationIdentifierAction,
                                                      getData: DraftIdRetrievalActionProvider,
-                                                     requireData: DataRequiredAction,
+                                                     requireData: RegistrationDataRequiredAction,
                                                      validateIndex: IndexActionFilterProvider,
                                                      formProvider: PropertyOrLandDescriptionFormProvider,
                                                      val controllerComponents: MessagesControllerComponents,

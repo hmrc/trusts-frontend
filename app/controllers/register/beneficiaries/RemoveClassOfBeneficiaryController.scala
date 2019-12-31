@@ -18,7 +18,7 @@ package controllers.register.beneficiaries
 
 import controllers.RemoveIndexController
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
 import models.requests.DataRequest
@@ -37,7 +37,7 @@ class RemoveClassOfBeneficiaryController @Inject()(
                                                     override val registrationsRepository: RegistrationsRepository,
                                                     identify: RegistrationIdentifierAction,
                                                     getData: DraftIdRetrievalActionProvider,
-                                                    requireData: DataRequiredAction,
+                                                    requireData: RegistrationDataRequiredAction,
                                                     val formProvider: RemoveIndexFormProvider,
                                                     val controllerComponents: MessagesControllerComponents,
                                                     val removeView: RemoveIndexView,

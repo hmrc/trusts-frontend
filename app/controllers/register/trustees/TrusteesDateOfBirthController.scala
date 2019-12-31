@@ -17,7 +17,7 @@
 package controllers.register.trustees
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
 import forms.trustees.TrusteesDateOfBirthFormProvider
 import javax.inject.Inject
@@ -41,7 +41,7 @@ class TrusteesDateOfBirthController @Inject()(
                                                navigator: Navigator,
                                                identify: RegistrationIdentifierAction,
                                                getData: DraftIdRetrievalActionProvider,
-                                               requireData: DataRequiredAction,
+                                               requireData: RegistrationDataRequiredAction,
                                                validateIndex : IndexActionFilterProvider,
                                                requiredAnswer: RequiredAnswerActionProvider,
                                                formProvider: TrusteesDateOfBirthFormProvider,

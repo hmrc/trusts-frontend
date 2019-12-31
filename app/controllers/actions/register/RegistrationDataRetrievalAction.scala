@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers.actions
+package controllers.actions.register
 
 import javax.inject.Inject
 import models.core.UserAnswers
@@ -24,8 +24,8 @@ import repositories.RegistrationsRepository
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DataRetrievalActionImpl @Inject()(val registrationsRepository: RegistrationsRepository)
-                                       (implicit val executionContext: ExecutionContext) extends DataRetrievalAction {
+class RegistrationDataRetrievalActionImpl @Inject()(val registrationsRepository: RegistrationsRepository)
+                                                   (implicit val executionContext: ExecutionContext) extends RegistrationDataRetrievalAction {
 
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] = {
 
@@ -43,12 +43,10 @@ class DataRetrievalActionImpl @Inject()(val registrationsRepository: Registratio
                 createdOptionalDataRequest(request, None)
               case Some(userAnswers) =>
                 createdOptionalDataRequest(request, Some(userAnswers))
-          }
+            }
         }
     }
   }
 }
 
-trait DataRetrievalAction extends ActionTransformer[IdentifierRequest, OptionalDataRequest]
-
-
+trait RegistrationDataRetrievalAction extends ActionTransformer[IdentifierRequest, OptionalDataRequest]

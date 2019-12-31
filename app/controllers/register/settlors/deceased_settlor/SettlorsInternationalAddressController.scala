@@ -17,7 +17,7 @@
 package controllers.register.settlors.deceased_settlor
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.InternationalAddressFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
@@ -39,7 +39,7 @@ class SettlorsInternationalAddressController @Inject()(
                                                         navigator: Navigator,
                                                         identify: RegistrationIdentifierAction,
                                                         getData: DraftIdRetrievalActionProvider,
-                                                        requireData: DataRequiredAction,
+                                                        requireData: RegistrationDataRequiredAction,
                                                         formProvider: InternationalAddressFormProvider,
                                                         requiredAnswer: RequiredAnswerActionProvider,
                                                         val controllerComponents: MessagesControllerComponents,

@@ -17,7 +17,7 @@
 package controllers.register.asset.shares
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.register.asset.RemoveAssetController
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
@@ -35,7 +35,7 @@ class RemoveSharePortfolioAssetController @Inject()(
                                                      override val formProvider: RemoveIndexFormProvider,
                                                      identify: RegistrationIdentifierAction,
                                                      getData: DraftIdRetrievalActionProvider,
-                                                     requireData: DataRequiredAction,
+                                                     requireData: RegistrationDataRequiredAction,
                                                      val controllerComponents: MessagesControllerComponents,
                                                      require: RequiredAnswerActionProvider,
                                                      val removeView: RemoveIndexView

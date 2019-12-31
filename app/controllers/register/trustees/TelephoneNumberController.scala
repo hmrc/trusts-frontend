@@ -17,7 +17,7 @@
 package controllers.register.trustees
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
 import forms.trustees.TelephoneNumberFormProvider
 import javax.inject.Inject
@@ -42,7 +42,7 @@ class TelephoneNumberController @Inject()(
                                            validateIndex: IndexActionFilterProvider,
                                            identify: RegistrationIdentifierAction,
                                            getData: DraftIdRetrievalActionProvider,
-                                           requireData: DataRequiredAction,
+                                           requireData: RegistrationDataRequiredAction,
                                            requiredAnswer: RequiredAnswerActionProvider,
                                            formProvider: TelephoneNumberFormProvider,
                                            val controllerComponents: MessagesControllerComponents,

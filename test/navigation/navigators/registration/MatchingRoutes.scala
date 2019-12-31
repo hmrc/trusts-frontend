@@ -17,7 +17,8 @@
 package navigation.navigators.registration
 
 import base.SpecBase
-import controllers.actions.{DataRetrievalAction, FakeDataRetrievalAction}
+import controllers.actions.FakeRegistrationDataRetrievalAction
+import controllers.actions.register.RegistrationDataRetrievalAction
 import controllers.register.routes
 import generators.Generators
 import models.NormalMode
@@ -144,7 +145,7 @@ trait MatchingRoutes {
               .set(TrustHaveAUTRPage, true).success.value
 
             val app = new GuiceApplicationBuilder().overrides(
-              bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(Some(answers)))
+              bind[RegistrationDataRetrievalAction].toInstance(new FakeRegistrationDataRetrievalAction(Some(answers)))
             ).configure(("microservice.services.features.claim.enabled", false)).build()
 
             val nav = app.injector.instanceOf[Navigator]
@@ -162,7 +163,7 @@ trait MatchingRoutes {
               .set(TrustHaveAUTRPage, true).success.value
 
             val app = new GuiceApplicationBuilder().overrides(
-              bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(Some(answers)))
+              bind[RegistrationDataRetrievalAction].toInstance(new FakeRegistrationDataRetrievalAction(Some(answers)))
             ).configure(("microservice.services.features.claim.enabled", true)).build()
 
             val nav = app.injector.instanceOf[Navigator]

@@ -17,7 +17,7 @@
 package controllers.register.agents
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import javax.inject.Inject
 import models.NormalMode
 import navigation.Navigator
@@ -38,7 +38,7 @@ class AgentAnswerController @Inject()(
                                        navigator: Navigator,
                                        hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                        getData: DraftIdRetrievalActionProvider,
-                                       requireData: DataRequiredAction,
+                                       requireData: RegistrationDataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: AgentAnswerView, countryOptions : CountryOptions
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {

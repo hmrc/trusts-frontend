@@ -18,7 +18,7 @@ package controllers.register.settlors.living_settlor
 
 import controllers.RemoveIndexController
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
@@ -44,7 +44,7 @@ class RemoveSettlorController @Inject()(
                                          identify: RegistrationIdentifierAction,
                                          validateIndex : IndexActionFilterProvider,
                                          getData: DraftIdRetrievalActionProvider,
-                                         requireData: DataRequiredAction,
+                                         requireData: RegistrationDataRequiredAction,
                                          override val formProvider: RemoveIndexFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          override val removeView: RemoveIndexView

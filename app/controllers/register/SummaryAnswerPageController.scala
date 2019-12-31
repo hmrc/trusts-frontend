@@ -17,7 +17,7 @@
 package controllers.register
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import javax.inject.Inject
 import pages.register.RegistrationProgress
 import pages.register.agents.AgentInternalReferencePage
@@ -34,7 +34,7 @@ class SummaryAnswerPageController @Inject()(
                                              override val messagesApi: MessagesApi,
                                              identify: RegistrationIdentifierAction,
                                              getData: DraftIdRetrievalActionProvider,
-                                             requireData: DataRequiredAction,
+                                             requireData: RegistrationDataRequiredAction,
                                              val controllerComponents: MessagesControllerComponents,
                                              view: SummaryAnswerPageView,
                                              countryOptions : CountryOptions,

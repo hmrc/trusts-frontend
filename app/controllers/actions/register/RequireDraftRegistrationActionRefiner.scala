@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package controllers.actions
+package controllers.actions.register
 
-import controllers.routes
 import javax.inject.Inject
 import models.registration.pages.RegistrationStatus.Complete
 import models.requests.DataRequest
