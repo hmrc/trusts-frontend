@@ -18,11 +18,9 @@ package base
 
 import config.FrontendAppConfig
 import controllers.actions.playback.PlaybackIdentifierAction
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationDataRequiredActionImpl, RegistrationDataRetrievalAction, RegistrationIdentifierAction}
 import controllers.actions.{FakeDraftIdRetrievalActionProvider, _}
-import mapping.playback.{FakeUserAnswerExtractor, PlaybackExtractor, UserAnswersExtractor}
 import models.core.UserAnswers
-import models.playback.http.GetTrust
 import models.registration.pages.RegistrationStatus
 import navigation.{FakeNavigator, Navigator}
 import org.scalatest.{BeforeAndAfter, TestSuite, TryValues}
@@ -86,7 +84,7 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
         bind[RegistrationDataRequiredAction].to[RegistrationDataRequiredActionImpl],
         bind[RegistrationIdentifierAction].toInstance(new FakeIdentifyForRegistration(affinityGroup)(injectedParsers, trustsAuth, enrolments)),
         bind[PlaybackIdentifierAction].toInstance(new FakePlaybackIdentifierAction()),
-        bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
+        bind[RegistrationDataRetrievalAction].toInstance(new FakeRegistrationDataRetrievalAction(userAnswers)),
         bind[DraftIdRetrievalActionProvider].toInstance(fakeDraftIdAction(userAnswers)),
         bind[RegistrationsRepository].toInstance(registrationsRepository),
         bind[SubmissionService].toInstance(mockSubmissionService),

@@ -20,8 +20,7 @@ import com.google.inject.AbstractModule
 import connector.OtacAuthConnectorImpl
 import controllers.actions._
 import controllers.actions.playback.{PlaybackIdentifierAction, PlaybackIdentifierActionImpl}
-import mapping.playback.{PlaybackExtractor, UserAnswersExtractor}
-import models.playback.http.GetTrust
+import controllers.actions.register._
 import navigation.Navigator
 import navigation.registration.{LivingSettlorNavigator, PropertyOrLandNavigator}
 import repositories.{DefaultPlaybackRepository, DefaultRegistrationsRepository, PlaybackRepository, RegistrationsRepository}
@@ -34,7 +33,7 @@ class Module extends AbstractModule {
 
   override def configure(): Unit = {
 
-    bind(classOf[DataRetrievalAction]).to(classOf[DataRetrievalActionImpl]).asEagerSingleton()
+    bind(classOf[RegistrationDataRetrievalAction]).to(classOf[RegistrationDataRetrievalActionImpl]).asEagerSingleton()
     bind(classOf[RegistrationDataRequiredAction]).to(classOf[RegistrationDataRequiredActionImpl]).asEagerSingleton()
     bind(classOf[PlaybackIdentifierAction]).to(classOf[PlaybackIdentifierActionImpl]).asEagerSingleton()
     bind(classOf[DraftIdRetrievalActionProvider]).to(classOf[DraftIdDataRetrievalActionProviderImpl]).asEagerSingleton()

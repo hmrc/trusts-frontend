@@ -17,7 +17,7 @@
 package controllers.playback
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{RegistrationDataRequiredAction, RegistrationDataRetrievalAction, RegistrationIdentifierAction}
 import javax.inject.Inject
 import pages.playback.WhatIsTheUTRVariationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -30,7 +30,7 @@ import scala.concurrent.ExecutionContext
 class TrustNotClaimedController @Inject()(
                                            override val messagesApi: MessagesApi,
                                            identify: RegistrationIdentifierAction,
-                                           getData: DataRetrievalAction,
+                                           getData: RegistrationDataRetrievalAction,
                                            requireData: RegistrationDataRequiredAction,
                                            val controllerComponents: MessagesControllerComponents,
                                            view: TrustNotClaimedView

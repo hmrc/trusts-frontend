@@ -17,7 +17,7 @@
 package controllers.register
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.TrustPreviouslyResidentFormProvider
 import javax.inject.Inject
 import models.Mode

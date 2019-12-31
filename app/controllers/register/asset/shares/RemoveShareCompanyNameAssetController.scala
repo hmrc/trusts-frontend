@@ -17,7 +17,7 @@
 package controllers.register.asset.shares
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.register.asset.RemoveAssetController
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject

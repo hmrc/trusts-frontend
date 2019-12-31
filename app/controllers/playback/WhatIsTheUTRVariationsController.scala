@@ -18,7 +18,7 @@ package controllers.playback
 
 import config.FrontendAppConfig
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{RegistrationDataRequiredAction, RegistrationDataRetrievalAction, RegistrationIdentifierAction}
 import forms.WhatIsTheUTRFormProvider
 import handlers.ErrorHandler
 import javax.inject.Inject
@@ -37,7 +37,7 @@ class WhatIsTheUTRVariationsController @Inject()(
                                                   override val messagesApi: MessagesApi,
                                                   registrationsRepository: RegistrationsRepository,
                                                   identify: RegistrationIdentifierAction,
-                                                  getData: DataRetrievalAction,
+                                                  getData: RegistrationDataRetrievalAction,
                                                   requireData: RegistrationDataRequiredAction,
                                                   formProvider: WhatIsTheUTRFormProvider,
                                                   val controllerComponents: MessagesControllerComponents,

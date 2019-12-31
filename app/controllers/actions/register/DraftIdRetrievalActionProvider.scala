@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package controllers.actions
+package controllers.actions.register
 
 import javax.inject.Inject
-import models.registration.pages.RegistrationStatus
 import models.requests.{IdentifierRequest, OptionalDataRequest}
 import play.api.mvc.ActionTransformer
 import repositories.RegistrationsRepository
@@ -29,6 +28,12 @@ class DraftIdDataRetrievalActionProviderImpl @Inject()(registrationsRepository: 
 
   def apply(draftId: String): DraftIdDataRetrievalAction =
     new DraftIdDataRetrievalAction(draftId, registrationsRepository, executionContext)
+
+}
+
+trait DraftIdRetrievalActionProvider {
+
+  def apply(draftId : String) : DraftIdDataRetrievalAction
 
 }
 
@@ -45,11 +50,5 @@ class DraftIdDataRetrievalAction(
         OptionalDataRequest(request.request, request.identifier, userAnswers, request.affinityGroup, request.enrolments, request.agentARN)
     }
   }
-
-}
-
-trait DraftIdRetrievalActionProvider {
-
-  def apply(draftId : String) : DraftIdDataRetrievalAction
 
 }

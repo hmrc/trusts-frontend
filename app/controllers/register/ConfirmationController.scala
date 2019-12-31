@@ -18,7 +18,7 @@ package controllers.register
 
 import config.FrontendAppConfig
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import handlers.ErrorHandler
 import javax.inject.Inject
 import mapping.reads.{LeadTrusteeIndividual, Trustees}

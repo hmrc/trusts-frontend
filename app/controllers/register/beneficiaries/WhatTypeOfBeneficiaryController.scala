@@ -17,7 +17,7 @@
 package controllers.register.beneficiaries
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.WhatTypeOfBeneficiaryFormProvider
 import javax.inject.Inject
 import models.requests.DataRequest

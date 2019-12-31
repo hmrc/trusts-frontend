@@ -20,7 +20,7 @@ import java.time.temporal.ChronoUnit.DAYS
 import java.time.{LocalDateTime, ZoneOffset}
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction, RequireDraftRegistrationActionRefiner}
 import forms.DeclarationFormProvider
 import javax.inject.Inject
 import models.Mode

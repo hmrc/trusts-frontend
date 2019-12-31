@@ -16,8 +16,7 @@
 
 package controllers.playback
 
-import controllers.actions.DataRetrievalAction
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{RegistrationDataRetrievalAction, RegistrationIdentifierAction}
 import javax.inject.Inject
 import models.NormalMode
 import pages.register.TrustRegisteredOnlinePage
@@ -30,7 +29,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class IndexController @Inject()(
                                  identify: RegistrationIdentifierAction,
-                                 getData: DataRetrievalAction,
+                                 getData: RegistrationDataRetrievalAction,
                                  val controllerComponents: MessagesControllerComponents
                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 

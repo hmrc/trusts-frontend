@@ -17,7 +17,7 @@
 package controllers.register.settlors.deceased_settlor
 
 import controllers.actions._
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import javax.inject.Inject
 import models.NormalMode
 import models.registration.pages.Status.Completed

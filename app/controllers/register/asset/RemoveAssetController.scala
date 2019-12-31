@@ -17,8 +17,8 @@
 package controllers.register.asset
 
 import controllers.RemoveIndexController
-import controllers.actions.register.RegistrationIdentifierAction
-import controllers.actions.{RegistrationDataRequiredAction, DraftIdRetrievalActionProvider, RequiredAnswerActionProvider}
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
+import controllers.actions.RequiredAnswerActionProvider
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
 import models.requests.DataRequest
