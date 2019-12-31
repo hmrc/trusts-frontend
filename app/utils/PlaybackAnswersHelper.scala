@@ -20,9 +20,12 @@ import javax.inject.Inject
 import models.core.pages.{IndividualOrBusiness, InternationalAddress, UKAddress}
 import models.playback.UserAnswers
 import pages.register.beneficiaries.charity._
+import pages.register.beneficiaries.classOfBeneficiary._
 import pages.register.beneficiaries.company._
+import pages.register.beneficiaries.other._
 import pages.register.beneficiaries.trust._
 import pages.register.settlors.deceased_settlor._
+import pages.register.settlors.living_settlor._
 import pages.register.trustees._
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
@@ -32,7 +35,7 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 class PlaybackAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers)(implicit messages: Messages) {
 
-  def deceasedSettlor: Option[Seq[AnswerSection]] = DeceasedSettlorSection(userAnswers, countryOptions)
+  def deceasedSettlor: Option[Seq[AnswerSection]] = DeceasedSettlor(userAnswers, countryOptions)
 
   def charityBeneficiary(index: Int): Option[Seq[AnswerSection]] = CharityBeneficiary(index, userAnswers, countryOptions)
 
@@ -45,70 +48,98 @@ class PlaybackAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswer
 
 }
 
-object CharityBeneficiary {
+//Lead Trustee Individual UK
+//Lead Trustee Individual Non-UK
+//Trustee Organisation
+
+object SettlorCompany {
 
   def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] = {
-    if (charityName(index, userAnswers).nonEmpty) {
+
+    val questions = Seq(
+    ).flatten
+
+    if (name(index, userAnswers).nonEmpty) {
       Some(Seq(AnswerSection(
         headingKey = None,
-        Seq(
-          charityName(index, userAnswers),
-          charityShareOfIncomeYesNo(index, userAnswers),
-          charityAddressYesNo(index, userAnswers)
-        ).flatten,
-        sectionKey = Some(messages("answerPage.section.charityBeneficiary.heading"))
+        questions,
+        sectionKey = Some(messages("answerPage.section.settlorCompany.heading"))
       )))
     } else {
       None
     }
   }
 
-  def charityName(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(CharityBeneficiaryNamePage(index)) map {
+  def name(index: Int, userAnswers: UserAnswers) = userAnswers.get(SettlorIndividualNamePage(index)) map { x =>
+    AnswerRow(
+      "settlorCompanyName.checkYourAnswersLabel",
+      HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"),
+      None
+    )
+  }
+
+  def utrYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+    userAnswers.get(SettlorUtrYesNoPage(index)) map {
+      x =>
+        AnswerRow(
+          "settlorCompanyUtrYesNo.checkYourAnswersLabel",
+          yesOrNo(x),
+          None
+        )
+    }
+
+  def utr(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(SettlorUtrPage(index)) map {
     x =>
       AnswerRow(
-        "charityName.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
+        "settlorCompanyUtr.checkYourAnswersLabel",
+        HtmlFormat.escape(x.format(dateFormatter)),
         None
       )
   }
 
-  def charityShareOfIncomeYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
-    userAnswers.get(CharityBeneficiaryDiscretionYesNoPage(index)) map {
-      x =>
-        AnswerRow(
-          "charityShareOfIncomeYesNo.checkYourAnswersLabel",
-          yesOrNo(x),
-          None
-        )
-    }
-
-  def charityAddressYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
-    userAnswers.get(CharityBeneficiaryAddressYesNoPage(index)) map {
-      x =>
-        AnswerRow(
-          "charityAddressYesNo.checkYourAnswersLabel",
-          yesOrNo(x),
-          None
-        )
-    }
-
-  def charityAddressYesNo(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[AnswerRow] =
-    userAnswers.get(CharityBeneficiaryAddressPage(index)) map {
-      case address: UKAddress => AnswerRow(
-        "charityBeneficiaryAddress.checkYourAnswersLabel",
-        ukAddress(address),
+  def addressYesNo(index: Int, userAnswers: UserAnswers)
+                  (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressYesNoPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorCompanyAddressYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
         None
       )
-      case address: InternationalAddress => AnswerRow(
-        "charityBeneficiaryAddress.checkYourAnswersLabel",
-        internationalAddress(address, countryOptions),
+  }
+
+  def addressUKYesNo(index: Int, userAnswers: UserAnswers)
+                    (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressUKYesNoPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorCompanyAddressUKYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
         None
       )
-    }
+  }
+
+  def addressUK(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)
+               (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressUKPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorCompanyUKAddress.checkYourAnswersLabel",
+        ukAddress(x),
+        None
+      )
+  }
+
+  def nonUKAddress(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)
+                  (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressInternationalPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorCompanyNonUKAddress.checkYourAnswersLabel",
+        internationalAddress(x, countryOptions),
+        None
+      )
+  }
 
 }
 
-object DeceasedSettlorSection {
+object DeceasedSettlor {
 
   def apply(userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] = {
 
@@ -258,14 +289,16 @@ object DeceasedSettlorSection {
 object LeadTrusteeBusiness {
 
   def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] = {
-    if (trusteeName(index, userAnswers).nonEmpty) {
+    if (name(index, userAnswers).nonEmpty) {
       Some(Seq(AnswerSection(
         headingKey = None,
         Seq(
-          trusteeName(index, userAnswers),
-          trusteeAddressUKYesNo(index, userAnswers),
-          trusteeTelephone(index, userAnswers),
-          trusteeEmail(index, userAnswers)
+          name(index, userAnswers),
+          addressUKYesNo(index, userAnswers),
+          addressUK(index, userAnswers),
+          addressNonUK(index, userAnswers, countryOptions),
+          telephone(index, userAnswers),
+          email(index, userAnswers)
         ).flatten,
         sectionKey = Some(messages("answerPage.section.leadTrusteeIndividual.heading"))
       )))
@@ -274,7 +307,7 @@ object LeadTrusteeBusiness {
     }
   }
 
-  def trusteeName(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(TrusteesNamePage(index)) map {
+  def name(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(TrusteesNamePage(index)) map {
     x =>
       AnswerRow(
         "trusteeName.checkYourAnswersLabel",
@@ -283,7 +316,7 @@ object LeadTrusteeBusiness {
       )
   }
 
-  def trusteeAddressUKYesNo(index: Int, userAnswers: UserAnswers)
+  def addressUKYesNo(index: Int, userAnswers: UserAnswers)
                            (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TrusteeLiveInTheUKPage(index)) map {
     x =>
       AnswerRow(
@@ -293,7 +326,7 @@ object LeadTrusteeBusiness {
       )
   }
 
-  def trusteeAddressUK(index: Int, userAnswers: UserAnswers)
+  def addressUK(index: Int, userAnswers: UserAnswers)
                            (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TrusteesUkAddressPage(index)) map {
     x =>
       AnswerRow(
@@ -303,7 +336,7 @@ object LeadTrusteeBusiness {
       )
   }
 
-  def trusteeAddressNonUK(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)
+  def addressNonUK(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)
                            (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TrusteesInternationalAddressPage(index)) map {
     x =>
       AnswerRow(
@@ -313,7 +346,7 @@ object LeadTrusteeBusiness {
       )
   }
 
-  def trusteeTelephone(index: Int, userAnswers: UserAnswers)
+  def telephone(index: Int, userAnswers: UserAnswers)
                       (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TelephoneNumberPage(index)) map {
     x =>
       AnswerRow(
@@ -323,7 +356,7 @@ object LeadTrusteeBusiness {
       )
   }
 
-  def trusteeEmail(index: Int, userAnswers: UserAnswers)
+  def email(index: Int, userAnswers: UserAnswers)
                   (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(EmailPage(index)) map {
     x =>
       AnswerRow(
@@ -338,20 +371,20 @@ object LeadTrusteeBusiness {
 object LeadTrusteeIndividual {
 
   def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] = {
-    if (trusteeName(index, userAnswers).nonEmpty) {
+    if (name(index, userAnswers).nonEmpty) {
       Some(Seq(AnswerSection(
         headingKey = None,
         Seq(
-          trusteeName(index, userAnswers),
-          trusteeDateOfBirth(index, userAnswers),
-          trusteeUKCitizen(index, userAnswers),
-          trusteeNationalInsuranceNumber(index, userAnswers),
+          name(index, userAnswers),
+          dateOfBirth(index, userAnswers),
+          isUKCitizen(index, userAnswers),
+          nino(index, userAnswers),
           trusteePassportOrIDCard(index, userAnswers, countryOptions),
-          trusteeAddressUKYesNo(index, userAnswers),
-          trusteeUKAddress(index, userAnswers, countryOptions),
-          trusteeNonUKAddress(index, userAnswers, countryOptions),
-          trusteeTelephone(index, userAnswers),
-          trusteeEmail(index, userAnswers)
+          addressUKYesNo(index, userAnswers),
+          addressUK(index, userAnswers, countryOptions),
+          nonUKAddress(index, userAnswers, countryOptions),
+          telephone(index, userAnswers),
+          email(index, userAnswers)
         ).flatten,
         sectionKey = Some(messages("answerPage.section.leadTrusteeIndividual.heading"))
       )))
@@ -360,7 +393,7 @@ object LeadTrusteeIndividual {
     }
   }
 
-  def trusteeName(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(TrusteesNamePage(index)) map {
+  def name(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(TrusteesNamePage(index)) map {
     x =>
       AnswerRow(
         "trusteeName.checkYourAnswersLabel",
@@ -369,7 +402,7 @@ object LeadTrusteeIndividual {
       )
   }
 
-  def trusteeDateOfBirth(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(TrusteesDateOfBirthPage(index)) map {
+  def dateOfBirth(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(TrusteesDateOfBirthPage(index)) map {
     x =>
       AnswerRow(
         "trusteeDateOfBirth.checkYourAnswersLabel",
@@ -378,7 +411,7 @@ object LeadTrusteeIndividual {
       )
   }
 
-  def trusteeUKCitizen(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+  def isUKCitizen(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
     userAnswers.get(TrusteeAUKCitizenPage(index)) map {
       x =>
         AnswerRow(
@@ -388,7 +421,7 @@ object LeadTrusteeIndividual {
         )
     }
 
-  def trusteeNationalInsuranceNumber(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(TrusteesNinoPage(index)) map {
+  def nino(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(TrusteesNinoPage(index)) map {
     x =>
       AnswerRow(
         "trusteeNationalInsuranceNumber.checkYourAnswersLabel",
@@ -407,7 +440,7 @@ object LeadTrusteeIndividual {
         )
     }
 
-  def trusteeAddressUKYesNo(index: Int, userAnswers: UserAnswers)
+  def addressUKYesNo(index: Int, userAnswers: UserAnswers)
                            (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TrusteeLiveInTheUKPage(index)) map {
     x =>
       AnswerRow(
@@ -417,7 +450,7 @@ object LeadTrusteeIndividual {
       )
   }
 
-  def trusteeUKAddress(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)
+  def addressUK(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)
                       (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TrusteesUkAddressPage(index)) map {
     x =>
       AnswerRow(
@@ -427,7 +460,7 @@ object LeadTrusteeIndividual {
       )
   }
 
-  def trusteeNonUKAddress(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)
+  def nonUKAddress(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)
                          (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TrusteesInternationalAddressPage(index)) map {
     x =>
       AnswerRow(
@@ -437,7 +470,7 @@ object LeadTrusteeIndividual {
       )
   }
 
-  def trusteeTelephone(index: Int, userAnswers: UserAnswers)
+  def telephone(index: Int, userAnswers: UserAnswers)
                       (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TelephoneNumberPage(index)) map {
     x =>
       AnswerRow(
@@ -447,7 +480,7 @@ object LeadTrusteeIndividual {
       )
   }
 
-  def trusteeEmail(index: Int, userAnswers: UserAnswers)
+  def email(index: Int, userAnswers: UserAnswers)
                   (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(EmailPage(index)) map {
     x =>
       AnswerRow(
@@ -462,11 +495,15 @@ object LeadTrusteeIndividual {
 object CompanyBeneficiary {
 
   def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] =
-    if (companyBeneficiaryName(index, userAnswers).nonEmpty) {
+    if (name(index, userAnswers).nonEmpty) {
       Some(Seq(AnswerSection(
         headingKey = None,
         Seq(
-          companyBeneficiaryName(index, userAnswers)
+          name(index, userAnswers),
+          shareOfIncomeYesNo(index, userAnswers),
+          shareOfIncome(index, userAnswers),
+          addressYesNo(index, userAnswers),
+          address(index, userAnswers, countryOptions)
         ).flatten,
         sectionKey = Some(messages("answerPage.section.companyBeneficiary.heading"))
       )))
@@ -474,7 +511,7 @@ object CompanyBeneficiary {
       None
     }
 
-  def companyBeneficiaryName(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(CompanyBeneficiaryNamePage(index)) map {
+  def name(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(CompanyBeneficiaryNamePage(index)) map {
     x =>
       AnswerRow(
         "companyBeneficiaryName.checkYourAnswersLabel",
@@ -483,7 +520,7 @@ object CompanyBeneficiary {
       )
   }
 
-  def companyBeneficiaryShareOfIncomeYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+  def shareOfIncomeYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
     userAnswers.get(CompanyBeneficiaryDiscretionYesNoPage(index)) map {
       x =>
         AnswerRow(
@@ -493,7 +530,7 @@ object CompanyBeneficiary {
         )
     }
 
-  def companyBeneficiaryShareOfIncome(index: Int, userAnswers: UserAnswers): Option[AnswerRow] =
+  def shareOfIncome(index: Int, userAnswers: UserAnswers): Option[AnswerRow] =
     userAnswers.get(CompanyBeneficiaryShareOfIncomePage(index)) map {
       x =>
         AnswerRow(
@@ -503,7 +540,7 @@ object CompanyBeneficiary {
         )
     }
 
-  def companyBeneficiaryAddressYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+  def addressYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
     userAnswers.get(CompanyBeneficiaryAddressYesNoPage(index)) map {
       x =>
         AnswerRow(
@@ -513,7 +550,7 @@ object CompanyBeneficiary {
         )
     }
 
-  def companyBeneficiaryAddress(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[AnswerRow] =
+  def address(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[AnswerRow] =
     userAnswers.get(CompanyBeneficiaryAddressPage(index)) map {
       case address: UKAddress => AnswerRow(
         "companyBeneficiaryAddress.checkYourAnswersLabel",
@@ -532,10 +569,15 @@ object CompanyBeneficiary {
 object TrustBeneficiary {
 
   def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] =
-    if (trustBeneficiaryNamePage(index, userAnswers).nonEmpty) {
+    if (name(index, userAnswers).nonEmpty) {
       Some(Seq(AnswerSection(
         headingKey = None,
         Seq(
+          name(index, userAnswers),
+          shareOfIncomeYesNo(index, userAnswers),
+          shareOfIncome(index, userAnswers),
+          addressYesNo(index, userAnswers),
+          address(index, userAnswers, countryOptions)
         ).flatten,
         sectionKey = Some(messages("answerPage.section.companyBeneficiary.heading"))
       )))
@@ -543,7 +585,7 @@ object TrustBeneficiary {
       None
     }
 
-  def trustBeneficiaryNamePage(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(TrustBeneficiaryNamePage(index)) map {
+  def name(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(TrustBeneficiaryNamePage(index)) map {
     x =>
       AnswerRow(
         "trustBeneficiaryName.checkYourAnswersLabel",
@@ -552,7 +594,7 @@ object TrustBeneficiary {
       )
   }
 
-  def trustBeneficiaryShareOfIncomeYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+  def shareOfIncomeYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
     userAnswers.get(TrustBeneficiaryDiscretionYesNoPage(index)) map {
       x =>
         AnswerRow(
@@ -562,7 +604,7 @@ object TrustBeneficiary {
         )
     }
 
-  def trustBeneficiaryShareOfIncome(index: Int, userAnswers: UserAnswers): Option[AnswerRow] =
+  def shareOfIncome(index: Int, userAnswers: UserAnswers): Option[AnswerRow] =
     userAnswers.get(TrustBeneficiaryShareOfIncomePage(index)) map {
       x =>
         AnswerRow(
@@ -572,7 +614,7 @@ object TrustBeneficiary {
         )
     }
 
-  def trustBeneficiaryAddressYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+  def addressYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
     userAnswers.get(TrustBeneficiaryAddressYesNoPage(index)) map {
       x =>
         AnswerRow(
@@ -582,7 +624,7 @@ object TrustBeneficiary {
         )
     }
 
-  def trustBeneficiaryAddress(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[AnswerRow] =
+  def address(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[AnswerRow] =
     userAnswers.get(TrustBeneficiaryAddressPage(index)) map {
       case address: UKAddress => AnswerRow(
         "trustBeneficiaryAddress.checkYourAnswersLabel",
@@ -591,6 +633,205 @@ object TrustBeneficiary {
       )
       case address: InternationalAddress => AnswerRow(
         "trustBeneficiaryAddress.checkYourAnswersLabel",
+        internationalAddress(address, countryOptions),
+        None
+      )
+    }
+
+}
+
+object CharityBeneficiary {
+
+  def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] = {
+    if (name(index, userAnswers).nonEmpty) {
+      Some(Seq(AnswerSection(
+        headingKey = None,
+        Seq(
+          name(index, userAnswers),
+          shareOfIncomeYesNo(index, userAnswers),
+          shareOfIncome(index, userAnswers),
+          addressYesNo(index, userAnswers),
+          address(index, userAnswers, countryOptions)
+        ).flatten,
+        sectionKey = Some(messages("answerPage.section.charityBeneficiary.heading"))
+      )))
+    } else {
+      None
+    }
+  }
+
+  def name(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(CharityBeneficiaryNamePage(index)) map {
+    x =>
+      AnswerRow(
+        "charityName.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        None
+      )
+  }
+
+  def shareOfIncomeYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+    userAnswers.get(CharityBeneficiaryDiscretionYesNoPage(index)) map {
+      x =>
+        AnswerRow(
+          "charityShareOfIncomeYesNo.checkYourAnswersLabel",
+          yesOrNo(x),
+          None
+        )
+    }
+
+  def shareOfIncome(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+    userAnswers.get(CharityBeneficiaryShareOfIncomePage(index)) map {
+      x =>
+        AnswerRow(
+          "charityShareOfIncomeYesNo.checkYourAnswersLabel",
+          HtmlFormat.escape(x),
+          None
+        )
+    }
+
+  def addressYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+    userAnswers.get(CharityBeneficiaryAddressYesNoPage(index)) map {
+      x =>
+        AnswerRow(
+          "charityAddressYesNo.checkYourAnswersLabel",
+          yesOrNo(x),
+          None
+        )
+    }
+
+  def address(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[AnswerRow] =
+    userAnswers.get(CharityBeneficiaryAddressPage(index)) map {
+      case address: UKAddress => AnswerRow(
+        "charityBeneficiaryAddress.checkYourAnswersLabel",
+        ukAddress(address),
+        None
+      )
+      case address: InternationalAddress => AnswerRow(
+        "charityBeneficiaryAddress.checkYourAnswersLabel",
+        internationalAddress(address, countryOptions),
+        None
+      )
+    }
+
+}
+
+object ClassOfBeneficiary {
+
+  def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] = {
+    if (description(index, userAnswers).nonEmpty) {
+      Some(Seq(AnswerSection(
+        headingKey = None,
+        Seq(
+          description(index, userAnswers),
+          shareOfIncomeYesNo(index, userAnswers),
+          shareOfIncome(index, userAnswers)
+        ).flatten,
+        sectionKey = Some(messages("answerPage.section.charityBeneficiary.heading"))
+      )))
+    } else {
+      None
+    }
+  }
+
+  def description(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(ClassOfBeneficiaryDescriptionPage(index)) map {
+    x =>
+      AnswerRow(
+        "otherDescription.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        None
+      )
+  }
+
+  def shareOfIncomeYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+    userAnswers.get(ClassOfBeneficiaryDiscretionYesNoPage(index)) map {
+      x =>
+        AnswerRow(
+          "otherShareOfIncomeYesNo.checkYourAnswersLabel",
+          yesOrNo(x),
+          None
+        )
+    }
+
+  def shareOfIncome(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+    userAnswers.get(ClassOfBeneficiaryShareOfIncomePage(index)) map {
+      x =>
+        AnswerRow(
+          "otherShareOfIncome.checkYourAnswersLabel",
+          HtmlFormat.escape(x),
+          None
+        )
+    }
+
+}
+
+object OtherBeneficiary {
+
+  def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] = {
+    if (description(index, userAnswers).nonEmpty) {
+      Some(Seq(AnswerSection(
+        headingKey = None,
+        Seq(
+          description(index, userAnswers),
+          shareOfIncomeYesNo(index, userAnswers),
+          shareOfIncome(index, userAnswers),
+          addressYesNo(index, userAnswers),
+          address(index, userAnswers, countryOptions)
+        ).flatten,
+        sectionKey = Some(messages("answerPage.section.charityBeneficiary.heading"))
+      )))
+    } else {
+      None
+    }
+  }
+
+  def description(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(OtherBeneficiaryDescriptionPage(index)) map {
+    x =>
+      AnswerRow(
+        "otherDescription.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        None
+      )
+  }
+
+  def shareOfIncomeYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+    userAnswers.get(OtherBeneficiaryDiscretionYesNoPage(index)) map {
+      x =>
+        AnswerRow(
+          "otherShareOfIncomeYesNo.checkYourAnswersLabel",
+          yesOrNo(x),
+          None
+        )
+    }
+
+  def shareOfIncome(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+    userAnswers.get(OtherBeneficiaryShareOfIncomePage(index)) map {
+      x =>
+        AnswerRow(
+          "otherShareOfIncome.checkYourAnswersLabel",
+          HtmlFormat.escape(x),
+          None
+        )
+    }
+
+  def addressYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+    userAnswers.get(OtherBeneficiaryAddressYesNoPage(index)) map {
+      x =>
+        AnswerRow(
+          "otherAddressYesNo.checkYourAnswersLabel",
+          yesOrNo(x),
+          None
+        )
+    }
+
+  def address(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[AnswerRow] =
+    userAnswers.get(OtherBeneficiaryAddressPage(index)) map {
+      case address: UKAddress => AnswerRow(
+        "charityBeneficiaryAddress.checkYourAnswersLabel",
+        ukAddress(address),
+        None
+      )
+      case address: InternationalAddress => AnswerRow(
+        "charityBeneficiaryAddress.checkYourAnswersLabel",
         internationalAddress(address, countryOptions),
         None
       )
