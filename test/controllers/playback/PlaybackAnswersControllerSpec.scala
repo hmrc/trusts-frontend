@@ -20,7 +20,7 @@ import base.SpecBase
 import connector.TrustConnector
 import controllers.actions._
 import controllers.actions.playback.PlaybackIdentifierAction
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{RegistrationDataRequiredAction, RegistrationDataRequiredActionImpl, RegistrationDataRetrievalAction, RegistrationIdentifierAction}
 import models.core.pages.UKAddress
 import models.playback.UserAnswers
 import pages.playback.WhatIsTheUTRVariationPage
@@ -59,11 +59,11 @@ class PlaybackAnswersControllerSpec extends SpecBase {
 
       val app = new GuiceApplicationBuilder()
         .overrides(
-          bind[DataRequiredAction].to[DataRequiredActionImpl],
+          bind[RegistrationDataRequiredAction].to[RegistrationDataRequiredActionImpl],
           bind[TrustConnector].toInstance(mock[TrustConnector]),
           bind[RegistrationIdentifierAction].toInstance(new FakeIdentifyForRegistration(Organisation)(injectedParsers, trustsAuth, Enrolments(Set.empty))),
           bind[PlaybackIdentifierAction].toInstance(new FakePlaybackIdentifierAction()),
-          bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(None)),
+          bind[RegistrationDataRetrievalAction].toInstance(new FakeRegistrationDataRetrievalAction(None)),
           bind[AffinityGroup].toInstance(Organisation)
         ).build()
 

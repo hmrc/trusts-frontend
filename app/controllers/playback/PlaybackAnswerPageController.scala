@@ -19,7 +19,7 @@ package controllers.playback
 import connector.TrustConnector
 import controllers.actions._
 import controllers.actions.playback.PlaybackIdentifierAction
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.{RegistrationDataRequiredAction, RegistrationDataRetrievalAction, RegistrationIdentifierAction}
 import javax.inject.Inject
 import models.playback.http.Processed
 import pages.playback.WhatIsTheUTRVariationPage
@@ -36,8 +36,8 @@ class PlaybackAnswerPageController @Inject()(
                                               override val messagesApi: MessagesApi,
                                               identify: RegistrationIdentifierAction,
                                               playbackAction: PlaybackIdentifierAction,
-                                              getData: DataRetrievalAction,
-                                              requireData: DataRequiredAction,
+                                              getData: RegistrationDataRetrievalAction,
+                                              requireData: RegistrationDataRequiredAction,
                                               val controllerComponents: MessagesControllerComponents,
                                               view: PlaybackAnswersView,
                                               countryOptions: CountryOptions,
