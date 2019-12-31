@@ -131,7 +131,7 @@ class TrustStatusController @Inject()(
       case Processing => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.processing()))
       case UtrNotFound => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.notFound()))
       case Processed(playback, _) =>
-        authenticationService.authenticateForPlayback(utr) flatMap {
+        authenticationService.authenticate(utr) flatMap {
           case Left(failure) => Future.successful(failure)
           case Right(_) => extract(utr, playback)
         }

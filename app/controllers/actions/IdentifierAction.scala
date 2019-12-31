@@ -25,7 +25,8 @@ import uk.gov.hmrc.play.HeaderCarrierConverter
 import scala.concurrent.{ExecutionContext, Future}
 
 
-class IdentifierAction @Inject()(val parser: BodyParsers.Default, trustsAuth: TrustsAuth)
+class IdentifierAction @Inject()(val parser: BodyParsers.Default,
+                                 trustsAuth: TrustsAuth)
                                 (override implicit val executionContext: ExecutionContext) extends ActionBuilder[IdentifierRequest, AnyContent] {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {

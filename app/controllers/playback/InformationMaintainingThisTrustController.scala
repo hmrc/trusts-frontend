@@ -34,7 +34,7 @@ class InformationMaintainingThisTrustController @Inject()(
                                                            identify: IdentifierAction,
                                                            getData: DataRetrievalAction,
                                                            requireData: DataRequiredAction,
-                                                           playbackAction: PlaybackAction,
+                                                           playbackAction: PlaybackIdentifierAction,
                                                            val controllerComponents: MessagesControllerComponents,
                                                            maintainingTrustView: InformationMaintainingThisTrustView,
                                                            agentCannotAccessTrustYetView: AgentCannotAccessTrustYetView

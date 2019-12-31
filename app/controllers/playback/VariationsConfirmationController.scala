@@ -27,13 +27,13 @@ import views.html.playback.VariationsConfirmationView
 import scala.concurrent.ExecutionContext
 
 class VariationsConfirmationController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
-                                       playbackAction: PlaybackAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: VariationsConfirmationView
+                                                  override val messagesApi: MessagesApi,
+                                                  identify: IdentifierAction,
+                                                  playbackAction: PlaybackIdentifierAction,
+                                                  getData: DataRetrievalAction,
+                                                  requireData: DataRequiredAction,
+                                                  val controllerComponents: MessagesControllerComponents,
+                                                  view: VariationsConfirmationView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 

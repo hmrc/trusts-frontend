@@ -35,7 +35,7 @@ class Module extends AbstractModule {
 
     bind(classOf[DataRetrievalAction]).to(classOf[DataRetrievalActionImpl]).asEagerSingleton()
     bind(classOf[DataRequiredAction]).to(classOf[DataRequiredActionImpl]).asEagerSingleton()
-    bind(classOf[PlaybackAction]).to(classOf[PlaybackActionImpl]).asEagerSingleton()
+    bind(classOf[PlaybackIdentifierAction]).to(classOf[PlaybackIdentifierActionImpl]).asEagerSingleton()
     bind(classOf[DraftIdRetrievalActionProvider]).to(classOf[DraftIdDataRetrievalActionProviderImpl]).asEagerSingleton()
     bind(classOf[RequireDraftRegistrationActionRefiner]).to(classOf[RequireDraftRegistrationActionRefinerImpl]).asEagerSingleton()
 

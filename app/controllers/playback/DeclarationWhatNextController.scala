@@ -36,7 +36,7 @@ class DeclarationWhatNextController @Inject()(
                                                sessionRepository: RegistrationsRepository,
                                                navigator: VariationsNavigator,
                                                identify: IdentifierAction,
-                                               playbackAction: PlaybackAction,
+                                               playbackAction: PlaybackIdentifierAction,
                                                getData: DataRetrievalAction,
                                                requireData: DataRequiredAction,
                                                formProvider: DeclarationWhatNextFormProvider,

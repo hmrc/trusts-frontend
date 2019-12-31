@@ -85,7 +85,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
 
           val service = app.injector.instanceOf[PlaybackAuthenticationService]
 
-          whenReady(service.authenticateForPlayback[AnyContent](utr)) {
+          whenReady(service.authenticate[AnyContent](utr)) {
             result =>
               result.right.value mustBe dataRequest
           }
@@ -110,7 +110,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
 
           val service = app.injector.instanceOf[PlaybackAuthenticationService]
 
-          whenReady(service.authenticateForPlayback[AnyContent](utr)) {
+          whenReady(service.authenticate[AnyContent](utr)) {
             result =>
               result.left.value.header.headers(HeaderNames.LOCATION) mustBe controllers.playback.routes.TrustNotClaimedController.onPageLoad().url
           }
@@ -138,7 +138,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
 
           implicit val dataRequest = DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Agent, enrolments)
 
-          whenReady(service.authenticateForPlayback[AnyContent](utr)) {
+          whenReady(service.authenticate[AnyContent](utr)) {
             result =>
               result.left.value.header.headers(HeaderNames.LOCATION) mustBe controllers.playback.routes.AgentNotAuthorisedController.onPageLoad().url
           }
@@ -170,7 +170,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
 
           implicit val dataRequest = DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Agent, enrolments)
 
-          whenReady(service.authenticateForPlayback[AnyContent](utr)) {
+          whenReady(service.authenticate[AnyContent](utr)) {
             result =>
               result.left.value.header.headers(HeaderNames.LOCATION) mustBe controllers.playback.routes.AgentNotAuthorisedController.onPageLoad().url
           }
@@ -206,7 +206,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
             implicit val dataRequest =
               DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
 
-            whenReady(service.authenticateForPlayback[AnyContent](utr)) {
+            whenReady(service.authenticate[AnyContent](utr)) {
               result =>
                 result.left.value.header.headers(HeaderNames.LOCATION) must include("/verify-your-identity-for-a-trust")
             }
@@ -236,7 +236,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
             implicit val dataRequest =
               DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
 
-            whenReady(service.authenticateForPlayback[AnyContent](utr)) {
+            whenReady(service.authenticate[AnyContent](utr)) {
               result =>
                 result.right.value mustBe dataRequest
             }
@@ -269,7 +269,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
             implicit val dataRequest =
               DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
 
-            val result = service.authenticateForPlayback(utr)
+            val result = service.authenticate(utr)
             val left = result.map(_.left.value)
 
             status(left) mustBe INTERNAL_SERVER_ERROR
@@ -299,7 +299,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
             implicit val dataRequest =
               DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
 
-            whenReady(service.authenticateForPlayback[AnyContent](utr)) {
+            whenReady(service.authenticate[AnyContent](utr)) {
               result =>
                 result.left.value.header.headers(HeaderNames.LOCATION) mustBe
                   controllers.playback.routes.TrustStatusController.alreadyClaimed().url
@@ -330,7 +330,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
             implicit val dataRequest =
               DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
 
-            whenReady(service.authenticateForPlayback[AnyContent](utr)) {
+            whenReady(service.authenticate[AnyContent](utr)) {
               result =>
                 result.left.value.header.headers(HeaderNames.LOCATION) must include("/claim-a-trust")
             }
@@ -357,7 +357,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
 
       val service = app.injector.instanceOf[PlaybackAuthenticationService]
 
-      recoverToSucceededIf[BearerTokenExpired](service.authenticateForPlayback[AnyContent](utr))
+      recoverToSucceededIf[BearerTokenExpired](service.authenticate[AnyContent](utr))
     }
   }
 

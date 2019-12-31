@@ -40,7 +40,7 @@ class PlaybackAuthenticationServiceImpl @Inject()(
                                            implicit val ec: ExecutionContext
                                          ) extends PlaybackAuthenticationService {
 
-  def authenticateForPlayback[A](utr: String)(implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]] =
+  def authenticate[A](utr: String)(implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]] =
     request.affinityGroup match {
       case Agent => checkIfAgentAuthorised(utr)
       case _ => checkIfTrustIsClaimedAndTrustIV(utr)
@@ -108,5 +108,5 @@ class PlaybackAuthenticationServiceImpl @Inject()(
 
 @ImplementedBy(classOf[PlaybackAuthenticationServiceImpl])
 trait PlaybackAuthenticationService {
-  def authenticateForPlayback[A](utr: String)(implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]]
+  def authenticate[A](utr: String)(implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]]
 }

@@ -22,9 +22,9 @@ import play.api.mvc.Result
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class FakePlaybackAction @Inject()(
+class FakePlaybackIdentifierAction @Inject()(
                                   implicit val executionContext: ExecutionContext
-                                  ) extends PlaybackAction {
+                                  ) extends PlaybackIdentifierAction {
 
   override def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] = Future.successful(Right(request))
 

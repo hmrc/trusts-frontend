@@ -39,7 +39,7 @@ class DeclarationController @Inject()(
                                        registrationsRepository: RegistrationsRepository,
                                        navigator: Navigator,
                                        identify: IdentifierAction,
-                                       playbackAction: PlaybackAction,
+                                       playbackAction: PlaybackIdentifierAction,
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
                                        requiredAnswer: RequiredAnswerActionProvider,
