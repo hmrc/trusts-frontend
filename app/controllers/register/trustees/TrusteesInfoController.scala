@@ -27,7 +27,7 @@ import scala.concurrent.ExecutionContext
 
 class TrusteesInfoController @Inject()(
                                         override val messagesApi: MessagesApi,
-                                        identify: IdentifierAction,
+                                        identify: RegistrationIdentifierAction,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: TrusteesInfoView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {

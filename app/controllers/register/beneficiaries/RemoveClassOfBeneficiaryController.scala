@@ -34,7 +34,7 @@ import scala.concurrent.ExecutionContext
 class RemoveClassOfBeneficiaryController @Inject()(
                                                     override val messagesApi: MessagesApi,
                                                     override val registrationsRepository: RegistrationsRepository,
-                                                    identify: IdentifierAction,
+                                                    identify: RegistrationIdentifierAction,
                                                     getData: DraftIdRetrievalActionProvider,
                                                     requireData: DataRequiredAction,
                                                     val formProvider: RemoveIndexFormProvider,

@@ -31,7 +31,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class AgentOverviewController @Inject()(
                                          override val messagesApi: MessagesApi,
-                                         identify: IdentifierAction,
+                                         identify: RegistrationIdentifierAction,
                                          hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                          registrationsRepository: RegistrationsRepository,
                                          config: FrontendAppConfig,

@@ -35,7 +35,7 @@ class AgentTelephoneNumberController @Inject()(
                                                 override val messagesApi: MessagesApi,
                                                 registrationsRepository: RegistrationsRepository,
                                                 navigator: Navigator,
-                                                identify: IdentifierAction,
+                                                identify: RegistrationIdentifierAction,
                                                 hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                                 getData: DraftIdRetrievalActionProvider,
                                                 requireData: DataRequiredAction,

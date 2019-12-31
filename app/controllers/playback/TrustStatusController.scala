@@ -18,7 +18,7 @@ package controllers.playback
 
 import config.FrontendAppConfig
 import connector.{TrustConnector, TrustsStoreConnector}
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions.{DataRequiredAction, DataRetrievalAction, RegistrationIdentifierAction}
 import handlers.ErrorHandler
 import javax.inject.Inject
 import mapping.playback.UserAnswersExtractor
@@ -41,7 +41,7 @@ class TrustStatusController @Inject()(
                                        registrationsRepository: RegistrationsRepository,
                                        playbackRepository: PlaybackRepository,
                                        navigator: Navigator,
-                                       identify: IdentifierAction,
+                                       identify: RegistrationIdentifierAction,
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
                                        closedView: ClosedErrorView,

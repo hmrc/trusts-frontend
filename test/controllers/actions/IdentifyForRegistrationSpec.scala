@@ -35,7 +35,7 @@ class IdentifyForRegistrationSpec extends SpecBase {
 
   val mockAuthConnector: AuthConnector = mock[AuthConnector]
   val appConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
-  lazy override val trustsAuth = new TrustsAuth(mockAuthConnector, appConfig)
+  lazy override val trustsAuth = new TrustsAuthorisedFunctions(mockAuthConnector, appConfig)
 
   private val noEnrollment = Enrolments(Set())
 
@@ -49,7 +49,7 @@ class IdentifyForRegistrationSpec extends SpecBase {
     "passing a non authenticated request" must {
       "redirect to the login page" in {
 
-        val identify: IdentifierAction = new IdentifierAction(injectedParsers, trustsAuth)
+        val identify: RegistrationIdentifierAction = new RegistrationIdentifierAction(injectedParsers, trustsAuth)
         val application = applicationBuilder(userAnswers = None).build()
 
         def fakeAction: Action[AnyContent] = identify { _ => Results.Ok }
@@ -68,7 +68,7 @@ class IdentifyForRegistrationSpec extends SpecBase {
     "passing an identifier request" must {
       "execute the body of the action" in {
 
-        val identify: IdentifierAction = new IdentifierAction(injectedParsers, trustsAuth)
+        val identify: RegistrationIdentifierAction = new RegistrationIdentifierAction(injectedParsers, trustsAuth)
 
         val fakeAction: Action[AnyContent] = identify { _ => Results.Ok }
 

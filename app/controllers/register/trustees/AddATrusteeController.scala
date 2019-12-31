@@ -38,7 +38,7 @@ class AddATrusteeController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        registrationsRepository: RegistrationsRepository,
                                        navigator: Navigator,
-                                       identify: IdentifierAction,
+                                       identify: RegistrationIdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
                                        addAnotherFormProvider: AddATrusteeFormProvider,

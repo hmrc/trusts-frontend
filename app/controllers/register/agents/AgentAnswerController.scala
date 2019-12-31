@@ -33,7 +33,7 @@ import scala.concurrent.ExecutionContext
 
 class AgentAnswerController @Inject()(
                                        override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
+                                       identify: RegistrationIdentifierAction,
                                        navigator: Navigator,
                                        hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                        getData: DraftIdRetrievalActionProvider,

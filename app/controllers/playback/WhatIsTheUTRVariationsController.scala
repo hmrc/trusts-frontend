@@ -35,7 +35,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class WhatIsTheUTRVariationsController @Inject()(
                                                   override val messagesApi: MessagesApi,
                                                   registrationsRepository: RegistrationsRepository,
-                                                  identify: IdentifierAction,
+                                                  identify: RegistrationIdentifierAction,
                                                   getData: DataRetrievalAction,
                                                   requireData: DataRequiredAction,
                                                   formProvider: WhatIsTheUTRFormProvider,

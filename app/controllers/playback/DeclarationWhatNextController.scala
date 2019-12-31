@@ -35,7 +35,7 @@ class DeclarationWhatNextController @Inject()(
                                                override val messagesApi: MessagesApi,
                                                sessionRepository: RegistrationsRepository,
                                                navigator: VariationsNavigator,
-                                               identify: IdentifierAction,
+                                               identify: RegistrationIdentifierAction,
                                                playbackAction: PlaybackIdentifierAction,
                                                getData: DataRetrievalAction,
                                                requireData: DataRequiredAction,

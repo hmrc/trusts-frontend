@@ -27,7 +27,7 @@ import scala.concurrent.ExecutionContext
 
 class IndividualBeneficiaryInfoController @Inject()(
                                                      override val messagesApi: MessagesApi,
-                                                     identify: IdentifierAction,
+                                                     identify: RegistrationIdentifierAction,
                                                      getData: DraftIdRetrievalActionProvider,
                                                      requireData: DataRequiredAction,
                                                      val controllerComponents: MessagesControllerComponents,

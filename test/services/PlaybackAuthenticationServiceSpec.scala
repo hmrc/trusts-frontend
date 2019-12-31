@@ -19,7 +19,7 @@ package services
 import base.SpecBase
 import config.FrontendAppConfig
 import connector.EnrolmentStoreConnector
-import controllers.actions.TrustsAuth
+import controllers.actions.TrustsAuthorisedFunctions
 import models.EnrolmentStoreResponse.{AlreadyClaimed, NotClaimed, ServerError}
 import models.requests.DataRequest
 import org.mockito.Matchers.{any, eq => mEq}
@@ -62,7 +62,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
   private def authRetrievals(affinityGroup: AffinityGroup, enrolment: Enrolments) =
     Future.successful(new ~(new ~(Some("id"), Some(affinityGroup)), enrolment))
 
-  lazy override val trustsAuth = new TrustsAuth(mockAuthConnector, appConfig)
+  lazy override val trustsAuth = new TrustsAuthorisedFunctions(mockAuthConnector, appConfig)
 
   "invoking the IdentifyForPlaybacks action builder" when {
 
@@ -79,7 +79,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
             .thenReturn(Future.successful(AlreadyClaimed))
 
           val app = applicationBuilder()
-            .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+            .overrides(bind[TrustsAuthorisedFunctions].toInstance(trustsAuth))
             .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
             .build()
 
@@ -104,7 +104,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
             .thenReturn(Future.successful(NotClaimed))
 
           val app = applicationBuilder()
-            .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+            .overrides(bind[TrustsAuthorisedFunctions].toInstance(trustsAuth))
             .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
             .build()
 
@@ -130,7 +130,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
             .thenReturn(Future.successful(AlreadyClaimed))
 
           val app = applicationBuilder()
-            .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+            .overrides(bind[TrustsAuthorisedFunctions].toInstance(trustsAuth))
             .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
             .build()
 
@@ -162,7 +162,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
             .thenReturn(Future.successful(AlreadyClaimed))
 
           val app = applicationBuilder()
-            .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+            .overrides(bind[TrustsAuthorisedFunctions].toInstance(trustsAuth))
             .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
             .build()
 
@@ -197,7 +197,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
               .thenReturn(Future.failed(FailedRelationship()))
 
             val app = applicationBuilder()
-              .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+              .overrides(bind[TrustsAuthorisedFunctions].toInstance(trustsAuth))
               .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
               .build()
 
@@ -227,7 +227,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
               .thenReturn(Future.successful(()))
 
             val app = applicationBuilder()
-              .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+              .overrides(bind[TrustsAuthorisedFunctions].toInstance(trustsAuth))
               .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
               .build()
 
@@ -260,7 +260,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
               .thenReturn(Future.successful(ServerError))
 
             val app = applicationBuilder()
-              .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+              .overrides(bind[TrustsAuthorisedFunctions].toInstance(trustsAuth))
               .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
               .build()
 
@@ -290,7 +290,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
               .thenReturn(Future.successful(AlreadyClaimed))
 
             val app = applicationBuilder()
-              .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+              .overrides(bind[TrustsAuthorisedFunctions].toInstance(trustsAuth))
               .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
               .build()
 
@@ -321,7 +321,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
 
 
             val app = applicationBuilder()
-              .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+              .overrides(bind[TrustsAuthorisedFunctions].toInstance(trustsAuth))
               .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
               .build()
 
@@ -349,7 +349,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
     "redirect to the login page" in {
 
       val app = applicationBuilder()
-        .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+        .overrides(bind[TrustsAuthorisedFunctions].toInstance(trustsAuth))
         .build()
 
       when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))

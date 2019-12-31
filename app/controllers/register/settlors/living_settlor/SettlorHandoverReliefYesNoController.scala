@@ -37,7 +37,7 @@ class SettlorHandoverReliefYesNoController @Inject()(
                                                       override val messagesApi: MessagesApi,
                                                       registrationsRepository: RegistrationsRepository,
                                                       @LivingSettlor navigator: Navigator,
-                                                      identify: IdentifierAction,
+                                                      identify: RegistrationIdentifierAction,
                                                       getData: DraftIdRetrievalActionProvider,
                                                       requiredAnswer: RequiredAnswerActionProvider,
                                                       requireData: DataRequiredAction,

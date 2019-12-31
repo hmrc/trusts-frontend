@@ -16,7 +16,7 @@
 
 package services
 
-import controllers.actions.TrustsAuth
+import controllers.actions.TrustsAuthorisedFunctions
 import javax.inject.Inject
 import models.requests.DataRequest
 import play.api.Logger
@@ -26,7 +26,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrustsIV @Inject()(trustsAuth: TrustsAuth) {
+class TrustsIV @Inject()(trustsAuth: TrustsAuthorisedFunctions) {
 
   def authenticate[A](utr: String,
                       onIVRelationshipExisting : Future[Either[Result, DataRequest[A]]],

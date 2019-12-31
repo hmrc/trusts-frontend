@@ -17,7 +17,7 @@
 package controllers.register
 
 import com.google.inject.Inject
-import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider, IdentifierAction}
+import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider, RegistrationIdentifierAction}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -28,7 +28,7 @@ import views.html.register.CheckYourAnswersView
 
 class CheckYourAnswersController @Inject()(
                                             override val messagesApi: MessagesApi,
-                                            identify: IdentifierAction,
+                                            identify: RegistrationIdentifierAction,
                                             getData: DraftIdRetrievalActionProvider,
                                             requireData: DataRequiredAction,
                                             val controllerComponents: MessagesControllerComponents,

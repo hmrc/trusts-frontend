@@ -27,12 +27,12 @@ import views.html.playback.TrustNotClaimedView
 import scala.concurrent.ExecutionContext
 
 class TrustNotClaimedController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: TrustNotClaimedView
+                                           override val messagesApi: MessagesApi,
+                                           identify: RegistrationIdentifierAction,
+                                           getData: DataRetrievalAction,
+                                           requireData: DataRequiredAction,
+                                           val controllerComponents: MessagesControllerComponents,
+                                           view: TrustNotClaimedView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {

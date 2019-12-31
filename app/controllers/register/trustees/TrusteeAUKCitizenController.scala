@@ -39,7 +39,7 @@ class TrusteeAUKCitizenController @Inject()(
                                              registrationsRepository: RegistrationsRepository,
                                              navigator: Navigator,
                                              validateIndex: IndexActionFilterProvider,
-                                             identify: IdentifierAction,
+                                             identify: RegistrationIdentifierAction,
                                              getData: DraftIdRetrievalActionProvider,
                                              requireData: DataRequiredAction,
                                              requiredAnswer: RequiredAnswerActionProvider,

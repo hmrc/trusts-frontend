@@ -37,7 +37,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class DeceasedSettlorAnswerController @Inject()(
                                                  override val messagesApi: MessagesApi,
                                                  registrationsRepository: RegistrationsRepository,
-                                                 identify: IdentifierAction,
+                                                 identify: RegistrationIdentifierAction,
                                                  getData: DraftIdRetrievalActionProvider,
                                                  navigator: Navigator,
                                                  requireData: DataRequiredAction,

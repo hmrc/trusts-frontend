@@ -37,7 +37,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class ConfirmationController @Inject()(
                                         override val messagesApi: MessagesApi,
-                                        identify: IdentifierAction,
+                                        identify: RegistrationIdentifierAction,
                                         getData: DraftIdRetrievalActionProvider,
                                         requireData: DataRequiredAction,
                                         config: FrontendAppConfig,

@@ -28,7 +28,7 @@ import scala.concurrent.ExecutionContext
 
 class VariationsConfirmationController @Inject()(
                                                   override val messagesApi: MessagesApi,
-                                                  identify: IdentifierAction,
+                                                  identify: RegistrationIdentifierAction,
                                                   playbackAction: PlaybackIdentifierAction,
                                                   getData: DataRetrievalAction,
                                                   requireData: DataRequiredAction,
