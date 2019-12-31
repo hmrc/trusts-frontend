@@ -18,11 +18,13 @@ package controllers.playback
 
 import connector.TrustConnector
 import controllers.actions._
+import controllers.actions.playback.PlaybackIdentifierAction
+import controllers.actions.register.RegistrationIdentifierAction
 import javax.inject.Inject
 import models.playback.http.Processed
 import pages.playback.WhatIsTheUTRVariationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.MessagesControllerComponents
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.countryOptions.CountryOptions
 import utils.PrintPlaybackHelper
@@ -32,8 +34,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class PlaybackAnswerPageController @Inject()(
                                               override val messagesApi: MessagesApi,
-                                              identify: IdentifierAction,
-                                              playbackAction: PlaybackAction,
+                                              identify: RegistrationIdentifierAction,
+                                              playbackAction: PlaybackIdentifierAction,
                                               getData: DataRetrievalAction,
                                               requireData: DataRequiredAction,
                                               val controllerComponents: MessagesControllerComponents,
@@ -44,7 +46,7 @@ class PlaybackAnswerPageController @Inject()(
                                             )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions =
-    identify andThen getData andThen requireData
+    identify andThen getData andThen requireData andThen playbackAction
 
   def onPageLoad() = actions.async {
     implicit request =>

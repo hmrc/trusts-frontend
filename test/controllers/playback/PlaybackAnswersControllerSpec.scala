@@ -19,6 +19,8 @@ package controllers.playback
 import base.SpecBase
 import connector.TrustConnector
 import controllers.actions._
+import controllers.actions.playback.PlaybackIdentifierAction
+import controllers.actions.register.RegistrationIdentifierAction
 import models.core.pages.UKAddress
 import models.playback.UserAnswers
 import pages.playback.WhatIsTheUTRVariationPage
@@ -59,8 +61,8 @@ class PlaybackAnswersControllerSpec extends SpecBase {
         .overrides(
           bind[DataRequiredAction].to[DataRequiredActionImpl],
           bind[TrustConnector].toInstance(mock[TrustConnector]),
-          bind[IdentifierAction].toInstance(new FakeIdentifyForRegistration(Organisation)(injectedParsers, trustsAuth, Enrolments(Set.empty))),
-          bind[PlaybackAction].toInstance(new FakePlaybackAction()),
+          bind[RegistrationIdentifierAction].toInstance(new FakeIdentifyForRegistration(Organisation)(injectedParsers, trustsAuth, Enrolments(Set.empty))),
+          bind[PlaybackIdentifierAction].toInstance(new FakePlaybackIdentifierAction()),
           bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(None)),
           bind[AffinityGroup].toInstance(Organisation)
         ).build()
