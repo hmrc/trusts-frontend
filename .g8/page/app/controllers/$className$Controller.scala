@@ -1,6 +1,7 @@
 package controllers
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -11,7 +12,7 @@ import scala.concurrent.ExecutionContext
 
 class $className$Controller @Inject()(
                                        override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
+                                       identify: RegistrationIdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,

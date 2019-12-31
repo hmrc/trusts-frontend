@@ -18,6 +18,7 @@ package controllers.playback
 
 import config.FrontendAppConfig
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.WhatIsTheUTRFormProvider
 import handlers.ErrorHandler
 import javax.inject.Inject
@@ -35,7 +36,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class WhatIsTheUTRVariationsController @Inject()(
                                                   override val messagesApi: MessagesApi,
                                                   registrationsRepository: RegistrationsRepository,
-                                                  identify: IdentifierAction,
+                                                  identify: RegistrationIdentifierAction,
                                                   getData: DataRetrievalAction,
                                                   requireData: DataRequiredAction,
                                                   formProvider: WhatIsTheUTRFormProvider,

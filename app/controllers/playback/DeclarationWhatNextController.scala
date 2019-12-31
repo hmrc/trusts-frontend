@@ -17,6 +17,8 @@
 package controllers.playback
 
 import controllers.actions._
+import controllers.actions.playback.PlaybackIdentifierAction
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.DeclarationWhatNextFormProvider
 import javax.inject.Inject
 import models.Enumerable
@@ -35,8 +37,8 @@ class DeclarationWhatNextController @Inject()(
                                                override val messagesApi: MessagesApi,
                                                sessionRepository: RegistrationsRepository,
                                                navigator: VariationsNavigator,
-                                               identify: IdentifierAction,
-                                               playbackAction: PlaybackAction,
+                                               identify: RegistrationIdentifierAction,
+                                               playbackAction: PlaybackIdentifierAction,
                                                getData: DataRetrievalAction,
                                                requireData: DataRequiredAction,
                                                formProvider: DeclarationWhatNextFormProvider,

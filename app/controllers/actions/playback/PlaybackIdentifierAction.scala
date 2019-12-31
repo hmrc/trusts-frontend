@@ -14,39 +14,39 @@
  * limitations under the License.
  */
 
-package controllers.actions
+package controllers.actions.playback
 
 import com.google.inject.{ImplementedBy, Inject}
 import connector.EnrolmentStoreConnector
 import models.requests.DataRequest
 import pages.playback.WhatIsTheUTRVariationPage
 import play.api.mvc.Results.Redirect
-import play.api.mvc._
+import play.api.mvc.{ActionRefiner, BodyParsers, Result}
 import services.PlaybackAuthenticationService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class PlaybackActionImpl @Inject()(val parser: BodyParsers.Default,
-                                   enrolmentStoreConnector: EnrolmentStoreConnector,
-                                   authenticationService: PlaybackAuthenticationService
-                                  )(override implicit val executionContext: ExecutionContext) extends PlaybackAction {
+class PlaybackIdentifierActionImpl @Inject()(val parser: BodyParsers.Default,
+                                             enrolmentStoreConnector: EnrolmentStoreConnector,
+                                             playbackAuthenticationService: PlaybackAuthenticationService
+                                  )(override implicit val executionContext: ExecutionContext) extends PlaybackIdentifierAction {
 
   override def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
     request.userAnswers.get(WhatIsTheUTRVariationPage) map { utr =>
-      authenticationService.authenticateForPlayback(utr)(request, hc)
+      playbackAuthenticationService.authenticate(utr)(request, hc)
     } getOrElse Future.successful(Left(Redirect(controllers.register.routes.IndexController.onPageLoad())))
 
   }
 
 }
 
-@ImplementedBy(classOf[PlaybackActionImpl])
-trait PlaybackAction extends ActionRefiner[DataRequest, DataRequest] {
+@ImplementedBy(classOf[PlaybackIdentifierActionImpl])
+trait PlaybackIdentifierAction extends ActionRefiner[DataRequest, DataRequest] {
 
   def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]]
 

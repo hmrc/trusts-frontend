@@ -18,6 +18,7 @@ package controllers.register
 
 import config.FrontendAppConfig
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import handlers.ErrorHandler
 import javax.inject.Inject
 import mapping.reads.{LeadTrusteeIndividual, Trustees}
@@ -37,7 +38,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class ConfirmationController @Inject()(
                                         override val messagesApi: MessagesApi,
-                                        identify: IdentifierAction,
+                                        identify: RegistrationIdentifierAction,
                                         getData: DraftIdRetrievalActionProvider,
                                         requireData: DataRequiredAction,
                                         config: FrontendAppConfig,

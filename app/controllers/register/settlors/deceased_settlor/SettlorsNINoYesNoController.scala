@@ -17,6 +17,7 @@
 package controllers.register.settlors.deceased_settlor
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
@@ -35,7 +36,7 @@ class SettlorsNINoYesNoController @Inject()(
                                              override val messagesApi: MessagesApi,
                                              registrationsRepository: RegistrationsRepository,
                                              navigator: Navigator,
-                                             identify: IdentifierAction,
+                                             identify: RegistrationIdentifierAction,
                                              getData: DraftIdRetrievalActionProvider,
                                              requireData: DataRequiredAction,
                                              yesNoFormProvider: YesNoFormProvider,

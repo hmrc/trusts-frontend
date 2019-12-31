@@ -17,6 +17,7 @@
 package controllers.register
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import controllers.filters.IndexActionFilterProvider
 import javax.inject.Inject
 import models.NormalMode
@@ -39,7 +40,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class TrustDetailsAnswerPageController @Inject()(
                                                   registrationsRepository: RegistrationsRepository,
                                                   override val messagesApi: MessagesApi,
-                                                  identify: IdentifierAction,
+                                                  identify: RegistrationIdentifierAction,
                                                   navigator: Navigator,
                                                   getData: DraftIdRetrievalActionProvider,
                                                   requireData: DataRequiredAction,

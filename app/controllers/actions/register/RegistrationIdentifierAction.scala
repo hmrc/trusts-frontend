@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package controllers.actions
+package controllers.actions.register
 
 import com.google.inject.Inject
+import controllers.actions.{AffinityGroupIdentifierAction, TrustsAuthorisedFunctions}
 import models.requests.IdentifierRequest
 import play.api.mvc.{Request, Result, _}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -25,8 +26,9 @@ import uk.gov.hmrc.play.HeaderCarrierConverter
 import scala.concurrent.{ExecutionContext, Future}
 
 
-class IdentifierAction @Inject()(val parser: BodyParsers.Default, trustsAuth: TrustsAuth)
-                                (override implicit val executionContext: ExecutionContext) extends ActionBuilder[IdentifierRequest, AnyContent] {
+class RegistrationIdentifierAction @Inject()(val parser: BodyParsers.Default,
+                                             trustsAuth: TrustsAuthorisedFunctions)
+                                            (override implicit val executionContext: ExecutionContext) extends ActionBuilder[IdentifierRequest, AnyContent] {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
@@ -39,5 +41,5 @@ class IdentifierAction @Inject()(val parser: BodyParsers.Default, trustsAuth: Tr
     }
   }
 
-  override def composeAction[A](action: Action[A]): Action[A] = new AuthenticatedIdentifierAction(action, trustsAuth)
+  override def composeAction[A](action: Action[A]): Action[A] = new AffinityGroupIdentifierAction(action, trustsAuth)
 }

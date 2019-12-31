@@ -17,6 +17,7 @@
 package controllers.register.beneficiaries
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.{AddABeneficiaryFormProvider, YesNoFormProvider}
 import javax.inject.Inject
 import models.{Enumerable, Mode}
@@ -36,7 +37,7 @@ class AddABeneficiaryController @Inject()(
                                            override val messagesApi: MessagesApi,
                                            registrationsRepository: RegistrationsRepository,
                                            navigator: Navigator,
-                                           identify: IdentifierAction,
+                                           identify: RegistrationIdentifierAction,
                                            getData: DraftIdRetrievalActionProvider,
                                            requireData: DataRequiredAction,
                                            addAnotherFormProvider: AddABeneficiaryFormProvider,

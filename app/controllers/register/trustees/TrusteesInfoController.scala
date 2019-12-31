@@ -17,6 +17,7 @@
 package controllers.register.trustees
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -27,7 +28,7 @@ import scala.concurrent.ExecutionContext
 
 class TrusteesInfoController @Inject()(
                                         override val messagesApi: MessagesApi,
-                                        identify: IdentifierAction,
+                                        identify: RegistrationIdentifierAction,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: TrusteesInfoView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {

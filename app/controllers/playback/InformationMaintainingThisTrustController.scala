@@ -18,6 +18,8 @@ package controllers.playback
 
 import config.FrontendAppConfig
 import controllers.actions._
+import controllers.actions.playback.PlaybackIdentifierAction
+import controllers.actions.register.RegistrationIdentifierAction
 import javax.inject.Inject
 import pages.playback.WhatIsTheUTRVariationPage
 import play.api.i18n.I18nSupport
@@ -31,10 +33,10 @@ import scala.concurrent.ExecutionContext
 
 class InformationMaintainingThisTrustController @Inject()(
                                                            registrationsRepository: RegistrationsRepository,
-                                                           identify: IdentifierAction,
+                                                           identify: RegistrationIdentifierAction,
                                                            getData: DataRetrievalAction,
                                                            requireData: DataRequiredAction,
-                                                           playbackAction: PlaybackAction,
+                                                           playbackAction: PlaybackIdentifierAction,
                                                            val controllerComponents: MessagesControllerComponents,
                                                            maintainingTrustView: InformationMaintainingThisTrustView,
                                                            agentCannotAccessTrustYetView: AgentCannotAccessTrustYetView

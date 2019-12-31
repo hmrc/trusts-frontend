@@ -18,7 +18,7 @@ package controllers.playback
 
 import base.SpecBase
 import config.FrontendAppConfig
-import controllers.actions.TrustsAuth
+import controllers.actions.TrustsAuthorisedFunctions
 import forms.DeclarationWhatNextFormProvider
 import models.playback.pages.DeclarationWhatNext
 import play.api.test.FakeRequest
@@ -38,7 +38,7 @@ class DeclarationWhatNextControllerSpec extends SpecBase {
   val mockAuthConnector: AuthConnector = mock[AuthConnector]
   val appConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
 
-  override def trustsAuth = new TrustsAuth(mockAuthConnector, appConfig)
+  override def trustsAuth = new TrustsAuthorisedFunctions(mockAuthConnector, appConfig)
 
   "DeclarationWhatNext Controller" must {
 

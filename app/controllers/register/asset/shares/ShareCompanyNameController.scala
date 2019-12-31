@@ -17,6 +17,7 @@
 package controllers.register.asset.shares
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import controllers.filters.IndexActionFilterProvider
 import forms.shares.ShareCompanyNameFormProvider
 import javax.inject.Inject
@@ -36,7 +37,7 @@ class ShareCompanyNameController @Inject()(
                                             override val messagesApi: MessagesApi,
                                             registrationsRepository: RegistrationsRepository,
                                             navigator: Navigator,
-                                            identify: IdentifierAction,
+                                            identify: RegistrationIdentifierAction,
                                             getData: DraftIdRetrievalActionProvider,
                                             requireData: DataRequiredAction,
                                             formProvider: ShareCompanyNameFormProvider,

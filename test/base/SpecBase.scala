@@ -17,6 +17,8 @@
 package base
 
 import config.FrontendAppConfig
+import controllers.actions.playback.PlaybackIdentifierAction
+import controllers.actions.register.RegistrationIdentifierAction
 import controllers.actions.{FakeDraftIdRetrievalActionProvider, _}
 import mapping.playback.{FakeUserAnswerExtractor, PlaybackExtractor, UserAnswersExtractor}
 import models.core.UserAnswers
@@ -59,7 +61,7 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
 
   def injectedParsers = injector.instanceOf[BodyParsers.Default]
 
-  def trustsAuth = injector.instanceOf[TrustsAuth]
+  def trustsAuth = injector.instanceOf[TrustsAuthorisedFunctions]
 
   implicit def executionContext = injector.instanceOf[ExecutionContext]
 
@@ -82,8 +84,8 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
     new GuiceApplicationBuilder()
       .overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],
-        bind[IdentifierAction].toInstance(new FakeIdentifyForRegistration(affinityGroup)(injectedParsers, trustsAuth, enrolments)),
-        bind[PlaybackAction].toInstance(new FakePlaybackAction()),
+        bind[RegistrationIdentifierAction].toInstance(new FakeIdentifyForRegistration(affinityGroup)(injectedParsers, trustsAuth, enrolments)),
+        bind[PlaybackIdentifierAction].toInstance(new FakePlaybackIdentifierAction()),
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
         bind[DraftIdRetrievalActionProvider].toInstance(fakeDraftIdAction(userAnswers)),
         bind[RegistrationsRepository].toInstance(registrationsRepository),

@@ -17,6 +17,8 @@
 package controllers.playback
 
 import controllers.actions._
+import controllers.actions.playback.PlaybackIdentifierAction
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.DeclarationFormProvider
 import navigation.Navigator
 import repositories.RegistrationsRepository
@@ -34,8 +36,8 @@ class DeclarationController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        registrationsRepository: RegistrationsRepository,
                                        navigator: Navigator,
-                                       identify: IdentifierAction,
-                                       playbackAction: PlaybackAction,
+                                       identify: RegistrationIdentifierAction,
+                                       playbackAction: PlaybackIdentifierAction,
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
                                        requiredAnswer: RequiredAnswerActionProvider,

@@ -18,6 +18,7 @@ package controllers.register.settlors.living_settlor
 
 import controllers.RemoveIndexController
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import controllers.filters.IndexActionFilterProvider
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
@@ -40,7 +41,7 @@ class RemoveSettlorController @Inject()(
                                          override val messagesApi: MessagesApi,
                                          override val registrationsRepository: RegistrationsRepository,
                                          navigator: Navigator,
-                                         identify: IdentifierAction,
+                                         identify: RegistrationIdentifierAction,
                                          validateIndex : IndexActionFilterProvider,
                                          getData: DraftIdRetrievalActionProvider,
                                          requireData: DataRequiredAction,

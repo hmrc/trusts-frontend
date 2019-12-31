@@ -18,7 +18,8 @@ package controllers.playback
 
 import config.FrontendAppConfig
 import connector.{TrustConnector, TrustsStoreConnector}
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import handlers.ErrorHandler
 import javax.inject.Inject
 import mapping.playback.UserAnswersExtractor
@@ -41,7 +42,7 @@ class TrustStatusController @Inject()(
                                        registrationsRepository: RegistrationsRepository,
                                        playbackRepository: PlaybackRepository,
                                        navigator: Navigator,
-                                       identify: IdentifierAction,
+                                       identify: RegistrationIdentifierAction,
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
                                        closedView: ClosedErrorView,
@@ -131,7 +132,7 @@ class TrustStatusController @Inject()(
       case Processing => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.processing()))
       case UtrNotFound => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.notFound()))
       case Processed(playback, _) =>
-        authenticationService.authenticateForPlayback(utr) flatMap {
+        authenticationService.authenticate(utr) flatMap {
           case Left(failure) => Future.successful(failure)
           case Right(_) => extract(utr, playback)
         }

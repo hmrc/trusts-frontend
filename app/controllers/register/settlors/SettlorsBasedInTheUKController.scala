@@ -17,6 +17,7 @@
 package controllers.register.settlors
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.SettlorsBasedInTheUKFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode}
@@ -35,7 +36,7 @@ class SettlorsBasedInTheUKController @Inject()(
                                                 override val messagesApi: MessagesApi,
                                                 registrationsRepository: RegistrationsRepository,
                                                 navigator: Navigator,
-                                                identify: IdentifierAction,
+                                                identify: RegistrationIdentifierAction,
                                                 getData: DraftIdRetrievalActionProvider,
                                                 requireData: DataRequiredAction,
                                                 formProvider: SettlorsBasedInTheUKFormProvider,

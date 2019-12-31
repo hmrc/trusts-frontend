@@ -20,6 +20,7 @@ import java.time.temporal.ChronoUnit.DAYS
 import java.time.{LocalDateTime, ZoneOffset}
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.DeclarationFormProvider
 import javax.inject.Inject
 import models.Mode
@@ -45,7 +46,7 @@ class DeclarationController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        registrationsRepository: RegistrationsRepository,
                                        navigator: Navigator,
-                                       identify: IdentifierAction,
+                                       identify: RegistrationIdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
                                        requireData: DataRequiredAction,
                                        formProvider: DeclarationFormProvider,

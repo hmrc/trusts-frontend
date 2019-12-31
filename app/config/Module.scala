@@ -19,6 +19,7 @@ package config
 import com.google.inject.AbstractModule
 import connector.OtacAuthConnectorImpl
 import controllers.actions._
+import controllers.actions.playback.{PlaybackIdentifierAction, PlaybackIdentifierActionImpl}
 import mapping.playback.{PlaybackExtractor, UserAnswersExtractor}
 import models.playback.http.GetTrust
 import navigation.Navigator
@@ -35,7 +36,7 @@ class Module extends AbstractModule {
 
     bind(classOf[DataRetrievalAction]).to(classOf[DataRetrievalActionImpl]).asEagerSingleton()
     bind(classOf[DataRequiredAction]).to(classOf[DataRequiredActionImpl]).asEagerSingleton()
-    bind(classOf[PlaybackAction]).to(classOf[PlaybackActionImpl]).asEagerSingleton()
+    bind(classOf[PlaybackIdentifierAction]).to(classOf[PlaybackIdentifierActionImpl]).asEagerSingleton()
     bind(classOf[DraftIdRetrievalActionProvider]).to(classOf[DraftIdDataRetrievalActionProviderImpl]).asEagerSingleton()
     bind(classOf[RequireDraftRegistrationActionRefiner]).to(classOf[RequireDraftRegistrationActionRefinerImpl]).asEagerSingleton()
 

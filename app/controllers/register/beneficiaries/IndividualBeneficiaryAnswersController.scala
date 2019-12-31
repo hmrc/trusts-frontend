@@ -17,6 +17,7 @@
 package controllers.register.beneficiaries
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import controllers.filters.IndexActionFilterProvider
 import javax.inject.Inject
 import models.NormalMode
@@ -38,7 +39,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class IndividualBeneficiaryAnswersController @Inject()(
                                                         override val messagesApi: MessagesApi,
                                                         registrationsRepository: RegistrationsRepository,
-                                                        identify: IdentifierAction,
+                                                        identify: RegistrationIdentifierAction,
                                                         navigator: Navigator,
                                                         getData: DraftIdRetrievalActionProvider,
                                                         requireData: DataRequiredAction,

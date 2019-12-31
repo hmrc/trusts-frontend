@@ -17,6 +17,7 @@
 package controllers.register.settlors.living_settlor
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import controllers.filters.IndexActionFilterProvider
 import forms.SettlorKindOfTrustFormProvider
 import javax.inject.Inject
@@ -38,7 +39,7 @@ class SettlorKindOfTrustController @Inject()(
                                               override val messagesApi: MessagesApi,
                                               registrationsRepository: RegistrationsRepository,
                                               @LivingSettlor navigator: Navigator,
-                                              identify: IdentifierAction,
+                                              identify: RegistrationIdentifierAction,
                                               getData: DraftIdRetrievalActionProvider,
                                               requireData: DataRequiredAction,
                                               validateIndex: IndexActionFilterProvider,

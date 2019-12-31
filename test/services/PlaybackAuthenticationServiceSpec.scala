@@ -19,7 +19,7 @@ package services
 import base.SpecBase
 import config.FrontendAppConfig
 import connector.EnrolmentStoreConnector
-import controllers.actions.TrustsAuth
+import controllers.actions.TrustsAuthorisedFunctions
 import models.EnrolmentStoreResponse.{AlreadyClaimed, NotClaimed, ServerError}
 import models.requests.DataRequest
 import org.mockito.Matchers.{any, eq => mEq}
@@ -62,7 +62,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
   private def authRetrievals(affinityGroup: AffinityGroup, enrolment: Enrolments) =
     Future.successful(new ~(new ~(Some("id"), Some(affinityGroup)), enrolment))
 
-  lazy override val trustsAuth = new TrustsAuth(mockAuthConnector, appConfig)
+  lazy override val trustsAuth = new TrustsAuthorisedFunctions(mockAuthConnector, appConfig)
 
   "invoking the IdentifyForPlaybacks action builder" when {
 
@@ -79,13 +79,13 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
             .thenReturn(Future.successful(AlreadyClaimed))
 
           val app = applicationBuilder()
-            .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+            .overrides(bind[TrustsAuthorisedFunctions].toInstance(trustsAuth))
             .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
             .build()
 
           val service = app.injector.instanceOf[PlaybackAuthenticationService]
 
-          whenReady(service.authenticateForPlayback[AnyContent](utr)) {
+          whenReady(service.authenticate[AnyContent](utr)) {
             result =>
               result.right.value mustBe dataRequest
           }
@@ -104,13 +104,13 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
             .thenReturn(Future.successful(NotClaimed))
 
           val app = applicationBuilder()
-            .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+            .overrides(bind[TrustsAuthorisedFunctions].toInstance(trustsAuth))
             .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
             .build()
 
           val service = app.injector.instanceOf[PlaybackAuthenticationService]
 
-          whenReady(service.authenticateForPlayback[AnyContent](utr)) {
+          whenReady(service.authenticate[AnyContent](utr)) {
             result =>
               result.left.value.header.headers(HeaderNames.LOCATION) mustBe controllers.playback.routes.TrustNotClaimedController.onPageLoad().url
           }
@@ -130,7 +130,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
             .thenReturn(Future.successful(AlreadyClaimed))
 
           val app = applicationBuilder()
-            .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+            .overrides(bind[TrustsAuthorisedFunctions].toInstance(trustsAuth))
             .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
             .build()
 
@@ -138,7 +138,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
 
           implicit val dataRequest = DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Agent, enrolments)
 
-          whenReady(service.authenticateForPlayback[AnyContent](utr)) {
+          whenReady(service.authenticate[AnyContent](utr)) {
             result =>
               result.left.value.header.headers(HeaderNames.LOCATION) mustBe controllers.playback.routes.AgentNotAuthorisedController.onPageLoad().url
           }
@@ -162,7 +162,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
             .thenReturn(Future.successful(AlreadyClaimed))
 
           val app = applicationBuilder()
-            .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+            .overrides(bind[TrustsAuthorisedFunctions].toInstance(trustsAuth))
             .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
             .build()
 
@@ -170,7 +170,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
 
           implicit val dataRequest = DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Agent, enrolments)
 
-          whenReady(service.authenticateForPlayback[AnyContent](utr)) {
+          whenReady(service.authenticate[AnyContent](utr)) {
             result =>
               result.left.value.header.headers(HeaderNames.LOCATION) mustBe controllers.playback.routes.AgentNotAuthorisedController.onPageLoad().url
           }
@@ -197,7 +197,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
               .thenReturn(Future.failed(FailedRelationship()))
 
             val app = applicationBuilder()
-              .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+              .overrides(bind[TrustsAuthorisedFunctions].toInstance(trustsAuth))
               .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
               .build()
 
@@ -206,7 +206,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
             implicit val dataRequest =
               DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
 
-            whenReady(service.authenticateForPlayback[AnyContent](utr)) {
+            whenReady(service.authenticate[AnyContent](utr)) {
               result =>
                 result.left.value.header.headers(HeaderNames.LOCATION) must include("/verify-your-identity-for-a-trust")
             }
@@ -227,7 +227,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
               .thenReturn(Future.successful(()))
 
             val app = applicationBuilder()
-              .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+              .overrides(bind[TrustsAuthorisedFunctions].toInstance(trustsAuth))
               .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
               .build()
 
@@ -236,7 +236,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
             implicit val dataRequest =
               DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
 
-            whenReady(service.authenticateForPlayback[AnyContent](utr)) {
+            whenReady(service.authenticate[AnyContent](utr)) {
               result =>
                 result.right.value mustBe dataRequest
             }
@@ -260,7 +260,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
               .thenReturn(Future.successful(ServerError))
 
             val app = applicationBuilder()
-              .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+              .overrides(bind[TrustsAuthorisedFunctions].toInstance(trustsAuth))
               .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
               .build()
 
@@ -269,7 +269,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
             implicit val dataRequest =
               DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
 
-            val result = service.authenticateForPlayback(utr)
+            val result = service.authenticate(utr)
             val left = result.map(_.left.value)
 
             status(left) mustBe INTERNAL_SERVER_ERROR
@@ -290,7 +290,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
               .thenReturn(Future.successful(AlreadyClaimed))
 
             val app = applicationBuilder()
-              .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+              .overrides(bind[TrustsAuthorisedFunctions].toInstance(trustsAuth))
               .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
               .build()
 
@@ -299,7 +299,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
             implicit val dataRequest =
               DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
 
-            whenReady(service.authenticateForPlayback[AnyContent](utr)) {
+            whenReady(service.authenticate[AnyContent](utr)) {
               result =>
                 result.left.value.header.headers(HeaderNames.LOCATION) mustBe
                   controllers.playback.routes.TrustStatusController.alreadyClaimed().url
@@ -321,7 +321,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
 
 
             val app = applicationBuilder()
-              .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+              .overrides(bind[TrustsAuthorisedFunctions].toInstance(trustsAuth))
               .overrides(bind[EnrolmentStoreConnector].toInstance(mockEnrolmentStoreConnector))
               .build()
 
@@ -330,7 +330,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
             implicit val dataRequest =
               DataRequest[AnyContent](fakeRequest, "internalId", emptyUserAnswers, Organisation, enrolments)
 
-            whenReady(service.authenticateForPlayback[AnyContent](utr)) {
+            whenReady(service.authenticate[AnyContent](utr)) {
               result =>
                 result.left.value.header.headers(HeaderNames.LOCATION) must include("/claim-a-trust")
             }
@@ -349,7 +349,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
     "redirect to the login page" in {
 
       val app = applicationBuilder()
-        .overrides(bind[TrustsAuth].toInstance(trustsAuth))
+        .overrides(bind[TrustsAuthorisedFunctions].toInstance(trustsAuth))
         .build()
 
       when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
@@ -357,7 +357,7 @@ class PlaybackAuthenticationServiceSpec extends SpecBase with ScalaFutures with 
 
       val service = app.injector.instanceOf[PlaybackAuthenticationService]
 
-      recoverToSucceededIf[BearerTokenExpired](service.authenticateForPlayback[AnyContent](utr))
+      recoverToSucceededIf[BearerTokenExpired](service.authenticate[AnyContent](utr))
     }
   }
 

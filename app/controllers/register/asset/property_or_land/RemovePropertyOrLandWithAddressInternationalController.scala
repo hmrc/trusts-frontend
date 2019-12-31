@@ -17,6 +17,7 @@
 package controllers.register.asset.property_or_land
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import controllers.register.asset.RemoveAssetController
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
@@ -33,7 +34,7 @@ class RemovePropertyOrLandWithAddressInternationalController @Inject()(
                                                                         override val messagesApi: MessagesApi,
                                                                         override val registrationsRepository: RegistrationsRepository,
                                                                         override val formProvider: RemoveIndexFormProvider,
-                                                                        identify: IdentifierAction,
+                                                                        identify: RegistrationIdentifierAction,
                                                                         getData: DraftIdRetrievalActionProvider,
                                                                         requireData: DataRequiredAction,
                                                                         val controllerComponents: MessagesControllerComponents,

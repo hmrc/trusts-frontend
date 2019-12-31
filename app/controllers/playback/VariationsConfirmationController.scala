@@ -17,6 +17,8 @@
 package controllers.playback
 
 import controllers.actions._
+import controllers.actions.playback.PlaybackIdentifierAction
+import controllers.actions.register.RegistrationIdentifierAction
 import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
@@ -27,13 +29,13 @@ import views.html.playback.VariationsConfirmationView
 import scala.concurrent.ExecutionContext
 
 class VariationsConfirmationController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
-                                       playbackAction: PlaybackAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: VariationsConfirmationView
+                                                  override val messagesApi: MessagesApi,
+                                                  identify: RegistrationIdentifierAction,
+                                                  playbackAction: PlaybackIdentifierAction,
+                                                  getData: DataRetrievalAction,
+                                                  requireData: DataRequiredAction,
+                                                  val controllerComponents: MessagesControllerComponents,
+                                                  view: VariationsConfirmationView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 

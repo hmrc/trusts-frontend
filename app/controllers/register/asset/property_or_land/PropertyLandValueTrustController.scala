@@ -17,6 +17,7 @@
 package controllers.register.asset.property_or_land
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import controllers.filters.IndexActionFilterProvider
 import forms.property_or_land.PropertyLandValueTrustFormProvider
 import javax.inject.Inject
@@ -37,7 +38,7 @@ class PropertyLandValueTrustController @Inject()(
                                                   override val messagesApi: MessagesApi,
                                                   registrationsRepository: RegistrationsRepository,
                                                   @PropertyOrLand navigator: Navigator,
-                                                  identify: IdentifierAction,
+                                                  identify: RegistrationIdentifierAction,
                                                   getData: DraftIdRetrievalActionProvider,
                                                   requireData: DataRequiredAction,
                                                   validateIndex: IndexActionFilterProvider,

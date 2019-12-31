@@ -17,6 +17,7 @@
 package controllers.register
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.PostcodeForTheTrustFormProvider
 import javax.inject.Inject
 import models.Mode
@@ -36,7 +37,7 @@ class PostcodeForTheTrustController @Inject()(
                                                override val messagesApi: MessagesApi,
                                                registrationsRepository: RegistrationsRepository,
                                                navigator: Navigator,
-                                               identify: IdentifierAction,
+                                               identify: RegistrationIdentifierAction,
                                                getData: DraftIdRetrievalActionProvider,
                                                requireData: DataRequiredAction,
                                                formProvider: PostcodeForTheTrustFormProvider,

@@ -17,6 +17,7 @@
 package controllers.register
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import javax.inject.Inject
 import pages.register.RegistrationProgress
 import pages.register.agents.AgentInternalReferencePage
@@ -31,7 +32,7 @@ import views.html.register.SummaryAnswerPageView
 
 class SummaryAnswerPageController @Inject()(
                                              override val messagesApi: MessagesApi,
-                                             identify: IdentifierAction,
+                                             identify: RegistrationIdentifierAction,
                                              getData: DraftIdRetrievalActionProvider,
                                              requireData: DataRequiredAction,
                                              val controllerComponents: MessagesControllerComponents,

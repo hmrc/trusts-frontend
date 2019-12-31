@@ -30,8 +30,8 @@ import uk.gov.hmrc.play.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AuthenticatedIdentifierAction[A] @Inject()(action: Action[A],
-                                                 trustsAuthFunctions: TrustsAuth
+class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
+                                                 trustsAuthFunctions: TrustsAuthorisedFunctions
                                                 ) extends Action[A]  {
 
   private def authoriseAgent(request : Request[A],

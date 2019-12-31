@@ -17,6 +17,7 @@
 package controllers.register.asset
 
 import controllers.actions._
+import controllers.actions.register.RegistrationIdentifierAction
 import controllers.filters.IndexActionFilterProvider
 import forms.WhatKindOfAssetFormProvider
 import javax.inject.Inject
@@ -40,7 +41,7 @@ class WhatKindOfAssetController @Inject()(
                                            override val messagesApi: MessagesApi,
                                            registrationsRepository: RegistrationsRepository,
                                            navigator: Navigator,
-                                           identify: IdentifierAction,
+                                           identify: RegistrationIdentifierAction,
                                            getData: DraftIdRetrievalActionProvider,
                                            requireData: DataRequiredAction,
                                            validateIndex: IndexActionFilterProvider,
