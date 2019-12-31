@@ -46,9 +46,7 @@ class IndividualBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[
               .flatMap(_.set(IndividualBeneficiaryRoleInCompanyPage(index), individualBeneficiary.beneficiaryType.map(mapRoleInCompany)))
               .flatMap(answers => extractDateOfBirth(individualBeneficiary, index, answers))
               .flatMap(answers => extractShareOfIncome(individualBeneficiary, index, answers))
-              .flatMap(answers => extractNino(individualBeneficiary, index, answers))
-              .flatMap(answers => extractAddress(individualBeneficiary, index, answers))
-              .flatMap(answers => extractPassportIdCard(individualBeneficiary, index, answers))
+              .flatMap(answers => extractIdentification(individualBeneficiary, index, answers))
               .flatMap(_.set(IndividualBeneficiaryVulnerableYesNoPage(index), individualBeneficiary.vulnerableBeneficiary))
               .flatMap {
                 _.set(
@@ -82,6 +80,35 @@ class IndividualBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[
     }
   }
 
+
+  private def extractIdentification(individualBeneficiary: DisplayTrustIndividualDetailsType, index: Int, answers: UserAnswers) = {
+
+    (for {
+      identification <- individualBeneficiary.identification
+      nino = identification.nino
+      address = identification.address
+      passport = identification.passport
+    } yield (nino, address, passport) match {
+      case(Some(nino), None, None) =>
+        answers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), true)
+          .flatMap(_.set(IndividualBeneficiaryNationalInsuranceNumberPage(index), nino))
+      case(None, Some(address), None) =>
+        answers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), false)
+          .flatMap(_.set(IndividualBeneficiaryPassportIDCardYesNoPage(index), false))
+          .flatMap(answers => extractAddress(individualBeneficiary, index, answers))
+      case(None, Some(address), Some(passport)) =>
+        answers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), false)
+        .flatMap(answers => extractAddress(individualBeneficiary, index, answers))
+        .flatMap(answers => extractPassportIdCard(individualBeneficiary, index, answers))
+      case(_,_,_) =>
+        answers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), false)
+          .flatMap(_.set(IndividualBeneficiaryAddressYesNoPage(index), false))
+    }).getOrElse(answers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), false)
+      .flatMap(_.set(IndividualBeneficiaryAddressYesNoPage(index), false)))
+
+  }
+
+
   private def extractDateOfBirth(individualBeneficiary: DisplayTrustIndividualDetailsType, index: Int, answers: UserAnswers) = {
     individualBeneficiary.dateOfBirth match {
       case Some(dob) =>
@@ -104,41 +131,26 @@ class IndividualBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[
     }
   }
 
-  private def extractNino(individualBeneficiary: DisplayTrustIndividualDetailsType, index: Int, answers: UserAnswers) = {
-    individualBeneficiary.identification.flatMap(_.nino) match {
-      case Some(nino) =>
-        answers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), true)
-          .flatMap(_.set(IndividualBeneficiaryNationalInsuranceNumberPage(index), nino))
-      case None =>
-        // Assumption that user answered no as nino is not provided
-        answers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), false)
+  private def extractPassportIdCard(individualBeneficiary: DisplayTrustIndividualDetailsType, index: Int, answers: UserAnswers) = {
+    individualBeneficiary.identification.flatMap(_.passport) match {
+      case Some(passportIdCard) =>
+        answers.set(IndividualBeneficiaryPassportIDCardYesNoPage(index), true)
+          .flatMap(_.set(IndividualBeneficiaryPassportIDCardPage(index), passportIdCard.convert))
     }
   }
 
-    private def extractPassportIdCard(individualBeneficiary: DisplayTrustIndividualDetailsType, index: Int, answers: UserAnswers) = {
-      (individualBeneficiary.identification.flatMap(_.passport), individualBeneficiary.identification.flatMap(_.address)) match {
-        case (Some(passportIdCard), _) =>
-          answers.set(IndividualBeneficiaryPassportIDCardYesNoPage(index), true)
-            .flatMap(_.set(IndividualBeneficiaryPassportIDCardPage(index), passportIdCard.convert))
-        case (None, Some(address)) =>
-          answers.set(IndividualBeneficiaryPassportIDCardYesNoPage(index), false)
-        case (_,_) => Success(answers)
-      }
-    }
-
   private def extractAddress(individualBeneficiary: DisplayTrustIndividualDetailsType, index: Int, answers: UserAnswers) = {
-    (individualBeneficiary.identification.flatMap(_.address.convert), individualBeneficiary.identification.flatMap(_.nino)) match {
-      case (Some(uk: UKAddress), _) =>
+    individualBeneficiary.identification.flatMap(_.address.convert) match {
+      case Some(uk: UKAddress) =>
         answers.set(IndividualBeneficiaryAddressPage(index), uk)
           .flatMap(_.set(IndividualBeneficiaryAddressYesNoPage(index), true))
           .flatMap(_.set(IndividualBeneficiaryAddressUKYesNoPage(index), true))
-      case (Some(nonUk: InternationalAddress), _) =>
+      case Some(nonUk: InternationalAddress) =>
         answers.set(IndividualBeneficiaryAddressPage(index), nonUk)
           .flatMap(_.set(IndividualBeneficiaryAddressYesNoPage(index), true))
           .flatMap(_.set(IndividualBeneficiaryAddressUKYesNoPage(index), false))
-      case (None, None) =>
-        answers.set(IndividualBeneficiaryAddressYesNoPage(index), false)
-      case (_,_) => Success(answers)
     }
   }
+
 }
+
