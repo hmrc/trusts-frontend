@@ -58,35 +58,35 @@ class TrustTypeExtractor extends PlaybackExtractor[Option[DisplayTrust]] {
       case TypeOfTrust.DeedOfVariation =>
         answers.set(SettlorKindOfTrustPage, SettlorKindOfTrust.Deed)
           .flatMap(answers => extractDeedOfVariation(trust, answers))
+
       case TypeOfTrust.IntervivosSettlementTrust =>
         answers.set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos)
           .flatMap(_.set(SettlorHandoverReliefYesNoPage, trust.details.interVivos))
-      case TypeOfTrust.EmployeeRelated => answers.set(SettlorKindOfTrustPage, SettlorKindOfTrust.Employees)
-      case TypeOfTrust.FlatManagementTrust => answers.set(SettlorKindOfTrustPage, SettlorKindOfTrust.FlatManagement)
-      case TypeOfTrust.HeritageTrust => answers.set(SettlorKindOfTrustPage, SettlorKindOfTrust.HeritageMaintenanceFund)
-      case TypeOfTrust.WillTrustOrIntestacyTrust => Success(answers)
-      case _ => Failure(new RuntimeException("Unexpected trust type"))
+
+      case TypeOfTrust.EmployeeRelated =>
+        answers.set(SettlorKindOfTrustPage, SettlorKindOfTrust.Employees)
+
+      case TypeOfTrust.FlatManagementTrust =>
+        answers.set(SettlorKindOfTrustPage, SettlorKindOfTrust.FlatManagement)
+
+      case TypeOfTrust.HeritageTrust =>
+        answers.set(SettlorKindOfTrustPage, SettlorKindOfTrust.HeritageMaintenanceFund)
+
+      case TypeOfTrust.WillTrustOrIntestacyTrust =>
+        Success(answers)
     }
   }
 
   private def extractDeedOfVariation(trust: DisplayTrust, answers: UserAnswers) = {
-    trust.details.deedOfVariation.map(mapDeedOfVariation) match {
+    trust.details.deedOfVariation match {
       case Some(DeedOfVariation.AdditionToWill) =>
         answers.set(SettlorAdditionToWillTrustYesNoPage, true)
       case Some(_) =>
         answers.set(SettlorAdditionToWillTrustYesNoPage, false)
-          .flatMap(_.set(SettlorHowDeedOfVariationCreatedPage, trust.details.deedOfVariation.map(mapDeedOfVariation)))
-      case _ => Success(answers)
+          .flatMap(_.set(SettlorHowDeedOfVariationCreatedPage, trust.details.deedOfVariation))
+      case _ =>
+        Success(answers)
     }
   }
-
-  private def mapDeedOfVariation(deedofVariation: String): DeedOfVariation = {
-    deedofVariation match {
-      case "Previously there was only an absolute interest under the will" => DeedOfVariation.DeedOfVariation
-      case "Replaced the will trust" => DeedOfVariation.ReplacedWill
-      case "Addition to the will trust" => DeedOfVariation.AdditionToWill
-    }
-  }
-
 
 }
