@@ -58,6 +58,8 @@ class PlaybackAnswerPageController @Inject()(
 
               val sections = printPlaybackAnswersHelper.summary(trust)
 
+              println(">>>>" + sections)
+
               Ok(view(sections))
 
             case _ => ???
