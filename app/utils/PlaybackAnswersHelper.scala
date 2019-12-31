@@ -40,19 +40,28 @@ class PlaybackAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswer
   def charityBeneficiary(index: Int): Option[Seq[AnswerSection]] = CharityBeneficiary(index, userAnswers, countryOptions)
 
   def leadTrustee(index: Int): Option[Seq[AnswerSection]] = {
-    userAnswers.get(TrusteeIndividualOrBusinessPage(index)) flatMap {
-      case IndividualOrBusiness.Individual => LeadTrusteeIndividual(index, userAnswers, countryOptions)
-      case IndividualOrBusiness.Business => LeadTrusteeBusiness(index, userAnswers, countryOptions)
+
+    userAnswers.get(IsThisLeadTrusteePage(index)) flatMap { isLeadTrustee =>
+      userAnswers.get(TrusteeIndividualOrBusinessPage(index)) flatMap { individualOrBusiness =>
+        if(isLeadTrustee) {
+          individualOrBusiness match {
+            case IndividualOrBusiness.Individual => LeadTrusteeIndividual(index, userAnswers, countryOptions)
+            case IndividualOrBusiness.Business => LeadTrusteeBusiness(index, userAnswers, countryOptions)
+          }
+        } else {
+          TrusteeOrganisation(index, userAnswers, countryOptions)
+        }
+      }
     }
+
   }
 
 }
 
 //Lead Trustee Individual UK
 //Lead Trustee Individual Non-UK
-//Trustee Organisation
 
-object SettlorCompany {
+object TrusteeOrganisation {
 
   def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] = {
 
@@ -70,7 +79,110 @@ object SettlorCompany {
     }
   }
 
-  def name(index: Int, userAnswers: UserAnswers) = userAnswers.get(SettlorIndividualNamePage(index)) map { x =>
+  def name(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(TrusteeOrgNamePage(index)) map { x =>
+    AnswerRow(
+      "trusteeOrgName.checkYourAnswersLabel",
+      HtmlFormat.escape(x),
+      None
+    )
+  }
+
+  def utrYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+    userAnswers.get(TrusteeUTRYesNoPagePage(index)) map {
+      x =>
+        AnswerRow(
+          "trusteeOrgUtrYesNo.checkYourAnswersLabel",
+          yesOrNo(x),
+          None
+        )
+    }
+
+  def utr(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(TrusteesUtrPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeUtr.checkYourAnswersLabel",
+        HtmlFormat.escape(x.format(dateFormatter)),
+        None
+      )
+  }
+
+  def addressUKYesNo(index: Int, userAnswers: UserAnswers)
+                    (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TrusteeLiveInTheUKPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeOrgAddressUKYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        None
+      )
+  }
+
+  def addressUK(index: Int, userAnswers: UserAnswers)
+               (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TrusteesUkAddressPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeOrgUKAddress.checkYourAnswersLabel",
+        ukAddress(x),
+        None
+      )
+  }
+
+  def nonUKAddress(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)
+                  (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TrusteesInternationalAddressPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeOrgNonUKAddress.checkYourAnswersLabel",
+        internationalAddress(x, countryOptions),
+        None
+      )
+  }
+
+  def telephone(index: Int, userAnswers: UserAnswers)
+               (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TelephoneNumberPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeTelephone.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        None
+      )
+  }
+
+  def email(index: Int, userAnswers: UserAnswers)
+           (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(EmailPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeEmail.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        None
+      )
+  }
+}
+
+object SettlorCompany {
+
+  def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] = {
+
+    val questions = Seq(
+      name(index, userAnswers),
+      utrYesNo(index, userAnswers),
+      utr(index, userAnswers),
+      addressYesNo(index, userAnswers),
+      addressUKYesNo(index, userAnswers),
+      addressUK(index, userAnswers),
+      nonUKAddress(index, userAnswers, countryOptions)
+    ).flatten
+
+    if (name(index, userAnswers).nonEmpty) {
+      Some(Seq(AnswerSection(
+        headingKey = None,
+        questions,
+        sectionKey = Some(messages("answerPage.section.settlorCompany.heading"))
+      )))
+    } else {
+      None
+    }
+  }
+
+  def name(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(SettlorIndividualNamePage(index)) map { x =>
     AnswerRow(
       "settlorCompanyName.checkYourAnswersLabel",
       HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"),
@@ -117,7 +229,7 @@ object SettlorCompany {
       )
   }
 
-  def addressUK(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)
+  def addressUK(index: Int, userAnswers: UserAnswers)
                (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressUKPage(index)) map {
     x =>
       AnswerRow(
