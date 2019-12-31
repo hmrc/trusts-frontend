@@ -16,23 +16,19 @@
 
 package controllers.playback
 
-import connector.TrustConnector
 import controllers.actions._
 import forms.DeclarationFormProvider
-import javax.inject.Inject
-import models.playback.http.Processed
 import navigation.Navigator
-import pages.playback.{DeclarationWhatNextPage, WhatIsTheUTRVariationPage}
-import pages.register.DeclarationPage
+import repositories.RegistrationsRepository
+import views.html.playback.DeclarationView
+import scala.concurrent.{ExecutionContext, Future}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.RegistrationsRepository
-import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.PrintPlaybackHelper
-import views.html.playback.DeclarationView
-
-import scala.concurrent.{ExecutionContext, Future}
+import javax.inject.Inject
+import pages.playback.DeclarationWhatNextPage
+import pages.register.DeclarationPage
 
 class DeclarationController @Inject()(
                                        override val messagesApi: MessagesApi,
@@ -44,36 +40,24 @@ class DeclarationController @Inject()(
                                        requireData: DataRequiredAction,
                                        requiredAnswer: RequiredAnswerActionProvider,
                                        formProvider: DeclarationFormProvider,
-                                       connector: TrustConnector,
-                                       playBackHelper: PrintPlaybackHelper,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: DeclarationView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def actions() = identify andThen getData andThen requireData andThen playbackAction andThen
-    requiredAnswer(RequiredAnswer(DeclarationWhatNextPage, routes.DeclarationWhatNextController.onPageLoad()))
+      requiredAnswer(RequiredAnswer(DeclarationWhatNextPage, routes.DeclarationWhatNextController.onPageLoad()))
 
-  def onPageLoad(): Action[AnyContent] = actions().async {
+  def onPageLoad(): Action[AnyContent] = actions() {
     implicit request =>
 
-      request.userAnswers.get(WhatIsTheUTRVariationPage) match {
-        case Some(utr) => connector.playback(utr) map {
-          case Processed(trust, _) =>
-
-            val preparedForm = request.userAnswers.get(DeclarationPage) match {
-              case None => form
-              case Some(value) => form.fill(value)
-            }
-
-            Ok(view(preparedForm, request.affinityGroup, playBackHelper.summary(trust), controllers.playback.routes.DeclarationController.onSubmit()))
-
-          case _ => ???
-        }
-        case _ => Future.successful(Redirect(controllers.register.routes.SessionExpiredController.onPageLoad()))
+      val preparedForm = request.userAnswers.get(DeclarationPage) match {
+        case None => form
+        case Some(value) => form.fill(value)
       }
 
+      Ok(view(preparedForm, request.affinityGroup, controllers.playback.routes.DeclarationController.onSubmit()))
   }
 
   def onSubmit(): Action[AnyContent] = actions().async {
@@ -81,21 +65,7 @@ class DeclarationController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-
-          request.userAnswers.get(WhatIsTheUTRVariationPage) match {
-            case Some(utr) =>
-              connector.playback(utr) map {
-                case Processed(trust, _) =>
-
-                  BadRequest(view(formWithErrors, request.affinityGroup, playBackHelper.summary(trust), controllers.playback.routes.DeclarationController.onSubmit()))
-
-                case _ => ???
-
-              }
-
-            case _ => Future.successful(Redirect(controllers.register.routes.SessionExpiredController.onPageLoad()))
-
-          },
+          Future.successful(BadRequest(view(formWithErrors, request.affinityGroup, controllers.playback.routes.DeclarationController.onSubmit()))),
 
         // TODO:  Check response for submission of no change data and redirect accordingly
 

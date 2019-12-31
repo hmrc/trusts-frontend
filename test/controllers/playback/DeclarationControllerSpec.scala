@@ -59,7 +59,7 @@ class DeclarationControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, AffinityGroup.Organisation, Seq.empty, submitRoute)(request, messages).toString
+        view(form, AffinityGroup.Organisation, submitRoute)(request, messages).toString
 
       application.stop()
     }
@@ -79,7 +79,7 @@ class DeclarationControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, AffinityGroup.Agent, Seq.empty, submitRoute)(request, messages).toString
+        view(form, AffinityGroup.Agent, submitRoute)(request, messages).toString
 
       application.stop()
     }
@@ -99,7 +99,7 @@ class DeclarationControllerSpec extends SpecBase {
 
       status(result) mustEqual OK
 
-      contentAsString(result) mustEqual view(form.fill(models.core.pages.Declaration(FullName("First",None, "Last"), Some("test@test.comn"))), AffinityGroup.Agent, Seq.empty, submitRoute)(fakeRequest, messages).toString
+      contentAsString(result) mustEqual view(form.fill(models.core.pages.Declaration(FullName("First",None, "Last"), Some("test@test.comn"))), AffinityGroup.Agent, submitRoute)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -141,7 +141,7 @@ class DeclarationControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, AffinityGroup.Agent, Seq.empty, submitRoute)(fakeRequest, messages).toString
+        view(boundForm, AffinityGroup.Agent, submitRoute)(fakeRequest, messages).toString
 
       application.stop()
     }

@@ -36,7 +36,7 @@ class DeclarationViewSpec extends QuestionViewBehaviours[Declaration] {
     val view = viewFor[DeclarationView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, AffinityGroup.Agent, Seq.empty, Call("POST", ""))(fakeRequest, messages)
+      view.apply(form, AffinityGroup.Agent, Call("POST", ""))(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
@@ -56,7 +56,7 @@ class DeclarationViewSpec extends QuestionViewBehaviours[Declaration] {
       val view = viewFor[DeclarationView](Some(emptyUserAnswers))
 
       def applyView(form: Form[_]): HtmlFormat.Appendable =
-        view.apply(form, AffinityGroup.Organisation, Seq.empty, Call("POST", ""))(fakeRequest, messages)
+        view.apply(form, AffinityGroup.Organisation, Call("POST", ""))(fakeRequest, messages)
 
       val doc = asDocument(applyView(form))
       assertContainsText(doc, "I confirm that the information given is true and complete to the best of my knowledge and belief. " +
@@ -73,7 +73,7 @@ class DeclarationViewSpec extends QuestionViewBehaviours[Declaration] {
       val view = viewFor[DeclarationView](Some(emptyUserAnswers))
 
       def applyView(form: Form[_]): HtmlFormat.Appendable =
-        view.apply(form, AffinityGroup.Agent, Seq.empty, Call("POST", ""))(fakeRequest, messages)
+        view.apply(form, AffinityGroup.Agent, Call("POST", ""))(fakeRequest, messages)
 
       val doc = asDocument(applyView(form))
 
