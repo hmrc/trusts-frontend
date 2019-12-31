@@ -43,9 +43,9 @@ class IndividualBeneficiaryExtractorSpec extends FreeSpec with MustMatchers
     },
     vulnerableBeneficiary = true,
     beneficiaryType = index match {
-      case 0 => Some("Director")
-      case 1 => Some("Employee")
-      case 2 => Some("NA")
+      case 0 => Some(RoleInCompany.Director)
+      case 1 => Some(RoleInCompany.Employee)
+      case 2 => Some(RoleInCompany.NA)
     },
     beneficiaryDiscretion = index match {
       case 0 => Some(false)

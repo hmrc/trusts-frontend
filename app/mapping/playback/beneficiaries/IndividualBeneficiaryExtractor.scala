@@ -19,8 +19,9 @@ package mapping.playback.beneficiaries
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
 import mapping.playback.{PlaybackExtractor, PlaybackImplicits}
-import models.core.pages.{InternationalAddress, UKAddress}
-import models.playback.http.DisplayTrustIndividualDetailsType
+import mapping.registration.PassportType
+import models.core.pages.{Address, InternationalAddress, UKAddress}
+import models.playback.http.{DisplayTrustIdentificationType, DisplayTrustIndividualDetailsType}
 import models.playback.{MetaData, UserAnswers}
 import models.registration.pages.RoleInCompany
 import pages.register.beneficiaries.individual._
@@ -43,7 +44,7 @@ class IndividualBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[
 
             answers
               .flatMap(_.set(IndividualBeneficiaryNamePage(index), individualBeneficiary.name.convert))
-              .flatMap(_.set(IndividualBeneficiaryRoleInCompanyPage(index), individualBeneficiary.beneficiaryType.map(mapRoleInCompany)))
+              .flatMap(_.set(IndividualBeneficiaryRoleInCompanyPage(index), individualBeneficiary.beneficiaryType))
               .flatMap(answers => extractDateOfBirth(individualBeneficiary, index, answers))
               .flatMap(answers => extractShareOfIncome(individualBeneficiary, index, answers))
               .flatMap(answers => extractIdentification(individualBeneficiary, index, answers))
@@ -53,7 +54,7 @@ class IndividualBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[
                   IndividualBeneficiaryMetaData(index),
                   MetaData(
                     lineNo = individualBeneficiary.lineNo,
-                    bpMatchStatus = individualBeneficiary.bpMatchStatus,  // TODO does this need to be filtered as ClassOfBeneficiary ?
+                    bpMatchStatus = individualBeneficiary.bpMatchStatus,
                     entityStart = individualBeneficiary.entityStart
                   )
                 )
@@ -71,41 +72,35 @@ class IndividualBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[
       }
     }
 
-
-  private def mapRoleInCompany(role: String): RoleInCompany = {
-    role match {
-      case "Director" => RoleInCompany.Director
-      case "Employee" => RoleInCompany.Employee
-      case "NA" => RoleInCompany.NA
-    }
-  }
-
-
   private def extractIdentification(individualBeneficiary: DisplayTrustIndividualDetailsType, index: Int, answers: UserAnswers) = {
+    individualBeneficiary.identification map {
 
-    (for {
-      identification <- individualBeneficiary.identification
-      nino = identification.nino
-      address = identification.address
-      passport = identification.passport
-    } yield (nino, address, passport) match {
-      case(Some(nino), None, None) =>
+      case DisplayTrustIdentificationType(_, Some(nino), None, None) =>
         answers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), true)
           .flatMap(_.set(IndividualBeneficiaryNationalInsuranceNumberPage(index), nino))
-      case(None, Some(address), None) =>
-        answers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), false)
-          .flatMap(_.set(IndividualBeneficiaryPassportIDCardYesNoPage(index), false))
-          .flatMap(answers => extractAddress(individualBeneficiary, index, answers))
-      case(None, Some(address), Some(passport)) =>
-        answers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), false)
-        .flatMap(answers => extractAddress(individualBeneficiary, index, answers))
-        .flatMap(answers => extractPassportIdCard(individualBeneficiary, index, answers))
-      case(_,_,_) =>
+
+      case DisplayTrustIdentificationType(_, None, Some(passport), None) =>
+        // TODO should this fail the unpacking, can we get this back in the API? What did the iForm do?
         answers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), false)
           .flatMap(_.set(IndividualBeneficiaryAddressYesNoPage(index), false))
-    }).getOrElse(answers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), false)
-      .flatMap(_.set(IndividualBeneficiaryAddressYesNoPage(index), false)))
 
+//        case object InvalidExtractorState extends RuntimeException
+//        Failure(InvalidExtractorState)
+
+      case DisplayTrustIdentificationType(_, None, None, Some(address)) =>
+        answers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), false)
+          .flatMap(_.set(IndividualBeneficiaryPassportIDCardYesNoPage(index), false))
+          .flatMap(answers => extractAddress(address.convert, index, answers))
+
+      case DisplayTrustIdentificationType(_, None, Some(passport), Some(address)) =>
+        answers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), false)
+          .flatMap(answers => extractAddress(address.convert, index, answers))
+          .flatMap(answers => extractPassportIdCard(passport, index, answers))
+
+    } getOrElse {
+      answers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), false)
+        .flatMap(_.set(IndividualBeneficiaryAddressYesNoPage(index), false))
+    }
   }
 
 
@@ -131,21 +126,18 @@ class IndividualBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[
     }
   }
 
-  private def extractPassportIdCard(individualBeneficiary: DisplayTrustIndividualDetailsType, index: Int, answers: UserAnswers) = {
-    individualBeneficiary.identification.flatMap(_.passport) match {
-      case Some(passportIdCard) =>
-        answers.set(IndividualBeneficiaryPassportIDCardYesNoPage(index), true)
-          .flatMap(_.set(IndividualBeneficiaryPassportIDCardPage(index), passportIdCard.convert))
-    }
+  private def extractPassportIdCard(passport: PassportType, index: Int, answers: UserAnswers) = {
+      answers.set(IndividualBeneficiaryPassportIDCardYesNoPage(index), true)
+        .flatMap(_.set(IndividualBeneficiaryPassportIDCardPage(index), passport.convert))
   }
 
-  private def extractAddress(individualBeneficiary: DisplayTrustIndividualDetailsType, index: Int, answers: UserAnswers) = {
-    individualBeneficiary.identification.flatMap(_.address.convert) match {
-      case Some(uk: UKAddress) =>
+  private def extractAddress(address: Address, index: Int, answers: UserAnswers) = {
+    address match {
+      case uk: UKAddress =>
         answers.set(IndividualBeneficiaryAddressPage(index), uk)
           .flatMap(_.set(IndividualBeneficiaryAddressYesNoPage(index), true))
           .flatMap(_.set(IndividualBeneficiaryAddressUKYesNoPage(index), true))
-      case Some(nonUk: InternationalAddress) =>
+      case nonUk: InternationalAddress =>
         answers.set(IndividualBeneficiaryAddressPage(index), nonUk)
           .flatMap(_.set(IndividualBeneficiaryAddressYesNoPage(index), true))
           .flatMap(_.set(IndividualBeneficiaryAddressUKYesNoPage(index), false))
