@@ -22,8 +22,9 @@ import models.playback.{UserAnswers => PlaybackAnswers}
 import pages.register.beneficiaries.charity._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import utils.CharityBeneficiarySection
 import utils.countryOptions.CountryOptions
+import utils.print.playback.sections
+import utils.print.playback.sections.CharityBeneficiary
 import views.html.playback.PlaybackAnswersView
 
 class PlaybackAnswerPageControllerSpec extends PlaybackSpecBase {
@@ -44,7 +45,7 @@ class PlaybackAnswerPageControllerSpec extends PlaybackSpecBase {
         .set(CharityBeneficiaryAddressUKYesNoPage(0), true).success.value
         .set(CharityBeneficiaryAddressPage(0), UKAddress("line1", "line2", None, None, "NE11NE")).success.value
 
-      val expectedSections = CharityBeneficiarySection(0, playbackAnswers, countryOptions).get
+      val expectedSections = sections.CharityBeneficiary(0, playbackAnswers, countryOptions).get
 
       val application = applicationBuilder(Some(playbackAnswers)).build()
 

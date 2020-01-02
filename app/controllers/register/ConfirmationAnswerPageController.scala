@@ -26,7 +26,8 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.countryOptions.CountryOptions
-import utils.{DateFormatter, PrintUserAnswersHelper}
+import utils.DateFormatter
+import utils.print.register.PrintUserAnswersHelper
 import views.html.register.ConfirmationAnswerPageView
 
 

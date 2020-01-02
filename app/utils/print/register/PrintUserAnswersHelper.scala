@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package utils
+package utils.print.register
 
 import javax.inject.Inject
 import models.core.UserAnswers
 import play.api.i18n.Messages
+import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 

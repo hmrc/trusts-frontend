@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package utils
+package utils.print.playback
 
 import controllers.actions.playback.PlaybackDataRequest
 import javax.inject.Inject
 import mapping.playback.UserAnswersExtractor
-import models.playback.http.GetTrust
 import play.api.i18n.Messages
 import play.api.mvc.AnyContent
 import utils.countryOptions.CountryOptions

@@ -25,8 +25,8 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.PrintUserAnswersHelper
 import utils.countryOptions.CountryOptions
+import utils.print.register.PrintUserAnswersHelper
 import views.html.register.SummaryAnswerPageView
 
 
