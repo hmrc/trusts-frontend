@@ -28,19 +28,13 @@ import viewmodels.AnswerSection
 class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions,
                                     userAnswersExtractor: UserAnswersExtractor){
 
-  def summary(trust: GetTrust)(implicit messages: Messages, request: PlaybackDataRequest[AnyContent]) : Seq[AnswerSection] = {
+  def summary(userAnswers: models.playback.UserAnswers)(implicit messages: Messages, request: PlaybackDataRequest[AnyContent]) : Seq[AnswerSection] = {
 
-    userAnswersExtractor.extract(request.userAnswers, trust) match {
-      case Right(userAnswers) =>
+      val playbackAnswersHelper: PlaybackAnswersHelper = new PlaybackAnswersHelper(countryOptions)(userAnswers)
 
-        val playbackAnswersHelper: PlaybackAnswersHelper = new PlaybackAnswersHelper(countryOptions)(userAnswers)
+      val settlors = playbackAnswersHelper.deceasedSettlor.getOrElse(Nil)
 
-        val settlors = playbackAnswersHelper.deceasedSettlor.getOrElse(Nil)
-
-        settlors ++ playbackAnswersHelper.charityBeneficiary(0).getOrElse(Nil)
-
-      case _ => Seq.empty
-    }
+      settlors ++ playbackAnswersHelper.charityBeneficiary(0).getOrElse(Nil)
 
   }
 }

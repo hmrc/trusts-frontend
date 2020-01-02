@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,12 @@
 
 package controllers.playback
 
-import connector.TrustConnector
-import controllers.actions._
-import controllers.actions.playback.PlaybackIdentifierAction
-import controllers.actions.register.{RegistrationDataRequiredAction, RegistrationDataRetrievalAction, RegistrationIdentifierAction}
+import controllers.actions.playback.{PlaybackDataRequiredAction, PlaybackDataRetrievalAction, PlaybackIdentifierAction}
+import controllers.actions.register.RegistrationIdentifierAction
 import javax.inject.Inject
-import models.playback.http.Processed
-import pages.playback.WhatIsTheUTRVariationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.countryOptions.CountryOptions
 import utils.PrintPlaybackHelper
 import views.html.playback.PlaybackAnswersView
 
@@ -35,41 +30,25 @@ import scala.concurrent.{ExecutionContext, Future}
 class PlaybackAnswerPageController @Inject()(
                                               override val messagesApi: MessagesApi,
                                               identify: RegistrationIdentifierAction,
-                                              playbackAction: PlaybackIdentifierAction,
-                                              getData: RegistrationDataRetrievalAction,
-                                              requireData: RegistrationDataRequiredAction,
+                                              playbackIdentify: PlaybackIdentifierAction,
+                                              getData: PlaybackDataRetrievalAction,
+                                              requireData: PlaybackDataRequiredAction,
                                               val controllerComponents: MessagesControllerComponents,
                                               view: PlaybackAnswersView,
-                                              countryOptions: CountryOptions,
-                                              printPlaybackAnswersHelper: PrintPlaybackHelper,
-                                              trustConnector: TrustConnector
+                                              printPlaybackAnswersHelper: PrintPlaybackHelper
                                             )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions =
-    identify andThen getData andThen requireData andThen playbackAction
+    identify andThen getData andThen requireData andThen playbackIdentify
 
   def onPageLoad() = actions.async {
     implicit request =>
 
-      request.userAnswers.get(WhatIsTheUTRVariationPage) match {
-        case Some(utr) =>
-          trustConnector.playback(utr) map {
-            case Processed(trust, _) =>
+      val sections = printPlaybackAnswersHelper.summary(request.userAnswers)
 
-              val sections = printPlaybackAnswersHelper.summary(trust)
+      println(">>>>" + sections)
 
-              println(">>>>" + sections)
-
-              Ok(view(sections))
-
-            case _ => ???
-
-          }
-
-        case _ => Future.successful(Redirect(controllers.register.routes.SessionExpiredController.onPageLoad()))
-
-      }
-
+      Future.successful(Ok(view(sections)))
   }
 
 }
