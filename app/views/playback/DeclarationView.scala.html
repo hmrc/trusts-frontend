@@ -19,7 +19,6 @@
 @import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 @import play.api.mvc.Call
 @import config.FrontendAppConfig
-@import viewmodels.{AnswerSection, RepeaterAnswerSection, Section}
 
 @this(
     appConfig: FrontendAppConfig,
@@ -27,7 +26,7 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], affinityGroup : AffinityGroup, sections: Seq[AnswerSection], onSubmit: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], affinityGroup : AffinityGroup, onSubmit: Call)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("declaration.title")}"
@@ -40,15 +39,6 @@
         @components.error_summary(form.errors)
 
         @components.heading("declaration.heading")
-
-        @for(section <- sections){
-                @{
-                    section match {
-                        case a: AnswerSection => components.answer_section(a)
-                        case r: RepeaterAnswerSection => components.repeater_answer_section(r)
-                }
-            }
-        }
 
         @components.input_text(
             field = form("firstName"),
