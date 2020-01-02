@@ -30,11 +30,11 @@ class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions,
 
   def summary(userAnswers: models.playback.UserAnswers)(implicit messages: Messages, request: PlaybackDataRequest[AnyContent]) : Seq[AnswerSection] = {
 
-      val playbackAnswersHelper: PlaybackAnswersHelper = new PlaybackAnswersHelper(countryOptions)(userAnswers)
+    val playbackAnswersHelper: PlaybackAnswersHelper = new PlaybackAnswersHelper(countryOptions)(userAnswers)
 
-      val settlors = playbackAnswersHelper.deceasedSettlor.getOrElse(Nil)
-
-      settlors ++ playbackAnswersHelper.charityBeneficiary(0).getOrElse(Nil)
-
+    List(
+      playbackAnswersHelper.deceasedSettlor,
+      playbackAnswersHelper.charityBeneficiary(0)
+    ).collect { case Some(a) => a }.flatten
   }
 }
