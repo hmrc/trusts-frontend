@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,24 @@ import org.joda.time.DateTime
 
 object PlaybackImplicits {
 
+  private def convertAddress(address: AddressType) : Address = address.postCode match {
+    case Some(post) =>
+      UKAddress(
+        line1 = address.line1,
+        line2 = address.line2,
+        line3 = address.line3,
+        line4 = address.line4,
+        postcode = post
+      )
+    case None =>
+      InternationalAddress(
+        line1 = address.line1,
+        line2 = address.line2,
+        line3 = address.line3,
+        country = address.country
+      )
+  }
+
   implicit class FullNameConverter(name: NameType) {
     def convert : FullName = FullName(name.firstName, name.middleName, name.lastName)
   }
@@ -39,31 +57,12 @@ object PlaybackImplicits {
       PassportOrIdCardDetails(passport.countryOfIssue, passport.number, passport.expirationDate)
   }
 
-  implicit class AddressConverter(address : Option[AddressType]) {
+  implicit class AddressOptionConverter(address : Option[AddressType]) {
+    def convert : Option[Address] = address.map(convertAddress)
+  }
 
-    def convert : Option[Address] = {
-      address map {
-        add =>
-          add.postCode match {
-            case Some(post) =>
-              UKAddress(
-                line1 = add.line1,
-                line2 = add.line2,
-                line3 = add.line3,
-                line4 = add.line4,
-                postcode = post
-              )
-            case None =>
-              InternationalAddress(
-                line1 = add.line1,
-                line2 = add.line2,
-                line3 = add.line3,
-                country = add.country
-              )
-          }
-      }
-    }
-
+  implicit class AddressConverter(address : AddressType) {
+    def convert : Address = convertAddress(address)
   }
 
 }

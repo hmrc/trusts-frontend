@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,8 @@ class BeneficiaryExtractor @Inject()(charityBeneficiaryExtractor: CharityBenefic
                                      companyBeneficiaryExtractor: CompanyBeneficiaryExtractor,
                                      trustBeneficiaryExtractor: TrustBeneficiaryExtractor,
                                      otherBeneficiaryExtractor: OtherBeneficiaryExtractor,
-                                     classOfBeneficiaryExtractor: ClassOfBeneficiaryExtractor) extends PlaybackExtractor[DisplayTrustBeneficiaryType] {
+                                     classOfBeneficiaryExtractor: ClassOfBeneficiaryExtractor,
+                                     individualBeneficiaryExtractor: IndividualBeneficiaryExtractor) extends PlaybackExtractor[DisplayTrustBeneficiaryType] {
 
   override def extract(answers: UserAnswers, data: DisplayTrustBeneficiaryType): Either[PlaybackExtractionError, UserAnswers] = {
 
@@ -37,7 +38,8 @@ class BeneficiaryExtractor @Inject()(charityBeneficiaryExtractor: CharityBenefic
       companyBeneficiaryExtractor.extract(answers, data.company),
       trustBeneficiaryExtractor.extract(answers, data.trust),
       otherBeneficiaryExtractor.extract(answers, data.other),
-      classOfBeneficiaryExtractor.extract(answers, data.unidentified)
+      classOfBeneficiaryExtractor.extract(answers, data.unidentified),
+      individualBeneficiaryExtractor.extract(answers, data.individualDetails)
     ).collect {
       case Right(z) => z
     }

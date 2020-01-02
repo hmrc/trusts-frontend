@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import base.SpecBaseHelpers
 import generators.Generators
 import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
 import mapping.playback.PlaybackExtractor
-import models.core.pages.UKAddress
+import models.core.pages.{FullName, UKAddress}
 import models.playback.http._
 import models.playback.{MetaData, UserAnswers}
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
@@ -29,6 +29,7 @@ import pages.register.beneficiaries.classOfBeneficiary._
 import pages.register.beneficiaries.company._
 import pages.register.beneficiaries.other._
 import pages.register.beneficiaries.trust._
+import pages.register.beneficiaries.individual._
 
 class BeneficiaryExtractorSpec extends FreeSpec with MustMatchers
   with EitherValues with Generators with SpecBaseHelpers {
@@ -58,7 +59,18 @@ class BeneficiaryExtractorSpec extends FreeSpec with MustMatchers
 
       "must return user answers updated" in {
         val beneficiary = DisplayTrustBeneficiaryType(
-          individualDetails = None,
+          individualDetails = Some(List(DisplayTrustIndividualDetailsType(
+            lineNo = s"1",
+            bpMatchStatus = Some("01"),
+            name = NameType("First Name", None, "Last Name"),
+            dateOfBirth = None,
+            vulnerableBeneficiary = false,
+            beneficiaryType = None,
+            beneficiaryDiscretion = None,
+            beneficiaryShareOfIncome = None,
+            identification = None,
+            entityStart = "2019-11-26"
+          ))),
           company = Some(
             List(
               DisplayTrustCompanyType(
@@ -190,6 +202,24 @@ class BeneficiaryExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(ClassOfBeneficiaryDiscretionYesNoPage(0)).get mustBe false
         extraction.right.value.get(ClassOfBeneficiaryShareOfIncomePage(0)).get mustBe "10"
         extraction.right.value.get(ClassOfBeneficiaryMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
+
+        extraction.right.value.get(IndividualBeneficiaryNamePage(0)).get mustBe FullName("First Name", None, "Last Name")
+        extraction.right.value.get(IndividualBeneficiaryMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
+        extraction.right.value.get(IndividualBeneficiaryRoleInCompanyPage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryVulnerableYesNoPage(0)).get mustBe false
+        extraction.right.value.get(IndividualBeneficiaryDateOfBirthYesNoPage(0)).get mustBe false
+        extraction.right.value.get(IndividualBeneficiaryDateOfBirthPage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryIncomeYesNoPage(0)).get mustBe true
+        extraction.right.value.get(IndividualBeneficiaryIncomePage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryNationalInsuranceYesNoPage(0)).get mustBe false
+        extraction.right.value.get(IndividualBeneficiaryNationalInsuranceNumberPage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryAddressYesNoPage(0)).get mustBe false
+        extraction.right.value.get(IndividualBeneficiaryAddressUKYesNoPage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryAddressPage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryPassportIDCardYesNoPage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiaryPassportIDCardPage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualBeneficiarySafeIdPage(0)) mustNot be(defined)
+
       }
 
     }
