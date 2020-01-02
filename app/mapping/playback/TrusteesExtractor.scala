@@ -107,12 +107,12 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
   private def extractIndividualIdentification(individual: DisplayTrustTrusteeIndividualType, index: Int, answers: UserAnswers) = {
     individual.identification map {
 
-      case DisplayTrustIdentificationType(_, Some(utr), None, None) =>
+      case DisplayTrustIdentificationType(_, Some(nino), None, None) =>
         answers.set(TrusteeNinoYesNoPage(index), true)
-          .flatMap(_.set(TrusteesNinoPage(index), utr))
+          .flatMap(_.set(TrusteesNinoPage(index), nino))
 
       case DisplayTrustIdentificationType(_, None, Some(passport), None) =>
-        // TODO should this fail the unpacking, can we get this back in the API? What did the iForm do?
+        Logger.error(s"[TrusteesExtractor] only passport identification returned in DisplayTrustOrEstate api")
         case object InvalidExtractorState extends RuntimeException
         Failure(InvalidExtractorState)
 
@@ -136,15 +136,15 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
     company.identification map {
 
       case DisplayTrustIdentificationOrgType(_, Some(utr), None) =>
-        answers.set(TrusteeUTRYesNoPagePage(index), true)
+        answers.set(TrusteeUtrYesNoPage(index), true)
           .flatMap(_.set(TrusteesUtrPage(index), utr))
 
       case DisplayTrustIdentificationOrgType(_, None, Some(address)) =>
-        answers.set(TrusteeUTRYesNoPagePage(index), false)
+        answers.set(TrusteeUtrYesNoPage(index), false)
           .flatMap(answers => extractAddress(address.convert, index, answers))
 
     } getOrElse {
-      answers.set(TrusteeNinoYesNoPage(index), false)
+      answers.set(TrusteeUtrYesNoPage(index), false)
         .flatMap(_.set(TrusteeAddressYesNoPage(index), false))
     }
   }

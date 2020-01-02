@@ -73,10 +73,10 @@ class TrusteeOrgExtractor @Inject() extends PlaybackExtractor[Option[DisplayTrus
   private def extractUtr(trustee: DisplayTrustTrusteeOrgType, answers: UserAnswers): Try[UserAnswers] =
     trustee.identification.flatMap(_.utr) match {
       case Some(utr) =>
-          answers.set(TrusteeUTRYesNoPagePage(0), true)
+          answers.set(TrusteeUtrYesNoPage(0), true)
             .flatMap(_.set(TrusteesUtrPage(0), utr))
       case None =>
-        answers.set(TrusteeUTRYesNoPagePage(0), false)
+        answers.set(TrusteeUtrYesNoPage(0), false)
     }
 
   private def extractAddress(trusteeOrg: DisplayTrustTrusteeOrgType, answers: UserAnswers): Try[UserAnswers] =

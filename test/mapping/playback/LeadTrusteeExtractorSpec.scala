@@ -79,7 +79,7 @@ class LeadTrusteeExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(IsThisLeadTrusteePage(0)).get mustBe true
         extraction.right.value.get(TrusteeIndividualOrBusinessPage(0)).get mustBe IndividualOrBusiness.Business
         extraction.right.value.get(TrusteeOrgNamePage(0)).get mustBe "org1"
-        extraction.right.value.get(TrusteeUTRYesNoPagePage(0)).get mustBe true
+        extraction.right.value.get(TrusteeUtrYesNoPage(0)).get mustBe true
         extraction.right.value.get(TrusteesUtrPage(0)).get mustBe "1234567890"
         extraction.right.value.get(TrusteeLiveInTheUKPage(0)).get mustBe true
         extraction.right.value.get(TrusteesUkAddressPage(0)) must be(defined)
