@@ -79,14 +79,6 @@ class IndividualBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[
         answers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), true)
           .flatMap(_.set(IndividualBeneficiaryNationalInsuranceNumberPage(index), nino))
 
-      case DisplayTrustIdentificationType(_, None, Some(passport), None) =>
-        // TODO should this fail the unpacking, can we get this back in the API? What did the iForm do?
-        answers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), false)
-          .flatMap(_.set(IndividualBeneficiaryAddressYesNoPage(index), false))
-
-//        case object InvalidExtractorState extends RuntimeException
-//        Failure(InvalidExtractorState)
-
       case DisplayTrustIdentificationType(_, None, None, Some(address)) =>
         answers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), false)
           .flatMap(_.set(IndividualBeneficiaryPassportIDCardYesNoPage(index), false))
@@ -96,6 +88,11 @@ class IndividualBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[
         answers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), false)
           .flatMap(answers => extractAddress(address.convert, index, answers))
           .flatMap(answers => extractPassportIdCard(passport, index, answers))
+
+      case DisplayTrustIdentificationType(_, None, Some(passport), None) =>
+        Logger.error(s"[IndividualBeneficiaryExtractor] only passport identification returned in DisplayTrustOrEstate api")
+        case object InvalidExtractorState extends RuntimeException
+        Failure(InvalidExtractorState)
 
     } getOrElse {
       answers.set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), false)
@@ -110,7 +107,7 @@ class IndividualBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[
         answers.set(IndividualBeneficiaryDateOfBirthYesNoPage(index), true)
           .flatMap(_.set(IndividualBeneficiaryDateOfBirthPage(index), dob.convert))
       case None =>
-        // Assumption that user answered no as utr is not provided
+        // Assumption that user answered no as dob is not provided
         answers.set(IndividualBeneficiaryDateOfBirthYesNoPage(index), false)
     }
   }
