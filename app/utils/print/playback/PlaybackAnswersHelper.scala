@@ -20,6 +20,7 @@ import javax.inject.Inject
 import models.core.pages.IndividualOrBusiness
 import models.playback.UserAnswers
 import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage}
+import play.api.Logger
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
 import utils.print.playback.sections._
@@ -48,5 +49,22 @@ class PlaybackAnswersHelper @Inject()(countryOptions: CountryOptions)
 
   def deceasedSettlor: Option[Seq[AnswerSection]] = DeceasedSettlor(userAnswers, countryOptions)
 
-  def charityBeneficiary(index: Int): Option[Seq[AnswerSection]] = CharityBeneficiary(index, userAnswers, countryOptions)
+  def charityBeneficiaries : Option[Seq[AnswerSection]] = {
+    val path = _root_.sections.beneficiaries.CharityBeneficiaries.toString
+    val size = (userAnswers.data \\ path).size
+
+    size match {
+      case 0 => None
+      case _ =>
+        val sections = (for (index <- 0 to size) yield {
+          val sec = CharityBeneficiary(index, userAnswers, countryOptions)
+
+          Logger.debug(s"[Generated following answers $sec]")
+          sec
+        }).flatten
+
+        Some(sections.flatten)
+    }
+  }
+
 }

@@ -28,6 +28,7 @@ import navigation.Navigator
 import pages.playback.WhatIsTheUTRVariationPage
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.PlaybackRepository
 import services.PlaybackAuthenticationService
@@ -140,6 +141,9 @@ class TrustStatusController @Inject()(
   }
 
   private def extract(utr: String, playback: GetTrust)(implicit request: PlaybackDataRequest[AnyContent]) : Future[Result] = {
+
+    Logger.debug(s"[TrustStatusController] unpacking the following trust ${Json.stringify(Json.toJson(playback))}")
+
     playbackExtractor.extract(request.userAnswers, playback) match {
       case Right(answers) =>
         playbackRepository.set(answers) map { _ =>

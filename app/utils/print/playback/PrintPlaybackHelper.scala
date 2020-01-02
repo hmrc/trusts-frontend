@@ -33,7 +33,7 @@ class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions,
 
     val entitySections = List(
       playbackAnswersHelper.deceasedSettlor,
-      playbackAnswersHelper.charityBeneficiary(0)
+      playbackAnswersHelper.charityBeneficiaries
     ).flatten.flatten
 
     List(entitySections).flatten

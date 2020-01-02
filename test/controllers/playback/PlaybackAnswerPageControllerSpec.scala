@@ -38,14 +38,21 @@ class PlaybackAnswerPageControllerSpec extends PlaybackSpecBase {
       val countryOptions = injector.instanceOf[CountryOptions]
 
       val playbackAnswers = PlaybackAnswers("internalId")
-        .set(CharityBeneficiaryNamePage(0), "Charity Beneficiary").success.value
+        .set(CharityBeneficiaryNamePage(0), "Charity Beneficiary 1").success.value
         .set(CharityBeneficiaryDiscretionYesNoPage(0), true).success.value
         .set(CharityBeneficiaryShareOfIncomePage(0), "10").success.value
         .set(CharityBeneficiaryAddressYesNoPage(0), true).success.value
         .set(CharityBeneficiaryAddressUKYesNoPage(0), true).success.value
         .set(CharityBeneficiaryAddressPage(0), UKAddress("line1", "line2", None, None, "NE11NE")).success.value
 
-      val expectedSections = sections.CharityBeneficiary(0, playbackAnswers, countryOptions).get
+        .set(CharityBeneficiaryNamePage(1), "Charity Beneficiary 2").success.value
+        .set(CharityBeneficiaryDiscretionYesNoPage(0), false).success.value
+        .set(CharityBeneficiaryAddressYesNoPage(0), false).success.value
+
+      val expectedSections = Seq(
+        sections.CharityBeneficiary(0, playbackAnswers, countryOptions),
+        sections.CharityBeneficiary(1, playbackAnswers, countryOptions)
+      ).flatten.flatten
 
       val application = applicationBuilder(Some(playbackAnswers)).build()
 

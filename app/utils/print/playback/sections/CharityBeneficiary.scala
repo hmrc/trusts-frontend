@@ -27,7 +27,11 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 object CharityBeneficiary {
 
-  def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] = {
+  def apply(index: Int,
+            userAnswers: UserAnswers,
+            countryOptions: CountryOptions)
+           (implicit messages: Messages): Option[Seq[AnswerSection]] = {
+
     if (name(index, userAnswers).nonEmpty) {
       Some(Seq(AnswerSection(
         headingKey = None,
