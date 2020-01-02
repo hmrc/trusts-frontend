@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,6 @@ class TrustStatusControllerSpec extends PlaybackSpecBase with BeforeAndAfterEach
       bind[TrustConnector].to(fakeTrustConnector),
       bind[TrustsStoreConnector].to(fakeTrustStoreConnector),
       bind[PlaybackAuthenticationService].to(new FakePlaybackAuthenticationService()),
-      bind[PlaybackRepository].toInstance(fakePlaybackRepository),
       bind[UserAnswersExtractor].to[FakeUserAnswerExtractor]
     ).build()
 
@@ -285,14 +284,12 @@ class TrustStatusControllerSpec extends PlaybackSpecBase with BeforeAndAfterEach
 
               val fakeTrustConnector: TrustConnector = mock[TrustConnector]
               val fakeTrustStoreConnector: TrustsStoreConnector = mock[TrustsStoreConnector]
-              val fakePlaybackRepository: PlaybackRepository = mock[PlaybackRepository]
 
               val userAnswers = emptyUserAnswers.set(WhatIsTheUTRVariationPage, "1234567890").success.value
 
               def application: Application = applicationBuilder(userAnswers = Some(userAnswers)).overrides(
                 bind[TrustConnector].to(fakeTrustConnector),
                 bind[TrustsStoreConnector].to(fakeTrustStoreConnector),
-                bind[PlaybackRepository].toInstance(fakePlaybackRepository),
                 bind[UserAnswersExtractor].to[FakeFailingUserAnswerExtractor],
                 bind[PlaybackAuthenticationService].to(new FakePlaybackAuthenticationService())
               ).build()
@@ -310,7 +307,7 @@ class TrustStatusControllerSpec extends PlaybackSpecBase with BeforeAndAfterEach
               when(fakeTrustConnector.playback(any[String])(any(), any()))
                 .thenReturn(Future.successful(Processed(getTrust, "9873459837459837")))
 
-              when(fakePlaybackRepository.set(any())).thenReturn(Future.successful(true))
+              when(playbackRepository.set(any())).thenReturn(Future.successful(true))
 
               val result: Future[Result] = route(application, request).value
 
@@ -337,13 +334,11 @@ class TrustStatusControllerSpec extends PlaybackSpecBase with BeforeAndAfterEach
 
             val fakeTrustConnector: TrustConnector = mock[TrustConnector]
             val fakeTrustStoreConnector: TrustsStoreConnector = mock[TrustsStoreConnector]
-            val fakePlaybackRepository: PlaybackRepository = mock[PlaybackRepository]
 
             def application: Application = applicationBuilder(userAnswers = Some(userAnswers)).overrides(
               bind[TrustConnector].to(fakeTrustConnector),
               bind[TrustsStoreConnector].to(fakeTrustStoreConnector),
-              bind[PlaybackAuthenticationService].to(new FakeFailingPlaybackAuthenticationService()),
-              bind[PlaybackRepository].toInstance(fakePlaybackRepository)
+              bind[PlaybackAuthenticationService].to(new FakeFailingPlaybackAuthenticationService())
             ).build()
 
             val payload : String =
@@ -361,7 +356,7 @@ class TrustStatusControllerSpec extends PlaybackSpecBase with BeforeAndAfterEach
             when(fakeTrustConnector.playback(any[String])(any(), any()))
               .thenReturn(Future.successful(Processed(getTrust, "9873459837459837")))
 
-            when(fakePlaybackRepository.set(any())).thenReturn(Future.successful(true))
+            when(playbackRepository.set(any())).thenReturn(Future.successful(true))
 
             status(result) mustEqual UNAUTHORIZED
 

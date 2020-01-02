@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,7 @@ import org.scalatestplus.play.guice._
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import repositories.PlaybackRepository
-import services.{CreateDraftRegistrationService, SubmissionService}
-import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
+import services.SubmissionService
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import utils.TestUserAnswers
 import utils.annotations.{LivingSettlor, PropertyOrLand}
@@ -52,8 +51,6 @@ trait PlaybackSpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mo
         bind[PlaybackDataRequiredAction].to[PlaybackDataRequiredActionImpl],
         bind[PlaybackRepository].toInstance(playbackRepository),
         bind[SubmissionService].toInstance(mockSubmissionService),
-        bind[AffinityGroup].toInstance(Organisation),
-        bind[CreateDraftRegistrationService].toInstance(mockCreateDraftRegistrationService),
         bind[Navigator].toInstance(navigator),
         bind[Navigator].qualifiedWith(classOf[PropertyOrLand]).toInstance(navigator),
         bind[Navigator].qualifiedWith(classOf[LivingSettlor]).toInstance(navigator)
