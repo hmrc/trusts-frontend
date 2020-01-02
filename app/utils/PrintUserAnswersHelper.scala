@@ -25,34 +25,28 @@ import viewmodels.AnswerSection
 class PrintUserAnswersHelper @Inject()(countryOptions: CountryOptions){
 
   def summary(draftId: String, userAnswers : UserAnswers)(implicit messages: Messages) : Seq[AnswerSection] = {
-    val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, draftId, canEdit = false)
 
-    val trustDetails = checkYourAnswersHelper.trustDetails.getOrElse(Nil)
-    val trustees = checkYourAnswersHelper.trustees.getOrElse(Nil)
-    val settlors = checkYourAnswersHelper.deceasedSettlor.getOrElse(Nil)
-    val livingSettlors = checkYourAnswersHelper.livingSettlors.getOrElse(Nil)
-    val individualBeneficiaries = checkYourAnswersHelper.individualBeneficiaries.getOrElse(Nil)
-    val individualBeneficiariesExist: Boolean = individualBeneficiaries.nonEmpty
-    val classOfBeneficiaries = checkYourAnswersHelper.classOfBeneficiaries(individualBeneficiariesExist).getOrElse(Nil)
+    val helper = new CheckYourAnswersHelper(countryOptions)(userAnswers, draftId, canEdit = false)
 
-    val money = checkYourAnswersHelper.money
-    val shares = checkYourAnswersHelper.shares
-    val propertyOrLand = checkYourAnswersHelper.propertyOrLand
+    val entitySections = List(
+      helper.trustDetails,
+      helper.deceasedSettlor,
+      helper.livingSettlors,
+      helper.trustees,
+      helper.individualBeneficiaries,
+      helper.classOfBeneficiaries(helper.individualBeneficiaries.exists(_.nonEmpty))
+    ).flatten.flatten
 
-    val assetSection = Seq(AnswerSection(None, Nil, Some(messages("answerPage.section.assets.heading"))))
+    val assetSections = List(
+      Seq(AnswerSection(None, Nil, Some(messages("answerPage.section.assets.heading")))),
+      helper.money,
+      helper.shares,
+      helper.propertyOrLand
+    ).flatten
 
-    val sections =
-      trustDetails ++
-      settlors ++
-      livingSettlors ++
-      trustees ++
-      individualBeneficiaries ++
-      classOfBeneficiaries ++
-      assetSection ++
-      money ++
-      shares ++
-      propertyOrLand
-
-    sections
+    List(
+      entitySections,
+      assetSections
+    ).flatten
   }
 }

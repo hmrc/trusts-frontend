@@ -45,7 +45,7 @@ import utils.{CheckYourAnswersHelper, TestUserAnswers}
 import viewmodels.AnswerSection
 import views.html.register.SummaryAnswerPageView
 
-class SummaryAnswersControllerSpec extends RegistrationSpecBase {
+class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
 
   val index = 0
 

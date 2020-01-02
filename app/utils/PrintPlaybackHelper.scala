@@ -32,9 +32,11 @@ class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions,
 
     val playbackAnswersHelper: PlaybackAnswersHelper = new PlaybackAnswersHelper(countryOptions)(userAnswers)
 
-    List(
+    val entitySections = List(
       playbackAnswersHelper.deceasedSettlor,
       playbackAnswersHelper.charityBeneficiary(0)
-    ).collect { case Some(a) => a }.flatten
+    ).flatten.flatten
+
+    List(entitySections).flatten
   }
 }
