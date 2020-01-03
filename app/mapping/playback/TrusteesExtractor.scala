@@ -20,7 +20,7 @@ import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
 import mapping.registration.PassportType
 import models.core.pages.{Address, IndividualOrBusiness, InternationalAddress, UKAddress}
-import models.playback.http.{DisplayTrustCharityType, DisplayTrustIdentificationOrgType, DisplayTrustIdentificationType, DisplayTrustTrusteeIndividualType, DisplayTrustTrusteeOrgType, Trustees}
+import models.playback.http.{DisplayTrustIdentificationOrgType, DisplayTrustIdentificationType, DisplayTrustTrusteeIndividualType, DisplayTrustTrusteeOrgType, DisplayTrustTrusteeType, Trustees}
 import models.playback.{MetaData, UserAnswers}
 import models.registration.pages.Status.Completed
 import pages.entitystatus.TrusteeStatus
@@ -54,7 +54,7 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
               Right(a)
             case Failure(exception) =>
               Logger.warn(s"[TrusteesExtractor] failed to extract data due to ${exception.getMessage}")
-              Left(FailedToExtractData(DisplayTrustCharityType.toString))
+              Left(FailedToExtractData(DisplayTrustTrusteeType.toString))
           }
       }
     }

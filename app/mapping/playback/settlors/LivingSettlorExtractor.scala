@@ -20,7 +20,7 @@ import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
 import mapping.playback.{PlaybackExtractor, PlaybackImplicits}
 import models.core.pages.{Address, IndividualOrBusiness, InternationalAddress, UKAddress}
-import models.playback.http.{DisplayTrustCharityType, DisplayTrustSettlor, DisplayTrustSettlorCompany, LivingSettlor}
+import models.playback.http.{DisplayTrustSettlor, DisplayTrustSettlorCompany, DisplayTrustSettlors, LivingSettlor}
 import models.playback.{MetaData, UserAnswers}
 import models.registration.pages.Status.Completed
 import pages.register.settlors.living_settlor._
@@ -54,7 +54,7 @@ class LivingSettlorExtractor @Inject() extends PlaybackExtractor[Option[List[Liv
               Right(a)
             case Failure(exception) =>
               Logger.warn(s"[SettlorCompanyExtractor] failed to extract data due to ${exception.getMessage}")
-              Left(FailedToExtractData(DisplayTrustCharityType.toString))
+              Left(FailedToExtractData(DisplayTrustSettlors.toString))
           }
       }
     }
