@@ -16,12 +16,9 @@
 
 package mapping.playback.protectors
 
-import java.time.LocalDate
-
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping.playback.PlaybackExtractor
-import mapping.registration.PassportType
 import models.core.pages.FullName
 import models.playback.http._
 import models.playback.{MetaData, UserAnswers}
@@ -32,7 +29,7 @@ import pages.register.protectors.individual._
 class ProtectorExtractorSpec extends FreeSpec with MustMatchers
   with EitherValues with Generators with SpecBaseHelpers {
 
-  val protectorExtractor : PlaybackExtractor[DisplayTrustProtectorsType] =
+  val protectorExtractor : PlaybackExtractor[Option[DisplayTrustProtectorsType]] =
     injector.instanceOf[ProtectorExtractor]
 
   "Protector Extractor" - {
@@ -45,7 +42,7 @@ class ProtectorExtractorSpec extends FreeSpec with MustMatchers
 
         val ua = UserAnswers("fakeId")
 
-        val extraction = protectorExtractor.extract(ua, protector)
+        val extraction = protectorExtractor.extract(ua, Some(protector))
 
         extraction.right.value mustBe ua
 
@@ -81,7 +78,7 @@ class ProtectorExtractorSpec extends FreeSpec with MustMatchers
 
         val ua = UserAnswers("fakeId")
 
-        val extraction = protectorExtractor.extract(ua, protectors)
+        val extraction = protectorExtractor.extract(ua, Some(protectors))
 
         extraction.right.value.get(IndividualProtectorNamePage(0)).get mustBe FullName("First Name", None, "Last Name")
         extraction.right.value.get(IndividualProtectorNINOYesNoPage(0)).get mustBe true
