@@ -17,27 +17,29 @@
 package controllers.playback
 
 import controllers.actions._
+import controllers.actions.playback.{PlaybackDataRequiredAction, PlaybackDataRetrievalAction, PlaybackIdentifierAction}
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.DeclarationFormProvider
+import javax.inject.Inject
 import navigation.Navigator
-import repositories.RegistrationsRepository
-import views.html.playback.DeclarationView
-import scala.concurrent.{ExecutionContext, Future}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import pages.register.DeclarationPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import javax.inject.Inject
-import pages.playback.DeclarationWhatNextPage
-import pages.register.DeclarationPage
+import repositories.PlaybackRepository
+import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import views.html.playback.DeclarationView
+
+import scala.concurrent.{ExecutionContext, Future}
 
 class DeclarationController @Inject()(
                                        override val messagesApi: MessagesApi,
-                                       registrationsRepository: RegistrationsRepository,
+                                       playbackRepository: PlaybackRepository,
                                        navigator: Navigator,
-                                       identify: IdentifierAction,
-                                       playbackAction: PlaybackAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
+                                       identify: RegistrationIdentifierAction,
+                                       playbackIdentify: PlaybackIdentifierAction,
+                                       getData: PlaybackDataRetrievalAction,
+                                       requireData: PlaybackDataRequiredAction,
                                        requiredAnswer: RequiredAnswerActionProvider,
                                        formProvider: DeclarationFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
@@ -46,8 +48,8 @@ class DeclarationController @Inject()(
 
   val form = formProvider()
 
-  def actions() = identify andThen getData andThen requireData andThen playbackAction andThen
-      requiredAnswer(RequiredAnswer(DeclarationWhatNextPage, routes.DeclarationWhatNextController.onPageLoad()))
+  def actions() = identify andThen getData andThen requireData andThen playbackIdentify //andThen
+    //requiredAnswer(RequiredAnswer(DeclarationWhatNextPage, routes.DeclarationWhatNextController.onPageLoad()))
 
   def onPageLoad(): Action[AnyContent] = actions() {
     implicit request =>
@@ -72,7 +74,7 @@ class DeclarationController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, value))
-            _ <- registrationsRepository.set(updatedAnswers)
+            _ <- playbackRepository.set(updatedAnswers)
           } yield Redirect(controllers.playback.routes.VariationsConfirmationController.onPageLoad())
         }
       )

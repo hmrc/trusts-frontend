@@ -16,6 +16,7 @@
 
 package controllers.actions
 
+import controllers.actions.register.{DraftIdDataRetrievalAction, DraftIdRetrievalActionProvider}
 import models.core.UserAnswers
 import models.registration.pages.RegistrationStatus
 import org.mockito.Matchers._

@@ -16,7 +16,7 @@
 
 package utils
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import models.core.pages.{FullName, IndividualOrBusiness}
 import models.registration.pages.Status.{Completed, InProgress}
 import pages.entitystatus.LivingSettlorStatus
@@ -25,7 +25,7 @@ import viewmodels.AddRow
 import controllers.register.settlors.living_settlor.routes
 import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
 
-class AddASettlorViewHelperSpec extends SpecBase   {
+class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 
   val settlorName = FullName("first name", Some("middle name"), "last name")
 

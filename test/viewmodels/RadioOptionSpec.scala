@@ -16,9 +16,9 @@
 
 package viewmodels
 
-import base.SpecBase
+import base.RegistrationSpecBase
 
-class RadioOptionSpec extends SpecBase {
+class RadioOptionSpec extends RegistrationSpecBase {
 
   "Radio Option" must {
 

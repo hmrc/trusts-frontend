@@ -18,7 +18,7 @@ package controllers.register.beneficiaries
 
 import java.time.{LocalDate, ZoneOffset}
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.IndividualBeneficiaryDateOfBirthFormProvider
 import models.NormalMode
 import models.core.pages.FullName
@@ -29,7 +29,7 @@ import views.html.register.beneficiaries.IndividualBeneficiaryDateOfBirthView
 import controllers.register.routes._
 import pages.register.beneficiaries.individual.{IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryNamePage}
 
-class IndividualBeneficiaryDateOfBirthControllerSpec extends SpecBase with MockitoSugar {
+class IndividualBeneficiaryDateOfBirthControllerSpec extends RegistrationSpecBase with MockitoSugar {
 
   val formProvider = new IndividualBeneficiaryDateOfBirthFormProvider()
   val form = formProvider()

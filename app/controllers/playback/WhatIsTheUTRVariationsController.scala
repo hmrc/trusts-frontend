@@ -17,15 +17,17 @@
 package controllers.playback
 
 import config.FrontendAppConfig
-import controllers.actions._
+import controllers.actions.playback.{PlaybackDataRequiredAction, PlaybackDataRetrievalAction}
+import controllers.actions.register.RegistrationIdentifierAction
 import forms.WhatIsTheUTRFormProvider
 import handlers.ErrorHandler
 import javax.inject.Inject
+import models.playback.UserAnswers
 import pages.playback.WhatIsTheUTRVariationPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.RegistrationsRepository
+import repositories.PlaybackRepository
 import services.PlaybackAuthenticationService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.register.WhatIsTheUTRView
@@ -34,10 +36,9 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class WhatIsTheUTRVariationsController @Inject()(
                                                   override val messagesApi: MessagesApi,
-                                                  registrationsRepository: RegistrationsRepository,
-                                                  identify: IdentifierAction,
-                                                  getData: DataRetrievalAction,
-                                                  requireData: DataRequiredAction,
+                                                  playbackRepository: PlaybackRepository,
+                                                  identify: RegistrationIdentifierAction,
+                                                  getData: PlaybackDataRetrievalAction,
                                                   formProvider: WhatIsTheUTRFormProvider,
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: WhatIsTheUTRView,
@@ -48,10 +49,10 @@ class WhatIsTheUTRVariationsController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(WhatIsTheUTRVariationPage) match {
+      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.internalId)).get(WhatIsTheUTRVariationPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -59,15 +60,18 @@ class WhatIsTheUTRVariationsController @Inject()(
       Ok(view(preparedForm, routes.WhatIsTheUTRVariationsController.onSubmit()))
   }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(): Action[AnyContent] = (identify andThen getData).async {
     implicit request =>
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(view(formWithErrors, routes.WhatIsTheUTRVariationsController.onSubmit()))),
         utr => {
+
+          val newUpdatedAnswerSession = request.userAnswers.getOrElse(UserAnswers(request.internalId)).set(WhatIsTheUTRVariationPage, utr)
+
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatIsTheUTRVariationPage, utr))
-            _ <- registrationsRepository.set(updatedAnswers)
+            updatedAnswers <- Future.fromTry(newUpdatedAnswerSession)
+            _ <- playbackRepository.set(updatedAnswers)
           } yield Redirect(controllers.playback.routes.TrustStatusController.status())
         }
       )

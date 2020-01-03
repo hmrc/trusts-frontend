@@ -31,7 +31,7 @@ class PlaybackRepositorySpec extends FreeSpec with MustMatchers with FailOnUnind
 
         started(application).futureValue
 
-        val storedOk = repository.store(userAnswers)
+        val storedOk = repository.set(userAnswers)
 
         storedOk.futureValue mustBe true
 
@@ -50,7 +50,7 @@ class PlaybackRepositorySpec extends FreeSpec with MustMatchers with FailOnUnind
 
         started(application).futureValue
 
-        repository.store(userAnswers)
+        repository.set(userAnswers)
 
         val firstGet = repository.get(userAnswers.internalAuthId).map(_.get.updatedAt).futureValue
 

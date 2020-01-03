@@ -17,7 +17,7 @@
 package controllers.actions
 
 import javax.inject.Inject
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import pages.register.RegistrationProgress
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Result}
@@ -29,7 +29,7 @@ class TaskListCompleteActionRefinerImpl @Inject()(
                                                      implicit val executionContext: ExecutionContext
                                                      ) extends TaskListCompleteActionRefiner {
 
-  override protected def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
+  override protected def refine[A](request: RegistrationDataRequest[A]): Future[Either[Result, RegistrationDataRequest[A]]] = {
 
     if (registrationProgress.isTaskListComplete(request.userAnswers)) {
       Future.successful(Right(request))
@@ -39,4 +39,4 @@ class TaskListCompleteActionRefinerImpl @Inject()(
   }
 }
 
-trait TaskListCompleteActionRefiner extends ActionRefiner[DataRequest, DataRequest]
+trait TaskListCompleteActionRefiner extends ActionRefiner[RegistrationDataRequest, RegistrationDataRequest]

@@ -14,30 +14,36 @@
  * limitations under the License.
  */
 
-package controllers.actions
+package controllers.actions.playback
 
 import javax.inject.Inject
-import controllers.routes
-import models.requests.{DataRequest, OptionalDataRequest}
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Result}
 import uk.gov.hmrc.play.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DataRequiredActionImpl @Inject()(implicit val executionContext: ExecutionContext) extends DataRequiredAction {
+class PlaybackDataRequiredActionImpl @Inject()(implicit val executionContext: ExecutionContext) extends PlaybackDataRequiredAction {
 
-  override protected def refine[A](request: OptionalDataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
+  override protected def refine[A](request: OptionalPlaybackDataRequest[A]): Future[Either[Result, PlaybackDataRequest[A]]] = {
 
     implicit val hc = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
     request.userAnswers match {
       case None =>
-        Future.successful(Left(Redirect(controllers.register.routes.SessionExpiredController.onPageLoad())))
+        Future.successful(
+          Left(
+            Redirect(controllers.register.routes.SessionExpiredController.onPageLoad())
+          )
+        )
       case Some(data) =>
-        Future.successful(Right(DataRequest(request.request, request.internalId, data, request.affinityGroup, request.enrolments, request.agentARN)))
+        Future.successful(
+          Right(
+            PlaybackDataRequest(request.request, request.internalId, data, request.affinityGroup, request.enrolments, request.agentARN)
+          )
+        )
     }
   }
 }
 
-trait DataRequiredAction extends ActionRefiner[OptionalDataRequest, DataRequest]
+trait PlaybackDataRequiredAction extends ActionRefiner[OptionalPlaybackDataRequest, PlaybackDataRequest]

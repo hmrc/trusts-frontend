@@ -18,7 +18,7 @@ package controllers.register.settlors.living_settlor
 
 import java.time.{LocalDate, ZoneOffset}
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.IndexValidation
 import forms.PassportOrIdCardFormProvider
 import models.NormalMode
@@ -34,7 +34,7 @@ import utils.countryOptions.CountryOptions
 import views.html.register.settlors.living_settlor.SettlorIndividualPassportView
 import controllers.register.routes._
 
-class SettlorIndividualPassportControllerSpec extends SpecBase with IndexValidation {
+class SettlorIndividualPassportControllerSpec extends RegistrationSpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 

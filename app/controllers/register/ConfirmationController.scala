@@ -18,13 +18,14 @@ package controllers.register
 
 import config.FrontendAppConfig
 import controllers.actions._
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import handlers.ErrorHandler
 import javax.inject.Inject
 import mapping.reads.{LeadTrusteeIndividual, Trustees}
 import models.NormalMode
 import models.core.UserAnswers
 import models.registration.pages.RegistrationStatus
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import pages.register.{RegistrationTRNPage, TrustHaveAUTRPage}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -37,16 +38,16 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class ConfirmationController @Inject()(
                                         override val messagesApi: MessagesApi,
-                                        identify: IdentifierAction,
+                                        identify: RegistrationIdentifierAction,
                                         getData: DraftIdRetrievalActionProvider,
-                                        requireData: DataRequiredAction,
+                                        requireData: RegistrationDataRequiredAction,
                                         config: FrontendAppConfig,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: ConfirmationView,
                                         errorHandler: ErrorHandler
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def renderView(trn : String, userAnswers: UserAnswers, draftId: String)(implicit request : DataRequest[AnyContent]) : Future[Result] = {
+  private def renderView(trn : String, userAnswers: UserAnswers, draftId: String)(implicit request : RegistrationDataRequest[AnyContent]) : Future[Result] = {
     val trustees = userAnswers.get(Trustees).getOrElse(Nil)
     val isAgent = request.affinityGroup == Agent
     val agentOverviewUrl = controllers.register.agents.routes.AgentOverviewController.onPageLoad().url

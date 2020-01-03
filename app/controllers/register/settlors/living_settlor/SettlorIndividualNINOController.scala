@@ -17,6 +17,7 @@
 package controllers.register.settlors.living_settlor
 
 import controllers.actions._
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
 import forms.NinoFormProvider
 import javax.inject.Inject
@@ -38,10 +39,10 @@ class SettlorIndividualNINOController @Inject()(
                                                  override val messagesApi: MessagesApi,
                                                  registrationsRepository: RegistrationsRepository,
                                                  @LivingSettlor navigator: Navigator,
-                                                 identify: IdentifierAction,
+                                                 identify: RegistrationIdentifierAction,
                                                  getData: DraftIdRetrievalActionProvider,
                                                  validateIndex: IndexActionFilterProvider,
-                                                 requireData: DataRequiredAction,
+                                                 requireData: RegistrationDataRequiredAction,
                                                  requiredAnswer: RequiredAnswerActionProvider,
                                                  formProvider: NinoFormProvider,
                                                  val controllerComponents: MessagesControllerComponents,

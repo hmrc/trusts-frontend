@@ -16,7 +16,7 @@
 
 package navigation.navigators.registration
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.register.settlors.living_settlor.routes
 import generators.Generators
 import models.NormalMode
@@ -33,7 +33,7 @@ import pages.register.settlors.living_settlor._
 
 trait LivingSettlorRoutes {
 
-  self: PropertyChecks with Generators with SpecBase =>
+  self: PropertyChecks with Generators with RegistrationSpecBase =>
 
   private val index = 0
 

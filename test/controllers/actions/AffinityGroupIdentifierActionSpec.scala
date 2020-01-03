@@ -16,7 +16,7 @@
 
 package controllers.actions
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import config.FrontendAppConfig
 import controllers.routes
 import org.mockito.Matchers.any
@@ -28,7 +28,7 @@ import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
 
 import scala.concurrent.Future
 
-class AuthenticatedIdentifierActionSpec extends SpecBase {
+class AffinityGroupIdentifierActionSpec extends RegistrationSpecBase {
 
   type RetrievalType = Option[String] ~ Option[AffinityGroup] ~ Enrolments
 
@@ -36,7 +36,7 @@ class AuthenticatedIdentifierActionSpec extends SpecBase {
   val appConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
   val fakeAction: Action[AnyContent] = Action { _ => Results.Ok }
 
-  lazy override val trustsAuth = new TrustsAuth(mockAuthConnector, appConfig)
+  lazy override val trustsAuth = new TrustsAuthorisedFunctions(mockAuthConnector, appConfig)
 
   private val noEnrollment = Enrolments(Set())
 
@@ -55,7 +55,7 @@ class AuthenticatedIdentifierActionSpec extends SpecBase {
         when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
           .thenReturn(authRetrievals(AffinityGroup.Agent, noEnrollment))
 
-        val result = new AuthenticatedIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
+        val result = new AffinityGroupIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
 
         status(result) mustBe SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.register.routes.CreateAgentServicesAccountController.onPageLoad().url)
@@ -71,7 +71,7 @@ class AuthenticatedIdentifierActionSpec extends SpecBase {
         when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
           .thenReturn(authRetrievals(AffinityGroup.Agent, agentEnrolment))
 
-        val result = new AuthenticatedIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
+        val result = new AffinityGroupIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
 
         status(result) mustBe OK
         application.stop()
@@ -86,7 +86,7 @@ class AuthenticatedIdentifierActionSpec extends SpecBase {
         when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
           .thenReturn(authRetrievals(AffinityGroup.Organisation, agentEnrolment))
 
-        val result = new AuthenticatedIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
+        val result = new AffinityGroupIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
 
         status(result) mustBe OK
         application.stop()
@@ -101,7 +101,7 @@ class AuthenticatedIdentifierActionSpec extends SpecBase {
         when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
           .thenReturn(authRetrievals(AffinityGroup.Individual, noEnrollment))
 
-        val result = new AuthenticatedIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
+        val result = new AffinityGroupIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
 
         status(result) mustBe SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.register.routes.UnauthorisedController.onPageLoad().url)
@@ -117,7 +117,7 @@ class AuthenticatedIdentifierActionSpec extends SpecBase {
 
         when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any())) thenReturn (Future failed MissingBearerToken())
 
-        val result = new AuthenticatedIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
+        val result = new AffinityGroupIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
 
         status(result) mustBe SEE_OTHER
 
@@ -133,7 +133,7 @@ class AuthenticatedIdentifierActionSpec extends SpecBase {
 
         when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any())) thenReturn (Future failed BearerTokenExpired())
 
-        val result = new AuthenticatedIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
+        val result = new AffinityGroupIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
 
         status(result) mustBe SEE_OTHER
 
@@ -149,7 +149,7 @@ class AuthenticatedIdentifierActionSpec extends SpecBase {
 
         when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any())) thenReturn (Future failed InsufficientEnrolments())
 
-        val result = new AuthenticatedIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
+        val result = new AffinityGroupIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
 
         status(result) mustBe SEE_OTHER
 
@@ -165,7 +165,7 @@ class AuthenticatedIdentifierActionSpec extends SpecBase {
 
         when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any())) thenReturn (Future failed InsufficientConfidenceLevel())
 
-        val result = new AuthenticatedIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
+        val result = new AffinityGroupIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
 
         status(result) mustBe SEE_OTHER
 
@@ -181,7 +181,7 @@ class AuthenticatedIdentifierActionSpec extends SpecBase {
 
         when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any())) thenReturn (Future failed UnsupportedAuthProvider())
 
-        val result = new AuthenticatedIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
+        val result = new AffinityGroupIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
 
         status(result) mustBe SEE_OTHER
 
@@ -197,7 +197,7 @@ class AuthenticatedIdentifierActionSpec extends SpecBase {
 
         when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any())) thenReturn (Future failed UnsupportedAffinityGroup())
 
-        val result = new AuthenticatedIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
+        val result = new AffinityGroupIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
 
         status(result) mustBe SEE_OTHER
 
@@ -213,7 +213,7 @@ class AuthenticatedIdentifierActionSpec extends SpecBase {
 
         when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any())) thenReturn (Future failed UnsupportedCredentialRole())
 
-        val result = new AuthenticatedIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
+        val result = new AffinityGroupIdentifierAction(fakeAction, trustsAuth).apply(fakeRequest)
 
         status(result) mustBe SEE_OTHER
 

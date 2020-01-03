@@ -16,7 +16,7 @@
 
 package controllers.register.settlors.living_settlor
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.IndexValidation
 import forms.SettlorKindOfTrustFormProvider
 import models.NormalMode
@@ -28,7 +28,7 @@ import controllers.register.routes._
 import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
 import pages.register.settlors.living_settlor.SettlorKindOfTrustPage
 
-class SettlorKindOfTrustControllerSpec extends SpecBase with IndexValidation {
+class SettlorKindOfTrustControllerSpec extends RegistrationSpecBase with IndexValidation {
 
   val index = 0
 

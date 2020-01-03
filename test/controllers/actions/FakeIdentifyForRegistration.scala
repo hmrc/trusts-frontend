@@ -16,6 +16,7 @@
 
 package controllers.actions
 
+import controllers.actions.register.RegistrationIdentifierAction
 import javax.inject.Inject
 import models.requests.IdentifierRequest
 import play.api.mvc._
@@ -25,19 +26,19 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class FakeIdentifyForRegistration @Inject()(affinityGroup: AffinityGroup)
                                            (override val parser: BodyParsers.Default,
-                                            trustsAuth: TrustsAuth,
+                                            trustsAuth: TrustsAuthorisedFunctions,
                                             enrolments: Enrolments = Enrolments(Set.empty[Enrolment]))
                                            (override implicit val executionContext: ExecutionContext)
-  extends IdentifierAction(parser, trustsAuth) {
+  extends RegistrationIdentifierAction(parser, trustsAuth) {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] =
     block(IdentifierRequest(request, "id", affinityGroup, enrolments))
 
-  override def composeAction[A](action: Action[A]): Action[A] = new FakeAuthenticatedIdentifierAction(action, trustsAuth)
+  override def composeAction[A](action: Action[A]): Action[A] = new FakeAffinityGroupIdentifierAction(action, trustsAuth)
 
 }
 
-class FakeAuthenticatedIdentifierAction[A](action: Action[A], trustsAuth: TrustsAuth) extends AuthenticatedIdentifierAction(action, trustsAuth)  {
+class FakeAffinityGroupIdentifierAction[A](action: Action[A], trustsAuth: TrustsAuthorisedFunctions) extends AffinityGroupIdentifierAction(action, trustsAuth)  {
   override def apply(request: Request[A]): Future[Result] = {
     action(request)
   }

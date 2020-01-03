@@ -36,7 +36,8 @@ import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescri
 import pages.register.trustees._
 import utils.AccessibilityHelper._
 import utils.countryOptions.CountryOptions
-import utils.{DateFormatter, PrintUserAnswersHelper, TestUserAnswers}
+import utils.print.register.PrintUserAnswersHelper
+import utils.{DateFormatter, TestUserAnswers}
 import views.behaviours.ViewBehaviours
 import views.html.register.ConfirmationAnswerPageView
 

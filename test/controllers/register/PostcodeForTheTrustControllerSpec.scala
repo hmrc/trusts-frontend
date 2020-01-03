@@ -16,7 +16,7 @@
 
 package controllers.register
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.PostcodeForTheTrustFormProvider
 import models.NormalMode
 import navigation.Navigator
@@ -26,7 +26,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.PostcodeForTheTrustView
 
-class PostcodeForTheTrustControllerSpec extends SpecBase {
+class PostcodeForTheTrustControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new PostcodeForTheTrustFormProvider()
   val form : Form[Option[String]] = formProvider()

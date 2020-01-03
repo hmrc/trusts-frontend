@@ -18,7 +18,7 @@ package controllers.register.trustees
 
 import java.time.{LocalDate, ZoneOffset}
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import models.NormalMode
 import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
 import pages.register.trustees._
@@ -30,7 +30,7 @@ import viewmodels.AnswerSection
 import views.html.register.trustees.TrusteesAnswerPageView
 import controllers.register.routes._
 
-class TrusteesAnswerPageControllerSpec extends SpecBase {
+class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
 
   val index = 0
 

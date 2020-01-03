@@ -16,7 +16,7 @@
 
 package controllers.register.agents
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.UKAddressFormProvider
 import models.NormalMode
 import models.core.pages.UKAddress
@@ -27,7 +27,7 @@ import views.html.register.agents.AgentUKAddressView
 import controllers.register.routes._
 import pages.register.agents.{AgentNamePage, AgentUKAddressPage}
 
-class AgentUKAddressControllerSpec extends SpecBase {
+class AgentUKAddressControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new UKAddressFormProvider()
   val form = formProvider()

@@ -16,7 +16,7 @@
 
 package controllers.register.asset
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.IndexValidation
 import forms.WhatKindOfAssetFormProvider
 import models.NormalMode
@@ -30,7 +30,7 @@ import views.html.register.asset.WhatKindOfAssetView
 import controllers.register.routes._
 import pages.register.asset.WhatKindOfAssetPage
 
-class WhatKindOfAssetControllerSpec extends SpecBase with IndexValidation  {
+class WhatKindOfAssetControllerSpec extends RegistrationSpecBase with IndexValidation  {
 
   val index = 0
 
