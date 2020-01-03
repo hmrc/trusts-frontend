@@ -748,6 +748,7 @@ charityBeneficiaryShareOfIncome.checkYourAnswersLabel = What percentage of the t
 charityBeneficiaryAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
 charityBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 charityBeneficiaryAddress.checkYourAnswersLabel = What is {0}’s address?
+charityBeneficiaryUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference?
 
 individualBeneficiaryName.title = What is the name of the individual?
 individualBeneficiaryName.heading = What is the name of the individual?
