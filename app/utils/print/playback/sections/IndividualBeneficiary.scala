@@ -18,9 +18,8 @@ package utils.print.playback.sections
 
 import java.time.LocalDate
 
-import models.core.pages.{Address, FullName, InternationalAddress, UKAddress}
+import models.core.pages.{FullName, UKAddress}
 import models.playback.UserAnswers
-import models.registration.pages.RoleInCompany
 import pages.register.beneficiaries.individual._
 import play.api.i18n.Messages
 import play.api.libs.json.Reads
@@ -54,7 +53,7 @@ object IndividualBeneficiary {
             ninoQuestion(IndividualBeneficiaryNationalInsuranceNumberPage(index), userAnswers, "individualBeneficiaryNationalInsuranceNumber", name),
             yesNoQuestion(IndividualBeneficiaryAddressYesNoPage(index), userAnswers, "individualBeneficiaryAddressYesNo", name),
             yesNoQuestion(IndividualBeneficiaryAddressUKYesNoPage(index), userAnswers, "individualBeneficiaryAddressUKYesNo", name),
-            addressQuestion(IndividualBeneficiaryAddressPage(index), userAnswers, "individualBeneficiaryAddressUK", name, None, countryOptions),
+            addressQuestion(IndividualBeneficiaryAddressUKPage(index), userAnswers, "individualBeneficiaryAddressUK", name),
             yesNoQuestion(IndividualBeneficiaryVulnerableYesNoPage(index), userAnswers, "individualBeneficiaryVulnerableYesNo", name),
             stringRow(IndividualBeneficiaryRoleInCompanyPage(index), userAnswers, "individualBeneficiaryRoleInCompany", name),
             yesNoQuestion(IndividualBeneficiaryPassportIDCardYesNoPage(index), userAnswers, "individualBeneficiaryPassportYesNo", name),
@@ -83,23 +82,15 @@ object IndividualBeneficiary {
     }
   }
 
-  def addressQuestion(query: Gettable[Address], userAnswers: UserAnswers, labelKey: String,
-                      messageArg: String = "", changeRoute: Option[Call] = None, countryOptions: CountryOptions)
+  def addressQuestion(query: Gettable[UKAddress], userAnswers: UserAnswers, labelKey: String,
+                      messageArg: String = "", changeRoute: Option[Call] = None)
                      (implicit messages:Messages) = {
-
-    userAnswers.get(query) map {
-      case x: UKAddress =>
-        AnswerRow(
-          messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-          CheckYourAnswersHelper.ukAddress(x),
-          None
-        )
-      case x: InternationalAddress =>
-        AnswerRow(
-          messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-          CheckYourAnswersHelper.internationalAddress(x, countryOptions),
-          None
-        )
+    userAnswers.get(query) map {x =>
+      AnswerRow(
+        messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
+        CheckYourAnswersHelper.ukAddress(x),
+        None
+      )
     }
   }
 
@@ -138,6 +129,7 @@ object IndividualBeneficiary {
       )
     }
   }
+
   def fullNameQuestion(query: Gettable[FullName], userAnswers: UserAnswers, labelKey: String,
                        messageArg: String = "", changeRoute: Option[Call] = None)
                       (implicit messages:Messages) = {
@@ -151,8 +143,8 @@ object IndividualBeneficiary {
   }
 
   def stringRow[T](query: Gettable[T], userAnswers: UserAnswers, labelKey: String,
-                    messageArg: String = "", changeRoute: Option[Call] = None)
-                   (implicit messages:Messages, rds: Reads[T]) = {
+                   messageArg: String = "", changeRoute: Option[Call] = None)
+                  (implicit messages:Messages, rds: Reads[T]) = {
     userAnswers.get(query) map {x =>
       AnswerRow(
         messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
@@ -161,5 +153,4 @@ object IndividualBeneficiary {
       )
     }
   }
-
 }
