@@ -22,14 +22,20 @@ import mapping.playback.PlaybackExtractor
 import models.playback.UserAnswers
 import models.playback.http.DisplayTrustProtectorsType
 
-class ProtectorExtractor @Inject()(individualProtectorExtractor: IndividualProtectorExtractor) extends PlaybackExtractor[DisplayTrustProtectorsType] {
+class ProtectorExtractor @Inject()(individualProtectorExtractor: IndividualProtectorExtractor) extends PlaybackExtractor[Option[DisplayTrustProtectorsType]] {
   import models.playback.UserAnswersCombinator._
-  override def extract(answers: UserAnswers, data: DisplayTrustProtectorsType): Either[PlaybackExtractionError, UserAnswers] = {
+  override def extract(answers: UserAnswers, data: Option[DisplayTrustProtectorsType]): Either[PlaybackExtractionError, UserAnswers] = {
 
-    List(
-      individualProtectorExtractor.extract(answers, data.protector)
-    ).collect {
-      case Right(z) => z
-    }.combine.map(Right.apply).getOrElse(Left(FailedToExtractData("Protector Extraction Error")))
+    data match {
+      case Some(p) =>
+        List(
+          individualProtectorExtractor.extract(answers, p.protector)
+        ).collect {
+          case Right(z) => z
+        }.combine.map(Right.apply).getOrElse(Left(FailedToExtractData("Protector Extraction Error")))
+      case None =>
+        Right(answers)
+    }
+
   }
 }
