@@ -823,6 +823,8 @@ individualBeneficiaryVulnerableYesNo.heading = Has a vulnerable person election 
 individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel = Has a vulnerable person election form (VPE1) been submitted to HMRC for {0}?
 individualBeneficiaryVulnerableYesNo.error.required = Select yes if a vulnerable person election form (VPE1) has been submitted to HMRC for the individual beneficiary
 
+individualBeneficiaryRoleInCompany.checkYourAnswersLabel = ???
+
 individualBeneficiaryInfo.title = Information you need to add a beneficiary
 individualBeneficiaryInfo.heading = Information you need to add a beneficiary
 individualBeneficiaryInfo.caption = Beneficiaries
