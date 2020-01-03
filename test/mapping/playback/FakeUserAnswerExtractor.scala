@@ -26,9 +26,10 @@ import models.playback.http.GetTrust
 class FakeUserAnswerExtractor @Inject()(beneficiary: BeneficiaryExtractor,
                                         leadTrustee: LeadTrusteeExtractor,
                                         settlors: SettlorExtractor,
-                                        trustType: TrustTypeExtractor
+                                        trustType: TrustTypeExtractor,
+                                        trustees: TrusteeExtractor
                                         ) extends UserAnswersExtractor(
-  beneficiary, leadTrustee, settlors, trustType
+  beneficiary, leadTrustee, settlors, trustType, trustees
 ) {
 
   override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionErrors.PlaybackExtractionError, UserAnswers] =
@@ -40,9 +41,10 @@ class FakeUserAnswerExtractor @Inject()(beneficiary: BeneficiaryExtractor,
 class FakeFailingUserAnswerExtractor @Inject()(beneficiary: BeneficiaryExtractor,
                                                leadTrustee: LeadTrusteeExtractor,
                                                settlors: SettlorExtractor,
-                                               trustType: TrustTypeExtractor
+                                               trustType: TrustTypeExtractor,
+                                               trustees: TrusteeExtractor
                                        ) extends UserAnswersExtractor(
-  beneficiary, leadTrustee, settlors, trustType
+  beneficiary, leadTrustee, settlors, trustType, trustees
 ) {
 
   override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionErrors.PlaybackExtractionError, UserAnswers] =
