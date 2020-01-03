@@ -29,8 +29,6 @@ class PlaybackAnswersViewSpec extends ViewBehaviours {
 
     behave like normalPage(applyView, "playbackLastDeclared")
 
-    behave like pageWithBackLink(applyView)
-
     "render correct content" in {
       val doc = asDocument(applyView)
 
