@@ -18,7 +18,7 @@ package controllers.actions
 
 import controllers.routes
 import javax.inject.Inject
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import play.api.libs.json.Reads
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Call, Result}
@@ -31,9 +31,9 @@ final case class RequiredAnswer[T](answer : Gettable[T],
 
 class RequiredAnswerAction[T] @Inject()(required : RequiredAnswer[T])
                                        (implicit val executionContext: ExecutionContext,
-                                       val reads: Reads[T]) extends ActionRefiner[DataRequest, DataRequest] {
+                                       val reads: Reads[T]) extends ActionRefiner[RegistrationDataRequest, RegistrationDataRequest] {
 
-  override protected def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
+  override protected def refine[A](request: RegistrationDataRequest[A]): Future[Either[Result, RegistrationDataRequest[A]]] = {
 
     request.userAnswers.get(required.answer) match {
       case None =>

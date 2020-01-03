@@ -16,7 +16,7 @@
 
 package controllers.register.trustees
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.IndexValidation
 import forms.NinoFormProvider
 import models.NormalMode
@@ -29,7 +29,7 @@ import play.api.test.Helpers.{route, _}
 import views.html.register.trustees.TrusteesNinoView
 import controllers.register.routes._
 
-class TrusteesNinoControllerSpec extends SpecBase with IndexValidation {
+class TrusteesNinoControllerSpec extends RegistrationSpecBase with IndexValidation {
 
   val leadTrusteeMessagePrefix = "leadTrusteesNino"
   val trusteeMessagePrefix = "trusteesNino"

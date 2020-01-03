@@ -17,6 +17,7 @@
 package controllers.register.trustees
 
 import controllers.actions._
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
 import forms.trustees.TrusteeIndividualOrBusinessFormProvider
 import javax.inject.Inject
@@ -37,9 +38,9 @@ class TrusteeIndividualOrBusinessController @Inject()(
                                                        override val messagesApi: MessagesApi,
                                                        registrationsRepository: RegistrationsRepository,
                                                        navigator: Navigator,
-                                                       identify: IdentifierAction,
+                                                       identify: RegistrationIdentifierAction,
                                                        getData: DraftIdRetrievalActionProvider,
-                                                       requireData: DataRequiredAction,
+                                                       requireData: RegistrationDataRequiredAction,
                                                        validateIndex: IndexActionFilterProvider,
                                                        formProvider: TrusteeIndividualOrBusinessFormProvider,
                                                        requiredAnswer: RequiredAnswerActionProvider,

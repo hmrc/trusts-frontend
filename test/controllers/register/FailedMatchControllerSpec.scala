@@ -16,12 +16,12 @@
 
 package controllers.register
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.FailedMatchView
 
-class FailedMatchControllerSpec extends SpecBase {
+class FailedMatchControllerSpec extends RegistrationSpecBase {
 
   "FailedMatch Controller" must {
 

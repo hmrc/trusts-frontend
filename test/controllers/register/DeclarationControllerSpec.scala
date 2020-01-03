@@ -16,7 +16,7 @@
 
 package controllers.register
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.DeclarationFormProvider
 import models.NormalMode
 import models.core.UserAnswers
@@ -38,7 +38,7 @@ import views.html.register.DeclarationView
 import scala.concurrent.Future
 
 
-class DeclarationControllerSpec extends SpecBase {
+class DeclarationControllerSpec extends RegistrationSpecBase {
 
   def confirmationRoute = Call("GET", "/confirmation")
 
@@ -167,7 +167,7 @@ class DeclarationControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad(userAnswersId).url
+      redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad(fakeDraftId).url
       verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any[HeaderCarrier], any())
       application.stop()
     }

@@ -17,6 +17,7 @@
 package controllers.register.trustees
 
 import controllers.actions._
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.TrusteesBasedInTheUKFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode}
@@ -35,9 +36,9 @@ class TrusteesBasedInTheUKController @Inject()(
                                                 override val messagesApi: MessagesApi,
                                                 registrationsRepository: RegistrationsRepository,
                                                 navigator: Navigator,
-                                                identify: IdentifierAction,
+                                                identify: RegistrationIdentifierAction,
                                                 getData: DraftIdRetrievalActionProvider,
-                                                requireData: DataRequiredAction,
+                                                requireData: RegistrationDataRequiredAction,
                                                 formProvider: TrusteesBasedInTheUKFormProvider,
                                                 val controllerComponents: MessagesControllerComponents,
                                                 view: TrusteesBasedInTheUKView

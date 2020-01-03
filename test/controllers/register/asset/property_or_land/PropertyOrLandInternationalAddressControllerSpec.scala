@@ -16,7 +16,7 @@
 
 package controllers.register.asset.property_or_land
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.IndexValidation
 import forms.InternationalAddressFormProvider
 import models.NormalMode
@@ -35,7 +35,7 @@ import controllers.register.routes._
 
 import scala.concurrent.Future
 
-class PropertyOrLandInternationalAddressControllerSpec extends SpecBase with IndexValidation {
+class PropertyOrLandInternationalAddressControllerSpec extends RegistrationSpecBase with IndexValidation {
 
   val formProvider = new InternationalAddressFormProvider()
   val form: Form[InternationalAddress] = formProvider()

@@ -19,8 +19,8 @@ package config
 import com.google.inject.AbstractModule
 import connector.OtacAuthConnectorImpl
 import controllers.actions._
-import mapping.playback.{PlaybackExtractor, UserAnswersExtractor}
-import models.playback.http.GetTrust
+import controllers.actions.playback._
+import controllers.actions.register._
 import navigation.Navigator
 import navigation.registration.{LivingSettlorNavigator, PropertyOrLandNavigator}
 import repositories.{DefaultPlaybackRepository, DefaultRegistrationsRepository, PlaybackRepository, RegistrationsRepository}
@@ -33,11 +33,14 @@ class Module extends AbstractModule {
 
   override def configure(): Unit = {
 
-    bind(classOf[DataRetrievalAction]).to(classOf[DataRetrievalActionImpl]).asEagerSingleton()
-    bind(classOf[DataRequiredAction]).to(classOf[DataRequiredActionImpl]).asEagerSingleton()
-    bind(classOf[PlaybackAction]).to(classOf[PlaybackActionImpl]).asEagerSingleton()
+    bind(classOf[RegistrationDataRetrievalAction]).to(classOf[RegistrationDataRetrievalActionImpl]).asEagerSingleton()
+    bind(classOf[RegistrationDataRequiredAction]).to(classOf[RegistrationDataRequiredActionImpl]).asEagerSingleton()
     bind(classOf[DraftIdRetrievalActionProvider]).to(classOf[DraftIdDataRetrievalActionProviderImpl]).asEagerSingleton()
     bind(classOf[RequireDraftRegistrationActionRefiner]).to(classOf[RequireDraftRegistrationActionRefinerImpl]).asEagerSingleton()
+
+    bind(classOf[PlaybackIdentifierAction]).to(classOf[PlaybackIdentifierActionImpl]).asEagerSingleton()
+    bind(classOf[PlaybackDataRequiredAction]).to(classOf[PlaybackDataRequiredActionImpl]).asEagerSingleton()
+    bind(classOf[PlaybackDataRetrievalAction]).to(classOf[PlaybackDataRetrievalActionImpl]).asEagerSingleton()
 
     bind(classOf[TaskListCompleteActionRefiner]).to(classOf[TaskListCompleteActionRefinerImpl]).asEagerSingleton()
 

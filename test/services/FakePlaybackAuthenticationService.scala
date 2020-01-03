@@ -15,7 +15,7 @@
  */
 
 package services
-import models.requests.DataRequest
+import controllers.actions.playback.PlaybackDataRequest
 import play.api.mvc.{Result, Results}
 import uk.gov.hmrc.http.HeaderCarrier
 
@@ -23,16 +23,16 @@ import scala.concurrent.Future
 
 class FakePlaybackAuthenticationService extends PlaybackAuthenticationService {
 
-  override def authenticateForPlayback[A](utr: String)
-                                         (implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]]
+  override def authenticate[A](utr: String)
+                              (implicit request: PlaybackDataRequest[A], hc: HeaderCarrier): Future[Either[Result, PlaybackDataRequest[A]]]
   = Future.successful(Right(request))
 
 }
 
 class FakeFailingPlaybackAuthenticationService extends PlaybackAuthenticationService {
 
-  override def authenticateForPlayback[A](utr: String)
-                                         (implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]]
+  override def authenticate[A](utr: String)
+                              (implicit request: PlaybackDataRequest[A], hc: HeaderCarrier): Future[Either[Result, PlaybackDataRequest[A]]]
   = Future.successful(Left(Results.Unauthorized))
 
 }

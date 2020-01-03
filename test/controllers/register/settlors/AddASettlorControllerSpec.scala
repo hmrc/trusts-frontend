@@ -16,7 +16,7 @@
 
 package controllers.register.settlors
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.{AddASettlorFormProvider, YesNoFormProvider}
 import models.NormalMode
 import models.registration.pages.AddASettlor
@@ -27,7 +27,7 @@ import views.html.register.settlors.{AddASettlorView, AddASettlorYesNoView}
 import controllers.register.routes._
 import pages.register.settlors.living_settlor.SettlorKindOfTrustPage
 
-class AddASettlorControllerSpec extends SpecBase {
+class AddASettlorControllerSpec extends RegistrationSpecBase {
 
   lazy val getRoute : String = routes.AddASettlorController.onPageLoad(fakeDraftId).url
   lazy val submitAnotherRoute : String = routes.AddASettlorController.submitAnother(fakeDraftId).url

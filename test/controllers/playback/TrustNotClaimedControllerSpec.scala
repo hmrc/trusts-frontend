@@ -16,13 +16,13 @@
 
 package controllers.playback
 
-import base.SpecBase
+import base.PlaybackSpecBase
 import pages.playback.WhatIsTheUTRVariationPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.playback.TrustNotClaimedView
 
-class TrustNotClaimedControllerSpec extends SpecBase {
+class TrustNotClaimedControllerSpec extends PlaybackSpecBase {
 
   "TrustNotClaimed Controller" must {
 

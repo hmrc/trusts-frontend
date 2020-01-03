@@ -25,17 +25,16 @@ import models.registration.pages.Status.Completed
 import models.registration.pages.TrusteesBasedInTheUK.UKBasedTrustees
 import models.registration.pages._
 import org.scalatest.TryValues
-import pages._
-import pages.register.agents.{AgentARNPage, AgentAddressYesNoPage, AgentInternalReferencePage, AgentNamePage, AgentTelephoneNumberPage, AgentUKAddressPage}
-import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.asset.money.AssetMoneyValuePage
-import pages.register.beneficiaries.AddABeneficiaryPage
-import pages.register.beneficiaries.individual.{IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryIncomePage, IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage, IndividualBeneficiaryNationalInsuranceYesNoPage, IndividualBeneficiaryVulnerableYesNoPage}
-import pages.register.settlors.deceased_settlor._
 import pages.entitystatus._
-import pages.register.{AdministrationInsideUKPage, DeclarationPage, EstablishedUnderScotsLawPage, ExistingTrustMatched, GovernedInsideTheUKPage, PostcodeForTheTrustPage, TrustHaveAUTRPage, TrustNamePage, TrustResidentOffshorePage, WhatIsTheUTRPage}
+import pages.register.agents._
+import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
+import pages.register.beneficiaries.AddABeneficiaryPage
+import pages.register.beneficiaries.individual._
+import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
 import pages.register.trustees._
+import pages.register._
 import play.api.libs.json.Json
 
 object TestUserAnswers extends TryValues {
@@ -43,7 +42,7 @@ object TestUserAnswers extends TryValues {
   lazy val draftId = "id"
   lazy val userInternalId = "internalId"
 
-  def emptyUserAnswers = UserAnswers(draftId, Json.obj(), internalAuthId = userInternalId)
+  def emptyUserAnswers = models.core.UserAnswers(draftId, Json.obj(), internalAuthId = userInternalId)
 
   def withAgent(userAnswers: UserAnswers): UserAnswers = {
     userAnswers

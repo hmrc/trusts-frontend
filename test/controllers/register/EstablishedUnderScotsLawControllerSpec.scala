@@ -16,7 +16,7 @@
 
 package controllers.register
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.YesNoFormProvider
 import models.NormalMode
 import pages.register.EstablishedUnderScotsLawPage
@@ -24,7 +24,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.EstablishedUnderScotsLawView
 
-class EstablishedUnderScotsLawControllerSpec extends SpecBase {
+class EstablishedUnderScotsLawControllerSpec extends RegistrationSpecBase {
 
   val form = new YesNoFormProvider().withPrefix("establishedUnderScotsLaw")
 

@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package controllers.actions
+package controllers.actions.register
 
 import javax.inject.Inject
 import models.core.UserAnswers
-import models.requests.{IdentifierRequest, OptionalDataRequest}
+import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
 import play.api.mvc.ActionTransformer
 import repositories.RegistrationsRepository
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DataRetrievalActionImpl @Inject()(val registrationsRepository: RegistrationsRepository)
-                                       (implicit val executionContext: ExecutionContext) extends DataRetrievalAction {
+class RegistrationDataRetrievalActionImpl @Inject()(val registrationsRepository: RegistrationsRepository)
+                                                   (implicit val executionContext: ExecutionContext) extends RegistrationDataRetrievalAction {
 
-  override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] = {
+  override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalRegistrationDataRequest[A]] = {
 
     def createdOptionalDataRequest(request: IdentifierRequest[A], userAnswers: Option[UserAnswers]) =
-      OptionalDataRequest(request.request, request.identifier, userAnswers, request.affinityGroup, request.enrolments, request.agentARN)
+      OptionalRegistrationDataRequest(request.request, request.identifier, userAnswers, request.affinityGroup, request.enrolments, request.agentARN)
 
     registrationsRepository.getDraftRegistrations(request.identifier).flatMap {
       ids =>
@@ -43,12 +43,10 @@ class DataRetrievalActionImpl @Inject()(val registrationsRepository: Registratio
                 createdOptionalDataRequest(request, None)
               case Some(userAnswers) =>
                 createdOptionalDataRequest(request, Some(userAnswers))
-          }
+            }
         }
     }
   }
 }
 
-trait DataRetrievalAction extends ActionTransformer[IdentifierRequest, OptionalDataRequest]
-
-
+trait RegistrationDataRetrievalAction extends ActionTransformer[IdentifierRequest, OptionalRegistrationDataRequest]

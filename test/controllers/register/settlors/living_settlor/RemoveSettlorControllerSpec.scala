@@ -16,7 +16,7 @@
 
 package controllers.register.settlors.living_settlor
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.IndexValidation
 import forms.RemoveIndexFormProvider
 import models.core.pages.FullName
@@ -28,7 +28,7 @@ import play.api.test.Helpers.{route, _}
 import views.html.RemoveIndexView
 import controllers.register.routes._
 
-class RemoveSettlorControllerSpec extends SpecBase with IndexValidation {
+class RemoveSettlorControllerSpec extends RegistrationSpecBase with IndexValidation {
 
   val prefix : String = "removeSettlor"
 

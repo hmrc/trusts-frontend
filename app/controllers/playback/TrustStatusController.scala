@@ -18,18 +18,19 @@ package controllers.playback
 
 import config.FrontendAppConfig
 import connector.{TrustConnector, TrustsStoreConnector}
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions.playback.{PlaybackDataRequest, PlaybackDataRequiredAction, PlaybackDataRetrievalAction}
+import controllers.actions.register.RegistrationIdentifierAction
 import handlers.ErrorHandler
 import javax.inject.Inject
 import mapping.playback.UserAnswersExtractor
 import models.playback.http._
-import models.requests.DataRequest
 import navigation.Navigator
 import pages.playback.WhatIsTheUTRVariationPage
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import repositories.{PlaybackRepository, RegistrationsRepository}
+import repositories.PlaybackRepository
 import services.PlaybackAuthenticationService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.playback.status._
@@ -38,12 +39,11 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class TrustStatusController @Inject()(
                                        override val messagesApi: MessagesApi,
-                                       registrationsRepository: RegistrationsRepository,
                                        playbackRepository: PlaybackRepository,
                                        navigator: Navigator,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
+                                       identify: RegistrationIdentifierAction,
+                                       getData: PlaybackDataRetrievalAction,
+                                       requireData: PlaybackDataRequiredAction,
                                        closedView: ClosedErrorView,
                                        stillProcessingView: StillProcessingErrorView,
                                        doesNotMatchView: DoesNotMatchErrorView,
@@ -56,7 +56,7 @@ class TrustStatusController @Inject()(
                                        alreadyClaimedView: TrustAlreadyClaimedView,
                                        playbackProblemContactHMRCView: PlaybackProblemContactHMRCView,
                                        playbackExtractor: UserAnswersExtractor,
-                                       authenticationService: PlaybackAuthenticationService,
+                                       playbackAuthenticationService: PlaybackAuthenticationService,
                                        val controllerComponents: MessagesControllerComponents
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
@@ -116,7 +116,7 @@ class TrustStatusController @Inject()(
       }
   }
 
-  private def checkIfLocked(utr: String)(implicit request: DataRequest[AnyContent]): Future[Result] = {
+  private def checkIfLocked(utr: String)(implicit request: PlaybackDataRequest[AnyContent]): Future[Result] = {
     trustStoreConnector.get(request.internalId, utr).flatMap {
       case Some(claim) if claim.trustLocked =>
         Future.successful(Redirect(controllers.playback.routes.TrustStatusController.locked()))
@@ -125,13 +125,13 @@ class TrustStatusController @Inject()(
     }
   }
 
-  private def tryToPlayback(utr: String)(implicit request: DataRequest[AnyContent]): Future[Result] = {
+  private def tryToPlayback(utr: String)(implicit request: PlaybackDataRequest[AnyContent]): Future[Result] = {
     trustConnector.playback(utr) flatMap {
       case Closed => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.closed()))
       case Processing => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.processing()))
       case UtrNotFound => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.notFound()))
       case Processed(playback, _) =>
-        authenticationService.authenticateForPlayback(utr) flatMap {
+        playbackAuthenticationService.authenticate(utr) flatMap {
           case Left(failure) => Future.successful(failure)
           case Right(_) => extract(utr, playback)
         }
@@ -140,11 +140,13 @@ class TrustStatusController @Inject()(
     }
   }
 
-  private def extract(utr: String, playback: GetTrust)(implicit request: DataRequest[AnyContent]) : Future[Result] = {
-    // Todo create new getData, requireData to return instance of PlaybackData for all Variations controllers rather than calling request.userAnswers.toPlaybackUserAnswers
-    playbackExtractor.extract(request.userAnswers.toPlaybackUserAnswers, playback) match {
+  private def extract(utr: String, playback: GetTrust)(implicit request: PlaybackDataRequest[AnyContent]) : Future[Result] = {
+
+    Logger.debug(s"[TrustStatusController] unpacking the following trust ${Json.stringify(Json.toJson(playback))}")
+
+    playbackExtractor.extract(request.userAnswers, playback) match {
       case Right(answers) =>
-        playbackRepository.store(answers) map { _ =>
+        playbackRepository.set(answers) map { _ =>
           Redirect(routes.InformationMaintainingThisTrustController.onPageLoad())
         }
       case Left(reason) =>
@@ -153,7 +155,7 @@ class TrustStatusController @Inject()(
     }
   }
 
-  private def enforceUtr()(block: String => Future[Result])(implicit request: DataRequest[AnyContent]): Future[Result] = {
+  private def enforceUtr()(block: String => Future[Result])(implicit request: PlaybackDataRequest[AnyContent]): Future[Result] = {
     request.userAnswers.get(WhatIsTheUTRVariationPage) match {
       case None => Future.successful(Redirect(routes.WhatIsTheUTRVariationsController.onPageLoad()))
       case Some(utr) => block(utr)

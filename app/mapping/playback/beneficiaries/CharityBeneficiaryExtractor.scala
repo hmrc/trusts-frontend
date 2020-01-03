@@ -37,6 +37,8 @@ class CharityBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[Lis
         case None => Left(FailedToExtractData("No Charity Beneficiary"))
         case Some(charities) =>
 
+          Logger.debug(s"[CharityBeneficiaryExtractor] extracting $charities")
+
           val updated = charities.zipWithIndex.foldLeft[Try[UserAnswers]](Success(answers)){
             case (answers, (charityBeneficiary, index)) =>
 

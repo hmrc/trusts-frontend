@@ -18,7 +18,7 @@ package controllers.register.settlors.living_settlor
 
 import java.time.{LocalDate, ZoneOffset}
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.IndexValidation
 import forms.DateOfBirthFormProvider
 import models.NormalMode
@@ -31,7 +31,7 @@ import play.api.test.Helpers._
 import views.html.register.settlors.living_settlor.SettlorIndividualDateOfBirthView
 import controllers.register.routes._
 
-class SettlorIndividualDateOfBirthControllerSpec extends SpecBase with IndexValidation {
+class SettlorIndividualDateOfBirthControllerSpec extends RegistrationSpecBase with IndexValidation {
 
   val formProvider = new DateOfBirthFormProvider()
   val form = formProvider()

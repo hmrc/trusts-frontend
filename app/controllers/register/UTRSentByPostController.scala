@@ -18,6 +18,7 @@ package controllers.register
 
 import config.FrontendAppConfig
 import controllers.actions._
+import controllers.actions.register.{RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -29,8 +30,8 @@ import scala.concurrent.ExecutionContext
 
 class UTRSentByPostController @Inject()(
                                          override val messagesApi: MessagesApi,
-                                         identify: IdentifierAction,
-                                         requireData: DataRequiredAction,
+                                         identify: RegistrationIdentifierAction,
+                                         requireData: RegistrationDataRequiredAction,
                                          config: FrontendAppConfig,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: UTRSentByPostView

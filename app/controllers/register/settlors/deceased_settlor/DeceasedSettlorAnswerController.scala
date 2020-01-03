@@ -17,6 +17,7 @@
 package controllers.register.settlors.deceased_settlor
 
 import controllers.actions._
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import javax.inject.Inject
 import models.NormalMode
 import models.registration.pages.Status.Completed
@@ -37,10 +38,10 @@ import scala.concurrent.{ExecutionContext, Future}
 class DeceasedSettlorAnswerController @Inject()(
                                                  override val messagesApi: MessagesApi,
                                                  registrationsRepository: RegistrationsRepository,
-                                                 identify: IdentifierAction,
+                                                 identify: RegistrationIdentifierAction,
                                                  getData: DraftIdRetrievalActionProvider,
                                                  navigator: Navigator,
-                                                 requireData: DataRequiredAction,
+                                                 requireData: RegistrationDataRequiredAction,
                                                  requiredAnswer: RequiredAnswerActionProvider,
                                                  val controllerComponents: MessagesControllerComponents,
                                                  view: DeceasedSettlorAnswerView,

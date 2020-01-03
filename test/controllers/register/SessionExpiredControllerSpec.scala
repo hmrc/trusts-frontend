@@ -16,12 +16,12 @@
 
 package controllers.register
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.SessionExpiredView
 
-class SessionExpiredControllerSpec extends SpecBase {
+class SessionExpiredControllerSpec extends RegistrationSpecBase {
 
   "SessionExpired Controller" must {
 

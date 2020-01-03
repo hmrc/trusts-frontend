@@ -18,7 +18,7 @@ package controllers.register
 
 import java.time.{LocalDate, ZoneOffset}
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
 import models.registration.pages.AddAssets.NoComplete
 import models.registration.pages.Status.Completed
@@ -45,7 +45,7 @@ import utils.{CheckYourAnswersHelper, TestUserAnswers}
 import viewmodels.AnswerSection
 import views.html.register.SummaryAnswerPageView
 
-class SummaryAnswersControllerSpec extends SpecBase {
+class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
 
   val index = 0
 

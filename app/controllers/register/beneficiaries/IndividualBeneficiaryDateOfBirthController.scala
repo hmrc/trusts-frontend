@@ -17,6 +17,7 @@
 package controllers.register.beneficiaries
 
 import controllers.actions._
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.IndividualBeneficiaryDateOfBirthFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
@@ -35,9 +36,9 @@ class IndividualBeneficiaryDateOfBirthController @Inject()(
                                                             override val messagesApi: MessagesApi,
                                                             registrationsRepository: RegistrationsRepository,
                                                             navigator: Navigator,
-                                                            identify: IdentifierAction,
+                                                            identify: RegistrationIdentifierAction,
                                                             getData: DraftIdRetrievalActionProvider,
-                                                            requireData: DataRequiredAction,
+                                                            requireData: RegistrationDataRequiredAction,
                                                             requiredAnswer: RequiredAnswerActionProvider,
                                                             formProvider: IndividualBeneficiaryDateOfBirthFormProvider,
                                                             val controllerComponents: MessagesControllerComponents,

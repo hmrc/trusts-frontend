@@ -1,6 +1,7 @@
 package controllers
 
 import controllers.actions._
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.$className$FormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode}
@@ -19,9 +20,9 @@ class $className$Controller @Inject()(
                                        override val messagesApi: MessagesApi,
                                        registrationsRepository: RegistrationsRepository,
                                        navigator: Navigator,
-                                       identify: IdentifierAction,
+                                       identify: RegistrationIdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
-                                       requireData: DataRequiredAction,
+                                       requireData: RegistrationDataRequiredAction,
                                        formProvider: $className$FormProvider,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: $className$View

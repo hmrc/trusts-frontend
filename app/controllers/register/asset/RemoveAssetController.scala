@@ -17,10 +17,11 @@
 package controllers.register.asset
 
 import controllers.RemoveIndexController
-import controllers.actions.{DataRequiredAction, DraftIdRetrievalActionProvider, IdentifierAction, RequiredAnswerActionProvider}
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
+import controllers.actions.RequiredAnswerActionProvider
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import pages.QuestionPage
 import pages.register.asset.DefaultRemoveAssetPage
 import play.api.i18n.{Messages, MessagesApi}
@@ -42,9 +43,9 @@ class DefaultRemoveAssetController @Inject()(
                                               override val messagesApi: MessagesApi,
                                               override val registrationsRepository: RegistrationsRepository,
                                               override val formProvider: RemoveIndexFormProvider,
-                                              identify: IdentifierAction,
+                                              identify: RegistrationIdentifierAction,
                                               getData: DraftIdRetrievalActionProvider,
-                                              requireData: DataRequiredAction,
+                                              requireData: RegistrationDataRequiredAction,
                                               val controllerComponents: MessagesControllerComponents,
                                               require: RequiredAnswerActionProvider,
                                               val removeView: RemoveIndexView
@@ -57,7 +58,7 @@ class DefaultRemoveAssetController @Inject()(
   override def actions(draftId : String, index: Int) =
     identify andThen getData(draftId) andThen requireData
 
-  override def content(index: Int)(implicit request: DataRequest[AnyContent]) : String = Messages(s"$messagesPrefix.default")
+  override def content(index: Int)(implicit request: RegistrationDataRequest[AnyContent]) : String = Messages(s"$messagesPrefix.default")
 
   override def formRoute(draftId: String, index: Int): Call =
     routes.DefaultRemoveAssetController.onSubmit(index, draftId)

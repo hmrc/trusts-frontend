@@ -16,12 +16,12 @@
 
 package controllers.register.settlors
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.settlors.SettlorInfoView
 
-class SettlorInfoControllerSpec extends SpecBase {
+class SettlorInfoControllerSpec extends RegistrationSpecBase {
 
   "SettlorInfo Controller" must {
 
