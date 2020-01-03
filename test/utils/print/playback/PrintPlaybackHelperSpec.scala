@@ -39,25 +39,25 @@ class PrintPlaybackHelperSpec extends PlaybackSpecBase {
       val result = helper.summary(answers)
 
       result mustBe Seq(
-        AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading\"")),
+        AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),
         AnswerSection(
-          headingKey = Some("Charity Beneficiary 1"),
+          headingKey = Some("Charity beneficiary 1"),
           rows = Seq(
-            AnswerRow(label = "charityName.checkYourAnswersLabel", answer = Html("Red Cross Ltd."), changeUrl = None)
+            AnswerRow(label = "charityBeneficiaryName.checkYourAnswersLabel", answer = Html("Red Cross Ltd."), changeUrl = None)
           ),
           sectionKey = None
         ),
         AnswerSection(
-          headingKey = Some("Charity Beneficiary 2"),
+          headingKey = Some("Charity beneficiary 2"),
           rows = Seq(
-            AnswerRow(label = "charityName.checkYourAnswersLabel", answer = Html("Bernardos"), changeUrl = None)
+            AnswerRow(label = "charityBeneficiaryName.checkYourAnswersLabel", answer = Html("Bernardos"), changeUrl = None)
           ),
           sectionKey = None
         ),
         AnswerSection(
-          headingKey = Some("Individual Beneficiary 1"),
+          headingKey = Some("Individual beneficiary 1"),
           rows = Seq(
-            AnswerRow(label = "individualBeneficiaryName.checkYourAnswersLabel", answer = Html("Michael Finnegan"), changeUrl = None)
+            AnswerRow(label = "What is the name of the individual?", answer = Html("Michael Finnegan"), changeUrl = None)
           ),
           sectionKey = None
         )

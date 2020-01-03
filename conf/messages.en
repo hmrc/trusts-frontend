@@ -742,7 +742,12 @@ agentName.error.required = Enter the agency’s name
 agentName.error.length = Agency’s name must be 56 characters or less
 agentName.error.invalidFormat = Agency’s name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
-charityBeneficiaryName.playback = Charity
+charityBeneficiaryName.checkYourAnswersLabel = What is the name of the charity?
+charityBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
+charityBeneficiaryShareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
+charityBeneficiaryAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+charityBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+charityBeneficiaryAddress.checkYourAnswersLabel = What is {0}’s address?
 
 individualBeneficiaryName.title = What is the name of the individual?
 individualBeneficiaryName.heading = What is the name of the individual?

@@ -21,7 +21,6 @@ import models.playback.UserAnswers
 import pages.register.beneficiaries.charity._
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
-import queries.Gettable
 import utils.CheckYourAnswersHelper.{internationalAddress, ukAddress, yesOrNo}
 import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
@@ -33,81 +32,78 @@ object CharityBeneficiary {
             countryOptions: CountryOptions)
            (implicit messages: Messages): Seq[AnswerSection] = {
 
-    if (name(index, userAnswers).nonEmpty) {
-      Seq(
-        AnswerSection(
-          headingKey = Some(messages("answerPage.section.charityBeneficiary.subheading", index + 1)),
-          Seq(
-            name(index, userAnswers),
-            shareOfIncomeYesNo(index, userAnswers),
-            shareOfIncome(index, userAnswers),
-            addressYesNo(index, userAnswers),
-            address(index, userAnswers, countryOptions)
-          ).flatten,
-          sectionKey = None
+    userAnswers.get(CharityBeneficiaryNamePage(index)).map { charityName =>
+        Seq(
+          AnswerSection(
+            headingKey = Some(messages("answerPage.section.charityBeneficiary.subheading", index + 1)),
+            Seq(
+              name(index, userAnswers),
+              shareOfIncomeYesNo(index, userAnswers, charityName),
+              shareOfIncome(index, userAnswers, charityName),
+              addressYesNo(index, userAnswers, charityName),
+              address(index, userAnswers, countryOptions, charityName)
+            ).flatten,
+            sectionKey = None
+          )
         )
-      )
-    } else {
-      Nil
-    }
-  }
-
-  def getSection[T](path: Gettable[T])(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = {
-    userAnswers.get(path) map {
-
-    }
+    }.getOrElse(Nil)
   }
 
   def name(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(CharityBeneficiaryNamePage(index)) map {
     x =>
       AnswerRow(
-        "charityName.checkYourAnswersLabel",
+        "charityBeneficiaryName.checkYourAnswersLabel",
         HtmlFormat.escape(x),
         None
       )
   }
 
-  def shareOfIncomeYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+  def shareOfIncomeYesNo(index: Int, userAnswers: UserAnswers, name: String)(implicit messages: Messages): Option[AnswerRow] =
     userAnswers.get(CharityBeneficiaryDiscretionYesNoPage(index)) map {
       x =>
         AnswerRow(
-          "charityShareOfIncomeYesNo.checkYourAnswersLabel",
+          "charityBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel",
           yesOrNo(x),
-          None
+          None,
+          name
         )
     }
 
-  def shareOfIncome(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+  def shareOfIncome(index: Int, userAnswers: UserAnswers, name: String)(implicit messages: Messages): Option[AnswerRow] =
     userAnswers.get(CharityBeneficiaryShareOfIncomePage(index)) map {
       x =>
         AnswerRow(
-          "charityShareOfIncomeYesNo.checkYourAnswersLabel",
+          "charityBeneficiaryShareOfIncome.checkYourAnswersLabel",
           HtmlFormat.escape(x),
-          None
+          None,
+          name
         )
     }
 
-  def addressYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+  def addressYesNo(index: Int, userAnswers: UserAnswers, name: String)(implicit messages: Messages): Option[AnswerRow] =
     userAnswers.get(CharityBeneficiaryAddressYesNoPage(index)) map {
       x =>
         AnswerRow(
-          "charityAddressYesNo.checkYourAnswersLabel",
+          "charityBeneficiaryAddressYesNo.checkYourAnswersLabel",
           yesOrNo(x),
-          None
+          None,
+          name
         )
     }
 
-  def address(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[AnswerRow] =
+  def address(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions, name: String)(implicit messages: Messages): Option[AnswerRow] =
     userAnswers.get(CharityBeneficiaryAddressPage(index)) map {
       case address: UKAddress => AnswerRow(
         "charityBeneficiaryAddress.checkYourAnswersLabel",
         ukAddress(address),
-        None
+        None,
+        name
       )
       case address: InternationalAddress => AnswerRow(
         "charityBeneficiaryAddress.checkYourAnswersLabel",
         internationalAddress(address, countryOptions),
-        None
+        None,
+        name
       )
     }
 
