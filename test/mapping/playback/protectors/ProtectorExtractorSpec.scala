@@ -53,7 +53,7 @@ class ProtectorExtractorSpec extends FreeSpec with MustMatchers
 
     }
 
-    "when there are protectors of different type" - {
+    "when there are protectors" - {
 
       "must return user answers updated" in {
         val protectors = DisplayTrustProtectorsType(
