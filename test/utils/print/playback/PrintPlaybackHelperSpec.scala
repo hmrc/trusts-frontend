@@ -20,7 +20,7 @@ import base.PlaybackSpecBase
 import models.core.pages.FullName
 import pages.register.beneficiaries.charity.CharityBeneficiaryNamePage
 import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
-import play.twirl.api.{Html, HtmlFormat}
+import play.twirl.api.Html
 import viewmodels.{AnswerRow, AnswerSection}
 
 class PrintPlaybackHelperSpec extends PlaybackSpecBase {
