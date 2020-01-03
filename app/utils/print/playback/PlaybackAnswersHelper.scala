@@ -16,19 +16,16 @@
 
 package utils.print.playback
 
-import javax.inject.Inject
 import models.core.pages.IndividualOrBusiness
 import models.playback.UserAnswers
 import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage}
-import play.api.Logger
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
 import utils.print.playback.sections._
 import viewmodels.AnswerSection
 
-class PlaybackAnswersHelper @Inject()(countryOptions: CountryOptions)
-                                     (userAnswers: UserAnswers)
-                                     (implicit messages: Messages) {
+class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAnswers)
+                           (implicit messages: Messages) {
 
   def trustee(index: Int): Option[Seq[AnswerSection]] = {
 
@@ -47,23 +44,23 @@ class PlaybackAnswersHelper @Inject()(countryOptions: CountryOptions)
 
   }
 
-  def deceasedSettlor: Option[Seq[AnswerSection]] = DeceasedSettlor(userAnswers, countryOptions)
-
-  def charityBeneficiaries : Option[Seq[AnswerSection]] = {
-    val path = _root_.sections.beneficiaries.CharityBeneficiaries.toString
-    val size = (userAnswers.data \\ path).size
+  def charityBeneficiaries : Seq[AnswerSection] = {
+    val size = userAnswers.get(_root_.sections.beneficiaries.CharityBeneficiaries).size
 
     size match {
-      case 0 => None
+      case 0 => Nil
       case _ =>
-        val sections = (for (index <- 0 to size) yield {
-          val sec = CharityBeneficiary(index, userAnswers, countryOptions)
+        (for (index <- 0 to size) yield CharityBeneficiary(index, userAnswers, countryOptions)).flatten
+    }
+  }
 
-          Logger.debug(s"[Generated following answers $sec]")
-          sec
-        }).flatten
+  def individualBeneficiaries : Seq[AnswerSection] = {
+    val size = userAnswers.get(_root_.sections.beneficiaries.IndividualBeneficiaries).size
 
-        Some(sections.flatten)
+    size match {
+      case 0 => Nil
+      case _ =>
+        (for (index <- 0 to size) yield IndividualBeneficiary(index, userAnswers, countryOptions)).flatten
     }
   }
 

@@ -21,6 +21,7 @@ import models.playback.UserAnswers
 import pages.register.beneficiaries.charity._
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
+import queries.Gettable
 import utils.CheckYourAnswersHelper.{internationalAddress, ukAddress, yesOrNo}
 import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
@@ -30,22 +31,30 @@ object CharityBeneficiary {
   def apply(index: Int,
             userAnswers: UserAnswers,
             countryOptions: CountryOptions)
-           (implicit messages: Messages): Option[Seq[AnswerSection]] = {
+           (implicit messages: Messages): Seq[AnswerSection] = {
 
     if (name(index, userAnswers).nonEmpty) {
-      Some(Seq(AnswerSection(
-        headingKey = None,
-        Seq(
-          name(index, userAnswers),
-          shareOfIncomeYesNo(index, userAnswers),
-          shareOfIncome(index, userAnswers),
-          addressYesNo(index, userAnswers),
-          address(index, userAnswers, countryOptions)
-        ).flatten,
-        sectionKey = Some(messages("answerPage.section.charityBeneficiary.heading"))
-      )))
+      Seq(
+        AnswerSection(
+          headingKey = Some(messages("answerPage.section.charityBeneficiary.subheading", index + 1)),
+          Seq(
+            name(index, userAnswers),
+            shareOfIncomeYesNo(index, userAnswers),
+            shareOfIncome(index, userAnswers),
+            addressYesNo(index, userAnswers),
+            address(index, userAnswers, countryOptions)
+          ).flatten,
+          sectionKey = None
+        )
+      )
     } else {
-      None
+      Nil
+    }
+  }
+
+  def getSection[T](path: Gettable[T])(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = {
+    userAnswers.get(path) map {
+
     }
   }
 

@@ -23,8 +23,7 @@ import pages.register.beneficiaries.charity._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.countryOptions.CountryOptions
-import utils.print.playback.sections
-import utils.print.playback.sections.CharityBeneficiary
+import utils.print.playback.{PlaybackAnswersHelper, PrintPlaybackHelper, sections}
 import views.html.playback.PlaybackAnswersView
 
 class PlaybackAnswerPageControllerSpec extends PlaybackSpecBase {
@@ -34,8 +33,6 @@ class PlaybackAnswerPageControllerSpec extends PlaybackSpecBase {
   "PlaybackAnswersController" must {
 
     "return OK and the correct view for a GET" in {
-
-      val countryOptions = injector.instanceOf[CountryOptions]
 
       val playbackAnswers = PlaybackAnswers("internalId")
         .set(CharityBeneficiaryNamePage(0), "Charity Beneficiary 1").success.value
@@ -49,10 +46,7 @@ class PlaybackAnswerPageControllerSpec extends PlaybackSpecBase {
         .set(CharityBeneficiaryDiscretionYesNoPage(0), false).success.value
         .set(CharityBeneficiaryAddressYesNoPage(0), false).success.value
 
-      val expectedSections = Seq(
-        sections.CharityBeneficiary(0, playbackAnswers, countryOptions),
-        sections.CharityBeneficiary(1, playbackAnswers, countryOptions)
-      ).flatten.flatten
+      val expectedSections = injector.instanceOf[PrintPlaybackHelper].summary(playbackAnswers)
 
       val application = applicationBuilder(Some(playbackAnswers)).build()
 

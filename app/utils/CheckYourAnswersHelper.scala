@@ -68,6 +68,19 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
+  def settlorBusinessName(index: Int) : Option[AnswerRow] =
+    stringQuestion(SettlorBusinessNamePage(index), "settlorBusinessName")
+
+  def stringQuestion(page: QuestionPage[String], label : String) : Option[AnswerRow] = userAnswers.get(page) map {
+    x =>
+      AnswerRow(
+        s"$label.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        Some(routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId).url)
+      )
+  }
+
+
   def settlorKindOfTrust: Option[AnswerRow] = userAnswers.get(SettlorKindOfTrustPage) map {
     x =>
       AnswerRow(

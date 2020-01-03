@@ -46,8 +46,6 @@ class PlaybackAnswerPageController @Inject()(
 
       val sections = printPlaybackAnswersHelper.summary(request.userAnswers)
 
-      println(">>>>" + sections)
-
       Future.successful(Ok(view(sections)))
   }
 

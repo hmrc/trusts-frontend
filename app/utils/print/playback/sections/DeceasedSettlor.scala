@@ -26,7 +26,7 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 object DeceasedSettlor {
 
-  def apply(userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] = {
+  def apply(userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Seq[AnswerSection] = {
 
     val questions = Seq(
       setupAfterSettlorDied(userAnswers),
@@ -44,13 +44,13 @@ object DeceasedSettlor {
     ).flatten
 
     if (deceasedSettlorsName(userAnswers).nonEmpty) {
-      Some(Seq(AnswerSection(
+      Seq(AnswerSection(
         headingKey = None,
         questions,
         sectionKey = Some(messages("answerPage.section.deceasedSettlor.heading"))
-      )))
+      ))
     } else {
-      None
+      Nil
     }
   }
 

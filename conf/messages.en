@@ -742,6 +742,8 @@ agentName.error.required = Enter the agency’s name
 agentName.error.length = Agency’s name must be 56 characters or less
 agentName.error.invalidFormat = Agency’s name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
+charityBeneficiaryName.playback = Charity
+
 individualBeneficiaryName.title = What is the name of the individual?
 individualBeneficiaryName.heading = What is the name of the individual?
 individualBeneficiaryName.checkYourAnswersLabel = What is the name of the individual?
@@ -968,6 +970,7 @@ answerPage.section.settlor.subheading = Settlor {0}
 answerPage.section.trustees.heading = Trustees
 answerPage.section.trustee.subheading = Trustee
 answerPage.section.beneficiaries.heading = Beneficiaries
+answerPage.section.charityBeneficiary.subheading = Charity beneficiary {0}
 answerPage.section.individualBeneficiary.subheading = Individual beneficiary
 answerPage.section.classOfBeneficiary.subheading = Class of beneficiary
 answerPage.section.assets.heading = Assets

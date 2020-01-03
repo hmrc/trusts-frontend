@@ -16,26 +16,25 @@
 
 package utils.print.playback
 
-import controllers.actions.playback.PlaybackDataRequest
 import javax.inject.Inject
-import mapping.playback.UserAnswersExtractor
 import play.api.i18n.Messages
-import play.api.mvc.AnyContent
 import utils.countryOptions.CountryOptions
+import utils.print.playback.sections.DeceasedSettlor
 import viewmodels.AnswerSection
 
-class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions,
-                                    userAnswersExtractor: UserAnswersExtractor){
+class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions){
 
-  def summary(userAnswers: models.playback.UserAnswers)(implicit messages: Messages, request: PlaybackDataRequest[AnyContent]) : Seq[AnswerSection] = {
+  def summary(userAnswers: models.playback.UserAnswers)(implicit messages: Messages) : Seq[AnswerSection] = {
 
-    val playbackAnswersHelper: PlaybackAnswersHelper = new PlaybackAnswersHelper(countryOptions)(userAnswers)
+    val playbackAnswersHelper: PlaybackAnswersHelper = new PlaybackAnswersHelper(countryOptions, userAnswers)
 
-    val entitySections = List(
-      playbackAnswersHelper.deceasedSettlor,
-      playbackAnswersHelper.charityBeneficiaries
-    ).flatten.flatten
+    List(
+      DeceasedSettlor(userAnswers, countryOptions),
+      Seq(AnswerSection(sectionKey = Some("answerPage.section.beneficiaries.heading"))),
+      playbackAnswersHelper.charityBeneficiaries,
+      playbackAnswersHelper.individualBeneficiaries
 
-    List(entitySections).flatten
+    ).flatten
+
   }
 }
