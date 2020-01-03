@@ -33,6 +33,7 @@
 package controllers.register.settlors.deceased_settlor
 
 import controllers.actions._
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.deceased_settlor.SettlorsNameFormProvider
 import javax.inject.Inject
 import models.Mode
@@ -51,9 +52,9 @@ class SettlorsNameController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         registrationsRepository: RegistrationsRepository,
                                         navigator: Navigator,
-                                        identify: IdentifierAction,
+                                        identify: RegistrationIdentifierAction,
                                         getData: DraftIdRetrievalActionProvider,
-                                        requireData: DataRequiredAction,
+                                        requireData: RegistrationDataRequiredAction,
                                         formProvider: SettlorsNameFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: SettlorsNameView

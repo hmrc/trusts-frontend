@@ -18,6 +18,7 @@ package controllers.register
 
 import config.FrontendAppConfig
 import controllers.actions._
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.Mode
@@ -36,9 +37,9 @@ import scala.concurrent.{ExecutionContext, Future}
 class TrustHaveAUTRController @Inject()(override val messagesApi: MessagesApi,
                                         registrationsRepository: RegistrationsRepository,
                                         navigator: Navigator,
-                                        identify: IdentifierAction,
+                                        identify: RegistrationIdentifierAction,
                                         getData: DraftIdRetrievalActionProvider,
-                                        requireData: DataRequiredAction,
+                                        requireData: RegistrationDataRequiredAction,
                                         formProvider: YesNoFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: TrustHaveAUTRView,

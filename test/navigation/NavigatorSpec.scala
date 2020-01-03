@@ -16,7 +16,7 @@
 
 package navigation
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.register.routes
 import generators.Generators
 import models.NormalMode
@@ -24,7 +24,7 @@ import navigation.navigators.registration._
 import org.scalatest.prop.PropertyChecks
 import pages._
 
-class NavigatorSpec extends SpecBase
+class NavigatorSpec extends RegistrationSpecBase
   with PropertyChecks
   with Generators
   with TrustDetailsRoutes

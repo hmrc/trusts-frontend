@@ -16,7 +16,7 @@
 
 package controllers.register.trustees
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.IndexValidation
 import forms.trustees.TrusteeIndividualOrBusinessFormProvider
 import models.NormalMode
@@ -30,7 +30,7 @@ import play.api.test.Helpers.{route, _}
 import views.html.register.trustees.TrusteeIndividualOrBusinessView
 import controllers.register.routes._
 
-class TrusteeIndividualOrBusinessControllerSpec extends SpecBase with IndexValidation {
+class TrusteeIndividualOrBusinessControllerSpec extends RegistrationSpecBase with IndexValidation {
 
   val index = 0
 

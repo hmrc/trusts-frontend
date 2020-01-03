@@ -16,7 +16,7 @@
 
 package controllers.register.asset.money
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.RemoveIndexFormProvider
 import models.registration.pages.Status.Completed
 import org.scalacheck.Arbitrary.arbitrary
@@ -28,7 +28,7 @@ import views.html.RemoveIndexView
 import controllers.register.routes._
 import pages.register.asset.money.AssetMoneyValuePage
 
-class RemoveMoneyAssetControllerSpec extends SpecBase with PropertyChecks {
+class RemoveMoneyAssetControllerSpec extends RegistrationSpecBase with PropertyChecks {
 
   val messagesPrefix = "removeMoneyAsset"
 

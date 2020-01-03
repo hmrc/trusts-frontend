@@ -16,7 +16,7 @@
 
 package controllers.register.settlors.living_settlor
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.IndexValidation
 import forms.YesNoFormProvider
 import models.NormalMode
@@ -29,7 +29,7 @@ import play.api.test.Helpers._
 import views.html.register.settlors.living_settlor.SettlorIndividualIDCardYesNoView
 import controllers.register.routes._
 
-class SettlorIndividualIDCardYesNoControllerSpec extends SpecBase with IndexValidation {
+class SettlorIndividualIDCardYesNoControllerSpec extends RegistrationSpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 

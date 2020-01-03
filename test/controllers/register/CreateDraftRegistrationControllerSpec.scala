@@ -16,12 +16,12 @@
 
 package controllers.register
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import models.NormalMode
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 
-class CreateDraftRegistrationControllerSpec extends SpecBase {
+class CreateDraftRegistrationControllerSpec extends RegistrationSpecBase {
 
   "CreateDraftRegistrationController" must {
 

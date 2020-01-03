@@ -16,20 +16,18 @@
 
 package controllers.playback
 
-import controllers.actions.{DataRetrievalAction, IdentifierAction}
+import controllers.actions.playback.PlaybackDataRetrievalAction
+import controllers.actions.register.RegistrationIdentifierAction
 import javax.inject.Inject
-import models.NormalMode
-import pages.register.TrustRegisteredOnlinePage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class IndexController @Inject()(
-                                 identify: IdentifierAction,
-                                 getData: DataRetrievalAction,
+                                 identify: RegistrationIdentifierAction,
+                                 getData: PlaybackDataRetrievalAction,
                                  val controllerComponents: MessagesControllerComponents
                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 

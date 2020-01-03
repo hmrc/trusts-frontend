@@ -16,7 +16,7 @@
 
 package controllers.register
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.TrustNameFormProvider
 import generators.Generators
 import models.NormalMode
@@ -29,7 +29,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.TrustNameView
 
-class TrustNameControllerSpec extends SpecBase with MockitoSugar with Generators with PropertyChecks {
+class TrustNameControllerSpec extends RegistrationSpecBase with MockitoSugar with Generators with PropertyChecks {
 
   val formProvider = new TrustNameFormProvider()
   val form = formProvider()

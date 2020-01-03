@@ -35,7 +35,8 @@ import pages.register.beneficiaries.individual.{IndividualBeneficiaryAddressUKPa
 import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
 import pages.register.trustees._
 import utils.countryOptions.CountryOptions
-import utils.{DateFormatter, PrintUserAnswersHelper, TestUserAnswers}
+import utils.print.register.PrintUserAnswersHelper
+import utils.{DateFormatter, TestUserAnswers}
 import views.behaviours.ViewBehaviours
 import views.html.register.SummaryAnswerPageView
 

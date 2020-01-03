@@ -18,7 +18,7 @@ package controllers.register.settlors.deceased_settlor
 
 import java.time.LocalDate
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import models.NormalMode
 import models.core.UserAnswers
 import models.core.pages.{FullName, InternationalAddress, UKAddress}
@@ -35,7 +35,7 @@ import controllers.register.routes._
 
 import scala.concurrent.Future
 
-class DeceasedSettlorAnswerControllerSpec extends SpecBase {
+class DeceasedSettlorAnswerControllerSpec extends RegistrationSpecBase {
 
   "DeceasedSettlorAnswer Controller" must {
 

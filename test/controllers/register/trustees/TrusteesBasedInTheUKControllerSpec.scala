@@ -16,7 +16,7 @@
 
 package controllers.register.trustees
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.TrusteesBasedInTheUKFormProvider
 import models.NormalMode
 import models.registration.pages.TrusteesBasedInTheUK
@@ -26,7 +26,7 @@ import views.html.register.trustees.TrusteesBasedInTheUKView
 import controllers.register.routes._
 import pages.register.trustees.TrusteesBasedInTheUKPage
 
-class TrusteesBasedInTheUKControllerSpec extends SpecBase {
+class TrusteesBasedInTheUKControllerSpec extends RegistrationSpecBase {
 
   lazy val trusteesBasedInTheUKRoute = routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, fakeDraftId).url
 

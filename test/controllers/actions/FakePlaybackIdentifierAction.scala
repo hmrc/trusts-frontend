@@ -16,21 +16,16 @@
 
 package controllers.actions
 
-import config.FrontendAppConfig
+import controllers.actions.playback.{PlaybackDataRequest, PlaybackIdentifierAction}
 import javax.inject.Inject
 import play.api.mvc.Result
-import play.api.mvc.Results.Redirect
-import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisedFunctions, NoActiveSession}
 
-class TrustsAuth @Inject()(override val authConnector: AuthConnector,
-                           val config: FrontendAppConfig) extends AuthorisedFunctions {
+import scala.concurrent.{ExecutionContext, Future}
 
-  def recoverFromAuthorisation : PartialFunction[Throwable, Result] = {
-    case _: NoActiveSession => redirectToLogin
-    case _ => Redirect(controllers.register.routes.UnauthorisedController.onPageLoad())
-  }
+class FakePlaybackIdentifierAction @Inject()(
+                                  implicit val executionContext: ExecutionContext
+                                  ) extends PlaybackIdentifierAction {
 
-  def redirectToLogin: Result = {
-    Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl)))
-  }
+  override def refine[A](request: PlaybackDataRequest[A]): Future[Either[Result, PlaybackDataRequest[A]]] = Future.successful(Right(request))
+
 }

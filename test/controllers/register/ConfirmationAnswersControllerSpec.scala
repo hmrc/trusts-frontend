@@ -19,7 +19,7 @@ package controllers.register
 import java.time.format.DateTimeFormatter
 import java.time.{LocalDate, LocalDateTime, ZoneOffset}
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
 import models.registration.pages.AddAssets.NoComplete
 import models.registration.pages.Status.Completed
@@ -44,7 +44,7 @@ import utils.{CheckYourAnswersHelper, TestUserAnswers}
 import viewmodels.AnswerSection
 import views.html.register.ConfirmationAnswerPageView
 
-class ConfirmationAnswersControllerSpec extends SpecBase {
+class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
 
   val index = 0
 

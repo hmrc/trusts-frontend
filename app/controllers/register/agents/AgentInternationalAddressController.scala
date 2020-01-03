@@ -17,6 +17,7 @@
 package controllers.register.agents
 
 import controllers.actions._
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.InternationalAddressFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
@@ -36,10 +37,10 @@ class AgentInternationalAddressController @Inject()(
                                                      override val messagesApi: MessagesApi,
                                                      registrationsRepository: RegistrationsRepository,
                                                      navigator: Navigator,
-                                                     identify: IdentifierAction,
+                                                     identify: RegistrationIdentifierAction,
                                                      hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                                      getData: DraftIdRetrievalActionProvider,
-                                                     requireData: DataRequiredAction,
+                                                     requireData: RegistrationDataRequiredAction,
                                                      requiredAnswer: RequiredAnswerActionProvider,
                                                      formProvider: InternationalAddressFormProvider,
                                                      val controllerComponents: MessagesControllerComponents,

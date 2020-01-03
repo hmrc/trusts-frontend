@@ -18,7 +18,7 @@ package controllers.register
 
 import java.time.LocalDate
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
 import models.registration.pages.{NonResidentType, WhenTrustSetupPage}
 import pages._
@@ -33,7 +33,7 @@ import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.register.TrustDetailsAnswerPageView
 
-class TrustDetailsAnswerPageControllerSpec extends SpecBase {
+class TrustDetailsAnswerPageControllerSpec extends RegistrationSpecBase {
 
   "TrustDetailsAnswerPageController" when {
 

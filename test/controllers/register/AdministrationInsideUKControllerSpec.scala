@@ -16,7 +16,7 @@
 
 package controllers.register
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.YesNoFormProvider
 import models.NormalMode
 import pages.register.AdministrationInsideUKPage
@@ -24,7 +24,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.AdministrationInsideUKView
 
-class AdministrationInsideUKControllerSpec extends SpecBase {
+class AdministrationInsideUKControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new YesNoFormProvider()
   val form = formProvider.withPrefix("administrationInsideUK")

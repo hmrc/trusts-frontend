@@ -18,10 +18,11 @@ package controllers.register.beneficiaries
 
 import controllers.RemoveIndexController
 import controllers.actions._
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
 import models.core.pages.FullName
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import pages.QuestionPage
 import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
 import play.api.i18n.{Messages, MessagesApi}
@@ -35,9 +36,9 @@ import scala.concurrent.ExecutionContext
 class RemoveIndividualBeneficiaryController @Inject()(
                                                        override val messagesApi: MessagesApi,
                                                        override val registrationsRepository: RegistrationsRepository,
-                                                       identify: IdentifierAction,
+                                                       identify: RegistrationIdentifierAction,
                                                        getData: DraftIdRetrievalActionProvider,
-                                                       requireData: DataRequiredAction,
+                                                       requireData: RegistrationDataRequiredAction,
                                                        val formProvider: RemoveIndexFormProvider,
                                                        val controllerComponents: MessagesControllerComponents,
                                                        val removeView: RemoveIndexView,
@@ -59,7 +60,7 @@ class RemoveIndividualBeneficiaryController @Inject()(
 
   override def removeQuery(index: Int): Settable[_] = RemoveIndividualBeneficiaryQuery(index)
 
-  override def content(index: Int)(implicit request: DataRequest[AnyContent]) : String =
+  override def content(index: Int)(implicit request: RegistrationDataRequest[AnyContent]) : String =
     request.userAnswers.get(page(index)).map(_.toString).getOrElse(Messages(s"$messagesPrefix.default"))
 
 }

@@ -17,10 +17,11 @@
 package controllers.register.trustees
 
 import controllers.actions._
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
 import forms.NinoFormProvider
 import javax.inject.Inject
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
 import pages.register.trustees.{IsThisLeadTrusteePage, TrusteesNamePage, TrusteesNinoPage}
@@ -38,9 +39,9 @@ class TrusteesNinoController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         registrationsRepository: RegistrationsRepository,
                                         navigator: Navigator,
-                                        identify: IdentifierAction,
+                                        identify: RegistrationIdentifierAction,
                                         getData: DraftIdRetrievalActionProvider,
-                                        requireData: DataRequiredAction,
+                                        requireData: RegistrationDataRequiredAction,
                                         validateIndex : IndexActionFilterProvider,
                                         requiredAnswer: RequiredAnswerActionProvider,
                                         formProvider: NinoFormProvider,
@@ -73,7 +74,7 @@ class TrusteesNinoController @Inject()(
       Ok(view(preparedForm, mode, draftId, index, messagePrefix, trusteeName))
   }
 
-  private def getMessagePrefix(index: Int, request: DataRequest[AnyContent]) = {
+  private def getMessagePrefix(index: Int, request: RegistrationDataRequest[AnyContent]) = {
     val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
 
     val messagePrefix = if (isLead) {

@@ -16,12 +16,12 @@
 
 package utils.countryOptions
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import com.typesafe.config.ConfigException
 import org.scalatest.mockito.MockitoSugar
 import utils.InputOption
 
-class CountryOptionsNonUKSpec extends SpecBase with MockitoSugar {
+class CountryOptionsNonUKSpec extends RegistrationSpecBase with MockitoSugar {
 
   "Country Options Non UK" must {
 

@@ -16,7 +16,7 @@
 
 package utils
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import models.core.pages.UKAddress
 import models.registration.pages.ShareClass
 import models.registration.pages.Status.Completed
@@ -29,7 +29,7 @@ import controllers.register.asset._
 import pages.register.asset.WhatKindOfAssetPage
 import pages.register.asset.money.AssetMoneyValuePage
 
-class AddAssetViewHelperSpec extends SpecBase {
+class AddAssetViewHelperSpec extends RegistrationSpecBase {
 
   def removeMoneyRoute(index: Int) =
     money.routes.RemoveMoneyAssetController.onPageLoad(index, fakeDraftId).url

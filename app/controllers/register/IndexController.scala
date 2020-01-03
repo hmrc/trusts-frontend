@@ -16,7 +16,7 @@
 
 package controllers.register
 
-import controllers.actions.{DataRetrievalAction, IdentifierAction}
+import controllers.actions.register.{RegistrationDataRetrievalAction, RegistrationIdentifierAction}
 import javax.inject.Inject
 import models.NormalMode
 import pages.register.TrustRegisteredOnlinePage
@@ -28,8 +28,8 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import scala.concurrent.{ExecutionContext, Future}
 
 class IndexController @Inject()(
-                                 identify: IdentifierAction,
-                                 getData: DataRetrievalAction,
+                                 identify: RegistrationIdentifierAction,
+                                 getData: RegistrationDataRetrievalAction,
                                  val controllerComponents: MessagesControllerComponents
                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 

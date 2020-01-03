@@ -47,14 +47,15 @@ import utils.CheckYourAnswersHelper._
 import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 
-class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers, draftId: String, canEdit: Boolean = true)(implicit messages: Messages) {
+class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswers: UserAnswers, draftId: String, canEdit: Boolean = true)
+                                      (implicit messages: Messages) {
 
   def declarationWhatNext: Option[AnswerRow] = userAnswers.get(DeclarationWhatNextPage) map {
     x =>
       AnswerRow(
         "declarationWhatNext.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"declarationWhatNext.$x")),
-        controllers.playback.routes.DeclarationWhatNextController.onPageLoad().url
+        Some(controllers.playback.routes.DeclarationWhatNextController.onPageLoad().url)
       )
   }
 
@@ -63,7 +64,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorBusinessName.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId).url
+        Some(routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -72,8 +73,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorKindOfTrust.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"settlorKindOfTrust.$x")),
-        routes.SettlorKindOfTrustController.onPageLoad(NormalMode, draftId).url,
-        canEdit = canEdit
+        Some(routes.SettlorKindOfTrustController.onPageLoad(NormalMode, draftId).url)
       )
   }
 
@@ -82,9 +82,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorsBasedInTheUK.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.settlors.routes.SettlorsBasedInTheUKController.onPageLoad(NormalMode, draftId).url,
-        canEdit = canEdit
-
+        Some(controllers.register.settlors.routes.SettlorsBasedInTheUKController.onPageLoad(NormalMode, draftId).url)
       )
   }
 
@@ -93,8 +91,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "trusteesBasedInTheUK.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"trusteesBasedInTheUK.$x")),
-        controllers.register.trustees.routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.trustees.routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, draftId).url)
       )
   }
 
@@ -103,8 +100,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorHandoverReliefYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SettlorHandoverReliefYesNoController.onPageLoad(NormalMode, draftId).url,
-        canEdit = canEdit
+        Some(routes.SettlorHandoverReliefYesNoController.onPageLoad(NormalMode, draftId).url)
       )
   }
 
@@ -113,7 +109,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorBusinessDetails.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"settlorDetails.$x")),
-        routes.SettlorBusinessDetailsController.onPageLoad(NormalMode, index, draftId).url
+        Some(routes.SettlorBusinessDetailsController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -122,9 +118,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualPassportYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, draftId).url,
-        livingSettlorName(index, userAnswers),
-        canEdit = canEdit
+        Some(routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, draftId).url),
+        livingSettlorName(index, userAnswers)
       )
   }
 
@@ -133,9 +128,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualPassport.checkYourAnswersLabel",
         passportOrIDCard(x, countryOptions),
-        routes.SettlorIndividualPassportController.onPageLoad(NormalMode, index, draftId).url,
-        livingSettlorName(index, userAnswers),
-        canEdit = canEdit
+        Some(routes.SettlorIndividualPassportController.onPageLoad(NormalMode, index, draftId).url),
+        livingSettlorName(index, userAnswers)
       )
   }
 
@@ -144,9 +138,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualIDCardYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SettlorIndividualIDCardYesNoController.onPageLoad(NormalMode, index, draftId).url,
-        livingSettlorName(index, userAnswers),
-        canEdit = canEdit
+        Some(routes.SettlorIndividualIDCardYesNoController.onPageLoad(NormalMode, index, draftId).url),
+        livingSettlorName(index, userAnswers)
       )
   }
 
@@ -155,9 +148,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualIDCard.checkYourAnswersLabel",
         passportOrIDCard(x, countryOptions),
-        routes.SettlorIndividualIDCardController.onPageLoad(NormalMode, index, draftId).url,
-        livingSettlorName(index, userAnswers),
-        canEdit = canEdit
+        Some(routes.SettlorIndividualIDCardController.onPageLoad(NormalMode, index, draftId).url),
+        livingSettlorName(index, userAnswers)
       )
   }
 
@@ -166,9 +158,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualAddressUKYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SettlorIndividualAddressUKYesNoController.onPageLoad(NormalMode, index, draftId).url,
-        livingSettlorName(index, userAnswers),
-        canEdit = canEdit
+        Some(routes.SettlorIndividualAddressUKYesNoController.onPageLoad(NormalMode, index, draftId).url),
+        livingSettlorName(index, userAnswers)
       )
   }
 
@@ -177,9 +168,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualAddressUK.checkYourAnswersLabel",
         ukAddress(x),
-        routes.SettlorIndividualAddressUKController.onPageLoad(NormalMode, index, draftId).url,
-        livingSettlorName(index, userAnswers),
-        canEdit = canEdit
+        Some(routes.SettlorIndividualAddressUKController.onPageLoad(NormalMode, index, draftId).url),
+        livingSettlorName(index, userAnswers)
       )
   }
 
@@ -188,9 +178,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualAddressInternational.checkYourAnswersLabel",
         internationalAddress(x, countryOptions),
-        routes.SettlorIndividualAddressInternationalController.onPageLoad(NormalMode, index, draftId).url,
-        livingSettlorName(index, userAnswers),
-        canEdit = canEdit
+        Some(routes.SettlorIndividualAddressInternationalController.onPageLoad(NormalMode, index, draftId).url),
+        livingSettlorName(index, userAnswers)
       )
   }
 
@@ -199,9 +188,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualNINOYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SettlorIndividualNINOYesNoController.onPageLoad(NormalMode, index, draftId).url,
-        livingSettlorName(index, userAnswers),
-        canEdit = canEdit
+        Some(routes.SettlorIndividualNINOYesNoController.onPageLoad(NormalMode, index, draftId).url),
+        livingSettlorName(index, userAnswers)
       )
   }
 
@@ -210,9 +198,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualNINO.checkYourAnswersLabel",
         HtmlFormat.escape(formatNino(x)),
-        routes.SettlorIndividualNINOController.onPageLoad(NormalMode, index, draftId).url,
-        livingSettlorName(index, userAnswers),
-        canEdit = canEdit
+        Some(routes.SettlorIndividualNINOController.onPageLoad(NormalMode, index, draftId).url),
+        livingSettlorName(index, userAnswers)
       )
   }
 
@@ -221,9 +208,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualAddressYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SettlorIndividualAddressYesNoController.onPageLoad(NormalMode, index, draftId).url,
-        livingSettlorName(index, userAnswers),
-        canEdit = canEdit
+        Some(routes.SettlorIndividualAddressYesNoController.onPageLoad(NormalMode, index, draftId).url),
+        livingSettlorName(index, userAnswers)
       )
   }
 
@@ -232,9 +218,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualDateOfBirth.checkYourAnswersLabel",
         HtmlFormat.escape(x.format(dateFormatter)),
-        routes.SettlorIndividualDateOfBirthController.onPageLoad(NormalMode, index, draftId).url,
-        livingSettlorName(index, userAnswers),
-        canEdit = canEdit
+        Some(routes.SettlorIndividualDateOfBirthController.onPageLoad(NormalMode, index, draftId).url),
+        livingSettlorName(index, userAnswers)
       )
   }
 
@@ -243,9 +228,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualDateOfBirthYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        routes.SettlorIndividualDateOfBirthYesNoController.onPageLoad(NormalMode, index, draftId).url,
-        livingSettlorName(index, userAnswers),
-        canEdit = canEdit
+        Some(routes.SettlorIndividualDateOfBirthYesNoController.onPageLoad(NormalMode, index, draftId).url),
+        livingSettlorName(index, userAnswers)
       )
   }
 
@@ -254,8 +238,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualName.checkYourAnswersLabel",
         HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"),
-        routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -264,8 +247,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorIndividualOrBusiness.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"settlorIndividualOrBusiness.$x")),
-        routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -532,8 +514,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "propertyOrLandAddressYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.asset.property_or_land.routes.PropertyOrLandAddressYesNoController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.asset.property_or_land.routes.PropertyOrLandAddressYesNoController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -542,8 +523,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "propertyLandValueTrust.checkYourAnswersLabel",
         currency(x),
-        controllers.register.asset.property_or_land.routes.PropertyLandValueTrustController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.asset.property_or_land.routes.PropertyLandValueTrustController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -552,8 +532,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "propertyOrLandDescription.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        controllers.register.asset.property_or_land.routes.PropertyOrLandDescriptionController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.asset.property_or_land.routes.PropertyOrLandDescriptionController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -562,8 +541,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "propertyOrLandAddressUkYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.asset.property_or_land.routes.PropertyOrLandAddressUkYesNoController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.asset.property_or_land.routes.PropertyOrLandAddressUkYesNoController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -572,8 +550,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "trustOwnAllThePropertyOrLand.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.asset.property_or_land.routes.TrustOwnAllThePropertyOrLandController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.asset.property_or_land.routes.TrustOwnAllThePropertyOrLandController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -582,8 +559,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "propertyOrLandUKAddress.checkYourAnswersLabel",
         ukAddress(x),
-        controllers.register.asset.property_or_land.routes.PropertyOrLandUKAddressController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.asset.property_or_land.routes.PropertyOrLandUKAddressController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -592,8 +568,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "propertyOrLandInternationalAddress.checkYourAnswersLabel",
         internationalAddress(x, countryOptions),
-        controllers.register.asset.property_or_land.routes.PropertyOrLandInternationalAddressController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.asset.property_or_land.routes.PropertyOrLandInternationalAddressController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -602,8 +577,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "propertyOrLandTotalValue.checkYourAnswersLabel",
         currency(x),
-        controllers.register.asset.property_or_land.routes.PropertyOrLandTotalValueController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.asset.property_or_land.routes.PropertyOrLandTotalValueController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -612,9 +586,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "site.address.international.checkYourAnswersLabel",
         internationalAddress(x, countryOptions),
-        controllers.register.agents.routes.AgentInternationalAddressController.onPageLoad(NormalMode, draftId).url,
-        agencyName(userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.agents.routes.AgentInternationalAddressController.onPageLoad(NormalMode, draftId).url),
+        agencyName(userAnswers)
       )
   }
 
@@ -623,8 +596,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "classBeneficiaryDescription.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        controllers.register.beneficiaries.routes.ClassBeneficiaryDescriptionController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.beneficiaries.routes.ClassBeneficiaryDescriptionController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -633,8 +605,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "shareCompanyName.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        controllers.register.asset.shares.routes.ShareCompanyNameController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.asset.shares.routes.ShareCompanyNameController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -643,9 +614,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "sharesOnStockExchange.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.asset.shares.routes.SharesOnStockExchangeController.onPageLoad(NormalMode, index, draftId).url,
-        shareCompName(index, userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.asset.shares.routes.SharesOnStockExchangeController.onPageLoad(NormalMode, index, draftId).url),
+        shareCompName(index, userAnswers)
       )
   }
 
@@ -654,8 +624,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "sharesInAPortfolio.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.asset.shares.routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.asset.shares.routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -664,9 +633,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "shareValueInTrust.checkYourAnswersLabel",
         currency(x),
-        controllers.register.asset.shares.routes.ShareValueInTrustController.onPageLoad(NormalMode, index, draftId).url,
-        shareCompName(index, userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.asset.shares.routes.ShareValueInTrustController.onPageLoad(NormalMode, index, draftId).url),
+        shareCompName(index, userAnswers)
       )
   }
 
@@ -675,9 +643,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "shareQuantityInTrust.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        controllers.register.asset.shares.routes.ShareQuantityInTrustController.onPageLoad(NormalMode, index, draftId).url,
-        shareCompName(index, userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.asset.shares.routes.ShareQuantityInTrustController.onPageLoad(NormalMode, index, draftId).url),
+        shareCompName(index, userAnswers)
       )
   }
 
@@ -686,8 +653,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "sharePortfolioValueInTrust.checkYourAnswersLabel",
         currency(x),
-        controllers.register.asset.shares.routes.SharePortfolioValueInTrustController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.asset.shares.routes.SharePortfolioValueInTrustController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -696,8 +662,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "sharePortfolioQuantityInTrust.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        controllers.register.asset.shares.routes.SharePortfolioQuantityInTrustController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.asset.shares.routes.SharePortfolioQuantityInTrustController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -706,8 +671,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "sharePortfolioOnStockExchange.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.asset.shares.routes.SharePortfolioOnStockExchangeController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.asset.shares.routes.SharePortfolioOnStockExchangeController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -716,8 +680,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "sharePortfolioName.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        controllers.register.asset.shares.routes.SharePortfolioNameController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.asset.shares.routes.SharePortfolioNameController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -726,8 +689,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "shareClass.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"shareClass.$x")),
-        controllers.register.asset.shares.routes.ShareClassController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.asset.shares.routes.ShareClassController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -736,9 +698,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "site.address.uk.checkYourAnswersLabel",
         ukAddress(x),
-        controllers.register.agents.routes.AgentUKAddressController.onPageLoad(NormalMode, draftId).url,
-        agencyName(userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.agents.routes.AgentUKAddressController.onPageLoad(NormalMode, draftId).url),
+        agencyName(userAnswers)
       )
   }
 
@@ -747,9 +708,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "agentAddressYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.agents.routes.AgentAddressYesNoController.onPageLoad(NormalMode, draftId).url,
-        agencyName(userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.agents.routes.AgentAddressYesNoController.onPageLoad(NormalMode, draftId).url),
+        agencyName(userAnswers)
       )
   }
 
@@ -758,9 +718,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "individualBeneficiaryAddressUKYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.beneficiaries.routes.IndividualBeneficiaryAddressUKYesNoController.onPageLoad(NormalMode, index, draftId).url,
-        indBeneficiaryName(index, userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.beneficiaries.routes.IndividualBeneficiaryAddressUKYesNoController.onPageLoad(NormalMode, index, draftId).url),
+        indBeneficiaryName(index, userAnswers)
       )
   }
 
@@ -769,8 +728,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "agentName.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        controllers.register.agents.routes.AgentNameController.onPageLoad(NormalMode, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.agents.routes.AgentNameController.onPageLoad(NormalMode, draftId).url)
       )
   }
 
@@ -779,8 +737,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "addABeneficiary.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"addABeneficiary.$x")),
-        controllers.register.beneficiaries.routes.AddABeneficiaryController.onPageLoad(draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.beneficiaries.routes.AddABeneficiaryController.onPageLoad(draftId).url)
       )
   }
 
@@ -789,9 +746,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.beneficiaries.routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index, draftId).url,
-        indBeneficiaryName(index, userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.beneficiaries.routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index, draftId).url),
+        indBeneficiaryName(index, userAnswers)
       )
   }
 
@@ -800,9 +756,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "individualBeneficiaryAddressUK.checkYourAnswersLabel",
         ukAddress(x),
-        controllers.register.beneficiaries.routes.IndividualBeneficiaryAddressUKController.onPageLoad(NormalMode, index, draftId).url,
-        indBeneficiaryName(index, userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.beneficiaries.routes.IndividualBeneficiaryAddressUKController.onPageLoad(NormalMode, index, draftId).url),
+        indBeneficiaryName(index, userAnswers)
       )
   }
 
@@ -811,9 +766,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "individualBeneficiaryAddressYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.beneficiaries.routes.IndividualBeneficiaryAddressYesNoController.onPageLoad(NormalMode, index, draftId).url,
-        indBeneficiaryName(index, userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.beneficiaries.routes.IndividualBeneficiaryAddressYesNoController.onPageLoad(NormalMode, index, draftId).url),
+        indBeneficiaryName(index, userAnswers)
       )
   }
 
@@ -822,9 +776,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "individualBeneficiaryNationalInsuranceNumber.checkYourAnswersLabel",
         HtmlFormat.escape(formatNino(x)),
-        controllers.register.beneficiaries.routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(NormalMode, index, draftId).url,
-        indBeneficiaryName(index, userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.beneficiaries.routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(NormalMode, index, draftId).url),
+        indBeneficiaryName(index, userAnswers)
       )
   }
 
@@ -833,9 +786,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.beneficiaries.routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode, index, draftId).url,
-        indBeneficiaryName(index, userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.beneficiaries.routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode, index, draftId).url),
+        indBeneficiaryName(index, userAnswers)
       )
   }
 
@@ -844,9 +796,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "individualBeneficiaryIncome.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        controllers.register.beneficiaries.routes.IndividualBeneficiaryIncomeController.onPageLoad(NormalMode, index, draftId).url,
-        indBeneficiaryName(index, userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.beneficiaries.routes.IndividualBeneficiaryIncomeController.onPageLoad(NormalMode, index, draftId).url),
+        indBeneficiaryName(index, userAnswers)
       )
   }
 
@@ -855,9 +806,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "individualBeneficiaryIncomeYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.beneficiaries.routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode, index, draftId).url,
-        indBeneficiaryName(index, userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.beneficiaries.routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode, index, draftId).url),
+        indBeneficiaryName(index, userAnswers)
       )
   }
 
@@ -866,9 +816,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "individualBeneficiaryDateOfBirth.checkYourAnswersLabel",
         HtmlFormat.escape(x.format(dateFormatter)),
-        controllers.register.beneficiaries.routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(NormalMode, index, draftId).url,
-        indBeneficiaryName(index, userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.beneficiaries.routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(NormalMode, index, draftId).url),
+        indBeneficiaryName(index, userAnswers)
       )
   }
 
@@ -877,9 +826,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.beneficiaries.routes.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(NormalMode, index, draftId).url,
-        indBeneficiaryName(index, userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.beneficiaries.routes.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(NormalMode, index, draftId).url),
+        indBeneficiaryName(index, userAnswers)
       )
   }
 
@@ -888,8 +836,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "individualBeneficiaryName.checkYourAnswersLabel",
         HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"),
-        controllers.register.beneficiaries.routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.beneficiaries.routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -898,9 +845,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "wasSettlorsAddressUKYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.settlors.deceased_settlor.routes.WasSettlorsAddressUKYesNoController.onPageLoad(NormalMode, draftId).url,
-        deceasedSettlorName(userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.settlors.deceased_settlor.routes.WasSettlorsAddressUKYesNoController.onPageLoad(NormalMode, draftId).url),
+        deceasedSettlorName(userAnswers)
       )
   }
 
@@ -909,8 +855,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "setupAfterSettlorDied.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.settlors.deceased_settlor.routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.settlors.deceased_settlor.routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode, draftId).url)
       )
   }
 
@@ -919,9 +864,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorsUKAddress.checkYourAnswersLabel",
         ukAddress(x),
-        controllers.register.settlors.deceased_settlor.routes.SettlorsUKAddressController.onPageLoad(NormalMode, draftId).url,
-        deceasedSettlorName(userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.settlors.deceased_settlor.routes.SettlorsUKAddressController.onPageLoad(NormalMode, draftId).url),
+        deceasedSettlorName(userAnswers)
       )
   }
 
@@ -930,9 +874,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorsNINoYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.settlors.deceased_settlor.routes.SettlorsNINoYesNoController.onPageLoad(NormalMode, draftId).url,
-        deceasedSettlorName(userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.settlors.deceased_settlor.routes.SettlorsNINoYesNoController.onPageLoad(NormalMode, draftId).url),
+        deceasedSettlorName(userAnswers)
       )
   }
 
@@ -941,8 +884,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorsName.checkYourAnswersLabel",
         HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"),
-        controllers.register.settlors.deceased_settlor.routes.SettlorsNameController.onPageLoad(NormalMode, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.settlors.deceased_settlor.routes.SettlorsNameController.onPageLoad(NormalMode, draftId).url)
       )
   }
 
@@ -951,9 +893,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorsLastKnownAddressYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.settlors.deceased_settlor.routes.SettlorsLastKnownAddressYesNoController.onPageLoad(NormalMode, draftId).url,
-        deceasedSettlorName(userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.settlors.deceased_settlor.routes.SettlorsLastKnownAddressYesNoController.onPageLoad(NormalMode, draftId).url),
+        deceasedSettlorName(userAnswers)
       )
   }
 
@@ -962,9 +903,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorsInternationalAddress.checkYourAnswersLabel",
         internationalAddress(x, countryOptions),
-        controllers.register.settlors.deceased_settlor.routes.SettlorsInternationalAddressController.onPageLoad(NormalMode, draftId).url,
-        deceasedSettlorName(userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.settlors.deceased_settlor.routes.SettlorsInternationalAddressController.onPageLoad(NormalMode, draftId).url),
+        deceasedSettlorName(userAnswers)
       )
   }
 
@@ -973,9 +913,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorsDateOfBirth.checkYourAnswersLabel",
         HtmlFormat.escape(x.format(dateFormatter)),
-        controllers.register.settlors.deceased_settlor.routes.SettlorsDateOfBirthController.onPageLoad(NormalMode, draftId).url,
-        deceasedSettlorName(userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.settlors.deceased_settlor.routes.SettlorsDateOfBirthController.onPageLoad(NormalMode, draftId).url),
+        deceasedSettlorName(userAnswers)
       )
   }
 
@@ -984,9 +923,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorNationalInsuranceNumber.checkYourAnswersLabel",
         HtmlFormat.escape(formatNino(x)),
-        controllers.register.settlors.deceased_settlor.routes.SettlorNationalInsuranceNumberController.onPageLoad(NormalMode, draftId).url,
-        deceasedSettlorName(userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.settlors.deceased_settlor.routes.SettlorNationalInsuranceNumberController.onPageLoad(NormalMode, draftId).url),
+        deceasedSettlorName(userAnswers)
       )
   }
 
@@ -995,9 +933,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorDateOfDeathYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.settlors.deceased_settlor.routes.SettlorDateOfDeathYesNoController.onPageLoad(NormalMode, draftId).url,
-        deceasedSettlorName(userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.settlors.deceased_settlor.routes.SettlorDateOfDeathYesNoController.onPageLoad(NormalMode, draftId).url),
+        deceasedSettlorName(userAnswers)
       )
   }
 
@@ -1006,9 +943,9 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorDateOfDeath.checkYourAnswersLabel",
         HtmlFormat.escape(x.format(dateFormatter)),
-        controllers.register.settlors.deceased_settlor.routes.SettlorDateOfDeathController.onPageLoad(NormalMode, draftId).url,
-        deceasedSettlorName(userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.settlors.deceased_settlor.routes.SettlorDateOfDeathController.onPageLoad(NormalMode, draftId).url),
+        deceasedSettlorName(userAnswers)
+        
       )
   }
 
@@ -1017,9 +954,9 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "settlorDateOfBirthYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.settlors.deceased_settlor.routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode, draftId).url,
-        deceasedSettlorName(userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.settlors.deceased_settlor.routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode, draftId).url),
+        deceasedSettlorName(userAnswers)
+        
       )
   }
 
@@ -1028,8 +965,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "assetMoneyValue.checkYourAnswersLabel",
         currency(x),
-        controllers.register.asset.money.routes.AssetMoneyValueController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.asset.money.routes.AssetMoneyValueController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -1038,8 +974,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "whatKindOfAsset.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"whatKindOfAsset.$x")),
-        controllers.register.asset.routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.asset.routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -1048,8 +983,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "agentInternalReference.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        controllers.register.agents.routes.AgentInternalReferenceController.onPageLoad(NormalMode, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.agents.routes.AgentInternalReferenceController.onPageLoad(NormalMode, draftId).url)
       )
   }
 
@@ -1058,9 +992,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "agentTelephoneNumber.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        controllers.register.agents.routes.AgentTelephoneNumberController.onPageLoad(NormalMode, draftId).url,
-        agencyName(userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.agents.routes.AgentTelephoneNumberController.onPageLoad(NormalMode, draftId).url),
+        agencyName(userAnswers)
       )
   }
 
@@ -1069,9 +1002,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "trusteesNino.checkYourAnswersLabel",
         HtmlFormat.escape(formatNino(x)),
-        controllers.register.trustees.routes.TrusteesNinoController.onPageLoad(NormalMode, index, draftId).url,
-        trusteeName(index, userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.trustees.routes.TrusteesNinoController.onPageLoad(NormalMode, index, draftId).url),
+        trusteeName(index, userAnswers)
       )
   }
 
@@ -1080,9 +1012,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "trusteeLiveInTheUK.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.trustees.routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index, draftId).url,
-        trusteeName(index, userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.trustees.routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index, draftId).url),
+        trusteeName(index, userAnswers)
       )
   }
 
@@ -1091,9 +1022,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "trusteesUkAddress.checkYourAnswersLabel",
         ukAddress(x),
-        controllers.register.trustees.routes.TrusteesUkAddressController.onPageLoad(NormalMode, index, draftId).url,
-        trusteeName(index, userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.trustees.routes.TrusteesUkAddressController.onPageLoad(NormalMode, index, draftId).url),
+        trusteeName(index, userAnswers)
       )
   }
 
@@ -1102,9 +1032,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "trusteesDateOfBirth.checkYourAnswersLabel",
         HtmlFormat.escape(x.format(dateFormatter)),
-        controllers.register.trustees.routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, draftId).url,
-        trusteeName(index, userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.trustees.routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, draftId).url),
+        trusteeName(index, userAnswers)
       )
   }
 
@@ -1113,9 +1042,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "telephoneNumber.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        controllers.register.trustees.routes.TelephoneNumberController.onPageLoad(NormalMode, index, draftId).url,
-        trusteeName(index, userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.trustees.routes.TelephoneNumberController.onPageLoad(NormalMode, index, draftId).url),
+        trusteeName(index, userAnswers)
       )
   }
 
@@ -1124,9 +1052,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "trusteeAUKCitizen.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.trustees.routes.TrusteeAUKCitizenController.onPageLoad(NormalMode, index, draftId).url,
-        trusteeName(index, userAnswers),
-        canEdit = canEdit
+        Some(controllers.register.trustees.routes.TrusteeAUKCitizenController.onPageLoad(NormalMode, index, draftId).url),
+        trusteeName(index, userAnswers)
       )
   }
 
@@ -1136,8 +1063,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         s"$messagePrefix.checkYourAnswersLabel",
         HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"),
-        controllers.register.trustees.routes.TrusteesNameController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.trustees.routes.TrusteesNameController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -1146,8 +1072,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         s"$messagePrefix.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"individualOrBusiness.$x")),
-        controllers.register.trustees.routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.trustees.routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -1156,8 +1081,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "isThisLeadTrustee.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.trustees.routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.trustees.routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, draftId).url)
       )
   }
 
@@ -1166,8 +1090,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "postcodeForTheTrust.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        controllers.register.routes.PostcodeForTheTrustController.onPageLoad(NormalMode, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.routes.PostcodeForTheTrustController.onPageLoad(NormalMode, draftId).url)
       )
   }
 
@@ -1176,8 +1099,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "whatIsTheUTR.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        controllers.register.routes.WhatIsTheUTRController.onPageLoad(NormalMode, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.routes.WhatIsTheUTRController.onPageLoad(NormalMode, draftId).url)
       )
   }
 
@@ -1186,8 +1108,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "trustHaveAUTR.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId).url)
       )
   }
 
@@ -1196,8 +1117,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "trustRegisteredOnline.checkYourAnswersLabel",
         yesOrNo(x),
-        controllers.register.routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId).url)
       )
   }
 
@@ -1206,61 +1126,60 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       AnswerRow(
         "whenTrustSetup.checkYourAnswersLabel",
         HtmlFormat.escape(x.format(dateFormatter)),
-        controllers.register.routes.WhenTrustSetupController.onPageLoad(NormalMode, draftId).url,
-        canEdit = canEdit
+        Some(controllers.register.routes.WhenTrustSetupController.onPageLoad(NormalMode, draftId).url)
       )
   }
 
   def agentOtherThanBarrister: Option[AnswerRow] = userAnswers.get(AgentOtherThanBarristerPage) map {
-    x => AnswerRow("agentOtherThanBarrister.checkYourAnswersLabel", yesOrNo(x), controllers.register.agents.routes.AgentOtherThanBarristerController.onPageLoad(NormalMode, draftId).url, canEdit = canEdit)
+    x => AnswerRow("agentOtherThanBarrister.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.agents.routes.AgentOtherThanBarristerController.onPageLoad(NormalMode, draftId).url))
   }
 
   def inheritanceTaxAct: Option[AnswerRow] = userAnswers.get(InheritanceTaxActPage) map {
-    x => AnswerRow("inheritanceTaxAct.checkYourAnswersLabel", yesOrNo(x), controllers.register.routes.InheritanceTaxActController.onPageLoad(NormalMode, draftId).url, canEdit = canEdit)
+    x => AnswerRow("inheritanceTaxAct.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.routes.InheritanceTaxActController.onPageLoad(NormalMode, draftId).url))
   }
 
   def nonresidentType: Option[AnswerRow] = userAnswers.get(NonResidentTypePage) map {
-    x => AnswerRow("nonresidentType.checkYourAnswersLabel", answer("nonresidentType", x), controllers.register.routes.NonResidentTypeController.onPageLoad(NormalMode, draftId).url, canEdit = canEdit)
+    x => AnswerRow("nonresidentType.checkYourAnswersLabel", answer("nonresidentType", x), Some(controllers.register.routes.NonResidentTypeController.onPageLoad(NormalMode, draftId).url))
   }
 
   def trustPreviouslyResident: Option[AnswerRow] = userAnswers.get(TrustPreviouslyResidentPage) map {
-    x => AnswerRow("trustPreviouslyResident.checkYourAnswersLabel", escape(country(x, countryOptions)), controllers.register.routes.TrustPreviouslyResidentController.onPageLoad(NormalMode, draftId).url, canEdit = canEdit)
+    x => AnswerRow("trustPreviouslyResident.checkYourAnswersLabel", escape(country(x, countryOptions)), Some(controllers.register.routes.TrustPreviouslyResidentController.onPageLoad(NormalMode, draftId).url))
   }
 
   def trustResidentOffshore: Option[AnswerRow] = userAnswers.get(TrustResidentOffshorePage) map {
-    x => AnswerRow("trustResidentOffshore.checkYourAnswersLabel", yesOrNo(x), controllers.register.routes.TrustResidentOffshoreController.onPageLoad(NormalMode, draftId).url, canEdit = canEdit)
+    x => AnswerRow("trustResidentOffshore.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.routes.TrustResidentOffshoreController.onPageLoad(NormalMode, draftId).url))
   }
 
   def establishedUnderScotsLaw: Option[AnswerRow] = userAnswers.get(EstablishedUnderScotsLawPage) map {
-    x => AnswerRow("establishedUnderScotsLaw.checkYourAnswersLabel", yesOrNo(x), controllers.register.routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode, draftId).url, canEdit = canEdit)
+    x => AnswerRow("establishedUnderScotsLaw.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode, draftId).url))
   }
 
   def trusteesBasedInUK: Option[AnswerRow] = userAnswers.get(TrusteesBasedInTheUKPage) map {
-    x => AnswerRow("trusteesBasedInTheUK.checkYourAnswersLabel", answer("trusteesBasedInTheUK", x), controllers.register.trustees.routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, draftId).url, canEdit = canEdit)
+    x => AnswerRow("trusteesBasedInTheUK.checkYourAnswersLabel", answer("trusteesBasedInTheUK", x), Some(controllers.register.trustees.routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, draftId).url))
   }
 
   def countryAdministeringTrust: Option[AnswerRow] = userAnswers.get(CountryAdministeringTrustPage) map {
-    x => AnswerRow("countryAdministeringTrust.checkYourAnswersLabel", escape(country(x, countryOptions)), controllers.register.routes.CountryAdministeringTrustController.onPageLoad(NormalMode, draftId).url, canEdit = canEdit)
+    x => AnswerRow("countryAdministeringTrust.checkYourAnswersLabel", escape(country(x, countryOptions)), Some(controllers.register.routes.CountryAdministeringTrustController.onPageLoad(NormalMode, draftId).url))
   }
 
   def administrationInsideUK: Option[AnswerRow] = userAnswers.get(AdministrationInsideUKPage) map {
-    x => AnswerRow("administrationInsideUK.checkYourAnswersLabel", yesOrNo(x), controllers.register.routes.AdministrationInsideUKController.onPageLoad(NormalMode, draftId).url, canEdit = canEdit)
+    x => AnswerRow("administrationInsideUK.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.routes.AdministrationInsideUKController.onPageLoad(NormalMode, draftId).url))
   }
 
   def countryGoverningTrust: Option[AnswerRow] = userAnswers.get(CountryGoverningTrustPage) map {
-    x => AnswerRow("countryGoverningTrust.checkYourAnswersLabel", escape(country(x, countryOptions)), controllers.register.routes.CountryGoverningTrustController.onPageLoad(NormalMode, draftId).url, canEdit = canEdit)
+    x => AnswerRow("countryGoverningTrust.checkYourAnswersLabel", escape(country(x, countryOptions)), Some(controllers.register.routes.CountryGoverningTrustController.onPageLoad(NormalMode, draftId).url))
   }
 
   def governedInsideTheUK: Option[AnswerRow] = userAnswers.get(GovernedInsideTheUKPage) map {
-    x => AnswerRow("governedInsideTheUK.checkYourAnswersLabel", yesOrNo(x), controllers.register.routes.GovernedInsideTheUKController.onPageLoad(NormalMode, draftId).url, canEdit = canEdit)
+    x => AnswerRow("governedInsideTheUK.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.routes.GovernedInsideTheUKController.onPageLoad(NormalMode, draftId).url))
   }
 
   def trustName: Option[AnswerRow] = userAnswers.get(TrustNamePage) map {
-    x => AnswerRow("trustName.checkYourAnswersLabel", escape(x), controllers.register.routes.TrustNameController.onPageLoad(NormalMode, draftId).url, canEdit = canEdit)
+    x => AnswerRow("trustName.checkYourAnswersLabel", escape(x), Some(controllers.register.routes.TrustNameController.onPageLoad(NormalMode, draftId).url))
   }
 
   def registeringTrustFor5A: Option[AnswerRow] = userAnswers.get(RegisteringTrustFor5APage) map {
-    x => AnswerRow("registeringTrustFor5A.checkYourAnswersLabel", yesOrNo(x), controllers.register.routes.RegisteringTrustFor5AController.onPageLoad(NormalMode, draftId).url, canEdit = canEdit)
+    x => AnswerRow("registeringTrustFor5A.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.routes.RegisteringTrustFor5AController.onPageLoad(NormalMode, draftId).url))
   }
 
 }

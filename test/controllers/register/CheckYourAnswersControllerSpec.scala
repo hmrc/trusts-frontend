@@ -16,13 +16,13 @@
 
 package controllers.register
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.AnswerSection
 import views.html.register.CheckYourAnswersView
 
-class CheckYourAnswersControllerSpec extends SpecBase {
+class CheckYourAnswersControllerSpec extends RegistrationSpecBase {
 
   "Check Your Answers Controller" must {
 

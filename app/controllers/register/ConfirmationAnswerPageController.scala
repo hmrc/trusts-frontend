@@ -19,21 +19,23 @@ package controllers.register
 import java.time.LocalDateTime
 
 import controllers.actions._
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import javax.inject.Inject
 import pages.register.{RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.countryOptions.CountryOptions
-import utils.{DateFormatter, PrintUserAnswersHelper}
+import utils.DateFormatter
+import utils.print.register.PrintUserAnswersHelper
 import views.html.register.ConfirmationAnswerPageView
 
 
 class ConfirmationAnswerPageController @Inject()(
                                                   override val messagesApi: MessagesApi,
-                                                  identify: IdentifierAction,
+                                                  identify: RegistrationIdentifierAction,
                                                   getData: DraftIdRetrievalActionProvider,
-                                                  requireData: DataRequiredAction,
+                                                  requireData: RegistrationDataRequiredAction,
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: ConfirmationAnswerPageView,
                                                   countryOptions : CountryOptions,

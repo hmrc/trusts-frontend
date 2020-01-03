@@ -16,7 +16,7 @@
 
 package controllers.register.trustees
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.IndexValidation
 import forms.trustees.TelephoneNumberFormProvider
 import models.NormalMode
@@ -29,7 +29,7 @@ import play.api.test.Helpers.{route, _}
 import views.html.register.trustees.TelephoneNumberView
 import controllers.register.routes._
 
-class TelephoneNumberControllerSpec extends SpecBase with IndexValidation {
+class TelephoneNumberControllerSpec extends RegistrationSpecBase with IndexValidation {
 
   val leadTrusteeMessagePrefix = "leadTrusteesTelephoneNumber"
   val trusteeMessagePrefix = "telephoneNumber"

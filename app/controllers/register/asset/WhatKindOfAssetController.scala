@@ -17,12 +17,13 @@
 package controllers.register.asset
 
 import controllers.actions._
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
 import forms.WhatKindOfAssetFormProvider
 import javax.inject.Inject
 import models.registration.pages.WhatKindOfAsset
 import models.registration.pages.WhatKindOfAsset.Money
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import models.{Enumerable, Mode}
 import navigation.Navigator
 import pages.register.asset.WhatKindOfAssetPage
@@ -40,9 +41,9 @@ class WhatKindOfAssetController @Inject()(
                                            override val messagesApi: MessagesApi,
                                            registrationsRepository: RegistrationsRepository,
                                            navigator: Navigator,
-                                           identify: IdentifierAction,
+                                           identify: RegistrationIdentifierAction,
                                            getData: DraftIdRetrievalActionProvider,
-                                           requireData: DataRequiredAction,
+                                           requireData: RegistrationDataRequiredAction,
                                            validateIndex: IndexActionFilterProvider,
                                            formProvider: WhatKindOfAssetFormProvider,
                                            val controllerComponents: MessagesControllerComponents,
@@ -54,7 +55,7 @@ class WhatKindOfAssetController @Inject()(
   private def findAssetThatIsMoney(assets : List[AssetViewModel]): Option[(AssetViewModel, Int)] =
     assets.zipWithIndex.find {_._1.isInstanceOf[MoneyAssetViewModel]}
 
-  private def options(request : DataRequest[AnyContent], index: Int) = {
+  private def options(request : RegistrationDataRequest[AnyContent], index: Int) = {
     val assets = request.userAnswers.get(sections.Assets).getOrElse(Nil)
     
     findAssetThatIsMoney(assets) match {
