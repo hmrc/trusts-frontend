@@ -64,4 +64,14 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
     }
   }
 
+  def individualProtectors : Seq[AnswerSection] = {
+    val size = userAnswers.get(_root_.sections.protectors.IndividualProtectors).map(_.value.size).getOrElse(0)
+
+    size match {
+      case 0 => Nil
+      case _ =>
+        (for (index <- 0 to size) yield IndividualProtector(index, userAnswers, countryOptions)).flatten
+    }
+  }
+
 }

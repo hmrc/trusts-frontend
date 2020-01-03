@@ -116,7 +116,6 @@ class ProtectorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(IndividualProtectorPassportIDCardPage(0)) mustNot be(defined)
         extraction.right.value.get(IndividualProtectorAddressYesNoPage(0)) mustNot be(defined)
         extraction.right.value.get(IndividualProtectorAddressUKYesNoPage(0)) mustNot be(defined)
-        extraction.right.value.get(IndividualProtectorAddressUKPage(0)) mustNot be(defined)
         extraction.right.value.get(IndividualProtectorMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
 
         extraction.right.value.get(CompanyProtectorNamePage(0)).get mustBe "Company 1"
@@ -124,8 +123,7 @@ class ProtectorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(CompanyProtectorAddressOrUtrPage(0)).get mustBe AddressOrUtr.Utr
         extraction.right.value.get(CompanyProtectorUtrPage(0)).get mustBe "1234567890"
         extraction.right.value.get(CompanyProtectorAddressUKYesNoPage(0)) mustNot be(defined)
-        extraction.right.value.get(CompanyProtectorAddressUKPage(0)) mustNot be(defined)
-        extraction.right.value.get(CompanyProtectorAddressInternationalPage(0)) mustNot be(defined)
+        extraction.right.value.get(CompanyProtectorAddressPage(0)) mustNot be(defined)
         extraction.right.value.get(CompanyProtectorMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
       }
     }

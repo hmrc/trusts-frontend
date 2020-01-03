@@ -113,11 +113,11 @@ class IndividualProtectorExtractor @Inject() extends PlaybackExtractor[Option[Li
   private def extractAddress(address: Address, index: Int, answers: UserAnswers) = {
     address match {
       case uk: UKAddress =>
-        answers.set(IndividualProtectorAddressUKPage(index), uk)
+        answers.set(IndividualProtectorAddressPage(index), uk)
           .flatMap(_.set(IndividualProtectorAddressYesNoPage(index), true))
           .flatMap(_.set(IndividualProtectorAddressUKYesNoPage(index), true))
       case nonUk: InternationalAddress =>
-        answers.set(IndividualProtectorAddressInternationalPage(index), nonUk)
+        answers.set(IndividualProtectorAddressPage(index), nonUk)
           .flatMap(_.set(IndividualProtectorAddressYesNoPage(index), true))
           .flatMap(_.set(IndividualProtectorAddressUKYesNoPage(index), false))
     }

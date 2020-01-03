@@ -33,8 +33,7 @@ final case class IndividualProtectorNINOYesNoPage(index : Int) extends QuestionP
     value match {
       case Some(false) => userAnswers.remove(IndividualProtectorNINOPage(index))
       case Some(true) => userAnswers.remove(IndividualProtectorAddressUKYesNoPage(index))
-        .flatMap(_.remove(IndividualProtectorAddressInternationalPage(index)))
-        .flatMap(_.remove(IndividualProtectorAddressUKPage(index)))
+        .flatMap(_.remove(IndividualProtectorAddressPage(index)))
         .flatMap(_.remove(IndividualProtectorPassportIDCardYesNoPage(index)))
         .flatMap(_.remove(IndividualProtectorPassportIDCardPage(index)))
       case _ => super.cleanup(value, userAnswers)

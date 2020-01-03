@@ -88,8 +88,7 @@ class CompanyProtectorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(CompanyProtectorNamePage(0)).get mustBe "Company 1"
         extraction.right.value.get(CompanyProtectorSafeIdPage(0)) mustNot be(defined)
         extraction.right.value.get(CompanyProtectorAddressUKYesNoPage(0)) mustNot be(defined)
-        extraction.right.value.get(CompanyProtectorAddressUKPage(0)) mustNot be(defined)
-        extraction.right.value.get(CompanyProtectorAddressInternationalPage(0)) mustNot be(defined)
+        extraction.right.value.get(CompanyProtectorAddressPage(0)) mustNot be(defined)
         extraction.right.value.get(CompanyProtectorUtrPage(0)) mustNot be(defined)
         extraction.right.value.get(CompanyProtectorMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
       }
@@ -119,13 +118,9 @@ class CompanyProtectorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(CompanyProtectorAddressUKYesNoPage(1)) mustNot be(defined)
         extraction.right.value.get(CompanyProtectorAddressUKYesNoPage(2)).get mustBe true
 
-        extraction.right.value.get(CompanyProtectorAddressUKPage(0)) mustNot be(defined)
-        extraction.right.value.get(CompanyProtectorAddressUKPage(1)) mustNot be(defined)
-        extraction.right.value.get(CompanyProtectorAddressUKPage(2)).get mustBe UKAddress("line 2", "line2", None, None, "NE11NE")
-
-        extraction.right.value.get(CompanyProtectorAddressInternationalPage(0)).get mustBe InternationalAddress("line 0", "line2", None, "DE")
-        extraction.right.value.get(CompanyProtectorAddressInternationalPage(1)) mustNot be(defined)
-        extraction.right.value.get(CompanyProtectorAddressInternationalPage(2)) mustNot be(defined)
+        extraction.right.value.get(CompanyProtectorAddressPage(0)).get mustBe InternationalAddress("line 0", "line2", None, "DE")
+        extraction.right.value.get(CompanyProtectorAddressPage(1)) mustNot be(defined)
+        extraction.right.value.get(CompanyProtectorAddressPage(2)).get mustBe UKAddress("line 2", "line2", None, None, "NE11NE")
 
         extraction.right.value.get(CompanyProtectorUtrPage(0)) mustNot be(defined)
         extraction.right.value.get(CompanyProtectorUtrPage(1)).get mustBe "1234567890"

@@ -17,9 +17,9 @@
 package sections.protectors
 
 import pages.QuestionPage
-import play.api.libs.json.JsPath
+import play.api.libs.json.{JsArray, JsPath}
 
-case object IndividualProtectors extends QuestionPage[Nothing]{
+case object IndividualProtectors extends QuestionPage[JsArray]{
 
   override def path: JsPath = JsPath \ Protectors \ toString
 

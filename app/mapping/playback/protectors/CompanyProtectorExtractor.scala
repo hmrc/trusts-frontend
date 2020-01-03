@@ -69,11 +69,11 @@ class CompanyProtectorExtractor @Inject() extends PlaybackExtractor[Option[List[
     companyProtector.identification.flatMap(_.address.convert) match {
       case Some(uk: UKAddress) =>
         answers.set(CompanyProtectorAddressOrUtrPage(index), AddressOrUtr.Address)
-          .flatMap(_.set(CompanyProtectorAddressUKPage(index), uk))
+          .flatMap(_.set(CompanyProtectorAddressPage(index), uk))
           .flatMap(_.set(CompanyProtectorAddressUKYesNoPage(index), true))
       case Some(nonUk: InternationalAddress) =>
         answers.set(CompanyProtectorAddressOrUtrPage(index), AddressOrUtr.Address)
-          .flatMap(_.set(CompanyProtectorAddressInternationalPage(index), nonUk))
+          .flatMap(_.set(CompanyProtectorAddressPage(index), nonUk))
           .flatMap(_.set(CompanyProtectorAddressUKYesNoPage(index), false))
       case None =>
         answers.set(CompanyProtectorAddressOrUtrPage(index), AddressOrUtr.Utr)

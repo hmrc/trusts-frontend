@@ -105,8 +105,7 @@ class IndividualProtectorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(IndividualProtectorPassportIDCardPage(0)) mustNot be(defined)
         extraction.right.value.get(IndividualProtectorAddressYesNoPage(0)).get mustBe false
         extraction.right.value.get(IndividualProtectorAddressUKYesNoPage(0)) mustNot be(defined)
-        extraction.right.value.get(IndividualProtectorAddressUKPage(0)) mustNot be(defined)
-        extraction.right.value.get(IndividualProtectorAddressInternationalPage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualProtectorAddressPage(0)) mustNot be(defined)
         extraction.right.value.get(IndividualProtectorMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
       }
 
@@ -151,13 +150,9 @@ class IndividualProtectorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(IndividualProtectorAddressUKYesNoPage(1)).get mustBe false
         extraction.right.value.get(IndividualProtectorAddressUKYesNoPage(2)).get mustBe true
 
-        extraction.right.value.get(IndividualProtectorAddressUKPage(0)) mustNot be(defined)
-        extraction.right.value.get(IndividualProtectorAddressUKPage(1)) mustNot be(defined)
-        extraction.right.value.get(IndividualProtectorAddressUKPage(2)).get mustBe UKAddress("line 2", "line2", None, None, "NE11NE")
-
-        extraction.right.value.get(IndividualProtectorAddressInternationalPage(0)) mustNot be(defined)
-        extraction.right.value.get(IndividualProtectorAddressInternationalPage(1)).get mustBe InternationalAddress("line 1", "line2", None, "DE")
-        extraction.right.value.get(IndividualProtectorAddressInternationalPage(2)) mustNot be(defined)
+        extraction.right.value.get(IndividualProtectorAddressPage(0)) mustNot be(defined)
+        extraction.right.value.get(IndividualProtectorAddressPage(1)).get mustBe InternationalAddress("line 1", "line2", None, "DE")
+        extraction.right.value.get(IndividualProtectorAddressPage(2)).get mustBe UKAddress("line 2", "line2", None, None, "NE11NE")
 
         extraction.right.value.get(IndividualProtectorMetaData(0)).get mustBe MetaData("0", Some("01"), "2019-11-26")
         extraction.right.value.get(IndividualProtectorMetaData(1)).get mustBe MetaData("1", Some("01"), "2019-11-26")

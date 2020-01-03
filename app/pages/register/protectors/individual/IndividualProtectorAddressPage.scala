@@ -16,12 +16,12 @@
 
 package pages.register.protectors.individual
 
-import models.core.pages.InternationalAddress
+import models.core.pages.Address
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.protectors.IndividualProtectors
 
-final case class IndividualProtectorAddressInternationalPage(index : Int) extends QuestionPage[InternationalAddress] {
+final case class IndividualProtectorAddressPage(index : Int) extends QuestionPage[Address] {
 
   override def path: JsPath = IndividualProtectors.path \ index \ toString
 

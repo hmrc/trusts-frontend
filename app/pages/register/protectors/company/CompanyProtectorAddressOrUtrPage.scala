@@ -35,8 +35,7 @@ case class CompanyProtectorAddressOrUtrPage(index: Int) extends QuestionPage[Add
     value match {
       case Some(Address) => userAnswers.remove(CompanyProtectorUtrPage(index))
       case Some(Utr) => userAnswers.remove(CompanyProtectorAddressUKYesNoPage(index))
-        .flatMap(_.remove(CompanyProtectorAddressUKPage(index)))
-        .flatMap(_.remove(CompanyProtectorAddressInternationalPage(index)))
+        .flatMap(_.remove(CompanyProtectorAddressPage(index)))
       case _ => super.cleanup(value, userAnswers)
     }
 }
