@@ -1188,6 +1188,10 @@ object CheckYourAnswersHelper {
 
   val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
 
+  def utr(answer: String)(implicit messages: Messages) : Html = {
+    HtmlFormat.escape(answer)
+  }
+
   def yesOrNo(answer: Boolean)(implicit messages: Messages): Html = {
     if (answer) {
       HtmlFormat.escape(messages("site.yes"))
