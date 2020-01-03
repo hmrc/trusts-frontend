@@ -41,11 +41,11 @@ class ProtectorExtractorSpec extends FreeSpec with MustMatchers
 
       "must return user answers" in {
 
-        val beneficiary = DisplayTrustProtectorsType(None, None)
+        val protector = DisplayTrustProtectorsType(None, None)
 
         val ua = UserAnswers("fakeId")
 
-        val extraction = protectorExtractor.extract(ua, beneficiary)
+        val extraction = protectorExtractor.extract(ua, protector)
 
         extraction.right.value mustBe ua
 
