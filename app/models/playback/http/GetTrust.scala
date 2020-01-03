@@ -18,6 +18,7 @@ package models.playback.http
 
 import mapping.Constant._
 import mapping.registration.{AssetMonetaryAmount, PassportType, PropertyLandType, TrustDetailsType}
+import models.registration.pages.RoleInCompany
 import org.joda.time.DateTime
 import play.api.libs.json._
 
@@ -191,7 +192,7 @@ case class DisplayTrustIndividualDetailsType(lineNo: String,
                                              name: NameType,
                                              dateOfBirth: Option[DateTime],
                                              vulnerableBeneficiary: Boolean,
-                                             beneficiaryType: Option[String],
+                                             beneficiaryType: Option[RoleInCompany],
                                              beneficiaryDiscretion: Option[Boolean],
                                              beneficiaryShareOfIncome: Option[String],
                                              identification: Option[DisplayTrustIdentificationType],

@@ -19,14 +19,15 @@ package mapping.playback
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors._
 import mapping.playback.beneficiaries.BeneficiaryExtractor
-import mapping.playback.settlors.SettlorExtractor
+import mapping.playback.settlors.{SettlorExtractor, TrustTypeExtractor}
 import models.playback.UserAnswers
 import models.playback.http.GetTrust
 import play.api.Logger
 
 class UserAnswersExtractor @Inject()(beneficiary: BeneficiaryExtractor,
                                      leadTrustee: LeadTrusteeExtractor,
-                                     settlors: SettlorExtractor
+                                     settlors: SettlorExtractor,
+                                     trustType: TrustTypeExtractor
                                     ) extends PlaybackExtractor[GetTrust] {
 
   import models.playback.UserAnswersCombinator._
@@ -37,8 +38,9 @@ class UserAnswersExtractor @Inject()(beneficiary: BeneficiaryExtractor,
       ua <- beneficiary.extract(answers, data.trust.entities.beneficiary).right
       ua1 <- leadTrustee.extract(answers, data.trust.entities.leadTrustee).right
       ua2 <- settlors.extract(answers, data.trust.entities).right
+      ua3 <- trustType.extract(answers, Some(data.trust)).right
     } yield {
-      List(ua, ua1, ua2).combine
+      List(ua, ua1, ua2, ua3).combine
     }
 
     answersCombined match {
