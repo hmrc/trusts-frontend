@@ -163,9 +163,6 @@ class IndividualProtectorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(IndividualProtectorMetaData(1)).get mustBe MetaData("1", Some("01"), "2019-11-26")
         extraction.right.value.get(IndividualProtectorMetaData(2)).get mustBe MetaData("2", Some("01"), "2019-11-26")
       }
-
     }
-
   }
-
 }
