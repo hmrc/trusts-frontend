@@ -72,7 +72,7 @@ object IndividualProtector {
       x =>
         AnswerRow(
           "individualProtectorDateOfBirth.checkYourAnswersLabel",
-          HtmlFormat.escape(x),
+          CheckAnswersFormatters.escape(x),
           None
         )
     }
@@ -82,7 +82,7 @@ object IndividualProtector {
       x =>
         AnswerRow(
           "individualProtectorNINOYesNo.checkYourAnswersLabel",
-          CheckYourAnswersFormatters.yesOrNo(x),
+          CheckAnswersFormatters.yesOrNo(x),
           None
         )
     }
@@ -92,7 +92,7 @@ object IndividualProtector {
       x =>
         AnswerRow(
           "individualProtectorNINO.checkYourAnswersLabel",
-          HtmlFormat.escape(x),
+          CheckAnswersFormatters.escape(x),
           None
         )
     }
@@ -102,7 +102,7 @@ object IndividualProtector {
       x =>
         AnswerRow(
           "individualProtectorAddressYesNo.checkYourAnswersLabel",
-          CheckYourAnswersFormatters.yesOrNo(x),
+          CheckAnswersFormatters.yesOrNo(x),
           None
         )
     }
@@ -112,7 +112,7 @@ object IndividualProtector {
       x =>
         AnswerRow(
           "individualProtectorAddressUkYesNo.checkYourAnswersLabel",
-          CheckYourAnswersFormatters.yesOrNo(x),
+          CheckAnswersFormatters.yesOrNo(x),
           None
         )
     }
