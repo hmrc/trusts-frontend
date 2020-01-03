@@ -45,7 +45,7 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
   }
 
   def charityBeneficiaries : Seq[AnswerSection] = {
-    val size = userAnswers.get(_root_.sections.beneficiaries.CharityBeneficiaries).size
+    val size = userAnswers.get(_root_.sections.beneficiaries.CharityBeneficiaries).map(_.value.size).getOrElse(0)
 
     size match {
       case 0 => Nil
@@ -55,7 +55,7 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
   }
 
   def individualBeneficiaries : Seq[AnswerSection] = {
-    val size = userAnswers.get(_root_.sections.beneficiaries.IndividualBeneficiaries).size
+    val size = userAnswers.get(_root_.sections.beneficiaries.IndividualBeneficiaries).map(_.size).getOrElse(0)
 
     size match {
       case 0 => Nil

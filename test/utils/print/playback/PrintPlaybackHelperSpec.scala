@@ -41,6 +41,13 @@ class PrintPlaybackHelperSpec extends PlaybackSpecBase {
       result mustBe Seq(
         AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),
         AnswerSection(
+          headingKey = Some("Individual beneficiary 1"),
+          rows = Seq(
+            AnswerRow(label = "What is the name of the individual?", answer = Html("Michael Finnegan"), changeUrl = None)
+          ),
+          sectionKey = None
+        ),
+        AnswerSection(
           headingKey = Some("Charity beneficiary 1"),
           rows = Seq(
             AnswerRow(label = "charityBeneficiaryName.checkYourAnswersLabel", answer = Html("Red Cross Ltd."), changeUrl = None)
@@ -51,13 +58,6 @@ class PrintPlaybackHelperSpec extends PlaybackSpecBase {
           headingKey = Some("Charity beneficiary 2"),
           rows = Seq(
             AnswerRow(label = "charityBeneficiaryName.checkYourAnswersLabel", answer = Html("Bernardos"), changeUrl = None)
-          ),
-          sectionKey = None
-        ),
-        AnswerSection(
-          headingKey = Some("Individual beneficiary 1"),
-          rows = Seq(
-            AnswerRow(label = "What is the name of the individual?", answer = Html("Michael Finnegan"), changeUrl = None)
           ),
           sectionKey = None
         )
