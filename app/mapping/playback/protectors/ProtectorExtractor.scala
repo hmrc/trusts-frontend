@@ -21,21 +21,40 @@ import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackE
 import mapping.playback.PlaybackExtractor
 import models.playback.UserAnswers
 import models.playback.http.DisplayTrustProtectorsType
+import pages.register.protectors.DoesTrustHaveAProtectorYesNoPage
+
+import scala.util.Success
 
 class ProtectorExtractor @Inject()(individualProtectorExtractor: IndividualProtectorExtractor) extends PlaybackExtractor[Option[DisplayTrustProtectorsType]] {
   import models.playback.UserAnswersCombinator._
   override def extract(answers: UserAnswers, data: Option[DisplayTrustProtectorsType]): Either[PlaybackExtractionError, UserAnswers] = {
 
+    val protectors = List(
+      data.flatMap(_.protector),
+      data.flatMap(_.protectorCompany)
+    ).collect {
+      case Some(z) => z
+    }
+
+    val updatedAnswers: UserAnswers = updateAnswers(answers, doesTrustHaveProtector = protectors.nonEmpty)
+
     data match {
       case Some(p) =>
         List(
-          individualProtectorExtractor.extract(answers, p.protector)
+          individualProtectorExtractor.extract(updatedAnswers, p.protector)
         ).collect {
           case Right(z) => z
         }.combine.map(Right.apply).getOrElse(Left(FailedToExtractData("Protector Extraction Error")))
       case None =>
-        Right(answers)
+        Right(updatedAnswers)
     }
 
+  }
+
+  def updateAnswers(answers: UserAnswers, doesTrustHaveProtector: Boolean): UserAnswers = {
+    answers.set(DoesTrustHaveAProtectorYesNoPage(), doesTrustHaveProtector) match {
+      case Success(ua) => ua
+      case _ => answers
+    }
   }
 }

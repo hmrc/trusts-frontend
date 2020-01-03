@@ -24,7 +24,9 @@ import models.playback.http._
 import models.playback.{MetaData, UserAnswers}
 import org.joda.time.DateTime
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
+import pages.register.protectors.DoesTrustHaveAProtectorYesNoPage
 import pages.register.protectors.individual._
+import sections.protectors.Protectors
 
 class ProtectorExtractorSpec extends FreeSpec with MustMatchers
   with EitherValues with Generators with SpecBaseHelpers {
@@ -34,9 +36,9 @@ class ProtectorExtractorSpec extends FreeSpec with MustMatchers
 
   "Protector Extractor" - {
 
-    "when no protector" - {
+    "when no protectors" - {
 
-      "must return user answers" in {
+      "must return false for doesTrustHaveAProtector given no individual protector and no company protector" in {
 
         val protector = DisplayTrustProtectorsType(None, None)
 
@@ -44,15 +46,22 @@ class ProtectorExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = protectorExtractor.extract(ua, Some(protector))
 
-        extraction.right.value mustBe ua
-
+        extraction.right.value.get(DoesTrustHaveAProtectorYesNoPage()).get mustBe false
       }
 
+      "must return false for doesTrustHaveAProtector given no protector" in {
+
+        val ua = UserAnswers("fakeId")
+
+        val extraction = protectorExtractor.extract(ua, None)
+
+        extraction.right.value.get(DoesTrustHaveAProtectorYesNoPage()).get mustBe false
+      }
     }
 
     "when there are protectors" - {
 
-      "must return user answers updated" in {
+      "must return user answers updated with doesTrustHaveAProtector true" in {
         val protectors = DisplayTrustProtectorsType(
           protector = Some(
             List(
@@ -80,6 +89,7 @@ class ProtectorExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = protectorExtractor.extract(ua, Some(protectors))
 
+        extraction.right.value.get(DoesTrustHaveAProtectorYesNoPage()).get mustBe true
         extraction.right.value.get(IndividualProtectorNamePage(0)).get mustBe FullName("First Name", None, "Last Name")
         extraction.right.value.get(IndividualProtectorNINOYesNoPage(0)).get mustBe true
         extraction.right.value.get(IndividualProtectorNINOPage(0)).get mustBe "1234567890"
