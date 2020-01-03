@@ -22,6 +22,7 @@ import mapping.playback.{PlaybackExtractor, PlaybackImplicits}
 import models.core.pages.{InternationalAddress, UKAddress}
 import models.playback.http.{DisplayTrustProtector, DisplayTrustProtectorCompany}
 import models.playback.{MetaData, UserAnswers}
+import models.registration.pages.AddressOrUtr
 import pages.register.protectors.company._
 import play.api.Logger
 
@@ -40,9 +41,8 @@ class CompanyProtectorExtractor @Inject() extends PlaybackExtractor[Option[List[
             case (answers, (companyProtector, index)) =>
               answers
                 .flatMap(_.set(CompanyProtectorNamePage(index), companyProtector.name))
-                .flatMap(_.set(CompanyProtectorUtrPage(index), companyProtector.identification.flatMap(_.utr)))
                 .flatMap(_.set(CompanyProtectorSafeIdPage(index), companyProtector.identification.flatMap(_.safeId)))
-                .flatMap(answers => extractAddress(companyProtector, index, answers))
+                .flatMap(answers => extractUtrOrAddress(companyProtector, index, answers))
                 .flatMap {
                   _.set(
                     CompanyProtectorMetaData(index),
@@ -65,17 +65,19 @@ class CompanyProtectorExtractor @Inject() extends PlaybackExtractor[Option[List[
       }
     }
 
-  private def extractAddress(companyProtector: DisplayTrustProtectorCompany, index: Int, answers: UserAnswers) = {
+  private def extractUtrOrAddress(companyProtector: DisplayTrustProtectorCompany, index: Int, answers: UserAnswers) = {
     companyProtector.identification.flatMap(_.address.convert) match {
       case Some(uk: UKAddress) =>
-        answers.set(CompanyProtectorAddressUKPage(index), uk)
+        answers.set(CompanyProtectorAddressOrUtrPage(index), AddressOrUtr.Address)
+          .flatMap(_.set(CompanyProtectorAddressUKPage(index), uk))
           .flatMap(_.set(CompanyProtectorAddressUKYesNoPage(index), true))
       case Some(nonUk: InternationalAddress) =>
-        answers.set(CompanyProtectorAddressInternationalPage(index), nonUk)
+        answers.set(CompanyProtectorAddressOrUtrPage(index), AddressOrUtr.Address)
+          .flatMap(_.set(CompanyProtectorAddressInternationalPage(index), nonUk))
           .flatMap(_.set(CompanyProtectorAddressUKYesNoPage(index), false))
       case None =>
-        answers.remove(CompanyProtectorAddressUKPage(index))
-          .flatMap(_.remove(CompanyProtectorAddressUKYesNoPage(index)))
+        answers.set(CompanyProtectorAddressOrUtrPage(index), AddressOrUtr.Utr)
+          .flatMap(_.set(CompanyProtectorUtrPage(index), companyProtector.identification.flatMap(_.utr)))
     }
   }
 }

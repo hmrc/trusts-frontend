@@ -22,11 +22,12 @@ import mapping.playback.PlaybackExtractor
 import models.core.pages.FullName
 import models.playback.http._
 import models.playback.{MetaData, UserAnswers}
+import models.registration.pages.AddressOrUtr
 import org.joda.time.DateTime
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import pages.register.protectors.DoesTrustHaveAProtectorYesNoPage
+import pages.register.protectors.company._
 import pages.register.protectors.individual._
-import sections.protectors.Protectors
 
 class ProtectorExtractorSpec extends FreeSpec with MustMatchers
   with EitherValues with Generators with SpecBaseHelpers {
@@ -82,7 +83,23 @@ class ProtectorExtractorSpec extends FreeSpec with MustMatchers
               )
             )
           ),
-          protectorCompany = None
+          protectorCompany = Some(
+            List(
+              DisplayTrustProtectorCompany(
+                lineNo = s"1",
+                bpMatchStatus = Some("01"),
+                name = s"Company 1",
+                identification = Some(
+                  DisplayTrustIdentificationOrgType(
+                    safeId = Some("8947584-94759745-84758745"),
+                    utr = Some("1234567890"),
+                    address = None
+                  )
+                ),
+                entityStart = "2019-11-26"
+              )
+            )
+          )
         )
 
         val ua = UserAnswers("fakeId")
@@ -90,6 +107,7 @@ class ProtectorExtractorSpec extends FreeSpec with MustMatchers
         val extraction = protectorExtractor.extract(ua, Some(protectors))
 
         extraction.right.value.get(DoesTrustHaveAProtectorYesNoPage()).get mustBe true
+        
         extraction.right.value.get(IndividualProtectorNamePage(0)).get mustBe FullName("First Name", None, "Last Name")
         extraction.right.value.get(IndividualProtectorNINOYesNoPage(0)).get mustBe true
         extraction.right.value.get(IndividualProtectorNINOPage(0)).get mustBe "1234567890"
@@ -100,6 +118,15 @@ class ProtectorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(IndividualProtectorAddressUKYesNoPage(0)) mustNot be(defined)
         extraction.right.value.get(IndividualProtectorAddressUKPage(0)) mustNot be(defined)
         extraction.right.value.get(IndividualProtectorMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
+
+        extraction.right.value.get(CompanyProtectorNamePage(0)).get mustBe "Company 1"
+        extraction.right.value.get(CompanyProtectorSafeIdPage(0)).get mustBe "8947584-94759745-84758745"
+        extraction.right.value.get(CompanyProtectorAddressOrUtrPage(0)).get mustBe AddressOrUtr.Utr
+        extraction.right.value.get(CompanyProtectorUtrPage(0)).get mustBe "1234567890"
+        extraction.right.value.get(CompanyProtectorAddressUKYesNoPage(0)) mustNot be(defined)
+        extraction.right.value.get(CompanyProtectorAddressUKPage(0)) mustNot be(defined)
+        extraction.right.value.get(CompanyProtectorAddressInternationalPage(0)) mustNot be(defined)
+        extraction.right.value.get(CompanyProtectorMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
       }
     }
   }

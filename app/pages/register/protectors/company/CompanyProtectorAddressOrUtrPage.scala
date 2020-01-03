@@ -16,13 +16,27 @@
 
 package pages.register.protectors.company
 
+import models.core.UserAnswers
+import models.registration.pages.AddressOrUtr
+import models.registration.pages.AddressOrUtr.{Address, Utr}
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.protectors.{CompanyProtectors, Protectors}
 
-case class CompanyProtectorAddressOrUtrPage(index: Int) extends QuestionPage[String] {
+import scala.util.Try
+
+case class CompanyProtectorAddressOrUtrPage(index: Int) extends QuestionPage[AddressOrUtr] {
 
   override def path: JsPath = JsPath \ Protectors \ CompanyProtectors \ index \ toString
 
-  override def toString: String = "utr"
+  override def toString: String = "addressOrUtr"
+
+  override def cleanup(value: Option[AddressOrUtr], userAnswers: UserAnswers): Try[UserAnswers] =
+    value match {
+      case Some(Address) => userAnswers.remove(CompanyProtectorUtrPage(index))
+      case Some(Utr) => userAnswers.remove(CompanyProtectorAddressUKYesNoPage(index))
+        .flatMap(_.remove(CompanyProtectorAddressUKPage(index)))
+        .flatMap(_.remove(CompanyProtectorAddressInternationalPage(index)))
+      case _ => super.cleanup(value, userAnswers)
+    }
 }

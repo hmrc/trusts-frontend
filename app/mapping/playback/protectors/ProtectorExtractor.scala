@@ -25,9 +25,12 @@ import pages.register.protectors.DoesTrustHaveAProtectorYesNoPage
 
 import scala.util.Success
 
-class ProtectorExtractor @Inject()(individualProtectorExtractor: IndividualProtectorExtractor) extends PlaybackExtractor[Option[DisplayTrustProtectorsType]] {
-  import models.playback.UserAnswersCombinator._
+class ProtectorExtractor @Inject()(individualProtectorExtractor: IndividualProtectorExtractor,
+                                   companyProtectorExtractor: CompanyProtectorExtractor) extends PlaybackExtractor[Option[DisplayTrustProtectorsType]] {
+
   override def extract(answers: UserAnswers, data: Option[DisplayTrustProtectorsType]): Either[PlaybackExtractionError, UserAnswers] = {
+
+    import models.playback.UserAnswersCombinator._
 
     val protectors = List(
       data.flatMap(_.protector),
@@ -41,7 +44,8 @@ class ProtectorExtractor @Inject()(individualProtectorExtractor: IndividualProte
     data match {
       case Some(p) =>
         List(
-          individualProtectorExtractor.extract(updatedAnswers, p.protector)
+          individualProtectorExtractor.extract(updatedAnswers, p.protector),
+          companyProtectorExtractor.extract(updatedAnswers, p.protectorCompany)
         ).collect {
           case Right(z) => z
         }.combine.map(Right.apply).getOrElse(Left(FailedToExtractData("Protector Extraction Error")))
