@@ -18,7 +18,7 @@ package mapping.registration
 
 import java.time.LocalDate
 
-import mapping.TypeOfTrust
+import mapping.{DeedOfVariation, TypeOfTrust}
 import play.api.libs.json._
 
 /**
@@ -351,7 +351,7 @@ case class TrustDetailsType(startDate: LocalDate,
                             administrationCountry: Option[String],
                             residentialStatus: Option[ResidentialStatusType],
                             typeOfTrust: TypeOfTrust,
-                            deedOfVariation: Option[String],
+                            deedOfVariation: Option[DeedOfVariation],
                             interVivos: Option[Boolean],
                             efrbsStartDate: Option[LocalDate])
 
