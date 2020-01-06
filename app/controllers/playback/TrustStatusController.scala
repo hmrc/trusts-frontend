@@ -127,16 +127,26 @@ class TrustStatusController @Inject()(
 
   private def tryToPlayback(utr: String)(implicit request: PlaybackDataRequest[AnyContent]): Future[Result] = {
     trustConnector.playback(utr) flatMap {
-      case Closed => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.closed()))
-      case Processing => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.processing()))
-      case UtrNotFound => Future.successful(Redirect(controllers.playback.routes.TrustStatusController.notFound()))
+      case Closed =>
+        Logger.info(s"[TrustStatusController][tryToPlayback] unable to retrieve trust due it being closed")
+        Future.successful(Redirect(controllers.playback.routes.TrustStatusController.closed()))
+      case Processing =>
+        Logger.info(s"[TrustStatusController][tryToPlayback] unable to retrieve trust due to trust change processing")
+        Future.successful(Redirect(controllers.playback.routes.TrustStatusController.processing()))
+      case UtrNotFound =>
+        Logger.info(s"[TrustStatusController][tryToPlayback] unable to retrieve trust due to UTR not found")
+        Future.successful(Redirect(controllers.playback.routes.TrustStatusController.notFound()))
       case Processed(playback, _) =>
         playbackAuthenticationService.authenticate(utr) flatMap {
           case Left(failure) => Future.successful(failure)
           case Right(_) => extract(utr, playback)
         }
-      case SorryThereHasBeenAProblem => Future.successful(Redirect(routes.TrustStatusController.sorryThereHasBeenAProblem()))
-      case _ => Future.successful(Redirect(routes.TrustStatusController.down()))
+      case SorryThereHasBeenAProblem =>
+        Logger.warn(s"[TrustStatusController][tryToPlayback] unable to retrieve trust due to status")
+        Future.successful(Redirect(routes.TrustStatusController.sorryThereHasBeenAProblem()))
+      case _ =>
+        Logger.warn(s"[TrustStatusController][tryToPlayback] unable to retrieve trust due to an error")
+        Future.successful(Redirect(routes.TrustStatusController.down()))
     }
   }
 

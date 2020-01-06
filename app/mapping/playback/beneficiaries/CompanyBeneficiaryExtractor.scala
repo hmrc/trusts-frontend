@@ -72,11 +72,14 @@ class CompanyBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[Lis
       case DisplayTrustIdentificationOrgType(_, Some(utr), None) =>
         answers.set(CompanyBeneficiaryUtrPage(index), utr)
           .flatMap(_.set(CompanyBeneficiaryAddressYesNoPage(index), false))
+
       case DisplayTrustIdentificationOrgType(_, None, Some(address)) =>
         extractAddress(address.convert, index, answers)
+
       case _ =>
         Logger.error(s"[CompanyBeneficiaryExtractor] only both utr and address parsed")
         Failure(InvalidExtractorState)
+
     } getOrElse {
       answers.set(CompanyBeneficiaryAddressYesNoPage(index), false)
     }
