@@ -16,12 +16,9 @@
 
 package pages.register.natural.individual
 
-import models.core.UserAnswers
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.natural.{Natural, Individual}
-
-import scala.util.Try
+import sections.natural.{Individual, Natural}
 
 final case class OtherIndividualDateOfBirthYesNoPage(index : Int) extends QuestionPage[Boolean] {
 
@@ -29,11 +26,4 @@ final case class OtherIndividualDateOfBirthYesNoPage(index : Int) extends Questi
 
   override def toString: String = "dateOfBirthYesNo"
 
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
-    value match {
-      case Some(false) =>
-        userAnswers.remove(OtherIndividualDateOfBirthPage(index))
-      case _ => super.cleanup(value, userAnswers)
-    }
-  }
 }

@@ -29,15 +29,4 @@ final case class OtherIndividualNationalInsuranceYesNoPage(index : Int) extends 
 
   override def toString: String = "nationalInsuranceNumberYesNo"
 
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
-    value match {
-      case Some(false) =>
-        userAnswers.remove(OtherIndividualNationalInsuranceNumberPage(index))
-      case Some(true) =>
-        userAnswers.remove(OtherIndividualAddressYesNoPage(index))
-          .flatMap(_.remove(OtherIndividualAddressUKYesNoPage(index)))
-          .flatMap(_.remove(OtherIndividualAddressUKPage(index)))
-      case _ => super.cleanup(value, userAnswers)
-    }
-  }
 }

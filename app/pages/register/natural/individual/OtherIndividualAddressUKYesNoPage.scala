@@ -16,25 +16,14 @@
 
 package pages.register.natural.individual
 
-import models.core.UserAnswers
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.natural.{Natural, Individual}
-
-import scala.util.Try
+import sections.natural.{Individual, Natural}
 
 final case class OtherIndividualAddressUKYesNoPage(index : Int) extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \  Natural \ Individual \ index \ toString
 
   override def toString: String = "addressUKYesNo"
-
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
-    value match {
-      case Some(false) =>
-        userAnswers.remove(OtherIndividualAddressUKPage(index))
-      case _ => super.cleanup(value, userAnswers)
-    }
-  }
 
 }
