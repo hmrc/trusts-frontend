@@ -20,15 +20,47 @@ import models.playback.UserAnswers
 import pages.register.trustees._
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
+import utils.CheckAnswersFormatters
 import utils.CheckAnswersFormatters._
 import utils.countryOptions.CountryOptions
+import utils.print.playback.sections.AnswerRowConverter.{dateQuestion, fullNameQuestion, individualOrBusinessQuestion, yesNoQuestion}
 import viewmodels.{AnswerRow, AnswerSection}
 
 object TrusteeOrganisation {
 
+  def apply(index: Int,
+            userAnswers: UserAnswers,
+            countryOptions: CountryOptions)
+           (implicit messages: Messages): Seq[AnswerSection] = {
+
+    userAnswers.get(TrusteeOrgNamePage(index)).map { name =>
+      Seq(
+        AnswerSection(
+          headingKey = Some(messages("answerPage.section.trustee.subheading") + s" ${index + 1}"),
+          Seq(
+            yesNoQuestion(IsThisLeadTrusteePage(index), userAnswers, "isThisLeadTrustee"),
+            individualOrBusinessQuestion(TrusteeIndividualOrBusinessPage(index), userAnswers, "trusteeIndividualOrBusiness"),
+            fullNameQuestion(TrusteesNamePage(index), userAnswers, "trusteesName"),
+            dateQuestion(TrusteesDateOfBirthPage(index), userAnswers, "trusteesDateOfBirth", name)
+          ).flatten,
+          sectionKey = None
+        )
+      )
+    }.getOrElse(Nil)
+  }
+
   def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] = {
 
     val questions = Seq(
+      isLeadTrustee(index, userAnswers),
+      trusteeIndividualOrBusiness(index, trusteeIndividualOrBusinessMessagePrefix),
+      name(index, userAnswers),
+      trusteesDateOfBirth(index),
+      trusteeAUKCitizen(index),
+      trusteesNino(index),
+      trusteeLiveInTheUK(index),
+      trusteesUkAddress(index),
+      telephoneNumber(index)
     ).flatten
 
     if (name(index, userAnswers).nonEmpty) {
@@ -41,6 +73,16 @@ object TrusteeOrganisation {
       None
     }
   }
+
+  def isLeadTrustee(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+    userAnswers.get(IsThisLeadTrusteePage(index)) map {
+      x =>
+        AnswerRow(
+          "trusteeOrgUtrYesNo.checkYourAnswersLabel",
+          yesOrNo(x),
+          None
+        )
+    }
 
   def name(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(TrusteeOrgNamePage(index)) map { x =>
     AnswerRow(
