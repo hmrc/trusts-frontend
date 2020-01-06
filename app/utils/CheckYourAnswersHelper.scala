@@ -16,34 +16,29 @@
 
 package utils
 
-import java.time.format.DateTimeFormatter
-
 import controllers.register.settlors.living_settlor.routes
 import javax.inject.Inject
 import mapping.reads._
 import models.NormalMode
 import models.core.UserAnswers
-import models.core.pages.{InternationalAddress, UKAddress}
-import models.registration.pages.{PassportOrIdCardDetails, WhenTrustSetupPage}
-import pages._
-import pages.register.agents.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentNamePage, AgentOtherThanBarristerPage, AgentTelephoneNumberPage, AgentUKAddressPage}
+import models.registration.pages.WhenTrustSetupPage
+import pages.playback.DeclarationWhatNextPage
+import pages.register._
+import pages.register.agents._
+import pages.register.asset.WhatKindOfAssetPage
 import pages.register.asset.money.AssetMoneyValuePage
-import pages.register.settlors.deceased_settlor._
-import pages.register.settlors.living_settlor._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
-import pages.register.beneficiaries.individual.{IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryAddressUKYesNoPage, IndividualBeneficiaryAddressYesNoPage, IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryIncomePage, IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage, IndividualBeneficiaryNationalInsuranceYesNoPage, IndividualBeneficiaryVulnerableYesNoPage}
+import pages.register.beneficiaries.individual._
 import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
-import pages.playback.DeclarationWhatNextPage
-import pages.register.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, PostcodeForTheTrustPage, RegisteringTrustFor5APage, TrustHaveAUTRPage, TrustNamePage, TrustPreviouslyResidentPage, TrustRegisteredOnlinePage, TrustResidentOffshorePage, WhatIsTheUTRPage}
-import pages.register.asset.WhatKindOfAssetPage
 import pages.register.settlors.SettlorsBasedInTheUKPage
+import pages.register.settlors.deceased_settlor._
+import pages.register.settlors.living_settlor._
 import pages.register.trustees._
 import play.api.i18n.Messages
-import play.twirl.api.{Html, HtmlFormat}
+import play.twirl.api.HtmlFormat
 import sections.LivingSettlors
-import uk.gov.hmrc.domain.Nino
-import utils.CheckYourAnswersHelper._
+import utils.CheckAnswersFormatters._
 import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 
@@ -1181,94 +1176,5 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
   def registeringTrustFor5A: Option[AnswerRow] = userAnswers.get(RegisteringTrustFor5APage) map {
     x => AnswerRow("registeringTrustFor5A.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.routes.RegisteringTrustFor5AController.onPageLoad(NormalMode, draftId).url))
   }
-
-}
-
-object CheckYourAnswersHelper {
-
-  val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
-
-  def utr(answer: String)(implicit messages: Messages) : Html = {
-    HtmlFormat.escape(answer)
-  }
-
-  def yesOrNo(answer: Boolean)(implicit messages: Messages): Html = {
-    if (answer) {
-      HtmlFormat.escape(messages("site.yes"))
-    } else {
-      HtmlFormat.escape(messages("site.no"))
-    }
-  }
-
-  def formatNino(nino: String): String = Nino(nino).formatted
-
-  def country(code: String, countryOptions: CountryOptions): String =
-    countryOptions.options.find(_.value.equals(code)).map(_.label).getOrElse("")
-
-  def currency(value: String): Html = escape(s"£$value")
-
-  def trusteeName(index: Int, userAnswers: UserAnswers): String =
-    userAnswers.get(TrusteesNamePage(index)).map(_.toString).getOrElse("")
-
-  def answer[T](key: String, answer: T)(implicit messages: Messages): Html =
-    HtmlFormat.escape(messages(s"$key.$answer"))
-
-  def escape(x: String) = HtmlFormat.escape(x)
-
-  def deceasedSettlorName(userAnswers: UserAnswers): String =
-    userAnswers.get(SettlorsNamePage).map(_.toString).getOrElse("")
-
-  def indBeneficiaryName(index: Int, userAnswers: UserAnswers): String = {
-    userAnswers.get(IndividualBeneficiaryNamePage(index)).map(_.toString).getOrElse("")
-  }
-
-  def shareCompName(index: Int, userAnswers: UserAnswers): String = {
-    userAnswers.get(ShareCompanyNamePage(index)).map(_.toString).getOrElse("")
-  }
-
-  def livingSettlorName(index: Int, userAnswers: UserAnswers): String = {
-    userAnswers.get(SettlorIndividualNamePage(index)).map(_.toString).getOrElse("")
-  }
-
-  def agencyName(userAnswers: UserAnswers): String = {
-    userAnswers.get(AgentNamePage).map(_.toString).getOrElse("")
-  }
-
-  def ukAddress(address: UKAddress): Html = {
-    val lines =
-      Seq(
-        Some(HtmlFormat.escape(address.line1)),
-        Some(HtmlFormat.escape(address.line2)),
-        address.line3.map(HtmlFormat.escape),
-        address.line4.map(HtmlFormat.escape),
-        Some(HtmlFormat.escape(address.postcode))
-      ).flatten
-
-    Html(lines.mkString("<br />"))
-  }
-
-  def internationalAddress(address: InternationalAddress, countryOptions: CountryOptions): Html = {
-    val lines =
-      Seq(
-        Some(HtmlFormat.escape(address.line1)),
-        Some(HtmlFormat.escape(address.line2)),
-        address.line3.map(HtmlFormat.escape),
-        Some(country(address.country, countryOptions))
-      ).flatten
-
-    Html(lines.mkString("<br />"))
-  }
-
-  def passportOrIDCard(passportOrIdCard: PassportOrIdCardDetails, countryOptions: CountryOptions): Html = {
-    val lines =
-      Seq(
-        Some(country(passportOrIdCard.country, countryOptions)),
-        Some(HtmlFormat.escape(passportOrIdCard.cardNumber)),
-        Some(HtmlFormat.escape(passportOrIdCard.expiryDate.format(dateFormatter)))
-      ).flatten
-
-    Html(lines.mkString("<br />"))
-  }
-
 
 }

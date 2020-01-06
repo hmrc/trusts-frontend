@@ -19,8 +19,7 @@ package utils.print.playback.sections
 import models.playback.UserAnswers
 import pages.register.beneficiaries.classOfBeneficiary.{ClassOfBeneficiaryDescriptionPage, ClassOfBeneficiaryDiscretionYesNoPage, ClassOfBeneficiaryShareOfIncomePage}
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
-import utils.CheckYourAnswersHelper.yesOrNo
+import utils.CheckAnswersFormatters
 import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 
@@ -46,7 +45,7 @@ object ClassOfBeneficiary {
     x =>
       AnswerRow(
         "otherDescription.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
+        CheckAnswersFormatters.escape(x),
         None
       )
   }
@@ -56,7 +55,7 @@ object ClassOfBeneficiary {
       x =>
         AnswerRow(
           "otherShareOfIncomeYesNo.checkYourAnswersLabel",
-          yesOrNo(x),
+          CheckAnswersFormatters.yesOrNo(x),
           None
         )
     }
@@ -66,7 +65,7 @@ object ClassOfBeneficiary {
       x =>
         AnswerRow(
           "otherShareOfIncome.checkYourAnswersLabel",
-          HtmlFormat.escape(x),
+          CheckAnswersFormatters.escape(x),
           None
         )
     }

@@ -16,30 +16,22 @@
 
 package utils.print.playback.sections
 
-import java.time.LocalDate
-
-import models.core.pages.{FullName, UKAddress}
 import models.playback.UserAnswers
 import pages.register.beneficiaries.individual._
 import play.api.i18n.Messages
-import play.api.libs.json.Reads
-import play.api.mvc.Call
-import play.twirl.api.HtmlFormat
-import queries.Gettable
-import utils.CheckYourAnswersHelper
-import utils.CheckYourAnswersHelper.yesOrNo
+import utils.CheckAnswersFormatters
 import utils.countryOptions.CountryOptions
-import viewmodels.{AnswerRow, AnswerSection}
+import utils.print.playback.sections.AnswerRowConverter._
+import viewmodels.AnswerSection
 
 object IndividualBeneficiary {
-
 
   def apply(index: Int,
             userAnswers: UserAnswers,
             countryOptions: CountryOptions)
            (implicit messages: Messages): Seq[AnswerSection] = {
 
-    userAnswers.get(IndividualBeneficiaryNamePage(index)).map(displayName).map { name =>
+    userAnswers.get(IndividualBeneficiaryNamePage(index)).map(CheckAnswersFormatters.fullName).map { name =>
       Seq(
         AnswerSection(
           headingKey = Some(messages("answerPage.section.individualBeneficiary.subheading") + s" ${index + 1}"),
@@ -55,9 +47,9 @@ object IndividualBeneficiary {
             yesNoQuestion(IndividualBeneficiaryAddressUKYesNoPage(index), userAnswers, "individualBeneficiaryAddressUKYesNo", name),
             addressQuestion(IndividualBeneficiaryAddressUKPage(index), userAnswers, "individualBeneficiaryAddressUK", name),
             yesNoQuestion(IndividualBeneficiaryVulnerableYesNoPage(index), userAnswers, "individualBeneficiaryVulnerableYesNo", name),
-            stringRow(IndividualBeneficiaryRoleInCompanyPage(index), userAnswers, "individualBeneficiaryRoleInCompany", name),
+            stringQuestion(IndividualBeneficiaryRoleInCompanyPage(index), userAnswers, "individualBeneficiaryRoleInCompany", name),
             yesNoQuestion(IndividualBeneficiaryPassportIDCardYesNoPage(index), userAnswers, "individualBeneficiaryPassportYesNo", name),
-            stringRow(IndividualBeneficiaryPassportIDCardPage(index), userAnswers, "individualBeneficiaryPassport", name)
+            stringQuestion(IndividualBeneficiaryPassportIDCardPage(index), userAnswers, "individualBeneficiaryPassport", name)
           ).flatten,
           sectionKey = None
         )
@@ -65,92 +57,4 @@ object IndividualBeneficiary {
     }.getOrElse(Nil)
   }
 
-  def displayName(fullname: FullName) = {
-    val middle = fullname.middleName.map(" " + _ + " ").getOrElse(" ")
-    s"${fullname.firstName}${middle}${fullname.lastName}"
-  }
-
-  def ninoQuestion(query: Gettable[String], userAnswers: UserAnswers, labelKey: String,
-                      messageArg: String = "", changeRoute: Option[Call] = None)
-                     (implicit messages:Messages) = {
-    userAnswers.get(query) map {x =>
-      AnswerRow(
-        messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-        HtmlFormat.escape(CheckYourAnswersHelper.formatNino(x)),
-        None
-      )
-    }
-  }
-
-  def addressQuestion(query: Gettable[UKAddress], userAnswers: UserAnswers, labelKey: String,
-                      messageArg: String = "", changeRoute: Option[Call] = None)
-                     (implicit messages:Messages) = {
-    userAnswers.get(query) map {x =>
-      AnswerRow(
-        messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-        CheckYourAnswersHelper.ukAddress(x),
-        None
-      )
-    }
-  }
-
-  def monetaryAmountQuestion(query: Gettable[String], userAnswers: UserAnswers, labelKey: String,
-                             messageArg: String = "", changeRoute: Option[Call] = None)
-                            (implicit messages:Messages) = {
-    userAnswers.get(query) map {x =>
-      AnswerRow(
-        messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-        CheckYourAnswersHelper.currency(x),
-        None
-      )
-    }
-  }
-
-  def dateQuestion(query: Gettable[LocalDate], userAnswers: UserAnswers, labelKey: String,
-                   messageArg: String = "", changeRoute: Option[Call] = None)
-                  (implicit messages:Messages) = {
-    userAnswers.get(query) map {x =>
-      AnswerRow(
-        messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-        HtmlFormat.escape(x.format(CheckYourAnswersHelper.dateFormatter)),
-        None
-      )
-    }
-  }
-
-  def yesNoQuestion(query: Gettable[Boolean], userAnswers: UserAnswers, labelKey: String,
-    messageArg: String = "", changeRoute: Option[Call] = None)
-  (implicit messages:Messages) = {
-    userAnswers.get(query) map {x =>
-      AnswerRow(
-        messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-        yesOrNo(x),
-        None
-      )
-    }
-  }
-
-  def fullNameQuestion(query: Gettable[FullName], userAnswers: UserAnswers, labelKey: String,
-                       messageArg: String = "", changeRoute: Option[Call] = None)
-                      (implicit messages:Messages) = {
-    userAnswers.get(query) map {x =>
-      AnswerRow(
-        messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-        HtmlFormat.escape(displayName(x)),
-        None
-      )
-    }
-  }
-
-  def stringRow[T](query: Gettable[T], userAnswers: UserAnswers, labelKey: String,
-                   messageArg: String = "", changeRoute: Option[Call] = None)
-                  (implicit messages:Messages, rds: Reads[T]) = {
-    userAnswers.get(query) map {x =>
-      AnswerRow(
-        messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-        HtmlFormat.escape(x.toString),
-        None
-      )
-    }
-  }
 }
