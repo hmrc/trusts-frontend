@@ -38,7 +38,10 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
             case IndividualOrBusiness.Business => LeadTrusteeBusiness(index, userAnswers, countryOptions)
           }
         } else {
-          TrusteeOrganisation(index, userAnswers, countryOptions)
+          individualOrBusiness match {
+            case IndividualOrBusiness.Individual => ???
+            case IndividualOrBusiness.Business => TrusteeOrganisation (index, userAnswers, countryOptions)
+          }
         }
       }
     }
