@@ -24,7 +24,7 @@ import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
 import play.twirl.api.Html
 import viewmodels.{AnswerRow, AnswerSection}
 
-class BeneficiaryPlaybackHelperSpec extends PlaybackSpecBase {
+class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
 
   "Playback print helper" must {
 
