@@ -17,10 +17,10 @@
 package mapping.playback.beneficiaries
 
 import com.google.inject.Inject
-import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
+import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, InvalidExtractorState, PlaybackExtractionError}
 import mapping.playback.{PlaybackExtractor, PlaybackImplicits}
-import models.core.pages.{InternationalAddress, UKAddress}
-import models.playback.http.DisplayTrustCharityType
+import models.core.pages.{Address, InternationalAddress, UKAddress}
+import models.playback.http.{DisplayTrustCharityType, DisplayTrustIdentificationOrgType}
 import models.playback.{MetaData, UserAnswers}
 import pages.register.beneficiaries.charity.{CharityBeneficiaryAddressYesNoPage, _}
 import play.api.Logger
@@ -45,9 +45,8 @@ class CharityBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[Lis
             answers
               .flatMap(_.set(CharityBeneficiaryNamePage(index), charityBeneficiary.organisationName))
               .flatMap(answers => extractShareOfIncome(charityBeneficiary, index, answers))
-              .flatMap(_.set(CharityBeneficiaryUtrPage(index), charityBeneficiary.identification.flatMap(_.utr)))
               .flatMap(_.set(CharityBeneficiarySafeIdPage(index), charityBeneficiary.identification.flatMap(_.safeId)))
-              .flatMap(answers => extractAddress(charityBeneficiary, index, answers))
+              .flatMap(answers => extractIdentification(charityBeneficiary.identification, index, answers))
               .flatMap {
                 _.set(
                   CharityBeneficiaryMetaData(index),
@@ -70,6 +69,24 @@ class CharityBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[Lis
       }
     }
 
+  private def extractIdentification(identification: Option[DisplayTrustIdentificationOrgType], index: Int, answers: UserAnswers) = {
+    identification map {
+      case DisplayTrustIdentificationOrgType(_, Some(utr), None) =>
+        answers.set(CharityBeneficiaryUtrPage(index), utr)
+          .flatMap(_.set(CharityBeneficiaryAddressYesNoPage(index), false))
+
+      case DisplayTrustIdentificationOrgType(_, None, Some(address)) =>
+        extractAddress(address.convert, index, answers)
+
+      case _ =>
+        Logger.error(s"[CharityBeneficiaryExtractor] both utr and address parsed")
+        Failure(InvalidExtractorState)
+
+    } getOrElse {
+      answers.set(CharityBeneficiaryAddressYesNoPage(index), false)
+    }
+  }
+
   private def extractShareOfIncome(charityBeneficiary: DisplayTrustCharityType, index: Int, answers: UserAnswers) = {
     charityBeneficiary.beneficiaryShareOfIncome match {
       case Some(income) =>
@@ -81,18 +98,16 @@ class CharityBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[Lis
     }
   }
 
-  private def extractAddress(charityBeneficiary: DisplayTrustCharityType, index: Int, answers: UserAnswers) = {
-    charityBeneficiary.identification.flatMap(_.address.convert) match {
-      case Some(uk: UKAddress) =>
+  private def extractAddress(address: Address, index: Int, answers: UserAnswers) = {
+    address match {
+      case uk: UKAddress =>
         answers.set(CharityBeneficiaryAddressPage(index), uk)
           .flatMap(_.set(CharityBeneficiaryAddressYesNoPage(index), true))
           .flatMap(_.set(CharityBeneficiaryAddressUKYesNoPage(index), true))
-      case Some(nonUk: InternationalAddress) =>
+      case nonUk: InternationalAddress =>
         answers.set(CharityBeneficiaryAddressPage(index), nonUk)
           .flatMap(_.set(CharityBeneficiaryAddressYesNoPage(index), true))
           .flatMap(_.set(CharityBeneficiaryAddressUKYesNoPage(index), false))
-      case None =>
-        answers.set(CharityBeneficiaryAddressYesNoPage(index), false)
     }
   }
 }
