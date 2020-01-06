@@ -26,7 +26,7 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
 
-  "Playback print helper" must {
+  "Beneficiary print playback helper" must {
 
     "generate charity beneficiaries sections" in {
 
