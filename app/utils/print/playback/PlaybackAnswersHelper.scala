@@ -45,7 +45,21 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
 
   }
 
-  def charityBeneficiaries : Seq[AnswerSection] = {
+  def beneficiaries : Seq[AnswerSection] = {
+    val beneficiaries = individualBeneficiaries ++ charityBeneficiaries
+
+    if (beneficiaries.nonEmpty) {
+      Seq(
+        Seq(AnswerSection(sectionKey = Some("answerPage.section.beneficiaries.heading"))),
+        individualBeneficiaries,
+        charityBeneficiaries
+      ).flatten
+    } else {
+      Nil
+    }
+  }
+
+  private def charityBeneficiaries : Seq[AnswerSection] = {
     val size = userAnswers.get(_root_.sections.beneficiaries.CharityBeneficiaries).map(_.value.size).getOrElse(0)
 
     size match {
@@ -55,7 +69,7 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
     }
   }
 
-  def individualBeneficiaries : Seq[AnswerSection] = {
+  private def individualBeneficiaries : Seq[AnswerSection] = {
     val size = userAnswers.get(_root_.sections.beneficiaries.IndividualBeneficiaries).map(_.size).getOrElse(0)
 
     size match {
