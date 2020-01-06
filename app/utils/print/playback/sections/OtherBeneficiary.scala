@@ -21,7 +21,7 @@ import models.playback.UserAnswers
 import pages.register.beneficiaries.other._
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
-import utils.CheckYourAnswersHelper.{internationalAddress, ukAddress, yesOrNo}
+import utils.CheckAnswersFormatters._
 import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 

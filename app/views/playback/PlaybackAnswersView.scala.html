@@ -28,15 +28,13 @@
 }
 
 @main_template(
-    title = messages("summaryAnswerPage.title"),
+    title = messages("playbackLastDeclared.title"),
     scriptElem = Some(printScript)
     ) {
 
-    @components.heading("summaryAnswerPage.heading", headingSize = "heading-xlarge")
+    @components.heading("playbackLastDeclared.heading", headingSize = "heading-xlarge")
 
-    <p>@messages("summaryAnswerPage.paragraph1")</p>
-
-    <p>@messages("summaryAnswerPage.paragraph2")</p>
+    @components.warning("playbackLastDeclared.declareAnnually")
 
     @for(section <- answerSections){
         @{
@@ -46,5 +44,8 @@
             }
         }
     }
+
+    <p>@messages("playbackLastDeclared.informationFirstRegistered")</p>
+    <p>@messages("playbackLastDeclared.selfAssessmentOnline")</p>
 
 }

@@ -20,9 +20,7 @@ import models.core.pages.{InternationalAddress, UKAddress}
 import models.playback.UserAnswers
 import pages.register.beneficiaries.charity._
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
-import utils.CheckYourAnswersHelper
-import utils.CheckYourAnswersHelper.{internationalAddress, ukAddress, yesOrNo}
+import utils.CheckAnswersFormatters
 import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 
@@ -57,7 +55,7 @@ object CharityBeneficiary {
     x =>
       AnswerRow(
         "charityBeneficiaryName.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
+        CheckAnswersFormatters.escape(x),
         None
       )
   }
@@ -69,7 +67,7 @@ object CharityBeneficiary {
       x =>
         AnswerRow(
           "charityBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel",
-          yesOrNo(x),
+          CheckAnswersFormatters.yesOrNo(x),
           None,
           name
         )
@@ -82,7 +80,7 @@ object CharityBeneficiary {
       x =>
         AnswerRow(
           "charityBeneficiaryShareOfIncome.checkYourAnswersLabel",
-          HtmlFormat.escape(x),
+          CheckAnswersFormatters.escape(x),
           None,
           name
         )
@@ -95,7 +93,7 @@ object CharityBeneficiary {
       x =>
         AnswerRow(
           "charityBeneficiaryAddressYesNo.checkYourAnswersLabel",
-          yesOrNo(x),
+          CheckAnswersFormatters.yesOrNo(x),
           None,
           name
         )
@@ -108,7 +106,7 @@ object CharityBeneficiary {
       x =>
         AnswerRow(
           "charityBeneficiaryAddressUKYesNo.checkYourAnswersLabel",
-          yesOrNo(x),
+          CheckAnswersFormatters.yesOrNo(x),
           None,
           name
         )
@@ -121,14 +119,14 @@ object CharityBeneficiary {
       case address: UKAddress =>
         AnswerRow(
           "charityBeneficiaryAddress.checkYourAnswersLabel",
-          ukAddress(address),
+          CheckAnswersFormatters.ukAddress(address),
           None,
           name
         )
       case address: InternationalAddress =>
         AnswerRow(
           "charityBeneficiaryAddress.checkYourAnswersLabel",
-          internationalAddress(address, countryOptions),
+          CheckAnswersFormatters.internationalAddress(address, countryOptions),
           None,
           name
         )
@@ -141,7 +139,7 @@ object CharityBeneficiary {
       x =>
         AnswerRow(
           "charityBeneficiaryUtr.checkYourAnswersLabel",
-          CheckYourAnswersHelper.utr(x),
+          CheckAnswersFormatters.utr(x),
           None,
           name
         )

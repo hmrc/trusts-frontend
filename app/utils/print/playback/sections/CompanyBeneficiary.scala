@@ -20,8 +20,7 @@ import models.core.pages.{InternationalAddress, UKAddress}
 import models.playback.UserAnswers
 import pages.register.beneficiaries.company._
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
-import utils.CheckYourAnswersHelper.{internationalAddress, ukAddress, yesOrNo}
+import utils.CheckAnswersFormatters
 import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 
@@ -48,7 +47,7 @@ object CompanyBeneficiary {
     x =>
       AnswerRow(
         "companyBeneficiaryName.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
+        CheckAnswersFormatters.escape(x),
         None
       )
   }
@@ -58,7 +57,7 @@ object CompanyBeneficiary {
       x =>
         AnswerRow(
           "companyBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel",
-          yesOrNo(x),
+          CheckAnswersFormatters.yesOrNo(x),
           None
         )
     }
@@ -68,7 +67,7 @@ object CompanyBeneficiary {
       x =>
         AnswerRow(
           "companyBeneficiaryShareOfIncome.checkYourAnswersLabel",
-          HtmlFormat.escape(x),
+          CheckAnswersFormatters.escape(x),
           None
         )
     }
@@ -78,7 +77,7 @@ object CompanyBeneficiary {
       x =>
         AnswerRow(
           "companyBeneficiaryAddressYesNo.checkYourAnswersLabel",
-          yesOrNo(x),
+          CheckAnswersFormatters.yesOrNo(x),
           None
         )
     }
@@ -87,12 +86,12 @@ object CompanyBeneficiary {
     userAnswers.get(CompanyBeneficiaryAddressPage(index)) map {
       case address: UKAddress => AnswerRow(
         "companyBeneficiaryAddress.checkYourAnswersLabel",
-        ukAddress(address),
+        CheckAnswersFormatters.ukAddress(address),
         None
       )
       case address: InternationalAddress => AnswerRow(
         "companyBeneficiaryAddress.checkYourAnswersLabel",
-        internationalAddress(address, countryOptions),
+        CheckAnswersFormatters.internationalAddress(address, countryOptions),
         None
       )
     }
