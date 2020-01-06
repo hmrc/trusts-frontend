@@ -18,13 +18,16 @@ package utils.print.playback.sections
 
 import java.time.LocalDate
 
+import models.core.pages.{Address, FullName, InternationalAddress, UKAddress}
 import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
 import models.playback.UserAnswers
+import models.registration.pages.{AddressOrUtr, PassportOrIdCardDetails}
 import play.api.i18n.Messages
 import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
 import queries.Gettable
 import utils.CheckAnswersFormatters
+import utils.countryOptions.CountryOptions
 import viewmodels.AnswerRow
 
 object AnswerRowConverter {
@@ -41,15 +44,22 @@ object AnswerRowConverter {
     }
   }
 
-  def addressQuestion(query: Gettable[UKAddress], userAnswers: UserAnswers, labelKey: String,
-                      messageArg: String = "", changeRoute: Option[Call] = None)
+  def addressQuestion(query: Gettable[Address], userAnswers: UserAnswers, labelKey: String,
+                      messageArg: String = "", countryOptions: CountryOptions, changeRoute: Option[Call] = None)
                      (implicit messages:Messages) = {
-    userAnswers.get(query) map {x =>
-      AnswerRow(
-        messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-        CheckAnswersFormatters.ukAddress(x),
-        None
-      )
+    userAnswers.get(query) map {
+      case x: UKAddress =>
+        AnswerRow(
+          messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
+          CheckAnswersFormatters.ukAddress(x),
+          None
+        )
+      case x: InternationalAddress =>
+        AnswerRow(
+          messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
+          CheckAnswersFormatters.internationalAddress(x, countryOptions),
+          None
+        )
     }
   }
 
@@ -89,6 +99,7 @@ object AnswerRowConverter {
     }
   }
 
+
   def individualOrBusinessQuestion(query: Gettable[IndividualOrBusiness], userAnswers: UserAnswers, labelKey: String,
                            messageArg: String = "", changeRoute: Option[Call] = None)
                    (implicit messages:Messages) = {
@@ -109,6 +120,42 @@ object AnswerRowConverter {
       AnswerRow(
         messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
         HtmlFormat.escape(CheckAnswersFormatters.fullName(x)),
+        None
+      )
+    }
+  }
+
+  def stringQuestion(query: Gettable[String], userAnswers: UserAnswers, labelKey: String,
+                       messageArg: String = "", changeRoute: Option[Call] = None)
+                      (implicit messages:Messages) = {
+    userAnswers.get(query) map {x =>
+      AnswerRow(
+        messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
+        HtmlFormat.escape(x),
+        None
+      )
+    }
+  }
+
+  def passportOrIdCardQuestion(query: Gettable[PassportOrIdCardDetails], userAnswers: UserAnswers, labelKey: String,
+                               messageArg: String = "", countryOptions: CountryOptions, changeRoute: Option[Call] = None)
+                              (implicit messages: Messages) = {
+    userAnswers.get(query) map {x =>
+      AnswerRow(
+        messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
+        CheckAnswersFormatters.passportOrIDCard(x, countryOptions),
+        None
+      )
+    }
+  }
+
+  def addressOrUtrQuestion(query: Gettable[AddressOrUtr], userAnswers: UserAnswers, labelKey: String,
+                           messageArg: String = "", changeRoute: Option[Call] = None)
+                          (implicit messages:Messages) = {
+    userAnswers.get(query) map {x =>
+      AnswerRow(
+        messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
+        CheckAnswersFormatters.addressOrUtr(x),
         None
       )
     }
