@@ -27,6 +27,7 @@ import models.playback.http._
 import models.playback.UserAnswers
 import models.registration.pages.SettlorKindOfTrust
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
+import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
 import pages.register.settlors.{SettlorAdditionToWillTrustYesNoPage, SettlorHowDeedOfVariationCreatedPage}
 import pages.register.settlors.living_settlor._
 
@@ -61,15 +62,17 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
 
           val trust = DisplayTrust(
             details = TrustDetailsType(
-            startDate = LocalDate.parse("1970-02-01"),
-            lawCountry = None,
-            administrationCountry = None,
-            residentialStatus = None,
-            typeOfTrust = TypeOfTrust.DeedOfVariation,
-            deedOfVariation = Some(DeedOfVariation.AdditionToWill),
-            interVivos = None,
-            efrbsStartDate = None),
-            entities = DisplayTrustEntitiesType(None,
+              startDate = LocalDate.parse("1970-02-01"),
+              lawCountry = None,
+              administrationCountry = None,
+              residentialStatus = None,
+              typeOfTrust = TypeOfTrust.DeedOfVariation,
+              deedOfVariation = Some(DeedOfVariation.AdditionToWill),
+              interVivos = None,
+              efrbsStartDate = None
+            ),
+            entities = DisplayTrustEntitiesType(
+              None,
               DisplayTrustBeneficiaryType(None, None, None, None, None, None, None),
               None,
               DisplayTrustLeadTrusteeType(None, None),
@@ -84,6 +87,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
 
           val extraction = trustTypeExtractor.extract(ua, Some(trust))
 
+          extraction.right.value.get(SetupAfterSettlorDiedPage).get mustBe false
           extraction.right.value.get(SettlorKindOfTrustPage).get mustBe SettlorKindOfTrust.Deed
           extraction.right.value.get(SettlorAdditionToWillTrustYesNoPage).get mustBe true
           extraction.right.value.get(SettlorHowDeedOfVariationCreatedPage) mustNot be(defined)
@@ -105,8 +109,10 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
             typeOfTrust = TypeOfTrust.DeedOfVariation,
             deedOfVariation = Some(DeedOfVariation.ReplacedWill),
             interVivos = None,
-            efrbsStartDate = None),
-          entities = DisplayTrustEntitiesType(None,
+            efrbsStartDate = None
+          ),
+          entities = DisplayTrustEntitiesType(
+            None,
             DisplayTrustBeneficiaryType(None, None, None, None, None, None, None),
             None,
             DisplayTrustLeadTrusteeType(None, None),
@@ -121,6 +127,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = trustTypeExtractor.extract(ua, Some(trust))
 
+        extraction.right.value.get(SetupAfterSettlorDiedPage).get mustBe false
         extraction.right.value.get(SettlorKindOfTrustPage).get mustBe SettlorKindOfTrust.Deed
         extraction.right.value.get(SettlorAdditionToWillTrustYesNoPage).get mustBe false
         extraction.right.value.get(SettlorHowDeedOfVariationCreatedPage).get mustBe DeedOfVariation.ReplacedWill
@@ -142,8 +149,10 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
             typeOfTrust = TypeOfTrust.IntervivosSettlementTrust,
             deedOfVariation = None,
             interVivos = Some(true),
-            efrbsStartDate = None),
-          entities = DisplayTrustEntitiesType(None,
+            efrbsStartDate = None
+          ),
+          entities = DisplayTrustEntitiesType(
+            None,
             DisplayTrustBeneficiaryType(None, None, None, None, None, None, None),
             None,
             DisplayTrustLeadTrusteeType(None, None),
@@ -158,6 +167,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = trustTypeExtractor.extract(ua, Some(trust))
 
+        extraction.right.value.get(SetupAfterSettlorDiedPage).get mustBe false
         extraction.right.value.get(SettlorKindOfTrustPage).get mustBe SettlorKindOfTrust.Intervivos
         extraction.right.value.get(SettlorHandoverReliefYesNoPage).get mustBe true
         extraction.right.value.get(SettlorAdditionToWillTrustYesNoPage) mustNot be(defined)
@@ -180,8 +190,10 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
             typeOfTrust = TypeOfTrust.EmployeeRelated,
             deedOfVariation = None,
             interVivos = None,
-            efrbsStartDate = None),
-          entities = DisplayTrustEntitiesType(None,
+            efrbsStartDate = None
+          ),
+          entities = DisplayTrustEntitiesType(
+            None,
             DisplayTrustBeneficiaryType(None, None, None, None, None, None, None),
             None,
             DisplayTrustLeadTrusteeType(None, None),
@@ -196,6 +208,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = trustTypeExtractor.extract(ua, Some(trust))
 
+        extraction.right.value.get(SetupAfterSettlorDiedPage).get mustBe false
         extraction.right.value.get(SettlorKindOfTrustPage).get mustBe SettlorKindOfTrust.Employees
         extraction.right.value.get(SettlorHandoverReliefYesNoPage) mustNot be(defined)
         extraction.right.value.get(SettlorAdditionToWillTrustYesNoPage) mustNot be(defined)
@@ -218,8 +231,10 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
             typeOfTrust = TypeOfTrust.FlatManagementTrust,
             deedOfVariation = None,
             interVivos = None,
-            efrbsStartDate = None),
-          entities = DisplayTrustEntitiesType(None,
+            efrbsStartDate = None
+          ),
+          entities = DisplayTrustEntitiesType(
+            None,
             DisplayTrustBeneficiaryType(None, None, None, None, None, None, None),
             None,
             DisplayTrustLeadTrusteeType(None, None),
@@ -234,6 +249,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = trustTypeExtractor.extract(ua, Some(trust))
 
+        extraction.right.value.get(SetupAfterSettlorDiedPage).get mustBe false
         extraction.right.value.get(SettlorKindOfTrustPage).get mustBe SettlorKindOfTrust.FlatManagement
         extraction.right.value.get(SettlorHandoverReliefYesNoPage) mustNot be(defined)
         extraction.right.value.get(SettlorAdditionToWillTrustYesNoPage) mustNot be(defined)
@@ -256,8 +272,10 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
             typeOfTrust = TypeOfTrust.HeritageTrust,
             deedOfVariation = None,
             interVivos = None,
-            efrbsStartDate = None),
-          entities = DisplayTrustEntitiesType(None,
+            efrbsStartDate = None
+          ),
+          entities = DisplayTrustEntitiesType(
+            None,
             DisplayTrustBeneficiaryType(None, None, None, None, None, None, None),
             None,
             DisplayTrustLeadTrusteeType(None, None),
@@ -272,7 +290,49 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = trustTypeExtractor.extract(ua, Some(trust))
 
+        extraction.right.value.get(SetupAfterSettlorDiedPage).get mustBe false
         extraction.right.value.get(SettlorKindOfTrustPage).get mustBe SettlorKindOfTrust.HeritageMaintenanceFund
+        extraction.right.value.get(SettlorHandoverReliefYesNoPage) mustNot be(defined)
+        extraction.right.value.get(SettlorAdditionToWillTrustYesNoPage) mustNot be(defined)
+        extraction.right.value.get(SettlorHowDeedOfVariationCreatedPage) mustNot be(defined)
+
+      }
+
+    }
+
+    "when there is a trust type of 'Will Trust or Intestacy Trust'" - {
+
+      "with minimum data must return user answers updated" in {
+
+        val trust = DisplayTrust(
+          details = TrustDetailsType(
+            startDate = LocalDate.parse("1970-02-01"),
+            lawCountry = None,
+            administrationCountry = None,
+            residentialStatus = None,
+            typeOfTrust = TypeOfTrust.WillTrustOrIntestacyTrust,
+            deedOfVariation = None,
+            interVivos = None,
+            efrbsStartDate = None
+          ),
+          entities = DisplayTrustEntitiesType(
+            None,
+            DisplayTrustBeneficiaryType(None, None, None, None, None, None, None),
+            None,
+            DisplayTrustLeadTrusteeType(None, None),
+            None,
+            None,
+            None
+          ),
+          assets = DisplayTrustAssets(None, None, None, None, None, None)
+        )
+
+        val ua = UserAnswers("fakeId")
+
+        val extraction = trustTypeExtractor.extract(ua, Some(trust))
+
+        extraction.right.value.get(SetupAfterSettlorDiedPage).get mustBe true
+        extraction.right.value.get(SettlorKindOfTrustPage) mustNot be(defined)
         extraction.right.value.get(SettlorHandoverReliefYesNoPage) mustNot be(defined)
         extraction.right.value.get(SettlorAdditionToWillTrustYesNoPage) mustNot be(defined)
         extraction.right.value.get(SettlorHowDeedOfVariationCreatedPage) mustNot be(defined)
