@@ -29,13 +29,13 @@ class BeneficiaryPlaybackHelperSpec extends PlaybackSpecBase {
 
     "generate charity beneficiaries sections" in {
 
-      val chariyBen1Name = "Red Cross Ltd."
-      val chariyBen2Name = "Bernardos"
+      val charityBen1Name = "Red Cross Ltd."
+      val charityBen2Name = "Bernardos"
 
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
       val answers = emptyUserAnswers
-        .set(CharityBeneficiaryNamePage(0), chariyBen1Name).success.value
+        .set(CharityBeneficiaryNamePage(0), charityBen1Name).success.value
         .set(CharityBeneficiaryDiscretionYesNoPage(0), false).success.value
         .set(CharityBeneficiaryShareOfIncomePage(0), "98").success.value
         .set(CharityBeneficiaryAddressYesNoPage(0), true).success.value
@@ -50,7 +50,7 @@ class BeneficiaryPlaybackHelperSpec extends PlaybackSpecBase {
           )
         ).success.value
 
-        .set(CharityBeneficiaryNamePage(1), chariyBen2Name).success.value
+        .set(CharityBeneficiaryNamePage(1), charityBen2Name).success.value
         .set(CharityBeneficiaryDiscretionYesNoPage(1), true).success.value
         .set(CharityBeneficiaryAddressYesNoPage(1), false).success.value
         .set(CharityBeneficiaryUtrPage(1), "1234567890").success.value
@@ -63,11 +63,11 @@ class BeneficiaryPlaybackHelperSpec extends PlaybackSpecBase {
           headingKey = Some("Charity beneficiary 1"),
           rows = Seq(
             AnswerRow(label = "charityBeneficiaryName.checkYourAnswersLabel", answer = Html("Red Cross Ltd."), changeUrl = None),
-            AnswerRow(label = "charityBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", answer = Html("No"), changeUrl = None, labelArg = chariyBen1Name),
-            AnswerRow(label = "charityBeneficiaryShareOfIncome.checkYourAnswersLabel", answer = Html("98"), changeUrl = None, labelArg = chariyBen1Name),
-            AnswerRow(label = "charityBeneficiaryAddressYesNo.checkYourAnswersLabel", answer = Html("Yes"), changeUrl = None, labelArg = chariyBen1Name),
-            AnswerRow(label = "charityBeneficiaryAddressUKYesNo.checkYourAnswersLabel", answer = Html("Yes"), changeUrl = None, labelArg = chariyBen1Name),
-            AnswerRow(label = "charityBeneficiaryAddress.checkYourAnswersLabel", answer = Html("line1<br />line2<br />line3<br />line4<br />NE981ZZ"), changeUrl = None, labelArg = chariyBen1Name)
+            AnswerRow(label = "charityBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", answer = Html("No"), changeUrl = None, labelArg = charityBen1Name),
+            AnswerRow(label = "charityBeneficiaryShareOfIncome.checkYourAnswersLabel", answer = Html("98"), changeUrl = None, labelArg = charityBen1Name),
+            AnswerRow(label = "charityBeneficiaryAddressYesNo.checkYourAnswersLabel", answer = Html("Yes"), changeUrl = None, labelArg = charityBen1Name),
+            AnswerRow(label = "charityBeneficiaryAddressUKYesNo.checkYourAnswersLabel", answer = Html("Yes"), changeUrl = None, labelArg = charityBen1Name),
+            AnswerRow(label = "charityBeneficiaryAddress.checkYourAnswersLabel", answer = Html("line1<br />line2<br />line3<br />line4<br />NE981ZZ"), changeUrl = None, labelArg = charityBen1Name)
           ),
           sectionKey = None
         ),
@@ -75,9 +75,9 @@ class BeneficiaryPlaybackHelperSpec extends PlaybackSpecBase {
           headingKey = Some("Charity beneficiary 2"),
           rows = Seq(
             AnswerRow(label = "charityBeneficiaryName.checkYourAnswersLabel", answer = Html("Bernardos"), changeUrl = None),
-            AnswerRow(label = "charityBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", answer = Html("Yes"), changeUrl = None, labelArg = chariyBen2Name),
-            AnswerRow(label = "charityBeneficiaryAddressYesNo.checkYourAnswersLabel", answer = Html("No"), changeUrl = None, labelArg = chariyBen2Name),
-            AnswerRow(label = "charityBeneficiaryUtr.checkYourAnswersLabel", answer = Html("1234567890"), changeUrl = None, labelArg = chariyBen2Name)
+            AnswerRow(label = "charityBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", answer = Html("Yes"), changeUrl = None, labelArg = charityBen2Name),
+            AnswerRow(label = "charityBeneficiaryAddressYesNo.checkYourAnswersLabel", answer = Html("No"), changeUrl = None, labelArg = charityBen2Name),
+            AnswerRow(label = "charityBeneficiaryUtr.checkYourAnswersLabel", answer = Html("1234567890"), changeUrl = None, labelArg = charityBen2Name)
           ),
           sectionKey = None
         )
