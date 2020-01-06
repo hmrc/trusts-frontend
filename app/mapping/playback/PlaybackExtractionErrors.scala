@@ -23,4 +23,6 @@ object PlaybackExtractionErrors {
   case class FailedToExtractData(reason: String) extends PlaybackExtractionError
   case object FailedToCombineAnswers extends RuntimeException with PlaybackExtractionError
 
+  case object InvalidExtractorState extends RuntimeException with PlaybackExtractionError
+
 }
