@@ -19,6 +19,7 @@ package utils.print.playback
 import base.PlaybackSpecBase
 import models.core.pages.{FullName, UKAddress}
 import pages.register.beneficiaries.charity._
+import pages.register.beneficiaries.company._
 import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
 import play.twirl.api.Html
 import viewmodels.{AnswerRow, AnswerSection}
@@ -100,6 +101,64 @@ class BeneficiaryPlaybackHelperSpec extends PlaybackSpecBase {
           headingKey = Some("Individual beneficiary 1"),
           rows = Seq(
             AnswerRow(label = "What is the name of the individual?", answer = Html("Michael Finnegan"), changeUrl = None)
+          ),
+          sectionKey = None
+        )
+      )
+
+    }
+
+    "generate company beneficiaries sections" in {
+
+      val companyBen1Name = "Amazon"
+      val companyBen2Name = "Apple"
+
+      val helper = injector.instanceOf[PrintPlaybackHelper]
+
+      val answers = emptyUserAnswers
+        .set(CompanyBeneficiaryNamePage(0), companyBen1Name).success.value
+        .set(CompanyBeneficiaryDiscretionYesNoPage(0), false).success.value
+        .set(CompanyBeneficiaryShareOfIncomePage(0), "98").success.value
+        .set(CompanyBeneficiaryAddressYesNoPage(0), true).success.value
+        .set(CompanyBeneficiaryAddressUKYesNoPage(0), true).success.value
+        .set(CompanyBeneficiaryAddressPage(0),
+          UKAddress(
+            line1 = "line1",
+            line2 = "line2",
+            line3 = Some("line3"),
+            line4 = Some("line4"),
+            postcode = "NE981ZZ"
+          )
+        ).success.value
+
+        .set(CompanyBeneficiaryNamePage(1), companyBen2Name).success.value
+        .set(CompanyBeneficiaryDiscretionYesNoPage(1), true).success.value
+        .set(CompanyBeneficiaryAddressYesNoPage(1), false).success.value
+        .set(CompanyBeneficiaryUtrPage(1), "1234567890").success.value
+
+      val result = helper.summary(answers)
+
+      result mustBe Seq(
+        AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),
+        AnswerSection(
+          headingKey = Some("Company beneficiary 1"),
+          rows = Seq(
+            AnswerRow(label = messages("companyBeneficiaryName.checkYourAnswersLabel"), answer = Html("Amazon"), changeUrl = None),
+            AnswerRow(label = messages("companyBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", companyBen1Name), answer = Html("No"), changeUrl = None),
+            AnswerRow(label = messages("companyBeneficiaryShareOfIncome.checkYourAnswersLabel", companyBen1Name), answer = Html("98"), changeUrl = None),
+            AnswerRow(label = messages("companyBeneficiaryAddressYesNo.checkYourAnswersLabel", companyBen1Name), answer = Html("Yes"), changeUrl = None),
+            AnswerRow(label = messages("companyBeneficiaryAddressUKYesNo.checkYourAnswersLabel", companyBen1Name), answer = Html("Yes"), changeUrl = None),
+            AnswerRow(label = messages("companyBeneficiaryAddress.checkYourAnswersLabel", companyBen1Name), answer = Html("line1<br />line2<br />line3<br />line4<br />NE981ZZ"), changeUrl = None)
+          ),
+          sectionKey = None
+        ),
+        AnswerSection(
+          headingKey = Some("Company beneficiary 2"),
+          rows = Seq(
+            AnswerRow(label = messages("companyBeneficiaryName.checkYourAnswersLabel", companyBen2Name), answer = Html("Apple"), changeUrl = None),
+            AnswerRow(label = messages("companyBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", companyBen2Name), answer = Html("Yes"), changeUrl = None),
+            AnswerRow(label = messages("companyBeneficiaryAddressYesNo.checkYourAnswersLabel", companyBen2Name), answer = Html("No"), changeUrl = None),
+            AnswerRow(label = messages("companyBeneficiaryUtr.checkYourAnswersLabel", companyBen2Name), answer = Html("1234567890"), changeUrl = None)
           ),
           sectionKey = None
         )

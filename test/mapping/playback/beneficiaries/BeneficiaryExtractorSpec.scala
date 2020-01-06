@@ -82,7 +82,7 @@ class BeneficiaryExtractorSpec extends FreeSpec with MustMatchers
                 identification = Some(
                   DisplayTrustIdentificationOrgType(
                     safeId = Some("8947584-94759745-84758745"),
-                    utr = Some(s"1234567890"),
+                    utr = None,
                     address = Some(AddressType(s"line 1", "line 2", None, None, Some("NE11NE"), "GB"))
                   )
                 ),
@@ -101,7 +101,7 @@ class BeneficiaryExtractorSpec extends FreeSpec with MustMatchers
                 identification = Some(
                   DisplayTrustIdentificationOrgType(
                     safeId = Some("8947584-94759745-84758745"),
-                    utr = Some(s"1234567890"),
+                    utr = None,
                     address = Some(AddressType(s"line 1", "line 2", None, None, Some("NE11NE"), "GB"))
                   )
                 ),
@@ -120,7 +120,7 @@ class BeneficiaryExtractorSpec extends FreeSpec with MustMatchers
                 identification = Some(
                   DisplayTrustIdentificationOrgType(
                     safeId = Some("8947584-94759745-84758745"),
-                    utr = Some(s"1234567890"),
+                    utr = None,
                     address = Some(AddressType(s"line 1", "line 2", None, None, Some("NE11NE"), "GB"))
                   )
                 ),
@@ -166,7 +166,7 @@ class BeneficiaryExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(CompanyBeneficiaryAddressYesNoPage(0)).get mustBe true
         extraction.right.value.get(CompanyBeneficiaryAddressUKYesNoPage(0)).get mustBe true
         extraction.right.value.get(CompanyBeneficiaryAddressPage(0)).get mustBe UKAddress("line 1", "line 2", None, None, "NE11NE")
-        extraction.right.value.get(CompanyBeneficiaryUtrPage(0)).get mustBe "1234567890"
+        extraction.right.value.get(CompanyBeneficiaryUtrPage(0)) mustNot be(defined)
         extraction.right.value.get(CompanyBeneficiaryMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
         extraction.right.value.get(CompanyBeneficiarySafeIdPage(0)) must be(defined)
 
@@ -176,7 +176,7 @@ class BeneficiaryExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(TrustBeneficiaryAddressYesNoPage(0)).get mustBe true
         extraction.right.value.get(TrustBeneficiaryAddressUKYesNoPage(0)).get mustBe true
         extraction.right.value.get(TrustBeneficiaryAddressPage(0)).get mustBe UKAddress("line 1", "line 2", None, None, "NE11NE")
-        extraction.right.value.get(TrustBeneficiaryUtrPage(0)).get mustBe "1234567890"
+        extraction.right.value.get(TrustBeneficiaryUtrPage(0)) mustNot be(defined)
         extraction.right.value.get(TrustBeneficiaryMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
         extraction.right.value.get(TrustBeneficiarySafeIdPage(0)) must be(defined)
 
@@ -186,7 +186,7 @@ class BeneficiaryExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(CharityBeneficiaryAddressYesNoPage(0)).get mustBe true
         extraction.right.value.get(CharityBeneficiaryAddressUKYesNoPage(0)).get mustBe true
         extraction.right.value.get(CharityBeneficiaryAddressPage(0)).get mustBe UKAddress("line 1", "line 2", None, None, "NE11NE")
-        extraction.right.value.get(CharityBeneficiaryUtrPage(0)).get mustBe "1234567890"
+        extraction.right.value.get(CharityBeneficiaryUtrPage(0)) mustNot be(defined)
         extraction.right.value.get(CharityBeneficiaryMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
         extraction.right.value.get(CharityBeneficiarySafeIdPage(0)) must be(defined)
         

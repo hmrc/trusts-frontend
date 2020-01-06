@@ -46,16 +46,30 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
   }
 
   def beneficiaries : Seq[AnswerSection] = {
-    val beneficiaries = individualBeneficiaries ++ charityBeneficiaries
+
+    val beneficiaries = Seq(
+      individualBeneficiaries,
+      charityBeneficiaries,
+      companyBeneficiaries
+    ).flatten
 
     if (beneficiaries.nonEmpty) {
       Seq(
         Seq(AnswerSection(sectionKey = Some("answerPage.section.beneficiaries.heading"))),
-        individualBeneficiaries,
-        charityBeneficiaries
+        beneficiaries
       ).flatten
     } else {
       Nil
+    }
+  }
+
+  private def companyBeneficiaries : Seq[AnswerSection] = {
+    val size = userAnswers.get(_root_.sections.beneficiaries.CompanyBeneficiaries).map(_.value.size).getOrElse(0)
+
+    size match {
+      case 0 => Nil
+      case _ =>
+        (for (index <- 0 to size) yield CompanyBeneficiary(index, userAnswers, countryOptions)).flatten
     }
   }
 
