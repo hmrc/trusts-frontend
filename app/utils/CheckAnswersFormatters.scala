@@ -48,14 +48,6 @@ object CheckAnswersFormatters {
     }
   }
 
-  def addressOrUtr(answer: AddressOrUtr)(implicit messages: Messages): Html = {
-    if (answer == AddressOrUtr.Address) {
-      HtmlFormat.escape(messages("site.address"))
-    } else {
-      HtmlFormat.escape(messages("site.utr"))
-    }
-  }
-
   def formatNino(nino: String): String = Nino(nino).formatted
 
   def country(code: String, countryOptions: CountryOptions): String =

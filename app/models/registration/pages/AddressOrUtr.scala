@@ -24,7 +24,7 @@ sealed trait AddressOrUtr
 object AddressOrUtr extends Enumerable.Implicits {
 
   case object Address extends WithName("Address") with AddressOrUtr
-  case object Utr extends WithName("Utr") with AddressOrUtr
+  case object Utr extends WithName("Unique Taxpayer Reference") with AddressOrUtr
 
   val values: List[AddressOrUtr] = List(
     Address, Utr
