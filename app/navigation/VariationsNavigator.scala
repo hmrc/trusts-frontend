@@ -17,7 +17,7 @@
 package navigation
 
 import javax.inject.Inject
-import models.core.UserAnswers
+import models.playback.UserAnswers
 import models.playback.pages.DeclarationWhatNext.DeclareTheTrustIsUpToDate
 import pages.playback.DeclarationWhatNextPage
 

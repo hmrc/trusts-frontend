@@ -16,7 +16,7 @@
 
 package navigation.navigators.registration
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.register.asset.property_or_land.routes
 import generators.Generators
 import models.NormalMode
@@ -30,7 +30,7 @@ import pages.register.asset.property_or_land._
 
 trait PropertyOrLandRoutes {
 
-  self: PropertyChecks with Generators with SpecBase =>
+  self: PropertyChecks with Generators with RegistrationSpecBase =>
 
   private val index = 0
 

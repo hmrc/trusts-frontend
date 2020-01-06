@@ -16,7 +16,7 @@
 
 package controllers.register.settlors.deceased_settlor
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.YesNoFormProvider
 import models.NormalMode
 import models.core.pages.FullName
@@ -26,7 +26,7 @@ import play.api.test.Helpers._
 import views.html.register.settlors.deceased_settlor.WasSettlorsAddressUKYesNoView
 import controllers.register.routes._
 
-class WasSettlorsAddressUKYesNoControllerSpec extends SpecBase {
+class WasSettlorsAddressUKYesNoControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new YesNoFormProvider()
   val form = formProvider.withPrefix("wasSettlorsAddressUKYesNo")

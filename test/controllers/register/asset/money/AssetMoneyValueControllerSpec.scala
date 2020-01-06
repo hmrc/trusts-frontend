@@ -16,7 +16,7 @@
 
 package controllers.register.asset.money
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.AssetMoneyValueFormProvider
 import models.NormalMode
 import play.api.test.FakeRequest
@@ -25,7 +25,7 @@ import views.html.register.asset.money.AssetMoneyValueView
 import controllers.register.routes._
 import pages.register.asset.money.AssetMoneyValuePage
 
-class AssetMoneyValueControllerSpec extends SpecBase {
+class AssetMoneyValueControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new AssetMoneyValueFormProvider()
   val form = formProvider()

@@ -16,7 +16,7 @@
 
 package utils
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.register.beneficiaries.routes
 import models.core.pages.FullName
 import models.registration.pages.Status.Completed
@@ -26,7 +26,7 @@ import pages.register.beneficiaries.individual.{IndividualBeneficiaryIncomeYesNo
 import pages.register.beneficiaries.{ClassBeneficiaryDescriptionPage, WhatTypeOfBeneficiaryPage}
 import viewmodels.AddRow
 
-class AddABeneficiaryViewHelperSpec extends SpecBase {
+class AddABeneficiaryViewHelperSpec extends RegistrationSpecBase {
 
   def removeIndividualRoute(index : Int) =
     routes.RemoveIndividualBeneficiaryController.onPageLoad(index, fakeDraftId).url

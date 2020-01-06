@@ -17,6 +17,7 @@
 package controllers.register.asset
 
 import controllers.actions._
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import javax.inject.Inject
 import models.NormalMode
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -28,9 +29,9 @@ import scala.concurrent.ExecutionContext
 
 class AssetInterruptPageController @Inject()(
                                               override val messagesApi: MessagesApi,
-                                              identify: IdentifierAction,
+                                              identify: RegistrationIdentifierAction,
                                               getData: DraftIdRetrievalActionProvider,
-                                              requireData: DataRequiredAction,
+                                              requireData: RegistrationDataRequiredAction,
                                               val controllerComponents: MessagesControllerComponents,
                                               view: AssetInterruptPageView
                                             )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {

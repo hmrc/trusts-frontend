@@ -16,7 +16,7 @@
 
 package controllers.register
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.TrustPreviouslyResidentFormProvider
 import models.NormalMode
 import pages.register.TrustPreviouslyResidentPage
@@ -26,7 +26,7 @@ import utils.InputOption
 import utils.countryOptions.CountryOptionsNonUK
 import views.html.register.TrustPreviouslyResidentView
 
-class TrustPreviouslyResidentControllerSpec extends SpecBase {
+class TrustPreviouslyResidentControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new TrustPreviouslyResidentFormProvider()
   val form = formProvider()

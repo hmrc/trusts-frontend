@@ -16,10 +16,10 @@
 
 package utils
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import org.scalatest.mockito.MockitoSugar
 
-class AccessibilityHelperSpec extends SpecBase with MockitoSugar {
+class AccessibilityHelperSpec extends RegistrationSpecBase with MockitoSugar {
 
   "AccessibilityHelper" must {
 

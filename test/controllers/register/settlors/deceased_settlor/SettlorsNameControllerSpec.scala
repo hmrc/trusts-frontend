@@ -16,7 +16,7 @@
 
 package controllers.register.settlors.deceased_settlor
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.deceased_settlor.SettlorsNameFormProvider
 import models.NormalMode
 import models.core.pages.FullName
@@ -26,7 +26,7 @@ import play.api.test.Helpers._
 import views.html.register.settlors.deceased_settlor.SettlorsNameView
 import controllers.register.routes._
 
-class SettlorsNameControllerSpec extends SpecBase {
+class SettlorsNameControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new SettlorsNameFormProvider()
 

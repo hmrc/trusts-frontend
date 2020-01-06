@@ -16,7 +16,7 @@
 
 package controllers.register.settlors.deceased_settlor
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.InternationalAddressFormProvider
 import models.NormalMode
 import models.core.UserAnswers
@@ -34,7 +34,7 @@ import controllers.register.routes._
 
 import scala.concurrent.Future
 
-class SettlorsInternationalAddressControllerSpec extends SpecBase {
+class SettlorsInternationalAddressControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new InternationalAddressFormProvider()
   val form: Form[InternationalAddress] = formProvider()

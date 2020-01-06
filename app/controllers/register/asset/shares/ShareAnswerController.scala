@@ -17,6 +17,7 @@
 package controllers.register.asset.shares
 
 import controllers.actions._
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
 import javax.inject.Inject
 import models.NormalMode
@@ -39,9 +40,9 @@ class ShareAnswerController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        registrationsRepository: RegistrationsRepository,
                                        navigator: Navigator,
-                                       identify: IdentifierAction,
+                                       identify: RegistrationIdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
-                                       requireData: DataRequiredAction,
+                                       requireData: RegistrationDataRequiredAction,
                                        requiredAnswer: RequiredAnswerActionProvider,
                                        validateIndex: IndexActionFilterProvider,
                                        view: ShareAnswersView,

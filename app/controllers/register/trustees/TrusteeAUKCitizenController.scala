@@ -17,10 +17,11 @@
 package controllers.register.trustees
 
 import controllers.actions._
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
 import forms.YesNoFormProvider
 import javax.inject.Inject
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
 import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeAUKCitizenPage, TrusteesNamePage}
@@ -39,9 +40,9 @@ class TrusteeAUKCitizenController @Inject()(
                                              registrationsRepository: RegistrationsRepository,
                                              navigator: Navigator,
                                              validateIndex: IndexActionFilterProvider,
-                                             identify: IdentifierAction,
+                                             identify: RegistrationIdentifierAction,
                                              getData: DraftIdRetrievalActionProvider,
-                                             requireData: DataRequiredAction,
+                                             requireData: RegistrationDataRequiredAction,
                                              requiredAnswer: RequiredAnswerActionProvider,
                                              formProvider: YesNoFormProvider,
                                              val controllerComponents: MessagesControllerComponents,
@@ -95,7 +96,7 @@ class TrusteeAUKCitizenController @Inject()(
       )
   }
 
-  private def getMessagePrefix(index: Int, request: DataRequest[AnyContent]) = {
+  private def getMessagePrefix(index: Int, request: RegistrationDataRequest[AnyContent]) = {
     val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
 
     val messagePrefix = if (isLead) {

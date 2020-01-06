@@ -16,10 +16,9 @@
 
 package controllers.playback
 
-import base.SpecBase
+import base.PlaybackSpecBase
 import connector.{TrustClaim, TrustConnector, TrustsStoreConnector}
-import mapping.playback.{FakeFailingUserAnswerExtractor, FakeUserAnswerExtractor, PlaybackExtractor, UserAnswersExtractor}
-import models.core.UserAnswers
+import mapping.playback.{FakeFailingUserAnswerExtractor, FakeUserAnswerExtractor, UserAnswersExtractor}
 import models.playback.http._
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -39,13 +38,13 @@ import views.html.playback.status._
 import scala.concurrent.Future
 import scala.io.Source
 
-class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
+class TrustStatusControllerSpec extends PlaybackSpecBase with BeforeAndAfterEach {
 
   trait LocalSetup {
 
     def utr = "1234567890"
 
-    def userAnswers: UserAnswers = emptyUserAnswers.set(WhatIsTheUTRVariationPage, utr).success.value
+    def userAnswers = emptyUserAnswers.set(WhatIsTheUTRVariationPage, utr).success.value
 
     val fakeTrustConnector: TrustConnector = mock[TrustConnector]
     val fakeTrustStoreConnector: TrustsStoreConnector = mock[TrustsStoreConnector]
@@ -55,7 +54,6 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
       bind[TrustConnector].to(fakeTrustConnector),
       bind[TrustsStoreConnector].to(fakeTrustStoreConnector),
       bind[PlaybackAuthenticationService].to(new FakePlaybackAuthenticationService()),
-      bind[PlaybackRepository].toInstance(fakePlaybackRepository),
       bind[UserAnswersExtractor].to[FakeUserAnswerExtractor]
     ).build()
 
@@ -267,7 +265,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
               when(fakeTrustConnector.playback(any[String])(any(), any()))
                 .thenReturn(Future.successful(Processed(getTrust, "9873459837459837")))
 
-              when(fakePlaybackRepository.store(any())).thenReturn(Future.successful(true))
+              when(fakePlaybackRepository.set(any())).thenReturn(Future.successful(true))
 
               status(result) mustEqual SEE_OTHER
 
@@ -286,14 +284,12 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
               val fakeTrustConnector: TrustConnector = mock[TrustConnector]
               val fakeTrustStoreConnector: TrustsStoreConnector = mock[TrustsStoreConnector]
-              val fakePlaybackRepository: PlaybackRepository = mock[PlaybackRepository]
 
-              val userAnswers: UserAnswers = emptyUserAnswers.set(WhatIsTheUTRVariationPage, "1234567890").success.value
+              val userAnswers = emptyUserAnswers.set(WhatIsTheUTRVariationPage, "1234567890").success.value
 
               def application: Application = applicationBuilder(userAnswers = Some(userAnswers)).overrides(
                 bind[TrustConnector].to(fakeTrustConnector),
                 bind[TrustsStoreConnector].to(fakeTrustStoreConnector),
-                bind[PlaybackRepository].toInstance(fakePlaybackRepository),
                 bind[UserAnswersExtractor].to[FakeFailingUserAnswerExtractor],
                 bind[PlaybackAuthenticationService].to(new FakePlaybackAuthenticationService())
               ).build()
@@ -311,7 +307,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
               when(fakeTrustConnector.playback(any[String])(any(), any()))
                 .thenReturn(Future.successful(Processed(getTrust, "9873459837459837")))
 
-              when(fakePlaybackRepository.store(any())).thenReturn(Future.successful(true))
+              when(playbackRepository.set(any())).thenReturn(Future.successful(true))
 
               val result: Future[Result] = route(application, request).value
 
@@ -334,17 +330,15 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
 
             def utr = "1234567890"
 
-            def userAnswers: UserAnswers = emptyUserAnswers.set(WhatIsTheUTRVariationPage, utr).success.value
+            def userAnswers = emptyUserAnswers.set(WhatIsTheUTRVariationPage, utr).success.value
 
             val fakeTrustConnector: TrustConnector = mock[TrustConnector]
             val fakeTrustStoreConnector: TrustsStoreConnector = mock[TrustsStoreConnector]
-            val fakePlaybackRepository: PlaybackRepository = mock[PlaybackRepository]
 
             def application: Application = applicationBuilder(userAnswers = Some(userAnswers)).overrides(
               bind[TrustConnector].to(fakeTrustConnector),
               bind[TrustsStoreConnector].to(fakeTrustStoreConnector),
-              bind[PlaybackAuthenticationService].to(new FakeFailingPlaybackAuthenticationService()),
-              bind[PlaybackRepository].toInstance(fakePlaybackRepository)
+              bind[PlaybackAuthenticationService].to(new FakeFailingPlaybackAuthenticationService())
             ).build()
 
             val payload : String =
@@ -362,7 +356,7 @@ class TrustStatusControllerSpec extends SpecBase with BeforeAndAfterEach {
             when(fakeTrustConnector.playback(any[String])(any(), any()))
               .thenReturn(Future.successful(Processed(getTrust, "9873459837459837")))
 
-            when(fakePlaybackRepository.store(any())).thenReturn(Future.successful(true))
+            when(playbackRepository.set(any())).thenReturn(Future.successful(true))
 
             status(result) mustEqual UNAUTHORIZED
 

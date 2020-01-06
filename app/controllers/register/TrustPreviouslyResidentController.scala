@@ -17,6 +17,7 @@
 package controllers.register
 
 import controllers.actions._
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.TrustPreviouslyResidentFormProvider
 import javax.inject.Inject
 import models.Mode
@@ -36,9 +37,9 @@ class TrustPreviouslyResidentController @Inject()(
                                                    override val messagesApi: MessagesApi,
                                                    registrationsRepository: RegistrationsRepository,
                                                    navigator: Navigator,
-                                                   identify: IdentifierAction,
+                                                   identify: RegistrationIdentifierAction,
                                                    getData: DraftIdRetrievalActionProvider,
-                                                   requireData: DataRequiredAction,
+                                                   requireData: RegistrationDataRequiredAction,
                                                    formProvider: TrustPreviouslyResidentFormProvider,
                                                    val controllerComponents: MessagesControllerComponents,
                                                    view: TrustPreviouslyResidentView,

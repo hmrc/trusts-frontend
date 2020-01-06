@@ -16,7 +16,7 @@
 
 package controllers.register.settlors.living_settlor
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.IndexValidation
 import forms.NinoFormProvider
 import models.NormalMode
@@ -29,7 +29,7 @@ import play.api.test.Helpers._
 import views.html.register.settlors.living_settlor.SettlorIndividualNINOView
 import controllers.register.routes._
 
-class SettlorIndividualNINOControllerSpec extends SpecBase with IndexValidation {
+class SettlorIndividualNINOControllerSpec extends RegistrationSpecBase with IndexValidation {
 
   def onwardRoute = Call("GET", "/foo")
 

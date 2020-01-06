@@ -16,7 +16,7 @@
 
 package navigation.navigators.registration
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.register.agents.routes
 import generators.Generators
 import models.NormalMode
@@ -30,7 +30,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 
 trait AgentRoutes {
 
-  self: PropertyChecks with Generators with SpecBase =>
+  self: PropertyChecks with Generators with RegistrationSpecBase =>
 
   def agentRoutes()(implicit navigator: Navigator) = {
 

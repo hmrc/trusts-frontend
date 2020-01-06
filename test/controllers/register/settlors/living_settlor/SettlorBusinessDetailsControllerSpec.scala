@@ -16,7 +16,7 @@
 
 package controllers.register.settlors.living_settlor
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import controllers.IndexValidation
 import forms.living_settlor.SettlorBusinessDetailsFormProvider
 import models.NormalMode
@@ -29,7 +29,7 @@ import play.api.test.Helpers.{route, _}
 import views.html.register.settlors.living_settlor.SettlorBusinessDetailsView
 import controllers.register.routes._
 
-class SettlorBusinessDetailsControllerSpec extends SpecBase with IndexValidation {
+class SettlorBusinessDetailsControllerSpec extends RegistrationSpecBase with IndexValidation {
 
   val index = 0
 

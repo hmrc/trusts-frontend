@@ -17,6 +17,7 @@
 package controllers.register.settlors.living_settlor
 
 import controllers.actions._
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
 import javax.inject.Inject
 import models.NormalMode
@@ -40,9 +41,9 @@ class SettlorIndividualAnswerController @Inject()(
                                                    override val messagesApi: MessagesApi,
                                                    registrationsRepository: RegistrationsRepository,
                                                    @LivingSettlor navigator: Navigator,
-                                                   identify: IdentifierAction,
+                                                   identify: RegistrationIdentifierAction,
                                                    getData: DraftIdRetrievalActionProvider,
-                                                   requireData: DataRequiredAction,
+                                                   requireData: RegistrationDataRequiredAction,
                                                    requiredAnswer: RequiredAnswerActionProvider,
                                                    validateIndex: IndexActionFilterProvider,
                                                    view: SettlorIndividualAnswersView,

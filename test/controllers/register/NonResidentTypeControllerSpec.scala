@@ -16,7 +16,7 @@
 
 package controllers.register
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.NonResidentTypeFormProvider
 import models.NormalMode
 import models.registration.pages.NonResidentType
@@ -25,7 +25,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.NonResidentTypeView
 
-class NonResidentTypeControllerSpec extends SpecBase {
+class NonResidentTypeControllerSpec extends RegistrationSpecBase {
 
   lazy val nonresidentTypeRoute = routes.NonResidentTypeController.onPageLoad(NormalMode,fakeDraftId).url
 

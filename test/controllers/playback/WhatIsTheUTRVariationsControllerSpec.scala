@@ -16,7 +16,7 @@
 
 package controllers.playback
 
-import base.SpecBase
+import base.PlaybackSpecBase
 import forms.WhatIsTheUTRFormProvider
 import pages.playback.WhatIsTheUTRVariationPage
 import play.api.test.FakeRequest
@@ -25,7 +25,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.{Enrolment, EnrolmentIdentifier, Enrolments}
 import views.html.register.WhatIsTheUTRView
 
-class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
+class WhatIsTheUTRVariationsControllerSpec extends PlaybackSpecBase {
 
   val formProvider = new WhatIsTheUTRFormProvider()
   val form = formProvider()
@@ -50,6 +50,43 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
 
       contentAsString(result) mustEqual
         view(form, onSubmit)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view for a GET if no existing data is found (creating a new session)" in {
+
+      val application = applicationBuilder(userAnswers = None).build()
+
+      val request = FakeRequest(GET, trustUTRRoute)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[WhatIsTheUTRView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(form, onSubmit)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "redirect to Trust Status for a POST if no existing data is found (creating a new session)" in {
+
+      val application = applicationBuilder(userAnswers = None).build()
+
+      val utr = "0987654321"
+
+      val request =
+        FakeRequest(POST, trustUTRRoute)
+          .withFormUrlEncodedBody(("value", utr))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual controllers.playback.routes.TrustStatusController.status().url
 
       application.stop()
     }
@@ -121,36 +158,6 @@ class WhatIsTheUTRVariationsControllerSpec extends SpecBase {
       application.stop()
     }
 
-    "redirect to Session Expired for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
-
-      val request = FakeRequest(GET, trustUTRRoute)
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual controllers.register.routes.SessionExpiredController.onPageLoad().url
-
-      application.stop()
-    }
-
-    "redirect to Session Expired for a POST if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = None).build()
-
-      val request =
-        FakeRequest(POST, trustUTRRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual controllers.register.routes.SessionExpiredController.onPageLoad().url
-
-      application.stop()
-    }
   }
 }

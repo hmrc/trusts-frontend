@@ -17,6 +17,7 @@
 package controllers.register.agents
 
 import controllers.actions._
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.AgentNameFormProvider
 import javax.inject.Inject
 import models.Mode
@@ -35,10 +36,10 @@ class AgentNameController @Inject()(
                                      override val messagesApi: MessagesApi,
                                      registrationsRepository: RegistrationsRepository,
                                      navigator: Navigator,
-                                     identify: IdentifierAction,
+                                     identify: RegistrationIdentifierAction,
                                      hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                      getData: DraftIdRetrievalActionProvider,
-                                     requireData: DataRequiredAction,
+                                     requireData: RegistrationDataRequiredAction,
                                      formProvider: AgentNameFormProvider,
                                      val controllerComponents: MessagesControllerComponents,
                                      view: AgentNameView

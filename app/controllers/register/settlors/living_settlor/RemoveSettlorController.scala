@@ -18,11 +18,12 @@ package controllers.register.settlors.living_settlor
 
 import controllers.RemoveIndexController
 import controllers.actions._
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
 import models.core.pages.FullName
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import navigation.Navigator
 import pages.QuestionPage
 import pages.register.settlors.living_settlor.SettlorIndividualNamePage
@@ -40,10 +41,10 @@ class RemoveSettlorController @Inject()(
                                          override val messagesApi: MessagesApi,
                                          override val registrationsRepository: RegistrationsRepository,
                                          navigator: Navigator,
-                                         identify: IdentifierAction,
+                                         identify: RegistrationIdentifierAction,
                                          validateIndex : IndexActionFilterProvider,
                                          getData: DraftIdRetrievalActionProvider,
-                                         requireData: DataRequiredAction,
+                                         requireData: RegistrationDataRequiredAction,
                                          override val formProvider: RemoveIndexFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          override val removeView: RemoveIndexView
@@ -58,7 +59,7 @@ class RemoveSettlorController @Inject()(
   override def actions(draftId : String, index: Int) =
     identify andThen getData(draftId) andThen requireData andThen validateIndex(index, LivingSettlors)
 
-  override def content(index: Int)(implicit request: DataRequest[AnyContent]) : String =
+  override def content(index: Int)(implicit request: RegistrationDataRequest[AnyContent]) : String =
     request.userAnswers.get(page(index)).map(_.toString).getOrElse(Messages(s"$messagesPrefix.default"))
 
   override def formRoute(draftId: String, index: Int): Call =

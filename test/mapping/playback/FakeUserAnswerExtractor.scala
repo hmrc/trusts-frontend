@@ -19,6 +19,7 @@ package mapping.playback
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
 import mapping.playback.beneficiaries.BeneficiaryExtractor
+import mapping.playback.protectors.ProtectorExtractor
 import mapping.playback.settlors.{SettlorExtractor, TrustTypeExtractor}
 import models.playback.UserAnswers
 import models.playback.http.GetTrust
@@ -27,9 +28,10 @@ class FakeUserAnswerExtractor @Inject()(beneficiary: BeneficiaryExtractor,
                                         leadTrustee: LeadTrusteeExtractor,
                                         settlors: SettlorExtractor,
                                         trustType: TrustTypeExtractor,
-                                        trustees: TrusteeExtractor
+                                        trustees: TrusteeExtractor,
+                                        protectors: ProtectorExtractor
                                         ) extends UserAnswersExtractor(
-  beneficiary, leadTrustee, settlors, trustType, trustees
+  beneficiary, leadTrustee, settlors, trustType, trustees, protectors
 ) {
 
   override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionErrors.PlaybackExtractionError, UserAnswers] =
@@ -42,9 +44,10 @@ class FakeFailingUserAnswerExtractor @Inject()(beneficiary: BeneficiaryExtractor
                                                leadTrustee: LeadTrusteeExtractor,
                                                settlors: SettlorExtractor,
                                                trustType: TrustTypeExtractor,
-                                               trustees: TrusteeExtractor
+                                               trustees: TrusteeExtractor,
+                                               protectors: ProtectorExtractor
                                        ) extends UserAnswersExtractor(
-  beneficiary, leadTrustee, settlors, trustType, trustees
+  beneficiary, leadTrustee, settlors, trustType, trustees, protectors
 ) {
 
   override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionErrors.PlaybackExtractionError, UserAnswers] =

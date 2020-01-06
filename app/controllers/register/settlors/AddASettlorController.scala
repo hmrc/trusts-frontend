@@ -17,9 +17,10 @@
 package controllers.register.settlors
 
 import controllers.actions._
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.{AddASettlorFormProvider, YesNoFormProvider}
 import javax.inject.Inject
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import models.{Enumerable, Mode}
 import navigation.Navigator
 import pages.register.settlors.living_settlor.SettlorKindOfTrustPage
@@ -39,9 +40,9 @@ class AddASettlorController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        registrationsRepository: RegistrationsRepository,
                                        @LivingSettlor navigator: Navigator,
-                                       identify: IdentifierAction,
+                                       identify: RegistrationIdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
-                                       requireData: DataRequiredAction,
+                                       requireData: RegistrationDataRequiredAction,
                                        yesNoFormProvider: YesNoFormProvider,
                                        addAnotherFormProvider: AddASettlorFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
@@ -64,7 +65,7 @@ class AddASettlorController @Inject()(
     }
   }
 
-  private def trustHintText(implicit request: DataRequest[AnyContent]): Option[String] = request.userAnswers.get(SettlorKindOfTrustPage) map { trust =>
+  private def trustHintText(implicit request: RegistrationDataRequest[AnyContent]): Option[String] = request.userAnswers.get(SettlorKindOfTrustPage) map { trust =>
     s"addASettlor.$trust"
   }
 

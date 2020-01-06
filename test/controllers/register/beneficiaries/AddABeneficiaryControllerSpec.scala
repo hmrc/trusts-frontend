@@ -16,7 +16,7 @@
 
 package controllers.register.beneficiaries
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.{AddABeneficiaryFormProvider, YesNoFormProvider}
 import models.NormalMode
 import models.core.pages.FullName
@@ -32,7 +32,7 @@ import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
 import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
 import views.html.register.beneficiaries.{AddABeneficiaryView, AddABeneficiaryYesNoView}
 
-class AddABeneficiaryControllerSpec extends SpecBase {
+class AddABeneficiaryControllerSpec extends RegistrationSpecBase {
 
   def onwardRoute: Call = Call("GET", "/foo")
 

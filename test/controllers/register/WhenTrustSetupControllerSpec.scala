@@ -18,7 +18,7 @@ package controllers.register
 
 import java.time.{LocalDate, ZoneOffset}
 
-import base.SpecBase
+import base.RegistrationSpecBase
 import forms.WhenTrustSetupFormProvider
 import models.NormalMode
 import models.registration.pages.WhenTrustSetupPage
@@ -27,7 +27,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.WhenTrustSetupView
 
-class WhenTrustSetupControllerSpec extends SpecBase with MockitoSugar {
+class WhenTrustSetupControllerSpec extends RegistrationSpecBase with MockitoSugar {
 
   val formProvider = new WhenTrustSetupFormProvider()
   val form = formProvider()

@@ -17,11 +17,12 @@
 package controllers.register.asset.property_or_land
 
 import controllers.actions._
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.register.asset.RemoveAssetController
 import forms.RemoveIndexFormProvider
 import javax.inject.Inject
 import models.core.pages.InternationalAddress
-import models.requests.DataRequest
+import models.requests.RegistrationDataRequest
 import pages.QuestionPage
 import pages.register.asset.property_or_land.PropertyOrLandInternationalAddressPage
 import play.api.i18n.{Messages, MessagesApi}
@@ -33,9 +34,9 @@ class RemovePropertyOrLandWithAddressInternationalController @Inject()(
                                                                         override val messagesApi: MessagesApi,
                                                                         override val registrationsRepository: RegistrationsRepository,
                                                                         override val formProvider: RemoveIndexFormProvider,
-                                                                        identify: IdentifierAction,
+                                                                        identify: RegistrationIdentifierAction,
                                                                         getData: DraftIdRetrievalActionProvider,
-                                                                        requireData: DataRequiredAction,
+                                                                        requireData: RegistrationDataRequiredAction,
                                                                         val controllerComponents: MessagesControllerComponents,
                                                                         require: RequiredAnswerActionProvider,
                                                                         val removeView: RemoveIndexView
@@ -48,7 +49,7 @@ class RemovePropertyOrLandWithAddressInternationalController @Inject()(
 
   override def page(index: Int): QuestionPage[InternationalAddress] = PropertyOrLandInternationalAddressPage(index)
 
-  override def content(index: Int)(implicit request: DataRequest[AnyContent]): String =
+  override def content(index: Int)(implicit request: RegistrationDataRequest[AnyContent]): String =
     request.userAnswers.get(page(index)).map(_.line1).getOrElse(Messages(s"$messagesPrefix.default"))
 
   override def formRoute(draftId: String, index: Int): Call =
