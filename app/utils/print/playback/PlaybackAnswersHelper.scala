@@ -71,7 +71,7 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
 
     if (protectors.nonEmpty) {
       Seq(
-        Seq(AnswerSection(sectionKey = Some("answerPage.section.protectors.heading"))),
+        Seq(AnswerSection(sectionKey = Some(messages("answerPage.section.protectors.heading")))),
         protectors
       ).flatten
     } else {

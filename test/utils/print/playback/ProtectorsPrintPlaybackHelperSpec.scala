@@ -21,6 +21,7 @@ import models.core.pages.FullName
 import pages.register.protectors.company.CompanyProtectorNamePage
 import pages.register.protectors.individual.IndividualProtectorNamePage
 import play.twirl.api.Html
+import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 
 class ProtectorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
@@ -29,43 +30,43 @@ class ProtectorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
 
     "generate protector sections" in {
 
-      val helper = injector.instanceOf[PrintPlaybackHelper]
-
       val answers = emptyUserAnswers
           .set(IndividualProtectorNamePage(0), FullName("Michael", None, "Finnegan")).success.value
           .set(IndividualProtectorNamePage(1), FullName("Joe", None, "Bloggs")).success.value
           .set(CompanyProtectorNamePage(0), "Bernardos").success.value
           .set(CompanyProtectorNamePage(1), "Red Cross Ltd.").success.value
 
-      val result = helper.summary(answers)
+      val helper = new PlaybackAnswersHelper(countryOptions = injector.instanceOf[CountryOptions], userAnswers = answers)
+
+      val result = helper.protectors
 
       result mustBe Seq(
-        AnswerSection(None, Nil, Some("answerPage.section.protectors.heading")),
+        AnswerSection(None, Nil, Some(messages("answerPage.section.protectors.heading"))),
         AnswerSection(
           headingKey = Some("Individual protector 1"),
           rows = Seq(
-            AnswerRow(label = "individualProtectorName.checkYourAnswersLabel", answer = Html("Michael Finnegan"), changeUrl = None)
+            AnswerRow(label = messages("individualProtectorName.checkYourAnswersLabel"), answer = Html("Michael Finnegan"), changeUrl = None)
           ),
           sectionKey = None
         ),
         AnswerSection(
           headingKey = Some("Individual protector 2"),
           rows = Seq(
-            AnswerRow(label = "individualProtectorName.checkYourAnswersLabel", answer = Html("Joe Bloggs"), changeUrl = None)
+            AnswerRow(label = messages("individualProtectorName.checkYourAnswersLabel"), answer = Html("Joe Bloggs"), changeUrl = None)
           ),
           sectionKey = None
         ),
         AnswerSection(
-          headingKey = Some("Company protector 1"),
+          headingKey = Some("Business protector 1"),
           rows = Seq(
-            AnswerRow(label = "companyProtectorName.checkYourAnswersLabel", answer = Html("Bernardos"), changeUrl = None)
+            AnswerRow(label = messages("companyProtectorName.checkYourAnswersLabel"), answer = Html("Bernardos"), changeUrl = None)
           ),
           sectionKey = None
         ),
         AnswerSection(
-          headingKey = Some("Company protector 2"),
+          headingKey = Some("Business protector 2"),
           rows = Seq(
-            AnswerRow(label = "companyProtectorName.checkYourAnswersLabel", answer = Html("Red Cross Ltd."), changeUrl = None)
+            AnswerRow(label = messages("companyProtectorName.checkYourAnswersLabel"), answer = Html("Red Cross Ltd."), changeUrl = None)
           ),
           sectionKey = None
         )
