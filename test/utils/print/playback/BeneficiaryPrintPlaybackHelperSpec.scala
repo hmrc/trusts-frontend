@@ -24,9 +24,9 @@ import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
 import play.twirl.api.Html
 import viewmodels.{AnswerRow, AnswerSection}
 
-class BeneficiaryPlaybackHelperSpec extends PlaybackSpecBase {
+class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
 
-  "Playback print helper" must {
+  "Beneficiary print playback helper" must {
 
     "generate charity beneficiaries sections" in {
 
