@@ -1458,7 +1458,7 @@ individualProtectorAddressYesNo.checkYourAnswersLabel = Do you know {0}’s addr
 individualProtectorAddressUkYesNo.checkYourAnswersLabel = Does {0} live in the UK?
 individualProtectorAddress.checkYourAnswersLabel = What is {0}’s address?
 individualProtectorPassportIDCardYesNo.checkYourAnswersLabel = Do you know {0}’s passport or ID card details?
-individualProtectorPassportIDCard.checkYourAnswersLabel = What are {0}’s passport/ID card details?
+individualProtectorPassportIDCard.checkYourAnswersLabel = What are {0}’s passport or ID card details?
 
 companyProtectorName.checkYourAnswersLabel = What is the business’s name?
 companyProtectorAddressOrUtr.checkYourAnswersLabel = Which of {0}’s details do you know?
