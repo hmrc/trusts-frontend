@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter
 
 import models.core.UserAnswers
 import models.core.pages.{FullName, InternationalAddress, UKAddress}
-import models.registration.pages.PassportOrIdCardDetails
+import models.registration.pages.{AddressOrUtr, PassportOrIdCardDetails}
 import pages.register.agents.AgentNamePage
 import pages.register.asset.shares.ShareCompanyNamePage
 import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
@@ -45,6 +45,14 @@ object CheckAnswersFormatters {
       HtmlFormat.escape(messages("site.yes"))
     } else {
       HtmlFormat.escape(messages("site.no"))
+    }
+  }
+
+  def addressOrUtr(answer: AddressOrUtr)(implicit messages: Messages): Html = {
+    if (answer == AddressOrUtr.Address) {
+      HtmlFormat.escape(messages("site.address"))
+    } else {
+      HtmlFormat.escape(messages("site.utr"))
     }
   }
 
