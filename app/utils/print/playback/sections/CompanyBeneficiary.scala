@@ -16,84 +16,32 @@
 
 package utils.print.playback.sections
 
-import models.core.pages.{InternationalAddress, UKAddress}
 import models.playback.UserAnswers
 import pages.register.beneficiaries.company._
 import play.api.i18n.Messages
-import utils.CheckAnswersFormatters
 import utils.countryOptions.CountryOptions
-import viewmodels.{AnswerRow, AnswerSection}
+import viewmodels.AnswerSection
 
 object CompanyBeneficiary {
 
-  def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] =
-    if (name(index, userAnswers).nonEmpty) {
-      Some(Seq(AnswerSection(
-        headingKey = None,
+  import utils.print.playback.sections.AnswerRowConverter._
+
+  def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)
+           (implicit messages: Messages): Seq[AnswerSection] =
+
+    userAnswers.get(CompanyBeneficiaryNamePage(index)).map { name =>
+      Seq(AnswerSection(
+        headingKey = Some(messages("answerPage.section.companyBeneficiary.subheading", index + 1)),
         Seq(
-          name(index, userAnswers),
-          shareOfIncomeYesNo(index, userAnswers),
-          shareOfIncome(index, userAnswers),
-          addressYesNo(index, userAnswers),
-          address(index, userAnswers, countryOptions)
-        ).flatten,
-        sectionKey = Some(messages("answerPage.section.companyBeneficiary.heading"))
-      )))
-    } else {
-      None
-    }
-
-  def name(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(CompanyBeneficiaryNamePage(index)) map {
-    x =>
-      AnswerRow(
-        "companyBeneficiaryName.checkYourAnswersLabel",
-        CheckAnswersFormatters.escape(x),
-        None
-      )
-  }
-
-  def shareOfIncomeYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
-    userAnswers.get(CompanyBeneficiaryDiscretionYesNoPage(index)) map {
-      x =>
-        AnswerRow(
-          "companyBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel",
-          CheckAnswersFormatters.yesOrNo(x),
-          None
-        )
-    }
-
-  def shareOfIncome(index: Int, userAnswers: UserAnswers): Option[AnswerRow] =
-    userAnswers.get(CompanyBeneficiaryShareOfIncomePage(index)) map {
-      x =>
-        AnswerRow(
-          "companyBeneficiaryShareOfIncome.checkYourAnswersLabel",
-          CheckAnswersFormatters.escape(x),
-          None
-        )
-    }
-
-  def addressYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
-    userAnswers.get(CompanyBeneficiaryAddressYesNoPage(index)) map {
-      x =>
-        AnswerRow(
-          "companyBeneficiaryAddressYesNo.checkYourAnswersLabel",
-          CheckAnswersFormatters.yesOrNo(x),
-          None
-        )
-    }
-
-  def address(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[AnswerRow] =
-    userAnswers.get(CompanyBeneficiaryAddressPage(index)) map {
-      case address: UKAddress => AnswerRow(
-        "companyBeneficiaryAddress.checkYourAnswersLabel",
-        CheckAnswersFormatters.ukAddress(address),
-        None
-      )
-      case address: InternationalAddress => AnswerRow(
-        "companyBeneficiaryAddress.checkYourAnswersLabel",
-        CheckAnswersFormatters.internationalAddress(address, countryOptions),
-        None
-      )
-    }
+          stringQuestion(CompanyBeneficiaryNamePage(index), userAnswers, "companyBeneficiaryName"),
+          yesNoQuestion(CompanyBeneficiaryDiscretionYesNoPage(index), userAnswers, "companyBeneficiaryShareOfIncomeYesNo", name),
+          stringQuestion(CompanyBeneficiaryShareOfIncomePage(index), userAnswers, "companyBeneficiaryShareOfIncome", name),
+          yesNoQuestion(CompanyBeneficiaryAddressYesNoPage(index), userAnswers, "companyBeneficiaryAddressYesNo", name),
+          yesNoQuestion(CompanyBeneficiaryAddressUKYesNoPage(index), userAnswers, "companyBeneficiaryAddressUKYesNo", name),
+          addressQuestion(CompanyBeneficiaryAddressPage(index), userAnswers, "companyBeneficiaryAddress", countryOptions = countryOptions, messageArg = name),
+          utrQuestion(CompanyBeneficiaryUtrPage(index), userAnswers, "companyBeneficiaryUtr", name)
+        ).flatten
+      ))
+    }.getOrElse(Nil)
 
 }
