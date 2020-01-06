@@ -57,8 +57,6 @@ site.onlyContinue = Continue
 site.date.hint = For example, 31 3 1980
 site.warning = Warning
 site.confirm-send = Confirm and send
-site.address = Address
-site.utr = Unique Taxpayer Reference
 
 site.address.uk.title = What is the address?
 site.address.uk.heading = What is {0}’s address?
@@ -828,6 +826,7 @@ individualBeneficiaryAddressUK.title = What is the individual beneficiary’s ad
 individualBeneficiaryAddressUK.heading = What is {0}’s address?
 individualBeneficiaryAddressUK.checkYourAnswersLabel = What is {0}’s address?
 
+individualBeneficiaryRoleInCompany.checkYourAnswersLabel = What is {0}’s role in the company that the trust was created for?
 individualBeneficiaryPassportIDCardYesNo.checkYourAnswersLabel = Do you know {0}’s passport or ID card details?
 individualBeneficiaryPassportIDCard.checkYourAnswersLabel = What are {0}’s passport or ID card details?
 

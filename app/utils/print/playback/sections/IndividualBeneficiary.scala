@@ -17,11 +17,11 @@
 package utils.print.playback.sections
 
 import models.playback.UserAnswers
-import models.registration.pages.{AddressOrUtr, RoleInCompany}
+import models.registration.pages.RoleInCompany
 import pages.register.beneficiaries.individual._
 import play.api.i18n.Messages
 import play.api.mvc.Call
-import play.twirl.api.{Html, HtmlFormat}
+import play.twirl.api.HtmlFormat
 import queries.Gettable
 import utils.CheckAnswersFormatters
 import utils.countryOptions.CountryOptions
@@ -41,6 +41,7 @@ object IndividualBeneficiary {
           headingKey = Some(messages("answerPage.section.individualBeneficiary.subheading") + s" ${index + 1}"),
           Seq(
             fullNameQuestion(IndividualBeneficiaryNamePage(index), userAnswers, "individualBeneficiaryName"),
+            roleInCompanyQuestion(IndividualBeneficiaryRoleInCompanyPage(index), userAnswers, "individualBeneficiaryRoleInCompany", name),
             yesNoQuestion(IndividualBeneficiaryDateOfBirthYesNoPage(index), userAnswers, "individualBeneficiaryDateOfBirthYesNo", name),
             dateQuestion(IndividualBeneficiaryDateOfBirthPage(index), userAnswers, "individualBeneficiaryDateOfBirth", name),
             yesNoQuestion(IndividualBeneficiaryIncomeYesNoPage(index), userAnswers, "individualBeneficiaryIncomeYesNo", name),
@@ -49,9 +50,9 @@ object IndividualBeneficiary {
             ninoQuestion(IndividualBeneficiaryNationalInsuranceNumberPage(index), userAnswers, "individualBeneficiaryNationalInsuranceNumber", name),
             yesNoQuestion(IndividualBeneficiaryAddressYesNoPage(index), userAnswers, "individualBeneficiaryAddressYesNo", name),
             yesNoQuestion(IndividualBeneficiaryAddressUKYesNoPage(index), userAnswers, "individualBeneficiaryAddressUKYesNo", name),
+            addressQuestion(IndividualBeneficiaryAddressPage(index), userAnswers, "individualBeneficiaryAddressUK", name, countryOptions),
             yesNoQuestion(IndividualBeneficiaryPassportIDCardYesNoPage(index), userAnswers, "individualBeneficiaryPassportIDCardYesNo", name),
             passportOrIdCardQuestion(IndividualBeneficiaryPassportIDCardPage(index), userAnswers, "individualBeneficiaryPassportIDCard", name, countryOptions),
-            addressQuestion(IndividualBeneficiaryAddressPage(index), userAnswers, "individualBeneficiaryAddressUK", name, countryOptions),
             yesNoQuestion(IndividualBeneficiaryVulnerableYesNoPage(index), userAnswers, "individualBeneficiaryVulnerableYesNo", name)
           ).flatten,
           sectionKey = None
@@ -66,17 +67,9 @@ object IndividualBeneficiary {
     userAnswers.get(query) map {x =>
       AnswerRow(
         messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-        CheckAnswersFormatters.addressOrUtr(x),
+        HtmlFormat.escape(x.toString),
         None
       )
-    }
-  }
-
-  private def addressOrUtr(answer: AddressOrUtr)(implicit messages: Messages): Html = {
-    if (answer == AddressOrUtr.Address) {
-      HtmlFormat.escape(messages("site.address"))
-    } else {
-      HtmlFormat.escape(messages("site.utr"))
     }
   }
 
