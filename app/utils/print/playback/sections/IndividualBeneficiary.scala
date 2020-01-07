@@ -17,12 +17,16 @@
 package utils.print.playback.sections
 
 import models.playback.UserAnswers
+import models.registration.pages.RoleInCompany
 import pages.register.beneficiaries.individual._
 import play.api.i18n.Messages
+import play.api.mvc.Call
+import play.twirl.api.HtmlFormat
+import queries.Gettable
 import utils.CheckAnswersFormatters
 import utils.countryOptions.CountryOptions
 import utils.print.playback.sections.AnswerRowConverter._
-import viewmodels.AnswerSection
+import viewmodels.{AnswerRow, AnswerSection}
 
 object IndividualBeneficiary {
 
@@ -37,21 +41,36 @@ object IndividualBeneficiary {
           headingKey = Some(messages("answerPage.section.individualBeneficiary.subheading") + s" ${index + 1}"),
           Seq(
             fullNameQuestion(IndividualBeneficiaryNamePage(index), userAnswers, "individualBeneficiaryName"),
+            roleInCompanyQuestion(IndividualBeneficiaryRoleInCompanyPage(index), userAnswers, "individualBeneficiaryRoleInCompany", name),
             yesNoQuestion(IndividualBeneficiaryDateOfBirthYesNoPage(index), userAnswers, "individualBeneficiaryDateOfBirthYesNo", name),
             dateQuestion(IndividualBeneficiaryDateOfBirthPage(index), userAnswers, "individualBeneficiaryDateOfBirth", name),
             yesNoQuestion(IndividualBeneficiaryIncomeYesNoPage(index), userAnswers, "individualBeneficiaryIncomeYesNo", name),
-            monetaryAmountQuestion(IndividualBeneficiaryIncomePage(index), userAnswers, labelKey = "individualBeneficiaryIncome", name ),
+            monetaryAmountQuestion(IndividualBeneficiaryIncomePage(index), userAnswers, "individualBeneficiaryIncome", name ),
             yesNoQuestion(IndividualBeneficiaryNationalInsuranceYesNoPage(index), userAnswers, "individualBeneficiaryNationalInsuranceYesNo", name),
             ninoQuestion(IndividualBeneficiaryNationalInsuranceNumberPage(index), userAnswers, "individualBeneficiaryNationalInsuranceNumber", name),
             yesNoQuestion(IndividualBeneficiaryAddressYesNoPage(index), userAnswers, "individualBeneficiaryAddressYesNo", name),
             yesNoQuestion(IndividualBeneficiaryAddressUKYesNoPage(index), userAnswers, "individualBeneficiaryAddressUKYesNo", name),
             addressQuestion(IndividualBeneficiaryAddressPage(index), userAnswers, "individualBeneficiaryAddressUK", name, countryOptions),
+            yesNoQuestion(IndividualBeneficiaryPassportIDCardYesNoPage(index), userAnswers, "individualBeneficiaryPassportIDCardYesNo", name),
+            passportOrIdCardQuestion(IndividualBeneficiaryPassportIDCardPage(index), userAnswers, "individualBeneficiaryPassportIDCard", name, countryOptions),
             yesNoQuestion(IndividualBeneficiaryVulnerableYesNoPage(index), userAnswers, "individualBeneficiaryVulnerableYesNo", name)
           ).flatten,
           sectionKey = None
         )
       )
     }.getOrElse(Nil)
+  }
+
+  private def roleInCompanyQuestion(query: Gettable[RoleInCompany], userAnswers: UserAnswers, labelKey: String,
+                            messageArg: String = "", changeRoute: Option[Call] = None)
+                           (implicit messages:Messages) = {
+    userAnswers.get(query) map {x =>
+      AnswerRow(
+        messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
+        HtmlFormat.escape(x.toString),
+        None
+      )
+    }
   }
 
 }

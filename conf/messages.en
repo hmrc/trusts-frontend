@@ -57,8 +57,6 @@ site.onlyContinue = Continue
 site.date.hint = For example, 31 3 1980
 site.warning = Warning
 site.confirm-send = Confirm and send
-site.address = Address
-site.utr = Unique Taxpayer Reference
 
 site.address.uk.title = What is the address?
 site.address.uk.heading = What is {0}’s address?
@@ -775,7 +773,6 @@ individualBeneficiaryName.error.firstname.invalid = The individual beneficiary�
 individualBeneficiaryName.error.middlename.invalid = The individual beneficiary’s middle names must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 individualBeneficiaryName.error.lastname.invalid = The individual beneficiary’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
-
 individualBeneficiaryDateOfBirthYesNo.title = Do you know the individual beneficiary’s date of birth?
 individualBeneficiaryDateOfBirthYesNo.heading = Do you know {0}’s date of birth?
 individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
@@ -828,6 +825,10 @@ individualBeneficiaryAddressYesNo.error.required = Select yes if you know the in
 individualBeneficiaryAddressUK.title = What is the individual beneficiary’s address?
 individualBeneficiaryAddressUK.heading = What is {0}’s address?
 individualBeneficiaryAddressUK.checkYourAnswersLabel = What is {0}’s address?
+
+individualBeneficiaryRoleInCompany.checkYourAnswersLabel = What is {0}’s role in the company that the trust was created for?
+individualBeneficiaryPassportIDCardYesNo.checkYourAnswersLabel = Do you know {0}’s passport or ID card details?
+individualBeneficiaryPassportIDCard.checkYourAnswersLabel = What are {0}’s passport or ID card details?
 
 individualBeneficiaryVulnerableYesNo.title = Has a vulnerable person election form (VPE1) been submitted to HMRC for the individual beneficiary?
 individualBeneficiaryVulnerableYesNo.heading = Has a vulnerable person election form (VPE1) been submitted to HMRC for {0}?

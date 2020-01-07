@@ -152,7 +152,7 @@ object AnswerRowConverter {
     userAnswers.get(query) map {x =>
       AnswerRow(
         messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-        CheckAnswersFormatters.addressOrUtr(x),
+        HtmlFormat.escape(x.toString),
         None
       )
     }
