@@ -57,6 +57,8 @@ site.onlyContinue = Continue
 site.date.hint = For example, 31 3 1980
 site.warning = Warning
 site.confirm-send = Confirm and send
+site.address = Address
+site.utr = Unique Taxpayer Reference
 
 site.address.uk.title = What is the address?
 site.address.uk.heading = What is {0}’s address?
@@ -1448,3 +1450,29 @@ playbackProblemContactHMRC.p1.link = contact the trusts helpline (opens in a new
 playbackProblemContactHMRC.p1.afterLink = so we can confirm details with you about the trust.
 playbackProblemContactHMRC.p2 = Please have the relevant documents relating to the trust and its Self Assessment available when you contact HMRC.
 
+playbackLastDeclared.title = Last declared copy of the trust’s registration
+playbackLastDeclared.heading = Last declared copy of the trust’s registration
+playbackLastDeclared.declareAnnually.warning = You only need to declare the trust is up to date every year if there is a tax liability.
+playbackLastDeclared.informationFirstRegistered = The following sections indicate what was entered when the trust was first registered. No further updates to trust details, assets and years of tax liability are required through this service.
+playbackLastDeclared.selfAssessmentOnline = If you need to view the latest information HMRC holds about these sections or need to update them, use Self Assessment Online for trusts.
+
+individualProtectorName.checkYourAnswersLabel = What is the protector's name?
+individualProtectorDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
+individualProtectorDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
+individualProtectorNINOYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
+individualProtectorNINO.checkYourAnswersLabel = What is {0}’s National Insurance number?
+individualProtectorAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+individualProtectorAddressUkYesNo.checkYourAnswersLabel = Does {0} live in the UK?
+individualProtectorAddress.checkYourAnswersLabel = What is {0}’s address?
+individualProtectorPassportIDCardYesNo.checkYourAnswersLabel = Do you know {0}’s passport or ID card details?
+individualProtectorPassportIDCard.checkYourAnswersLabel = What are {0}’s passport/ID card details?
+
+companyProtectorName.checkYourAnswersLabel = What is the business’s name?
+companyProtectorAddressOrUtr.checkYourAnswersLabel = Which of {0}’s details do you know?
+companyProtectorUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
+companyProtectorAddressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+companyProtectorAddress.checkYourAnswersLabel = What is {0}’s address?
+
+answerPage.section.protectors.heading = Protectors
+answerPage.section.individualProtector.subheading = Individual protector {0}
+answerPage.section.companyProtector.subheading = Business protector {0}

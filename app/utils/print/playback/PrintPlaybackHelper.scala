@@ -34,7 +34,8 @@ class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions){
       playbackAnswersHelper.leadTrustee,
       Seq(AnswerSection(sectionKey = Some("answerPage.section.beneficiaries.heading"))),
       playbackAnswersHelper.individualBeneficiaries,
-      playbackAnswersHelper.charityBeneficiaries
+      playbackAnswersHelper.charityBeneficiaries,
+      playbackAnswersHelper.protectors
     ).flatten
 
   }

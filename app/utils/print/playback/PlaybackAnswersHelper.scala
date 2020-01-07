@@ -20,6 +20,7 @@ import models.playback.UserAnswers
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
 import utils.print.playback.sections._
+import utils.print.playback.sections.protectors.{CompanyProtector, IndividualProtector}
 import viewmodels.AnswerSection
 
 class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAnswers)
@@ -46,6 +47,40 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
       case 0 => Nil
       case _ =>
         (for (index <- 0 to size) yield IndividualBeneficiary(index, userAnswers, countryOptions)).flatten
+    }
+  }
+
+  def protectors : Seq[AnswerSection] = {
+
+    val protectors: Seq[AnswerSection] = individualProtectors ++ companyProtectors
+
+    if (protectors.nonEmpty) {
+      Seq(
+        Seq(AnswerSection(sectionKey = Some(messages("answerPage.section.protectors.heading")))),
+        protectors
+      ).flatten
+    } else {
+      Nil
+    }
+  }
+
+  private def individualProtectors : Seq[AnswerSection] = {
+    val size = userAnswers.get(_root_.sections.protectors.IndividualProtectors).map(_.value.size).getOrElse(0)
+
+    size match {
+      case 0 => Nil
+      case _ =>
+        (for (index <- 0 to size) yield IndividualProtector(index, userAnswers, countryOptions)).flatten
+    }
+  }
+
+  private def companyProtectors : Seq[AnswerSection] = {
+    val size = userAnswers.get(_root_.sections.protectors.CompanyProtectors).map(_.value.size).getOrElse(0)
+
+    size match {
+      case 0 => Nil
+      case _ =>
+        (for (index <- 0 to size) yield CompanyProtector(index, userAnswers, countryOptions)).flatten
     }
   }
 }
