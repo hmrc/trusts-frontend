@@ -31,12 +31,8 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
 
   def trustee(index: Int): Seq[AnswerSection] = {
 
-    println("index: "+index)
-    println("IsThisLeadTrusteePage(index): "+IsThisLeadTrusteePage(index))
     userAnswers.get(IsThisLeadTrusteePage(index)) flatMap { isLeadTrustee =>
       userAnswers.get(TrusteeIndividualOrBusinessPage(index)) flatMap { individualOrBusiness =>
-        println("**************")
-        println("isLeadTrustee: "+isLeadTrustee)
         if (isLeadTrustee) {
           individualOrBusiness match {
             case IndividualOrBusiness.Individual => LeadTrusteeIndividual(index, userAnswers, countryOptions)
@@ -55,13 +51,9 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
 
   def allTrustees : Seq[AnswerSection] = {
 
-    val trustees = userAnswers.get(_root_.sections.Trustees)
-
-    println("trustees: "+trustees)
-
-
     val size = userAnswers.get(_root_.sections.Trustees).map(_.size).getOrElse(0)
-    println("******* allTrustees *******")
+
+    println(userAnswers.get(_root_.sections.Trustees))
     println("size: "+size)
 
     size match {
