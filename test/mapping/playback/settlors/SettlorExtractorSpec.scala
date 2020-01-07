@@ -143,7 +143,7 @@ class SettlorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SettlorBusinessNamePage(0)).get mustBe "Company Settlor 1"
         extraction.right.value.get(SettlorUtrYesNoPage(0)).get mustBe true
         extraction.right.value.get(SettlorUtrPage(0)).get mustBe "1234567890"
-        extraction.right.value.get(SettlorIndividualAddressYesNoPage(0)).get mustBe false
+        extraction.right.value.get(SettlorIndividualAddressYesNoPage(0)) mustNot be(defined)
         extraction.right.value.get(SettlorIndividualAddressUKYesNoPage(0)) mustNot be(defined)
         extraction.right.value.get(SettlorIndividualAddressUKPage(0)) mustNot be(defined)
         extraction.right.value.get(SettlorIndividualAddressInternationalPage(0)) mustNot be(defined)
@@ -156,7 +156,7 @@ class SettlorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SettlorBusinessNamePage(1)).get mustBe "Company Settlor 2"
         extraction.right.value.get(SettlorUtrYesNoPage(1)).get mustBe true
         extraction.right.value.get(SettlorUtrPage(1)).get mustBe "1234567890"
-        extraction.right.value.get(SettlorIndividualAddressYesNoPage(1)).get mustBe false
+        extraction.right.value.get(SettlorIndividualAddressYesNoPage(1)) mustNot be(defined)
         extraction.right.value.get(SettlorIndividualAddressUKYesNoPage(1)) mustNot be(defined)
         extraction.right.value.get(SettlorIndividualAddressUKPage(1)) mustNot be(defined)
         extraction.right.value.get(SettlorIndividualAddressInternationalPage(1)) mustNot be(defined)
@@ -173,7 +173,7 @@ class SettlorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SettlorIndividualAddressUKYesNoPage(2)) mustNot be(defined)
         extraction.right.value.get(SettlorIndividualAddressUKPage(2)) mustNot be(defined)
         extraction.right.value.get(SettlorIndividualAddressInternationalPage(2)) mustNot be(defined)
-        extraction.right.value.get(SettlorIndividualPassportIDCardYesNoPage(2)).get mustBe false
+        extraction.right.value.get(SettlorIndividualPassportIDCardYesNoPage(2)) mustNot be(defined)
         extraction.right.value.get(SettlorIndividualPassportIDCardPage(2)) mustNot be(defined)
         extraction.right.value.get(SettlorSafeIdPage(2)) mustNot be(defined)
         extraction.right.value.get(SettlorMetaData(2)).get mustBe MetaData("1", Some("01"), "2019-11-26")

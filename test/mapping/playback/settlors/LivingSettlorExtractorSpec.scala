@@ -154,42 +154,39 @@ class LivingSettlorExtractorSpec extends FreeSpec with MustMatchers
           extraction mustBe 'right
 
           extraction.right.value.get(SettlorBusinessNamePage(0)).get mustBe "Company Settlor 0"
-          extraction.right.value.get(SettlorBusinessNamePage(1)).get mustBe "Company Settlor 1"
-          extraction.right.value.get(SettlorBusinessNamePage(2)).get mustBe "Company Settlor 2"
-
           extraction.right.value.get(SettlorMetaData(0)).get mustBe MetaData("0", Some("01"), "2019-11-26")
-          extraction.right.value.get(SettlorMetaData(1)).get mustBe MetaData("1", Some("01"), "2019-11-26")
-          extraction.right.value.get(SettlorMetaData(2)).get mustBe MetaData("2", Some("01"), "2019-11-26")
-
           extraction.right.value.get(SettlorCompanyTypePage(0)).get mustBe "Trading"
-          extraction.right.value.get(SettlorCompanyTypePage(1)).get mustBe "Investment"
-          extraction.right.value.get(SettlorCompanyTypePage(2)) mustNot be(defined)
-
           extraction.right.value.get(SettlorCompanyTimePage(0)).get mustBe false
-          extraction.right.value.get(SettlorCompanyTimePage(1)).get mustBe true
-          extraction.right.value.get(SettlorCompanyTimePage(2)) mustNot be(defined)
-
+          extraction.right.value.get(SettlorUtrYesNoPage(0)).get mustBe false
           extraction.right.value.get(SettlorUtrPage(0)) mustNot be(defined)
-          extraction.right.value.get(SettlorUtrPage(1)).get mustBe "1234567890"
-          extraction.right.value.get(SettlorUtrPage(2)) mustNot be(defined)
-
           extraction.right.value.get(SettlorSafeIdPage(0)).get mustBe "8947584-94759745-84758745"
-          extraction.right.value.get(SettlorSafeIdPage(1)).get mustBe "8947584-94759745-84758745"
-          extraction.right.value.get(SettlorSafeIdPage(2)).get mustBe "8947584-94759745-84758745"
-
           extraction.right.value.get(SettlorIndividualAddressYesNoPage(0)).get mustBe true
-          extraction.right.value.get(SettlorIndividualAddressYesNoPage(1)).get mustBe false
-          extraction.right.value.get(SettlorIndividualAddressYesNoPage(2)).get mustBe true
-
           extraction.right.value.get(SettlorIndividualAddressInternationalPage(0)).get mustBe InternationalAddress("line 0", "line2", None, "DE")
           extraction.right.value.get(SettlorIndividualAddressUKPage(0)) mustNot be(defined)
+          extraction.right.value.get(SettlorIndividualAddressUKYesNoPage(0)).get mustBe false
+
+          extraction.right.value.get(SettlorBusinessNamePage(1)).get mustBe "Company Settlor 1"
+          extraction.right.value.get(SettlorMetaData(1)).get mustBe MetaData("1", Some("01"), "2019-11-26")
+          extraction.right.value.get(SettlorCompanyTypePage(1)).get mustBe "Investment"
+          extraction.right.value.get(SettlorCompanyTimePage(1)).get mustBe true
+          extraction.right.value.get(SettlorUtrYesNoPage(1)).get mustBe true
+          extraction.right.value.get(SettlorUtrPage(1)).get mustBe "1234567890"
+          extraction.right.value.get(SettlorSafeIdPage(1)).get mustBe "8947584-94759745-84758745"
+          extraction.right.value.get(SettlorIndividualAddressYesNoPage(1)) mustNot be(defined)
           extraction.right.value.get(SettlorIndividualAddressInternationalPage(1)) mustNot be(defined)
           extraction.right.value.get(SettlorIndividualAddressUKPage(1)) mustNot be(defined)
+          extraction.right.value.get(SettlorIndividualAddressUKYesNoPage(1)) mustNot be(defined)
+
+          extraction.right.value.get(SettlorBusinessNamePage(2)).get mustBe "Company Settlor 2"
+          extraction.right.value.get(SettlorMetaData(2)).get mustBe MetaData("2", Some("01"), "2019-11-26")
+          extraction.right.value.get(SettlorCompanyTypePage(2)) mustNot be(defined)
+          extraction.right.value.get(SettlorCompanyTimePage(2)) mustNot be(defined)
+          extraction.right.value.get(SettlorUtrYesNoPage(2)).get mustBe false
+          extraction.right.value.get(SettlorUtrPage(2)) mustNot be(defined)
+          extraction.right.value.get(SettlorSafeIdPage(2)).get mustBe "8947584-94759745-84758745"
+          extraction.right.value.get(SettlorIndividualAddressYesNoPage(2)).get mustBe true
           extraction.right.value.get(SettlorIndividualAddressInternationalPage(2)) mustNot be(defined)
           extraction.right.value.get(SettlorIndividualAddressUKPage(2)).get mustBe UKAddress("line 2", "line2", None, None, "NE11NE")
-
-          extraction.right.value.get(SettlorIndividualAddressUKYesNoPage(0)).get mustBe false
-          extraction.right.value.get(SettlorIndividualAddressUKYesNoPage(1)) mustNot be(defined)
           extraction.right.value.get(SettlorIndividualAddressUKYesNoPage(2)).get mustBe true
         }
 
@@ -241,7 +238,7 @@ class LivingSettlorExtractorSpec extends FreeSpec with MustMatchers
           extraction.right.value.get(SettlorIndividualAddressUKYesNoPage(0)) mustNot be(defined)
           extraction.right.value.get(SettlorIndividualAddressUKPage(0)) mustNot be(defined)
           extraction.right.value.get(SettlorIndividualAddressInternationalPage(0)) mustNot be(defined)
-          extraction.right.value.get(SettlorIndividualPassportIDCardYesNoPage(0)).get mustBe false
+          extraction.right.value.get(SettlorIndividualPassportIDCardYesNoPage(0)) mustNot be(defined)
           extraction.right.value.get(SettlorIndividualPassportIDCardPage(0)) mustNot be(defined)
           extraction.right.value.get(SettlorSafeIdPage(0)) mustNot be(defined)
           extraction.right.value.get(SettlorMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
@@ -257,49 +254,42 @@ class LivingSettlorExtractorSpec extends FreeSpec with MustMatchers
           extraction mustBe 'right
 
           extraction.right.value.get(SettlorIndividualNamePage(0)).get mustBe FullName("First Name 0", None, "Last Name 0")
-          extraction.right.value.get(SettlorIndividualNamePage(1)).get mustBe FullName("First Name 1", None, "Last Name 1")
-          extraction.right.value.get(SettlorIndividualNamePage(2)).get mustBe FullName("First Name 2", None, "Last Name 2")
-
           extraction.right.value.get(SettlorIndividualDateOfBirthPage(0)).get mustBe LocalDate.of(1970,2,1)
-          extraction.right.value.get(SettlorIndividualDateOfBirthPage(1)).get mustBe LocalDate.of(1970,2,1)
-          extraction.right.value.get(SettlorIndividualDateOfBirthPage(2)).get mustBe LocalDate.of(1970,2,1)
-
           extraction.right.value.get(SettlorMetaData(0)).get mustBe MetaData("0", Some("01"), "2019-11-26")
-          extraction.right.value.get(SettlorMetaData(1)).get mustBe MetaData("1", Some("01"), "2019-11-26")
-          extraction.right.value.get(SettlorMetaData(2)).get mustBe MetaData("2", Some("01"), "2019-11-26")
-
           extraction.right.value.get(SettlorIndividualNINOYesNoPage(0)).get mustBe true
-          extraction.right.value.get(SettlorIndividualNINOYesNoPage(1)).get mustBe false
-          extraction.right.value.get(SettlorIndividualNINOYesNoPage(2)).get mustBe false
-
           extraction.right.value.get(SettlorIndividualNINOPage(0)).get mustBe "0234567890"
-          extraction.right.value.get(SettlorIndividualNINOPage(1)) mustNot be(defined)
-          extraction.right.value.get(SettlorIndividualNINOPage(2)) mustNot be(defined)
-
-          extraction.right.value.get(SettlorIndividualAddressYesNoPage(0)).get mustBe false
-          extraction.right.value.get(SettlorIndividualAddressYesNoPage(1)).get mustBe true
-          extraction.right.value.get(SettlorIndividualAddressYesNoPage(2)).get mustBe true
-
+          extraction.right.value.get(SettlorIndividualAddressYesNoPage(0)) mustNot be(defined)
           extraction.right.value.get(SettlorIndividualAddressInternationalPage(0)) mustNot be(defined)
           extraction.right.value.get(SettlorIndividualAddressUKPage(0)) mustNot be(defined)
+          extraction.right.value.get(SettlorIndividualAddressUKYesNoPage(0)) mustNot be(defined)
+          extraction.right.value.get(SettlorIndividualPassportIDCardYesNoPage(0)) mustNot be(defined)
+          extraction.right.value.get(SettlorIndividualPassportIDCardPage(0)) mustNot be(defined)
+          extraction.right.value.get(SettlorSafeIdPage(0)).get mustBe "8947584-94759745-84758745"
+
+          extraction.right.value.get(SettlorIndividualNamePage(1)).get mustBe FullName("First Name 1", None, "Last Name 1")
+          extraction.right.value.get(SettlorIndividualDateOfBirthPage(1)).get mustBe LocalDate.of(1970,2,1)
+          extraction.right.value.get(SettlorMetaData(1)).get mustBe MetaData("1", Some("01"), "2019-11-26")
+          extraction.right.value.get(SettlorIndividualNINOYesNoPage(1)).get mustBe false
+          extraction.right.value.get(SettlorIndividualNINOPage(1)) mustNot be(defined)
+          extraction.right.value.get(SettlorIndividualAddressYesNoPage(1)).get mustBe true
           extraction.right.value.get(SettlorIndividualAddressInternationalPage(1)).get mustBe InternationalAddress("line 1", "line2", None, "DE")
           extraction.right.value.get(SettlorIndividualAddressUKPage(1)) mustNot be(defined)
-          extraction.right.value.get(SettlorIndividualAddressInternationalPage(2)) mustNot be(defined)
-          extraction.right.value.get(SettlorIndividualAddressUKPage(2)).get mustBe UKAddress("line 2", "line2", None, None, "NE11NE")
-
-          extraction.right.value.get(SettlorIndividualAddressUKYesNoPage(0)) mustNot be(defined)
           extraction.right.value.get(SettlorIndividualAddressUKYesNoPage(1)).get mustBe false
-          extraction.right.value.get(SettlorIndividualAddressUKYesNoPage(2)).get mustBe true
-
-          extraction.right.value.get(SettlorIndividualPassportIDCardYesNoPage(0)).get mustBe false
-          extraction.right.value.get(SettlorIndividualPassportIDCardPage(0)) mustNot be(defined)
           extraction.right.value.get(SettlorIndividualPassportIDCardYesNoPage(1)).get mustBe false
           extraction.right.value.get(SettlorIndividualPassportIDCardPage(1)) mustNot be(defined)
+          extraction.right.value.get(SettlorSafeIdPage(1)).get mustBe "8947584-94759745-84758745"
+
+          extraction.right.value.get(SettlorIndividualNamePage(2)).get mustBe FullName("First Name 2", None, "Last Name 2")
+          extraction.right.value.get(SettlorIndividualDateOfBirthPage(2)).get mustBe LocalDate.of(1970,2,1)
+          extraction.right.value.get(SettlorMetaData(2)).get mustBe MetaData("2", Some("01"), "2019-11-26")
+          extraction.right.value.get(SettlorIndividualNINOYesNoPage(2)).get mustBe false
+          extraction.right.value.get(SettlorIndividualNINOPage(2)) mustNot be(defined)
+          extraction.right.value.get(SettlorIndividualAddressYesNoPage(2)).get mustBe true
+          extraction.right.value.get(SettlorIndividualAddressInternationalPage(2)) mustNot be(defined)
+          extraction.right.value.get(SettlorIndividualAddressUKPage(2)).get mustBe UKAddress("line 2", "line2", None, None, "NE11NE")
+          extraction.right.value.get(SettlorIndividualAddressUKYesNoPage(2)).get mustBe true
           extraction.right.value.get(SettlorIndividualPassportIDCardYesNoPage(2)).get mustBe true
           extraction.right.value.get(SettlorIndividualPassportIDCardPage(2)).get.country mustBe "DE"
-
-          extraction.right.value.get(SettlorSafeIdPage(0)).get mustBe "8947584-94759745-84758745"
-          extraction.right.value.get(SettlorSafeIdPage(1)).get mustBe "8947584-94759745-84758745"
           extraction.right.value.get(SettlorSafeIdPage(2)).get mustBe "8947584-94759745-84758745"
 
         }
