@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package utils.print.playback.sections
+package utils.print.playback.sections.beneficiaries
 
 import models.core.pages.{InternationalAddress, UKAddress}
 import models.playback.UserAnswers

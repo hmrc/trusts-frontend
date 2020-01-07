@@ -27,7 +27,8 @@ class BeneficiaryExtractor @Inject()(charityBeneficiaryExtractor: CharityBenefic
                                      trustBeneficiaryExtractor: TrustBeneficiaryExtractor,
                                      otherBeneficiaryExtractor: OtherBeneficiaryExtractor,
                                      classOfBeneficiaryExtractor: ClassOfBeneficiaryExtractor,
-                                     individualBeneficiaryExtractor: IndividualBeneficiaryExtractor) extends PlaybackExtractor[DisplayTrustBeneficiaryType] {
+                                     individualBeneficiaryExtractor: IndividualBeneficiaryExtractor,
+                                     largeBeneficiaryExtractor: LargeBeneficiaryExtractor) extends PlaybackExtractor[DisplayTrustBeneficiaryType] {
 
   override def extract(answers: UserAnswers, data: DisplayTrustBeneficiaryType): Either[PlaybackExtractionError, UserAnswers] = {
 
@@ -39,7 +40,8 @@ class BeneficiaryExtractor @Inject()(charityBeneficiaryExtractor: CharityBenefic
       trustBeneficiaryExtractor.extract(answers, data.trust),
       otherBeneficiaryExtractor.extract(answers, data.other),
       classOfBeneficiaryExtractor.extract(answers, data.unidentified),
-      individualBeneficiaryExtractor.extract(answers, data.individualDetails)
+      individualBeneficiaryExtractor.extract(answers, data.individualDetails),
+      largeBeneficiaryExtractor.extract(answers, data.large)
     ).collect {
       case Right(z) => z
     }

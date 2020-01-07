@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package utils.print.playback.sections
+package utils.print.playback.sections.beneficiaries
 
 import models.core.pages.{InternationalAddress, UKAddress}
 import models.playback.UserAnswers
 import pages.register.beneficiaries.trust._
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
-import utils.CheckAnswersFormatters._
+import utils.CheckAnswersFormatters.{internationalAddress, ukAddress, yesOrNo}
 import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 
