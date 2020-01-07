@@ -22,7 +22,7 @@ import mapping.playback.{PlaybackExtractor, PlaybackImplicits}
 import models.core.pages.{Address, InternationalAddress, UKAddress}
 import models.playback.http.{DisplayTrustCharityType, DisplayTrustIdentificationOrgType}
 import models.playback.{MetaData, UserAnswers}
-import pages.register.beneficiaries.charity.{CharityBeneficiaryAddressYesNoPage, _}
+import pages.register.beneficiaries.charity._
 import play.api.Logger
 
 import scala.util.{Failure, Success, Try}

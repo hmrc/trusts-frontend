@@ -50,7 +50,8 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
     val beneficiaries = Seq(
       individualBeneficiaries,
       charityBeneficiaries,
-      companyBeneficiaries
+      companyBeneficiaries,
+      trustBeneficiaries
     ).flatten
 
     if (beneficiaries.nonEmpty) {
@@ -60,6 +61,16 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
       ).flatten
     } else {
       Nil
+    }
+  }
+
+  private def trustBeneficiaries : Seq[AnswerSection] = {
+    val size = userAnswers.get(_root_.sections.beneficiaries.TrustBeneficiaries).map(_.value.size).getOrElse(0)
+
+    size match {
+      case 0 => Nil
+      case _ =>
+        (for (index <- 0 to size) yield TrustBeneficiary(index, userAnswers, countryOptions)).flatten
     }
   }
 
