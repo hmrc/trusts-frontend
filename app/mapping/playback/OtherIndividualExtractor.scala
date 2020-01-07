@@ -20,18 +20,18 @@ import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
 import mapping.registration.PassportType
 import models.core.pages.{Address, InternationalAddress, UKAddress}
-import models.playback.http.{DisplayTrustIdentificationType, DisplayTrustIndividualDetailsType}
+import models.playback.http.{DisplayTrustIdentificationType, DisplayTrustNaturalPersonType}
 import models.playback.{MetaData, UserAnswers}
 import pages.register.natural.individual._
 import play.api.Logger
 
 import scala.util.{Failure, Success, Try}
 
-class OtherIndividualExtractor @Inject() extends PlaybackExtractor[Option[List[DisplayTrustIndividualDetailsType]]] {
+class OtherIndividualExtractor @Inject() extends PlaybackExtractor[Option[List[DisplayTrustNaturalPersonType]]] {
 
   import PlaybackImplicits._
 
-  override def extract(answers: UserAnswers, data: Option[List[DisplayTrustIndividualDetailsType]]): Either[PlaybackExtractionError, UserAnswers] =
+  override def extract(answers: UserAnswers, data: Option[List[DisplayTrustNaturalPersonType]]): Either[PlaybackExtractionError, UserAnswers] =
     {
       data match {
         case None => Left(FailedToExtractData("No Other Individual"))
@@ -62,12 +62,12 @@ class OtherIndividualExtractor @Inject() extends PlaybackExtractor[Option[List[D
               Right(a)
             case Failure(exception) =>
               Logger.warn(s"[OtherIndividualExtractor] failed to extract data due to ${exception.getMessage}")
-              Left(FailedToExtractData(DisplayTrustIndividualDetailsType.toString))
+              Left(FailedToExtractData(DisplayTrustNaturalPersonType.toString))
           }
       }
     }
 
-  private def extractIdentification(individual: DisplayTrustIndividualDetailsType, index: Int, answers: UserAnswers) = {
+  private def extractIdentification(individual: DisplayTrustNaturalPersonType, index: Int, answers: UserAnswers) = {
     individual.identification map {
 
       case DisplayTrustIdentificationType(_, Some(nino), None, None) =>
@@ -95,7 +95,7 @@ class OtherIndividualExtractor @Inject() extends PlaybackExtractor[Option[List[D
     }
   }
 
-  private def extractDateOfBirth(individual: DisplayTrustIndividualDetailsType, index: Int, answers: UserAnswers) = {
+  private def extractDateOfBirth(individual: DisplayTrustNaturalPersonType, index: Int, answers: UserAnswers) = {
     individual.dateOfBirth match {
       case Some(dob) =>
         answers.set(OtherIndividualDateOfBirthYesNoPage(index), true)
@@ -125,4 +125,3 @@ class OtherIndividualExtractor @Inject() extends PlaybackExtractor[Option[List[D
   }
 
 }
-

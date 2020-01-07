@@ -149,4 +149,15 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
     }
   }
 
+  def otherIndividual : Seq[AnswerSection] = {
+    val size = userAnswers.get(_root_.sections.natural.Individual).map(_.value.size).getOrElse(0)
+
+    size match {
+      case 0 => Nil
+      case _ =>
+        Seq(AnswerSection(sectionKey = Some(messages("answerPage.section.other.individual.heading")))) ++
+          (for (index <- 0 to size) yield OtherIndividual(index, userAnswers, countryOptions)).flatten
+    }
+  }
+
 }
