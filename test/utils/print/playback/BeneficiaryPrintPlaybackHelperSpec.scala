@@ -23,6 +23,7 @@ import models.core.pages.{FullName, UKAddress}
 import models.registration.pages.{PassportOrIdCardDetails, RoleInCompany}
 import pages.register.beneficiaries.charity._
 import pages.register.beneficiaries.company._
+import pages.register.beneficiaries.trust._
 import pages.register.beneficiaries.individual._
 import play.twirl.api.Html
 import viewmodels.{AnswerRow, AnswerSection}
@@ -232,6 +233,64 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
             AnswerRow(label = messages("companyBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", companyBen2Name), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("companyBeneficiaryAddressYesNo.checkYourAnswersLabel", companyBen2Name), answer = Html("No"), changeUrl = None),
             AnswerRow(label = messages("companyBeneficiaryUtr.checkYourAnswersLabel", companyBen2Name), answer = Html("1234567890"), changeUrl = None)
+          ),
+          sectionKey = None
+        )
+      )
+
+    }
+
+    "generate trust beneficiaries sections" in {
+
+      val trustBen1Name = "Trust of Adam"
+      val trustBen2Name = "Grandchildren of Adam"
+
+      val helper = injector.instanceOf[PrintPlaybackHelper]
+
+      val answers = emptyUserAnswers
+        .set(TrustBeneficiaryNamePage(0), trustBen1Name).success.value
+        .set(TrustBeneficiaryDiscretionYesNoPage(0), false).success.value
+        .set(TrustBeneficiaryShareOfIncomePage(0), "98").success.value
+        .set(TrustBeneficiaryAddressYesNoPage(0), true).success.value
+        .set(TrustBeneficiaryAddressUKYesNoPage(0), true).success.value
+        .set(TrustBeneficiaryAddressPage(0),
+          UKAddress(
+            line1 = "line1",
+            line2 = "line2",
+            line3 = Some("line3"),
+            line4 = Some("line4"),
+            postcode = "NE981ZZ"
+          )
+        ).success.value
+
+        .set(TrustBeneficiaryNamePage(1), trustBen2Name).success.value
+        .set(TrustBeneficiaryDiscretionYesNoPage(1), true).success.value
+        .set(TrustBeneficiaryAddressYesNoPage(1), false).success.value
+        .set(TrustBeneficiaryUtrPage(1), "1234567890").success.value
+
+      val result = helper.summary(answers)
+
+      result mustBe Seq(
+        AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),
+        AnswerSection(
+          headingKey = Some("Trust beneficiary 1"),
+          rows = Seq(
+            AnswerRow(label = messages("trustBeneficiaryName.checkYourAnswersLabel"), answer = Html("Trust of Adam"), changeUrl = None),
+            AnswerRow(label = messages("trustBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", trustBen1Name), answer = Html("No"), changeUrl = None),
+            AnswerRow(label = messages("trustBeneficiaryShareOfIncome.checkYourAnswersLabel",trustBen1Name), answer = Html("98"), changeUrl = None),
+            AnswerRow(label = messages("trustBeneficiaryAddressYesNo.checkYourAnswersLabel",trustBen1Name), answer = Html("Yes"), changeUrl = None),
+            AnswerRow(label = messages("trustBeneficiaryAddressUKYesNo.checkYourAnswersLabel",trustBen1Name), answer = Html("Yes"), changeUrl = None),
+            AnswerRow(label = messages("trustBeneficiaryAddress.checkYourAnswersLabel",trustBen1Name), answer = Html("line1<br />line2<br />line3<br />line4<br />NE981ZZ"), changeUrl = None)
+          ),
+          sectionKey = None
+        ),
+        AnswerSection(
+          headingKey = Some("Trust beneficiary 2"),
+          rows = Seq(
+            AnswerRow(label = messages("trustBeneficiaryName.checkYourAnswersLabel"), answer = Html("Grandchildren of Adam"), changeUrl = None),
+            AnswerRow(label = messages("trustBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel",trustBen2Name), answer = Html("Yes"), changeUrl = None),
+            AnswerRow(label = messages("trustBeneficiaryAddressYesNo.checkYourAnswersLabel",trustBen2Name), answer = Html("No"), changeUrl = None),
+            AnswerRow(label = messages("trustBeneficiaryUtr.checkYourAnswersLabel",trustBen2Name), answer = Html("1234567890"), changeUrl = None)
           ),
           sectionKey = None
         )

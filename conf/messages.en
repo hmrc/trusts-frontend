@@ -858,6 +858,14 @@ individualBeneficiaryInfo.paragraph7 = Do not include named or specific employee
 individualBeneficiaryInfo.subheading5 = Other beneficiaries
 individualBeneficiaryInfo.paragraph8 = A short description for beneficiaries that do not fall into the other beneficiary types is needed. For example, pets.
 
+trustBeneficiaryName.checkYourAnswersLabel = What is the name of the trust?
+trustBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
+trustBeneficiaryShareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
+trustBeneficiaryAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+trustBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+trustBeneficiaryAddress.checkYourAnswersLabel = What is {0}’s address?
+trustBeneficiaryUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
+
 addABeneficiary.title = Add a beneficiary
 addABeneficiary.heading = Add a beneficiary
 addABeneficiary.additional-content = Do you want to add another beneficiary?
@@ -991,6 +999,7 @@ answerPage.section.charityBeneficiary.subheading = Charity beneficiary {0}
 answerPage.section.companyBeneficiary.subheading = Company beneficiary {0}
 answerPage.section.individualBeneficiary.subheading = Individual beneficiary
 answerPage.section.classOfBeneficiary.subheading = Class of beneficiary
+answerPage.section.trustBeneficiary.heading = Trust beneficiary {0}
 answerPage.section.assets.heading = Assets
 answerPage.section.moneyAsset.subheading = Money
 answerPage.section.shareAsset.subheading = Share
