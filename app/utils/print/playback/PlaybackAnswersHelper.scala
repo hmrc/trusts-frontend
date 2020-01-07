@@ -16,13 +16,12 @@
 
 package utils.print.playback
 
-import mapping.reads.{Trustee, Trustees}
 import models.core.pages.IndividualOrBusiness
 import models.playback.UserAnswers
 import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage}
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
-import sections._
+import utils.print.playback.sections._
 import utils.print.playback.sections.protectors.{CompanyProtector, IndividualProtector}
 import viewmodels.AnswerSection
 
@@ -63,8 +62,46 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
     }
   }
 
+  def beneficiaries : Seq[AnswerSection] = {
 
-  def charityBeneficiaries : Seq[AnswerSection] = {
+    val beneficiaries = Seq(
+      individualBeneficiaries,
+      charityBeneficiaries,
+      companyBeneficiaries,
+      trustBeneficiaries
+    ).flatten
+
+    if (beneficiaries.nonEmpty) {
+      Seq(
+        Seq(AnswerSection(sectionKey = Some("answerPage.section.beneficiaries.heading"))),
+        beneficiaries
+      ).flatten
+    } else {
+      Nil
+    }
+  }
+
+  private def trustBeneficiaries : Seq[AnswerSection] = {
+    val size = userAnswers.get(_root_.sections.beneficiaries.TrustBeneficiaries).map(_.value.size).getOrElse(0)
+
+    size match {
+      case 0 => Nil
+      case _ =>
+        (for (index <- 0 to size) yield TrustBeneficiary(index, userAnswers, countryOptions)).flatten
+    }
+  }
+
+  private def companyBeneficiaries : Seq[AnswerSection] = {
+    val size = userAnswers.get(_root_.sections.beneficiaries.CompanyBeneficiaries).map(_.value.size).getOrElse(0)
+
+    size match {
+      case 0 => Nil
+      case _ =>
+        (for (index <- 0 to size) yield CompanyBeneficiary(index, userAnswers, countryOptions)).flatten
+    }
+  }
+
+  private def charityBeneficiaries : Seq[AnswerSection] = {
     val size = userAnswers.get(_root_.sections.beneficiaries.CharityBeneficiaries).map(_.value.size).getOrElse(0)
 
     size match {
@@ -74,7 +111,7 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
     }
   }
 
-  def individualBeneficiaries : Seq[AnswerSection] = {
+  private def individualBeneficiaries : Seq[AnswerSection] = {
     val size = userAnswers.get(_root_.sections.beneficiaries.IndividualBeneficiaries).map(_.size).getOrElse(0)
 
     size match {

@@ -17,10 +17,10 @@
 package mapping.playback.beneficiaries
 
 import com.google.inject.Inject
-import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
+import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, InvalidExtractorState, PlaybackExtractionError}
 import mapping.playback.{PlaybackExtractor, PlaybackImplicits}
-import models.core.pages.{InternationalAddress, UKAddress}
-import models.playback.http.DisplayTrustBeneficiaryTrustType
+import models.core.pages.{Address, InternationalAddress, UKAddress}
+import models.playback.http.{DisplayTrustBeneficiaryTrustType, DisplayTrustIdentificationOrgType}
 import models.playback.{MetaData, UserAnswers}
 import pages.register.beneficiaries.trust._
 import play.api.Logger
@@ -43,9 +43,8 @@ class TrustBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[List[
             answers
               .flatMap(_.set(TrustBeneficiaryNamePage(index), trustBeneficiary.organisationName))
               .flatMap(answers => extractShareOfIncome(trustBeneficiary, index, answers))
-              .flatMap(_.set(TrustBeneficiaryUtrPage(index), trustBeneficiary.identification.flatMap(_.utr)))
               .flatMap(_.set(TrustBeneficiarySafeIdPage(index), trustBeneficiary.identification.flatMap(_.safeId)))
-              .flatMap(answers => extractAddress(trustBeneficiary, index, answers))
+              .flatMap(answers => extractIdentification(trustBeneficiary.identification, index, answers))
               .flatMap {
                 _.set(
                   TrustBeneficiaryMetaData(index),
@@ -79,18 +78,35 @@ class TrustBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[List[
     }
   }
 
-  private def extractAddress(trustBeneficiary: DisplayTrustBeneficiaryTrustType, index: Int, answers: UserAnswers) = {
-    trustBeneficiary.identification.flatMap(_.address.convert) match {
-      case Some(uk: UKAddress) =>
+  private def extractIdentification(identification: Option[DisplayTrustIdentificationOrgType], index: Int, answers: UserAnswers) = {
+    identification map {
+      case DisplayTrustIdentificationOrgType(_, Some(utr), None) =>
+        answers.set(TrustBeneficiaryUtrPage(index), utr)
+          .flatMap(_.set(TrustBeneficiaryAddressYesNoPage(index), false))
+
+      case DisplayTrustIdentificationOrgType(_, None, Some(address)) =>
+        extractAddress(address.convert, index, answers)
+
+      case _ =>
+        Logger.error(s"[TrustBeneficiaryExtractor] both utr and address parsed")
+        Failure(InvalidExtractorState)
+
+    } getOrElse {
+      answers.set(TrustBeneficiaryAddressYesNoPage(index), false)
+    }
+  }
+
+  private def extractAddress(address: Address, index: Int, answers: UserAnswers) = {
+    address match {
+      case uk: UKAddress =>
         answers.set(TrustBeneficiaryAddressPage(index), uk)
           .flatMap(_.set(TrustBeneficiaryAddressYesNoPage(index), true))
           .flatMap(_.set(TrustBeneficiaryAddressUKYesNoPage(index), true))
-      case Some(nonUk: InternationalAddress) =>
+      case nonUk: InternationalAddress =>
         answers.set(TrustBeneficiaryAddressPage(index), nonUk)
           .flatMap(_.set(TrustBeneficiaryAddressYesNoPage(index), true))
           .flatMap(_.set(TrustBeneficiaryAddressUKYesNoPage(index), false))
-      case None =>
-        answers.set(TrustBeneficiaryAddressYesNoPage(index), false)
     }
   }
+
 }

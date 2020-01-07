@@ -17,10 +17,10 @@
 package mapping.playback.beneficiaries
 
 import com.google.inject.Inject
-import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
+import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, InvalidExtractorState, PlaybackExtractionError}
 import mapping.playback.{PlaybackExtractor, PlaybackImplicits}
-import models.core.pages.{InternationalAddress, UKAddress}
-import models.playback.http.DisplayTrustCompanyType
+import models.core.pages.{Address, InternationalAddress, UKAddress}
+import models.playback.http.{DisplayTrustCompanyType, DisplayTrustIdentificationOrgType}
 import models.playback.{MetaData, UserAnswers}
 import pages.register.beneficiaries.company._
 import play.api.Logger
@@ -43,9 +43,8 @@ class CompanyBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[Lis
             answers
               .flatMap(_.set(CompanyBeneficiaryNamePage(index), companyBeneficiary.organisationName))
               .flatMap(answers => extractShareOfIncome(companyBeneficiary, index, answers))
-              .flatMap(_.set(CompanyBeneficiaryUtrPage(index), companyBeneficiary.identification.flatMap(_.utr)))
               .flatMap(_.set(CompanyBeneficiarySafeIdPage(index), companyBeneficiary.identification.flatMap(_.safeId)))
-              .flatMap(answers => extractAddress(companyBeneficiary, index, answers))
+              .flatMap(answers => extractIdentification(companyBeneficiary.identification, index, answers))
               .flatMap {
                 _.set(
                   CompanyBeneficiaryMetaData(index),
@@ -68,6 +67,24 @@ class CompanyBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[Lis
       }
     }
 
+  private def extractIdentification(identification: Option[DisplayTrustIdentificationOrgType], index: Int, answers: UserAnswers) = {
+    identification map {
+      case DisplayTrustIdentificationOrgType(_, Some(utr), None) =>
+        answers.set(CompanyBeneficiaryUtrPage(index), utr)
+          .flatMap(_.set(CompanyBeneficiaryAddressYesNoPage(index), false))
+
+      case DisplayTrustIdentificationOrgType(_, None, Some(address)) =>
+        extractAddress(address.convert, index, answers)
+
+      case _ =>
+        Logger.error(s"[CompanyBeneficiaryExtractor] only both utr and address parsed")
+        Failure(InvalidExtractorState)
+
+    } getOrElse {
+      answers.set(CompanyBeneficiaryAddressYesNoPage(index), false)
+    }
+  }
+
   private def extractShareOfIncome(companyBeneficiary: DisplayTrustCompanyType, index: Int, answers: UserAnswers) = {
     companyBeneficiary.beneficiaryShareOfIncome match {
       case Some(income) =>
@@ -79,18 +96,16 @@ class CompanyBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[Lis
     }
   }
 
-  private def extractAddress(companyBeneficiary: DisplayTrustCompanyType, index: Int, answers: UserAnswers) = {
-    companyBeneficiary.identification.flatMap(_.address.convert) match {
-      case Some(uk: UKAddress) =>
+  private def extractAddress(address: Address, index: Int, answers: UserAnswers) = {
+    address match {
+      case uk: UKAddress =>
         answers.set(CompanyBeneficiaryAddressPage(index), uk)
           .flatMap(_.set(CompanyBeneficiaryAddressYesNoPage(index), true))
           .flatMap(_.set(CompanyBeneficiaryAddressUKYesNoPage(index), true))
-      case Some(nonUk: InternationalAddress) =>
+      case nonUk: InternationalAddress =>
         answers.set(CompanyBeneficiaryAddressPage(index), nonUk)
           .flatMap(_.set(CompanyBeneficiaryAddressYesNoPage(index), true))
           .flatMap(_.set(CompanyBeneficiaryAddressUKYesNoPage(index), false))
-      case None =>
-        answers.set(CompanyBeneficiaryAddressYesNoPage(index), false)
     }
   }
 }

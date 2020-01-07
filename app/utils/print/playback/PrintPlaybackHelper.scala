@@ -31,9 +31,7 @@ class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions){
     List(
       playbackAnswersHelper.allTrustees,
       DeceasedSettlor(userAnswers, countryOptions),
-      Seq(AnswerSection(sectionKey = Some("answerPage.section.beneficiaries.heading"))),
-      playbackAnswersHelper.individualBeneficiaries,
-      playbackAnswersHelper.charityBeneficiaries,
+      playbackAnswersHelper.beneficiaries,
       playbackAnswersHelper.protectors
     ).flatten
 

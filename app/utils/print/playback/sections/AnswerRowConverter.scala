@@ -44,6 +44,18 @@ object AnswerRowConverter {
     }
   }
 
+  def utrQuestion(query: Gettable[String], userAnswers: UserAnswers, labelKey: String,
+                   messageArg: String = "", changeRoute: Option[Call] = None)
+                  (implicit messages:Messages) = {
+    userAnswers.get(query) map {x =>
+      AnswerRow(
+        messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
+        CheckAnswersFormatters.utr(x),
+        None
+      )
+    }
+  }
+
   def addressQuestion(query: Gettable[Address], userAnswers: UserAnswers, labelKey: String,
                       messageArg: String = "", countryOptions: CountryOptions, changeRoute: Option[Call] = None)
                      (implicit messages:Messages) = {
@@ -155,7 +167,7 @@ object AnswerRowConverter {
     userAnswers.get(query) map {x =>
       AnswerRow(
         messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-        CheckAnswersFormatters.addressOrUtr(x),
+        HtmlFormat.escape(x.toString),
         None
       )
     }

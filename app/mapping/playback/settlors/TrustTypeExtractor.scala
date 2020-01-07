@@ -23,6 +23,7 @@ import mapping.playback.PlaybackExtractor
 import models.playback.UserAnswers
 import models.playback.http.{DisplayTrust, DisplayTrustWillType}
 import models.registration.pages.SettlorKindOfTrust
+import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
 import pages.register.settlors.{SettlorAdditionToWillTrustYesNoPage, SettlorHowDeedOfVariationCreatedPage}
 import pages.register.settlors.living_settlor.{SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage}
 import play.api.Logger
@@ -58,22 +59,27 @@ class TrustTypeExtractor extends PlaybackExtractor[Option[DisplayTrust]] {
       case TypeOfTrust.DeedOfVariation =>
         answers.set(SettlorKindOfTrustPage, SettlorKindOfTrust.Deed)
           .flatMap(answers => extractDeedOfVariation(trust, answers))
+          .flatMap(_.set(SetupAfterSettlorDiedPage, false))
 
       case TypeOfTrust.IntervivosSettlementTrust =>
         answers.set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos)
           .flatMap(_.set(SettlorHandoverReliefYesNoPage, trust.details.interVivos))
+          .flatMap(_.set(SetupAfterSettlorDiedPage, false))
 
       case TypeOfTrust.EmployeeRelated =>
         answers.set(SettlorKindOfTrustPage, SettlorKindOfTrust.Employees)
+          .flatMap(_.set(SetupAfterSettlorDiedPage, false))
 
       case TypeOfTrust.FlatManagementTrust =>
         answers.set(SettlorKindOfTrustPage, SettlorKindOfTrust.FlatManagement)
+          .flatMap(_.set(SetupAfterSettlorDiedPage, false))
 
       case TypeOfTrust.HeritageTrust =>
         answers.set(SettlorKindOfTrustPage, SettlorKindOfTrust.HeritageMaintenanceFund)
+          .flatMap(_.set(SetupAfterSettlorDiedPage, false))
 
       case TypeOfTrust.WillTrustOrIntestacyTrust =>
-        Success(answers)
+        answers.set(SetupAfterSettlorDiedPage, true)
     }
   }
 

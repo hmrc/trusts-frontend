@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package sections.beneficiaries
+package pages.register.natural.individual
 
+import models.core.pages.Address
 import pages.QuestionPage
-import play.api.libs.json.{JsArray, JsPath}
+import play.api.libs.json.JsPath
+import sections.natural.{Natural, Individual}
 
-case object CompanyBeneficiaries extends QuestionPage[JsArray]{
+case class OtherIndividualAddressPage(index: Int) extends QuestionPage[Address] {
 
-  override def path: JsPath = JsPath \ Beneficiaries \ toString
+  override def path: JsPath = JsPath \  Natural \ Individual \ index \ toString
 
-  override def toString: String = "companies"
-
+  override def toString: String = "address"
 }
