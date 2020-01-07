@@ -866,6 +866,13 @@ trustBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the
 trustBeneficiaryAddress.checkYourAnswersLabel = What is {0}’s address?
 trustBeneficiaryUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
 
+otherBeneficiaryDescription.checkYourAnswersLabel = What is the description of the beneficiary?
+otherBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
+otherBeneficiaryShareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
+otherBeneficiaryAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+otherBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+otherBeneficiaryAddress.checkYourAnswersLabel = What is {0}’s address?
+
 addABeneficiary.title = Add a beneficiary
 addABeneficiary.heading = Add a beneficiary
 addABeneficiary.additional-content = Do you want to add another beneficiary?
@@ -1000,6 +1007,7 @@ answerPage.section.companyBeneficiary.subheading = Company beneficiary {0}
 answerPage.section.individualBeneficiary.subheading = Individual beneficiary
 answerPage.section.classOfBeneficiary.subheading = Class of beneficiary
 answerPage.section.trustBeneficiary.heading = Trust beneficiary {0}
+answerPage.section.otherBeneficiary.heading = Other beneficiary {0}
 answerPage.section.assets.heading = Assets
 answerPage.section.moneyAsset.subheading = Money
 answerPage.section.shareAsset.subheading = Share
