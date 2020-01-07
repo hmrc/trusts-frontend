@@ -26,14 +26,13 @@ import models.core.pages.FullName
 import models.core.pages.IndividualOrBusiness.Individual
 import models.registration.pages.Status.Completed
 import models.registration.pages.WhatKindOfAsset.Money
-import models.registration.pages.WhenTrustSetupPage
 import navigation.registration.TaskListNavigator
 import pages._
 import pages.register.beneficiaries.ClassBeneficiaryDescriptionPage
 import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
 import pages.register.settlors.deceased_settlor.{SettlorsNamePage, SetupAfterSettlorDiedPage}
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
-import pages.register.TrustNamePage
+import pages.register.{TrustNamePage, WhenTrustSetupPage}
 import pages.register.asset.WhatKindOfAssetPage
 import pages.register.settlors.living_settlor.{SettlorIndividualNamePage, SettlorIndividualOrBusinessPage}
 import pages.register.trustees.IsThisLeadTrusteePage

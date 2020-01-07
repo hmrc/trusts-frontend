@@ -21,8 +21,8 @@ import controllers.actions.register.{DraftIdRetrievalActionProvider, Registratio
 import forms.WhenTrustSetupFormProvider
 import javax.inject.Inject
 import models.Mode
-import models.registration.pages.WhenTrustSetupPage
 import navigation.Navigator
+import pages.register.WhenTrustSetupPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

@@ -32,7 +32,7 @@ import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
 import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
 import pages.entitystatus._
-import pages.register.RegistrationProgress
+import pages.register.{RegistrationProgress, WhenTrustSetupPage}
 import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
 import pages.register.trustees.{AddATrusteePage, IsThisLeadTrusteePage}
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
