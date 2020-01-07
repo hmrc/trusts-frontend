@@ -27,8 +27,8 @@ import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import pages.register.beneficiaries.charity._
 import pages.register.beneficiaries.classOfBeneficiary._
 import pages.register.beneficiaries.company._
-import pages.register.beneficiaries.other._
 import pages.register.beneficiaries.trust._
+import pages.register.beneficiaries.other._
 import pages.register.beneficiaries.individual._
 import pages.register.beneficiaries.large._
 

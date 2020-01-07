@@ -22,7 +22,7 @@ import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusine
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
 import utils.print.playback.sections._
-import utils.print.playback.sections.beneficiaries.{CharityBeneficiary, CompanyBeneficiary, IndividualBeneficiary, LargeBeneficiary}
+import utils.print.playback.sections.beneficiaries._
 import utils.print.playback.sections.protectors.{CompanyProtector, IndividualProtector}
 import viewmodels.AnswerSection
 
@@ -52,7 +52,9 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
       individualBeneficiaries,
       charityBeneficiaries,
       companyBeneficiaries,
-      largeBeneficiaries
+      largeBeneficiaries,
+      companyBeneficiaries,
+      trustBeneficiaries
     ).flatten
 
     if (beneficiaries.nonEmpty) {
@@ -62,6 +64,16 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
       ).flatten
     } else {
       Nil
+    }
+  }
+
+  private def trustBeneficiaries : Seq[AnswerSection] = {
+    val size = userAnswers.get(_root_.sections.beneficiaries.TrustBeneficiaries).map(_.value.size).getOrElse(0)
+
+    size match {
+      case 0 => Nil
+      case _ =>
+        (for (index <- 0 to size) yield TrustBeneficiary(index, userAnswers, countryOptions)).flatten
     }
   }
 

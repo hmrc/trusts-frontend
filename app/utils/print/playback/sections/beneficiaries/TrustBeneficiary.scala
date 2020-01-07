@@ -14,87 +14,34 @@
  * limitations under the License.
  */
 
-package utils.print.playback.sections.beneficiaries
+package utils.print.playback.sections
 
-import models.core.pages.{InternationalAddress, UKAddress}
 import models.playback.UserAnswers
 import pages.register.beneficiaries.trust._
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
-import utils.CheckAnswersFormatters.{internationalAddress, ukAddress, yesOrNo}
 import utils.countryOptions.CountryOptions
-import viewmodels.{AnswerRow, AnswerSection}
+import utils.print.playback.sections.AnswerRowConverter.{addressQuestion, stringQuestion, utrQuestion, yesNoQuestion}
+import viewmodels.AnswerSection
 
 object TrustBeneficiary {
 
-  def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] =
-    if (name(index, userAnswers).nonEmpty) {
-      Some(Seq(AnswerSection(
-        headingKey = None,
+  def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)
+           (implicit messages: Messages): Seq[AnswerSection] = {
+
+    userAnswers.get(TrustBeneficiaryNamePage(index)).map { name =>
+      Seq(AnswerSection(
+        headingKey = Some(messages("answerPage.section.trustBeneficiary.heading", index + 1)),
         Seq(
-          name(index, userAnswers),
-          shareOfIncomeYesNo(index, userAnswers),
-          shareOfIncome(index, userAnswers),
-          addressYesNo(index, userAnswers),
-          address(index, userAnswers, countryOptions)
+          stringQuestion(TrustBeneficiaryNamePage(index), userAnswers, "trustBeneficiaryName"),
+          yesNoQuestion(TrustBeneficiaryDiscretionYesNoPage(index), userAnswers, "trustBeneficiaryShareOfIncomeYesNo", name),
+          stringQuestion(TrustBeneficiaryShareOfIncomePage(index), userAnswers, "trustBeneficiaryShareOfIncome", name),
+          yesNoQuestion(TrustBeneficiaryAddressYesNoPage(index), userAnswers, "trustBeneficiaryAddressYesNo", name),
+          yesNoQuestion(TrustBeneficiaryAddressUKYesNoPage(index), userAnswers, "trustBeneficiaryAddressUKYesNo", name),
+          addressQuestion(TrustBeneficiaryAddressPage(index), userAnswers, "trustBeneficiaryAddress", countryOptions = countryOptions, messageArg = name),
+          utrQuestion(TrustBeneficiaryUtrPage(index), userAnswers, "trustBeneficiaryUtr", name)
         ).flatten,
-        sectionKey = Some(messages("answerPage.section.companyBeneficiary.heading"))
-      )))
-    } else {
-      None
-    }
-
-  def name(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(TrustBeneficiaryNamePage(index)) map {
-    x =>
-      AnswerRow(
-        "trustBeneficiaryName.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
-        None
-      )
+        sectionKey = None
+      ))
+    }.getOrElse(Nil)
   }
-
-  def shareOfIncomeYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
-    userAnswers.get(TrustBeneficiaryDiscretionYesNoPage(index)) map {
-      x =>
-        AnswerRow(
-          "trustBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel",
-          yesOrNo(x),
-          None
-        )
-    }
-
-  def shareOfIncome(index: Int, userAnswers: UserAnswers): Option[AnswerRow] =
-    userAnswers.get(TrustBeneficiaryShareOfIncomePage(index)) map {
-      x =>
-        AnswerRow(
-          "trustBeneficiaryShareOfIncome.checkYourAnswersLabel",
-          HtmlFormat.escape(x),
-          None
-        )
-    }
-
-  def addressYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
-    userAnswers.get(TrustBeneficiaryAddressYesNoPage(index)) map {
-      x =>
-        AnswerRow(
-          "trustBeneficiaryAddressYesNo.checkYourAnswersLabel",
-          yesOrNo(x),
-          None
-        )
-    }
-
-  def address(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[AnswerRow] =
-    userAnswers.get(TrustBeneficiaryAddressPage(index)) map {
-      case address: UKAddress => AnswerRow(
-        "trustBeneficiaryAddress.checkYourAnswersLabel",
-        ukAddress(address),
-        None
-      )
-      case address: InternationalAddress => AnswerRow(
-        "trustBeneficiaryAddress.checkYourAnswersLabel",
-        internationalAddress(address, countryOptions),
-        None
-      )
-    }
-
 }
