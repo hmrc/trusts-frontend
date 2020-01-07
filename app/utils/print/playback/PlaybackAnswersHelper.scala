@@ -16,22 +16,27 @@
 
 package utils.print.playback
 
+import mapping.reads.{Trustee, Trustees}
 import models.core.pages.IndividualOrBusiness
 import models.playback.UserAnswers
 import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage}
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
-import utils.print.playback.sections._
+import sections._
 import utils.print.playback.sections.protectors.{CompanyProtector, IndividualProtector}
 import viewmodels.AnswerSection
 
 class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAnswers)
                            (implicit messages: Messages) {
 
-  def trustee(index: Int): Option[Seq[AnswerSection]] = {
+  def trustee(index: Int): Seq[AnswerSection] = {
 
+    println("index: "+index)
+    println("IsThisLeadTrusteePage(index): "+IsThisLeadTrusteePage(index))
     userAnswers.get(IsThisLeadTrusteePage(index)) flatMap { isLeadTrustee =>
       userAnswers.get(TrusteeIndividualOrBusinessPage(index)) flatMap { individualOrBusiness =>
+        println("**************")
+        println("isLeadTrustee: "+isLeadTrustee)
         if (isLeadTrustee) {
           individualOrBusiness match {
             case IndividualOrBusiness.Individual => LeadTrusteeIndividual(index, userAnswers, countryOptions)
@@ -39,14 +44,33 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
           }
         } else {
           individualOrBusiness match {
-            case IndividualOrBusiness.Individual => ???
-            case IndividualOrBusiness.Business => TrusteeOrganisation (index, userAnswers, countryOptions)
+            case IndividualOrBusiness.Individual => TrusteeIndividual(index, userAnswers, countryOptions)
+            case IndividualOrBusiness.Business => TrusteeOrganisation(index, userAnswers, countryOptions)
           }
         }
       }
     }
 
+  }.getOrElse(Nil)
+
+  def allTrustees : Seq[AnswerSection] = {
+
+    val trustees = userAnswers.get(_root_.sections.Trustees)
+
+    println("trustees: "+trustees)
+
+
+    val size = userAnswers.get(_root_.sections.Trustees).map(_.size).getOrElse(0)
+    println("******* allTrustees *******")
+    println("size: "+size)
+
+    size match {
+      case 0 => Nil
+      case _ =>
+        (for (index <- 0 to size) yield trustee(index)).flatten
+    }
   }
+
 
   def charityBeneficiaries : Seq[AnswerSection] = {
     val size = userAnswers.get(_root_.sections.beneficiaries.CharityBeneficiaries).map(_.value.size).getOrElse(0)

@@ -168,11 +168,11 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
   private def extractAddress(address: Address, index: Int, answers: UserAnswers) = {
     address match {
       case uk: UKAddress =>
-        answers.set(TrusteesUkAddressPage(index), uk)
+        answers.set(TrusteeAddressPage(index), uk)
           .flatMap(_.set(TrusteeAddressYesNoPage(index), true))
           .flatMap(_.set(TrusteeLiveInTheUKPage(index), true))
       case nonUk: InternationalAddress =>
-        answers.set(TrusteesInternationalAddressPage(index), nonUk)
+        answers.set(TrusteeAddressPage(index), nonUk)
           .flatMap(_.set(TrusteeAddressYesNoPage(index), true))
           .flatMap(_.set(TrusteeLiveInTheUKPage(index), false))
     }

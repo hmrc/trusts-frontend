@@ -29,22 +29,30 @@ object TrusteeIndividual {
   def apply(index: Int,
             userAnswers: UserAnswers,
             countryOptions: CountryOptions)
-           (implicit messages: Messages): Seq[AnswerSection] = {
+           (implicit messages: Messages): Option[Seq[AnswerSection]] = {
 
-    userAnswers.get(TrusteesNamePage(index)).map(CheckAnswersFormatters.fullName).map { name =>
-      Seq(
+    userAnswers.get(TrusteesNamePage(index)).map(CheckAnswersFormatters.fullName).flatMap { name =>
+      Some(Seq(
         AnswerSection(
           headingKey = Some(messages("answerPage.section.trustee.subheading") + s" ${index + 1}"),
           Seq(
             yesNoQuestion(IsThisLeadTrusteePage(index), userAnswers, "isThisLeadTrustee"),
             individualOrBusinessQuestion(TrusteeIndividualOrBusinessPage(index), userAnswers, "trusteeIndividualOrBusiness"),
             fullNameQuestion(TrusteesNamePage(index), userAnswers, "trusteesName"),
-            dateQuestion(TrusteesDateOfBirthPage(index), userAnswers, "trusteesDateOfBirth", name)
+            yesNoQuestion(TrusteeDateOfBirthYesNoPage(index), userAnswers, "trusteeDateOfBirthYesNo", name),
+            dateQuestion(TrusteesDateOfBirthPage(index), userAnswers, "trusteesDateOfBirth", name),
+            yesNoQuestion(TrusteeNinoYesNoPage(index), userAnswers, "trusteeNinoYesNo", name),
+            ninoQuestion(TrusteesNinoPage(index), userAnswers, "trusteesNino", name),
+            yesNoQuestion(TrusteeAddressYesNoPage(index), userAnswers, "trusteeUkAddressYesNo", name),
+            yesNoQuestion(TrusteeLiveInTheUKPage(index), userAnswers, "trusteeLiveInTheUK", name),
+            addressQuestion(TrusteeAddressPage(index), userAnswers, "trusteesUkAddress", name, countryOptions),
+            yesNoQuestion(TrusteePassportIDCardYesNoPage(index), userAnswers, "trusteePassportOrIdCardYesNo", name),
+            passportOrIdCardQuestion(TrusteePassportIDCardPage(index), userAnswers, "trusteePassportOrIdCard", name, countryOptions)
           ).flatten,
           sectionKey = None
-        )
+        ))
       )
-    }.getOrElse(Nil)
+    }
   }
 
 }
