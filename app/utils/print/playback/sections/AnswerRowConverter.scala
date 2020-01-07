@@ -44,20 +44,13 @@ object AnswerRowConverter {
     }
   }
 
-  def addressQuestion(query: Gettable[Address], userAnswers: UserAnswers, labelKey: String,
+  def addressQuestion[T <: Address](query: Gettable[T], userAnswers: UserAnswers, labelKey: String,
                       messageArg: String = "", countryOptions: CountryOptions, changeRoute: Option[Call] = None)
-                     (implicit messages:Messages) = {
-    userAnswers.get(query) map {
-      case x: UKAddress =>
+                     (implicit messages:Messages, reads: Reads[T]) = {
+    userAnswers.get(query) map { x =>
         AnswerRow(
           messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-          CheckAnswersFormatters.ukAddress(x),
-          None
-        )
-      case x: InternationalAddress =>
-        AnswerRow(
-          messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-          CheckAnswersFormatters.internationalAddress(x, countryOptions),
+          CheckAnswersFormatters.addressFormatter(x, countryOptions),
           None
         )
     }

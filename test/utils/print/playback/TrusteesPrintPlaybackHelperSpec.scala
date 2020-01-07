@@ -46,11 +46,11 @@ class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase with AnswerSectio
 
       result must containHeadingSection("answerPage.section.trustees.heading")
       result must containSectionWithHeadingAndValues("answerPage.section.leadTrusteeIndividual.heading",
-        "trusteeIndividualOrBusiness.checkYourAnswersLabel" -> Html("Individual"),
-        "leadTrusteesName.checkYourAnswersLabel" -> Html("Wild Bill Hickock"),
+        "What is the lead trustee’s name?" -> Html("Wild Bill Hickock"),
         "What is Wild Bill Hickock’s date of birth?" -> Html("23 January 1975"),
-        "What is Wild Bill Hickock’s National Insurance number?" -> Html("AA111111A"),
-        "Does Wild Bill Hickock live in the Uk?" -> Html("Yes"),
+        "Is Wild Bill Hickock a UK citizen?"-> Html("Yes"),
+        "What is Wild Bill Hickock’s National Insurance number?" -> Html("AA 11 11 11 A"),
+        "Does Wild Bill Hickock live in the UK?" -> Html("Yes"),
         "What is Wild Bill Hickock’s address?" -> Html("Address 1<br />Address 2<br />AA11 1AA"),
         "What is Wild Bill Hickock’s telephone number?" -> Html("67676767676"),
         "What is Wild Bill Hickock’s email address?" -> Html("aa@aabb.com")

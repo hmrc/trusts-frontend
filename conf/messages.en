@@ -433,6 +433,8 @@ telephoneNumber.error.required = Enter trustee’s telephone number
 telephoneNumber.error.invalid.characters = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192
 telephoneNumber.hint = For international numbers include the country code
 
+emailAddress.checkYourAnswersLabel = What is {0}’s email address?
+
 leadTrusteesTelephoneNumber.title = What is the lead trustee’s telephone number?
 leadTrusteesTelephoneNumber.error.required = Enter lead trustee’s telephone number
 
@@ -480,6 +482,10 @@ leadTrusteeLiveInTheUK.error.required = Select yes if the lead trustee lives in 
 trusteesUkAddress.title = What is the trustee’s address?
 trusteesUkAddress.heading = What is {0}’s address?
 trusteesUkAddress.checkYourAnswersLabel = What is {0}’s address?
+
+trusteesNonUkAddress.checkYourAnswersLabel = What is {0}’s address?
+
+trusteesPassportOrIdCard.checkYourAnswersLabel = What are {0}'s Passport or ID card details
 
 leadTrusteeUkAddress.title = What is the lead trustee’s address?
 

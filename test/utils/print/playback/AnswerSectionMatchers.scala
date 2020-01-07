@@ -32,8 +32,9 @@ trait AnswerSectionMatchers {
 
 
   class ContainsSectionWithHeadingAndValues(expectedHeading: String, expectedValues: Seq[(String, Html)]) extends Matcher[Seq[AnswerSection]] {
-    private def sectionContainsValue(answerSection: AnswerSection, value: (String, Html)) =
+    private def sectionContainsValue(answerSection: AnswerSection, value: (String, Html)) = {
       answerSection.rows.exists(r => r.label == value._1 && r.answer == value._2)
+    }
 
     private def sectionContainsValues(section: AnswerSection, values: Seq[(String, Html)]): Boolean = {
       values.forall(sectionContainsValue(section, _))

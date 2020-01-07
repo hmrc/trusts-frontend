@@ -19,6 +19,7 @@ package utils.print.playback.sections
 import models.playback.UserAnswers
 import pages.register.trustees._
 import play.api.i18n.Messages
+import utils.CheckAnswersFormatters
 import utils.countryOptions.CountryOptions
 import utils.print.playback.sections.AnswerRowConverter._
 import viewmodels.AnswerSection
@@ -26,21 +27,23 @@ import viewmodels.AnswerSection
 object LeadTrusteeIndividual {
 
   def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Seq[AnswerSection] = {
-    Seq(AnswerSection(
-      headingKey = Some("answerPage.section.leadTrusteeIndividual.heading"),
-      Seq(
-        fullNameQuestion(TrusteesNamePage(index), userAnswers, "trusteeName"),
-        dateQuestion(TrusteesDateOfBirthPage(index), userAnswers, "trusteeDateOfBirth"),
-        yesNoQuestion(TrusteeAUKCitizenPage(index), userAnswers, "trusteeUKCitizen"),
-        ninoQuestion(TrusteesNinoPage(index), userAnswers, "trusteeNationalInsuranceNumber"),
-        passportOrIdCardQuestion(TrusteePassportIDCardPage(index), userAnswers, "trusteePassportOrIdCard", "", countryOptions),
-        yesNoQuestion(TrusteeAddressInTheUKPage(index), userAnswers, "trusteeAddressUKYesNo"),
-        addressQuestion(TrusteesUkAddressPage(index), userAnswers, "trusteeUKAddress", "", countryOptions),
-        addressQuestion(TrusteesInternationalAddressPage(index), userAnswers, "trusteeNonUKAddress", "", countryOptions),
-        stringQuestion(TelephoneNumberPage(index), userAnswers, "trusteeTelephone"),
-        stringQuestion(EmailPage(index), userAnswers, "trusteeEmail")
-      ).flatten,
-      sectionKey = None
-    ))
+    userAnswers.get(TrusteesNamePage(index)).map(CheckAnswersFormatters.fullName).map { trusteeName =>
+      Seq(AnswerSection(
+        headingKey = Some("answerPage.section.leadTrusteeIndividual.heading"),
+        Seq(
+          fullNameQuestion(TrusteesNamePage(index), userAnswers, "leadTrusteesName"),
+          dateQuestion(TrusteesDateOfBirthPage(index), userAnswers, "trusteesDateOfBirth", trusteeName),
+          yesNoQuestion(TrusteeAUKCitizenPage(index), userAnswers, "trusteeAUKCitizen", trusteeName),
+          ninoQuestion(TrusteesNinoPage(index), userAnswers, "trusteesNino", trusteeName),
+          passportOrIdCardQuestion(TrusteePassportIDCardPage(index), userAnswers, "trusteesPassportOrIdCard", trusteeName, countryOptions),
+          yesNoQuestion(TrusteeAddressInTheUKPage(index), userAnswers, "trusteeLiveInTheUK", trusteeName),
+          addressQuestion(TrusteesUkAddressPage(index), userAnswers, "trusteesUkAddress", trusteeName, countryOptions),
+          addressQuestion(TrusteesInternationalAddressPage(index), userAnswers, "trusteesNonUkAddress", trusteeName, countryOptions),
+          stringQuestion(TelephoneNumberPage(index), userAnswers, "telephoneNumber", trusteeName),
+          stringQuestion(EmailPage(index), userAnswers, "emailAddress", trusteeName)
+        ).flatten,
+        sectionKey = None
+      ))
+    }.getOrElse(Nil)
   }
 }
