@@ -16,86 +16,32 @@
 
 package utils.print.playback.sections
 
-import models.core.pages.{InternationalAddress, UKAddress}
 import models.playback.UserAnswers
 import pages.register.beneficiaries.other._
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
-import utils.CheckAnswersFormatters._
 import utils.countryOptions.CountryOptions
-import viewmodels.{AnswerRow, AnswerSection}
+import viewmodels.AnswerSection
 
 object OtherBeneficiary {
 
-  def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] = {
-    if (description(index, userAnswers).nonEmpty) {
-      Some(Seq(AnswerSection(
-        headingKey = None,
+  import utils.print.playback.sections.AnswerRowConverter._
+
+  def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)
+           (implicit messages: Messages): Seq[AnswerSection] = {
+
+    userAnswers.get(OtherBeneficiaryDescriptionPage(index)).map { name =>
+      Seq(AnswerSection(
+        headingKey = Some(messages("answerPage.section.otherBeneficiary.heading", index + 1)),
         Seq(
-          description(index, userAnswers),
-          shareOfIncomeYesNo(index, userAnswers),
-          shareOfIncome(index, userAnswers),
-          addressYesNo(index, userAnswers),
-          address(index, userAnswers, countryOptions)
+          stringQuestion(OtherBeneficiaryDescriptionPage(index), userAnswers, "otherBeneficiaryDescription"),
+          yesNoQuestion(OtherBeneficiaryDiscretionYesNoPage(index), userAnswers, "otherBeneficiaryShareOfIncomeYesNo", name),
+          stringQuestion(OtherBeneficiaryShareOfIncomePage(index), userAnswers, "otherBeneficiaryShareOfIncome", name),
+          yesNoQuestion(OtherBeneficiaryAddressYesNoPage(index), userAnswers, "otherBeneficiaryAddressYesNo", name),
+          yesNoQuestion(OtherBeneficiaryAddressUKYesNoPage(index), userAnswers, "otherBeneficiaryAddressUKYesNo", name),
+          addressQuestion(OtherBeneficiaryAddressPage(index), userAnswers, "otherBeneficiaryAddress", countryOptions = countryOptions, messageArg = name)
         ).flatten,
-        sectionKey = Some(messages("answerPage.section.charityBeneficiary.heading"))
-      )))
-    } else {
-      None
-    }
+        sectionKey = None
+      ))
+    }.getOrElse(Nil)
   }
-
-  def description(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(OtherBeneficiaryDescriptionPage(index)) map {
-    x =>
-      AnswerRow(
-        "otherDescription.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
-        None
-      )
-  }
-
-  def shareOfIncomeYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
-    userAnswers.get(OtherBeneficiaryDiscretionYesNoPage(index)) map {
-      x =>
-        AnswerRow(
-          "otherShareOfIncomeYesNo.checkYourAnswersLabel",
-          yesOrNo(x),
-          None
-        )
-    }
-
-  def shareOfIncome(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
-    userAnswers.get(OtherBeneficiaryShareOfIncomePage(index)) map {
-      x =>
-        AnswerRow(
-          "otherShareOfIncome.checkYourAnswersLabel",
-          HtmlFormat.escape(x),
-          None
-        )
-    }
-
-  def addressYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
-    userAnswers.get(OtherBeneficiaryAddressYesNoPage(index)) map {
-      x =>
-        AnswerRow(
-          "otherAddressYesNo.checkYourAnswersLabel",
-          yesOrNo(x),
-          None
-        )
-    }
-
-  def address(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[AnswerRow] =
-    userAnswers.get(OtherBeneficiaryAddressPage(index)) map {
-      case address: UKAddress => AnswerRow(
-        "charityBeneficiaryAddress.checkYourAnswersLabel",
-        ukAddress(address),
-        None
-      )
-      case address: InternationalAddress => AnswerRow(
-        "charityBeneficiaryAddress.checkYourAnswersLabel",
-        internationalAddress(address, countryOptions),
-        None
-      )
-    }
-
 }
