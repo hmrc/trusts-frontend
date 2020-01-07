@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package sections.beneficiaries
+package pages.register.natural.individual
 
+import models.registration.pages.PassportOrIdCardDetails
 import pages.QuestionPage
-import play.api.libs.json.{JsArray, JsPath}
+import play.api.libs.json.JsPath
+import sections.natural.{Natural, Individual}
 
-case object OtherBeneficiaries extends QuestionPage[JsArray]{
+final case class OtherIndividualPassportIDCardPage(index : Int) extends QuestionPage[PassportOrIdCardDetails] {
 
-  override def path: JsPath = JsPath \ Beneficiaries \ toString
+  override def path: JsPath = JsPath \  Natural \ Individual \ index \ toString
 
-  override def toString: String = "other"
-
+  override def toString: String = "passportIdCard"
 }

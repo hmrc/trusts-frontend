@@ -46,16 +46,52 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
   }
 
   def beneficiaries : Seq[AnswerSection] = {
-    val beneficiaries = individualBeneficiaries ++ charityBeneficiaries
+
+    val beneficiaries = Seq(
+      individualBeneficiaries,
+      charityBeneficiaries,
+      companyBeneficiaries,
+      trustBeneficiaries,
+      otherBeneficiaries
+    ).flatten
 
     if (beneficiaries.nonEmpty) {
       Seq(
         Seq(AnswerSection(sectionKey = Some("answerPage.section.beneficiaries.heading"))),
-        individualBeneficiaries,
-        charityBeneficiaries
+        beneficiaries
       ).flatten
     } else {
       Nil
+    }
+  }
+
+  private def otherBeneficiaries : Seq[AnswerSection] = {
+    val size = userAnswers.get(_root_.sections.beneficiaries.OtherBeneficiaries).map(_.value.size).getOrElse(0)
+
+    size match {
+      case 0 => Nil
+      case _ =>
+        (for (index <- 0 to size) yield OtherBeneficiary(index, userAnswers, countryOptions)).flatten
+    }
+  }
+
+  private def trustBeneficiaries : Seq[AnswerSection] = {
+    val size = userAnswers.get(_root_.sections.beneficiaries.TrustBeneficiaries).map(_.value.size).getOrElse(0)
+
+    size match {
+      case 0 => Nil
+      case _ =>
+        (for (index <- 0 to size) yield TrustBeneficiary(index, userAnswers, countryOptions)).flatten
+    }
+  }
+
+  private def companyBeneficiaries : Seq[AnswerSection] = {
+    val size = userAnswers.get(_root_.sections.beneficiaries.CompanyBeneficiaries).map(_.value.size).getOrElse(0)
+
+    size match {
+      case 0 => Nil
+      case _ =>
+        (for (index <- 0 to size) yield CompanyBeneficiary(index, userAnswers, countryOptions)).flatten
     }
   }
 
@@ -110,6 +146,17 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
       case 0 => Nil
       case _ =>
         (for (index <- 0 to size) yield CompanyProtector(index, userAnswers, countryOptions)).flatten
+    }
+  }
+
+  def otherIndividual : Seq[AnswerSection] = {
+    val size = userAnswers.get(_root_.sections.natural.Individual).map(_.value.size).getOrElse(0)
+
+    size match {
+      case 0 => Nil
+      case _ =>
+        Seq(AnswerSection(sectionKey = Some(messages("answerPage.section.other.individual.heading")))) ++
+          (for (index <- 0 to size) yield OtherIndividual(index, userAnswers, countryOptions)).flatten
     }
   }
 

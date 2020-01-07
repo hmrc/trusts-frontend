@@ -28,9 +28,10 @@ class FakeUserAnswerExtractor @Inject()(beneficiary: BeneficiaryExtractor,
                                         leadTrustee: LeadTrusteeExtractor,
                                         settlors: SettlorExtractor,
                                         trustType: TrustTypeExtractor,
-                                        protectors: ProtectorExtractor
+                                        protectors: ProtectorExtractor,
+                                        otherIndividualExtractor: OtherIndividualExtractor
                                         ) extends UserAnswersExtractor(
-  beneficiary, leadTrustee, settlors, trustType, protectors
+  beneficiary, leadTrustee, settlors, trustType, protectors, otherIndividualExtractor
 ) {
 
   override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionErrors.PlaybackExtractionError, UserAnswers] =
@@ -43,9 +44,10 @@ class FakeFailingUserAnswerExtractor @Inject()(beneficiary: BeneficiaryExtractor
                                                leadTrustee: LeadTrusteeExtractor,
                                                settlors: SettlorExtractor,
                                                trustType: TrustTypeExtractor,
-                                               protectors: ProtectorExtractor
+                                               protectors: ProtectorExtractor,
+                                               otherIndividualExtractor: OtherIndividualExtractor
                                        ) extends UserAnswersExtractor(
-  beneficiary, leadTrustee, settlors, trustType, protectors
+  beneficiary, leadTrustee, settlors, trustType, protectors, otherIndividualExtractor
 ) {
 
   override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionErrors.PlaybackExtractionError, UserAnswers] =

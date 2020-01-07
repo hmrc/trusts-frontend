@@ -14,15 +14,8 @@
  * limitations under the License.
  */
 
-package sections.beneficiaries
+package pages.register.natural.individual
 
-import pages.QuestionPage
-import play.api.libs.json.{JsArray, JsPath}
+import pages.Page
 
-case object OtherBeneficiaries extends QuestionPage[JsArray]{
-
-  override def path: JsPath = JsPath \ Beneficiaries \ toString
-
-  override def toString: String = "other"
-
-}
+case object OtherIndividualAnswersPage extends Page

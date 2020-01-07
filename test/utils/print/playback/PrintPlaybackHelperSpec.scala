@@ -18,7 +18,7 @@ package utils.print.playback
 
 import base.PlaybackSpecBase
 import models.core.pages.FullName
-import pages.register.beneficiaries.charity.CharityBeneficiaryNamePage
+import pages.register.beneficiaries.charity._
 import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
 import play.twirl.api.Html
 import viewmodels.{AnswerRow, AnswerSection}

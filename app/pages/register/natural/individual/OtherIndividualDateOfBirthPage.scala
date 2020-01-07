@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package sections.beneficiaries
+package pages.register.natural.individual
+
+import java.time.LocalDate
 
 import pages.QuestionPage
-import play.api.libs.json.{JsArray, JsPath}
+import play.api.libs.json.JsPath
+import sections.natural.{Natural, Individual}
 
-case object OtherBeneficiaries extends QuestionPage[JsArray]{
+final case class OtherIndividualDateOfBirthPage(index : Int) extends QuestionPage[LocalDate] {
 
-  override def path: JsPath = JsPath \ Beneficiaries \ toString
+  override def path: JsPath = JsPath \  Natural \ Individual \ index \ toString
 
-  override def toString: String = "other"
-
+  override def toString: String = "dateOfBirth"
 }

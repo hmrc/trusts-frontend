@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package sections.beneficiaries
+package pages.register.natural.individual
 
+import models.core.UserAnswers
 import pages.QuestionPage
-import play.api.libs.json.{JsArray, JsPath}
+import play.api.libs.json.JsPath
+import sections.natural.{Natural, Individual}
 
-case object OtherBeneficiaries extends QuestionPage[JsArray]{
+import scala.util.Try
 
-  override def path: JsPath = JsPath \ Beneficiaries \ toString
+final case class OtherIndividualNationalInsuranceYesNoPage(index : Int) extends QuestionPage[Boolean] {
 
-  override def toString: String = "other"
+  override def path: JsPath = JsPath \  Natural \ Individual \ index \ toString
+
+  override def toString: String = "nationalInsuranceNumberYesNo"
 
 }
