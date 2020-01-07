@@ -980,6 +980,7 @@ answerPage.section.deceasedSettlor.heading = Settlor
 answerPage.section.settlors.heading = Settlors
 answerPage.section.settlor.subheading = Settlor {0}
 answerPage.section.trustees.heading = Trustees
+answerPage.section.leadTrusteeIndividual.heading = Lead Trustee
 answerPage.section.trustee.subheading = Trustee
 answerPage.section.beneficiaries.heading = Beneficiaries
 answerPage.section.charityBeneficiary.subheading = Charity beneficiary {0}

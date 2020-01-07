@@ -20,10 +20,9 @@ import base.PlaybackSpecBase
 import models.core.pages.FullName
 import pages.register.beneficiaries.charity.CharityBeneficiaryNamePage
 import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
-import play.twirl.api.{Html, HtmlFormat}
-import viewmodels.{AnswerRow, AnswerSection}
+import play.twirl.api.Html
 
-class PrintPlaybackHelperSpec extends PlaybackSpecBase {
+class PrintPlaybackHelperSpec extends PlaybackSpecBase with AnswerSectionMatchers {
 
   "Playback print helper" must {
 
@@ -38,33 +37,17 @@ class PrintPlaybackHelperSpec extends PlaybackSpecBase {
 
       val result = helper.summary(answers)
 
-      result mustBe Seq(
-        AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),
-        AnswerSection(
-          headingKey = Some("Individual beneficiary 1"),
-          rows = Seq(
-            AnswerRow(label = "What is the name of the individual?", answer = Html("Michael Finnegan"), changeUrl = None)
-          ),
-          sectionKey = None
-        ),
-        AnswerSection(
-          headingKey = Some("Charity beneficiary 1"),
-          rows = Seq(
-            AnswerRow(label = "charityBeneficiaryName.checkYourAnswersLabel", answer = Html("Red Cross Ltd."), changeUrl = None)
-          ),
-          sectionKey = None
-        ),
-        AnswerSection(
-          headingKey = Some("Charity beneficiary 2"),
-          rows = Seq(
-            AnswerRow(label = "charityBeneficiaryName.checkYourAnswersLabel", answer = Html("Bernardos"), changeUrl = None)
-          ),
-          sectionKey = None
-        )
+      result must containHeadingSection("answerPage.section.beneficiaries.heading")
+      result must containSectionWithHeadingAndValues("Individual beneficiary 1",
+        "What is the name of the individual?" -> Html("Michael Finnegan")
       )
-
+      result must containSectionWithHeadingAndValues("Charity beneficiary 1",
+        "charityBeneficiaryName.checkYourAnswersLabel" -> Html("Red Cross Ltd.")
+      )
+      result must containSectionWithHeadingAndValues("Charity beneficiary 2",
+        "charityBeneficiaryName.checkYourAnswersLabel" -> Html("Bernardos")
+      )
     }
-
   }
 
 }

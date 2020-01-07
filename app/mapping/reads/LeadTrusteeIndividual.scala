@@ -46,7 +46,7 @@ object LeadTrusteeIndividual {
         (__ \ "isUKCitizen").read[Boolean] and
         (__ \ "nino").readNullable[String] and
         (__ \ "passport").readNullable[String] and
-        (__ \ "liveInUK").read[Boolean] and
+        (__ \ "addressUKYesNo").read[Boolean] and
         (__ \ "address").read[Address] and
         (__ \ "telephoneNumber").read[String]
       )(LeadTrusteeIndividual.apply _)

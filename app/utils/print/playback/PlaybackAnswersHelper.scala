@@ -16,9 +16,7 @@
 
 package utils.print.playback
 
-import models.core.pages.IndividualOrBusiness
 import models.playback.UserAnswers
-import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage}
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
 import utils.print.playback.sections._
@@ -26,23 +24,10 @@ import viewmodels.AnswerSection
 
 class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAnswers)
                            (implicit messages: Messages) {
-
-  def trustee(index: Int): Option[Seq[AnswerSection]] = {
-
-    userAnswers.get(IsThisLeadTrusteePage(index)) flatMap { isLeadTrustee =>
-      userAnswers.get(TrusteeIndividualOrBusinessPage(index)) flatMap { individualOrBusiness =>
-        if (isLeadTrustee) {
-          individualOrBusiness match {
-            case IndividualOrBusiness.Individual => LeadTrusteeIndividual(index, userAnswers, countryOptions)
-            case IndividualOrBusiness.Business => LeadTrusteeBusiness(index, userAnswers, countryOptions)
-          }
-        } else {
-          TrusteeOrganisation(index, userAnswers, countryOptions)
-        }
-      }
-    }
-
+  def leadTrustee: Seq[AnswerSection] = {
+    LeadTrusteeIndividual(0, userAnswers, countryOptions)
   }
+
 
   def charityBeneficiaries : Seq[AnswerSection] = {
     val size = userAnswers.get(_root_.sections.beneficiaries.CharityBeneficiaries).map(_.value.size).getOrElse(0)
@@ -63,5 +48,4 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
         (for (index <- 0 to size) yield IndividualBeneficiary(index, userAnswers, countryOptions)).flatten
     }
   }
-
 }

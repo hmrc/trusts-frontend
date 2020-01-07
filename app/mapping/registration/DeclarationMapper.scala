@@ -22,7 +22,7 @@ import mapping.Mapping
 import models.core.UserAnswers
 import pages.register.DeclarationPage
 import pages.register.agents.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentUKAddressPage}
-import pages.register.trustees.{TrusteeLiveInTheUKPage, TrusteesInternationalAddressPage, TrusteesUkAddressPage}
+import pages.register.trustees.{TrusteeAddressInTheUKPage, TrusteesInternationalAddressPage, TrusteesUkAddressPage}
 import play.api.Logger
 
 class DeclarationMapper @Inject()(nameMapper: NameMapper,
@@ -63,7 +63,7 @@ class DeclarationMapper @Inject()(nameMapper: NameMapper,
             val index = list.indexOf(lti)
             addressMapper.build(
               userAnswers,
-              TrusteeLiveInTheUKPage(index),
+              TrusteeAddressInTheUKPage(index),
               TrusteesUkAddressPage(index),
               TrusteesInternationalAddressPage(index)
             )

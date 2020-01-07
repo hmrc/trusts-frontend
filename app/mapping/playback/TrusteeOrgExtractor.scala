@@ -83,10 +83,10 @@ class TrusteeOrgExtractor @Inject() extends PlaybackExtractor[Option[DisplayTrus
     trusteeOrg.identification.flatMap(_.address).convert match {
       case Some(uk: UKAddress) =>
         answers.set(TrusteesUkAddressPage(0), uk)
-          .flatMap(_.set(TrusteeLiveInTheUKPage(0), true))
+          .flatMap(_.set(TrusteeAddressInTheUKPage(0), true))
       case Some(nonUk: InternationalAddress) =>
         answers.set(TrusteesInternationalAddressPage(0), nonUk)
-          .flatMap(_.set(TrusteeLiveInTheUKPage(0), false))
+          .flatMap(_.set(TrusteeAddressInTheUKPage(0), false))
       case None =>
         trusteeOrg.identification.flatMap(_.utr) match {
           case None => answers.set(TrusteeAddressYesNoPage(0), false)

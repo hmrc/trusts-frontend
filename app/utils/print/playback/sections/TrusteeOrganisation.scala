@@ -70,7 +70,7 @@ object TrusteeOrganisation {
   }
 
   def addressUKYesNo(index: Int, userAnswers: UserAnswers)
-                    (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TrusteeLiveInTheUKPage(index)) map {
+                    (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TrusteeAddressInTheUKPage(index)) map {
     x =>
       AnswerRow(
         "trusteeOrgAddressUKYesNo.checkYourAnswersLabel",

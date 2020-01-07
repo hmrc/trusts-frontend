@@ -26,27 +26,23 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 object LeadTrusteeIndividual {
 
-  def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] = {
-    if (name(index, userAnswers).nonEmpty) {
-      Some(Seq(AnswerSection(
-        headingKey = None,
-        Seq(
-          name(index, userAnswers),
-          dateOfBirth(index, userAnswers),
-          isUKCitizen(index, userAnswers),
-          nino(index, userAnswers),
-          trusteePassportOrIDCard(index, userAnswers, countryOptions),
-          addressUKYesNo(index, userAnswers),
-          addressUK(index, userAnswers, countryOptions),
-          nonUKAddress(index, userAnswers, countryOptions),
-          telephone(index, userAnswers),
-          email(index, userAnswers)
-        ).flatten,
-        sectionKey = Some(messages("answerPage.section.leadTrusteeIndividual.heading"))
-      )))
-    } else {
-      None
-    }
+  def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Seq[AnswerSection] = {
+    Seq(AnswerSection(
+      headingKey = Some("answerPage.section.leadTrusteeIndividual.heading"),
+      Seq(
+        name(index, userAnswers),
+        dateOfBirth(index, userAnswers),
+        isUKCitizen(index, userAnswers),
+        nino(index, userAnswers),
+        trusteePassportOrIDCard(index, userAnswers, countryOptions),
+        addressUKYesNo(index, userAnswers),
+        addressUK(index, userAnswers, countryOptions),
+        nonUKAddress(index, userAnswers, countryOptions),
+        telephone(index, userAnswers),
+        email(index, userAnswers)
+      ).flatten,
+      sectionKey = None
+    ))
   }
 
   def name(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(TrusteesNamePage(index)) map {
@@ -97,7 +93,7 @@ object LeadTrusteeIndividual {
     }
 
   def addressUKYesNo(index: Int, userAnswers: UserAnswers)
-                    (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TrusteeLiveInTheUKPage(index)) map {
+                    (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TrusteeAddressInTheUKPage(index)) map {
     x =>
       AnswerRow(
         "trusteeAddressUKYesNo.checkYourAnswersLabel",

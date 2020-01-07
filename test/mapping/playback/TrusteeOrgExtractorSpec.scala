@@ -76,7 +76,7 @@ class TrusteeOrgExtractorSpec extends FreeSpec with MustMatchers with EitherValu
         extraction.right.value.get(TrusteeUTRYesNoPagePage(0)).get mustBe true
         extraction.right.value.get(TrusteesUtrPage(0)).get mustBe "1234567890"
         extraction.right.value.get(TrusteeAddressYesNoPage(0)) must not be defined
-        extraction.right.value.get(TrusteeLiveInTheUKPage(0)) must not be defined
+        extraction.right.value.get(TrusteeAddressInTheUKPage(0)) must not be defined
         extraction.right.value.get(TrusteesUkAddressPage(0)) must not be defined
         extraction.right.value.get(TrusteesInternationalAddressPage(0)) must not be defined
         extraction.right.value.get(TelephoneNumberPage(0)) must not be defined
@@ -112,7 +112,7 @@ class TrusteeOrgExtractorSpec extends FreeSpec with MustMatchers with EitherValu
         extraction.right.value.get(TrusteesUtrPage(0)) must not be defined
         extraction.right.value.get(TrusteeUTRYesNoPagePage(0)).get mustBe false
         extraction.right.value.get(TrusteeAddressYesNoPage(0)).get mustBe false
-        extraction.right.value.get(TrusteeLiveInTheUKPage(0)) must not be defined
+        extraction.right.value.get(TrusteeAddressInTheUKPage(0)) must not be defined
         extraction.right.value.get(TrusteesUkAddressPage(0)) must not be defined
         extraction.right.value.get(TrusteesInternationalAddressPage(0)) must not be defined
         extraction.right.value.get(TelephoneNumberPage(0)) must not be defined
@@ -147,7 +147,7 @@ class TrusteeOrgExtractorSpec extends FreeSpec with MustMatchers with EitherValu
         extraction.right.value.get(TrusteeOrgNamePage(0)).get mustBe "org1"
         extraction.right.value.get(TrusteeUTRYesNoPagePage(0)).get mustBe true
         extraction.right.value.get(TrusteesUtrPage(0)).get mustBe "1234567890"
-        extraction.right.value.get(TrusteeLiveInTheUKPage(0)).get mustBe true
+        extraction.right.value.get(TrusteeAddressInTheUKPage(0)).get mustBe true
         extraction.right.value.get(TrusteesUkAddressPage(0)) must be(defined)
         extraction.right.value.get(TrusteesUkAddressPage(0)).get.postcode mustBe "NE11NE"
         extraction.right.value.get(TrusteesInternationalAddressPage(0)) mustNot be(defined)
@@ -183,7 +183,7 @@ class TrusteeOrgExtractorSpec extends FreeSpec with MustMatchers with EitherValu
         extraction.right.value.get(TrusteeOrgNamePage(0)).get mustBe "org1"
         extraction.right.value.get(TrusteeUTRYesNoPagePage(0)).get mustBe false
         extraction.right.value.get(TrusteesUtrPage(0)) mustNot be(defined)
-        extraction.right.value.get(TrusteeLiveInTheUKPage(0)).get mustBe false
+        extraction.right.value.get(TrusteeAddressInTheUKPage(0)).get mustBe false
         extraction.right.value.get(TrusteesUkAddressPage(0)) must not be defined
         extraction.right.value.get(TrusteesInternationalAddressPage(0)) mustBe defined
         extraction.right.value.get(TelephoneNumberPage(0)).get mustBe "+441234567890"

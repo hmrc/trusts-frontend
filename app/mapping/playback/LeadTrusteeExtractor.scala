@@ -31,9 +31,7 @@ class LeadTrusteeExtractor @Inject()(leadTrusteeInd: LeadTrusteeIndExtractor,
       leadTrusteeOrg.extract(answers, data.leadTrusteeOrg)
     )
 
-    leadTrustees.collectFirst {
-      case z if z.isRight => z
-    }.getOrElse(Left(FailedToExtractData("Lead Trustee Extraction Error")))
+    leadTrustees.find(_.isRight).getOrElse(Left(FailedToExtractData("Lead Trustee Extraction Error")))
   }
 
 }

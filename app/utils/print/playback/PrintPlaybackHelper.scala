@@ -19,7 +19,7 @@ package utils.print.playback
 import javax.inject.Inject
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
-import utils.print.playback.sections.DeceasedSettlor
+import utils.print.playback.sections.{DeceasedSettlor, LeadTrusteeIndividual}
 import viewmodels.AnswerSection
 
 class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions){
@@ -30,6 +30,8 @@ class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions){
 
     List(
       DeceasedSettlor(userAnswers, countryOptions),
+      Seq(AnswerSection(sectionKey = Some("answerPage.section.trustees.heading"))),
+      playbackAnswersHelper.leadTrustee,
       Seq(AnswerSection(sectionKey = Some("answerPage.section.beneficiaries.heading"))),
       playbackAnswersHelper.individualBeneficiaries,
       playbackAnswersHelper.charityBeneficiaries

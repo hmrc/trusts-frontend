@@ -96,10 +96,10 @@ class LeadTrusteeIndExtractor @Inject() extends PlaybackExtractor[Option[Display
     leadTrusteeInd.identification.address.convert match {
       case Some(uk: UKAddress) =>
         answers.set(TrusteesUkAddressPage(0), uk)
-          .flatMap(_.set(TrusteeLiveInTheUKPage(0), true))
+          .flatMap(_.set(TrusteeAddressInTheUKPage(0), true))
       case Some(nonUk: InternationalAddress) =>
         answers.set(TrusteesInternationalAddressPage(0), nonUk)
-          .flatMap(_.set(TrusteeLiveInTheUKPage(0), false))
+          .flatMap(_.set(TrusteeAddressInTheUKPage(0), false))
       case None =>
         Success(answers)
     }

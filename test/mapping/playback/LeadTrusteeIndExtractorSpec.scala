@@ -82,7 +82,7 @@ class LeadTrusteeIndExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(TrusteesDateOfBirthPage(0)).get mustBe LocalDate.of(2018,2,1)
         extraction.right.value.get(TrusteeAUKCitizenPage(0)).get mustBe true
         extraction.right.value.get(TrusteesNinoPage(0)).get mustBe "NA1111111A"
-        extraction.right.value.get(TrusteeLiveInTheUKPage(0)).get mustBe true
+        extraction.right.value.get(TrusteeAddressInTheUKPage(0)).get mustBe true
         extraction.right.value.get(TrusteesUkAddressPage(0)) must be(defined)
         extraction.right.value.get(TrusteesUkAddressPage(0)).get.postcode mustBe "NE11NE"
         extraction.right.value.get(TrusteesInternationalAddressPage(0)) mustNot be(defined)
@@ -120,7 +120,7 @@ class LeadTrusteeIndExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(TrusteesDateOfBirthPage(0)).get mustBe LocalDate.of(2018,2,1)
         extraction.right.value.get(TrusteeAUKCitizenPage(0)).get mustBe true
         extraction.right.value.get(TrusteesNinoPage(0)).get mustBe "NA1111111A"
-        extraction.right.value.get(TrusteeLiveInTheUKPage(0)).get mustBe false
+        extraction.right.value.get(TrusteeAddressInTheUKPage(0)).get mustBe false
         extraction.right.value.get(TrusteesUkAddressPage(0)) mustNot be(defined)
         extraction.right.value.get(TrusteesInternationalAddressPage(0)) must be(defined)
         extraction.right.value.get(TrusteesInternationalAddressPage(0)).get.country mustBe "DE"
@@ -159,7 +159,7 @@ class LeadTrusteeIndExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(TrusteeAUKCitizenPage(0)).get mustBe false
         extraction.right.value.get(TrusteesNinoPage(0)) mustNot be(defined)
         extraction.right.value.get(TrusteePassportIDCardPage(0)) must be(defined)
-        extraction.right.value.get(TrusteeLiveInTheUKPage(0)).get mustBe true
+        extraction.right.value.get(TrusteeAddressInTheUKPage(0)).get mustBe true
         extraction.right.value.get(TrusteesUkAddressPage(0)) must be(defined)
         extraction.right.value.get(TrusteesUkAddressPage(0)).get.postcode mustBe "NE11NE"
         extraction.right.value.get(TrusteesInternationalAddressPage(0)) mustNot be(defined)
@@ -198,7 +198,7 @@ class LeadTrusteeIndExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(TrusteeAUKCitizenPage(0)).get mustBe false
         extraction.right.value.get(TrusteesNinoPage(0)) mustNot be(defined)
         extraction.right.value.get(TrusteePassportIDCardPage(0)) must be(defined)
-        extraction.right.value.get(TrusteeLiveInTheUKPage(0)).get mustBe false
+        extraction.right.value.get(TrusteeAddressInTheUKPage(0)).get mustBe false
         extraction.right.value.get(TrusteesUkAddressPage(0)) mustNot be(defined)
         extraction.right.value.get(TrusteesInternationalAddressPage(0)) must be(defined)
         extraction.right.value.get(TrusteesInternationalAddressPage(0)).get.country mustBe "DE"
