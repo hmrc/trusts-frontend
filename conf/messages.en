@@ -866,6 +866,13 @@ trustBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the
 trustBeneficiaryAddress.checkYourAnswersLabel = What is {0}’s address?
 trustBeneficiaryUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
 
+otherBeneficiaryDescription.checkYourAnswersLabel = What is the description of the beneficiary?
+otherBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
+otherBeneficiaryShareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
+otherBeneficiaryAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+otherBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+otherBeneficiaryAddress.checkYourAnswersLabel = What is {0}’s address?
+
 addABeneficiary.title = Add a beneficiary
 addABeneficiary.heading = Add a beneficiary
 addABeneficiary.additional-content = Do you want to add another beneficiary?
@@ -1000,11 +1007,13 @@ answerPage.section.companyBeneficiary.subheading = Company beneficiary {0}
 answerPage.section.individualBeneficiary.subheading = Individual beneficiary
 answerPage.section.classOfBeneficiary.subheading = Class of beneficiary
 answerPage.section.trustBeneficiary.heading = Trust beneficiary {0}
+answerPage.section.otherBeneficiary.heading = Other beneficiary {0}
 answerPage.section.assets.heading = Assets
 answerPage.section.moneyAsset.subheading = Money
 answerPage.section.shareAsset.subheading = Share
 answerPage.section.propertyOrLandAsset.subheading = Property or land
 answerPage.agentClientRef = Client reference number: {0}
+answerPage.section.other.individual.heading = Other individual
 
 sharePortfolioName.title = What is the share portfolio’s name?
 sharePortfolioName.heading = What is the share portfolio’s name?
@@ -1479,6 +1488,17 @@ individualProtectorAddress.checkYourAnswersLabel = What is {0}’s address?
 individualProtectorPassportIDCardYesNo.checkYourAnswersLabel = Do you know {0}’s passport or ID card details?
 individualProtectorPassportIDCard.checkYourAnswersLabel = What are {0}’s passport or ID card details?
 
+otherIndividualName.checkYourAnswersLabel = What is the name of the individual?
+otherIndividualDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
+otherIndividualDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
+otherIndividualNINOYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
+otherIndividualNINO.checkYourAnswersLabel = What is {0}’s National Insurance number?
+otherIndividualAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+otherIndividualAddressUKYesNo.checkYourAnswersLabel = Does {0} live in the UK?
+otherIndividualAddress.checkYourAnswersLabel = What is {0}’s address?
+otherIndividualPassportIDCardYesNo.checkYourAnswersLabel = Do you know {0}’s passport or ID card details?
+otherIndividualPassportIDCard.checkYourAnswersLabel = What are {0}’s passport or ID card details?
+
 companyProtectorName.checkYourAnswersLabel = What is the business’s name?
 companyProtectorAddressOrUtr.checkYourAnswersLabel = Which of {0}’s details do you know?
 companyProtectorUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
@@ -1488,3 +1508,4 @@ companyProtectorAddress.checkYourAnswersLabel = What is {0}’s address?
 answerPage.section.protectors.heading = Protectors
 answerPage.section.individualProtector.subheading = Individual protector {0}
 answerPage.section.companyProtector.subheading = Business protector {0}
+
