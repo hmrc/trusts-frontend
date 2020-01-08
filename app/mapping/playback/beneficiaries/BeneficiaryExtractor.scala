@@ -35,13 +35,13 @@ class BeneficiaryExtractor @Inject()(charityBeneficiaryExtractor: CharityBenefic
     import models.playback.UserAnswersCombinator._
 
     val beneficiaries: List[UserAnswers] = List(
-      charityBeneficiaryExtractor.extract(answers, data.charity),
-      companyBeneficiaryExtractor.extract(answers, data.company),
-      trustBeneficiaryExtractor.extract(answers, data.trust),
-      otherBeneficiaryExtractor.extract(answers, data.other),
-      classOfBeneficiaryExtractor.extract(answers, data.unidentified),
       individualBeneficiaryExtractor.extract(answers, data.individualDetails),
-      largeBeneficiaryExtractor.extract(answers, data.large)
+      classOfBeneficiaryExtractor.extract(answers, data.unidentified),
+      charityBeneficiaryExtractor.extract(answers, data.charity),
+      trustBeneficiaryExtractor.extract(answers, data.trust),
+      companyBeneficiaryExtractor.extract(answers, data.company),
+      largeBeneficiaryExtractor.extract(answers, data.large),
+      otherBeneficiaryExtractor.extract(answers, data.other)
     ).collect {
       case Right(z) => z
     }
