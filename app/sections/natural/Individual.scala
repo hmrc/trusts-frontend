@@ -19,7 +19,7 @@ package sections.natural
 import pages.QuestionPage
 import play.api.libs.json.{JsArray, JsPath}
 
-case object Individual extends QuestionPage[List[Nothing]]{
+case object Individual extends QuestionPage[JsArray]{
 
   override def path: JsPath = JsPath \ Natural \ toString
 

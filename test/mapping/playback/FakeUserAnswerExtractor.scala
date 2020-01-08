@@ -27,10 +27,11 @@ import models.playback.http.GetTrust
 class FakeUserAnswerExtractor @Inject()(beneficiary: BeneficiaryExtractor,
                                         settlors: SettlorExtractor,
                                         trustType: TrustTypeExtractor,
-                                        trustees: TrusteeExtractor,
-                                        protectors: ProtectorExtractor
+                                        protectors: ProtectorExtractor,
+                                        otherIndividualExtractor: OtherIndividualExtractor,
+                                        trustees: TrusteeExtractor
                                         ) extends UserAnswersExtractor(
-  beneficiary, settlors, trustType, trustees, protectors
+  beneficiary, settlors, trustType, protectors, trustees, otherIndividualExtractor
 ) {
 
   override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionErrors.PlaybackExtractionError, UserAnswers] =
@@ -42,10 +43,11 @@ class FakeUserAnswerExtractor @Inject()(beneficiary: BeneficiaryExtractor,
 class FakeFailingUserAnswerExtractor @Inject()(beneficiary: BeneficiaryExtractor,
                                                settlors: SettlorExtractor,
                                                trustType: TrustTypeExtractor,
+                                               protectors: ProtectorExtractor,
                                                trustees: TrusteeExtractor,
-                                               protectors: ProtectorExtractor
+                                               otherIndividualExtractor: OtherIndividualExtractor
                                        ) extends UserAnswersExtractor(
-  beneficiary, settlors, trustType, trustees, protectors
+  beneficiary, settlors, trustType, protectors, trustees, otherIndividualExtractor
 ) {
 
   override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionErrors.PlaybackExtractionError, UserAnswers] =

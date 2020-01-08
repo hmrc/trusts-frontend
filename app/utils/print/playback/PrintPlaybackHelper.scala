@@ -32,7 +32,8 @@ class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions){
       playbackAnswersHelper.allTrustees,
       DeceasedSettlor(userAnswers, countryOptions),
       playbackAnswersHelper.beneficiaries,
-      playbackAnswersHelper.protectors
+      playbackAnswersHelper.protectors,
+      playbackAnswersHelper.otherIndividual
     ).flatten
 
   }

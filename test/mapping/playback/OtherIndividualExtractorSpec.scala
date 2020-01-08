@@ -31,7 +31,7 @@ import pages.register.natural.individual._
 class OtherIndividualExtractorSpec extends FreeSpec with MustMatchers
   with EitherValues with Generators with SpecBaseHelpers {
 
-  def generateIndividual(index: Int) = DisplayTrustIndividualDetailsType(
+  def generateIndividual(index: Int) = DisplayTrustNaturalPersonType(
     lineNo = s"$index",
     bpMatchStatus = Some("01"),
     name = NameType(s"First Name $index", None, s"Last Name $index"),
@@ -39,10 +39,6 @@ class OtherIndividualExtractorSpec extends FreeSpec with MustMatchers
       case 0 => Some(DateTime.parse("1970-02-01"))
       case _ => None
     },
-    vulnerableBeneficiary = false,
-    beneficiaryType = None,
-    beneficiaryDiscretion = None,
-    beneficiaryShareOfIncome = None,
     identification = Some(
       DisplayTrustIdentificationType(
         safeId = Some("8947584-94759745-84758745"),
@@ -64,7 +60,7 @@ class OtherIndividualExtractorSpec extends FreeSpec with MustMatchers
     entityStart = "2019-11-26"
   )
 
-  val individualExtractor : PlaybackExtractor[Option[List[DisplayTrustIndividualDetailsType]]] =
+  val individualExtractor : PlaybackExtractor[Option[List[DisplayTrustNaturalPersonType]]] =
     injector.instanceOf[OtherIndividualExtractor]
 
   "Other Individual Extractor" - {
@@ -79,7 +75,7 @@ class OtherIndividualExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = individualExtractor.extract(ua, individual)
 
-        extraction mustBe 'left
+        extraction mustBe 'right
 
       }
 
@@ -88,15 +84,11 @@ class OtherIndividualExtractorSpec extends FreeSpec with MustMatchers
     "when there are individuals" - {
 
       "with minimum data must return user answers updated" in {
-        val individual = List(DisplayTrustIndividualDetailsType(
+        val individual = List(DisplayTrustNaturalPersonType(
           lineNo = s"1",
           bpMatchStatus = Some("01"),
           name = NameType("First Name", None, "Last Name"),
           dateOfBirth = None,
-          vulnerableBeneficiary = false,
-          beneficiaryType = None,
-          beneficiaryDiscretion = None,
-          beneficiaryShareOfIncome = None,
           identification = None,
           entityStart = "2019-11-26"
         ))

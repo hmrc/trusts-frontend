@@ -118,6 +118,7 @@ object DisplayTrustEntitiesType {
 }
 
 case class DisplayTrustNaturalPersonType(lineNo: String,
+                                         bpMatchStatus: Option[String],
                                          name: NameType,
                                          dateOfBirth: Option[DateTime],
                                          identification: Option[DisplayTrustIdentificationType],

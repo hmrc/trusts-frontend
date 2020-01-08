@@ -25,6 +25,7 @@ import pages.register.beneficiaries.charity._
 import pages.register.beneficiaries.company._
 import pages.register.beneficiaries.trust._
 import pages.register.beneficiaries.individual._
+import pages.register.beneficiaries.other._
 import play.twirl.api.Html
 import viewmodels.{AnswerRow, AnswerSection}
 
@@ -291,6 +292,62 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
             AnswerRow(label = messages("trustBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel",trustBen2Name), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("trustBeneficiaryAddressYesNo.checkYourAnswersLabel",trustBen2Name), answer = Html("No"), changeUrl = None),
             AnswerRow(label = messages("trustBeneficiaryUtr.checkYourAnswersLabel",trustBen2Name), answer = Html("1234567890"), changeUrl = None)
+          ),
+          sectionKey = None
+        )
+      )
+
+    }
+
+    "generate other beneficiaries sections" in {
+
+      val otherBen1Name = "Dog"
+      val otherBen2Name = "Cat"
+
+      val helper = injector.instanceOf[PrintPlaybackHelper]
+
+      val answers = emptyUserAnswers
+        .set(OtherBeneficiaryDescriptionPage(0), otherBen1Name).success.value
+        .set(OtherBeneficiaryDiscretionYesNoPage(0), false).success.value
+        .set(OtherBeneficiaryShareOfIncomePage(0), "98").success.value
+        .set(OtherBeneficiaryAddressYesNoPage(0), true).success.value
+        .set(OtherBeneficiaryAddressUKYesNoPage(0), true).success.value
+        .set(OtherBeneficiaryAddressPage(0),
+          UKAddress(
+            line1 = "line1",
+            line2 = "line2",
+            line3 = Some("line3"),
+            line4 = Some("line4"),
+            postcode = "NE981ZZ"
+          )
+        ).success.value
+
+        .set(OtherBeneficiaryDescriptionPage(1), otherBen2Name).success.value
+        .set(OtherBeneficiaryDiscretionYesNoPage(1), true).success.value
+        .set(OtherBeneficiaryAddressYesNoPage(1), false).success.value
+
+      val result = helper.summary(answers)
+
+      result mustBe Seq(
+        AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),
+        AnswerSection(
+          headingKey = Some("Other beneficiary 1"),
+          rows = Seq(
+            AnswerRow(label = messages("otherBeneficiaryDescription.checkYourAnswersLabel"), answer = Html("Dog"), changeUrl = None),
+            AnswerRow(label = messages("otherBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", otherBen1Name), answer = Html("No"), changeUrl = None),
+            AnswerRow(label = messages("otherBeneficiaryShareOfIncome.checkYourAnswersLabel",otherBen1Name), answer = Html("98"), changeUrl = None),
+            AnswerRow(label = messages("otherBeneficiaryAddressYesNo.checkYourAnswersLabel",otherBen1Name), answer = Html("Yes"), changeUrl = None),
+            AnswerRow(label = messages("otherBeneficiaryAddressUKYesNo.checkYourAnswersLabel",otherBen1Name), answer = Html("Yes"), changeUrl = None),
+            AnswerRow(label = messages("otherBeneficiaryAddress.checkYourAnswersLabel",otherBen1Name), answer = Html("line1<br />line2<br />line3<br />line4<br />NE981ZZ"), changeUrl = None)
+          ),
+          sectionKey = None
+        ),
+        AnswerSection(
+          headingKey = Some("Other beneficiary 2"),
+          rows = Seq(
+            AnswerRow(label = messages("otherBeneficiaryDescription.checkYourAnswersLabel"), answer = Html("Cat"), changeUrl = None),
+            AnswerRow(label = messages("otherBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel",otherBen2Name), answer = Html("Yes"), changeUrl = None),
+            AnswerRow(label = messages("otherBeneficiaryAddressYesNo.checkYourAnswersLabel",otherBen2Name), answer = Html("No"), changeUrl = None)
           ),
           sectionKey = None
         )
