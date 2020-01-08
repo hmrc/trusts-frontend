@@ -149,10 +149,10 @@ object AnswerRowConverter {
   def individualOrBusinessQuestion(query: Gettable[IndividualOrBusiness], userAnswers: UserAnswers, labelKey: String,
                                    messageArg: String = "", changeRoute: Option[Call] = None)
                               (implicit messages: Messages) = {
-    userAnswers.get(query) map {x =>
+    userAnswers.get(query) map { x =>
       AnswerRow(
         messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-        HtmlFormat.escape(x.toString),
+        HtmlFormat.escape(x.toString.capitalize),
         None
       )
     }
