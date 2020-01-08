@@ -17,6 +17,7 @@
 package utils.print.playback
 
 import models.core.pages.IndividualOrBusiness
+import models.core.pages.IndividualOrBusiness.{Business, Individual}
 import models.playback.UserAnswers
 import pages.register.protectors.ProtectorIndividualOrBusinessPage
 import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage}
@@ -67,7 +68,10 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
   }
 
   private def otherBeneficiaries : Seq[AnswerSection] = {
-    val size = userAnswers.get(_root_.sections.beneficiaries.OtherBeneficiaries).map(_.value.size).getOrElse(0)
+    val size = userAnswers
+      .get(_root_.sections.beneficiaries.OtherBeneficiaries)
+      .map(_.value.size)
+      .getOrElse(0)
 
     size match {
       case 0 => Nil
@@ -77,7 +81,10 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
   }
 
   private def trustBeneficiaries : Seq[AnswerSection] = {
-    val size = userAnswers.get(_root_.sections.beneficiaries.TrustBeneficiaries).map(_.value.size).getOrElse(0)
+    val size = userAnswers
+      .get(_root_.sections.beneficiaries.TrustBeneficiaries)
+      .map(_.value.size)
+      .getOrElse(0)
 
     size match {
       case 0 => Nil
@@ -87,7 +94,10 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
   }
 
   private def companyBeneficiaries : Seq[AnswerSection] = {
-    val size = userAnswers.get(_root_.sections.beneficiaries.CompanyBeneficiaries).map(_.value.size).getOrElse(0)
+    val size = userAnswers
+      .get(_root_.sections.beneficiaries.CompanyBeneficiaries)
+      .map(_.value.size)
+      .getOrElse(0)
 
     size match {
       case 0 => Nil
@@ -97,7 +107,10 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
   }
 
   private def charityBeneficiaries : Seq[AnswerSection] = {
-    val size = userAnswers.get(_root_.sections.beneficiaries.CharityBeneficiaries).map(_.value.size).getOrElse(0)
+    val size = userAnswers
+      .get(_root_.sections.beneficiaries.CharityBeneficiaries)
+      .map(_.value.size)
+      .getOrElse(0)
 
     size match {
       case 0 => Nil
@@ -107,7 +120,10 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
   }
 
   private def individualBeneficiaries : Seq[AnswerSection] = {
-    val size = userAnswers.get(_root_.sections.beneficiaries.IndividualBeneficiaries).map(_.size).getOrElse(0)
+    val size = userAnswers
+      .get(_root_.sections.beneficiaries.IndividualBeneficiaries)
+      .map(_.size)
+      .getOrElse(0)
 
     size match {
       case 0 => Nil
@@ -118,22 +134,22 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
 
   def protectors : Seq[AnswerSection] = {
 
-    val size = userAnswers.get(_root_.sections.Protectors).map(_.value.size).getOrElse(0)
+    val size = userAnswers
+      .get(_root_.sections.Protectors)
+      .map(_.value.size)
+      .getOrElse(0)
 
     val protectors = size match {
       case 0 => Nil
       case _ =>
+
         (for (index <- 0 to size) yield {
-          userAnswers.get(ProtectorIndividualOrBusinessPage(index)).map {individualOrBusiness =>
-            if (individualOrBusiness == IndividualOrBusiness.Business) {
-              BusinessProtector(index, userAnswers, countryOptions)
-            }
-            else {
+          userAnswers.get(ProtectorIndividualOrBusinessPage(index)).map {
+            case Individual =>
               IndividualProtector(index, userAnswers, countryOptions)
-            }
-
+            case Business =>
+              BusinessProtector(index, userAnswers, countryOptions)
           }.getOrElse(Nil)
-
         }).flatten
     }
 
@@ -148,7 +164,10 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
   }
 
   def otherIndividual : Seq[AnswerSection] = {
-    val size = userAnswers.get(_root_.sections.natural.Individual).map(_.value.size).getOrElse(0)
+    val size = userAnswers
+      .get(_root_.sections.natural.Individual)
+      .map(_.value.size)
+      .getOrElse(0)
 
     size match {
       case 0 => Nil

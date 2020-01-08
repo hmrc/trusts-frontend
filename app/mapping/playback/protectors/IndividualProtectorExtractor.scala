@@ -16,6 +16,7 @@
 
 package mapping.playback.protectors
 
+import mapping.playback.PlaybackExtractionErrors.InvalidExtractorState
 import mapping.playback.PlaybackImplicits
 import mapping.registration.PassportType
 import models.core.pages.{Address, IndividualOrBusiness, InternationalAddress, UKAddress}
@@ -80,8 +81,7 @@ class IndividualProtectorExtractor {
           .flatMap(answers => extractPassportIdCard(passport, index, answers))
 
       case DisplayTrustIdentificationType(_, None, Some(passport), None) =>
-        Logger.error(s"[IndividualProtectorExtractor] only passport identification returned in DisplayTrustOrEstate api")
-        case object InvalidExtractorState extends RuntimeException
+        Logger.error(s"[IndividualProtectorExtractor] only passport identification returned in DisplayTrustIdentificationType")
         Failure(InvalidExtractorState)
 
     } getOrElse {

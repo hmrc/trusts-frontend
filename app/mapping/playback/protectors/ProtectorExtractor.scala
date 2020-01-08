@@ -68,8 +68,8 @@ class ProtectorExtractor @Inject()(individualProtectorExtractor: IndividualProte
     updated match {
       case Success(a) =>
         Right(a)
-      case Failure(exception) =>
-        Logger.warn(s"[ProtectorExtractor] failed to extract data due to ${exception.getMessage}")
+      case Failure(_) =>
+        Logger.warn(s"[ProtectorExtractor] failed to extract data")
         Left(FailedToExtractData(DisplayTrustProtectorsType.toString))
     }
   }
