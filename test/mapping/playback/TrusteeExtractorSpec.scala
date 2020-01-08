@@ -25,11 +25,11 @@ import models.playback.{MetaData, UserAnswers}
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import pages.register.trustees._
 
-class LeadTrusteeExtractorSpec extends FreeSpec with MustMatchers
+class TrusteeExtractorSpec extends FreeSpec with MustMatchers
   with EitherValues with Generators with SpecBaseHelpers {
 
-  val leadTrusteeExtractor : PlaybackExtractor[Option[List[Trustees]]] =
-    injector.instanceOf[TrusteesExtractor]
+  val leadTrusteeExtractor : PlaybackExtractor[DisplayTrustEntitiesType] =
+    injector.instanceOf[TrusteeExtractor]
 
   "Lead Trustee Extractor" - {
 
@@ -37,7 +37,11 @@ class LeadTrusteeExtractorSpec extends FreeSpec with MustMatchers
 
       "must return an error" in {
 
-        val leadTrustee = Some(List())
+        val leadTrustee = DisplayTrustEntitiesType(None,
+          DisplayTrustBeneficiaryType(None, None, None,None,None,None,None),
+          None,
+          DisplayTrustLeadTrusteeType(None, None),
+          None, None, None)
 
         val ua = UserAnswers("fakeId")
 
@@ -52,8 +56,12 @@ class LeadTrusteeExtractorSpec extends FreeSpec with MustMatchers
     "when there is a lead trustee" - {
 
       "which is UK registered, return user answers updated" in {
-        val leadTrustee = Some(List(
-            DisplayTrustLeadTrusteeOrgType(
+
+        val leadTrustee = DisplayTrustEntitiesType(None,
+          DisplayTrustBeneficiaryType(None, None, None,None,None,None,None),
+          None,
+          DisplayTrustLeadTrusteeType(None,
+            Some(DisplayTrustLeadTrusteeOrgType(
               lineNo = s"1",
               bpMatchStatus = Some("01"),
               name = "org1",
@@ -67,8 +75,21 @@ class LeadTrusteeExtractorSpec extends FreeSpec with MustMatchers
                 ),
               entityStart = "2019-11-26"
             )
-          )
-        )
+          )),
+
+          None,
+//          Some(List(DisplayTrustTrusteeType(None, Some(DisplayTrustTrusteeOrgType(
+//            lineNo = s"1",
+//            bpMatchStatus = Some("01"),
+//            name = s"Trustee Company 1",
+//            phoneNumber = None,
+//            email = None,
+//            identification = None,
+//            entityStart = "2019-11-26"
+//          ))))),
+
+          None, None)
+
 
         val ua = UserAnswers("fakeId")
 
