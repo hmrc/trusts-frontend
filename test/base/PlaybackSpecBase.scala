@@ -25,7 +25,7 @@ import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice._
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
-import repositories.PlaybackRepository
+import repositories.{PlaybackRepository, RegistrationsRepository}
 import services.SubmissionService
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import utils.TestUserAnswers
@@ -50,6 +50,7 @@ trait PlaybackSpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mo
         bind[PlaybackDataRetrievalAction].toInstance(new FakePlaybackDataRetrievalAction(userAnswers)),
         bind[PlaybackDataRequiredAction].to[PlaybackDataRequiredActionImpl],
         bind[PlaybackRepository].toInstance(playbackRepository),
+        bind[RegistrationsRepository].toInstance(registrationsRepository),
         bind[SubmissionService].toInstance(mockSubmissionService),
         bind[Navigator].toInstance(navigator),
         bind[Navigator].qualifiedWith(classOf[PropertyOrLand]).toInstance(navigator),
