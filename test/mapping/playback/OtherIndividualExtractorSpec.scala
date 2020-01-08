@@ -75,7 +75,7 @@ class OtherIndividualExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = individualExtractor.extract(ua, individual)
 
-        extraction mustBe 'left
+        extraction mustBe 'right
 
       }
 
