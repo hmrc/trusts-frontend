@@ -24,6 +24,7 @@ import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
 import utils.print.playback.sections._
 import utils.print.playback.sections.protectors.{BusinessProtector, IndividualProtector}
+import utils.print.playback.sections.beneficiaries._
 import viewmodels.AnswerSection
 
 class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAnswers)
@@ -50,8 +51,10 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
 
     val beneficiaries = Seq(
       individualBeneficiaries,
+      classOfBeneficiaries,
       charityBeneficiaries,
       companyBeneficiaries,
+      largeBeneficiaries,
       trustBeneficiaries,
       otherBeneficiaries
     ).flatten
@@ -63,6 +66,16 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
       ).flatten
     } else {
       Nil
+    }
+  }
+
+  private def classOfBeneficiaries : Seq[AnswerSection] = {
+    val size = userAnswers.get(_root_.sections.beneficiaries.ClassOfBeneficiaries).map(_.size).getOrElse(0)
+
+    size match {
+      case 0 => Nil
+      case _ =>
+        (for (index <- 0 to size) yield ClassOfBeneficiary(index, userAnswers, countryOptions)).flatten
     }
   }
 
@@ -113,6 +126,16 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
       case 0 => Nil
       case _ =>
         (for (index <- 0 to size) yield IndividualBeneficiary(index, userAnswers, countryOptions)).flatten
+    }
+  }
+
+  private def largeBeneficiaries : Seq[AnswerSection] = {
+    val size = userAnswers.get(_root_.sections.beneficiaries.LargeBeneficiaries).map(_.value.size).getOrElse(0)
+
+    size match {
+      case 0 => Nil
+      case _ =>
+        (for (index <- 0 to size) yield LargeBeneficiary(index, userAnswers, countryOptions)).flatten
     }
   }
 

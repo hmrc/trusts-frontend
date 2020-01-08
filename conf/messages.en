@@ -760,6 +760,16 @@ companyBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in t
 companyBeneficiaryAddress.checkYourAnswersLabel = What is {0}’s address?
 companyBeneficiaryUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
 
+largeBeneficiaryName.checkYourAnswersLabel = What is the business’s name?
+largeBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
+largeBeneficiaryShareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
+largeBeneficiaryAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+largeBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+largeBeneficiaryAddress.checkYourAnswersLabel = What is {0}’s address?
+largeBeneficiaryUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
+largeBeneficiaryDescription.checkYourAnswersLabel = What is the description of the beneficiary?
+largeBeneficiaryNumberOfBeneficiaries.checkYourAnswersLabel = How many people are in this employment related beneficiary?
+
 individualBeneficiaryName.title = What is the name of the individual?
 individualBeneficiaryName.heading = What is the name of the individual?
 individualBeneficiaryName.checkYourAnswersLabel = What is the name of the individual?
@@ -913,6 +923,9 @@ classBeneficiaryDescription.error.length = The description of the class in the t
 classBeneficiaryDescription.error.invalid = The description of the class in the trust deed must only include letters a to z, numbers, ampersands (&), backward slashes or spaces
 classBeneficiaryDescription.hint = This must be 56 characters or less. For example, future grandchildren and future great-grandchildren.
 
+classBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
+classBeneficiaryShareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
+
 removeClassOfBeneficiary.title = Are you sure you want to remove the class of beneficiaries?
 removeClassOfBeneficiary.heading = Are you sure you want to remove {0}?
 removeClassOfBeneficiary.default = the class of beneficiaries
@@ -1010,6 +1023,7 @@ answerPage.section.individualBeneficiary.subheading = Individual beneficiary
 answerPage.section.classOfBeneficiary.subheading = Class of beneficiary
 answerPage.section.trustBeneficiary.heading = Trust beneficiary {0}
 answerPage.section.otherBeneficiary.heading = Other beneficiary {0}
+answerPage.section.largeBeneficiary.subheading = Employment related beneficiary {0}
 answerPage.section.assets.heading = Assets
 answerPage.section.moneyAsset.subheading = Money
 answerPage.section.shareAsset.subheading = Share
