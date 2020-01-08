@@ -35,9 +35,9 @@ class CompanyBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[Lis
     {
       data match {
         case None => Left(FailedToExtractData("No Company Beneficiary"))
-        case Some(charities) =>
+        case Some(companies) =>
 
-          val updated = charities.zipWithIndex.foldLeft[Try[UserAnswers]](Success(answers)){
+          val updated = companies.zipWithIndex.foldLeft[Try[UserAnswers]](Success(answers)){
             case (answers, (companyBeneficiary, index)) =>
 
             answers
