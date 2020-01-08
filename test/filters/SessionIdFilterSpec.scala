@@ -20,6 +20,7 @@ import java.util.UUID
 
 import akka.stream.Materializer
 import com.google.inject.Inject
+import org.scalatest.mockito.MockitoSugar
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.inject.bind
@@ -29,6 +30,7 @@ import play.api.mvc.{DefaultActionBuilder, Results, SessionCookieBaker}
 import play.api.routing.Router
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import repositories.{PlaybackRepository, RegistrationsRepository}
 import uk.gov.hmrc.http.{HeaderNames, SessionKeys}
 
 import scala.concurrent.ExecutionContext
@@ -72,25 +74,17 @@ class TrustRouter @Inject()(actionBuilder : DefaultActionBuilder) {
 
 }
 
-class SessionIdFilterSpec extends WordSpec with MustMatchers with GuiceOneAppPerSuite with OptionValues {
+class SessionIdFilterSpec extends WordSpec with MustMatchers with MockitoSugar with GuiceOneAppPerSuite with OptionValues {
 
   import SessionIdFilterSpec._
+
+  val registrationsRepository = mock[RegistrationsRepository]
+  val playbackRepository = mock[PlaybackRepository]
 
   "session id filter" must {
 
     "add a sessionId if one doesn't already exist" in {
-
-      val router = app.injector.instanceOf[TrustRouter]
-
-      val application = new GuiceApplicationBuilder()
-        .overrides(
-          bind[SessionIdFilter].to[TestSessionIdFilter]
-        )
-        .configure(
-          "play.filters.disabled" -> List("uk.gov.hmrc.play.bootstrap.filters.frontend.crypto.SessionCookieCryptoFilter")
-        )
-        .router(router.router)
-        .build()
+      val application = createApp()
 
       val result = route(application, FakeRequest(GET, "/test")).value
 
@@ -105,18 +99,7 @@ class SessionIdFilterSpec extends WordSpec with MustMatchers with GuiceOneAppPer
     }
 
     "not override a sessionId if one doesn't already exist" in {
-
-      val router = app.injector.instanceOf[TrustRouter]
-
-      val application = new GuiceApplicationBuilder()
-        .overrides(
-          bind[SessionIdFilter].to[TestSessionIdFilter]
-        )
-        .configure(
-          "play.filters.disabled" -> List("uk.gov.hmrc.play.bootstrap.filters.frontend.crypto.SessionCookieCryptoFilter")
-        )
-        .router(router.router)
-        .build()
+      val application = createApp()
 
       val result = route(application, FakeRequest(GET, "/test").withSession(SessionKeys.sessionId -> "foo")).value
 
@@ -129,18 +112,7 @@ class SessionIdFilterSpec extends WordSpec with MustMatchers with GuiceOneAppPer
     }
 
     "not override other session values from the response" in {
-
-      val router = app.injector.instanceOf[TrustRouter]
-
-      val application = new GuiceApplicationBuilder()
-        .overrides(
-          bind[SessionIdFilter].to[TestSessionIdFilter]
-        )
-        .configure(
-          "play.filters.disabled" -> List("uk.gov.hmrc.play.bootstrap.filters.frontend.crypto.SessionCookieCryptoFilter")
-        )
-        .router(router.router)
-        .build()
+      val application = createApp()
 
       val result = route(application, FakeRequest(GET, "/test2")).value
 
@@ -150,23 +122,26 @@ class SessionIdFilterSpec extends WordSpec with MustMatchers with GuiceOneAppPer
     }
 
     "not override other session values from the request" in {
-
-      val router = app.injector.instanceOf[TrustRouter]
-
-      val application = new GuiceApplicationBuilder()
-        .overrides(
-          bind[SessionIdFilter].to[TestSessionIdFilter]
-        )
-        .configure(
-          "play.filters.disabled" -> List("uk.gov.hmrc.play.bootstrap.filters.frontend.crypto.SessionCookieCryptoFilter")
-        )
-        .router(router.router)
-        .build()
+      val application = createApp()
 
       val result = route(application, FakeRequest(GET, "/test").withSession("foo" -> "bar")).value
       session(result).data must contain("foo" -> "bar")
 
       application.stop()
     }
+  }
+
+  private def createApp() = {
+    new GuiceApplicationBuilder()
+      .overrides(
+        bind[SessionIdFilter].to[TestSessionIdFilter],
+        bind[RegistrationsRepository].toInstance(registrationsRepository),
+        bind[PlaybackRepository].toInstance(playbackRepository)
+      )
+      .configure(
+        "play.filters.disabled" -> List("uk.gov.hmrc.play.bootstrap.filters.frontend.crypto.SessionCookieCryptoFilter")
+      )
+      .router(app.injector.instanceOf[TrustRouter].router)
+      .build()
   }
 }
