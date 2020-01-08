@@ -27,6 +27,7 @@ import pages.register.beneficiaries.trust._
 import pages.register.beneficiaries.individual._
 import pages.register.beneficiaries.large._
 import pages.register.beneficiaries.other._
+import pages.register.beneficiaries.classOfBeneficiary._
 import play.twirl.api.Html
 import viewmodels.{AnswerRow, AnswerSection}
 
@@ -415,6 +416,46 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
             AnswerRow(label = messages("otherBeneficiaryDescription.checkYourAnswersLabel"), answer = Html("Cat"), changeUrl = None),
             AnswerRow(label = messages("otherBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel",otherBen2Name), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("otherBeneficiaryAddressYesNo.checkYourAnswersLabel",otherBen2Name), answer = Html("No"), changeUrl = None)
+          ),
+          sectionKey = None
+        )
+      )
+
+    }
+
+    "generate class of beneficiaries sections" in {
+
+      val classBenDescription1 = "Grandchildren"
+      val classBenDescription2 = "Spouses"
+
+      val helper = injector.instanceOf[PrintPlaybackHelper]
+
+      val answers = emptyUserAnswers
+        .set(ClassOfBeneficiaryDescriptionPage(0), classBenDescription1).success.value
+        .set(ClassOfBeneficiaryDiscretionYesNoPage(0), false).success.value
+        .set(ClassOfBeneficiaryShareOfIncomePage(0), "55").success.value
+
+        .set(ClassOfBeneficiaryDescriptionPage(1), classBenDescription2).success.value
+        .set(ClassOfBeneficiaryDiscretionYesNoPage(1), true).success.value
+
+      val result = helper.summary(answers)
+
+      result mustBe Seq(
+        AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),
+        AnswerSection(
+          headingKey = Some("Class of beneficiary 1"),
+          rows = Seq(
+            AnswerRow(label = messages("classBeneficiaryDescription.checkYourAnswersLabel"), answer = Html("Grandchildren"), changeUrl = None),
+            AnswerRow(label = messages("classBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", classBenDescription1), answer = Html("No"), changeUrl = None),
+            AnswerRow(label = messages("classBeneficiaryShareOfIncome.checkYourAnswersLabel",classBenDescription1), answer = Html("55"), changeUrl = None)
+          ),
+          sectionKey = None
+        ),
+        AnswerSection(
+          headingKey = Some("Class of beneficiary 2"),
+          rows = Seq(
+            AnswerRow(label = messages("classBeneficiaryDescription.checkYourAnswersLabel"), answer = Html("Spouses"), changeUrl = None),
+            AnswerRow(label = messages("classBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", classBenDescription2), answer = Html("Yes"), changeUrl = None)
           ),
           sectionKey = None
         )

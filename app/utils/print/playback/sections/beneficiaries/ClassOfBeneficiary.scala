@@ -17,57 +17,29 @@
 package utils.print.playback.sections.beneficiaries
 
 import models.playback.UserAnswers
-import pages.register.beneficiaries.classOfBeneficiary.{ClassOfBeneficiaryDescriptionPage, ClassOfBeneficiaryDiscretionYesNoPage, ClassOfBeneficiaryShareOfIncomePage}
+import pages.register.beneficiaries.classOfBeneficiary._
 import play.api.i18n.Messages
-import utils.CheckAnswersFormatters
 import utils.countryOptions.CountryOptions
-import viewmodels.{AnswerRow, AnswerSection}
+import viewmodels.AnswerSection
 
 object ClassOfBeneficiary {
 
-  def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] = {
-    if (description(index, userAnswers).nonEmpty) {
-      Some(Seq(AnswerSection(
-        headingKey = None,
+  import utils.print.playback.sections.AnswerRowConverter._
+
+  def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)
+           (implicit messages: Messages): Seq[AnswerSection] = {
+
+    userAnswers.get(ClassOfBeneficiaryDescriptionPage(index)).map { name =>
+      Seq(AnswerSection(
+        headingKey = Some(messages("answerPage.section.classOfBeneficiary.subheading") + s" ${index + 1}"),
         Seq(
-          description(index, userAnswers),
-          shareOfIncomeYesNo(index, userAnswers),
-          shareOfIncome(index, userAnswers)
+          stringQuestion(ClassOfBeneficiaryDescriptionPage(index), userAnswers, "classBeneficiaryDescription"),
+          yesNoQuestion(ClassOfBeneficiaryDiscretionYesNoPage(index), userAnswers, "classBeneficiaryShareOfIncomeYesNo", name),
+          stringQuestion(ClassOfBeneficiaryShareOfIncomePage(index), userAnswers, "classBeneficiaryShareOfIncome", name)
         ).flatten,
-        sectionKey = Some(messages("answerPage.section.charityBeneficiary.heading"))
-      )))
-    } else {
-      None
-    }
+        sectionKey = None
+      ))
+    }.getOrElse(Nil)
   }
-
-  def description(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(ClassOfBeneficiaryDescriptionPage(index)) map {
-    x =>
-      AnswerRow(
-        "otherDescription.checkYourAnswersLabel",
-        CheckAnswersFormatters.escape(x),
-        None
-      )
-  }
-
-  def shareOfIncomeYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
-    userAnswers.get(ClassOfBeneficiaryDiscretionYesNoPage(index)) map {
-      x =>
-        AnswerRow(
-          "otherShareOfIncomeYesNo.checkYourAnswersLabel",
-          CheckAnswersFormatters.yesOrNo(x),
-          None
-        )
-    }
-
-  def shareOfIncome(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
-    userAnswers.get(ClassOfBeneficiaryShareOfIncomePage(index)) map {
-      x =>
-        AnswerRow(
-          "otherShareOfIncome.checkYourAnswersLabel",
-          CheckAnswersFormatters.escape(x),
-          None
-        )
-    }
 
 }
