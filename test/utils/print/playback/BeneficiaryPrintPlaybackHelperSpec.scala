@@ -19,12 +19,13 @@ package utils.print.playback
 import java.time.LocalDate
 
 import base.PlaybackSpecBase
-import models.core.pages.{FullName, UKAddress}
+import models.core.pages.{Description, FullName, UKAddress}
 import models.registration.pages.{PassportOrIdCardDetails, RoleInCompany}
 import pages.register.beneficiaries.charity._
 import pages.register.beneficiaries.company._
 import pages.register.beneficiaries.trust._
 import pages.register.beneficiaries.individual._
+import pages.register.beneficiaries.large._
 import pages.register.beneficiaries.other._
 import pages.register.beneficiaries.classOfBeneficiary._
 import play.twirl.api.Html
@@ -293,6 +294,72 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
             AnswerRow(label = messages("trustBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel",trustBen2Name), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("trustBeneficiaryAddressYesNo.checkYourAnswersLabel",trustBen2Name), answer = Html("No"), changeUrl = None),
             AnswerRow(label = messages("trustBeneficiaryUtr.checkYourAnswersLabel",trustBen2Name), answer = Html("1234567890"), changeUrl = None)
+          ),
+          sectionKey = None
+        )
+      )
+
+    }
+
+    "generate large beneficiaries sections" in {
+
+      val largeBen1Name = "Amazon"
+      val largeBen2Name = "Apple"
+
+      val helper = injector.instanceOf[PrintPlaybackHelper]
+
+      val answers = emptyUserAnswers
+        .set(LargeBeneficiaryNamePage(0), largeBen1Name).success.value
+        .set(LargeBeneficiaryDiscretionYesNoPage(0), false).success.value
+        .set(LargeBeneficiaryShareOfIncomePage(0), "98").success.value
+        .set(LargeBeneficiaryAddressYesNoPage(0), true).success.value
+        .set(LargeBeneficiaryAddressUKYesNoPage(0), true).success.value
+        .set(LargeBeneficiaryAddressPage(0),
+          UKAddress(
+            line1 = "line1",
+            line2 = "line2",
+            line3 = Some("line3"),
+            line4 = Some("line4"),
+            postcode = "NE981ZZ"
+          )
+        ).success.value
+        .set(LargeBeneficiaryDescriptionPage(0), Description("Description", None, None, None, None)).success.value
+        .set(LargeBeneficiaryNumberOfBeneficiariesPage(0), "1").success.value
+
+        .set(LargeBeneficiaryNamePage(1), largeBen2Name).success.value
+        .set(LargeBeneficiaryDiscretionYesNoPage(1), true).success.value
+        .set(LargeBeneficiaryAddressYesNoPage(1), false).success.value
+        .set(LargeBeneficiaryUtrPage(1), "1234567890").success.value
+        .set(LargeBeneficiaryDescriptionPage(1), Description("Description", None, None, None, None)).success.value
+        .set(LargeBeneficiaryNumberOfBeneficiariesPage(1), "1").success.value
+
+      val result = helper.summary(answers)
+
+      result mustBe Seq(
+        AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),
+        AnswerSection(
+          headingKey = Some("Employment related beneficiary 1"),
+          rows = Seq(
+            AnswerRow(label = messages("largeBeneficiaryName.checkYourAnswersLabel"), answer = Html("Amazon"), changeUrl = None),
+            AnswerRow(label = messages("largeBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", largeBen1Name), answer = Html("No"), changeUrl = None),
+            AnswerRow(label = messages("largeBeneficiaryShareOfIncome.checkYourAnswersLabel", largeBen1Name), answer = Html("98"), changeUrl = None),
+            AnswerRow(label = messages("largeBeneficiaryAddressYesNo.checkYourAnswersLabel", largeBen1Name), answer = Html("Yes"), changeUrl = None),
+            AnswerRow(label = messages("largeBeneficiaryAddressUKYesNo.checkYourAnswersLabel", largeBen1Name), answer = Html("Yes"), changeUrl = None),
+            AnswerRow(label = messages("largeBeneficiaryAddress.checkYourAnswersLabel", largeBen1Name), answer = Html("line1<br />line2<br />line3<br />line4<br />NE981ZZ"), changeUrl = None),
+            AnswerRow(label = messages("largeBeneficiaryDescription.checkYourAnswersLabel", largeBen1Name), answer = Html("Description"), changeUrl = None),
+            AnswerRow(label = messages("largeBeneficiaryNumberOfBeneficiaries.checkYourAnswersLabel", largeBen1Name), answer = Html("1"), changeUrl = None)
+          ),
+          sectionKey = None
+        ),
+        AnswerSection(
+          headingKey = Some("Employment related beneficiary 2"),
+          rows = Seq(
+            AnswerRow(label = messages("largeBeneficiaryName.checkYourAnswersLabel", largeBen2Name), answer = Html("Apple"), changeUrl = None),
+            AnswerRow(label = messages("largeBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", largeBen2Name), answer = Html("Yes"), changeUrl = None),
+            AnswerRow(label = messages("largeBeneficiaryAddressYesNo.checkYourAnswersLabel", largeBen2Name), answer = Html("No"), changeUrl = None),
+            AnswerRow(label = messages("largeBeneficiaryUtr.checkYourAnswersLabel", largeBen2Name), answer = Html("1234567890"), changeUrl = None),
+            AnswerRow(label = messages("largeBeneficiaryDescription.checkYourAnswersLabel", largeBen2Name), answer = Html("Description"), changeUrl = None),
+            AnswerRow(label = messages("largeBeneficiaryNumberOfBeneficiaries.checkYourAnswersLabel", largeBen2Name), answer = Html("1"), changeUrl = None)
           ),
           sectionKey = None
         )

@@ -22,6 +22,7 @@ import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusine
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
 import utils.print.playback.sections._
+import utils.print.playback.sections.beneficiaries._
 import utils.print.playback.sections.protectors.{CompanyProtector, IndividualProtector}
 import viewmodels.AnswerSection
 
@@ -51,8 +52,9 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
       individualBeneficiaries,
       classOfBeneficiaries,
       charityBeneficiaries,
-      trustBeneficiaries,
       companyBeneficiaries,
+      largeBeneficiaries,
+      trustBeneficiaries,
       otherBeneficiaries
     ).flatten
 
@@ -123,6 +125,16 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
       case 0 => Nil
       case _ =>
         (for (index <- 0 to size) yield IndividualBeneficiary(index, userAnswers, countryOptions)).flatten
+    }
+  }
+
+  private def largeBeneficiaries : Seq[AnswerSection] = {
+    val size = userAnswers.get(_root_.sections.beneficiaries.LargeBeneficiaries).map(_.value.size).getOrElse(0)
+
+    size match {
+      case 0 => Nil
+      case _ =>
+        (for (index <- 0 to size) yield LargeBeneficiary(index, userAnswers, countryOptions)).flatten
     }
   }
 
