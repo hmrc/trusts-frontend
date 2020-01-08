@@ -70,30 +70,36 @@ class TrustDetailsExtractor @Inject() extends PlaybackExtractor[Option[TrustDeta
 
   private def extractResidentialType(details: TrustDetailsType, answers: UserAnswers): Try[UserAnswers] =
     details.residentialStatus map {
-      case ResidentialStatusType(Some(UkType(scottishLaw, preOffShore)), None) =>
-        val extractOffShore = preOffShore match {
-          case Some(country) => answers.set(TrustPreviouslyResidentPage, country)
-              .flatMap(_.set(TrustResidentOffshorePage, true))
-          case _ => answers.set(TrustResidentOffshorePage, false)
-        }
-        extractOffShore.flatMap(_.set(EstablishedUnderScotsLawPage, scottishLaw))
-      case ResidentialStatusType(None, Some(NonUKType(sch5atcgga92, s218ihta84, agentS218IHTA84, trusteeStatus))) =>
-        val registeringTrustFor5A = answers.set(RegisteringTrustFor5APage, sch5atcgga92)
-
-        val inheritanceTax = s218ihta84 match {
-          case Some(iht) => registeringTrustFor5A.flatMap(_.set(InheritanceTaxActPage, iht))
-          case _ => registeringTrustFor5A
-        }
-
-        val agentInheritance = agentS218IHTA84 match {
-          case Some(iht) => inheritanceTax.flatMap(_.set(AgentOtherThanBarristerPage, iht))
-          case _ => inheritanceTax
-        }
-
-        trusteeStatus.map(NonResidentType.fromDES) match {
-          case Some(status) => agentInheritance.flatMap(_.set(NonResidentTypePage, status))
-          case _ => agentInheritance
-        }
+      case ResidentialStatusType(Some(uk), None) => ukTrust(uk, answers)
+      case ResidentialStatusType(None, Some(nonUK)) => nonUKTrust(nonUK, answers)
     } getOrElse Success(answers)
+
+  private def ukTrust(uk: UkType, answers: UserAnswers): Try[UserAnswers] = {
+    val extractOffShore = uk.preOffShore match {
+      case Some(country) => answers.set(TrustPreviouslyResidentPage, country)
+        .flatMap(_.set(TrustResidentOffshorePage, true))
+      case _ => answers.set(TrustResidentOffshorePage, false)
+    }
+    extractOffShore.flatMap(_.set(EstablishedUnderScotsLawPage, uk.scottishLaw))
+  }
+
+  private def nonUKTrust(nonUK: NonUKType, answers: UserAnswers): Try[UserAnswers] = {
+    val registeringTrustFor5A = answers.set(RegisteringTrustFor5APage, nonUK.sch5atcgga92)
+
+    val inheritanceTax = nonUK.s218ihta84 match {
+      case Some(iht) => registeringTrustFor5A.flatMap(_.set(InheritanceTaxActPage, iht))
+      case _ => registeringTrustFor5A
+    }
+
+    val agentInheritance = nonUK.agentS218IHTA84 match {
+      case Some(iht) => inheritanceTax.flatMap(_.set(AgentOtherThanBarristerPage, iht))
+      case _ => inheritanceTax
+    }
+
+    nonUK.trusteeStatus.map(NonResidentType.fromDES) match {
+      case Some(status) => agentInheritance.flatMap(_.set(NonResidentTypePage, status))
+      case _ => agentInheritance
+    }
+  }
 
 }
