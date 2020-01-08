@@ -337,7 +337,7 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
       result mustBe Seq(
         AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),
         AnswerSection(
-          headingKey = Some("Large beneficiary 1"),
+          headingKey = Some("Employment related beneficiary 1"),
           rows = Seq(
             AnswerRow(label = messages("largeBeneficiaryName.checkYourAnswersLabel"), answer = Html("Amazon"), changeUrl = None),
             AnswerRow(label = messages("largeBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", largeBen1Name), answer = Html("No"), changeUrl = None),
@@ -351,7 +351,7 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
           sectionKey = None
         ),
         AnswerSection(
-          headingKey = Some("Large beneficiary 2"),
+          headingKey = Some("Employment related beneficiary 2"),
           rows = Seq(
             AnswerRow(label = messages("largeBeneficiaryName.checkYourAnswersLabel", largeBen2Name), answer = Html("Apple"), changeUrl = None),
             AnswerRow(label = messages("largeBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", largeBen2Name), answer = Html("Yes"), changeUrl = None),
