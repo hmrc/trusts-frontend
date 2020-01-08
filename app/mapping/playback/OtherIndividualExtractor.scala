@@ -34,7 +34,7 @@ class OtherIndividualExtractor @Inject() extends PlaybackExtractor[Option[List[D
   override def extract(answers: UserAnswers, data: Option[List[DisplayTrustNaturalPersonType]]): Either[PlaybackExtractionError, UserAnswers] =
     {
       data match {
-        case None => Left(FailedToExtractData("No Other Individual"))
+        case None => Right(answers)
         case Some(individual) =>
 
           val updated = individual.zipWithIndex.foldLeft[Try[UserAnswers]](Success(answers)){
