@@ -19,7 +19,9 @@ package utils.print.playback
 import base.PlaybackSpecBase
 import models.core.pages.{FullName, IndividualOrBusiness}
 import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage, TrusteesNamePage}
+import play.twirl.api.Html
 import utils.countryOptions.CountryOptions
+import viewmodels.{AnswerRow, AnswerSection}
 
 class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase {
 
@@ -28,7 +30,7 @@ class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase {
     "generate trustee sections given individual lead trustee" in {
 
       val answers = emptyUserAnswers
-        .set(IsThisLeadTrusteePage(0), false).success.value
+        .set(IsThisLeadTrusteePage(0), true).success.value
         .set(TrusteeIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
         .set(TrusteesNamePage(0), FullName("Joe", None, "Bloggs")).success.value
 
@@ -36,7 +38,19 @@ class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase {
 
       val result = helper.allTrustees
 
-      println(result)
+      val name1 = "Joe Bloggs"
+
+      result mustBe Seq(
+        AnswerSection(
+          headingKey = Some("Trustee 1"),
+          rows = Seq(
+            AnswerRow(label = messages("isThisLeadTrustee.checkYourAnswersLabel"), answer = Html("Yes"), changeUrl = None),
+            AnswerRow(label = messages("trusteeIndividualOrBusiness.checkYourAnswersLabel", name1), answer = Html("Individual"), changeUrl = None),
+            AnswerRow(label = messages("trusteesName.checkYourAnswersLabel", name1), answer = Html("Joe Bolggs"), changeUrl = None)
+          ),
+          sectionKey = Some("Trustees")
+        )
+      )
     }
   }
 }

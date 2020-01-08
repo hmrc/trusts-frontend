@@ -28,8 +28,8 @@ import pages.register.trustees._
 class LeadTrusteeOrgExtractorSpec extends FreeSpec with MustMatchers
   with EitherValues with Generators with SpecBaseHelpers {
 
-  val leadTrusteeOrgExtractor : PlaybackExtractor[Option[DisplayTrustLeadTrusteeOrgType]] =
-    injector.instanceOf[LeadTrusteeOrgExtractor]
+  val leadTrusteeOrgExtractor : PlaybackExtractor[Option[List[Trustees]]] =
+    injector.instanceOf[TrusteesExtractor]
 
   "Lead Trustee Organisation Extractor" - {
 
@@ -52,7 +52,7 @@ class LeadTrusteeOrgExtractorSpec extends FreeSpec with MustMatchers
     "when there is a lead trustee organisation" - {
 
       "which is UK registered, return user answers updated" in {
-        val leadTrustee = DisplayTrustLeadTrusteeOrgType(
+        val leadTrustee = List(DisplayTrustLeadTrusteeOrgType(
           lineNo = s"1",
           bpMatchStatus = Some("01"),
           name = "org1",
@@ -65,7 +65,7 @@ class LeadTrusteeOrgExtractorSpec extends FreeSpec with MustMatchers
               address = Some(AddressType("line 1", "line2", None, None, Some("NE11NE"), "GB"))
             ),
           entityStart = "2019-11-26"
-        )
+        ))
 
         val ua = UserAnswers("fakeId")
 
@@ -87,7 +87,7 @@ class LeadTrusteeOrgExtractorSpec extends FreeSpec with MustMatchers
       }
 
       "which is not UK registered, return user answers updated" in {
-        val leadTrustee = DisplayTrustLeadTrusteeOrgType(
+        val leadTrustee = List(DisplayTrustLeadTrusteeOrgType(
           lineNo = s"1",
           bpMatchStatus = Some("01"),
           name = "org1",
@@ -100,7 +100,7 @@ class LeadTrusteeOrgExtractorSpec extends FreeSpec with MustMatchers
               address = Some(AddressType("line 1", "line2", None, None, None, "FR"))
             ),
           entityStart = "2019-11-26"
-        )
+        ))
 
         val ua = UserAnswers("fakeId")
 

@@ -28,8 +28,8 @@ import pages.register.trustees._
 class LeadTrusteeExtractorSpec extends FreeSpec with MustMatchers
   with EitherValues with Generators with SpecBaseHelpers {
 
-  val leadTrusteeExtractor : PlaybackExtractor[DisplayTrustLeadTrusteeType] =
-    injector.instanceOf[LeadTrusteeExtractor]
+  val leadTrusteeExtractor : PlaybackExtractor[Option[List[Trustees]]] =
+    injector.instanceOf[TrusteesExtractor]
 
   "Lead Trustee Extractor" - {
 
@@ -37,7 +37,7 @@ class LeadTrusteeExtractorSpec extends FreeSpec with MustMatchers
 
       "must return an error" in {
 
-        val leadTrustee = DisplayTrustLeadTrusteeType(None, None)
+        val leadTrustee = Some(List())
 
         val ua = UserAnswers("fakeId")
 
@@ -52,9 +52,7 @@ class LeadTrusteeExtractorSpec extends FreeSpec with MustMatchers
     "when there is a lead trustee" - {
 
       "which is UK registered, return user answers updated" in {
-        val leadTrustee = DisplayTrustLeadTrusteeType(
-          None,
-          Some(
+        val leadTrustee = Some(List(
             DisplayTrustLeadTrusteeOrgType(
               lineNo = s"1",
               bpMatchStatus = Some("01"),

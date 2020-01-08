@@ -25,13 +25,12 @@ import models.playback.UserAnswers
 import models.playback.http.GetTrust
 
 class FakeUserAnswerExtractor @Inject()(beneficiary: BeneficiaryExtractor,
-                                        leadTrustee: LeadTrusteeExtractor,
                                         settlors: SettlorExtractor,
                                         trustType: TrustTypeExtractor,
                                         trustees: TrusteeExtractor,
                                         protectors: ProtectorExtractor
                                         ) extends UserAnswersExtractor(
-  beneficiary, leadTrustee, settlors, trustType, trustees, protectors
+  beneficiary, settlors, trustType, trustees, protectors
 ) {
 
   override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionErrors.PlaybackExtractionError, UserAnswers] =
@@ -41,16 +40,15 @@ class FakeUserAnswerExtractor @Inject()(beneficiary: BeneficiaryExtractor,
 
 
 class FakeFailingUserAnswerExtractor @Inject()(beneficiary: BeneficiaryExtractor,
-                                               leadTrustee: LeadTrusteeExtractor,
                                                settlors: SettlorExtractor,
                                                trustType: TrustTypeExtractor,
                                                trustees: TrusteeExtractor,
                                                protectors: ProtectorExtractor
                                        ) extends UserAnswersExtractor(
-  beneficiary, leadTrustee, settlors, trustType, trustees, protectors
+  beneficiary, settlors, trustType, trustees, protectors
 ) {
 
   override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionErrors.PlaybackExtractionError, UserAnswers] =
-    Left(FailedToExtractData("No beneficiaries"))
+    Left(FailedToExtractData("No Entities"))
 
 }

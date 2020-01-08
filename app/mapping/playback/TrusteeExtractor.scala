@@ -19,7 +19,7 @@ package mapping.playback
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
 import models.playback.UserAnswers
-import models.playback.http.DisplayTrustEntitiesType
+import models.playback.http.{DisplayTrustEntitiesType, Trustees}
 
 class TrusteeExtractor @Inject()(trusteesExtractor: TrusteesExtractor) extends PlaybackExtractor[DisplayTrustEntitiesType] {
 
@@ -27,11 +27,15 @@ class TrusteeExtractor @Inject()(trusteesExtractor: TrusteesExtractor) extends P
 
     import models.playback.UserAnswersCombinator._
 
+    val leadTrustee: List[Trustees] = List(data.leadTrustee.leadTrusteeOrg, data.leadTrustee.leadTrusteeInd).collect {
+      case Some(x) => x
+    }
+
     val trusteesCombined = for {
       trustees <- data.trustees
       companies = trustees.flatMap(_.trusteeOrg)
       individuals = trustees.flatMap(_.trusteeInd)
-    } yield  companies ++ individuals
+    } yield leadTrustee ++ companies ++ individuals
 
     val trustees: List[UserAnswers] = List(
       trusteesExtractor.extract(answers, trusteesCombined)
@@ -39,8 +43,9 @@ class TrusteeExtractor @Inject()(trusteesExtractor: TrusteesExtractor) extends P
       case Right(z) => z
     }
 
-    trustees match {
-      case Nil => Left(FailedToExtractData("Trustee Extraction Error"))
+    (trustees, leadTrustee) match {
+      case (Nil, _) => Left(FailedToExtractData("Trustee Extraction Error"))
+      case (_, Nil) => Left(FailedToExtractData("Lead Trustee Extraction Error"))
       case _ => trustees.combine.map(Right.apply).getOrElse(Left(FailedToExtractData("Trustee Extraction Error")))
     }
   }

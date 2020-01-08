@@ -32,8 +32,8 @@ import pages.register.trustees._
 class LeadTrusteeIndExtractorSpec extends FreeSpec with MustMatchers
   with EitherValues with Generators with SpecBaseHelpers {
 
-  val leadTrusteeIndExtractor : PlaybackExtractor[Option[DisplayTrustLeadTrusteeIndType]] =
-    injector.instanceOf[LeadTrusteeIndExtractor]
+  val leadTrusteeIndExtractor : PlaybackExtractor[Option[List[Trustees]]] =
+    injector.instanceOf[TrusteesExtractor]
 
   "Lead Trustee Individual Extractor" - {
 
@@ -55,7 +55,7 @@ class LeadTrusteeIndExtractorSpec extends FreeSpec with MustMatchers
     "when there is a lead trustee individual" - {
 
       "with nino and UK address, return user answers updated" in {
-        val leadTrustee = DisplayTrustLeadTrusteeIndType(
+        val leadTrustee = List(DisplayTrustLeadTrusteeIndType(
           lineNo = s"1",
           bpMatchStatus = Some("01"),
           name = NameType("First Name", None, "Last Name"),
@@ -70,7 +70,7 @@ class LeadTrusteeIndExtractorSpec extends FreeSpec with MustMatchers
               address = Some(AddressType("line 1", "line2", None, None, Some("NE11NE"), "GB"))
             ),
           entityStart = "2019-11-26"
-        )
+        ))
 
         val ua = UserAnswers("fakeId")
 
@@ -93,7 +93,7 @@ class LeadTrusteeIndExtractorSpec extends FreeSpec with MustMatchers
       }
 
       "with nino and International address, return user answers updated" in {
-        val leadTrustee = DisplayTrustLeadTrusteeIndType(
+        val leadTrustee = List(DisplayTrustLeadTrusteeIndType(
           lineNo = s"1",
           bpMatchStatus = Some("01"),
           name = NameType("First Name", None, "Last Name"),
@@ -108,7 +108,7 @@ class LeadTrusteeIndExtractorSpec extends FreeSpec with MustMatchers
               address = Some(AddressType("Int line 1", "Int line2", None, None, None, "DE"))
             ),
           entityStart = "2019-11-26"
-        )
+        ))
 
         val ua = UserAnswers("fakeId")
 
@@ -131,7 +131,7 @@ class LeadTrusteeIndExtractorSpec extends FreeSpec with MustMatchers
       }
 
       "with Passport/ID Card and UK address, return user answers updated" in {
-        val leadTrustee = DisplayTrustLeadTrusteeIndType(
+        val leadTrustee = List(DisplayTrustLeadTrusteeIndType(
           lineNo = s"1",
           bpMatchStatus = Some("01"),
           name = NameType("First Name", None, "Last Name"),
@@ -146,7 +146,7 @@ class LeadTrusteeIndExtractorSpec extends FreeSpec with MustMatchers
               address = Some(AddressType("line 1", "line2", None, None, Some("NE11NE"), "GB"))
             ),
           entityStart = "2019-11-26"
-        )
+        ))
 
         val ua = UserAnswers("fakeId")
 
@@ -170,7 +170,7 @@ class LeadTrusteeIndExtractorSpec extends FreeSpec with MustMatchers
       }
 
       "with Passport/ID Card and International address, return user answers updated" in {
-        val leadTrustee = DisplayTrustLeadTrusteeIndType(
+        val leadTrustee = List(DisplayTrustLeadTrusteeIndType(
           lineNo = s"1",
           bpMatchStatus = Some("01"),
           name = NameType("First Name", None, "Last Name"),
@@ -185,7 +185,7 @@ class LeadTrusteeIndExtractorSpec extends FreeSpec with MustMatchers
               address = Some(AddressType("Int line 1", "Int line2", None, None, None, "DE"))
             ),
           entityStart = "2019-11-26"
-        )
+        ))
 
         val ua = UserAnswers("fakeId")
 

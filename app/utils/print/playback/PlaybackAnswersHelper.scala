@@ -21,7 +21,7 @@ import models.playback.UserAnswers
 import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage}
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
-import utils.print.playback.sections._
+import sections._
 import utils.print.playback.sections.protectors.{CompanyProtector, IndividualProtector}
 import viewmodels.AnswerSection
 
@@ -50,10 +50,7 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
 
   def allTrustees : Seq[AnswerSection] = {
 
-    val size = userAnswers.get(_root_.sections.Trustees).map(_.size).getOrElse(0)
-
-    println(userAnswers.get(_root_.sections.Trustees))
-    println("size: "+size)
+    val size = userAnswers.get(_root_.sections.trustees.Trustees).map(_.value.size).getOrElse(0)
 
     size match {
       case 0 => Nil

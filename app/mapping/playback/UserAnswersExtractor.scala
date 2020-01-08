@@ -26,7 +26,6 @@ import models.playback.http.GetTrust
 import play.api.Logger
 
 class UserAnswersExtractor @Inject()(beneficiary: BeneficiaryExtractor,
-                                     leadTrustee: LeadTrusteeExtractor,
                                      settlors: SettlorExtractor,
                                      trustType: TrustTypeExtractor,
                                      trustees: TrusteeExtractor,
@@ -39,13 +38,12 @@ class UserAnswersExtractor @Inject()(beneficiary: BeneficiaryExtractor,
 
     val answersCombined = for {
       ua <- beneficiary.extract(answers, data.trust.entities.beneficiary).right
-      ua1 <- leadTrustee.extract(answers, data.trust.entities.leadTrustee).right
-      ua2 <- settlors.extract(answers, data.trust.entities).right
-      ua3 <- trustType.extract(answers, Some(data.trust)).right
-      ua4 <- trustees.extract(answers, data.trust.entities).right
-      ua5 <- protectors.extract(answers, data.trust.entities.protectors).right
+      ua1 <- settlors.extract(answers, data.trust.entities).right
+      ua2 <- trustType.extract(answers, Some(data.trust)).right
+      ua3 <- trustees.extract(answers, data.trust.entities).right
+      ua4 <- protectors.extract(answers, data.trust.entities.protectors).right
     } yield {
-      List(ua, ua1, ua2, ua3, ua4, ua5).combine
+      List(ua, ua1, ua2, ua3, ua4).combine
     }
 
     answersCombined match {

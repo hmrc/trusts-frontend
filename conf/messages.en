@@ -484,6 +484,8 @@ leadTrusteeLiveInTheUK.title = Does the lead trustee live in the UK?
 leadTrusteeLiveInTheUK.error.required = Select yes if the lead trustee lives in the UK
 
 trusteeUkAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+trusteeTelephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
+trusteeEmailAddress.checkYourAnswersLabel = What is {0}’s email address?
 
 trusteesUkAddress.title = What is the trustee’s address?
 trusteesUkAddress.heading = What is {0}’s address?

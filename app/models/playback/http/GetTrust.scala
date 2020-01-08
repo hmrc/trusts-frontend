@@ -137,7 +137,7 @@ case class DisplayTrustLeadTrusteeIndType(
                                            email: Option[String] = None,
                                            identification: DisplayTrustIdentificationType,
                                            entityStart: String
-                                         )
+                                         ) extends Trustees
 
 object DisplayTrustLeadTrusteeIndType {
 
@@ -154,7 +154,7 @@ case class DisplayTrustLeadTrusteeOrgType(
                                            email: Option[String] = None,
                                            identification: DisplayTrustIdentificationOrgType,
                                            entityStart: String
-                                         )
+                                         ) extends Trustees
 
 object DisplayTrustLeadTrusteeOrgType {
   implicit val leadTrusteeOrgTypeFormat: Format[DisplayTrustLeadTrusteeOrgType] = Json.format[DisplayTrustLeadTrusteeOrgType]
