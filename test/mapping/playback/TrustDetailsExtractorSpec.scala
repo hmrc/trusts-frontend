@@ -38,15 +38,13 @@ class TrustDetailsExtractorSpec extends FreeSpec with MustMatchers with EitherVa
 
   "Trust Details Extractor" - {
 
-    "when no trustee org" - {
+    "when no trust details" - {
 
       "must return an error" in {
 
-        val trustee = None
-
         val ua = UserAnswers("fakeId")
 
-        val extraction = trusteeDetailsExtractor.extract(ua, trustee)
+        val extraction = trusteeDetailsExtractor.extract(ua, None)
 
         extraction.left.value mustBe a[FailedToExtractData]
       }
