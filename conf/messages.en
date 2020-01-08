@@ -766,7 +766,7 @@ largeBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the
 largeBeneficiaryAddress.checkYourAnswersLabel = What is {0}’s address?
 largeBeneficiaryUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
 largeBeneficiaryDescription.checkYourAnswersLabel = What is the description of the beneficiary?
-largeBeneficiaryNumberOfBeneficiaries.checkYourAnswersLabel = What is the approximate number of beneficiaries held in the trust?
+largeBeneficiaryNumberOfBeneficiaries.checkYourAnswersLabel = How many people are in this employment related beneficiary?
 
 individualBeneficiaryName.title = What is the name of the individual?
 individualBeneficiaryName.heading = What is the name of the individual?
