@@ -19,13 +19,13 @@ package pages.register.protectors.individual
 import models.core.UserAnswers
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.protectors.IndividualProtectors
+import sections.Protectors
 
 import scala.util.Try
 
 final case class IndividualProtectorNINOYesNoPage(index : Int) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = IndividualProtectors.path \ index \ toString
+  override def path: JsPath = Protectors.path \ index \ toString
 
   override def toString: String = "ninoYesNo"
 

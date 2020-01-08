@@ -19,7 +19,7 @@ package pages.register.protectors.individual
 import models.core.UserAnswers
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.protectors.IndividualProtectors
+import sections.Protectors
 
 import scala.util.Try
 
@@ -27,7 +27,7 @@ case class IndividualProtectorDateOfBirthYesNoPage(index: Int) extends QuestionP
 
   override def toString: String = "dateOfBirthYesNo"
 
-  override def path: JsPath = IndividualProtectors.path \ index \ toString
+  override def path: JsPath = Protectors.path \ index \ toString
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
     value match {

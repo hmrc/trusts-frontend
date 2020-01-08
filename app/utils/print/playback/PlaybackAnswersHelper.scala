@@ -18,11 +18,12 @@ package utils.print.playback
 
 import models.core.pages.IndividualOrBusiness
 import models.playback.UserAnswers
+import pages.register.protectors.ProtectorIndividualOrBusinessPage
 import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage}
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
 import utils.print.playback.sections._
-import utils.print.playback.sections.protectors.{CompanyProtector, IndividualProtector}
+import utils.print.playback.sections.protectors.{BusinessProtector, IndividualProtector}
 import viewmodels.AnswerSection
 
 class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAnswers)
@@ -117,7 +118,24 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
 
   def protectors : Seq[AnswerSection] = {
 
-    val protectors: Seq[AnswerSection] = individualProtectors ++ companyProtectors
+    val size = userAnswers.get(_root_.sections.Protectors).map(_.value.size).getOrElse(0)
+
+    val protectors = size match {
+      case 0 => Nil
+      case _ =>
+        (for (index <- 0 to size) yield {
+          userAnswers.get(ProtectorIndividualOrBusinessPage(index)).map {individualOrBusiness =>
+            if (individualOrBusiness == IndividualOrBusiness.Business) {
+              BusinessProtector(index, userAnswers, countryOptions)
+            }
+            else {
+              IndividualProtector(index, userAnswers, countryOptions)
+            }
+
+          }.getOrElse(Nil)
+
+        }).flatten
+    }
 
     if (protectors.nonEmpty) {
       Seq(
@@ -126,26 +144,6 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
       ).flatten
     } else {
       Nil
-    }
-  }
-
-  private def individualProtectors : Seq[AnswerSection] = {
-    val size = userAnswers.get(_root_.sections.protectors.IndividualProtectors).map(_.value.size).getOrElse(0)
-
-    size match {
-      case 0 => Nil
-      case _ =>
-        (for (index <- 0 to size) yield IndividualProtector(index, userAnswers, countryOptions)).flatten
-    }
-  }
-
-  private def companyProtectors : Seq[AnswerSection] = {
-    val size = userAnswers.get(_root_.sections.protectors.CompanyProtectors).map(_.value.size).getOrElse(0)
-
-    size match {
-      case 0 => Nil
-      case _ =>
-        (for (index <- 0 to size) yield CompanyProtector(index, userAnswers, countryOptions)).flatten
     }
   }
 

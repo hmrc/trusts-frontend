@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package sections.protectors
+package pages.register.protectors.business
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
+import sections.Protectors
 
-case object Protectors extends QuestionPage[List[Nothing]]{
+final case class BusinessProtectorAddressUKYesNoPage(index : Int) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = Protectors.path \ index \ toString
 
-  override def toString: String = "protectors"
+  override def toString: String = "ukAddressYesNo"
 
 }
