@@ -28,12 +28,12 @@ import pages.register.trustees._
 class TrusteeExtractorSpec extends FreeSpec with MustMatchers
   with EitherValues with Generators with SpecBaseHelpers {
 
-  val leadTrusteeExtractor : PlaybackExtractor[DisplayTrustEntitiesType] =
+  val trusteeExtractor : PlaybackExtractor[DisplayTrustEntitiesType] =
     injector.instanceOf[TrusteeExtractor]
 
-  "Lead Trustee Extractor" - {
+  "Trustee Extractor" - {
 
-    "when no lead trustee" - {
+    "when no trustees" - {
 
       "must return an error" in {
 
@@ -45,7 +45,7 @@ class TrusteeExtractorSpec extends FreeSpec with MustMatchers
 
         val ua = UserAnswers("fakeId")
 
-        val extraction = leadTrusteeExtractor.extract(ua, leadTrustee)
+        val extraction = trusteeExtractor.extract(ua, leadTrustee)
 
         extraction.left.value mustBe a[FailedToExtractData]
 
@@ -53,9 +53,9 @@ class TrusteeExtractorSpec extends FreeSpec with MustMatchers
 
     }
 
-    "when there is a lead trustee" - {
+    "when there is only a lead trustee" - {
 
-      "which is UK registered, return user answers updated" in {
+      "return user answers updated" in {
 
         val leadTrustee = DisplayTrustEntitiesType(None,
           DisplayTrustBeneficiaryType(None, None, None,None,None,None,None),
@@ -76,24 +76,13 @@ class TrusteeExtractorSpec extends FreeSpec with MustMatchers
               entityStart = "2019-11-26"
             )
           )),
-
           None,
-//          Some(List(DisplayTrustTrusteeType(None, Some(DisplayTrustTrusteeOrgType(
-//            lineNo = s"1",
-//            bpMatchStatus = Some("01"),
-//            name = s"Trustee Company 1",
-//            phoneNumber = None,
-//            email = None,
-//            identification = None,
-//            entityStart = "2019-11-26"
-//          ))))),
-
           None, None)
 
 
         val ua = UserAnswers("fakeId")
 
-        val extraction = leadTrusteeExtractor.extract(ua, leadTrustee)
+        val extraction = trusteeExtractor.extract(ua, leadTrustee)
 
         extraction.right.value.get(IsThisLeadTrusteePage(0)).get mustBe true
         extraction.right.value.get(TrusteeIndividualOrBusinessPage(0)).get mustBe IndividualOrBusiness.Business
@@ -111,6 +100,80 @@ class TrusteeExtractorSpec extends FreeSpec with MustMatchers
       }
 
     }
+
+    "when there is a lead trustee and trustees" - {
+
+      "return user answers updated" in {
+
+        val leadTrustee = DisplayTrustEntitiesType(None,
+          DisplayTrustBeneficiaryType(None, None, None,None,None,None,None),
+          None,
+          DisplayTrustLeadTrusteeType(None,
+            Some(DisplayTrustLeadTrusteeOrgType(
+              lineNo = s"1",
+              bpMatchStatus = Some("01"),
+              name = "org1",
+              phoneNumber = "+441234567890",
+              email = Some("test@test.com"),
+              identification =
+                DisplayTrustIdentificationOrgType(
+                  safeId = Some("8947584-94759745-84758745"),
+                  utr = Some("1234567890"),
+                  address = Some(AddressType("line 1", "line2", None, None, Some("NE11NE"), "GB"))
+                ),
+              entityStart = "2019-11-26"
+            )
+            )),
+            Some(List(DisplayTrustTrusteeType(None, Some(DisplayTrustTrusteeOrgType(
+              lineNo = s"1",
+              bpMatchStatus = Some("01"),
+              name = s"Trustee Company 1",
+              phoneNumber = None,
+              email = None,
+              identification = None,
+              entityStart = "2019-11-26"
+            ))))),
+          None, None)
+
+
+        val ua = UserAnswers("fakeId")
+
+        val extraction = trusteeExtractor.extract(ua, leadTrustee)
+
+        extraction.right.value.get(IsThisLeadTrusteePage(0)).get mustBe true
+        extraction.right.value.get(TrusteeIndividualOrBusinessPage(0)).get mustBe IndividualOrBusiness.Business
+        extraction.right.value.get(TrusteeOrgNamePage(0)).get mustBe "org1"
+        extraction.right.value.get(TrusteeUtrYesNoPage(0)).get mustBe true
+        extraction.right.value.get(TrusteesUtrPage(0)).get mustBe "1234567890"
+        extraction.right.value.get(TrusteeLiveInTheUKPage(0)).get mustBe true
+        extraction.right.value.get(TrusteesUkAddressPage(0)) must be(defined)
+        extraction.right.value.get(TrusteesUkAddressPage(0)).get.postcode mustBe "NE11NE"
+        extraction.right.value.get(TrusteesInternationalAddressPage(0)) mustNot be(defined)
+        extraction.right.value.get(TelephoneNumberPage(0)).get mustBe "+441234567890"
+        extraction.right.value.get(EmailPage(0)).get mustBe "test@test.com"
+        extraction.right.value.get(LeadTrusteeMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
+        extraction.right.value.get(TrusteesSafeIdPage(0)) must be(defined)
+
+        extraction.right.value.get(IsThisLeadTrusteePage(1)).get mustBe false
+        extraction.right.value.get(TrusteeIndividualOrBusinessPage(1)).get mustBe IndividualOrBusiness.Business
+        extraction.right.value.get(TrusteeOrgNamePage(1)).get mustBe "Trustee Company 1"
+        extraction.right.value.get(TrusteeUtrYesNoPage(1)).get mustBe false
+        extraction.right.value.get(TrusteesUtrPage(1)) mustNot be(defined)
+        extraction.right.value.get(TrusteeAddressYesNoPage(1)).get mustBe false
+        extraction.right.value.get(TrusteeLiveInTheUKPage(1)) mustNot be(defined)
+        extraction.right.value.get(TrusteesUkAddressPage(1)) mustNot be(defined)
+        extraction.right.value.get(TrusteesInternationalAddressPage(1)) mustNot be(defined)
+        extraction.right.value.get(TelephoneNumberPage(1)) mustNot be(defined)
+        extraction.right.value.get(EmailPage(1)) mustNot be(defined)
+        extraction.right.value.get(TrusteesSafeIdPage(1)) mustNot be(defined)
+        extraction.right.value.get(TrusteeMetaData(1)).get mustBe MetaData("1", Some("01"), "2019-11-26")
+
+      }
+
+    }
+
+
+
 
   }
 
