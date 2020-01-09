@@ -20,7 +20,7 @@ import base.SpecBaseHelpers
 import generators.Generators
 import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
 import mapping.playback.PlaybackExtractor
-import models.core.pages.{FullName, UKAddress}
+import models.core.pages.{Description, FullName, UKAddress}
 import models.playback.http._
 import models.playback.{MetaData, UserAnswers}
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
@@ -30,6 +30,7 @@ import pages.register.beneficiaries.company._
 import pages.register.beneficiaries.trust._
 import pages.register.beneficiaries.other._
 import pages.register.beneficiaries.individual._
+import pages.register.beneficiaries.large._
 
 class BeneficiaryExtractorSpec extends FreeSpec with MustMatchers
   with EitherValues with Generators with SpecBaseHelpers {
@@ -140,7 +141,31 @@ class BeneficiaryExtractorSpec extends FreeSpec with MustMatchers
               )
             )
           ),
-          large = None,
+          large = Some(
+            List(
+              DisplayTrustLargeType(
+                lineNo = s"1",
+                bpMatchStatus = Some("01"),
+                organisationName = "Large 1",
+                description = s"Description",
+                description1 = Some("Description 1"),
+                description2 = None,
+                description3 = None,
+                description4 = None,
+                numberOfBeneficiary = "1",
+                identification = Some(
+                  DisplayTrustIdentificationOrgType(
+                    safeId = Some("8947584-94759745-84758745"),
+                    utr = None,
+                    address = Some(AddressType(s"line 1", "line 2", None, None, Some("NE11NE"), "GB"))
+                  )
+                ),
+                beneficiaryDiscretion = Some(false),
+                beneficiaryShareOfIncome = Some("10"),
+                entityStart = "2019-11-26"
+              )
+            )
+          ),
           other = Some(
             List(
               DisplayTrustOtherType(
@@ -219,6 +244,18 @@ class BeneficiaryExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(IndividualBeneficiaryPassportIDCardYesNoPage(0)) mustNot be(defined)
         extraction.right.value.get(IndividualBeneficiaryPassportIDCardPage(0)) mustNot be(defined)
         extraction.right.value.get(IndividualBeneficiarySafeIdPage(0)) mustNot be(defined)
+
+        extraction.right.value.get(LargeBeneficiaryNamePage(0)).get mustBe "Large 1"
+        extraction.right.value.get(LargeBeneficiaryDescriptionPage(0)).get mustBe Description("Description", Some("Description 1"), None, None, None)
+        extraction.right.value.get(LargeBeneficiaryDiscretionYesNoPage(0)).get mustBe false
+        extraction.right.value.get(LargeBeneficiaryShareOfIncomePage(0)).get mustBe "10"
+        extraction.right.value.get(LargeBeneficiaryAddressYesNoPage(0)).get mustBe true
+        extraction.right.value.get(LargeBeneficiaryAddressUKYesNoPage(0)).get mustBe true
+        extraction.right.value.get(LargeBeneficiaryAddressPage(0)).get mustBe UKAddress("line 1", "line 2", None, None, "NE11NE")
+        extraction.right.value.get(LargeBeneficiaryUtrPage(0)) mustNot be(defined)
+        extraction.right.value.get(LargeBeneficiaryMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
+        extraction.right.value.get(LargeBeneficiarySafeIdPage(0)) must be(defined)
+        extraction.right.value.get(LargeBeneficiaryNumberOfBeneficiariesPage(0)).get mustBe "1"
 
       }
 

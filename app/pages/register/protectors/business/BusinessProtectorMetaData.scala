@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package pages.register.protectors.individual
+package pages.register.protectors.business
 
-import models.registration.pages.PassportOrIdCardDetails
+import models.playback.MetaData
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.Protectors
 
-final case class IndividualProtectorPassportIDCardPage(index : Int) extends QuestionPage[PassportOrIdCardDetails] {
+case class BusinessProtectorMetaData(index: Int) extends QuestionPage[MetaData]{
 
   override def path: JsPath = Protectors.path \ index \ toString
 
-  override def toString: String = "passportIdCard"
+  override def toString: String = "metaData"
+
 }

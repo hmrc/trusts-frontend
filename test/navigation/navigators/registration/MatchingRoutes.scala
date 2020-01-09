@@ -17,6 +17,7 @@
 package navigation.navigators.registration
 
 import base.RegistrationSpecBase
+import config.FrontendAppConfig
 import controllers.actions.FakeRegistrationDataRetrievalAction
 import controllers.actions.register.RegistrationDataRetrievalAction
 import controllers.register.routes
@@ -25,11 +26,13 @@ import models.NormalMode
 import models.core.UserAnswers
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
+import org.scalatest.mockito.MockitoSugar
 import org.scalatest.prop.PropertyChecks
 import pages.register.{TrustHaveAUTRPage, TrustNamePage, TrustRegisteredOnlinePage, WhatIsTheUTRPage}
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import uk.gov.hmrc.auth.core.AffinityGroup
+import org.mockito.Mockito.when
 
 trait MatchingRoutes {
 
@@ -144,14 +147,13 @@ trait MatchingRoutes {
               .set(TrustRegisteredOnlinePage, true).success.value
               .set(TrustHaveAUTRPage, true).success.value
 
-            val app = new GuiceApplicationBuilder().overrides(
-              bind[RegistrationDataRetrievalAction].toInstance(new FakeRegistrationDataRetrievalAction(Some(answers)))
-            ).configure(("microservice.services.features.claim.enabled", false)).build()
-
-            val nav = app.injector.instanceOf[Navigator]
+            val feAppConfig = mock[FrontendAppConfig]
+            when(feAppConfig.claimEnabled).thenReturn(false)
+            val nav = new Navigator(feAppConfig)
 
             nav.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId)(answers)
               .mustBe(routes.CannotMakeChangesController.onPageLoad())
+
         }
       }
       "go to WhatIsTheUtrVariations from TrustHaveAUTR when user answers yes when claim is on" in {
@@ -162,11 +164,9 @@ trait MatchingRoutes {
               .set(TrustRegisteredOnlinePage, true).success.value
               .set(TrustHaveAUTRPage, true).success.value
 
-            val app = new GuiceApplicationBuilder().overrides(
-              bind[RegistrationDataRetrievalAction].toInstance(new FakeRegistrationDataRetrievalAction(Some(answers)))
-            ).configure(("microservice.services.features.claim.enabled", true)).build()
-
-            val nav = app.injector.instanceOf[Navigator]
+            val feAppConfig = mock[FrontendAppConfig]
+            when(feAppConfig.claimEnabled).thenReturn(true)
+            val nav = new Navigator(feAppConfig)
 
             nav.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId)(answers)
               .mustBe(controllers.playback.routes.WhatIsTheUTRVariationsController.onPageLoad())

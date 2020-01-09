@@ -17,6 +17,7 @@
 package utils.print.playback.sections.protectors
 
 import models.playback.UserAnswers
+import pages.register.protectors.ProtectorIndividualOrBusinessPage
 import pages.register.protectors.individual._
 import play.api.i18n.Messages
 import utils.CheckAnswersFormatters
@@ -31,8 +32,9 @@ object IndividualProtector {
   def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Seq[AnswerSection] =
     userAnswers.get(IndividualProtectorNamePage(index)).map(CheckAnswersFormatters.fullName).map { protectorName =>
       Seq(AnswerSection(
-        headingKey = Some(messages("answerPage.section.individualProtector.subheading", index + 1)),
+        headingKey = Some(messages("answerPage.section.protectors.subheading", index + 1)),
         Seq(
+          individualOrBusinessQuestion(ProtectorIndividualOrBusinessPage(index), userAnswers, "protectorIndividualOrBusiness"),
           fullNameQuestion(IndividualProtectorNamePage(index), userAnswers, "individualProtectorName", protectorName),
           yesNoQuestion(IndividualProtectorDateOfBirthYesNoPage(index), userAnswers, "individualProtectorDateOfBirthYesNo", protectorName),
           dateQuestion(IndividualProtectorDateOfBirthPage(index),userAnswers, "individualProtectorDateOfBirth", protectorName),

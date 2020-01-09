@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package pages.register.protectors.company
+package sections
 
-import models.core.pages.Address
 import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.protectors.CompanyProtectors
+import play.api.libs.json.{JsArray, JsPath}
 
-final case class CompanyProtectorAddressPage(index : Int) extends QuestionPage[Address] {
+case object Protectors extends QuestionPage[JsArray]{
 
-  override def path: JsPath = CompanyProtectors.path \ index \ toString
+  override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "address"
+  override def toString: String = "protectors"
+
 }

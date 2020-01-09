@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package pages.register.protectors.company
+package models.core.pages
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.protectors.{CompanyProtectors, Protectors}
+import play.api.libs.json.{Json, OFormat}
 
-final case class CompanyProtectorNamePage(index : Int) extends QuestionPage[String] {
+case class Description(description: String,
+                       description1: Option[String],
+                       description2: Option[String],
+                       description3: Option[String],
+                       description4: Option[String]
+                      )
 
-  override def path: JsPath = JsPath \ Protectors \ CompanyProtectors \ index \ toString
+object Description {
 
-  override def toString: String = "name"
+  implicit lazy val formats: OFormat[Description] = Json.format[Description]
+
 }

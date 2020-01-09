@@ -16,54 +16,40 @@
 
 package mapping.playback.protectors
 
-import com.google.inject.Inject
-import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
-import mapping.playback.{PlaybackExtractor, PlaybackImplicits}
+import mapping.playback.PlaybackExtractionErrors.InvalidExtractorState
+import mapping.playback.PlaybackImplicits
 import mapping.registration.PassportType
-import models.core.pages.{Address, InternationalAddress, UKAddress}
+import models.core.pages.{Address, IndividualOrBusiness, InternationalAddress, UKAddress}
 import models.playback.http.{DisplayTrustIdentificationType, DisplayTrustProtector}
 import models.playback.{MetaData, UserAnswers}
+import pages.register.protectors.ProtectorIndividualOrBusinessPage
 import pages.register.protectors.individual._
 import play.api.Logger
 
-import scala.util.{Failure, Success, Try}
+import scala.util.{Failure, Try}
 
-class IndividualProtectorExtractor @Inject() extends PlaybackExtractor[Option[List[DisplayTrustProtector]]] {
+class IndividualProtectorExtractor {
 
   import PlaybackImplicits._
 
-  override def extract(answers: UserAnswers, data: Option[List[DisplayTrustProtector]]): Either[PlaybackExtractionError, UserAnswers] =
+  def extract(answers: Try[UserAnswers], index: Int, individualProtector : DisplayTrustProtector): Try[UserAnswers] =
     {
-      data match {
-        case None => Right(answers)
-        case Some(protectors) =>
-          val updated = protectors.zipWithIndex.foldLeft[Try[UserAnswers]](Success(answers)){
-            case (answers, (individualProtector, index)) =>
-              answers
-                .flatMap(_.set(IndividualProtectorNamePage(index), individualProtector.name.convert))
-                .flatMap(answers => extractDateOfBirth(individualProtector, index, answers))
-                .flatMap(answers => extractIdentification(individualProtector, index, answers))
-                .flatMap(_.set(IndividualProtectorSafeIdPage(index), individualProtector.identification.flatMap(_.safeId)))
-                .flatMap {
-                  _.set(
-                    IndividualProtectorMetaData(index),
-                    MetaData(
-                      lineNo = individualProtector.lineNo,
-                      bpMatchStatus = individualProtector.bpMatchStatus,
-                      entityStart = individualProtector.entityStart
-                    )
-                  )
-                }
-          }
-
-          updated match {
-            case Success(a) =>
-              Right(a)
-            case Failure(exception) =>
-              Logger.warn(s"[IndividualProtectorExtractor] failed to extract data due to ${exception.getMessage}")
-              Left(FailedToExtractData(DisplayTrustProtector.toString))
-          }
-      }
+      answers
+        .flatMap(_.set(ProtectorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual))
+        .flatMap(_.set(IndividualProtectorNamePage(index), individualProtector.name.convert))
+        .flatMap(answers => extractDateOfBirth(individualProtector, index, answers))
+        .flatMap(answers => extractIdentification(individualProtector, index, answers))
+        .flatMap(_.set(IndividualProtectorSafeIdPage(index), individualProtector.identification.flatMap(_.safeId)))
+        .flatMap {
+          _.set(
+            IndividualProtectorMetaData(index),
+            MetaData(
+              lineNo = individualProtector.lineNo,
+              bpMatchStatus = individualProtector.bpMatchStatus,
+              entityStart = individualProtector.entityStart
+            )
+          )
+        }
     }
 
   private def extractDateOfBirth(individualProtector: DisplayTrustProtector, index: Int, answers: UserAnswers) = {
@@ -95,8 +81,7 @@ class IndividualProtectorExtractor @Inject() extends PlaybackExtractor[Option[Li
           .flatMap(answers => extractPassportIdCard(passport, index, answers))
 
       case DisplayTrustIdentificationType(_, None, Some(passport), None) =>
-        Logger.error(s"[IndividualProtectorExtractor] only passport identification returned in DisplayTrustOrEstate api")
-        case object InvalidExtractorState extends RuntimeException
+        Logger.error(s"[IndividualProtectorExtractor] only passport identification returned in DisplayTrustIdentificationType")
         Failure(InvalidExtractorState)
 
     } getOrElse {

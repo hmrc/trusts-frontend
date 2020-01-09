@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter
 
 import models.core.UserAnswers
 import models.core.pages.{FullName, InternationalAddress, UKAddress}
-import models.registration.pages.{AddressOrUtr, PassportOrIdCardDetails}
+import models.registration.pages.PassportOrIdCardDetails
 import pages.register.agents.AgentNamePage
 import pages.register.asset.shares.ShareCompanyNamePage
 import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
@@ -122,6 +122,5 @@ object CheckAnswersFormatters {
     val middle = fullname.middleName.map(" " + _ + " ").getOrElse(" ")
     s"${fullname.firstName}${middle}${fullname.lastName}"
   }
-
 
 }

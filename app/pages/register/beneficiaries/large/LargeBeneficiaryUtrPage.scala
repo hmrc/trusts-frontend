@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-package pages.register.protectors.company
+package pages.register.beneficiaries.large
 
-import models.playback.MetaData
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.protectors.{CompanyProtectors, Protectors}
+import sections.beneficiaries.{Beneficiaries, LargeBeneficiaries}
 
-case class CompanyProtectorMetaData(index: Int) extends QuestionPage[MetaData]{
+case class LargeBeneficiaryUtrPage(index: Int) extends QuestionPage[String] {
 
-  override def path: JsPath = JsPath \ Protectors \ CompanyProtectors \ index \ toString
+  override def path: JsPath = JsPath \ Beneficiaries \ LargeBeneficiaries \ index \ toString
 
-  override def toString: String = "metaData"
-
+  override def toString: String = "utr"
 }

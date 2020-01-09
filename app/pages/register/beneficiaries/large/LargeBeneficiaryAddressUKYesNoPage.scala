@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package sections.protectors
+package pages.register.beneficiaries.large
 
 import pages.QuestionPage
-import play.api.libs.json.{JsArray, JsPath}
+import play.api.libs.json.JsPath
+import sections.beneficiaries.{Beneficiaries, LargeBeneficiaries}
 
-case object IndividualProtectors extends QuestionPage[JsArray]{
+final case class LargeBeneficiaryAddressUKYesNoPage(index: Int) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ Protectors \ toString
+  override def path: JsPath = JsPath \ Beneficiaries \ LargeBeneficiaries \ index \ toString
 
-  override def toString: String = "individualProtectors"
-
+  override def toString: String = "addressUKYesNo"
 }

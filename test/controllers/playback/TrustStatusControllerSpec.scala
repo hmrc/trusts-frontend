@@ -50,7 +50,7 @@ class TrustStatusControllerSpec extends PlaybackSpecBase with BeforeAndAfterEach
     val fakeTrustStoreConnector: TrustsStoreConnector = mock[TrustsStoreConnector]
     val fakePlaybackRepository: PlaybackRepository = mock[PlaybackRepository]
 
-    def application: Application = applicationBuilder(userAnswers = Some(userAnswers)).overrides(
+    val application: Application = applicationBuilder(userAnswers = Some(userAnswers)).overrides(
       bind[TrustConnector].to(fakeTrustConnector),
       bind[TrustsStoreConnector].to(fakeTrustStoreConnector),
       bind[PlaybackAuthenticationService].to(new FakePlaybackAuthenticationService()),

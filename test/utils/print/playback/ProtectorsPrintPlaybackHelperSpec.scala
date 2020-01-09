@@ -19,9 +19,10 @@ package utils.print.playback
 import java.time.LocalDate
 
 import base.PlaybackSpecBase
-import models.core.pages.{FullName, InternationalAddress, UKAddress}
-import models.registration.pages.{AddressOrUtr, PassportOrIdCardDetails}
-import pages.register.protectors.company._
+import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
+import models.registration.pages.PassportOrIdCardDetails
+import pages.register.protectors.ProtectorIndividualOrBusinessPage
+import pages.register.protectors.business._
 import pages.register.protectors.individual._
 import play.twirl.api.Html
 import utils.countryOptions.CountryOptions
@@ -34,22 +35,26 @@ class ProtectorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
     "generate protector sections given individuals" in {
 
       val answers = emptyUserAnswers
+        .set(ProtectorIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
         .set(IndividualProtectorNamePage(0), FullName("Joe", None, "Bloggs")).success.value
         .set(IndividualProtectorDateOfBirthYesNoPage(0), false).success.value
         .set(IndividualProtectorNINOYesNoPage(0), true).success.value
         .set(IndividualProtectorNINOPage(0), "JB 12 34 56 C").success.value
 
+        .set(ProtectorIndividualOrBusinessPage(1), IndividualOrBusiness.Individual).success.value
         .set(IndividualProtectorNamePage(1), FullName("John", None, "Doe")).success.value
         .set(IndividualProtectorDateOfBirthYesNoPage(1), true).success.value
         .set(IndividualProtectorDateOfBirthPage(1), LocalDate.of(1996, 2, 3)).success.value
         .set(IndividualProtectorAddressYesNoPage(1), false).success.value
 
+        .set(ProtectorIndividualOrBusinessPage(2), IndividualOrBusiness.Individual).success.value
         .set(IndividualProtectorNamePage(2), FullName("Michael", None, "Finnegan")).success.value
         .set(IndividualProtectorDateOfBirthYesNoPage(2), false).success.value
         .set(IndividualProtectorAddressYesNoPage(2), true).success.value
         .set(IndividualProtectorAddressPage(2), UKAddress("line 1", "line 2", None, None, "NE11NE")).success.value
         .set(IndividualProtectorPassportIDCardYesNoPage(2), false).success.value
 
+        .set(ProtectorIndividualOrBusinessPage(3), IndividualOrBusiness.Individual).success.value
         .set(IndividualProtectorNamePage(3), FullName("Paul", None, "Chuckle")).success.value
         .set(IndividualProtectorDateOfBirthYesNoPage(3), true).success.value
         .set(IndividualProtectorDateOfBirthPage(3), LocalDate.of(1947, 10, 18)).success.value
@@ -70,8 +75,9 @@ class ProtectorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
       result mustBe Seq(
         AnswerSection(None, Nil, Some(messages("answerPage.section.protectors.heading"))),
         AnswerSection(
-          headingKey = Some("Individual protector 1"),
+          headingKey = Some("Protector 1"),
           rows = Seq(
+            AnswerRow(label = messages("protectorIndividualOrBusiness.checkYourAnswersLabel"), answer = Html("Individual"), changeUrl = None),
             AnswerRow(label = messages("individualProtectorName.checkYourAnswersLabel"), answer = Html(name1), changeUrl = None),
             AnswerRow(label = messages("individualProtectorDateOfBirthYesNo.checkYourAnswersLabel", name1), answer = Html("No"), changeUrl = None),
             AnswerRow(label = messages("individualProtectorNINOYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None),
@@ -80,8 +86,9 @@ class ProtectorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
           sectionKey = None
         ),
         AnswerSection(
-          headingKey = Some("Individual protector 2"),
+          headingKey = Some("Protector 2"),
           rows = Seq(
+            AnswerRow(label = messages("protectorIndividualOrBusiness.checkYourAnswersLabel"), answer = Html("Individual"), changeUrl = None),
             AnswerRow(label = messages("individualProtectorName.checkYourAnswersLabel"), answer = Html(name2), changeUrl = None),
             AnswerRow(label = messages("individualProtectorDateOfBirthYesNo.checkYourAnswersLabel", name2), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("individualProtectorDateOfBirth.checkYourAnswersLabel", name2), answer = Html("3 February 1996"), changeUrl = None),
@@ -90,8 +97,9 @@ class ProtectorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
           sectionKey = None
         ),
         AnswerSection(
-          headingKey = Some("Individual protector 3"),
+          headingKey = Some("Protector 3"),
           rows = Seq(
+            AnswerRow(label = messages("protectorIndividualOrBusiness.checkYourAnswersLabel"), answer = Html("Individual"), changeUrl = None),
             AnswerRow(label = messages("individualProtectorName.checkYourAnswersLabel"), answer = Html(name3), changeUrl = None),
             AnswerRow(label = messages("individualProtectorDateOfBirthYesNo.checkYourAnswersLabel", name3), answer = Html("No"), changeUrl = None),
             AnswerRow(label = messages("individualProtectorAddressYesNo.checkYourAnswersLabel", name3), answer = Html("Yes"), changeUrl = None),
@@ -101,8 +109,9 @@ class ProtectorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
           sectionKey = None
         ),
         AnswerSection(
-          headingKey = Some("Individual protector 4"),
+          headingKey = Some("Protector 4"),
           rows = Seq(
+            AnswerRow(label = messages("protectorIndividualOrBusiness.checkYourAnswersLabel"), answer = Html("Individual"), changeUrl = None),
             AnswerRow(label = messages("individualProtectorName.checkYourAnswersLabel"), answer = Html(name4), changeUrl = None),
             AnswerRow(label = messages("individualProtectorDateOfBirthYesNo.checkYourAnswersLabel", name4), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("individualProtectorDateOfBirth.checkYourAnswersLabel", name4), answer = Html("18 October 1947"), changeUrl = None),
@@ -119,14 +128,22 @@ class ProtectorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
     "generate protector sections given businesses" in {
 
       val answers = emptyUserAnswers
-        .set(CompanyProtectorNamePage(0), "Bernardos").success.value
-        .set(CompanyProtectorAddressOrUtrPage(0), AddressOrUtr.Utr).success.value
-        .set(CompanyProtectorUtrPage(0), "1234567890").success.value
+        .set(ProtectorIndividualOrBusinessPage(0), IndividualOrBusiness.Business).success.value
+        .set(BusinessProtectorNamePage(0), "Bernardos").success.value
+        .set(BusinessProtectorUtrYesNoPage(0), true).success.value
+        .set(BusinessProtectorUtrPage(0), "1234567890").success.value
 
-        .set(CompanyProtectorNamePage(1), "Red Cross Ltd.").success.value
-        .set(CompanyProtectorAddressOrUtrPage(1), AddressOrUtr.Address).success.value
-        .set(CompanyProtectorAddressUKYesNoPage(1), false).success.value
-        .set(CompanyProtectorAddressPage(1), InternationalAddress(s"line 1", "line 2", None, "DE")).success.value
+        .set(ProtectorIndividualOrBusinessPage(1), IndividualOrBusiness.Business).success.value
+        .set(BusinessProtectorNamePage(1), "Red Cross Ltd.").success.value
+        .set(BusinessProtectorUtrYesNoPage(1), false).success.value
+        .set(BusinessProtectorAddressYesNoPage(1), true).success.value
+        .set(BusinessProtectorAddressUKYesNoPage(1), false).success.value
+        .set(BusinessProtectorAddressPage(1), InternationalAddress(s"line 1", "line 2", None, "DE")).success.value
+
+        .set(ProtectorIndividualOrBusinessPage(2), IndividualOrBusiness.Business).success.value
+        .set(BusinessProtectorNamePage(2), "Amazon").success.value
+        .set(BusinessProtectorUtrYesNoPage(2), false).success.value
+        .set(BusinessProtectorAddressYesNoPage(2), false).success.value
 
       val helper = new PlaybackAnswersHelper(countryOptions = injector.instanceOf[CountryOptions], userAnswers = answers)
 
@@ -134,25 +151,39 @@ class ProtectorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
 
       val company1 = "Bernardos"
       val company2 = "Red Cross Ltd."
+      val company3 = "Amazon"
 
       result mustBe Seq(
         AnswerSection(None, Nil, Some(messages("answerPage.section.protectors.heading"))),
         AnswerSection(
-          headingKey = Some("Business protector 1"),
+          headingKey = Some("Protector 1"),
           rows = Seq(
+            AnswerRow(label = messages("protectorIndividualOrBusiness.checkYourAnswersLabel"), answer = Html("Business"), changeUrl = None),
             AnswerRow(label = messages("companyProtectorName.checkYourAnswersLabel"), answer = Html(company1), changeUrl = None),
-            AnswerRow(label = messages("companyProtectorAddressOrUtr.checkYourAnswersLabel", company1), answer = Html("Unique Taxpayer Reference"), changeUrl = None),
+            AnswerRow(label = messages("companyProtectorUtrYesNo.checkYourAnswersLabel", company1), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("companyProtectorUtr.checkYourAnswersLabel", company1), answer = Html("1234567890"), changeUrl = None)
           ),
           sectionKey = None
         ),
         AnswerSection(
-          headingKey = Some("Business protector 2"),
+          headingKey = Some("Protector 2"),
           rows = Seq(
+            AnswerRow(label = messages("protectorIndividualOrBusiness.checkYourAnswersLabel"), answer = Html("Business"), changeUrl = None),
             AnswerRow(label = messages("companyProtectorName.checkYourAnswersLabel"), answer = Html(company2), changeUrl = None),
-            AnswerRow(label = messages("companyProtectorAddressOrUtr.checkYourAnswersLabel", company2), answer = Html("Address"), changeUrl = None),
+            AnswerRow(label = messages("companyProtectorUtrYesNo.checkYourAnswersLabel", company2), answer = Html("No"), changeUrl = None),
+            AnswerRow(label = messages("companyProtectorAddressYesNo.checkYourAnswersLabel", company2), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("companyProtectorAddressUkYesNo.checkYourAnswersLabel", company2), answer = Html("No"), changeUrl = None),
             AnswerRow(label = messages("companyProtectorAddress.checkYourAnswersLabel", company2), answer = Html("line 1<br />line 2<br />Germany"), changeUrl = None)
+          ),
+          sectionKey = None
+        ),
+        AnswerSection(
+          headingKey = Some("Protector 3"),
+          rows = Seq(
+            AnswerRow(label = messages("protectorIndividualOrBusiness.checkYourAnswersLabel"), answer = Html("Business"), changeUrl = None),
+            AnswerRow(label = messages("companyProtectorName.checkYourAnswersLabel"), answer = Html(company3), changeUrl = None),
+            AnswerRow(label = messages("companyProtectorUtrYesNo.checkYourAnswersLabel", company3), answer = Html("No"), changeUrl = None),
+            AnswerRow(label = messages("companyProtectorAddressYesNo.checkYourAnswersLabel", company3), answer = Html("No"), changeUrl = None)
           ),
           sectionKey = None
         )
@@ -162,6 +193,7 @@ class ProtectorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
     "generate protector sections given an individual and company" in {
 
       val answers = emptyUserAnswers
+        .set(ProtectorIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
         .set(IndividualProtectorNamePage(0), FullName("Paul", None, "Chuckle")).success.value
         .set(IndividualProtectorDateOfBirthYesNoPage(0), true).success.value
         .set(IndividualProtectorDateOfBirthPage(0), LocalDate.of(1947, 10, 18)).success.value
@@ -170,9 +202,10 @@ class ProtectorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(IndividualProtectorPassportIDCardYesNoPage(0), true).success.value
         .set(IndividualProtectorPassportIDCardPage(0), PassportOrIdCardDetails("DE", "KSJDFKSDHF6456545147852369QWER", LocalDate.of(2020,2,2))).success.value
 
-        .set(CompanyProtectorNamePage(0), "Bernardos").success.value
-        .set(CompanyProtectorAddressOrUtrPage(0), AddressOrUtr.Utr).success.value
-        .set(CompanyProtectorUtrPage(0), "1234567890").success.value
+        .set(ProtectorIndividualOrBusinessPage(1), IndividualOrBusiness.Business).success.value
+        .set(BusinessProtectorNamePage(1), "Bernardos").success.value
+        .set(BusinessProtectorUtrYesNoPage(1), true).success.value
+        .set(BusinessProtectorUtrPage(1), "1234567890").success.value
 
       val helper = new PlaybackAnswersHelper(countryOptions = injector.instanceOf[CountryOptions], userAnswers = answers)
 
@@ -184,8 +217,9 @@ class ProtectorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
       result mustBe Seq(
         AnswerSection(None, Nil, Some(messages("answerPage.section.protectors.heading"))),
         AnswerSection(
-          headingKey = Some("Individual protector 1"),
+          headingKey = Some("Protector 1"),
           rows = Seq(
+            AnswerRow(label = messages("protectorIndividualOrBusiness.checkYourAnswersLabel"), answer = Html("Individual"), changeUrl = None),
             AnswerRow(label = messages("individualProtectorName.checkYourAnswersLabel"), answer = Html(name1), changeUrl = None),
             AnswerRow(label = messages("individualProtectorDateOfBirthYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("individualProtectorDateOfBirth.checkYourAnswersLabel", name1), answer = Html("18 October 1947"), changeUrl = None),
@@ -197,10 +231,11 @@ class ProtectorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
           sectionKey = None
         ),
         AnswerSection(
-          headingKey = Some("Business protector 1"),
+          headingKey = Some("Protector 2"),
           rows = Seq(
+            AnswerRow(label = messages("protectorIndividualOrBusiness.checkYourAnswersLabel"), answer = Html("Business"), changeUrl = None),
             AnswerRow(label = messages("companyProtectorName.checkYourAnswersLabel"), answer = Html(company1), changeUrl = None),
-            AnswerRow(label = messages("companyProtectorAddressOrUtr.checkYourAnswersLabel", company1), answer = Html("Unique Taxpayer Reference"), changeUrl = None),
+            AnswerRow(label = messages("companyProtectorUtrYesNo.checkYourAnswersLabel", company1), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("companyProtectorUtr.checkYourAnswersLabel", company1), answer = Html("1234567890"), changeUrl = None)
           ),
           sectionKey = None

@@ -18,9 +18,9 @@ package utils.print.playback.sections
 
 import java.time.LocalDate
 
-import models.core.pages.{Address, FullName, InternationalAddress, UKAddress}
+import models.core.pages.{Address, FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
 import models.playback.UserAnswers
-import models.registration.pages.{AddressOrUtr, PassportOrIdCardDetails}
+import models.registration.pages.PassportOrIdCardDetails
 import play.api.i18n.Messages
 import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
@@ -146,13 +146,13 @@ object AnswerRowConverter {
     }
   }
 
-  def addressOrUtrQuestion(query: Gettable[AddressOrUtr], userAnswers: UserAnswers, labelKey: String,
-                           messageArg: String = "", changeRoute: Option[Call] = None)
-                          (implicit messages:Messages) = {
-    userAnswers.get(query) map {x =>
+  def individualOrBusinessQuestion(query: Gettable[IndividualOrBusiness], userAnswers: UserAnswers, labelKey: String,
+                                   messageArg: String = "", changeRoute: Option[Call] = None)
+                              (implicit messages: Messages) = {
+    userAnswers.get(query) map { x =>
       AnswerRow(
         messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-        HtmlFormat.escape(x.toString),
+        HtmlFormat.escape(x.toString.capitalize),
         None
       )
     }
