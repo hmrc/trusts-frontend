@@ -54,7 +54,7 @@ object DeceasedSettlor {
     }
   }
 
-  def setupAfterSettlorDied(userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SetupAfterSettlorDiedPage) map {
+  def setupAfterSettlorDied(userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SetupAfterSettlorDiedYesNoPage) map {
     x =>
       AnswerRow(
         "setupAfterSettlorDied.checkYourAnswersLabel",

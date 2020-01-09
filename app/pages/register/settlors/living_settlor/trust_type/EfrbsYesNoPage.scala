@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package pages.register.settlors.living_settlor
+package pages.register.settlors.living_settlor.trust_type
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.Settlors
 
-case object SettlorHandoverReliefYesNoPage extends QuestionPage[Boolean] {
+case object EfrbsYesNoPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = Settlors.path \ toString
 
-  override def toString: String = "settlorHandoverReliefYesNo"
+  override def toString: String = "efrbsYesNo"
 }

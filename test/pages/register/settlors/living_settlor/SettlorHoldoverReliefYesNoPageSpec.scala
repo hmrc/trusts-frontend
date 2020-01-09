@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package forms
+package pages.register.settlors.living_settlor
 
-import javax.inject.Inject
-import forms.mappings.Mappings
-import models.registration.pages.KindOfTrust
-import play.api.data.Form
+import pages.behaviours.PageBehaviours
+import pages.register.settlors.living_settlor.trust_type.HoldoverReliefYesNoPage
 
-class KindOfTrustFormProvider @Inject() extends Mappings {
+class HoldoverReliefYesNoPageSpec extends PageBehaviours {
 
-  def apply(): Form[KindOfTrust] =
-    Form(
-      "value" -> enumerable[KindOfTrust]("kindOfTrust.error.required")
-    )
+  "HoldoverReliefYesNoPage" must {
+
+    beRetrievable[Boolean](HoldoverReliefYesNoPage)
+
+    beSettable[Boolean](HoldoverReliefYesNoPage)
+
+    beRemovable[Boolean](HoldoverReliefYesNoPage)
+  }
 }

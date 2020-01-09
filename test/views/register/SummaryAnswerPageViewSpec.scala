@@ -85,7 +85,7 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
         .set(TrusteeStatus(index), Status.Completed).success.value
         .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
-        .set(SetupAfterSettlorDiedPage, true).success.value
+        .set(SetupAfterSettlorDiedYesNoPage, true).success.value
         .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
         .set(SettlorDateOfDeathYesNoPage, true).success.value
         .set(SettlorDateOfDeathPage, LocalDate.of(2010, 10, 10)).success.value

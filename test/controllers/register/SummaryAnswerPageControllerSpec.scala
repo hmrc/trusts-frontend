@@ -36,6 +36,7 @@ import pages.register.asset.shares._
 import pages.register.beneficiaries.individual.{IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryAddressUKYesNoPage, IndividualBeneficiaryAddressYesNoPage, IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryIncomePage, IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage, IndividualBeneficiaryNationalInsuranceYesNoPage, IndividualBeneficiaryVulnerableYesNoPage}
 import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
 import pages.register.settlors.AddASettlorPage
+import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.trustees._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -91,7 +92,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
         .set(TrusteeStatus(index), Status.Completed).success.value
         .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
-        .set(SetupAfterSettlorDiedPage, true).success.value
+        .set(SetupAfterSettlorDiedYesNoPage, true).success.value
         .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
         .set(SettlorDateOfDeathYesNoPage, true).success.value
         .set(SettlorDateOfDeathPage, LocalDate.now).success.value
@@ -320,9 +321,9 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
         .set(TrusteeStatus(index), Status.Completed).success.value
         .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
-        .set(SetupAfterSettlorDiedPage, false).success.value
-        .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
-        .set(SettlorHandoverReliefYesNoPage, true).success.value
+        .set(SetupAfterSettlorDiedYesNoPage, false).success.value
+        .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+        .set(HoldoverReliefYesNoPage, true).success.value
         .set(SettlorIndividualOrBusinessPage(index),IndividualOrBusiness.Individual).success.value
         .set(SettlorIndividualNamePage(index), FullName("First", None, "Settlor")).success.value
         .set(SettlorIndividualDateOfBirthYesNoPage(index), true).success.value
@@ -368,8 +369,8 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
       AnswerSection(
         headingKey = Some("Settlor 1"),
         Seq(checkYourAnswersHelper.setupAfterSettlorDied.value,
-          checkYourAnswersHelper.settlorKindOfTrust.value,
-          checkYourAnswersHelper.settlorHandoverReliefYesNo.value,
+          checkYourAnswersHelper.kindOfTrust.value,
+          checkYourAnswersHelper.holdoverReliefYesNo.value,
           checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
           checkYourAnswersHelper.settlorIndividualName(index).value,
           checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,

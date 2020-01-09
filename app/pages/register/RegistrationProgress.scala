@@ -26,7 +26,7 @@ import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
 import pages.register.asset.AddAssetsPage
 import pages.register.beneficiaries.AddABeneficiaryPage
 import pages.register.settlors.AddASettlorPage
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
+import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedYesNoPage
 import pages.register.trustees.AddATrusteePage
 import sections._
 import sections.beneficiaries.{Beneficiaries, ClassOfBeneficiaries, IndividualBeneficiaries}
@@ -80,7 +80,7 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator) {
   }
 
   def isSettlorsComplete(userAnswers: UserAnswers): Option[Status] = {
-    val setUpAfterSettlorDied = userAnswers.get(SetupAfterSettlorDiedPage)
+    val setUpAfterSettlorDied = userAnswers.get(SetupAfterSettlorDiedYesNoPage)
 
     def isDeceasedSettlorComplete: Option[Status] = {
       val deceasedCompleted = userAnswers.get(DeceasedSettlorStatus)

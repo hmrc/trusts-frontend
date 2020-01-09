@@ -19,25 +19,25 @@ package models.registration.pages
 import models.{Enumerable, WithName}
 import viewmodels.RadioOption
 
-sealed trait SettlorKindOfTrust
+sealed trait KindOfTrust
 
-object SettlorKindOfTrust extends Enumerable.Implicits {
+object KindOfTrust extends Enumerable.Implicits {
 
-  case object Intervivos extends WithName("Lifetime") with SettlorKindOfTrust
-  case object Deed extends WithName("Deed") with SettlorKindOfTrust
-  case object Employees extends WithName("Employees") with SettlorKindOfTrust
-  case object FlatManagement extends WithName("Building") with SettlorKindOfTrust
-  case object HeritageMaintenanceFund extends WithName("Repair") with SettlorKindOfTrust
+  case object Intervivos extends WithName("Lifetime") with KindOfTrust
+  case object Deed extends WithName("Deed") with KindOfTrust
+  case object Employees extends WithName("Employees") with KindOfTrust
+  case object FlatManagement extends WithName("Building") with KindOfTrust
+  case object HeritageMaintenanceFund extends WithName("Repair") with KindOfTrust
 
-  val values: List[SettlorKindOfTrust] = List(
+  val values: List[KindOfTrust] = List(
     Intervivos, Deed, Employees, FlatManagement, HeritageMaintenanceFund
   )
 
   val options: List[RadioOption] = values.map {
     value =>
-      RadioOption("settlorKindOfTrust", value.toString)
+      RadioOption("kindOfTrust", value.toString)
   }
 
-  implicit val enumerable: Enumerable[SettlorKindOfTrust] =
+  implicit val enumerable: Enumerable[KindOfTrust] =
     Enumerable(values.map(v => v.toString -> v): _*)
 }

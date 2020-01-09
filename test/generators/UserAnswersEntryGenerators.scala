@@ -32,6 +32,7 @@ import pages.register.asset.shares._
 import pages.register.beneficiaries.individual.{IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryAddressUKYesNoPage, IndividualBeneficiaryAddressYesNoPage, IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryIncomePage, IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage, IndividualBeneficiaryNationalInsuranceYesNoPage, IndividualBeneficiaryVulnerableYesNoPage}
 import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage, WhatTypeOfBeneficiaryPage}
 import pages.playback.{DeclarationWhatNextPage, WhatIsTheUTRVariationPage}
+import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, DeclarationPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, PostcodeForTheTrustPage, RegisteringTrustFor5APage, TrustHaveAUTRPage, TrustNamePage, TrustPreviouslyResidentPage, TrustRegisteredOnlinePage, TrustResidentOffshorePage, WhatIsTheUTRPage}
 import pages.register.settlors.{AddASettlorPage, SettlorsBasedInTheUKPage}
 import pages.register.trustees._
@@ -87,10 +88,10 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitrarySettlorHandoverReliefYesNoUserAnswersEntry: Arbitrary[(SettlorHandoverReliefYesNoPage.type, JsValue)] =
+  implicit lazy val arbitraryHoldoverReliefYesNoUserAnswersEntry: Arbitrary[(HoldoverReliefYesNoPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorHandoverReliefYesNoPage.type]
+        page  <- arbitrary[HoldoverReliefYesNoPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }
@@ -103,11 +104,11 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitrarySettlorKindOfTrustUserAnswersEntry: Arbitrary[(SettlorKindOfTrustPage.type, JsValue)] =
+  implicit lazy val arbitraryKindOfTrustUserAnswersEntry: Arbitrary[(KindOfTrustPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SettlorKindOfTrustPage.type]
-        value <- arbitrary[SettlorKindOfTrust].map(Json.toJson(_))
+        page  <- arbitrary[KindOfTrustPage.type]
+        value <- arbitrary[KindOfTrust].map(Json.toJson(_))
       } yield (page, value)
     }
 
@@ -528,10 +529,10 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitrarySetupAfterSettlorDiedUserAnswersEntry: Arbitrary[(SetupAfterSettlorDiedPage.type, JsValue)] =
+  implicit lazy val arbitrarySetupAfterSettlorDiedUserAnswersEntry: Arbitrary[(SetupAfterSettlorDiedYesNoPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[SetupAfterSettlorDiedPage.type]
+        page  <- arbitrary[SetupAfterSettlorDiedYesNoPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }

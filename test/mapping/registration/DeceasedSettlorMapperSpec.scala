@@ -52,7 +52,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers =
           emptyUserAnswers
-            .set(SetupAfterSettlorDiedPage, true).success.value
+            .set(SetupAfterSettlorDiedYesNoPage, true).success.value
             .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
             .set(SettlorDateOfDeathYesNoPage, false).success.value
             .set(SettlorDateOfBirthYesNoPage, false).success.value
@@ -72,7 +72,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers =
           emptyUserAnswers
-            .set(SetupAfterSettlorDiedPage, true).success.value
+            .set(SetupAfterSettlorDiedYesNoPage, true).success.value
             .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
             .set(SettlorDateOfDeathYesNoPage, true).success.value
             .set(SettlorDateOfDeathPage, dateOfDeath).success.value
@@ -93,7 +93,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers =
           emptyUserAnswers
-            .set(SetupAfterSettlorDiedPage, true).success.value
+            .set(SetupAfterSettlorDiedYesNoPage, true).success.value
             .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
             .set(SettlorDateOfDeathYesNoPage, false).success.value
             .set(SettlorDateOfBirthYesNoPage, true).success.value
@@ -114,7 +114,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers =
           emptyUserAnswers
-            .set(SetupAfterSettlorDiedPage, true).success.value
+            .set(SetupAfterSettlorDiedYesNoPage, true).success.value
             .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
             .set(SettlorDateOfDeathYesNoPage, false).success.value
             .set(SettlorDateOfBirthYesNoPage, false).success.value
@@ -135,7 +135,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers =
           emptyUserAnswers
-            .set(SetupAfterSettlorDiedPage, true).success.value
+            .set(SetupAfterSettlorDiedYesNoPage, true).success.value
             .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
             .set(SettlorDateOfDeathYesNoPage, false).success.value
             .set(SettlorDateOfBirthYesNoPage, false).success.value
@@ -157,7 +157,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers =
           emptyUserAnswers
-            .set(SetupAfterSettlorDiedPage, true).success.value
+            .set(SetupAfterSettlorDiedYesNoPage, true).success.value
             .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
             .set(SettlorDateOfDeathYesNoPage, false).success.value
             .set(SettlorDateOfBirthYesNoPage, false).success.value
@@ -179,7 +179,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers =
           emptyUserAnswers
-            .set(SetupAfterSettlorDiedPage, true).success.value
+            .set(SetupAfterSettlorDiedYesNoPage, true).success.value
             .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
             .set(SettlorDateOfDeathYesNoPage, true).success.value
             .set(SettlorDateOfDeathPage, dateOfDeath).success.value
@@ -201,7 +201,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers =
           emptyUserAnswers
-            .set(SetupAfterSettlorDiedPage, true).success.value
+            .set(SetupAfterSettlorDiedYesNoPage, true).success.value
 
         deceasedSettlorMapper.build(userAnswers) mustBe None
 

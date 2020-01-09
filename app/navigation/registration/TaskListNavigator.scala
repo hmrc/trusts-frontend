@@ -24,7 +24,7 @@ import models.NormalMode
 import models.core.UserAnswers
 import pages._
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
+import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedYesNoPage
 import play.api.mvc.Call
 import sections._
 import sections.beneficiaries.{Beneficiaries, ClassOfBeneficiaries, IndividualBeneficiaries}
@@ -59,7 +59,7 @@ class TaskListNavigator @Inject()() {
           controllers.register.settlors.deceased_settlor.routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode,draftId)
         }
       case None =>
-        answers.get(SetupAfterSettlorDiedPage) match {
+        answers.get(SetupAfterSettlorDiedYesNoPage) match {
           case None => controllers.register.settlors.routes.SettlorInfoController.onPageLoad(draftId)
           case _ =>
             answers.get (LivingSettlors).getOrElse (Nil) match {

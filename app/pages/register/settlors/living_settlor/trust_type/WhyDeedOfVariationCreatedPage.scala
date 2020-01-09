@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package pages.register.settlors
+package pages.register.settlors.living_settlor.trust_type
 
 import mapping.DeedOfVariation
-import pages._
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.Settlors
 
-case object SettlorHowDeedOfVariationCreatedPage extends QuestionPage[DeedOfVariation] {
+case object WhyDeedOfVariationCreatedPage extends QuestionPage[DeedOfVariation] {
 
   override def path: JsPath = Settlors.path \ toString
 

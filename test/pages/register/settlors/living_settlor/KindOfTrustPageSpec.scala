@@ -17,33 +17,34 @@
 package pages.register.settlors.living_settlor
 
 import models.core.UserAnswers
-import models.registration.pages.SettlorKindOfTrust
+import models.registration.pages.KindOfTrust
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
+import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedYesNoPage
+import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 
-class SettlorKindOfTrustPageSpec extends PageBehaviours {
+class KindOfTrustPageSpec extends PageBehaviours {
 
-  "SettlorKindOfTrustPage" must {
+  "KindOfTrustPage" must {
 
-    beRetrievable[SettlorKindOfTrust](SettlorKindOfTrustPage)
+    beRetrievable[KindOfTrust](KindOfTrustPage)
 
-    beSettable[SettlorKindOfTrust](SettlorKindOfTrustPage)
+    beSettable[KindOfTrust](KindOfTrustPage)
 
-    beRemovable[SettlorKindOfTrust](SettlorKindOfTrustPage)
+    beRemovable[KindOfTrust](KindOfTrustPage)
   }
 
   "for a Lifetime trust remove holdover relief when changing type of trust" in {
     forAll(arbitrary[UserAnswers], arbitrary[String]) {
       (initial, str) =>
         val answers: UserAnswers = initial
-          .set(SetupAfterSettlorDiedPage, false).success.value
-          .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
-          .set(SettlorHandoverReliefYesNoPage, true).success.value
+          .set(SetupAfterSettlorDiedYesNoPage, false).success.value
+          .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+          .set(HoldoverReliefYesNoPage, true).success.value
 
-        val result = answers.set(SettlorKindOfTrustPage, SettlorKindOfTrust.FlatManagement).success.value
+        val result = answers.set(KindOfTrustPage, KindOfTrust.FlatManagement).success.value
 
-        result.get(SettlorHandoverReliefYesNoPage) mustNot be(defined)
+        result.get(HoldoverReliefYesNoPage) mustNot be(defined)
     }
   }
 }

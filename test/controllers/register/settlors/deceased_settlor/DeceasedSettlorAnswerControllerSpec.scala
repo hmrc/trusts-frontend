@@ -22,7 +22,7 @@ import base.RegistrationSpecBase
 import models.NormalMode
 import models.core.UserAnswers
 import models.core.pages.{FullName, InternationalAddress, UKAddress}
-import pages.register.settlors.deceased_settlor.{SetupAfterSettlorDiedPage, _}
+import pages.register.settlors.deceased_settlor.{SetupAfterSettlorDiedYesNoPage, _}
 import play.api.Application
 import play.api.mvc.Result
 import play.api.test.FakeRequest
@@ -45,7 +45,7 @@ class DeceasedSettlorAnswerControllerSpec extends RegistrationSpecBase {
 
       val answers: UserAnswers =
         emptyUserAnswers
-          .set(SetupAfterSettlorDiedPage, true).success.value
+          .set(SetupAfterSettlorDiedYesNoPage, true).success.value
           .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
           .set(SettlorDateOfDeathYesNoPage, true).success.value
           .set(SettlorDateOfDeathPage, LocalDate.now).success.value
@@ -99,7 +99,7 @@ class DeceasedSettlorAnswerControllerSpec extends RegistrationSpecBase {
 
       val answers =
         emptyUserAnswers
-          .set(SetupAfterSettlorDiedPage, true).success.value
+          .set(SetupAfterSettlorDiedYesNoPage, true).success.value
           .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
           .set(SettlorDateOfDeathYesNoPage, true).success.value
           .set(SettlorDateOfDeathPage, LocalDate.now).success.value

@@ -21,17 +21,17 @@ import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.register.settlors.living_settlor.SettlorHandoverReliefYesNoView
+import views.html.register.settlors.living_settlor.HoldoverReliefYesNoView
 
-class SettlorHandoverReliefYesNoViewSpec extends YesNoViewBehaviours {
+class HoldoverReliefYesNoViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "settlorHandoverReliefYesNo"
+  val messageKeyPrefix = "holdoverReliefYesNo"
 
   val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
-  "SettlorHandoverReliefYesNo view" must {
+  "HoldoverReliefYesNo view" must {
 
-    val view = viewFor[SettlorHandoverReliefYesNoView](Some(emptyUserAnswers))
+    val view = viewFor[HoldoverReliefYesNoView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)

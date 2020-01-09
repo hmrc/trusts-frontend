@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-package pages.register.settlors.living_settlor
+package pages.register.settlors.living_settlor.trust_type
 
-import pages.behaviours.PageBehaviours
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import sections.Settlors
 
-class SettlorHandoverReliefYesNoPageSpec extends PageBehaviours {
+case object SetUpInAdditionToWillTrustYesNoPage extends QuestionPage[Boolean] {
 
-  "SettlorHandoverReliefYesNoPage" must {
+  override def path: JsPath = Settlors.path \ toString
 
-    beRetrievable[Boolean](SettlorHandoverReliefYesNoPage)
+  override def toString: String = "setUpInAdditionToWillTrustYesNo"
 
-    beSettable[Boolean](SettlorHandoverReliefYesNoPage)
-
-    beRemovable[Boolean](SettlorHandoverReliefYesNoPage)
-  }
 }

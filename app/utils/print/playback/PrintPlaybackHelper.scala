@@ -33,8 +33,8 @@ class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions){
       playbackAnswersHelper.beneficiaries,
       playbackAnswersHelper.protectors,
       playbackAnswersHelper.otherIndividual,
-      // trust details must go last
-      playbackAnswersHelper.trustDetails
+      // trust type must go last
+      playbackAnswersHelper.trustType
     ).flatten
 
   }

@@ -68,8 +68,8 @@ class SettlorIndividualAnswerController @Inject()(
           None,
           Seq(
             answers.setupAfterSettlorDied,
-            answers.settlorKindOfTrust,
-            answers.settlorHandoverReliefYesNo,
+            answers.kindOfTrust,
+            answers.holdoverReliefYesNo,
             answers.settlorIndividualOrBusiness(index),
             answers.settlorIndividualName(index),
             answers.settlorIndividualDateOfBirthYesNo(index),

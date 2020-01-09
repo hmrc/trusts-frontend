@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package pages.register.settlors
+package pages.register.settlors.living_settlor.trust_type
 
-import pages._
+import java.time.LocalDate
+
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.Settlors
 
-case object SettlorAdditionToWillTrustYesNoPage extends QuestionPage[Boolean] {
+case object EfrbsStartDatePage extends QuestionPage[LocalDate] {
 
   override def path: JsPath = Settlors.path \ toString
 
-  override def toString: String = "settlorAdditionToWillTrustYesNo"
-
+  override def toString: String = "efrbsStartDate"
 }

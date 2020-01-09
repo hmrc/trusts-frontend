@@ -22,7 +22,7 @@ import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
+import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedYesNoPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -51,7 +51,7 @@ class SetupAfterSettlorDiedController @Inject()(
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(SetupAfterSettlorDiedPage) match {
+      val preparedForm = request.userAnswers.get(SetupAfterSettlorDiedYesNoPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -68,9 +68,9 @@ class SetupAfterSettlorDiedController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(SetupAfterSettlorDiedPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(SetupAfterSettlorDiedYesNoPage, value))
             _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SetupAfterSettlorDiedPage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(SetupAfterSettlorDiedYesNoPage, mode, draftId)(updatedAnswers))
         }
       )
   }

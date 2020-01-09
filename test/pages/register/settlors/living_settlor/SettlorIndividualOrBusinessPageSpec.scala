@@ -18,12 +18,13 @@ package pages.register.settlors.living_settlor
 
 import models.core.UserAnswers
 import models.core.pages.{FullName, IndividualOrBusiness}
-import models.registration.pages.SettlorKindOfTrust
+import models.registration.pages.KindOfTrust
 import models.registration.pages.Status.InProgress
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 import pages.entitystatus.LivingSettlorStatus
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
+import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedYesNoPage
+import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 
 class SettlorIndividualOrBusinessPageSpec extends PageBehaviours {
 
@@ -40,9 +41,9 @@ class SettlorIndividualOrBusinessPageSpec extends PageBehaviours {
     forAll(arbitrary[UserAnswers], arbitrary[String]) {
       (initial, str) =>
         val answers: UserAnswers = initial
-          .set(SetupAfterSettlorDiedPage, false).success.value
-          .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
-          .set(SettlorHandoverReliefYesNoPage, true).success.value
+          .set(SetupAfterSettlorDiedYesNoPage, false).success.value
+          .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+          .set(HoldoverReliefYesNoPage, true).success.value
           .set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Business).success.value
           .set(SettlorBusinessNamePage(0), "AWS").success.value
           .set(LivingSettlorStatus(0), InProgress).success.value
@@ -57,9 +58,9 @@ class SettlorIndividualOrBusinessPageSpec extends PageBehaviours {
     forAll(arbitrary[UserAnswers], arbitrary[String]) {
       (initial, str) =>
         val answers: UserAnswers = initial
-          .set(SetupAfterSettlorDiedPage, false).success.value
-          .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
-          .set(SettlorHandoverReliefYesNoPage, true).success.value
+          .set(SetupAfterSettlorDiedYesNoPage, false).success.value
+          .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+          .set(HoldoverReliefYesNoPage, true).success.value
           .set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
           .set(SettlorIndividualNamePage(0), FullName("First", None, "Last")).success.value
           .set(SettlorIndividualDateOfBirthYesNoPage(0), true).success.value

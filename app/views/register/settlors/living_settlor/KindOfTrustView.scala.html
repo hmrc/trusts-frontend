@@ -16,7 +16,7 @@
 
 @import controllers.register.settlors.living_settlor.routes._
 @import models.Mode
-@import models.registration.pages.SettlorKindOfTrust
+@import models.registration.pages.KindOfTrust
 
 @this(
     main_template: MainTemplate,
@@ -26,10 +26,10 @@
 @(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("settlorKindOfTrust.title")}"
+    title = s"${errorPrefix(form)} ${messages("kindOfTrust.title")}"
     ) {
 
-    @formHelper(action = SettlorKindOfTrustController.onSubmit(mode, draftId), 'autoComplete -> "off") {
+    @formHelper(action = KindOfTrustController.onSubmit(mode, draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 
@@ -37,9 +37,9 @@
 
         @components.input_radio(
             field = form("value"),
-            legend = messages("settlorKindOfTrust.heading"),
+            legend = messages("kindOfTrust.heading"),
             legendClass = Some("heading-large"),
-            inputs = SettlorKindOfTrust.options,
+            inputs = KindOfTrust.options,
             legendAsHeading = true
         )
 

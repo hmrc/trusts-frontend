@@ -18,25 +18,25 @@ package pages.register.settlors.deceased_settlor
 
 import models.core.UserAnswers
 import pages.QuestionPage
-import pages.register.settlors.living_settlor.{SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage}
+import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import play.api.libs.json.JsPath
 import sections.{DeceasedSettlor, LivingSettlors, Settlors}
 
 import scala.util.Try
 
-case object SetupAfterSettlorDiedPage extends QuestionPage[Boolean] {
+case object SetupAfterSettlorDiedYesNoPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = Settlors.path \toString
 
-  override def toString: String = "setupAfterSettlorDied"
+  override def toString: String = "setupAfterSettlorDiedYesNo"
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
       case Some(false) =>
         userAnswers.remove(DeceasedSettlor)
       case Some(true) =>
-        userAnswers.remove(SettlorKindOfTrustPage)
-          .flatMap(_.remove(SettlorHandoverReliefYesNoPage))
+        userAnswers.remove(KindOfTrustPage)
+          .flatMap(_.remove(HoldoverReliefYesNoPage))
           .flatMap(_.remove(LivingSettlors))
       case _ => super.cleanup(value, userAnswers)
     }

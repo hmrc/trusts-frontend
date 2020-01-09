@@ -22,19 +22,19 @@ import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
-import pages.register.settlors.living_settlor.SettlorHandoverReliefYesNoPage
+import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedYesNoPage
+import pages.register.settlors.living_settlor.trust_type.HoldoverReliefYesNoPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.annotations.LivingSettlor
-import views.html.register.settlors.living_settlor.SettlorHandoverReliefYesNoView
+import views.html.register.settlors.living_settlor.HoldoverReliefYesNoView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class SettlorHandoverReliefYesNoController @Inject()(
+class HoldoverReliefYesNoController @Inject()(
                                                       override val messagesApi: MessagesApi,
                                                       registrationsRepository: RegistrationsRepository,
                                                       @LivingSettlor navigator: Navigator,
@@ -44,21 +44,21 @@ class SettlorHandoverReliefYesNoController @Inject()(
                                                       requireData: RegistrationDataRequiredAction,
                                                       yesNoFormProvider: YesNoFormProvider,
                                                       val controllerComponents: MessagesControllerComponents,
-                                                      view: SettlorHandoverReliefYesNoView
+                                                      view: HoldoverReliefYesNoView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = yesNoFormProvider.withPrefix("settlorHandoverReliefYesNo")
+  val form: Form[Boolean] = yesNoFormProvider.withPrefix("holdoverReliefYesNo")
 
   private def actions(draftId: String) =
     identify andThen
       getData(draftId) andThen
       requireData andThen
-      requiredAnswer(RequiredAnswer(SetupAfterSettlorDiedPage, controllers.register.settlors.deceased_settlor.routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode, draftId)))
+      requiredAnswer(RequiredAnswer(SetupAfterSettlorDiedYesNoPage, controllers.register.settlors.deceased_settlor.routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode, draftId)))
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(SettlorHandoverReliefYesNoPage) match {
+      val preparedForm = request.userAnswers.get(HoldoverReliefYesNoPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -75,9 +75,9 @@ class SettlorHandoverReliefYesNoController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorHandoverReliefYesNoPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(HoldoverReliefYesNoPage, value))
             _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SettlorHandoverReliefYesNoPage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(HoldoverReliefYesNoPage, mode, draftId)(updatedAnswers))
         }
       )
   }
