@@ -31,6 +31,10 @@ import viewmodels.AnswerSection
 class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAnswers)
                            (implicit messages: Messages) {
 
+  def trustDetails: Seq[AnswerSection] = {
+    ???
+  }
+
   def trustee(index: Int): Option[Seq[AnswerSection]] = {
 
     userAnswers.get(IsThisLeadTrusteePage(index)) flatMap { isLeadTrustee =>
