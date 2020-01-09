@@ -89,7 +89,7 @@ class TrusteeExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(TrusteeOrgNamePage(0)).get mustBe "org1"
         extraction.right.value.get(TrusteeUtrYesNoPage(0)).get mustBe true
         extraction.right.value.get(TrusteesUtrPage(0)).get mustBe "1234567890"
-        extraction.right.value.get(TrusteeLiveInTheUKPage(0)).get mustBe true
+        extraction.right.value.get(TrusteeAddressInTheUKPage(0)).get mustBe true
         extraction.right.value.get(TrusteesUkAddressPage(0)) must be(defined)
         extraction.right.value.get(TrusteesUkAddressPage(0)).get.postcode mustBe "NE11NE"
         extraction.right.value.get(TrusteesInternationalAddressPage(0)) mustNot be(defined)
@@ -145,7 +145,7 @@ class TrusteeExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(TrusteeOrgNamePage(0)).get mustBe "org1"
         extraction.right.value.get(TrusteeUtrYesNoPage(0)).get mustBe true
         extraction.right.value.get(TrusteesUtrPage(0)).get mustBe "1234567890"
-        extraction.right.value.get(TrusteeLiveInTheUKPage(0)).get mustBe true
+        extraction.right.value.get(TrusteeAddressInTheUKPage(0)).get mustBe true
         extraction.right.value.get(TrusteesUkAddressPage(0)) must be(defined)
         extraction.right.value.get(TrusteesUkAddressPage(0)).get.postcode mustBe "NE11NE"
         extraction.right.value.get(TrusteesInternationalAddressPage(0)) mustNot be(defined)
@@ -160,7 +160,7 @@ class TrusteeExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(TrusteeUtrYesNoPage(1)).get mustBe false
         extraction.right.value.get(TrusteesUtrPage(1)) mustNot be(defined)
         extraction.right.value.get(TrusteeAddressYesNoPage(1)).get mustBe false
-        extraction.right.value.get(TrusteeLiveInTheUKPage(1)) mustNot be(defined)
+        extraction.right.value.get(TrusteeAddressInTheUKPage(1)) mustNot be(defined)
         extraction.right.value.get(TrusteesUkAddressPage(1)) mustNot be(defined)
         extraction.right.value.get(TrusteesInternationalAddressPage(1)) mustNot be(defined)
         extraction.right.value.get(TelephoneNumberPage(1)) mustNot be(defined)

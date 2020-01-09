@@ -16,46 +16,111 @@
 
 package utils.print.playback
 
+
+import java.time.LocalDate
+
 import base.PlaybackSpecBase
-import models.core.pages.{FullName, IndividualOrBusiness}
-import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage, TrusteesNamePage}
+import models.core.pages.{FullName, InternationalAddress, UKAddress}
+import models.registration.pages.PassportOrIdCardDetails
+import pages.register.trustees._
 import play.twirl.api.Html
-import utils.countryOptions.CountryOptions
-import viewmodels.{AnswerRow, AnswerSection}
 
-class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase {
+class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase with AnswerSectionMatchers with UserAnswersWriting {
 
-  "Playback print helper" must {
+  "when the lead trustee is an UK individual" must {
+    "generate lead trustee section" in {
+      val helper = injector.instanceOf[PrintPlaybackHelper]
 
-    "generate trustee sections given individual lead trustee" in {
+      val (answers, _) = (for {
+        _ <- individualUKTrustee(0)
+        _ <- TrusteesNamePage(0) is FullName("Wild", Some("Bill"), "Hickock")
+        _ <- TrusteesDateOfBirthPage(0) is LocalDate.parse("1975-01-23")
+        _ <- TrusteesNinoPage(0) is "AA111111A"
+        _ <- TrusteesUkAddressPage(0) is UKAddress("Address 1", "Address 2", None, None, "AA11 1AA")
+        _ <- TelephoneNumberPage(0) is "67676767676"
+        _ <- EmailPage(0) is "aa@aabb.com"
+        _ <- IsThisLeadTrusteePage(0) is true
+      } yield Unit).run(emptyUserAnswers).value
 
-      val answers = emptyUserAnswers
-        .set(IsThisLeadTrusteePage(0), true).success.value
-        .set(TrusteeIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
-        .set(TrusteesNamePage(0), FullName("Joe", None, "Bloggs")).success.value
+      val result = helper.summary(answers)
 
-      val helper = new PlaybackAnswersHelper(countryOptions = injector.instanceOf[CountryOptions], userAnswers = answers)
-
-      val result = helper.allTrustees
-
-      val name1 = "Joe Bloggs"
-
-      result mustBe Seq(
-        AnswerSection(
-          headingKey = Some("Trustee 1"),
-          rows = Seq(
-            AnswerRow(label = messages("isThisLeadTrustee.checkYourAnswersLabel"), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("trusteeIndividualOrBusiness.checkYourAnswersLabel", name1), answer = Html("Individual"), changeUrl = None),
-            AnswerRow(label = messages("trusteesName.checkYourAnswersLabel", name1), answer = Html("Joe Bolggs"), changeUrl = None)
-          ),
-          sectionKey = Some("Trustees")
-        )
+      result must containHeadingSection(messages("answerPage.section.trustees.heading"))
+      result must containSectionWithHeadingAndValues(messages("answerPage.section.leadTrustee.subheading"),
+        "What is the lead trustee’s name?" -> Html("Wild Bill Hickock"),
+        "What is Wild Bill Hickock’s date of birth?" -> Html("23 January 1975"),
+        "Is Wild Bill Hickock a UK citizen?"-> Html("Yes"),
+        "What is Wild Bill Hickock’s National Insurance number?" -> Html("AA 11 11 11 A"),
+        "Does Wild Bill Hickock live in the UK?" -> Html("Yes"),
+        "What is Wild Bill Hickock’s address?" -> Html("Address 1<br />Address 2<br />AA11 1AA"),
+        "What is Wild Bill Hickock’s telephone number?" -> Html("67676767676"),
+        "What is Wild Bill Hickock’s email address?" -> Html("aa@aabb.com")
       )
     }
   }
+
+  "when the lead trustee is a non-UK individual" must {
+    "generate a lead trustee section" in {
+      val helper = injector.instanceOf[PrintPlaybackHelper]
+
+      val (answers, _) = (for {
+        _ <- individualUKTrustee(0)
+        _ <- individualNonUkTrustee(0)
+        _ <- TrusteesNamePage(0) is FullName("William", None, "Bonny")
+        _ <- TrusteesDateOfBirthPage(0) is LocalDate.parse("1975-01-23")
+        _ <- TrusteesInternationalAddressPage(0) is InternationalAddress("Address 1", "Address 2", None, "DE")
+        _ <- TelephoneNumberPage(0) is "67676767676"
+        _ <- EmailPage(0) is "aa@aabb.com"
+        _ <- IsThisLeadTrusteePage(0) is true
+        _ <- TrusteePassportIDCardPage(0) is PassportOrIdCardDetails("DE", "KSJDFKSDHF6456545147852369QWER", LocalDate.of(2020,2,2))
+        _ <- TrusteePassportIDCardYesNoPage(0) is true
+      } yield Unit).run(emptyUserAnswers).value
+
+      val result = helper.summary(answers)
+
+      result must containHeadingSection(messages("answerPage.section.trustees.heading"))
+      result must containSectionWithHeadingAndValues(messages("answerPage.section.leadTrustee.subheading"),
+      "What is the lead trustee’s name?" -> Html("William Bonny"),
+      "What is William Bonny’s date of birth?" -> Html("23 January 1975"),
+      "Is William Bonny a UK citizen?"-> Html("No"),
+      "Does William Bonny live in the UK?" -> Html("No"),
+      "What is William Bonny’s address?" -> Html("Address 1<br />Address 2<br />Germany"),
+      "Do you know William Bonny’s passport or ID card details?"-> Html("Yes"),
+      "What are William Bonny’s passport or ID card details?"-> Html("Germany<br />KSJDFKSDHF6456545147852369QWER<br />2 February 2020"),
+      "What is William Bonny’s telephone number?" -> Html("67676767676"),
+      "What is William Bonny’s email address?" -> Html("aa@aabb.com")
+      )
+    }
+  }
+
+  "when the lead trustee is a company" must {
+    "generate a lead trustee section" in {
+      val helper = injector.instanceOf[PrintPlaybackHelper]
+
+      val (answers, _) = (for {
+        _ <- ukCompanyTrustee(0)
+        _ <- TrusteeOrgNamePage(0) is "Lead Trustee Company"
+        _ <- TrusteeUtrYesNoPage(0) is true
+        _ <- TrusteesUtrPage(0) is "1234567890"
+        _ <- IsThisLeadTrusteePage(0) is true
+      } yield Unit).run(emptyUserAnswers).value
+
+      val result = helper.summary(answers)
+
+      println("answers: "+answers)
+      println("result: "+result)
+
+      result must containHeadingSection(messages("answerPage.section.trustees.heading"))
+      result must containSectionWithHeadingAndValues(messages("answerPage.section.leadTrustee.subheading"),
+        "What is the business’s name?" -> Html("Lead Trustee Company"),
+        "Do you know Lead Trustee Company’s Unique Taxpayer Reference (UTR) number?"-> Html("Yes"),
+        "What is Lead Trustee Company’s Unique Taxpayer Reference (UTR) number?" -> Html("1234567890")
+      )
+    }
+  }
+
+  "when there is an organisation trustee" must {
+    "generate a trustee section for each trustee" ignore {}
+  }
+
+  
 }
-
-
-
-
-

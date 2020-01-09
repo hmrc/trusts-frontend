@@ -19,7 +19,7 @@ package utils
 import java.time.format.DateTimeFormatter
 
 import models.core.UserAnswers
-import models.core.pages.{FullName, InternationalAddress, UKAddress}
+import models.core.pages.{Address, FullName, InternationalAddress, UKAddress}
 import models.registration.pages.PassportOrIdCardDetails
 import pages.register.agents.AgentNamePage
 import pages.register.asset.shares.ShareCompanyNamePage
@@ -105,6 +105,13 @@ object CheckAnswersFormatters {
       ).flatten
 
     Html(lines.mkString("<br />"))
+  }
+
+  def addressFormatter(address: Address, countryOptions: CountryOptions): Html = {
+    address match {
+      case a:UKAddress => ukAddress(a)
+      case a:InternationalAddress => internationalAddress(a, countryOptions)
+    }
   }
 
   def passportOrIDCard(passportOrIdCard: PassportOrIdCardDetails, countryOptions: CountryOptions): Html = {

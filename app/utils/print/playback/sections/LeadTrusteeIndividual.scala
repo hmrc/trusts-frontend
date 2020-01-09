@@ -21,7 +21,7 @@ import pages.register.trustees._
 import play.api.i18n.Messages
 import utils.CheckAnswersFormatters
 import utils.countryOptions.CountryOptions
-import utils.print.playback.sections.AnswerRowConverter.{addressQuestion, dateQuestion, fullNameQuestion, individualOrBusinessQuestion, ninoQuestion, passportOrIdCardQuestion, yesNoQuestion}
+import utils.print.playback.sections.AnswerRowConverter._
 import viewmodels.AnswerSection
 
 object LeadTrusteeIndividual {
@@ -31,20 +31,23 @@ object LeadTrusteeIndividual {
     userAnswers.get(TrusteesNamePage(index)).map(CheckAnswersFormatters.fullName).flatMap { name =>
       Some(Seq(
         AnswerSection(
-          headingKey = Some(messages("answerPage.section.leadTrustee.heading")),
+          headingKey = Some(messages("answerPage.section.leadTrustee.subheading")),
           Seq(
-            yesNoQuestion(IsThisLeadTrusteePage(index), userAnswers, "isThisLeadTrustee"),
-            individualOrBusinessQuestion(TrusteeIndividualOrBusinessPage(index), userAnswers, "trusteeIndividualOrBusiness"),
-            fullNameQuestion(TrusteesNamePage(index), userAnswers, "trusteesName"),
+//            yesNoQuestion(IsThisLeadTrusteePage(index), userAnswers, "isThisLeadTrustee"),
+//            individualOrBusinessQuestion(TrusteeIndividualOrBusinessPage(index), userAnswers, "trusteeIndividualOrBusiness"),
+            fullNameQuestion(TrusteesNamePage(index), userAnswers, "leadTrusteesName"),
             yesNoQuestion(TrusteeDateOfBirthYesNoPage(index), userAnswers, "trusteeDateOfBirthYesNo", name),
             dateQuestion(TrusteesDateOfBirthPage(index), userAnswers, "trusteesDateOfBirth", name),
+            yesNoQuestion(TrusteeAUKCitizenPage(index), userAnswers, "trusteeAUKCitizen", name),
             yesNoQuestion(TrusteeNinoYesNoPage(index), userAnswers, "trusteeNinoYesNo", name),
             ninoQuestion(TrusteesNinoPage(index), userAnswers, "trusteesNino", name),
             yesNoQuestion(TrusteeAddressYesNoPage(index), userAnswers, "trusteeUkAddressYesNo", name),
-            yesNoQuestion(TrusteeLiveInTheUKPage(index), userAnswers, "trusteeLiveInTheUK", name),
+            yesNoQuestion(TrusteeAddressInTheUKPage(index), userAnswers, "trusteeLiveInTheUK", name),
             addressQuestion(TrusteeAddressPage(index), userAnswers, "trusteesUkAddress", name, countryOptions),
             yesNoQuestion(TrusteePassportIDCardYesNoPage(index), userAnswers, "trusteePassportOrIdCardYesNo", name),
-            passportOrIdCardQuestion(TrusteePassportIDCardPage(index), userAnswers, "trusteePassportOrIdCard", name, countryOptions)
+            passportOrIdCardQuestion(TrusteePassportIDCardPage(index), userAnswers, "trusteePassportOrIdCard", name, countryOptions),
+            stringQuestion(TelephoneNumberPage(index), userAnswers, "telephoneNumber", name),
+            stringQuestion(EmailPage(index), userAnswers, "trusteeEmailAddress", name)
           ).flatten,
           sectionKey = Some(messages("answerPage.section.trustees.heading"))
         ))

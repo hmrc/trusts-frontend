@@ -41,7 +41,7 @@ object TrusteeOrganisation {
             yesNoQuestion(TrusteeUtrYesNoPage(index), userAnswers, "trusteeUtrYesNo", name),
             stringQuestion(TrusteesUtrPage(index), userAnswers, "trusteeUtr", name),
             yesNoQuestion(TrusteeAddressYesNoPage(index), userAnswers, "trusteeUkAddressYesNo", name),
-            yesNoQuestion(TrusteeLiveInTheUKPage(index), userAnswers, "trusteeLiveInTheUK", name),
+            yesNoQuestion(TrusteeAddressInTheUKPage(index), userAnswers, "trusteeLiveInTheUK", name),
             addressQuestion(TrusteeAddressPage(index), userAnswers, "trusteesUkAddress", name, countryOptions)
           ).flatten,
           sectionKey = None

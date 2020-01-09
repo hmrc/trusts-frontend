@@ -29,15 +29,15 @@ object LeadTrusteeBusiness {
 
     userAnswers.get(TrusteeOrgNamePage(index)).flatMap { name =>
       Some(Seq(AnswerSection(
-        headingKey = Some(messages("answerPage.section.leadTrustee.heading")),
+        headingKey = Some(messages("answerPage.section.leadTrustee.subheading")),
         Seq(
-          yesNoQuestion(IsThisLeadTrusteePage(index), userAnswers, "isThisLeadTrustee"),
-          individualOrBusinessQuestion(TrusteeIndividualOrBusinessPage(index), userAnswers, "trusteeIndividualOrBusiness"),
+//          yesNoQuestion(IsThisLeadTrusteePage(index), userAnswers, "isThisLeadTrustee"),
+//          individualOrBusinessQuestion(TrusteeIndividualOrBusinessPage(index), userAnswers, "trusteeIndividualOrBusiness"),
           stringQuestion(TrusteeOrgNamePage(index), userAnswers, "trusteeBusinessName"),
           yesNoQuestion(TrusteeUtrYesNoPage(index), userAnswers, "trusteeUtrYesNo", name),
           stringQuestion(TrusteesUtrPage(index), userAnswers, "trusteeUtr", name),
           yesNoQuestion(TrusteeAddressYesNoPage(index), userAnswers, "trusteeUkAddressYesNo", name),
-          yesNoQuestion(TrusteeLiveInTheUKPage(index), userAnswers, "trusteeLiveInTheUK", name),
+          yesNoQuestion(TrusteeAddressInTheUKPage(index), userAnswers, "trusteeLiveInTheUK", name),
           addressQuestion(TrusteeAddressPage(index), userAnswers, "trusteesUkAddress", name, countryOptions),
           stringQuestion(TelephoneNumberPage(index), userAnswers, "trusteeTelephoneNumber", name),
           stringQuestion(EmailPage(index), userAnswers, "trusteeEmailAddress", name)

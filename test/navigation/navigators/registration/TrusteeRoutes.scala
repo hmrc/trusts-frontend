@@ -217,9 +217,9 @@ trait TrusteeRoutes {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
-            val answers = userAnswers.set(TrusteeLiveInTheUKPage(index), value = true).success.value
+            val answers = userAnswers.set(TrusteeAddressInTheUKPage(index), value = true).success.value
 
-            navigator.nextPage(TrusteeLiveInTheUKPage(index), NormalMode, fakeDraftId)(answers)
+            navigator.nextPage(TrusteeAddressInTheUKPage(index), NormalMode, fakeDraftId)(answers)
               .mustBe(routes.TrusteesUkAddressController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
@@ -228,9 +228,9 @@ trait TrusteeRoutes {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
-            val answers = userAnswers.set(TrusteeLiveInTheUKPage(index), value = false).success.value
+            val answers = userAnswers.set(TrusteeAddressInTheUKPage(index), value = false).success.value
 
-            navigator.nextPage(TrusteeLiveInTheUKPage(index), NormalMode, fakeDraftId)(answers)
+            navigator.nextPage(TrusteeAddressInTheUKPage(index), NormalMode, fakeDraftId)(answers)
               .mustBe(routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }

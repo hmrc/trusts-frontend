@@ -183,10 +183,10 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
     leadTrusteeInd.identification.address.convert match {
       case Some(uk: UKAddress) =>
         answers.set(TrusteesUkAddressPage(index), uk)
-          .flatMap(_.set(TrusteeLiveInTheUKPage(index), true))
+          .flatMap(_.set(TrusteeAddressInTheUKPage(index), true))
       case Some(nonUk: InternationalAddress) =>
         answers.set(TrusteesInternationalAddressPage(index), nonUk)
-          .flatMap(_.set(TrusteeLiveInTheUKPage(index), false))
+          .flatMap(_.set(TrusteeAddressInTheUKPage(index), false))
       case None =>
         Success(answers)
     }
@@ -196,10 +196,10 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
     leadTrusteeOrg.identification.address.convert match {
       case Some(uk: UKAddress) =>
         answers.set(TrusteesUkAddressPage(index), uk)
-          .flatMap(_.set(TrusteeLiveInTheUKPage(index), true))
+          .flatMap(_.set(TrusteeAddressInTheUKPage(index), true))
       case Some(nonUk: InternationalAddress) =>
         answers.set(TrusteesInternationalAddressPage(index), nonUk)
-          .flatMap(_.set(TrusteeLiveInTheUKPage(index), false))
+          .flatMap(_.set(TrusteeAddressInTheUKPage(index), false))
       case None => Success(answers)
     }
   }
@@ -270,11 +270,11 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
       case uk: UKAddress =>
         answers.set(TrusteeAddressPage(index), uk)
           .flatMap(_.set(TrusteeAddressYesNoPage(index), true))
-          .flatMap(_.set(TrusteeLiveInTheUKPage(index), true))
+          .flatMap(_.set(TrusteeAddressInTheUKPage(index), true))
       case nonUk: InternationalAddress =>
         answers.set(TrusteeAddressPage(index), nonUk)
           .flatMap(_.set(TrusteeAddressYesNoPage(index), true))
-          .flatMap(_.set(TrusteeLiveInTheUKPage(index), false))
+          .flatMap(_.set(TrusteeAddressInTheUKPage(index), false))
     }
   }
 }
