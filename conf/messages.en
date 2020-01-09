@@ -1526,3 +1526,7 @@ protectorIndividualOrBusiness.checkYourAnswersLabel = Is the protector an indivi
 
 answerPage.section.protectors.heading = Protectors
 answerPage.section.protectors.subheading = Protector {0}
+
+answerPage.section.trustDetails.heading = Trust details
+
+trustDetailsTrustType.checkYourAnswersLabel = What is the trust type?

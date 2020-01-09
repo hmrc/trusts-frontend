@@ -17,9 +17,9 @@
 package utils.print.playback
 
 import base.PlaybackSpecBase
-import models.core.pages.FullName
-import pages.register.beneficiaries.charity._
-import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
+import models.registration.pages.SettlorKindOfTrust
+import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
+import pages.register.settlors.living_settlor.SettlorKindOfTrustPage
 import play.twirl.api.Html
 import viewmodels.{AnswerRow, AnswerSection}
 
@@ -27,37 +27,148 @@ class PrintPlaybackHelperSpec extends PlaybackSpecBase {
 
   "Playback print helper" must {
 
-    "generate beneficiary sections" in {
+    "generate trust details for trust setup after settlor died" in {
 
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
       val answers = emptyUserAnswers
-          .set(CharityBeneficiaryNamePage(0), "Red Cross Ltd.").success.value
-          .set(CharityBeneficiaryNamePage(1), "Bernardos").success.value
-          .set(IndividualBeneficiaryNamePage(0), FullName("Michael", None, "Finnegan")).success.value
+          .set(SetupAfterSettlorDiedPage, true).success.value
 
       val result = helper.summary(answers)
 
       result mustBe Seq(
-        AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),
         AnswerSection(
-          headingKey = Some("Individual beneficiary 1"),
+          headingKey = Some("Trust details"),
           rows = Seq(
-            AnswerRow(label = "What is the name of the individual?", answer = Html("Michael Finnegan"), changeUrl = None)
+            AnswerRow(label = messages("trustDetailsTrustType.checkYourAnswersLabel"),
+              answer = Html("Will Trust or Intestacy Trust"),
+              changeUrl = None
+            )
           ),
           sectionKey = None
-        ),
+        )
+      )
+
+    }
+
+    "generate trust details for trust through a deed of variation or family agreement" in {
+
+      val helper = injector.instanceOf[PrintPlaybackHelper]
+
+      val answers = emptyUserAnswers
+        .set(SetupAfterSettlorDiedPage, false).success.value
+        .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Deed).success.value
+
+      val result = helper.summary(answers)
+
+      result mustBe Seq(
         AnswerSection(
-          headingKey = Some("Charity beneficiary 1"),
+          headingKey = Some("Trust details"),
           rows = Seq(
-            AnswerRow(label = "charityBeneficiaryName.checkYourAnswersLabel", answer = Html("Red Cross Ltd."), changeUrl = None)
+            AnswerRow(label = messages("trustDetailsTrustType.checkYourAnswersLabel"),
+              answer = Html("Deed of Variation Trust or Family Arrangement"),
+              changeUrl = None
+            )
           ),
           sectionKey = None
-        ),
+        )
+      )
+
+    }
+
+    "generate trust details for trust created during their lifetime to gift or transfer assets" in {
+
+      val helper = injector.instanceOf[PrintPlaybackHelper]
+
+      val answers = emptyUserAnswers
+        .set(SetupAfterSettlorDiedPage, false).success.value
+        .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
+
+      val result = helper.summary(answers)
+
+      result mustBe Seq(
         AnswerSection(
-          headingKey = Some("Charity beneficiary 2"),
+          headingKey = Some("Trust details"),
           rows = Seq(
-            AnswerRow(label = "charityBeneficiaryName.checkYourAnswersLabel", answer = Html("Bernardos"), changeUrl = None)
+            AnswerRow(label = messages("trustDetailsTrustType.checkYourAnswersLabel"),
+              answer = Html("Inter vivos Settlement"),
+              changeUrl = None
+            )
+          ),
+          sectionKey = None
+        )
+      )
+
+    }
+
+    "generate trust details for trust for a building or building with tenants" in {
+
+      val helper = injector.instanceOf[PrintPlaybackHelper]
+
+      val answers = emptyUserAnswers
+        .set(SetupAfterSettlorDiedPage, false).success.value
+        .set(SettlorKindOfTrustPage, SettlorKindOfTrust.FlatManagement).success.value
+
+      val result = helper.summary(answers)
+
+      result mustBe Seq(
+        AnswerSection(
+          headingKey = Some("Trust details"),
+          rows = Seq(
+            AnswerRow(label = messages("trustDetailsTrustType.checkYourAnswersLabel"),
+              answer = Html("Flat Management Company or Sinking Fund"),
+              changeUrl = None
+            )
+          ),
+          sectionKey = None
+        )
+      )
+
+    }
+
+    "generate trust details for trust for the repair of historic buildings" in {
+
+      val helper = injector.instanceOf[PrintPlaybackHelper]
+
+      val answers = emptyUserAnswers
+        .set(SetupAfterSettlorDiedPage, false).success.value
+        .set(SettlorKindOfTrustPage, SettlorKindOfTrust.HeritageMaintenanceFund).success.value
+
+      val result = helper.summary(answers)
+
+      result mustBe Seq(
+        AnswerSection(
+          headingKey = Some("Trust details"),
+          rows = Seq(
+            AnswerRow(label = messages("trustDetailsTrustType.checkYourAnswersLabel"),
+              answer = Html("Heritage Maintenance Fund"),
+              changeUrl = None
+            )
+          ),
+          sectionKey = None
+        )
+      )
+
+    }
+
+    "generate trust details for trust for the employees of a company" in {
+
+      val helper = injector.instanceOf[PrintPlaybackHelper]
+
+      val answers = emptyUserAnswers
+        .set(SetupAfterSettlorDiedPage, false).success.value
+        .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Employees).success.value
+
+      val result = helper.summary(answers)
+
+      result mustBe Seq(
+        AnswerSection(
+          headingKey = Some("Trust details"),
+          rows = Seq(
+            AnswerRow(label = messages("trustDetailsTrustType.checkYourAnswersLabel"),
+              answer = Html("Employment Related"),
+              changeUrl = None
+            )
           ),
           sectionKey = None
         )

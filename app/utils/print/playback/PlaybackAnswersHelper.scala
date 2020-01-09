@@ -200,4 +200,17 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
     }
   }
 
+  def trustDetails : Seq[AnswerSection] = {
+    TrustDetails(userAnswers).rows match {
+      case Nil => Nil
+      case trustDetails =>
+        Seq(
+          AnswerSection(
+            headingKey = Some(messages("answerPage.section.trustDetails.heading")),
+            rows = trustDetails
+          )
+        )
+    }
+  }
+
 }
