@@ -21,6 +21,7 @@ import mapping.registration.{AssetMonetaryAmount, PassportType, PropertyLandType
 import models.registration.pages.RoleInCompany
 import org.joda.time.DateTime
 import play.api.libs.json._
+import play.api.libs.functional.syntax._
 
 case class GetTrust(matchData: MatchData,
                     correspondence: Correspondence,
@@ -331,11 +332,20 @@ object DisplayTrustTrusteeIndividualType {
 }
 
 
-case class DisplayTrustProtectorsType(protector: Option[List[DisplayTrustProtector]],
-                                      protectorCompany: Option[List[DisplayTrustProtectorCompany]])
+case class DisplayTrustProtectorsType(protector: List[DisplayTrustProtector],
+                                      protectorCompany: List[DisplayTrustProtectorBusiness])
+
+sealed trait Protector
 
 object DisplayTrustProtectorsType {
-  implicit val protectorsTypeFormat: Format[DisplayTrustProtectorsType] = Json.format[DisplayTrustProtectorsType]
+
+  implicit val protectorReads : Reads[DisplayTrustProtectorsType] = (
+    (__ \ "protector").read[List[DisplayTrustProtector]].orElse(Reads.pure(Nil)) and
+      (__ \ "protectorCompany").read[List[DisplayTrustProtectorBusiness]].orElse(Reads.pure(Nil))
+  ) (DisplayTrustProtectorsType.apply _)
+
+  implicit val protectorWrites : Writes[DisplayTrustProtectorsType] = Json.writes[DisplayTrustProtectorsType]
+
 }
 
 case class DisplayTrustProtector(lineNo: String,
@@ -343,21 +353,21 @@ case class DisplayTrustProtector(lineNo: String,
                                  name: NameType,
                                  dateOfBirth: Option[DateTime],
                                  identification: Option[DisplayTrustIdentificationType],
-                                 entityStart: String)
+                                 entityStart: String) extends Protector
 
 object DisplayTrustProtector {
   implicit val dateFormat: Format[DateTime] = Format[DateTime](JodaReads.jodaDateReads(dateTimePattern), JodaWrites.jodaDateWrites(dateTimePattern))
   implicit val protectorFormat: Format[DisplayTrustProtector] = Json.format[DisplayTrustProtector]
 }
 
-case class DisplayTrustProtectorCompany(lineNo: String,
-                                        bpMatchStatus: Option[String],
-                                        name: String,
-                                        identification: Option[DisplayTrustIdentificationOrgType],
-                                        entityStart: String)
+case class DisplayTrustProtectorBusiness(lineNo: String,
+                                         bpMatchStatus: Option[String],
+                                         name: String,
+                                         identification: Option[DisplayTrustIdentificationOrgType],
+                                         entityStart: String) extends Protector
 
-object DisplayTrustProtectorCompany {
-  implicit val protectorCompanyFormat: Format[DisplayTrustProtectorCompany] = Json.format[DisplayTrustProtectorCompany]
+object DisplayTrustProtectorBusiness {
+  implicit val protectorCompanyFormat: Format[DisplayTrustProtectorBusiness] = Json.format[DisplayTrustProtectorBusiness]
 }
 
 

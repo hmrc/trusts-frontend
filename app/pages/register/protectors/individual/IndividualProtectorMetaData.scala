@@ -19,11 +19,11 @@ package pages.register.protectors.individual
 import models.playback.MetaData
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.protectors.{IndividualProtectors, Protectors}
+import sections.Protectors
 
 case class IndividualProtectorMetaData(index: Int) extends QuestionPage[MetaData]{
 
-  override def path: JsPath = JsPath \ Protectors \ IndividualProtectors \ index \ toString
+  override def path: JsPath = Protectors.path \ index \ toString
 
   override def toString: String = "metaData"
 
