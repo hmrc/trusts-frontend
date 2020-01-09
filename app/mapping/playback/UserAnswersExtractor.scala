@@ -49,7 +49,7 @@ class UserAnswersExtractor @Inject()(beneficiary: BeneficiaryExtractor,
       ua6 <- correspondenceExtractor.extract(answers, data.correspondence).right
       ua7 <- trustDetailsExtractor.extract(answers, data.trust.details).right
     } yield {
-      List(ua, ua1, ua2, ua3, ua4, ua5).combine
+      List(ua, ua1, ua2, ua3, ua4, ua5, ua6, ua7).combine
     }
 
     answersCombined match {
