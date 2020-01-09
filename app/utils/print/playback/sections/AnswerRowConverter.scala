@@ -111,19 +111,6 @@ object AnswerRowConverter {
   }
 
 
-//  def individualOrBusinessQuestion(query: Gettable[IndividualOrBusiness], userAnswers: UserAnswers, labelKey: String,
-//                           messageArg: String = "", changeRoute: Option[Call] = None)
-//                   (implicit messages:Messages) = {
-//    userAnswers.get(query) map {x =>
-//      AnswerRow(
-//        messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-//        CheckAnswersFormatters.answer("individualOrBusiness", x),
-//        None
-//      )
-//    }
-//  }
-
-
   def fullNameQuestion(query: Gettable[FullName], userAnswers: UserAnswers, labelKey: String,
                        messageArg: String = "", changeRoute: Option[Call] = None)
                       (implicit messages:Messages) = {
