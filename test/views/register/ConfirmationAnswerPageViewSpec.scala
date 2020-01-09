@@ -92,7 +92,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
         .set(SettlorDateOfDeathPage, LocalDate.of(2010, 10, 10)).success.value
         .set(SettlorDateOfBirthYesNoPage, true).success.value
         .set(SettlorsDateOfBirthPage, LocalDate.of(2010, 10, 10)).success.value
-        .set(SettlorsNINoYesNoPage, true).success.value
+        .set(SettlorsNationalInsuranceYesNoPage, true).success.value
         .set(SettlorNationalInsuranceNumberPage, "AB123456C").success.value
         .set(SettlorsLastKnownAddressYesNoPage, true).success.value
         .set(WasSettlorsAddressUKYesNoPage, true).success.value
@@ -203,7 +203,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
       assertContainsQuestionAnswerPair(doc, messages("settlorsDateOfBirth.checkYourAnswersLabel", name), "10 October 2010")
       assertContainsQuestionAnswerPair(doc, messages("settlorDateOfDeathYesNo.checkYourAnswersLabel", name), yes)
       assertContainsQuestionAnswerPair(doc, messages("settlorDateOfDeath.checkYourAnswersLabel", name), "10 October 2010")
-      assertContainsQuestionAnswerPair(doc, messages("settlorsNINoYesNo.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("settlorsNationalInsuranceYesNo.checkYourAnswersLabel", name), yes)
       assertContainsQuestionAnswerPair(doc, messages("settlorNationalInsuranceNumber.checkYourAnswersLabel", name), "AB 12 34 56 C")
       assertContainsQuestionAnswerPair(doc, messages("settlorsLastKnownAddressYesNo.checkYourAnswersLabel", name), yes)
       assertContainsQuestionAnswerPair(doc, messages("wasSettlorsAddressUKYesNo.checkYourAnswersLabel", name), yes)

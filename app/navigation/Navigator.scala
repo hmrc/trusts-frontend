@@ -119,7 +119,7 @@ class Navigator @Inject()(
     case SettlorDateOfDeathYesNoPage => _ => deceasedSettlorDateOfDeathRoute(draftId)
     case SettlorDateOfBirthYesNoPage => _ => deceasedSettlorDateOfBirthRoute(draftId)
     case SettlorsDateOfBirthPage => _ => _ => controllers.register.settlors.deceased_settlor.routes.SettlorsNINoYesNoController.onPageLoad(NormalMode, draftId)
-    case SettlorsNINoYesNoPage => _ => deceasedSettlorNinoRoute(draftId)
+    case SettlorsNationalInsuranceYesNoPage => _ => deceasedSettlorNinoRoute(draftId)
     case SettlorsLastKnownAddressYesNoPage => _ => deceasedSettlorLastKnownAddressRoute(draftId)
     case SettlorDateOfDeathPage => _ => _ => controllers.register.settlors.deceased_settlor.routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode, draftId)
     case SettlorNationalInsuranceNumberPage => _ => _ => controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
@@ -255,7 +255,7 @@ class Navigator @Inject()(
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def deceasedSettlorNinoRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(SettlorsNINoYesNoPage) match {
+  private def deceasedSettlorNinoRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(SettlorsNationalInsuranceYesNoPage) match {
     case Some(false) => controllers.register.settlors.deceased_settlor.routes.SettlorsLastKnownAddressYesNoController.onPageLoad(NormalMode, draftId)
     case Some(true) => controllers.register.settlors.deceased_settlor.routes.SettlorNationalInsuranceNumberController.onPageLoad(NormalMode, draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
@@ -485,7 +485,7 @@ class Navigator @Inject()(
     case None => routes.SessionExpiredController.onPageLoad()
   }
 
-  def nextPage(page: Page, mode: Mode, draftId: String,  af :AffinityGroup = AffinityGroup.Organisation): UserAnswers => Call = mode match {
+  def nextPage(page: Page, mode: Mode, draftId: String, af :AffinityGroup = AffinityGroup.Organisation): UserAnswers => Call = mode match {
     case NormalMode =>
       normalRoutes(draftId)(page)(af)
     case CheckMode =>

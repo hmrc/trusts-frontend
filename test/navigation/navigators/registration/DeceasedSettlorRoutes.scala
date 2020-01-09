@@ -108,9 +108,9 @@ trait DeceasedSettlorRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          val answers = userAnswers.set(SettlorsNINoYesNoPage, true).success.value
+          val answers = userAnswers.set(SettlorsNationalInsuranceYesNoPage, true).success.value
 
-          navigator.nextPage(SettlorsNINoYesNoPage, NormalMode, fakeDraftId)(answers)
+          navigator.nextPage(SettlorsNationalInsuranceYesNoPage, NormalMode, fakeDraftId)(answers)
             .mustBe(routes.SettlorNationalInsuranceNumberController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
@@ -134,8 +134,8 @@ trait DeceasedSettlorRoutes {
     "go to SettlorsLastKnownAddressYesNoPage from SettlorsNINoYesNoPage when user answers no" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          val answers = userAnswers.set(SettlorsNINoYesNoPage, value = false).success.value
-          navigator.nextPage(SettlorsNINoYesNoPage, NormalMode, fakeDraftId)(answers)
+          val answers = userAnswers.set(SettlorsNationalInsuranceYesNoPage, value = false).success.value
+          navigator.nextPage(SettlorsNationalInsuranceYesNoPage, NormalMode, fakeDraftId)(answers)
             .mustBe(routes.SettlorsLastKnownAddressYesNoController.onPageLoad(NormalMode, fakeDraftId))
       }
     }

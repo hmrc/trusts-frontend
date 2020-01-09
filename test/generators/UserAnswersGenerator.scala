@@ -106,7 +106,7 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(WasSettlorsAddressUKYesNoPage.type, JsValue)] ::
     arbitrary[(SetupAfterSettlorDiedPage.type, JsValue)] ::
     arbitrary[(SettlorsUKAddressPage.type, JsValue)] ::
-    arbitrary[(SettlorsNINoYesNoPage.type, JsValue)] ::
+    arbitrary[(SettlorsNationalInsuranceYesNoPage.type, JsValue)] ::
     arbitrary[(SettlorsNamePage.type, JsValue)] ::
     arbitrary[(SettlorsLastKnownAddressYesNoPage.type, JsValue)] ::
     arbitrary[(SettlorsInternationalAddressPage.type, JsValue)] ::

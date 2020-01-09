@@ -50,7 +50,7 @@ class SetupAfterSettlorDiedPageSpec extends PageBehaviours {
             .set(SettlorDateOfDeathPage, LocalDate.now).success.value
             .set(SettlorDateOfBirthYesNoPage, true).success.value
             .set(SettlorsDateOfBirthPage, LocalDate.now.minusDays(10)).success.value
-            .set(SettlorsNINoYesNoPage, true).success.value
+            .set(SettlorsNationalInsuranceYesNoPage, true).success.value
             .set(SettlorNationalInsuranceNumberPage, str).success.value
             .set(DeceasedSettlorStatus, Status.Completed).success.value
 
@@ -61,7 +61,7 @@ class SetupAfterSettlorDiedPageSpec extends PageBehaviours {
           result.get(SettlorDateOfDeathPage) mustNot be(defined)
           result.get(SettlorDateOfBirthYesNoPage) mustNot be(defined)
           result.get(SettlorsDateOfBirthPage) mustNot be(defined)
-          result.get(SettlorsNINoYesNoPage) mustNot be(defined)
+          result.get(SettlorsNationalInsuranceYesNoPage) mustNot be(defined)
           result.get(SettlorNationalInsuranceNumberPage) mustNot be(defined)
           result.get(DeceasedSettlorStatus) mustNot be(defined)
       }
@@ -75,7 +75,7 @@ class SetupAfterSettlorDiedPageSpec extends PageBehaviours {
             .set(SettlorDateOfDeathPage, LocalDate.now).success.value
             .set(SettlorDateOfBirthYesNoPage, true).success.value
             .set(SettlorsDateOfBirthPage, LocalDate.now.minusDays(10)).success.value
-            .set(SettlorsNINoYesNoPage, false).success.value
+            .set(SettlorsNationalInsuranceYesNoPage, false).success.value
             .set(SettlorsLastKnownAddressYesNoPage, true).success.value
             .set(WasSettlorsAddressUKYesNoPage, true).success.value
             .set(SettlorsUKAddressPage, UKAddress(str, str, Some(str), Some(str), str)).success.value
@@ -88,7 +88,7 @@ class SetupAfterSettlorDiedPageSpec extends PageBehaviours {
           result.get(SettlorDateOfDeathPage) mustNot be(defined)
           result.get(SettlorDateOfBirthYesNoPage) mustNot be(defined)
           result.get(SettlorsDateOfBirthPage) mustNot be(defined)
-          result.get(SettlorsNINoYesNoPage) mustNot be(defined)
+          result.get(SettlorsNationalInsuranceYesNoPage) mustNot be(defined)
           result.get(SettlorsLastKnownAddressYesNoPage) mustNot be(defined)
           result.get(WasSettlorsAddressUKYesNoPage) mustNot be(defined)
           result.get(SettlorsUKAddressPage) mustNot be(defined)

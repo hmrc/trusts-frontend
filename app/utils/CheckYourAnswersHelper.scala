@@ -864,10 +864,10 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
-  def deceasedSettlorsNINoYesNo: Option[AnswerRow] = userAnswers.get(SettlorsNINoYesNoPage) map {
+  def deceasedSettlorsNINoYesNo: Option[AnswerRow] = userAnswers.get(SettlorsNationalInsuranceYesNoPage) map {
     x =>
       AnswerRow(
-        "settlorsNINoYesNo.checkYourAnswersLabel",
+        "settlorsNationalInsuranceYesNo.checkYourAnswersLabel",
         yesOrNo(x),
         Some(controllers.register.settlors.deceased_settlor.routes.SettlorsNINoYesNoController.onPageLoad(NormalMode, draftId).url),
         deceasedSettlorName(userAnswers)

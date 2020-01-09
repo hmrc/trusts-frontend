@@ -56,7 +56,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
             .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
             .set(SettlorDateOfDeathYesNoPage, false).success.value
             .set(SettlorDateOfBirthYesNoPage, false).success.value
-            .set(SettlorsNINoYesNoPage, false).success.value
+            .set(SettlorsNationalInsuranceYesNoPage, false).success.value
             .set(SettlorsLastKnownAddressYesNoPage, false).success.value
 
         deceasedSettlorMapper.build(userAnswers).value mustBe WillType(
@@ -77,7 +77,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
             .set(SettlorDateOfDeathYesNoPage, true).success.value
             .set(SettlorDateOfDeathPage, dateOfDeath).success.value
             .set(SettlorDateOfBirthYesNoPage, false).success.value
-            .set(SettlorsNINoYesNoPage, false).success.value
+            .set(SettlorsNationalInsuranceYesNoPage, false).success.value
             .set(SettlorsLastKnownAddressYesNoPage, false).success.value
 
         deceasedSettlorMapper.build(userAnswers).value mustBe WillType(
@@ -98,7 +98,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
             .set(SettlorDateOfDeathYesNoPage, false).success.value
             .set(SettlorDateOfBirthYesNoPage, true).success.value
             .set(SettlorsDateOfBirthPage, dateOfBirth).success.value
-            .set(SettlorsNINoYesNoPage, false).success.value
+            .set(SettlorsNationalInsuranceYesNoPage, false).success.value
             .set(SettlorsLastKnownAddressYesNoPage, false).success.value
 
         deceasedSettlorMapper.build(userAnswers).value mustBe WillType(
@@ -118,7 +118,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
             .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
             .set(SettlorDateOfDeathYesNoPage, false).success.value
             .set(SettlorDateOfBirthYesNoPage, false).success.value
-            .set(SettlorsNINoYesNoPage, true).success.value
+            .set(SettlorsNationalInsuranceYesNoPage, true).success.value
             .set(SettlorNationalInsuranceNumberPage, "NH111111A").success.value
             .set(SettlorsLastKnownAddressYesNoPage, false).success.value
 
@@ -139,7 +139,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
             .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
             .set(SettlorDateOfDeathYesNoPage, false).success.value
             .set(SettlorDateOfBirthYesNoPage, false).success.value
-            .set(SettlorsNINoYesNoPage, false).success.value
+            .set(SettlorsNationalInsuranceYesNoPage, false).success.value
             .set(SettlorsLastKnownAddressYesNoPage, true).success.value
             .set(WasSettlorsAddressUKYesNoPage, true).success.value
             .set(SettlorsUKAddressPage, UKAddress("line1", "line2", Some("line3"), Some("line4"), "ab1 1ab")).success.value
@@ -161,7 +161,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
             .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
             .set(SettlorDateOfDeathYesNoPage, false).success.value
             .set(SettlorDateOfBirthYesNoPage, false).success.value
-            .set(SettlorsNINoYesNoPage, false).success.value
+            .set(SettlorsNationalInsuranceYesNoPage, false).success.value
             .set(SettlorsLastKnownAddressYesNoPage, true).success.value
             .set(WasSettlorsAddressUKYesNoPage, false).success.value
             .set(SettlorsInternationalAddressPage, InternationalAddress("line1", "line2", Some("line3"), "FR")).success.value
@@ -185,7 +185,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
             .set(SettlorDateOfDeathPage, dateOfDeath).success.value
             .set(SettlorDateOfBirthYesNoPage, true).success.value
             .set(SettlorsDateOfBirthPage, dateOfBirth).success.value
-            .set(SettlorsNINoYesNoPage, true).success.value
+            .set(SettlorsNationalInsuranceYesNoPage, true).success.value
             .set(SettlorNationalInsuranceNumberPage, "NH111111A").success.value
 
         deceasedSettlorMapper.build(userAnswers).value mustBe WillType(
