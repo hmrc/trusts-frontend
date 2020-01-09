@@ -26,23 +26,10 @@ import pages.register._
 
 class CorrespondenceExtractorSpec extends FreeSpec with MustMatchers with EitherValues with Generators with SpecBaseHelpers {
 
-  val correspondenceExtractor: PlaybackExtractor[Option[Correspondence]] =
+  val correspondenceExtractor: PlaybackExtractor[Correspondence] =
     injector.instanceOf[CorrespondenceExtractor]
 
   "Correspondence Extractor" - {
-
-    "when no correspondence" - {
-
-      "must return an error" in {
-
-        val ua = UserAnswers("fakeId")
-
-        val extraction = correspondenceExtractor.extract(ua, None)
-
-        extraction.left.value mustBe a[FailedToExtractData]
-      }
-
-    }
 
     "when there is correspondence" - {
       
@@ -58,7 +45,7 @@ class CorrespondenceExtractorSpec extends FreeSpec with MustMatchers with Either
 
       val ua = UserAnswers("fakeId")
 
-      val extraction = correspondenceExtractor.extract(ua, Some(correspondence))
+      val extraction = correspondenceExtractor.extract(ua, correspondence)
 
       extraction.right.value.get(TrustNamePage).get mustBe "Trust Ltd"
 

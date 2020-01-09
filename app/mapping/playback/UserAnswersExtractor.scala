@@ -30,7 +30,9 @@ class UserAnswersExtractor @Inject()(beneficiary: BeneficiaryExtractor,
                                      settlors: SettlorExtractor,
                                      trustType: TrustTypeExtractor,
                                      protectors: ProtectorExtractor,
-                                     individualExtractor: OtherIndividualExtractor
+                                     individualExtractor: OtherIndividualExtractor,
+                                     correspondenceExtractor: CorrespondenceExtractor,
+                                     trustDetailsExtractor: TrustDetailsExtractor
                                     ) extends PlaybackExtractor[GetTrust] {
 
   import models.playback.UserAnswersCombinator._
@@ -43,9 +45,11 @@ class UserAnswersExtractor @Inject()(beneficiary: BeneficiaryExtractor,
       ua2 <- settlors.extract(answers, data.trust.entities).right
       ua3 <- trustType.extract(answers, Some(data.trust)).right
       ua4 <- protectors.extract(answers, data.trust.entities.protectors).right
-      ua6 <- individualExtractor.extract(answers, data.trust.entities.naturalPerson).right
+      ua5 <- individualExtractor.extract(answers, data.trust.entities.naturalPerson).right
+      ua6 <- correspondenceExtractor.extract(answers, data.correspondence).right
+      ua7 <- trustDetailsExtractor.extract(answers, data.trust.details).right
     } yield {
-      List(ua, ua1, ua2, ua3, ua4, ua6).combine
+      List(ua, ua1, ua2, ua3, ua4, ua5).combine
     }
 
     answersCombined match {

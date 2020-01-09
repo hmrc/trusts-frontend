@@ -22,7 +22,6 @@ import base.SpecBaseHelpers
 import generators.Generators
 import mapping.DeedOfVariation.ReplacedWill
 import mapping.TypeOfTrust.WillTrustOrIntestacyTrust
-import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
 import mapping.registration.{NonUKType, ResidentialStatusType, TrustDetailsType, UkType}
 import models.playback.UserAnswers
 import models.registration.pages.NonResidentType
@@ -33,29 +32,16 @@ import pages.register.agents.AgentOtherThanBarristerPage
 
 class TrustDetailsExtractorSpec extends FreeSpec with MustMatchers with EitherValues with Generators with SpecBaseHelpers {
 
-  val trusteeDetailsExtractor : PlaybackExtractor[Option[TrustDetailsType]] =
+  val trusteeDetailsExtractor : PlaybackExtractor[TrustDetailsType] =
     injector.instanceOf[TrustDetailsExtractor]
 
   "Trust Details Extractor" - {
-
-    "when no trust details" - {
-
-      "must return an error" in {
-
-        val ua = UserAnswers("fakeId")
-
-        val extraction = trusteeDetailsExtractor.extract(ua, None)
-
-        extraction.left.value mustBe a[FailedToExtractData]
-      }
-
-    }
 
     "when there is trust details" - {
 
       "uk" in {
 
-        val trustee = TrustDetailsType(
+        val trust = TrustDetailsType(
           startDate = LocalDate.of(2019, 6, 1),
           lawCountry = None,
           administrationCountry = None,
@@ -68,7 +54,7 @@ class TrustDetailsExtractorSpec extends FreeSpec with MustMatchers with EitherVa
 
         val ua = UserAnswers("fakeId")
 
-        val extraction = trusteeDetailsExtractor.extract(ua, Some(trustee))
+        val extraction = trusteeDetailsExtractor.extract(ua, trust)
 
         extraction.right.value.get(WhenTrustSetupPage).get mustBe LocalDate.of(2019, 6, 1)
         extraction.right.value.get(GovernedInsideTheUKPage).get mustBe true
@@ -82,7 +68,7 @@ class TrustDetailsExtractorSpec extends FreeSpec with MustMatchers with EitherVa
 
       "non uk" in {
 
-        val trustee = TrustDetailsType(
+        val trust = TrustDetailsType(
           startDate = LocalDate.of(2019, 6, 1),
           lawCountry = Some("FR"),
           administrationCountry = Some("IT"),
@@ -95,7 +81,7 @@ class TrustDetailsExtractorSpec extends FreeSpec with MustMatchers with EitherVa
 
         val ua = UserAnswers("fakeId")
 
-        val extraction = trusteeDetailsExtractor.extract(ua, Some(trustee))
+        val extraction = trusteeDetailsExtractor.extract(ua, trust)
 
         extraction.right.value.get(WhenTrustSetupPage).get mustBe LocalDate.of(2019, 6, 1)
         extraction.right.value.get(GovernedInsideTheUKPage).get mustBe false

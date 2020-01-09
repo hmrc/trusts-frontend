@@ -27,30 +27,22 @@ import play.api.Logger
 
 import scala.util.{Failure, Success, Try}
 
-class TrustDetailsExtractor @Inject() extends PlaybackExtractor[Option[TrustDetailsType]] {
+class TrustDetailsExtractor @Inject() extends PlaybackExtractor[TrustDetailsType] {
 
-  override def extract(answers: UserAnswers, data: Option[TrustDetailsType]): Either[PlaybackExtractionError, UserAnswers] =
+  override def extract(answers: UserAnswers, data: TrustDetailsType): Either[PlaybackExtractionError, UserAnswers] =
     {
-      data match {
-        case None => Left(FailedToExtractData("No Trustee Details"))
-        case trust =>
+      val updated = answers
+        .set(WhenTrustSetupPage, data.startDate)
+        .flatMap(answers => extractGovernedBy(data, answers))
+        .flatMap(answers => extractAdminBy(data, answers))
+        .flatMap(answers => extractResidentialType(data, answers))
 
-          val updated: Try[UserAnswers] = trust.foldLeft[Try[UserAnswers]](Success(answers)){
-            case (answers, details) =>
-              answers
-                .flatMap(_.set(WhenTrustSetupPage, details.startDate))
-                .flatMap(answers => extractGovernedBy(details, answers))
-                .flatMap(answers => extractAdminBy(details, answers))
-                .flatMap(answers => extractResidentialType(details, answers))
-          }
-
-          updated match {
-            case Success(a) =>
-              Right(a)
-            case Failure(exception) =>
-              Logger.warn(s"[TrustDetailsExtractor] failed to extract data due to ${exception.getMessage}")
-              Left(FailedToExtractData(TrustDetailsType.toString))
-          }
+      updated match {
+        case Success(a) =>
+          Right(a)
+        case Failure(exception) =>
+          Logger.warn(s"[TrustDetailsExtractor] failed to extract data due to ${exception.getMessage}")
+          Left(FailedToExtractData(TrustDetailsType.toString))
       }
     }
 

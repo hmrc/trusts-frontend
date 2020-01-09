@@ -25,28 +25,18 @@ import play.api.Logger
 
 import scala.util.{Failure, Success, Try}
 
-class CorrespondenceExtractor @Inject() extends PlaybackExtractor[Option[Correspondence]] {
+class CorrespondenceExtractor @Inject() extends PlaybackExtractor[Correspondence] {
 
-  override def extract(answers: UserAnswers, data: Option[Correspondence]): Either[PlaybackExtractionError, UserAnswers] =
+  override def extract(answers: UserAnswers, data: Correspondence): Either[PlaybackExtractionError, UserAnswers] =
     {
-      data match {
-        case None => Left(FailedToExtractData("No Correspondence"))
-        case trust =>
-
-          val updated: Try[UserAnswers] = trust.foldLeft[Try[UserAnswers]](Success(answers)){
-            case (answers, correspondence) =>
-              answers
-                .flatMap(_.set(TrustNamePage, correspondence.name))
-          }
-
-          updated match {
-            case Success(a) =>
-              Right(a)
-            case Failure(exception) =>
-              Logger.warn(s"[Correspondence] failed to extract data due to ${exception.getMessage}")
-              Left(FailedToExtractData(Correspondence.toString))
-          }
+      answers.set(TrustNamePage, data.name) match {
+        case Success(a) =>
+          Right(a)
+        case Failure(exception) =>
+          Logger.warn(s"[Correspondence] failed to extract data due to ${exception.getMessage}")
+          Left(FailedToExtractData(Correspondence.toString))
       }
+
     }
 
 }
