@@ -32,14 +32,13 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 object TrustDetails {
 
-  def apply(index: Int,
-            userAnswers: UserAnswers,
+  def apply(userAnswers: UserAnswers,
             countryOptions: CountryOptions)
            (implicit messages: Messages): Seq[AnswerSection] = {
 
     Seq(
       AnswerSection(
-        headingKey = Some(messages("answerPage.section.other.individual.heading")),
+        headingKey = None,
         Seq(
           stringQuestion(TrustNamePage, userAnswers, "trustName"),
           dateQuestion(WhenTrustSetupPage, userAnswers, "whenTrustSetup"),
