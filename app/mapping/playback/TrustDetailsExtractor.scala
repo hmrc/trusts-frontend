@@ -18,9 +18,11 @@ package mapping.playback
 
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
-import mapping.registration.TrustDetailsType
+import mapping.registration.{NonUKType, ResidentialStatusType, TrustDetailsType, UkType}
 import models.playback.UserAnswers
+import models.registration.pages.NonResidentType
 import pages.register._
+import pages.register.agents.AgentOtherThanBarristerPage
 import play.api.Logger
 
 import scala.util.{Failure, Success, Try}
@@ -38,6 +40,8 @@ class TrustDetailsExtractor @Inject() extends PlaybackExtractor[Option[TrustDeta
               answers
                 .flatMap(_.set(WhenTrustSetupPage, details.startDate))
                 .flatMap(answers => extractGovernedBy(details, answers))
+                .flatMap(answers => extractAdminBy(details, answers))
+                .flatMap(answers => extractResidentialType(details, answers))
           }
 
           updated match {
@@ -56,5 +60,46 @@ class TrustDetailsExtractor @Inject() extends PlaybackExtractor[Option[TrustDeta
         .flatMap(_.set(CountryGoverningTrustPage, country))
       case _ => answers.set(GovernedInsideTheUKPage, true)
     }
+
+  private def extractAdminBy(details: TrustDetailsType, answers: UserAnswers): Try[UserAnswers] =
+    details.administrationCountry match {
+      case Some(country) => answers.set(AdministrationInsideUKPage, false)
+        .flatMap(_.set(CountryAdministeringTrustPage, country))
+      case _ => answers.set(AdministrationInsideUKPage, true)
+    }
+
+  private def extractResidentialType(details: TrustDetailsType, answers: UserAnswers): Try[UserAnswers] =
+    details.residentialStatus map {
+      case ResidentialStatusType(Some(uk), None) => ukTrust(uk, answers)
+      case ResidentialStatusType(None, Some(nonUK)) => nonUKTrust(nonUK, answers)
+    } getOrElse Success(answers)
+
+  private def ukTrust(uk: UkType, answers: UserAnswers): Try[UserAnswers] = {
+    val extractOffShore = uk.preOffShore match {
+      case Some(country) => answers.set(TrustPreviouslyResidentPage, country)
+        .flatMap(_.set(TrustResidentOffshorePage, true))
+      case _ => answers.set(TrustResidentOffshorePage, false)
+    }
+    extractOffShore.flatMap(_.set(EstablishedUnderScotsLawPage, uk.scottishLaw))
+  }
+
+  private def nonUKTrust(nonUK: NonUKType, answers: UserAnswers): Try[UserAnswers] = {
+    val registeringTrustFor5A = answers.set(RegisteringTrustFor5APage, nonUK.sch5atcgga92)
+
+    val inheritanceTax = nonUK.s218ihta84 match {
+      case Some(iht) => registeringTrustFor5A.flatMap(_.set(InheritanceTaxActPage, iht))
+      case _ => registeringTrustFor5A
+    }
+
+    val agentInheritance = nonUK.agentS218IHTA84 match {
+      case Some(iht) => inheritanceTax.flatMap(_.set(AgentOtherThanBarristerPage, iht))
+      case _ => inheritanceTax
+    }
+
+    nonUK.trusteeStatus.map(NonResidentType.fromDES) match {
+      case Some(status) => agentInheritance.flatMap(_.set(NonResidentTypePage, status))
+      case _ => agentInheritance
+    }
+  }
 
 }

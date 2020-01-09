@@ -25,6 +25,7 @@ import mapping.TypeOfTrust.WillTrustOrIntestacyTrust
 import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
 import mapping.registration.{NonUKType, ResidentialStatusType, TrustDetailsType, UkType}
 import models.playback.UserAnswers
+import models.registration.pages.NonResidentType
 import models.registration.pages.NonResidentType.Domiciled
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import pages.register._
@@ -37,15 +38,13 @@ class TrustDetailsExtractorSpec extends FreeSpec with MustMatchers with EitherVa
 
   "Trust Details Extractor" - {
 
-    "when no trustee org" - {
+    "when no trust details" - {
 
       "must return an error" in {
 
-        val trustee = None
-
         val ua = UserAnswers("fakeId")
 
-        val extraction = trusteeDetailsExtractor.extract(ua, trustee)
+        val extraction = trusteeDetailsExtractor.extract(ua, None)
 
         extraction.left.value mustBe a[FailedToExtractData]
       }
@@ -86,8 +85,8 @@ class TrustDetailsExtractorSpec extends FreeSpec with MustMatchers with EitherVa
         val trustee = TrustDetailsType(
           startDate = LocalDate.of(2019, 6, 1),
           lawCountry = Some("FR"),
-          administrationCountry = Some("UK"),
-          residentialStatus = Some(ResidentialStatusType(None, Some(NonUKType(true, Some(false), Some(true), None)))),
+          administrationCountry = Some("IT"),
+          residentialStatus = Some(ResidentialStatusType(None, Some(NonUKType(false, Some(false), Some(true), Some(NonResidentType.toDES(Domiciled)))))),
           typeOfTrust = WillTrustOrIntestacyTrust,
           deedOfVariation = Some(ReplacedWill),
           interVivos = Some(true),
@@ -100,12 +99,12 @@ class TrustDetailsExtractorSpec extends FreeSpec with MustMatchers with EitherVa
 
         extraction.right.value.get(WhenTrustSetupPage).get mustBe LocalDate.of(2019, 6, 1)
         extraction.right.value.get(GovernedInsideTheUKPage).get mustBe false
-        extraction.right.value.get(CountryGoverningTrustPage).get mustBe "France"
+        extraction.right.value.get(CountryGoverningTrustPage).get mustBe "FR"
         extraction.right.value.get(AdministrationInsideUKPage).get mustBe false
-        extraction.right.value.get(CountryAdministeringTrustPage).get mustBe "Italy"
-        extraction.right.value.get(RegisteringTrustFor5APage).get mustBe true
+        extraction.right.value.get(CountryAdministeringTrustPage).get mustBe "IT"
+        extraction.right.value.get(RegisteringTrustFor5APage).get mustBe false
         extraction.right.value.get(NonResidentTypePage).get mustBe Domiciled
-        extraction.right.value.get(InheritanceTaxActPage).get mustBe true
+        extraction.right.value.get(InheritanceTaxActPage).get mustBe false
         extraction.right.value.get(AgentOtherThanBarristerPage).get mustBe true
 
       }
