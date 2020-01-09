@@ -18,6 +18,7 @@ package utils.print.playback
 
 import base.PlaybackSpecBase
 import models.core.pages.FullName
+import pages.register.TrustNamePage
 import pages.register.beneficiaries.charity._
 import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
 import play.twirl.api.Html
@@ -27,11 +28,12 @@ class PrintPlaybackHelperSpec extends PlaybackSpecBase {
 
   "Playback print helper" must {
 
-    "generate beneficiary sections" in {
+    "generate trust details and beneficiary sections" in {
 
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
       val answers = emptyUserAnswers
+          .set(TrustNamePage, "Trust Ltd.").success.value
           .set(CharityBeneficiaryNamePage(0), "Red Cross Ltd.").success.value
           .set(CharityBeneficiaryNamePage(1), "Bernardos").success.value
           .set(IndividualBeneficiaryNamePage(0), FullName("Michael", None, "Finnegan")).success.value
@@ -39,6 +41,12 @@ class PrintPlaybackHelperSpec extends PlaybackSpecBase {
       val result = helper.summary(answers)
 
       result mustBe Seq(
+        AnswerSection(
+          headingKey = Some("answerPage.section.trustsDetails.heading"),
+          rows = Seq(
+            AnswerRow(label = "What is the trust’s name?", answer = Html("Trust Ltd."), changeUrl = None)
+          )
+        ),
         AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),
         AnswerSection(
           headingKey = Some("Individual beneficiary 1"),

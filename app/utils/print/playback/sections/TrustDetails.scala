@@ -38,7 +38,7 @@ object TrustDetails {
 
     Seq(
       AnswerSection(
-        headingKey = None,
+        headingKey = Some("answerPage.section.trustsDetails.heading"),
         Seq(
           stringQuestion(TrustNamePage, userAnswers, "trustName"),
           dateQuestion(WhenTrustSetupPage, userAnswers, "whenTrustSetup"),
