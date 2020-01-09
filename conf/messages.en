@@ -57,6 +57,8 @@ site.onlyContinue = Continue
 site.date.hint = For example, 31 3 1980
 site.warning = Warning
 site.confirm-send = Confirm and send
+site.address = Address
+site.utr = Unique Taxpayer Reference
 
 site.address.uk.title = What is the address?
 site.address.uk.heading = What is {0}’s address?
@@ -1514,12 +1516,13 @@ otherIndividualPassportIDCardYesNo.checkYourAnswersLabel = Do you know {0}’s p
 otherIndividualPassportIDCard.checkYourAnswersLabel = What are {0}’s passport or ID card details?
 
 companyProtectorName.checkYourAnswersLabel = What is the business’s name?
-companyProtectorAddressOrUtr.checkYourAnswersLabel = Which of {0}’s details do you know?
+companyProtectorUtrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
 companyProtectorUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
+companyProtectorAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
 companyProtectorAddressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 companyProtectorAddress.checkYourAnswersLabel = What is {0}’s address?
 
-answerPage.section.protectors.heading = Protectors
-answerPage.section.individualProtector.subheading = Individual protector {0}
-answerPage.section.companyProtector.subheading = Business protector {0}
+protectorIndividualOrBusiness.checkYourAnswersLabel = Is the protector an individual or a business?
 
+answerPage.section.protectors.heading = Protectors
+answerPage.section.protectors.subheading = Protector {0}

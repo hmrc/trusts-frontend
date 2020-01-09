@@ -20,11 +20,11 @@ import java.time.LocalDate
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.protectors.IndividualProtectors
+import sections.Protectors
 
 final case class IndividualProtectorDateOfBirthPage(index : Int) extends QuestionPage[LocalDate] {
 
-  override def path: JsPath = IndividualProtectors.path \ index \ toString
+  override def path: JsPath = Protectors.path \ index \ toString
 
   override def toString: String = "dateOfBirth"
 }

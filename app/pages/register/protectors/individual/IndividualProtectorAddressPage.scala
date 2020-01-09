@@ -19,11 +19,11 @@ package pages.register.protectors.individual
 import models.core.pages.Address
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.protectors.IndividualProtectors
+import sections.Protectors
 
 final case class IndividualProtectorAddressPage(index : Int) extends QuestionPage[Address] {
 
-  override def path: JsPath = IndividualProtectors.path \ index \ toString
+  override def path: JsPath = Protectors.path \ index \ toString
 
   override def toString: String = "address"
 }
