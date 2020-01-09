@@ -122,5 +122,5 @@ class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase with AnswerSectio
     "generate a trustee section for each trustee" ignore {}
   }
 
-  
+
 }
