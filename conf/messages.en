@@ -1027,6 +1027,7 @@ answerPage.section.trustsDetails.heading = Trust details
 answerPage.section.deceasedSettlor.heading = Settlor
 answerPage.section.settlors.heading = Settlors
 answerPage.section.settlor.subheading = Settlor {0}
+answerPage.section.leadTrustee.heading = Lead trustee
 answerPage.section.trustees.heading = Trustees
 answerPage.section.trustee.subheading = Trustee
 answerPage.section.beneficiaries.heading = Beneficiaries

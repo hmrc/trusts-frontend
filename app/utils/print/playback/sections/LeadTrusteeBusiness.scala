@@ -29,7 +29,7 @@ object LeadTrusteeBusiness {
 
     userAnswers.get(TrusteeOrgNamePage(index)).flatMap { name =>
       Some(Seq(AnswerSection(
-        headingKey = Some(messages("answerPage.section.trustee.subheading") + s" ${index + 1}"),
+        headingKey = Some(messages("answerPage.section.leadTrustee.heading")),
         Seq(
           yesNoQuestion(IsThisLeadTrusteePage(index), userAnswers, "isThisLeadTrustee"),
           individualOrBusinessQuestion(TrusteeIndividualOrBusinessPage(index), userAnswers, "trusteeIndividualOrBusiness"),
