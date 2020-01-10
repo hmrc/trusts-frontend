@@ -23,25 +23,25 @@ import models.NormalMode
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.register.settlors.deceased_settlor.SetupAfterSettlorDiedView
+import views.html.register.settlors.deceased_settlor.SetUpAfterSettlorDiedView
 
 class SetUpAfterSettlorDiedControllerSpec extends RegistrationSpecBase {
 
-  val form = new YesNoFormProvider().withPrefix("setupAfterSettlorDied")
+  val form = new YesNoFormProvider().withPrefix("setUpAfterSettlorDied")
 
-  lazy val setupAfterSettlorDiedRoute = routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode,fakeDraftId).url
+  lazy val setUpAfterSettlorDiedRoute = routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode,fakeDraftId).url
 
-  "SetupAfterSettlorDied Controller" must {
+  "SetUpAfterSettlorDied Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, setupAfterSettlorDiedRoute)
+      val request = FakeRequest(GET, setUpAfterSettlorDiedRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[SetupAfterSettlorDiedView]
+      val view = application.injector.instanceOf[SetUpAfterSettlorDiedView]
 
       status(result) mustEqual OK
 
@@ -57,9 +57,9 @@ class SetUpAfterSettlorDiedControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, setupAfterSettlorDiedRoute)
+      val request = FakeRequest(GET, setUpAfterSettlorDiedRoute)
 
-      val view = application.injector.instanceOf[SetupAfterSettlorDiedView]
+      val view = application.injector.instanceOf[SetUpAfterSettlorDiedView]
 
       val result = route(application, request).value
 
@@ -77,7 +77,7 @@ class SetUpAfterSettlorDiedControllerSpec extends RegistrationSpecBase {
         applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, setupAfterSettlorDiedRoute)
+        FakeRequest(POST, setUpAfterSettlorDiedRoute)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
@@ -94,12 +94,12 @@ class SetUpAfterSettlorDiedControllerSpec extends RegistrationSpecBase {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, setupAfterSettlorDiedRoute)
+        FakeRequest(POST, setUpAfterSettlorDiedRoute)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[SetupAfterSettlorDiedView]
+      val view = application.injector.instanceOf[SetUpAfterSettlorDiedView]
 
       val result = route(application, request).value
 
@@ -115,7 +115,7 @@ class SetUpAfterSettlorDiedControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, setupAfterSettlorDiedRoute)
+      val request = FakeRequest(GET, setUpAfterSettlorDiedRoute)
 
       val result = route(application, request).value
 
@@ -131,7 +131,7 @@ class SetUpAfterSettlorDiedControllerSpec extends RegistrationSpecBase {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, setupAfterSettlorDiedRoute)
+        FakeRequest(POST, setUpAfterSettlorDiedRoute)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value

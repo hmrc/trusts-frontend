@@ -198,7 +198,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
     }
 
     "assert question labels for Settlors" in {
-      assertContainsQuestionAnswerPair(doc, messages("setupAfterSettlorDied.checkYourAnswersLabel"), yes)
+      assertContainsQuestionAnswerPair(doc, messages("setUpAfterSettlorDied.checkYourAnswersLabel"), yes)
       assertContainsQuestionAnswerPair(doc, messages("settlorsName.checkYourAnswersLabel"), name)
       assertContainsQuestionAnswerPair(doc, messages("settlorDateOfBirthYesNo.checkYourAnswersLabel", name), yes)
       assertContainsQuestionAnswerPair(doc, messages("settlorsDateOfBirth.checkYourAnswersLabel", name), "10 October 2010")

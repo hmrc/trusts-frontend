@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.register.settlors.deceased_settlor.routes._
+@import controllers.register.settlors.routes._
 @import models.Mode
 
 @this(
@@ -25,10 +25,10 @@
 @(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("setupAfterSettlorDied.title")}"
+    title = s"${errorPrefix(form)} ${messages("setUpAfterSettlorDied.title")}"
     ) {
 
-    @formHelper(action = SetupAfterSettlorDiedController.onSubmit(mode, draftId), 'autoComplete -> "off") {
+    @formHelper(action = SetUpAfterSettlorDiedController.onSubmit(mode, draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 
@@ -36,10 +36,10 @@
 
         @components.input_yes_no(
             field = form("value"),
-            label = messages("setupAfterSettlorDied.heading"),
+            label = messages("setUpAfterSettlorDied.heading"),
             legendClass = Some("heading-large"),
             legendAsHeading = true,
-            hint = Some(messages("setupAfterSettlorDied.hint"))
+            hint = Some(messages("setUpAfterSettlorDied.hint"))
         )
 
         @components.submit_button()

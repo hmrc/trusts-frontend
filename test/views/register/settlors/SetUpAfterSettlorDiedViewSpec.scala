@@ -21,18 +21,18 @@ import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.register.settlors.deceased_settlor.SetupAfterSettlorDiedView
+import views.html.register.settlors.deceased_settlor.SetUpAfterSettlorDiedView
 
 class SetUpAfterSettlorDiedViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "setupAfterSettlorDied"
+  val messageKeyPrefix = "setUpAfterSettlorDied"
 
 
-  val form = new YesNoFormProvider().withPrefix("setupAfterSettlorDied")
+  val form = new YesNoFormProvider().withPrefix("setUpAfterSettlorDied")
 
-  "SetupAfterSettlorDied view" must {
+  "SetUpAfterSettlorDied view" must {
 
-    val view = viewFor[SetupAfterSettlorDiedView](Some(emptyUserAnswers))
+    val view = viewFor[SetUpAfterSettlorDiedView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)

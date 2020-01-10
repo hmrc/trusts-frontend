@@ -56,6 +56,6 @@ class SettlorInfoViewSpec extends ViewBehaviours {
 
     behave like pageWithBackLink(applyView)
 
-    behave like pageWithContinueButton(applyView,routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode, fakeDraftId).url )
+    behave like pageWithContinueButton(applyView,routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode, fakeDraftId).url )
   }
 }

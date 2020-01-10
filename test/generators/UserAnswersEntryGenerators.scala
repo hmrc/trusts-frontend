@@ -529,7 +529,7 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitrarySetupAfterSettlorDiedUserAnswersEntry: Arbitrary[(SetUpAfterSettlorDiedYesNoPage.type, JsValue)] =
+  implicit lazy val arbitrarySetUpAfterSettlorDiedUserAnswersEntry: Arbitrary[(SetUpAfterSettlorDiedYesNoPage.type, JsValue)] =
     Arbitrary {
       for {
         page  <- arbitrary[SetUpAfterSettlorDiedYesNoPage.type]

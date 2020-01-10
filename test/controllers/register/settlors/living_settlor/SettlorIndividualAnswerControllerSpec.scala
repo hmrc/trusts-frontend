@@ -76,7 +76,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           AnswerSection(
             None,
             Seq(
-              checkYourAnswersHelper.setupAfterSettlorDied.value,
+              checkYourAnswersHelper.setUpAfterSettlorDied.value,
               checkYourAnswersHelper.kindOfTrust.value,
               checkYourAnswersHelper.holdoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
@@ -130,7 +130,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           AnswerSection(
             None,
             Seq(
-              checkYourAnswersHelper.setupAfterSettlorDied.value,
+              checkYourAnswersHelper.setUpAfterSettlorDied.value,
               checkYourAnswersHelper.kindOfTrust.value,
               checkYourAnswersHelper.holdoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
@@ -188,7 +188,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           AnswerSection(
             None,
             Seq(
-              checkYourAnswersHelper.setupAfterSettlorDied.value,
+              checkYourAnswersHelper.setUpAfterSettlorDied.value,
               checkYourAnswersHelper.kindOfTrust.value,
               checkYourAnswersHelper.holdoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
@@ -248,7 +248,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           AnswerSection(
             None,
             Seq(
-              checkYourAnswersHelper.setupAfterSettlorDied.value,
+              checkYourAnswersHelper.setUpAfterSettlorDied.value,
               checkYourAnswersHelper.kindOfTrust.value,
               checkYourAnswersHelper.holdoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
@@ -310,7 +310,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           AnswerSection(
             None,
             Seq(
-              checkYourAnswersHelper.setupAfterSettlorDied.value,
+              checkYourAnswersHelper.setUpAfterSettlorDied.value,
               checkYourAnswersHelper.kindOfTrust.value,
               checkYourAnswersHelper.holdoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,

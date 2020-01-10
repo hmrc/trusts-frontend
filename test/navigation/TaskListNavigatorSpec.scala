@@ -91,10 +91,10 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
           navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId)
         }
 
-        "go to SetupAfterSettlorDied when deceased settlor is not complete" in {
+        "go to SetUpAfterSettlorDied when deceased settlor is not complete" in {
           val answers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, true).success.value
             .set(SettlorsNamePage, FullName("deceased",None, "settlor")).success.value
-         navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.register.settlors.deceased_settlor.routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode,fakeDraftId)
+         navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.register.settlors.deceased_settlor.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode,fakeDraftId)
         }
 
       }
@@ -111,10 +111,10 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
         navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId)
       }
 
-      "go to SetupAfterSettlorDied when deceased settlor is not complete" in {
+      "go to SetUpAfterSettlorDied when deceased settlor is not complete" in {
         val answers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, true).success.value
           .set(SettlorsNamePage, FullName("deceased",None, "settlor")).success.value
-        navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.register.settlors.deceased_settlor.routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode,fakeDraftId)
+        navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.register.settlors.deceased_settlor.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode,fakeDraftId)
       }
 
     }

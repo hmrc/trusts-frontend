@@ -56,14 +56,14 @@ class TaskListNavigator @Inject()() {
         if(value.equals(Completed)) {
           controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
         } else {
-          controllers.register.settlors.deceased_settlor.routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode,draftId)
+          controllers.register.settlors.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode,draftId)
         }
       case None =>
         answers.get(SetUpAfterSettlorDiedYesNoPage) match {
           case None => controllers.register.settlors.routes.SettlorInfoController.onPageLoad(draftId)
           case _ =>
             answers.get (LivingSettlors).getOrElse (Nil) match {
-              case Nil => controllers.register.settlors.deceased_settlor.routes.SetupAfterSettlorDiedController.onPageLoad (NormalMode, draftId)
+              case Nil => controllers.register.settlors.routes.SetUpAfterSettlorDiedController.onPageLoad (NormalMode, draftId)
               case _ => controllers.register.settlors.routes.AddASettlorController.onPageLoad (draftId)
             }
         }

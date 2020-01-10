@@ -272,7 +272,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
   def deceasedSettlor: Option[Seq[AnswerSection]] = {
 
     val questions = Seq(
-      setupAfterSettlorDied,
+      setUpAfterSettlorDied,
       deceasedSettlorsName,
       deceasedSettlorDateOfDeathYesNo,
       deceasedSettlorDateOfDeath,
@@ -304,7 +304,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       case (_, index) =>
 
         val questions = Seq(
-          setupAfterSettlorDied,
+          setUpAfterSettlorDied,
           kindOfTrust,
           holdoverReliefYesNo,
           settlorIndividualOrBusiness(index),
@@ -846,12 +846,12 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
-  def setupAfterSettlorDied: Option[AnswerRow] = userAnswers.get(SetUpAfterSettlorDiedYesNoPage) map {
+  def setUpAfterSettlorDied: Option[AnswerRow] = userAnswers.get(SetUpAfterSettlorDiedYesNoPage) map {
     x =>
       AnswerRow(
-        "setupAfterSettlorDied.checkYourAnswersLabel",
+        "setUpAfterSettlorDied.checkYourAnswersLabel",
         yesOrNo(x),
-        Some(controllers.register.settlors.deceased_settlor.routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode, draftId).url)
+        Some(controllers.register.settlors.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode, draftId).url)
       )
   }
 

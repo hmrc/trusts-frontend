@@ -65,7 +65,7 @@ class DeceasedSettlorAnswerControllerSpec extends RegistrationSpecBase {
       val expectedSections = Seq(
         AnswerSection(
           None,
-          Seq(checkYourAnswersHelper.setupAfterSettlorDied.value,
+          Seq(checkYourAnswersHelper.setUpAfterSettlorDied.value,
             checkYourAnswersHelper.deceasedSettlorsName.value,
             checkYourAnswersHelper.deceasedSettlorDateOfDeathYesNo.value,
             checkYourAnswersHelper.deceasedSettlorDateOfDeath.value,
@@ -120,7 +120,7 @@ class DeceasedSettlorAnswerControllerSpec extends RegistrationSpecBase {
       val expectedSections = Seq(
         AnswerSection(
           None,
-          Seq(checkYourAnswersHelper.setupAfterSettlorDied.value,
+          Seq(checkYourAnswersHelper.setUpAfterSettlorDied.value,
             checkYourAnswersHelper.deceasedSettlorsName.value,
             checkYourAnswersHelper.deceasedSettlorDateOfDeathYesNo.value,
             checkYourAnswersHelper.deceasedSettlorDateOfDeath.value,

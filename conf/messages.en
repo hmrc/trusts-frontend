@@ -723,11 +723,11 @@ settlorsUKAddress.title = What is the settlor’s last known address?
 settlorsUKAddress.heading = What is {0}’s last known address?
 settlorsUKAddress.checkYourAnswersLabel = What is {0}’s last known address?
 
-setupAfterSettlorDied.title = Was the trust set up after the settlor died?
-setupAfterSettlorDied.heading = Was the trust set up after the settlor died?
-setupAfterSettlorDied.checkYourAnswersLabel = Was the trust set up after the settlor died?
-setupAfterSettlorDied.error.required = Select yes if the trust was set up after the settlor died
-setupAfterSettlorDied.hint = This is also known as a will trust
+setUpAfterSettlorDied.title = Was the trust set up after the settlor died?
+setUpAfterSettlorDied.heading = Was the trust set up after the settlor died?
+setUpAfterSettlorDied.checkYourAnswersLabel = Was the trust set up after the settlor died?
+setUpAfterSettlorDied.error.required = Select yes if the trust was set up after the settlor died
+setUpAfterSettlorDied.hint = This is also known as a will trust
 
 wasSettlorsAddressUKYesNo.title = Was the settlor’s last known address in the UK?
 wasSettlorsAddressUKYesNo.heading = Was {0}’s last known address in the UK?

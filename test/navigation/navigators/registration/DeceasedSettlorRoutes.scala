@@ -32,7 +32,7 @@ trait DeceasedSettlorRoutes {
 
   def deceasedSettlorRoutes()(implicit navigator: Navigator) = {
 
-    "go to WhatKindOfTrustPage from SetupAfterSettlorDiedPage when user answers no" in {
+    "go to WhatKindOfTrustPage from SetUpAfterSettlorDiedPage when user answers no" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
@@ -43,7 +43,7 @@ trait DeceasedSettlorRoutes {
       }
     }
 
-    "go to SettlorsNamePage from SetupAfterSettlorDiedPage when user answers yes" in {
+    "go to SettlorsNamePage from SetUpAfterSettlorDiedPage when user answers yes" in {
       forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 

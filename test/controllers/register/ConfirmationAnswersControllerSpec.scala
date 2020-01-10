@@ -143,7 +143,7 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
         ),
         AnswerSection(
           None,
-          Seq(checkYourAnswersHelper.setupAfterSettlorDied.value,
+          Seq(checkYourAnswersHelper.setUpAfterSettlorDied.value,
             checkYourAnswersHelper.deceasedSettlorsName.value,
             checkYourAnswersHelper.deceasedSettlorDateOfDeathYesNo.value,
             checkYourAnswersHelper.deceasedSettlorDateOfDeath.value,
@@ -354,7 +354,7 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
         ),
         AnswerSection(
           headingKey = Some("Settlor 1"),
-          Seq(checkYourAnswersHelper.setupAfterSettlorDied.value,
+          Seq(checkYourAnswersHelper.setUpAfterSettlorDied.value,
             checkYourAnswersHelper.kindOfTrust.value,
             checkYourAnswersHelper.holdoverReliefYesNo.value,
             checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,

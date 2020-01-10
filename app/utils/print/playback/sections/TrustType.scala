@@ -34,7 +34,7 @@ object TrustType {
     AnswerSection(
       headingKey = Some(messages("answerPage.section.trustType.heading")),
       Seq(
-        yesNoQuestion(SetUpAfterSettlorDiedYesNoPage, userAnswers, "setupAfterSettlorDied"),
+        yesNoQuestion(SetUpAfterSettlorDiedYesNoPage, userAnswers, "setUpAfterSettlorDied"),
         kindOfTrustQuestion(KindOfTrustPage, userAnswers, "kindOfTrust"),
         yesNoQuestion(SetUpInAdditionToWillTrustYesNoPage, userAnswers, "setupInAdditionToWillTrustYesNo"),
         deedOfVariationQuestion(WhyDeedOfVariationCreatedPage, userAnswers, "whyDeedOfVariationCreated"),

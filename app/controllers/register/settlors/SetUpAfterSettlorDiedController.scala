@@ -27,7 +27,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.register.settlors.deceased_settlor.SetupAfterSettlorDiedView
+import views.html.register.settlors.SetUpAfterSettlorDiedView
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -40,12 +40,12 @@ class SetUpAfterSettlorDiedController @Inject()(
                                                  requireData: RegistrationDataRequiredAction,
                                                  yesNoFormProvider: YesNoFormProvider,
                                                  val controllerComponents: MessagesControllerComponents,
-                                                 view: SetupAfterSettlorDiedView
+                                                 view: SetUpAfterSettlorDiedView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
 
-  val form: Form[Boolean] = yesNoFormProvider.withPrefix("setupAfterSettlorDied")
+  val form: Form[Boolean] = yesNoFormProvider.withPrefix("setUpAfterSettlorDied")
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>

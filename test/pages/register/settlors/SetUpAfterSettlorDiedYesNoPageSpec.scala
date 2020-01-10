@@ -31,7 +31,7 @@ import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPag
 
 class SetUpAfterSettlorDiedYesNoPageSpec extends PageBehaviours {
 
-  "SetupAfterSettlorDiedPage" must {
+  "SetUpAfterSettlorDiedPage" must {
 
     beRetrievable[Boolean](SetUpAfterSettlorDiedYesNoPage)
 
@@ -42,7 +42,7 @@ class SetUpAfterSettlorDiedYesNoPageSpec extends PageBehaviours {
 
   "when becoming a living settlor" must {
 
-    "remove relevant data and Nino when SetupAfterSettlorDiedPage set to false" in {
+    "remove relevant data and Nino when SetUpAfterSettlorDiedPage set to false" in {
       forAll(arbitrary[UserAnswers], arbitrary[String]) {
         (initial, str) =>
           val answers: UserAnswers = initial
@@ -69,7 +69,7 @@ class SetUpAfterSettlorDiedYesNoPageSpec extends PageBehaviours {
       }
     }
 
-    "remove relevant data and addresses when SetupAfterSettlorDiedPage set to false" in {
+    "remove relevant data and addresses when SetUpAfterSettlorDiedPage set to false" in {
       forAll(arbitrary[UserAnswers], arbitrary[String]) {
         (initial, str) =>
           val answers: UserAnswers = initial.set(SettlorsNamePage, FullName(str,None, str)).success.value
@@ -102,7 +102,7 @@ class SetUpAfterSettlorDiedYesNoPageSpec extends PageBehaviours {
 
   "when becoming a deceased settlor" must {
 
-    "remove trust type data and data for Nino individual when SetupAfterSettlorDiedPage is set to true" in {
+    "remove trust type data and data for Nino individual when SetUpAfterSettlorDiedPage is set to true" in {
       forAll(arbitrary[UserAnswers], arbitrary[String]) {
         (initial, str) =>
           val answers: UserAnswers = initial

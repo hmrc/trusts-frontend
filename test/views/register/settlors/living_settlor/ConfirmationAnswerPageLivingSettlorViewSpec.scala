@@ -199,7 +199,7 @@ class ConfirmationAnswerPageLivingSettlorViewSpec extends ViewBehaviours {
 
 
     "assert question labels for Settlors" in {
-      assertContainsQuestionAnswerPair(doc, messages("setupAfterSettlorDied.checkYourAnswersLabel"), no)
+      assertContainsQuestionAnswerPair(doc, messages("setUpAfterSettlorDied.checkYourAnswersLabel"), no)
       assertContainsQuestionAnswerPair(doc, messages("kindOfTrust.checkYourAnswersLabel"), "A trust created during their lifetime to gift or transfer assets")
       assertContainsQuestionAnswerPair(doc, messages("holdoverReliefYesNo.checkYourAnswersLabel"),  yes)
       assertContainsQuestionAnswerPair(doc, messages("settlorIndividualOrBusiness.checkYourAnswersLabel"), "Individual")

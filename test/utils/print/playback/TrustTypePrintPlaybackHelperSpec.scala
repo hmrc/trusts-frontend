@@ -44,7 +44,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
           headingKey = Some("Trust type"),
           rows = Seq(
             AnswerRow(
-              label = messages("setupAfterSettlorDied.checkYourAnswersLabel"),
+              label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
               answer = Html("Yes"),
               changeUrl = None
             )
@@ -71,7 +71,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
           headingKey = Some("Trust type"),
           rows = Seq(
             AnswerRow(
-              label = messages("setupAfterSettlorDied.checkYourAnswersLabel"),
+              label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
               answer = Html("No"),
               changeUrl = None
             ),
@@ -109,7 +109,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
           headingKey = Some("Trust type"),
           rows = Seq(
             AnswerRow(
-              label = messages("setupAfterSettlorDied.checkYourAnswersLabel"),
+              label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
               answer = Html("No"),
               changeUrl = None
             ),
@@ -151,7 +151,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
           headingKey = Some("Trust type"),
           rows = Seq(
             AnswerRow(
-              label = messages("setupAfterSettlorDied.checkYourAnswersLabel"),
+              label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
               answer = Html("No"),
               changeUrl = None
             ),
@@ -187,7 +187,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
           headingKey = Some("Trust type"),
           rows = Seq(
             AnswerRow(
-              label = messages("setupAfterSettlorDied.checkYourAnswersLabel"),
+              label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
               answer = Html("No"),
               changeUrl = None
             ),
@@ -218,7 +218,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
           headingKey = Some("Trust type"),
           rows = Seq(
             AnswerRow(
-              label = messages("setupAfterSettlorDied.checkYourAnswersLabel"),
+              label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
               answer = Html("No"),
               changeUrl = None
             ),
@@ -251,7 +251,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
           headingKey = Some("Trust type"),
           rows = Seq(
             AnswerRow(
-              label = messages("setupAfterSettlorDied.checkYourAnswersLabel"),
+              label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
               answer = Html("No"),
               changeUrl = None
             ),
@@ -293,7 +293,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
           headingKey = Some("Trust type"),
           rows = Seq(
             AnswerRow(
-              label = messages("setupAfterSettlorDied.checkYourAnswersLabel"),
+              label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
               answer = Html("No"),
               changeUrl = None
             ),
