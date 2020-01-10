@@ -12,7 +12,7 @@ case object SetUpAfterSettlorDiedYesNoPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = Settlors.path \toString
 
-  override def toString: String = "setupAfterSettlorDiedYesNo"
+  override def toString: String = "setUpAfterSettlorDiedYesNo"
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
