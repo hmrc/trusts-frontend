@@ -37,7 +37,7 @@ object DeceasedSettlor {
             yesNoQuestion(SettlorDateOfDeathYesNoPage, userAnswers, "settlorDateOfDeathYesNo", name),
             dateQuestion(SettlorDateOfDeathPage, userAnswers, "settlorDateOfDeath", name),
             yesNoQuestion(SettlorDateOfBirthYesNoPage, userAnswers, "settlorDateOfBirthYesNo", name),
-            dateQuestion(SettlorsDateOfBirthPage, userAnswers, "settlorDateOfBirth", name),
+            dateQuestion(SettlorsDateOfBirthPage, userAnswers, "settlorsDateOfBirth", name),
             yesNoQuestion(SettlorsNationalInsuranceYesNoPage, userAnswers, "settlorsNationalInsuranceYesNo", name),
             ninoQuestion(SettlorNationalInsuranceNumberPage, userAnswers, "settlorNationalInsuranceNumber", name),
             yesNoQuestion(SettlorsLastKnownAddressYesNoPage, userAnswers, "settlorsLastKnownAddressYesNo", name),

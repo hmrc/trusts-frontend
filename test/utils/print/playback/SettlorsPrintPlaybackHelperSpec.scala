@@ -28,7 +28,7 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
 
   "Settlors print playback helper" must {
 
-    "generate deceased settlor sections" in {
+    "generate deceased settlor sections for maximum dataset" in {
 
       val name = "Adam Smith"
 
@@ -48,15 +48,15 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
       result mustBe Seq(
         AnswerSection(None, Nil, Some("answerPage.section.deceasedSettlor.heading")),
         AnswerSection(
-          headingKey = Some("Settlor"),
+          headingKey = None,
           rows = Seq(
-            AnswerRow(label = "settlorsName.checkYourAnswersLabel", answer = Html("Adam Smith"), changeUrl = None),
-            AnswerRow(label = "settlorDateOfDeathYesNo.checkYourAnswersLabel", answer = Html("Yes"), changeUrl = None, labelArg = name),
-            AnswerRow(label = "settlorDateOfDeath.checkYourAnswersLabel", answer = Html("10 October 2010"), changeUrl = None, labelArg = name),
-            AnswerRow(label = "settlorDateOfBirthYesNo.checkYourAnswersLabel", answer = Html("Yes"), changeUrl = None, labelArg = name),
-            AnswerRow(label = "settlorsDateOfBirth.checkYourAnswersLabel", answer = Html("27 August 1991"), changeUrl = None, labelArg = name),
-            AnswerRow(label = "settlorsNationalInsuranceYesNo.checkYourAnswersLabel", answer = Html("Yes"), changeUrl = None, labelArg = name),
-            AnswerRow(label = "settlorNationalInsuranceNumber.checkYourAnswersLabel", answer = Html("JP 12 12 12 A"), changeUrl = None, labelArg = name)
+            AnswerRow(label = messages("settlorsName.checkYourAnswersLabel"), answer = Html("Adam Smith"), changeUrl = None),
+            AnswerRow(label = messages("settlorDateOfDeathYesNo.checkYourAnswersLabel", name), answer = Html("Yes"), changeUrl = None),
+            AnswerRow(label = messages("settlorDateOfDeath.checkYourAnswersLabel", name), answer = Html("10 October 2010"), changeUrl = None),
+            AnswerRow(label = messages("settlorDateOfBirthYesNo.checkYourAnswersLabel", name), answer = Html("Yes"), changeUrl = None),
+            AnswerRow(label = messages("settlorsDateOfBirth.checkYourAnswersLabel", name), answer = Html("27 August 1991"), changeUrl = None),
+            AnswerRow(label = messages("settlorsNationalInsuranceYesNo.checkYourAnswersLabel", name), answer = Html("Yes"), changeUrl = None),
+            AnswerRow(label = messages("settlorNationalInsuranceNumber.checkYourAnswersLabel", name), answer = Html("JP 12 12 12 A"), changeUrl = None)
           ),
           sectionKey = None
         )
