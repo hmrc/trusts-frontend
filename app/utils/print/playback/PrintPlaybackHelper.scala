@@ -32,7 +32,9 @@ class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions){
       DeceasedSettlor(userAnswers, countryOptions),
       playbackAnswersHelper.beneficiaries,
       playbackAnswersHelper.protectors,
-      playbackAnswersHelper.otherIndividual
+      playbackAnswersHelper.otherIndividual,
+      // trust type must go last
+      playbackAnswersHelper.trustType
     ).flatten
 
   }

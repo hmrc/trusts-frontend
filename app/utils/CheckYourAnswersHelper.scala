@@ -31,9 +31,10 @@ import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import pages.register.beneficiaries.individual._
 import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
-import pages.register.settlors.SettlorsBasedInTheUKPage
+import pages.register.settlors.{SetUpAfterSettlorDiedYesNoPage, SettlorsBasedInTheUKPage}
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
+import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.trustees._
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
@@ -63,12 +64,12 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
-  def settlorKindOfTrust: Option[AnswerRow] = userAnswers.get(SettlorKindOfTrustPage) map {
+  def kindOfTrust: Option[AnswerRow] = userAnswers.get(KindOfTrustPage) map {
     x =>
       AnswerRow(
-        "settlorKindOfTrust.checkYourAnswersLabel",
-        HtmlFormat.escape(messages(s"settlorKindOfTrust.$x")),
-        Some(routes.SettlorKindOfTrustController.onPageLoad(NormalMode, draftId).url)
+        "kindOfTrust.checkYourAnswersLabel",
+        HtmlFormat.escape(messages(s"kindOfTrust.$x")),
+        Some(routes.KindOfTrustController.onPageLoad(NormalMode, draftId).url)
       )
   }
 
@@ -90,12 +91,12 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
-  def settlorHandoverReliefYesNo: Option[AnswerRow] = userAnswers.get(SettlorHandoverReliefYesNoPage) map {
+  def holdoverReliefYesNo: Option[AnswerRow] = userAnswers.get(HoldoverReliefYesNoPage) map {
     x =>
       AnswerRow(
-        "settlorHandoverReliefYesNo.checkYourAnswersLabel",
+        "holdoverReliefYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        Some(routes.SettlorHandoverReliefYesNoController.onPageLoad(NormalMode, draftId).url)
+        Some(routes.HoldoverReliefYesNoController.onPageLoad(NormalMode, draftId).url)
       )
   }
 
@@ -271,7 +272,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
   def deceasedSettlor: Option[Seq[AnswerSection]] = {
 
     val questions = Seq(
-      setupAfterSettlorDied,
+      setUpAfterSettlorDied,
       deceasedSettlorsName,
       deceasedSettlorDateOfDeathYesNo,
       deceasedSettlorDateOfDeath,
@@ -303,9 +304,9 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       case (_, index) =>
 
         val questions = Seq(
-          setupAfterSettlorDied,
-          settlorKindOfTrust,
-          settlorHandoverReliefYesNo,
+          setUpAfterSettlorDied,
+          kindOfTrust,
+          holdoverReliefYesNo,
           settlorIndividualOrBusiness(index),
           settlorIndividualName(index),
           settlorIndividualDateOfBirthYesNo(index),
@@ -845,12 +846,12 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
-  def setupAfterSettlorDied: Option[AnswerRow] = userAnswers.get(SetupAfterSettlorDiedPage) map {
+  def setUpAfterSettlorDied: Option[AnswerRow] = userAnswers.get(SetUpAfterSettlorDiedYesNoPage) map {
     x =>
       AnswerRow(
-        "setupAfterSettlorDied.checkYourAnswersLabel",
+        "setUpAfterSettlorDied.checkYourAnswersLabel",
         yesOrNo(x),
-        Some(controllers.register.settlors.deceased_settlor.routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode, draftId).url)
+        Some(controllers.register.settlors.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode, draftId).url)
       )
   }
 
