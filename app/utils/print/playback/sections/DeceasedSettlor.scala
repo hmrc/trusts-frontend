@@ -34,16 +34,22 @@ object DeceasedSettlor {
           headingKey = None,
           rows = Seq(
             fullNameQuestion(SettlorsNamePage, userAnswers, "settlorsName"),
+
             yesNoQuestion(SettlorDateOfDeathYesNoPage, userAnswers, "settlorDateOfDeathYesNo", name),
             dateQuestion(SettlorDateOfDeathPage, userAnswers, "settlorDateOfDeath", name),
+
             yesNoQuestion(SettlorDateOfBirthYesNoPage, userAnswers, "settlorDateOfBirthYesNo", name),
             dateQuestion(SettlorsDateOfBirthPage, userAnswers, "settlorsDateOfBirth", name),
+
             yesNoQuestion(SettlorsNationalInsuranceYesNoPage, userAnswers, "settlorsNationalInsuranceYesNo", name),
             ninoQuestion(SettlorNationalInsuranceNumberPage, userAnswers, "settlorNationalInsuranceNumber", name),
+
             yesNoQuestion(SettlorsLastKnownAddressYesNoPage, userAnswers, "settlorsLastKnownAddressYesNo", name),
             yesNoQuestion(WasSettlorsAddressUKYesNoPage, userAnswers, "wasSettlorsAddressUKYesNo", name),
             ukAddressQuestion(SettlorsUKAddressPage, userAnswers, "settlorsUKAddress", name, countryOptions),
-            internationalAddressQuestion(SettlorsInternationalAddressPage, userAnswers, "settlorsInternationalAddress", name, countryOptions)
+            internationalAddressQuestion(SettlorsInternationalAddressPage, userAnswers, "settlorsInternationalAddress", name, countryOptions),
+            passportOrIdCardQuestion(SettlorsPassportIDCardPage, userAnswers, "settlorsPassportOrIdCard", name, countryOptions)
+
           ).flatten,
           sectionKey = None
         )

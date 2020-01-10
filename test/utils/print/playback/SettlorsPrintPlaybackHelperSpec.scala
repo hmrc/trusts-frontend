@@ -19,7 +19,8 @@ package utils.print.playback
 import java.time.LocalDate
 
 import base.PlaybackSpecBase
-import models.core.pages.FullName
+import models.core.pages.{FullName, UKAddress}
+import models.registration.pages.PassportOrIdCardDetails
 import pages.register.settlors.deceased_settlor._
 import play.twirl.api.Html
 import viewmodels.{AnswerRow, AnswerSection}
@@ -57,6 +58,52 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
             AnswerRow(label = messages("settlorsDateOfBirth.checkYourAnswersLabel", name), answer = Html("27 August 1991"), changeUrl = None),
             AnswerRow(label = messages("settlorsNationalInsuranceYesNo.checkYourAnswersLabel", name), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("settlorNationalInsuranceNumber.checkYourAnswersLabel", name), answer = Html("JP 12 12 12 A"), changeUrl = None)
+          ),
+          sectionKey = None
+        )
+      )
+
+    }
+
+    "generate deceased settlor sections for minimum dataset" in {
+
+      val name = "Adam Smith"
+
+      val helper = injector.instanceOf[PrintPlaybackHelper]
+
+      val answers = emptyUserAnswers
+        .set(SettlorsNamePage, FullName("Adam", None, "Smith")).success.value
+        .set(SettlorDateOfDeathYesNoPage, false).success.value
+        .set(SettlorDateOfBirthYesNoPage, false).success.value
+        .set(SettlorsNationalInsuranceYesNoPage, false).success.value
+        .set(SettlorsLastKnownAddressYesNoPage, true).success.value
+        .set(WasSettlorsAddressUKYesNoPage, true).success.value
+        .set(SettlorsUKAddressPage, UKAddress(
+          line1 = "line 1",
+          line2 = "line 2",
+          line3 = Some("line 3"),
+          line4 = Some("line 4"),
+          postcode = "NE981ZZ"
+        )).success.value
+        .set(SettlorsPassportIDCardPage,
+          PassportOrIdCardDetails("DE", "123456789", LocalDate.of(2021,10,10))
+        ).success.value
+
+      val result = helper.summary(answers)
+
+      result mustBe Seq(
+        AnswerSection(None, Nil, Some("answerPage.section.deceasedSettlor.heading")),
+        AnswerSection(
+          headingKey = None,
+          rows = Seq(
+            AnswerRow(label = messages("settlorsName.checkYourAnswersLabel"), answer = Html("Adam Smith"), changeUrl = None),
+            AnswerRow(label = messages("settlorDateOfDeathYesNo.checkYourAnswersLabel", name), answer = Html("No"), changeUrl = None),
+            AnswerRow(label = messages("settlorDateOfBirthYesNo.checkYourAnswersLabel", name), answer = Html("No"), changeUrl = None),
+            AnswerRow(label = messages("settlorsNationalInsuranceYesNo.checkYourAnswersLabel", name), answer = Html("No"), changeUrl = None),
+            AnswerRow(label = messages("settlorsLastKnownAddressYesNo.checkYourAnswersLabel", name), answer = Html("Yes"), changeUrl = None),
+            AnswerRow(label = messages("wasSettlorsAddressUKYesNo.checkYourAnswersLabel", name), answer = Html("Yes"), changeUrl = None),
+            AnswerRow(label = messages("settlorsUKAddress.checkYourAnswersLabel", name), answer = Html("line 1<br />line 2<br />line 3<br />line 4<br />NE981ZZ"), changeUrl = None),
+            AnswerRow(label = messages("settlorsPassportOrIdCard.checkYourAnswersLabel", name), answer = Html("Germany<br />123456789<br />10 October 2021"), changeUrl = None)
           ),
           sectionKey = None
         )
