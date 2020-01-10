@@ -124,7 +124,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
               changeUrl = None
             ),
             AnswerRow(
-              label = messages("whyDeedOfVariationCreated.checkYourAnswersLabel"),
+              label = messages("howDeedOfVariationCreated.checkYourAnswersLabel"),
               answer = Html("to replace a will trust"),
               changeUrl = None
             )
