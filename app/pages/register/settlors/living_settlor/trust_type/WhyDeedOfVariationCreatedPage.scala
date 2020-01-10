@@ -25,6 +25,6 @@ case object WhyDeedOfVariationCreatedPage extends QuestionPage[DeedOfVariation] 
 
   override def path: JsPath = Settlors.path \ toString
 
-  override def toString: String = "settlorHowDeedOfVariationCreated"
+  override def toString: String = "whyDeedOfVariationCreated"
 
 }

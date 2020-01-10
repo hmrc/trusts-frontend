@@ -19,7 +19,7 @@ package pages.register.settlors.living_settlor
 import models.registration.pages.SettlorBusinessDetails
 import pages.behaviours.PageBehaviours
 
-class SettlorDetailsSpec extends PageBehaviours {
+class SettlorBusinessDetailsPageSpec extends PageBehaviours {
 
   "SettlorDetailsPage" must {
 
