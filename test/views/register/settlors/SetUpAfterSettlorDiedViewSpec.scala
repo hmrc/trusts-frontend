@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package views.register.settlors.deceased_settlor
+package views.register.settlors
 
 import forms.YesNoFormProvider
 import models.NormalMode
@@ -23,7 +23,7 @@ import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
 import views.html.register.settlors.deceased_settlor.SetupAfterSettlorDiedView
 
-class SetupAfterSettlorDiedViewSpec extends YesNoViewBehaviours {
+class SetUpAfterSettlorDiedViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "setupAfterSettlorDied"
 
