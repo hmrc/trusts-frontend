@@ -21,7 +21,7 @@ import java.time.LocalDate
 import base.PlaybackSpecBase
 import mapping.DeedOfVariation
 import models.registration.pages.KindOfTrust
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedYesNoPage
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.living_settlor.trust_type.{EfrbsStartDatePage, EfrbsYesNoPage, HoldoverReliefYesNoPage, KindOfTrustPage, SetUpInAdditionToWillTrustYesNoPage, WhyDeedOfVariationCreatedPage}
 import play.twirl.api.Html
 import viewmodels.{AnswerRow, AnswerSection}
@@ -35,7 +35,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
       val answers = emptyUserAnswers
-        .set(SetupAfterSettlorDiedYesNoPage, true).success.value
+        .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
 
       val result = helper.summary(answers)
 
@@ -60,7 +60,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
       val answers = emptyUserAnswers
-        .set(SetupAfterSettlorDiedYesNoPage, false).success.value
+        .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
         .set(KindOfTrustPage, KindOfTrust.Deed).success.value
         .set(SetUpInAdditionToWillTrustYesNoPage, true).success.value
 
@@ -97,7 +97,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
       val answers = emptyUserAnswers
-        .set(SetupAfterSettlorDiedYesNoPage, false).success.value
+        .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
         .set(KindOfTrustPage, KindOfTrust.Deed).success.value
         .set(SetUpInAdditionToWillTrustYesNoPage, false).success.value
         .set(WhyDeedOfVariationCreatedPage, DeedOfVariation.ReplacedWill).success.value
@@ -140,7 +140,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
       val answers = emptyUserAnswers
-        .set(SetupAfterSettlorDiedYesNoPage, false).success.value
+        .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
         .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
         .set(HoldoverReliefYesNoPage, true).success.value
 
@@ -177,7 +177,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
       val answers = emptyUserAnswers
-        .set(SetupAfterSettlorDiedYesNoPage, false).success.value
+        .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
         .set(KindOfTrustPage, KindOfTrust.FlatManagement).success.value
 
       val result = helper.summary(answers)
@@ -208,7 +208,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
       val answers = emptyUserAnswers
-        .set(SetupAfterSettlorDiedYesNoPage, false).success.value
+        .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
         .set(KindOfTrustPage, KindOfTrust.HeritageMaintenanceFund).success.value
 
       val result = helper.summary(answers)
@@ -239,7 +239,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
       val answers = emptyUserAnswers
-        .set(SetupAfterSettlorDiedYesNoPage, false).success.value
+        .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
         .set(KindOfTrustPage, KindOfTrust.Employees).success.value
         .set(EfrbsYesNoPage, true).success.value
         .set(EfrbsStartDatePage, LocalDate.of(1970, 2, 1)).success.value
@@ -282,7 +282,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
       val answers = emptyUserAnswers
-        .set(SetupAfterSettlorDiedYesNoPage, false).success.value
+        .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
         .set(KindOfTrustPage, KindOfTrust.Employees).success.value
         .set(EfrbsYesNoPage, false).success.value
 

@@ -23,7 +23,7 @@ import pages.entitystatus.LivingSettlorStatus
 import pages.register.settlors.living_settlor._
 import viewmodels.AddRow
 import controllers.register.settlors.living_settlor.routes
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedYesNoPage
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 
 class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 
@@ -45,7 +45,7 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
       "generate rows from user answers for settlors in progress" in {
 
         val userAnswers = emptyUserAnswers
-          .set(SetupAfterSettlorDiedYesNoPage, false).success.value
+          .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
           .set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
           .set(SettlorIndividualOrBusinessPage(1), IndividualOrBusiness.Individual).success.value
           .set(SettlorIndividualNamePage(1), settlorName).success.value
@@ -65,7 +65,7 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
       "generate rows from user answers for complete settlors" in {
 
         val userAnswers = emptyUserAnswers
-          .set(SetupAfterSettlorDiedYesNoPage, false).success.value
+          .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
           .set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
           .set(SettlorIndividualNamePage(0), settlorName).success.value
           .set(SettlorIndividualDateOfBirthYesNoPage(0), false).success.value

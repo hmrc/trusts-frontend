@@ -23,7 +23,7 @@ import mapping.playback.PlaybackExtractor
 import models.playback.UserAnswers
 import models.playback.http.{DisplayTrust, DisplayTrustWillType}
 import models.registration.pages.KindOfTrust
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedYesNoPage
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.living_settlor.trust_type._
 import play.api.Logger
 
@@ -58,28 +58,28 @@ class TrustTypeExtractor extends PlaybackExtractor[Option[DisplayTrust]] {
       case TypeOfTrust.DeedOfVariation =>
         answers.set(KindOfTrustPage, KindOfTrust.Deed)
           .flatMap(answers => extractDeedOfVariation(trust, answers))
-          .flatMap(_.set(SetupAfterSettlorDiedYesNoPage, false))
+          .flatMap(_.set(SetUpAfterSettlorDiedYesNoPage, false))
 
       case TypeOfTrust.IntervivosSettlementTrust =>
         answers.set(KindOfTrustPage, KindOfTrust.Intervivos)
           .flatMap(_.set(HoldoverReliefYesNoPage, trust.details.interVivos))
-          .flatMap(_.set(SetupAfterSettlorDiedYesNoPage, false))
+          .flatMap(_.set(SetUpAfterSettlorDiedYesNoPage, false))
 
       case TypeOfTrust.EmployeeRelated =>
         answers.set(KindOfTrustPage, KindOfTrust.Employees)
           .flatMap(answers => extractEfrbs(trust, answers))
-          .flatMap(_.set(SetupAfterSettlorDiedYesNoPage, false))
+          .flatMap(_.set(SetUpAfterSettlorDiedYesNoPage, false))
 
       case TypeOfTrust.FlatManagementTrust =>
         answers.set(KindOfTrustPage, KindOfTrust.FlatManagement)
-          .flatMap(_.set(SetupAfterSettlorDiedYesNoPage, false))
+          .flatMap(_.set(SetUpAfterSettlorDiedYesNoPage, false))
 
       case TypeOfTrust.HeritageTrust =>
         answers.set(KindOfTrustPage, KindOfTrust.HeritageMaintenanceFund)
-          .flatMap(_.set(SetupAfterSettlorDiedYesNoPage, false))
+          .flatMap(_.set(SetUpAfterSettlorDiedYesNoPage, false))
 
       case TypeOfTrust.WillTrustOrIntestacyTrust =>
-        answers.set(SetupAfterSettlorDiedYesNoPage, true)
+        answers.set(SetUpAfterSettlorDiedYesNoPage, true)
     }
   }
 

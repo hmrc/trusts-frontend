@@ -31,10 +31,11 @@ import navigation.registration.TaskListNavigator
 import pages._
 import pages.register.beneficiaries.ClassBeneficiaryDescriptionPage
 import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
-import pages.register.settlors.deceased_settlor.{SettlorsNamePage, SetupAfterSettlorDiedYesNoPage}
+import pages.register.settlors.deceased_settlor.SettlorsNamePage
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
 import pages.register.TrustNamePage
 import pages.register.asset.WhatKindOfAssetPage
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.living_settlor.{SettlorIndividualNamePage, SettlorIndividualOrBusinessPage}
 import pages.register.trustees.IsThisLeadTrusteePage
 import sections.beneficiaries.Beneficiaries
@@ -83,7 +84,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
       "there is a deceased settlor" must {
 
         "go to DeceasedSettlorAnswerPage" in {
-          val answers = emptyUserAnswers.set(SetupAfterSettlorDiedYesNoPage, true).success.value
+          val answers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, true).success.value
               .set(SettlorsNamePage, FullName("deceased",None, "settlor")).success.value
               .set(DeceasedSettlorStatus, Completed).success.value
 
@@ -91,7 +92,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
         }
 
         "go to SetupAfterSettlorDied when deceased settlor is not complete" in {
-          val answers = emptyUserAnswers.set(SetupAfterSettlorDiedYesNoPage, true).success.value
+          val answers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, true).success.value
             .set(SettlorsNamePage, FullName("deceased",None, "settlor")).success.value
          navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.register.settlors.deceased_settlor.routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode,fakeDraftId)
         }
@@ -103,7 +104,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
     "there is a deceased settlor" must {
 
       "go to DeceasedSettlorAnswerPage" in {
-        val answers = emptyUserAnswers.set(SetupAfterSettlorDiedYesNoPage, true).success.value
+        val answers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, true).success.value
           .set(SettlorsNamePage, FullName("deceased",None, "settlor")).success.value
           .set(DeceasedSettlorStatus, Completed).success.value
 
@@ -111,7 +112,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
       }
 
       "go to SetupAfterSettlorDied when deceased settlor is not complete" in {
-        val answers = emptyUserAnswers.set(SetupAfterSettlorDiedYesNoPage, true).success.value
+        val answers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, true).success.value
           .set(SettlorsNamePage, FullName("deceased",None, "settlor")).success.value
         navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.register.settlors.deceased_settlor.routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode,fakeDraftId)
       }
@@ -120,7 +121,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
     "there are living settlors" must {
 
       "go to AddASettlor" in {
-        val answers = emptyUserAnswers.set(SetupAfterSettlorDiedYesNoPage, false).success.value
+        val answers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, false).success.value
           .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
           .set(SettlorIndividualNamePage(0), FullName("living settlor",None, "settlor")).success.value
 

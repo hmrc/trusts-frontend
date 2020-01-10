@@ -23,7 +23,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.settlors.living_settlor.HoldoverReliefYesNoView
 import controllers.register.routes._
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedYesNoPage
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.living_settlor.trust_type.HoldoverReliefYesNoPage
 
 class HoldoverReliefYesNoControllerSpec extends RegistrationSpecBase {
@@ -37,7 +37,7 @@ class HoldoverReliefYesNoControllerSpec extends RegistrationSpecBase {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = emptyUserAnswers.set(SetupAfterSettlorDiedYesNoPage, false).success.value
+      val userAnswers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, false).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -57,7 +57,7 @@ class HoldoverReliefYesNoControllerSpec extends RegistrationSpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(SetupAfterSettlorDiedYesNoPage, false).success.value.set(HoldoverReliefYesNoPage, true).success.value
+      val userAnswers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, false).success.value.set(HoldoverReliefYesNoPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -77,7 +77,7 @@ class HoldoverReliefYesNoControllerSpec extends RegistrationSpecBase {
 
     "redirect to the next page when valid data is submitted" in {
 
-      val userAnswers = emptyUserAnswers.set(SetupAfterSettlorDiedYesNoPage, false).success.value
+      val userAnswers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, false).success.value
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -97,7 +97,7 @@ class HoldoverReliefYesNoControllerSpec extends RegistrationSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = emptyUserAnswers.set(SetupAfterSettlorDiedYesNoPage, false).success.value
+      val userAnswers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, false).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

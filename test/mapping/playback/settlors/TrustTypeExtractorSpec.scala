@@ -27,7 +27,7 @@ import models.playback.UserAnswers
 import models.playback.http._
 import models.registration.pages.KindOfTrust
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedYesNoPage
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.living_settlor.trust_type._
 
 class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
@@ -86,7 +86,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
 
           val extraction = trustTypeExtractor.extract(ua, Some(trust))
 
-          extraction.right.value.get(SetupAfterSettlorDiedYesNoPage).get mustBe false
+          extraction.right.value.get(SetUpAfterSettlorDiedYesNoPage).get mustBe false
           extraction.right.value.get(KindOfTrustPage).get mustBe KindOfTrust.Deed
           extraction.right.value.get(SetUpInAdditionToWillTrustYesNoPage).get mustBe true
           extraction.right.value.get(WhyDeedOfVariationCreatedPage) mustNot be(defined)
@@ -129,7 +129,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = trustTypeExtractor.extract(ua, Some(trust))
 
-        extraction.right.value.get(SetupAfterSettlorDiedYesNoPage).get mustBe false
+        extraction.right.value.get(SetUpAfterSettlorDiedYesNoPage).get mustBe false
         extraction.right.value.get(KindOfTrustPage).get mustBe KindOfTrust.Deed
         extraction.right.value.get(SetUpInAdditionToWillTrustYesNoPage).get mustBe false
         extraction.right.value.get(WhyDeedOfVariationCreatedPage).get mustBe DeedOfVariation.ReplacedWill
@@ -172,7 +172,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = trustTypeExtractor.extract(ua, Some(trust))
 
-        extraction.right.value.get(SetupAfterSettlorDiedYesNoPage).get mustBe false
+        extraction.right.value.get(SetUpAfterSettlorDiedYesNoPage).get mustBe false
         extraction.right.value.get(KindOfTrustPage).get mustBe KindOfTrust.Intervivos
         extraction.right.value.get(SetUpInAdditionToWillTrustYesNoPage) mustNot be(defined)
         extraction.right.value.get(WhyDeedOfVariationCreatedPage) mustNot be(defined)
@@ -215,7 +215,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = trustTypeExtractor.extract(ua, Some(trust))
 
-        extraction.right.value.get(SetupAfterSettlorDiedYesNoPage).get mustBe false
+        extraction.right.value.get(SetUpAfterSettlorDiedYesNoPage).get mustBe false
         extraction.right.value.get(KindOfTrustPage).get mustBe KindOfTrust.Employees
         extraction.right.value.get(HoldoverReliefYesNoPage) mustNot be(defined)
         extraction.right.value.get(SetUpInAdditionToWillTrustYesNoPage) mustNot be(defined)
@@ -254,7 +254,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = trustTypeExtractor.extract(ua, Some(trust))
 
-        extraction.right.value.get(SetupAfterSettlorDiedYesNoPage).get mustBe false
+        extraction.right.value.get(SetUpAfterSettlorDiedYesNoPage).get mustBe false
         extraction.right.value.get(KindOfTrustPage).get mustBe KindOfTrust.Employees
         extraction.right.value.get(SetUpInAdditionToWillTrustYesNoPage) mustNot be(defined)
         extraction.right.value.get(WhyDeedOfVariationCreatedPage) mustNot be(defined)
@@ -297,7 +297,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = trustTypeExtractor.extract(ua, Some(trust))
 
-        extraction.right.value.get(SetupAfterSettlorDiedYesNoPage).get mustBe false
+        extraction.right.value.get(SetUpAfterSettlorDiedYesNoPage).get mustBe false
         extraction.right.value.get(KindOfTrustPage).get mustBe KindOfTrust.FlatManagement
         extraction.right.value.get(SetUpInAdditionToWillTrustYesNoPage) mustNot be(defined)
         extraction.right.value.get(WhyDeedOfVariationCreatedPage) mustNot be(defined)
@@ -340,7 +340,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = trustTypeExtractor.extract(ua, Some(trust))
 
-        extraction.right.value.get(SetupAfterSettlorDiedYesNoPage).get mustBe false
+        extraction.right.value.get(SetUpAfterSettlorDiedYesNoPage).get mustBe false
         extraction.right.value.get(KindOfTrustPage).get mustBe KindOfTrust.HeritageMaintenanceFund
         extraction.right.value.get(SetUpInAdditionToWillTrustYesNoPage) mustNot be(defined)
         extraction.right.value.get(WhyDeedOfVariationCreatedPage) mustNot be(defined)
@@ -383,7 +383,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = trustTypeExtractor.extract(ua, Some(trust))
 
-        extraction.right.value.get(SetupAfterSettlorDiedYesNoPage).get mustBe true
+        extraction.right.value.get(SetUpAfterSettlorDiedYesNoPage).get mustBe true
         extraction.right.value.get(KindOfTrustPage) mustNot be(defined)
         extraction.right.value.get(SetUpInAdditionToWillTrustYesNoPage) mustNot be(defined)
         extraction.right.value.get(WhyDeedOfVariationCreatedPage) mustNot be(defined)

@@ -23,7 +23,7 @@ import models.registration.pages.Status.InProgress
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 import pages.entitystatus.LivingSettlorStatus
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedYesNoPage
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 
 class SettlorIndividualOrBusinessPageSpec extends PageBehaviours {
@@ -41,7 +41,7 @@ class SettlorIndividualOrBusinessPageSpec extends PageBehaviours {
     forAll(arbitrary[UserAnswers], arbitrary[String]) {
       (initial, str) =>
         val answers: UserAnswers = initial
-          .set(SetupAfterSettlorDiedYesNoPage, false).success.value
+          .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
           .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
           .set(HoldoverReliefYesNoPage, true).success.value
           .set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Business).success.value
@@ -58,7 +58,7 @@ class SettlorIndividualOrBusinessPageSpec extends PageBehaviours {
     forAll(arbitrary[UserAnswers], arbitrary[String]) {
       (initial, str) =>
         val answers: UserAnswers = initial
-          .set(SetupAfterSettlorDiedYesNoPage, false).success.value
+          .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
           .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
           .set(HoldoverReliefYesNoPage, true).success.value
           .set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value

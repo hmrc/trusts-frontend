@@ -35,7 +35,7 @@ import pages.register.settlors.living_settlor._
 import pages.register.asset.shares._
 import pages.register.beneficiaries.individual.{IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryAddressUKYesNoPage, IndividualBeneficiaryAddressYesNoPage, IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryIncomePage, IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage, IndividualBeneficiaryNationalInsuranceYesNoPage, IndividualBeneficiaryVulnerableYesNoPage}
 import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
-import pages.register.settlors.AddASettlorPage
+import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.trustees._
 import play.api.test.FakeRequest
@@ -93,7 +93,7 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
           .set(TrusteeStatus(index), Status.Completed).success.value
           .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
-          .set(SetupAfterSettlorDiedYesNoPage, true).success.value
+          .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
           .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
           .set(SettlorDateOfDeathYesNoPage, true).success.value
           .set(SettlorDateOfDeathPage, LocalDate.now).success.value
@@ -305,7 +305,7 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
           .set(TrusteeStatus(index), Status.Completed).success.value
           .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
-          .set(SetupAfterSettlorDiedYesNoPage, false).success.value
+          .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
           .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
           .set(HoldoverReliefYesNoPage, true).success.value
           .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value

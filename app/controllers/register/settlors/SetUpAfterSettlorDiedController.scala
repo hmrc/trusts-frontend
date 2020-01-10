@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package controllers.register.settlors.deceased_settlor
+package controllers.register.settlors
 
-import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedYesNoPage
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -32,7 +31,7 @@ import views.html.register.settlors.deceased_settlor.SetupAfterSettlorDiedView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class SetupAfterSettlorDiedController @Inject()(
+class SetUpAfterSettlorDiedController @Inject()(
                                                  override val messagesApi: MessagesApi,
                                                  registrationsRepository: RegistrationsRepository,
                                                  navigator: Navigator,
@@ -51,7 +50,7 @@ class SetupAfterSettlorDiedController @Inject()(
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(SetupAfterSettlorDiedYesNoPage) match {
+      val preparedForm = request.userAnswers.get(SetUpAfterSettlorDiedYesNoPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -68,9 +67,9 @@ class SetupAfterSettlorDiedController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(SetupAfterSettlorDiedYesNoPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(SetUpAfterSettlorDiedYesNoPage, value))
             _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SetupAfterSettlorDiedYesNoPage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(SetUpAfterSettlorDiedYesNoPage, mode, draftId)(updatedAnswers))
         }
       )
   }

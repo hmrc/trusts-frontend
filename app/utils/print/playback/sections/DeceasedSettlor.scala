@@ -17,6 +17,7 @@
 package utils.print.playback.sections
 
 import models.playback.UserAnswers
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
@@ -54,7 +55,7 @@ object DeceasedSettlor {
     }
   }
 
-  def setupAfterSettlorDied(userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SetupAfterSettlorDiedYesNoPage) map {
+  def setupAfterSettlorDied(userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SetUpAfterSettlorDiedYesNoPage) map {
     x =>
       AnswerRow(
         "setupAfterSettlorDied.checkYourAnswersLabel",

@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package controllers.register.settlors.deceased_settlor
+package controllers.register.settlors
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.YesNoFormProvider
 import models.NormalMode
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.settlors.deceased_settlor.SetupAfterSettlorDiedView
-import controllers.register.routes._
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedYesNoPage
 
-class SetupAfterSettlorDiedControllerSpec extends RegistrationSpecBase {
+class SetUpAfterSettlorDiedControllerSpec extends RegistrationSpecBase {
 
   val form = new YesNoFormProvider().withPrefix("setupAfterSettlorDied")
 
@@ -53,7 +53,7 @@ class SetupAfterSettlorDiedControllerSpec extends RegistrationSpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(SetupAfterSettlorDiedYesNoPage, true).success.value
+      val userAnswers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

@@ -31,7 +31,7 @@ import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescri
 import pages.playback.{DeclarationWhatNextPage, WhatIsTheUTRVariationPage}
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, DeclarationPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, PostcodeForTheTrustPage, RegisteringTrustFor5APage, TrustHaveAUTRPage, TrustNamePage, TrustPreviouslyResidentPage, TrustRegisteredOnlinePage, TrustResidentOffshorePage, WhatIsTheUTRPage}
-import pages.register.settlors.{AddASettlorPage, SettlorsBasedInTheUKPage}
+import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage, SettlorsBasedInTheUKPage}
 import pages.register.trustees._
 
 trait PageGenerators {
@@ -223,8 +223,8 @@ trait PageGenerators {
   implicit lazy val arbitraryWasSettlorsAddressUKYesNoPage: Arbitrary[WasSettlorsAddressUKYesNoPage.type] =
     Arbitrary(WasSettlorsAddressUKYesNoPage)
 
-  implicit lazy val arbitrarySetupAfterSettlorDiedPage: Arbitrary[SetupAfterSettlorDiedYesNoPage.type] =
-    Arbitrary(SetupAfterSettlorDiedYesNoPage)
+  implicit lazy val arbitrarySetupAfterSettlorDiedPage: Arbitrary[SetUpAfterSettlorDiedYesNoPage.type] =
+    Arbitrary(SetUpAfterSettlorDiedYesNoPage)
 
   implicit lazy val arbitrarySettlorsUKAddressPage: Arbitrary[SettlorsUKAddressPage.type] =
     Arbitrary(SettlorsUKAddressPage)

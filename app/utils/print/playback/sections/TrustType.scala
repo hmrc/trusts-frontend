@@ -18,7 +18,7 @@ package utils.print.playback.sections
 
 import mapping.DeedOfVariation
 import models.playback.UserAnswers
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedYesNoPage
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.living_settlor.trust_type._
 import play.api.i18n.Messages
 import play.api.mvc.Call
@@ -34,7 +34,7 @@ object TrustType {
     AnswerSection(
       headingKey = Some(messages("answerPage.section.trustType.heading")),
       Seq(
-        yesNoQuestion(SetupAfterSettlorDiedYesNoPage, userAnswers, "setupAfterSettlorDied"),
+        yesNoQuestion(SetUpAfterSettlorDiedYesNoPage, userAnswers, "setupAfterSettlorDied"),
         kindOfTrustQuestion(KindOfTrustPage, userAnswers, "kindOfTrust"),
         yesNoQuestion(SetUpInAdditionToWillTrustYesNoPage, userAnswers, "setupInAdditionToWillTrustYesNo"),
         deedOfVariationQuestion(WhyDeedOfVariationCreatedPage, userAnswers, "whyDeedOfVariationCreated"),
