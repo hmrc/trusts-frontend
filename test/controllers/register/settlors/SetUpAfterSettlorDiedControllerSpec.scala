@@ -14,56 +14,52 @@
  * limitations under the License.
  */
 
-package controllers.register.settlors.living_settlor
+package controllers.register.settlors
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.YesNoFormProvider
 import models.NormalMode
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.register.settlors.living_settlor.SettlorHandoverReliefYesNoView
-import controllers.register.routes._
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
-import pages.register.settlors.living_settlor.SettlorHandoverReliefYesNoPage
+import views.html.register.settlors.SetUpAfterSettlorDiedView
 
-class SettlorHandoverReliefYesNoControllerSpec extends RegistrationSpecBase {
+class SetUpAfterSettlorDiedControllerSpec extends RegistrationSpecBase {
 
-  val formProvider = new YesNoFormProvider()
-  val form = formProvider.withPrefix("settlorHandoverReliefYesNo")
+  val form = new YesNoFormProvider().withPrefix("setUpAfterSettlorDied")
 
-  lazy val settlorHandoverReliefYesNoRoute = routes.SettlorHandoverReliefYesNoController.onPageLoad(NormalMode, fakeDraftId).url
+  lazy val setUpAfterSettlorDiedRoute = routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode,fakeDraftId).url
 
-  "SettlorHandoverReliefYesNo Controller" must {
+  "SetUpAfterSettlorDied Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, false).success.value
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-      val request = FakeRequest(GET, settlorHandoverReliefYesNoRoute)
+      val request = FakeRequest(GET, setUpAfterSettlorDiedRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[SettlorHandoverReliefYesNoView]
+      val view = application.injector.instanceOf[SetUpAfterSettlorDiedView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form, NormalMode,fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, false).success.value.set(SettlorHandoverReliefYesNoPage, true).success.value
+      val userAnswers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, settlorHandoverReliefYesNoRoute)
+      val request = FakeRequest(GET, setUpAfterSettlorDiedRoute)
 
-      val view = application.injector.instanceOf[SettlorHandoverReliefYesNoView]
+      val view = application.injector.instanceOf[SetUpAfterSettlorDiedView]
 
       val result = route(application, request).value
 
@@ -77,13 +73,11 @@ class SettlorHandoverReliefYesNoControllerSpec extends RegistrationSpecBase {
 
     "redirect to the next page when valid data is submitted" in {
 
-      val userAnswers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, false).success.value
-
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers)).build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, settlorHandoverReliefYesNoRoute)
+        FakeRequest(POST, setUpAfterSettlorDiedRoute)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
@@ -97,17 +91,15 @@ class SettlorHandoverReliefYesNoControllerSpec extends RegistrationSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, false).success.value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, settlorHandoverReliefYesNoRoute)
+        FakeRequest(POST, setUpAfterSettlorDiedRoute)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[SettlorHandoverReliefYesNoView]
+      val view = application.injector.instanceOf[SetUpAfterSettlorDiedView]
 
       val result = route(application, request).value
 
@@ -123,7 +115,7 @@ class SettlorHandoverReliefYesNoControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, settlorHandoverReliefYesNoRoute)
+      val request = FakeRequest(GET, setUpAfterSettlorDiedRoute)
 
       val result = route(application, request).value
 
@@ -139,7 +131,7 @@ class SettlorHandoverReliefYesNoControllerSpec extends RegistrationSpecBase {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, settlorHandoverReliefYesNoRoute)
+        FakeRequest(POST, setUpAfterSettlorDiedRoute)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value

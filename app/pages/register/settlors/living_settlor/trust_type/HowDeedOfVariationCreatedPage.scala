@@ -14,23 +14,17 @@
  * limitations under the License.
  */
 
-package mapping
+package pages.register.settlors.living_settlor.trust_type
 
-import models.{Enumerable, WithName}
+import mapping.DeedOfVariation
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import sections.Settlors
 
-sealed trait DeedOfVariation
+case object HowDeedOfVariationCreatedPage extends QuestionPage[DeedOfVariation] {
 
-object DeedOfVariation extends Enumerable.Implicits {
+  override def path: JsPath = Settlors.path \ toString
 
-  case object DeedOfVariation extends WithName("to replace an absolute interest over a will") with DeedOfVariation
-  case object ReplacedWill extends WithName("to replace a will trust") with DeedOfVariation
-  case object AdditionToWill extends DeedOfVariation
+  override def toString: String = "howDeedOfVariationCreated"
 
-  val values: Set[DeedOfVariation] = Set(
-    DeedOfVariation,
-    ReplacedWill
-  )
-
-  implicit val enumerable: Enumerable[DeedOfVariation] =
-    Enumerable(values.toSeq.map(v => v.toString -> v): _*)
 }

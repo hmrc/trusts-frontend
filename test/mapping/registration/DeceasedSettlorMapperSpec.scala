@@ -24,6 +24,7 @@ import mapping._
 import models.core.pages.{FullName, InternationalAddress, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
 
 class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
@@ -52,7 +53,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers =
           emptyUserAnswers
-            .set(SetupAfterSettlorDiedPage, true).success.value
+            .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
             .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
             .set(SettlorDateOfDeathYesNoPage, false).success.value
             .set(SettlorDateOfBirthYesNoPage, false).success.value
@@ -72,7 +73,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers =
           emptyUserAnswers
-            .set(SetupAfterSettlorDiedPage, true).success.value
+            .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
             .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
             .set(SettlorDateOfDeathYesNoPage, true).success.value
             .set(SettlorDateOfDeathPage, dateOfDeath).success.value
@@ -93,7 +94,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers =
           emptyUserAnswers
-            .set(SetupAfterSettlorDiedPage, true).success.value
+            .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
             .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
             .set(SettlorDateOfDeathYesNoPage, false).success.value
             .set(SettlorDateOfBirthYesNoPage, true).success.value
@@ -114,7 +115,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers =
           emptyUserAnswers
-            .set(SetupAfterSettlorDiedPage, true).success.value
+            .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
             .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
             .set(SettlorDateOfDeathYesNoPage, false).success.value
             .set(SettlorDateOfBirthYesNoPage, false).success.value
@@ -135,7 +136,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers =
           emptyUserAnswers
-            .set(SetupAfterSettlorDiedPage, true).success.value
+            .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
             .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
             .set(SettlorDateOfDeathYesNoPage, false).success.value
             .set(SettlorDateOfBirthYesNoPage, false).success.value
@@ -157,7 +158,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers =
           emptyUserAnswers
-            .set(SetupAfterSettlorDiedPage, true).success.value
+            .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
             .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
             .set(SettlorDateOfDeathYesNoPage, false).success.value
             .set(SettlorDateOfBirthYesNoPage, false).success.value
@@ -179,7 +180,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers =
           emptyUserAnswers
-            .set(SetupAfterSettlorDiedPage, true).success.value
+            .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
             .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
             .set(SettlorDateOfDeathYesNoPage, true).success.value
             .set(SettlorDateOfDeathPage, dateOfDeath).success.value
@@ -201,7 +202,7 @@ class DeceasedSettlorMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers =
           emptyUserAnswers
-            .set(SetupAfterSettlorDiedPage, true).success.value
+            .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
 
         deceasedSettlorMapper.build(userAnswers) mustBe None
 

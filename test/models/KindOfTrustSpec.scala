@@ -16,47 +16,47 @@
 
 package models
 
-import models.registration.pages.SettlorKindOfTrust
+import models.registration.pages.KindOfTrust
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import play.api.libs.json.{JsError, JsString, Json}
 
-class SettlorKindOfTrustSpec extends WordSpec with MustMatchers with PropertyChecks with OptionValues {
+class KindOfTrustSpec extends WordSpec with MustMatchers with PropertyChecks with OptionValues {
 
-  "SettlorKindOfTrust" must {
+  "KindOfTrust" must {
 
     "deserialise valid values" in {
 
-      val gen = Gen.oneOf(SettlorKindOfTrust.values.toSeq)
+      val gen = Gen.oneOf(KindOfTrust.values.toSeq)
 
       forAll(gen) {
-        settlorKindOfTrust =>
+        kindOfTrust =>
 
-          JsString(settlorKindOfTrust.toString).validate[SettlorKindOfTrust].asOpt.value mustEqual settlorKindOfTrust
+          JsString(kindOfTrust.toString).validate[KindOfTrust].asOpt.value mustEqual kindOfTrust
       }
     }
 
     "fail to deserialise invalid values" in {
 
-      val gen = arbitrary[String] suchThat (!SettlorKindOfTrust.values.map(_.toString).contains(_))
+      val gen = arbitrary[String] suchThat (!KindOfTrust.values.map(_.toString).contains(_))
 
       forAll(gen) {
         invalidValue =>
 
-          JsString(invalidValue).validate[SettlorKindOfTrust] mustEqual JsError("error.invalid")
+          JsString(invalidValue).validate[KindOfTrust] mustEqual JsError("error.invalid")
       }
     }
 
     "serialise" in {
 
-      val gen = Gen.oneOf(SettlorKindOfTrust.values.toSeq)
+      val gen = Gen.oneOf(KindOfTrust.values.toSeq)
 
       forAll(gen) {
-        settlorKindOfTrust =>
+        kindOfTrust =>
 
-          Json.toJson(settlorKindOfTrust) mustEqual JsString(settlorKindOfTrust.toString)
+          Json.toJson(kindOfTrust) mustEqual JsString(kindOfTrust.toString)
       }
     }
   }

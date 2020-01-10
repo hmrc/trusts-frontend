@@ -16,26 +16,26 @@
 
 package views.register.settlors.living_settlor
 
-import forms.SettlorKindOfTrustFormProvider
+import forms.KindOfTrustFormProvider
 import models.NormalMode
-import models.registration.pages.SettlorKindOfTrust
+import models.registration.pages.KindOfTrust
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.ViewBehaviours
-import views.html.register.settlors.living_settlor.SettlorKindOfTrustView
+import views.html.register.settlors.living_settlor.KindOfTrustView
 
-class SettlorKindOfTrustViewSpec extends ViewBehaviours {
+class KindOfTrustViewSpec extends ViewBehaviours {
 
-  val messageKeyPrefix = "settlorKindOfTrust"
+  val messageKeyPrefix = "kindOfTrust"
 
-  val form = new SettlorKindOfTrustFormProvider()()
+  val form = new KindOfTrustFormProvider()()
 
-  val view = viewFor[SettlorKindOfTrustView](Some(emptyUserAnswers))
+  val view = viewFor[KindOfTrustView](Some(emptyUserAnswers))
 
   def applyView(form: Form[_]): HtmlFormat.Appendable =
     view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
 
-  "SettlorKindOfTrustView" must {
+  "KindOfTrustView" must {
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
@@ -45,7 +45,7 @@ class SettlorKindOfTrustViewSpec extends ViewBehaviours {
 
   }
 
-  "SettlorKindOfTrustView" when {
+  "KindOfTrustView" when {
 
     "rendered" must {
 
@@ -53,13 +53,13 @@ class SettlorKindOfTrustViewSpec extends ViewBehaviours {
 
         val doc = asDocument(applyView(form))
 
-        for (option <- SettlorKindOfTrust.options) {
+        for (option <- KindOfTrust.options) {
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
         }
       }
     }
 
-    for (option <- SettlorKindOfTrust.options) {
+    for (option <- KindOfTrust.options) {
 
       s"rendered with a value of '${option.value}'" must {
 
@@ -69,7 +69,7 @@ class SettlorKindOfTrustViewSpec extends ViewBehaviours {
 
           assertContainsRadioButton(doc, option.id, "value", option.value, true)
 
-          for (unselectedOption <- SettlorKindOfTrust.options.filterNot(o => o == option)) {
+          for (unselectedOption <- KindOfTrust.options.filterNot(o => o == option)) {
             assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
           }
         }

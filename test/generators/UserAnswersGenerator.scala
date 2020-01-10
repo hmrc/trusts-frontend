@@ -32,8 +32,9 @@ import pages.register.asset.shares._
 import pages.register.beneficiaries.individual.{IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryAddressUKYesNoPage, IndividualBeneficiaryAddressYesNoPage, IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryIncomePage, IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage, IndividualBeneficiaryNationalInsuranceYesNoPage, IndividualBeneficiaryVulnerableYesNoPage}
 import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage, WhatTypeOfBeneficiaryPage}
 import pages.playback.{DeclarationWhatNextPage, WhatIsTheUTRVariationPage}
+import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, DeclarationPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, PostcodeForTheTrustPage, RegisteringTrustFor5APage, TrustHaveAUTRPage, TrustNamePage, TrustPreviouslyResidentPage, TrustRegisteredOnlinePage, TrustResidentOffshorePage, WhatIsTheUTRPage}
-import pages.register.settlors.{AddASettlorPage, SettlorsBasedInTheUKPage}
+import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage, SettlorsBasedInTheUKPage}
 import pages.register.trustees._
 import play.api.libs.json.{JsValue, Json}
 
@@ -45,10 +46,10 @@ trait UserAnswersGenerator extends TryValues {
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
     arbitrary[(DeclarationWhatNextPage.type, JsValue)] ::
     arbitrary[(WhatIsTheUTRVariationPage.type, JsValue)] ::
-    arbitrary[(SettlorKindOfTrustPage.type, JsValue)] ::
+    arbitrary[(KindOfTrustPage.type, JsValue)] ::
     arbitrary[(SettlorsBasedInTheUKPage.type, JsValue)] ::
     arbitrary[(TrusteesBasedInTheUKPage.type, JsValue)] ::
-    arbitrary[(SettlorHandoverReliefYesNoPage.type, JsValue)] ::
+    arbitrary[(HoldoverReliefYesNoPage.type, JsValue)] ::
     arbitrary[(SettlorBusinessNamePage, JsValue)] ::
     arbitrary[(SettlorBusinessDetailsPage, JsValue)] ::
     arbitrary[(RemoveSettlorPage, JsValue)] ::
@@ -104,7 +105,7 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(IndividualBeneficiaryDateOfBirthYesNoPage, JsValue)] ::
     arbitrary[(IndividualBeneficiaryNamePage, JsValue)] ::
     arbitrary[(WasSettlorsAddressUKYesNoPage.type, JsValue)] ::
-    arbitrary[(SetupAfterSettlorDiedPage.type, JsValue)] ::
+    arbitrary[(SetUpAfterSettlorDiedYesNoPage.type, JsValue)] ::
     arbitrary[(SettlorsUKAddressPage.type, JsValue)] ::
     arbitrary[(SettlorsNationalInsuranceYesNoPage.type, JsValue)] ::
     arbitrary[(SettlorsNamePage.type, JsValue)] ::

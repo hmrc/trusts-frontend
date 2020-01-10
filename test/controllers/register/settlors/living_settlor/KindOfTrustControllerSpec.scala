@@ -14,71 +14,82 @@
  * limitations under the License.
  */
 
-package controllers.register.settlors.deceased_settlor
+package controllers.register.settlors.living_settlor
 
 import base.RegistrationSpecBase
-import forms.YesNoFormProvider
+import controllers.IndexValidation
+import forms.KindOfTrustFormProvider
 import models.NormalMode
+import models.registration.pages.KindOfTrust
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.register.settlors.deceased_settlor.SetupAfterSettlorDiedView
+import views.html.register.settlors.living_settlor.KindOfTrustView
 import controllers.register.routes._
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
+import pages.register.settlors.living_settlor.trust_type.KindOfTrustPage
 
-class SetupAfterSettlorDiedControllerSpec extends RegistrationSpecBase {
+class KindOfTrustControllerSpec extends RegistrationSpecBase with IndexValidation {
 
-  val form = new YesNoFormProvider().withPrefix("setupAfterSettlorDied")
+  val index = 0
 
-  lazy val setupAfterSettlorDiedRoute = routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode,fakeDraftId).url
+  lazy val kindOfTrustRoute = routes.KindOfTrustController.onPageLoad(NormalMode, fakeDraftId).url
 
-  "SetupAfterSettlorDied Controller" must {
+  val formProvider = new KindOfTrustFormProvider()
+  val form = formProvider()
+
+  "KindOfTrust Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, false).success.value
 
-      val request = FakeRequest(GET, setupAfterSettlorDiedRoute)
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, kindOfTrustRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[SetupAfterSettlorDiedView]
+      val view = application.injector.instanceOf[KindOfTrustView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,fakeDraftId)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, true).success.value
+      val userAnswers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+        .set(KindOfTrustPage, KindOfTrust.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, setupAfterSettlorDiedRoute)
+      val request = FakeRequest(GET, kindOfTrustRoute)
 
-      val view = application.injector.instanceOf[SetupAfterSettlorDiedView]
+      val view = application.injector.instanceOf[KindOfTrustView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill(KindOfTrust.values.head), NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
+      val userAnswers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
-        FakeRequest(POST, setupAfterSettlorDiedRoute)
-          .withFormUrlEncodedBody(("value", "true"))
+        FakeRequest(POST, kindOfTrustRoute)
+          .withFormUrlEncodedBody(("value", KindOfTrust.options.head.value))
 
       val result = route(application, request).value
 
@@ -91,15 +102,17 @@ class SetupAfterSettlorDiedControllerSpec extends RegistrationSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
-        FakeRequest(POST, setupAfterSettlorDiedRoute)
-          .withFormUrlEncodedBody(("value", ""))
+        FakeRequest(POST, kindOfTrustRoute)
+          .withFormUrlEncodedBody(("value", "invalid value"))
 
-      val boundForm = form.bind(Map("value" -> ""))
+      val boundForm = form.bind(Map("value" -> "invalid value"))
 
-      val view = application.injector.instanceOf[SetupAfterSettlorDiedView]
+      val view = application.injector.instanceOf[KindOfTrustView]
 
       val result = route(application, request).value
 
@@ -115,12 +128,11 @@ class SetupAfterSettlorDiedControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, setupAfterSettlorDiedRoute)
+      val request = FakeRequest(GET, kindOfTrustRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-
       redirectLocation(result).value mustEqual SessionExpiredController.onPageLoad().url
 
       application.stop()
@@ -131,8 +143,8 @@ class SetupAfterSettlorDiedControllerSpec extends RegistrationSpecBase {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, setupAfterSettlorDiedRoute)
-          .withFormUrlEncodedBody(("value", "true"))
+        FakeRequest(POST, kindOfTrustRoute)
+          .withFormUrlEncodedBody(("value", KindOfTrust.values.head.toString))
 
       val result = route(application, request).value
 

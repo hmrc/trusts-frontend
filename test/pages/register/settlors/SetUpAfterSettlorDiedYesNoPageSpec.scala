@@ -14,37 +14,39 @@
  * limitations under the License.
  */
 
-package pages.register.settlors.deceased_settlor
+package pages.register.settlors
 
 import java.time.LocalDate
 
 import models.core.UserAnswers
 import models.core.pages.IndividualOrBusiness.{Business, Individual}
 import models.core.pages.{FullName, UKAddress}
-import models.registration.pages.{SettlorKindOfTrust, Status}
+import models.registration.pages.{KindOfTrust, Status}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 import pages.entitystatus.{DeceasedSettlorStatus, LivingSettlorStatus}
+import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
+import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 
-class SetupAfterSettlorDiedPageSpec extends PageBehaviours {
+class SetUpAfterSettlorDiedYesNoPageSpec extends PageBehaviours {
 
-  "SetupAfterSettlorDiedPage" must {
+  "SetUpAfterSettlorDiedPage" must {
 
-    beRetrievable[Boolean](SetupAfterSettlorDiedPage)
+    beRetrievable[Boolean](SetUpAfterSettlorDiedYesNoPage)
 
-    beSettable[Boolean](SetupAfterSettlorDiedPage)
+    beSettable[Boolean](SetUpAfterSettlorDiedYesNoPage)
 
-    beRemovable[Boolean](SetupAfterSettlorDiedPage)
+    beRemovable[Boolean](SetUpAfterSettlorDiedYesNoPage)
   }
 
   "when becoming a living settlor" must {
 
-    "remove relevant data and Nino when SetupAfterSettlorDiedPage set to false" in {
+    "remove relevant data and Nino when SetUpAfterSettlorDiedPage set to false" in {
       forAll(arbitrary[UserAnswers], arbitrary[String]) {
         (initial, str) =>
           val answers: UserAnswers = initial
-            .set(SetupAfterSettlorDiedPage, true).success.value
+            .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
             .set(SettlorsNamePage, FullName(str,None, str)).success.value
             .set(SettlorDateOfDeathYesNoPage, true).success.value
             .set(SettlorDateOfDeathPage, LocalDate.now).success.value
@@ -54,7 +56,7 @@ class SetupAfterSettlorDiedPageSpec extends PageBehaviours {
             .set(SettlorNationalInsuranceNumberPage, str).success.value
             .set(DeceasedSettlorStatus, Status.Completed).success.value
 
-          val result = answers.set(SetupAfterSettlorDiedPage, false).success.value
+          val result = answers.set(SetUpAfterSettlorDiedYesNoPage, false).success.value
 
           result.get(SettlorsNamePage) mustNot be(defined)
           result.get(SettlorDateOfDeathYesNoPage) mustNot be(defined)
@@ -67,7 +69,7 @@ class SetupAfterSettlorDiedPageSpec extends PageBehaviours {
       }
     }
 
-    "remove relevant data and addresses when SetupAfterSettlorDiedPage set to false" in {
+    "remove relevant data and addresses when SetUpAfterSettlorDiedPage set to false" in {
       forAll(arbitrary[UserAnswers], arbitrary[String]) {
         (initial, str) =>
           val answers: UserAnswers = initial.set(SettlorsNamePage, FullName(str,None, str)).success.value
@@ -81,7 +83,7 @@ class SetupAfterSettlorDiedPageSpec extends PageBehaviours {
             .set(SettlorsUKAddressPage, UKAddress(str, str, Some(str), Some(str), str)).success.value
             .set(DeceasedSettlorStatus, Status.Completed).success.value
 
-          val result = answers.set(SetupAfterSettlorDiedPage, false).success.value
+          val result = answers.set(SetUpAfterSettlorDiedYesNoPage, false).success.value
 
           result.get(SettlorsNamePage) mustNot be(defined)
           result.get(SettlorDateOfDeathYesNoPage) mustNot be(defined)
@@ -100,13 +102,13 @@ class SetupAfterSettlorDiedPageSpec extends PageBehaviours {
 
   "when becoming a deceased settlor" must {
 
-    "remove trust type data and data for Nino individual when SetupAfterSettlorDiedPage is set to true" in {
+    "remove trust type data and data for Nino individual when SetUpAfterSettlorDiedPage is set to true" in {
       forAll(arbitrary[UserAnswers], arbitrary[String]) {
         (initial, str) =>
           val answers: UserAnswers = initial
             // settlor with nino
-            .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
-            .set(SettlorHandoverReliefYesNoPage, true).success.value
+            .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+            .set(HoldoverReliefYesNoPage, true).success.value
             .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
             .set(SettlorIndividualNamePage(0), FullName("First", None,"Last")).success.value
             .set(SettlorIndividualDateOfBirthYesNoPage(0), true).success.value
@@ -133,10 +135,10 @@ class SetupAfterSettlorDiedPageSpec extends PageBehaviours {
             .set(SettlorIndividualOrBusinessPage(2), Business).success.value
             .set(SettlorBusinessNamePage(2), "Fake Business").success.value
 
-          val result = answers.set(SetupAfterSettlorDiedPage, true).success.value
+          val result = answers.set(SetUpAfterSettlorDiedYesNoPage, true).success.value
 
-          result.get(SettlorKindOfTrustPage) mustNot be(defined)
-          result.get(SettlorHandoverReliefYesNoPage) mustNot be(defined)
+          result.get(KindOfTrustPage) mustNot be(defined)
+          result.get(HoldoverReliefYesNoPage) mustNot be(defined)
 
           result.get(SettlorIndividualOrBusinessPage(0)) mustNot be(defined)
           result.get(SettlorIndividualNamePage(0)) mustNot be(defined)

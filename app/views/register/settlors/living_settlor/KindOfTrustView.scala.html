@@ -14,8 +14,9 @@
  * limitations under the License.
  *@
 
-@import controllers.register.settlors.deceased_settlor.routes._
+@import controllers.register.settlors.living_settlor.routes._
 @import models.Mode
+@import models.registration.pages.KindOfTrust
 
 @this(
     main_template: MainTemplate,
@@ -25,21 +26,21 @@
 @(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("setupAfterSettlorDied.title")}"
+    title = s"${errorPrefix(form)} ${messages("kindOfTrust.title")}"
     ) {
 
-    @formHelper(action = SetupAfterSettlorDiedController.onSubmit(mode, draftId), 'autoComplete -> "off") {
+    @formHelper(action = KindOfTrustController.onSubmit(mode, draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.input_yes_no(
+        @components.input_radio(
             field = form("value"),
-            label = messages("setupAfterSettlorDied.heading"),
+            legend = messages("kindOfTrust.heading"),
             legendClass = Some("heading-large"),
-            legendAsHeading = true,
-            hint = Some(messages("setupAfterSettlorDied.hint"))
+            inputs = KindOfTrust.options,
+            legendAsHeading = true
         )
 
         @components.submit_button()

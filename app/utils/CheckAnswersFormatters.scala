@@ -20,7 +20,8 @@ import java.time.format.DateTimeFormatter
 
 import models.core.UserAnswers
 import models.core.pages.{FullName, InternationalAddress, UKAddress}
-import models.registration.pages.PassportOrIdCardDetails
+import models.registration.pages.KindOfTrust._
+import models.registration.pages.{PassportOrIdCardDetails, KindOfTrust}
 import pages.register.agents.AgentNamePage
 import pages.register.asset.shares.ShareCompanyNamePage
 import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
@@ -121,6 +122,21 @@ object CheckAnswersFormatters {
   def fullName(fullname: FullName) = {
     val middle = fullname.middleName.map(" " + _ + " ").getOrElse(" ")
     s"${fullname.firstName}${middle}${fullname.lastName}"
+  }
+
+  def kindOfTrust(kindOfTrust: KindOfTrust, messages: Messages) = {
+    kindOfTrust match {
+      case Intervivos =>
+        messages("kindOfTrust.Lifetime")
+      case Deed =>
+        messages("kindOfTrust.Deed")
+      case Employees =>
+        messages("kindOfTrust.Employees")
+      case FlatManagement =>
+        messages("kindOfTrust.Building")
+      case HeritageMaintenanceFund =>
+        messages("kindOfTrust.Repair")
+    }
   }
 
 }
