@@ -55,8 +55,6 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
 
     val size = userAnswers.get(_root_.sections.trustees.Trustees).map(_.value.size).getOrElse(0)
 
-    println(size)
-
     size match {
       case 0 => Nil
       case _ =>

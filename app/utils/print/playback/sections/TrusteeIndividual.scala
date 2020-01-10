@@ -36,8 +36,6 @@ object TrusteeIndividual {
         AnswerSection(
           headingKey = Some(messages("answerPage.section.trustee.subheading") + s" ${index + 1}"),
           Seq(
-            yesNoQuestion(IsThisLeadTrusteePage(index), userAnswers, "isThisLeadTrustee"),
-            individualOrBusinessQuestion(TrusteeIndividualOrBusinessPage(index), userAnswers, "trusteeIndividualOrBusiness"),
             fullNameQuestion(TrusteesNamePage(index), userAnswers, "trusteesName"),
             yesNoQuestion(TrusteeDateOfBirthYesNoPage(index), userAnswers, "trusteeDateOfBirthYesNo", name),
             dateQuestion(TrusteesDateOfBirthPage(index), userAnswers, "trusteesDateOfBirth", name),

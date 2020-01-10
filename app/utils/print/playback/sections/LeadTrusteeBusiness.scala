@@ -31,10 +31,8 @@ object LeadTrusteeBusiness {
       Some(Seq(AnswerSection(
         headingKey = Some(messages("answerPage.section.leadTrustee.subheading")),
         Seq(
-//          yesNoQuestion(IsThisLeadTrusteePage(index), userAnswers, "isThisLeadTrustee"),
-//          individualOrBusinessQuestion(TrusteeIndividualOrBusinessPage(index), userAnswers, "trusteeIndividualOrBusiness"),
           stringQuestion(TrusteeOrgNamePage(index), userAnswers, "trusteeBusinessName"),
-          yesNoQuestion(TrusteeUtrYesNoPage(index), userAnswers, "trusteeUtrYesNo", name),
+          yesNoQuestion(TrusteeUtrYesNoPage(index), userAnswers, "leadTrusteeUtrYesNo", name),
           stringQuestion(TrusteesUtrPage(index), userAnswers, "trusteeUtr", name),
           yesNoQuestion(TrusteeAddressYesNoPage(index), userAnswers, "trusteeUkAddressYesNo", name),
           yesNoQuestion(TrusteeAddressInTheUKPage(index), userAnswers, "trusteeLiveInTheUK", name),

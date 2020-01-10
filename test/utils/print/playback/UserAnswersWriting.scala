@@ -54,7 +54,9 @@ trait UserAnswersWriting extends TryValues with ModelGenerators {
     _ <- IsThisLeadTrusteePage(index) is false
     _ <- TrusteeIndividualOrBusinessPage(index) is IndividualOrBusiness.Individual
     _ <- TrusteesNamePage(index).withArbitraryValue
+    _ <- TrusteeDateOfBirthYesNoPage(index).withArbitraryValue
     _ <- TrusteesDateOfBirthPage(index).withArbitraryValue
+    _ <- TrusteeNinoYesNoPage(index) is true
     _ <- TrusteeAUKCitizenPage(index) is true
     _ <- TrusteesNinoPage(index) is "AA000000A"
     _ <- TrusteeAddressInTheUKPage(index) is true
@@ -69,6 +71,7 @@ trait UserAnswersWriting extends TryValues with ModelGenerators {
   } yield Unit
 
   def moveIndividualOutOfUK(index: Int): State[UserAnswers, Unit] = for {
+    _ <- TrusteeNinoYesNoPage(index) is false
     _ <- TrusteeAUKCitizenPage(index) is false
     _ <- TrusteePassportIDCardYesNoPage(index).withArbitraryValue
     _ <- TrusteePassportIDCardPage(index).withArbitraryValue

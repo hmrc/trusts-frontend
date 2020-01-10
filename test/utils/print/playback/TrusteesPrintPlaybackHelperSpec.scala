@@ -106,20 +106,61 @@ class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase with AnswerSectio
 
       val result = helper.summary(answers)
 
-      println("answers: "+answers)
-      println("result: "+result)
-
       result must containHeadingSection(messages("answerPage.section.trustees.heading"))
       result must containSectionWithHeadingAndValues(messages("answerPage.section.leadTrustee.subheading"),
         "What is the business’s name?" -> Html("Lead Trustee Company"),
-        "Do you know Lead Trustee Company’s Unique Taxpayer Reference (UTR) number?"-> Html("Yes"),
+        "Is this trustee a UK registered company?"-> Html("Yes"),
         "What is Lead Trustee Company’s Unique Taxpayer Reference (UTR) number?" -> Html("1234567890")
       )
     }
   }
 
-  "when there is an organisation trustee" must {
-    "generate a trustee section for each trustee" ignore {}
+  "when the lead trustee is a company and other trustees" must {
+    "generate a trustee section for each trustee" in {
+      val helper = injector.instanceOf[PrintPlaybackHelper]
+
+      val (answers, _) = (for {
+        _ <- ukCompanyTrustee(0)
+        _ <- TrusteeOrgNamePage(0) is "Lead Trustee Company"
+        _ <- TrusteeUtrYesNoPage(0) is true
+        _ <- TrusteesUtrPage(0) is "1234567890"
+        _ <- IsThisLeadTrusteePage(0) is true
+        _ <- ukCompanyTrustee(1)
+        _ <- TrusteeOrgNamePage(1) is "Trustee Company"
+        _ <- TrusteeUtrYesNoPage(1) is true
+        _ <- TrusteesUtrPage(1) is "1234567890"
+        _ <- IsThisLeadTrusteePage(1) is false
+        _ <- individualUKTrustee(2)
+        _ <- TrusteesNamePage(2) is FullName("Individual", None, "trustee")
+        _ <- TrusteeDateOfBirthYesNoPage(2) is true
+        _ <- TrusteesDateOfBirthPage(2) is LocalDate.parse("1975-01-23")
+        _ <- TrusteeNinoYesNoPage(2) is true
+        _ <- TrusteesNinoPage(2) is "NH111111A"
+        _ <- IsThisLeadTrusteePage(2) is false
+      } yield Unit).run(emptyUserAnswers).value
+
+      val result = helper.summary(answers)
+
+      result must containHeadingSection(messages("answerPage.section.trustees.heading"))
+      result must containSectionWithHeadingAndValues(messages("answerPage.section.leadTrustee.subheading"),
+        "What is the business’s name?" -> Html("Lead Trustee Company"),
+        "Is this trustee a UK registered company?"-> Html("Yes"),
+        "What is Lead Trustee Company’s Unique Taxpayer Reference (UTR) number?" -> Html("1234567890")
+      )
+      result must containSectionWithHeadingAndValues(messages("answerPage.section.trustee.subheading") + " 2",
+        "What is the business’s name?" -> Html("Trustee Company"),
+        "Do you know Trustee Company’s Unique Taxpayer Reference (UTR) number?"-> Html("Yes"),
+        "What is Trustee Company’s Unique Taxpayer Reference (UTR) number?" -> Html("1234567890")
+      )
+      result must containSectionWithHeadingAndValues(messages("answerPage.section.trustee.subheading") + " 3",
+        "What is the trustee’s name?" -> Html("Individual trustee"),
+        "Do you know Individual trustee’s date of birth?"-> Html("Yes"),
+        "What is Individual trustee’s date of birth?" -> Html("23 January 1975"),
+        "Do you know Individual trustee’s National Insurance number?"-> Html("Yes"),
+        "What is Individual trustee’s National Insurance number?" -> Html("NH 11 11 11 A")
+      )
+
+    }
   }
 
 
