@@ -21,7 +21,7 @@ import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.register.settlors.deceased_settlor.SetUpAfterSettlorDiedView
+import views.html.register.settlors.SetUpAfterSettlorDiedView
 
 class SetUpAfterSettlorDiedViewSpec extends YesNoViewBehaviours {
 

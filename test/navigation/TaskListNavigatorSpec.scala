@@ -28,14 +28,13 @@ import models.registration.pages.Status.Completed
 import models.registration.pages.WhatKindOfAsset.Money
 import models.registration.pages.WhenTrustSetupPage
 import navigation.registration.TaskListNavigator
-import pages._
-import pages.register.beneficiaries.ClassBeneficiaryDescriptionPage
-import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
-import pages.register.settlors.deceased_settlor.SettlorsNamePage
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
 import pages.register.TrustNamePage
 import pages.register.asset.WhatKindOfAssetPage
+import pages.register.beneficiaries.ClassBeneficiaryDescriptionPage
+import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
+import pages.register.settlors.deceased_settlor.SettlorsNamePage
 import pages.register.settlors.living_settlor.{SettlorIndividualNamePage, SettlorIndividualOrBusinessPage}
 import pages.register.trustees.IsThisLeadTrusteePage
 import sections.beneficiaries.Beneficiaries
@@ -94,7 +93,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
         "go to SetUpAfterSettlorDied when deceased settlor is not complete" in {
           val answers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, true).success.value
             .set(SettlorsNamePage, FullName("deceased",None, "settlor")).success.value
-         navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.register.settlors.deceased_settlor.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode,fakeDraftId)
+         navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.register.settlors.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode,fakeDraftId)
         }
 
       }
@@ -114,7 +113,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
       "go to SetUpAfterSettlorDied when deceased settlor is not complete" in {
         val answers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, true).success.value
           .set(SettlorsNamePage, FullName("deceased",None, "settlor")).success.value
-        navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.register.settlors.deceased_settlor.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode,fakeDraftId)
+        navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.register.settlors.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode,fakeDraftId)
       }
 
     }

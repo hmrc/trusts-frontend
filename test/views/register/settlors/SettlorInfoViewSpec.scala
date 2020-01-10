@@ -16,7 +16,7 @@
 
 package views.register.settlors
 
-import controllers.register.settlors.deceased_settlor.routes
+import controllers.register.settlors.routes
 import models.NormalMode
 import views.behaviours.ViewBehaviours
 import views.html.register.settlors.SettlorInfoView

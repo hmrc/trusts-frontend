@@ -23,7 +23,7 @@ import models.NormalMode
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.register.settlors.deceased_settlor.SetUpAfterSettlorDiedView
+import views.html.register.settlors.SetUpAfterSettlorDiedView
 
 class SetUpAfterSettlorDiedControllerSpec extends RegistrationSpecBase {
 
