@@ -23,13 +23,14 @@ import models.NormalMode
 import models.core.UserAnswers
 import models.core.pages.IndividualOrBusiness
 import models.core.pages.IndividualOrBusiness.Individual
-import models.registration.pages.{AddASettlor, SettlorKindOfTrust}
+import models.registration.pages.{AddASettlor, KindOfTrust}
 import navigation.Navigator
 import navigation.registration.LivingSettlorNavigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage}
 import pages.register.settlors.living_settlor._
+import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 
 trait LivingSettlorRoutes {
 
@@ -68,29 +69,29 @@ trait LivingSettlorRoutes {
 
   def livingSettlorRoutes(): Unit = {
 
-    "navigate from SettlorKindOfTrustPage" when {
+    "navigate from KindOfTrustPage" when {
 
       "user answers Deed" in {
-        val page = SettlorKindOfTrustPage
-        val answer = SettlorKindOfTrust.Deed
+        val page = KindOfTrustPage
+        val answer = KindOfTrust.Deed
 
         val answers = emptyUserAnswers.set(page, answer).success.value
 
-        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(routes.SettlorKindOfTrustController.onPageLoad(NormalMode, fakeDraftId))
+        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(routes.KindOfTrustController.onPageLoad(NormalMode, fakeDraftId))
       }
 
       "user answers Lifetime" in {
-        val page = SettlorKindOfTrustPage
-        val answer = SettlorKindOfTrust.Intervivos
+        val page = KindOfTrustPage
+        val answer = KindOfTrust.Intervivos
 
         val answers = emptyUserAnswers.set(page, answer).success.value
 
-        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(routes.SettlorHandoverReliefYesNoController.onPageLoad(NormalMode, fakeDraftId))
+        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(routes.HoldoverReliefYesNoController.onPageLoad(NormalMode, fakeDraftId))
       }
 
       "user answers Building" in {
-        val page = SettlorKindOfTrustPage
-        val answer = SettlorKindOfTrust.FlatManagement
+        val page = KindOfTrustPage
+        val answer = KindOfTrust.FlatManagement
 
         val answers = emptyUserAnswers.set(page, answer).success.value
 
@@ -98,8 +99,8 @@ trait LivingSettlorRoutes {
       }
 
       "user answers Repair Historic" in {
-        val page = SettlorKindOfTrustPage
-        val answer = SettlorKindOfTrust.HeritageMaintenanceFund
+        val page = KindOfTrustPage
+        val answer = KindOfTrust.HeritageMaintenanceFund
 
         val answers = emptyUserAnswers.set(page, answer).success.value
 
@@ -107,19 +108,19 @@ trait LivingSettlorRoutes {
       }
 
       "user answers Employees" in {
-        val page = SettlorKindOfTrustPage
-        val answer = SettlorKindOfTrust.Employees
+        val page = KindOfTrustPage
+        val answer = KindOfTrust.Employees
 
         val answers = emptyUserAnswers.set(page, answer).success.value
 
-        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(routes.SettlorKindOfTrustController.onPageLoad(NormalMode, fakeDraftId))
+        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(routes.KindOfTrustController.onPageLoad(NormalMode, fakeDraftId))
       }
 
     }
 
-    "navigate from SettlorHandoverReliefYesNoPage" in {
+    "navigate from HoldoverReliefYesNoPage" in {
 
-      val page = SettlorHandoverReliefYesNoPage
+      val page = HoldoverReliefYesNoPage
 
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>

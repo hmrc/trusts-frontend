@@ -23,7 +23,7 @@ import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.register.settlors.living_settlor.SettlorKindOfTrustPage
+import pages.register.settlors.living_settlor.trust_type.KindOfTrustPage
 import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi, MessagesProvider}
@@ -55,7 +55,7 @@ class AddASettlorController @Inject()(
   val yesNoForm: Form[Boolean] = yesNoFormProvider.withPrefix("addAnSettlorYesNo")
 
   private def actions(draftId: String) =
-    identify andThen getData(draftId) andThen requireData andThen requiredAnswer(RequiredAnswer(SettlorKindOfTrustPage))
+    identify andThen getData(draftId) andThen requireData andThen requiredAnswer(RequiredAnswer(KindOfTrustPage))
 
   private def heading(count: Int)(implicit mp : MessagesProvider) = {
     count match {
@@ -65,7 +65,7 @@ class AddASettlorController @Inject()(
     }
   }
 
-  private def trustHintText(implicit request: RegistrationDataRequest[AnyContent]): Option[String] = request.userAnswers.get(SettlorKindOfTrustPage) map { trust =>
+  private def trustHintText(implicit request: RegistrationDataRequest[AnyContent]): Option[String] = request.userAnswers.get(KindOfTrustPage) map { trust =>
     s"addASettlor.$trust"
   }
 

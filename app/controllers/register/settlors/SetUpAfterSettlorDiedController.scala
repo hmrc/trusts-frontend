@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
-package controllers.register.settlors.deceased_settlor
+package controllers.register.settlors
 
-import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.register.settlors.deceased_settlor.SetupAfterSettlorDiedView
+import views.html.register.settlors.SetUpAfterSettlorDiedView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class SetupAfterSettlorDiedController @Inject()(
+class SetUpAfterSettlorDiedController @Inject()(
                                                  override val messagesApi: MessagesApi,
                                                  registrationsRepository: RegistrationsRepository,
                                                  navigator: Navigator,
@@ -41,17 +40,17 @@ class SetupAfterSettlorDiedController @Inject()(
                                                  requireData: RegistrationDataRequiredAction,
                                                  yesNoFormProvider: YesNoFormProvider,
                                                  val controllerComponents: MessagesControllerComponents,
-                                                 view: SetupAfterSettlorDiedView
+                                                 view: SetUpAfterSettlorDiedView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
 
-  val form: Form[Boolean] = yesNoFormProvider.withPrefix("setupAfterSettlorDied")
+  val form: Form[Boolean] = yesNoFormProvider.withPrefix("setUpAfterSettlorDied")
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(SetupAfterSettlorDiedPage) match {
+      val preparedForm = request.userAnswers.get(SetUpAfterSettlorDiedYesNoPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -68,9 +67,9 @@ class SetupAfterSettlorDiedController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(SetupAfterSettlorDiedPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(SetUpAfterSettlorDiedYesNoPage, value))
             _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SetupAfterSettlorDiedPage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(SetUpAfterSettlorDiedYesNoPage, mode, draftId)(updatedAnswers))
         }
       )
   }

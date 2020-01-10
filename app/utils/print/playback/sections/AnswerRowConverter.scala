@@ -20,7 +20,7 @@ import java.time.LocalDate
 
 import models.core.pages.{Address, FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
 import models.playback.UserAnswers
-import models.registration.pages.PassportOrIdCardDetails
+import models.registration.pages.{PassportOrIdCardDetails, KindOfTrust}
 import play.api.i18n.Messages
 import play.api.libs.json.Reads
 import play.api.mvc.Call
@@ -147,6 +147,18 @@ object AnswerRowConverter {
       AnswerRow(
         messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
         HtmlFormat.escape(x.toString.capitalize),
+        None
+      )
+    }
+  }
+
+  def kindOfTrustQuestion(query: Gettable[KindOfTrust], userAnswers: UserAnswers, labelKey: String,
+                          messageArg: String = "", changeRoute: Option[Call] = None)
+                         (implicit messages: Messages) = {
+    userAnswers.get(query) map { x =>
+      AnswerRow(
+        messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
+        HtmlFormat.escape(CheckAnswersFormatters.kindOfTrust(x, messages)),
         None
       )
     }

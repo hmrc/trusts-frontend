@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package forms
+package pages.register.settlors.living_settlor.trust_type
 
-import javax.inject.Inject
-import forms.mappings.Mappings
-import models.registration.pages.SettlorKindOfTrust
-import play.api.data.Form
+import java.time.LocalDate
 
-class SettlorKindOfTrustFormProvider @Inject() extends Mappings {
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import sections.Settlors
 
-  def apply(): Form[SettlorKindOfTrust] =
-    Form(
-      "value" -> enumerable[SettlorKindOfTrust]("settlorKindOfTrust.error.required")
-    )
+case object EfrbsStartDatePage extends QuestionPage[LocalDate] {
+
+  override def path: JsPath = Settlors.path \ toString
+
+  override def toString: String = "efrbsStartDate"
 }

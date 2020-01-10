@@ -36,9 +36,9 @@ trait ModelGenerators {
       Gen.oneOf(SettlorBusinessDetails.values.toSeq)
     }
 
-  implicit lazy val arbitrarySettlorKindOfTrust: Arbitrary[SettlorKindOfTrust] =
+  implicit lazy val arbitraryKindOfTrust: Arbitrary[KindOfTrust] =
     Arbitrary {
-      Gen.oneOf(SettlorKindOfTrust.values.toSeq)
+      Gen.oneOf(KindOfTrust.values.toSeq)
     }
 
   implicit lazy val arbitraryTrusteesBasedInTheUK: Arbitrary[TrusteesBasedInTheUK] =

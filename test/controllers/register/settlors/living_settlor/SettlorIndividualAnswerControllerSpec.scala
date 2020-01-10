@@ -22,7 +22,7 @@ import base.RegistrationSpecBase
 import models.NormalMode
 import models.core.UserAnswers
 import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
-import models.registration.pages.{PassportOrIdCardDetails, SettlorKindOfTrust}
+import models.registration.pages.{KindOfTrust, PassportOrIdCardDetails}
 import pages.register.settlors.living_settlor.{SettlorIndividualOrBusinessPage, _}
 import play.api.Application
 import play.api.mvc.{Call, Result}
@@ -33,7 +33,8 @@ import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.register.settlors.living_settlor.SettlorIndividualAnswersView
 import controllers.register.routes._
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
+import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 
 import scala.concurrent.Future
 
@@ -59,9 +60,9 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
 
         val userAnswers: UserAnswers =
           emptyUserAnswers
-            .set(SetupAfterSettlorDiedPage, false).success.value
-            .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
-            .set(SettlorHandoverReliefYesNoPage, false).success.value
+            .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+            .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+            .set(HoldoverReliefYesNoPage, false).success.value
             .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
             .set(SettlorIndividualNamePage(index), settlorName).success.value
             .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
@@ -75,9 +76,9 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           AnswerSection(
             None,
             Seq(
-              checkYourAnswersHelper.setupAfterSettlorDied.value,
-              checkYourAnswersHelper.settlorKindOfTrust.value,
-              checkYourAnswersHelper.settlorHandoverReliefYesNo.value,
+              checkYourAnswersHelper.setUpAfterSettlorDied.value,
+              checkYourAnswersHelper.kindOfTrust.value,
+              checkYourAnswersHelper.holdoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
               checkYourAnswersHelper.settlorIndividualName(index).value,
               checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
@@ -111,9 +112,9 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
 
         val userAnswers: UserAnswers =
           emptyUserAnswers
-            .set(SetupAfterSettlorDiedPage, false).success.value
-            .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
-            .set(SettlorHandoverReliefYesNoPage, false).success.value
+            .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+            .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+            .set(HoldoverReliefYesNoPage, false).success.value
             .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
             .set(SettlorIndividualNamePage(index), settlorName).success.value
             .set(SettlorIndividualDateOfBirthYesNoPage(index), true).success.value
@@ -129,9 +130,9 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           AnswerSection(
             None,
             Seq(
-              checkYourAnswersHelper.setupAfterSettlorDied.value,
-              checkYourAnswersHelper.settlorKindOfTrust.value,
-              checkYourAnswersHelper.settlorHandoverReliefYesNo.value,
+              checkYourAnswersHelper.setUpAfterSettlorDied.value,
+              checkYourAnswersHelper.kindOfTrust.value,
+              checkYourAnswersHelper.holdoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
               checkYourAnswersHelper.settlorIndividualName(index).value,
               checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
@@ -167,9 +168,9 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
 
         val userAnswers =
           emptyUserAnswers
-            .set(SetupAfterSettlorDiedPage, false).success.value
-            .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
-            .set(SettlorHandoverReliefYesNoPage, false).success.value
+            .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+            .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+            .set(HoldoverReliefYesNoPage, false).success.value
             .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
             .set(SettlorIndividualNamePage(index), settlorName).success.value
             .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
@@ -187,9 +188,9 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           AnswerSection(
             None,
             Seq(
-              checkYourAnswersHelper.setupAfterSettlorDied.value,
-              checkYourAnswersHelper.settlorKindOfTrust.value,
-              checkYourAnswersHelper.settlorHandoverReliefYesNo.value,
+              checkYourAnswersHelper.setUpAfterSettlorDied.value,
+              checkYourAnswersHelper.kindOfTrust.value,
+              checkYourAnswersHelper.holdoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
               checkYourAnswersHelper.settlorIndividualName(index).value,
               checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
@@ -227,9 +228,9 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
 
         val userAnswers =
           emptyUserAnswers
-            .set(SetupAfterSettlorDiedPage, false).success.value
-            .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
-            .set(SettlorHandoverReliefYesNoPage, false).success.value
+            .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+            .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+            .set(HoldoverReliefYesNoPage, false).success.value
             .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
             .set(SettlorIndividualNamePage(index), settlorName).success.value
             .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
@@ -247,9 +248,9 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           AnswerSection(
             None,
             Seq(
-              checkYourAnswersHelper.setupAfterSettlorDied.value,
-              checkYourAnswersHelper.settlorKindOfTrust.value,
-              checkYourAnswersHelper.settlorHandoverReliefYesNo.value,
+              checkYourAnswersHelper.setUpAfterSettlorDied.value,
+              checkYourAnswersHelper.kindOfTrust.value,
+              checkYourAnswersHelper.holdoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
               checkYourAnswersHelper.settlorIndividualName(index).value,
               checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
@@ -287,9 +288,9 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
 
         val userAnswers =
           emptyUserAnswers
-            .set(SetupAfterSettlorDiedPage, false).success.value
-            .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
-            .set(SettlorHandoverReliefYesNoPage, false).success.value
+            .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+            .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+            .set(HoldoverReliefYesNoPage, false).success.value
             .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
             .set(SettlorIndividualNamePage(index), settlorName).success.value
             .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
@@ -309,9 +310,9 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           AnswerSection(
             None,
             Seq(
-              checkYourAnswersHelper.setupAfterSettlorDied.value,
-              checkYourAnswersHelper.settlorKindOfTrust.value,
-              checkYourAnswersHelper.settlorHandoverReliefYesNo.value,
+              checkYourAnswersHelper.setUpAfterSettlorDied.value,
+              checkYourAnswersHelper.kindOfTrust.value,
+              checkYourAnswersHelper.holdoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
               checkYourAnswersHelper.settlorIndividualName(index).value,
               checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
@@ -349,9 +350,9 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
     "redirect to SettlorIndividualOrBusinessPage on a GET if no answer for 'Is the settlor an individual or business?' at index" in {
       val answers =
         emptyUserAnswers
-          .set(SetupAfterSettlorDiedPage, false).success.value
-          .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
-          .set(SettlorHandoverReliefYesNoPage, false).success.value
+          .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+          .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+          .set(HoldoverReliefYesNoPage, false).success.value
           .set(SettlorIndividualNamePage(index), settlorName).success.value
           .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
           .set(SettlorIndividualNINOYesNoPage(index), false).success.value

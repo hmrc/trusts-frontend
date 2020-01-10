@@ -213,4 +213,18 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
           (for (index <- 0 to size) yield OtherIndividual(index, userAnswers, countryOptions)).flatten
     }
   }
+
+  def trustType : Seq[AnswerSection] = {
+    TrustType(userAnswers).rows match {
+      case Nil => Nil
+      case trustType =>
+        Seq(
+          AnswerSection(
+            headingKey = Some(messages("answerPage.section.trustType.heading")),
+            rows = trustType
+          )
+        )
+    }
+  }
+
 }

@@ -17,6 +17,7 @@
 package utils.print.playback.sections
 
 import models.playback.UserAnswers
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
@@ -29,7 +30,7 @@ object DeceasedSettlor {
   def apply(userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Seq[AnswerSection] = {
 
     val questions = Seq(
-      setupAfterSettlorDied(userAnswers),
+      setUpAfterSettlorDied(userAnswers),
       deceasedSettlorsName(userAnswers),
       deceasedSettlorDateOfDeathYesNo(userAnswers),
       deceasedSettlorDateOfDeath(userAnswers),
@@ -54,10 +55,10 @@ object DeceasedSettlor {
     }
   }
 
-  def setupAfterSettlorDied(userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SetupAfterSettlorDiedPage) map {
+  def setUpAfterSettlorDied(userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SetUpAfterSettlorDiedYesNoPage) map {
     x =>
       AnswerRow(
-        "setupAfterSettlorDied.checkYourAnswersLabel",
+        "setUpAfterSettlorDied.checkYourAnswersLabel",
         yesOrNo(x),
         None
       )

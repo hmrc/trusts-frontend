@@ -745,11 +745,11 @@ settlorsUKAddress.title = What is the settlor’s last known address?
 settlorsUKAddress.heading = What is {0}’s last known address?
 settlorsUKAddress.checkYourAnswersLabel = What is {0}’s last known address?
 
-setupAfterSettlorDied.title = Was the trust set up after the settlor died?
-setupAfterSettlorDied.heading = Was the trust set up after the settlor died?
-setupAfterSettlorDied.checkYourAnswersLabel = Was the trust set up after the settlor died?
-setupAfterSettlorDied.error.required = Select yes if the trust was set up after the settlor died
-setupAfterSettlorDied.hint = This is also known as a will trust
+setUpAfterSettlorDied.title = Was the trust set up after the settlor died?
+setUpAfterSettlorDied.heading = Was the trust set up after the settlor died?
+setUpAfterSettlorDied.checkYourAnswersLabel = Was the trust set up after the settlor died?
+setUpAfterSettlorDied.error.required = Select yes if the trust was set up after the settlor died
+setUpAfterSettlorDied.hint = This is also known as a will trust
 
 wasSettlorsAddressUKYesNo.title = Was the settlor’s last known address in the UK?
 wasSettlorsAddressUKYesNo.heading = Was {0}’s last known address in the UK?
@@ -1338,20 +1338,20 @@ addASettlorYesNo.title = Do you want to add a settlor?
 addASettlorYesNo.heading = Do you want to add a settlor?
 addASettlorYesNo.error.required = Select yes if you want to add a settlor
 
-settlorKindOfTrust.title = What kind of trust did the settlor create?
-settlorKindOfTrust.heading = What kind of trust did the settlor create?
-settlorKindOfTrust.Lifetime = A trust created during their lifetime to gift or transfer assets
-settlorKindOfTrust.Deed = A trust through a Deed of Variation or family agreement
-settlorKindOfTrust.Employees = A trust for the employees of a company
-settlorKindOfTrust.Building = A trust for a building or building with tenants
-settlorKindOfTrust.Repair = A trust for the repair of historic buildings
-settlorKindOfTrust.checkYourAnswersLabel = What kind of trust did the settlor create?
-settlorKindOfTrust.error.required = Select what kind of trust the settlor created
+kindOfTrust.title = What kind of trust did the settlor create?
+kindOfTrust.heading = What kind of trust did the settlor create?
+kindOfTrust.Lifetime = A trust created during their lifetime to gift or transfer assets
+kindOfTrust.Deed = A trust through a Deed of Variation or family agreement
+kindOfTrust.Employees = A trust for the employees of a company
+kindOfTrust.Building = A trust for a building or building with tenants
+kindOfTrust.Repair = A trust for the repair of historic buildings
+kindOfTrust.checkYourAnswersLabel = What kind of trust did the settlor create?
+kindOfTrust.error.required = Select what kind of trust the settlor created
 
-settlorHandoverReliefYesNo.title = Was holdover relief claimed on any assets put into the trust?
-settlorHandoverReliefYesNo.heading = Was holdover relief claimed on any assets put into the trust?
-settlorHandoverReliefYesNo.checkYourAnswersLabel = Was holdover relief claimed on any assets put into the trust?
-settlorHandoverReliefYesNo.error.required = Select yes if holdover relief was claimed by any settlor on transfer into the trust
+holdoverReliefYesNo.title = Was holdover relief claimed on any assets put into the trust?
+holdoverReliefYesNo.heading = Was holdover relief claimed on any assets put into the trust?
+holdoverReliefYesNo.checkYourAnswersLabel = Was holdover relief claimed on any assets put into the trust?
+holdoverReliefYesNo.error.required = Select yes if holdover relief was claimed by any settlor on transfer into the trust
 
 settlorBusinessDetails.title = Which of the settlor’s details do you know?
 settlorBusinessDetails.heading = Which of {0}’s details do you know?
@@ -1556,3 +1556,9 @@ protectorIndividualOrBusiness.checkYourAnswersLabel = Is the protector an indivi
 
 answerPage.section.protectors.heading = Protectors
 answerPage.section.protectors.subheading = Protector {0}
+
+answerPage.section.trustType.heading = Trust type
+setupInAdditionToWillTrustYesNo.checkYourAnswersLabel = Was it set up in addition to a will trust?
+howDeedOfVariationCreated.checkYourAnswersLabel = How was the Deed of Variation created?
+employerFinancedRetirementBenefitsSchemeYesNo.checkYourAnswersLabel = Is this an employer-financed retirement benefits scheme?
+employerFinancedRetirementBenefitsSchemeStartDate.checkYourAnswersLabel = When did the employer-financed retirement benefits scheme start?
