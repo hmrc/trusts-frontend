@@ -21,10 +21,10 @@ import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.Settlors
 
-case object WhyDeedOfVariationCreatedPage extends QuestionPage[DeedOfVariation] {
+case object HowDeedOfVariationCreatedPage extends QuestionPage[DeedOfVariation] {
 
   override def path: JsPath = Settlors.path \ toString
 
-  override def toString: String = "whyDeedOfVariationCreated"
+  override def toString: String = "howDeedOfVariationCreated"
 
 }

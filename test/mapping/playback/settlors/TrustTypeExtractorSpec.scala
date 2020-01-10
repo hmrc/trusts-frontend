@@ -89,7 +89,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
           extraction.right.value.get(SetUpAfterSettlorDiedYesNoPage).get mustBe false
           extraction.right.value.get(KindOfTrustPage).get mustBe KindOfTrust.Deed
           extraction.right.value.get(SetUpInAdditionToWillTrustYesNoPage).get mustBe true
-          extraction.right.value.get(WhyDeedOfVariationCreatedPage) mustNot be(defined)
+          extraction.right.value.get(HowDeedOfVariationCreatedPage) mustNot be(defined)
           extraction.right.value.get(HoldoverReliefYesNoPage) mustNot be(defined)
           extraction.right.value.get(EfrbsYesNoPage) mustNot be(defined)
           extraction.right.value.get(EfrbsStartDatePage) mustNot be(defined)
@@ -132,7 +132,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SetUpAfterSettlorDiedYesNoPage).get mustBe false
         extraction.right.value.get(KindOfTrustPage).get mustBe KindOfTrust.Deed
         extraction.right.value.get(SetUpInAdditionToWillTrustYesNoPage).get mustBe false
-        extraction.right.value.get(WhyDeedOfVariationCreatedPage).get mustBe DeedOfVariation.ReplacedWill
+        extraction.right.value.get(HowDeedOfVariationCreatedPage).get mustBe DeedOfVariation.ReplacedWill
         extraction.right.value.get(HoldoverReliefYesNoPage) mustNot be(defined)
         extraction.right.value.get(EfrbsYesNoPage) mustNot be(defined)
         extraction.right.value.get(EfrbsStartDatePage) mustNot be(defined)
@@ -175,7 +175,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SetUpAfterSettlorDiedYesNoPage).get mustBe false
         extraction.right.value.get(KindOfTrustPage).get mustBe KindOfTrust.Intervivos
         extraction.right.value.get(SetUpInAdditionToWillTrustYesNoPage) mustNot be(defined)
-        extraction.right.value.get(WhyDeedOfVariationCreatedPage) mustNot be(defined)
+        extraction.right.value.get(HowDeedOfVariationCreatedPage) mustNot be(defined)
         extraction.right.value.get(HoldoverReliefYesNoPage).get mustBe true
         extraction.right.value.get(EfrbsYesNoPage) mustNot be(defined)
         extraction.right.value.get(EfrbsStartDatePage) mustNot be(defined)
@@ -219,7 +219,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(KindOfTrustPage).get mustBe KindOfTrust.Employees
         extraction.right.value.get(HoldoverReliefYesNoPage) mustNot be(defined)
         extraction.right.value.get(SetUpInAdditionToWillTrustYesNoPage) mustNot be(defined)
-        extraction.right.value.get(WhyDeedOfVariationCreatedPage) mustNot be(defined)
+        extraction.right.value.get(HowDeedOfVariationCreatedPage) mustNot be(defined)
         extraction.right.value.get(EfrbsYesNoPage).get mustBe true
         extraction.right.value.get(EfrbsStartDatePage).get mustBe LocalDate.parse("1970-02-01")
 
@@ -257,7 +257,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SetUpAfterSettlorDiedYesNoPage).get mustBe false
         extraction.right.value.get(KindOfTrustPage).get mustBe KindOfTrust.Employees
         extraction.right.value.get(SetUpInAdditionToWillTrustYesNoPage) mustNot be(defined)
-        extraction.right.value.get(WhyDeedOfVariationCreatedPage) mustNot be(defined)
+        extraction.right.value.get(HowDeedOfVariationCreatedPage) mustNot be(defined)
         extraction.right.value.get(HoldoverReliefYesNoPage) mustNot be(defined)
         extraction.right.value.get(EfrbsYesNoPage).get mustBe false
         extraction.right.value.get(EfrbsStartDatePage) mustNot be(defined)
@@ -300,7 +300,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SetUpAfterSettlorDiedYesNoPage).get mustBe false
         extraction.right.value.get(KindOfTrustPage).get mustBe KindOfTrust.FlatManagement
         extraction.right.value.get(SetUpInAdditionToWillTrustYesNoPage) mustNot be(defined)
-        extraction.right.value.get(WhyDeedOfVariationCreatedPage) mustNot be(defined)
+        extraction.right.value.get(HowDeedOfVariationCreatedPage) mustNot be(defined)
         extraction.right.value.get(HoldoverReliefYesNoPage) mustNot be(defined)
         extraction.right.value.get(EfrbsYesNoPage) mustNot be(defined)
         extraction.right.value.get(EfrbsStartDatePage) mustNot be(defined)
@@ -343,7 +343,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SetUpAfterSettlorDiedYesNoPage).get mustBe false
         extraction.right.value.get(KindOfTrustPage).get mustBe KindOfTrust.HeritageMaintenanceFund
         extraction.right.value.get(SetUpInAdditionToWillTrustYesNoPage) mustNot be(defined)
-        extraction.right.value.get(WhyDeedOfVariationCreatedPage) mustNot be(defined)
+        extraction.right.value.get(HowDeedOfVariationCreatedPage) mustNot be(defined)
         extraction.right.value.get(HoldoverReliefYesNoPage) mustNot be(defined)
         extraction.right.value.get(EfrbsYesNoPage) mustNot be(defined)
         extraction.right.value.get(EfrbsStartDatePage) mustNot be(defined)
@@ -386,7 +386,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SetUpAfterSettlorDiedYesNoPage).get mustBe true
         extraction.right.value.get(KindOfTrustPage) mustNot be(defined)
         extraction.right.value.get(SetUpInAdditionToWillTrustYesNoPage) mustNot be(defined)
-        extraction.right.value.get(WhyDeedOfVariationCreatedPage) mustNot be(defined)
+        extraction.right.value.get(HowDeedOfVariationCreatedPage) mustNot be(defined)
         extraction.right.value.get(HoldoverReliefYesNoPage) mustNot be(defined)
         extraction.right.value.get(EfrbsYesNoPage) mustNot be(defined)
         extraction.right.value.get(EfrbsStartDatePage) mustNot be(defined)

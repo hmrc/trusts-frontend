@@ -22,7 +22,7 @@ import base.PlaybackSpecBase
 import mapping.DeedOfVariation
 import models.registration.pages.KindOfTrust
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
-import pages.register.settlors.living_settlor.trust_type.{EfrbsStartDatePage, EfrbsYesNoPage, HoldoverReliefYesNoPage, KindOfTrustPage, SetUpInAdditionToWillTrustYesNoPage, WhyDeedOfVariationCreatedPage}
+import pages.register.settlors.living_settlor.trust_type.{EfrbsStartDatePage, EfrbsYesNoPage, HoldoverReliefYesNoPage, KindOfTrustPage, SetUpInAdditionToWillTrustYesNoPage, HowDeedOfVariationCreatedPage}
 import play.twirl.api.Html
 import viewmodels.{AnswerRow, AnswerSection}
 
@@ -100,7 +100,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
         .set(KindOfTrustPage, KindOfTrust.Deed).success.value
         .set(SetUpInAdditionToWillTrustYesNoPage, false).success.value
-        .set(WhyDeedOfVariationCreatedPage, DeedOfVariation.ReplacedWill).success.value
+        .set(HowDeedOfVariationCreatedPage, DeedOfVariation.ReplacedWill).success.value
 
       val result = helper.summary(answers)
 

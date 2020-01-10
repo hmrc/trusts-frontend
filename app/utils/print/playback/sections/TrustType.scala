@@ -37,7 +37,7 @@ object TrustType {
         yesNoQuestion(SetUpAfterSettlorDiedYesNoPage, userAnswers, "setUpAfterSettlorDied"),
         kindOfTrustQuestion(KindOfTrustPage, userAnswers, "kindOfTrust"),
         yesNoQuestion(SetUpInAdditionToWillTrustYesNoPage, userAnswers, "setupInAdditionToWillTrustYesNo"),
-        deedOfVariationQuestion(WhyDeedOfVariationCreatedPage, userAnswers, "whyDeedOfVariationCreated"),
+        deedOfVariationQuestion(HowDeedOfVariationCreatedPage, userAnswers, "whyDeedOfVariationCreated"),
         yesNoQuestion(HoldoverReliefYesNoPage, userAnswers, "holdoverReliefYesNo"),
         yesNoQuestion(EfrbsYesNoPage, userAnswers, "employerFinancedRetirementBenefitsSchemeYesNo"),
         dateQuestion(EfrbsStartDatePage, userAnswers, "employerFinancedRetirementBenefitsSchemeStartDate")

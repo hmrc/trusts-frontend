@@ -89,7 +89,7 @@ class TrustTypeExtractor extends PlaybackExtractor[Option[DisplayTrust]] {
         answers.set(SetUpInAdditionToWillTrustYesNoPage, true)
       case Some(_) =>
         answers.set(SetUpInAdditionToWillTrustYesNoPage, false)
-          .flatMap(_.set(WhyDeedOfVariationCreatedPage, trust.details.deedOfVariation))
+          .flatMap(_.set(HowDeedOfVariationCreatedPage, trust.details.deedOfVariation))
       case _ =>
         Success(answers)
     }
