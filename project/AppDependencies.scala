@@ -1,35 +1,40 @@
 import sbt._
+import play.core.PlayVersion
 
 object AppDependencies {
-  import play.core.PlayVersion
 
-  val compile = Seq(
+  val compile: Seq[ModuleID] = Seq(
     play.sbt.PlayImport.ws,
     "org.reactivemongo" %% "play2-reactivemongo"            % "0.18.3-play26",
-    "uk.gov.hmrc"       %% "logback-json-logger"            % "3.1.0",
-    "uk.gov.hmrc"       %% "govuk-template"                 % "5.25.0-play-26",
+    "uk.gov.hmrc"       %% "logback-json-logger"            % "4.6.0",
+    "uk.gov.hmrc"       %% "govuk-template"                 % "5.48.0-play-26",
     "uk.gov.hmrc"       %% "play-health"                    % "3.14.0-play-26",
-    "uk.gov.hmrc"       %% "play-ui"                        % "7.39.0-play-26",
-    "uk.gov.hmrc"       %% "play-conditional-form-mapping"  % "0.2.0",
-    "uk.gov.hmrc"       %% "bootstrap-play-26"              % "1.1.0",
-    "uk.gov.hmrc"       %% "play-whitelist-filter"          % "2.0.0",
+    "uk.gov.hmrc"       %% "play-ui"                        % "8.5.0-play-26",
+    "uk.gov.hmrc"       %% "play-conditional-form-mapping"  % "1.2.0-play-26",
+    "uk.gov.hmrc"       %% "bootstrap-play-26"              % "1.3.0",
+    "uk.gov.hmrc"       %% "play-whitelist-filter"          % "3.1.0-play-26",
     "uk.gov.hmrc"       %% "domain"                         % "5.6.0-play-26",
     "com.typesafe.play" %% "play-json-joda"                 % "2.7.4",
     "org.typelevel"     %% "cats-core"                      % "2.0.0"
   )
 
-  val test = Seq(
-    "org.pegdown"                 %  "pegdown"            % "1.6.0" % "test",
-    "org.scalatest"               %% "scalatest"          % "3.0.4" % "test",
-    "org.scalatestplus.play"      %% "scalatestplus-play" % "3.1.2" % "test, it",
-    "uk.gov.hmrc"                 %% "hmrctest"           % "3.8.0-play-26" % "test, it",
-    "org.jsoup"                   %  "jsoup"              % "1.10.3" % "test",
-    "com.typesafe.play"           %% "play-test"          % PlayVersion.current % "test",
-    "org.mockito"                 %  "mockito-all"        % "1.10.19" % "test",
-    "org.scalacheck"              %% "scalacheck"         % "1.13.4" % "test",
-    "wolfendale"                 %% "scalacheck-gen-regexp" % "0.1.1" % "test",
-    "com.github.tomakehurst"      % "wiremock-standalone"      % "2.17.0" % "test"
-  )
+  val test: Seq[ModuleID] = Seq(
+    "org.pegdown"              % "pegdown"                % "1.6.0",
+    "org.scalatest"           %% "scalatest"              % "3.0.4",
+    "org.scalatestplus.play"  %% "scalatestplus-play"     % "3.1.2",
+    "uk.gov.hmrc"             %% "hmrctest"               % "3.9.0-play-26",
+    "org.jsoup"                % "jsoup"                  % "1.12.1",
+    "com.typesafe.play"       %% "play-test"              % PlayVersion.current,
+    "org.mockito"              % "mockito-all"            % "1.10.19",
+    "org.scalacheck"          %% "scalacheck"             % "1.14.3",
+    "wolfendale"              %% "scalacheck-gen-regexp"  % "0.1.2",
+    "com.github.tomakehurst"   % "wiremock-standalone"    % "2.25.1"
+  ).map(_ % "test")
 
-  def apply(): Seq[ModuleID] = compile ++ test
+  val it: Seq[ModuleID] = Seq(
+    "org.scalatestplus.play"  %% "scalatestplus-play"     % "3.1.2",
+    "uk.gov.hmrc"             %% "hmrctest"               % "3.9.0-play-26"
+  ).map(_ % "it")
+
+  def apply(): Seq[ModuleID] = compile ++ test ++ it
 }
