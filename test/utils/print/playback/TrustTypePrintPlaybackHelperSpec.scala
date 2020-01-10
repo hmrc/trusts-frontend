@@ -26,7 +26,7 @@ import pages.register.settlors.living_settlor.trust_type.{EfrbsStartDatePage, Ef
 import play.twirl.api.Html
 import viewmodels.{AnswerRow, AnswerSection}
 
-class PrintPlaybackHelperSpec extends PlaybackSpecBase {
+class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
 
   "Playback print helper" must {
 
