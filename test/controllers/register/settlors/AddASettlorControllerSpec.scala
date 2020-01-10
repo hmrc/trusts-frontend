@@ -20,12 +20,12 @@ import base.RegistrationSpecBase
 import forms.{AddASettlorFormProvider, YesNoFormProvider}
 import models.NormalMode
 import models.registration.pages.AddASettlor
-import models.registration.pages.SettlorKindOfTrust.Intervivos
+import models.registration.pages.KindOfTrust.Intervivos
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.settlors.{AddASettlorView, AddASettlorYesNoView}
 import controllers.register.routes._
-import pages.register.settlors.living_settlor.SettlorKindOfTrustPage
+import pages.register.settlors.living_settlor.trust_type.KindOfTrustPage
 
 class AddASettlorControllerSpec extends RegistrationSpecBase {
 
@@ -41,7 +41,7 @@ class AddASettlorControllerSpec extends RegistrationSpecBase {
   val hint = "addASettlor.Lifetime"
 
   val userAnswersWithSettlorsComplete = emptyUserAnswers
-    .set(SettlorKindOfTrustPage, Intervivos)
+    .set(KindOfTrustPage, Intervivos)
     .success
     .value
 
@@ -87,7 +87,7 @@ class AddASettlorControllerSpec extends RegistrationSpecBase {
       "return OK and the correct view for a GET" in {
 
         val answers = emptyUserAnswers
-          .set(SettlorKindOfTrustPage, Intervivos)
+          .set(KindOfTrustPage, Intervivos)
           .success
           .value
 
@@ -110,7 +110,7 @@ class AddASettlorControllerSpec extends RegistrationSpecBase {
       "redirect to the next page when valid data is submitted" in {
 
         val answers = emptyUserAnswers
-          .set(SettlorKindOfTrustPage, Intervivos)
+          .set(KindOfTrustPage, Intervivos)
           .success
           .value
 
@@ -133,7 +133,7 @@ class AddASettlorControllerSpec extends RegistrationSpecBase {
       "return a Bad Request and errors when invalid data is submitted" in {
 
         val answers = emptyUserAnswers
-          .set(SettlorKindOfTrustPage, Intervivos)
+          .set(KindOfTrustPage, Intervivos)
           .success
           .value
 

@@ -19,23 +19,23 @@ package controllers.register.settlors.living_settlor
 import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
-import forms.SettlorKindOfTrustFormProvider
+import forms.KindOfTrustFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode, NormalMode}
 import navigation.Navigator
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
-import pages.register.settlors.living_settlor.SettlorKindOfTrustPage
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
+import pages.register.settlors.living_settlor.trust_type.KindOfTrustPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.annotations.LivingSettlor
-import views.html.register.settlors.living_settlor.SettlorKindOfTrustView
+import views.html.register.settlors.living_settlor.KindOfTrustView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class SettlorKindOfTrustController @Inject()(
+class KindOfTrustController @Inject()(
                                               override val messagesApi: MessagesApi,
                                               registrationsRepository: RegistrationsRepository,
                                               @LivingSettlor navigator: Navigator,
@@ -43,9 +43,9 @@ class SettlorKindOfTrustController @Inject()(
                                               getData: DraftIdRetrievalActionProvider,
                                               requireData: RegistrationDataRequiredAction,
                                               validateIndex: IndexActionFilterProvider,
-                                              formProvider: SettlorKindOfTrustFormProvider,
+                                              formProvider: KindOfTrustFormProvider,
                                               val controllerComponents: MessagesControllerComponents,
-                                              view: SettlorKindOfTrustView,
+                                              view: KindOfTrustView,
                                               requiredAnswer: RequiredAnswerActionProvider
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
@@ -53,14 +53,14 @@ class SettlorKindOfTrustController @Inject()(
     identify andThen
       getData(draftId) andThen
       requireData andThen
-      requiredAnswer(RequiredAnswer(SetupAfterSettlorDiedPage, controllers.register.settlors.deceased_settlor.routes.SetupAfterSettlorDiedController.onPageLoad(NormalMode, draftId)))
+      requiredAnswer(RequiredAnswer(SetUpAfterSettlorDiedYesNoPage, controllers.register.settlors.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode, draftId)))
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = (actions(draftId)) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(SettlorKindOfTrustPage) match {
+      val preparedForm = request.userAnswers.get(KindOfTrustPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -77,9 +77,9 @@ class SettlorKindOfTrustController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorKindOfTrustPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(KindOfTrustPage, value))
             _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SettlorKindOfTrustPage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(KindOfTrustPage, mode, draftId)(updatedAnswers))
         }
       )
   }

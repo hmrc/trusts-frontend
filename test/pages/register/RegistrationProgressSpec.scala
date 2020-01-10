@@ -31,8 +31,7 @@ import pages.register.asset.shares._
 import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
 import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
 import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
-import pages.register.settlors.AddASettlorPage
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
+import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
 import pages.register.settlors.living_settlor.SettlorIndividualOrBusinessPage
 import pages.register.trustees.{AddATrusteePage, IsThisLeadTrusteePage}
 import play.api.libs.json.{JsObject, Json}
@@ -194,7 +193,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
         val registrationProgress = injector.instanceOf[RegistrationProgress]
 
         val userAnswers = emptyUserAnswers
-            .set(SetupAfterSettlorDiedPage, true).success.value
+            .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
             .set(DeceasedSettlorStatus, Status.InProgress).success.value
 
         registrationProgress.isSettlorsComplete(userAnswers).value mustBe InProgress
@@ -204,7 +203,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
         val registrationProgress = injector.instanceOf[RegistrationProgress]
 
         val userAnswers = emptyUserAnswers
-          .set(SetupAfterSettlorDiedPage, false).success.value
+          .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
 
         registrationProgress.isSettlorsComplete(userAnswers).value mustBe InProgress
       }
@@ -213,7 +212,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
         val registrationProgress = injector.instanceOf[RegistrationProgress]
 
         val userAnswers = emptyUserAnswers
-          .set(SetupAfterSettlorDiedPage, false).success.value
+          .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
           .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
           .set(SettlorIndividualOrBusinessPage(1), Individual).success.value
           .set(LivingSettlorStatus(1), Status.Completed).success.value
@@ -227,7 +226,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
         val registrationProgress = injector.instanceOf[RegistrationProgress]
 
         val userAnswers = emptyUserAnswers
-          .set(SetupAfterSettlorDiedPage, false).success.value
+          .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
           .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
           .set(LivingSettlorStatus(0), Status.Completed).success.value
           .set(AddASettlorPage, AddASettlor.YesLater).success.value
@@ -243,7 +242,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
         val registrationProgress = injector.instanceOf[RegistrationProgress]
 
         val userAnswers = emptyUserAnswers
-          .set(SetupAfterSettlorDiedPage, true).success.value
+          .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
           .set(DeceasedSettlorStatus, Status.Completed).success.value
 
         registrationProgress.isSettlorsComplete(userAnswers).value mustBe Completed
@@ -253,7 +252,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
         val registrationProgress = injector.instanceOf[RegistrationProgress]
 
         val userAnswers = emptyUserAnswers
-          .set(SetupAfterSettlorDiedPage, false).success.value
+          .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
           .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
           .set(LivingSettlorStatus(0), Status.Completed).success.value
           .set(AddASettlorPage, AddASettlor.NoComplete).success.value
@@ -470,7 +469,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
         .set(IsThisLeadTrusteePage(1), true).success.value
         .set(TrusteeStatus(1), Status.Completed).success.value
         .set(AddATrusteePage, AddATrustee.NoComplete).success.value
-        .set(SetupAfterSettlorDiedPage, true).success.value
+        .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
         .set(DeceasedSettlorStatus, Status.Completed).success.value
         .set(ClassBeneficiaryDescriptionPage(0), "Description").success.value
         .set(ClassBeneficiaryStatus(0), Status.Completed).success.value

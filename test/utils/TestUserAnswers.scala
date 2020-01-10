@@ -35,6 +35,8 @@ import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
 import pages.register.trustees._
 import pages.register._
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
+import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import play.api.libs.json.Json
 
 object TestUserAnswers extends TryValues {
@@ -85,7 +87,7 @@ object TestUserAnswers extends TryValues {
 
   def withDeceasedSettlor(userAnswers: UserAnswers): UserAnswers = {
     userAnswers
-      .set(SetupAfterSettlorDiedPage, true).success.value
+      .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
       .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
       .set(SettlorDateOfDeathYesNoPage, false).success.value
       .set(SettlorDateOfBirthYesNoPage, false).success.value
@@ -96,7 +98,7 @@ object TestUserAnswers extends TryValues {
 
   def withIndividualLivingSettlor(index: Int, userAnswers: UserAnswers): UserAnswers = {
     userAnswers
-      .set(SetupAfterSettlorDiedPage, false).success.value
+      .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
       .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
       .set(SettlorIndividualNamePage(index), FullName("First", None, "Last")).success.value
       .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
@@ -165,18 +167,18 @@ object TestUserAnswers extends TryValues {
 
   def withInterVivosTrust(userAnswers: UserAnswers): UserAnswers = {
     userAnswers
-      .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
-      .set(SettlorHandoverReliefYesNoPage, true).success.value
+      .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+      .set(HoldoverReliefYesNoPage, true).success.value
   }
 
   def withHeritageTrust(userAnswers: UserAnswers): UserAnswers = {
     userAnswers
-      .set(SettlorKindOfTrustPage, SettlorKindOfTrust.HeritageMaintenanceFund).success.value
+      .set(KindOfTrustPage, KindOfTrust.HeritageMaintenanceFund).success.value
   }
 
   def withFlatManagementTrust(userAnswers: UserAnswers): UserAnswers = {
     userAnswers
-      .set(SettlorKindOfTrustPage, SettlorKindOfTrust.FlatManagement).success.value
+      .set(KindOfTrustPage, KindOfTrust.FlatManagement).success.value
   }
 
 }

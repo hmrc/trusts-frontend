@@ -32,8 +32,9 @@ import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
 import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
 import pages.entitystatus._
+import pages.register.RegistrationProgress
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.{RegistrationProgress, WhenTrustSetupPage}
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
 import pages.register.trustees.{AddATrusteePage, IsThisLeadTrusteePage}
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import views.behaviours.{TaskListViewBehaviours, ViewBehaviours}
@@ -80,7 +81,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(IsThisLeadTrusteePage(1), true).success.value
             .set(TrusteeStatus(1), Status.Completed).success.value
             .set(AddATrusteePage, AddATrustee.NoComplete).success.value
-            .set(SetupAfterSettlorDiedPage, true).success.value
+            .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
             .set(DeceasedSettlorStatus, Status.Completed).success.value
             .set(ClassBeneficiaryDescriptionPage(0), "Description").success.value
             .set(ClassBeneficiaryStatus(0), Status.Completed).success.value

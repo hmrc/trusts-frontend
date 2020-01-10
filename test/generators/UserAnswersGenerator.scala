@@ -21,18 +21,19 @@ import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.TryValues
 import pages._
-import pages.register.agents.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentNamePage, AgentOtherThanBarristerPage, AgentTelephoneNumberPage, AgentUKAddressPage}
+import pages.register.agents._
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
-import pages.register.asset.property_or_land.{PropertyOrLandAddressUkYesNoPage, PropertyOrLandDescriptionPage, PropertyOrLandUKAddressPage, _}
+import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
-import pages.register.beneficiaries.individual.{IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryAddressUKYesNoPage, IndividualBeneficiaryAddressYesNoPage, IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryIncomePage, IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage, IndividualBeneficiaryNationalInsuranceYesNoPage, IndividualBeneficiaryVulnerableYesNoPage}
+import pages.register.beneficiaries.individual._
 import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage, WhatTypeOfBeneficiaryPage}
 import pages.playback.{DeclarationWhatNextPage, WhatIsTheUTRVariationPage}
-import pages.register.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, DeclarationPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, PostcodeForTheTrustPage, RegisteringTrustFor5APage, TrustHaveAUTRPage, TrustNamePage, TrustPreviouslyResidentPage, TrustRegisteredOnlinePage, TrustResidentOffshorePage, WhatIsTheUTRPage, WhenTrustSetupPage}
-import pages.register.settlors.{AddASettlorPage, SettlorsBasedInTheUKPage}
+import pages.register.settlors.living_settlor.trust_type._
+import pages.register._
+import pages.register.settlors._
 import pages.register.trustees._
 import play.api.libs.json.{JsValue, Json}
 
@@ -44,10 +45,10 @@ trait UserAnswersGenerator extends TryValues {
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
     arbitrary[(DeclarationWhatNextPage.type, JsValue)] ::
     arbitrary[(WhatIsTheUTRVariationPage.type, JsValue)] ::
-    arbitrary[(SettlorKindOfTrustPage.type, JsValue)] ::
+    arbitrary[(KindOfTrustPage.type, JsValue)] ::
     arbitrary[(SettlorsBasedInTheUKPage.type, JsValue)] ::
     arbitrary[(TrusteesBasedInTheUKPage.type, JsValue)] ::
-    arbitrary[(SettlorHandoverReliefYesNoPage.type, JsValue)] ::
+    arbitrary[(HoldoverReliefYesNoPage.type, JsValue)] ::
     arbitrary[(SettlorBusinessNamePage, JsValue)] ::
     arbitrary[(SettlorBusinessDetailsPage, JsValue)] ::
     arbitrary[(RemoveSettlorPage, JsValue)] ::
@@ -103,7 +104,7 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(IndividualBeneficiaryDateOfBirthYesNoPage, JsValue)] ::
     arbitrary[(IndividualBeneficiaryNamePage, JsValue)] ::
     arbitrary[(WasSettlorsAddressUKYesNoPage.type, JsValue)] ::
-    arbitrary[(SetupAfterSettlorDiedPage.type, JsValue)] ::
+    arbitrary[(SetUpAfterSettlorDiedYesNoPage.type, JsValue)] ::
     arbitrary[(SettlorsUKAddressPage.type, JsValue)] ::
     arbitrary[(SettlorsNINoYesNoPage.type, JsValue)] ::
     arbitrary[(SettlorsNamePage.type, JsValue)] ::

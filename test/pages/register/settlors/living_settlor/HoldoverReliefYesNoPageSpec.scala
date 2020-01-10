@@ -16,13 +16,17 @@
 
 package pages.register.settlors.living_settlor
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.Settlors
+import pages.behaviours.PageBehaviours
+import pages.register.settlors.living_settlor.trust_type.HoldoverReliefYesNoPage
 
-case object SettlorHandoverReliefYesNoPage extends QuestionPage[Boolean] {
+class HoldoverReliefYesNoPageSpec extends PageBehaviours {
 
-  override def path: JsPath = Settlors.path \ toString
+  "HoldoverReliefYesNoPage" must {
 
-  override def toString: String = "settlorHandoverReliefYesNo"
+    beRetrievable[Boolean](HoldoverReliefYesNoPage)
+
+    beSettable[Boolean](HoldoverReliefYesNoPage)
+
+    beRemovable[Boolean](HoldoverReliefYesNoPage)
+  }
 }

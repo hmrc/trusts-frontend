@@ -33,6 +33,7 @@ import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import pages.register.beneficiaries.individual.{IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryAddressUKYesNoPage, IndividualBeneficiaryAddressYesNoPage, IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryIncomePage, IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage, IndividualBeneficiaryNationalInsuranceYesNoPage, IndividualBeneficiaryVulnerableYesNoPage}
 import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.trustees._
 import utils.AccessibilityHelper._
 import utils.countryOptions.CountryOptions
@@ -86,7 +87,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
         .set(TrusteeStatus(index), Status.Completed).success.value
         .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
-        .set(SetupAfterSettlorDiedPage, true).success.value
+        .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
         .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
         .set(SettlorDateOfDeathYesNoPage, true).success.value
         .set(SettlorDateOfDeathPage, LocalDate.of(2010, 10, 10)).success.value
@@ -197,7 +198,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
     }
 
     "assert question labels for Settlors" in {
-      assertContainsQuestionAnswerPair(doc, messages("setupAfterSettlorDied.checkYourAnswersLabel"), yes)
+      assertContainsQuestionAnswerPair(doc, messages("setUpAfterSettlorDied.checkYourAnswersLabel"), yes)
       assertContainsQuestionAnswerPair(doc, messages("settlorsName.checkYourAnswersLabel"), name)
       assertContainsQuestionAnswerPair(doc, messages("settlorDateOfBirthYesNo.checkYourAnswersLabel", name), yes)
       assertContainsQuestionAnswerPair(doc, messages("settlorsDateOfBirth.checkYourAnswersLabel", name), "10 October 2010")

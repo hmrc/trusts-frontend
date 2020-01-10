@@ -63,7 +63,7 @@ class DeceasedSettlorAnswerController @Inject()(
       val sections = Seq(
         AnswerSection(
           None,
-          Seq(checkYourAnswersHelper.setupAfterSettlorDied,
+          Seq(checkYourAnswersHelper.setUpAfterSettlorDied,
             checkYourAnswersHelper.deceasedSettlorsName,
             checkYourAnswersHelper.deceasedSettlorDateOfDeathYesNo,
             checkYourAnswersHelper.deceasedSettlorDateOfDeath,

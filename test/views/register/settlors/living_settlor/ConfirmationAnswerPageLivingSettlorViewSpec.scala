@@ -33,7 +33,8 @@ import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import pages.register.beneficiaries.individual.{IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryAddressUKYesNoPage, IndividualBeneficiaryAddressYesNoPage, IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryIncomePage, IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage, IndividualBeneficiaryNationalInsuranceYesNoPage, IndividualBeneficiaryVulnerableYesNoPage}
 import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
+import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.trustees._
 import utils.AccessibilityHelper._
 import utils.countryOptions.CountryOptions
@@ -87,9 +88,9 @@ class ConfirmationAnswerPageLivingSettlorViewSpec extends ViewBehaviours {
         .set(TrusteeStatus(index), Status.Completed).success.value
         .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
-        .set(SetupAfterSettlorDiedPage, false).success.value
-        .set(SettlorKindOfTrustPage, SettlorKindOfTrust.Intervivos).success.value
-        .set(SettlorHandoverReliefYesNoPage, true).success.value
+        .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+        .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+        .set(HoldoverReliefYesNoPage, true).success.value
         .set(SettlorIndividualOrBusinessPage(index),IndividualOrBusiness.Individual).success.value
         .set(SettlorIndividualNamePage(index), FullName("First", None, "Last")).success.value
         .set(SettlorIndividualDateOfBirthYesNoPage(index), true).success.value
@@ -198,9 +199,9 @@ class ConfirmationAnswerPageLivingSettlorViewSpec extends ViewBehaviours {
 
 
     "assert question labels for Settlors" in {
-      assertContainsQuestionAnswerPair(doc, messages("setupAfterSettlorDied.checkYourAnswersLabel"), no)
-      assertContainsQuestionAnswerPair(doc, messages("settlorKindOfTrust.checkYourAnswersLabel"), "A trust created during their lifetime to gift or transfer assets")
-      assertContainsQuestionAnswerPair(doc, messages("settlorHandoverReliefYesNo.checkYourAnswersLabel"),  yes)
+      assertContainsQuestionAnswerPair(doc, messages("setUpAfterSettlorDied.checkYourAnswersLabel"), no)
+      assertContainsQuestionAnswerPair(doc, messages("kindOfTrust.checkYourAnswersLabel"), "A trust created during their lifetime to gift or transfer assets")
+      assertContainsQuestionAnswerPair(doc, messages("holdoverReliefYesNo.checkYourAnswersLabel"),  yes)
       assertContainsQuestionAnswerPair(doc, messages("settlorIndividualOrBusiness.checkYourAnswersLabel"), "Individual")
       assertContainsQuestionAnswerPair(doc, messages("settlorIndividualName.checkYourAnswersLabel"), name)
       assertContainsQuestionAnswerPair(doc, messages("settlorIndividualDateOfBirthYesNo.checkYourAnswersLabel", name), yes)

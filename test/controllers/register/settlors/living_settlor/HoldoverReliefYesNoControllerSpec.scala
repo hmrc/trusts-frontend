@@ -17,39 +17,35 @@
 package controllers.register.settlors.living_settlor
 
 import base.RegistrationSpecBase
-import controllers.IndexValidation
-import forms.SettlorKindOfTrustFormProvider
+import forms.YesNoFormProvider
 import models.NormalMode
-import models.registration.pages.SettlorKindOfTrust
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.register.settlors.living_settlor.SettlorKindOfTrustView
+import views.html.register.settlors.living_settlor.HoldoverReliefYesNoView
 import controllers.register.routes._
-import pages.register.settlors.deceased_settlor.SetupAfterSettlorDiedPage
-import pages.register.settlors.living_settlor.SettlorKindOfTrustPage
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
+import pages.register.settlors.living_settlor.trust_type.HoldoverReliefYesNoPage
 
-class SettlorKindOfTrustControllerSpec extends RegistrationSpecBase with IndexValidation {
+class HoldoverReliefYesNoControllerSpec extends RegistrationSpecBase {
 
-  val index = 0
+  val formProvider = new YesNoFormProvider()
+  val form = formProvider.withPrefix("holdoverReliefYesNo")
 
-  lazy val settlorKindOfTrustRoute = routes.SettlorKindOfTrustController.onPageLoad(NormalMode, fakeDraftId).url
+  lazy val holdoverReliefYesNoRoute = routes.HoldoverReliefYesNoController.onPageLoad(NormalMode, fakeDraftId).url
 
-  val formProvider = new SettlorKindOfTrustFormProvider()
-  val form = formProvider()
-
-  "SettlorKindOfTrust Controller" must {
+  "HoldoverReliefYesNo Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, false).success.value
+      val userAnswers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, false).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, settlorKindOfTrustRoute)
+      val request = FakeRequest(GET, holdoverReliefYesNoRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[SettlorKindOfTrustView]
+      val view = application.injector.instanceOf[HoldoverReliefYesNoView]
 
       status(result) mustEqual OK
 
@@ -61,35 +57,34 @@ class SettlorKindOfTrustControllerSpec extends RegistrationSpecBase with IndexVa
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, false).success.value
-        .set(SettlorKindOfTrustPage, SettlorKindOfTrust.values.head).success.value
+      val userAnswers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, false).success.value.set(HoldoverReliefYesNoPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, settlorKindOfTrustRoute)
+      val request = FakeRequest(GET, holdoverReliefYesNoRoute)
 
-      val view = application.injector.instanceOf[SettlorKindOfTrustView]
+      val view = application.injector.instanceOf[HoldoverReliefYesNoView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(SettlorKindOfTrust.values.head), NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
-      val userAnswers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, false).success.value
+      val userAnswers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, false).success.value
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
-        FakeRequest(POST, settlorKindOfTrustRoute)
-          .withFormUrlEncodedBody(("value", SettlorKindOfTrust.options.head.value))
+        FakeRequest(POST, holdoverReliefYesNoRoute)
+          .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 
@@ -102,17 +97,17 @@ class SettlorKindOfTrustControllerSpec extends RegistrationSpecBase with IndexVa
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = emptyUserAnswers.set(SetupAfterSettlorDiedPage, false).success.value
+      val userAnswers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, false).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
-        FakeRequest(POST, settlorKindOfTrustRoute)
-          .withFormUrlEncodedBody(("value", "invalid value"))
+        FakeRequest(POST, holdoverReliefYesNoRoute)
+          .withFormUrlEncodedBody(("value", ""))
 
-      val boundForm = form.bind(Map("value" -> "invalid value"))
+      val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[SettlorKindOfTrustView]
+      val view = application.injector.instanceOf[HoldoverReliefYesNoView]
 
       val result = route(application, request).value
 
@@ -128,11 +123,12 @@ class SettlorKindOfTrustControllerSpec extends RegistrationSpecBase with IndexVa
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, settlorKindOfTrustRoute)
+      val request = FakeRequest(GET, holdoverReliefYesNoRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
+
       redirectLocation(result).value mustEqual SessionExpiredController.onPageLoad().url
 
       application.stop()
@@ -143,8 +139,8 @@ class SettlorKindOfTrustControllerSpec extends RegistrationSpecBase with IndexVa
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, settlorKindOfTrustRoute)
-          .withFormUrlEncodedBody(("value", SettlorKindOfTrust.values.head.toString))
+        FakeRequest(POST, holdoverReliefYesNoRoute)
+          .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 

@@ -28,7 +28,7 @@ import play.twirl.api.Html
 import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 
-class ProtectorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
+class ProtectorPrintPlaybackHelperSpec extends PlaybackSpecBase {
 
   "Playback print helper" must {
 

@@ -25,10 +25,10 @@
 @(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("settlorHandoverReliefYesNo.title")}"
+    title = s"${errorPrefix(form)} ${messages("holdoverReliefYesNo.title")}"
     ) {
 
-    @formHelper(action = SettlorHandoverReliefYesNoController.onSubmit(mode, draftId), 'autoComplete -> "off") {
+    @formHelper(action = HoldoverReliefYesNoController.onSubmit(mode, draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 
@@ -36,7 +36,7 @@
 
         @components.input_yes_no(
             field = form("value"),
-            label = messages("settlorHandoverReliefYesNo.heading"),
+            label = messages("holdoverReliefYesNo.heading"),
             legendClass = Some("heading-large"),
             legendAsHeading = true
         )

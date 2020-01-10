@@ -15,7 +15,7 @@
  *@
 
 @import models.Mode
-@import controllers.register.settlors.deceased_settlor.routes._
+@import controllers.register.settlors.routes._
 
 @this(
     main_template: MainTemplate
@@ -81,6 +81,6 @@
         )
     )
 
-    @components.button_link(messages("site.onlyContinue"), SetupAfterSettlorDiedController.onPageLoad(NormalMode, draftId).url)
+    @components.button_link(messages("site.onlyContinue"), SetUpAfterSettlorDiedController.onPageLoad(NormalMode, draftId).url)
 
 }

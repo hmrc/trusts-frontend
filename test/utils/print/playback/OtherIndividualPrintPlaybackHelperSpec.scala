@@ -30,7 +30,7 @@ class OtherIndividualPrintPlaybackHelperSpec extends PlaybackSpecBase {
 
   "Playback print helper" must {
 
-    "generate protector sections given individuals" in {
+    "generate other individuals sections given individuals" in {
 
       val answers = emptyUserAnswers
         .set(OtherIndividualNamePage(0), FullName("Joe", None, "Bloggs")).success.value

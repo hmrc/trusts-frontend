@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-package pages.register.settlors.living_settlor
+package pages.register.settlors.living_settlor.trust_type
 
 import models.core.UserAnswers
-import models.registration.pages.SettlorKindOfTrust
-import models.registration.pages.SettlorKindOfTrust.Intervivos
+import models.registration.pages.KindOfTrust
+import models.registration.pages.KindOfTrust.Intervivos
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.Settlors
 
 import scala.util.Try
 
-case object SettlorKindOfTrustPage extends QuestionPage[SettlorKindOfTrust] {
+case object KindOfTrustPage extends QuestionPage[KindOfTrust] {
 
   override def path: JsPath = Settlors.path \ toString
 
-  override def toString: String = "settlorKindOfTrust"
+  override def toString: String = "kindOfTrust"
 
-  override def cleanup(value: Option[SettlorKindOfTrust], userAnswers: UserAnswers): Try[UserAnswers] = {
+  override def cleanup(value: Option[KindOfTrust], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
       case Some(Intervivos) =>
         super.cleanup(value, userAnswers)
       case _ =>
-        userAnswers.remove(SettlorHandoverReliefYesNoPage)
+        userAnswers.remove(HoldoverReliefYesNoPage)
     }
   }
 }

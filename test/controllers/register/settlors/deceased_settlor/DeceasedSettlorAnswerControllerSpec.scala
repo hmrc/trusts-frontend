@@ -22,7 +22,7 @@ import base.RegistrationSpecBase
 import models.NormalMode
 import models.core.UserAnswers
 import models.core.pages.{FullName, InternationalAddress, UKAddress}
-import pages.register.settlors.deceased_settlor.{SetupAfterSettlorDiedPage, _}
+import pages.register.settlors.deceased_settlor._
 import play.api.Application
 import play.api.mvc.Result
 import play.api.test.FakeRequest
@@ -32,6 +32,7 @@ import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.register.settlors.deceased_settlor.DeceasedSettlorAnswerView
 import controllers.register.routes._
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 
 import scala.concurrent.Future
 
@@ -45,7 +46,7 @@ class DeceasedSettlorAnswerControllerSpec extends RegistrationSpecBase {
 
       val answers: UserAnswers =
         emptyUserAnswers
-          .set(SetupAfterSettlorDiedPage, true).success.value
+          .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
           .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
           .set(SettlorDateOfDeathYesNoPage, true).success.value
           .set(SettlorDateOfDeathPage, LocalDate.now).success.value
@@ -64,7 +65,7 @@ class DeceasedSettlorAnswerControllerSpec extends RegistrationSpecBase {
       val expectedSections = Seq(
         AnswerSection(
           None,
-          Seq(checkYourAnswersHelper.setupAfterSettlorDied.value,
+          Seq(checkYourAnswersHelper.setUpAfterSettlorDied.value,
             checkYourAnswersHelper.deceasedSettlorsName.value,
             checkYourAnswersHelper.deceasedSettlorDateOfDeathYesNo.value,
             checkYourAnswersHelper.deceasedSettlorDateOfDeath.value,
@@ -99,7 +100,7 @@ class DeceasedSettlorAnswerControllerSpec extends RegistrationSpecBase {
 
       val answers =
         emptyUserAnswers
-          .set(SetupAfterSettlorDiedPage, true).success.value
+          .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
           .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
           .set(SettlorDateOfDeathYesNoPage, true).success.value
           .set(SettlorDateOfDeathPage, LocalDate.now).success.value
@@ -119,7 +120,7 @@ class DeceasedSettlorAnswerControllerSpec extends RegistrationSpecBase {
       val expectedSections = Seq(
         AnswerSection(
           None,
-          Seq(checkYourAnswersHelper.setupAfterSettlorDied.value,
+          Seq(checkYourAnswersHelper.setUpAfterSettlorDied.value,
             checkYourAnswersHelper.deceasedSettlorsName.value,
             checkYourAnswersHelper.deceasedSettlorDateOfDeathYesNo.value,
             checkYourAnswersHelper.deceasedSettlorDateOfDeath.value,

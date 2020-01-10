@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
-package views.register.settlors.living_settlor
+package views.register.settlors
 
 import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.register.settlors.living_settlor.SettlorHandoverReliefYesNoView
+import views.html.register.settlors.SetUpAfterSettlorDiedView
 
-class SettlorHandoverReliefYesNoViewSpec extends YesNoViewBehaviours {
+class SetUpAfterSettlorDiedViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "settlorHandoverReliefYesNo"
+  val messageKeyPrefix = "setUpAfterSettlorDied"
 
-  val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
-  "SettlorHandoverReliefYesNo view" must {
+  val form = new YesNoFormProvider().withPrefix("setUpAfterSettlorDied")
 
-    val view = viewFor[SettlorHandoverReliefYesNoView](Some(emptyUserAnswers))
+  "SetUpAfterSettlorDied view" must {
+
+    val view = viewFor[SetUpAfterSettlorDiedView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
@@ -40,9 +41,9 @@ class SettlorHandoverReliefYesNoViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix)
+
+    behave like yesNoPage(form, applyView, messageKeyPrefix, Some(messageKeyPrefix))
 
     behave like pageWithASubmitButton(applyView(form))
-
   }
 }

@@ -19,15 +19,15 @@ package mapping.registration
 import mapping.TypeOfTrust.WillTrustOrIntestacyTrust
 import mapping.{registration, _}
 import models.core.UserAnswers
-import models.registration.pages.SettlorKindOfTrust.{Deed, Employees, FlatManagement, HeritageMaintenanceFund, Intervivos}
+import models.registration.pages.KindOfTrust.{Deed, Employees, FlatManagement, HeritageMaintenanceFund, Intervivos}
 import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
-import models.registration.pages.{NonResidentType, SettlorKindOfTrust}
+import models.registration.pages.{KindOfTrust, NonResidentType}
 import pages.entitystatus.DeceasedSettlorStatus
+import pages.register._
 import pages.register.agents.AgentOtherThanBarristerPage
 import pages.register.settlors.SettlorsBasedInTheUKPage
-import pages.register.settlors.living_settlor.{SettlorHandoverReliefYesNoPage, SettlorKindOfTrustPage}
+import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.trustees.TrusteesBasedInTheUKPage
-import pages.register._
 import play.api.Logger
 import sections.LivingSettlors
 
@@ -44,7 +44,7 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
         Logger.info("[TrustDetailsMapper] - Cannot build trust type for Deed of variation yet")
         None
       case (Some(_), None) =>
-        userAnswers.get(SettlorKindOfTrustPage).map(mapTrustTypeToDes)
+        userAnswers.get(KindOfTrustPage).map(mapTrustTypeToDes)
       case (None, Some(_)) =>
         Some(WillTrustOrIntestacyTrust)
       case (None, None) =>
@@ -54,7 +54,7 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
 
   }
 
-  private def mapTrustTypeToDes(kind: SettlorKindOfTrust): TypeOfTrust = {
+  private def mapTrustTypeToDes(kind: KindOfTrust): TypeOfTrust = {
     kind match {
       case Intervivos => TypeOfTrust.IntervivosSettlementTrust
       case Deed => TypeOfTrust.DeedOfVariation
@@ -79,7 +79,7 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
         residentialStatus = Some(residentialStatusOption),
         typeOfTrust = typeOfTrust,
         deedOfVariation = None,
-        interVivos = userAnswers.get(SettlorHandoverReliefYesNoPage),
+        interVivos = userAnswers.get(HoldoverReliefYesNoPage),
         efrbsStartDate = None
       )
     }

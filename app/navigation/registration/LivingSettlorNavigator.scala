@@ -23,11 +23,12 @@ import models.NormalMode
 import models.core.UserAnswers
 import models.registration.pages.AddASettlor
 import models.core.pages.IndividualOrBusiness._
-import models.registration.pages.SettlorKindOfTrust._
+import models.registration.pages.KindOfTrust._
 import navigation.Navigator
 import pages._
 import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage}
 import pages.register.settlors.living_settlor._
+import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
 
@@ -35,8 +36,8 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Navigator(config) {
 
   override protected def normalRoutes(draftId: String): Page => AffinityGroup => UserAnswers => Call = {
-    case SettlorKindOfTrustPage => _ => settlorKindOfTrustPage(draftId)
-    case SettlorHandoverReliefYesNoPage => _ => _ => routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
+    case KindOfTrustPage => _ => kindOfTrustPage(draftId)
+    case HoldoverReliefYesNoPage => _ => _ => routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
     case SettlorIndividualNamePage(index) => _ => _ => routes.SettlorIndividualDateOfBirthYesNoController.onPageLoad(NormalMode, index, draftId)
     case SettlorIndividualDateOfBirthYesNoPage(index) => _ => settlorIndividualDateOfBirthYesNoPage(draftId, index)
     case SettlorIndividualDateOfBirthPage(index) => _ => _ => routes.SettlorIndividualNINOYesNoController.onPageLoad(NormalMode, index, draftId)
@@ -92,18 +93,18 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
     }
   }
 
-  private def settlorKindOfTrustPage(draftId: String)(answers: UserAnswers) = {
-    answers.get(SettlorKindOfTrustPage) match {
+  private def kindOfTrustPage(draftId: String)(answers: UserAnswers) = {
+    answers.get(KindOfTrustPage) match {
       case Some(Deed) =>
-        routes.SettlorKindOfTrustController.onPageLoad(NormalMode, draftId)
+        routes.KindOfTrustController.onPageLoad(NormalMode, draftId)
       case Some(Intervivos) =>
-        routes.SettlorHandoverReliefYesNoController.onPageLoad(NormalMode, draftId)
+        routes.HoldoverReliefYesNoController.onPageLoad(NormalMode, draftId)
       case Some(FlatManagement) =>
         routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
       case Some(HeritageMaintenanceFund) =>
         routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
       case Some(Employees) =>
-        routes.SettlorKindOfTrustController.onPageLoad(NormalMode, draftId)
+        routes.KindOfTrustController.onPageLoad(NormalMode, draftId)
       case _ => controllers.register.routes.SessionExpiredController.onPageLoad()
     }
   }
