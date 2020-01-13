@@ -19,7 +19,6 @@ package utils.print.playback
 import javax.inject.Inject
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
-import utils.print.playback.sections.DeceasedSettlor
 import viewmodels.AnswerSection
 
 class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions){
@@ -29,7 +28,7 @@ class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions){
     val playbackAnswersHelper: PlaybackAnswersHelper = new PlaybackAnswersHelper(countryOptions, userAnswers)
 
     List(
-      DeceasedSettlor(userAnswers, countryOptions),
+      playbackAnswersHelper.settlors,
       playbackAnswersHelper.livingSettlors,
       playbackAnswersHelper.beneficiaries,
       playbackAnswersHelper.protectors,

@@ -22,7 +22,7 @@ import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.register.settlors.deceased_settlor.{SettlorsNINoYesNoPage, SettlorsNamePage}
+import pages.register.settlors.deceased_settlor.{SettlorsNationalInsuranceYesNoPage, SettlorsNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -45,7 +45,7 @@ class SettlorsNINoYesNoController @Inject()(
                                              view: SettlorsNINoYesNoView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = yesNoFormProvider.withPrefix("settlorsNINoYesNo")
+  val form: Form[Boolean] = yesNoFormProvider.withPrefix("settlorsNationalInsuranceYesNo")
 
   private def actions(draftId: String) =
     identify andThen
@@ -58,7 +58,7 @@ class SettlorsNINoYesNoController @Inject()(
 
       val name = request.userAnswers.get(SettlorsNamePage).get
 
-      val preparedForm = request.userAnswers.get(SettlorsNINoYesNoPage) match {
+      val preparedForm = request.userAnswers.get(SettlorsNationalInsuranceYesNoPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -77,9 +77,9 @@ class SettlorsNINoYesNoController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorsNINoYesNoPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorsNationalInsuranceYesNoPage, value))
             _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SettlorsNINoYesNoPage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(SettlorsNationalInsuranceYesNoPage, mode, draftId)(updatedAnswers))
         }
       )
   }

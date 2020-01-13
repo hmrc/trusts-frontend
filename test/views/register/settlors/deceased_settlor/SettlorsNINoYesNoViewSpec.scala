@@ -26,11 +26,11 @@ import views.html.register.settlors.deceased_settlor.SettlorsNINoYesNoView
 
 class SettlorsNINoYesNoViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "settlorsNINoYesNo"
+  val messageKeyPrefix = "settlorsNationalInsuranceYesNo"
 
   val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
-  "SettlorsNINoYesNo view" must {
+  "SettlorsNationalInsuranceYesNo view" must {
 
     val name = FullName("First", None, "Last")
 

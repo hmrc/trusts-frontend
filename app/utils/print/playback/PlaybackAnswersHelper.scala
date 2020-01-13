@@ -50,6 +50,21 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
 
   }
 
+  def settlors: Seq[AnswerSection] = {
+
+    val deceasedSettlor = DeceasedSettlor(userAnswers, countryOptions)
+
+    if (deceasedSettlor.nonEmpty) {
+      Seq(
+        Seq(AnswerSection(sectionKey = Some("answerPage.section.deceasedSettlor.heading"))),
+        deceasedSettlor
+      ).flatten
+    } else {
+      // living settlors
+      Nil
+    }
+  }
+
   def livingSettlor(index: Int): Seq[AnswerSection] = {
 
     userAnswers.get(SettlorIndividualOrBusinessPage(index)) flatMap { individualOrBusiness =>

@@ -17,11 +17,12 @@
 package mapping.playback.settlors
 
 import com.google.inject.Inject
-import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
+import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, InvalidExtractorState, PlaybackExtractionError}
 import mapping.playback.{PlaybackExtractor, PlaybackImplicits}
-import models.core.pages.{InternationalAddress, UKAddress}
-import models.playback.http.DisplayTrustWillType
+import models.core.pages.{Address, InternationalAddress, UKAddress}
+import models.playback.http.{DisplayTrustIdentificationType, DisplayTrustWillType}
 import models.playback.{MetaData, UserAnswers}
+import models.registration.pages.PassportOrIdCardDetails
 import pages.register.settlors.deceased_settlor._
 import play.api.Logger
 
@@ -44,9 +45,7 @@ class DeceasedSettlorExtractor @Inject() extends PlaybackExtractor[Option[Displa
               .flatMap(_.set(SettlorsNamePage, deceasedSettlor.name.convert))
               .flatMap(answers => extractDateOfDeath(deceasedSettlor, answers))
               .flatMap(answers => extractDateOfBirth(deceasedSettlor, answers))
-              .flatMap(answers => extractNino(deceasedSettlor, answers))
-              .flatMap(answers => extractAddress(deceasedSettlor, answers))
-              .flatMap(answers => extractPassportIdCard(deceasedSettlor, answers))
+              .flatMap(answers => extractIdentification(deceasedSettlor.identification, answers))
               .flatMap(_.set(SettlorsSafeIdPage, deceasedSettlor.identification.flatMap(_.safeId)))
               .flatMap {
                 _.set(
@@ -92,38 +91,58 @@ class DeceasedSettlorExtractor @Inject() extends PlaybackExtractor[Option[Displa
     }
   }
 
-  private def extractNino(deceasedSettlor: DisplayTrustWillType, answers: UserAnswers) = {
-    deceasedSettlor.identification.flatMap(_.nino) match {
-      case Some(nino) =>
-        answers.set(SettlorNationalInsuranceNumberPage, nino)
-          .flatMap(_.set(SettlorsNINoYesNoPage, true))
-      case None =>
-        // Assumption that user answered no as nino is not provided
-        answers.set(SettlorsNINoYesNoPage, false)
+  private def extractIdentification(identification : Option[DisplayTrustIdentificationType], answers: UserAnswers) = {
+    identification map {
+      case DisplayTrustIdentificationType(_, Some(nino), None, None) =>
+        extractNino(nino, answers)
+
+      case DisplayTrustIdentificationType(_, None, Some(passport), Some(address)) =>
+        extractPassportIdCard(passport.convert, answers)
+          .flatMap(updated => extractAddress(address.convert, updated))
+
+      case DisplayTrustIdentificationType(_, None, None, Some(address)) =>
+        extractAddress(address.convert, answers)
+
+      case DisplayTrustIdentificationType(_, None, Some(passport), None) =>
+        extractPassportIdCard(passport.convert, answers)
+
+      case _ =>
+        // just a safeId returned
+        answers.set(SettlorsNationalInsuranceYesNoPage, false)
+          .flatMap(_.set(SettlorsLastKnownAddressYesNoPage, false))
+
+    } getOrElse {
+      answers.set(SettlorsNationalInsuranceYesNoPage, false)
+        .flatMap(_.set(SettlorsLastKnownAddressYesNoPage, false))
     }
   }
 
-  private def extractAddress(deceasedSettlor: DisplayTrustWillType, answers: UserAnswers) = {
-    deceasedSettlor.identification.flatMap(_.address.convert) match {
-      case Some(uk: UKAddress) =>
-        answers.set(SettlorsUKAddressPage, uk)
+  private def extractNino(nino: String, answers: UserAnswers) = {
+    answers.set(SettlorNationalInsuranceNumberPage, nino)
+      .flatMap(_.set(SettlorsNationalInsuranceYesNoPage, true))
+  }
+
+  private def extractAddress(address: Address, answers: UserAnswers) = {
+    address match {
+      case uk: UKAddress =>
+        answers
+          .set(SettlorsNationalInsuranceYesNoPage, false)
+          .flatMap(_.set(SettlorsUKAddressPage, uk))
           .flatMap(_.set(SettlorsLastKnownAddressYesNoPage, true))
           .flatMap(_.set(WasSettlorsAddressUKYesNoPage, true))
-      case Some(nonUk: InternationalAddress) =>
-        answers.set(SettlorsInternationalAddressPage, nonUk)
+      case nonUk: InternationalAddress =>
+        answers
+          .set(SettlorsNationalInsuranceYesNoPage, false)
+          .flatMap(_.set(SettlorsInternationalAddressPage, nonUk))
           .flatMap(_.set(SettlorsLastKnownAddressYesNoPage, true))
           .flatMap(_.set(WasSettlorsAddressUKYesNoPage, false))
-      case None => Try(answers)
     }
   }
 
-  private def extractPassportIdCard(deceasedSettlor: DisplayTrustWillType, answers: UserAnswers) = {
-    deceasedSettlor.identification.flatMap(_.passport) match {
-      case Some(passportIdCard) =>
-        answers.set(SettlorsPassportIDCardPage, passportIdCard.convert)
-      case None => Try(answers)
-    }
-  }
-
+  private def extractPassportIdCard(passport: PassportOrIdCardDetails, answers: UserAnswers) =
+    answers
+      .set(SettlorsPassportIDCardPage, passport)
+      .flatMap(_.set(SettlorsNationalInsuranceYesNoPage, false))
+      .flatMap(_.set(SettlorsLastKnownAddressYesNoPage, false))
 
 }
