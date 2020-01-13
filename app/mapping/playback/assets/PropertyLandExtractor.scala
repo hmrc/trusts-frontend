@@ -40,6 +40,7 @@ class PropertyLandExtractor @Inject() extends PlaybackExtractor[Option[List[Prop
 
             answers
               .flatMap(_.set(PropertyOrLandDescriptionPage(index), asset.buildingLandName))
+              .flatMap(answers => extractAddress(index, asset, answers))
         }
 
         updated match {
@@ -52,14 +53,16 @@ class PropertyLandExtractor @Inject() extends PlaybackExtractor[Option[List[Prop
     }
   }
 
-  private def extractAddress(data: PropertyLandType, userAnswers: UserAnswers) = {
+  private def extractAddress(index: Int, data: PropertyLandType, userAnswers: UserAnswers) = {
     data.address.convert match {
       case Some(uk: UKAddress) =>
-        userAnswers.set(???, uk)
-          .flatMap(_.set(???, true))
+        userAnswers.set(PropertyOrLandUKAddressPage(index), uk)
+          .flatMap(_.set(PropertyOrLandAddressUkYesNoPage(index), true))
+          .flatMap(_.set(PropertyOrLandAddressYesNoPage(index), true))
       case Some(nonUk: InternationalAddress) =>
-        userAnswers.set(???, nonUk)
-          .flatMap(_.set(???, false))
+        userAnswers.set(PropertyOrLandInternationalAddressPage(index), nonUk)
+          .flatMap(_.set(PropertyOrLandAddressUkYesNoPage(index), false))
+          .flatMap(_.set(PropertyOrLandAddressYesNoPage(index), true))
       case None => Success(userAnswers)
     }
   }
