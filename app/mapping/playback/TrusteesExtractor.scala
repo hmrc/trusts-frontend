@@ -144,63 +144,7 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
       }
       .flatMap(_.set(TrusteeStatus(index), Completed))
   }
-
-//  private def extractLeadUtr(leadTrustee: DisplayTrustLeadTrusteeOrgType, index: Int, answers: UserAnswers) = {
-//    leadTrustee.identification.utr match {
-//      case Some(utr) =>
-//        answers.set(TrusteeUtrYesNoPage(index), true)
-//          .flatMap(_.set(TrusteesUtrPage(index), utr))
-//      case None =>
-//        // Assumption that user answered no as utr is not provided
-//        answers.set(TrusteeUtrYesNoPage(index), false)
-//    }
-//  }
-
-//  private def extractLeadNino(leadTrustee: DisplayTrustLeadTrusteeIndType, index: Int, answers: UserAnswers) = {
-//    leadTrustee.identification.nino match {
-//      case Some(nino) =>
-//        answers.set(TrusteeAUKCitizenPage(index), true)
-//          .flatMap(_.set(TrusteesNinoPage(index), nino))
-//      case None =>
-//        // Assumption that user answered no as nino is not provided
-//        answers.set(TrusteeAUKCitizenPage(index), false)
-//    }
-//  }
-
-//  private def extractLeadPassportOrIDCard(leadTrustee: DisplayTrustLeadTrusteeIndType, index: Int, answers: UserAnswers) = {
-//    leadTrustee.identification.passport match {
-//      case Some(passport) =>
-//        answers.set(TrusteePassportIDCardPage(index), passport.convert)
-//      case None =>
-//        Success(answers)
-//    }
-//  }
-
-//  private def extractLeadIndAddress(leadTrusteeInd: DisplayTrustLeadTrusteeIndType, index: Int, answers: UserAnswers) = {
-//    leadTrusteeInd.identification.address.convert match {
-//      case Some(uk: UKAddress) =>
-//        answers.set(TrusteesUkAddressPage(index), uk)
-//          .flatMap(_.set(TrusteeAddressInTheUKPage(index), true))
-//      case Some(nonUk: InternationalAddress) =>
-//        answers.set(TrusteesInternationalAddressPage(index), nonUk)
-//          .flatMap(_.set(TrusteeAddressInTheUKPage(index), false))
-//      case None =>
-//        Success(answers)
-//    }
-//  }
-
-//  private def extractLeadOrgAddress(leadTrusteeOrg: DisplayTrustLeadTrusteeOrgType, index: Int, answers: UserAnswers) = {
-//    leadTrusteeOrg.identification.address.convert match {
-//      case Some(uk: UKAddress) =>
-//        answers.set(TrusteesUkAddressPage(index), uk)
-//          .flatMap(_.set(TrusteeAddressInTheUKPage(index), true))
-//      case Some(nonUk: InternationalAddress) =>
-//        answers.set(TrusteesInternationalAddressPage(index), nonUk)
-//          .flatMap(_.set(TrusteeAddressInTheUKPage(index), false))
-//      case None => Success(answers)
-//    }
-//  }
-
+  
   private def extractLeadIndividualIdentification(leadIndividual: DisplayTrustLeadTrusteeIndType, index: Int, answers: UserAnswers) = {
     leadIndividual.identification.map {
 
@@ -278,9 +222,9 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
           .flatMap(answers => extractAddress(address.convert, index, answers))
 
       case DisplayTrustIdentificationOrgType(_, Some(utr), None) =>
-        Logger.error(s"[TrusteesExtractor] only utr identification for lead trustee company returned in DisplayTrustOrEstate api")
-        case object InvalidExtractorState extends RuntimeException
-        Failure(InvalidExtractorState)
+        answers.set(TrusteeUtrYesNoPage(index), true)
+          .flatMap(_.set(TrusteesUtrPage(index), utr))
+          .flatMap(_.set(TrusteeAddressYesNoPage(index), false))
 
     } getOrElse {
       Logger.error(s"[TrusteesExtractor] no identification for lead trustee company returned in DisplayTrustOrEstate api")
