@@ -39,4 +39,3 @@ object RoleInCompany extends Enumerable.Implicits {
   implicit val enumerable: Enumerable[RoleInCompany] =
     Enumerable(values.map(v => v.toString -> v): _*)
 }
-

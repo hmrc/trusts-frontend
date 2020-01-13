@@ -20,13 +20,24 @@ import java.time.LocalDate
 
 import base.PlaybackSpecBase
 import mapping.DeedOfVariation
+import models.playback.UserAnswers
 import models.registration.pages.KindOfTrust
+import pages.register.TrustNamePage
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
-import pages.register.settlors.living_settlor.trust_type.{EfrbsStartDatePage, EfrbsYesNoPage, HoldoverReliefYesNoPage, KindOfTrustPage, SetUpInAdditionToWillTrustYesNoPage, HowDeedOfVariationCreatedPage}
+import pages.register.settlors.living_settlor.trust_type._
 import play.twirl.api.Html
 import viewmodels.{AnswerRow, AnswerSection}
 
 class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
+
+  private val answersWithTrustDetails: UserAnswers = emptyUserAnswers.set(TrustNamePage, "Trust Ltd.").success.value
+
+  private val trustDetails: AnswerSection = AnswerSection(
+    headingKey = Some("answerPage.section.trustsDetails.heading"),
+    rows = Seq(
+      AnswerRow(label = "What is the trust’s name?", answer = Html("Trust Ltd."), changeUrl = None)
+    )
+  )
 
   "Playback print helper" must {
 
@@ -34,12 +45,13 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
 
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
-      val answers = emptyUserAnswers
+      val answers = answersWithTrustDetails
         .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
 
       val result = helper.summary(answers)
 
       result mustBe Seq(
+        trustDetails,
         AnswerSection(
           headingKey = Some("Trust type"),
           rows = Seq(
@@ -59,7 +71,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
 
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
-      val answers = emptyUserAnswers
+      val answers = answersWithTrustDetails
         .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
         .set(KindOfTrustPage, KindOfTrust.Deed).success.value
         .set(SetUpInAdditionToWillTrustYesNoPage, true).success.value
@@ -67,6 +79,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
       val result = helper.summary(answers)
 
       result mustBe Seq(
+        trustDetails,
         AnswerSection(
           headingKey = Some("Trust type"),
           rows = Seq(
@@ -96,7 +109,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
 
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
-      val answers = emptyUserAnswers
+      val answers = answersWithTrustDetails
         .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
         .set(KindOfTrustPage, KindOfTrust.Deed).success.value
         .set(SetUpInAdditionToWillTrustYesNoPage, false).success.value
@@ -105,6 +118,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
       val result = helper.summary(answers)
 
       result mustBe Seq(
+        trustDetails,
         AnswerSection(
           headingKey = Some("Trust type"),
           rows = Seq(
@@ -139,7 +153,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
 
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
-      val answers = emptyUserAnswers
+      val answers = answersWithTrustDetails
         .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
         .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
         .set(HoldoverReliefYesNoPage, true).success.value
@@ -147,6 +161,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
       val result = helper.summary(answers)
 
       result mustBe Seq(
+        trustDetails,
         AnswerSection(
           headingKey = Some("Trust type"),
           rows = Seq(
@@ -176,13 +191,14 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
 
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
-      val answers = emptyUserAnswers
+      val answers = answersWithTrustDetails
         .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
         .set(KindOfTrustPage, KindOfTrust.FlatManagement).success.value
 
       val result = helper.summary(answers)
 
       result mustBe Seq(
+        trustDetails,
         AnswerSection(
           headingKey = Some("Trust type"),
           rows = Seq(
@@ -207,13 +223,14 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
 
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
-      val answers = emptyUserAnswers
+      val answers = answersWithTrustDetails
         .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
         .set(KindOfTrustPage, KindOfTrust.HeritageMaintenanceFund).success.value
 
       val result = helper.summary(answers)
 
       result mustBe Seq(
+        trustDetails,
         AnswerSection(
           headingKey = Some("Trust type"),
           rows = Seq(
@@ -238,7 +255,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
 
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
-      val answers = emptyUserAnswers
+      val answers = answersWithTrustDetails
         .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
         .set(KindOfTrustPage, KindOfTrust.Employees).success.value
         .set(EfrbsYesNoPage, true).success.value
@@ -247,6 +264,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
       val result = helper.summary(answers)
 
       result mustBe Seq(
+        trustDetails,
         AnswerSection(
           headingKey = Some("Trust type"),
           rows = Seq(
@@ -281,7 +299,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
 
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
-      val answers = emptyUserAnswers
+      val answers = answersWithTrustDetails
         .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
         .set(KindOfTrustPage, KindOfTrust.Employees).success.value
         .set(EfrbsYesNoPage, false).success.value
@@ -289,6 +307,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
       val result = helper.summary(answers)
 
       result mustBe Seq(
+        trustDetails,
         AnswerSection(
           headingKey = Some("Trust type"),
           rows = Seq(

@@ -39,10 +39,19 @@ object NonResidentType extends Enumerable.Implicits {
   implicit val enumerable: Enumerable[NonResidentType] =
     Enumerable(values.map(v => v.toString -> v): _*)
 
+  private val domiciledDES = "Non Resident Domiciled"
+  private val nonDomiciledDES = "Non Resident Non Domiciled"
+  private val ceaseResidentDES = "Non Resident Cease Resident"
 
   def toDES(value : NonResidentType) = value match {
-    case Domiciled => "Non Resident Domiciled"
-    case NonDomiciled => "Non Resident Non Domiciled"
-    case CeaseResident => "Non Resident Cease Resident"
+    case Domiciled => domiciledDES
+    case NonDomiciled => nonDomiciledDES
+    case CeaseResident => ceaseResidentDES
+  }
+
+  def fromDES(value : String): NonResidentType = value match {
+    case `domiciledDES` => Domiciled
+    case `nonDomiciledDES` => NonDomiciled
+    case `ceaseResidentDES` => CeaseResident
   }
 }
