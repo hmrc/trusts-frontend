@@ -30,13 +30,15 @@ import play.api.Logger
 trait UserAnswersExtractor extends PlaybackExtractor[GetTrust]
 
 class UserAnswersExtractorImpl @Inject()(beneficiary: BeneficiaryExtractor,
-                                     leadTrustee: LeadTrusteeExtractor,
-                                     settlors: SettlorExtractor,
-                                     trustType: TrustTypeExtractor,
-                                     protectors: ProtectorExtractor,
-                                     assets: AssetsExtractor,
-                                     individualExtractor: OtherIndividualExtractor
-                                    ) extends UserAnswersExtractor {
+                                         leadTrustee: LeadTrusteeExtractor,
+                                         settlors: SettlorExtractor,
+                                         trustType: TrustTypeExtractor,
+                                         protectors: ProtectorExtractor,
+                                         assets: AssetsExtractor,
+                                         individualExtractor: OtherIndividualExtractor,
+                                         correspondenceExtractor: CorrespondenceExtractor,
+                                         trustDetailsExtractor: TrustDetailsExtractor
+                                        ) extends UserAnswersExtractor {
 
   import models.playback.UserAnswersCombinator._
 
@@ -48,10 +50,12 @@ class UserAnswersExtractorImpl @Inject()(beneficiary: BeneficiaryExtractor,
       ua2 <- settlors.extract(answers, data.trust.entities).right
       ua3 <- trustType.extract(answers, Some(data.trust)).right
       ua4 <- protectors.extract(answers, data.trust.entities.protectors).right
-      ua5 <- assets.extract(answers, data.trust.assets).right
-      ua6 <- individualExtractor.extract(answers, data.trust.entities.naturalPerson).right
+      ua5 <- individualExtractor.extract(answers, data.trust.entities.naturalPerson).right
+      ua6 <- correspondenceExtractor.extract(answers, data.correspondence).right
+      ua7 <- trustDetailsExtractor.extract(answers, data.trust.details).right
+      ua8 <- assets.extract(answers, data.trust.assets).right
     } yield {
-      List(ua, ua1, ua2, ua3, ua4, ua5, ua6).combine
+      List(ua, ua1, ua2, ua3, ua4, ua5, ua6, ua7, ua8).combine
     }
 
     answersCombined match {

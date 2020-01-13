@@ -18,7 +18,6 @@ package pages.register
 
 import java.time.LocalDate
 
-import models.registration.pages.WhenTrustSetupPage
 import org.scalacheck.Arbitrary
 import pages.behaviours.PageBehaviours
 
