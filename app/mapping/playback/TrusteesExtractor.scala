@@ -159,22 +159,22 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
           .flatMap(answers => extractAddress(address.convert, index, answers))
 
       case DisplayTrustIdentificationType(_, None, Some(passport), None) =>
-        Logger.error(s"[TrusteesExtractor] only passport identification for lead trustee returned in DisplayTrustOrEstate api")
+        Logger.error(s"[TrusteesExtractor] only passport identification for lead trustee individual returned in DisplayTrustOrEstate api")
         case object InvalidExtractorState extends RuntimeException
         Failure(InvalidExtractorState)
 
       case DisplayTrustIdentificationType(_, Some(nino), None, None) =>
-        Logger.error(s"[TrusteesExtractor] only nino identification for lead trustee returned in DisplayTrustOrEstate api")
-        case object InvalidExtractorState extends RuntimeException
-        Failure(InvalidExtractorState)
+        answers.set(TrusteeAUKCitizenPage(index), true)
+          .flatMap(_.set(TrusteesNinoPage(index), nino))
+        // TODO Copy correspondence address to lead trustee individual address
 
       case DisplayTrustIdentificationType(_, None, None, Some(address)) =>
-        Logger.error(s"[TrusteesExtractor] only address identification for lead trustee returned in DisplayTrustOrEstate api")
+        Logger.error(s"[TrusteesExtractor] only address identification for lead trustee individual returned in DisplayTrustOrEstate api")
         case object InvalidExtractorState extends RuntimeException
         Failure(InvalidExtractorState)
 
     } getOrElse {
-      Logger.error(s"[TrusteesExtractor] no identification for lead trustee returned in DisplayTrustOrEstate api")
+      Logger.error(s"[TrusteesExtractor] no identification for lead trustee individual returned in DisplayTrustOrEstate api")
       case object InvalidExtractorState extends RuntimeException
       Failure(InvalidExtractorState)
     }
@@ -189,7 +189,7 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
           .flatMap(_.set(TrusteesNinoPage(index), nino))
 
       case DisplayTrustIdentificationType(_, None, Some(passport), None) =>
-        Logger.error(s"[TrusteesExtractor] only passport identification returned in DisplayTrustOrEstate api")
+        Logger.error(s"[TrusteesExtractor] only passport identification returned for trustee individual in DisplayTrustOrEstate api")
         case object InvalidExtractorState extends RuntimeException
         Failure(InvalidExtractorState)
 
@@ -225,6 +225,7 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
         answers.set(TrusteeUtrYesNoPage(index), true)
           .flatMap(_.set(TrusteesUtrPage(index), utr))
           .flatMap(_.set(TrusteeAddressYesNoPage(index), false))
+      // TODO Copy correspondence address to lead trustee org address
 
     } getOrElse {
       Logger.error(s"[TrusteesExtractor] no identification for lead trustee company returned in DisplayTrustOrEstate api")
