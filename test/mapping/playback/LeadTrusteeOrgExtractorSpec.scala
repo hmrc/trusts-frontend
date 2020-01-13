@@ -59,11 +59,11 @@ class LeadTrusteeOrgExtractorSpec extends FreeSpec with MustMatchers
           phoneNumber = "+441234567890",
           email = Some("test@test.com"),
           identification =
-            DisplayTrustIdentificationOrgType(
+            Some(DisplayTrustIdentificationOrgType(
               safeId = Some("8947584-94759745-84758745"),
               utr = Some("1234567890"),
               address = Some(AddressType("line 1", "line2", None, None, Some("NE11NE"), "GB"))
-            ),
+            )),
           entityStart = "2019-11-26"
         ))
 
@@ -94,11 +94,11 @@ class LeadTrusteeOrgExtractorSpec extends FreeSpec with MustMatchers
           phoneNumber = "+441234567890",
           email = Some("test@test.com"),
           identification =
-            DisplayTrustIdentificationOrgType(
+            Some(DisplayTrustIdentificationOrgType(
               safeId = Some("8947584-94759745-84758745"),
               utr = None,
               address = Some(AddressType("line 1", "line2", None, None, None, "FR"))
-            ),
+            )),
           entityStart = "2019-11-26"
         ))
 
