@@ -68,7 +68,7 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
 
     if (deceasedSettlor.nonEmpty) {
       Seq(
-        Seq(AnswerSection(sectionKey = Some("answerPage.section.deceasedSettlor.heading"))),
+        Seq(AnswerSection(sectionKey = Some(messages("answerPage.section.deceasedSettlor.heading")))),
         deceasedSettlor
       ).flatten
     } else {
