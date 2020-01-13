@@ -21,7 +21,7 @@ import mapping.{registration, _}
 import models.core.UserAnswers
 import models.registration.pages.KindOfTrust.{Deed, Employees, FlatManagement, HeritageMaintenanceFund, Intervivos}
 import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
-import models.registration.pages.{KindOfTrust, NonResidentType, WhenTrustSetupPage}
+import models.registration.pages.{KindOfTrust, NonResidentType}
 import pages.entitystatus.DeceasedSettlorStatus
 import pages.register._
 import pages.register.agents.AgentOtherThanBarristerPage

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package models.registration.pages
+package pages.register
 
 import java.time.LocalDate
 
