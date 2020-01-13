@@ -20,9 +20,11 @@ import base.SpecBaseHelpers
 import generators.Generators
 import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
 import mapping.playback.PlaybackExtractor
+import mapping.registration.AssetMonetaryAmount
 import models.playback.UserAnswers
 import models.playback.http.DisplayTrustAssets
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
+import pages.register.asset.money.AssetMoneyValuePage
 
 class AssetsExtractorSpec extends FreeSpec with MustMatchers
   with EitherValues with Generators with SpecBaseHelpers {
@@ -46,6 +48,26 @@ class AssetsExtractorSpec extends FreeSpec with MustMatchers
         val extraction = assetsExtractor.extract(ua, assets)
 
         extraction mustBe Left(FailedToExtractData("Assets Extraction Error"))
+      }
+    }
+
+    "when there is a monetary amount" - {
+      "must return that amount" in {
+        val monetaryAmount = List(AssetMonetaryAmount(64000))
+        val assets = DisplayTrustAssets(
+          monetary = Some(monetaryAmount),
+          propertyOrLand = None,
+          shares = None,
+          business = None,
+          partnerShip = None,
+          other = None
+        )
+        val ua = UserAnswers("fakeId")
+
+        val extraction = assetsExtractor.extract(ua, assets)
+
+        extraction mustBe 'Right
+        extraction.right.value.get(AssetMoneyValuePage(0)).get mustBe "64000"
       }
     }
   }
