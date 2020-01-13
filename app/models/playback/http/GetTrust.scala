@@ -18,7 +18,7 @@ package models.playback.http
 
 import mapping.Constant._
 import mapping.registration.{AssetMonetaryAmount, PassportType, PropertyLandType, TrustDetailsType}
-import models.registration.pages.RoleInCompany
+import models.registration.pages.{RoleInCompany, ShareClass, ShareType}
 import org.joda.time.DateTime
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
@@ -440,12 +440,11 @@ object DisplayTrustAssets {
   implicit val assetsFormat: Format[DisplayTrustAssets] = Json.format[DisplayTrustAssets]
 }
 
-case class DisplaySharesType(numberOfShares: Option[String],
+case class DisplaySharesType(numberOfShares: String,
                              orgName: String,
-                             utr: Option[String],
-                             shareClass: Option[String],
-                             typeOfShare: Option[String],
-                             value: Option[Long])
+                             shareClass: ShareClass,
+                             typeOfShare: ShareType,
+                             value: Long)
 
 object DisplaySharesType {
   implicit val sharesTypeFormat: Format[DisplaySharesType] = Json.format[DisplaySharesType]

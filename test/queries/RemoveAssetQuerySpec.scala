@@ -56,7 +56,7 @@ class RemoveAssetQuerySpec extends PageBehaviours {
 
             val answers: UserAnswers = initial
               .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Shares).success.value
-              .set(ShareClassPage(0), ShareClass.Growth).success.value
+              .set(ShareClassPage(0), ShareClass.Ordinary).success.value
               .set(ShareCompanyNamePage(0), "AWS").success.value
               .set(SharesInAPortfolioPage(0), false).success.value
               .set(ShareValueInTrustPage(0), "2000").success.value
