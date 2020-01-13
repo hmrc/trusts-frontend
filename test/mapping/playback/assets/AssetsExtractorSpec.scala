@@ -19,16 +19,10 @@ package mapping.playback.assets
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
-import mapping.playback.{PlaybackExtractionErrors, PlaybackExtractor}
+import mapping.playback.PlaybackExtractor
 import models.playback.UserAnswers
 import models.playback.http.DisplayTrustAssets
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
-
-class AssetsExtractor extends PlaybackExtractor[DisplayTrustAssets] {
-  override def extract(answers: UserAnswers, data: DisplayTrustAssets): Either[PlaybackExtractionErrors.PlaybackExtractionError, UserAnswers] =  {
-    Left(FailedToExtractData("Assets Extraction Error"))
-  }
-}
 
 class AssetsExtractorSpec extends FreeSpec with MustMatchers
   with EitherValues with Generators with SpecBaseHelpers {
