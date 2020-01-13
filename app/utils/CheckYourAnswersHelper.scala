@@ -22,7 +22,7 @@ import mapping.reads._
 import models.NormalMode
 import models.core.UserAnswers
 import pages.playback.DeclarationWhatNextPage
-import pages.register.{WhenTrustSetupPage, _}
+import pages.register._
 import pages.register.agents._
 import pages.register.asset.WhatKindOfAssetPage
 import pages.register.asset.money.AssetMoneyValuePage
