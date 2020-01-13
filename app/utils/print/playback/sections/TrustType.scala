@@ -46,14 +46,23 @@ object TrustType {
     )
 
   private def deedOfVariationQuestion(query: Gettable[DeedOfVariation], userAnswers: UserAnswers, labelKey: String,
-                    messageArg: String = "", changeRoute: Option[Call] = None)
-                   (implicit messages:Messages) = {
-    userAnswers.get(query) map {x =>
+                                      messageArg: String = "", changeRoute: Option[Call] = None)
+                                     (implicit messages: Messages) = {
+    userAnswers.get(query) map { x =>
       AnswerRow(
         messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-        HtmlFormat.escape(x.toString),
+        HtmlFormat.escape(deedOfVariation(x, messages)),
         None
       )
+    }
+  }
+
+  private def deedOfVariation(deedOfVariation: DeedOfVariation, messages: Messages) = {
+    deedOfVariation match {
+      case DeedOfVariation.DeedOfVariation =>
+        messages("deedOfVariation.replaceAbsoluteInterestOverWill")
+      case DeedOfVariation.ReplacedWill =>
+        messages("deedOfVariation.replaceWillTrust")
     }
   }
 
