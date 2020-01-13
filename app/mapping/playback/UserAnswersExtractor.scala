@@ -16,7 +16,7 @@
 
 package mapping.playback
 
-import com.google.inject.Inject
+import com.google.inject.{ImplementedBy, Inject}
 import mapping.playback.PlaybackExtractionErrors._
 import mapping.playback.assets.AssetsExtractor
 import mapping.playback.beneficiaries.BeneficiaryExtractor
@@ -26,14 +26,17 @@ import models.playback.UserAnswers
 import models.playback.http.GetTrust
 import play.api.Logger
 
-class UserAnswersExtractor @Inject()(beneficiary: BeneficiaryExtractor,
+@ImplementedBy(classOf[UserAnswersExtractorImpl])
+trait UserAnswersExtractor extends PlaybackExtractor[GetTrust]
+
+class UserAnswersExtractorImpl @Inject()(beneficiary: BeneficiaryExtractor,
                                      leadTrustee: LeadTrusteeExtractor,
                                      settlors: SettlorExtractor,
                                      trustType: TrustTypeExtractor,
                                      protectors: ProtectorExtractor,
                                      assets: AssetsExtractor,
                                      individualExtractor: OtherIndividualExtractor
-                                    ) extends PlaybackExtractor[GetTrust] {
+                                    ) extends UserAnswersExtractor {
 
   import models.playback.UserAnswersCombinator._
 
