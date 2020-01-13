@@ -25,31 +25,31 @@ class SettlorsNINoYesNoPageSpec extends PageBehaviours {
 
   "SettlorsNINoYesNoPage" must {
 
-    beRetrievable[Boolean](SettlorsNINoYesNoPage)
+    beRetrievable[Boolean](SettlorsNationalInsuranceYesNoPage)
 
-    beSettable[Boolean](SettlorsNINoYesNoPage)
+    beSettable[Boolean](SettlorsNationalInsuranceYesNoPage)
 
-    beRemovable[Boolean](SettlorsNINoYesNoPage)
+    beRemovable[Boolean](SettlorsNationalInsuranceYesNoPage)
   }
 
-  "remove SettlorNinoPage when SettlorsNINoYesNoPage is set to false" in {
+  "remove SettlorNinoPage when settlorsNationalInsuranceYesNoPage is set to false" in {
     forAll(arbitrary[UserAnswers], arbitrary[String]) {
       (initial, str) =>
         val answers: UserAnswers = initial.set(SettlorNationalInsuranceNumberPage, str).success.value
-        val result = answers.set(SettlorsNINoYesNoPage, false).success.value
+        val result = answers.set(SettlorsNationalInsuranceYesNoPage, false).success.value
 
         result.get(SettlorNationalInsuranceNumberPage) mustNot be(defined)
     }
   }
 
-  "remove relevant Data when SettlorsNINoYesNoPage is set to true" in {
+  "remove relevant Data when SettlorsNationalInsurancePage is set to true" in {
     forAll(arbitrary[UserAnswers], arbitrary[String]) {
       (initial, str) =>
         val answers: UserAnswers = initial.set(SettlorsLastKnownAddressYesNoPage, true).success.value
           .set(WasSettlorsAddressUKYesNoPage, true).success.value
         .set(SettlorsUKAddressPage, UKAddress(str, str, Some(str), Some(str), str)).success.value
 
-        val result = answers.set(SettlorsNINoYesNoPage, true).success.value
+        val result = answers.set(SettlorsNationalInsuranceYesNoPage, true).success.value
 
         result.get(SettlorsLastKnownAddressYesNoPage) mustNot be(defined)
         result.get(WasSettlorsAddressUKYesNoPage) mustNot be(defined)

@@ -39,7 +39,7 @@ class DeceasedSettlorMapper @Inject()(nameMapper: NameMapper, addressMapper: Add
   }
 
   private def identificationStatus(userAnswers: UserAnswers): Option[Identification] = {
-    val settlorNinoYesNo = userAnswers.get(SettlorsNINoYesNoPage)
+    val settlorNinoYesNo = userAnswers.get(SettlorsNationalInsuranceYesNoPage)
     val settlorsLastKnownAddressYesNo = userAnswers.get(SettlorsLastKnownAddressYesNoPage)
 
     (settlorNinoYesNo, settlorsLastKnownAddressYesNo) match {

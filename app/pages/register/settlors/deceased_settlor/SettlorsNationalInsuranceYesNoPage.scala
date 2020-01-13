@@ -23,7 +23,7 @@ import sections.DeceasedSettlor
 
 import scala.util.Try
 
-case object SettlorsNINoYesNoPage extends QuestionPage[Boolean] {
+case object SettlorsNationalInsuranceYesNoPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = DeceasedSettlor.path \ toString
 

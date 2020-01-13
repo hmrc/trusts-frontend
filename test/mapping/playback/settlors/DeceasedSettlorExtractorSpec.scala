@@ -76,9 +76,9 @@ class DeceasedSettlorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SettlorDateOfDeathPage) mustNot be(defined)
         extraction.right.value.get(SettlorDateOfBirthYesNoPage).get mustBe false
         extraction.right.value.get(SettlorsDateOfBirthPage) mustNot be(defined)
-        extraction.right.value.get(SettlorsNINoYesNoPage).get mustBe false
+        extraction.right.value.get(SettlorsNationalInsuranceYesNoPage).get mustBe false
         extraction.right.value.get(SettlorNationalInsuranceNumberPage) mustNot be(defined)
-        extraction.right.value.get(SettlorsLastKnownAddressYesNoPage) mustNot be(defined)
+        extraction.right.value.get(SettlorsLastKnownAddressYesNoPage).get mustBe false
         extraction.right.value.get(SettlorsUKAddressPage) mustNot be(defined)
         extraction.right.value.get(SettlorsInternationalAddressPage) mustNot be(defined)
         extraction.right.value.get(SettlorsPassportIDCardPage) mustNot be(defined)
@@ -95,7 +95,7 @@ class DeceasedSettlorExtractorSpec extends FreeSpec with MustMatchers
           dateOfDeath = Some(DateTime.parse("2019-02-01")),
           identification = Some(
             DisplayTrustIdentificationType(
-              safeId = None,
+              safeId = Some("34234234-34234-234234"),
               nino = None,
               passport = None,
               address = None
@@ -113,48 +113,13 @@ class DeceasedSettlorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SettlorDateOfDeathPage).get mustBe LocalDate.of(2019,2,1)
         extraction.right.value.get(SettlorDateOfBirthYesNoPage).get mustBe false
         extraction.right.value.get(SettlorsDateOfBirthPage) mustNot be(defined)
-        extraction.right.value.get(SettlorsNINoYesNoPage).get mustBe false
+        extraction.right.value.get(SettlorsNationalInsuranceYesNoPage).get mustBe false
         extraction.right.value.get(SettlorNationalInsuranceNumberPage) mustNot be(defined)
-        extraction.right.value.get(SettlorsLastKnownAddressYesNoPage) mustNot be(defined)
+        extraction.right.value.get(SettlorsLastKnownAddressYesNoPage).get mustBe false
         extraction.right.value.get(SettlorsUKAddressPage) mustNot be(defined)
         extraction.right.value.get(SettlorsInternationalAddressPage) mustNot be(defined)
         extraction.right.value.get(SettlorsPassportIDCardPage) mustNot be(defined)
-      }
-
-      "with name and date of birth, must return user answers updated" in {
-
-        val deceasedSettlor = DisplayTrustWillType(
-          lineNo = "1",
-          bpMatchStatus = Some("01"),
-          name = NameType("First Name", None, "Last Name"),
-          dateOfBirth = Some(DateTime.parse("1970-10-15")),
-          dateOfDeath = None,
-          identification = Some(
-            DisplayTrustIdentificationType(
-              safeId = None,
-              nino = None,
-              passport = None,
-              address = None
-            )
-          ),
-          entityStart = "2019-11-26"
-        )
-
-        val ua = UserAnswers("fakeId")
-
-        val extraction = deceasedSettlorExtractor.extract(ua, Some(deceasedSettlor))
-
-        extraction.right.value.get(SettlorsNamePage).get mustBe FullName("First Name", None, "Last Name")
-        extraction.right.value.get(SettlorDateOfDeathYesNoPage).get mustBe false
-        extraction.right.value.get(SettlorDateOfDeathPage) mustNot be(defined)
-        extraction.right.value.get(SettlorDateOfBirthYesNoPage).get mustBe true
-        extraction.right.value.get(SettlorsDateOfBirthPage).get mustBe LocalDate.of(1970,10,15)
-        extraction.right.value.get(SettlorsNINoYesNoPage).get mustBe false
-        extraction.right.value.get(SettlorNationalInsuranceNumberPage) mustNot be(defined)
-        extraction.right.value.get(SettlorsLastKnownAddressYesNoPage) mustNot be(defined)
-        extraction.right.value.get(SettlorsUKAddressPage) mustNot be(defined)
-        extraction.right.value.get(SettlorsInternationalAddressPage) mustNot be(defined)
-        extraction.right.value.get(SettlorsPassportIDCardPage) mustNot be(defined)
+        extraction.right.value.get(SettlorsSafeIdPage).get mustBe "34234234-34234-234234"
       }
 
       "with name and nino, must return user answers updated" in {
@@ -185,7 +150,7 @@ class DeceasedSettlorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SettlorDateOfDeathPage) mustNot be(defined)
         extraction.right.value.get(SettlorDateOfBirthYesNoPage).get mustBe false
         extraction.right.value.get(SettlorsDateOfBirthPage) mustNot be(defined)
-        extraction.right.value.get(SettlorsNINoYesNoPage).get mustBe true
+        extraction.right.value.get(SettlorsNationalInsuranceYesNoPage).get mustBe true
         extraction.right.value.get(SettlorNationalInsuranceNumberPage).get mustBe "NA1111111A"
         extraction.right.value.get(SettlorsLastKnownAddressYesNoPage) mustNot be(defined)
         extraction.right.value.get(SettlorsUKAddressPage) mustNot be(defined)
@@ -221,7 +186,7 @@ class DeceasedSettlorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SettlorDateOfDeathPage) mustNot be(defined)
         extraction.right.value.get(SettlorDateOfBirthYesNoPage).get mustBe false
         extraction.right.value.get(SettlorsDateOfBirthPage) mustNot be(defined)
-        extraction.right.value.get(SettlorsNINoYesNoPage).get mustBe false
+        extraction.right.value.get(SettlorsNationalInsuranceYesNoPage).get mustBe false
         extraction.right.value.get(SettlorNationalInsuranceNumberPage) mustNot be(defined)
         extraction.right.value.get(SettlorsLastKnownAddressYesNoPage).get mustBe true
         extraction.right.value.get(WasSettlorsAddressUKYesNoPage).get mustBe true
@@ -259,7 +224,7 @@ class DeceasedSettlorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SettlorDateOfDeathPage) mustNot be(defined)
         extraction.right.value.get(SettlorDateOfBirthYesNoPage).get mustBe false
         extraction.right.value.get(SettlorsDateOfBirthPage) mustNot be(defined)
-        extraction.right.value.get(SettlorsNINoYesNoPage).get mustBe false
+        extraction.right.value.get(SettlorsNationalInsuranceYesNoPage).get mustBe false
         extraction.right.value.get(SettlorNationalInsuranceNumberPage) mustNot be(defined)
         extraction.right.value.get(SettlorsLastKnownAddressYesNoPage).get mustBe true
         extraction.right.value.get(WasSettlorsAddressUKYesNoPage).get mustBe false
@@ -297,9 +262,9 @@ class DeceasedSettlorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SettlorDateOfDeathPage) mustNot be(defined)
         extraction.right.value.get(SettlorDateOfBirthYesNoPage).get mustBe false
         extraction.right.value.get(SettlorsDateOfBirthPage) mustNot be(defined)
-        extraction.right.value.get(SettlorsNINoYesNoPage).get mustBe false
+        extraction.right.value.get(SettlorsNationalInsuranceYesNoPage).get mustBe false
         extraction.right.value.get(SettlorNationalInsuranceNumberPage) mustNot be(defined)
-        extraction.right.value.get(SettlorsLastKnownAddressYesNoPage) mustNot be(defined)
+        extraction.right.value.get(SettlorsLastKnownAddressYesNoPage).get mustBe false
         extraction.right.value.get(WasSettlorsAddressUKYesNoPage) mustNot be(defined)
         extraction.right.value.get(SettlorsUKAddressPage) mustNot be(defined)
         extraction.right.value.get(SettlorsInternationalAddressPage) mustNot be(defined)
@@ -335,7 +300,7 @@ class DeceasedSettlorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SettlorDateOfDeathPage).get mustBe LocalDate.of(2019,2,1)
         extraction.right.value.get(SettlorDateOfBirthYesNoPage).get mustBe true
         extraction.right.value.get(SettlorsDateOfBirthPage).get mustBe LocalDate.of(1970,10,15)
-        extraction.right.value.get(SettlorsNINoYesNoPage).get mustBe true
+        extraction.right.value.get(SettlorsNationalInsuranceYesNoPage).get mustBe true
         extraction.right.value.get(SettlorNationalInsuranceNumberPage).get mustBe "NA1111111A"
         extraction.right.value.get(SettlorsLastKnownAddressYesNoPage) mustNot be(defined)
         extraction.right.value.get(SettlorsUKAddressPage) mustNot be(defined)
@@ -371,7 +336,7 @@ class DeceasedSettlorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SettlorDateOfDeathPage) mustNot be(defined)
         extraction.right.value.get(SettlorDateOfBirthYesNoPage).get mustBe false
         extraction.right.value.get(SettlorsDateOfBirthPage) mustNot be(defined)
-        extraction.right.value.get(SettlorsNINoYesNoPage).get mustBe false
+        extraction.right.value.get(SettlorsNationalInsuranceYesNoPage).get mustBe false
         extraction.right.value.get(SettlorNationalInsuranceNumberPage) mustNot be(defined)
         extraction.right.value.get(SettlorsLastKnownAddressYesNoPage).get mustBe true
         extraction.right.value.get(WasSettlorsAddressUKYesNoPage).get mustBe true
