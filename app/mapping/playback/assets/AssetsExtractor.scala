@@ -16,6 +16,7 @@
 
 package mapping.playback.assets
 
+import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
 import mapping.playback.{PlaybackExtractionErrors, PlaybackExtractor}
 import models.playback.UserAnswers
@@ -25,7 +26,7 @@ import pages.register.asset.money.AssetMoneyValuePage
 
 import scala.util.Success
 
-class AssetsExtractor extends PlaybackExtractor[DisplayTrustAssets] {
+class AssetsExtractor @Inject() extends PlaybackExtractor[DisplayTrustAssets] {
   override def extract(answers: UserAnswers, data: DisplayTrustAssets): Either[PlaybackExtractionErrors.PlaybackExtractionError, UserAnswers] =  {
     val assets: List[UserAnswers] = List(
       extractMonetaryAsset(answers, data)
