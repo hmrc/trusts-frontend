@@ -21,7 +21,7 @@ import java.time.LocalDate
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping.playback.PlaybackExtractor
-import mapping.registration.PassportType
+import mapping.registration.{AddressType, PassportType}
 import models.core.pages.FullName
 import models.playback.http._
 import models.playback.{MetaData, UserAnswers}

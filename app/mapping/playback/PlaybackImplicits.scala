@@ -18,9 +18,9 @@ package mapping.playback
 
 import java.time.LocalDate
 
-import mapping.registration.PassportType
+import mapping.registration.{AddressType, PassportType}
 import models.core.pages.{Address, FullName, InternationalAddress, UKAddress}
-import models.playback.http.{AddressType, NameType}
+import models.playback.http.NameType
 import models.registration.pages.PassportOrIdCardDetails
 import org.joda.time.DateTime
 

@@ -17,7 +17,7 @@
 package models.playback.http
 
 import mapping.Constant._
-import mapping.registration.{AssetMonetaryAmount, PassportType, PropertyLandType, TrustDetailsType}
+import mapping.registration.{AssetMonetaryAmount, PassportType, PropertyLandType, TrustDetailsType, AddressType}
 import models.registration.pages.RoleInCompany
 import org.joda.time.DateTime
 import play.api.libs.json._
@@ -55,17 +55,6 @@ case class Declaration(name: NameType,
 
 object Declaration {
   implicit val declarationFormat: Format[Declaration] = Json.format[Declaration]
-}
-
-case class AddressType(line1: String,
-                       line2: String,
-                       line3: Option[String],
-                       line4: Option[String],
-                       postCode: Option[String],
-                       country: String)
-
-object AddressType {
-  implicit val addressTypeFormat: Format[AddressType] = Json.format[AddressType]
 }
 
 case class NameType(firstName: String,

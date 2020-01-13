@@ -19,8 +19,9 @@ package mapping.playback
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
+import mapping.registration.AddressType
 import models.playback.UserAnswers
-import models.playback.http.{AddressType, Correspondence}
+import models.playback.http.Correspondence
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import pages.register._
 

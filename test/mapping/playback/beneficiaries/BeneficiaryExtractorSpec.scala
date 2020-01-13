@@ -20,6 +20,7 @@ import base.SpecBaseHelpers
 import generators.Generators
 import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
 import mapping.playback.PlaybackExtractor
+import mapping.registration.AddressType
 import models.core.pages.{Description, FullName, UKAddress}
 import models.playback.http._
 import models.playback.{MetaData, UserAnswers}
