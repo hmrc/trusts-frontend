@@ -23,78 +23,79 @@ import play.twirl.api.HtmlFormat
 import utils.CheckAnswersFormatters._
 import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
+import utils.print.playback.sections.AnswerRowConverter._
 
 object SettlorCompany {
 
   def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] = {
 
-    val questions = Seq(
-      name(index, userAnswers),
-      utrYesNo(index, userAnswers),
-      utr(index, userAnswers),
-      addressYesNo(index, userAnswers),
-      addressUKYesNo(index, userAnswers),
-      addressUK(index, userAnswers),
-      nonUKAddress(index, userAnswers, countryOptions)
-    ).flatten
-
-    if (name(index, userAnswers).nonEmpty) {
-      Some(Seq(AnswerSection(
-        headingKey = None,
-        questions,
-        sectionKey = Some(messages("answerPage.section.settlorCompany.heading"))
-      )))
-    } else {
-      None
-    }
-  }
-
-  def name(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(SettlorIndividualNamePage(index)) map { x =>
-    AnswerRow(
-      "settlorCompanyName.checkYourAnswersLabel",
-      HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"),
-      None
-    )
-  }
-
-  def utrYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
-    userAnswers.get(SettlorUtrYesNoPage(index)) map {
-      x =>
-        AnswerRow(
-          "settlorCompanyUtrYesNo.checkYourAnswersLabel",
-          yesOrNo(x),
-          None
+    userAnswers.get(SettlorBusinessNamePage(index)).flatMap { name =>
+      Some(Seq(
+        AnswerSection(
+          headingKey = Some(messages("answerPage.section.settlorCompany.subheading") + s" ${index + 1}"),
+          Seq(
+            stringQuestion(SettlorBusinessNamePage(index), userAnswers, "settlorCompanyName"),
+            yesNoQuestion(SettlorUtrYesNoPage(index), userAnswers, "settlorCompanyUtrYesNo", name),
+            stringQuestion(SettlorUtrPage(index), userAnswers, "settlorCompanyUtr", name),
+            yesNoQuestion(SettlorIndividualAddressYesNoPage(index), userAnswers, "settlorCompanyAddressYesNo", name),
+            yesNoQuestion(SettlorIndividualAddressUKYesNoPage(index), userAnswers, "settlorCompanyAddressUKYesNo", name),
+            addressQuestion(SettlorIndividualAddressUKPage(index), userAnswers, "trusteesUkAddress", name, countryOptions),
+            addressUK(index, userAnswers),
+            nonUKAddress(index, userAnswers, countryOptions)
+          ).flatten,
+          sectionKey = None
         )
+      ))
     }
 
-  def utr(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(SettlorUtrPage(index)) map {
-    x =>
-      AnswerRow(
-        "settlorCompanyUtr.checkYourAnswersLabel",
-        HtmlFormat.escape(x.format(dateFormatter)),
-        None
-      )
   }
 
-  def addressYesNo(index: Int, userAnswers: UserAnswers)
-                  (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressYesNoPage(index)) map {
-    x =>
-      AnswerRow(
-        "settlorCompanyAddressYesNo.checkYourAnswersLabel",
-        yesOrNo(x),
-        None
-      )
-  }
+//  def name(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(SettlorBusinessNamePage(index)) map { x =>
+//    AnswerRow(
+//      "settlorCompanyName.checkYourAnswersLabel",
+//      HtmlFormat.escape(x),
+//      None
+//    )
+//  }
 
-  def addressUKYesNo(index: Int, userAnswers: UserAnswers)
-                    (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressUKYesNoPage(index)) map {
-    x =>
-      AnswerRow(
-        "settlorCompanyAddressUKYesNo.checkYourAnswersLabel",
-        yesOrNo(x),
-        None
-      )
-  }
+//  def utrYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
+//    userAnswers.get(SettlorUtrYesNoPage(index)) map {
+//      x =>
+//        AnswerRow(
+//          "settlorCompanyUtrYesNo.checkYourAnswersLabel",
+//          yesOrNo(x),
+//          None
+//        )
+//    }
+//
+//  def utr(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(SettlorUtrPage(index)) map {
+//    x =>
+//      AnswerRow(
+//        "settlorCompanyUtr.checkYourAnswersLabel",
+//        HtmlFormat.escape(x.format(dateFormatter)),
+//        None
+//      )
+//  }
+
+//  def addressYesNo(index: Int, userAnswers: UserAnswers)
+//                  (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressYesNoPage(index)) map {
+//    x =>
+//      AnswerRow(
+//        "settlorCompanyAddressYesNo.checkYourAnswersLabel",
+//        yesOrNo(x),
+//        None
+//      )
+//  }
+//
+//  def addressUKYesNo(index: Int, userAnswers: UserAnswers)
+//                    (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressUKYesNoPage(index)) map {
+//    x =>
+//      AnswerRow(
+//        "settlorCompanyAddressUKYesNo.checkYourAnswersLabel",
+//        yesOrNo(x),
+//        None
+//      )
+//  }
 
   def addressUK(index: Int, userAnswers: UserAnswers)
                (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressUKPage(index)) map {

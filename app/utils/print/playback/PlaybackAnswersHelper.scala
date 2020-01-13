@@ -20,6 +20,8 @@ import models.core.pages.IndividualOrBusiness
 import models.core.pages.IndividualOrBusiness.{Business, Individual}
 import models.playback.UserAnswers
 import pages.register.protectors.ProtectorIndividualOrBusinessPage
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
+import pages.register.settlors.living_settlor.SettlorIndividualOrBusinessPage
 import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage}
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
@@ -44,6 +46,39 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
           TrusteeOrganisation(index, userAnswers, countryOptions)
         }
       }
+    }
+
+  }
+
+  def livingSettlor(index: Int): Seq[AnswerSection] = {
+
+    userAnswers.get(SettlorIndividualOrBusinessPage(index)) flatMap { individualOrBusiness =>
+      println("SettlorIndividualOrBusinessPage: "+individualOrBusiness)
+      individualOrBusiness match {
+        case IndividualOrBusiness.Individual => None //SettlorIndividual(index, userAnswers, countryOptions)
+        case IndividualOrBusiness.Business => SettlorCompany(index, userAnswers, countryOptions)
+      }
+    }
+
+  }.getOrElse(Nil)
+
+  def livingSettlors : Seq[AnswerSection] = {
+
+    val size = userAnswers.get(_root_.sections.settlors.LivingSettlors).map(_.value.size).getOrElse(0)
+
+    val livingSettlors = size match {
+      case 0 => Nil
+      case _ =>
+        (for (index <- 0 to size) yield livingSettlor(index)).flatten
+    }
+
+    if (livingSettlors.nonEmpty) {
+      Seq(
+        Seq(AnswerSection(sectionKey = Some("answerPage.section.settlors.heading"))),
+        livingSettlors
+      ).flatten
+    } else {
+      Nil
     }
 
   }

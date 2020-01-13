@@ -30,6 +30,7 @@ class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions){
 
     List(
       DeceasedSettlor(userAnswers, countryOptions),
+      playbackAnswersHelper.livingSettlors,
       playbackAnswersHelper.beneficiaries,
       playbackAnswersHelper.protectors,
       playbackAnswersHelper.otherIndividual,
