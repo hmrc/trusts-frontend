@@ -68,6 +68,32 @@ object AnswerRowConverter {
     }
   }
 
+  def internationalAddressQuestion(query: Gettable[InternationalAddress], userAnswers: UserAnswers, labelKey: String,
+                        messageArg: String = "", countryOptions: CountryOptions, changeRoute: Option[Call] = None)
+                       (implicit messages:Messages) = {
+    userAnswers.get(query) map {
+      international =>
+        AnswerRow(
+          messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
+          CheckAnswersFormatters.internationalAddress(international, countryOptions),
+          None
+        )
+    }
+  }
+
+  def ukAddressQuestion(query: Gettable[UKAddress], userAnswers: UserAnswers, labelKey: String,
+  messageArg: String = "", countryOptions: CountryOptions, changeRoute: Option[Call] = None)
+  (implicit messages:Messages) = {
+    userAnswers.get(query) map {
+      uk =>
+        AnswerRow(
+          messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
+          CheckAnswersFormatters.ukAddress(uk),
+          None
+        )
+    }
+  }
+
   def monetaryAmountQuestion(query: Gettable[String], userAnswers: UserAnswers, labelKey: String,
                              messageArg: String = "", changeRoute: Option[Call] = None)
                             (implicit messages:Messages) = {

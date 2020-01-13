@@ -144,7 +144,7 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
       }
       .flatMap(_.set(TrusteeStatus(index), Completed))
   }
-  
+
   private def extractLeadIndividualIdentification(leadIndividual: DisplayTrustLeadTrusteeIndType, index: Int, answers: UserAnswers) = {
     leadIndividual.identification.map {
 

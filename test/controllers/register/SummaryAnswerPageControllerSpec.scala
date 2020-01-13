@@ -98,7 +98,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
         .set(SettlorDateOfDeathPage, LocalDate.now).success.value
         .set(SettlorDateOfBirthYesNoPage, true).success.value
         .set(SettlorsDateOfBirthPage, LocalDate.now).success.value
-        .set(SettlorsNINoYesNoPage, true).success.value
+        .set(SettlorsNationalInsuranceYesNoPage, true).success.value
         .set(SettlorNationalInsuranceNumberPage, "AB123456C").success.value
         .set(SettlorsLastKnownAddressYesNoPage, true).success.value
         .set(WasSettlorsAddressUKYesNoPage, true).success.value

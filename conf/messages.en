@@ -721,6 +721,8 @@ settlorsLastKnownAddressYesNo.heading = Do you know {0}’s last known address?
 settlorsLastKnownAddressYesNo.checkYourAnswersLabel = Do you know {0}’s last known address?
 settlorsLastKnownAddressYesNo.error.required = Select yes if you know the settlor’s last known address
 
+settlorsPassportOrIdCard.checkYourAnswersLabel = What are {0}’s passport or ID card details?
+
 settlorsName.title = What is the settlor’s name?
 settlorsName.heading = What is the settlor’s name?
 settlorsName.firstName = First name
@@ -736,10 +738,10 @@ settlorsName.error.middleName.length = Settlor’s middle names must be 35 chara
 settlorsName.error.middleName.invalid = Settlor’s middle names must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 settlorsName.error.lastName.length = Settlor’s last name must be 35 characters or less
 
-settlorsNINoYesNo.title = Do you know the settlor’s National Insurance number?
-settlorsNINoYesNo.heading = Do you know {0}’s National Insurance number?
-settlorsNINoYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
-settlorsNINoYesNo.error.required = Select yes if you know the settlor’s National Insurance number
+settlorsNationalInsuranceYesNo.title = Do you know the settlor’s National Insurance number?
+settlorsNationalInsuranceYesNo.heading = Do you know {0}’s National Insurance number?
+settlorsNationalInsuranceYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
+settlorsNationalInsuranceYesNo.error.required = Select yes if you know the settlor’s National Insurance number
 
 settlorsUKAddress.title = What is the settlor’s last known address?
 settlorsUKAddress.heading = What is {0}’s last known address?

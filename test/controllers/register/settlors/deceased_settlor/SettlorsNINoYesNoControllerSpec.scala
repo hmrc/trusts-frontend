@@ -20,7 +20,7 @@ import base.RegistrationSpecBase
 import forms.YesNoFormProvider
 import models.NormalMode
 import models.core.pages.FullName
-import pages.register.settlors.deceased_settlor.{SettlorsNINoYesNoPage, SettlorsNamePage}
+import pages.register.settlors.deceased_settlor.{SettlorsNationalInsuranceYesNoPage, SettlorsNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.settlors.deceased_settlor.SettlorsNINoYesNoView
@@ -28,7 +28,7 @@ import controllers.register.routes._
 
 class SettlorsNINoYesNoControllerSpec extends RegistrationSpecBase {
 
-  val form = new YesNoFormProvider().withPrefix("settlorsNINoYesNo")
+  val form = new YesNoFormProvider().withPrefix("settlorsNationalInsuranceYesNo")
 
   lazy val settlorsNINoYesNoRoute = routes.SettlorsNINoYesNoController.onPageLoad(NormalMode,fakeDraftId).url
 
@@ -59,7 +59,7 @@ class SettlorsNINoYesNoControllerSpec extends RegistrationSpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(SettlorsNINoYesNoPage, true).success.value.set(SettlorsNamePage,
+      val userAnswers = emptyUserAnswers.set(SettlorsNationalInsuranceYesNoPage, true).success.value.set(SettlorsNamePage,
         name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()

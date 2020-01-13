@@ -91,7 +91,7 @@ object TestUserAnswers extends TryValues {
       .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
       .set(SettlorDateOfDeathYesNoPage, false).success.value
       .set(SettlorDateOfBirthYesNoPage, false).success.value
-      .set(SettlorsNINoYesNoPage, false).success.value
+      .set(SettlorsNationalInsuranceYesNoPage, false).success.value
       .set(SettlorsLastKnownAddressYesNoPage, false).success.value
       .set(DeceasedSettlorStatus, Completed).success.value
   }
