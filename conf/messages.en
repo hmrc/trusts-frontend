@@ -1534,3 +1534,6 @@ setupInAdditionToWillTrustYesNo.checkYourAnswersLabel = Was it set up in additio
 howDeedOfVariationCreated.checkYourAnswersLabel = How was the Deed of Variation created?
 employerFinancedRetirementBenefitsSchemeYesNo.checkYourAnswersLabel = Is this an employer-financed retirement benefits scheme?
 employerFinancedRetirementBenefitsSchemeStartDate.checkYourAnswersLabel = When did the employer-financed retirement benefits scheme start?
+
+deedOfVariation.replaceAbsoluteInterestOverWill = to replace an absolute interest over a will
+deedOfVariation.replaceWillTrust = to replace a will trust

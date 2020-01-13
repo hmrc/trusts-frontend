@@ -22,9 +22,9 @@ sealed trait DeedOfVariation
 
 object DeedOfVariation extends Enumerable.Implicits {
 
-  case object DeedOfVariation extends WithName("to replace an absolute interest over a will") with DeedOfVariation
-  case object ReplacedWill extends WithName("to replace a will trust") with DeedOfVariation
-  case object AdditionToWill extends DeedOfVariation
+  case object DeedOfVariation extends WithName("Previously there was only an absolute interest under the will") with DeedOfVariation
+  case object ReplacedWill extends WithName("Replaced the will trust") with DeedOfVariation
+  case object AdditionToWill extends WithName("Addition to the will trust") with DeedOfVariation
 
   val values: Set[DeedOfVariation] = Set(
     DeedOfVariation,
