@@ -46,7 +46,7 @@ class PlaybackAnswerPageControllerSpec extends PlaybackSpecBase {
         .set(CharityBeneficiaryDiscretionYesNoPage(0), false).success.value
         .set(CharityBeneficiaryAddressYesNoPage(0), false).success.value
 
-      val expectedSections = injector.instanceOf[PrintPlaybackHelper].summary(playbackAnswers)
+      val expectedSections = injector.instanceOf[PrintPlaybackHelper].entities(playbackAnswers)
 
       val application = applicationBuilder(Some(playbackAnswers)).build()
 
