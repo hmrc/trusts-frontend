@@ -22,21 +22,36 @@ import models.playback.UserAnswers
 import models.playback.http.Correspondence
 import pages.register._
 import play.api.Logger
-
-import scala.util.{Failure, Success, Try}
+import models.core.pages.{Address, InternationalAddress, UKAddress}
+import scala.util.{Failure, Success}
 
 class CorrespondenceExtractor @Inject() extends PlaybackExtractor[Correspondence] {
 
-  override def extract(answers: UserAnswers, data: Correspondence): Either[PlaybackExtractionError, UserAnswers] =
-    {
-      answers.set(TrustNamePage, data.name) match {
-        case Success(a) =>
-          Right(a)
-        case Failure(exception) =>
-          Logger.warn(s"[Correspondence] failed to extract data due to ${exception.getMessage}")
-          Left(FailedToExtractData(Correspondence.toString))
-      }
+  import PlaybackImplicits._
 
+  override def extract(answers: UserAnswers, data: Correspondence): Either[PlaybackExtractionError, UserAnswers] =
+  {
+    val updated = answers
+      .set(CorrespondenceAbroadIndicatorPage, data.abroadIndicator)
+      .flatMap(_.set(TrustNamePage, data.name))
+      .flatMap(answers => extractAddress(data.address.convert, answers))
+      .flatMap(_.set(CorrespondenceBpMatchStatusPage, data.bpMatchStatus))
+      .flatMap(_.set(CorrespondencePhoneNumberPage, data.phoneNumber))
+
+    updated match {
+      case Success(a) =>
+        Right(a)
+      case Failure(exception) =>
+        Logger.warn(s"[CorrespondenceExtractor] failed to extract data due to ${exception.getMessage}")
+        Left(FailedToExtractData(Correspondence.toString))
     }
+  }
+
+  private def extractAddress(address: Address, answers: UserAnswers) = {
+    address match {
+      case uk: UKAddress => answers.set(CorrespondenceAddressPage, uk)
+      case nonUk: InternationalAddress => answers.set(CorrespondenceAddressPage, nonUk)
+    }
+  }
 
 }
