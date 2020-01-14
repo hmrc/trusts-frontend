@@ -16,58 +16,35 @@
 
 package mapping.playback.assets
 
-import com.google.inject.Inject
-import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
-import mapping.playback.PlaybackExtractor
 import models.playback.UserAnswers
-import models.playback.http.{DisplaySharesType, DisplayTrustTrusteeOrgType}
+import models.playback.http.DisplaySharesType
 import models.registration.pages.ShareClass._
 import models.registration.pages.ShareType
 import models.registration.pages.ShareType.{Quoted, Unquoted}
 import pages.register.asset.shares._
-import play.api.Logger
 
-import scala.util.{Failure, Success, Try}
+import scala.util.Try
 
-class SharesAssetExtractor @Inject() extends PlaybackExtractor[Option[List[DisplaySharesType]]] {
+class SharesAssetExtractor {
 
-  override def extract(answers: UserAnswers, data: Option[List[DisplaySharesType]]): Either[PlaybackExtractionError, UserAnswers] = {
-    data match {
-      case None => Left(FailedToExtractData("No Shares Asset"))
-      case Some(shares) =>
-
-        Logger.debug(s"[SharesAssetExtractor] extracting $shares")
-
-        val updated = shares.zipWithIndex.foldLeft[Try[UserAnswers]](Success(answers)){
-          case (answers, (share, index)) =>
-
-            share.shareClass match {
-              case Other =>
-                answers
-                  .flatMap(_.set(SharesInAPortfolioPage(index), true))
-                  .flatMap(_.set(SharePortfolioNamePage(index), share.orgName))
-                  .flatMap(answers => extractAreSharesListedOnStockExchange(share.typeOfShare, index, answers))
-                  .flatMap(_.set(ShareClassPage(index), share.shareClass))
-                  .flatMap(_.set(SharePortfolioQuantityInTrustPage(index), share.numberOfShares))
-                  .flatMap(_.set(ShareValueInTrustPage(index), share.value.toString))
-              case _ =>
-                answers
-                  .flatMap(_.set(SharesInAPortfolioPage(index), false))
-                  .flatMap(_.set(ShareCompanyNamePage(index), share.orgName))
-                  .flatMap(answers => extractAreSharesListedOnStockExchange(share.typeOfShare, index, answers))
-                  .flatMap(_.set(ShareClassPage(index), share.shareClass))
-                  .flatMap(_.set(ShareQuantityInTrustPage(index), share.numberOfShares))
-                  .flatMap(_.set(ShareValueInTrustPage(index), share.value.toString))
-            }
-          }
-
-        updated match {
-          case Success(a) =>
-            Right(a)
-          case Failure(exception) =>
-            Logger.warn(s"[SharesAssetExtractor] failed to extract data due to ${exception.getMessage}")
-            Left(FailedToExtractData(DisplaySharesType.toString))
-        }
+  def extract(answers: Try[UserAnswers], index: Int, share: DisplaySharesType): Try[UserAnswers] = {
+    share.shareClass match {
+      case Other =>
+        answers
+          .flatMap(_.set(SharesInAPortfolioPage(index), true))
+          .flatMap(_.set(SharePortfolioNamePage(index), share.orgName))
+          .flatMap(answers => extractAreSharesListedOnStockExchange(share.typeOfShare, index, answers))
+          .flatMap(_.set(ShareClassPage(index), share.shareClass))
+          .flatMap(_.set(SharePortfolioQuantityInTrustPage(index), share.numberOfShares))
+          .flatMap(_.set(ShareValueInTrustPage(index), share.value.toString))
+      case _ =>
+        answers
+          .flatMap(_.set(SharesInAPortfolioPage(index), false))
+          .flatMap(_.set(ShareCompanyNamePage(index), share.orgName))
+          .flatMap(answers => extractAreSharesListedOnStockExchange(share.typeOfShare, index, answers))
+          .flatMap(_.set(ShareClassPage(index), share.shareClass))
+          .flatMap(_.set(ShareQuantityInTrustPage(index), share.numberOfShares))
+          .flatMap(_.set(ShareValueInTrustPage(index), share.value.toString))
     }
   }
 
