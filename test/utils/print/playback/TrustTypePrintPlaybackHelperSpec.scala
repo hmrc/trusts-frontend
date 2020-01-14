@@ -48,7 +48,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
       val answers = answersWithTrustDetails
         .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
 
-      val result = helper.summary(answers)
+      val result = helper.trustDetails(answers)
 
       result mustBe Seq(
         trustDetails,
@@ -76,7 +76,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(KindOfTrustPage, KindOfTrust.Deed).success.value
         .set(SetUpInAdditionToWillTrustYesNoPage, true).success.value
 
-      val result = helper.summary(answers)
+      val result = helper.trustDetails(answers)
 
       result mustBe Seq(
         trustDetails,
@@ -115,7 +115,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(SetUpInAdditionToWillTrustYesNoPage, false).success.value
         .set(HowDeedOfVariationCreatedPage, DeedOfVariation.ReplacedWill).success.value
 
-      val result = helper.summary(answers)
+      val result = helper.trustDetails(answers)
 
       result mustBe Seq(
         trustDetails,
@@ -158,7 +158,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
         .set(HoldoverReliefYesNoPage, true).success.value
 
-      val result = helper.summary(answers)
+      val result = helper.trustDetails(answers)
 
       result mustBe Seq(
         trustDetails,
@@ -195,7 +195,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
         .set(KindOfTrustPage, KindOfTrust.FlatManagement).success.value
 
-      val result = helper.summary(answers)
+      val result = helper.trustDetails(answers)
 
       result mustBe Seq(
         trustDetails,
@@ -227,7 +227,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
         .set(KindOfTrustPage, KindOfTrust.HeritageMaintenanceFund).success.value
 
-      val result = helper.summary(answers)
+      val result = helper.trustDetails(answers)
 
       result mustBe Seq(
         trustDetails,
@@ -261,7 +261,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(EfrbsYesNoPage, true).success.value
         .set(EfrbsStartDatePage, LocalDate.of(1970, 2, 1)).success.value
 
-      val result = helper.summary(answers)
+      val result = helper.trustDetails(answers)
 
       result mustBe Seq(
         trustDetails,
@@ -304,7 +304,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(KindOfTrustPage, KindOfTrust.Employees).success.value
         .set(EfrbsYesNoPage, false).success.value
 
-      val result = helper.summary(answers)
+      val result = helper.trustDetails(answers)
 
       result mustBe Seq(
         trustDetails,

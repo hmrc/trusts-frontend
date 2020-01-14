@@ -25,7 +25,7 @@ class PlaybackAnswersViewSpec extends ViewBehaviours {
 
     val view = viewFor[PlaybackAnswersView](Some(emptyUserAnswers))
 
-    val applyView = view.apply(Nil)(fakeRequest, messages)
+    val applyView = view.apply(Nil, Nil)(fakeRequest, messages)
 
     behave like normalPage(applyView, "playbackLastDeclared")
 
