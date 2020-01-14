@@ -19,6 +19,7 @@ package mapping.playback
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
+import mapping.registration.AddressType
 import models.core.pages.IndividualOrBusiness
 import models.playback.http._
 import models.playback.{MetaData, UserAnswers}

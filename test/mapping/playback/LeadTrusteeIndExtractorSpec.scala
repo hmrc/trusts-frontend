@@ -22,7 +22,7 @@ import org.joda.time.DateTime
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
-import mapping.registration.PassportType
+import mapping.registration.{AddressType, PassportType}
 import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
 import models.playback.http._
 import models.playback.{MetaData, UserAnswers}

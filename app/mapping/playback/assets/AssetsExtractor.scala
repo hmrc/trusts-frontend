@@ -19,7 +19,7 @@ package mapping.playback.assets
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
 import mapping.playback.PlaybackExtractor
-import mapping.registration.AssetMonetaryAmount
+import mapping.registration.{AssetMonetaryAmount, PropertyLandType}
 import models.playback.UserAnswers
 import models.playback.http.{Asset, DisplaySharesType, DisplayTrustAssets}
 import pages.register.asset.money.AssetMoneyValuePage
@@ -27,7 +27,8 @@ import play.api.Logger
 
 import scala.util.{Failure, Success, Try}
 
-class AssetsExtractor @Inject()(sharesAssetExtractor: SharesAssetExtractor) extends PlaybackExtractor[DisplayTrustAssets] {
+class AssetsExtractor @Inject()(sharesAssetExtractor: SharesAssetExtractor,
+                                propertyLandExtractor: PropertyOrLandAssetExtractor) extends PlaybackExtractor[DisplayTrustAssets] {
   override def extract(answers: UserAnswers, data: DisplayTrustAssets): Either[PlaybackExtractionError, UserAnswers] =  {
 
     val assets: List[Asset] =
@@ -53,6 +54,7 @@ class AssetsExtractor @Inject()(sharesAssetExtractor: SharesAssetExtractor) exte
         asset match {
           case x : AssetMonetaryAmount => extractMonetaryAsset(answers, index, x)
           case x : DisplaySharesType => sharesAssetExtractor.extract(answers, index, x)
+          case x : PropertyLandType => propertyLandExtractor.extract(answers, index, x)
           case _ =>
             // TODO: Restore this behaviour once all assets types are supported.
             // Failure(new RuntimeException("Unexpected asset type"))

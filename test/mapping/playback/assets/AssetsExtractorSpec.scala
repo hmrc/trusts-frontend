@@ -20,13 +20,15 @@ import base.SpecBaseHelpers
 import generators.Generators
 import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
 import mapping.playback.PlaybackExtractor
-import mapping.registration.AssetMonetaryAmount
+import mapping.registration.{AddressType, AssetMonetaryAmount, PropertyLandType}
+import models.core.pages.{InternationalAddress, UKAddress}
 import models.playback.UserAnswers
 import models.playback.http.{DisplaySharesType, DisplayTrustAssets}
 import models.registration.pages.ShareClass._
 import models.registration.pages.ShareType.{Quoted, Unquoted}
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 
 class AssetsExtractorSpec extends FreeSpec with MustMatchers
@@ -57,7 +59,30 @@ class AssetsExtractorSpec extends FreeSpec with MustMatchers
       "must return user answers updated" in {
         val assets = DisplayTrustAssets(
           monetary = List(AssetMonetaryAmount(64000)),
-          propertyOrLand = Nil,
+          propertyOrLand = List(
+            PropertyLandType(
+              buildingLandName = Some("Property 1"),
+              address = Some(AddressType(
+                "line1", "line2", None, None, Some("NE11NE"), "UK"
+              )),
+              valueFull = 95,
+              valuePrevious = 90
+            ),
+            PropertyLandType(
+              buildingLandName = Some("Property 2"),
+              address = Some(AddressType(
+                "line1", "line2", None, None, None, "FR"
+              )),
+              valueFull = 95,
+              valuePrevious = 90
+            ),
+            PropertyLandType(
+              buildingLandName = Some("Property 3"),
+              address = None,
+              valueFull = 95,
+              valuePrevious = 90
+            )
+          ),
           shares = List(
             DisplaySharesType(
               numberOfShares = Some("1"),
@@ -88,21 +113,48 @@ class AssetsExtractorSpec extends FreeSpec with MustMatchers
 
         extraction.right.value.get(AssetMoneyValuePage(0)).get mustBe "64000"
 
-        extraction.right.value.get(SharesInAPortfolioPage(1)).get mustBe false
-        extraction.right.value.get(ShareCompanyNamePage(1)).get mustBe "Share 1"
-        extraction.right.value.get(ShareUtrPage(1)).get mustBe "1234567890"
-        extraction.right.value.get(SharesOnStockExchangePage(1)).get mustBe true
-        extraction.right.value.get(ShareClassPage(1)).get mustBe Ordinary
-        extraction.right.value.get(ShareQuantityInTrustPage(1)).get mustBe "1"
-        extraction.right.value.get(ShareValueInTrustPage(1)).get mustBe "1"
+        extraction.right.value.get(PropertyOrLandAddressYesNoPage(1)).get mustBe true
+        extraction.right.value.get(PropertyOrLandAddressUkYesNoPage(1)).get mustBe true
+        extraction.right.value.get(PropertyOrLandUKAddressPage(1)).get mustBe UKAddress("line1", "line2", None, None, "NE11NE")
+        extraction.right.value.get(PropertyOrLandInternationalAddressPage(1)) must not be defined
+        extraction.right.value.get(PropertyOrLandDescriptionPage(1)).get mustBe "Property 1"
+        extraction.right.value.get(PropertyOrLandTotalValuePage(1)).get mustBe 95
+        extraction.right.value.get(TrustOwnAllThePropertyOrLandPage(1)).get mustBe true
+        extraction.right.value.get(PropertyLandValueTrustPage(1)).get mustBe 90
 
-        extraction.right.value.get(SharesInAPortfolioPage(2)).get mustBe true
-        extraction.right.value.get(SharePortfolioNamePage(2)).get mustBe "Share 2"
-        extraction.right.value.get(ShareUtrPage(2)) mustNot be(defined)
-        extraction.right.value.get(SharesOnStockExchangePage(2)).get mustBe false
-        extraction.right.value.get(ShareClassPage(2)).get mustBe Other
-        extraction.right.value.get(SharePortfolioQuantityInTrustPage(2)).get mustBe "2"
-        extraction.right.value.get(ShareValueInTrustPage(2)).get mustBe "2"
+        extraction.right.value.get(PropertyOrLandAddressYesNoPage(2)).get mustBe true
+        extraction.right.value.get(PropertyOrLandAddressUkYesNoPage(2)).get mustBe false
+        extraction.right.value.get(PropertyOrLandInternationalAddressPage(2)).get mustBe InternationalAddress("line1", "line2", None, "FR")
+        extraction.right.value.get(PropertyOrLandUKAddressPage(2)) must not be defined
+        extraction.right.value.get(PropertyOrLandDescriptionPage(2)).get mustBe "Property 2"
+        extraction.right.value.get(PropertyOrLandTotalValuePage(2)).get mustBe 95
+        extraction.right.value.get(TrustOwnAllThePropertyOrLandPage(2)).get mustBe true
+        extraction.right.value.get(PropertyLandValueTrustPage(2)).get mustBe 90
+
+        extraction.right.value.get(PropertyOrLandAddressYesNoPage(3)).get mustBe false
+        extraction.right.value.get(PropertyOrLandAddressUkYesNoPage(3)) must not be defined
+        extraction.right.value.get(PropertyOrLandUKAddressPage(3)) must not be defined
+        extraction.right.value.get(PropertyOrLandInternationalAddressPage(3)) must not be defined
+        extraction.right.value.get(PropertyOrLandDescriptionPage(3)).get mustBe "Property 3"
+        extraction.right.value.get(PropertyOrLandTotalValuePage(3)).get mustBe 95
+        extraction.right.value.get(TrustOwnAllThePropertyOrLandPage(3)).get mustBe false
+        extraction.right.value.get(PropertyLandValueTrustPage(3)) mustBe 90
+
+        extraction.right.value.get(SharesInAPortfolioPage(4)).get mustBe false
+        extraction.right.value.get(ShareCompanyNamePage(4)).get mustBe "Share 1"
+        extraction.right.value.get(ShareUtrPage(4)).get mustBe "1234567890"
+        extraction.right.value.get(SharesOnStockExchangePage(4)).get mustBe true
+        extraction.right.value.get(ShareClassPage(4)).get mustBe Ordinary
+        extraction.right.value.get(ShareQuantityInTrustPage(4)).get mustBe "1"
+        extraction.right.value.get(ShareValueInTrustPage(4)).get mustBe "1"
+
+        extraction.right.value.get(SharesInAPortfolioPage(5)).get mustBe true
+        extraction.right.value.get(SharePortfolioNamePage(5)).get mustBe "Share 2"
+        extraction.right.value.get(ShareUtrPage(5)) mustNot be(defined)
+        extraction.right.value.get(SharesOnStockExchangePage(5)).get mustBe false
+        extraction.right.value.get(ShareClassPage(5)).get mustBe Other
+        extraction.right.value.get(SharePortfolioQuantityInTrustPage(5)).get mustBe "2"
+        extraction.right.value.get(ShareValueInTrustPage(5)).get mustBe "2"
       }
     }
   }
