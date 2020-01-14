@@ -17,43 +17,59 @@
 package mapping.playback.assets
 
 import com.google.inject.Inject
-import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
-import mapping.playback.{PlaybackExtractionErrors, PlaybackExtractor}
+import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
+import mapping.playback.PlaybackExtractor
+import mapping.registration.AssetMonetaryAmount
 import models.playback.UserAnswers
-import models.playback.UserAnswersCombinator._
-import models.playback.http.DisplayTrustAssets
+import models.playback.http.{Asset, DisplaySharesType, DisplayTrustAssets}
 import pages.register.asset.money.AssetMoneyValuePage
+import play.api.Logger
 
-import scala.util.Success
+import scala.util.{Failure, Success, Try}
 
-class AssetsExtractor @Inject() extends PlaybackExtractor[DisplayTrustAssets] {
-  override def extract(answers: UserAnswers, data: DisplayTrustAssets): Either[PlaybackExtractionErrors.PlaybackExtractionError, UserAnswers] =  {
-    val assets: List[UserAnswers] = List(
-      extractMonetaryAsset(answers, data)
-    ).collect {
-      case Right(x) => x
-    }
+class AssetsExtractor @Inject()(sharesAssetExtractor: SharesAssetExtractor) extends PlaybackExtractor[DisplayTrustAssets] {
+  override def extract(answers: UserAnswers, data: DisplayTrustAssets): Either[PlaybackExtractionError, UserAnswers] =  {
+
+    val assets: List[Asset] =
+      data.monetary ++
+      data.propertyOrLand ++
+      data.shares ++
+      data.business ++
+      data.partnerShip ++
+      data.other
 
     assets match {
       case Nil =>
-        // TODO: Restore this behaviour once all assets types are supported.
-        //        Left(AssetsExtractionError)
-        Right(UserAnswers(answers.internalAuthId))
-      case _ => assets.combine.map(Right.apply).getOrElse(Left(AssetsExtractionError))
+        Left(FailedToExtractData("Extraction error - No assets"))
+      case _ =>
+        extractAssets(answers, assets)
     }
   }
 
-  private object AssetsExtractionError extends FailedToExtractData("Assets Extraction Error")
-  private object MonetaryExtractionError extends FailedToExtractData("Monetary Extraction Error")
+  def extractAssets(answers: UserAnswers, data: List[Asset]): Either[PlaybackExtractionError, UserAnswers] = {
+    val updated = data.zipWithIndex.foldLeft[Try[UserAnswers]](Success(answers)){
+      case (answers, (asset, index)) =>
 
-  private def extractMonetaryAsset(answers: UserAnswers, data: DisplayTrustAssets): Either[PlaybackExtractionErrors.PlaybackExtractionError, UserAnswers] = {
-    data.monetary match {
-      case Some(monetary :: Nil) =>
-        answers.set(AssetMoneyValuePage(0), monetary.assetMonetaryAmount.toString) match {
-         case Success(a) => Right(a)
-         case _ => Left(MonetaryExtractionError)
+        asset match {
+          case x : AssetMonetaryAmount => extractMonetaryAsset(answers, index, x)
+          case x : DisplaySharesType => sharesAssetExtractor.extract(answers, index, x)
+          case _ =>
+            // TODO: Restore this behaviour once all assets types are supported.
+            // Failure(new RuntimeException("Unexpected asset type"))
+            answers
         }
-      case _ => Left(MonetaryExtractionError)
     }
+
+    updated match {
+      case Success(a) =>
+        Right(a)
+      case Failure(_) =>
+        Logger.warn(s"[AssetsExtractor] failed to extract data")
+        Left(FailedToExtractData(DisplayTrustAssets.toString))
+    }
+  }
+
+  private def extractMonetaryAsset(answers: Try[UserAnswers], index: Int, asset: AssetMonetaryAmount): Try[UserAnswers] = {
+    answers.flatMap(_.set(AssetMoneyValuePage(index), asset.assetMonetaryAmount.toString))
   }
 }
