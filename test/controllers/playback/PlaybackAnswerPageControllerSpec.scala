@@ -22,8 +22,7 @@ import models.playback.{UserAnswers => PlaybackAnswers}
 import pages.register.beneficiaries.charity._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import utils.countryOptions.CountryOptions
-import utils.print.playback.{PlaybackAnswersHelper, PrintPlaybackHelper, sections}
+import utils.print.playback.PrintPlaybackHelper
 import views.html.playback.PlaybackAnswersView
 
 class PlaybackAnswerPageControllerSpec extends PlaybackSpecBase {
@@ -46,7 +45,9 @@ class PlaybackAnswerPageControllerSpec extends PlaybackSpecBase {
         .set(CharityBeneficiaryDiscretionYesNoPage(0), false).success.value
         .set(CharityBeneficiaryAddressYesNoPage(0), false).success.value
 
-      val expectedSections = injector.instanceOf[PrintPlaybackHelper].entities(playbackAnswers)
+      val entities = injector.instanceOf[PrintPlaybackHelper].entities(playbackAnswers)
+
+      val trustDetails = injector.instanceOf[PrintPlaybackHelper].trustDetails(playbackAnswers)
 
       val application = applicationBuilder(Some(playbackAnswers)).build()
 
@@ -59,7 +60,7 @@ class PlaybackAnswerPageControllerSpec extends PlaybackSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(expectedSections)(fakeRequest, messages).toString
+        view(entities, trustDetails)(fakeRequest, messages).toString
 
       application.stop()
     }
