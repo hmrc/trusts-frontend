@@ -20,7 +20,7 @@ import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
 import mapping.playback.PlaybackExtractor
 import models.playback.UserAnswers
-import models.playback.http.{DisplaySharesType, DisplayTrustTrusteeOrgType}
+import models.playback.http.DisplaySharesType
 import models.registration.pages.ShareClass._
 import models.registration.pages.ShareType
 import models.registration.pages.ShareType.{Quoted, Unquoted}
@@ -66,7 +66,7 @@ class SharesAssetExtractor @Inject() extends PlaybackExtractor[Option[List[Displ
             Right(a)
           case Failure(exception) =>
             Logger.warn(s"[SharesAssetExtractor] failed to extract data due to ${exception.getMessage}")
-            Left(FailedToExtractData(DisplayTrustTrusteeOrgType.toString))
+            Left(FailedToExtractData(DisplaySharesType.toString))
         }
     }
   }
