@@ -26,10 +26,9 @@ import models.core.pages.FullName
 import models.core.pages.IndividualOrBusiness.Individual
 import models.registration.pages.Status.Completed
 import models.registration.pages.WhatKindOfAsset.Money
-import models.registration.pages.WhenTrustSetupPage
 import navigation.registration.TaskListNavigator
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
-import pages.register.TrustNamePage
+import pages.register.{TrustNamePage, WhenTrustSetupPage}
 import pages.register.asset.WhatKindOfAssetPage
 import pages.register.beneficiaries.ClassBeneficiaryDescriptionPage
 import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage

@@ -30,10 +30,12 @@ class FakeUserAnswerExtractor @Inject()(beneficiary: BeneficiaryExtractor,
                                         settlors: SettlorExtractor,
                                         trustType: TrustTypeExtractor,
                                         protectors: ProtectorExtractor,
-                                        otherIndividualExtractor: OtherIndividualExtractor,
+                                        individualExtractor: OtherIndividualExtractor,
+                                        correspondenceExtractor: CorrespondenceExtractor,
+                                        trustDetailsExtractor: TrustDetailsExtractor,
                                         assetExtractor: AssetExtractor
                                         ) extends UserAnswersExtractor(
-  beneficiary, leadTrustee, settlors, trustType, protectors, otherIndividualExtractor, assetExtractor
+  beneficiary, leadTrustee, settlors, trustType, protectors, individualExtractor, correspondenceExtractor, trustDetailsExtractor, assetExtractor
 ) {
 
   override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionErrors.PlaybackExtractionError, UserAnswers] =
@@ -47,10 +49,12 @@ class FakeFailingUserAnswerExtractor @Inject()(beneficiary: BeneficiaryExtractor
                                                settlors: SettlorExtractor,
                                                trustType: TrustTypeExtractor,
                                                protectors: ProtectorExtractor,
-                                               otherIndividualExtractor: OtherIndividualExtractor,
+                                               individualExtractor: OtherIndividualExtractor,
+                                               correspondenceExtractor: CorrespondenceExtractor,
+                                               trustDetailsExtractor: TrustDetailsExtractor,
                                                assetExtractor: AssetExtractor
                                        ) extends UserAnswersExtractor(
-  beneficiary, leadTrustee, settlors, trustType, protectors, otherIndividualExtractor, assetExtractor
+  beneficiary, leadTrustee, settlors, trustType, protectors, individualExtractor, correspondenceExtractor, trustDetailsExtractor, assetExtractor
 ) {
 
   override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionErrors.PlaybackExtractionError, UserAnswers] =
