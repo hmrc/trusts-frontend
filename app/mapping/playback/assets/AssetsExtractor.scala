@@ -35,7 +35,10 @@ class AssetsExtractor @Inject() extends PlaybackExtractor[DisplayTrustAssets] {
     }
 
     assets match {
-      case Nil => Left(AssetsExtractionError)
+      case Nil =>
+        // TODO: Restore this behaviour once all assets types are supported.
+        //        Left(AssetsExtractionError)
+        Right(UserAnswers(answers.internalAuthId))
       case _ => assets.combine.map(Right.apply).getOrElse(Left(AssetsExtractionError))
     }
   }

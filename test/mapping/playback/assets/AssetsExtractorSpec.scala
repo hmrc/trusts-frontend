@@ -47,7 +47,9 @@ class AssetsExtractorSpec extends FreeSpec with MustMatchers
 
         val extraction = assetsExtractor.extract(ua, assets)
 
-        extraction mustBe Left(FailedToExtractData("Assets Extraction Error"))
+//        TODO: Restore the following behaviour once all asset types are supported
+//        extraction mustBe Left(FailedToExtractData("Assets Extraction Error"))
+          extraction mustBe 'Right
       }
     }
 
