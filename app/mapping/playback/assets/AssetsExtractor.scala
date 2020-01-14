@@ -40,9 +40,7 @@ class AssetsExtractor @Inject()(sharesAssetExtractor: SharesAssetExtractor) exte
 
     assets match {
       case Nil =>
-        // TODO: Restore this behaviour once all assets types are supported.
-        //        Left(AssetsExtractionError)
-        Right(UserAnswers(answers.internalAuthId))
+        Left(FailedToExtractData("Extraction error - No assets"))
       case _ =>
         extractAssets(answers, assets)
     }

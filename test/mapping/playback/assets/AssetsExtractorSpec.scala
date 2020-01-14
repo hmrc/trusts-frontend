@@ -18,6 +18,7 @@ package mapping.playback.assets
 
 import base.SpecBaseHelpers
 import generators.Generators
+import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
 import mapping.playback.PlaybackExtractor
 import mapping.registration.AssetMonetaryAmount
 import models.playback.UserAnswers
@@ -48,10 +49,7 @@ class AssetsExtractorSpec extends FreeSpec with MustMatchers
         val ua = UserAnswers("fakeId")
 
         val extraction = assetsExtractor.extract(ua, assets)
-
-//        TODO: Restore the following behaviour once all asset types are supported
-//        extraction mustBe Left(FailedToExtractData("Assets Extraction Error"))
-          extraction mustBe 'Right
+        extraction mustBe Left(FailedToExtractData("Extraction error - No assets"))
       }
     }
 
