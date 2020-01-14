@@ -55,7 +55,10 @@ class AssetsExtractor @Inject()(sharesAssetExtractor: SharesAssetExtractor) exte
         asset match {
           case x : AssetMonetaryAmount => extractMonetaryAsset(answers, index, x)
           case x : DisplaySharesType => sharesAssetExtractor.extract(answers, index, x)
-          case _ => Failure(new RuntimeException("Unexpected asset type"))
+          case _ =>
+            // TODO: Restore this behaviour once all assets types are supported.
+            // Failure(new RuntimeException("Unexpected asset type"))
+            answers
         }
     }
 
