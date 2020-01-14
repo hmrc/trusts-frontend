@@ -20,9 +20,9 @@ import java.time.LocalDate
 
 import base.RegistrationSpecBase
 import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
-import models.registration.pages.{NonResidentType, WhenTrustSetupPage}
+import models.registration.pages.NonResidentType
 import pages._
-import pages.register.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, RegisteringTrustFor5APage, TrustNamePage, TrustPreviouslyResidentPage, TrustResidentOffshorePage}
+import pages.register.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, RegisteringTrustFor5APage, TrustNamePage, TrustPreviouslyResidentPage, TrustResidentOffshorePage, WhenTrustSetupPage}
 import pages.register.agents.AgentOtherThanBarristerPage
 import pages.register.settlors.SettlorsBasedInTheUKPage
 import pages.register.trustees.TrusteesBasedInTheUKPage

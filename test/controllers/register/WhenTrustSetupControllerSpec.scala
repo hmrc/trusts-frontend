@@ -21,8 +21,8 @@ import java.time.{LocalDate, ZoneOffset}
 import base.RegistrationSpecBase
 import forms.WhenTrustSetupFormProvider
 import models.NormalMode
-import models.registration.pages.WhenTrustSetupPage
 import org.scalatest.mockito.MockitoSugar
+import pages.register.WhenTrustSetupPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.WhenTrustSetupView

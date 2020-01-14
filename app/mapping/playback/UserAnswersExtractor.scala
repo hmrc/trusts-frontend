@@ -25,7 +25,9 @@ import models.playback.UserAnswers
 import models.playback.http.GetTrust
 import play.api.Logger
 
-class UserAnswersExtractor @Inject()(beneficiary: BeneficiaryExtractor,
+class UserAnswersExtractor @Inject()(correspondenceExtractor: CorrespondenceExtractor,
+                                     trustDetailsExtractor: TrustDetailsExtractor,
+                                     beneficiary: BeneficiaryExtractor,
                                      settlors: SettlorExtractor,
                                      trustType: TrustTypeExtractor,
                                      protectors: ProtectorExtractor,
@@ -38,14 +40,16 @@ class UserAnswersExtractor @Inject()(beneficiary: BeneficiaryExtractor,
   override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionError, UserAnswers] = {
 
     val answersCombined = for {
-      ua <- beneficiary.extract(answers, data.trust.entities.beneficiary).right
-      ua1 <- settlors.extract(answers, data.trust.entities).right
-      ua2 <- trustType.extract(answers, Some(data.trust)).right
-      ua3 <- trustees.extract(answers, data.trust.entities).right
-      ua4 <- protectors.extract(answers, data.trust.entities.protectors).right
-      ua5 <- individualExtractor.extract(answers, data.trust.entities.naturalPerson).right
+      ua <- correspondenceExtractor.extract(answers, data.correspondence).right
+      ua1 <- trustDetailsExtractor.extract(answers, data.trust.details).right
+      ua2 <- beneficiary.extract(answers, data.trust.entities.beneficiary).right
+      ua3 <- settlors.extract(answers, data.trust.entities).right
+      ua4 <- trustType.extract(answers, Some(data.trust)).right
+      ua5 <- trustees.extract(answers, data.trust.entities).right
+      ua6 <- protectors.extract(answers, data.trust.entities.protectors).right
+      ua7 <- individualExtractor.extract(answers, data.trust.entities.naturalPerson).right
     } yield {
-      List(ua, ua1, ua2, ua3, ua4, ua5).combine
+      List(ua, ua1, ua2, ua3, ua4, ua5, ua6, ua7).combine
     }
 
     answersCombined match {

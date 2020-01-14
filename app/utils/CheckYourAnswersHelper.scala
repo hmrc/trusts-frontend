@@ -21,7 +21,6 @@ import javax.inject.Inject
 import mapping.reads._
 import models.NormalMode
 import models.core.UserAnswers
-import models.registration.pages.WhenTrustSetupPage
 import pages.playback.DeclarationWhatNextPage
 import pages.register._
 import pages.register.agents._
