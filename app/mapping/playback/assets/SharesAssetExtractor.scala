@@ -42,7 +42,7 @@ class SharesAssetExtractor @Inject() extends PlaybackExtractor[Option[List[Displ
           case (answers, (share, index)) =>
 
             share.shareClass match {
-              case Deferred =>
+              case Other =>
                 answers
                   .flatMap(_.set(SharesInAPortfolioPage(index), true))
                   .flatMap(_.set(SharePortfolioNamePage(index), share.orgName))

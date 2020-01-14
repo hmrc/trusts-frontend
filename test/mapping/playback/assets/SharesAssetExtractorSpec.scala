@@ -35,7 +35,7 @@ class SharesAssetExtractorSpec extends FreeSpec with MustMatchers
     orgName = s"Share $index",
     shareClass = index match {
       case 0 => Ordinary
-      case _ => Deferred
+      case _ => Other
     },
     typeOfShare = index match {
       case 0 => Quoted
@@ -109,14 +109,14 @@ class SharesAssetExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SharesInAPortfolioPage(1)).get mustBe true
         extraction.right.value.get(SharePortfolioNamePage(1)).get mustBe "Share 1"
         extraction.right.value.get(SharesOnStockExchangePage(1)).get mustBe false
-        extraction.right.value.get(ShareClassPage(1)).get mustBe Deferred
+        extraction.right.value.get(ShareClassPage(1)).get mustBe Other
         extraction.right.value.get(SharePortfolioQuantityInTrustPage(1)).get mustBe "1"
         extraction.right.value.get(ShareValueInTrustPage(1)).get mustBe "1"
 
         extraction.right.value.get(SharesInAPortfolioPage(2)).get mustBe true
         extraction.right.value.get(SharePortfolioNamePage(2)).get mustBe "Share 2"
         extraction.right.value.get(SharesOnStockExchangePage(2)).get mustBe false
-        extraction.right.value.get(ShareClassPage(2)).get mustBe Deferred
+        extraction.right.value.get(ShareClassPage(2)).get mustBe Other
         extraction.right.value.get(SharePortfolioQuantityInTrustPage(2)).get mustBe "2"
         extraction.right.value.get(ShareValueInTrustPage(2)).get mustBe "2"
       }
