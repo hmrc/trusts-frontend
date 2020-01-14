@@ -66,7 +66,7 @@ class SharesAssetExtractor @Inject() extends PlaybackExtractor[Option[List[Displ
             Right(a)
           case Failure(exception) =>
             Logger.warn(s"[SharesAssetExtractor] failed to extract data due to ${exception.getMessage}")
-            Left(FailedToExtractData(DisplayTrustTrusteeOrgType.toString))
+            Left(FailedToExtractData(DisplaySharesType.toString))
         }
     }
   }
