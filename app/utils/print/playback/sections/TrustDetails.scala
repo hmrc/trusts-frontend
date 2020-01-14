@@ -38,7 +38,7 @@ object TrustDetails {
 
     Seq(
       AnswerSection(
-        headingKey = Some("answerPage.section.trustsDetails.heading"),
+        headingKey = None,
         Seq(
           stringQuestion(TrustNamePage, userAnswers, "trustName"),
           dateQuestion(WhenTrustSetupPage, userAnswers, "whenTrustSetup"),
@@ -54,7 +54,7 @@ object TrustDetails {
           yesNoQuestion(InheritanceTaxActPage, userAnswers, "inheritanceTaxAct"),
           yesNoQuestion(AgentOtherThanBarristerPage, userAnswers, "agentOtherThanBarrister")
         ).flatten,
-        sectionKey = None
+        sectionKey = Some(messages("answerPage.section.trustsDetails.heading"))
       )
     )
 

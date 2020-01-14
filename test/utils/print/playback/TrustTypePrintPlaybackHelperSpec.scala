@@ -33,10 +33,10 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
   private val answersWithTrustDetails: UserAnswers = emptyUserAnswers.set(TrustNamePage, "Trust Ltd.").success.value
 
   private val trustDetails: AnswerSection = AnswerSection(
-    headingKey = Some("answerPage.section.trustsDetails.heading"),
     rows = Seq(
       AnswerRow(label = "What is the trust’s name?", answer = Html("Trust Ltd."), changeUrl = None)
-    )
+    ),
+    sectionKey = Some(messages("answerPage.section.trustsDetails.heading"))
   )
 
   "Playback print helper" must {
@@ -48,12 +48,12 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
       val answers = answersWithTrustDetails
         .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
 
-      val result = helper.summary(answers)
+      val result = helper.trustDetails(answers)
 
       result mustBe Seq(
         trustDetails,
         AnswerSection(
-          headingKey = Some("Trust type"),
+          headingKey = None,
           rows = Seq(
             AnswerRow(
               label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
@@ -61,7 +61,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
               changeUrl = None
             )
           ),
-          sectionKey = None
+          sectionKey = Some("Trust type")
         )
       )
 
@@ -75,13 +75,14 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
         .set(KindOfTrustPage, KindOfTrust.Deed).success.value
         .set(SetUpInAdditionToWillTrustYesNoPage, true).success.value
+        .set(HowDeedOfVariationCreatedPage, DeedOfVariation.AdditionToWill).success.value
 
-      val result = helper.summary(answers)
+      val result = helper.trustDetails(answers)
 
       result mustBe Seq(
         trustDetails,
         AnswerSection(
-          headingKey = Some("Trust type"),
+          headingKey = None,
           rows = Seq(
             AnswerRow(
               label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
@@ -99,7 +100,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
               changeUrl = None
             )
           ),
-          sectionKey = None
+          sectionKey = Some("Trust type")
         )
       )
 
@@ -115,12 +116,12 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(SetUpInAdditionToWillTrustYesNoPage, false).success.value
         .set(HowDeedOfVariationCreatedPage, DeedOfVariation.ReplacedWill).success.value
 
-      val result = helper.summary(answers)
+      val result = helper.trustDetails(answers)
 
       result mustBe Seq(
         trustDetails,
         AnswerSection(
-          headingKey = Some("Trust type"),
+          headingKey = None,
           rows = Seq(
             AnswerRow(
               label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
@@ -143,7 +144,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
               changeUrl = None
             )
           ),
-          sectionKey = None
+          sectionKey = Some("Trust type")
         )
       )
 
@@ -158,12 +159,12 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
         .set(HoldoverReliefYesNoPage, true).success.value
 
-      val result = helper.summary(answers)
+      val result = helper.trustDetails(answers)
 
       result mustBe Seq(
         trustDetails,
         AnswerSection(
-          headingKey = Some("Trust type"),
+          headingKey = None,
           rows = Seq(
             AnswerRow(
               label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
@@ -181,7 +182,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
               changeUrl = None
             )
           ),
-          sectionKey = None
+          sectionKey = Some("Trust type")
         )
       )
 
@@ -195,12 +196,12 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
         .set(KindOfTrustPage, KindOfTrust.FlatManagement).success.value
 
-      val result = helper.summary(answers)
+      val result = helper.trustDetails(answers)
 
       result mustBe Seq(
         trustDetails,
         AnswerSection(
-          headingKey = Some("Trust type"),
+          headingKey = None,
           rows = Seq(
             AnswerRow(
               label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
@@ -213,7 +214,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
               changeUrl = None
             )
           ),
-          sectionKey = None
+          sectionKey = Some("Trust type")
         )
       )
 
@@ -227,12 +228,12 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
         .set(KindOfTrustPage, KindOfTrust.HeritageMaintenanceFund).success.value
 
-      val result = helper.summary(answers)
+      val result = helper.trustDetails(answers)
 
       result mustBe Seq(
         trustDetails,
         AnswerSection(
-          headingKey = Some("Trust type"),
+          headingKey = None,
           rows = Seq(
             AnswerRow(
               label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
@@ -245,7 +246,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
               changeUrl = None
             )
           ),
-          sectionKey = None
+          sectionKey = Some("Trust type")
         )
       )
 
@@ -261,12 +262,12 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(EfrbsYesNoPage, true).success.value
         .set(EfrbsStartDatePage, LocalDate.of(1970, 2, 1)).success.value
 
-      val result = helper.summary(answers)
+      val result = helper.trustDetails(answers)
 
       result mustBe Seq(
         trustDetails,
         AnswerSection(
-          headingKey = Some("Trust type"),
+          headingKey = None,
           rows = Seq(
             AnswerRow(
               label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
@@ -289,7 +290,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
               changeUrl = None
             )
           ),
-          sectionKey = None
+          sectionKey = Some("Trust type")
         )
       )
 
@@ -304,12 +305,12 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(KindOfTrustPage, KindOfTrust.Employees).success.value
         .set(EfrbsYesNoPage, false).success.value
 
-      val result = helper.summary(answers)
+      val result = helper.trustDetails(answers)
 
       result mustBe Seq(
         trustDetails,
         AnswerSection(
-          headingKey = Some("Trust type"),
+          headingKey = None,
           rows = Seq(
             AnswerRow(
               label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
@@ -327,7 +328,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
               changeUrl = None
             )
           ),
-          sectionKey = None
+          sectionKey = Some("Trust type")
         )
       )
 

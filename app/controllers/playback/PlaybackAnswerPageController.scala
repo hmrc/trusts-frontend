@@ -44,9 +44,11 @@ class PlaybackAnswerPageController @Inject()(
   def onPageLoad() = actions.async {
     implicit request =>
 
-      val sections = printPlaybackAnswersHelper.summary(request.userAnswers)
+      val entities = printPlaybackAnswersHelper.entities(request.userAnswers)
 
-      Future.successful(Ok(view(sections)))
+      val trustDetails = printPlaybackAnswersHelper.trustDetails(request.userAnswers)
+
+      Future.successful(Ok(view(entities, trustDetails)))
   }
 
 }
