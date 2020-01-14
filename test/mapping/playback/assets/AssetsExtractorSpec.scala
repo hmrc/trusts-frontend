@@ -18,7 +18,6 @@ package mapping.playback.assets
 
 import base.SpecBaseHelpers
 import generators.Generators
-import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
 import mapping.playback.PlaybackExtractor
 import mapping.registration.AssetMonetaryAmount
 import models.playback.UserAnswers
