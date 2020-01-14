@@ -62,18 +62,20 @@ class AssetsExtractorSpec extends FreeSpec with MustMatchers
           propertyOrLand = Nil,
           shares = List(
             DisplaySharesType(
-              numberOfShares = "1",
+              numberOfShares = Some("1"),
               orgName = "Share 1",
-              shareClass = Ordinary,
-              typeOfShare = Quoted,
-              value = 1
+              utr = Some("1234567890"),
+              shareClass = Some(Ordinary),
+              typeOfShare = Some(Quoted),
+              value = Some(1)
             ),
             DisplaySharesType(
-              numberOfShares = "2",
+              numberOfShares = Some("2"),
               orgName = "Share 2",
-              shareClass = Other,
-              typeOfShare = Unquoted,
-              value = 2
+              utr = None,
+              shareClass = Some(Other),
+              typeOfShare = Some(Unquoted),
+              value = Some(2)
             )
           ),
           business = Nil,
@@ -90,6 +92,7 @@ class AssetsExtractorSpec extends FreeSpec with MustMatchers
 
         extraction.right.value.get(SharesInAPortfolioPage(1)).get mustBe false
         extraction.right.value.get(ShareCompanyNamePage(1)).get mustBe "Share 1"
+        extraction.right.value.get(ShareUtrPage(1)).get mustBe "1234567890"
         extraction.right.value.get(SharesOnStockExchangePage(1)).get mustBe true
         extraction.right.value.get(ShareClassPage(1)).get mustBe Ordinary
         extraction.right.value.get(ShareQuantityInTrustPage(1)).get mustBe "1"
@@ -97,6 +100,7 @@ class AssetsExtractorSpec extends FreeSpec with MustMatchers
 
         extraction.right.value.get(SharesInAPortfolioPage(2)).get mustBe true
         extraction.right.value.get(SharePortfolioNamePage(2)).get mustBe "Share 2"
+        extraction.right.value.get(ShareUtrPage(2)) mustNot be(defined)
         extraction.right.value.get(SharesOnStockExchangePage(2)).get mustBe false
         extraction.right.value.get(ShareClassPage(2)).get mustBe Other
         extraction.right.value.get(SharePortfolioQuantityInTrustPage(2)).get mustBe "2"

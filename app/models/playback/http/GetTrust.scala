@@ -454,11 +454,12 @@ object DisplayTrustAssets {
 
 }
 
-case class DisplaySharesType(numberOfShares: String,
+case class DisplaySharesType(numberOfShares: Option[String],
                              orgName: String,
-                             shareClass: ShareClass,
-                             typeOfShare: ShareType,
-                             value: Long) extends Asset
+                             utr: Option[String],
+                             shareClass: Option[ShareClass],
+                             typeOfShare: Option[ShareType],
+                             value: Option[Long]) extends Asset
 
 object DisplaySharesType {
   implicit val sharesTypeFormat: Format[DisplaySharesType] = Json.format[DisplaySharesType]
