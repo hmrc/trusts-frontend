@@ -67,8 +67,8 @@ class PropertyOrLandMapperSpec extends FreeSpec with MustMatchers
                 postCode = Some("Z99 2YY"),
                 country = "GB"
               )),
-            valueFull = 1000L,
-            valuePrevious = 750L
+            valueFull = Some(1000L),
+            valuePrevious = Some(750L)
 
           )
         )
@@ -89,8 +89,8 @@ class PropertyOrLandMapperSpec extends FreeSpec with MustMatchers
           PropertyLandType(
             buildingLandName = Some("Property Or Land"),
             address = None,
-            valueFull = 1000L,
-            valuePrevious = 1000L
+            valueFull = Some(1000L),
+            valuePrevious = Some(1000L)
 
           )
         )

@@ -33,22 +33,22 @@ class PropertyOrLandExtractorSpec extends FreeSpec with MustMatchers with Either
       address = Some(AddressType(
         "line1", "line2", None, None, Some("NE11NE"), "UK"
       )),
-      valueFull = 95,
-      valuePrevious = 90
+      valueFull = Some(95L),
+      valuePrevious = Some(90L)
     ),
     PropertyLandType(
       buildingLandName = Some("Property 2"),
       address = Some(AddressType(
         "line1", "line2", None, None, None, "FR"
       )),
-      valueFull = 95,
-      valuePrevious = 90
+      valueFull = Some(85L),
+      valuePrevious = Some(80L)
     ),
     PropertyLandType(
       buildingLandName = Some("Property 3"),
       address = None,
-      valueFull = 95,
-      valuePrevious = 90
+      valueFull = Some(75L),
+      None
     )
   )
 
@@ -82,27 +82,27 @@ class PropertyOrLandExtractorSpec extends FreeSpec with MustMatchers with Either
       extraction.right.value.get(PropertyOrLandUKAddressPage(0)).get mustBe UKAddress("line1", "line2", None, None, "NE11NE")
       extraction.right.value.get(PropertyOrLandInternationalAddressPage(0)) must not be defined
       extraction.right.value.get(PropertyOrLandDescriptionPage(0)).get mustBe "Property 1"
-      extraction.right.value.get(PropertyOrLandTotalValuePage(0)).get mustBe 95
-      extraction.right.value.get(TrustOwnAllThePropertyOrLandPage(0)).get mustBe true
-      extraction.right.value.get(PropertyLandValueTrustPage(0)).get mustBe 90
+      extraction.right.value.get(PropertyOrLandTotalValuePage(0)).get mustBe "95"
+      extraction.right.value.get(TrustOwnAllThePropertyOrLandPage(0)).get mustBe false
+      extraction.right.value.get(PropertyLandValueTrustPage(0)).get mustBe "90"
 
       extraction.right.value.get(PropertyOrLandAddressYesNoPage(1)).get mustBe true
       extraction.right.value.get(PropertyOrLandAddressUkYesNoPage(1)).get mustBe false
       extraction.right.value.get(PropertyOrLandInternationalAddressPage(1)).get mustBe InternationalAddress("line1", "line2", None, "FR")
       extraction.right.value.get(PropertyOrLandUKAddressPage(1)) must not be defined
       extraction.right.value.get(PropertyOrLandDescriptionPage(1)).get mustBe "Property 2"
-      extraction.right.value.get(PropertyOrLandTotalValuePage(1)).get mustBe 95
-      extraction.right.value.get(TrustOwnAllThePropertyOrLandPage(1)).get mustBe true
-      extraction.right.value.get(PropertyLandValueTrustPage(1)).get mustBe 90
+      extraction.right.value.get(PropertyOrLandTotalValuePage(1)).get mustBe "85"
+      extraction.right.value.get(TrustOwnAllThePropertyOrLandPage(1)).get mustBe false
+      extraction.right.value.get(PropertyLandValueTrustPage(1)).get mustBe "80"
 
       extraction.right.value.get(PropertyOrLandAddressYesNoPage(2)).get mustBe false
       extraction.right.value.get(PropertyOrLandAddressUkYesNoPage(2)) must not be defined
       extraction.right.value.get(PropertyOrLandUKAddressPage(2)) must not be defined
       extraction.right.value.get(PropertyOrLandInternationalAddressPage(2)) must not be defined
       extraction.right.value.get(PropertyOrLandDescriptionPage(2)).get mustBe "Property 3"
-      extraction.right.value.get(PropertyOrLandTotalValuePage(2)).get mustBe 95
-      extraction.right.value.get(TrustOwnAllThePropertyOrLandPage(2)).get mustBe false
-      extraction.right.value.get(PropertyLandValueTrustPage(2)) mustBe 90
+      extraction.right.value.get(PropertyOrLandTotalValuePage(2)).get mustBe "75"
+      extraction.right.value.get(TrustOwnAllThePropertyOrLandPage(2)).get mustBe true
+      extraction.right.value.get(PropertyLandValueTrustPage(2)) mustBe None
 
     }
 

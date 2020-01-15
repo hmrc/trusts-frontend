@@ -43,9 +43,9 @@ class PropertyOrLandMapper @Inject()(addressMapper: AddressMapper) extends Mappi
                 } yield {
                   value match {
                     case Some(v) =>
-                      PropertyLandType(x.propertyOrLandDescription, addressMapper.build(x.address), totalValue, v)
+                      PropertyLandType(x.propertyOrLandDescription, addressMapper.build(x.address), Some(totalValue), Some(v))
                     case None =>
-                      PropertyLandType(x.propertyOrLandDescription, addressMapper.build(x.address), totalValue, totalValue)
+                      PropertyLandType(x.propertyOrLandDescription, addressMapper.build(x.address), Some(totalValue), Some(totalValue))
                   }
                 }
             }

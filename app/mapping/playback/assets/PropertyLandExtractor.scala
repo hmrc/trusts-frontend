@@ -41,6 +41,8 @@ class PropertyLandExtractor @Inject() extends PlaybackExtractor[Option[List[Prop
             answers
               .flatMap(_.set(PropertyOrLandDescriptionPage(index), asset.buildingLandName))
               .flatMap(answers => extractAddress(index, asset, answers))
+              .flatMap(_.set(PropertyOrLandTotalValuePage(index), asset.valueFull.map(_.toString)))
+              .flatMap(answers => extractOwnership(index, asset, answers))
         }
 
         updated match {
@@ -63,7 +65,15 @@ class PropertyLandExtractor @Inject() extends PlaybackExtractor[Option[List[Prop
         userAnswers.set(PropertyOrLandInternationalAddressPage(index), nonUk)
           .flatMap(_.set(PropertyOrLandAddressUkYesNoPage(index), false))
           .flatMap(_.set(PropertyOrLandAddressYesNoPage(index), true))
-      case None => Success(userAnswers)
+      case None => userAnswers.set(PropertyOrLandAddressYesNoPage(index), false)
+    }
+  }
+
+  private def extractOwnership(index: Int, data: PropertyLandType, userAnswers: UserAnswers) = {
+    data.valuePrevious match {
+      case Some(value) => userAnswers.set(PropertyLandValueTrustPage(index), value.toString)
+          .flatMap(_.set(TrustOwnAllThePropertyOrLandPage(index), false))
+      case _ => userAnswers.set(TrustOwnAllThePropertyOrLandPage(index), true)
     }
   }
 

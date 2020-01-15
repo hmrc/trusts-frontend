@@ -16,11 +16,11 @@
 
 package mapping.reads
 
-import mapping.registration.Settlors
+import mapping.registration.{Settlors => SettlorsType}
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object Settlors extends QuestionPage[Settlors] {
+case object Settlors extends QuestionPage[SettlorsType] {
 
   override def path: JsPath = JsPath \ toString
 
