@@ -19,14 +19,10 @@ package controllers.playback
 import base.PlaybackSpecBase
 import models.core.pages.UKAddress
 import models.playback.{UserAnswers => PlaybackAnswers}
-import models.registration.pages.KindOfTrust
 import pages.register.beneficiaries.charity._
-import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
-import pages.register.settlors.living_settlor.trust_type.KindOfTrustPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import utils.countryOptions.CountryOptions
-import utils.print.playback.{PlaybackAnswersHelper, PrintPlaybackHelper, sections}
+import utils.print.playback.PrintPlaybackHelper
 import views.html.playback.PlaybackAnswersView
 
 class PlaybackAnswerPageControllerSpec extends PlaybackSpecBase {
@@ -49,13 +45,9 @@ class PlaybackAnswerPageControllerSpec extends PlaybackSpecBase {
         .set(CharityBeneficiaryDiscretionYesNoPage(0), false).success.value
         .set(CharityBeneficiaryAddressYesNoPage(0), false).success.value
 
-      val nonAmendAnswers = PlaybackAnswers("internalId")
-        .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
-        .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+      val entities = injector.instanceOf[PrintPlaybackHelper].entities(playbackAnswers)
 
-
-      val expectedSections = injector.instanceOf[PrintPlaybackHelper].summary(playbackAnswers)
-      val nonAmendSections = injector.instanceOf[PrintPlaybackHelper].nonAmendSections(nonAmendAnswers)
+      val trustDetails = injector.instanceOf[PrintPlaybackHelper].trustDetails(playbackAnswers)
 
       val application = applicationBuilder(Some(playbackAnswers)).build()
 
@@ -68,7 +60,7 @@ class PlaybackAnswerPageControllerSpec extends PlaybackSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(expectedSections, nonAmendSections)(fakeRequest, messages).toString
+        view(entities, trustDetails)(fakeRequest, messages).toString
 
       application.stop()
     }

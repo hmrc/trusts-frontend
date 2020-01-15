@@ -21,10 +21,10 @@
     formHelper: FormWithCSRF
 )
 
-@(answerSections: Seq[Section], nonAmendAnswerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
+@(entities: Seq[Section], trustDetails: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @printScript = {
-<script type="text/javascript" src='@routes.Assets.versioned("javascripts/print.js")'></script>
+    <script type="text/javascript" src='@routes.Assets.versioned("javascripts/print.js")'></script>
 }
 
 @main_template(
@@ -36,7 +36,7 @@
 
     @components.warning("playbackLastDeclared.declareAnnually")
 
-    @for(section <- answerSections){
+    @for(section <- entities){
         @{
             section match {
                 case a: AnswerSection => components.answer_section(a)
@@ -46,7 +46,9 @@
     }
 
     <p>@messages("playbackLastDeclared.informationFirstRegistered")</p>
-    @for(section <- nonAmendAnswerSections){
+    <p>@messages("playbackLastDeclared.selfAssessmentOnline")</p>
+
+    @for(section <- trustDetails){
         @{
             section match {
                 case a: AnswerSection => components.answer_section(a)
@@ -54,7 +56,5 @@
             }
         }
     }
-    <p>@messages("playbackLastDeclared.selfAssessmentOnline")</p>
-
 
 }

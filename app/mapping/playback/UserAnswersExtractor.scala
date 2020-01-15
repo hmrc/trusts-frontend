@@ -16,8 +16,9 @@
 
 package mapping.playback
 
-import com.google.inject.Inject
+import com.google.inject.{ImplementedBy, Inject}
 import mapping.playback.PlaybackExtractionErrors._
+import mapping.playback.assets.AssetsExtractor
 import mapping.playback.beneficiaries.BeneficiaryExtractor
 import mapping.playback.protectors.ProtectorExtractor
 import mapping.playback.settlors.{SettlorExtractor, TrustTypeExtractor}
@@ -25,15 +26,19 @@ import models.playback.UserAnswers
 import models.playback.http.GetTrust
 import play.api.Logger
 
-class UserAnswersExtractor @Inject()(correspondenceExtractor: CorrespondenceExtractor,
-                                     trustDetailsExtractor: TrustDetailsExtractor,
-                                     beneficiary: BeneficiaryExtractor,
-                                     settlors: SettlorExtractor,
-                                     trustType: TrustTypeExtractor,
-                                     protectors: ProtectorExtractor,
-                                     trustees: TrusteeExtractor,
-                                     individualExtractor: OtherIndividualExtractor
-                                    ) extends PlaybackExtractor[GetTrust] {
+@ImplementedBy(classOf[UserAnswersExtractorImpl])
+trait UserAnswersExtractor extends PlaybackExtractor[GetTrust]
+
+class UserAnswersExtractorImpl @Inject()(beneficiary: BeneficiaryExtractor,
+                                         trustees: TrusteeExtractor,
+                                         settlors: SettlorExtractor,
+                                         trustType: TrustTypeExtractor,
+                                         protectors: ProtectorExtractor,
+                                         assets: AssetsExtractor,
+                                         individualExtractor: OtherIndividualExtractor,
+                                         correspondenceExtractor: CorrespondenceExtractor,
+                                         trustDetailsExtractor: TrustDetailsExtractor
+                                        ) extends UserAnswersExtractor {
 
   import models.playback.UserAnswersCombinator._
 
@@ -41,15 +46,16 @@ class UserAnswersExtractor @Inject()(correspondenceExtractor: CorrespondenceExtr
 
     val answersCombined = for {
       ua <- correspondenceExtractor.extract(answers, data.correspondence).right
-      ua1 <- trustDetailsExtractor.extract(answers, data.trust.details).right
-      ua2 <- beneficiary.extract(answers, data.trust.entities.beneficiary).right
-      ua3 <- settlors.extract(answers, data.trust.entities).right
-      ua4 <- trustType.extract(answers, Some(data.trust)).right
-      ua5 <- trustees.extract(answers, data.trust.entities).right
-      ua6 <- protectors.extract(answers, data.trust.entities.protectors).right
-      ua7 <- individualExtractor.extract(answers, data.trust.entities.naturalPerson).right
+      ua1 <- beneficiary.extract(answers, data.trust.entities.beneficiary).right
+      ua2 <- settlors.extract(answers, data.trust.entities).right
+      ua3 <- trustType.extract(answers, Some(data.trust)).right
+      ua4 <- protectors.extract(answers, data.trust.entities.protectors).right
+      ua5 <- individualExtractor.extract(answers, data.trust.entities.naturalPerson).right
+      ua6 <- trustees.extract(answers, data.trust.entities).right
+      ua7 <- trustDetailsExtractor.extract(answers, data.trust.details).right
+      ua8 <- assets.extract(answers, data.trust.assets).right
     } yield {
-      List(ua, ua1, ua2, ua3, ua4, ua5, ua6, ua7).combine
+      List(ua, ua1, ua2, ua3, ua4, ua5, ua6, ua7, ua8).combine
     }
 
     answersCombined match {

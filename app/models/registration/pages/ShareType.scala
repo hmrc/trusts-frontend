@@ -14,26 +14,27 @@
  * limitations under the License.
  */
 
-package pages.register.settlors.living_settlor.trust_type
+package models.registration.pages
 
-import models.core.UserAnswers
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.Settlors
+import models.{Enumerable, WithName}
+import viewmodels.RadioOption
 
-import scala.util.Try
+sealed trait ShareType
 
-case object EfrbsYesNoPage extends QuestionPage[Boolean] {
+object ShareType extends Enumerable.Implicits {
 
-  override def path: JsPath = Settlors.path \ toString
+  case object Quoted extends WithName("Quoted") with ShareType
+  case object Unquoted extends WithName("Unquoted") with ShareType
 
-  override def toString: String = "efrbsYesNo"
+  val values: List[ShareType] = List(
+    Quoted, Unquoted
+  )
 
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
-    value match {
-      case Some(false) =>
-        userAnswers.remove(EfrbsStartDatePage)
-      case _ => super.cleanup(value, userAnswers)
-    }
+  val options: List[RadioOption] = values.map {
+    value =>
+      RadioOption("shareType", value.toString)
   }
+
+  implicit val enumerable: Enumerable[ShareType] =
+    Enumerable(values.map(v => v.toString -> v): _*)
 }

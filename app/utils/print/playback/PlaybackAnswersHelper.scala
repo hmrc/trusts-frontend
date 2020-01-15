@@ -235,8 +235,8 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
       case trustType =>
         Seq(
           AnswerSection(
-            headingKey = Some(messages("answerPage.section.trustType.heading")),
-            rows = trustType
+            rows = trustType,
+            sectionKey = Some(messages("answerPage.section.trustType.heading"))
           )
         )
     }

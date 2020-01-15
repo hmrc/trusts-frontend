@@ -24,13 +24,19 @@ sealed trait ShareClass
 object ShareClass extends Enumerable.Implicits {
 
   case object Ordinary extends WithName("ordinary") with ShareClass
+  case object NonVoting extends WithName("non-voting") with ShareClass
+  case object Redeemable extends WithName("redeemable") with ShareClass
   case object Preference extends WithName("preference") with ShareClass
   case object Deferred extends WithName("deferred") with ShareClass
-  case object Growth extends WithName("growth") with ShareClass
+  case object Management extends WithName("management") with ShareClass
+  case object OtherClasses extends WithName("other-classes") with ShareClass
+  case object Voting extends WithName("voting") with ShareClass
+  case object Dividend extends WithName("dividend") with ShareClass
+  case object Capital extends WithName("capital") with ShareClass
   case object Other extends WithName("other") with ShareClass
 
   val values: List[ShareClass] = List(
-    Ordinary, Preference, Deferred, Growth, Other
+    Ordinary, NonVoting, Redeemable, Preference, Deferred, Management, OtherClasses, Voting, Dividend, Capital, Other
   )
 
   val options: List[RadioOption] = values.map {
@@ -43,9 +49,15 @@ object ShareClass extends Enumerable.Implicits {
 
   def toDES(value : ShareClass) : String = value match {
     case Ordinary => "Ordinary shares"
+    case NonVoting => "Non-voting shares"
+    case Redeemable => "Redeemable shares"
     case Preference => "Preference shares"
     case Deferred => "Deferred ordinary shares"
-    case Growth => "Other"
+    case Management => "Management shares"
+    case OtherClasses => "Other classes of shares"
+    case Voting => "Voting shares"
+    case Dividend => "Dividend shares"
+    case Capital => "Capital share"
     case Other => "Other"
   }
 }

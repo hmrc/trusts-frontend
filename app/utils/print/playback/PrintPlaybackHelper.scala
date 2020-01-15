@@ -24,7 +24,7 @@ import viewmodels.AnswerSection
 
 class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions){
 
-  def summary(userAnswers: models.playback.UserAnswers)(implicit messages: Messages) : Seq[AnswerSection] = {
+  def entities(userAnswers: models.playback.UserAnswers)(implicit messages: Messages) : Seq[AnswerSection] = {
 
     val playbackAnswersHelper: PlaybackAnswersHelper = new PlaybackAnswersHelper(countryOptions, userAnswers)
 
@@ -33,17 +33,18 @@ class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions){
       playbackAnswersHelper.settlors,
       playbackAnswersHelper.beneficiaries,
       playbackAnswersHelper.protectors,
-      playbackAnswersHelper.otherIndividual,
-      // trust type must go last
-      playbackAnswersHelper.trustType
+      playbackAnswersHelper.otherIndividual
     ).flatten
 
   }
 
-  def nonAmendSections(userAnswers: models.playback.UserAnswers)(implicit messages: Messages) : Seq[AnswerSection] = {
+  def trustDetails(userAnswers: models.playback.UserAnswers)(implicit messages: Messages) : Seq[AnswerSection] = {
+
+    val playbackAnswersHelper: PlaybackAnswersHelper = new PlaybackAnswersHelper(countryOptions, userAnswers)
 
     List(
-      TrustDetails(userAnswers, countryOptions)
+      TrustDetails(userAnswers, countryOptions),
+      playbackAnswersHelper.trustType
     ).flatten
 
   }

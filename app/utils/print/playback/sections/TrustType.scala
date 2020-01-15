@@ -63,6 +63,8 @@ object TrustType {
         messages("deedOfVariation.replaceAbsoluteInterestOverWill")
       case DeedOfVariation.ReplacedWill =>
         messages("deedOfVariation.replaceWillTrust")
+      case DeedOfVariation.AdditionToWill =>
+        ""
     }
   }
 

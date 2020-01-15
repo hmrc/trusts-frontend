@@ -18,43 +18,15 @@ package mapping.playback
 
 import com.google.inject.Inject
 import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
-import mapping.playback.beneficiaries.BeneficiaryExtractor
-import mapping.playback.protectors.ProtectorExtractor
-import mapping.playback.settlors.{SettlorExtractor, TrustTypeExtractor}
 import models.playback.UserAnswers
 import models.playback.http.GetTrust
 
-class FakeUserAnswerExtractor @Inject()(beneficiary: BeneficiaryExtractor,
-                                        settlors: SettlorExtractor,
-                                        trustType: TrustTypeExtractor,
-                                        protectors: ProtectorExtractor,
-                                        trustees: TrusteeExtractor,
-                                        otherIndividualExtractor: OtherIndividualExtractor,
-                                        correspondenceExtractor: CorrespondenceExtractor,
-                                        trustDetailsExtractor: TrustDetailsExtractor
-                                       ) extends UserAnswersExtractor(
-  correspondenceExtractor, trustDetailsExtractor, beneficiary, settlors, trustType, protectors, trustees, otherIndividualExtractor
-) {
-
+class FakeUserAnswerExtractor @Inject() extends UserAnswersExtractor {
   override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionErrors.PlaybackExtractionError, UserAnswers] =
     Right(UserAnswers("id"))
-
 }
 
-
-class FakeFailingUserAnswerExtractor @Inject()(beneficiary: BeneficiaryExtractor,
-                                               settlors: SettlorExtractor,
-                                               trustType: TrustTypeExtractor,
-                                               protectors: ProtectorExtractor,
-                                               trustees: TrusteeExtractor,
-                                               otherIndividualExtractor: OtherIndividualExtractor,
-                                               correspondenceExtractor: CorrespondenceExtractor,
-                                               trustDetailsExtractor: TrustDetailsExtractor
-                                       ) extends UserAnswersExtractor(
-  correspondenceExtractor, trustDetailsExtractor, beneficiary, settlors, trustType, protectors, trustees, otherIndividualExtractor
-) {
-
+class FakeFailingUserAnswerExtractor @Inject() extends UserAnswersExtractor {
   override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionErrors.PlaybackExtractionError, UserAnswers] =
-    Left(FailedToExtractData("No Entities"))
-
+    Left(FailedToExtractData("No beneficiaries"))
 }
