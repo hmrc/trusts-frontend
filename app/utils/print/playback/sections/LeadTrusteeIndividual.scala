@@ -17,12 +17,13 @@
 package utils.print.playback.sections
 
 import models.playback.UserAnswers
+import pages.register.CorrespondenceAddressPage
 import pages.register.trustees._
 import play.api.i18n.Messages
 import utils.CheckAnswersFormatters
 import utils.countryOptions.CountryOptions
 import utils.print.playback.sections.AnswerRowConverter._
-import viewmodels.AnswerSection
+import viewmodels.{AnswerRow, AnswerSection}
 
 object LeadTrusteeIndividual {
 
@@ -34,23 +35,34 @@ object LeadTrusteeIndividual {
           headingKey = Some(messages("answerPage.section.leadTrustee.subheading")),
           Seq(
             fullNameQuestion(TrusteesNamePage(index), userAnswers, "leadTrusteesName"),
-            yesNoQuestion(TrusteeDateOfBirthYesNoPage(index), userAnswers, "trusteeDateOfBirthYesNo", name),
             dateQuestion(TrusteesDateOfBirthPage(index), userAnswers, "trusteesDateOfBirth", name),
             yesNoQuestion(TrusteeAUKCitizenPage(index), userAnswers, "trusteeAUKCitizen", name),
-            yesNoQuestion(TrusteeNinoYesNoPage(index), userAnswers, "trusteeNinoYesNo", name),
-            ninoQuestion(TrusteesNinoPage(index), userAnswers, "trusteesNino", name),
-            yesNoQuestion(TrusteeAddressYesNoPage(index), userAnswers, "trusteeUkAddressYesNo", name),
-            yesNoQuestion(TrusteeAddressInTheUKPage(index), userAnswers, "trusteeLiveInTheUK", name),
-            addressQuestion(TrusteeAddressPage(index), userAnswers, "trusteesUkAddress", name, countryOptions),
-            yesNoQuestion(TrusteePassportIDCardYesNoPage(index), userAnswers, "trusteePassportOrIdCardYesNo", name),
-            passportOrIdCardQuestion(TrusteePassportIDCardPage(index), userAnswers, "trusteePassportOrIdCard", name, countryOptions),
-            stringQuestion(TelephoneNumberPage(index), userAnswers, "telephoneNumber", name),
-            stringQuestion(EmailPage(index), userAnswers, "trusteeEmailAddress", name)
-          ).flatten,
+            ninoQuestion(TrusteesNinoPage(index), userAnswers, "trusteesNino", name)
+          ).flatten ++
+            addressAnswers(index, userAnswers, countryOptions, name).flatten ++
+            Seq(yesNoQuestion(TrusteePassportIDCardYesNoPage(index), userAnswers, "trusteePassportOrIdCardYesNo", name),
+              passportOrIdCardQuestion(TrusteePassportIDCardPage(index), userAnswers, "trusteePassportOrIdCard", name, countryOptions),
+              stringQuestion(TelephoneNumberPage(index), userAnswers, "telephoneNumber", name),
+              stringQuestion(EmailPage(index), userAnswers, "trusteeEmailAddress", name)
+            ).flatten,
           sectionKey = Some(messages("answerPage.section.trustees.heading"))
         ))
       )
     }
+  }
+
+  def addressAnswers(index: Int,
+                     userAnswers: UserAnswers,
+                     countryOptions: CountryOptions,
+                     name: String)(implicit messages: Messages): Seq[Option[AnswerRow]] = {
+
+    userAnswers.get(TrusteeAddressYesNoPage(index)) match {
+      case Some(x) =>  Seq(yesNoQuestion(TrusteeAddressYesNoPage(index), userAnswers, "trusteeUkAddressYesNo", name),
+        yesNoQuestion(TrusteeAddressInTheUKPage(index), userAnswers, "trusteeLiveInTheUK", name),
+        addressQuestion(TrusteeAddressPage(index), userAnswers, "trusteesUkAddress", name, countryOptions))
+      case _ =>  Seq(addressQuestion(CorrespondenceAddressPage, userAnswers, "trusteesUkAddress", name, countryOptions))
+    }
+
   }
 
 }

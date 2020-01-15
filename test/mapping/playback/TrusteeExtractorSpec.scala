@@ -53,6 +53,54 @@ class TrusteeExtractorSpec extends FreeSpec with MustMatchers
 
     }
 
+    "when there is only a lead trustee with only a utr identification" - {
+
+      "return user answers updated" in {
+
+        val leadTrustee = DisplayTrustEntitiesType(None,
+          DisplayTrustBeneficiaryType(None, None, None,None,None,None,None),
+          None,
+          DisplayTrustLeadTrusteeType(None,
+            Some(DisplayTrustLeadTrusteeOrgType(
+              lineNo = s"1",
+              bpMatchStatus = Some("01"),
+              name = "org1",
+              phoneNumber = "+441234567890",
+              email = Some("test@test.com"),
+              identification =
+                Some(DisplayTrustIdentificationOrgType(
+                  safeId = Some("8947584-94759745-84758745"),
+                  utr = Some("1234567890"),
+                  address = None
+                )),
+              entityStart = "2019-11-26"
+            )
+            )),
+          None,
+          None, None)
+
+
+        val ua = UserAnswers("fakeId")
+
+        val extraction = trusteeExtractor.extract(ua, leadTrustee)
+
+        extraction.right.value.get(IsThisLeadTrusteePage(0)).get mustBe true
+        extraction.right.value.get(TrusteeIndividualOrBusinessPage(0)).get mustBe IndividualOrBusiness.Business
+        extraction.right.value.get(TrusteeOrgNamePage(0)).get mustBe "org1"
+        extraction.right.value.get(TrusteeUtrYesNoPage(0)).get mustBe true
+        extraction.right.value.get(TrusteesUtrPage(0)).get mustBe "1234567890"
+        extraction.right.value.get(TrusteeAddressYesNoPage(0)) mustNot be(defined)
+        extraction.right.value.get(TrusteeAddressInTheUKPage(0)) mustNot be(defined)
+        extraction.right.value.get(TrusteesUkAddressPage(0)) mustNot be(defined)
+        extraction.right.value.get(TrusteesInternationalAddressPage(0)) mustNot be(defined)
+        extraction.right.value.get(TelephoneNumberPage(0)).get mustBe "+441234567890"
+        extraction.right.value.get(EmailPage(0)).get mustBe "test@test.com"
+        extraction.right.value.get(LeadTrusteeMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
+        extraction.right.value.get(TrusteesSafeIdPage(0)) must be(defined)
+      }
+
+    }
+
     "when there is only a lead trustee" - {
 
       "return user answers updated" in {

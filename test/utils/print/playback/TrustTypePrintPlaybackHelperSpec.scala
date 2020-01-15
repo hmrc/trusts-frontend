@@ -49,9 +49,9 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
 
       val result = helper.summary(answers)
+      val nonAmendsResult = helper.nonAmendSections(answers)
 
       result mustBe Seq(
-        trustDetails,
         AnswerSection(
           headingKey = Some("Trust type"),
           rows = Seq(
@@ -64,6 +64,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
           sectionKey = None
         )
       )
+      nonAmendsResult mustBe Seq(trustDetails)
 
     }
 
@@ -77,9 +78,9 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(SetUpInAdditionToWillTrustYesNoPage, true).success.value
 
       val result = helper.summary(answers)
+      val nonAmendsResult = helper.nonAmendSections(answers)
 
       result mustBe Seq(
-        trustDetails,
         AnswerSection(
           headingKey = Some("Trust type"),
           rows = Seq(
@@ -102,6 +103,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
           sectionKey = None
         )
       )
+      nonAmendsResult mustBe Seq(trustDetails)
 
     }
 
@@ -116,9 +118,9 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(HowDeedOfVariationCreatedPage, DeedOfVariation.ReplacedWill).success.value
 
       val result = helper.summary(answers)
+      val nonAmendsResult = helper.nonAmendSections(answers)
 
       result mustBe Seq(
-        trustDetails,
         AnswerSection(
           headingKey = Some("Trust type"),
           rows = Seq(
@@ -146,6 +148,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
           sectionKey = None
         )
       )
+      nonAmendsResult mustBe Seq(trustDetails)
 
     }
 
@@ -159,9 +162,9 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(HoldoverReliefYesNoPage, true).success.value
 
       val result = helper.summary(answers)
+      val nonAmendsResult = helper.nonAmendSections(answers)
 
       result mustBe Seq(
-        trustDetails,
         AnswerSection(
           headingKey = Some("Trust type"),
           rows = Seq(
@@ -184,6 +187,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
           sectionKey = None
         )
       )
+      nonAmendsResult mustBe Seq(trustDetails)
 
     }
 
@@ -196,9 +200,9 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(KindOfTrustPage, KindOfTrust.FlatManagement).success.value
 
       val result = helper.summary(answers)
+      val nonAmendsResult = helper.nonAmendSections(answers)
 
       result mustBe Seq(
-        trustDetails,
         AnswerSection(
           headingKey = Some("Trust type"),
           rows = Seq(
@@ -216,6 +220,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
           sectionKey = None
         )
       )
+      nonAmendsResult mustBe Seq(trustDetails)
 
     }
 
@@ -228,9 +233,9 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(KindOfTrustPage, KindOfTrust.HeritageMaintenanceFund).success.value
 
       val result = helper.summary(answers)
+      val nonAmendsResult = helper.nonAmendSections(answers)
 
       result mustBe Seq(
-        trustDetails,
         AnswerSection(
           headingKey = Some("Trust type"),
           rows = Seq(
@@ -248,6 +253,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
           sectionKey = None
         )
       )
+      nonAmendsResult mustBe Seq(trustDetails)
 
     }
 
@@ -262,9 +268,9 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(EfrbsStartDatePage, LocalDate.of(1970, 2, 1)).success.value
 
       val result = helper.summary(answers)
+      val nonAmendsResult = helper.nonAmendSections(answers)
 
       result mustBe Seq(
-        trustDetails,
         AnswerSection(
           headingKey = Some("Trust type"),
           rows = Seq(
@@ -292,6 +298,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
           sectionKey = None
         )
       )
+      nonAmendsResult mustBe Seq(trustDetails)
 
     }
 
@@ -305,9 +312,9 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(EfrbsYesNoPage, false).success.value
 
       val result = helper.summary(answers)
+      val nonAmendsResult = helper.nonAmendSections(answers)
 
       result mustBe Seq(
-        trustDetails,
         AnswerSection(
           headingKey = Some("Trust type"),
           rows = Seq(
@@ -330,6 +337,7 @@ class TrustTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
           sectionKey = None
         )
       )
+      nonAmendsResult mustBe Seq(trustDetails)
 
     }
 

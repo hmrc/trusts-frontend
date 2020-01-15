@@ -19,7 +19,7 @@ package utils.print.playback
 import javax.inject.Inject
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
-import utils.print.playback.sections.{DeceasedSettlor, TrustDetails}
+import utils.print.playback.sections.TrustDetails
 import viewmodels.AnswerSection
 
 class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions){
@@ -29,7 +29,6 @@ class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions){
     val playbackAnswersHelper: PlaybackAnswersHelper = new PlaybackAnswersHelper(countryOptions, userAnswers)
 
     List(
-      TrustDetails(userAnswers, countryOptions),
       playbackAnswersHelper.allTrustees,
       playbackAnswersHelper.settlors,
       playbackAnswersHelper.beneficiaries,
@@ -40,4 +39,13 @@ class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions){
     ).flatten
 
   }
+
+  def nonAmendSections(userAnswers: models.playback.UserAnswers)(implicit messages: Messages) : Seq[AnswerSection] = {
+
+    List(
+      TrustDetails(userAnswers, countryOptions)
+    ).flatten
+
+  }
+
 }

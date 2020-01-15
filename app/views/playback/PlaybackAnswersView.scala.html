@@ -21,7 +21,7 @@
     formHelper: FormWithCSRF
 )
 
-@(answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
+@(answerSections: Seq[Section], nonAmendAnswerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @printScript = {
 <script type="text/javascript" src='@routes.Assets.versioned("javascripts/print.js")'></script>
@@ -46,6 +46,15 @@
     }
 
     <p>@messages("playbackLastDeclared.informationFirstRegistered")</p>
+    @for(section <- nonAmendAnswerSections){
+        @{
+            section match {
+                case a: AnswerSection => components.answer_section(a)
+                case r: RepeaterAnswerSection => components.repeater_answer_section(r)
+            }
+        }
+    }
     <p>@messages("playbackLastDeclared.selfAssessmentOnline")</p>
+
 
 }

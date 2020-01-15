@@ -19,7 +19,10 @@ package controllers.playback
 import base.PlaybackSpecBase
 import models.core.pages.UKAddress
 import models.playback.{UserAnswers => PlaybackAnswers}
+import models.registration.pages.KindOfTrust
 import pages.register.beneficiaries.charity._
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
+import pages.register.settlors.living_settlor.trust_type.KindOfTrustPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.countryOptions.CountryOptions
@@ -46,7 +49,13 @@ class PlaybackAnswerPageControllerSpec extends PlaybackSpecBase {
         .set(CharityBeneficiaryDiscretionYesNoPage(0), false).success.value
         .set(CharityBeneficiaryAddressYesNoPage(0), false).success.value
 
+      val nonAmendAnswers = PlaybackAnswers("internalId")
+        .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
+        .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+
+
       val expectedSections = injector.instanceOf[PrintPlaybackHelper].summary(playbackAnswers)
+      val nonAmendSections = injector.instanceOf[PrintPlaybackHelper].nonAmendSections(nonAmendAnswers)
 
       val application = applicationBuilder(Some(playbackAnswers)).build()
 
@@ -59,7 +68,7 @@ class PlaybackAnswerPageControllerSpec extends PlaybackSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(expectedSections)(fakeRequest, messages).toString
+        view(expectedSections, nonAmendSections)(fakeRequest, messages).toString
 
       application.stop()
     }

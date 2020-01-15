@@ -75,9 +75,9 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(CharityBeneficiaryUtrPage(1), "1234567890").success.value
 
       val result = helper.summary(answers)
+      val nonAmendsResult = helper.nonAmendSections(answers)
 
       result mustBe Seq(
-        trustDetails,
         AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),
         AnswerSection(
           headingKey = Some("Charity beneficiary 1"),
@@ -102,6 +102,8 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
           sectionKey = None
         )
       )
+
+      nonAmendsResult mustBe Seq(trustDetails)
 
     }
 
@@ -141,13 +143,13 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(IndividualBeneficiaryVulnerableYesNoPage(2), false).success.value
 
       val result = helper.summary(answers)
+      val nonAmendsResult = helper.nonAmendSections(answers)
 
       val name1 = "Michael Finnegan"
       val name2 = "Joe Bloggs"
       val name3 = "Paul Chuckle"
 
       result mustBe Seq(
-        trustDetails,
         AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),
         AnswerSection(
           headingKey = Some("Individual beneficiary 1"),
@@ -196,6 +198,8 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         )
       )
 
+      nonAmendsResult mustBe Seq(trustDetails)
+
     }
 
     "generate company beneficiaries sections" in {
@@ -227,9 +231,9 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(CompanyBeneficiaryUtrPage(1), "1234567890").success.value
 
       val result = helper.summary(answers)
+      val nonAmendsResult = helper.nonAmendSections(answers)
 
       result mustBe Seq(
-        trustDetails,
         AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),
         AnswerSection(
           headingKey = Some("Company beneficiary 1"),
@@ -254,6 +258,8 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
           sectionKey = None
         )
       )
+
+      nonAmendsResult mustBe Seq(trustDetails)
 
     }
 
@@ -286,9 +292,9 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(TrustBeneficiaryUtrPage(1), "1234567890").success.value
 
       val result = helper.summary(answers)
+      val nonAmendsResult = helper.nonAmendSections(answers)
 
       result mustBe Seq(
-        trustDetails,
         AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),
         AnswerSection(
           headingKey = Some("Trust beneficiary 1"),
@@ -313,6 +319,8 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
           sectionKey = None
         )
       )
+
+      nonAmendsResult mustBe Seq(trustDetails)
 
     }
 
@@ -349,9 +357,9 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(LargeBeneficiaryNumberOfBeneficiariesPage(1), "1").success.value
 
       val result = helper.summary(answers)
+      val nonAmendsResult = helper.nonAmendSections(answers)
 
       result mustBe Seq(
-        trustDetails,
         AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),
         AnswerSection(
           headingKey = Some("Employment related beneficiary 1"),
@@ -380,6 +388,8 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
           sectionKey = None
         )
       )
+
+      nonAmendsResult mustBe Seq(trustDetails)
 
     }
 
@@ -411,9 +421,9 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(OtherBeneficiaryAddressYesNoPage(1), false).success.value
 
       val result = helper.summary(answers)
+      val nonAmendsResult = helper.nonAmendSections(answers)
 
       result mustBe Seq(
-        trustDetails,
         AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),
         AnswerSection(
           headingKey = Some("Other beneficiary 1"),
@@ -438,6 +448,8 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         )
       )
 
+      nonAmendsResult mustBe Seq(trustDetails)
+
     }
 
     "generate class of beneficiaries sections" in {
@@ -456,9 +468,9 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(ClassOfBeneficiaryDiscretionYesNoPage(1), true).success.value
 
       val result = helper.summary(answers)
+      val nonAmendsResult = helper.nonAmendSections(answers)
 
       result mustBe Seq(
-        trustDetails,
         AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),
         AnswerSection(
           headingKey = Some("Class of beneficiary 1"),
@@ -478,6 +490,8 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
           sectionKey = None
         )
       )
+
+      nonAmendsResult mustBe Seq(trustDetails)
 
     }
 

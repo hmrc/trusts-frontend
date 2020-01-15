@@ -166,7 +166,6 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
       case DisplayTrustIdentificationType(_, Some(nino), None, None) =>
         answers.set(TrusteeAUKCitizenPage(index), true)
           .flatMap(_.set(TrusteesNinoPage(index), nino))
-        // TODO Copy correspondence address to lead trustee individual address
 
       case DisplayTrustIdentificationType(_, None, None, Some(address)) =>
         Logger.error(s"[TrusteesExtractor] only address identification for lead trustee individual returned in DisplayTrustOrEstate api")
@@ -224,8 +223,6 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
       case DisplayTrustIdentificationOrgType(_, Some(utr), None) =>
         answers.set(TrusteeUtrYesNoPage(index), true)
           .flatMap(_.set(TrusteesUtrPage(index), utr))
-          .flatMap(_.set(TrusteeAddressYesNoPage(index), false))
-      // TODO Copy correspondence address to lead trustee org address
 
     } getOrElse {
       Logger.error(s"[TrusteesExtractor] no identification for lead trustee company returned in DisplayTrustOrEstate api")

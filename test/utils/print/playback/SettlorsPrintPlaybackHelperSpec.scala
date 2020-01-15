@@ -56,9 +56,9 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(SettlorNationalInsuranceNumberPage, "JP121212A").success.value
 
       val result = helper.summary(answers)
+      val nonAmendsResult = helper.nonAmendSections(answers)
 
       result mustBe Seq(
-        trustDetails,
         AnswerSection(None, Nil, Some(messages("answerPage.section.deceasedSettlor.heading"))),
         AnswerSection(
           headingKey = None,
@@ -74,6 +74,7 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
           sectionKey = None
         )
       )
+      nonAmendsResult mustBe Seq(trustDetails)
 
     }
 
@@ -102,9 +103,9 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
         ).success.value
 
       val result = helper.summary(answers)
+      val nonAmendsResult = helper.nonAmendSections(answers)
 
       result mustBe Seq(
-        trustDetails,
         AnswerSection(None, Nil, Some(messages("answerPage.section.deceasedSettlor.heading"))),
         AnswerSection(
           headingKey = None,
@@ -121,6 +122,7 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
           sectionKey = None
         )
       )
+      nonAmendsResult mustBe Seq(trustDetails)
 
     }
 

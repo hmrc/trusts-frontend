@@ -45,8 +45,9 @@ class PlaybackAnswerPageController @Inject()(
     implicit request =>
 
       val sections = printPlaybackAnswersHelper.summary(request.userAnswers)
+      val nonAmendSections = printPlaybackAnswersHelper.nonAmendSections(request.userAnswers)
 
-      Future.successful(Ok(view(sections)))
+      Future.successful(Ok(view(sections, nonAmendSections)))
   }
 
 }

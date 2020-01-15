@@ -22,6 +22,7 @@ import java.time.LocalDate
 import base.PlaybackSpecBase
 import models.core.pages.{FullName, InternationalAddress, UKAddress}
 import models.registration.pages.PassportOrIdCardDetails
+import pages.register.CorrespondenceAddressPage
 import pages.register.trustees._
 import play.twirl.api.Html
 
@@ -92,6 +93,39 @@ class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase with AnswerSectio
     }
   }
 
+  "when the lead trustee is an UK individual with nino and no address" must {
+    "generate lead trustee section with correspondence address" in {
+      val helper = injector.instanceOf[PrintPlaybackHelper]
+
+      val (answers, _) = (for {
+        _ <- individualUKTrustee(0)
+        _ <- TrusteesNamePage(0) is FullName("Wild", Some("Bill"), "Hickock")
+        _ <- TrusteesDateOfBirthPage(0) is LocalDate.parse("1975-01-23")
+        _ <- TrusteesNinoPage(0) is "AA111111A"
+        _ <- TrusteeAddressYesNoPage(0).isRemoved
+        _ <- TrusteeAddressInTheUKPage(0).isRemoved
+        _ <- TrusteesUkAddressPage(0).isRemoved
+        _ <- CorrespondenceAddressPage is UKAddress("Address 1", "Address 2", None, None, "AA11 1AA")
+        _ <- TelephoneNumberPage(0) is "67676767676"
+        _ <- EmailPage(0) is "aa@aabb.com"
+        _ <- IsThisLeadTrusteePage(0) is true
+      } yield Unit).run(emptyUserAnswers).value
+
+      val result = helper.summary(answers)
+
+      result must containHeadingSection(messages("answerPage.section.trustees.heading"))
+      result must containSectionWithHeadingAndValues(messages("answerPage.section.leadTrustee.subheading"),
+        "What is the lead trustee’s name?" -> Html("Wild Bill Hickock"),
+        "What is Wild Bill Hickock’s date of birth?" -> Html("23 January 1975"),
+        "Is Wild Bill Hickock a UK citizen?"-> Html("Yes"),
+        "What is Wild Bill Hickock’s National Insurance number?" -> Html("AA 11 11 11 A"),
+        "What is Wild Bill Hickock’s address?" -> Html("Address 1<br />Address 2<br />AA11 1AA"),
+        "What is Wild Bill Hickock’s telephone number?" -> Html("67676767676"),
+        "What is Wild Bill Hickock’s email address?" -> Html("aa@aabb.com")
+      )
+    }
+  }
+
   "when the lead trustee is a company" must {
     "generate a lead trustee section" in {
       val helper = injector.instanceOf[PrintPlaybackHelper]
@@ -111,6 +145,34 @@ class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase with AnswerSectio
         "What is the business’s name?" -> Html("Lead Trustee Company"),
         "Is this trustee a UK registered company?"-> Html("Yes"),
         "What is Lead Trustee Company’s Unique Taxpayer Reference (UTR) number?" -> Html("1234567890")
+      )
+    }
+  }
+
+  "when the lead trustee is a company with utr and no address" must {
+    "generate a lead trustee section with correspondence address" in {
+      val helper = injector.instanceOf[PrintPlaybackHelper]
+
+      val (answers, _) = (for {
+        _ <- ukCompanyTrustee(0)
+        _ <- TrusteeOrgNamePage(0) is "Lead Trustee Company"
+        _ <- TrusteeUtrYesNoPage(0) is true
+        _ <- TrusteesUtrPage(0) is "1234567890"
+        _ <- TrusteeAddressYesNoPage(0).isRemoved
+        _ <- TrusteeAddressInTheUKPage(0).isRemoved
+        _ <- TrusteesUkAddressPage(0).isRemoved
+        _ <- CorrespondenceAddressPage is UKAddress("Address 1", "Address 2", None, None, "AA11 1AA")
+        _ <- IsThisLeadTrusteePage(0) is true
+      } yield Unit).run(emptyUserAnswers).value
+
+      val result = helper.summary(answers)
+
+      result must containHeadingSection(messages("answerPage.section.trustees.heading"))
+      result must containSectionWithHeadingAndValues(messages("answerPage.section.leadTrustee.subheading"),
+        "What is the business’s name?" -> Html("Lead Trustee Company"),
+        "Is this trustee a UK registered company?"-> Html("Yes"),
+        "What is Lead Trustee Company’s Unique Taxpayer Reference (UTR) number?" -> Html("1234567890"),
+        "What is Lead Trustee Company’s address?" -> Html("Address 1<br />Address 2<br />AA11 1AA")
       )
     }
   }

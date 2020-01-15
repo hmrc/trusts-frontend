@@ -59,6 +59,7 @@ trait UserAnswersWriting extends TryValues with ModelGenerators {
     _ <- TrusteeNinoYesNoPage(index) is true
     _ <- TrusteeAUKCitizenPage(index) is true
     _ <- TrusteesNinoPage(index) is "AA000000A"
+    _ <- TrusteeAddressYesNoPage(index) is true
     _ <- TrusteeAddressInTheUKPage(index) is true
     _ <- TrusteesUkAddressPage(index).withArbitraryValue
     _ <- TelephoneNumberPage(index).withArbitraryValue
