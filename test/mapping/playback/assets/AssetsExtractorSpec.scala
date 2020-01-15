@@ -16,17 +16,22 @@
 
 package mapping.playback.assets
 
+import java.time.LocalDate
+
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
 import mapping.playback.PlaybackExtractor
 import mapping.registration.AssetMonetaryAmount
 import models.playback.UserAnswers
-import models.playback.http.{DisplaySharesType, DisplayTrustAssets}
+import models.playback.http.{DisplayOtherAssetType, DisplaySharesType, DisplayTrustAssets, DisplayTrustPartnershipType}
 import models.registration.pages.ShareClass._
 import models.registration.pages.ShareType.{Quoted, Unquoted}
+import org.joda.time.DateTime
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.asset.other._
+import pages.register.asset.partnership._
 import pages.register.asset.shares._
 
 class AssetsExtractorSpec extends FreeSpec with MustMatchers
@@ -77,8 +82,28 @@ class AssetsExtractorSpec extends FreeSpec with MustMatchers
             )
           ),
           business = Nil,
-          partnerShip = Nil,
-          other = Nil
+          partnerShip = List(
+            DisplayTrustPartnershipType(
+              description = "Partnership 1",
+              partnershipStart = Some(DateTime.parse("1970-02-01")),
+              utr = Some("1234567890")
+            ),
+            DisplayTrustPartnershipType(
+              description = "Partnership 2",
+              partnershipStart = None,
+              utr = None
+            )
+          ),
+          other = List(
+            DisplayOtherAssetType(
+              description = "Other 1",
+              value = Some(1)
+            ),
+            DisplayOtherAssetType(
+              description = "Other 2",
+              value = None
+            )
+          )
         )
         val ua = UserAnswers("fakeId")
 
@@ -103,6 +128,20 @@ class AssetsExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(ShareClassPage(2)).get mustBe Other
         extraction.right.value.get(SharePortfolioQuantityInTrustPage(2)).get mustBe "2"
         extraction.right.value.get(ShareValueInTrustPage(2)).get mustBe "2"
+
+        extraction.right.value.get(PartnershipAssetDescriptionPage(3)).get mustBe "Partnership 1"
+        extraction.right.value.get(PartnershipAssetStartDatePage(3)).get mustBe LocalDate.of(1970,2,1)
+        extraction.right.value.get(PartnershipAssetUtrPage(3)).get mustBe "1234567890"
+
+        extraction.right.value.get(PartnershipAssetDescriptionPage(4)).get mustBe "Partnership 2"
+        extraction.right.value.get(PartnershipAssetStartDatePage(4)) mustNot be(defined)
+        extraction.right.value.get(PartnershipAssetUtrPage(4)) mustNot be(defined)
+
+        extraction.right.value.get(OtherAssetDescriptionPage(5)).get mustBe "Other 1"
+        extraction.right.value.get(OtherAssetValuePage(5)).get mustBe "1"
+
+        extraction.right.value.get(OtherAssetDescriptionPage(6)).get mustBe "Other 2"
+        extraction.right.value.get(OtherAssetValuePage(6)) mustNot be(defined)
       }
     }
   }
