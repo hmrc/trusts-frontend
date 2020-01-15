@@ -113,32 +113,32 @@ class AssetsExtractorSpec extends FreeSpec with MustMatchers
 
         extraction.right.value.get(AssetMoneyValuePage(0)).get mustBe "64000"
 
-        extraction.right.value.get(PropertyOrLandAddressYesNoPage(0)).get mustBe true
-        extraction.right.value.get(PropertyOrLandAddressUkYesNoPage(0)).get mustBe true
-        extraction.right.value.get(PropertyOrLandUKAddressPage(0)).get mustBe UKAddress("line1", "line2", None, None, "NE11NE")
-        extraction.right.value.get(PropertyOrLandInternationalAddressPage(0)) must not be defined
-        extraction.right.value.get(PropertyOrLandDescriptionPage(0)).get mustBe "Property 1"
-        extraction.right.value.get(PropertyOrLandTotalValuePage(0)).get mustBe "95"
-        extraction.right.value.get(TrustOwnAllThePropertyOrLandPage(0)).get mustBe false
-        extraction.right.value.get(PropertyLandValueTrustPage(0)).get mustBe "90"
-
         extraction.right.value.get(PropertyOrLandAddressYesNoPage(1)).get mustBe true
-        extraction.right.value.get(PropertyOrLandAddressUkYesNoPage(1)).get mustBe false
-        extraction.right.value.get(PropertyOrLandInternationalAddressPage(1)).get mustBe InternationalAddress("line1", "line2", None, "FR")
-        extraction.right.value.get(PropertyOrLandUKAddressPage(1)) must not be defined
-        extraction.right.value.get(PropertyOrLandDescriptionPage(1)).get mustBe "Property 2"
-        extraction.right.value.get(PropertyOrLandTotalValuePage(1)).get mustBe "85"
+        extraction.right.value.get(PropertyOrLandAddressUkYesNoPage(1)).get mustBe true
+        extraction.right.value.get(PropertyOrLandUKAddressPage(1)).get mustBe UKAddress("line1", "line2", None, None, "NE11NE")
+        extraction.right.value.get(PropertyOrLandInternationalAddressPage(1)) must not be defined
+        extraction.right.value.get(PropertyOrLandDescriptionPage(1)).get mustBe "Property 1"
+        extraction.right.value.get(PropertyOrLandTotalValuePage(1)).get mustBe "95"
         extraction.right.value.get(TrustOwnAllThePropertyOrLandPage(1)).get mustBe false
-        extraction.right.value.get(PropertyLandValueTrustPage(1)).get mustBe "80"
+        extraction.right.value.get(PropertyLandValueTrustPage(1)).get mustBe "90"
 
-        extraction.right.value.get(PropertyOrLandAddressYesNoPage(2)).get mustBe false
-        extraction.right.value.get(PropertyOrLandAddressUkYesNoPage(2)) must not be defined
+        extraction.right.value.get(PropertyOrLandAddressYesNoPage(2)).get mustBe true
+        extraction.right.value.get(PropertyOrLandAddressUkYesNoPage(2)).get mustBe false
+        extraction.right.value.get(PropertyOrLandInternationalAddressPage(2)).get mustBe InternationalAddress("line1", "line2", None, "FR")
         extraction.right.value.get(PropertyOrLandUKAddressPage(2)) must not be defined
-        extraction.right.value.get(PropertyOrLandInternationalAddressPage(2)) must not be defined
-        extraction.right.value.get(PropertyOrLandDescriptionPage(2)).get mustBe "Property 3"
-        extraction.right.value.get(PropertyOrLandTotalValuePage(2)).get mustBe "75"
-        extraction.right.value.get(TrustOwnAllThePropertyOrLandPage(2)).get mustBe true
-        extraction.right.value.get(PropertyLandValueTrustPage(2)) mustBe None
+        extraction.right.value.get(PropertyOrLandDescriptionPage(2)).get mustBe "Property 2"
+        extraction.right.value.get(PropertyOrLandTotalValuePage(2)).get mustBe "85"
+        extraction.right.value.get(TrustOwnAllThePropertyOrLandPage(2)).get mustBe false
+        extraction.right.value.get(PropertyLandValueTrustPage(2)).get mustBe "80"
+
+        extraction.right.value.get(PropertyOrLandAddressYesNoPage(3)).get mustBe false
+        extraction.right.value.get(PropertyOrLandAddressUkYesNoPage(3)) must not be defined
+        extraction.right.value.get(PropertyOrLandUKAddressPage(3)) must not be defined
+        extraction.right.value.get(PropertyOrLandInternationalAddressPage(3)) must not be defined
+        extraction.right.value.get(PropertyOrLandDescriptionPage(3)).get mustBe "Property 3"
+        extraction.right.value.get(PropertyOrLandTotalValuePage(3)).get mustBe "75"
+        extraction.right.value.get(TrustOwnAllThePropertyOrLandPage(3)).get mustBe true
+        extraction.right.value.get(PropertyLandValueTrustPage(3)) mustBe None
 
         extraction.right.value.get(SharesInAPortfolioPage(4)).get mustBe false
         extraction.right.value.get(ShareCompanyNamePage(4)).get mustBe "Share 1"
