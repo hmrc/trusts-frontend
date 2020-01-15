@@ -121,7 +121,7 @@ class AssetMapperSpec extends FreeSpec with MustMatchers
 
 
         val expected = Some(Assets(Some(List(AssetMonetaryAmount(2000))),
-          Some(List(PropertyLandType(None, Some(AddressType("26", "Grangetown", Some("Tyne and Wear"), Some("Newcastle"), Some("Z99 2YY"), "GB")), Some(1000), Some(750L)))),
+          Some(List(PropertyLandType(None, Some(AddressType("26", "Grangetown", Some("Tyne and Wear"), Some("Newcastle"), Some("Z99 2YY"), "GB")), Some(1000), Some(750L)   ))),
           Some(List(SharesType("30","Portfolio","Other","Unquoted",999999999999L))),None,None,None))
 
         assetMapper.build(userAnswers) mustBe expected

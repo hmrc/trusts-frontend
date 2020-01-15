@@ -294,7 +294,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
           data.trust.entities.protectors.value.protectorCompany.head.name mustBe "Protector Org 01"
           data.trust.entities.protectors.value.protectorCompany.head.entityStart mustBe "2019-03-05"
 
-          data.trust.assets.propertyOrLand.value.head.buildingLandName.value mustBe "Land of Brian Cloud"
+          data.trust.assets.propertyOrLand.head.buildingLandName.value mustBe "Land of Brian Cloud"
       }
     }
   }

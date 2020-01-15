@@ -79,7 +79,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
               None,
               None
             ),
-            assets = DisplayTrustAssets(None, None, None, None, None, None)
+            assets = DisplayTrustAssets(Nil, Nil, Nil, Nil, Nil, Nil)
           )
 
           val ua = UserAnswers("fakeId")
@@ -122,7 +122,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
             None,
             None
           ),
-          assets = DisplayTrustAssets(None, None, None, None, None, None)
+          assets = DisplayTrustAssets(Nil, Nil, Nil, Nil, Nil, Nil)
         )
 
         val ua = UserAnswers("fakeId")
@@ -165,7 +165,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
             None,
             None
           ),
-          assets = DisplayTrustAssets(None, None, None, None, None, None)
+          assets = DisplayTrustAssets(Nil, Nil, Nil, Nil, Nil, Nil)
         )
 
         val ua = UserAnswers("fakeId")
@@ -208,7 +208,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
             None,
             None
           ),
-          assets = DisplayTrustAssets(None, None, None, None, None, None)
+          assets = DisplayTrustAssets(Nil, Nil, Nil, Nil, Nil, Nil)
         )
 
         val ua = UserAnswers("fakeId")
@@ -247,7 +247,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
             None,
             None
           ),
-          assets = DisplayTrustAssets(None, None, None, None, None, None)
+          assets = DisplayTrustAssets(Nil, Nil, Nil, Nil, Nil, Nil)
         )
 
         val ua = UserAnswers("fakeId")
@@ -290,7 +290,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
             None,
             None
           ),
-          assets = DisplayTrustAssets(None, None, None, None, None, None)
+          assets = DisplayTrustAssets(Nil, Nil, Nil, Nil, Nil, Nil)
         )
 
         val ua = UserAnswers("fakeId")
@@ -333,7 +333,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
             None,
             None
           ),
-          assets = DisplayTrustAssets(None, None, None, None, None, None)
+          assets = DisplayTrustAssets(Nil, Nil, Nil, Nil, Nil, Nil)
         )
 
         val ua = UserAnswers("fakeId")
@@ -376,7 +376,7 @@ class TrustTypeExtractorSpec extends FreeSpec with MustMatchers
             None,
             None
           ),
-          assets = DisplayTrustAssets(None, None, None, None, None, None)
+          assets = DisplayTrustAssets(Nil, Nil, Nil, Nil, Nil, Nil)
         )
 
         val ua = UserAnswers("fakeId")

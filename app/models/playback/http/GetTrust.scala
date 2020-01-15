@@ -18,7 +18,7 @@ package models.playback.http
 
 import mapping.Constant._
 import mapping.registration.{AssetMonetaryAmount, PassportType, PropertyLandType, TrustDetailsType, AddressType}
-import models.registration.pages.RoleInCompany
+import models.registration.pages.{RoleInCompany, ShareClass, ShareType}
 import org.joda.time.DateTime
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
@@ -410,7 +410,7 @@ object DisplayTrustIdentificationOrgType {
 
 case class DisplayTrustPartnershipType(utr: Option[String],
                                        description: String,
-                                       partnershipStart: Option[DateTime])
+                                       partnershipStart: Option[DateTime]) extends Asset
 
 object DisplayTrustPartnershipType {
 
@@ -418,23 +418,37 @@ object DisplayTrustPartnershipType {
   implicit val partnershipTypeFormat: Format[DisplayTrustPartnershipType] = Json.format[DisplayTrustPartnershipType]
 }
 
-case class DisplayTrustAssets(monetary: Option[List[AssetMonetaryAmount]],
-                              propertyOrLand: Option[List[PropertyLandType]],
-                              shares: Option[List[DisplaySharesType]],
-                              business: Option[List[DisplayBusinessAssetType]],
-                              partnerShip: Option[List[DisplayTrustPartnershipType]],
-                              other: Option[List[DisplayOtherAssetType]])
+case class DisplayTrustAssets(monetary: List[AssetMonetaryAmount],
+                              propertyOrLand: List[PropertyLandType],
+                              shares: List[DisplaySharesType],
+                              business: List[DisplayBusinessAssetType],
+                              partnerShip: List[DisplayTrustPartnershipType],
+                              other: List[DisplayOtherAssetType])
+
+trait Asset
 
 object DisplayTrustAssets {
-  implicit val assetsFormat: Format[DisplayTrustAssets] = Json.format[DisplayTrustAssets]
+
+  implicit val assetReads : Reads[DisplayTrustAssets] = (
+    (__ \ "monetary").read[List[AssetMonetaryAmount]].orElse(Reads.pure(Nil)) and
+      (__ \ "propertyOrLand").read[List[PropertyLandType]].orElse(Reads.pure(Nil)) and
+        (__ \ "shares").read[List[DisplaySharesType]].orElse(Reads.pure(Nil)) and
+          (__ \ "business").read[List[DisplayBusinessAssetType]].orElse(Reads.pure(Nil)) and
+            (__ \ "partnerShip").read[List[DisplayTrustPartnershipType]].orElse(Reads.pure(Nil)) and
+              (__ \ "other").read[List[DisplayOtherAssetType]].orElse(Reads.pure(Nil))
+
+    ) (DisplayTrustAssets.apply _)
+
+  implicit val assetWrites : Writes[DisplayTrustAssets] = Json.writes[DisplayTrustAssets]
+
 }
 
 case class DisplaySharesType(numberOfShares: Option[String],
                              orgName: String,
                              utr: Option[String],
-                             shareClass: Option[String],
-                             typeOfShare: Option[String],
-                             value: Option[Long])
+                             shareClass: Option[ShareClass],
+                             typeOfShare: Option[ShareType],
+                             value: Option[Long]) extends Asset
 
 object DisplaySharesType {
   implicit val sharesTypeFormat: Format[DisplaySharesType] = Json.format[DisplaySharesType]
@@ -444,14 +458,14 @@ case class DisplayBusinessAssetType(orgName: String,
                                     utr: Option[String],
                                     businessDescription: String,
                                     address: Option[AddressType],
-                                    businessValue: Option[Long])
+                                    businessValue: Option[Long]) extends Asset
 
 object DisplayBusinessAssetType {
   implicit val businessAssetTypeFormat: Format[DisplayBusinessAssetType] = Json.format[DisplayBusinessAssetType]
 }
 
 case class DisplayOtherAssetType(description: String,
-                                 value: Option[Long])
+                                 value: Option[Long]) extends Asset
 
 object DisplayOtherAssetType {
   implicit val otherAssetTypeFormat: Format[DisplayOtherAssetType] = Json.format[DisplayOtherAssetType]

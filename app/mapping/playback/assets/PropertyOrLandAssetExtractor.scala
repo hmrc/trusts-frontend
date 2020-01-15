@@ -16,43 +16,22 @@
 
 package mapping.playback.assets
 
-import com.google.inject.Inject
-import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
-import mapping.playback.{PlaybackExtractor, PlaybackImplicits}
+import mapping.playback.PlaybackImplicits._
 import mapping.registration.PropertyLandType
 import models.core.pages.{InternationalAddress, UKAddress}
 import models.playback.UserAnswers
 import pages.register.asset.property_or_land._
-import play.api.Logger
-import PlaybackImplicits._
 
-import scala.util.{Failure, Success, Try}
+import scala.util.Try
 
-class PropertyLandExtractor @Inject() extends PlaybackExtractor[Option[List[PropertyLandType]]] {
+class PropertyOrLandAssetExtractor {
 
-  override def extract(answers: UserAnswers, data: Option[List[PropertyLandType]]): Either[PlaybackExtractionError, UserAnswers] = {
-    data match {
-      case None => Left(FailedToExtractData("No PropertyOrLand Asset"))
-      case Some(assets) =>
-
-        val updated = assets.zipWithIndex.foldLeft[Try[UserAnswers]](Success(answers)){
-          case (answers, (asset, index)) =>
-
-            answers
-              .flatMap(_.set(PropertyOrLandDescriptionPage(index), asset.buildingLandName))
-              .flatMap(answers => extractAddress(index, asset, answers))
-              .flatMap(_.set(PropertyOrLandTotalValuePage(index), asset.valueFull.map(_.toString)))
-              .flatMap(answers => extractOwnership(index, asset, answers))
-        }
-
-        updated match {
-          case Success(a) =>
-            Right(a)
-          case Failure(exception) =>
-            Logger.warn(s"[PropertyLandExtractor] failed to extract data due to ${exception.getMessage}")
-            Left(FailedToExtractData(PropertyLandType.toString))
-        }
-    }
+  def extract(answers: Try[UserAnswers], index: Int, data: PropertyLandType): Try[UserAnswers] = {
+    answers
+      .flatMap(_.set(PropertyOrLandDescriptionPage(index), data.buildingLandName))
+      .flatMap(answers => extractAddress(index, data, answers))
+      .flatMap(_.set(PropertyOrLandTotalValuePage(index), data.valueFull.map(_.toString)))
+      .flatMap(answers => extractOwnership(index, data, answers))
   }
 
   private def extractAddress(index: Int, data: PropertyLandType, userAnswers: UserAnswers) = {
