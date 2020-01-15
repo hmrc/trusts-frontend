@@ -72,7 +72,7 @@ class AssetsExtractor @Inject()(sharesAssetExtractor: SharesAssetExtractor) exte
       case Success(a) =>
         Right(a)
       case Failure(_) =>
-        Logger.warn(s"[AssetsExtractor] failed to extract data")
+        Logger.warn("[AssetsExtractor] failed to extract data")
         Left(FailedToExtractData(DisplayTrustAssets.toString))
     }
   }
