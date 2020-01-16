@@ -137,7 +137,7 @@ case class DisplayTrustLeadTrusteeIndType(
                                            dateOfBirth: DateTime,
                                            phoneNumber: String,
                                            email: Option[String] = None,
-                                           identification: Option[DisplayTrustIdentificationType],
+                                           identification: DisplayTrustIdentificationType,
                                            entityStart: String
                                          ) extends Trustees
 
@@ -154,7 +154,7 @@ case class DisplayTrustLeadTrusteeOrgType(
                                            name: String,
                                            phoneNumber: String,
                                            email: Option[String] = None,
-                                           identification: Option[DisplayTrustIdentificationOrgType],
+                                           identification: DisplayTrustIdentificationOrgType,
                                            entityStart: String
                                          ) extends Trustees
 

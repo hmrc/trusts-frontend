@@ -63,12 +63,12 @@ class LeadTrusteeIndExtractorSpec extends FreeSpec with MustMatchers
           phoneNumber = "+441234567890",
           email = Some("test@test.com"),
           identification =
-            Some(DisplayTrustIdentificationType(
+            DisplayTrustIdentificationType(
               safeId = Some("8947584-94759745-84758745"),
               nino = Some("NA1111111A"),
               passport = None,
               address = Some(AddressType("line 1", "line2", None, None, Some("NE11NE"), "GB"))
-            )),
+            ),
           entityStart = "2019-11-26"
         ))
 
@@ -101,12 +101,12 @@ class LeadTrusteeIndExtractorSpec extends FreeSpec with MustMatchers
           phoneNumber = "+441234567890",
           email = Some("test@test.com"),
           identification =
-            Some(DisplayTrustIdentificationType(
+            DisplayTrustIdentificationType(
               safeId = Some("8947584-94759745-84758745"),
               nino = Some("NA1111111A"),
               passport = None,
               address = Some(AddressType("Int line 1", "Int line2", None, None, None, "DE"))
-            )),
+            ),
           entityStart = "2019-11-26"
         ))
 
@@ -139,12 +139,12 @@ class LeadTrusteeIndExtractorSpec extends FreeSpec with MustMatchers
           phoneNumber = "+441234567890",
           email = Some("test@test.com"),
           identification =
-            Some(DisplayTrustIdentificationType(
+            DisplayTrustIdentificationType(
               safeId = Some("8947584-94759745-84758745"),
               nino = None,
               passport = Some(PassportType("KSJDFKSDHF6456545147852369QWER", LocalDate.of(2020,2,2), "DE")),
               address = Some(AddressType("line 1", "line2", None, None, Some("NE11NE"), "GB"))
-            )),
+            ),
           entityStart = "2019-11-26"
         ))
 
@@ -178,12 +178,12 @@ class LeadTrusteeIndExtractorSpec extends FreeSpec with MustMatchers
           phoneNumber = "+441234567890",
           email = Some("test@test.com"),
           identification =
-            Some(DisplayTrustIdentificationType(
+            DisplayTrustIdentificationType(
               safeId = Some("8947584-94759745-84758745"),
               nino = None,
               passport = Some(PassportType("KSJDFKSDHF6456545147852369QWER", LocalDate.of(2020,2,2), "DE")),
               address = Some(AddressType("Int line 1", "Int line2", None, None, None, "DE"))
-            )),
+            ),
           entityStart = "2019-11-26"
         ))
 

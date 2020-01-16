@@ -67,7 +67,7 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
       .flatMap(answers => extractLeadIndividualIdentification(leadIndividual, index, answers))
       .flatMap(_.set(TelephoneNumberPage(index), leadIndividual.phoneNumber))
       .flatMap(_.set(EmailPage(index), leadIndividual.email))
-      .flatMap(_.set(TrusteesSafeIdPage(index), leadIndividual.identification.flatMap(_.safeId)))
+      .flatMap(_.set(TrusteesSafeIdPage(index), leadIndividual.identification.safeId))
       .flatMap {
         _.set(
           LeadTrusteeMetaData(index),
@@ -88,7 +88,7 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
       .flatMap(answers => extractLeadOrgIdentification(leadCompany, index, answers))
       .flatMap(_.set(TelephoneNumberPage(index), leadCompany.phoneNumber))
       .flatMap(_.set(EmailPage(index), leadCompany.email))
-      .flatMap(_.set(TrusteesSafeIdPage(index), leadCompany.identification.flatMap(_.safeId)))
+      .flatMap(_.set(TrusteesSafeIdPage(index), leadCompany.identification.safeId))
       .flatMap {
         _.set(
           LeadTrusteeMetaData(index),
@@ -146,7 +146,7 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
   }
 
   private def extractLeadIndividualIdentification(leadIndividual: DisplayTrustLeadTrusteeIndType, index: Int, answers: UserAnswers) = {
-    leadIndividual.identification.map {
+    leadIndividual.identification match {
 
       case DisplayTrustIdentificationType(_, Some(nino), None, Some(address)) =>
         answers.set(TrusteeAUKCitizenPage(index), true)
@@ -172,10 +172,10 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
         case object InvalidExtractorState extends RuntimeException
         Failure(InvalidExtractorState)
 
-    } getOrElse {
-      Logger.error(s"[TrusteesExtractor] no identification for lead trustee individual returned in DisplayTrustOrEstate api")
-      case object InvalidExtractorState extends RuntimeException
-      Failure(InvalidExtractorState)
+      case DisplayTrustIdentificationType(_, _, _, _) =>
+        Logger.error(s"[TrusteesExtractor] no identification for lead trustee individual returned in DisplayTrustOrEstate api")
+        case object InvalidExtractorState extends RuntimeException
+        Failure(InvalidExtractorState)
     }
   }
 
@@ -209,7 +209,7 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
   }
 
   private def extractLeadOrgIdentification(leadIndividual: DisplayTrustLeadTrusteeOrgType, index: Int, answers: UserAnswers) = {
-    leadIndividual.identification.map {
+    leadIndividual.identification match {
 
       case DisplayTrustIdentificationOrgType(_, Some(utr), Some(address)) =>
         answers.set(TrusteeUtrYesNoPage(index), true)
@@ -224,10 +224,10 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
         answers.set(TrusteeUtrYesNoPage(index), true)
           .flatMap(_.set(TrusteesUtrPage(index), utr))
 
-    } getOrElse {
-      Logger.error(s"[TrusteesExtractor] no identification for lead trustee company returned in DisplayTrustOrEstate api")
-      case object InvalidExtractorState extends RuntimeException
-      Failure(InvalidExtractorState)
+      case DisplayTrustIdentificationOrgType(_, _, _) =>
+        Logger.error(s"[TrusteesExtractor] no identification for lead trustee company returned in DisplayTrustOrEstate api")
+        case object InvalidExtractorState extends RuntimeException
+        Failure(InvalidExtractorState)
     }
   }
 
