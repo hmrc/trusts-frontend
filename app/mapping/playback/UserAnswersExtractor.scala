@@ -34,7 +34,6 @@ class UserAnswersExtractorImpl @Inject()(beneficiary: BeneficiaryExtractor,
                                          settlors: SettlorExtractor,
                                          trustType: TrustTypeExtractor,
                                          protectors: ProtectorExtractor,
-                                         assets: AssetsExtractor,
                                          individualExtractor: OtherIndividualExtractor,
                                          correspondenceExtractor: CorrespondenceExtractor,
                                          trustDetailsExtractor: TrustDetailsExtractor
@@ -53,9 +52,8 @@ class UserAnswersExtractorImpl @Inject()(beneficiary: BeneficiaryExtractor,
       ua5 <- individualExtractor.extract(answers, data.trust.entities.naturalPerson).right
       ua6 <- trustees.extract(answers, data.trust.entities).right
       ua7 <- trustDetailsExtractor.extract(answers, data.trust.details).right
-      ua8 <- assets.extract(answers, data.trust.assets).right
     } yield {
-      List(ua, ua1, ua2, ua3, ua4, ua5, ua6, ua7, ua8).combine
+      List(ua, ua1, ua2, ua3, ua4, ua5, ua6, ua7).combine
     }
 
     answersCombined match {
