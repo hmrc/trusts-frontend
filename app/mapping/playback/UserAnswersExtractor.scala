@@ -30,7 +30,7 @@ import play.api.Logger
 trait UserAnswersExtractor extends PlaybackExtractor[GetTrust]
 
 class UserAnswersExtractorImpl @Inject()(beneficiary: BeneficiaryExtractor,
-                                         leadTrustee: LeadTrusteeExtractor,
+                                         trustees: TrusteeExtractor,
                                          settlors: SettlorExtractor,
                                          trustType: TrustTypeExtractor,
                                          protectors: ProtectorExtractor,
@@ -45,13 +45,13 @@ class UserAnswersExtractorImpl @Inject()(beneficiary: BeneficiaryExtractor,
   override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionError, UserAnswers] = {
 
     val answersCombined = for {
-      ua <- beneficiary.extract(answers, data.trust.entities.beneficiary).right
-      ua1 <- leadTrustee.extract(answers, data.trust.entities.leadTrustee).right
+      ua <- correspondenceExtractor.extract(answers, data.correspondence).right
+      ua1 <- beneficiary.extract(answers, data.trust.entities.beneficiary).right
       ua2 <- settlors.extract(answers, data.trust.entities).right
       ua3 <- trustType.extract(answers, Some(data.trust)).right
       ua4 <- protectors.extract(answers, data.trust.entities.protectors).right
       ua5 <- individualExtractor.extract(answers, data.trust.entities.naturalPerson).right
-      ua6 <- correspondenceExtractor.extract(answers, data.correspondence).right
+      ua6 <- trustees.extract(answers, data.trust.entities).right
       ua7 <- trustDetailsExtractor.extract(answers, data.trust.details).right
       ua8 <- assets.extract(answers, data.trust.assets).right
     } yield {

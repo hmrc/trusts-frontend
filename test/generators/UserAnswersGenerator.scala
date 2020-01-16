@@ -121,7 +121,7 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(AgentInternalReferencePage.type, JsValue)] ::
     arbitrary[(WhatKindOfAssetPage, JsValue)] ::
     arbitrary[(AgentTelephoneNumberPage.type, JsValue)] ::
-    arbitrary[(TrusteeLiveInTheUKPage, JsValue)] ::
+    arbitrary[(TrusteeAddressInTheUKPage, JsValue)] ::
     arbitrary[(TrusteesNinoPage, JsValue)] ::
     arbitrary[(TrusteesUkAddressPage, JsValue)] ::
     arbitrary[(TrusteeAUKCitizenPage, JsValue)] ::

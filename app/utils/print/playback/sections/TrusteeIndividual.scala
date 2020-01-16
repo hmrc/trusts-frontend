@@ -19,34 +19,38 @@ package utils.print.playback.sections
 import models.playback.UserAnswers
 import pages.register.trustees._
 import play.api.i18n.Messages
+import utils.CheckAnswersFormatters
 import utils.countryOptions.CountryOptions
-import utils.print.playback.sections.AnswerRowConverter._
 import viewmodels.AnswerSection
+import utils.print.playback.sections.AnswerRowConverter._
 
-object TrusteeOrganisation {
+object TrusteeIndividual {
 
   def apply(index: Int,
             userAnswers: UserAnswers,
             countryOptions: CountryOptions)
            (implicit messages: Messages): Option[Seq[AnswerSection]] = {
 
-    userAnswers.get(TrusteeOrgNamePage(index)).flatMap { name =>
+    userAnswers.get(TrusteesNamePage(index)).map(CheckAnswersFormatters.fullName).flatMap { name =>
       Some(Seq(
         AnswerSection(
           headingKey = Some(messages("answerPage.section.trustee.subheading") + s" ${index + 1}"),
           Seq(
-            stringQuestion(TrusteeOrgNamePage(index), userAnswers, "trusteeBusinessName"),
-            yesNoQuestion(TrusteeUtrYesNoPage(index), userAnswers, "trusteeUtrYesNo", name),
-            stringQuestion(TrusteesUtrPage(index), userAnswers, "trusteeUtr", name),
+            fullNameQuestion(TrusteesNamePage(index), userAnswers, "trusteesName"),
+            yesNoQuestion(TrusteeDateOfBirthYesNoPage(index), userAnswers, "trusteeDateOfBirthYesNo", name),
+            dateQuestion(TrusteesDateOfBirthPage(index), userAnswers, "trusteesDateOfBirth", name),
+            yesNoQuestion(TrusteeNinoYesNoPage(index), userAnswers, "trusteeNinoYesNo", name),
+            ninoQuestion(TrusteesNinoPage(index), userAnswers, "trusteesNino", name),
             yesNoQuestion(TrusteeAddressYesNoPage(index), userAnswers, "trusteeUkAddressYesNo", name),
             yesNoQuestion(TrusteeAddressInTheUKPage(index), userAnswers, "trusteeLiveInTheUK", name),
-            addressQuestion(TrusteeAddressPage(index), userAnswers, "trusteesUkAddress", name, countryOptions)
+            addressQuestion(TrusteeAddressPage(index), userAnswers, "trusteesUkAddress", name, countryOptions),
+            yesNoQuestion(TrusteePassportIDCardYesNoPage(index), userAnswers, "trusteePassportOrIdCardYesNo", name),
+            passportOrIdCardQuestion(TrusteePassportIDCardPage(index), userAnswers, "trusteePassportOrIdCard", name, countryOptions)
           ).flatten,
           sectionKey = None
-        )
-      ))
+        ))
+      )
     }
-
   }
 
 }

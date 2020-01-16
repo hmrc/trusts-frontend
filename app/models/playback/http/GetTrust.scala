@@ -139,7 +139,7 @@ case class DisplayTrustLeadTrusteeIndType(
                                            email: Option[String] = None,
                                            identification: DisplayTrustIdentificationType,
                                            entityStart: String
-                                         )
+                                         ) extends Trustees
 
 object DisplayTrustLeadTrusteeIndType {
 
@@ -156,7 +156,7 @@ case class DisplayTrustLeadTrusteeOrgType(
                                            email: Option[String] = None,
                                            identification: DisplayTrustIdentificationOrgType,
                                            entityStart: String
-                                         )
+                                         ) extends Trustees
 
 object DisplayTrustLeadTrusteeOrgType {
   implicit val leadTrusteeOrgTypeFormat: Format[DisplayTrustLeadTrusteeOrgType] = Json.format[DisplayTrustLeadTrusteeOrgType]
@@ -303,13 +303,15 @@ object DisplayTrustTrusteeType {
   implicit val trusteeTypeFormat: Format[DisplayTrustTrusteeType] = Json.format[DisplayTrustTrusteeType]
 }
 
+sealed trait Trustees
+
 case class DisplayTrustTrusteeOrgType(lineNo: String,
                                       bpMatchStatus: Option[String],
                                       name: String,
                                       phoneNumber: Option[String] = None,
                                       email: Option[String] = None,
                                       identification: Option[DisplayTrustIdentificationOrgType],
-                                      entityStart: String)
+                                      entityStart: String) extends Trustees
 
 object DisplayTrustTrusteeOrgType {
   implicit val trusteeOrgTypeFormat: Format[DisplayTrustTrusteeOrgType] = Json.format[DisplayTrustTrusteeOrgType]
@@ -321,7 +323,7 @@ case class DisplayTrustTrusteeIndividualType(lineNo: String,
                                              dateOfBirth: Option[DateTime],
                                              phoneNumber: Option[String],
                                              identification: Option[DisplayTrustIdentificationType],
-                                             entityStart: String)
+                                             entityStart: String) extends Trustees
 
 object DisplayTrustTrusteeIndividualType {
 

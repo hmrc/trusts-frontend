@@ -65,7 +65,7 @@ class TrusteeReadsSpec extends FreeSpec with MustMatchers with PropertyChecks wi
               "isUKCitizen" -> true,
               "isThisLeadTrustee" -> true,
               "address" -> address,
-              "liveInUK" -> true,
+              "addressUKYesNo" -> true,
               "individualOrBusiness" -> individual.toString
             )
 

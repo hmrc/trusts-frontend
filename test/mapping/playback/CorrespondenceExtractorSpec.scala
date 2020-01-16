@@ -19,6 +19,7 @@ package mapping.playback
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping.playback.PlaybackExtractionErrors.FailedToExtractData
+import models.core.pages.{Address, UKAddress}
 import models.playback.UserAnswers
 import models.playback.http.{AddressType, Correspondence}
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
@@ -31,13 +32,13 @@ class CorrespondenceExtractorSpec extends FreeSpec with MustMatchers with Either
 
   "Correspondence Extractor" - {
 
-    "when there is correspondence" - {
+    "when there is correspondence" in {
       
       val correspondence = Correspondence(
         abroadIndicator = false,
         name = "Trust Ltd",
         address = AddressType(
-          "line1", "line2", None, None, None, "UK"
+          "line1", "line2", None, None, Some("NE991NE"), "GB"
         ),
         bpMatchStatus = None,
         phoneNumber = "1225645"
@@ -47,7 +48,11 @@ class CorrespondenceExtractorSpec extends FreeSpec with MustMatchers with Either
 
       val extraction = correspondenceExtractor.extract(ua, correspondence)
 
+      extraction.right.value.get(CorrespondenceAbroadIndicatorPage).get mustBe false
       extraction.right.value.get(TrustNamePage).get mustBe "Trust Ltd"
+      extraction.right.value.get(CorrespondenceAddressPage).get mustBe UKAddress("line1", "line2", None, None, "NE991NE")
+      extraction.right.value.get(CorrespondenceBpMatchStatusPage) mustNot be(defined)
+      extraction.right.value.get(CorrespondencePhoneNumberPage).get mustBe "1225645"
 
     }
 

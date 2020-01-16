@@ -29,6 +29,7 @@ class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions){
     val playbackAnswersHelper: PlaybackAnswersHelper = new PlaybackAnswersHelper(countryOptions, userAnswers)
 
     List(
+      playbackAnswersHelper.allTrustees,
       playbackAnswersHelper.settlors,
       playbackAnswersHelper.beneficiaries,
       playbackAnswersHelper.protectors,

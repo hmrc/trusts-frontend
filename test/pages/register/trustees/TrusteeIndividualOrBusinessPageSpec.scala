@@ -46,7 +46,7 @@ class TrusteeIndividualOrBusinessPageSpec extends PageBehaviours {
           .set(TrusteesDateOfBirthPage(index), LocalDate.now()).success.value
           .set(TrusteeAUKCitizenPage(index), true).success.value
           .set(TrusteesNinoPage(index), str).success.value
-          .set(TrusteeLiveInTheUKPage(index), true).success.value
+          .set(TrusteeAddressInTheUKPage(index), true).success.value
           .set(TrusteesUkAddressPage(index), UKAddress(str, str, None, None, str)).success.value
           .set(TelephoneNumberPage(index), str).success.value
 
@@ -56,7 +56,7 @@ class TrusteeIndividualOrBusinessPageSpec extends PageBehaviours {
         result.get(TrusteesDateOfBirthPage(index)) mustNot be(defined)
         result.get(TrusteeAUKCitizenPage(index)) mustNot be(defined)
         result.get(TrusteesNinoPage(index)) mustNot be(defined)
-        result.get(TrusteeLiveInTheUKPage(index)) mustNot be(defined)
+        result.get(TrusteeAddressInTheUKPage(index)) mustNot be(defined)
         result.get(TrusteesUkAddressPage(index)) mustNot be(defined)
         result.get(TelephoneNumberPage(index)) mustNot be(defined)
     }

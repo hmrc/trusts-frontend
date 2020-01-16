@@ -349,6 +349,8 @@ leadTrusteeIndividualOrBusiness.error.required = Select if the lead trustee is a
 trustDetailsAnswerPage.title = Check trust details
 trustDetailsAnswerPage.heading = Check trust details
 
+trusteeBusinessName.checkYourAnswersLabel = What is the business’s name?
+
 trusteesName.title = What is the trustee’s name?
 trusteesName.heading = What is the trustee’s name?
 trusteesName.checkYourAnswersLabel = What is the trustee’s name?
@@ -433,6 +435,8 @@ telephoneNumber.error.required = Enter trustee’s telephone number
 telephoneNumber.error.invalid.characters = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192
 telephoneNumber.hint = For international numbers include the country code
 
+emailAddress.checkYourAnswersLabel = What is {0}’s email address?
+
 leadTrusteesTelephoneNumber.title = What is the lead trustee’s telephone number?
 leadTrusteesTelephoneNumber.error.required = Enter lead trustee’s telephone number
 
@@ -443,6 +447,11 @@ trusteeAUKCitizen.error.required = Select yes if the trustee is a UK citizen
 
 leadTrusteeAUKCitizen.title = Is the lead trustee a UK citizen?
 leadTrusteeAUKCitizen.error.required = Select yes if the lead trustee is a UK citizen
+
+trusteeDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
+trusteeUtrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
+trusteeUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
+leadTrusteeUtrYesNo.checkYourAnswersLabel = Is this trustee a UK registered company?
 
 trusteesDateOfBirth.title = What is the trustee’s date of birth?
 trusteesDateOfBirth.heading = What is {0}’s date of birth?
@@ -456,6 +465,8 @@ trusteesDateOfBirth.error.future = Date of birth must be today or in the past
 trusteesDateOfBirth.error.past = Date of birth must be after 31 December 1499
 
 leadTrusteesDateOfBirth.title = What is the lead trustee’s date of birth?
+
+trusteeNinoYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
 
 trusteesNino.title = What is the trustee’s National Insurance number?
 trusteesNino.heading = What is {0}’s National Insurance number?
@@ -477,11 +488,22 @@ trusteeLiveInTheUK.error.required = Select yes if the trustee lives in the UK
 leadTrusteeLiveInTheUK.title = Does the lead trustee live in the UK?
 leadTrusteeLiveInTheUK.error.required = Select yes if the lead trustee lives in the UK
 
+trusteeUkAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+trusteeTelephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
+trusteeEmailAddress.checkYourAnswersLabel = What is {0}’s email address?
+
 trusteesUkAddress.title = What is the trustee’s address?
 trusteesUkAddress.heading = What is {0}’s address?
 trusteesUkAddress.checkYourAnswersLabel = What is {0}’s address?
 
+trusteesNonUkAddress.checkYourAnswersLabel = What is {0}’s address?
+
+trusteesPassportOrIdCard.checkYourAnswersLabel = What are {0}'s Passport or ID card details
+
 leadTrusteeUkAddress.title = What is the lead trustee’s address?
+
+trusteePassportOrIdCardYesNo.checkYourAnswersLabel = Do you know {0}’s passport or ID card details?
+trusteePassportOrIdCard.checkYourAnswersLabel = What are {0}’s passport or ID card details?
 
 agentInternalReference.title = What is your internal reference for this client?
 agentInternalReference.heading = What is your internal reference for this client?
@@ -849,6 +871,12 @@ individualBeneficiaryVulnerableYesNo.heading = Has a vulnerable person election 
 individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel = Has a vulnerable person election form (VPE1) been submitted to HMRC for {0}?
 individualBeneficiaryVulnerableYesNo.error.required = Select yes if a vulnerable person election form (VPE1) has been submitted to HMRC for the individual beneficiary
 
+individualBeneficiaryRoleInCompany.checkYourAnswersLabel = What is {0}’s role in the company the trust was created for?
+individualBeneficiaryPassportYeNo.checkYourAnswersLabel = Do you know {0}’s passport details
+individualBeneficiaryPassport.checkYourAnswersLabel = What are {0}’s passport details?
+individualBeneficiaryIDCardDetailsYesNo.checkYourAnswersLabel = Do you know {0}’s ID card details?
+individualBeneficiaryIDCardDetails.checkYourAnswersLabel = What are {0}’s ID card details?
+
 individualBeneficiaryInfo.title = Information you need to add a beneficiary
 individualBeneficiaryInfo.heading = Information you need to add a beneficiary
 individualBeneficiaryInfo.caption = Beneficiaries
@@ -1016,6 +1044,7 @@ answerPage.section.trustsDetails.heading = Trust details
 answerPage.section.deceasedSettlor.heading = Settlor
 answerPage.section.settlors.heading = Settlors
 answerPage.section.settlor.subheading = Settlor {0}
+answerPage.section.leadTrustee.subheading = Lead trustee
 answerPage.section.trustees.heading = Trustees
 answerPage.section.trustee.subheading = Trustee
 answerPage.section.beneficiaries.heading = Beneficiaries

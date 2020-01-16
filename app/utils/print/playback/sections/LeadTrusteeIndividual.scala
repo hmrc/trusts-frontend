@@ -17,133 +17,52 @@
 package utils.print.playback.sections
 
 import models.playback.UserAnswers
+import pages.register.CorrespondenceAddressPage
 import pages.register.trustees._
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
-import utils.CheckAnswersFormatters._
+import utils.CheckAnswersFormatters
 import utils.countryOptions.CountryOptions
+import utils.print.playback.sections.AnswerRowConverter._
 import viewmodels.{AnswerRow, AnswerSection}
 
 object LeadTrusteeIndividual {
 
   def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] = {
-    if (name(index, userAnswers).nonEmpty) {
-      Some(Seq(AnswerSection(
-        headingKey = None,
-        Seq(
-          name(index, userAnswers),
-          dateOfBirth(index, userAnswers),
-          isUKCitizen(index, userAnswers),
-          nino(index, userAnswers),
-          trusteePassportOrIDCard(index, userAnswers, countryOptions),
-          addressUKYesNo(index, userAnswers),
-          addressUK(index, userAnswers, countryOptions),
-          nonUKAddress(index, userAnswers, countryOptions),
-          telephone(index, userAnswers),
-          email(index, userAnswers)
-        ).flatten,
-        sectionKey = Some(messages("answerPage.section.leadTrusteeIndividual.heading"))
-      )))
-    } else {
-      None
+
+    userAnswers.get(TrusteesNamePage(index)).map(CheckAnswersFormatters.fullName).flatMap { name =>
+      Some(Seq(
+        AnswerSection(
+          headingKey = Some(messages("answerPage.section.leadTrustee.subheading")),
+          Seq(
+            fullNameQuestion(TrusteesNamePage(index), userAnswers, "leadTrusteesName"),
+            dateQuestion(TrusteesDateOfBirthPage(index), userAnswers, "trusteesDateOfBirth", name),
+            yesNoQuestion(TrusteeAUKCitizenPage(index), userAnswers, "trusteeAUKCitizen", name),
+            ninoQuestion(TrusteesNinoPage(index), userAnswers, "trusteesNino", name)
+          ).flatten ++
+            addressAnswers(index, userAnswers, countryOptions, name).flatten ++
+            Seq(yesNoQuestion(TrusteePassportIDCardYesNoPage(index), userAnswers, "trusteePassportOrIdCardYesNo", name),
+              passportOrIdCardQuestion(TrusteePassportIDCardPage(index), userAnswers, "trusteePassportOrIdCard", name, countryOptions),
+              stringQuestion(TelephoneNumberPage(index), userAnswers, "telephoneNumber", name),
+              stringQuestion(EmailPage(index), userAnswers, "trusteeEmailAddress", name)
+            ).flatten,
+          sectionKey = Some(messages("answerPage.section.trustees.heading"))
+        ))
+      )
     }
   }
 
-  def name(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(TrusteesNamePage(index)) map {
-    x =>
-      AnswerRow(
-        "trusteeName.checkYourAnswersLabel",
-        HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"),
-        None
-      )
-  }
+  def addressAnswers(index: Int,
+                     userAnswers: UserAnswers,
+                     countryOptions: CountryOptions,
+                     name: String)(implicit messages: Messages): Seq[Option[AnswerRow]] = {
 
-  def dateOfBirth(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(TrusteesDateOfBirthPage(index)) map {
-    x =>
-      AnswerRow(
-        "trusteeDateOfBirth.checkYourAnswersLabel",
-        HtmlFormat.escape(x.format(dateFormatter)),
-        None
-      )
-  }
-
-  def isUKCitizen(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
-    userAnswers.get(TrusteeAUKCitizenPage(index)) map {
-      x =>
-        AnswerRow(
-          "trusteeUKCitizen.checkYourAnswersLabel",
-          yesOrNo(x),
-          None
-        )
+    userAnswers.get(TrusteeAddressYesNoPage(index)) match {
+      case Some(x) =>  Seq(yesNoQuestion(TrusteeAddressYesNoPage(index), userAnswers, "trusteeUkAddressYesNo", name),
+        yesNoQuestion(TrusteeAddressInTheUKPage(index), userAnswers, "trusteeLiveInTheUK", name),
+        addressQuestion(TrusteeAddressPage(index), userAnswers, "trusteesUkAddress", name, countryOptions))
+      case _ =>  Seq(addressQuestion(CorrespondenceAddressPage, userAnswers, "trusteesUkAddress", name, countryOptions))
     }
 
-  def nino(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(TrusteesNinoPage(index)) map {
-    x =>
-      AnswerRow(
-        "trusteeNationalInsuranceNumber.checkYourAnswersLabel",
-        HtmlFormat.escape(formatNino(x)),
-        None
-      )
-  }
-
-  def trusteePassportOrIDCard(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions): Option[AnswerRow] =
-    userAnswers.get(TrusteePassportIDCardPage(index)) map {
-      x =>
-        AnswerRow(
-          "trusteeNationalInsuranceNumber.checkYourAnswersLabel",
-          passportOrIDCard(x, countryOptions),
-          None
-        )
-    }
-
-  def addressUKYesNo(index: Int, userAnswers: UserAnswers)
-                    (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TrusteeLiveInTheUKPage(index)) map {
-    x =>
-      AnswerRow(
-        "trusteeAddressUKYesNo.checkYourAnswersLabel",
-        yesOrNo(x),
-        None
-      )
-  }
-
-  def addressUK(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)
-               (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TrusteesUkAddressPage(index)) map {
-    x =>
-      AnswerRow(
-        "trusteeUKAddress.checkYourAnswersLabel",
-        ukAddress(x),
-        None
-      )
-  }
-
-  def nonUKAddress(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)
-                  (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TrusteesInternationalAddressPage(index)) map {
-    x =>
-      AnswerRow(
-        "trusteeNonUKAddress.checkYourAnswersLabel",
-        internationalAddress(x, countryOptions),
-        None
-      )
-  }
-
-  def telephone(index: Int, userAnswers: UserAnswers)
-               (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(TelephoneNumberPage(index)) map {
-    x =>
-      AnswerRow(
-        "trusteeTelephone.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
-        None
-      )
-  }
-
-  def email(index: Int, userAnswers: UserAnswers)
-           (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(EmailPage(index)) map {
-    x =>
-      AnswerRow(
-        "trusteeEmail.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
-        None
-      )
   }
 
 }

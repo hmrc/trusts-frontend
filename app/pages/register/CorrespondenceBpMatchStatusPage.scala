@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package pages.register.trustees
+package pages.register
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.Trustees
+import sections.TrustDetails
 
-final case class  TrusteeUTRYesNoPagePage(index : Int) extends QuestionPage[Boolean] {
+case object CorrespondenceBpMatchStatusPage extends QuestionPage[String] {
 
-  override def path: JsPath = Trustees.path \ index \ toString
+  override def path: JsPath = JsPath \ TrustDetails \ toString
 
-  override def toString: String = "isUKBusiness"
+  override def toString: String = "bpMatchStatus"
 }

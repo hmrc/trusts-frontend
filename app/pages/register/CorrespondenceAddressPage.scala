@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package pages.register.trustees
+package pages.register
 
-import models.core.pages.{InternationalAddress}
+import models.core.pages.Address
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.Trustees
+import sections.TrustDetails
 
-final case class TrusteesInternationalAddressPage(index: Int) extends QuestionPage[InternationalAddress] {
+case object CorrespondenceAddressPage extends QuestionPage[Address] {
 
-  override def path: JsPath = Trustees.path \ index \ toString
+  override def path: JsPath = JsPath \ TrustDetails \ toString
 
   override def toString: String = "address"
 }

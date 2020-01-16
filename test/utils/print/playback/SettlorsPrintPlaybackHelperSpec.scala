@@ -47,7 +47,7 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
       val result = helper.entities(answers)
 
       result mustBe Seq(
-        AnswerSection(None, Nil, Some("answerPage.section.deceasedSettlor.heading")),
+        AnswerSection(None, Nil, Some(messages("answerPage.section.deceasedSettlor.heading"))),
         AnswerSection(
           headingKey = None,
           rows = Seq(
@@ -92,7 +92,7 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
       val result = helper.entities(answers)
 
       result mustBe Seq(
-        AnswerSection(None, Nil, Some("answerPage.section.deceasedSettlor.heading")),
+        AnswerSection(None, Nil, Some(messages("answerPage.section.deceasedSettlor.heading"))),
         AnswerSection(
           headingKey = None,
           rows = Seq(

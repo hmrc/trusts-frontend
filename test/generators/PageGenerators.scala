@@ -277,8 +277,8 @@ trait PageGenerators {
   implicit lazy val arbitraryTrusteesNinoPage: Arbitrary[TrusteesNinoPage] =
     Arbitrary(TrusteesNinoPage(0))
 
-  implicit lazy val arbitraryTrusteeLiveInTheUKPage: Arbitrary[TrusteeLiveInTheUKPage] =
-    Arbitrary(TrusteeLiveInTheUKPage(0))
+  implicit lazy val arbitraryTrusteeLiveInTheUKPage: Arbitrary[TrusteeAddressInTheUKPage] =
+    Arbitrary(TrusteeAddressInTheUKPage(0))
 
   implicit lazy val arbitraryTrusteesUkAddressPage: Arbitrary[TrusteesUkAddressPage] =
     Arbitrary(TrusteesUkAddressPage(0))

@@ -28,8 +28,8 @@ import pages.register.trustees._
 class LeadTrusteeOrgExtractorSpec extends FreeSpec with MustMatchers
   with EitherValues with Generators with SpecBaseHelpers {
 
-  val leadTrusteeOrgExtractor : PlaybackExtractor[Option[DisplayTrustLeadTrusteeOrgType]] =
-    injector.instanceOf[LeadTrusteeOrgExtractor]
+  val leadTrusteeOrgExtractor : PlaybackExtractor[Option[List[Trustees]]] =
+    injector.instanceOf[TrusteesExtractor]
 
   "Lead Trustee Organisation Extractor" - {
 
@@ -52,7 +52,7 @@ class LeadTrusteeOrgExtractorSpec extends FreeSpec with MustMatchers
     "when there is a lead trustee organisation" - {
 
       "which is UK registered, return user answers updated" in {
-        val leadTrustee = DisplayTrustLeadTrusteeOrgType(
+        val leadTrustee = List(DisplayTrustLeadTrusteeOrgType(
           lineNo = s"1",
           bpMatchStatus = Some("01"),
           name = "org1",
@@ -65,7 +65,7 @@ class LeadTrusteeOrgExtractorSpec extends FreeSpec with MustMatchers
               address = Some(AddressType("line 1", "line2", None, None, Some("NE11NE"), "GB"))
             ),
           entityStart = "2019-11-26"
-        )
+        ))
 
         val ua = UserAnswers("fakeId")
 
@@ -74,9 +74,9 @@ class LeadTrusteeOrgExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(IsThisLeadTrusteePage(0)).get mustBe true
         extraction.right.value.get(TrusteeIndividualOrBusinessPage(0)).get mustBe IndividualOrBusiness.Business
         extraction.right.value.get(TrusteeOrgNamePage(0)).get mustBe "org1"
-        extraction.right.value.get(TrusteeUTRYesNoPagePage(0)).get mustBe true
+        extraction.right.value.get(TrusteeUtrYesNoPage(0)).get mustBe true
         extraction.right.value.get(TrusteesUtrPage(0)).get mustBe "1234567890"
-        extraction.right.value.get(TrusteeLiveInTheUKPage(0)).get mustBe true
+        extraction.right.value.get(TrusteeAddressInTheUKPage(0)).get mustBe true
         extraction.right.value.get(TrusteesUkAddressPage(0)) must be(defined)
         extraction.right.value.get(TrusteesUkAddressPage(0)).get.postcode mustBe "NE11NE"
         extraction.right.value.get(TrusteesInternationalAddressPage(0)) mustNot be(defined)
@@ -87,7 +87,7 @@ class LeadTrusteeOrgExtractorSpec extends FreeSpec with MustMatchers
       }
 
       "which is not UK registered, return user answers updated" in {
-        val leadTrustee = DisplayTrustLeadTrusteeOrgType(
+        val leadTrustee = List(DisplayTrustLeadTrusteeOrgType(
           lineNo = s"1",
           bpMatchStatus = Some("01"),
           name = "org1",
@@ -100,7 +100,7 @@ class LeadTrusteeOrgExtractorSpec extends FreeSpec with MustMatchers
               address = Some(AddressType("line 1", "line2", None, None, None, "FR"))
             ),
           entityStart = "2019-11-26"
-        )
+        ))
 
         val ua = UserAnswers("fakeId")
 
@@ -109,9 +109,9 @@ class LeadTrusteeOrgExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(IsThisLeadTrusteePage(0)).get mustBe true
         extraction.right.value.get(TrusteeIndividualOrBusinessPage(0)).get mustBe IndividualOrBusiness.Business
         extraction.right.value.get(TrusteeOrgNamePage(0)).get mustBe "org1"
-        extraction.right.value.get(TrusteeUTRYesNoPagePage(0)).get mustBe false
+        extraction.right.value.get(TrusteeUtrYesNoPage(0)).get mustBe false
         extraction.right.value.get(TrusteesUtrPage(0)) mustNot be(defined)
-        extraction.right.value.get(TrusteeLiveInTheUKPage(0)).get mustBe false
+        extraction.right.value.get(TrusteeAddressInTheUKPage(0)).get mustBe false
         extraction.right.value.get(TrusteesUkAddressPage(0)) must not be defined
         extraction.right.value.get(TrusteesInternationalAddressPage(0)) must be(defined)
         extraction.right.value.get(TelephoneNumberPage(0)).get mustBe "+441234567890"

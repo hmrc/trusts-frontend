@@ -22,6 +22,7 @@ import models.core.pages.{Address, FullName, IndividualOrBusiness, International
 import models.playback.UserAnswers
 import models.registration.pages.{PassportOrIdCardDetails, KindOfTrust}
 import play.api.i18n.Messages
+import play.api.libs.json.Reads
 import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
 import queries.Gettable
@@ -55,20 +56,13 @@ object AnswerRowConverter {
     }
   }
 
-  def addressQuestion(query: Gettable[Address], userAnswers: UserAnswers, labelKey: String,
+  def addressQuestion[T <: Address](query: Gettable[T], userAnswers: UserAnswers, labelKey: String,
                       messageArg: String = "", countryOptions: CountryOptions, changeRoute: Option[Call] = None)
-                     (implicit messages:Messages) = {
-    userAnswers.get(query) map {
-      case x: UKAddress =>
+                     (implicit messages:Messages, reads: Reads[T]) = {
+    userAnswers.get(query) map { x =>
         AnswerRow(
           messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-          CheckAnswersFormatters.ukAddress(x),
-          None
-        )
-      case x: InternationalAddress =>
-        AnswerRow(
-          messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-          CheckAnswersFormatters.internationalAddress(x, countryOptions),
+          CheckAnswersFormatters.addressFormatter(x, countryOptions),
           None
         )
     }
@@ -148,13 +142,13 @@ object AnswerRowConverter {
     }
   }
 
-  def stringQuestion(query: Gettable[String], userAnswers: UserAnswers, labelKey: String,
-                       messageArg: String = "", changeRoute: Option[Call] = None)
-                      (implicit messages:Messages) = {
+  def stringQuestion[T](query: Gettable[T], userAnswers: UserAnswers, labelKey: String,
+                        messageArg: String = "", changeRoute: Option[Call] = None)
+                       (implicit messages:Messages, rds: Reads[T]): Option[AnswerRow] = {
     userAnswers.get(query) map {x =>
       AnswerRow(
         messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.toString),
         None
       )
     }
