@@ -17,7 +17,7 @@
 package mapping.playback
 
 import com.google.inject.Inject
-import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, PlaybackExtractionError}
+import mapping.playback.PlaybackExtractionErrors.{FailedToExtractData, InvalidExtractorState, PlaybackExtractionError}
 import mapping.registration.PassportType
 import models.core.pages.{Address, IndividualOrBusiness, InternationalAddress, UKAddress}
 import models.playback.http.{DisplayTrustIdentificationOrgType, DisplayTrustIdentificationType, DisplayTrustLeadTrusteeIndType, DisplayTrustLeadTrusteeOrgType, DisplayTrustTrusteeIndividualType, DisplayTrustTrusteeOrgType, DisplayTrustTrusteeType, Trustees}
@@ -160,7 +160,6 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
 
       case DisplayTrustIdentificationType(_, None, Some(passport), None) =>
         Logger.error(s"[TrusteesExtractor] only passport identification for lead trustee individual returned in DisplayTrustOrEstate api")
-        case object InvalidExtractorState extends RuntimeException
         Failure(InvalidExtractorState)
 
       case DisplayTrustIdentificationType(_, Some(nino), None, None) =>
@@ -169,12 +168,10 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
 
       case DisplayTrustIdentificationType(_, None, None, Some(address)) =>
         Logger.error(s"[TrusteesExtractor] only address identification for lead trustee individual returned in DisplayTrustOrEstate api")
-        case object InvalidExtractorState extends RuntimeException
         Failure(InvalidExtractorState)
 
       case DisplayTrustIdentificationType(_, _, _, _) =>
         Logger.error(s"[TrusteesExtractor] no identification for lead trustee individual returned in DisplayTrustOrEstate api")
-        case object InvalidExtractorState extends RuntimeException
         Failure(InvalidExtractorState)
     }
   }
@@ -189,7 +186,6 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
 
       case DisplayTrustIdentificationType(_, None, Some(passport), None) =>
         Logger.error(s"[TrusteesExtractor] only passport identification returned for trustee individual in DisplayTrustOrEstate api")
-        case object InvalidExtractorState extends RuntimeException
         Failure(InvalidExtractorState)
 
       case DisplayTrustIdentificationType(_, None, None, Some(address)) =>
@@ -226,7 +222,6 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
 
       case DisplayTrustIdentificationOrgType(_, _, _) =>
         Logger.error(s"[TrusteesExtractor] no identification for lead trustee company returned in DisplayTrustOrEstate api")
-        case object InvalidExtractorState extends RuntimeException
         Failure(InvalidExtractorState)
     }
   }
