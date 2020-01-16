@@ -17,8 +17,10 @@
 package utils.print.playback.sections
 
 import models.playback.UserAnswers
-import models.registration.pages.NonResidentType
+import models.registration.pages.TrusteesBasedInTheUK._
+import models.registration.pages.{NonResidentType, TrusteesBasedInTheUK}
 import pages.register.agents.AgentOtherThanBarristerPage
+import pages.register.trustees.TrusteesBasedInTheUKPage
 import pages.register.{NonResidentTypePage, _}
 import play.api.i18n.Messages
 import play.api.mvc.Call
@@ -46,6 +48,7 @@ object TrustDetails {
           countryQuestion(CountryGoverningTrustPage, userAnswers, "countryGoverningTrust", countryOptions = countryOptions),
           yesNoQuestion(AdministrationInsideUKPage, userAnswers, "administrationInsideUK"),
           countryQuestion(CountryAdministeringTrustPage, userAnswers, "countryAdministeringTrust", countryOptions = countryOptions),
+          howManyTrusteesBasedInUkQuestion(TrusteesBasedInTheUKPage, userAnswers, "trusteesBasedInTheUK"),
           yesNoQuestion(EstablishedUnderScotsLawPage, userAnswers, "establishedUnderScotsLaw"),
           yesNoQuestion(TrustResidentOffshorePage, userAnswers, "trustResidentOffshore"),
           countryQuestion(TrustPreviouslyResidentPage, userAnswers, "trustPreviouslyResident", countryOptions = countryOptions),
@@ -81,6 +84,27 @@ object TrustDetails {
         HtmlFormat.escape(messages(s"$labelKey.${x.toString}")),
         None
       )
+    }
+  }
+
+  private def howManyTrusteesBasedInUkQuestion(query: Gettable[TrusteesBasedInTheUK], userAnswers: UserAnswers, labelKey: String,
+                                               messageArg: String = "", changeRoute: Option[Call] = None)
+                                     (implicit messages: Messages): Option[AnswerRow] = {
+    userAnswers.get(query) map { _ =>
+      AnswerRow(
+        messages(s"$labelKey.checkYourAnswersLabel", messageArg),
+        HtmlFormat.escape(trusteesBasedInUk(userAnswers.get(EstablishedUnderScotsLawPage), messages)),
+        None
+      )
+    }
+  }
+
+  private def trusteesBasedInUk(data: Option[Boolean], messages: Messages) = {
+    data match {
+      case Some(_) =>
+        messages("trustResidentInTheUK.yes")
+      case None =>
+        messages("trustResidentInTheUK.no")
     }
   }
 
