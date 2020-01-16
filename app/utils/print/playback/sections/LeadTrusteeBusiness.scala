@@ -21,8 +21,7 @@ import pages.register.CorrespondenceAddressPage
 import pages.register.trustees._
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
-import utils.print.playback.sections.AnswerRowConverter.{addressQuestion, individualOrBusinessQuestion, stringQuestion, yesNoQuestion}
-import utils.print.playback.sections.LeadTrusteeIndividual.addressAnswers
+import utils.print.playback.sections.AnswerRowConverter.{addressQuestion, stringQuestion, yesNoQuestion}
 import viewmodels.{AnswerRow, AnswerSection}
 
 object LeadTrusteeBusiness {
@@ -33,13 +32,14 @@ object LeadTrusteeBusiness {
       Some(Seq(AnswerSection(
         headingKey = Some(messages("answerPage.section.leadTrustee.subheading")),
         Seq(
-          stringQuestion(TrusteeOrgNamePage(index), userAnswers, "trusteeBusinessName"),
           yesNoQuestion(TrusteeUtrYesNoPage(index), userAnswers, "leadTrusteeUtrYesNo", name),
+          stringQuestion(TrusteeOrgNamePage(index), userAnswers, "trusteeBusinessName"),
           stringQuestion(TrusteesUtrPage(index), userAnswers, "trusteeUtr", name)
         ).flatten ++
         addressAnswers(index, userAnswers, countryOptions, name).flatten ++
-        Seq(stringQuestion(TelephoneNumberPage(index), userAnswers, "trusteeTelephoneNumber", name),
-          stringQuestion(EmailPage(index), userAnswers, "trusteeEmailAddress", name)
+        Seq(yesNoQuestion(TrusteeEmailYesNoPage(index), userAnswers, "trusteeEmailAddressYesNo", name),
+          stringQuestion(EmailPage(index), userAnswers, "trusteeEmailAddress", name),
+          stringQuestion(TelephoneNumberPage(index), userAnswers, "trusteeTelephoneNumber", name)
         ).flatten,
         sectionKey = Some(messages("answerPage.section.trustees.heading"))
       )))

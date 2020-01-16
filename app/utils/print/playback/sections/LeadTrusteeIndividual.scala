@@ -42,8 +42,9 @@ object LeadTrusteeIndividual {
             addressAnswers(index, userAnswers, countryOptions, name).flatten ++
             Seq(yesNoQuestion(TrusteePassportIDCardYesNoPage(index), userAnswers, "trusteePassportOrIdCardYesNo", name),
               passportOrIdCardQuestion(TrusteePassportIDCardPage(index), userAnswers, "trusteePassportOrIdCard", name, countryOptions),
-              stringQuestion(TelephoneNumberPage(index), userAnswers, "telephoneNumber", name),
-              stringQuestion(EmailPage(index), userAnswers, "trusteeEmailAddress", name)
+              yesNoQuestion(TrusteeEmailYesNoPage(index), userAnswers, "trusteeEmailAddressYesNo", name),
+              stringQuestion(EmailPage(index), userAnswers, "trusteeEmailAddress", name),
+                stringQuestion(TelephoneNumberPage(index), userAnswers, "telephoneNumber", name)
             ).flatten,
           sectionKey = Some(messages("answerPage.section.trustees.heading"))
         ))
