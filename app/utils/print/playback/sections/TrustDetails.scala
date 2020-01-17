@@ -20,6 +20,7 @@ import models.playback.UserAnswers
 import models.registration.pages.TrusteesBasedInTheUK._
 import models.registration.pages.{NonResidentType, TrusteesBasedInTheUK}
 import pages.register.agents.AgentOtherThanBarristerPage
+import pages.register.settlors.SettlorsBasedInTheUKPage
 import pages.register.trustees.TrusteesBasedInTheUKPage
 import pages.register.{NonResidentTypePage, _}
 import play.api.i18n.Messages
@@ -48,7 +49,7 @@ object TrustDetails {
           countryQuestion(CountryGoverningTrustPage, userAnswers, "countryGoverningTrust", countryOptions = countryOptions),
           yesNoQuestion(AdministrationInsideUKPage, userAnswers, "administrationInsideUK"),
           countryQuestion(CountryAdministeringTrustPage, userAnswers, "countryAdministeringTrust", countryOptions = countryOptions),
-          howManyTrusteesBasedInUkQuestion(TrusteesBasedInTheUKPage, userAnswers, "trusteesBasedInTheUK"),
+          howManyTrusteesBasedInUkQuestion(TrusteesBasedInTheUKPage, userAnswers, "trustResidentInUK"),
           yesNoQuestion(EstablishedUnderScotsLawPage, userAnswers, "establishedUnderScotsLaw"),
           yesNoQuestion(TrustResidentOffshorePage, userAnswers, "trustResidentOffshore"),
           countryQuestion(TrustPreviouslyResidentPage, userAnswers, "trustPreviouslyResident", countryOptions = countryOptions),

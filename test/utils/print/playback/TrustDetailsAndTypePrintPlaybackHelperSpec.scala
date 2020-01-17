@@ -76,7 +76,7 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
               changeUrl = None
             ),
             AnswerRow(
-              label = messages("trusteesBasedInTheUK.checkYourAnswersLabel"),
+              label = messages("trustResidentInUK.checkYourAnswersLabel"),
               answer = Html("Based on your answers, the trust is resident in the UK"),
               changeUrl = None
             ),
@@ -171,7 +171,7 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
               changeUrl = None
             ),
             AnswerRow(
-              label = messages("trusteesBasedInTheUK.checkYourAnswersLabel"),
+              label = messages("trustResidentInUK.checkYourAnswersLabel"),
               answer = Html("Based on your answers, the trust is not resident in the UK"),
               changeUrl = None
             ),
@@ -264,7 +264,7 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
               changeUrl = None
             ),
             AnswerRow(
-              label = messages("trusteesBasedInTheUK.checkYourAnswersLabel"),
+              label = messages("trustResidentInUK.checkYourAnswersLabel"),
               answer = Html("Based on your answers, the trust is resident in the UK"),
               changeUrl = None
             ),
@@ -356,7 +356,7 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
               changeUrl = None
             ),
             AnswerRow(
-              label = messages("trusteesBasedInTheUK.checkYourAnswersLabel"),
+              label = messages("trustResidentInUK.checkYourAnswersLabel"),
               answer = Html("Based on your answers, the trust is not resident in the UK"),
               changeUrl = None
             ),
@@ -441,7 +441,7 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
               changeUrl = None
             ),
             AnswerRow(
-              label = messages("trusteesBasedInTheUK.checkYourAnswersLabel"),
+              label = messages("trustResidentInUK.checkYourAnswersLabel"),
               answer = Html("Based on your answers, the trust is not resident in the UK"),
               changeUrl = None
             ),
