@@ -162,7 +162,7 @@ class ConfirmationAnswerPageLivingSettlorViewSpec extends ViewBehaviours {
       assertContainsQuestionAnswerPair(doc, messages("whenTrustSetup.checkYourAnswersLabel"), "10 October 2010")
       assertContainsQuestionAnswerPair(doc, messages("governedInsideTheUK.checkYourAnswersLabel"), yes)
       assertContainsQuestionAnswerPair(doc, messages("administrationInsideUK.checkYourAnswersLabel"), yes)
-      assertContainsQuestionAnswerPair(doc, messages("trusteesBasedInTheUK.checkYourAnswersLabel"), "All the trustees based in the UK")
+      assertContainsQuestionAnswerPair(doc, messages("trusteesBasedInTheUK.checkYourAnswersLabel"), "All of the trustees are based in the UK")
       assertContainsQuestionAnswerPair(doc, messages("establishedUnderScotsLaw.checkYourAnswersLabel"), yes)
       assertContainsQuestionAnswerPair(doc, messages("trustResidentOffshore.checkYourAnswersLabel"), no)
     }
