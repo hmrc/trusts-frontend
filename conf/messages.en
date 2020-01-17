@@ -1364,9 +1364,9 @@ settlorBusinessDetails.address = Address
 settlorBusinessDetails.checkYourAnswersLabel = Which of {0}’s details do you know?
 settlorBusinessDetails.error.required = Select which of the business’s details you know
 
-trusteesBasedInTheUK.title = Are the trustees based in the UK?
-trusteesBasedInTheUK.heading =  Are the trustees based in the UK?
-trusteesBasedInTheUK.UKBasedTrustees = All the trustees based in the UK
+trusteesBasedInTheUK.title = How many of the trustees are based in the UK?
+trusteesBasedInTheUK.heading =  How many of the trustees are based in the UK?
+trusteesBasedInTheUK.UKBasedTrustees = All of the trustees are based in the UK
 trusteesBasedInTheUK.NonUkBasedTrustees = None of the trustees are based in the UK
 trusteesBasedInTheUK.InternationalAndUKTrustees = The trust contains international and UK-based trustees
 trusteesBasedInTheUK.checkYourAnswersLabel = How many of the trustees are based in the UK?
