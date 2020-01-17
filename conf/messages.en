@@ -174,6 +174,8 @@ trustResidentInUK.title = Is the trust resident in the UK?
 trustResidentInUK.heading = Is the trust resident in the UK?
 trustResidentInUK.checkYourAnswersLabel = Is the trust resident in the UK?
 trustResidentInUK.error.required = Select yes if the trust is resident in the UK
+trustResidentInTheUK.yes = Based on your answers, the trust is resident in the UK
+trustResidentInTheUK.no = Based on your answers, the trust is not resident in the UK
 
 establishedUnderScotsLaw.title = Is the trust established under Scots Law?
 establishedUnderScotsLaw.heading = Is the trust established under Scots Law?
@@ -1367,7 +1369,7 @@ trusteesBasedInTheUK.heading =  Are the trustees based in the UK?
 trusteesBasedInTheUK.UKBasedTrustees = All the trustees based in the UK
 trusteesBasedInTheUK.NonUkBasedTrustees = None of the trustees are based in the UK
 trusteesBasedInTheUK.InternationalAndUKTrustees = The trust contains international and UK-based trustees
-trusteesBasedInTheUK.checkYourAnswersLabel = Are the trustees based in the UK?
+trusteesBasedInTheUK.checkYourAnswersLabel = How many of the trustees are based in the UK?
 trusteesBasedInTheUK.error.required = Select how many of the trustees are based in the UK
 
 settlorsBasedInTheUK.title = Are any of the settlors based in the UK?
