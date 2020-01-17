@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package utils.print.playback.sections
+package utils.print.playback.sections.settlors
 
 import models.playback.UserAnswers
 import pages.register.settlors.deceased_settlor._

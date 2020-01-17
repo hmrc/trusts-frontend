@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package utils.print.playback.sections
+package utils.print.playback.sections.trustees
 
 import models.playback.UserAnswers
 import pages.register.trustees._
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
-import utils.print.playback.sections.AnswerRowConverter._
+import utils.print.playback.sections.AnswerRowConverter.{addressQuestion, stringQuestion, yesNoQuestion}
 import viewmodels.AnswerSection
 
 object TrusteeOrganisation {

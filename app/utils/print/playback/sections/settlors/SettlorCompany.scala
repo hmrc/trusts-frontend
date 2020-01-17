@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package utils.print.playback.sections
+package utils.print.playback.sections.settlors
 
 import models.playback.UserAnswers
 import pages.register.settlors.living_settlor._
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
-import utils.CheckAnswersFormatters._
+import utils.CheckAnswersFormatters.{dateFormatter, internationalAddress, ukAddress, yesOrNo}
 import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 
