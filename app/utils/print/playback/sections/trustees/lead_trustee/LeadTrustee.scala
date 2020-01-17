@@ -24,7 +24,7 @@ import utils.countryOptions.CountryOptions
 import utils.print.playback.sections.AnswerRowConverter.{addressQuestion, yesNoQuestion}
 import viewmodels.AnswerRow
 
-class LeadTrustee {
+trait LeadTrustee {
 
   def addressAnswers(index: Int,
                      userAnswers: UserAnswers,
