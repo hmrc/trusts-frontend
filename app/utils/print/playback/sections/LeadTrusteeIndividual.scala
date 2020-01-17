@@ -37,13 +37,15 @@ object LeadTrusteeIndividual {
             fullNameQuestion(TrusteesNamePage(index), userAnswers, "leadTrusteesName"),
             dateQuestion(TrusteesDateOfBirthPage(index), userAnswers, "trusteesDateOfBirth", name),
             yesNoQuestion(TrusteeAUKCitizenPage(index), userAnswers, "trusteeAUKCitizen", name),
-            ninoQuestion(TrusteesNinoPage(index), userAnswers, "trusteesNino", name)
+            ninoQuestion(TrusteesNinoPage(index), userAnswers, "trusteesNino", name),
+            yesNoQuestion(TrusteePassportIDCardYesNoPage(index), userAnswers, "trusteePassportOrIdCardYesNo", name),
+            passportOrIdCardQuestion(TrusteePassportIDCardPage(index), userAnswers, "trusteePassportOrIdCard", name, countryOptions)
           ).flatten ++
             addressAnswers(index, userAnswers, countryOptions, name).flatten ++
-            Seq(yesNoQuestion(TrusteePassportIDCardYesNoPage(index), userAnswers, "trusteePassportOrIdCardYesNo", name),
-              passportOrIdCardQuestion(TrusteePassportIDCardPage(index), userAnswers, "trusteePassportOrIdCard", name, countryOptions),
-              stringQuestion(TelephoneNumberPage(index), userAnswers, "telephoneNumber", name),
-              stringQuestion(EmailPage(index), userAnswers, "trusteeEmailAddress", name)
+            Seq(
+              yesNoQuestion(TrusteeEmailYesNoPage(index), userAnswers, "trusteeEmailAddressYesNo", name),
+              stringQuestion(EmailPage(index), userAnswers, "trusteeEmailAddress", name),
+                stringQuestion(TelephoneNumberPage(index), userAnswers, "telephoneNumber", name)
             ).flatten,
           sectionKey = Some(messages("answerPage.section.trustees.heading"))
         ))
@@ -56,9 +58,8 @@ object LeadTrusteeIndividual {
                      countryOptions: CountryOptions,
                      name: String)(implicit messages: Messages): Seq[Option[AnswerRow]] = {
 
-    userAnswers.get(TrusteeAddressYesNoPage(index)) match {
-      case Some(x) =>  Seq(yesNoQuestion(TrusteeAddressYesNoPage(index), userAnswers, "trusteeUkAddressYesNo", name),
-        yesNoQuestion(TrusteeAddressInTheUKPage(index), userAnswers, "trusteeLiveInTheUK", name),
+    userAnswers.get(TrusteeAddressPage(index)) match {
+      case Some(x) =>  Seq(yesNoQuestion(TrusteeAddressInTheUKPage(index), userAnswers, "trusteeLiveInTheUK", name),
         addressQuestion(TrusteeAddressPage(index), userAnswers, "trusteesUkAddress", name, countryOptions))
       case _ =>  Seq(addressQuestion(CorrespondenceAddressPage, userAnswers, "trusteesUkAddress", name, countryOptions))
     }

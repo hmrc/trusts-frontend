@@ -65,8 +65,8 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
       .flatMap(_.set(TrusteesNamePage(index), leadIndividual.name.convert))
       .flatMap(_.set(TrusteesDateOfBirthPage(index), leadIndividual.dateOfBirth.convert))
       .flatMap(answers => extractLeadIndividualIdentification(leadIndividual, index, answers))
+      .flatMap(answers => extractEmail(leadIndividual.email, index, answers))
       .flatMap(_.set(TelephoneNumberPage(index), leadIndividual.phoneNumber))
-      .flatMap(_.set(EmailPage(index), leadIndividual.email))
       .flatMap(_.set(TrusteesSafeIdPage(index), leadIndividual.identification.safeId))
       .flatMap {
         _.set(
@@ -86,8 +86,8 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
       .flatMap(_.set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Business))
       .flatMap(_.set(TrusteeOrgNamePage(index), leadCompany.name))
       .flatMap(answers => extractLeadOrgIdentification(leadCompany, index, answers))
+      .flatMap(answers => extractEmail(leadCompany.email, index, answers))
       .flatMap(_.set(TelephoneNumberPage(index), leadCompany.phoneNumber))
-      .flatMap(_.set(EmailPage(index), leadCompany.email))
       .flatMap(_.set(TrusteesSafeIdPage(index), leadCompany.identification.safeId))
       .flatMap {
         _.set(
@@ -271,4 +271,15 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
           .flatMap(_.set(TrusteeAddressInTheUKPage(index), false))
     }
   }
+
+  private def extractEmail(email: Option[String], index: Int, answers: UserAnswers) = {
+    email match {
+      case Some(x) => {
+        answers.set(TrusteeEmailYesNoPage(index), true)
+          .flatMap(_.set(EmailPage(index), x))
+      }
+      case _ =>  answers.set(TrusteeEmailYesNoPage(index), false)
+    }
+  }
+
 }
