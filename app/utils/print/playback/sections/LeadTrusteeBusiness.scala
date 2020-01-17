@@ -51,9 +51,8 @@ object LeadTrusteeBusiness {
                      countryOptions: CountryOptions,
                      name: String)(implicit messages: Messages): Seq[Option[AnswerRow]] = {
 
-    userAnswers.get(TrusteeAddressYesNoPage(index)) match {
-      case Some(x) =>  Seq(yesNoQuestion(TrusteeAddressYesNoPage(index), userAnswers, "trusteeUkAddressYesNo", name),
-        yesNoQuestion(TrusteeAddressInTheUKPage(index), userAnswers, "trusteeLiveInTheUK", name),
+    userAnswers.get(TrusteeAddressPage(index)) match {
+      case Some(x) =>  Seq(yesNoQuestion(TrusteeAddressInTheUKPage(index), userAnswers, "trusteeLiveInTheUK", name),
         addressQuestion(TrusteeAddressPage(index), userAnswers, "trusteesUkAddress", name, countryOptions))
       case _ =>  Seq(addressQuestion(CorrespondenceAddressPage, userAnswers, "trusteesUkAddress", name, countryOptions))
     }
