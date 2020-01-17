@@ -486,7 +486,13 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
       result mustBe Seq(
         AnswerSection(
           headingKey = None,
-          rows = Seq(),
+          rows = Seq(
+            AnswerRow(
+              label = messages("trustResidentInUK.checkYourAnswersLabel"),
+              answer = Html("Based on your answers, the trust is not resident in the UK"),
+              changeUrl = None
+            )
+          ),
           sectionKey = Some("Trust details")
         ),
         AnswerSection(
@@ -524,7 +530,13 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
       result mustBe Seq(
         AnswerSection(
           headingKey = None,
-          rows = Seq(),
+          rows = Seq(
+            AnswerRow(
+              label = messages("trustResidentInUK.checkYourAnswersLabel"),
+              answer = Html("Based on your answers, the trust is not resident in the UK"),
+              changeUrl = None
+            )
+          ),
           sectionKey = Some("Trust details")
         ),
         AnswerSection(
@@ -571,7 +583,13 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
       result mustBe Seq(
         AnswerSection(
           headingKey = None,
-          rows = Seq(),
+          rows = Seq(
+            AnswerRow(
+              label = messages("trustResidentInUK.checkYourAnswersLabel"),
+              answer = Html("Based on your answers, the trust is not resident in the UK"),
+              changeUrl = None
+            )
+          ),
           sectionKey = Some("Trust details")
         ),
         AnswerSection(
