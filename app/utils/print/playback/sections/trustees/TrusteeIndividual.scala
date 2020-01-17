@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package utils.print.playback.sections
+package utils.print.playback.sections.trustees
 
 import models.playback.UserAnswers
 import pages.register.trustees._
 import play.api.i18n.Messages
 import utils.CheckAnswersFormatters
 import utils.countryOptions.CountryOptions
-import viewmodels.AnswerSection
 import utils.print.playback.sections.AnswerRowConverter._
+import viewmodels.AnswerSection
 
 object TrusteeIndividual {
 

@@ -23,9 +23,12 @@ import pages.register.protectors.ProtectorIndividualOrBusinessPage
 import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage}
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
-import utils.print.playback.sections.protectors.{BusinessProtector, IndividualProtector}
+import utils.print.playback.sections._
 import utils.print.playback.sections.beneficiaries._
-import sections._
+import utils.print.playback.sections.protectors.{BusinessProtector, IndividualProtector}
+import utils.print.playback.sections.settlors.DeceasedSettlor
+import utils.print.playback.sections.trustees.lead_trustee.{LeadTrusteeBusiness, LeadTrusteeIndividual}
+import utils.print.playback.sections.trustees.{TrusteeIndividual, TrusteeOrganisation}
 import viewmodels.AnswerSection
 
 class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAnswers)
