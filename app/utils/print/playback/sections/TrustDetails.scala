@@ -49,7 +49,7 @@ object TrustDetails {
           countryQuestion(CountryGoverningTrustPage, userAnswers, "countryGoverningTrust", countryOptions = countryOptions),
           yesNoQuestion(AdministrationInsideUKPage, userAnswers, "administrationInsideUK"),
           countryQuestion(CountryAdministeringTrustPage, userAnswers, "countryAdministeringTrust", countryOptions = countryOptions),
-          howManyTrusteesBasedInUkQuestion(TrusteesBasedInTheUKPage, userAnswers, "trustResidentInUK"),
+          howManyTrusteesBasedInUkQuestion(EstablishedUnderScotsLawPage, userAnswers, "trustResidentInUK"),
           yesNoQuestion(EstablishedUnderScotsLawPage, userAnswers, "establishedUnderScotsLaw"),
           yesNoQuestion(TrustResidentOffshorePage, userAnswers, "trustResidentOffshore"),
           countryQuestion(TrustPreviouslyResidentPage, userAnswers, "trustPreviouslyResident", countryOptions = countryOptions),
@@ -88,16 +88,16 @@ object TrustDetails {
     }
   }
 
-  private def howManyTrusteesBasedInUkQuestion(query: Gettable[TrusteesBasedInTheUK], userAnswers: UserAnswers, labelKey: String,
+  private def howManyTrusteesBasedInUkQuestion(query: Gettable[Boolean], userAnswers: UserAnswers, labelKey: String,
                                                messageArg: String = "", changeRoute: Option[Call] = None)
                                      (implicit messages: Messages): Option[AnswerRow] = {
-    userAnswers.get(query) map { _ =>
+    Some(
       AnswerRow(
         messages(s"$labelKey.checkYourAnswersLabel", messageArg),
-        HtmlFormat.escape(trusteesBasedInUk(userAnswers.get(EstablishedUnderScotsLawPage), messages)),
+        HtmlFormat.escape(trusteesBasedInUk(userAnswers.get(query), messages)),
         None
       )
-    }
+    )
   }
 
   private def trusteesBasedInUk(data: Option[Boolean], messages: Messages) = {
