@@ -21,7 +21,6 @@ import javax.inject.Inject
 import mapping.reads._
 import models.NormalMode
 import models.core.UserAnswers
-import models.registration.pages.WhenTrustSetupPage
 import pages.playback.DeclarationWhatNextPage
 import pages.register._
 import pages.register.agents._
@@ -994,7 +993,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
-  def trusteeLiveInTheUK(index: Int): Option[AnswerRow] = userAnswers.get(TrusteeLiveInTheUKPage(index)) map {
+  def trusteeLiveInTheUK(index: Int): Option[AnswerRow] = userAnswers.get(TrusteeAddressInTheUKPage(index)) map {
     x =>
       AnswerRow(
         "trusteeLiveInTheUK.checkYourAnswersLabel",

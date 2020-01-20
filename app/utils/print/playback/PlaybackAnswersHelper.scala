@@ -20,20 +20,22 @@ import models.core.pages.IndividualOrBusiness
 import models.core.pages.IndividualOrBusiness.{Business, Individual}
 import models.playback.UserAnswers
 import pages.register.protectors.ProtectorIndividualOrBusinessPage
-import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.living_settlor.SettlorIndividualOrBusinessPage
 import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage}
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
 import utils.print.playback.sections._
-import utils.print.playback.sections.protectors.{BusinessProtector, IndividualProtector}
 import utils.print.playback.sections.beneficiaries._
+import utils.print.playback.sections.protectors.{BusinessProtector, IndividualProtector}
+import utils.print.playback.sections.settlors.DeceasedSettlor
+import utils.print.playback.sections.trustees.lead_trustee.{LeadTrusteeBusiness, LeadTrusteeIndividual}
+import utils.print.playback.sections.trustees.{TrusteeIndividual, TrusteeOrganisation}
 import viewmodels.AnswerSection
 
 class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAnswers)
                            (implicit messages: Messages) {
 
-  def trustee(index: Int): Option[Seq[AnswerSection]] = {
+  def trustee(index: Int): Seq[AnswerSection] = {
 
     userAnswers.get(IsThisLeadTrusteePage(index)) flatMap { isLeadTrustee =>
       userAnswers.get(TrusteeIndividualOrBusinessPage(index)) flatMap { individualOrBusiness =>
@@ -43,11 +45,25 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
             case IndividualOrBusiness.Business => LeadTrusteeBusiness(index, userAnswers, countryOptions)
           }
         } else {
-          TrusteeOrganisation(index, userAnswers, countryOptions)
+          individualOrBusiness match {
+            case IndividualOrBusiness.Individual => TrusteeIndividual(index, userAnswers, countryOptions)
+            case IndividualOrBusiness.Business => TrusteeOrganisation(index, userAnswers, countryOptions)
+          }
         }
       }
     }
 
+  }.getOrElse(Nil)
+
+  def allTrustees : Seq[AnswerSection] = {
+
+    val size = userAnswers.get(_root_.sections.trustees.Trustees).map(_.value.size).getOrElse(0)
+
+    size match {
+      case 0 => Nil
+      case _ =>
+        (for (index <- 0 to size) yield trustee(index)).flatten
+    }
   }
 
   def settlors: Seq[AnswerSection] = deceasedSettlors ++ livingSettlors
@@ -238,8 +254,8 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
       case trustType =>
         Seq(
           AnswerSection(
-            headingKey = Some(messages("answerPage.section.trustType.heading")),
-            rows = trustType
+            rows = trustType,
+            sectionKey = Some(messages("answerPage.section.trustType.heading"))
           )
         )
     }

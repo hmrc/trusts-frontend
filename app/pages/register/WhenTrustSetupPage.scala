@@ -14,27 +14,17 @@
  * limitations under the License.
  */
 
-package pages.register.trustees
+package pages.register
 
-import models.core.UserAnswers
+import java.time.LocalDate
+
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.Trustees
+import sections.TrustDetails
 
-import scala.util.Try
+case object WhenTrustSetupPage extends QuestionPage[LocalDate] {
 
-final case class TrusteeLiveInTheUKPage(index : Int) extends QuestionPage[Boolean] {
+  override def path: JsPath = JsPath \ TrustDetails \ toString
 
-  override def path: JsPath = Trustees.path \ index \ toString
-
-  override def toString: String = "liveInUK"
-
-  // TODO this is incomplete
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
-    value match {
-      case Some(false) =>
-        userAnswers.remove(TrusteesUkAddressPage(index))
-      case _ => super.cleanup(value, userAnswers)
-    }
-  }
+  override def toString: String = "whenTrustSetup"
 }

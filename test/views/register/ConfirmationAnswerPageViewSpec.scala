@@ -28,7 +28,7 @@ import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.settlors.deceased_settlor._
 import pages.entitystatus._
-import pages.register.{AdministrationInsideUKPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, RegistrationSubmissionDatePage, RegistrationTRNPage, TrustNamePage, TrustResidentOffshorePage}
+import pages.register.{AdministrationInsideUKPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, RegistrationSubmissionDatePage, RegistrationTRNPage, TrustNamePage, TrustResidentOffshorePage, WhenTrustSetupPage}
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import pages.register.beneficiaries.individual.{IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryAddressUKYesNoPage, IndividualBeneficiaryAddressYesNoPage, IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryIncomePage, IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage, IndividualBeneficiaryNationalInsuranceYesNoPage, IndividualBeneficiaryVulnerableYesNoPage}
@@ -82,7 +82,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
         .set(TrusteeAUKCitizenPage(index), true).success.value
         .set(TrusteesNinoPage(index), "AB123456C").success.value
         .set(TelephoneNumberPage(index), "0191 1111111").success.value
-        .set(TrusteeLiveInTheUKPage(index), true).success.value
+        .set(TrusteeAddressInTheUKPage(index), true).success.value
         .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", Some("line3"), Some("line4"), "AB1 1AB")).success.value
         .set(TrusteeStatus(index), Status.Completed).success.value
         .set(AddATrusteePage, AddATrustee.NoComplete).success.value
@@ -162,7 +162,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
       assertContainsQuestionAnswerPair(doc, messages("whenTrustSetup.checkYourAnswersLabel"), "10 October 2010")
       assertContainsQuestionAnswerPair(doc, messages("governedInsideTheUK.checkYourAnswersLabel"), yes)
       assertContainsQuestionAnswerPair(doc, messages("administrationInsideUK.checkYourAnswersLabel"), yes)
-      assertContainsQuestionAnswerPair(doc, messages("trusteesBasedInTheUK.checkYourAnswersLabel"), "All the trustees based in the UK")
+      assertContainsQuestionAnswerPair(doc, messages("trusteesBasedInTheUK.checkYourAnswersLabel"), "All of the trustees are based in the UK")
       assertContainsQuestionAnswerPair(doc, messages("establishedUnderScotsLaw.checkYourAnswersLabel"), yes)
       assertContainsQuestionAnswerPair(doc, messages("trustResidentOffshore.checkYourAnswersLabel"), no)
     }

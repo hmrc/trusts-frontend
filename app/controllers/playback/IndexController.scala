@@ -33,11 +33,6 @@ class IndexController @Inject()(
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData).async {
     implicit request =>
-      request.userAnswers match {
-        case Some(_) =>
-          Future.successful(Redirect(controllers.playback.routes.WhatIsTheUTRVariationsController.onPageLoad()))
-        case None =>
-          Future.successful(Redirect(controllers.register.routes.IndexController.onPageLoad()))
-      }
+      Future.successful(Redirect(controllers.playback.routes.WhatIsTheUTRVariationsController.onPageLoad()))
   }
 }

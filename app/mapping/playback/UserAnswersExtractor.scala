@@ -16,8 +16,9 @@
 
 package mapping.playback
 
-import com.google.inject.Inject
+import com.google.inject.{ImplementedBy, Inject}
 import mapping.playback.PlaybackExtractionErrors._
+import mapping.playback.assets.AssetsExtractor
 import mapping.playback.beneficiaries.BeneficiaryExtractor
 import mapping.playback.protectors.ProtectorExtractor
 import mapping.playback.settlors.{SettlorExtractor, TrustTypeExtractor}
@@ -25,27 +26,34 @@ import models.playback.UserAnswers
 import models.playback.http.GetTrust
 import play.api.Logger
 
-class UserAnswersExtractor @Inject()(beneficiary: BeneficiaryExtractor,
-                                     leadTrustee: LeadTrusteeExtractor,
-                                     settlors: SettlorExtractor,
-                                     trustType: TrustTypeExtractor,
-                                     protectors: ProtectorExtractor,
-                                     individualExtractor: OtherIndividualExtractor
-                                    ) extends PlaybackExtractor[GetTrust] {
+@ImplementedBy(classOf[UserAnswersExtractorImpl])
+trait UserAnswersExtractor extends PlaybackExtractor[GetTrust]
+
+class UserAnswersExtractorImpl @Inject()(beneficiary: BeneficiaryExtractor,
+                                         trustees: TrusteeExtractor,
+                                         settlors: SettlorExtractor,
+                                         trustType: TrustTypeExtractor,
+                                         protectors: ProtectorExtractor,
+                                         individualExtractor: OtherIndividualExtractor,
+                                         correspondenceExtractor: CorrespondenceExtractor,
+                                         trustDetailsExtractor: TrustDetailsExtractor
+                                        ) extends UserAnswersExtractor {
 
   import models.playback.UserAnswersCombinator._
 
   override def extract(answers: UserAnswers, data: GetTrust): Either[PlaybackExtractionError, UserAnswers] = {
 
     val answersCombined = for {
-      ua <- beneficiary.extract(answers, data.trust.entities.beneficiary).right
-      ua1 <- leadTrustee.extract(answers, data.trust.entities.leadTrustee).right
+      ua <- correspondenceExtractor.extract(answers, data.correspondence).right
+      ua1 <- beneficiary.extract(answers, data.trust.entities.beneficiary).right
       ua2 <- settlors.extract(answers, data.trust.entities).right
       ua3 <- trustType.extract(answers, Some(data.trust)).right
       ua4 <- protectors.extract(answers, data.trust.entities.protectors).right
-      ua6 <- individualExtractor.extract(answers, data.trust.entities.naturalPerson).right
+      ua5 <- individualExtractor.extract(answers, data.trust.entities.naturalPerson).right
+      ua6 <- trustees.extract(answers, data.trust.entities).right
+      ua7 <- trustDetailsExtractor.extract(answers, data.trust.details).right
     } yield {
-      List(ua, ua1, ua2, ua3, ua4, ua6).combine
+      List(ua, ua1, ua2, ua3, ua4, ua5, ua6, ua7).combine
     }
 
     answersCombined match {

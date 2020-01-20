@@ -20,7 +20,9 @@ import java.time.LocalDate
 
 import base.PlaybackSpecBase
 import models.core.pages.{Description, FullName, UKAddress}
+import models.playback.UserAnswers
 import models.registration.pages.{PassportOrIdCardDetails, RoleInCompany}
+import pages.register.TrustNamePage
 import pages.register.beneficiaries.charity._
 import pages.register.beneficiaries.company._
 import pages.register.beneficiaries.trust._
@@ -63,7 +65,7 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(CharityBeneficiaryAddressYesNoPage(1), false).success.value
         .set(CharityBeneficiaryUtrPage(1), "1234567890").success.value
 
-      val result = helper.summary(answers)
+      val result = helper.entities(answers)
 
       result mustBe Seq(
         AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),
@@ -128,7 +130,7 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(IndividualBeneficiaryPassportIDCardPage(2), PassportOrIdCardDetails("DE", "KSJDFKSDHF6456545147852369QWER", LocalDate.of(2020,2,2))).success.value
         .set(IndividualBeneficiaryVulnerableYesNoPage(2), false).success.value
 
-      val result = helper.summary(answers)
+      val result = helper.entities(answers)
 
       val name1 = "Michael Finnegan"
       val name2 = "Joe Bloggs"
@@ -213,7 +215,7 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(CompanyBeneficiaryAddressYesNoPage(1), false).success.value
         .set(CompanyBeneficiaryUtrPage(1), "1234567890").success.value
 
-      val result = helper.summary(answers)
+      val result = helper.entities(answers)
 
       result mustBe Seq(
         AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),
@@ -271,7 +273,7 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(TrustBeneficiaryAddressYesNoPage(1), false).success.value
         .set(TrustBeneficiaryUtrPage(1), "1234567890").success.value
 
-      val result = helper.summary(answers)
+      val result = helper.entities(answers)
 
       result mustBe Seq(
         AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),
@@ -333,7 +335,7 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(LargeBeneficiaryDescriptionPage(1), Description("Description", None, None, None, None)).success.value
         .set(LargeBeneficiaryNumberOfBeneficiariesPage(1), "1").success.value
 
-      val result = helper.summary(answers)
+      val result = helper.entities(answers)
 
       result mustBe Seq(
         AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),
@@ -394,7 +396,7 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(OtherBeneficiaryDiscretionYesNoPage(1), true).success.value
         .set(OtherBeneficiaryAddressYesNoPage(1), false).success.value
 
-      val result = helper.summary(answers)
+      val result = helper.entities(answers)
 
       result mustBe Seq(
         AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),
@@ -438,7 +440,7 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(ClassOfBeneficiaryDescriptionPage(1), classBenDescription2).success.value
         .set(ClassOfBeneficiaryDiscretionYesNoPage(1), true).success.value
 
-      val result = helper.summary(answers)
+      val result = helper.entities(answers)
 
       result mustBe Seq(
         AnswerSection(None, Nil, Some("answerPage.section.beneficiaries.heading")),

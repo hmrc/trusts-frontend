@@ -35,6 +35,7 @@ import pages.playback.{DeclarationWhatNextPage, WhatIsTheUTRVariationPage}
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, DeclarationPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, PostcodeForTheTrustPage, RegisteringTrustFor5APage, TrustHaveAUTRPage, TrustNamePage, TrustPreviouslyResidentPage, TrustRegisteredOnlinePage, TrustResidentOffshorePage, WhatIsTheUTRPage}
 import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage, SettlorsBasedInTheUKPage}
+import pages.register.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, DeclarationPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, PostcodeForTheTrustPage, RegisteringTrustFor5APage, TrustHaveAUTRPage, TrustNamePage, TrustPreviouslyResidentPage, TrustRegisteredOnlinePage, TrustResidentOffshorePage, WhatIsTheUTRPage, WhenTrustSetupPage}
 import pages.register.trustees._
 import play.api.libs.json.{JsValue, Json}
 
@@ -675,10 +676,10 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryTrusteeLiveInTheUKUserAnswersEntry: Arbitrary[(TrusteeLiveInTheUKPage, JsValue)] =
+  implicit lazy val arbitraryTrusteeLiveInTheUKUserAnswersEntry: Arbitrary[(TrusteeAddressInTheUKPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[TrusteeLiveInTheUKPage]
+        page  <- arbitrary[TrusteeAddressInTheUKPage]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }

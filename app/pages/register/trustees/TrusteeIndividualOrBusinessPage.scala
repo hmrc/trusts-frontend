@@ -38,7 +38,7 @@ final case class TrusteeIndividualOrBusinessPage(index : Int) extends QuestionPa
           .flatMap(_.remove(TrusteesDateOfBirthPage(index)))
           .flatMap(_.remove(TrusteeAUKCitizenPage(index)))
           .flatMap(_.remove(TrusteesNinoPage(index)))
-          .flatMap(_.remove(TrusteeLiveInTheUKPage(index))
+          .flatMap(_.remove(TrusteeAddressInTheUKPage(index))
           .flatMap(_.remove(TrusteesUkAddressPage(index)))
           .flatMap(_.remove(TelephoneNumberPage(index)))
           )

@@ -49,7 +49,7 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
         .set(SettlorsNationalInsuranceYesNoPage, true).success.value
         .set(SettlorNationalInsuranceNumberPage, "JP121212A").success.value
 
-      val result = helper.summary(answers)
+      val result = helper.entities(answers)
 
       result mustBe Seq(
         AnswerSection(None, Nil, Some("answerPage.section.deceasedSettlor.heading")),
@@ -94,7 +94,7 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
           PassportOrIdCardDetails("DE", "123456789", LocalDate.of(2021,10,10))
         ).success.value
 
-      val result = helper.summary(answers)
+      val result = helper.entities(answers)
 
       result mustBe Seq(
         AnswerSection(None, Nil, Some("answerPage.section.deceasedSettlor.heading")),
@@ -147,7 +147,7 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
 
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
-      val result = helper.summary((
+      val result = helper.entities((
         businessSettlorWithUTR(0) andThen
         businessSettlorWithUKAddress(1) andThen
         businessSettlorWithNonUKAddress(2) andThen
@@ -213,7 +213,7 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
 
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
-      val result = helper.summary((
+      val result = helper.entities((
         individualSettlor(0)
         ).apply(emptyUserAnswers))
 

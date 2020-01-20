@@ -16,7 +16,6 @@
 
 package generators
 
-import models.registration.pages.WhenTrustSetupPage
 import org.scalacheck.Arbitrary
 import pages.{register, _}
 import pages.register.agents.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentNamePage, AgentOtherThanBarristerPage, AgentTelephoneNumberPage, AgentUKAddressPage}
@@ -32,6 +31,7 @@ import pages.playback.{DeclarationWhatNextPage, WhatIsTheUTRVariationPage}
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, DeclarationPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, PostcodeForTheTrustPage, RegisteringTrustFor5APage, TrustHaveAUTRPage, TrustNamePage, TrustPreviouslyResidentPage, TrustRegisteredOnlinePage, TrustResidentOffshorePage, WhatIsTheUTRPage}
 import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage, SettlorsBasedInTheUKPage}
+import pages.register.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, DeclarationPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, PostcodeForTheTrustPage, RegisteringTrustFor5APage, TrustHaveAUTRPage, TrustNamePage, TrustPreviouslyResidentPage, TrustRegisteredOnlinePage, TrustResidentOffshorePage, WhatIsTheUTRPage, WhenTrustSetupPage}
 import pages.register.trustees._
 
 trait PageGenerators {
@@ -274,8 +274,8 @@ trait PageGenerators {
   implicit lazy val arbitraryTrusteesNinoPage: Arbitrary[TrusteesNinoPage] =
     Arbitrary(TrusteesNinoPage(0))
 
-  implicit lazy val arbitraryTrusteeLiveInTheUKPage: Arbitrary[TrusteeLiveInTheUKPage] =
-    Arbitrary(TrusteeLiveInTheUKPage(0))
+  implicit lazy val arbitraryTrusteeLiveInTheUKPage: Arbitrary[TrusteeAddressInTheUKPage] =
+    Arbitrary(TrusteeAddressInTheUKPage(0))
 
   implicit lazy val arbitraryTrusteesUkAddressPage: Arbitrary[TrusteesUkAddressPage] =
     Arbitrary(TrusteesUkAddressPage(0))

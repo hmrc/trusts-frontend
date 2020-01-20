@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-package models.registration.pages
-
-import java.time.LocalDate
+package pages.register.asset.partnership
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.TrustDetails
+import sections.Assets
 
-case object WhenTrustSetupPage extends QuestionPage[LocalDate] {
+final case class  PartnershipAssetDescriptionPage(index : Int) extends QuestionPage[String] {
 
-  override def path: JsPath = JsPath \ TrustDetails \ toString
+  override def path: JsPath = Assets.path \ index \ toString
 
-  override def toString: String = "whenTrustSetup"
+  override def toString: String = "partnershipAssetDescription"
 }

@@ -16,7 +16,7 @@
 
 package pages.register.trustees
 
-import models.core.pages.InternationalAddress
+import models.core.pages.{InternationalAddress}
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.Trustees

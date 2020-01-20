@@ -19,22 +19,34 @@ package utils.print.playback
 import javax.inject.Inject
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
+import utils.print.playback.sections.TrustDetails
 import viewmodels.AnswerSection
 
 class PrintPlaybackHelper @Inject()(countryOptions: CountryOptions){
 
-  def summary(userAnswers: models.playback.UserAnswers)(implicit messages: Messages) : Seq[AnswerSection] = {
+  def entities(userAnswers: models.playback.UserAnswers)(implicit messages: Messages) : Seq[AnswerSection] = {
 
     val playbackAnswersHelper: PlaybackAnswersHelper = new PlaybackAnswersHelper(countryOptions, userAnswers)
 
     List(
       playbackAnswersHelper.settlors,
+      playbackAnswersHelper.allTrustees,
       playbackAnswersHelper.beneficiaries,
       playbackAnswersHelper.protectors,
-      playbackAnswersHelper.otherIndividual,
-      // trust type must go last
+      playbackAnswersHelper.otherIndividual
+    ).flatten
+
+  }
+
+  def trustDetails(userAnswers: models.playback.UserAnswers)(implicit messages: Messages) : Seq[AnswerSection] = {
+
+    val playbackAnswersHelper: PlaybackAnswersHelper = new PlaybackAnswersHelper(countryOptions, userAnswers)
+
+    List(
+      TrustDetails(userAnswers, countryOptions),
       playbackAnswersHelper.trustType
     ).flatten
 
   }
+
 }

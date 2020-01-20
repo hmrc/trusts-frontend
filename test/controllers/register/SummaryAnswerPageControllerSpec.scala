@@ -30,7 +30,7 @@ import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.settlors.deceased_settlor._
 import pages.entitystatus._
-import pages.register.{AdministrationInsideUKPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, TrustNamePage, TrustResidentOffshorePage}
+import pages.register.{AdministrationInsideUKPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, TrustNamePage, TrustResidentOffshorePage, WhenTrustSetupPage}
 import pages.register.settlors.living_settlor._
 import pages.register.asset.shares._
 import pages.register.beneficiaries.individual.{IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryAddressUKYesNoPage, IndividualBeneficiaryAddressYesNoPage, IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryIncomePage, IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage, IndividualBeneficiaryNationalInsuranceYesNoPage, IndividualBeneficiaryVulnerableYesNoPage}
@@ -87,7 +87,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
         .set(TrusteeAUKCitizenPage(index), true).success.value
         .set(TrusteesNinoPage(index), "AB123456C").success.value
         .set(TelephoneNumberPage(index), "0191 1111111").success.value
-        .set(TrusteeLiveInTheUKPage(index), true).success.value
+        .set(TrusteeAddressInTheUKPage(index), true).success.value
         .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", Some("line3"), Some("line4"), "AB1 1AB")).success.value
         .set(TrusteeStatus(index), Status.Completed).success.value
         .set(AddATrusteePage, AddATrustee.NoComplete).success.value
@@ -316,7 +316,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
         .set(TrusteeAUKCitizenPage(index), true).success.value
         .set(TrusteesNinoPage(index), "AB123456C").success.value
         .set(TelephoneNumberPage(index), "0191 1111111").success.value
-        .set(TrusteeLiveInTheUKPage(index), true).success.value
+        .set(TrusteeAddressInTheUKPage(index), true).success.value
         .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", Some("line3"), Some("line4"), "AB1 1AB")).success.value
         .set(TrusteeStatus(index), Status.Completed).success.value
         .set(AddATrusteePage, AddATrustee.NoComplete).success.value

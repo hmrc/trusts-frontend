@@ -24,7 +24,7 @@ import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeLiveInTheUKPage, TrusteesNamePage}
+import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeAddressInTheUKPage, TrusteesNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -66,7 +66,7 @@ class TrusteeLiveInTheUKController @Inject()(
 
       val form: Form[Boolean] = formProvider.withPrefix(messagePrefix)
 
-      val preparedForm = request.userAnswers.get(TrusteeLiveInTheUKPage(index)) match {
+      val preparedForm = request.userAnswers.get(TrusteeAddressInTheUKPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -100,9 +100,9 @@ class TrusteeLiveInTheUKController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeLiveInTheUKPage(index), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeAddressInTheUKPage(index), value))
             _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrusteeLiveInTheUKPage(index), mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrusteeAddressInTheUKPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }
