@@ -43,18 +43,17 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
     case SettlorIndividualDateOfBirthPage(index) => _ => _ => routes.SettlorIndividualNINOYesNoController.onPageLoad(NormalMode, index, draftId)
     case SettlorIndividualNINOYesNoPage(index) => _ => settlorIndividualNINOYesNoPage(draftId, index)
     case SettlorIndividualNINOPage(index) => _ => _ => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
-    case SettlorIndividualAddressYesNoPage(index) => _ => settlorIndividualAddressYesNoPage(draftId, index)
-    case SettlorIndividualAddressUKYesNoPage(index) => _ => settlorIndividualAddressUKYesNoPage(draftId, index)
-    case SettlorIndividualAddressUKPage(index) => _ => _ => routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, draftId)
-    case SettlorIndividualAddressInternationalPage(index) => _ => _ => routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, draftId)
+    case SettlorAddressYesNoPage(index) => _ => settlorIndividualAddressYesNoPage(draftId, index)
+    case SettlorAddressUKYesNoPage(index) => _ => settlorIndividualAddressUKYesNoPage(draftId, index)
+    case SettlorAddressUKPage(index) => _ => _ => routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, draftId)
+    case SettlorAddressInternationalPage(index) => _ => _ => routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, draftId)
     case SettlorIndividualPassportYesNoPage(index) => _ => settlorIndividualPassportYesNoPage(draftId, index)
     case SettlorIndividualPassportPage(index) => _ => _ => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
     case SettlorIndividualIDCardYesNoPage(index) => _ =>  settlorIndividualIDCardYesNoPage(draftId, index)
     case SettlorIndividualIDCardPage(index) => _ => _ => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
     case SettlorIndividualOrBusinessPage(index) => _ => settlorIndividualOrBusinessPage(index, draftId)
     case SettlorIndividualAnswerPage => _ => _ => controllers.register.settlors.routes.AddASettlorController.onPageLoad(draftId)
-    case SettlorBusinessNamePage(index)  =>_ => _ => routes.SettlorBusinessDetailsController.onPageLoad(NormalMode, index, draftId)
-    case SettlorBusinessDetailsPage(index) =>_ => _ => routes.SettlorBusinessDetailsController.onPageLoad(NormalMode, index, draftId)
+    case SettlorBusinessNamePage(index)  =>_ => _ => routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId)
     case AddASettlorPage => _ => addSettlorRoute(draftId)
     case AddASettlorYesNoPage => _ => addASettlorYesNoRoute(draftId)
   }
@@ -124,14 +123,14 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
     }
 
   private def settlorIndividualAddressYesNoPage(draftId: String, index: Int)(answers: UserAnswers) =
-    answers.get(SettlorIndividualAddressYesNoPage(index)) match {
+    answers.get(SettlorAddressYesNoPage(index)) match {
       case Some(true) => routes.SettlorIndividualAddressUKYesNoController.onPageLoad(NormalMode, index, draftId)
       case Some(false) => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
       case None => controllers.register.routes.SessionExpiredController.onPageLoad()
     }
 
   private def settlorIndividualAddressUKYesNoPage(draftId: String, index: Int)(answers: UserAnswers) =
-    answers.get(SettlorIndividualAddressUKYesNoPage(index)) match {
+    answers.get(SettlorAddressUKYesNoPage(index)) match {
       case Some(true) => routes.SettlorIndividualAddressUKController.onPageLoad(NormalMode, index, draftId)
       case Some(false) => routes.SettlorIndividualAddressInternationalController.onPageLoad(NormalMode, index, draftId)
       case None => controllers.register.routes.SessionExpiredController.onPageLoad()

@@ -22,7 +22,7 @@ import forms.YesNoFormProvider
 import models.NormalMode
 import models.core.pages.FullName
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.settlors.living_settlor.{SettlorIndividualAddressUKYesNoPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNamePage}
+import pages.register.settlors.living_settlor.{SettlorAddressUKYesNoPage, SettlorIndividualDateOfBirthYesNoPage, SettlorIndividualNamePage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -65,7 +65,7 @@ class SettlorIndividualAddressUKYesNoControllerSpec extends RegistrationSpecBase
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers.set(SettlorIndividualNamePage(index), name).success.value
-        .set(SettlorIndividualAddressUKYesNoPage(index), true).success.value
+        .set(SettlorAddressUKYesNoPage(index), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -105,7 +105,7 @@ class SettlorIndividualAddressUKYesNoControllerSpec extends RegistrationSpecBase
     "return a Bad Request and errors when invalid data is submitted" in {
 
       val userAnswers = emptyUserAnswers.set(SettlorIndividualNamePage(index), name).success.value
-        .set(SettlorIndividualAddressUKYesNoPage(index), true).success.value
+        .set(SettlorAddressUKYesNoPage(index), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -187,7 +187,7 @@ class SettlorIndividualAddressUKYesNoControllerSpec extends RegistrationSpecBase
 
       validateIndex(
         arbitrary[Boolean],
-        SettlorIndividualAddressUKYesNoPage.apply,
+        SettlorAddressUKYesNoPage.apply,
         getForIndex
       )
 
@@ -205,7 +205,7 @@ class SettlorIndividualAddressUKYesNoControllerSpec extends RegistrationSpecBase
 
       validateIndex(
         arbitrary[Boolean],
-        SettlorIndividualAddressUKYesNoPage.apply,
+        SettlorAddressUKYesNoPage.apply,
         postForIndex
       )
     }

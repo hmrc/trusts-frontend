@@ -42,9 +42,6 @@ trait PageGenerators {
   implicit lazy val arbitraryTrustUTRPage: Arbitrary[WhatIsTheUTRVariationPage.type] =
     Arbitrary(WhatIsTheUTRVariationPage)
 
-  implicit lazy val arbitrarySettlorDetailsPage: Arbitrary[SettlorBusinessDetailsPage] =
-    Arbitrary(SettlorBusinessDetailsPage(0))
-
   implicit lazy val arbitrarySettlorBusinessDetailsPage: Arbitrary[SettlorBusinessNamePage] =
     Arbitrary(SettlorBusinessNamePage(0))
 
@@ -76,14 +73,14 @@ trait PageGenerators {
   implicit lazy val arbitrarySettlorIndividualIDCardPage: Arbitrary[SettlorIndividualIDCardPage] =
     Arbitrary(SettlorIndividualIDCardPage(0))
 
-  implicit lazy val arbitrarySettlorIndividualAddressUKYesNoPage: Arbitrary[SettlorIndividualAddressUKYesNoPage] =
-    Arbitrary(SettlorIndividualAddressUKYesNoPage(0))
+  implicit lazy val arbitrarySettlorIndividualAddressUKYesNoPage: Arbitrary[SettlorAddressUKYesNoPage] =
+    Arbitrary(SettlorAddressUKYesNoPage(0))
 
-  implicit lazy val arbitrarySettlorIndividualAddressUKPage: Arbitrary[SettlorIndividualAddressUKPage] =
-    Arbitrary(SettlorIndividualAddressUKPage(0))
+  implicit lazy val arbitrarySettlorIndividualAddressUKPage: Arbitrary[SettlorAddressUKPage] =
+    Arbitrary(SettlorAddressUKPage(0))
 
-  implicit lazy val arbitrarySettlorIndividualAddressInternationalPage: Arbitrary[SettlorIndividualAddressInternationalPage] =
-    Arbitrary(SettlorIndividualAddressInternationalPage(0))
+  implicit lazy val arbitrarySettlorIndividualAddressInternationalPage: Arbitrary[SettlorAddressInternationalPage] =
+    Arbitrary(SettlorAddressInternationalPage(0))
 
   implicit lazy val arbitrarySettlorIndividualNINOYesNoPage: Arbitrary[SettlorIndividualNINOYesNoPage] =
     Arbitrary(SettlorIndividualNINOYesNoPage(0))
@@ -91,8 +88,8 @@ trait PageGenerators {
   implicit lazy val arbitrarySettlorIndividualNINOPage: Arbitrary[SettlorIndividualNINOPage] =
     Arbitrary(SettlorIndividualNINOPage(0))
 
-  implicit lazy val arbitrarySettlorIndividualAddressYesNoPage: Arbitrary[SettlorIndividualAddressYesNoPage] =
-    Arbitrary(SettlorIndividualAddressYesNoPage(0))
+  implicit lazy val arbitrarySettlorIndividualAddressYesNoPage: Arbitrary[SettlorAddressYesNoPage] =
+    Arbitrary(SettlorAddressYesNoPage(0))
 
   implicit lazy val arbitrarySettlorIndividualDateOfBirthPage: Arbitrary[SettlorIndividualDateOfBirthPage] =
     Arbitrary(SettlorIndividualDateOfBirthPage(0))

@@ -84,6 +84,8 @@ object CheckAnswersFormatters {
   }
 
   def ukAddress(address: UKAddress): Html = {
+    println("*"*20 + "UK Address")
+
     val lines =
       Seq(
         Some(HtmlFormat.escape(address.line1)),
@@ -97,6 +99,7 @@ object CheckAnswersFormatters {
   }
 
   def internationalAddress(address: InternationalAddress, countryOptions: CountryOptions): Html = {
+    println("*"*20 + "International Address : " + address.toString)
     val lines =
       Seq(
         Some(HtmlFormat.escape(address.line1)),

@@ -23,7 +23,7 @@ import sections.LivingSettlors
 
 import scala.util.Try
 
-final case class SettlorIndividualAddressYesNoPage(index : Int) extends QuestionPage[Boolean] {
+final case class SettlorAddressYesNoPage(index : Int) extends QuestionPage[Boolean] {
 
   override def path: JsPath = LivingSettlors.path \ index \ toString
 
@@ -31,9 +31,9 @@ final case class SettlorIndividualAddressYesNoPage(index : Int) extends Question
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
     value match {
-      case Some(false) => userAnswers.remove(SettlorIndividualAddressUKYesNoPage(index))
-        .flatMap(_.remove(SettlorIndividualAddressInternationalPage(index)))
-        .flatMap(_.remove(SettlorIndividualAddressUKPage(index)))
+      case Some(false) => userAnswers.remove(SettlorAddressUKYesNoPage(index))
+        .flatMap(_.remove(SettlorAddressInternationalPage(index)))
+        .flatMap(_.remove(SettlorAddressUKPage(index)))
         .flatMap(_.remove(SettlorIndividualPassportYesNoPage(index)))
         .flatMap(_.remove(SettlorIndividualPassportPage(index)))
         .flatMap(_.remove(SettlorIndividualIDCardYesNoPage(index)))

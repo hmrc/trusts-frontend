@@ -125,7 +125,7 @@ class LivingSettlorExtractor @Inject() extends PlaybackExtractor[Option[List[Liv
 
     } getOrElse {
       answers.set(SettlorIndividualNINOYesNoPage(index), false)
-        .flatMap(_.set(SettlorIndividualAddressYesNoPage(index), false))
+        .flatMap(_.set(SettlorAddressYesNoPage(index), false))
     }
   }
 
@@ -142,7 +142,7 @@ class LivingSettlorExtractor @Inject() extends PlaybackExtractor[Option[List[Liv
 
     } getOrElse {
       answers.set(SettlorUtrYesNoPage(index), false)
-        .flatMap(_.set(SettlorIndividualAddressYesNoPage(index), false))
+        .flatMap(_.set(SettlorAddressYesNoPage(index), false))
     }
   }
 
@@ -165,13 +165,13 @@ class LivingSettlorExtractor @Inject() extends PlaybackExtractor[Option[List[Liv
   private def extractAddress(address: Address, index: Int, answers: UserAnswers) = {
     address match {
       case uk: UKAddress =>
-        answers.set(SettlorIndividualAddressUKPage(index), uk)
-          .flatMap(_.set(SettlorIndividualAddressYesNoPage(index), true))
-          .flatMap(_.set(SettlorIndividualAddressUKYesNoPage(index), true))
+        answers.set(SettlorAddressUKPage(index), uk)
+          .flatMap(_.set(SettlorAddressYesNoPage(index), true))
+          .flatMap(_.set(SettlorAddressUKYesNoPage(index), true))
       case nonUk: InternationalAddress =>
-        answers.set(SettlorIndividualAddressInternationalPage(index), nonUk)
-          .flatMap(_.set(SettlorIndividualAddressYesNoPage(index), true))
-          .flatMap(_.set(SettlorIndividualAddressUKYesNoPage(index), false))
+        answers.set(SettlorAddressInternationalPage(index), nonUk)
+          .flatMap(_.set(SettlorAddressYesNoPage(index), true))
+          .flatMap(_.set(SettlorAddressUKYesNoPage(index), false))
     }
   }
 }

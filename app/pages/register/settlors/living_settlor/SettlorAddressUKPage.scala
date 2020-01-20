@@ -16,17 +16,14 @@
 
 package pages.register.settlors.living_settlor
 
-import models.core.UserAnswers
+import models.core.pages.UKAddress
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.LivingSettlors
 
-import scala.util.Try
-
-final case class SettlorIndividualAddressUKYesNoPage(index : Int) extends QuestionPage[Boolean] {
+final case class SettlorAddressUKPage(index : Int) extends QuestionPage[UKAddress] {
 
   override def path: JsPath = LivingSettlors.path \ index \ toString
 
-  override def toString: String = "ukAddressYesNo"
-
+  override def toString: String = "address"
 }

@@ -1016,6 +1016,7 @@ answerPage.section.trustsDetails.heading = Trust details
 answerPage.section.deceasedSettlor.heading = Settlor
 answerPage.section.settlors.heading = Settlors
 answerPage.section.settlor.subheading = Settlor {0}
+answerPage.section.settlorCompany.subheading = Company Settlor
 answerPage.section.trustees.heading = Trustees
 answerPage.section.trustee.subheading = Trustee
 answerPage.section.beneficiaries.heading = Beneficiaries
@@ -1298,13 +1299,19 @@ addATrusteeYesNo.title = Do you want to add a trustee?
 addATrusteeYesNo.heading = Do you want to add a trustee?
 addATrusteeYesNo.error.required = Select yes if you want to add a trustee
 
-
 settlorBusinessName.title = What is the business’s name?
 settlorBusinessName.heading = What is the business’s name?
 settlorBusinessName.checkYourAnswersLabel = What is the business’s name?
 settlorBusinessName.error.required = Enter the business’s name
 settlorBusinessName.error.length = Business’s name must be 105 characters or less
 settlorBusinessName.error.invalid = Business name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+
+settlorBusinessUtrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
+settlorBusinessUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
+settlorBusinessAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+settlorBusinessAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+settlorBusinessAddressUK.checkYourAnswersLabel = What is {0}’s address?
+settlorBusinessAddressInternational.checkYourAnswersLabel = What is {0}’s address?
 
 addASettlorYesNo.title = Do you want to add a settlor?
 addASettlorYesNo.heading = Do you want to add a settlor?
@@ -1324,13 +1331,6 @@ holdoverReliefYesNo.title = Was holdover relief claimed on any assets put into t
 holdoverReliefYesNo.heading = Was holdover relief claimed on any assets put into the trust?
 holdoverReliefYesNo.checkYourAnswersLabel = Was holdover relief claimed on any assets put into the trust?
 holdoverReliefYesNo.error.required = Select yes if holdover relief was claimed by any settlor on transfer into the trust
-
-settlorBusinessDetails.title = Which of the settlor’s details do you know?
-settlorBusinessDetails.heading = Which of {0}’s details do you know?
-settlorBusinessDetails.uniqueTaxReference = Unique Taxpayer Reference
-settlorBusinessDetails.address = Address
-settlorBusinessDetails.checkYourAnswersLabel = Which of {0}’s details do you know?
-settlorBusinessDetails.error.required = Select which of the business’s details you know
 
 trusteesBasedInTheUK.title = Are the trustees based in the UK?
 trusteesBasedInTheUK.heading =  Are the trustees based in the UK?

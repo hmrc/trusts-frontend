@@ -100,15 +100,6 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
-  def settlorBusinessDetails(index: Int): Option[AnswerRow] = userAnswers.get(SettlorBusinessDetailsPage(index)) map {
-    x =>
-      AnswerRow(
-        "settlorBusinessDetails.checkYourAnswersLabel",
-        HtmlFormat.escape(messages(s"settlorDetails.$x")),
-        Some(routes.SettlorBusinessDetailsController.onPageLoad(NormalMode, index, draftId).url)
-      )
-  }
-
   def settlorIndividualPassportYesNo(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualPassportYesNoPage(index)) map {
     x =>
       AnswerRow(
@@ -149,7 +140,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
-  def settlorIndividualAddressUKYesNo(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressUKYesNoPage(index)) map {
+  def settlorIndividualAddressUKYesNo(index: Int): Option[AnswerRow] = userAnswers.get(SettlorAddressUKYesNoPage(index)) map {
     x =>
       AnswerRow(
         "settlorIndividualAddressUKYesNo.checkYourAnswersLabel",
@@ -159,7 +150,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
-  def settlorIndividualAddressUK(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressUKPage(index)) map {
+  def settlorIndividualAddressUK(index: Int): Option[AnswerRow] = userAnswers.get(SettlorAddressUKPage(index)) map {
     x =>
       AnswerRow(
         "settlorIndividualAddressUK.checkYourAnswersLabel",
@@ -169,7 +160,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
-  def settlorIndividualAddressInternational(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressInternationalPage(index)) map {
+  def settlorIndividualAddressInternational(index: Int): Option[AnswerRow] = userAnswers.get(SettlorAddressInternationalPage(index)) map {
     x =>
       AnswerRow(
         "settlorIndividualAddressInternational.checkYourAnswersLabel",
@@ -199,7 +190,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)(userAnswe
       )
   }
 
-  def settlorIndividualAddressYesNo(index: Int): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressYesNoPage(index)) map {
+  def settlorIndividualAddressYesNo(index: Int): Option[AnswerRow] = userAnswers.get(SettlorAddressYesNoPage(index)) map {
     x =>
       AnswerRow(
         "settlorIndividualAddressYesNo.checkYourAnswersLabel",

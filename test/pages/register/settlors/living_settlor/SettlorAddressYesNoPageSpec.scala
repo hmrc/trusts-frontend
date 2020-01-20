@@ -24,27 +24,27 @@ import models.registration.pages.PassportOrIdCardDetails
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
-class SettlorIndividualAddressYesNoPageSpec extends PageBehaviours {
+class SettlorAddressYesNoPageSpec extends PageBehaviours {
 
   "SettlorIndividualAddressYesNoPage" must {
 
-    beRetrievable[Boolean](SettlorIndividualAddressYesNoPage(0))
+    beRetrievable[Boolean](SettlorAddressYesNoPage(0))
 
-    beSettable[Boolean](SettlorIndividualAddressYesNoPage(0))
+    beSettable[Boolean](SettlorAddressYesNoPage(0))
 
-    beRemovable[Boolean](SettlorIndividualAddressYesNoPage(0))
+    beRemovable[Boolean](SettlorAddressYesNoPage(0))
 
     "remove relevant data" when {
 
-      val page = SettlorIndividualAddressYesNoPage(0)
+      val page = SettlorAddressYesNoPage(0)
 
       "set to false" in {
         forAll(arbitrary[UserAnswers]) {
           initial =>
             val answers: UserAnswers = initial.set(page, true).success.value
-              .set(SettlorIndividualAddressUKYesNoPage(0), true).success.value
-              .set(SettlorIndividualAddressInternationalPage(0), InternationalAddress("line1", "line2", None, "France")).success.value
-              .set(SettlorIndividualAddressUKPage(0), UKAddress("line1", "line2", None, None, "NE11NE")).success.value
+              .set(SettlorAddressUKYesNoPage(0), true).success.value
+              .set(SettlorAddressInternationalPage(0), InternationalAddress("line1", "line2", None, "France")).success.value
+              .set(SettlorAddressUKPage(0), UKAddress("line1", "line2", None, None, "NE11NE")).success.value
               .set(SettlorIndividualPassportYesNoPage(0), true).success.value
               .set(SettlorIndividualPassportPage(0), PassportOrIdCardDetails("UK", "234567887", LocalDate.now())).success.value
               .set(SettlorIndividualIDCardYesNoPage(0), true).success.value
@@ -52,9 +52,9 @@ class SettlorIndividualAddressYesNoPageSpec extends PageBehaviours {
 
             val result = answers.set(page, false).success.value
 
-            result.get(SettlorIndividualAddressUKYesNoPage(0)) must not be defined
-            result.get(SettlorIndividualAddressInternationalPage(0)) must not be defined
-            result.get(SettlorIndividualAddressUKPage(0)) must not be defined
+            result.get(SettlorAddressUKYesNoPage(0)) must not be defined
+            result.get(SettlorAddressInternationalPage(0)) must not be defined
+            result.get(SettlorAddressUKPage(0)) must not be defined
             result.get(SettlorIndividualPassportYesNoPage(0)) must not be defined
             result.get(SettlorIndividualPassportPage(0)) must not be defined
             result.get(SettlorIndividualIDCardYesNoPage(0)) must not be defined

@@ -19,10 +19,14 @@ package utils.print.playback
 import java.time.LocalDate
 
 import base.PlaybackSpecBase
-import models.core.pages.{FullName, UKAddress}
+import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
+import models.playback.UserAnswers
 import models.registration.pages.PassportOrIdCardDetails
 import pages.register.settlors.deceased_settlor._
+import pages.register.settlors.living_settlor
+import play.api.libs.json.Writes
 import play.twirl.api.Html
+import queries.Settable
 import viewmodels.{AnswerRow, AnswerSection}
 
 class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
@@ -108,9 +112,74 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
           sectionKey = None
         )
       )
-
     }
 
+    def uaSet[T:Writes](settable: Settable[T], value: T) : UserAnswers => UserAnswers = _.set(settable, value).success.value
+
+    "generate Company Settlor Section" in {
+      def businessSettlorBase(index: Int) = uaSet(living_settlor.SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Business) andThen
+        uaSet(living_settlor.SettlorBusinessNamePage(index), "International Exports")
+
+      def businessSettlorWithUTR(index: Int) = businessSettlorBase(index) andThen
+        uaSet(living_settlor.SettlorUtrYesNoPage(index), true) andThen
+        uaSet(living_settlor.SettlorUtrPage(index), "UTRUTRUTRUTR")
+
+      def businessSettlorWithUKAddress(index: Int) = businessSettlorBase(index) andThen
+        uaSet(living_settlor.SettlorUtrYesNoPage(index), false) andThen
+        uaSet(living_settlor.SettlorAddressYesNoPage(index), true) andThen
+        uaSet(living_settlor.SettlorAddressUKYesNoPage(index), true) andThen
+        uaSet(living_settlor.SettlorAddressUKPage(index), UKAddress("Line1", "Line2", Some("Line3"), None, "POSTCODE"))
+
+      def businessSettlorWithNonUKAddress(index: Int) = businessSettlorBase(index) andThen
+        uaSet(living_settlor.SettlorUtrYesNoPage(index), false) andThen
+        uaSet(living_settlor.SettlorAddressYesNoPage(index), true) andThen
+        uaSet(living_settlor.SettlorAddressUKYesNoPage(index), false) andThen
+        uaSet(living_settlor.SettlorAddressInternationalPage(index), InternationalAddress( "Line1", "Line2", Some("Line3"), "AN"))
+
+      def businessSettlorWithNoIdentification(index: Int) = businessSettlorBase(index) andThen
+        uaSet(living_settlor.SettlorUtrYesNoPage(index), false) andThen
+        uaSet(living_settlor.SettlorAddressYesNoPage(index), false)
+
+      val helper = injector.instanceOf[PrintPlaybackHelper]
+
+      val result = helper.summary((
+        businessSettlorWithUTR(0) andThen
+        businessSettlorWithUKAddress(1) andThen
+        businessSettlorWithNonUKAddress(2) andThen
+        businessSettlorWithNoIdentification(3)
+        ).apply(emptyUserAnswers))
+
+
+      result mustBe Seq(
+        AnswerSection(None, Nil, Some("answerPage.section.settlors.heading")),
+        AnswerSection(Some("Company Settlor 1"),Seq(
+          AnswerRow("What is the business’s name?", Html("International Exports"), None),
+          AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("Yes"), None),
+          AnswerRow("What is International Exports’s Unique Taxpayer Reference (UTR) number?", Html("UTRUTRUTRUTR"), None)
+          ), None),
+        AnswerSection(Some("Company Settlor 2"), Seq(
+          AnswerRow("What is the business’s name?", Html("International Exports"), None),
+          AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("No"), None),
+          AnswerRow("Do you know International Exports’s address?", Html("Yes"), None),
+          AnswerRow("Is International Exports’s address in the UK?", Html("Yes"), None),
+          AnswerRow("What is International Exports’s address?", Html("Line1<br />Line2<br />Line3<br />POSTCODE"), None)
+
+        ), None),
+        AnswerSection(Some("Company Settlor 3"), Seq(
+          AnswerRow("What is the business’s name?", Html("International Exports"), None),
+          AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("No"), None),
+          AnswerRow("Do you know International Exports’s address?", Html("Yes"), None),
+          AnswerRow("Is International Exports’s address in the UK?", Html("No"), None),
+          AnswerRow("What is International Exports’s address?", Html("Line1<br />Line2<br />Line3<br />Dutch Antilles"), None)
+        ), None),
+        AnswerSection(Some("Company Settlor 4"), Seq(
+          AnswerRow("What is the business’s name?", Html("International Exports"), None),
+          AnswerRow("Which of International Exports’s details do you know?", Html("Address"), None)
+        ), None)
+      )
+    }
+
+    "generate Individual Settlor Section" ignore {}
   }
 
 }

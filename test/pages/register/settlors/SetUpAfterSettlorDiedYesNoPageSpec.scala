@@ -122,8 +122,8 @@ class SetUpAfterSettlorDiedYesNoPageSpec extends PageBehaviours {
             .set(SettlorIndividualDateOfBirthYesNoPage(1), true).success.value
             .set(SettlorIndividualDateOfBirthPage(1), LocalDate.of(2010,10,10)).success.value
             .set(SettlorIndividualNINOYesNoPage(1), false).success.value
-            .set(SettlorIndividualAddressUKYesNoPage(1), true).success.value
-            .set(SettlorIndividualAddressUKPage(1), UKAddress(
+            .set(SettlorAddressUKYesNoPage(1), true).success.value
+            .set(SettlorAddressUKPage(1), UKAddress(
               line1 = "line 1",
               line2= "Newcastle",
               postcode = "NE981ZZ"
@@ -153,8 +153,8 @@ class SetUpAfterSettlorDiedYesNoPageSpec extends PageBehaviours {
           result.get(SettlorIndividualDateOfBirthYesNoPage(1)) mustNot be(defined)
           result.get(SettlorIndividualDateOfBirthPage(1)) mustNot be(defined)
           result.get(SettlorIndividualNINOYesNoPage(1)) mustNot be(defined)
-          result.get(SettlorIndividualAddressUKYesNoPage(1)) mustNot be(defined)
-          result.get(SettlorIndividualAddressUKPage(1)) mustNot be(defined)
+          result.get(SettlorAddressUKYesNoPage(1)) mustNot be(defined)
+          result.get(SettlorAddressUKPage(1)) mustNot be(defined)
           result.get(SettlorIndividualPassportYesNoPage(1)) mustNot be(defined)
           result.get(SettlorIndividualIDCardYesNoPage(1)) mustNot be(defined)
           result.get(LivingSettlorStatus(1)) mustNot be(defined)

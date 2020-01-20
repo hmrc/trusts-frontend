@@ -22,11 +22,11 @@ class SettlorIndividualAddressUKYesNoPageSpec extends PageBehaviours {
 
   "SettlorIndividualAddressUKYesNoPage" must {
 
-    beRetrievable[Boolean](SettlorIndividualAddressUKYesNoPage(0))
+    beRetrievable[Boolean](SettlorAddressUKYesNoPage(0))
 
-    beSettable[Boolean](SettlorIndividualAddressUKYesNoPage(0))
+    beSettable[Boolean](SettlorAddressUKYesNoPage(0))
 
-    beRemovable[Boolean](SettlorIndividualAddressUKYesNoPage(0))
+    beRemovable[Boolean](SettlorAddressUKYesNoPage(0))
 
   }
 }

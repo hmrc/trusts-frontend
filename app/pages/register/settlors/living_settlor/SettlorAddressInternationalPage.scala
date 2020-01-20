@@ -16,17 +16,14 @@
 
 package pages.register.settlors.living_settlor
 
-import models.core.pages.UKAddress
-import pages.behaviours.PageBehaviours
+import models.core.pages.InternationalAddress
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import sections.LivingSettlors
 
-class SettlorIndividualAddressUKPageSpec extends PageBehaviours {
+final case class SettlorAddressInternationalPage(index : Int) extends QuestionPage[InternationalAddress] {
 
-  "SettlorIndividualAddressUKPage" must {
+  override def path: JsPath = LivingSettlors.path \ index \ toString
 
-    beRetrievable[UKAddress](SettlorIndividualAddressUKPage(0))
-
-    beSettable[UKAddress](SettlorIndividualAddressUKPage(0))
-
-    beRemovable[UKAddress](SettlorIndividualAddressUKPage(0))
-  }
+  override def toString: String = "address"
 }

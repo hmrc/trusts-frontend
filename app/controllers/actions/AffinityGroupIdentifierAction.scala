@@ -18,6 +18,7 @@ package controllers.actions
 
 import com.google.inject.Inject
 import models.requests.IdentifierRequest
+import org.slf4j.LoggerFactory
 import play.api.Logger
 import play.api.mvc.Results._
 import play.api.mvc.{Request, Result, _}
@@ -33,6 +34,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
                                                  trustsAuthFunctions: TrustsAuthorisedFunctions
                                                 ) extends Action[A]  {
+  private val logger = LoggerFactory.getLogger("application.controllers.actions.AffinityGroupIdentifierAction")
 
   private def authoriseAgent(request : Request[A],
                                 enrolments : Enrolments,
@@ -78,16 +80,16 @@ class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
 
     trustsAuthFunctions.authorised().retrieve(retrievals) {
       case Some(internalId) ~ Some(Agent) ~ enrolments =>
-        Logger.info(s"[AuthenticatedIdentifierAction] successfully identified as an Agent")
+        logger.info("successfully identified as an Agent")
         authoriseAgent(request, enrolments, internalId, action)
       case Some(internalId) ~ Some(Organisation) ~ enrolments =>
-        Logger.info(s"[AuthenticatedIdentifierAction] successfully identified as Organisation")
+        logger.info("successfully identified as Organisation")
         action(IdentifierRequest(request, internalId, AffinityGroup.Organisation, enrolments))
       case Some(_) ~ _ ~ _ =>
-        Logger.info(s"[AuthenticatedIdentifierAction] Unauthorised due to affinityGroup being Individual")
+        logger.info("Unauthorised due to affinityGroup being Individual")
         Future.successful(Redirect(controllers.register.routes.UnauthorisedController.onPageLoad()))
       case _ =>
-        Logger.warn(s"[AuthenticatedIdentifierAction] Unable to retrieve internal id")
+        logger.warn("Unable to retrieve internal id")
         throw new UnauthorizedException("Unable to retrieve internal Id")
     } recover trustsAuthFunctions.recoverFromAuthorisation
   }

@@ -53,18 +53,6 @@ trait LivingSettlorRoutes {
           .mustBe(routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, fakeDraftId))
 
     }
-
-    "navigate from SettlorBusinessName to SettlorBusinessDetails" in {
-      val page = SettlorBusinessNamePage(index)
-
-      val ua = emptyUserAnswers
-        .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Business).success.value
-        .set(page, "AWS").success.value
-
-      navigator.nextPage(page, NormalMode, fakeDraftId)(ua)
-        .mustBe(routes.SettlorBusinessDetailsController.onPageLoad(NormalMode, index, fakeDraftId))
-    }
-
   }
 
   def livingSettlorRoutes(): Unit = {
@@ -211,7 +199,7 @@ trait LivingSettlorRoutes {
 
     "navigate from SettlorIndividualAddressYesNoPage" when {
 
-      val page = SettlorIndividualAddressYesNoPage(index)
+      val page = SettlorAddressYesNoPage(index)
 
       "answer is yes" in {
 
@@ -235,7 +223,7 @@ trait LivingSettlorRoutes {
 
     "navigate from SettlorIndividualAddressUKYesNoPage" when {
 
-      val page = SettlorIndividualAddressUKYesNoPage(index)
+      val page = SettlorAddressUKYesNoPage(index)
 
       "answer is yes" in {
 
@@ -259,7 +247,7 @@ trait LivingSettlorRoutes {
 
     "navigate from SettlorIndividualAddressUKPage" in {
 
-      val page = SettlorIndividualAddressUKPage(index)
+      val page = SettlorAddressUKPage(index)
 
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
@@ -270,7 +258,7 @@ trait LivingSettlorRoutes {
 
     "navigate from SettlorIndividualAddressInternationalPage" in {
 
-      val page = SettlorIndividualAddressInternationalPage(index)
+      val page = SettlorAddressInternationalPage(index)
 
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>

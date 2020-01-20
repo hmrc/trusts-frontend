@@ -23,7 +23,7 @@ import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.register.settlors.living_settlor.{SettlorIndividualAddressUKYesNoPage, SettlorIndividualNamePage}
+import pages.register.settlors.living_settlor.{SettlorAddressUKYesNoPage, SettlorIndividualNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -64,7 +64,7 @@ class SettlorIndividualAddressUKYesNoController @Inject()(
 
       val name = request.userAnswers.get(SettlorIndividualNamePage(index)).get
 
-      val preparedForm = request.userAnswers.get(SettlorIndividualAddressUKYesNoPage(index)) match {
+      val preparedForm = request.userAnswers.get(SettlorAddressUKYesNoPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -83,9 +83,9 @@ class SettlorIndividualAddressUKYesNoController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorIndividualAddressUKYesNoPage(index), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorAddressUKYesNoPage(index), value))
             _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SettlorIndividualAddressUKYesNoPage(index), mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(SettlorAddressUKYesNoPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

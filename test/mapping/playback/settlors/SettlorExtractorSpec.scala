@@ -143,10 +143,10 @@ class SettlorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SettlorBusinessNamePage(0)).get mustBe "Company Settlor 1"
         extraction.right.value.get(SettlorUtrYesNoPage(0)).get mustBe true
         extraction.right.value.get(SettlorUtrPage(0)).get mustBe "1234567890"
-        extraction.right.value.get(SettlorIndividualAddressYesNoPage(0)) mustNot be(defined)
-        extraction.right.value.get(SettlorIndividualAddressUKYesNoPage(0)) mustNot be(defined)
-        extraction.right.value.get(SettlorIndividualAddressUKPage(0)) mustNot be(defined)
-        extraction.right.value.get(SettlorIndividualAddressInternationalPage(0)) mustNot be(defined)
+        extraction.right.value.get(SettlorAddressYesNoPage(0)) mustNot be(defined)
+        extraction.right.value.get(SettlorAddressUKYesNoPage(0)) mustNot be(defined)
+        extraction.right.value.get(SettlorAddressUKPage(0)) mustNot be(defined)
+        extraction.right.value.get(SettlorAddressInternationalPage(0)) mustNot be(defined)
         extraction.right.value.get(SettlorCompanyTypePage(0)).get mustBe "Trading"
         extraction.right.value.get(SettlorCompanyTimePage(0)).get mustBe false
         extraction.right.value.get(SettlorSafeIdPage(0)).get mustBe "8947584-94759745-84758745"
@@ -156,10 +156,10 @@ class SettlorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SettlorBusinessNamePage(1)).get mustBe "Company Settlor 2"
         extraction.right.value.get(SettlorUtrYesNoPage(1)).get mustBe true
         extraction.right.value.get(SettlorUtrPage(1)).get mustBe "1234567890"
-        extraction.right.value.get(SettlorIndividualAddressYesNoPage(1)) mustNot be(defined)
-        extraction.right.value.get(SettlorIndividualAddressUKYesNoPage(1)) mustNot be(defined)
-        extraction.right.value.get(SettlorIndividualAddressUKPage(1)) mustNot be(defined)
-        extraction.right.value.get(SettlorIndividualAddressInternationalPage(1)) mustNot be(defined)
+        extraction.right.value.get(SettlorAddressYesNoPage(1)) mustNot be(defined)
+        extraction.right.value.get(SettlorAddressUKYesNoPage(1)) mustNot be(defined)
+        extraction.right.value.get(SettlorAddressUKPage(1)) mustNot be(defined)
+        extraction.right.value.get(SettlorAddressInternationalPage(1)) mustNot be(defined)
         extraction.right.value.get(SettlorCompanyTypePage(1)).get mustBe "Trading"
         extraction.right.value.get(SettlorCompanyTimePage(1)).get mustBe false
         extraction.right.value.get(SettlorSafeIdPage(1)).get mustBe "8947584-94759745-84758745"
@@ -169,10 +169,10 @@ class SettlorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SettlorIndividualNamePage(2)).get mustBe FullName("individual", Some("living"), "settlor")
         extraction.right.value.get(SettlorIndividualNINOYesNoPage(2)).get mustBe false
         extraction.right.value.get(SettlorIndividualNINOPage(2)) mustNot be(defined)
-        extraction.right.value.get(SettlorIndividualAddressYesNoPage(2)).get mustBe false
-        extraction.right.value.get(SettlorIndividualAddressUKYesNoPage(2)) mustNot be(defined)
-        extraction.right.value.get(SettlorIndividualAddressUKPage(2)) mustNot be(defined)
-        extraction.right.value.get(SettlorIndividualAddressInternationalPage(2)) mustNot be(defined)
+        extraction.right.value.get(SettlorAddressYesNoPage(2)).get mustBe false
+        extraction.right.value.get(SettlorAddressUKYesNoPage(2)) mustNot be(defined)
+        extraction.right.value.get(SettlorAddressUKPage(2)) mustNot be(defined)
+        extraction.right.value.get(SettlorAddressInternationalPage(2)) mustNot be(defined)
         extraction.right.value.get(SettlorIndividualPassportIDCardYesNoPage(2)) mustNot be(defined)
         extraction.right.value.get(SettlorIndividualPassportIDCardPage(2)) mustNot be(defined)
         extraction.right.value.get(SettlorSafeIdPage(2)) mustNot be(defined)

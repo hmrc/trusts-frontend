@@ -20,8 +20,9 @@ import java.time.LocalDate
 
 import models.core.pages.{Address, FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
 import models.playback.UserAnswers
-import models.registration.pages.{PassportOrIdCardDetails, KindOfTrust}
+import models.registration.pages.{KindOfTrust, PassportOrIdCardDetails}
 import play.api.i18n.Messages
+import play.api.libs.json.Reads
 import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
 import queries.Gettable
@@ -55,9 +56,9 @@ object AnswerRowConverter {
     }
   }
 
-  def addressQuestion(query: Gettable[Address], userAnswers: UserAnswers, labelKey: String,
+  def addressQuestion[T <: Address](query: Gettable[T], userAnswers: UserAnswers, labelKey: String,
                       messageArg: String = "", countryOptions: CountryOptions, changeRoute: Option[Call] = None)
-                     (implicit messages:Messages) = {
+                     (implicit messages:Messages, reads: Reads[T]) = {
     userAnswers.get(query) map {
       case x: UKAddress =>
         AnswerRow(

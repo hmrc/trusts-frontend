@@ -23,7 +23,7 @@ import forms.InternationalAddressFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.register.settlors.living_settlor.{SettlorIndividualAddressInternationalPage, SettlorIndividualNamePage}
+import pages.register.settlors.living_settlor.{SettlorAddressInternationalPage, SettlorIndividualNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -66,7 +66,7 @@ class SettlorIndividualAddressInternationalController @Inject()(
 
       val name = request.userAnswers.get(SettlorIndividualNamePage(index)).get
 
-      val preparedForm = request.userAnswers.get(SettlorIndividualAddressInternationalPage(index)) match {
+      val preparedForm = request.userAnswers.get(SettlorAddressInternationalPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -85,9 +85,9 @@ class SettlorIndividualAddressInternationalController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorIndividualAddressInternationalPage(index), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorAddressInternationalPage(index), value))
             _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SettlorIndividualAddressInternationalPage(index), mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(SettlorAddressInternationalPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

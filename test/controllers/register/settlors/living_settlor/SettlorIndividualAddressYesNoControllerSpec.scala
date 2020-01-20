@@ -22,7 +22,7 @@ import forms.YesNoFormProvider
 import models.NormalMode
 import models.core.pages.FullName
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.settlors.living_settlor.{SettlorIndividualAddressYesNoPage, SettlorIndividualNamePage}
+import pages.register.settlors.living_settlor.{SettlorAddressYesNoPage, SettlorIndividualNamePage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -65,7 +65,7 @@ class SettlorIndividualAddressYesNoControllerSpec extends RegistrationSpecBase w
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers.set(SettlorIndividualNamePage(index), name).success.value
-        .set(SettlorIndividualAddressYesNoPage(index), true).success.value
+        .set(SettlorAddressYesNoPage(index), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -86,7 +86,7 @@ class SettlorIndividualAddressYesNoControllerSpec extends RegistrationSpecBase w
     "redirect to the next page when valid data is submitted" in {
 
       val userAnswers = emptyUserAnswers.set(SettlorIndividualNamePage(index), name).success.value
-        .set(SettlorIndividualAddressYesNoPage(index), true).success.value
+        .set(SettlorAddressYesNoPage(index), true).success.value
       val application =
         applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -106,7 +106,7 @@ class SettlorIndividualAddressYesNoControllerSpec extends RegistrationSpecBase w
     "redirect to Settlors Name page when Settlors name is not answered" in {
 
       val userAnswers = emptyUserAnswers
-        .set(SettlorIndividualAddressYesNoPage(index), true).success.value
+        .set(SettlorAddressYesNoPage(index), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -188,7 +188,7 @@ class SettlorIndividualAddressYesNoControllerSpec extends RegistrationSpecBase w
 
       validateIndex(
         arbitrary[Boolean],
-        SettlorIndividualAddressYesNoPage.apply,
+        SettlorAddressYesNoPage.apply,
         getForIndex
       )
 
@@ -206,7 +206,7 @@ class SettlorIndividualAddressYesNoControllerSpec extends RegistrationSpecBase w
 
       validateIndex(
         arbitrary[Boolean],
-        SettlorIndividualAddressYesNoPage.apply,
+        SettlorAddressYesNoPage.apply,
         postForIndex
       )
     }

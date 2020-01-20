@@ -50,52 +50,32 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
 
   }
 
-  def settlors: Seq[AnswerSection] = {
+  def deceasedSettlors: Seq[AnswerSection] = {
 
-    val deceasedSettlor = DeceasedSettlor(userAnswers, countryOptions)
-
-    if (deceasedSettlor.nonEmpty) {
-      Seq(
-        Seq(AnswerSection(sectionKey = Some("answerPage.section.deceasedSettlor.heading"))),
-        deceasedSettlor
-      ).flatten
-    } else {
-      // living settlors
-      Nil
+    DeceasedSettlor(userAnswers, countryOptions) match {
+      case Nil => Nil
+      case x => AnswerSection(sectionKey = Some("answerPage.section.deceasedSettlor.heading")) +: x
     }
   }
 
   def livingSettlor(index: Int): Seq[AnswerSection] = {
-
-    userAnswers.get(SettlorIndividualOrBusinessPage(index)) flatMap { individualOrBusiness =>
-      println("SettlorIndividualOrBusinessPage: "+individualOrBusiness)
+    userAnswers.get(SettlorIndividualOrBusinessPage(index)).flatMap { individualOrBusiness =>
       individualOrBusiness match {
-        case IndividualOrBusiness.Individual => None //SettlorIndividual(index, userAnswers, countryOptions)
+        case IndividualOrBusiness.Individual => None
         case IndividualOrBusiness.Business => SettlorCompany(index, userAnswers, countryOptions)
       }
-    }
-
-  }.getOrElse(Nil)
+    }.getOrElse(Nil)
+  }
 
   def livingSettlors : Seq[AnswerSection] = {
-
     val size = userAnswers.get(_root_.sections.settlors.LivingSettlors).map(_.value.size).getOrElse(0)
 
-    val livingSettlors = size match {
+    size match {
       case 0 => Nil
       case _ =>
+        AnswerSection(sectionKey = Some("answerPage.section.settlors.heading")) +:
         (for (index <- 0 to size) yield livingSettlor(index)).flatten
     }
-
-    if (livingSettlors.nonEmpty) {
-      Seq(
-        Seq(AnswerSection(sectionKey = Some("answerPage.section.settlors.heading"))),
-        livingSettlors
-      ).flatten
-    } else {
-      Nil
-    }
-
   }
 
   def beneficiaries : Seq[AnswerSection] = {
