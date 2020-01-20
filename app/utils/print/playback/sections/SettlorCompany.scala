@@ -17,10 +17,13 @@
 package utils.print.playback.sections
 
 import models.playback.UserAnswers
+import models.registration.pages.KindOfBusiness
 import pages.register.settlors.living_settlor._
 import play.api.i18n.Messages
+import play.twirl.api.HtmlFormat
+import queries.Gettable
 import utils.countryOptions.CountryOptions
-import viewmodels.AnswerSection
+import viewmodels.{AnswerRow, AnswerSection}
 import utils.print.playback.sections.AnswerRowConverter._
 
 object SettlorCompany {
@@ -30,23 +33,35 @@ object SettlorCompany {
     userAnswers.get(SettlorBusinessNamePage(index)).flatMap { name =>
       Some(Seq(
         AnswerSection(
-          headingKey = Some(messages("answerPage.section.settlorCompany.subheading") + s" ${index + 1}"),
+          headingKey = Some(messages("answerPage.section.settlor.subheading", index + 1)),
           Seq(
+            individualOrBusinessQuestion(SettlorIndividualOrBusinessPage(index), userAnswers, "settlorIndividualOrBusiness"),
             stringQuestion(SettlorBusinessNamePage(index), userAnswers, "settlorBusinessName"),
             yesNoQuestion(SettlorUtrYesNoPage(index), userAnswers, "settlorBusinessUtrYesNo", name),
             stringQuestion(SettlorUtrPage(index), userAnswers, "settlorBusinessUtr", name),
             yesNoQuestion(SettlorAddressYesNoPage(index), userAnswers, "settlorBusinessAddressYesNo", name),
             yesNoQuestion(SettlorAddressUKYesNoPage(index), userAnswers, "settlorBusinessAddressUKYesNo", name),
             addressQuestion(SettlorAddressUKPage(index), userAnswers, "settlorBusinessAddressUK", name, countryOptions),
-            addressQuestion(SettlorAddressInternationalPage(index), userAnswers, "settlorBusinessAddressUK", name, countryOptions)
-//            yesNoQuestion(SettlorIndividualAddressYesNoPage(index), userAnswers, "settlorCompanyAddressYesNo", name),
-//            yesNoQuestion(SettlorIndividualAddressUKYesNoPage(index), userAnswers, "settlorCompanyAddressUKYesNo", name),
-//            addressQuestion(SettlorIndividualAddressUKPage(index), userAnswers, "trusteesUkAddress", name, countryOptions),
-//            addressQuestion(SettlorIndividualAddressInternationalPage(index), userAnswers, "settlorCompanyNonUKAddress", name, countryOptions)
+            addressQuestion(SettlorAddressInternationalPage(index), userAnswers, "settlorBusinessAddressUK", name, countryOptions),
+            kindOfBusinessQuestion(SettlorCompanyTypePage(index), userAnswers, "settlorBusinessType", name, messages),
+            yesNoQuestion(SettlorCompanyTimePage(index), userAnswers, "settlorBusinessTime", name)
           ).flatten,
           sectionKey = None
         )
       ))
     }
   }
+
+  def kindOfBusinessQuestion(query: Gettable[KindOfBusiness], userAnswers: UserAnswers, labelKey: String, messageArg : String, messages: Messages) = {
+    userAnswers.get(query) map { x =>
+      AnswerRow(
+        messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
+        HtmlFormat.escape(x.toString),
+        None
+      )
+    }
+  }
 }
+
+
+

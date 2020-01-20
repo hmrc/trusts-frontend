@@ -25,6 +25,8 @@ import mapping.registration.PassportType
 import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
 import models.playback.http._
 import models.playback.{MetaData, UserAnswers}
+import models.registration.pages.KindOfBusiness
+import models.registration.pages.KindOfBusiness._
 import org.joda.time.DateTime
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import pages.register.settlors.living_settlor._
@@ -37,8 +39,8 @@ class LivingSettlorExtractorSpec extends FreeSpec with MustMatchers
     bpMatchStatus = Some("01"),
     name = s"Company Settlor $index",
     companyType = index match {
-      case 0 => Some("Trading")
-      case 1 => Some("Investment")
+      case 0 => Some(KindOfBusiness.Trading)
+      case 1 => Some(KindOfBusiness.Investment)
       case _ => None
     },
     companyTime = index match {
@@ -155,7 +157,7 @@ class LivingSettlorExtractorSpec extends FreeSpec with MustMatchers
 
           extraction.right.value.get(SettlorBusinessNamePage(0)).get mustBe "Company Settlor 0"
           extraction.right.value.get(SettlorMetaData(0)).get mustBe MetaData("0", Some("01"), "2019-11-26")
-          extraction.right.value.get(SettlorCompanyTypePage(0)).get mustBe "Trading"
+          extraction.right.value.get(SettlorCompanyTypePage(0)).get mustBe Trading
           extraction.right.value.get(SettlorCompanyTimePage(0)).get mustBe false
           extraction.right.value.get(SettlorUtrYesNoPage(0)).get mustBe false
           extraction.right.value.get(SettlorUtrPage(0)) mustNot be(defined)
@@ -167,7 +169,7 @@ class LivingSettlorExtractorSpec extends FreeSpec with MustMatchers
 
           extraction.right.value.get(SettlorBusinessNamePage(1)).get mustBe "Company Settlor 1"
           extraction.right.value.get(SettlorMetaData(1)).get mustBe MetaData("1", Some("01"), "2019-11-26")
-          extraction.right.value.get(SettlorCompanyTypePage(1)).get mustBe "Investment"
+          extraction.right.value.get(SettlorCompanyTypePage(1)).get mustBe Investment
           extraction.right.value.get(SettlorCompanyTimePage(1)).get mustBe true
           extraction.right.value.get(SettlorUtrYesNoPage(1)).get mustBe true
           extraction.right.value.get(SettlorUtrPage(1)).get mustBe "1234567890"

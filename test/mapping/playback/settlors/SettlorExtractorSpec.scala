@@ -23,6 +23,8 @@ import mapping.playback.PlaybackExtractor
 import models.core.pages.{FullName, IndividualOrBusiness}
 import models.playback.http._
 import models.playback.{MetaData, UserAnswers}
+import models.registration.pages.KindOfBusiness
+import models.registration.pages.KindOfBusiness._
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
@@ -93,7 +95,7 @@ class SettlorExtractorSpec extends FreeSpec with MustMatchers
               lineNo = s"1",
               bpMatchStatus = Some("01"),
               name = s"Company Settlor 1",
-              companyType = Some("Trading"),
+              companyType = Some(KindOfBusiness.Trading),
               companyTime = Some(false),
               identification = Some(
                 DisplayTrustIdentificationOrgType(
@@ -108,7 +110,7 @@ class SettlorExtractorSpec extends FreeSpec with MustMatchers
                 lineNo = s"1",
                 bpMatchStatus = Some("01"),
                 name = s"Company Settlor 2",
-                companyType = Some("Trading"),
+                companyType = Some(KindOfBusiness.Trading),
                 companyTime = Some(false),
                 identification = Some(
                   DisplayTrustIdentificationOrgType(
@@ -147,7 +149,7 @@ class SettlorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SettlorAddressUKYesNoPage(0)) mustNot be(defined)
         extraction.right.value.get(SettlorAddressUKPage(0)) mustNot be(defined)
         extraction.right.value.get(SettlorAddressInternationalPage(0)) mustNot be(defined)
-        extraction.right.value.get(SettlorCompanyTypePage(0)).get mustBe "Trading"
+        extraction.right.value.get(SettlorCompanyTypePage(0)).get mustBe Trading
         extraction.right.value.get(SettlorCompanyTimePage(0)).get mustBe false
         extraction.right.value.get(SettlorSafeIdPage(0)).get mustBe "8947584-94759745-84758745"
         extraction.right.value.get(SettlorMetaData(0)).get mustBe MetaData("1", Some("01"), "2019-11-26")
@@ -160,7 +162,7 @@ class SettlorExtractorSpec extends FreeSpec with MustMatchers
         extraction.right.value.get(SettlorAddressUKYesNoPage(1)) mustNot be(defined)
         extraction.right.value.get(SettlorAddressUKPage(1)) mustNot be(defined)
         extraction.right.value.get(SettlorAddressInternationalPage(1)) mustNot be(defined)
-        extraction.right.value.get(SettlorCompanyTypePage(1)).get mustBe "Trading"
+        extraction.right.value.get(SettlorCompanyTypePage(1)).get mustBe Trading
         extraction.right.value.get(SettlorCompanyTimePage(1)).get mustBe false
         extraction.right.value.get(SettlorSafeIdPage(1)).get mustBe "8947584-94759745-84758745"
         extraction.right.value.get(SettlorMetaData(1)).get mustBe MetaData("1", Some("01"), "2019-11-26")

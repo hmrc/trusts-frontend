@@ -50,21 +50,14 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
 
   }
 
+  def settlors: Seq[AnswerSection] = deceasedSettlors ++ livingSettlors
+
   def deceasedSettlors: Seq[AnswerSection] = {
 
     DeceasedSettlor(userAnswers, countryOptions) match {
       case Nil => Nil
       case x => AnswerSection(sectionKey = Some("answerPage.section.deceasedSettlor.heading")) +: x
     }
-  }
-
-  def livingSettlor(index: Int): Seq[AnswerSection] = {
-    userAnswers.get(SettlorIndividualOrBusinessPage(index)).flatMap { individualOrBusiness =>
-      individualOrBusiness match {
-        case IndividualOrBusiness.Individual => None
-        case IndividualOrBusiness.Business => SettlorCompany(index, userAnswers, countryOptions)
-      }
-    }.getOrElse(Nil)
   }
 
   def livingSettlors : Seq[AnswerSection] = {
@@ -77,6 +70,16 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
         (for (index <- 0 to size) yield livingSettlor(index)).flatten
     }
   }
+
+  def livingSettlor(index: Int): Seq[AnswerSection] = {
+    userAnswers.get(SettlorIndividualOrBusinessPage(index)).flatMap { individualOrBusiness =>
+      individualOrBusiness match {
+        case IndividualOrBusiness.Individual => None
+        case IndividualOrBusiness.Business => SettlorCompany(index, userAnswers, countryOptions)
+      }
+    }.getOrElse(Nil)
+  }
+
 
   def beneficiaries : Seq[AnswerSection] = {
 

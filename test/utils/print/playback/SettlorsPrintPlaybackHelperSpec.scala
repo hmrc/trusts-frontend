@@ -21,6 +21,7 @@ import java.time.LocalDate
 import base.PlaybackSpecBase
 import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
 import models.playback.UserAnswers
+import models.registration.pages.KindOfBusiness.Trading
 import models.registration.pages.PassportOrIdCardDetails
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor
@@ -140,24 +141,31 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
         uaSet(living_settlor.SettlorUtrYesNoPage(index), false) andThen
         uaSet(living_settlor.SettlorAddressYesNoPage(index), false)
 
+      def businessSettlorInEmployeeRelatedTrust(index: Int) = businessSettlorWithUKAddress(index) andThen
+        uaSet(living_settlor.SettlorCompanyTypePage(index), Trading) andThen
+        uaSet(living_settlor.SettlorCompanyTimePage(index), false)
+
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
       val result = helper.summary((
         businessSettlorWithUTR(0) andThen
         businessSettlorWithUKAddress(1) andThen
         businessSettlorWithNonUKAddress(2) andThen
-        businessSettlorWithNoIdentification(3)
+        businessSettlorWithNoIdentification(3) andThen
+        businessSettlorInEmployeeRelatedTrust(4)
         ).apply(emptyUserAnswers))
 
 
       result mustBe Seq(
         AnswerSection(None, Nil, Some("answerPage.section.settlors.heading")),
-        AnswerSection(Some("Company Settlor 1"),Seq(
+        AnswerSection(Some("Settlor 1"),Seq(
+          AnswerRow("Is the settlor an individual or a business?", Html("Business"), None),
           AnswerRow("What is the business’s name?", Html("International Exports"), None),
           AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("Yes"), None),
           AnswerRow("What is International Exports’s Unique Taxpayer Reference (UTR) number?", Html("UTRUTRUTRUTR"), None)
           ), None),
-        AnswerSection(Some("Company Settlor 2"), Seq(
+        AnswerSection(Some("Settlor 2"), Seq(
+          AnswerRow("Is the settlor an individual or a business?", Html("Business"), None),
           AnswerRow("What is the business’s name?", Html("International Exports"), None),
           AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("No"), None),
           AnswerRow("Do you know International Exports’s address?", Html("Yes"), None),
@@ -165,16 +173,30 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
           AnswerRow("What is International Exports’s address?", Html("Line1<br />Line2<br />Line3<br />POSTCODE"), None)
 
         ), None),
-        AnswerSection(Some("Company Settlor 3"), Seq(
+        AnswerSection(Some("Settlor 3"), Seq(
+          AnswerRow("Is the settlor an individual or a business?", Html("Business"), None),
           AnswerRow("What is the business’s name?", Html("International Exports"), None),
           AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("No"), None),
           AnswerRow("Do you know International Exports’s address?", Html("Yes"), None),
           AnswerRow("Is International Exports’s address in the UK?", Html("No"), None),
           AnswerRow("What is International Exports’s address?", Html("Line1<br />Line2<br />Line3<br />Dutch Antilles"), None)
         ), None),
-        AnswerSection(Some("Company Settlor 4"), Seq(
+        AnswerSection(Some("Settlor 4"), Seq(
+          AnswerRow("Is the settlor an individual or a business?", Html("Business"), None),
           AnswerRow("What is the business’s name?", Html("International Exports"), None),
-          AnswerRow("Which of International Exports’s details do you know?", Html("Address"), None)
+          AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("No"), None),
+          AnswerRow("Do you know International Exports’s address?", Html("No"), None)
+        ), None),
+        AnswerSection(Some("Settlor 5"), Seq(
+          AnswerRow("Is the settlor an individual or a business?", Html("Business"), None),
+          AnswerRow("What is the business’s name?", Html("International Exports"), None),
+          AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("No"), None),
+          AnswerRow("Do you know International Exports’s address?", Html("Yes"), None),
+          AnswerRow("Is International Exports’s address in the UK?", Html("Yes"), None),
+          AnswerRow("What is International Exports’s address?", Html("Line1<br />Line2<br />Line3<br />POSTCODE"), None),
+          AnswerRow("What kind of business is International Exports?", Html("Trading"), None),
+          AnswerRow("At the date of each contribution to the trust, had the business been in existence for at least 2 years?", Html("No"), None)
+
         ), None)
       )
     }

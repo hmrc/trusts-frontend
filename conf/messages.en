@@ -1016,7 +1016,6 @@ answerPage.section.trustsDetails.heading = Trust details
 answerPage.section.deceasedSettlor.heading = Settlor
 answerPage.section.settlors.heading = Settlors
 answerPage.section.settlor.subheading = Settlor {0}
-answerPage.section.settlorCompany.subheading = Company Settlor
 answerPage.section.trustees.heading = Trustees
 answerPage.section.trustee.subheading = Trustee
 answerPage.section.beneficiaries.heading = Beneficiaries
@@ -1312,6 +1311,8 @@ settlorBusinessAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
 settlorBusinessAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 settlorBusinessAddressUK.checkYourAnswersLabel = What is {0}’s address?
 settlorBusinessAddressInternational.checkYourAnswersLabel = What is {0}’s address?
+settlorBusinessType.checkYourAnswersLabel = What kind of business is {0}?
+settlorBusinessTime.checkYourAnswersLabel = At the date of each contribution to the trust, had the business been in existence for at least 2 years?
 
 addASettlorYesNo.title = Do you want to add a settlor?
 addASettlorYesNo.heading = Do you want to add a settlor?
