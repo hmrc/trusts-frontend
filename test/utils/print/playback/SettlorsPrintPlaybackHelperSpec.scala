@@ -201,7 +201,34 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
       )
     }
 
-    "generate Individual Settlor Section" ignore {}
+    "generate Individual Settlor Section" in {
+      //dob
+
+      def individualSettlor(index: Int) =
+        uaSet(living_settlor.SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual) andThen
+        uaSet(living_settlor.SettlorIndividualNamePage(index), FullName("Joe", None,  "Bloggs")) andThen
+        uaSet(living_settlor.SettlorIndividualDateOfBirthYesNoPage(index), false) andThen
+        uaSet(living_settlor.SettlorIndividualNINOYesNoPage(index), true) andThen
+        uaSet(living_settlor.SettlorIndividualNINOPage(index), "AA000000A")
+
+      val helper = injector.instanceOf[PrintPlaybackHelper]
+
+      val result = helper.summary((
+        individualSettlor(0)
+        ).apply(emptyUserAnswers))
+
+
+      result mustBe Seq(
+        AnswerSection(None, Nil, Some("answerPage.section.settlors.heading")),
+        AnswerSection(Some("Settlor 1"),Seq(
+          AnswerRow("Is the settlor an individual or a business?", Html("Individual"), None),
+          AnswerRow("What is the settlor’s name?", Html("Joe Bloggs"), None),
+          AnswerRow("Do you know Joe Bloggs’s date of birth?", Html("No"), None),
+          AnswerRow("Do you know Joe Bloggs’s National Insurance number?", Html("Yes"), None),
+          AnswerRow("What is Joe Bloggs’s National Insurance number?", Html("AA 00 00 00 A"), None)
+        ), None)
+      )
+    }
   }
 
 }

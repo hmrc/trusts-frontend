@@ -62,7 +62,6 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
 
   def livingSettlors : Seq[AnswerSection] = {
     val size = userAnswers.get(_root_.sections.settlors.LivingSettlors).map(_.value.size).getOrElse(0)
-
     size match {
       case 0 => Nil
       case _ =>
@@ -74,7 +73,7 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
   def livingSettlor(index: Int): Seq[AnswerSection] = {
     userAnswers.get(SettlorIndividualOrBusinessPage(index)).flatMap { individualOrBusiness =>
       individualOrBusiness match {
-        case IndividualOrBusiness.Individual => None
+        case IndividualOrBusiness.Individual => SettlorIndividual(index, userAnswers, countryOptions)
         case IndividualOrBusiness.Business => SettlorCompany(index, userAnswers, countryOptions)
       }
     }.getOrElse(Nil)
