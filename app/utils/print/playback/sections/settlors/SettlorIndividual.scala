@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package utils.print.playback.sections
+package utils.print.playback.sections.settlors
 
 import models.playback.UserAnswers
 import pages.register.settlors.living_settlor._
@@ -36,17 +36,17 @@ object SettlorIndividual {
               individualOrBusinessQuestion(SettlorIndividualOrBusinessPage(index), userAnswers, "settlorIndividualOrBusiness"),
               fullNameQuestion(SettlorIndividualNamePage(index), userAnswers, "settlorIndividualName"),
               yesNoQuestion(SettlorIndividualDateOfBirthYesNoPage(index), userAnswers, "settlorIndividualDateOfBirthYesNo", name),
-             // dateQuestion(SettlorIndividualDateOfBirthPage(index), userAnswers, "settlorIndividualDateOfBirth", name),
+              dateQuestion(SettlorIndividualDateOfBirthPage(index), userAnswers, "settlorIndividualDateOfBirth", name),
               yesNoQuestion(SettlorIndividualNINOYesNoPage(index), userAnswers, "settlorIndividualNINOYesNo", name),
-              ninoQuestion(SettlorIndividualNINOPage(index), userAnswers, "settlorIndividualNINO", name)
-//              yesNoQuestion(SettlorAddressYesNoPage(index), userAnswers, "settlorIndividualAddressYesNo", name),
-//              yesNoQuestion(SettlorAddressUKYesNoPage(index), userAnswers, "settlorIndividualAddressUKYesNo", name),
-//              addressQuestion(SettlorAddressUKPage(index), userAnswers, "settlorIndividualAddressUK", name, countryOptions),
-//              addressQuestion(SettlorAddressInternationalPage(index), userAnswers, "settlorIndividualAddressInternational", name, countryOptions),
-//              yesNoQuestion(SettlorIndividualPassportYesNoPage(index), userAnswers, "settlorIndividualPassportYesNo", name),
-//              passportOrIdCardQuestion(SettlorIndividualPassportPage(index), userAnswers, "settlorIndividualPassport", name, countryOptions),
-//              yesNoQuestion(SettlorIndividualIDCardYesNoPage(index), userAnswers, "settlorIndividualIDCardYesNo", name),
-//              passportOrIdCardQuestion(SettlorIndividualIDCardPage(index), userAnswers, "settlorIndividualIDCard", name, countryOptions)
+              ninoQuestion(SettlorIndividualNINOPage(index), userAnswers, "settlorIndividualNINO", name),
+              yesNoQuestion(SettlorAddressYesNoPage(index), userAnswers, "settlorIndividualAddressYesNo", name),
+              yesNoQuestion(SettlorAddressUKYesNoPage(index), userAnswers, "settlorIndividualAddressUKYesNo", name),
+              addressQuestion(SettlorAddressUKPage(index), userAnswers, "settlorIndividualAddressUK", name, countryOptions),
+              addressQuestion(SettlorAddressInternationalPage(index), userAnswers, "settlorIndividualAddressInternational", name, countryOptions),
+              yesNoQuestion(SettlorIndividualPassportYesNoPage(index), userAnswers, "settlorIndividualPassportYesNo", name),
+              passportOrIdCardQuestion(SettlorIndividualPassportPage(index), userAnswers, "settlorIndividualPassport", name, countryOptions),
+              yesNoQuestion(SettlorIndividualIDCardYesNoPage(index), userAnswers, "settlorIndividualIDCardYesNo", name),
+              passportOrIdCardQuestion(SettlorIndividualIDCardPage(index), userAnswers, "settlorIndividualIDCard", name, countryOptions)
             ).flatten,
             sectionKey = None
           )

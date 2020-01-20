@@ -204,17 +204,45 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
     "generate Individual Settlor Section" in {
       //dob
 
-      def individualSettlor(index: Int) =
+      def baseIndividualSettlor(index: Int) =
         uaSet(living_settlor.SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual) andThen
         uaSet(living_settlor.SettlorIndividualNamePage(index), FullName("Joe", None,  "Bloggs")) andThen
-        uaSet(living_settlor.SettlorIndividualDateOfBirthYesNoPage(index), false) andThen
+        uaSet(living_settlor.SettlorIndividualDateOfBirthYesNoPage(index), true) andThen
+        uaSet(living_settlor.SettlorIndividualDateOfBirthPage(index), LocalDate.parse("1934-12-12"))
+
+
+      def individualSettlorWithNino(index: Int) = baseIndividualSettlor(index) andThen
         uaSet(living_settlor.SettlorIndividualNINOYesNoPage(index), true) andThen
         uaSet(living_settlor.SettlorIndividualNINOPage(index), "AA000000A")
+
+      def individualSettlorWithUKAddressAndPassport(index: Int) = baseIndividualSettlor(index) andThen
+        uaSet(living_settlor.SettlorIndividualNINOYesNoPage(index), false) andThen
+        uaSet(living_settlor.SettlorAddressYesNoPage(index), true) andThen
+        uaSet(living_settlor.SettlorAddressUKYesNoPage(index), true) andThen
+        uaSet(living_settlor.SettlorAddressUKPage(index), UKAddress("Line1", "Line2", Some("Line3"), None, "POSTCODE")) andThen
+        uaSet(living_settlor.SettlorIndividualPassportYesNoPage(index), true) andThen
+        uaSet(living_settlor.SettlorIndividualPassportPage(index), PassportOrIdCardDetails("GB", "1234567890", LocalDate.of(2020, 1, 1)))
+
+      def individualSettlorWithInternationalAddressAndIdCard(index: Int) = baseIndividualSettlor(index) andThen
+        uaSet(living_settlor.SettlorIndividualNINOYesNoPage(index), false) andThen
+        uaSet(living_settlor.SettlorAddressYesNoPage(index), true) andThen
+        uaSet(living_settlor.SettlorAddressUKYesNoPage(index), false) andThen
+        uaSet(living_settlor.SettlorAddressInternationalPage(index), InternationalAddress("Line1", "Line2", Some("Line3"), "DE")) andThen
+        uaSet(living_settlor.SettlorIndividualPassportYesNoPage(index), false) andThen
+        uaSet(living_settlor.SettlorIndividualIDCardYesNoPage(index), true) andThen
+        uaSet(living_settlor.SettlorIndividualIDCardPage(index), PassportOrIdCardDetails("DE", "1234567890", LocalDate.of(2020, 1, 1)))
+
+      def individualSettlorWithNoId(index: Int) = baseIndividualSettlor(index) andThen
+        uaSet(living_settlor.SettlorIndividualNINOYesNoPage(index), false) andThen
+        uaSet(living_settlor.SettlorAddressYesNoPage(index), false)
 
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
       val result = helper.entities((
-        individualSettlor(0)
+        individualSettlorWithNino(0) andThen
+          individualSettlorWithUKAddressAndPassport(1) andThen
+          individualSettlorWithInternationalAddressAndIdCard(2) andThen
+          individualSettlorWithNoId(3)
         ).apply(emptyUserAnswers))
 
 
@@ -223,9 +251,43 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
         AnswerSection(Some("Settlor 1"),Seq(
           AnswerRow("Is the settlor an individual or a business?", Html("Individual"), None),
           AnswerRow("What is the settlor’s name?", Html("Joe Bloggs"), None),
-          AnswerRow("Do you know Joe Bloggs’s date of birth?", Html("No"), None),
+          AnswerRow("Do you know Joe Bloggs’s date of birth?", Html("Yes"), None),
+          AnswerRow("What is Joe Bloggs’s date of birth?", Html("12 December 1934"), None),
           AnswerRow("Do you know Joe Bloggs’s National Insurance number?", Html("Yes"), None),
           AnswerRow("What is Joe Bloggs’s National Insurance number?", Html("AA 00 00 00 A"), None)
+        ), None),
+        AnswerSection(Some("Settlor 2"),Seq(
+          AnswerRow("Is the settlor an individual or a business?", Html("Individual"), None),
+          AnswerRow("What is the settlor’s name?", Html("Joe Bloggs"), None),
+          AnswerRow("Do you know Joe Bloggs’s date of birth?", Html("Yes"), None),
+          AnswerRow("What is Joe Bloggs’s date of birth?", Html("12 December 1934"), None),
+          AnswerRow("Do you know Joe Bloggs’s National Insurance number?", Html("No"), None),
+          AnswerRow("Do you know Joe Bloggs’s address?", Html("Yes"), None),
+          AnswerRow("Does Joe Bloggs live in the UK?", Html("Yes"), None),
+          AnswerRow("What is Joe Bloggs’s address?", Html("Line1<br />Line2<br />Line3<br />POSTCODE"), None),
+          AnswerRow("Do you know Joe Bloggs’s passport details?", Html("Yes"), None),
+          AnswerRow("What are Joe Bloggs’s passport details?", Html("United Kingdom<br />1234567890<br />1 January 2020"), None)
+        ), None),
+        AnswerSection(Some("Settlor 3"),Seq(
+          AnswerRow("Is the settlor an individual or a business?", Html("Individual"), None),
+          AnswerRow("What is the settlor’s name?", Html("Joe Bloggs"), None),
+          AnswerRow("Do you know Joe Bloggs’s date of birth?", Html("Yes"), None),
+          AnswerRow("What is Joe Bloggs’s date of birth?", Html("12 December 1934"), None),
+          AnswerRow("Do you know Joe Bloggs’s National Insurance number?", Html("No"), None),
+          AnswerRow("Do you know Joe Bloggs’s address?", Html("Yes"), None),
+          AnswerRow("Does Joe Bloggs live in the UK?", Html("No"), None),
+          AnswerRow("What is Joe Bloggs’s address?", Html("Line1<br />Line2<br />Line3<br />Germany"), None),
+          AnswerRow("Do you know Joe Bloggs’s passport details?", Html("No"), None),
+          AnswerRow("Do you know Joe Bloggs’s ID card details?", Html("Yes"), None),
+          AnswerRow("What are Joe Bloggs’s ID card details?", Html("Germany<br />1234567890<br />1 January 2020"), None)
+        ), None),
+        AnswerSection(Some("Settlor 4"),Seq(
+          AnswerRow("Is the settlor an individual or a business?", Html("Individual"), None),
+          AnswerRow("What is the settlor’s name?", Html("Joe Bloggs"), None),
+          AnswerRow("Do you know Joe Bloggs’s date of birth?", Html("Yes"), None),
+          AnswerRow("What is Joe Bloggs’s date of birth?", Html("12 December 1934"), None),
+          AnswerRow("Do you know Joe Bloggs’s National Insurance number?", Html("No"), None),
+          AnswerRow("Do you know Joe Bloggs’s address?", Html("No"), None)
         ), None)
       )
     }

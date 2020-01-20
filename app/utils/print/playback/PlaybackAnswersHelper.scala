@@ -27,7 +27,7 @@ import utils.countryOptions.CountryOptions
 import utils.print.playback.sections._
 import utils.print.playback.sections.beneficiaries._
 import utils.print.playback.sections.protectors.{BusinessProtector, IndividualProtector}
-import utils.print.playback.sections.settlors.DeceasedSettlor
+import utils.print.playback.sections.settlors.{DeceasedSettlor, SettlorIndividual}
 import utils.print.playback.sections.trustees.lead_trustee.{LeadTrusteeBusiness, LeadTrusteeIndividual}
 import utils.print.playback.sections.trustees.{TrusteeIndividual, TrusteeOrganisation}
 import viewmodels.AnswerSection
