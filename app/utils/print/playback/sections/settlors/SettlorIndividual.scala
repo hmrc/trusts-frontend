@@ -33,7 +33,6 @@ object SettlorIndividual {
           AnswerSection(
             headingKey = Some(messages("answerPage.section.settlor.subheading", index + 1)),
             Seq(
-              individualOrBusinessQuestion(SettlorIndividualOrBusinessPage(index), userAnswers, "settlorIndividualOrBusiness"),
               fullNameQuestion(SettlorIndividualNamePage(index), userAnswers, "settlorIndividualName"),
               yesNoQuestion(SettlorIndividualDateOfBirthYesNoPage(index), userAnswers, "settlorIndividualDateOfBirthYesNo", name),
               dateQuestion(SettlorIndividualDateOfBirthPage(index), userAnswers, "settlorIndividualDateOfBirth", name),

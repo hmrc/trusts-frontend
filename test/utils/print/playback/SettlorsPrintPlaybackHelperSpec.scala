@@ -159,13 +159,11 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
       result mustBe Seq(
         AnswerSection(None, Nil, Some("answerPage.section.settlors.heading")),
         AnswerSection(Some("Settlor 1"),Seq(
-          AnswerRow("Is the settlor an individual or a business?", Html("Business"), None),
           AnswerRow("What is the business’s name?", Html("International Exports"), None),
           AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("Yes"), None),
           AnswerRow("What is International Exports’s Unique Taxpayer Reference (UTR) number?", Html("UTRUTRUTRUTR"), None)
           ), None),
         AnswerSection(Some("Settlor 2"), Seq(
-          AnswerRow("Is the settlor an individual or a business?", Html("Business"), None),
           AnswerRow("What is the business’s name?", Html("International Exports"), None),
           AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("No"), None),
           AnswerRow("Do you know International Exports’s address?", Html("Yes"), None),
@@ -174,7 +172,6 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
 
         ), None),
         AnswerSection(Some("Settlor 3"), Seq(
-          AnswerRow("Is the settlor an individual or a business?", Html("Business"), None),
           AnswerRow("What is the business’s name?", Html("International Exports"), None),
           AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("No"), None),
           AnswerRow("Do you know International Exports’s address?", Html("Yes"), None),
@@ -182,13 +179,11 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
           AnswerRow("What is International Exports’s address?", Html("Line1<br />Line2<br />Line3<br />Dutch Antilles"), None)
         ), None),
         AnswerSection(Some("Settlor 4"), Seq(
-          AnswerRow("Is the settlor an individual or a business?", Html("Business"), None),
           AnswerRow("What is the business’s name?", Html("International Exports"), None),
           AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("No"), None),
           AnswerRow("Do you know International Exports’s address?", Html("No"), None)
         ), None),
         AnswerSection(Some("Settlor 5"), Seq(
-          AnswerRow("Is the settlor an individual or a business?", Html("Business"), None),
           AnswerRow("What is the business’s name?", Html("International Exports"), None),
           AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("No"), None),
           AnswerRow("Do you know International Exports’s address?", Html("Yes"), None),
@@ -247,7 +242,6 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
       result mustBe Seq(
         AnswerSection(None, Nil, Some("answerPage.section.settlors.heading")),
         AnswerSection(Some("Settlor 1"),Seq(
-          AnswerRow("Is the settlor an individual or a business?", Html("Individual"), None),
           AnswerRow("What is the settlor’s name?", Html("Joe Bloggs"), None),
           AnswerRow("Do you know Joe Bloggs’s date of birth?", Html("Yes"), None),
           AnswerRow("What is Joe Bloggs’s date of birth?", Html("12 December 1934"), None),
@@ -255,7 +249,6 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
           AnswerRow("What is Joe Bloggs’s National Insurance number?", Html("AA 00 00 00 A"), None)
         ), None),
         AnswerSection(Some("Settlor 2"),Seq(
-          AnswerRow("Is the settlor an individual or a business?", Html("Individual"), None),
           AnswerRow("What is the settlor’s name?", Html("Joe Bloggs"), None),
           AnswerRow("Do you know Joe Bloggs’s date of birth?", Html("Yes"), None),
           AnswerRow("What is Joe Bloggs’s date of birth?", Html("12 December 1934"), None),
@@ -266,7 +259,6 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
           AnswerRow("Do you know Joe Bloggs’s passport or ID card details?", Html("No"), None)
         ), None),
         AnswerSection(Some("Settlor 3"),Seq(
-          AnswerRow("Is the settlor an individual or a business?", Html("Individual"), None),
           AnswerRow("What is the settlor’s name?", Html("Joe Bloggs"), None),
           AnswerRow("Do you know Joe Bloggs’s date of birth?", Html("Yes"), None),
           AnswerRow("What is Joe Bloggs’s date of birth?", Html("12 December 1934"), None),
@@ -278,7 +270,6 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
           AnswerRow("What are Joe Bloggs’s passport or ID card details?", Html("Germany<br />1234567890<br />1 January 2020"), None)
         ), None),
         AnswerSection(Some("Settlor 4"),Seq(
-          AnswerRow("Is the settlor an individual or a business?", Html("Individual"), None),
           AnswerRow("What is the settlor’s name?", Html("Joe Bloggs"), None),
           AnswerRow("Do you know Joe Bloggs’s date of birth?", Html("Yes"), None),
           AnswerRow("What is Joe Bloggs’s date of birth?", Html("12 December 1934"), None),
