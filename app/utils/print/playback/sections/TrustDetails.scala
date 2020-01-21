@@ -54,7 +54,6 @@ object TrustDetails {
           yesNoQuestion(TrustResidentOffshorePage, userAnswers, "trustResidentOffshore"),
           countryQuestion(TrustPreviouslyResidentPage, userAnswers, "trustPreviouslyResident", countryOptions = countryOptions),
           yesNoQuestion(RegisteringTrustFor5APage, userAnswers, "registeringTrustFor5A"),
-          nonResidentTypeQuestion(NonResidentTypePage, userAnswers, "nonresidentType"),
           yesNoQuestion(InheritanceTaxActPage, userAnswers, "inheritanceTaxAct"),
           yesNoQuestion(AgentOtherThanBarristerPage, userAnswers, "agentOtherThanBarrister")
         ).flatten,
@@ -71,18 +70,6 @@ object TrustDetails {
       AnswerRow(
         messages(s"$labelKey.checkYourAnswersLabel", messageArg),
         HtmlFormat.escape(CheckAnswersFormatters.country(x, countryOptions)),
-        None
-      )
-    }
-  }
-
-  private def nonResidentTypeQuestion(query: Gettable[NonResidentType], userAnswers: UserAnswers, labelKey: String,
-                                      messageArg: String = "", changeRoute: Option[Call] = None)
-                                     (implicit messages: Messages): Option[AnswerRow] = {
-    userAnswers.get(query) map { x =>
-      AnswerRow(
-        messages(s"$labelKey.checkYourAnswersLabel", messageArg),
-        HtmlFormat.escape(messages(s"$labelKey.${x.toString}")),
         None
       )
     }
