@@ -44,7 +44,7 @@ class TrustDetailsExtractorSpec extends FreeSpec with MustMatchers with EitherVa
         val trust = TrustDetailsType(
           startDate = LocalDate.of(2019, 6, 1),
           lawCountry = None,
-          administrationCountry = None,
+          administrationCountry = Some("GB"),
           residentialStatus = Some(ResidentialStatusType(Some(UkType(true, None)), None)),
           typeOfTrust = WillTrustOrIntestacyTrust,
           deedOfVariation = Some(ReplacedWill),
