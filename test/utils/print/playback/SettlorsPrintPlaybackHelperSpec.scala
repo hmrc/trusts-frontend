@@ -215,22 +215,20 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
         uaSet(living_settlor.SettlorIndividualNINOYesNoPage(index), true) andThen
         uaSet(living_settlor.SettlorIndividualNINOPage(index), "AA000000A")
 
-      def individualSettlorWithUKAddressAndPassport(index: Int) = baseIndividualSettlor(index) andThen
+      def individualSettlorWithUKAddressAndNoPassportOrIdCard(index: Int) = baseIndividualSettlor(index) andThen
         uaSet(living_settlor.SettlorIndividualNINOYesNoPage(index), false) andThen
         uaSet(living_settlor.SettlorAddressYesNoPage(index), true) andThen
         uaSet(living_settlor.SettlorAddressUKYesNoPage(index), true) andThen
         uaSet(living_settlor.SettlorAddressUKPage(index), UKAddress("Line1", "Line2", Some("Line3"), None, "POSTCODE")) andThen
-        uaSet(living_settlor.SettlorIndividualPassportYesNoPage(index), true) andThen
-        uaSet(living_settlor.SettlorIndividualPassportPage(index), PassportOrIdCardDetails("GB", "1234567890", LocalDate.of(2020, 1, 1)))
+        uaSet(living_settlor.SettlorIndividualPassportIDCardYesNoPage(index), false)
 
       def individualSettlorWithInternationalAddressAndIdCard(index: Int) = baseIndividualSettlor(index) andThen
         uaSet(living_settlor.SettlorIndividualNINOYesNoPage(index), false) andThen
         uaSet(living_settlor.SettlorAddressYesNoPage(index), true) andThen
         uaSet(living_settlor.SettlorAddressUKYesNoPage(index), false) andThen
         uaSet(living_settlor.SettlorAddressInternationalPage(index), InternationalAddress("Line1", "Line2", Some("Line3"), "DE")) andThen
-        uaSet(living_settlor.SettlorIndividualPassportYesNoPage(index), false) andThen
-        uaSet(living_settlor.SettlorIndividualIDCardYesNoPage(index), true) andThen
-        uaSet(living_settlor.SettlorIndividualIDCardPage(index), PassportOrIdCardDetails("DE", "1234567890", LocalDate.of(2020, 1, 1)))
+        uaSet(living_settlor.SettlorIndividualPassportIDCardYesNoPage(index), true) andThen
+        uaSet(living_settlor.SettlorIndividualPassportIDCardPage(index), PassportOrIdCardDetails("DE", "1234567890", LocalDate.of(2020, 1, 1)))
 
       def individualSettlorWithNoId(index: Int) = baseIndividualSettlor(index) andThen
         uaSet(living_settlor.SettlorIndividualNINOYesNoPage(index), false) andThen
@@ -240,7 +238,7 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
 
       val result = helper.entities((
         individualSettlorWithNino(0) andThen
-          individualSettlorWithUKAddressAndPassport(1) andThen
+          individualSettlorWithUKAddressAndNoPassportOrIdCard(1) andThen
           individualSettlorWithInternationalAddressAndIdCard(2) andThen
           individualSettlorWithNoId(3)
         ).apply(emptyUserAnswers))
@@ -265,8 +263,7 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
           AnswerRow("Do you know Joe Bloggs’s address?", Html("Yes"), None),
           AnswerRow("Does Joe Bloggs live in the UK?", Html("Yes"), None),
           AnswerRow("What is Joe Bloggs’s address?", Html("Line1<br />Line2<br />Line3<br />POSTCODE"), None),
-          AnswerRow("Do you know Joe Bloggs’s passport details?", Html("Yes"), None),
-          AnswerRow("What are Joe Bloggs’s passport details?", Html("United Kingdom<br />1234567890<br />1 January 2020"), None)
+          AnswerRow("Do you know Joe Bloggs’s passport or ID card details?", Html("No"), None)
         ), None),
         AnswerSection(Some("Settlor 3"),Seq(
           AnswerRow("Is the settlor an individual or a business?", Html("Individual"), None),
@@ -277,9 +274,8 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
           AnswerRow("Do you know Joe Bloggs’s address?", Html("Yes"), None),
           AnswerRow("Does Joe Bloggs live in the UK?", Html("No"), None),
           AnswerRow("What is Joe Bloggs’s address?", Html("Line1<br />Line2<br />Line3<br />Germany"), None),
-          AnswerRow("Do you know Joe Bloggs’s passport details?", Html("No"), None),
-          AnswerRow("Do you know Joe Bloggs’s ID card details?", Html("Yes"), None),
-          AnswerRow("What are Joe Bloggs’s ID card details?", Html("Germany<br />1234567890<br />1 January 2020"), None)
+          AnswerRow("Do you know Joe Bloggs’s passport or ID card details?", Html("Yes"), None),
+          AnswerRow("What are Joe Bloggs’s passport or ID card details?", Html("Germany<br />1234567890<br />1 January 2020"), None)
         ), None),
         AnswerSection(Some("Settlor 4"),Seq(
           AnswerRow("Is the settlor an individual or a business?", Html("Individual"), None),
