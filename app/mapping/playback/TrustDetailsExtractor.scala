@@ -29,22 +29,21 @@ import scala.util.{Failure, Success, Try}
 
 class TrustDetailsExtractor @Inject() extends PlaybackExtractor[TrustDetailsType] {
 
-  override def extract(answers: UserAnswers, data: TrustDetailsType): Either[PlaybackExtractionError, UserAnswers] =
-    {
-      val updated = answers
-        .set(WhenTrustSetupPage, data.startDate)
-        .flatMap(answers => extractGovernedBy(data, answers))
-        .flatMap(answers => extractAdminBy(data, answers))
-        .flatMap(answers => extractResidentialType(data, answers))
+  override def extract(answers: UserAnswers, data: TrustDetailsType): Either[PlaybackExtractionError, UserAnswers] = {
+    val updated = answers
+      .set(WhenTrustSetupPage, data.startDate)
+      .flatMap(answers => extractGovernedBy(data, answers))
+      .flatMap(answers => extractAdminBy(data, answers))
+      .flatMap(answers => extractResidentialType(data, answers))
 
-      updated match {
-        case Success(a) =>
-          Right(a)
-        case Failure(exception) =>
-          Logger.warn(s"[TrustDetailsExtractor] failed to extract data due to ${exception.getMessage}")
-          Left(FailedToExtractData(TrustDetailsType.toString))
-      }
+    updated match {
+      case Success(a) =>
+        Right(a)
+      case Failure(exception) =>
+        Logger.warn(s"[TrustDetailsExtractor] failed to extract data due to ${exception.getMessage}")
+        Left(FailedToExtractData(TrustDetailsType.toString))
     }
+  }
 
   private def extractGovernedBy(details: TrustDetailsType, answers: UserAnswers): Try[UserAnswers] =
     details.lawCountry match {
@@ -55,7 +54,7 @@ class TrustDetailsExtractor @Inject() extends PlaybackExtractor[TrustDetailsType
 
   private def extractAdminBy(details: TrustDetailsType, answers: UserAnswers): Try[UserAnswers] =
     details.administrationCountry match {
-      case Some(country) => answers.set(AdministrationInsideUKPage, false)
+      case Some(country) if country != "GB" => answers.set(AdministrationInsideUKPage, false)
         .flatMap(_.set(CountryAdministeringTrustPage, country))
       case _ => answers.set(AdministrationInsideUKPage, true)
     }
