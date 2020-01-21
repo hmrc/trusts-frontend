@@ -34,7 +34,6 @@ object IndividualProtector {
       Seq(AnswerSection(
         headingKey = Some(messages("answerPage.section.protectors.subheading", index + 1)),
         Seq(
-          individualOrBusinessQuestion(ProtectorIndividualOrBusinessPage(index), userAnswers, "protectorIndividualOrBusiness"),
           fullNameQuestion(IndividualProtectorNamePage(index), userAnswers, "individualProtectorName", protectorName),
           yesNoQuestion(IndividualProtectorDateOfBirthYesNoPage(index), userAnswers, "individualProtectorDateOfBirthYesNo", protectorName),
           dateQuestion(IndividualProtectorDateOfBirthPage(index),userAnswers, "individualProtectorDateOfBirth", protectorName),

@@ -33,7 +33,6 @@ object BusinessProtector {
       Seq(AnswerSection(
         headingKey = Some(messages("answerPage.section.protectors.subheading", index + 1)),
         Seq(
-          individualOrBusinessQuestion(ProtectorIndividualOrBusinessPage(index), userAnswers, "protectorIndividualOrBusiness"),
           stringQuestion(BusinessProtectorNamePage(index), userAnswers, "companyProtectorName", protectorName),
           yesNoQuestion(BusinessProtectorUtrYesNoPage(index), userAnswers, "companyProtectorUtrYesNo", protectorName),
           stringQuestion(BusinessProtectorUtrPage(index), userAnswers, "companyProtectorUtr", protectorName),
