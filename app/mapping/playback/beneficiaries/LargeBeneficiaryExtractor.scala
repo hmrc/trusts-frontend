@@ -25,58 +25,58 @@ import models.playback.http.{DisplayTrustCompanyType, DisplayTrustIdentification
 import models.playback.{MetaData, UserAnswers}
 import pages.register.beneficiaries.large._
 import play.api.Logger
+
 import scala.util.{Failure, Success, Try}
 
 class LargeBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[List[DisplayTrustLargeType]]] {
 
-  override def extract(answers: UserAnswers, data: Option[List[DisplayTrustLargeType]]): Either[PlaybackExtractionError, UserAnswers] =
-    {
-      data match {
-        case None => Left(FailedToExtractData("No Large Beneficiary"))
-        case Some(largeBeneficiaries) =>
+  override def extract(answers: UserAnswers, data: Option[List[DisplayTrustLargeType]]): Either[PlaybackExtractionError, UserAnswers] = {
+    data match {
+      case None => Left(FailedToExtractData("No Large Beneficiary"))
+      case Some(largeBeneficiaries) =>
 
-          val updated = largeBeneficiaries.zipWithIndex.foldLeft[Try[UserAnswers]](Success(answers)) {
-            case (answers, (largeBeneficiary, index)) =>
+        val updated = largeBeneficiaries.zipWithIndex.foldLeft[Try[UserAnswers]](Success(answers)) {
+          case (answers, (largeBeneficiary, index)) =>
 
-              answers
-                .flatMap(_.set(LargeBeneficiaryNamePage(index), largeBeneficiary.organisationName))
-                .flatMap(answers => extractShareOfIncome(largeBeneficiary, index, answers))
-                .flatMap(answers => extractIdentification(largeBeneficiary.identification, index, answers))
-                .flatMap(
-                  _.set(
-                    LargeBeneficiaryDescriptionPage(index),
-                    Description(
-                      largeBeneficiary.description,
-                      largeBeneficiary.description1,
-                      largeBeneficiary.description2,
-                      largeBeneficiary.description3,
-                      largeBeneficiary.description4
-                    )
+            answers
+              .flatMap(_.set(LargeBeneficiaryNamePage(index), largeBeneficiary.organisationName))
+              .flatMap(answers => extractShareOfIncome(largeBeneficiary, index, answers))
+              .flatMap(answers => extractIdentification(largeBeneficiary.identification, index, answers))
+              .flatMap(
+                _.set(
+                  LargeBeneficiaryDescriptionPage(index),
+                  Description(
+                    largeBeneficiary.description,
+                    largeBeneficiary.description1,
+                    largeBeneficiary.description2,
+                    largeBeneficiary.description3,
+                    largeBeneficiary.description4
                   )
                 )
-                .flatMap(_.set(LargeBeneficiaryNumberOfBeneficiariesPage(index), largeBeneficiary.numberOfBeneficiary))
-                .flatMap(_.set(LargeBeneficiarySafeIdPage(index), largeBeneficiary.identification.flatMap(_.safeId)))
-                .flatMap {
-                  _.set(
-                    LargeBeneficiaryMetaData(index),
-                    MetaData(
-                      lineNo = largeBeneficiary.lineNo,
-                      bpMatchStatus = largeBeneficiary.bpMatchStatus,
-                      entityStart = largeBeneficiary.entityStart
-                    )
+              )
+              .flatMap(answers => extractNumberOfBeneficiary(largeBeneficiary, index, answers))
+              .flatMap(_.set(LargeBeneficiarySafeIdPage(index), largeBeneficiary.identification.flatMap(_.safeId)))
+              .flatMap {
+                _.set(
+                  LargeBeneficiaryMetaData(index),
+                  MetaData(
+                    lineNo = largeBeneficiary.lineNo,
+                    bpMatchStatus = largeBeneficiary.bpMatchStatus,
+                    entityStart = largeBeneficiary.entityStart
                   )
-                }
-          }
+                )
+              }
+        }
 
-          updated match {
-            case Success(a) =>
-              Right(a)
-            case Failure(exception) =>
-              Logger.warn(s"[CompanyBeneficiaryExtractor] failed to extract data due to ${exception.getMessage}")
-              Left(FailedToExtractData(DisplayTrustCompanyType.toString))
-          }
-      }
+        updated match {
+          case Success(a) =>
+            Right(a)
+          case Failure(exception) =>
+            Logger.warn(s"[CompanyBeneficiaryExtractor] failed to extract data due to ${exception.getMessage}")
+            Left(FailedToExtractData(DisplayTrustCompanyType.toString))
+        }
     }
+  }
 
   private def extractIdentification(identification: Option[DisplayTrustIdentificationOrgType], index: Int, answers: UserAnswers) = {
     identification map {
@@ -104,6 +104,16 @@ class LargeBeneficiaryExtractor @Inject() extends PlaybackExtractor[Option[List[
       case None =>
         // Assumption that user answered yes as the share of income is not provided
         answers.set(LargeBeneficiaryDiscretionYesNoPage(index), true)
+    }
+  }
+
+  private def extractNumberOfBeneficiary(largeBeneficiary: DisplayTrustLargeType, index: Int, answers: UserAnswers): Try[UserAnswers] = {
+    largeBeneficiary.numberOfBeneficiary.toInt match {
+      case x if 1 to 100 contains x => answers.set(LargeBeneficiaryNumberOfBeneficiariesPage(index), "1 to 100")
+      case x if 101 to 200 contains x => answers.set(LargeBeneficiaryNumberOfBeneficiariesPage(index), "101 to 200")
+      case x if 201 to 500 contains x => answers.set(LargeBeneficiaryNumberOfBeneficiariesPage(index), "201 to 500")
+      case x if 501 to 1000 contains x => answers.set(LargeBeneficiaryNumberOfBeneficiariesPage(index), "501 to 1,000")
+      case _ => answers.set(LargeBeneficiaryNumberOfBeneficiariesPage(index), "Over 1,001")
     }
   }
 
