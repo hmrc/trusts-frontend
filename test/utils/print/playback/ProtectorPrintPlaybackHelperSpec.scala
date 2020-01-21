@@ -77,7 +77,6 @@ class ProtectorPrintPlaybackHelperSpec extends PlaybackSpecBase {
         AnswerSection(
           headingKey = Some("Protector 1"),
           rows = Seq(
-            AnswerRow(label = messages("protectorIndividualOrBusiness.checkYourAnswersLabel"), answer = Html("Individual"), changeUrl = None),
             AnswerRow(label = messages("individualProtectorName.checkYourAnswersLabel"), answer = Html(name1), changeUrl = None),
             AnswerRow(label = messages("individualProtectorDateOfBirthYesNo.checkYourAnswersLabel", name1), answer = Html("No"), changeUrl = None),
             AnswerRow(label = messages("individualProtectorNINOYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None),
@@ -88,7 +87,6 @@ class ProtectorPrintPlaybackHelperSpec extends PlaybackSpecBase {
         AnswerSection(
           headingKey = Some("Protector 2"),
           rows = Seq(
-            AnswerRow(label = messages("protectorIndividualOrBusiness.checkYourAnswersLabel"), answer = Html("Individual"), changeUrl = None),
             AnswerRow(label = messages("individualProtectorName.checkYourAnswersLabel"), answer = Html(name2), changeUrl = None),
             AnswerRow(label = messages("individualProtectorDateOfBirthYesNo.checkYourAnswersLabel", name2), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("individualProtectorDateOfBirth.checkYourAnswersLabel", name2), answer = Html("3 February 1996"), changeUrl = None),
@@ -99,7 +97,6 @@ class ProtectorPrintPlaybackHelperSpec extends PlaybackSpecBase {
         AnswerSection(
           headingKey = Some("Protector 3"),
           rows = Seq(
-            AnswerRow(label = messages("protectorIndividualOrBusiness.checkYourAnswersLabel"), answer = Html("Individual"), changeUrl = None),
             AnswerRow(label = messages("individualProtectorName.checkYourAnswersLabel"), answer = Html(name3), changeUrl = None),
             AnswerRow(label = messages("individualProtectorDateOfBirthYesNo.checkYourAnswersLabel", name3), answer = Html("No"), changeUrl = None),
             AnswerRow(label = messages("individualProtectorAddressYesNo.checkYourAnswersLabel", name3), answer = Html("Yes"), changeUrl = None),
@@ -111,7 +108,6 @@ class ProtectorPrintPlaybackHelperSpec extends PlaybackSpecBase {
         AnswerSection(
           headingKey = Some("Protector 4"),
           rows = Seq(
-            AnswerRow(label = messages("protectorIndividualOrBusiness.checkYourAnswersLabel"), answer = Html("Individual"), changeUrl = None),
             AnswerRow(label = messages("individualProtectorName.checkYourAnswersLabel"), answer = Html(name4), changeUrl = None),
             AnswerRow(label = messages("individualProtectorDateOfBirthYesNo.checkYourAnswersLabel", name4), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("individualProtectorDateOfBirth.checkYourAnswersLabel", name4), answer = Html("18 October 1947"), changeUrl = None),
@@ -158,7 +154,6 @@ class ProtectorPrintPlaybackHelperSpec extends PlaybackSpecBase {
         AnswerSection(
           headingKey = Some("Protector 1"),
           rows = Seq(
-            AnswerRow(label = messages("protectorIndividualOrBusiness.checkYourAnswersLabel"), answer = Html("Business"), changeUrl = None),
             AnswerRow(label = messages("companyProtectorName.checkYourAnswersLabel"), answer = Html(company1), changeUrl = None),
             AnswerRow(label = messages("companyProtectorUtrYesNo.checkYourAnswersLabel", company1), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("companyProtectorUtr.checkYourAnswersLabel", company1), answer = Html("1234567890"), changeUrl = None)
@@ -168,7 +163,6 @@ class ProtectorPrintPlaybackHelperSpec extends PlaybackSpecBase {
         AnswerSection(
           headingKey = Some("Protector 2"),
           rows = Seq(
-            AnswerRow(label = messages("protectorIndividualOrBusiness.checkYourAnswersLabel"), answer = Html("Business"), changeUrl = None),
             AnswerRow(label = messages("companyProtectorName.checkYourAnswersLabel"), answer = Html(company2), changeUrl = None),
             AnswerRow(label = messages("companyProtectorUtrYesNo.checkYourAnswersLabel", company2), answer = Html("No"), changeUrl = None),
             AnswerRow(label = messages("companyProtectorAddressYesNo.checkYourAnswersLabel", company2), answer = Html("Yes"), changeUrl = None),
@@ -180,7 +174,6 @@ class ProtectorPrintPlaybackHelperSpec extends PlaybackSpecBase {
         AnswerSection(
           headingKey = Some("Protector 3"),
           rows = Seq(
-            AnswerRow(label = messages("protectorIndividualOrBusiness.checkYourAnswersLabel"), answer = Html("Business"), changeUrl = None),
             AnswerRow(label = messages("companyProtectorName.checkYourAnswersLabel"), answer = Html(company3), changeUrl = None),
             AnswerRow(label = messages("companyProtectorUtrYesNo.checkYourAnswersLabel", company3), answer = Html("No"), changeUrl = None),
             AnswerRow(label = messages("companyProtectorAddressYesNo.checkYourAnswersLabel", company3), answer = Html("No"), changeUrl = None)
@@ -219,7 +212,6 @@ class ProtectorPrintPlaybackHelperSpec extends PlaybackSpecBase {
         AnswerSection(
           headingKey = Some("Protector 1"),
           rows = Seq(
-            AnswerRow(label = messages("protectorIndividualOrBusiness.checkYourAnswersLabel"), answer = Html("Individual"), changeUrl = None),
             AnswerRow(label = messages("individualProtectorName.checkYourAnswersLabel"), answer = Html(name1), changeUrl = None),
             AnswerRow(label = messages("individualProtectorDateOfBirthYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("individualProtectorDateOfBirth.checkYourAnswersLabel", name1), answer = Html("18 October 1947"), changeUrl = None),
@@ -233,7 +225,6 @@ class ProtectorPrintPlaybackHelperSpec extends PlaybackSpecBase {
         AnswerSection(
           headingKey = Some("Protector 2"),
           rows = Seq(
-            AnswerRow(label = messages("protectorIndividualOrBusiness.checkYourAnswersLabel"), answer = Html("Business"), changeUrl = None),
             AnswerRow(label = messages("companyProtectorName.checkYourAnswersLabel"), answer = Html(company1), changeUrl = None),
             AnswerRow(label = messages("companyProtectorUtrYesNo.checkYourAnswersLabel", company1), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("companyProtectorUtr.checkYourAnswersLabel", company1), answer = Html("1234567890"), changeUrl = None)
