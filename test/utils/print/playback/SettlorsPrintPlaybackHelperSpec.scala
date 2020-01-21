@@ -19,10 +19,15 @@ package utils.print.playback
 import java.time.LocalDate
 
 import base.PlaybackSpecBase
-import models.core.pages.{FullName, UKAddress}
+import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
+import models.playback.UserAnswers
+import models.registration.pages.KindOfBusiness.Trading
 import models.registration.pages.PassportOrIdCardDetails
 import pages.register.settlors.deceased_settlor._
+import pages.register.settlors.living_settlor
+import play.api.libs.json.Writes
 import play.twirl.api.Html
+import queries.Settable
 import viewmodels.{AnswerRow, AnswerSection}
 
 class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
@@ -47,7 +52,7 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
       val result = helper.entities(answers)
 
       result mustBe Seq(
-        AnswerSection(None, Nil, Some(messages("answerPage.section.deceasedSettlor.heading"))),
+        AnswerSection(None, Nil, Some("answerPage.section.deceasedSettlor.heading")),
         AnswerSection(
           headingKey = None,
           rows = Seq(
@@ -92,7 +97,7 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
       val result = helper.entities(answers)
 
       result mustBe Seq(
-        AnswerSection(None, Nil, Some(messages("answerPage.section.deceasedSettlor.heading"))),
+        AnswerSection(None, Nil, Some("answerPage.section.deceasedSettlor.heading")),
         AnswerSection(
           headingKey = None,
           rows = Seq(
@@ -108,9 +113,171 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
           sectionKey = None
         )
       )
-
     }
 
+    def uaSet[T:Writes](settable: Settable[T], value: T) : UserAnswers => UserAnswers = _.set(settable, value).success.value
+
+    "generate Company Settlor Section" in {
+      def businessSettlorBase(index: Int) = uaSet(living_settlor.SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Business) andThen
+        uaSet(living_settlor.SettlorBusinessNamePage(index), "International Exports")
+
+      def businessSettlorWithUTR(index: Int) = businessSettlorBase(index) andThen
+        uaSet(living_settlor.SettlorUtrYesNoPage(index), true) andThen
+        uaSet(living_settlor.SettlorUtrPage(index), "UTRUTRUTRUTR")
+
+      def businessSettlorWithUKAddress(index: Int) = businessSettlorBase(index) andThen
+        uaSet(living_settlor.SettlorUtrYesNoPage(index), false) andThen
+        uaSet(living_settlor.SettlorAddressYesNoPage(index), true) andThen
+        uaSet(living_settlor.SettlorAddressUKYesNoPage(index), true) andThen
+        uaSet(living_settlor.SettlorAddressUKPage(index), UKAddress("Line1", "Line2", Some("Line3"), None, "POSTCODE"))
+
+      def businessSettlorWithNonUKAddress(index: Int) = businessSettlorBase(index) andThen
+        uaSet(living_settlor.SettlorUtrYesNoPage(index), false) andThen
+        uaSet(living_settlor.SettlorAddressYesNoPage(index), true) andThen
+        uaSet(living_settlor.SettlorAddressUKYesNoPage(index), false) andThen
+        uaSet(living_settlor.SettlorAddressInternationalPage(index), InternationalAddress( "Line1", "Line2", Some("Line3"), "AN"))
+
+      def businessSettlorWithNoIdentification(index: Int) = businessSettlorBase(index) andThen
+        uaSet(living_settlor.SettlorUtrYesNoPage(index), false) andThen
+        uaSet(living_settlor.SettlorAddressYesNoPage(index), false)
+
+      def businessSettlorInEmployeeRelatedTrust(index: Int) = businessSettlorWithUKAddress(index) andThen
+        uaSet(living_settlor.SettlorCompanyTypePage(index), Trading) andThen
+        uaSet(living_settlor.SettlorCompanyTimePage(index), false)
+
+      val helper = injector.instanceOf[PrintPlaybackHelper]
+
+      val result = helper.entities((
+        businessSettlorWithUTR(0) andThen
+        businessSettlorWithUKAddress(1) andThen
+        businessSettlorWithNonUKAddress(2) andThen
+        businessSettlorWithNoIdentification(3) andThen
+        businessSettlorInEmployeeRelatedTrust(4)
+        ).apply(emptyUserAnswers))
+
+
+      result mustBe Seq(
+        AnswerSection(None, Nil, Some("answerPage.section.settlors.heading")),
+        AnswerSection(Some("Settlor 1"),Seq(
+          AnswerRow("What is the business’s name?", Html("International Exports"), None),
+          AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("Yes"), None),
+          AnswerRow("What is International Exports’s Unique Taxpayer Reference (UTR) number?", Html("UTRUTRUTRUTR"), None)
+          ), None),
+        AnswerSection(Some("Settlor 2"), Seq(
+          AnswerRow("What is the business’s name?", Html("International Exports"), None),
+          AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("No"), None),
+          AnswerRow("Do you know International Exports’s address?", Html("Yes"), None),
+          AnswerRow("Is International Exports’s address in the UK?", Html("Yes"), None),
+          AnswerRow("What is International Exports’s address?", Html("Line1<br />Line2<br />Line3<br />POSTCODE"), None)
+
+        ), None),
+        AnswerSection(Some("Settlor 3"), Seq(
+          AnswerRow("What is the business’s name?", Html("International Exports"), None),
+          AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("No"), None),
+          AnswerRow("Do you know International Exports’s address?", Html("Yes"), None),
+          AnswerRow("Is International Exports’s address in the UK?", Html("No"), None),
+          AnswerRow("What is International Exports’s address?", Html("Line1<br />Line2<br />Line3<br />Dutch Antilles"), None)
+        ), None),
+        AnswerSection(Some("Settlor 4"), Seq(
+          AnswerRow("What is the business’s name?", Html("International Exports"), None),
+          AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("No"), None),
+          AnswerRow("Do you know International Exports’s address?", Html("No"), None)
+        ), None),
+        AnswerSection(Some("Settlor 5"), Seq(
+          AnswerRow("What is the business’s name?", Html("International Exports"), None),
+          AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("No"), None),
+          AnswerRow("Do you know International Exports’s address?", Html("Yes"), None),
+          AnswerRow("Is International Exports’s address in the UK?", Html("Yes"), None),
+          AnswerRow("What is International Exports’s address?", Html("Line1<br />Line2<br />Line3<br />POSTCODE"), None),
+          AnswerRow("What kind of business is International Exports?", Html("Trading"), None),
+          AnswerRow("At the date of each contribution to the trust, had the business been in existence for at least 2 years?", Html("No"), None)
+
+        ), None)
+      )
+    }
+
+    "generate Individual Settlor Section" in {
+      //dob
+
+      def baseIndividualSettlor(index: Int) =
+        uaSet(living_settlor.SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual) andThen
+        uaSet(living_settlor.SettlorIndividualNamePage(index), FullName("Joe", None,  "Bloggs")) andThen
+        uaSet(living_settlor.SettlorIndividualDateOfBirthYesNoPage(index), true) andThen
+        uaSet(living_settlor.SettlorIndividualDateOfBirthPage(index), LocalDate.parse("1934-12-12"))
+
+
+      def individualSettlorWithNino(index: Int) = baseIndividualSettlor(index) andThen
+        uaSet(living_settlor.SettlorIndividualNINOYesNoPage(index), true) andThen
+        uaSet(living_settlor.SettlorIndividualNINOPage(index), "AA000000A")
+
+      def individualSettlorWithUKAddressAndNoPassportOrIdCard(index: Int) = baseIndividualSettlor(index) andThen
+        uaSet(living_settlor.SettlorIndividualNINOYesNoPage(index), false) andThen
+        uaSet(living_settlor.SettlorAddressYesNoPage(index), true) andThen
+        uaSet(living_settlor.SettlorAddressUKYesNoPage(index), true) andThen
+        uaSet(living_settlor.SettlorAddressUKPage(index), UKAddress("Line1", "Line2", Some("Line3"), None, "POSTCODE")) andThen
+        uaSet(living_settlor.SettlorIndividualPassportIDCardYesNoPage(index), false)
+
+      def individualSettlorWithInternationalAddressAndIdCard(index: Int) = baseIndividualSettlor(index) andThen
+        uaSet(living_settlor.SettlorIndividualNINOYesNoPage(index), false) andThen
+        uaSet(living_settlor.SettlorAddressYesNoPage(index), true) andThen
+        uaSet(living_settlor.SettlorAddressUKYesNoPage(index), false) andThen
+        uaSet(living_settlor.SettlorAddressInternationalPage(index), InternationalAddress("Line1", "Line2", Some("Line3"), "DE")) andThen
+        uaSet(living_settlor.SettlorIndividualPassportIDCardYesNoPage(index), true) andThen
+        uaSet(living_settlor.SettlorIndividualPassportIDCardPage(index), PassportOrIdCardDetails("DE", "1234567890", LocalDate.of(2020, 1, 1)))
+
+      def individualSettlorWithNoId(index: Int) = baseIndividualSettlor(index) andThen
+        uaSet(living_settlor.SettlorIndividualNINOYesNoPage(index), false) andThen
+        uaSet(living_settlor.SettlorAddressYesNoPage(index), false)
+
+      val helper = injector.instanceOf[PrintPlaybackHelper]
+
+      val result = helper.entities((
+        individualSettlorWithNino(0) andThen
+          individualSettlorWithUKAddressAndNoPassportOrIdCard(1) andThen
+          individualSettlorWithInternationalAddressAndIdCard(2) andThen
+          individualSettlorWithNoId(3)
+        ).apply(emptyUserAnswers))
+
+
+      result mustBe Seq(
+        AnswerSection(None, Nil, Some("answerPage.section.settlors.heading")),
+        AnswerSection(Some("Settlor 1"),Seq(
+          AnswerRow("What is the settlor’s name?", Html("Joe Bloggs"), None),
+          AnswerRow("Do you know Joe Bloggs’s date of birth?", Html("Yes"), None),
+          AnswerRow("What is Joe Bloggs’s date of birth?", Html("12 December 1934"), None),
+          AnswerRow("Do you know Joe Bloggs’s National Insurance number?", Html("Yes"), None),
+          AnswerRow("What is Joe Bloggs’s National Insurance number?", Html("AA 00 00 00 A"), None)
+        ), None),
+        AnswerSection(Some("Settlor 2"),Seq(
+          AnswerRow("What is the settlor’s name?", Html("Joe Bloggs"), None),
+          AnswerRow("Do you know Joe Bloggs’s date of birth?", Html("Yes"), None),
+          AnswerRow("What is Joe Bloggs’s date of birth?", Html("12 December 1934"), None),
+          AnswerRow("Do you know Joe Bloggs’s National Insurance number?", Html("No"), None),
+          AnswerRow("Do you know Joe Bloggs’s address?", Html("Yes"), None),
+          AnswerRow("Does Joe Bloggs live in the UK?", Html("Yes"), None),
+          AnswerRow("What is Joe Bloggs’s address?", Html("Line1<br />Line2<br />Line3<br />POSTCODE"), None),
+          AnswerRow("Do you know Joe Bloggs’s passport or ID card details?", Html("No"), None)
+        ), None),
+        AnswerSection(Some("Settlor 3"),Seq(
+          AnswerRow("What is the settlor’s name?", Html("Joe Bloggs"), None),
+          AnswerRow("Do you know Joe Bloggs’s date of birth?", Html("Yes"), None),
+          AnswerRow("What is Joe Bloggs’s date of birth?", Html("12 December 1934"), None),
+          AnswerRow("Do you know Joe Bloggs’s National Insurance number?", Html("No"), None),
+          AnswerRow("Do you know Joe Bloggs’s address?", Html("Yes"), None),
+          AnswerRow("Does Joe Bloggs live in the UK?", Html("No"), None),
+          AnswerRow("What is Joe Bloggs’s address?", Html("Line1<br />Line2<br />Line3<br />Germany"), None),
+          AnswerRow("Do you know Joe Bloggs’s passport or ID card details?", Html("Yes"), None),
+          AnswerRow("What are Joe Bloggs’s passport or ID card details?", Html("Germany<br />1234567890<br />1 January 2020"), None)
+        ), None),
+        AnswerSection(Some("Settlor 4"),Seq(
+          AnswerRow("What is the settlor’s name?", Html("Joe Bloggs"), None),
+          AnswerRow("Do you know Joe Bloggs’s date of birth?", Html("Yes"), None),
+          AnswerRow("What is Joe Bloggs’s date of birth?", Html("12 December 1934"), None),
+          AnswerRow("Do you know Joe Bloggs’s National Insurance number?", Html("No"), None),
+          AnswerRow("Do you know Joe Bloggs’s address?", Html("No"), None)
+        ), None)
+      )
+    }
   }
 
 }

@@ -22,7 +22,7 @@ import forms.UKAddressFormProvider
 import models.NormalMode
 import models.core.pages.{FullName, UKAddress}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.settlors.living_settlor.{SettlorIndividualAddressUKPage, SettlorIndividualNINOPage, SettlorIndividualNamePage}
+import pages.register.settlors.living_settlor.{SettlorAddressUKPage, SettlorIndividualNINOPage, SettlorIndividualNamePage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -65,7 +65,7 @@ class SettlorIndividualAddressUKControllerSpec extends RegistrationSpecBase with
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers.set(SettlorIndividualNamePage(index), name).success.value
-        .set(SettlorIndividualAddressUKPage(index), UKAddress("line 1", "line 2", Some("line 3"), Some("line 4"), "line 5")).success.value
+        .set(SettlorAddressUKPage(index), UKAddress("line 1", "line 2", Some("line 3"), Some("line 4"), "line 5")).success.value
 
       val application = applicationBuilder(Some(userAnswers)).build()
 
@@ -86,7 +86,7 @@ class SettlorIndividualAddressUKControllerSpec extends RegistrationSpecBase with
     "redirect to the next page when valid data is submitted" in {
 
       val userAnswers = emptyUserAnswers.set(SettlorIndividualNamePage(index), name).success.value
-        .set(SettlorIndividualAddressUKPage(index), UKAddress("line 1", "line 2", Some("line 3"), Some("line 4"), "line 5")).success.value
+        .set(SettlorAddressUKPage(index), UKAddress("line 1", "line 2", Some("line 3"), Some("line 4"), "line 5")).success.value
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -188,7 +188,7 @@ class SettlorIndividualAddressUKControllerSpec extends RegistrationSpecBase with
 
       validateIndex(
         arbitrary[UKAddress],
-        SettlorIndividualAddressUKPage.apply,
+        SettlorAddressUKPage.apply,
         getForIndex
       )
 
@@ -206,7 +206,7 @@ class SettlorIndividualAddressUKControllerSpec extends RegistrationSpecBase with
 
       validateIndex(
         arbitrary[UKAddress],
-        SettlorIndividualAddressUKPage.apply,
+        SettlorAddressUKPage.apply,
         postForIndex
       )
     }

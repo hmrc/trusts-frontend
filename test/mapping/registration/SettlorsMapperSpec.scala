@@ -56,14 +56,14 @@ class SettlorsMapperSpec extends FreeSpec with MustMatchers
           .set(SettlorIndividualNamePage(0), FullName("First", None, "Last")).success.value
           .set(SettlorIndividualDateOfBirthYesNoPage(0), true).success.value
           .set(SettlorIndividualDateOfBirthPage(0), dateOfBirth).success.value
-          .set(SettlorIndividualAddressYesNoPage(0), true).success.value
+          .set(SettlorAddressYesNoPage(0), true).success.value
           .set(SettlorIndividualNINOYesNoPage(0), false).success.value
           .set(SettlorIndividualPassportYesNoPage(0), true).success.value
           .set(SettlorIndividualPassportPage(0), PassportOrIdCardDetails("UK", "2345678", expiryDate)).success.value
           .set(SettlorIndividualOrBusinessPage(1), IndividualOrBusiness.Individual).success.value
           .set(SettlorIndividualNamePage(1), FullName("Another", None, "Name")).success.value
           .set(SettlorIndividualDateOfBirthYesNoPage(1), false).success.value
-          .set(SettlorIndividualAddressYesNoPage(1), true).success.value
+          .set(SettlorAddressYesNoPage(1), true).success.value
           .set(SettlorIndividualNINOYesNoPage(1), false).success.value
           .set(SettlorIndividualPassportYesNoPage(1), true).success.value
           .set(SettlorIndividualPassportPage(1), PassportOrIdCardDetails("UK", "1234567", expiryDate)).success.value

@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package pages.register.settlors.living_settlor
+package sections.settlors
 
-import models.core.UserAnswers
 import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.LivingSettlors
+import play.api.libs.json.{JsArray, JsPath}
+import sections.Settlors
 
-import scala.util.Try
+case object LivingSettlors extends QuestionPage[JsArray]{
 
-final case class SettlorIndividualAddressUKYesNoPage(index : Int) extends QuestionPage[Boolean] {
+  override def path: JsPath = Settlors.path \ toString
 
-  override def path: JsPath = LivingSettlors.path \ index \ toString
-
-  override def toString: String = "ukAddressYesNo"
+  override def toString: String = "living"
 
 }

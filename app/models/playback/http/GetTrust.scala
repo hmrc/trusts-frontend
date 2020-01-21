@@ -18,10 +18,10 @@ package models.playback.http
 
 import mapping.Constant._
 import mapping.registration.{AssetMonetaryAmount, PassportType, PropertyLandType, TrustDetailsType}
-import models.registration.pages.{RoleInCompany, ShareClass, ShareType}
+import models.registration.pages.{KindOfBusiness, RoleInCompany, ShareClass, ShareType}
 import org.joda.time.DateTime
-import play.api.libs.json._
 import play.api.libs.functional.syntax._
+import play.api.libs.json._
 
 case class GetTrust(matchData: MatchData,
                     correspondence: Correspondence,
@@ -395,7 +395,7 @@ object DisplayTrustSettlor {
 case class DisplayTrustSettlorCompany(lineNo: String,
                                       bpMatchStatus: Option[String],
                                       name: String,
-                                      companyType: Option[String],
+                                      companyType: Option[KindOfBusiness],
                                       companyTime: Option[Boolean],
                                       identification: Option[DisplayTrustIdentificationOrgType],
                                       entityStart: String) extends LivingSettlor

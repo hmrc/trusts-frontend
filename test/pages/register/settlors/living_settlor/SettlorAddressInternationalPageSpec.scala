@@ -19,14 +19,14 @@ package pages.register.settlors.living_settlor
 import models.core.pages.InternationalAddress
 import pages.behaviours.PageBehaviours
 
-class SettlorIndividualAddressInternationalPageSpec extends PageBehaviours {
+class SettlorAddressInternationalPageSpec extends PageBehaviours {
 
   "SettlorIndividualAddressInternationalPage" must {
 
-    beRetrievable[InternationalAddress](SettlorIndividualAddressInternationalPage(0))
+    beRetrievable[InternationalAddress](SettlorAddressInternationalPage(0))
 
-    beSettable[InternationalAddress](SettlorIndividualAddressInternationalPage(0))
+    beSettable[InternationalAddress](SettlorAddressInternationalPage(0))
 
-    beRemovable[InternationalAddress](SettlorIndividualAddressInternationalPage(0))
+    beRemovable[InternationalAddress](SettlorAddressInternationalPage(0))
   }
 }

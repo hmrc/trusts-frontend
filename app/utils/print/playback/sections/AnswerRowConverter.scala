@@ -20,7 +20,7 @@ import java.time.LocalDate
 
 import models.core.pages.{Address, FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
 import models.playback.UserAnswers
-import models.registration.pages.{PassportOrIdCardDetails, KindOfTrust}
+import models.registration.pages.{KindOfTrust, PassportOrIdCardDetails}
 import play.api.i18n.Messages
 import play.api.libs.json.Reads
 import play.api.mvc.Call

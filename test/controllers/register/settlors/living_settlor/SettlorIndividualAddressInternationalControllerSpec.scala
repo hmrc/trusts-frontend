@@ -23,7 +23,7 @@ import models.NormalMode
 import models.core.UserAnswers
 import models.core.pages.{FullName, InternationalAddress}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.settlors.living_settlor.{SettlorIndividualAddressInternationalPage, SettlorIndividualNINOPage, SettlorIndividualNamePage}
+import pages.register.settlors.living_settlor.{SettlorAddressInternationalPage, SettlorIndividualNINOPage, SettlorIndividualNamePage}
 import play.api.Application
 import play.api.data.Form
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
@@ -75,7 +75,7 @@ class SettlorIndividualAddressInternationalControllerSpec extends RegistrationSp
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers.set(SettlorIndividualNamePage(index), name).success.value
-        .set(SettlorIndividualAddressInternationalPage(index), InternationalAddress("line 1", "line 2", Some("line 3"), "country")).success.value
+        .set(SettlorAddressInternationalPage(index), InternationalAddress("line 1", "line 2", Some("line 3"), "country")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -98,7 +98,7 @@ class SettlorIndividualAddressInternationalControllerSpec extends RegistrationSp
     "redirect to the next page when valid data is submitted" in {
 
       val userAnswers = emptyUserAnswers.set(SettlorIndividualNamePage(index), name).success.value
-        .set(SettlorIndividualAddressInternationalPage(index), InternationalAddress("line 1", "line 2", Some("line 3"), "country")).success.value
+        .set(SettlorAddressInternationalPage(index), InternationalAddress("line 1", "line 2", Some("line 3"), "country")).success.value
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -201,7 +201,7 @@ class SettlorIndividualAddressInternationalControllerSpec extends RegistrationSp
 
       validateIndex(
         arbitrary[InternationalAddress],
-        SettlorIndividualAddressInternationalPage.apply,
+        SettlorAddressInternationalPage.apply,
         getForIndex
       )
 
@@ -219,7 +219,7 @@ class SettlorIndividualAddressInternationalControllerSpec extends RegistrationSp
 
       validateIndex(
         arbitrary[InternationalAddress],
-        SettlorIndividualAddressInternationalPage.apply,
+        SettlorAddressInternationalPage.apply,
         postForIndex
       )
     }

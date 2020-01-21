@@ -67,7 +67,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
             .set(SettlorIndividualNamePage(index), settlorName).success.value
             .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
             .set(SettlorIndividualNINOYesNoPage(index), false).success.value
-            .set(SettlorIndividualAddressYesNoPage(index), false).success.value
+            .set(SettlorAddressYesNoPage(index), false).success.value
 
         val countryOptions: CountryOptions = injector.instanceOf[CountryOptions]
         val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId)
@@ -121,7 +121,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
             .set(SettlorIndividualDateOfBirthPage(index), validDate).success.value
             .set(SettlorIndividualNINOYesNoPage(index), true).success.value
             .set(SettlorIndividualNINOPage(index), nino).success.value
-            .set(SettlorIndividualAddressYesNoPage(index), false).success.value
+            .set(SettlorAddressYesNoPage(index), false).success.value
 
         val countryOptions = injector.instanceOf[CountryOptions]
         val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId)
@@ -175,9 +175,9 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
             .set(SettlorIndividualNamePage(index), settlorName).success.value
             .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
             .set(SettlorIndividualNINOYesNoPage(index), false).success.value
-            .set(SettlorIndividualAddressYesNoPage(index), true).success.value
-            .set(SettlorIndividualAddressUKYesNoPage(index), true).success.value
-            .set(SettlorIndividualAddressUKPage(index), AddressUK).success.value
+            .set(SettlorAddressYesNoPage(index), true).success.value
+            .set(SettlorAddressUKYesNoPage(index), true).success.value
+            .set(SettlorAddressUKPage(index), AddressUK).success.value
             .set(SettlorIndividualPassportYesNoPage(index), false).success.value
             .set(SettlorIndividualIDCardYesNoPage(index), false).success.value
 
@@ -235,9 +235,9 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
             .set(SettlorIndividualNamePage(index), settlorName).success.value
             .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
             .set(SettlorIndividualNINOYesNoPage(index), false).success.value
-            .set(SettlorIndividualAddressYesNoPage(index), true).success.value
-            .set(SettlorIndividualAddressUKYesNoPage(index), false).success.value
-            .set(SettlorIndividualAddressInternationalPage(index), AddressInternational).success.value
+            .set(SettlorAddressYesNoPage(index), true).success.value
+            .set(SettlorAddressUKYesNoPage(index), false).success.value
+            .set(SettlorAddressInternationalPage(index), AddressInternational).success.value
             .set(SettlorIndividualPassportYesNoPage(index), false).success.value
             .set(SettlorIndividualIDCardYesNoPage(index), false).success.value
 
@@ -295,9 +295,9 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
             .set(SettlorIndividualNamePage(index), settlorName).success.value
             .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
             .set(SettlorIndividualNINOYesNoPage(index), false).success.value
-            .set(SettlorIndividualAddressYesNoPage(index), true).success.value
-            .set(SettlorIndividualAddressUKYesNoPage(index), true).success.value
-            .set(SettlorIndividualAddressUKPage(index), AddressUK).success.value
+            .set(SettlorAddressYesNoPage(index), true).success.value
+            .set(SettlorAddressUKYesNoPage(index), true).success.value
+            .set(SettlorAddressUKPage(index), AddressUK).success.value
             .set(SettlorIndividualPassportYesNoPage(index), true).success.value
             .set(SettlorIndividualPassportPage(index), passportOrIDCardDetails).success.value
             .set(SettlorIndividualIDCardYesNoPage(index), true).success.value
@@ -356,7 +356,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           .set(SettlorIndividualNamePage(index), settlorName).success.value
           .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
           .set(SettlorIndividualNINOYesNoPage(index), false).success.value
-          .set(SettlorIndividualAddressYesNoPage(index), false).success.value
+          .set(SettlorAddressYesNoPage(index), false).success.value
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 

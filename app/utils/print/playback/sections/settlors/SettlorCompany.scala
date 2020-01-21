@@ -14,106 +14,53 @@
  * limitations under the License.
  */
 
-package utils.print.playback.sections.settlors
+package utils.print.playback.sections
 
 import models.playback.UserAnswers
+import models.registration.pages.KindOfBusiness
 import pages.register.settlors.living_settlor._
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
-import utils.CheckAnswersFormatters.{dateFormatter, internationalAddress, ukAddress, yesOrNo}
+import queries.Gettable
 import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
+import utils.print.playback.sections.AnswerRowConverter._
 
 object SettlorCompany {
 
   def apply(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)(implicit messages: Messages): Option[Seq[AnswerSection]] = {
 
-    val questions = Seq(
-      name(index, userAnswers),
-      utrYesNo(index, userAnswers),
-      utr(index, userAnswers),
-      addressYesNo(index, userAnswers),
-      addressUKYesNo(index, userAnswers),
-      addressUK(index, userAnswers),
-      nonUKAddress(index, userAnswers, countryOptions)
-    ).flatten
-
-    if (name(index, userAnswers).nonEmpty) {
-      Some(Seq(AnswerSection(
-        headingKey = None,
-        questions,
-        sectionKey = Some(messages("answerPage.section.settlorCompany.heading"))
-      )))
-    } else {
-      None
-    }
-  }
-
-  def name(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(SettlorIndividualNamePage(index)) map { x =>
-    AnswerRow(
-      "settlorCompanyName.checkYourAnswersLabel",
-      HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"),
-      None
-    )
-  }
-
-  def utrYesNo(index: Int, userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] =
-    userAnswers.get(SettlorUtrYesNoPage(index)) map {
-      x =>
-        AnswerRow(
-          "settlorCompanyUtrYesNo.checkYourAnswersLabel",
-          yesOrNo(x),
-          None
+    userAnswers.get(SettlorBusinessNamePage(index)).flatMap { name =>
+      Some(Seq(
+        AnswerSection(
+          headingKey = Some(messages("answerPage.section.settlor.subheading", index + 1)),
+          Seq(
+            stringQuestion(SettlorBusinessNamePage(index), userAnswers, "settlorBusinessName"),
+            yesNoQuestion(SettlorUtrYesNoPage(index), userAnswers, "settlorBusinessUtrYesNo", name),
+            stringQuestion(SettlorUtrPage(index), userAnswers, "settlorBusinessUtr", name),
+            yesNoQuestion(SettlorAddressYesNoPage(index), userAnswers, "settlorBusinessAddressYesNo", name),
+            yesNoQuestion(SettlorAddressUKYesNoPage(index), userAnswers, "settlorBusinessAddressUKYesNo", name),
+            addressQuestion(SettlorAddressUKPage(index), userAnswers, "settlorBusinessAddressUK", name, countryOptions),
+            addressQuestion(SettlorAddressInternationalPage(index), userAnswers, "settlorBusinessAddressUK", name, countryOptions),
+            kindOfBusinessQuestion(SettlorCompanyTypePage(index), userAnswers, "settlorBusinessType", name, messages),
+            yesNoQuestion(SettlorCompanyTimePage(index), userAnswers, "settlorBusinessTime", name)
+          ).flatten,
+          sectionKey = None
         )
+      ))
     }
-
-  def utr(index: Int, userAnswers: UserAnswers): Option[AnswerRow] = userAnswers.get(SettlorUtrPage(index)) map {
-    x =>
-      AnswerRow(
-        "settlorCompanyUtr.checkYourAnswersLabel",
-        HtmlFormat.escape(x.format(dateFormatter)),
-        None
-      )
   }
 
-  def addressYesNo(index: Int, userAnswers: UserAnswers)
-                  (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressYesNoPage(index)) map {
-    x =>
+  def kindOfBusinessQuestion(query: Gettable[KindOfBusiness], userAnswers: UserAnswers, labelKey: String, messageArg : String, messages: Messages) = {
+    userAnswers.get(query) map { x =>
       AnswerRow(
-        "settlorCompanyAddressYesNo.checkYourAnswersLabel",
-        yesOrNo(x),
+        messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
+        HtmlFormat.escape(x.toString),
         None
       )
+    }
   }
-
-  def addressUKYesNo(index: Int, userAnswers: UserAnswers)
-                    (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressUKYesNoPage(index)) map {
-    x =>
-      AnswerRow(
-        "settlorCompanyAddressUKYesNo.checkYourAnswersLabel",
-        yesOrNo(x),
-        None
-      )
-  }
-
-  def addressUK(index: Int, userAnswers: UserAnswers)
-               (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressUKPage(index)) map {
-    x =>
-      AnswerRow(
-        "settlorCompanyUKAddress.checkYourAnswersLabel",
-        ukAddress(x),
-        None
-      )
-  }
-
-  def nonUKAddress(index: Int, userAnswers: UserAnswers, countryOptions: CountryOptions)
-                  (implicit messages: Messages): Option[AnswerRow] = userAnswers.get(SettlorIndividualAddressInternationalPage(index)) map {
-    x =>
-      AnswerRow(
-        "settlorCompanyNonUKAddress.checkYourAnswersLabel",
-        internationalAddress(x, countryOptions),
-        None
-      )
-  }
-
 }
+
+
+

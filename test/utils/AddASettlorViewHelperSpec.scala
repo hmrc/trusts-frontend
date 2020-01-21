@@ -70,7 +70,7 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
           .set(SettlorIndividualNamePage(0), settlorName).success.value
           .set(SettlorIndividualDateOfBirthYesNoPage(0), false).success.value
           .set(SettlorIndividualNINOYesNoPage(0), false).success.value
-          .set(SettlorIndividualAddressYesNoPage(0), false).success.value
+          .set(SettlorAddressYesNoPage(0), false).success.value
           .set(LivingSettlorStatus(0), Completed).success.value
 
         val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows

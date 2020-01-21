@@ -20,13 +20,14 @@ import models.core.pages.IndividualOrBusiness
 import models.core.pages.IndividualOrBusiness.{Business, Individual}
 import models.playback.UserAnswers
 import pages.register.protectors.ProtectorIndividualOrBusinessPage
+import pages.register.settlors.living_settlor.SettlorIndividualOrBusinessPage
 import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage}
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
 import utils.print.playback.sections._
 import utils.print.playback.sections.beneficiaries._
 import utils.print.playback.sections.protectors.{BusinessProtector, IndividualProtector}
-import utils.print.playback.sections.settlors.DeceasedSettlor
+import utils.print.playback.sections.settlors.{DeceasedSettlor, SettlorIndividual}
 import utils.print.playback.sections.trustees.lead_trustee.{LeadTrusteeBusiness, LeadTrusteeIndividual}
 import utils.print.playback.sections.trustees.{TrusteeIndividual, TrusteeOrganisation}
 import viewmodels.AnswerSection
@@ -65,20 +66,35 @@ class PlaybackAnswersHelper(countryOptions: CountryOptions, userAnswers: UserAns
     }
   }
 
-  def settlors: Seq[AnswerSection] = {
+  def settlors: Seq[AnswerSection] = deceasedSettlors ++ livingSettlors
 
-    val deceasedSettlor = DeceasedSettlor(userAnswers, countryOptions)
+  def deceasedSettlors: Seq[AnswerSection] = {
 
-    if (deceasedSettlor.nonEmpty) {
-      Seq(
-        Seq(AnswerSection(sectionKey = Some(messages("answerPage.section.deceasedSettlor.heading")))),
-        deceasedSettlor
-      ).flatten
-    } else {
-      // living settlors
-      Nil
+    DeceasedSettlor(userAnswers, countryOptions) match {
+      case Nil => Nil
+      case x => AnswerSection(sectionKey = Some("answerPage.section.deceasedSettlor.heading")) +: x
     }
   }
+
+  def livingSettlors : Seq[AnswerSection] = {
+    val size = userAnswers.get(_root_.sections.settlors.LivingSettlors).map(_.value.size).getOrElse(0)
+    size match {
+      case 0 => Nil
+      case _ =>
+        AnswerSection(sectionKey = Some("answerPage.section.settlors.heading")) +:
+        (for (index <- 0 to size) yield livingSettlor(index)).flatten
+    }
+  }
+
+  def livingSettlor(index: Int): Seq[AnswerSection] = {
+    userAnswers.get(SettlorIndividualOrBusinessPage(index)).flatMap { individualOrBusiness =>
+      individualOrBusiness match {
+        case IndividualOrBusiness.Individual => SettlorIndividual(index, userAnswers, countryOptions)
+        case IndividualOrBusiness.Business => SettlorCompany(index, userAnswers, countryOptions)
+      }
+    }.getOrElse(Nil)
+  }
+
 
   def beneficiaries : Seq[AnswerSection] = {
 

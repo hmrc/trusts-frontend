@@ -16,11 +16,12 @@
 
 package pages.register.settlors.living_settlor
 
+import models.registration.pages.KindOfBusiness
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.LivingSettlors
 
-case class SettlorCompanyTypePage(index : Int) extends QuestionPage[String] {
+case class SettlorCompanyTypePage(index : Int) extends QuestionPage[KindOfBusiness] {
 
   override def path: JsPath = LivingSettlors.path \ index \ toString
 

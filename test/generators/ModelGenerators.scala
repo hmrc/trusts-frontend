@@ -31,11 +31,6 @@ trait ModelGenerators {
       Gen.oneOf(DeclarationWhatNext.values.toSeq)
     }
 
-  implicit lazy val arbitrarySettlorDetails: Arbitrary[SettlorBusinessDetails] =
-    Arbitrary {
-      Gen.oneOf(SettlorBusinessDetails.values.toSeq)
-    }
-
   implicit lazy val arbitraryKindOfTrust: Arbitrary[KindOfTrust] =
     Arbitrary {
       Gen.oneOf(KindOfTrust.values.toSeq)

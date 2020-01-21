@@ -19,22 +19,21 @@ package models.registration.pages
 import models.{Enumerable, WithName}
 import viewmodels.RadioOption
 
-sealed trait SettlorBusinessDetails
+sealed trait KindOfBusiness
 
-object SettlorBusinessDetails extends Enumerable.Implicits {
+object KindOfBusiness extends Enumerable.Implicits {
 
-  case object UTR extends WithName("uniqueTaxReference") with SettlorBusinessDetails
-  case object Address extends WithName("address") with SettlorBusinessDetails
-
-  val values: List[SettlorBusinessDetails] = List(
-    UTR, Address
+  case object Trading extends WithName("Trading") with KindOfBusiness
+  case object Investment extends WithName("Investment") with KindOfBusiness
+  val values: List[KindOfBusiness] = List(
+    Trading, Investment
   )
 
   val options: List[RadioOption] = values.map {
     value =>
-      RadioOption("settlorBusinessDetails", value.toString)
+      RadioOption("kindOfBusiness", value.toString)
   }
 
-  implicit val enumerable: Enumerable[SettlorBusinessDetails] =
+  implicit val enumerable: Enumerable[KindOfBusiness] =
     Enumerable(values.map(v => v.toString -> v): _*)
 }

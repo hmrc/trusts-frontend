@@ -50,18 +50,17 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(TrusteesBasedInTheUKPage.type, JsValue)] ::
     arbitrary[(HoldoverReliefYesNoPage.type, JsValue)] ::
     arbitrary[(SettlorBusinessNamePage, JsValue)] ::
-    arbitrary[(SettlorBusinessDetailsPage, JsValue)] ::
     arbitrary[(RemoveSettlorPage, JsValue)] ::
     arbitrary[(SettlorIndividualPassportYesNoPage, JsValue)] ::
     arbitrary[(SettlorIndividualPassportPage, JsValue)] ::
     arbitrary[(SettlorIndividualIDCardYesNoPage, JsValue)] ::
     arbitrary[(SettlorIndividualIDCardPage, JsValue)] ::
-    arbitrary[(SettlorIndividualAddressUKYesNoPage, JsValue)] ::
-    arbitrary[(SettlorIndividualAddressUKPage, JsValue)] ::
-    arbitrary[(SettlorIndividualAddressInternationalPage, JsValue)] ::
+    arbitrary[(SettlorAddressUKYesNoPage, JsValue)] ::
+    arbitrary[(SettlorAddressUKPage, JsValue)] ::
+    arbitrary[(SettlorAddressInternationalPage, JsValue)] ::
     arbitrary[(SettlorIndividualNINOYesNoPage, JsValue)] ::
     arbitrary[(SettlorIndividualNINOPage, JsValue)] ::
-    arbitrary[(SettlorIndividualAddressYesNoPage, JsValue)] ::
+    arbitrary[(SettlorAddressYesNoPage, JsValue)] ::
     arbitrary[(SettlorIndividualDateOfBirthPage, JsValue)] ::
     arbitrary[(SettlorIndividualDateOfBirthYesNoPage, JsValue)] ::
     arbitrary[(SettlorIndividualNamePage, JsValue)] ::
