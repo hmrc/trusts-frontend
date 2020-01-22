@@ -35,7 +35,7 @@ object ClassOfBeneficiary {
         Seq(
           stringQuestion(ClassOfBeneficiaryDescriptionPage(index), userAnswers, "classBeneficiaryDescription"),
           yesNoQuestion(ClassOfBeneficiaryDiscretionYesNoPage(index), userAnswers, "classBeneficiaryShareOfIncomeYesNo", name),
-          stringQuestion(ClassOfBeneficiaryShareOfIncomePage(index), userAnswers, "classBeneficiaryShareOfIncome", name)
+          percentageQuestion(ClassOfBeneficiaryShareOfIncomePage(index), userAnswers, "classBeneficiaryShareOfIncome", name)
         ).flatten,
         sectionKey = None
       ))

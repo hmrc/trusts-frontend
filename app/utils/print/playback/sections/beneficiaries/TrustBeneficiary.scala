@@ -20,7 +20,7 @@ import models.playback.UserAnswers
 import pages.register.beneficiaries.trust._
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
-import utils.print.playback.sections.AnswerRowConverter.{addressQuestion, stringQuestion, utrQuestion, yesNoQuestion}
+import utils.print.playback.sections.AnswerRowConverter.{addressQuestion, percentageQuestion, stringQuestion, utrQuestion, yesNoQuestion}
 import viewmodels.AnswerSection
 
 object TrustBeneficiary {
@@ -34,7 +34,7 @@ object TrustBeneficiary {
         Seq(
           stringQuestion(TrustBeneficiaryNamePage(index), userAnswers, "trustBeneficiaryName"),
           yesNoQuestion(TrustBeneficiaryDiscretionYesNoPage(index), userAnswers, "trustBeneficiaryShareOfIncomeYesNo", name),
-          stringQuestion(TrustBeneficiaryShareOfIncomePage(index), userAnswers, "trustBeneficiaryShareOfIncome", name),
+          percentageQuestion(TrustBeneficiaryShareOfIncomePage(index), userAnswers, "trustBeneficiaryShareOfIncome", name),
           yesNoQuestion(TrustBeneficiaryAddressYesNoPage(index), userAnswers, "trustBeneficiaryAddressYesNo", name),
           yesNoQuestion(TrustBeneficiaryAddressUKYesNoPage(index), userAnswers, "trustBeneficiaryAddressUKYesNo", name),
           addressQuestion(TrustBeneficiaryAddressPage(index), userAnswers, "trustBeneficiaryAddress", countryOptions = countryOptions, messageArg = name),

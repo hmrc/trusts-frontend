@@ -74,7 +74,7 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
           rows = Seq(
             AnswerRow(label = "charityBeneficiaryName.checkYourAnswersLabel", answer = Html("Red Cross Ltd."), changeUrl = None),
             AnswerRow(label = "charityBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", answer = Html("No"), changeUrl = None, labelArg = charityBen1Name),
-            AnswerRow(label = "charityBeneficiaryShareOfIncome.checkYourAnswersLabel", answer = Html("98"), changeUrl = None, labelArg = charityBen1Name),
+            AnswerRow(label = "charityBeneficiaryShareOfIncome.checkYourAnswersLabel", answer = Html("98%"), changeUrl = None, labelArg = charityBen1Name),
             AnswerRow(label = "charityBeneficiaryAddressYesNo.checkYourAnswersLabel", answer = Html("Yes"), changeUrl = None, labelArg = charityBen1Name),
             AnswerRow(label = "charityBeneficiaryAddressUKYesNo.checkYourAnswersLabel", answer = Html("Yes"), changeUrl = None, labelArg = charityBen1Name),
             AnswerRow(label = "charityBeneficiaryAddress.checkYourAnswersLabel", answer = Html("line1<br />line2<br />line3<br />line4<br />NE981ZZ"), changeUrl = None, labelArg = charityBen1Name)
@@ -146,7 +146,7 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
             AnswerRow(label = messages("individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("individualBeneficiaryDateOfBirth.checkYourAnswersLabel", name1), answer = Html("3 February 1996"), changeUrl = None),
             AnswerRow(label = messages("individualBeneficiaryIncomeYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryIncome.checkYourAnswersLabel", name1), answer = Html("£98"), changeUrl = None),
+            AnswerRow(label = messages("individualBeneficiaryIncome.checkYourAnswersLabel", name1), answer = Html("98%"), changeUrl = None),
             AnswerRow(label = messages("individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("individualBeneficiaryNationalInsuranceNumber.checkYourAnswersLabel", name1), answer = Html("JB  1 2  34  5 6  C"), changeUrl = None),
             AnswerRow(label = messages("individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None)
@@ -224,7 +224,7 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
           rows = Seq(
             AnswerRow(label = messages("companyBeneficiaryName.checkYourAnswersLabel"), answer = Html("Amazon"), changeUrl = None),
             AnswerRow(label = messages("companyBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", companyBen1Name), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("companyBeneficiaryShareOfIncome.checkYourAnswersLabel", companyBen1Name), answer = Html("98"), changeUrl = None),
+            AnswerRow(label = messages("companyBeneficiaryShareOfIncome.checkYourAnswersLabel", companyBen1Name), answer = Html("98%"), changeUrl = None),
             AnswerRow(label = messages("companyBeneficiaryAddressYesNo.checkYourAnswersLabel", companyBen1Name), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("companyBeneficiaryAddressUKYesNo.checkYourAnswersLabel", companyBen1Name), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("companyBeneficiaryAddress.checkYourAnswersLabel", companyBen1Name), answer = Html("line1<br />line2<br />line3<br />line4<br />NE981ZZ"), changeUrl = None)
@@ -282,7 +282,7 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
           rows = Seq(
             AnswerRow(label = messages("trustBeneficiaryName.checkYourAnswersLabel"), answer = Html("Trust of Adam"), changeUrl = None),
             AnswerRow(label = messages("trustBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", trustBen1Name), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("trustBeneficiaryShareOfIncome.checkYourAnswersLabel",trustBen1Name), answer = Html("98"), changeUrl = None),
+            AnswerRow(label = messages("trustBeneficiaryShareOfIncome.checkYourAnswersLabel",trustBen1Name), answer = Html("98%"), changeUrl = None),
             AnswerRow(label = messages("trustBeneficiaryAddressYesNo.checkYourAnswersLabel",trustBen1Name), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("trustBeneficiaryAddressUKYesNo.checkYourAnswersLabel",trustBen1Name), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("trustBeneficiaryAddress.checkYourAnswersLabel",trustBen1Name), answer = Html("line1<br />line2<br />line3<br />line4<br />NE981ZZ"), changeUrl = None)
@@ -344,7 +344,7 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
           rows = Seq(
             AnswerRow(label = messages("largeBeneficiaryName.checkYourAnswersLabel"), answer = Html("Amazon"), changeUrl = None),
             AnswerRow(label = messages("largeBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", largeBen1Name), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("largeBeneficiaryShareOfIncome.checkYourAnswersLabel", largeBen1Name), answer = Html("98"), changeUrl = None),
+            AnswerRow(label = messages("largeBeneficiaryShareOfIncome.checkYourAnswersLabel", largeBen1Name), answer = Html("98%"), changeUrl = None),
             AnswerRow(label = messages("largeBeneficiaryAddressYesNo.checkYourAnswersLabel", largeBen1Name), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("largeBeneficiaryAddressUKYesNo.checkYourAnswersLabel", largeBen1Name), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("largeBeneficiaryAddress.checkYourAnswersLabel", largeBen1Name), answer = Html("line1<br />line2<br />line3<br />line4<br />NE981ZZ"), changeUrl = None),
@@ -405,7 +405,7 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
           rows = Seq(
             AnswerRow(label = messages("otherBeneficiaryDescription.checkYourAnswersLabel"), answer = Html("Dog"), changeUrl = None),
             AnswerRow(label = messages("otherBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", otherBen1Name), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("otherBeneficiaryShareOfIncome.checkYourAnswersLabel",otherBen1Name), answer = Html("98"), changeUrl = None),
+            AnswerRow(label = messages("otherBeneficiaryShareOfIncome.checkYourAnswersLabel",otherBen1Name), answer = Html("98%"), changeUrl = None),
             AnswerRow(label = messages("otherBeneficiaryAddressYesNo.checkYourAnswersLabel",otherBen1Name), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("otherBeneficiaryAddressUKYesNo.checkYourAnswersLabel",otherBen1Name), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("otherBeneficiaryAddress.checkYourAnswersLabel",otherBen1Name), answer = Html("line1<br />line2<br />line3<br />line4<br />NE981ZZ"), changeUrl = None)
@@ -449,7 +449,7 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
           rows = Seq(
             AnswerRow(label = messages("classBeneficiaryDescription.checkYourAnswersLabel"), answer = Html("Grandchildren"), changeUrl = None),
             AnswerRow(label = messages("classBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", classBenDescription1), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("classBeneficiaryShareOfIncome.checkYourAnswersLabel",classBenDescription1), answer = Html("55"), changeUrl = None)
+            AnswerRow(label = messages("classBeneficiaryShareOfIncome.checkYourAnswersLabel",classBenDescription1), answer = Html("55%"), changeUrl = None)
           ),
           sectionKey = None
         ),
