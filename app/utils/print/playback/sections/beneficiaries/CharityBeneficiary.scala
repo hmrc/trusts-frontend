@@ -80,7 +80,7 @@ object CharityBeneficiary {
       x =>
         AnswerRow(
           "charityBeneficiaryShareOfIncome.checkYourAnswersLabel",
-          CheckAnswersFormatters.escape(x),
+          CheckAnswersFormatters.percentage(x),
           None,
           name
         )

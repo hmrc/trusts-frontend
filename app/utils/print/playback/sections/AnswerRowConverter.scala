@@ -106,6 +106,18 @@ object AnswerRowConverter {
     }
   }
 
+  def percentageQuestion(query: Gettable[String], userAnswers: UserAnswers, labelKey: String,
+                             messageArg: String = "", changeRoute: Option[Call] = None)
+                            (implicit messages:Messages) = {
+    userAnswers.get(query) map {x =>
+      AnswerRow(
+        messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
+        CheckAnswersFormatters.percentage(x),
+        None
+      )
+    }
+  }
+
   def dateQuestion(query: Gettable[LocalDate], userAnswers: UserAnswers, labelKey: String,
                    messageArg: String = "", changeRoute: Option[Call] = None)
                   (implicit messages:Messages) = {
