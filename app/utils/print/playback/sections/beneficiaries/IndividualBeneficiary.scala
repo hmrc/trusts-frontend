@@ -62,12 +62,15 @@ object IndividualBeneficiary {
   }
 
   private def roleInCompanyQuestion(query: Gettable[RoleInCompany], userAnswers: UserAnswers, labelKey: String,
-                            messageArg: String = "", changeRoute: Option[Call] = None)
-                           (implicit messages:Messages) = {
+                                    messageArg: String = "", changeRoute: Option[Call] = None)
+                                   (implicit messages:Messages) = {
     userAnswers.get(query) map {x =>
       AnswerRow(
-        messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-        HtmlFormat.escape(x.toString),
+        messages(s"$labelKey.checkYourAnswersLabel", messageArg),
+        x match {
+          case RoleInCompany.NA => HtmlFormat.escape("Not a Director or Employee")
+          case _ => HtmlFormat.escape(x.toString)
+        },
         None
       )
     }
