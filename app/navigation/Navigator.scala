@@ -380,7 +380,7 @@ class Navigator @Inject()(
     }
   }
 
-  private def routeToMaintain = {
+  private def routeToMaintain : Call = {
     if (config.claimEnabled) {
       controllers.playback.routes.WhatIsTheUTRVariationsController.onPageLoad()
     } else {

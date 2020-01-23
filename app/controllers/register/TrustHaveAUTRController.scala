@@ -26,7 +26,7 @@ import navigation.Navigator
 import pages.register.TrustHaveAUTRPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import viewmodels.Link
@@ -78,7 +78,13 @@ class TrustHaveAUTRController @Inject()(override val messagesApi: MessagesApi,
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustHaveAUTRPage, value))
             _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrustHaveAUTRPage, mode, draftId, request.affinityGroup)(updatedAnswers))
+          } yield {
+            if(config.useMaintainFrontend) {
+              Redirect(config.maintainATrustFrontendUrl)
+            } else {
+              Redirect(navigator.nextPage(TrustHaveAUTRPage, mode, draftId, request.affinityGroup)(updatedAnswers))
+            }
+          }
         }
       )
   }

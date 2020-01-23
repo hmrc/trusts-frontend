@@ -19,7 +19,8 @@ package controllers.register
 import base.RegistrationSpecBase
 import forms.YesNoFormProvider
 import models.NormalMode
-import pages.register.TrustHaveAUTRPage
+import navigation.Navigator
+import pages.register.{TrustHaveAUTRPage, TrustRegisteredOnlinePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.Link
@@ -75,22 +76,60 @@ class TrustHaveAUTRControllerSpec extends RegistrationSpecBase {
       application.stop()
     }
 
-    "redirect to the next page when valid data is submitted" in {
+    "redirect to trusts registration frontend" when {
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      "redirect to the next page when valid data is submitted" in {
 
-      val request =
-        FakeRequest(POST, trustHaveAUTRRoute)
-          .withFormUrlEncodedBody(("value", "true"))
+        val application =
+          applicationBuilder(userAnswers = Some(emptyUserAnswers))
+            .configure(Seq(
+              "microservice.services.features.useMaintainFrontend.enabled" -> false
+            ): _*)
+            .build()
 
-      val result = route(application, request).value
+        val request =
+          FakeRequest(POST, trustHaveAUTRRoute)
+            .withFormUrlEncodedBody(("value", "true"))
 
-      status(result) mustEqual SEE_OTHER
+        val result = route(application, request).value
 
-      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+        status(result) mustEqual SEE_OTHER
 
-      application.stop()
+        redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+
+        application.stop()
+      }
+
+    }
+
+    "redirect to maintain-a-trust" when {
+
+      "redirect to the next page when valid data is submitted" in {
+
+        val userAnswers = emptyUserAnswers
+          .set(TrustRegisteredOnlinePage, true).success.value
+          .set(TrustHaveAUTRPage, true).success.value
+
+        val application =
+          applicationBuilder(userAnswers = Some(userAnswers))
+            .configure(Seq(
+              "microservice.services.features.useMaintainFrontend.enabled" -> true
+            ): _*)
+            .build()
+
+        val request =
+          FakeRequest(POST, trustHaveAUTRRoute)
+            .withFormUrlEncodedBody(("value", "true"))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value must include("/maintain-trust")
+
+        application.stop()
+      }
+
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {

@@ -109,4 +109,9 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   lazy val declarationEmailEnabled: Boolean = configuration.get[Boolean]("microservice.services.features.declaration.email.enabled")
 
+  lazy val useMaintainFrontend : Boolean =
+    configuration.get[Boolean]("microservice.services.features.useMaintainFrontend.enabled")
+
+  lazy val maintainATrustFrontendUrl : String =
+    configuration.get[String]("urls.maintainATrust")
 }
