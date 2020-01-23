@@ -79,7 +79,6 @@ class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase with AnswerSectio
         _ <- EmailPage(0) is "aa@aabb.com"
         _ <- IsThisLeadTrusteePage(0) is true
         _ <- TrusteePassportIDCardPage(0) is PassportOrIdCardDetails("DE", "KSJDFKSDHF6456545147852369QWER", LocalDate.of(2020,2,2))
-        _ <- TrusteePassportIDCardYesNoPage(0) is true
       } yield Unit).run(emptyUserAnswers).value
 
       val result = helper.entities(answers)
@@ -91,7 +90,6 @@ class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase with AnswerSectio
       "Is William Bonny a UK citizen?"-> Html("No"),
       "Does William Bonny live in the UK?" -> Html("No"),
       "What is William Bonny’s address?" -> Html("Address 1<br />Address 2<br />Germany"),
-      "Do you know William Bonny’s passport or ID card details?"-> Html("Yes"),
       "What are William Bonny’s passport or ID card details?"-> Html("Germany<br />KSJDFKSDHF6456545147852369QWER<br />2 February 2020"),
       "Do you know William Bonny’s email address?" -> Html("Yes"),
       "What is William Bonny’s email address?" -> Html("aa@aabb.com"),

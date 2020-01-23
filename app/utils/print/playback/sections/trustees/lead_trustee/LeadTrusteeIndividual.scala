@@ -39,7 +39,6 @@ object LeadTrusteeIndividual extends LeadTrustee {
               dateQuestion(TrusteesDateOfBirthPage(index), userAnswers, "trusteesDateOfBirth", name),
               yesNoQuestion(TrusteeAUKCitizenPage(index), userAnswers, "trusteeAUKCitizen", name),
               ninoQuestion(TrusteesNinoPage(index), userAnswers, "trusteesNino", name),
-              yesNoQuestion(TrusteePassportIDCardYesNoPage(index), userAnswers, "trusteePassportOrIdCardYesNo", name),
               passportOrIdCardQuestion(TrusteePassportIDCardPage(index), userAnswers, "trusteePassportOrIdCard", name, countryOptions)
             ).flatten ++
             addressAnswers(index, userAnswers, countryOptions, name).flatten ++
