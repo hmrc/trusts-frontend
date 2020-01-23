@@ -352,6 +352,7 @@ trustDetailsAnswerPage.title = Check trust details
 trustDetailsAnswerPage.heading = Check trust details
 
 trusteeBusinessName.checkYourAnswersLabel = What is the business’s name?
+trusteeBusinessAddressInUK.checkYourAnswersLabel = Is {0}’s address in the UK?
 
 trusteesName.title = What is the trustee’s name?
 trusteesName.heading = What is the trustee’s name?
