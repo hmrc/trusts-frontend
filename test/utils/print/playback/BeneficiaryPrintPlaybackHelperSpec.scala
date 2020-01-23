@@ -312,8 +312,6 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
 
       val answers = emptyUserAnswers
         .set(LargeBeneficiaryNamePage(0), largeBen1Name).success.value
-        .set(LargeBeneficiaryDiscretionYesNoPage(0), false).success.value
-        .set(LargeBeneficiaryShareOfIncomePage(0), "98").success.value
         .set(LargeBeneficiaryAddressYesNoPage(0), true).success.value
         .set(LargeBeneficiaryAddressUKYesNoPage(0), true).success.value
         .set(LargeBeneficiaryAddressPage(0),
@@ -343,8 +341,6 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
           headingKey = Some("Employment related beneficiary 1"),
           rows = Seq(
             AnswerRow(label = messages("largeBeneficiaryName.checkYourAnswersLabel"), answer = Html("Amazon"), changeUrl = None),
-            AnswerRow(label = messages("largeBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", largeBen1Name), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("largeBeneficiaryShareOfIncome.checkYourAnswersLabel", largeBen1Name), answer = Html("98%"), changeUrl = None),
             AnswerRow(label = messages("largeBeneficiaryAddressYesNo.checkYourAnswersLabel", largeBen1Name), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("largeBeneficiaryAddressUKYesNo.checkYourAnswersLabel", largeBen1Name), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("largeBeneficiaryAddress.checkYourAnswersLabel", largeBen1Name), answer = Html("line1<br />line2<br />line3<br />line4<br />NE981ZZ"), changeUrl = None),
@@ -357,7 +353,6 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
           headingKey = Some("Employment related beneficiary 2"),
           rows = Seq(
             AnswerRow(label = messages("largeBeneficiaryName.checkYourAnswersLabel", largeBen2Name), answer = Html("Apple"), changeUrl = None),
-            AnswerRow(label = messages("largeBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", largeBen2Name), answer = Html("Yes"), changeUrl = None),
             AnswerRow(label = messages("largeBeneficiaryAddressYesNo.checkYourAnswersLabel", largeBen2Name), answer = Html("No"), changeUrl = None),
             AnswerRow(label = messages("largeBeneficiaryUtr.checkYourAnswersLabel", largeBen2Name), answer = Html("1234567890"), changeUrl = None),
             AnswerRow(label = messages("largeBeneficiaryDescription.checkYourAnswersLabel", largeBen2Name), answer = Html("Description"), changeUrl = None),
@@ -434,11 +429,7 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
 
       val answers = emptyUserAnswers
         .set(ClassOfBeneficiaryDescriptionPage(0), classBenDescription1).success.value
-        .set(ClassOfBeneficiaryDiscretionYesNoPage(0), false).success.value
-        .set(ClassOfBeneficiaryShareOfIncomePage(0), "55").success.value
-
         .set(ClassOfBeneficiaryDescriptionPage(1), classBenDescription2).success.value
-        .set(ClassOfBeneficiaryDiscretionYesNoPage(1), true).success.value
 
       val result = helper.entities(answers)
 
@@ -447,17 +438,14 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         AnswerSection(
           headingKey = Some("Class of beneficiary 1"),
           rows = Seq(
-            AnswerRow(label = messages("classBeneficiaryDescription.checkYourAnswersLabel"), answer = Html("Grandchildren"), changeUrl = None),
-            AnswerRow(label = messages("classBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", classBenDescription1), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("classBeneficiaryShareOfIncome.checkYourAnswersLabel",classBenDescription1), answer = Html("55%"), changeUrl = None)
+            AnswerRow(label = messages("classBeneficiaryDescription.checkYourAnswersLabel"), answer = Html("Grandchildren"), changeUrl = None)
           ),
           sectionKey = None
         ),
         AnswerSection(
           headingKey = Some("Class of beneficiary 2"),
           rows = Seq(
-            AnswerRow(label = messages("classBeneficiaryDescription.checkYourAnswersLabel"), answer = Html("Spouses"), changeUrl = None),
-            AnswerRow(label = messages("classBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", classBenDescription2), answer = Html("Yes"), changeUrl = None)
+            AnswerRow(label = messages("classBeneficiaryDescription.checkYourAnswersLabel"), answer = Html("Spouses"), changeUrl = None)
           ),
           sectionKey = None
         )

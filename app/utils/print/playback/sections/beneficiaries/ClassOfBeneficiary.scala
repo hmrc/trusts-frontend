@@ -33,9 +33,7 @@ object ClassOfBeneficiary {
       Seq(AnswerSection(
         headingKey = Some(messages("answerPage.section.classOfBeneficiary.subheading") + s" ${index + 1}"),
         Seq(
-          stringQuestion(ClassOfBeneficiaryDescriptionPage(index), userAnswers, "classBeneficiaryDescription"),
-          yesNoQuestion(ClassOfBeneficiaryDiscretionYesNoPage(index), userAnswers, "classBeneficiaryShareOfIncomeYesNo", name),
-          percentageQuestion(ClassOfBeneficiaryShareOfIncomePage(index), userAnswers, "classBeneficiaryShareOfIncome", name)
+          stringQuestion(ClassOfBeneficiaryDescriptionPage(index), userAnswers, "classBeneficiaryDescription")
         ).flatten,
         sectionKey = None
       ))
