@@ -18,7 +18,7 @@ package utils.print.playback.sections.trustees.lead_trustee
 
 import models.core.pages.IndividualOrBusiness.Individual
 import models.playback.UserAnswers
-import pages.register.CorrespondenceAddressPage
+import pages.register.{CorrespondenceAddressInTheUKPage, CorrespondenceAddressPage}
 import pages.register.trustees._
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
@@ -45,6 +45,7 @@ trait LeadTrustee {
         )
       case _ =>
         Seq(
+          yesNoQuestion(CorrespondenceAddressInTheUKPage, userAnswers, addressKey, name),
           addressQuestion(CorrespondenceAddressPage, userAnswers, "trusteesUkAddress", name, countryOptions)
         )
     }

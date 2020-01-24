@@ -50,7 +50,9 @@ class CorrespondenceExtractor @Inject() extends PlaybackExtractor[Correspondence
   private def extractAddress(address: Address, answers: UserAnswers) = {
     address match {
       case uk: UKAddress => answers.set(CorrespondenceAddressPage, uk)
+        .flatMap(_.set(CorrespondenceAddressInTheUKPage, true))
       case nonUk: InternationalAddress => answers.set(CorrespondenceAddressPage, nonUk)
+        .flatMap(_.set(CorrespondenceAddressInTheUKPage, false))
     }
   }
 
