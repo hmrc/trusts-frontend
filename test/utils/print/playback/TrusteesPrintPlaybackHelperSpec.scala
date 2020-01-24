@@ -22,7 +22,7 @@ import java.time.LocalDate
 import base.PlaybackSpecBase
 import models.core.pages.{FullName, InternationalAddress, UKAddress}
 import models.registration.pages.PassportOrIdCardDetails
-import pages.register.CorrespondenceAddressPage
+import pages.register.{CorrespondenceAddressInTheUKPage, CorrespondenceAddressPage}
 import pages.register.trustees._
 import play.twirl.api.Html
 
@@ -110,6 +110,7 @@ class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase with AnswerSectio
         _ <- TrusteeAddressYesNoPage(0).isRemoved
         _ <- TrusteeAddressInTheUKPage(0).isRemoved
         _ <- TrusteesUkAddressPage(0).isRemoved
+        _ <- CorrespondenceAddressInTheUKPage is true
         _ <- CorrespondenceAddressPage is UKAddress("Address 1", "Address 2", None, None, "AA11 1AA")
         _ <- TelephoneNumberPage(0) is "67676767676"
         _ <- TrusteeEmailYesNoPage(0) is true
@@ -125,6 +126,7 @@ class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase with AnswerSectio
         "What is Wild Bill Hickock’s date of birth?" -> Html("23 January 1975"),
         "Is Wild Bill Hickock a UK citizen?"-> Html("Yes"),
         "What is Wild Bill Hickock’s National Insurance number?" -> Html("AA 11 11 11 A"),
+        "Does Wild Bill Hickock live in the UK?" -> Html("Yes"),
         "What is Wild Bill Hickock’s address?" -> Html("Address 1<br />Address 2<br />AA11 1AA"),
         "Do you know Wild Bill Hickock’s email address?" -> Html("Yes"),
         "What is Wild Bill Hickock’s email address?" -> Html("aa@aabb.com"),
@@ -177,6 +179,7 @@ class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase with AnswerSectio
         _ <- TrusteeAddressYesNoPage(0).isRemoved
         _ <- TrusteeAddressInTheUKPage(0).isRemoved
         _ <- TrusteesUkAddressPage(0).isRemoved
+        _ <- CorrespondenceAddressInTheUKPage is true
         _ <- CorrespondenceAddressPage is UKAddress("Address 1", "Address 2", None, None, "AA11 1AA")
         _ <- TrusteeEmailYesNoPage(0) is true
         _ <- EmailPage(0) is "aa@aabb.com"
@@ -191,6 +194,7 @@ class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase with AnswerSectio
         "What is the business’s name?" -> Html("Lead Trustee Company"),
         "Is this trustee a UK registered company?"-> Html("Yes"),
         "What is Lead Trustee Company’s Unique Taxpayer Reference (UTR) number?" -> Html("1234567890"),
+        "Is Lead Trustee Company’s address in the UK?" -> Html("Yes"),
         "What is Lead Trustee Company’s address?" -> Html("Address 1<br />Address 2<br />AA11 1AA"),
         "Do you know Lead Trustee Company’s email address?" -> Html("Yes"),
         "What is Lead Trustee Company’s email address?" -> Html("aa@aabb.com"),
