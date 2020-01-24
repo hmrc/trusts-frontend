@@ -1512,7 +1512,7 @@ playbackLastDeclared.title = Last declared copy of the trust’s registration
 playbackLastDeclared.heading = Last declared copy of the trust’s registration
 playbackLastDeclared.declareAnnually.warning = You only need to declare the trust is up to date every year if there is a tax liability.
 playbackLastDeclared.informationFirstRegistered = The following sections indicate what was entered when the trust was first registered. No further updates to trust details, assets and years of tax liability are required through this service.
-playbackLastDeclared.selfAssessmentOnline = If you need to view the latest information HMRC holds about these sections or need to update them, use Self Assessment Online for trusts.
+playbackLastDeclared.selfAssessmentOnline = If you need to update these sections, use Self Assessment for trusts.
 
 individualProtectorName.checkYourAnswersLabel = What is the protector's name?
 individualProtectorDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?

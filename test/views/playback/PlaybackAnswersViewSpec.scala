@@ -41,8 +41,7 @@ class PlaybackAnswersViewSpec extends ViewBehaviours {
         " No further updates to trust details, assets and years of tax liability are required through this service."
       )
       assertContainsText(doc,
-        "If you need to view the latest information HMRC holds about these sections or need to update them," +
-        " use Self Assessment Online for trusts."
+        "If you need to update these sections, use Self Assessment for trusts."
       )
     }
   }
