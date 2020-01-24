@@ -17,6 +17,7 @@
 package utils.print.playback.sections
 
 import mapping.DeedOfVariation
+import mapping.DeedOfVariation.ReplacedWill
 import models.playback.UserAnswers
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.living_settlor.trust_type._
@@ -48,12 +49,19 @@ object TrustType {
   private def deedOfVariationQuestion(query: Gettable[DeedOfVariation], userAnswers: UserAnswers, labelKey: String,
                                       messageArg: String = "", changeRoute: Option[Call] = None)
                                      (implicit messages: Messages) = {
-    userAnswers.get(query) map { x =>
-      AnswerRow(
-        messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
-        HtmlFormat.escape(deedOfVariation(x, messages)),
-        None
-      )
+
+    def renderRow(answer: DeedOfVariation) = {
+        AnswerRow(
+          messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
+          HtmlFormat.escape(deedOfVariation(answer, messages)),
+          None
+        )
+    }
+
+    userAnswers.get(query) match {
+      case Some(DeedOfVariation.DeedOfVariation) => Some(renderRow(DeedOfVariation.DeedOfVariation))
+      case Some(DeedOfVariation.ReplacedWill) => Some(renderRow(DeedOfVariation.ReplacedWill))
+      case _ => None
     }
   }
 
