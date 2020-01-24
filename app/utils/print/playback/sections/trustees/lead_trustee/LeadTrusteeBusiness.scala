@@ -17,12 +17,11 @@
 package utils.print.playback.sections.trustees.lead_trustee
 
 import models.playback.UserAnswers
-import pages.register.CorrespondenceAddressPage
 import pages.register.trustees._
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
-import utils.print.playback.sections.AnswerRowConverter.{addressQuestion, stringQuestion, yesNoQuestion}
-import viewmodels.{AnswerRow, AnswerSection}
+import utils.print.playback.sections.AnswerRowConverter.{stringQuestion, yesNoQuestion}
+import viewmodels.AnswerSection
 
 object LeadTrusteeBusiness extends LeadTrustee {
 
@@ -38,11 +37,11 @@ object LeadTrusteeBusiness extends LeadTrustee {
               stringQuestion(TrusteeOrgNamePage(index), userAnswers, "trusteeBusinessName"),
               stringQuestion(TrusteesUtrPage(index), userAnswers, "trusteeUtr", name)
             ).flatten ++
-            addressAnswers(index, userAnswers, countryOptions, name).flatten ++
-            Seq(yesNoQuestion(TrusteeEmailYesNoPage(index), userAnswers, "trusteeEmailAddressYesNo", name),
-              stringQuestion(EmailPage(index), userAnswers, "trusteeEmailAddress", name),
-              stringQuestion(TelephoneNumberPage(index), userAnswers, "trusteeTelephoneNumber", name)
-            ).flatten,
+              addressAnswers(index, userAnswers, countryOptions, name).flatten ++
+              Seq(yesNoQuestion(TrusteeEmailYesNoPage(index), userAnswers, "trusteeEmailAddressYesNo", name),
+                stringQuestion(EmailPage(index), userAnswers, "trusteeEmailAddress", name),
+                stringQuestion(TelephoneNumberPage(index), userAnswers, "trusteeTelephoneNumber", name)
+              ).flatten,
             sectionKey = Some(messages("answerPage.section.trustees.heading"))
           )
         )

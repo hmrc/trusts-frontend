@@ -17,13 +17,12 @@
 package utils.print.playback.sections.trustees.lead_trustee
 
 import models.playback.UserAnswers
-import pages.register.CorrespondenceAddressPage
 import pages.register.trustees._
 import play.api.i18n.Messages
 import utils.CheckAnswersFormatters
 import utils.countryOptions.CountryOptions
 import utils.print.playback.sections.AnswerRowConverter._
-import viewmodels.{AnswerRow, AnswerSection}
+import viewmodels.AnswerSection
 
 object LeadTrusteeIndividual extends LeadTrustee {
 
@@ -41,12 +40,12 @@ object LeadTrusteeIndividual extends LeadTrustee {
               ninoQuestion(TrusteesNinoPage(index), userAnswers, "trusteesNino", name),
               passportOrIdCardQuestion(TrusteePassportIDCardPage(index), userAnswers, "trusteePassportOrIdCard", name, countryOptions)
             ).flatten ++
-            addressAnswers(index, userAnswers, countryOptions, name).flatten ++
-            Seq(
-              yesNoQuestion(TrusteeEmailYesNoPage(index), userAnswers, "trusteeEmailAddressYesNo", name),
-              stringQuestion(EmailPage(index), userAnswers, "trusteeEmailAddress", name),
-              stringQuestion(TelephoneNumberPage(index), userAnswers, "telephoneNumber", name)
-            ).flatten,
+              addressAnswers(index, userAnswers, countryOptions, name).flatten ++
+              Seq(
+                yesNoQuestion(TrusteeEmailYesNoPage(index), userAnswers, "trusteeEmailAddressYesNo", name),
+                stringQuestion(EmailPage(index), userAnswers, "trusteeEmailAddress", name),
+                stringQuestion(TelephoneNumberPage(index), userAnswers, "telephoneNumber", name)
+              ).flatten,
             sectionKey = Some(messages("answerPage.section.trustees.heading"))
           )
         )

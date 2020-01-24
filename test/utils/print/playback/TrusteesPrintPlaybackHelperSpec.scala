@@ -157,7 +157,7 @@ class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase with AnswerSectio
         "What is the business’s name?" -> Html("Lead Trustee Company"),
         "Is this trustee a UK registered company?"-> Html("Yes"),
         "What is Lead Trustee Company’s Unique Taxpayer Reference (UTR) number?" -> Html("1234567890"),
-        "Does Lead Trustee Company live in the UK?" -> Html("Yes"),
+        "Is Lead Trustee Company’s address in the UK?" -> Html("Yes"),
         "What is Lead Trustee Company’s address?" -> Html("Address 1<br />Address 2<br />AA11 1AA"),
         "Do you know Lead Trustee Company’s email address?" -> Html("No"),
         "What is Lead Trustee Company’s telephone number?" -> Html("67676767676")
