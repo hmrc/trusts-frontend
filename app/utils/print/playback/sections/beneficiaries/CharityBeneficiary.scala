@@ -56,7 +56,8 @@ object CharityBeneficiary {
       AnswerRow(
         "charityBeneficiaryName.checkYourAnswersLabel",
         CheckAnswersFormatters.escape(x),
-        None
+        None,
+        canEdit = false
       )
   }
 
@@ -69,7 +70,8 @@ object CharityBeneficiary {
           "charityBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel",
           CheckAnswersFormatters.yesOrNo(x),
           None,
-          name
+          name,
+          canEdit = false
         )
     }
 
@@ -82,7 +84,8 @@ object CharityBeneficiary {
           "charityBeneficiaryShareOfIncome.checkYourAnswersLabel",
           CheckAnswersFormatters.percentage(x),
           None,
-          name
+          name,
+          canEdit = false
         )
     }
 
@@ -95,7 +98,8 @@ object CharityBeneficiary {
           "charityBeneficiaryAddressYesNo.checkYourAnswersLabel",
           CheckAnswersFormatters.yesOrNo(x),
           None,
-          name
+          name,
+          canEdit = false
         )
     }
 
@@ -108,7 +112,8 @@ object CharityBeneficiary {
           "charityBeneficiaryAddressUKYesNo.checkYourAnswersLabel",
           CheckAnswersFormatters.yesOrNo(x),
           None,
-          name
+          name,
+          canEdit = false
         )
     }
 
@@ -121,14 +126,16 @@ object CharityBeneficiary {
           "charityBeneficiaryAddress.checkYourAnswersLabel",
           CheckAnswersFormatters.ukAddress(address),
           None,
-          name
+          name,
+          canEdit = false
         )
       case address: InternationalAddress =>
         AnswerRow(
           "charityBeneficiaryAddress.checkYourAnswersLabel",
           CheckAnswersFormatters.internationalAddress(address, countryOptions),
           None,
-          name
+          name,
+          canEdit = false
         )
     }
 
@@ -141,7 +148,8 @@ object CharityBeneficiary {
           "charityBeneficiaryUtr.checkYourAnswersLabel",
           CheckAnswersFormatters.utr(x),
           None,
-          name
+          name,
+          canEdit = false
         )
     }
 

@@ -61,7 +61,7 @@ class TrusteesAnswerPageController @Inject()(
   def onPageLoad(index : Int, draftId: String) = actions(index, draftId) {
     implicit request =>
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId, canEdit = true)
 
       val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
 

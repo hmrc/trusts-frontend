@@ -56,13 +56,13 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
         AnswerSection(
           headingKey = None,
           rows = Seq(
-            AnswerRow(label = messages("settlorsName.checkYourAnswersLabel"), answer = Html("Adam Smith"), changeUrl = None),
-            AnswerRow(label = messages("settlorDateOfDeathYesNo.checkYourAnswersLabel", name), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("settlorDateOfDeath.checkYourAnswersLabel", name), answer = Html("10 October 2010"), changeUrl = None),
-            AnswerRow(label = messages("settlorDateOfBirthYesNo.checkYourAnswersLabel", name), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("settlorsDateOfBirth.checkYourAnswersLabel", name), answer = Html("27 August 1991"), changeUrl = None),
-            AnswerRow(label = messages("settlorsNationalInsuranceYesNo.checkYourAnswersLabel", name), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("settlorNationalInsuranceNumber.checkYourAnswersLabel", name), answer = Html("JP 12 12 12 A"), changeUrl = None)
+            AnswerRow(label = messages("settlorsName.checkYourAnswersLabel"), answer = Html("Adam Smith"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("settlorDateOfDeathYesNo.checkYourAnswersLabel", name), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("settlorDateOfDeath.checkYourAnswersLabel", name), answer = Html("10 October 2010"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("settlorDateOfBirthYesNo.checkYourAnswersLabel", name), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("settlorsDateOfBirth.checkYourAnswersLabel", name), answer = Html("27 August 1991"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("settlorsNationalInsuranceYesNo.checkYourAnswersLabel", name), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("settlorNationalInsuranceNumber.checkYourAnswersLabel", name), answer = Html("JP 12 12 12 A"), changeUrl = None, canEdit = false)
           ),
           sectionKey = None
         )
@@ -101,14 +101,14 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
         AnswerSection(
           headingKey = None,
           rows = Seq(
-            AnswerRow(label = messages("settlorsName.checkYourAnswersLabel"), answer = Html("Adam Smith"), changeUrl = None),
-            AnswerRow(label = messages("settlorDateOfDeathYesNo.checkYourAnswersLabel", name), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("settlorDateOfBirthYesNo.checkYourAnswersLabel", name), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("settlorsNationalInsuranceYesNo.checkYourAnswersLabel", name), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("settlorsLastKnownAddressYesNo.checkYourAnswersLabel", name), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("wasSettlorsAddressUKYesNo.checkYourAnswersLabel", name), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("settlorsUKAddress.checkYourAnswersLabel", name), answer = Html("line 1<br />line 2<br />line 3<br />line 4<br />NE981ZZ"), changeUrl = None),
-            AnswerRow(label = messages("settlorsPassportOrIdCard.checkYourAnswersLabel", name), answer = Html("Germany<br />123456789<br />10 October 2021"), changeUrl = None)
+            AnswerRow(label = messages("settlorsName.checkYourAnswersLabel"), answer = Html("Adam Smith"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("settlorDateOfDeathYesNo.checkYourAnswersLabel", name), answer = Html("No"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("settlorDateOfBirthYesNo.checkYourAnswersLabel", name), answer = Html("No"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("settlorsNationalInsuranceYesNo.checkYourAnswersLabel", name), answer = Html("No"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("settlorsLastKnownAddressYesNo.checkYourAnswersLabel", name), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("wasSettlorsAddressUKYesNo.checkYourAnswersLabel", name), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("settlorsUKAddress.checkYourAnswersLabel", name), answer = Html("line 1<br />line 2<br />line 3<br />line 4<br />NE981ZZ"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("settlorsPassportOrIdCard.checkYourAnswersLabel", name), answer = Html("Germany<br />123456789<br />10 October 2021"), changeUrl = None, canEdit = false)
           ),
           sectionKey = None
         )
@@ -159,38 +159,38 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
       result mustBe Seq(
         AnswerSection(None, Nil, Some("answerPage.section.settlors.heading")),
         AnswerSection(Some("Settlor 1"),Seq(
-          AnswerRow("What is the business’s name?", Html("International Exports"), None),
-          AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("Yes"), None),
-          AnswerRow("What is International Exports’s Unique Taxpayer Reference (UTR) number?", Html("UTRUTRUTRUTR"), None)
+          AnswerRow("What is the business’s name?", Html("International Exports"), None, canEdit = false),
+          AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("Yes"), None, canEdit = false),
+          AnswerRow("What is International Exports’s Unique Taxpayer Reference (UTR) number?", Html("UTRUTRUTRUTR"), None, canEdit = false)
           ), None),
         AnswerSection(Some("Settlor 2"), Seq(
-          AnswerRow("What is the business’s name?", Html("International Exports"), None),
-          AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("No"), None),
-          AnswerRow("Do you know International Exports’s address?", Html("Yes"), None),
-          AnswerRow("Is International Exports’s address in the UK?", Html("Yes"), None),
-          AnswerRow("What is International Exports’s address?", Html("Line1<br />Line2<br />Line3<br />POSTCODE"), None)
+          AnswerRow("What is the business’s name?", Html("International Exports"), None, canEdit = false),
+          AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("No"), None,canEdit = false),
+          AnswerRow("Do you know International Exports’s address?", Html("Yes"), None,canEdit = false),
+          AnswerRow("Is International Exports’s address in the UK?", Html("Yes"), None,canEdit = false),
+          AnswerRow("What is International Exports’s address?", Html("Line1<br />Line2<br />Line3<br />POSTCODE"), None,canEdit = false)
 
         ), None),
         AnswerSection(Some("Settlor 3"), Seq(
-          AnswerRow("What is the business’s name?", Html("International Exports"), None),
-          AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("No"), None),
-          AnswerRow("Do you know International Exports’s address?", Html("Yes"), None),
-          AnswerRow("Is International Exports’s address in the UK?", Html("No"), None),
-          AnswerRow("What is International Exports’s address?", Html("Line1<br />Line2<br />Line3<br />Dutch Antilles"), None)
+          AnswerRow("What is the business’s name?", Html("International Exports"), None,canEdit = false),
+          AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("No"), None,canEdit = false),
+          AnswerRow("Do you know International Exports’s address?", Html("Yes"), None,canEdit = false),
+          AnswerRow("Is International Exports’s address in the UK?", Html("No"), None,canEdit = false),
+          AnswerRow("What is International Exports’s address?", Html("Line1<br />Line2<br />Line3<br />Dutch Antilles"), None,canEdit = false)
         ), None),
         AnswerSection(Some("Settlor 4"), Seq(
-          AnswerRow("What is the business’s name?", Html("International Exports"), None),
-          AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("No"), None),
-          AnswerRow("Do you know International Exports’s address?", Html("No"), None)
+          AnswerRow("What is the business’s name?", Html("International Exports"), None,canEdit = false),
+          AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("No"), None,canEdit = false),
+          AnswerRow("Do you know International Exports’s address?", Html("No"), None,canEdit = false)
         ), None),
         AnswerSection(Some("Settlor 5"), Seq(
-          AnswerRow("What is the business’s name?", Html("International Exports"), None),
-          AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("No"), None),
-          AnswerRow("Do you know International Exports’s address?", Html("Yes"), None),
-          AnswerRow("Is International Exports’s address in the UK?", Html("Yes"), None),
-          AnswerRow("What is International Exports’s address?", Html("Line1<br />Line2<br />Line3<br />POSTCODE"), None),
-          AnswerRow("What kind of business is International Exports?", Html("Trading"), None),
-          AnswerRow("At the date of each contribution to the trust, had the business been in existence for at least 2 years?", Html("No"), None)
+          AnswerRow("What is the business’s name?", Html("International Exports"), None,canEdit = false),
+          AnswerRow("Do you know International Exports’s Unique Taxpayer Reference (UTR) number?", Html("No"), None,canEdit = false),
+          AnswerRow("Do you know International Exports’s address?", Html("Yes"), None,canEdit = false),
+          AnswerRow("Is International Exports’s address in the UK?", Html("Yes"), None,canEdit = false),
+          AnswerRow("What is International Exports’s address?", Html("Line1<br />Line2<br />Line3<br />POSTCODE"), None,canEdit = false),
+          AnswerRow("What kind of business is International Exports?", Html("Trading"), None,canEdit = false),
+          AnswerRow("At the date of each contribution to the trust, had the business been in existence for at least 2 years?", Html("No"), None,canEdit = false)
 
         ), None)
       )
@@ -242,39 +242,39 @@ class SettlorsPrintPlaybackHelperSpec extends PlaybackSpecBase {
       result mustBe Seq(
         AnswerSection(None, Nil, Some("answerPage.section.settlors.heading")),
         AnswerSection(Some("Settlor 1"),Seq(
-          AnswerRow("What is the settlor’s name?", Html("Joe Bloggs"), None),
-          AnswerRow("Do you know Joe Bloggs’s date of birth?", Html("Yes"), None),
-          AnswerRow("What is Joe Bloggs’s date of birth?", Html("12 December 1934"), None),
-          AnswerRow("Do you know Joe Bloggs’s National Insurance number?", Html("Yes"), None),
-          AnswerRow("What is Joe Bloggs’s National Insurance number?", Html("AA 00 00 00 A"), None)
+          AnswerRow("What is the settlor’s name?", Html("Joe Bloggs"), None, canEdit = false),
+          AnswerRow("Do you know Joe Bloggs’s date of birth?", Html("Yes"), None, canEdit = false),
+          AnswerRow("What is Joe Bloggs’s date of birth?", Html("12 December 1934"), None, canEdit = false),
+          AnswerRow("Do you know Joe Bloggs’s National Insurance number?", Html("Yes"), None, canEdit = false),
+          AnswerRow("What is Joe Bloggs’s National Insurance number?", Html("AA 00 00 00 A"), None, canEdit = false)
         ), None),
         AnswerSection(Some("Settlor 2"),Seq(
-          AnswerRow("What is the settlor’s name?", Html("Joe Bloggs"), None),
-          AnswerRow("Do you know Joe Bloggs’s date of birth?", Html("Yes"), None),
-          AnswerRow("What is Joe Bloggs’s date of birth?", Html("12 December 1934"), None),
-          AnswerRow("Do you know Joe Bloggs’s National Insurance number?", Html("No"), None),
-          AnswerRow("Do you know Joe Bloggs’s address?", Html("Yes"), None),
-          AnswerRow("Does Joe Bloggs live in the UK?", Html("Yes"), None),
-          AnswerRow("What is Joe Bloggs’s address?", Html("Line1<br />Line2<br />Line3<br />POSTCODE"), None),
-          AnswerRow("Do you know Joe Bloggs’s passport or ID card details?", Html("No"), None)
+          AnswerRow("What is the settlor’s name?", Html("Joe Bloggs"), None, canEdit = false),
+          AnswerRow("Do you know Joe Bloggs’s date of birth?", Html("Yes"), None, canEdit = false),
+          AnswerRow("What is Joe Bloggs’s date of birth?", Html("12 December 1934"), None, canEdit = false),
+          AnswerRow("Do you know Joe Bloggs’s National Insurance number?", Html("No"), None, canEdit = false),
+          AnswerRow("Do you know Joe Bloggs’s address?", Html("Yes"), None, canEdit = false),
+          AnswerRow("Does Joe Bloggs live in the UK?", Html("Yes"), None, canEdit = false),
+          AnswerRow("What is Joe Bloggs’s address?", Html("Line1<br />Line2<br />Line3<br />POSTCODE"), None, canEdit = false),
+          AnswerRow("Do you know Joe Bloggs’s passport or ID card details?", Html("No"), None, canEdit = false)
         ), None),
         AnswerSection(Some("Settlor 3"),Seq(
-          AnswerRow("What is the settlor’s name?", Html("Joe Bloggs"), None),
-          AnswerRow("Do you know Joe Bloggs’s date of birth?", Html("Yes"), None),
-          AnswerRow("What is Joe Bloggs’s date of birth?", Html("12 December 1934"), None),
-          AnswerRow("Do you know Joe Bloggs’s National Insurance number?", Html("No"), None),
-          AnswerRow("Do you know Joe Bloggs’s address?", Html("Yes"), None),
-          AnswerRow("Does Joe Bloggs live in the UK?", Html("No"), None),
-          AnswerRow("What is Joe Bloggs’s address?", Html("Line1<br />Line2<br />Line3<br />Germany"), None),
-          AnswerRow("Do you know Joe Bloggs’s passport or ID card details?", Html("Yes"), None),
-          AnswerRow("What are Joe Bloggs’s passport or ID card details?", Html("Germany<br />1234567890<br />1 January 2020"), None)
+          AnswerRow("What is the settlor’s name?", Html("Joe Bloggs"), None, canEdit = false),
+          AnswerRow("Do you know Joe Bloggs’s date of birth?", Html("Yes"), None, canEdit = false),
+          AnswerRow("What is Joe Bloggs’s date of birth?", Html("12 December 1934"), None, canEdit = false),
+          AnswerRow("Do you know Joe Bloggs’s National Insurance number?", Html("No"), None, canEdit = false),
+          AnswerRow("Do you know Joe Bloggs’s address?", Html("Yes"), None, canEdit = false),
+          AnswerRow("Does Joe Bloggs live in the UK?", Html("No"), None, canEdit = false),
+          AnswerRow("What is Joe Bloggs’s address?", Html("Line1<br />Line2<br />Line3<br />Germany"), None, canEdit = false),
+          AnswerRow("Do you know Joe Bloggs’s passport or ID card details?", Html("Yes"), None, canEdit = false),
+          AnswerRow("What are Joe Bloggs’s passport or ID card details?", Html("Germany<br />1234567890<br />1 January 2020"), None, canEdit = false)
         ), None),
         AnswerSection(Some("Settlor 4"),Seq(
-          AnswerRow("What is the settlor’s name?", Html("Joe Bloggs"), None),
-          AnswerRow("Do you know Joe Bloggs’s date of birth?", Html("Yes"), None),
-          AnswerRow("What is Joe Bloggs’s date of birth?", Html("12 December 1934"), None),
-          AnswerRow("Do you know Joe Bloggs’s National Insurance number?", Html("No"), None),
-          AnswerRow("Do you know Joe Bloggs’s address?", Html("No"), None)
+          AnswerRow("What is the settlor’s name?", Html("Joe Bloggs"), None, canEdit = false),
+          AnswerRow("Do you know Joe Bloggs’s date of birth?", Html("Yes"), None, canEdit = false),
+          AnswerRow("What is Joe Bloggs’s date of birth?", Html("12 December 1934"), None, canEdit = false),
+          AnswerRow("Do you know Joe Bloggs’s National Insurance number?", Html("No"), None, canEdit = false),
+          AnswerRow("Do you know Joe Bloggs’s address?", Html("No"), None, canEdit = false)
         ), None)
       )
     }

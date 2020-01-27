@@ -77,44 +77,44 @@ class ProtectorPrintPlaybackHelperSpec extends PlaybackSpecBase {
         AnswerSection(
           headingKey = Some("Protector 1"),
           rows = Seq(
-            AnswerRow(label = messages("individualProtectorName.checkYourAnswersLabel"), answer = Html(name1), changeUrl = None),
-            AnswerRow(label = messages("individualProtectorDateOfBirthYesNo.checkYourAnswersLabel", name1), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("individualProtectorNINOYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("individualProtectorNINO.checkYourAnswersLabel", name1), answer = Html("JB  1 2  34  5 6  C"), changeUrl = None)
+            AnswerRow(label = messages("individualProtectorName.checkYourAnswersLabel"), answer = Html(name1), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualProtectorDateOfBirthYesNo.checkYourAnswersLabel", name1), answer = Html("No"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualProtectorNINOYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualProtectorNINO.checkYourAnswersLabel", name1), answer = Html("JB  1 2  34  5 6  C"), changeUrl = None, canEdit = false)
           ),
           sectionKey = None
         ),
         AnswerSection(
           headingKey = Some("Protector 2"),
           rows = Seq(
-            AnswerRow(label = messages("individualProtectorName.checkYourAnswersLabel"), answer = Html(name2), changeUrl = None),
-            AnswerRow(label = messages("individualProtectorDateOfBirthYesNo.checkYourAnswersLabel", name2), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("individualProtectorDateOfBirth.checkYourAnswersLabel", name2), answer = Html("3 February 1996"), changeUrl = None),
-            AnswerRow(label = messages("individualProtectorAddressYesNo.checkYourAnswersLabel", name2), answer = Html("No"), changeUrl = None)
+            AnswerRow(label = messages("individualProtectorName.checkYourAnswersLabel"), answer = Html(name2), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualProtectorDateOfBirthYesNo.checkYourAnswersLabel", name2), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualProtectorDateOfBirth.checkYourAnswersLabel", name2), answer = Html("3 February 1996"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualProtectorAddressYesNo.checkYourAnswersLabel", name2), answer = Html("No"), changeUrl = None, canEdit = false)
           ),
           sectionKey = None
         ),
         AnswerSection(
           headingKey = Some("Protector 3"),
           rows = Seq(
-            AnswerRow(label = messages("individualProtectorName.checkYourAnswersLabel"), answer = Html(name3), changeUrl = None),
-            AnswerRow(label = messages("individualProtectorDateOfBirthYesNo.checkYourAnswersLabel", name3), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("individualProtectorAddressYesNo.checkYourAnswersLabel", name3), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("individualProtectorAddress.checkYourAnswersLabel", name3), answer = Html("line 1<br />line 2<br />NE11NE"), changeUrl = None),
-            AnswerRow(label = messages("individualProtectorPassportIDCardYesNo.checkYourAnswersLabel", name3), answer = Html("No"), changeUrl = None)
+            AnswerRow(label = messages("individualProtectorName.checkYourAnswersLabel"), answer = Html(name3), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualProtectorDateOfBirthYesNo.checkYourAnswersLabel", name3), answer = Html("No"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualProtectorAddressYesNo.checkYourAnswersLabel", name3), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualProtectorAddress.checkYourAnswersLabel", name3), answer = Html("line 1<br />line 2<br />NE11NE"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualProtectorPassportIDCardYesNo.checkYourAnswersLabel", name3), answer = Html("No"), changeUrl = None, canEdit = false)
           ),
           sectionKey = None
         ),
         AnswerSection(
           headingKey = Some("Protector 4"),
           rows = Seq(
-            AnswerRow(label = messages("individualProtectorName.checkYourAnswersLabel"), answer = Html(name4), changeUrl = None),
-            AnswerRow(label = messages("individualProtectorDateOfBirthYesNo.checkYourAnswersLabel", name4), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("individualProtectorDateOfBirth.checkYourAnswersLabel", name4), answer = Html("18 October 1947"), changeUrl = None),
-            AnswerRow(label = messages("individualProtectorAddressYesNo.checkYourAnswersLabel", name4), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("individualProtectorAddress.checkYourAnswersLabel", name4), answer = Html("line 1<br />line 2<br />DH11DH"), changeUrl = None),
-            AnswerRow(label = messages("individualProtectorPassportIDCardYesNo.checkYourAnswersLabel", name4), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("individualProtectorPassportIDCard.checkYourAnswersLabel", name4), answer = Html("Germany<br />KSJDFKSDHF6456545147852369QWER<br />2 February 2020"), changeUrl = None)
+            AnswerRow(label = messages("individualProtectorName.checkYourAnswersLabel"), answer = Html(name4), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualProtectorDateOfBirthYesNo.checkYourAnswersLabel", name4), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualProtectorDateOfBirth.checkYourAnswersLabel", name4), answer = Html("18 October 1947"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualProtectorAddressYesNo.checkYourAnswersLabel", name4), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualProtectorAddress.checkYourAnswersLabel", name4), answer = Html("line 1<br />line 2<br />DH11DH"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualProtectorPassportIDCardYesNo.checkYourAnswersLabel", name4), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualProtectorPassportIDCard.checkYourAnswersLabel", name4), answer = Html("Germany<br />KSJDFKSDHF6456545147852369QWER<br />2 February 2020"), changeUrl = None, canEdit = false)
           ),
           sectionKey = None
         )
@@ -154,29 +154,29 @@ class ProtectorPrintPlaybackHelperSpec extends PlaybackSpecBase {
         AnswerSection(
           headingKey = Some("Protector 1"),
           rows = Seq(
-            AnswerRow(label = messages("companyProtectorName.checkYourAnswersLabel"), answer = Html(company1), changeUrl = None),
-            AnswerRow(label = messages("companyProtectorUtrYesNo.checkYourAnswersLabel", company1), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("companyProtectorUtr.checkYourAnswersLabel", company1), answer = Html("1234567890"), changeUrl = None)
+            AnswerRow(label = messages("companyProtectorName.checkYourAnswersLabel"), answer = Html(company1), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("companyProtectorUtrYesNo.checkYourAnswersLabel", company1), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("companyProtectorUtr.checkYourAnswersLabel", company1), answer = Html("1234567890"), changeUrl = None, canEdit = false)
           ),
           sectionKey = None
         ),
         AnswerSection(
           headingKey = Some("Protector 2"),
           rows = Seq(
-            AnswerRow(label = messages("companyProtectorName.checkYourAnswersLabel"), answer = Html(company2), changeUrl = None),
-            AnswerRow(label = messages("companyProtectorUtrYesNo.checkYourAnswersLabel", company2), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("companyProtectorAddressYesNo.checkYourAnswersLabel", company2), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("companyProtectorAddressUkYesNo.checkYourAnswersLabel", company2), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("companyProtectorAddress.checkYourAnswersLabel", company2), answer = Html("line 1<br />line 2<br />Germany"), changeUrl = None)
+            AnswerRow(label = messages("companyProtectorName.checkYourAnswersLabel"), answer = Html(company2), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("companyProtectorUtrYesNo.checkYourAnswersLabel", company2), answer = Html("No"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("companyProtectorAddressYesNo.checkYourAnswersLabel", company2), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("companyProtectorAddressUkYesNo.checkYourAnswersLabel", company2), answer = Html("No"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("companyProtectorAddress.checkYourAnswersLabel", company2), answer = Html("line 1<br />line 2<br />Germany"), changeUrl = None, canEdit = false)
           ),
           sectionKey = None
         ),
         AnswerSection(
           headingKey = Some("Protector 3"),
           rows = Seq(
-            AnswerRow(label = messages("companyProtectorName.checkYourAnswersLabel"), answer = Html(company3), changeUrl = None),
-            AnswerRow(label = messages("companyProtectorUtrYesNo.checkYourAnswersLabel", company3), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("companyProtectorAddressYesNo.checkYourAnswersLabel", company3), answer = Html("No"), changeUrl = None)
+            AnswerRow(label = messages("companyProtectorName.checkYourAnswersLabel"), answer = Html(company3), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("companyProtectorUtrYesNo.checkYourAnswersLabel", company3), answer = Html("No"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("companyProtectorAddressYesNo.checkYourAnswersLabel", company3), answer = Html("No"), changeUrl = None, canEdit = false)
           ),
           sectionKey = None
         )
@@ -212,22 +212,22 @@ class ProtectorPrintPlaybackHelperSpec extends PlaybackSpecBase {
         AnswerSection(
           headingKey = Some("Protector 1"),
           rows = Seq(
-            AnswerRow(label = messages("individualProtectorName.checkYourAnswersLabel"), answer = Html(name1), changeUrl = None),
-            AnswerRow(label = messages("individualProtectorDateOfBirthYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("individualProtectorDateOfBirth.checkYourAnswersLabel", name1), answer = Html("18 October 1947"), changeUrl = None),
-            AnswerRow(label = messages("individualProtectorAddressYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("individualProtectorAddress.checkYourAnswersLabel", name1), answer = Html("line 1<br />line 2<br />DH11DH"), changeUrl = None),
-            AnswerRow(label = messages("individualProtectorPassportIDCardYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("individualProtectorPassportIDCard.checkYourAnswersLabel", name1), answer = Html("Germany<br />KSJDFKSDHF6456545147852369QWER<br />2 February 2020"), changeUrl = None)
+            AnswerRow(label = messages("individualProtectorName.checkYourAnswersLabel"), answer = Html(name1), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualProtectorDateOfBirthYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualProtectorDateOfBirth.checkYourAnswersLabel", name1), answer = Html("18 October 1947"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualProtectorAddressYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualProtectorAddress.checkYourAnswersLabel", name1), answer = Html("line 1<br />line 2<br />DH11DH"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualProtectorPassportIDCardYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualProtectorPassportIDCard.checkYourAnswersLabel", name1), answer = Html("Germany<br />KSJDFKSDHF6456545147852369QWER<br />2 February 2020"), changeUrl = None, canEdit = false)
           ),
           sectionKey = None
         ),
         AnswerSection(
           headingKey = Some("Protector 2"),
           rows = Seq(
-            AnswerRow(label = messages("companyProtectorName.checkYourAnswersLabel"), answer = Html(company1), changeUrl = None),
-            AnswerRow(label = messages("companyProtectorUtrYesNo.checkYourAnswersLabel", company1), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("companyProtectorUtr.checkYourAnswersLabel", company1), answer = Html("1234567890"), changeUrl = None)
+            AnswerRow(label = messages("companyProtectorName.checkYourAnswersLabel"), answer = Html(company1), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("companyProtectorUtrYesNo.checkYourAnswersLabel", company1), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("companyProtectorUtr.checkYourAnswersLabel", company1), answer = Html("1234567890"), changeUrl = None, canEdit = false)
           ),
           sectionKey = None
         )

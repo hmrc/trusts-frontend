@@ -58,42 +58,42 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
             AnswerRow(
               label = messages("trustName.checkYourAnswersLabel"),
               answer = Html("Trust Ltd."),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("whenTrustSetup.checkYourAnswersLabel"),
               answer = Html("1 June 2019"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("governedInsideTheUK.checkYourAnswersLabel"),
               answer = Html("Yes"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("administrationInsideUK.checkYourAnswersLabel"),
               answer = Html("Yes"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("trustResidentInUK.checkYourAnswersLabel"),
               answer = Html("Based on your answers, the trust is resident in the UK"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("establishedUnderScotsLaw.checkYourAnswersLabel"),
               answer = Html("Yes"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("trustResidentOffshore.checkYourAnswersLabel"),
               answer = Html("Yes"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("trustPreviouslyResident.checkYourAnswersLabel"),
               answer = Html("Germany"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             )
           ),
           sectionKey = Some(messages("answerPage.section.trustsDetails.heading"))
@@ -104,7 +104,7 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
             AnswerRow(
               label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
               answer = Html("Yes"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             )
           ),
           sectionKey = Some("Trust type")
@@ -143,52 +143,52 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
             AnswerRow(
               label = messages("trustName.checkYourAnswersLabel"),
               answer = Html("Trust Ltd."),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("whenTrustSetup.checkYourAnswersLabel"),
               answer = Html("1 June 2019"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("governedInsideTheUK.checkYourAnswersLabel"),
               answer = Html("No"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("countryGoverningTrust.checkYourAnswersLabel"),
               answer = Html("Germany"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("administrationInsideUK.checkYourAnswersLabel"),
               answer = Html("No"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("countryAdministeringTrust.checkYourAnswersLabel"),
               answer = Html("Germany"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("trustResidentInUK.checkYourAnswersLabel"),
               answer = Html("Based on your answers, the trust is not resident in the UK"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("registeringTrustFor5A.checkYourAnswersLabel"),
               answer = Html("No"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("inheritanceTaxAct.checkYourAnswersLabel"),
               answer = Html("Yes"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("agentOtherThanBarrister.checkYourAnswersLabel"),
               answer = Html("Yes"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             )
           ),
           sectionKey = Some(messages("answerPage.section.trustsDetails.heading"))
@@ -199,17 +199,17 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
             AnswerRow(
               label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
               answer = Html("No"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("kindOfTrust.checkYourAnswersLabel"),
               answer = Html(messages("kindOfTrust.Deed")),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("setupInAdditionToWillTrustYesNo.checkYourAnswersLabel"),
               answer = Html("Yes"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             )
           ),
           sectionKey = Some("Trust type")
@@ -246,37 +246,37 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
             AnswerRow(
               label = messages("trustName.checkYourAnswersLabel"),
               answer = Html("Trust Ltd."),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("whenTrustSetup.checkYourAnswersLabel"),
               answer = Html("1 June 2019"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("governedInsideTheUK.checkYourAnswersLabel"),
               answer = Html("Yes"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("administrationInsideUK.checkYourAnswersLabel"),
               answer = Html("Yes"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("trustResidentInUK.checkYourAnswersLabel"),
               answer = Html("Based on your answers, the trust is resident in the UK"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("establishedUnderScotsLaw.checkYourAnswersLabel"),
               answer = Html("No"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("trustResidentOffshore.checkYourAnswersLabel"),
               answer = Html("No"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             )
           ),
           sectionKey = Some(messages("answerPage.section.trustsDetails.heading"))
@@ -287,22 +287,22 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
             AnswerRow(
               label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
               answer = Html("No"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("kindOfTrust.checkYourAnswersLabel"),
               answer = Html(messages("kindOfTrust.Deed")),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("setupInAdditionToWillTrustYesNo.checkYourAnswersLabel"),
               answer = Html("No"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("howDeedOfVariationCreated.checkYourAnswersLabel"),
               answer = Html(messages("deedOfVariation.replaceWillTrust")),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             )
           ),
           sectionKey = Some("Trust type")
@@ -338,37 +338,37 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
             AnswerRow(
               label = messages("trustName.checkYourAnswersLabel"),
               answer = Html("Trust Ltd."),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("whenTrustSetup.checkYourAnswersLabel"),
               answer = Html("1 June 2019"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("governedInsideTheUK.checkYourAnswersLabel"),
               answer = Html("Yes"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("administrationInsideUK.checkYourAnswersLabel"),
               answer = Html("Yes"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("trustResidentInUK.checkYourAnswersLabel"),
               answer = Html("Based on your answers, the trust is not resident in the UK"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("registeringTrustFor5A.checkYourAnswersLabel"),
               answer = Html("No"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("inheritanceTaxAct.checkYourAnswersLabel"),
               answer = Html("No"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             )
           ),
           sectionKey = Some(messages("answerPage.section.trustsDetails.heading"))
@@ -379,17 +379,17 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
             AnswerRow(
               label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
               answer = Html("No"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("kindOfTrust.checkYourAnswersLabel"),
               answer = Html(messages("kindOfTrust.Lifetime")),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("holdoverReliefYesNo.checkYourAnswersLabel"),
               answer = Html("Yes"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             )
           ),
           sectionKey = Some("Trust type")
@@ -423,32 +423,32 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
             AnswerRow(
               label = messages("trustName.checkYourAnswersLabel"),
               answer = Html("Trust Ltd."),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("whenTrustSetup.checkYourAnswersLabel"),
               answer = Html("1 June 2019"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("governedInsideTheUK.checkYourAnswersLabel"),
               answer = Html("Yes"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("administrationInsideUK.checkYourAnswersLabel"),
               answer = Html("Yes"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("trustResidentInUK.checkYourAnswersLabel"),
               answer = Html("Based on your answers, the trust is not resident in the UK"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("registeringTrustFor5A.checkYourAnswersLabel"),
               answer = Html("Yes"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             )
           ),
           sectionKey = Some(messages("answerPage.section.trustsDetails.heading"))
@@ -459,12 +459,12 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
             AnswerRow(
               label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
               answer = Html("No"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("kindOfTrust.checkYourAnswersLabel"),
               answer = Html(messages("kindOfTrust.Building")),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             )
           ),
           sectionKey = Some("Trust type")
@@ -490,7 +490,7 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
             AnswerRow(
               label = messages("trustResidentInUK.checkYourAnswersLabel"),
               answer = Html("Based on your answers, the trust is not resident in the UK"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             )
           ),
           sectionKey = Some("Trust details")
@@ -501,12 +501,12 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
             AnswerRow(
               label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
               answer = Html("No"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("kindOfTrust.checkYourAnswersLabel"),
               answer = Html(messages("kindOfTrust.Repair")),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             )
           ),
           sectionKey = Some("Trust type")
@@ -534,7 +534,7 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
             AnswerRow(
               label = messages("trustResidentInUK.checkYourAnswersLabel"),
               answer = Html("Based on your answers, the trust is not resident in the UK"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             )
           ),
           sectionKey = Some("Trust details")
@@ -545,22 +545,22 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
             AnswerRow(
               label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
               answer = Html("No"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("kindOfTrust.checkYourAnswersLabel"),
               answer = Html(messages("kindOfTrust.Employees")),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("employerFinancedRetirementBenefitsSchemeYesNo.checkYourAnswersLabel"),
               answer = Html("Yes"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("employerFinancedRetirementBenefitsSchemeStartDate.checkYourAnswersLabel"),
               answer = Html("1 February 1970"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             )
           ),
           sectionKey = Some("Trust type")
@@ -587,7 +587,7 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
             AnswerRow(
               label = messages("trustResidentInUK.checkYourAnswersLabel"),
               answer = Html("Based on your answers, the trust is not resident in the UK"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             )
           ),
           sectionKey = Some("Trust details")
@@ -598,17 +598,17 @@ class TrustDetailsAndTypePrintPlaybackHelperSpec extends PlaybackSpecBase {
             AnswerRow(
               label = messages("setUpAfterSettlorDied.checkYourAnswersLabel"),
               answer = Html("No"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("kindOfTrust.checkYourAnswersLabel"),
               answer = Html(messages("kindOfTrust.Employees")),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             ),
             AnswerRow(
               label = messages("employerFinancedRetirementBenefitsSchemeYesNo.checkYourAnswersLabel"),
               answer = Html("No"),
-              changeUrl = None
+              changeUrl = None, canEdit = false
             )
           ),
           sectionKey = Some("Trust type")

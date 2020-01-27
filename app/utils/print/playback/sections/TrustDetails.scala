@@ -70,7 +70,8 @@ object TrustDetails {
       AnswerRow(
         messages(s"$labelKey.checkYourAnswersLabel", messageArg),
         HtmlFormat.escape(CheckAnswersFormatters.country(x, countryOptions)),
-        None
+        None,
+        canEdit = false
       )
     }
   }
@@ -82,7 +83,8 @@ object TrustDetails {
       AnswerRow(
         messages(s"$labelKey.checkYourAnswersLabel", messageArg),
         HtmlFormat.escape(trusteesBasedInUk(userAnswers.get(query), messages)),
-        None
+        None,
+        canEdit = false
       )
     )
   }

@@ -52,7 +52,7 @@ class IndividualBeneficiaryAnswersControllerSpec extends RegistrationSpecBase {
 
 
       val countryOptions = injector.instanceOf[CountryOptions]
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
 
       val expectedSections = Seq(
         AnswerSection(

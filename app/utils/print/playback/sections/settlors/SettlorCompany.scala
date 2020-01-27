@@ -56,7 +56,8 @@ object SettlorCompany {
       AnswerRow(
         messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
         HtmlFormat.escape(x.toString),
-        None
+        None,
+        canEdit = false
       )
     }
   }

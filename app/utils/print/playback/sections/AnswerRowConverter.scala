@@ -39,7 +39,8 @@ object AnswerRowConverter {
       AnswerRow(
         messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
         HtmlFormat.escape(CheckAnswersFormatters.formatNino(x)),
-        None
+        None,
+        canEdit = false
       )
     }
   }
@@ -51,7 +52,8 @@ object AnswerRowConverter {
       AnswerRow(
         messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
         CheckAnswersFormatters.utr(x),
-        None
+        None,
+        canEdit = false
       )
     }
   }
@@ -63,7 +65,8 @@ object AnswerRowConverter {
         AnswerRow(
           messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
           CheckAnswersFormatters.addressFormatter(x, countryOptions),
-          None
+          None,
+          canEdit = false
         )
     }
   }
@@ -76,7 +79,8 @@ object AnswerRowConverter {
         AnswerRow(
           messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
           CheckAnswersFormatters.internationalAddress(international, countryOptions),
-          None
+          None,
+          canEdit = false
         )
     }
   }
@@ -89,7 +93,8 @@ object AnswerRowConverter {
         AnswerRow(
           messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
           CheckAnswersFormatters.ukAddress(uk),
-          None
+          None,
+          canEdit = false
         )
     }
   }
@@ -101,7 +106,8 @@ object AnswerRowConverter {
       AnswerRow(
         messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
         CheckAnswersFormatters.currency(x),
-        None
+        None,
+        canEdit = false
       )
     }
   }
@@ -113,7 +119,8 @@ object AnswerRowConverter {
       AnswerRow(
         messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
         CheckAnswersFormatters.percentage(x),
-        None
+        None,
+        canEdit = false
       )
     }
   }
@@ -125,7 +132,8 @@ object AnswerRowConverter {
       AnswerRow(
         messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
         HtmlFormat.escape(x.format(CheckAnswersFormatters.dateFormatter)),
-        None
+        None,
+        canEdit = false
       )
     }
   }
@@ -137,7 +145,8 @@ object AnswerRowConverter {
       AnswerRow(
         messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
         CheckAnswersFormatters.yesOrNo(x),
-        None
+        None,
+        canEdit = false
       )
     }
   }
@@ -149,7 +158,8 @@ object AnswerRowConverter {
       AnswerRow(
         messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
         HtmlFormat.escape(CheckAnswersFormatters.fullName(x)),
-        None
+        None,
+        canEdit = false
       )
     }
   }
@@ -161,7 +171,8 @@ object AnswerRowConverter {
       AnswerRow(
         messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
         HtmlFormat.escape(x.toString),
-        None
+        None,
+        canEdit = false
       )
     }
   }
@@ -173,7 +184,8 @@ object AnswerRowConverter {
       AnswerRow(
         messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
         CheckAnswersFormatters.passportOrIDCard(x, countryOptions),
-        None
+        None,
+        canEdit = false
       )
     }
   }
@@ -185,7 +197,8 @@ object AnswerRowConverter {
       AnswerRow(
         messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
         HtmlFormat.escape(x.toString.capitalize),
-        None
+        None,
+        canEdit = false
       )
     }
   }
@@ -197,7 +210,8 @@ object AnswerRowConverter {
       AnswerRow(
         messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
         HtmlFormat.escape(CheckAnswersFormatters.kindOfTrust(x, messages)),
-        None
+        None,
+        canEdit = false
       )
     }
   }
